@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --undp-blue: #0468b1;
+  --undp-black: #232e3d;
+  --undp-gray: #55606e;
+  --undp-light: #f7f7f7;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--undp-black);
+  line-height: 1.6;
+}
