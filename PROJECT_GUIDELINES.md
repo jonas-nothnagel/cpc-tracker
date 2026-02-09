@@ -1,230 +1,289 @@
 # CPC Tracker - Project Guidelines
 
-> Nature-Climate Policy Coherence Progress Analysis Tool
+> Nature-Climate Policy Coherence Progress Analysis Tool for UNDP
 
-## Project Overview
-
-An interactive web application for UNDP country offices that visualizes policy coherence and implementation progress across climate, biodiversity, and related sectoral policies. Powered by AI-generated insights from structured (budget) and unstructured (policy documents, reports) data.
-
-### Core Questions the Product Should Answer
-
-1. **Primary**: "Are various policies (NDC, NBSAP, NAP, NDP, sectoral policies) working in coherence toward major Nature-Climate targets?"
-2. **Secondary** (exploratory): "What was the ROI of climate/nature interventions on national development priorities?"
-
-### Target Countries (Pilot)
-
-- Mongolia (CCD COP17 hosting country)
-- Panama
-- Morocco (around Water)
-- Potentially: Armenia, Turkey, Seychelles
+*Last updated: February 2026*
 
 ---
 
-## Design System & Tech Stack
+## 1. Product Vision
 
-### Frontend Framework
+An interactive web application that allows UNDP country offices and national partners to **input their policy targets**, run AI-powered coherency analysis, and explore the results through interactive visualizations. The tool automates and enhances the process currently done manually in static reports (e.g. the Mongolia Target Alignment Assessment).
 
-| Technology | Purpose |
-|------------|---------|
-| **Next.js** | React framework with App Router |
-| **TypeScript** | Type safety |
-| **pnpm** | Package manager |
-| **Tailwind CSS** | Utility-first styling |
-| **shadcn/ui** | Base component primitives |
-| **ESLint + Prettier** | Code quality |
+### What This Tool Is NOT
 
-> **Reference**: Stack inspired by [un-fck/open.unfck.org](https://github.com/un-fck/open.unfck.org)
+- Not a replacement for national planning processes
 
-### Data Processing
+### What This Tool IS
 
-| Technology | Purpose |
-|------------|---------|
-| **Python** | Data processing, ETL scripts |
-| **uv** | Python package management |
-
-### UNDP Design System (MANDATORY)
-
-All UI components must follow the official UNDP React Design System:
-
-- **Documentation**: https://react.design.undp.org/?path=/docs/getting-started-intro--docs
-- **NPM Package**: `@undp/design-system-react` (check for latest version)
-- Follow UNDP brand guidelines for colors, typography, spacing
-- Use shadcn/ui as base, customize to match UNDP design tokens
-
-### Data Visualization (MANDATORY)
-
-All charts, graphs, and visualizations must follow UNDP Data Visualization Guidelines:
-
-- **Documentation**: https://dataviz.design.undp.org/
-- Use recommended chart types for different data scenarios
-- Follow accessibility guidelines for color contrast and labeling
-- Ensure visualizations are responsive and print-friendly
-
-### Key Visualization Types to Implement
-
-| Visualization | Use Case |
-|--------------|----------|
-| Heatmaps | Target alignment matrices (NBT vs NDC vs NAP) |
-| Sankey Diagrams | Policy-to-target flow, budget allocation flows |
-| Spider/Radar Charts | Theme coverage comparison across policy types |
-| Treemaps | Budget allocation by sector/theme |
-| Timeline Charts | Temporal coherence, target deadlines |
+- A **data input** platform where users submit their own structured targets
+- An **AI analysis engine** that assesses alignment between targets
+- An **interactive dashboard** that visualizes coherency results
+- A tool designed for **human-in-the-loop** validation
 
 ---
 
-## Architecture Principles
+## 2. Core Questions
 
-### Data Sovereignty
-
-- Built to be **deployed independently** by national governments
-- No government data exposed to external models without explicit consent
-- Open source under appropriate license (Digital Public Good target)
-- Data upload model, not data scraping
-
-### Human-in-the-Loop
-
-- AI provides suggestions and analysis, humans validate
-- Clear indicators when content is AI-generated
-- Easy override/correction mechanisms
+| Priority | Question |
+|----------|----------|
+| **Primary** | Are various policies (NDC, NBSAP, NAP, LDN, sectoral) working in coherence toward Nature-Climate targets? |
+| **Secondary** | Where are the highest opportunities for coordinated implementation? |
+| **Future** | What is the progress toward coherent implementation (indicators, finance, outcomes)? |
 
 ---
 
-## Data Model Concepts
+## 3. Phased Roadmap
 
-### Policy Coherence Measurement
+### Phase 1: Coherency Analysis Dashboard (Current Focus)
 
-Four-level alignment classification:
+Replicate and enhance the Mongolia report output as an interactive web application.
+
+**Input**: Users upload/enter their national targets from various policy documents.
+**Processing**: LLM-based multi-agent analysis assesses alignment.
+**Output**: Interactive dashboard with visualizations and insights.
+
+Specific deliverables:
+1. **Target upload interface** — structured input for targets from NDC, NBSAP, NAP, LDN, other policies
+2. **NBS classification** — AI classifies each target against 10 nature-based solution categories
+3. **Theme classification** — AI classifies each target against 10+ cross-cutting themes (user-extensible)
+4. **Pairwise alignment assessment** — AI evaluates every target pair for alignment (No/Low/Medium/High)
+5. **Interactive dashboard** — heatmaps, bar charts, radar charts, summary statistics
+6. **Exportable results** — allow users to download analysis for offline use
+
+### Phase 2: Progress & Implementation Tracking
+
+Move from "are policies coherent?" to "are we making coherent progress?"
+
+- Monitorable indicators mapped to targets
+- Cross-sector progress tracking (energy, water, agriculture moving in coherence?)
+- Finance and budget commitment overlay on targets
+- Potentially integrate [BIOFIN Global Biodiversity Expenditure Taxonomy](https://www.biofin.org/knowledge-product/global-biodiversity-expenditure-taxonomy)
+
+### Phase 3: Impact & Cross-Country (Future)
+
+- Cross-country comparison
+- Impact proxies (job creation, green economy indicators)
+- Geospatial layers
+
+---
+
+## 4. Data Model
+
+### 4.1 Policy Documents (Sources)
+
+Users provide targets from these document types:
+
+| Document | Convention | Example |
+|----------|-----------|---------|
+| **NDC** (Nationally Determined Contributions) | UNFCCC | Mongolia NDC 3.0 |
+| **NBSAP / NBT** (National Biodiversity Targets) | CBD / KMGBF | Mongolia NBTs |
+| **NAP** (National Adaptation Plan) | UNFCCC | Mongolia 2021 NAP |
+| **LDN** (Land Degradation Neutrality Targets) | UNCCD | Mongolia LDN targets |
+| **Sectoral policies** | Various | Agriculture, water, forest, land use |
+
+### 4.2 Target
+
+A specific policy objective submitted by the user.
+
+```
+Target {
+  id: string
+  text: string                    // Full target text
+  source_document: PolicyDocument // NDC, NBSAP, NAP, LDN, other
+  source_label: string            // e.g. "Animal husbandry and pastureland 2"
+  country: string
+  is_quantitative: boolean
+  is_time_bound: boolean
+  quantitative_details?: string   // e.g. "30%", "by 2030"
+}
+```
+
+### 4.3 Nature-Based Solution Categories (10 predefined)
+
+From IPCC Special Report on Climate Change and Land + Griscom et al:
+
+1. Agriculture and livestock management
+2. Ecosystem protection and connectivity
+3. Forest management, restoration, and protection
+4. Nature-based carbon sequestration
+5. Nature-based risk management and disaster prevention
+6. Protection and restoration of wetlands and freshwater ecosystems
+7. Protection, management, and restoration of marine and coastal habitats
+8. Soil fertility management and restoration
+9. Urban settlements management
+10. Water management
+
+### 4.4 Cross-Cutting Themes (10 predefined + user-extensible)
+
+1. Climate change adaptation
+2. Climate change mitigation
+3. Land conservation and restoration
+4. Species conservation and ecosystems
+5. Pollution
+6. Gender equality
+7. Capacity building and development
+8. Sustainable development and the SDGs
+9. Indigenous Peoples and local communities
+10. Private sector
+
+> Countries may propose additional themes for assessment.
+
+### 4.5 Alignment Classification
 
 | Level | Description |
 |-------|-------------|
-| **No alignment** | Distinct purpose, no connection |
-| **Low alignment** | Superficial overlap (terminology), needs substantial effort |
-| **Medium alignment** | Clear overlap (thematic/geographic), some effort needed |
-| **High alignment** | Robust overlap (goals, actions, ecosystems), ready for coordination |
+| **No alignment** | Distinct in purpose and implementation, no connection |
+| **Low** | Superficial overlap (terminology), substantial effort needed to align |
+| **Medium** | Clear overlap (thematic/geographic), some effort needed to align |
+| **High** | Robust overlap (goals, actions, ecosystems, actors), ready for coordination |
 
-### Key Entities
-
-- **Target**: A specific policy objective from any document (NDC, NBSAP, NAP, etc.)
-- **Theme**: Cross-cutting categories (Climate Adaptation, Biodiversity, Water, etc.)
-- **NBS Category**: Nature-based solution categories
-- **Budget Line**: Financial allocation that can be mapped to targets/themes
-
-### Important Distinction
+### 4.6 Important Distinction
 
 > **Coherence ≠ Impact**
-> 
-> A target with high coherence across policies is not necessarily the most important target. The tool should present both:
-> 1. Coherence Score: How aligned with other targets
-> 2. Strategic Importance: How central to key outcomes
+>
+> High coherence across policies does not mean a target is the most important. Coherence identifies coordination opportunities, not strategic priority.
 
 ---
 
-## MVP Feature Priorities
+## 5. AI / LLM Architecture
 
-### 🔴 Must Have
+### Multi-Agent Approach (from existing methodology)
 
-1. Policy target alignment visualization (interactive heatmaps)
-2. Multi-policy integration (NDC, NBSAP, NAP, sectoral)
-3. Document ingestion and target extraction
-4. Budget/expenditure overlay on targets
+The analysis uses a two-agent pipeline:
 
-### 🟡 Should Have
+**Agent 1 — Target Analyst**
+- Decomposes each target into structured components:
+  - Goal/Purpose
+  - Action/Intervention
+  - Ecosystem/Area
+  - Target Audience
+  - Expected Impact/Outcome
 
-5. Temporal coherence view (timelines)
-6. Counterproductive target detection ("alarming incoherence")
-7. Investment opportunity flagging (multiplier opportunities)
-8. Query interface for exploring data
+**Agent 2 — Alignment Advisor**
+- Compares target pairs using structured output from Agent 1
+- Classifies alignment level (No/Low/Medium/High)
+- Generates descriptive rationale for each classification
 
-### 🟢 Could Have (Future)
+### Thematic Classification
 
-9. Basic geospatial layer
-10. Cross-country comparison
-11. Impact proxy dashboard
+- Each target independently compared against each predefined theme/NBS category
+- Binary output (Yes/No) per target-theme combination
+- For n targets and 20 categories → n × 20 observations
 
----
+### LLM Provider Strategy
 
-## Project Structure
+| Phase | Provider | Notes |
+|-------|----------|-------|
+| Development / Prototype | [OpenRouter](https://openrouter.ai/) | Multi-model access, easy switching, pay-per-use |
+| Production | Azure OpenAI (pending access) | UNDP-compliant, data sovereignty |
 
-```
-cpc-tracker/
-├── src/
-│   ├── app/              # Next.js App Router pages
-│   ├── components/       # React components
-│   │   ├── ui/           # shadcn/ui base components
-│   │   └── viz/          # Visualization components
-│   └── lib/              # Utilities, helpers
-├── python/               # Data processing scripts
-├── data/                 # Static/sample data
-├── public/               # Static assets
-├── docs/                 # Documentation
-└── documents/            # Project reference documents
-```
+> Previous work used GPT-4o mini. We should evaluate newer/better models.
 
 ---
 
-## Development Practices
+## 6. Visualizations (Phase 1)
 
-### Code Quality
+Following [UNDP Data Visualization Guidelines](https://dataviz.design.undp.org/).
 
-- Use TypeScript for type safety
-- Component documentation with Storybook (aligns with UNDP design system)
-- Comprehensive test coverage for data processing logic
-- Linting with ESLint, formatting with Prettier
-
-### Accessibility
-
-- WCAG 2.1 AA compliance minimum
-- Keyboard navigation support
-- Screen reader friendly visualizations
-- Color-blind safe palettes (per UNDP dataviz guidelines)
-
-### Performance
-
-- Lazy loading for large datasets
-- Client-side caching for repeated queries
-- Optimize bundle size (code splitting)
-
-### Maintenance Commands
-
-```bash
-# Check for issues
-pnpm audit          # Security vulnerabilities
-pnpm outdated       # Outdated packages
-pnpm lint           # ESLint errors
-pnpm tsc --noEmit   # TypeScript errors
-
-# Update packages
-pnpm update         # Safe patch/minor updates
-
-# Update shadcn/ui components
-pnpm dlx shadcn@latest diff
-pnpm dlx shadcn@latest add <component-name> --overwrite
-
-# Clean install
-rm -rf node_modules .next && pnpm install
-```
+| Visualization | Use Case | Mongolia Report Equivalent |
+|--------------|----------|---------------------------|
+| **Heatmaps** | Pairwise target alignment (NBT×NDC, NBT×NAP, NDC×NAP) | Figures 3.3–3.5 |
+| **Stacked bar charts** | Targets per NBS category / theme, colored by source document | Figures 3.1, 3.2 |
+| **Radar/spider charts** | NBS coverage comparison across document types | Figure 4.1 |
+| **Summary statistics** | Counts, percentages, alignment distribution | Throughout report |
 
 ---
 
-## Open Questions & Decisions Needed
+## 7. Tech Stack
 
-- [ ] Minimum data schema definition - what must a country provide?
-- [ ] LLM provider selection (Azure OpenAI? Local models?)
-- [ ] Hosting strategy for data sovereignty
-- [ ] Authentication/authorization model
-- [ ] Offline capability requirements
-- [ ] Multi-language support scope
+### Frontend
+
+| Technology | Purpose |
+|------------|---------|
+| **Next.js** (App Router) | React framework |
+| **TypeScript** (strict) | Type safety |
+| **pnpm** | Package manager |
+| **Tailwind CSS** | Utility-first styling |
+| **shadcn/ui** | Base component primitives |
+
+### Design Systems (MANDATORY)
+
+- **UI**: [UNDP React Design System](https://react.design.undp.org/?path=/docs/getting-started-intro--docs)
+- **Charts**: [UNDP Data Visualization Guidelines](https://dataviz.design.undp.org/)
+
+### Backend / Data Processing
+
+| Technology | Purpose |
+|------------|---------|
+| **Python** (uv) | LLM pipeline, data processing |
+| **Next.js API routes** | Lightweight API layer |
 
 ---
 
-## References
+## 8. Architecture Principles
+
+### Data Sovereignty
+- Deployable independently by national governments
+- No government data sent to external services without explicit consent
+- Data upload model, not data scraping
+- Open source (Digital Public Good target)
+
+### Human-in-the-Loop
+- AI provides analysis, humans validate
+- Clear indicators when content is AI-generated
+- Users can override/correct classifications
+
+### Vendor-Ready / Handoverable
+- Clean, well-documented code with clear separation of concerns
+- Comprehensive tech requirements (this document) that can serve as Terms of Reference
+- No tribal knowledge — all decisions documented
+
+---
+
+## 9. Pilot Countries
+
+| Country | Context | Status |
+|---------|---------|--------|
+| 🇲🇳 Mongolia | CCD COP17 host, has existing report | Pilot data available |
+| 🇵🇦 Panama | — | Planned |
+| 🇲🇦 Morocco | Water focus | Planned |
+| 🇦🇲 Armenia | — | Potential |
+| 🇹🇷 Turkey | — | Potential |
+| 🇸🇨 Seychelles | — | Potential |
+
+---
+
+## 10. Future: Document Processing Pipeline
+
+While Phase 1 focuses on structured manual input of targets, a later iteration may include:
+
+- **PDF / Word upload** → automated target extraction via LLM
+- **Processing + confirmation flow**: uploaded documents are parsed, extracted targets are shown to the user for review/correction before analysis runs
+- **Challenge**: need to define what kinds of input to expect — bullet lists? Numbered targets? Prose paragraphs? Mixed formats?
+- This could be a Python processing script that returns structured candidates for user confirmation on the frontend
+
+> Keep the input interface flexible enough to support both manual entry (Phase 1) and document-upload-then-confirm (future).
+
+---
+
+## 11. Open Questions
+
+- [ ] LLM cost model: per-analysis pricing for country offices?
+- [ ] Azure OpenAI access timeline
+- [ ] Minimum data schema: what exactly must a country provide beyond target text?
+- [ ] Hosting strategy for production (data sovereignty requirements)
+- [ ] Authentication model: who can access, who can upload?
+- [ ] Offline capability requirements?
+- [ ] Multi-language support scope (targets may be in local languages)
+- [ ] Build vs vendor decision — maintain this doc as potential ToR
+
+---
+
+## 12. References
 
 - [UNDP React Design System](https://react.design.undp.org/?path=/docs/getting-started-intro--docs)
 - [UNDP Data Visualization Guidelines](https://dataviz.design.undp.org/)
-- [UN Website Boilerplate](https://github.com/un-fck/open.unfck.org) - Tech stack reference
-- Mongolia Target Assessment Report (internal reference)
-- AI Flagships Proposal Document (internal reference)
-
----
-
-*Last updated: February 2026*
+- [BIOFIN Expenditure Taxonomy](https://www.biofin.org/knowledge-product/global-biodiversity-expenditure-taxonomy)
+- Mongolia Target Assessment Report (internal, Jan 2025)
+- AI Flagships Proposal Document (internal)

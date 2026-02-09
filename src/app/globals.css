@@ -2,13 +2,20 @@
 
 :root {
   --undp-blue: #0468b1;
+  --undp-blue-dark: #035293;
+  --undp-blue-light: #0099d9;
   --undp-black: #232e3d;
   --undp-gray: #55606e;
   --undp-light: #f7f7f7;
+  --undp-green: #59ba47;
+  --undp-yellow: #ffbc00;
+  --undp-red: #ee402d;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   color: var(--undp-black);
   line-height: 1.6;
 }
