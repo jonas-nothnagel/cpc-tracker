@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 html {
-  font-size: 16px;
+  font-size: 16px !important;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 :root {
