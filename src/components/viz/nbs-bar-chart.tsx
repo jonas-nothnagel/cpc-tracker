@@ -127,7 +127,7 @@ export function NbsBarChart({
         <BarChart
           data={chartData}
           layout="vertical"
-          margin={{ top: 5, right: 40, left: 200, bottom: 5 }}
+          margin={{ top: 5, right: 24, left: 180, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
           <XAxis type="number" tick={{ fontSize: 12, fill: "#64748b" }} />
@@ -135,7 +135,7 @@ export function NbsBarChart({
             dataKey="name"
             type="category"
             tick={{ fontSize: 12, fill: "#64748b" }}
-            width={190}
+            width={170}
           />
           <Tooltip
             contentStyle={{
