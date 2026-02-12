@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -10,9 +11,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
-import type { PolicyDocumentType } from "@/types";
+import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
 interface BarData {
+  categoryId: string;
   categoryName: string;
   total: number;
   byDocument: Record<PolicyDocumentType, number>;
@@ -23,30 +25,77 @@ interface ThemeBarChartProps {
   title: string;
   subtitle?: string;
   documentTypes: PolicyDocumentType[];
+  targets: Target[];
+  themeClassifications: ThematicClassification[];
+}
+
+function getTargetsForThemeAndDoc(
+  themeId: string,
+  docType: PolicyDocumentType,
+  targets: Target[],
+  classifications: ThematicClassification[]
+): Target[] {
+  const targetIds = new Set(
+    classifications
+      .filter(
+        (c) =>
+          c.categoryId === themeId &&
+          c.isRelevant &&
+          c.taxonomyType === "theme"
+      )
+      .map((c) => c.targetId)
+  );
+  return targets.filter(
+    (t) => targetIds.has(t.id) && t.sourceDocument === docType
+  );
 }
 
 /**
- * Interactive vertical stacked bar chart using Recharts.
- * Hoverable bars with tooltips showing per-document breakdown.
+ * Interactive horizontal stacked bar chart using Recharts.
+ * Theme names on Y-axis. Click a segment to see which targets it represents.
  */
 export function ThemeBarChart({
   data,
   title,
   subtitle,
   documentTypes,
+  targets,
+  themeClassifications,
 }: ThemeBarChartProps) {
+  const [modal, setModal] = useState<{
+    themeName: string;
+    docType: PolicyDocumentType;
+    targets: Target[];
+  } | null>(null);
+
   const chartData = data.map((d) => ({
     name: d.categoryName,
-    // Create a shorter label for the X axis
-    shortName:
-      d.categoryName.length > 20
-        ? d.categoryName.slice(0, 18) + "…"
-        : d.categoryName,
+    categoryId: d.categoryId,
     ...Object.fromEntries(
       documentTypes.map((doc) => [doc, d.byDocument[doc]])
     ),
     total: d.total,
   }));
+
+  const handleSegmentClick = (
+    data: { name?: string; categoryId?: string },
+    docType: PolicyDocumentType
+  ) => {
+    if (!data?.categoryId || !data?.name) return;
+    const segmentTargets = getTargetsForThemeAndDoc(
+      data.categoryId,
+      docType,
+      targets,
+      themeClassifications
+    );
+    if (segmentTargets.length > 0) {
+      setModal({
+        themeName: data.name,
+        docType,
+        targets: segmentTargets,
+      });
+    }
+  };
 
   return (
     <div>
@@ -74,37 +123,26 @@ export function ThemeBarChart({
           ))}
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={320}>
+      <ResponsiveContainer width="100%" height={data.length * 40 + 40}>
         <BarChart
           data={chartData}
-          margin={{ top: 5, right: 10, left: 10, bottom: 120 }}
+          layout="vertical"
+          margin={{ top: 5, right: 40, left: 200, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-          <XAxis
-            dataKey="shortName"
-            tick={{ fontSize: 10, fill: "#64748b" }}
-            angle={-50}
-            textAnchor="end"
-            interval={0}
-            height={110}
+          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
+          <XAxis type="number" tick={{ fontSize: 12, fill: "#64748b" }} />
+          <YAxis
+            dataKey="name"
+            type="category"
+            tick={{ fontSize: 12, fill: "#64748b" }}
+            width={190}
           />
-          <YAxis tick={{ fontSize: 12, fill: "#64748b" }} />
           <Tooltip
             contentStyle={{
               fontSize: 13,
               borderRadius: 6,
               border: "1px solid #e2e8f0",
               boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
-            }}
-            labelFormatter={(label) => {
-              // Find full name from data
-              const labelStr = String(label);
-              const item = data.find(
-                (d) =>
-                  d.categoryName === labelStr ||
-                  d.categoryName.startsWith(labelStr.replace("…", ""))
-              );
-              return item?.categoryName ?? labelStr;
             }}
             formatter={(value, name) => [
               value ?? 0,
@@ -117,10 +155,61 @@ export function ThemeBarChart({
               dataKey={doc}
               stackId="stack"
               fill={DOC_COLORS[doc]}
+              onClick={(data) => handleSegmentClick(data, doc)}
+              style={{ cursor: "pointer" }}
             />
           ))}
         </BarChart>
       </ResponsiveContainer>
+
+      {/* Modal: targets for theme + document type */}
+      {modal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setModal(null)}
+        >
+          <div
+            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h3 className="font-medium text-[var(--undp-black)]">
+                {modal.themeName} — {DOC_LABELS[modal.docType]} ({modal.targets.length})
+              </h3>
+              <button
+                type="button"
+                onClick={() => setModal(null)}
+                className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
+              >
+                x
+              </button>
+            </div>
+            <div className="overflow-auto flex-1 px-6 py-4">
+              <p className="text-xs text-[var(--undp-gray)] mb-3">
+                {DOC_LABELS[modal.docType]} targets that refer to this theme
+              </p>
+              <ul className="space-y-3">
+                {modal.targets.map((t) => (
+                  <li
+                    key={t.id}
+                    className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
+                  >
+                    <span
+                      className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
+                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    >
+                      {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
+                    </span>
+                    <span className="text-[var(--undp-black)] leading-relaxed">
+                      {t.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

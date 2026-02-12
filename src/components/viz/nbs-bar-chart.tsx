@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -10,9 +11,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
-import type { PolicyDocumentType } from "@/types";
+import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
 interface BarData {
+  categoryId: string;
   categoryName: string;
   total: number;
   byDocument: Record<PolicyDocumentType, number>;
@@ -23,26 +25,77 @@ interface NbsBarChartProps {
   title: string;
   subtitle?: string;
   documentTypes: PolicyDocumentType[];
+  targets: Target[];
+  nbsClassifications: ThematicClassification[];
+}
+
+function getTargetsForCategoryAndDoc(
+  categoryId: string,
+  docType: PolicyDocumentType,
+  targets: Target[],
+  classifications: ThematicClassification[]
+): Target[] {
+  const targetIds = new Set(
+    classifications
+      .filter(
+        (c) =>
+          c.categoryId === categoryId &&
+          c.isRelevant &&
+          c.taxonomyType === "nbs"
+      )
+      .map((c) => c.targetId)
+  );
+  return targets.filter(
+    (t) => targetIds.has(t.id) && t.sourceDocument === docType
+  );
 }
 
 /**
  * Interactive horizontal stacked bar chart using Recharts.
- * Hoverable bars with tooltips showing per-document breakdown.
+ * Click a segment to see which targets it represents.
  */
 export function NbsBarChart({
   data,
   title,
   subtitle,
   documentTypes,
+  targets,
+  nbsClassifications,
 }: NbsBarChartProps) {
-  // Reshape data for Recharts
+  const [modal, setModal] = useState<{
+    categoryName: string;
+    docType: PolicyDocumentType;
+    targets: Target[];
+  } | null>(null);
+
   const chartData = data.map((d) => ({
     name: d.categoryName,
+    categoryId: d.categoryId,
     ...Object.fromEntries(
       documentTypes.map((doc) => [doc, d.byDocument[doc]])
     ),
     total: d.total,
   }));
+
+  const handleSegmentClick = (
+    data: { name?: string; categoryId?: string },
+    docType: PolicyDocumentType
+  ) => {
+    if (!data?.categoryId || !data?.name) return;
+    const segmentTargets = getTargetsForCategoryAndDoc(
+      data.categoryId,
+      docType,
+      targets,
+      nbsClassifications
+    );
+    if (segmentTargets.length > 0) {
+      setModal({
+        categoryName: data.name,
+        docType,
+        targets: segmentTargets,
+      });
+    }
+  };
 
   return (
     <div>
@@ -103,10 +156,60 @@ export function NbsBarChart({
               stackId="stack"
               fill={DOC_COLORS[doc]}
               radius={[0, 0, 0, 0]}
+              onClick={(data) => handleSegmentClick(data, doc)}
+              style={{ cursor: "pointer" }}
             />
           ))}
         </BarChart>
       </ResponsiveContainer>
+
+      {modal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setModal(null)}
+        >
+          <div
+            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h3 className="font-medium text-[var(--undp-black)]">
+                {modal.categoryName} — {DOC_LABELS[modal.docType]} ({modal.targets.length})
+              </h3>
+              <button
+                type="button"
+                onClick={() => setModal(null)}
+                className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
+              >
+                x
+              </button>
+            </div>
+            <div className="overflow-auto flex-1 px-6 py-4">
+              <p className="text-xs text-[var(--undp-gray)] mb-3">
+                {DOC_LABELS[modal.docType]} targets that refer to this NBS category
+              </p>
+              <ul className="space-y-3">
+                {modal.targets.map((t) => (
+                  <li
+                    key={t.id}
+                    className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
+                  >
+                    <span
+                      className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
+                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    >
+                      {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
+                    </span>
+                    <span className="text-[var(--undp-black)] leading-relaxed">
+                      {t.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

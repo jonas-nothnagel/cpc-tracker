@@ -4,31 +4,29 @@ import { useState } from "react";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
 import type { Target } from "@/types";
 
-interface StatCardProps {
-  value: number;
+interface OutcomeStatCardProps {
+  percentage: number;
   label: string;
-  colorClass: string;
-  targets?: Target[];
+  targets: Target[];
 }
 
-function StatCard({ value, label, colorClass, targets }: StatCardProps) {
+function OutcomeStatCard({ percentage, label, targets }: OutcomeStatCardProps) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const isClickable = targets && targets.length > 0;
+  const isClickable = targets.length > 0;
 
   return (
     <>
       <button
         type="button"
         onClick={() => isClickable && setIsOpen(true)}
-        className={`bg-[var(--undp-light)] p-5 text-left w-full transition-colors ${
+        className={`bg-[var(--undp-light)] p-6 flex-1 flex flex-col items-center justify-center text-center w-full transition-colors ${
           isClickable ? "hover:bg-gray-200/60 cursor-pointer" : "cursor-default"
         }`}
       >
-        <p className={`text-2xl md:text-3xl font-medium tabular-nums ${colorClass}`}>
-          {value}
+        <p className="text-4xl font-medium text-[var(--chart-ndc)] tabular-nums">
+          {percentage}%
         </p>
-        <p className="text-xs text-[var(--undp-gray)] mt-1 leading-snug">
+        <p className="text-sm text-[var(--undp-gray)] mt-2">
           {label}
         </p>
         {isClickable && (
@@ -38,7 +36,7 @@ function StatCard({ value, label, colorClass, targets }: StatCardProps) {
         )}
       </button>
 
-      {isOpen && targets && (
+      {isOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
           onClick={() => setIsOpen(false)}
@@ -86,64 +84,32 @@ function StatCard({ value, label, colorClass, targets }: StatCardProps) {
   );
 }
 
-interface DashboardStatsProps {
+interface OutcomeStatsProps {
+  quantitativeTargets: Target[];
+  timeBoundTargets: Target[];
   totalTargets: number;
-  nbtTargets: Target[];
-  ndcTargets: Target[];
-  napTargets: Target[];
-  alignmentCount: number;
 }
 
-export function DashboardStats({
+export function OutcomeStats({
+  quantitativeTargets,
+  timeBoundTargets,
   totalTargets,
-  nbtTargets,
-  ndcTargets,
-  napTargets,
-  alignmentCount,
-}: DashboardStatsProps) {
-  const allTargets = [...nbtTargets, ...ndcTargets, ...napTargets];
+}: OutcomeStatsProps) {
+  const quantitativePct = Math.round((quantitativeTargets.length / totalTargets) * 100);
+  const timeBoundPct = Math.round((timeBoundTargets.length / totalTargets) * 100);
 
   return (
-    <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-      <div className="col-span-2 md:col-span-1">
-        <StatCard
-          value={totalTargets}
-          label="targets from 3 sources"
-          colorClass="text-[var(--chart-ndc)]"
-          targets={allTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={nbtTargets.length}
-          label="National Biodiversity Targets"
-          colorClass="text-[var(--chart-nbt)]"
-          targets={nbtTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={ndcTargets.length}
-          label="Nationally Determined Contributions"
-          colorClass="text-[var(--chart-ndc)]"
-          targets={ndcTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={napTargets.length}
-          label="National Adaptation Plan Targets"
-          colorClass="text-[var(--chart-nap)]"
-          targets={napTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={alignmentCount}
-          label="Alignment Opportunities"
-          colorClass="text-[var(--chart-alignment)]"
-        />
-      </div>
-    </section>
+    <div className="flex flex-col gap-4">
+      <OutcomeStatCard
+        percentage={quantitativePct}
+        label="of targets include measurable outcomes"
+        targets={quantitativeTargets}
+      />
+      <OutcomeStatCard
+        percentage={timeBoundPct}
+        label="of targets include time-bound commitments"
+        targets={timeBoundTargets}
+      />
+    </div>
   );
 }

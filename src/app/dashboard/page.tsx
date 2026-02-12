@@ -18,6 +18,7 @@ import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
 import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-selector";
 import { DashboardStats } from "@/components/viz/dashboard-stats";
+import { OutcomeStats } from "@/components/viz/outcome-stats";
 
 export const metadata = {
   title: "Mongolia Dashboard — CPC Tracker",
@@ -30,9 +31,6 @@ export default function DashboardPage() {
   const napTargets = targets.filter((t) => t.sourceDocument === "NAP");
   const ndcTargets = targets.filter((t) => t.sourceDocument === "NDC");
   const nbtTargets = targets.filter((t) => t.sourceDocument === "NBSAP");
-
-  const quantitativeCount = targets.filter((t) => t.isQuantitative).length;
-  const timeBoundCount = targets.filter((t) => t.isTimeBound).length;
 
   const nbsCounts = countByCategory(targets, MONGOLIA_NBS_CLASSIFICATIONS, NBS_CATEGORIES);
   const themeCounts = countByCategory(targets, MONGOLIA_THEME_CLASSIFICATIONS, THEMES);
@@ -95,38 +93,29 @@ export default function DashboardPage() {
           <div className="md:col-span-2 bg-[var(--undp-light)] p-6">
             <NbsBarChart
               title="Nature-Based Solutions Breakdown"
-              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) appear to refer to Nature-Based Solutions`}
+              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) appear to refer to Nature-Based Solutions. Click a segment to see which targets.`}
               data={nbsSorted}
               documentTypes={[...documentTypes]}
+              targets={targets}
+              nbsClassifications={MONGOLIA_NBS_CLASSIFICATIONS}
             />
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="bg-[var(--undp-light)] p-6 flex-1 flex flex-col items-center justify-center text-center">
-              <p className="text-4xl font-medium text-[var(--undp-blue)] tabular-nums">
-                {Math.round((quantitativeCount / targets.length) * 100)}%
-              </p>
-              <p className="text-sm text-[var(--undp-gray)] mt-2">
-                of targets include measurable outcomes
-              </p>
-            </div>
-            <div className="bg-[var(--undp-light)] p-6 flex-1 flex flex-col items-center justify-center text-center">
-              <p className="text-4xl font-medium text-[var(--undp-blue)] tabular-nums">
-                {Math.round((timeBoundCount / targets.length) * 100)}%
-              </p>
-              <p className="text-sm text-[var(--undp-gray)] mt-2">
-                of targets include time-bound commitments
-              </p>
-            </div>
-          </div>
+          <OutcomeStats
+            quantitativeTargets={targets.filter((t) => t.isQuantitative)}
+            timeBoundTargets={targets.filter((t) => t.isTimeBound)}
+            totalTargets={targets.length}
+          />
         </section>
 
         {/* Cross-cutting themes */}
         <section className="bg-[var(--undp-light)] p-6 mb-10">
           <ThemeBarChart
             title="Cross-Cutting Themes"
-            subtitle="Number of targets that appear to pertain to each theme"
+            subtitle="Number of targets that appear to pertain to each theme. Click a segment to see which targets."
             data={themeSorted}
             documentTypes={[...documentTypes]}
+            targets={targets}
+            themeClassifications={MONGOLIA_THEME_CLASSIFICATIONS}
           />
         </section>
 

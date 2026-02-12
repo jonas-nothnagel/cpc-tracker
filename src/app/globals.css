@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 :root {
   --undp-blue: #0468b1;
   --undp-blue-dark: #035293;
@@ -14,6 +20,7 @@
   --chart-ndc: #0468b1;
   --chart-nbt: #0d9488;
   --chart-nap: #b45309;
+  --chart-alignment: #196127;
 }
 
 body {
