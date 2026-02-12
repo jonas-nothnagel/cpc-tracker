@@ -9,13 +9,13 @@ export default function Home() {
         <div className="bg-gradient-to-b from-black/50 to-transparent">
           <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-white rounded p-1.5">
+              <div className="bg-white/90 rounded p-0.5">
                 <Image
                   src="/undp-logo.png"
                   alt="UNDP"
-                  width={32}
-                  height={48}
-                  className="h-8 w-auto"
+                  width={40}
+                  height={60}
+                  className="h-10 w-auto"
                 />
               </div>
               <span className="text-sm font-medium text-white tracking-wide hidden sm:block">
@@ -171,9 +171,9 @@ export default function Home() {
             <Image
               src="/undp-logo.png"
               alt="UNDP"
-              width={30}
-              height={48}
-              className="h-8 w-auto"
+              width={45}
+              height={72}
+              className="h-12 w-auto"
             />
             <span className="text-sm text-[var(--undp-gray)]">
               United Nations Development Programme

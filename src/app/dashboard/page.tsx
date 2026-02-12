@@ -6,6 +6,7 @@ import {
   THEMES,
   MONGOLIA_NBS_CLASSIFICATIONS,
   MONGOLIA_THEME_CLASSIFICATIONS,
+  MONGOLIA_CLASSIFICATIONS,
   MONGOLIA_ALIGNMENT,
   NBT_NDC_ALIGNMENT,
   NBT_NAP_ALIGNMENT,
@@ -15,7 +16,7 @@ import { countByCategory } from "@/lib/utils";
 import { NbsBarChart } from "@/components/viz/nbs-bar-chart";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
-import { AlignmentNetwork } from "@/components/viz/alignment-network";
+import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-selector";
 import { TargetTable } from "@/components/viz/target-table";
 
 export const metadata = {
@@ -51,7 +52,7 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/">
-              <Image src="/undp-logo.png" alt="UNDP" width={40} height={64} className="h-10 w-auto" />
+              <Image src="/undp-logo.png" alt="UNDP" width={40} height={60} className="h-10 w-auto" />
             </Link>
             <div className="border-l border-gray-200 pl-4">
               <p className="text-sm font-medium text-[var(--undp-black)]">Policy Coherence Tracker</p>
@@ -83,14 +84,14 @@ export default function DashboardPage() {
                   AI-assisted assessment for national review and consideration
                 </p>
               </div>
-              {/* UNDP logo on blue banner — white pill for visibility */}
-              <div className="bg-white/15 backdrop-blur-sm rounded-lg p-2 hidden md:block">
+              {/* UNDP logo on blue banner */}
+              <div className="bg-white rounded p-1 hidden md:block">
                 <Image
                   src="/undp-logo.png"
                   alt="UNDP"
-                  width={48}
-                  height={72}
-                  className="h-12 w-auto brightness-0 invert"
+                  width={50}
+                  height={78}
+                  className="h-12 w-auto"
                 />
               </div>
             </div>
@@ -161,14 +162,14 @@ export default function DashboardPage() {
           />
         </section>
 
-        {/* Alignment Network Graph */}
+        {/* Alignment Network Graph — filterable by NBS category or theme */}
         <section className="border border-gray-200 rounded-lg p-6 mb-10">
-          <AlignmentNetwork
-            title="Target Alignment Network"
-            subtitle="Most connected targets across all policy documents. Hover a node to see its connections. Edge color indicates alignment strength."
+          <AlignmentNetworkSelector
             alignmentData={MONGOLIA_ALIGNMENT}
             targets={targets}
-            maxNodes={12}
+            nbsCategories={NBS_CATEGORIES}
+            themes={THEMES}
+            classifications={MONGOLIA_CLASSIFICATIONS}
           />
         </section>
 

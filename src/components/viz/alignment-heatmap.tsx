@@ -71,8 +71,8 @@ export function AlignmentHeatmap({
   const lowCount = alignmentData.filter((a) => a.alignment === "low").length;
 
   const cellSize = Math.min(
-    32,
-    Math.max(20, Math.floor(600 / Math.max(colTargets.length, 1)))
+    40,
+    Math.max(24, Math.floor(700 / Math.max(colTargets.length, 1)))
   );
 
   return (
@@ -112,13 +112,13 @@ export function AlignmentHeatmap({
             {colTargets.map((t) => (
               <div
                 key={t.id}
-                style={{ width: cellSize, height: 90 }}
+                style={{ width: cellSize, height: 120, minWidth: cellSize }}
                 className="flex items-end justify-center"
               >
                 <span
                   className="text-[10px] text-[var(--undp-gray)] origin-bottom-left whitespace-nowrap"
                   style={{
-                    transform: "rotate(-55deg)",
+                    transform: "rotate(-60deg)",
                     transformOrigin: "bottom left",
                   }}
                   title={`${t.sourceLabel}: ${t.text}`}

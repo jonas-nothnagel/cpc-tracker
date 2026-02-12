@@ -1,0 +1,106 @@
+{
+  "nbs_categories": [
+    {
+      "id": "nbs_agri",
+      "name": "Agriculture and livestock management",
+      "description": "This includes climate-resilient crops, climate-resilient livestock management, climate-smart agriculture, insurance, regenerative agriculture, crop diversification, integrated water management, grazing land management, agricultural land and soil management, post-harvest processing, sustainable intensification, agriculture and livestock disease management, agricultural education and consulting, increased food productivity, agroforestry, agricultural diversification, improved grazing land management, and reduced grassland conservation to cropland."
+    },
+    {
+      "id": "nbs_ecosystem",
+      "name": "Ecosystem protection and connectivity",
+      "description": "This includes establishing protected areas, community reserves, wildlife corridors, restore pollinator habitats, prevent species extinction, habitat rewilding, restricting invasive species and pests, ecosystem change detection, other effective conservation measures (OECM), and increased connectivity between protected areas."
+    },
+    {
+      "id": "nbs_forest",
+      "name": "Forest protection, management, and restoration",
+      "description": "This includes natural forest management, improved plantations, sustainable forestry practices, agro-forestry, avoiding fuelwood harvest, preventing illegal logging, reducing deforestation and forest degradation, fire management, REDD+, reforestation, afforestation, tree planting on degraded land, temperate and tropical forest restoration, forest carbon sink management, and monitoring forest changes."
+    },
+    {
+      "id": "nbs_carbon",
+      "name": "Nature-based carbon sequestration",
+      "description": "This includes Bioenergy with Carbon Capture and Storage (BECCS), enhanced weathering of minerals, tree planting for carbon sequestration, afforestation, reforestation, proforestation, tree intercropping, silvopasture, restore forests for carbon sequestration, and improved plantations for carbon storage."
+    },
+    {
+      "id": "nbs_risk",
+      "name": "Risk management and disaster prevention",
+      "description": "This includes agricultural disaster management and invasive alien species and pest control, disease surveillance, wildfire management, fire management, flood control, infrastructure and critical systems resilience, reduced landslides and hazards, making human settlement safer, environmental risk monitoring, forecasting and warning systems, resource-based early warnings, reduced pollution, acidification prevention, disaster risk reduction and management in agriculture, security and diversification in critical sectors such as energy, food and water, risk sharing instruments and insurance, livelihood diversification, and management of urban sprawl (blue and green spaces)."
+    },
+    {
+      "id": "nbs_wetland",
+      "name": "Protection and restoration of wetlands and freshwater ecosystems",
+      "description": "This includes river, inland water and wetland protection, peatland rewetting, avoiding peat impacts, freshwater ecosystem protection, wetland management, service management of freshwater ecosystems, peatland restoration, dune restoration, freshwater ecosystem restoration, catchment restoration, watershed protection, restoration and reduced conversion of coastal wetlands, restoration and reduced conversion of peatlands, and sustainable fishery."
+    },
+    {
+      "id": "nbs_marine",
+      "name": "Protection, management, and restoration of marine and coastal zones",
+      "description": "This includes coastal zone risk retention (soft and hard structures), marine ecosystem service management, tidal salt marshes, sustainable coastal management, marine production promotion, coastal environment monitoring and risk assessment, disease management of marine resources, mangrove protection, coral reef protection, seagrass protection, marine protected areas, avoiding coastal impacts, restoring marine ecosystems, coastal wetland, seagrass, coral reef and mangrove restoration, and sustainable fishery."
+    },
+    {
+      "id": "nbs_soil",
+      "name": "Soil fertility management and restoration",
+      "description": "This includes increased soil organic carbon, reduced soil erosion, reduced soil salinization, reduced soil compaction, biochar application, improved cropland soil management, soil restoration, soil improvement, and sustainable intensification."
+    },
+    {
+      "id": "nbs_urban",
+      "name": "Urban settlements management",
+      "description": "Urban green spaces, sponge city, urban forests, green roofs, green walls, urban wetlands, rain gardens, vegetated stormwater systems, green infrastructure, urban farms."
+    },
+    {
+      "id": "nbs_water",
+      "name": "Water management",
+      "description": "This includes catchment protection, sustainable irrigation, watershed restoration, freshwater ecosystem restoration, integrated water resource management, water management systems, maintaining sustainable water supply, securing water quality, water education and consulting, and monitoring of water resources, and service management of water ecosystems."
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_adaptation",
+      "name": "Climate change adaptation",
+      "description": "This includes actions that help reduce vulnerability to the current or expected impacts of climate change (climate resilience) and prevent global warming from reaching 1.5\u00ba Celsius about pre-industrial levels. This can include climate risk assessments, building flood defenses, strengthening infrastructure, critical systems, essential services and human settlements, switching to drought-resistant crops, diversifying food production and sources, blue carbon, reducing GHG emissions, recycling, using renewable energy (solar, wind, green hydrogen, waste and others), reducing carbon footprint, expanding low-carbon technology, electrifying transportation, adopting non-motorized transportation, using sustainable or low-carbon fuel, minimizing loss and damage, expand climate forecasting infrastructure, decarbonization, create carbon sinks, and conduct carbon removal, capture and storage."
+    },
+    {
+      "id": "theme_mitigation",
+      "name": "Climate change mitigation",
+      "description": "This includes actions that help reduce vulnerability to the current or expected impacts of climate change (climate resilience) and prevent global warming from reaching 1.5\u00ba Celsius about pre-industrial levels. This can include climate risk assessments, building flood defenses, strengthening infrastructure, critical systems, essential services and human settlements, switching to drought-resistant crops, diversifying food production and sources, blue carbon, reducing GHG emissions, recycling, using renewable energy (solar, wind, green hydrogen, waste and others), reducing carbon footprint, expanding low-carbon technology, electrifying transportation, adopting non-motorized transportation, using sustainable or low-carbon fuel, minimizing loss and damage, expand climate forecasting infrastructure, decarbonization, create carbon sinks, and conduct carbon removal, capture and storage."
+    },
+    {
+      "id": "theme_land",
+      "name": "Desertification, drought, and land degradation",
+      "description": "This includes actions to address desertification and the effects of drought, especially in arid, semi-arid and dry sub-humid areas. It also includes the concept of Land Degradation Neutrality (LDN), which strives for a balance between land degradation and land restoration, ensuring that any land degradation is offset by the restoration of an equivalent area. Avoiding new degradation of land by maintaining existing healthy land,\u00a0reducing existing degradation by adopting sustainable land management practices (i.e. Nature based Solutions), maintaining soil health, ramping up efforts to restore and return degraded lands to a natural or more productive state. This approach promotes long-term environmental sustainability, supports the restoration of ecosystem services, and contributes to the achievement of Rio Conventions global targets."
+    },
+    {
+      "id": "theme_species",
+      "name": "Species conservation and ecosystems",
+      "description": "This includes halting human-induced extinction of species, controlling invasive alien species, sharing of genetic resources and their digital sequence information to ensure genetic diversity, and reducing human-wildlife conflict, for instance, creating reserves. This also includes ecosystem services and ecosystem-based adaptation across deserts, forests, grasslands, shrublands, tropical rainforests, oceans, coral reefs, lakes, marine coastal ecosystems, rivers, savanna, woodlands, sub-tropical, wetlands, and other biomes."
+    },
+    {
+      "id": "theme_pollution",
+      "name": "Pollution",
+      "description": "This includes improved waste management, reduced industrial pollution, reduced nutrient loss, reduced single-use plastics, reduced air pollution, sustainable consumption, and reduced pesticide and chemical risk."
+    },
+    {
+      "id": "theme_gender",
+      "name": "Gender equality",
+      "description": "This includes gender mainstreaming, gender-responsive decision-making, ensuring women\u2019s rights and participation, reducing gender-based violence, and implementation of the KMGBF Gender Plan of Action, UNCCD Gender Action Plan, and the Lima work programme on gender."
+    },
+    {
+      "id": "theme_capacity",
+      "name": "Capacity building\u00a0and development",
+      "description": "This includes technology transfer, education and learning, south-south exchange, knowledge sharing (including traditional knowledge), scientific cooperation and information networks, developing communities of practice and task forces, access and benefit sharing (ABS) under the Nagoya Protocol, R&D and investment in green technologies, institutional strengthening and establishment of emergency response capabilities, and the development of transparent monitoring and reporting systems, and mainstreaming concepts and values related to biodiversity and climate so that people are aware of their importance, and capacitated to deal with their deterioration."
+    },
+    {
+      "id": "theme_sdg",
+      "name": "Sustainable development and the SDGs",
+      "description": "This includes actions that promote inclusive, equitable, and environmentally sustainable development while ensuring that present needs are met without compromising the ability of future generations to meet theirs. It covers the implementation of the 2030 Agenda for Sustainable Development and its 17 SDGs, which integrate social, economic, and environmental dimensions. Efforts include poverty eradication, food and water security, universal access to education and healthcare, sustainable economic growth, sustainable infrastructure and urbanization, responsible consumption and production, access to clean energy, reduction of inequalities, promotion of peace, justice and strong institutions, and fostering partnerships. It also includes aligning national strategies with the SDGs, strengthening institutions to deliver on them, integrating SDG indicators into monitoring and reporting systems, ensuring policy coherence across sectors, and promoting cross-cutting solutions that address multiple goals simultaneously, including biodiversity conservation, climate action, and gender equality."
+    },
+    {
+      "id": "theme_indigenous",
+      "name": "Indigenous Peoples and local communities",
+      "description": "Full, equitable representation and participation in decision-making, respecting cultures and rights over lands, territories, resources, and traditional knowledge with free, prior and informed consent."
+    },
+    {
+      "id": "theme_private",
+      "name": "Private sector",
+      "description": "Private sector participation in solutions development, policy planning, innovation, financing, business development for NBS/climate value chains, impact monitoring, public-private partnerships."
+    }
+  ]
+}

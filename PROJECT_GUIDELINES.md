@@ -245,12 +245,12 @@ Following [UNDP Data Visualization Guidelines](https://dataviz.design.undp.org/)
 
 | Country | Context | Status |
 |---------|---------|--------|
-| 🇲🇳 Mongolia | CCD COP17 host, has existing report | Pilot data available |
-| 🇵🇦 Panama | — | Planned |
-| 🇲🇦 Morocco | Water focus | Planned |
-| 🇦🇲 Armenia | — | Potential |
-| 🇹🇷 Turkey | — | Potential |
-| 🇸🇨 Seychelles | — | Potential |
+| Mongolia | CCD COP17 host, has existing report | Pilot data available |
+| Panama | — | Planned |
+| Morocco | Water focus | Planned |
+| Armenia | — | Potential |
+| Turkey | — | Potential |
+| Seychelles | — | Potential |
 
 ---
 

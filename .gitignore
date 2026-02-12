@@ -40,6 +40,8 @@ __pycache__/
 .venv/
 venv/
 .uv/
+*.egg-info/
+python/output/
 
 # Testing
 coverage/
@@ -51,3 +53,4 @@ coverage/
 .cursorrules
 # Project-specific
 documents/
+old_scripts/

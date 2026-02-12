@@ -1,11 +1,12 @@
 [project]
 name = "cpc-tracker-data"
 version = "0.1.0"
-description = "Data processing scripts for CPC Tracker"
+description = "Data processing and LLM pipeline for CPC Tracker"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "pandas>=2.0.0",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
     "pydantic>=2.0.0",
 ]
 

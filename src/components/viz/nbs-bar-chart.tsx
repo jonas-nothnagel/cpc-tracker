@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
@@ -47,12 +46,30 @@ export function NbsBarChart({
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-1">
-        {title}
-      </h3>
-      {subtitle && (
-        <p className="text-sm text-[var(--undp-gray)] mb-4">{subtitle}</p>
-      )}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 mb-4">
+        <div>
+          <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-1">
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="text-sm text-[var(--undp-gray)]">{subtitle}</p>
+          )}
+        </div>
+        {/* Legend placed outside chart to avoid overlap */}
+        <div className="flex flex-wrap gap-4 text-xs">
+          {documentTypes.map((doc) => (
+            <div key={doc} className="flex items-center gap-1.5">
+              <span
+                className="w-3 h-3 rounded-sm inline-block"
+                style={{ backgroundColor: DOC_COLORS[doc] }}
+              />
+              <span className="text-[var(--undp-gray)]">
+                {DOC_LABELS[doc] ?? doc}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
       <ResponsiveContainer width="100%" height={data.length * 40 + 40}>
         <BarChart
           data={chartData}
@@ -74,16 +91,10 @@ export function NbsBarChart({
               border: "1px solid #d4d6d8",
               boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
             }}
-            formatter={(value: number, name: string) => [
-              value,
-              DOC_LABELS[name as PolicyDocumentType] ?? name,
+            formatter={(value, name) => [
+              value ?? 0,
+              DOC_LABELS[name as PolicyDocumentType] ?? name ?? "",
             ]}
-          />
-          <Legend
-            formatter={(value: string) =>
-              DOC_LABELS[value as PolicyDocumentType] ?? value
-            }
-            wrapperStyle={{ fontSize: 12 }}
           />
           {documentTypes.map((doc) => (
             <Bar
