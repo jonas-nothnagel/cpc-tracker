@@ -22,9 +22,16 @@ const ALIGNMENT_EDGE_COLORS: Record<AlignmentLevel, string> = {
 
 const ALIGNMENT_EDGE_WIDTH: Record<AlignmentLevel, number> = {
   none: 0,
-  low: 1.5,
-  medium: 2.5,
-  high: 3.5,
+  low: 2,
+  medium: 2,
+  high: 2.5,
+};
+
+const ALIGNMENT_EDGE_DASH: Record<AlignmentLevel, string> = {
+  none: "none",
+  low: "4 4",
+  medium: "8 4",
+  high: "none",
 };
 
 const DOC_TYPE_LABELS: Record<string, string> = {
@@ -212,13 +219,17 @@ export function AlignmentNetwork({
         <div className="flex flex-wrap gap-3 items-center">
           {(["high", "medium", "low"] as AlignmentLevel[]).map((level) => (
             <div key={level} className="flex items-center gap-1.5">
-              <span
-                className="w-5 h-0.5 inline-block rounded"
-                style={{
-                  backgroundColor: ALIGNMENT_EDGE_COLORS[level],
-                  height: ALIGNMENT_EDGE_WIDTH[level],
-                }}
-              />
+              <svg width={28} height={8} className="shrink-0">
+                <line
+                  x1={0}
+                  y1={4}
+                  x2={28}
+                  y2={4}
+                  stroke={ALIGNMENT_EDGE_COLORS[level]}
+                  strokeWidth={ALIGNMENT_EDGE_WIDTH[level]}
+                  strokeDasharray={ALIGNMENT_EDGE_DASH[level]}
+                />
+              </svg>
               <span className="text-[var(--undp-gray)] capitalize">{level} alignment</span>
             </div>
           ))}
@@ -238,7 +249,7 @@ export function AlignmentNetwork({
             cy={cy}
             r={radius}
             fill="none"
-            stroke="#d4d6d8"
+            stroke="#e2e8f0"
             strokeWidth={1}
             strokeDasharray="6 4"
           />
@@ -272,9 +283,10 @@ export function AlignmentNetwork({
                 stroke={ALIGNMENT_EDGE_COLORS[e.alignment]}
                 strokeWidth={
                   isHighlighted
-                    ? ALIGNMENT_EDGE_WIDTH[e.alignment] + 1.5
+                    ? ALIGNMENT_EDGE_WIDTH[e.alignment] + 1
                     : ALIGNMENT_EDGE_WIDTH[e.alignment]
                 }
+                strokeDasharray={ALIGNMENT_EDGE_DASH[e.alignment]}
                 opacity={isDimmed ? 0.12 : isHighlighted ? 1 : 0.65}
                 className="transition-all duration-200"
                 style={{ cursor: "pointer" }}
@@ -362,7 +374,7 @@ export function AlignmentNetwork({
                 textAnchor={anchor}
                 dominantBaseline="middle"
                 className="text-[11px] transition-all duration-200 cursor-pointer select-none"
-                fill={isDimmed ? "#d4d6d8" : "#55606e"}
+                fill={isDimmed ? "#cbd5e1" : "#64748b"}
                 fontWeight={hoveredNode === t.id ? 600 : 400}
                 onMouseEnter={() => setHoveredNode(t.id)}
                 onMouseLeave={() => setHoveredNode(null)}

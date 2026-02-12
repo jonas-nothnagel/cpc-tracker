@@ -4,14 +4,14 @@ import type {
   PolicyDocumentType,
 } from "@/types";
 
-/** Color palette for policy document types — UNDP-adjacent palette */
+/** Color palette for policy document types — clean UNDP palette */
 export const DOC_COLORS: Record<PolicyDocumentType, string> = {
-  NDC: "#0468b1",    // UNDP blue
-  NBSAP: "#59ba47",  // UNDP green
-  NAP: "#ffbc00",    // UNDP yellow
-  LDN: "#ee402d",    // UNDP red
-  SECTORAL: "#6b7280",
-  OTHER: "#a9b1b7",
+  NDC: "#0468b1",     // UNDP primary blue
+  NBSAP: "#0d9488",  // Teal — distinct, professional
+  NAP: "#b45309",    // Warm amber — softer than bright yellow
+  LDN: "#dc2626",    // Muted red
+  SECTORAL: "#64748b",
+  OTHER: "#94a3b8",
 };
 
 /** Shorter labels for chart axes */

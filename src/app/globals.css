@@ -10,6 +10,10 @@
   --undp-green: #59ba47;
   --undp-yellow: #ffbc00;
   --undp-red: #ee402d;
+  /* Chart palette — clean UNDP-aligned */
+  --chart-ndc: #0468b1;
+  --chart-nbt: #0d9488;
+  --chart-nap: #b45309;
 }
 
 body {
@@ -18,4 +22,5 @@ body {
     Arial, sans-serif;
   color: var(--undp-black);
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }

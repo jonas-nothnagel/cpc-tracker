@@ -54,10 +54,10 @@ export function TargetTable({ targets }: TargetTableProps) {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-200 rounded-md overflow-hidden">
+      <div className="bg-[var(--undp-light)] overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
+            <tr className="bg-white/80 border-b border-gray-100">
               <th className="text-left px-4 py-2.5 font-medium text-[var(--undp-gray)] w-36">
                 Source
               </th>

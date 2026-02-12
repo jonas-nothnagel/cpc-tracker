@@ -76,20 +76,20 @@ export function NbsBarChart({
           layout="vertical"
           margin={{ top: 5, right: 40, left: 200, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#edeff0" />
-          <XAxis type="number" tick={{ fontSize: 12, fill: "#55606e" }} />
+          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
+          <XAxis type="number" tick={{ fontSize: 12, fill: "#64748b" }} />
           <YAxis
             dataKey="name"
             type="category"
-            tick={{ fontSize: 12, fill: "#55606e" }}
+            tick={{ fontSize: 12, fill: "#64748b" }}
             width={190}
           />
           <Tooltip
             contentStyle={{
               fontSize: 13,
               borderRadius: 6,
-              border: "1px solid #d4d6d8",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              border: "1px solid #e2e8f0",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
             }}
             formatter={(value, name) => [
               value ?? 0,

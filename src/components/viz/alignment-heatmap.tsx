@@ -93,7 +93,7 @@ export function AlignmentHeatmap({
           (level) => (
             <div key={level} className="flex items-center gap-1">
               <span
-                className="w-4 h-4 rounded-sm inline-block border border-gray-200"
+                className="w-4 h-4 rounded-sm inline-block border border-gray-200/80"
                 style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
               />
               <span className="text-[var(--undp-gray)]">
@@ -203,7 +203,7 @@ export function AlignmentHeatmap({
                   backgroundColor: ALIGNMENT_COLORS[hoveredCell.alignment],
                   border:
                     hoveredCell.alignment === "none"
-                      ? "1px solid #d4d6d8"
+                      ? "1px solid #e2e8f0"
                       : "none",
                 }}
               />
@@ -212,7 +212,7 @@ export function AlignmentHeatmap({
                 style={{
                   color:
                     hoveredCell.alignment === "none"
-                      ? "#a9b1b7"
+                      ? "#94a3b8"
                       : ALIGNMENT_COLORS[hoveredCell.alignment],
                 }}
               >

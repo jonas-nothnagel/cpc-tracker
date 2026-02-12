@@ -79,22 +79,22 @@ export function ThemeBarChart({
           data={chartData}
           margin={{ top: 5, right: 10, left: 10, bottom: 120 }}
         >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#edeff0" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
           <XAxis
             dataKey="shortName"
-            tick={{ fontSize: 10, fill: "#55606e" }}
+            tick={{ fontSize: 10, fill: "#64748b" }}
             angle={-50}
             textAnchor="end"
             interval={0}
             height={110}
           />
-          <YAxis tick={{ fontSize: 12, fill: "#55606e" }} />
+          <YAxis tick={{ fontSize: 12, fill: "#64748b" }} />
           <Tooltip
             contentStyle={{
               fontSize: 13,
               borderRadius: 6,
-              border: "1px solid #d4d6d8",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              border: "1px solid #e2e8f0",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
             }}
             labelFormatter={(label) => {
               // Find full name from data

@@ -17,7 +17,7 @@ import { NbsBarChart } from "@/components/viz/nbs-bar-chart";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
 import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-selector";
-import { TargetTable } from "@/components/viz/target-table";
+import { DashboardStats } from "@/components/viz/dashboard-stats";
 
 export const metadata = {
   title: "Mongolia Dashboard — CPC Tracker",
@@ -48,83 +48,51 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      <header className="border-b border-gray-200 sticky top-0 bg-white z-10">
+      <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/">
-              <Image src="/undp-logo.png" alt="UNDP" width={40} height={60} className="h-10 w-auto" />
+            <Link href="/" className="flex items-center gap-4">
+              <Image src="/undp-logo.png" alt="UNDP" width={40} height={60} className="h-9 w-auto" />
+              <div>
+                <p className="text-sm font-medium text-[var(--undp-black)]">Policy Coherence Tracker</p>
+                <p className="text-xs text-[var(--undp-gray)]">Mongolia Pilot</p>
+              </div>
             </Link>
-            <div className="border-l border-gray-200 pl-4">
-              <p className="text-sm font-medium text-[var(--undp-black)]">Policy Coherence Tracker</p>
-              <p className="text-xs text-[var(--undp-gray)]">🇲🇳 Mongolia Pilot</p>
-            </div>
           </div>
           <nav className="flex items-center gap-6 text-sm">
             <Link href="/upload" className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors">
               Upload Data
             </Link>
             <Link href="/" className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors">
-              ← Home
+              Home
             </Link>
           </nav>
         </div>
       </header>
 
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
-        {/* Hero banner */}
-        <section className="relative rounded-lg overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-[#1a365d] to-[#0468b1] px-8 py-8">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-widest text-white/60 mb-2">Key Findings</p>
-                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                  Mongolia Nature-Climate Target Assessment
-                </h1>
-                <p className="text-sm text-white/70">
-                  AI-assisted assessment for national review and consideration
-                </p>
-              </div>
-              {/* UNDP logo on blue banner */}
-              <div className="bg-white rounded p-1 hidden md:block">
-                <Image
-                  src="/undp-logo.png"
-                  alt="UNDP"
-                  width={50}
-                  height={78}
-                  className="h-12 w-auto"
-                />
-              </div>
-            </div>
-          </div>
+        {/* Page title */}
+        <section className="mb-10">
+          <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-1">
+            Mongolia Nature-Climate Target Assessment
+          </h1>
+          <p className="text-sm text-[var(--undp-gray)]">
+            AI-assisted assessment for national review and consideration
+          </p>
         </section>
 
-        {/* Key stats row */}
-        <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-          <div className="col-span-2 md:col-span-1 border border-gray-200 rounded-lg p-5 flex flex-col items-center justify-center text-center">
-            <p className="text-4xl font-bold text-[var(--undp-blue)] tabular-nums">{targets.length}</p>
-            <p className="text-sm text-[var(--undp-gray)] mt-1">targets from 3 sources</p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-5 text-center">
-            <p className="text-3xl font-bold text-[var(--undp-green)] tabular-nums">{nbtTargets.length}</p>
-            <p className="text-xs text-[var(--undp-gray)] mt-1 leading-snug">National Biodiversity<br />Targets</p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-5 text-center">
-            <p className="text-3xl font-bold text-[var(--undp-blue)] tabular-nums">{ndcTargets.length}</p>
-            <p className="text-xs text-[var(--undp-gray)] mt-1 leading-snug">Nationally Determined<br />Contributions</p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-5 text-center">
-            <p className="text-3xl font-bold text-[var(--undp-yellow)] tabular-nums">{napTargets.length}</p>
-            <p className="text-xs text-[var(--undp-gray)] mt-1 leading-snug">National Adaptation<br />Plan Targets</p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-5 text-center">
-            <p className="text-3xl font-bold text-[var(--undp-blue-light)] tabular-nums">{MONGOLIA_ALIGNMENT.length}</p>
-            <p className="text-xs text-[var(--undp-gray)] mt-1 leading-snug">Alignment<br />Opportunities</p>
-          </div>
-        </section>
+        {/* Key stats row — click to view targets */}
+        <DashboardStats
+          totalTargets={targets.length}
+          nbtTargets={nbtTargets}
+          ndcTargets={ndcTargets}
+          napTargets={napTargets}
+          alignmentCount={MONGOLIA_ALIGNMENT.length}
+        />
 
         {/* NBS bar chart + side stats */}
         <section className="grid md:grid-cols-3 gap-6 mb-10">
-          <div className="md:col-span-2 border border-gray-200 rounded-lg p-6">
+          <div className="md:col-span-2 bg-[var(--undp-light)] p-6">
             <NbsBarChart
               title="Nature-Based Solutions Breakdown"
               subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) appear to refer to Nature-Based Solutions`}
@@ -133,27 +101,27 @@ export default function DashboardPage() {
             />
           </div>
           <div className="flex flex-col gap-4">
-            <div className="border border-gray-200 rounded-lg p-6 flex-1 flex flex-col items-center justify-center text-center">
-              <p className="text-5xl font-bold text-[var(--undp-blue)] tabular-nums">
+            <div className="bg-[var(--undp-light)] p-6 flex-1 flex flex-col items-center justify-center text-center">
+              <p className="text-4xl font-medium text-[var(--undp-blue)] tabular-nums">
                 {Math.round((quantitativeCount / targets.length) * 100)}%
               </p>
               <p className="text-sm text-[var(--undp-gray)] mt-2">
-                of targets include<br />measurable outcomes
+                of targets include measurable outcomes
               </p>
             </div>
-            <div className="border border-gray-200 rounded-lg p-6 flex-1 flex flex-col items-center justify-center text-center">
-              <p className="text-5xl font-bold text-[var(--undp-blue)] tabular-nums">
+            <div className="bg-[var(--undp-light)] p-6 flex-1 flex flex-col items-center justify-center text-center">
+              <p className="text-4xl font-medium text-[var(--undp-blue)] tabular-nums">
                 {Math.round((timeBoundCount / targets.length) * 100)}%
               </p>
               <p className="text-sm text-[var(--undp-gray)] mt-2">
-                of targets include<br />time-bound commitments
+                of targets include time-bound commitments
               </p>
             </div>
           </div>
         </section>
 
         {/* Cross-cutting themes */}
-        <section className="border border-gray-200 rounded-lg p-6 mb-10">
+        <section className="bg-[var(--undp-light)] p-6 mb-10">
           <ThemeBarChart
             title="Cross-Cutting Themes"
             subtitle="Number of targets that appear to pertain to each theme"
@@ -163,7 +131,7 @@ export default function DashboardPage() {
         </section>
 
         {/* Alignment Network Graph — filterable by NBS category or theme */}
-        <section className="border border-gray-200 rounded-lg p-6 mb-10">
+        <section className="bg-[var(--undp-light)] p-6 mb-10">
           <AlignmentNetworkSelector
             alignmentData={MONGOLIA_ALIGNMENT}
             targets={targets}
@@ -186,7 +154,7 @@ export default function DashboardPage() {
           </div>
 
           {/* NBT × NDC */}
-          <div className="border border-gray-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
             <AlignmentHeatmap
               title="National Biodiversity Targets × NDC Targets"
               alignmentData={NBT_NDC_ALIGNMENT}
@@ -198,7 +166,7 @@ export default function DashboardPage() {
           </div>
 
           {/* NBT × NAP */}
-          <div className="border border-gray-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
             <AlignmentHeatmap
               title="National Biodiversity Targets × NAP Targets"
               alignmentData={NBT_NAP_ALIGNMENT}
@@ -210,7 +178,7 @@ export default function DashboardPage() {
           </div>
 
           {/* NDC × NAP */}
-          <div className="border border-gray-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
             <AlignmentHeatmap
               title="NDC Targets × NAP Targets"
               alignmentData={NDC_NAP_ALIGNMENT}
@@ -222,16 +190,8 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Target Explorer */}
-        <section className="mb-10">
-          <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-4">
-            Target Explorer
-          </h3>
-          <TargetTable targets={targets} />
-        </section>
-
         {/* Methodology note */}
-        <section className="mb-10 bg-[var(--undp-light)] border border-gray-200 rounded-lg p-6">
+        <section className="mb-10 bg-[var(--undp-light)] p-6">
           <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-2">
             About this analysis
           </h3>
@@ -252,9 +212,9 @@ export default function DashboardPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-center text-sm text-[var(--undp-gray)]">
-          United Nations Development Programme · CPC Tracker Prototype
+      <footer className="border-t border-gray-100 mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
+          United Nations Development Programme · CPC Tracker
         </div>
       </footer>
     </div>

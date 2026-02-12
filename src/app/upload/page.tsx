@@ -82,24 +82,24 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      <header className="border-b border-gray-200 sticky top-0 bg-white z-10">
+      <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/">
+            <Link href="/" className="flex items-center gap-4">
               <Image
                 src="/undp-logo.png"
                 alt="UNDP"
                 width={40}
                 height={64}
-                className="h-10 w-auto"
+                className="h-9 w-auto"
               />
+              <div>
+                <p className="text-sm font-medium text-[var(--undp-black)]">
+                  Policy Coherence Tracker
+                </p>
+                <p className="text-xs text-[var(--undp-gray)]">Upload Targets</p>
+              </div>
             </Link>
-            <div className="border-l border-gray-200 pl-4">
-              <p className="text-sm font-medium text-[var(--undp-black)]">
-                Policy Coherence Tracker
-              </p>
-              <p className="text-xs text-[var(--undp-gray)]">Upload Targets</p>
-            </div>
           </div>
           <nav className="flex items-center gap-6 text-sm">
             <Link
@@ -112,7 +112,7 @@ export default function UploadPage() {
               href="/"
               className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors"
             >
-              ← Home
+              Home
             </Link>
           </nav>
         </div>
@@ -168,7 +168,7 @@ export default function UploadPage() {
 
         {/* Manual entry */}
         {mode === "manual" && (
-          <div className="border border-gray-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
             <div className="grid md:grid-cols-3 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
@@ -225,7 +225,7 @@ export default function UploadPage() {
 
         {/* CSV paste */}
         {mode === "csv" && (
-          <div className="border border-gray-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
             <p className="text-xs text-[var(--undp-gray)] mb-3">
               Format: <code className="bg-gray-100 px-1 rounded">source_document, label, target_text</code> — one per line.
               <br />
@@ -262,10 +262,10 @@ export default function UploadPage() {
                 Run Analysis →
               </button>
             </div>
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="bg-[var(--undp-light)] overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
+                  <tr className="bg-white/80 border-b border-gray-100">
                     <th className="text-left px-4 py-2.5 font-medium text-[var(--undp-gray)] w-36">
                       Source
                     </th>
@@ -279,7 +279,7 @@ export default function UploadPage() {
                   {targets.map((t, i) => (
                     <tr
                       key={i}
-                      className="border-b border-gray-100 last:border-0"
+                      className="border-b border-gray-100/50 last:border-0"
                     >
                       <td className="px-4 py-2.5 align-top">
                         <span
@@ -325,9 +325,9 @@ export default function UploadPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200">
-        <div className="max-w-5xl mx-auto px-6 py-6 text-center text-sm text-[var(--undp-gray)]">
-          United Nations Development Programme · CPC Tracker Prototype
+      <footer className="border-t border-gray-100 mt-auto">
+        <div className="max-w-5xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
+          United Nations Development Programme · CPC Tracker
         </div>
       </footer>
     </div>
