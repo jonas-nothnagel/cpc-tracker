@@ -29,6 +29,7 @@ import time
 from .config import DATA_DIR, LLM_MODEL, OUTPUT_DIR
 from .classify import run_classification
 from .align import decompose_targets, generate_pairs, assess_alignment
+from .quantitative import assess_quantitative_flags
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,7 +47,7 @@ def load_input_data() -> tuple[list, list, list]:
     themes = cats["themes"]
     logger.info(
         f"Loaded {len(targets)} targets, "
-        f"{len(themes)} themes (from themes_18Jul25.xlsx taxonomy)"
+        f"{len(nbs)} NBS + {len(themes)} themes (from themes_18Jul25.xlsx)"
     )
     return targets, nbs, themes
 
@@ -59,8 +60,19 @@ async def main() -> None:
     # 1. Load data
     targets, nbs_categories, themes = load_input_data()
 
-    # 2. Thematic classification
-    logger.info("STEP 1: Thematic classification")
+    # 2. Quantitative and time-bound detection
+    logger.info("STEP 1: Quantitative and time-bound detection")
+    logger.info("-" * 40)
+    quant_flags = await assess_quantitative_flags(targets)
+    quant_path = OUTPUT_DIR / "quantitative_flags.json"
+    quant_path.write_text(json.dumps(quant_flags, indent=2))
+    q_count = sum(1 for q in quant_flags if q.get("isQuantitative"))
+    t_count = sum(1 for q in quant_flags if q.get("isTimeBound"))
+    logger.info(f"Saved quantitative flags: {q_count} quantitative, {t_count} time-bound")
+
+    # 3. Thematic classification
+    logger.info("")
+    logger.info("STEP 2: Thematic classification")
     logger.info("-" * 40)
 
     nbs_classifications = await run_classification(targets, nbs_categories, "nbs")
@@ -73,9 +85,9 @@ async def main() -> None:
     out_path.write_text(json.dumps(all_classifications, indent=2))
     logger.info(f"Saved {len(all_classifications)} classifications to {out_path}")
 
-    # 3. Generate theme-filtered pairs
+    # 4. Generate theme-filtered pairs
     logger.info("")
-    logger.info("STEP 2: Generate theme-filtered pairs")
+    logger.info("STEP 3: Generate theme-filtered pairs")
     logger.info("-" * 40)
 
     pairs = generate_pairs(targets, all_classifications)
@@ -85,9 +97,9 @@ async def main() -> None:
         logger.warning("No pairs generated! Check classification results.")
         return
 
-    # 4. Decompose targets (only those that appear in pairs)
+    # 5. Decompose targets (only those that appear in pairs)
     logger.info("")
-    logger.info("STEP 3: Decompose targets (Agent 1)")
+    logger.info("STEP 4: Decompose targets (Agent 1)")
     logger.info("-" * 40)
 
     # Collect unique target IDs from pairs
@@ -104,9 +116,9 @@ async def main() -> None:
     out_path.write_text(json.dumps(decompositions, indent=2))
     logger.info(f"Saved {len(decompositions)} decompositions to {out_path}")
 
-    # 5. Assess alignment
+    # 6. Assess alignment
     logger.info("")
-    logger.info("STEP 4: Assess alignment (Agent 2)")
+    logger.info("STEP 5: Assess alignment (Agent 2)")
     logger.info("-" * 40)
 
     alignment_results = await assess_alignment(pairs, decompositions)

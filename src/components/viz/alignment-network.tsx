@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import type { AlignmentResult, AlignmentLevel, Target, PolicyDocumentType } from "@/types";
 import { DOC_COLORS } from "@/lib/utils";
+import { TargetTextWithHighlights } from "./target-text";
 
 interface AlignmentNetworkProps {
   alignmentData: AlignmentResult[];
@@ -452,7 +453,7 @@ export function AlignmentNetwork({
               </span>
             </div>
             <p className="text-xs text-[var(--undp-gray)] leading-relaxed">
-              {t.text}
+              <TargetTextWithHighlights target={t} />
             </p>
           </div>
         );

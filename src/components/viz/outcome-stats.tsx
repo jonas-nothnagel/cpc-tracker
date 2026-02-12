@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { TargetTextWithHighlights } from "./target-text";
 import type { Target } from "@/types";
 
 interface OutcomeStatCardProps {
@@ -71,7 +72,7 @@ function OutcomeStatCard({ percentage, label, targets }: OutcomeStatCardProps) {
                       {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
                     </span>
                     <span className="text-[var(--undp-black)] leading-relaxed">
-                      {t.text}
+                      <TargetTextWithHighlights target={t} />
                     </span>
                   </li>
                 ))}

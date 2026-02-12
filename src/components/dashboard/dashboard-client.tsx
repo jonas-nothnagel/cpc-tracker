@@ -1,0 +1,342 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { countByCategory } from "@/lib/utils";
+import { NbsBarChart } from "@/components/viz/nbs-bar-chart";
+import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
+import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
+import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-selector";
+import { DashboardStats } from "@/components/viz/dashboard-stats";
+import { OutcomeStats } from "@/components/viz/outcome-stats";
+import type {
+  Target,
+  ThematicClassification,
+  AlignmentResult,
+  NbsCategory,
+  Theme,
+} from "@/types";
+
+interface DashboardData {
+  targets: Target[];
+  nbsCategories: NbsCategory[];
+  themes: (Theme & { isCustom?: boolean })[];
+  classifications: ThematicClassification[];
+  alignment: AlignmentResult[];
+}
+
+/** Filter alignment to pairs between two document types */
+function filterAlignmentByDocPair(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  docA: string,
+  docB: string
+): AlignmentResult[] {
+  const idsA = new Set(
+    targets.filter((t) => t.sourceDocument === docA).map((t) => t.id)
+  );
+  const idsB = new Set(
+    targets.filter((t) => t.sourceDocument === docB).map((t) => t.id)
+  );
+  return alignment.filter(
+    (a) =>
+      (idsA.has(a.targetAId) && idsB.has(a.targetBId)) ||
+      (idsB.has(a.targetAId) && idsA.has(a.targetBId))
+  );
+}
+
+/** Ensure targets have optional fields */
+function normalizeTarget(t: Record<string, unknown>): Target {
+  return {
+    id: String(t.id),
+    text: String(t.text),
+    sourceDocument: t.sourceDocument as Target["sourceDocument"],
+    sourceLabel: String(t.sourceLabel),
+    country: String(t.country),
+    isQuantitative: Boolean(t.isQuantitative),
+    isTimeBound: Boolean(t.isTimeBound),
+    quantitativeDetails: t.quantitativeDetails ? String(t.quantitativeDetails) : undefined,
+    timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
+  };
+}
+
+/** Add isCustom to themes from API */
+function normalizeTheme(t: Record<string, unknown>): Theme {
+  return {
+    id: String(t.id),
+    name: String(t.name),
+    description: String(t.description ?? ""),
+    isCustom: false,
+  };
+}
+
+export function DashboardClient() {
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/dashboard")
+      .then((r) => {
+        if (!r.ok) return r.json().then((e) => Promise.reject(e));
+        return r.json();
+      })
+      .then((raw) => {
+        setData({
+          targets: (raw.targets ?? []).map(normalizeTarget),
+          nbsCategories: raw.nbsCategories ?? [],
+          themes: (raw.themes ?? []).map(normalizeTheme),
+          classifications: raw.classifications ?? [],
+          alignment: raw.alignment ?? [],
+        });
+      })
+      .catch((e) => setError(e?.error ?? String(e)));
+  }, []);
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white p-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-lg font-medium text-red-600 mb-2">
+            Could not load dashboard data
+          </h2>
+          <p className="text-sm text-[var(--undp-gray)] mb-4">{error}</p>
+          <p className="text-sm text-[var(--undp-gray)]">
+            Run the pipeline first:{" "}
+            <code className="bg-gray-100 px-2 py-1 rounded">
+              cd python && uv run python -m src.run_analysis
+            </code>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <p className="text-[var(--undp-gray)]">Loading dashboard…</p>
+      </div>
+    );
+  }
+
+  const targets = data.targets;
+  const napTargets = targets.filter((t) => t.sourceDocument === "NAP");
+  const ndcTargets = targets.filter((t) => t.sourceDocument === "NDC");
+  const nbtTargets = targets.filter((t) => t.sourceDocument === "NBSAP");
+
+  const nbsClassifications = data.classifications.filter(
+    (c) => c.taxonomyType === "nbs"
+  );
+  const themeClassifications = data.classifications.filter(
+    (c) => c.taxonomyType === "theme"
+  );
+
+  const nbsCounts = countByCategory(
+    targets,
+    nbsClassifications,
+    data.nbsCategories
+  );
+  const themeCounts = countByCategory(
+    targets,
+    themeClassifications,
+    data.themes
+  );
+
+  const targetsWithNbs = new Set(
+    nbsClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
+  ).size;
+
+  const documentTypes = ["NDC", "NBSAP", "NAP"] as const;
+  const nbsSorted = [...nbsCounts].sort((a, b) => b.total - a.total);
+  const themeSorted = [...themeCounts].sort((a, b) => b.total - a.total);
+
+  const nbtNdcAlignment = filterAlignmentByDocPair(
+    data.alignment,
+    targets,
+    "NBSAP",
+    "NDC"
+  );
+  const nbtNapAlignment = filterAlignmentByDocPair(
+    data.alignment,
+    targets,
+    "NBSAP",
+    "NAP"
+  );
+  const ndcNapAlignment = filterAlignmentByDocPair(
+    data.alignment,
+    targets,
+    "NDC",
+    "NAP"
+  );
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-center gap-4">
+              <Image
+                src="/undp-logo.png"
+                alt="UNDP"
+                width={40}
+                height={60}
+                className="h-9 w-auto"
+              />
+              <div>
+                <p className="text-sm font-medium text-[var(--undp-black)]">
+                  Policy Coherence Tracker
+                </p>
+                <p className="text-xs text-[var(--undp-gray)]">Mongolia Pilot</p>
+              </div>
+            </Link>
+          </div>
+          <nav className="flex items-center gap-6 text-sm">
+            <Link
+              href="/upload"
+              className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors"
+            >
+              Upload Data
+            </Link>
+            <Link
+              href="/"
+              className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors"
+            >
+              Home
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
+        <section className="mb-10">
+          <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-1">
+            Mongolia Nature-Climate Target Assessment
+          </h1>
+          <p className="text-sm text-[var(--undp-gray)]">
+            AI-assisted assessment for national review and consideration
+          </p>
+        </section>
+
+        <DashboardStats
+          totalTargets={targets.length}
+          nbtTargets={nbtTargets}
+          ndcTargets={ndcTargets}
+          napTargets={napTargets}
+          alignmentCount={data.alignment.length}
+        />
+
+        <section className="grid md:grid-cols-3 gap-6 mb-10">
+          <div className="md:col-span-2 bg-[var(--undp-light)] p-6">
+            <NbsBarChart
+              title="Nature-Based Solutions Breakdown"
+              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) appear to refer to Nature-Based Solutions. Click a segment to see which targets.`}
+              data={nbsSorted}
+              documentTypes={[...documentTypes]}
+              targets={targets}
+              nbsClassifications={nbsClassifications}
+            />
+          </div>
+          <OutcomeStats
+            quantitativeTargets={targets.filter((t) => t.isQuantitative)}
+            timeBoundTargets={targets.filter((t) => t.isTimeBound)}
+            totalTargets={targets.length}
+          />
+        </section>
+
+        <section className="bg-[var(--undp-light)] p-6 mb-10">
+          <ThemeBarChart
+            title="Cross-Cutting Themes"
+            subtitle="Number of targets that appear to pertain to each theme. Click a segment to see which targets."
+            data={themeSorted}
+            documentTypes={[...documentTypes]}
+            targets={targets}
+            themeClassifications={themeClassifications}
+          />
+        </section>
+
+        <section className="bg-[var(--undp-light)] p-6 mb-10">
+          <AlignmentNetworkSelector
+            alignmentData={data.alignment}
+            targets={targets}
+            nbsCategories={data.nbsCategories}
+            themes={data.themes}
+            classifications={data.classifications}
+          />
+        </section>
+
+        <section className="mb-10">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-[var(--undp-black)]">
+              Pairwise Alignment Analysis
+            </h2>
+            <p className="text-sm text-[var(--undp-gray)] mt-1">
+              Hover over cells to see alignment rationale between target pairs.
+              Green intensity indicates alignment strength.
+            </p>
+          </div>
+
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
+            <AlignmentHeatmap
+              title="National Biodiversity Targets × NDC Targets"
+              alignmentData={nbtNdcAlignment}
+              rowTargets={nbtTargets}
+              colTargets={ndcTargets}
+              rowLabel="NBTs ↓"
+              colLabel="NDC Targets →"
+            />
+          </div>
+
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
+            <AlignmentHeatmap
+              title="National Biodiversity Targets × NAP Targets"
+              alignmentData={nbtNapAlignment}
+              rowTargets={nbtTargets}
+              colTargets={napTargets}
+              rowLabel="NBTs ↓"
+              colLabel="NAP Targets →"
+            />
+          </div>
+
+          <div className="bg-[var(--undp-light)] p-6 mb-6">
+            <AlignmentHeatmap
+              title="NDC Targets × NAP Targets"
+              alignmentData={ndcNapAlignment}
+              rowTargets={ndcTargets}
+              colTargets={napTargets}
+              rowLabel="NDC Targets ↓"
+              colLabel="NAP Targets →"
+            />
+          </div>
+        </section>
+
+        <section className="mb-10 bg-[var(--undp-light)] p-6">
+          <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-2">
+            About this analysis
+          </h3>
+          <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-3">
+            This dashboard displays results from the Nature-Climate Target
+            Alignment Assessment pipeline. {targets.length} targets from the NAP,
+            NDC, and National Biodiversity Targets were classified against{" "}
+            {data.nbsCategories.length} NBS categories and {data.themes.length}{" "}
+            cross-cutting themes. Alignment is assessed pairwise across documents.
+          </p>
+          <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+            <strong>Note:</strong> Data is loaded from the pipeline output. Run{" "}
+            <code className="bg-white px-1 rounded">
+              cd python && uv run python -m src.run_analysis
+            </code>{" "}
+            to regenerate. All results should be validated with national
+            experts.
+          </p>
+        </section>
+      </main>
+
+      <footer className="border-t border-gray-100 mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
+          United Nations Development Programme · CPC Tracker
+        </div>
+      </footer>
+    </div>
+  );
+}

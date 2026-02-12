@@ -34,8 +34,10 @@ export interface Target {
   isQuantitative: boolean;
   /** Whether the target specifies a deadline */
   isTimeBound: boolean;
-  /** Optional detail string (e.g. "30% by 2030") */
+  /** Extracted quantitative phrase(s) for highlighting (e.g. "30%", "5.277 million tons") */
   quantitativeDetails?: string;
+  /** Extracted time-bound phrase(s) for highlighting (e.g. "by 2030") */
+  timeBoundDetails?: string;
 }
 
 // ---------------------------------------------------------------------------

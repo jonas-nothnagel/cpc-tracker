@@ -35,21 +35,58 @@ export function AlignmentNetworkSelector({
   classifications,
 }: AlignmentNetworkSelectorProps) {
   const [taxonomyType, setTaxonomyType] = useState<TaxonomyType>("nbs");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
-    nbsCategories[0]?.id ?? ""
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
 
-  const categories = taxonomyType === "nbs" ? nbsCategories : themes;
+  const baseCategories = taxonomyType === "nbs" ? nbsCategories : themes;
 
-  // When switching taxonomy type, reset to first category
+  // Sort by alignment activity: categories with most cross-document pairs first,
+  // sparse/empty ones last (avoids defaulting to "nothing shown")
+  const categories = useMemo(() => {
+    return [...baseCategories].sort((a, b) => {
+      const idsA = new Set(
+        classifications
+          .filter(
+            (c) =>
+              c.categoryId === a.id &&
+              c.isRelevant &&
+              c.taxonomyType === taxonomyType
+          )
+          .map((c) => c.targetId)
+      );
+      const idsB = new Set(
+        classifications
+          .filter(
+            (c) =>
+              c.categoryId === b.id &&
+              c.isRelevant &&
+              c.taxonomyType === taxonomyType
+          )
+          .map((c) => c.targetId)
+      );
+      const pairsA = alignmentData.filter(
+        (x) => idsA.has(x.targetAId) && idsA.has(x.targetBId)
+      ).length;
+      const pairsB = alignmentData.filter(
+        (x) => idsB.has(x.targetAId) && idsB.has(x.targetBId)
+      ).length;
+      return pairsB - pairsA;
+    });
+  }, [baseCategories, classifications, taxonomyType, alignmentData]);
+
+  // When switching taxonomy type, reset to first category (now the most active)
   const handleTaxonomyChange = (type: TaxonomyType) => {
     setTaxonomyType(type);
-    const firstCategory = type === "nbs" ? nbsCategories[0] : themes[0];
-    setSelectedCategoryId(firstCategory?.id ?? "");
+    setSelectedCategoryId("");
   };
 
+  // Effective selection: use first (most active) category when switching or empty
+  const effectiveCategoryId =
+    selectedCategoryId && categories.some((c) => c.id === selectedCategoryId)
+      ? selectedCategoryId
+      : categories[0]?.id ?? "";
+
   // Get the selected category name
-  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
+  const selectedCategory = categories.find((c) => c.id === effectiveCategoryId);
 
   // Filter targets: only those classified under the selected category
   const filteredTargetIds = useMemo(() => {
@@ -57,13 +94,13 @@ export function AlignmentNetworkSelector({
       classifications
         .filter(
           (c) =>
-            c.categoryId === selectedCategoryId &&
+            c.categoryId === effectiveCategoryId &&
             c.isRelevant &&
             c.taxonomyType === taxonomyType
         )
         .map((c) => c.targetId)
     );
-  }, [classifications, selectedCategoryId, taxonomyType]);
+  }, [classifications, effectiveCategoryId, taxonomyType]);
 
   const filteredTargets = useMemo(
     () => targets.filter((t) => filteredTargetIds.has(t.id)),
@@ -148,7 +185,7 @@ export function AlignmentNetworkSelector({
 
         {/* Category dropdown */}
         <select
-          value={selectedCategoryId}
+          value={effectiveCategoryId}
           onChange={(e) => setSelectedCategoryId(e.target.value)}
           className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30 focus:border-[var(--undp-blue)]"
         >

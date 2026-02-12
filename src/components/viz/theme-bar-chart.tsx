@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { TargetTextWithHighlights } from "./target-text";
 import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
 interface BarData {
@@ -201,7 +202,7 @@ export function ThemeBarChart({
                       {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
                     </span>
                     <span className="text-[var(--undp-black)] leading-relaxed">
-                      {t.text}
+                      <TargetTextWithHighlights target={t} />
                     </span>
                   </li>
                 ))}
