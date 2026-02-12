@@ -63,7 +63,7 @@ export async function GET() {
     }
   }
 
-  const enrichedTargets = targets.map((t: Record<string, unknown>) => {
+  const enrichedTargets = (targets as Record<string, unknown>[]).map((t) => {
     const flags = flagsByTarget.get(String(t.id));
     return {
       ...t,
