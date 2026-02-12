@@ -67,11 +67,9 @@ ADVISOR_USER_TEMPLATE = """    Role: Alignment Advisor
 real-world feasibility, operational synergy, and strategic overlap. You never assume alignment based on superficial wording alone.
 
     Task:
-    1. Analyze the following two targets:
-       - {target_1_type} target: {target_1_text}
-         Structured analysis: {target_1_decomp}
-       - {target_2_type} target: {target_2_text}
-         Structured analysis: {target_2_decomp}
+    1. Analyze the following two targets (structured analysis from Target Analyst):
+       - {target_1_type} target: {target_1_decomp}
+       - {target_2_type} target: {target_2_decomp}
     2. Compare the goal, action, ecosystem, target audience, and expected impact of both targets to assess their relationship.
     3. Consider hierarchical relationships between ecosystems. Recognize that specific ecosystems (e.g., mangroves, coral reefs) \
 may fall under broader categories such as coastal-marine ecosystems.
@@ -360,10 +358,8 @@ async def assess_alignment(
 
         user = ADVISOR_USER_TEMPLATE.format(
             target_1_type=DOC_TYPE_LABELS.get(ta["sourceDocument"], ta["sourceDocument"]),
-            target_1_text=ta["text"],
             target_1_decomp=decomp_a,
             target_2_type=DOC_TYPE_LABELS.get(tb["sourceDocument"], tb["sourceDocument"]),
-            target_2_text=tb["text"],
             target_2_decomp=decomp_b,
         )
         calls.append({"system": ADVISOR_SYSTEM, "user": user})

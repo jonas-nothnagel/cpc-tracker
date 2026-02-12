@@ -46,7 +46,7 @@ def load_input_data() -> tuple[list, list, list]:
     themes = cats["themes"]
     logger.info(
         f"Loaded {len(targets)} targets, "
-        f"{len(nbs)} NBS categories, {len(themes)} themes"
+        f"{len(themes)} themes (from themes_18Jul25.xlsx taxonomy)"
     )
     return targets, nbs, themes
 
@@ -78,7 +78,7 @@ async def main() -> None:
     logger.info("STEP 2: Generate theme-filtered pairs")
     logger.info("-" * 40)
 
-    pairs = generate_pairs(targets, theme_classifications)
+    pairs = generate_pairs(targets, all_classifications)
     logger.info(f"Total cross-document pairs to assess: {len(pairs)}")
 
     if not pairs:
@@ -122,8 +122,7 @@ async def main() -> None:
     logger.info("=" * 60)
     logger.info(f"Pipeline complete in {elapsed:.1f}s")
     logger.info(f"  Classifications: {len(all_classifications)}")
-    logger.info(f"    - NBS relevant: {sum(1 for c in nbs_classifications if c['isRelevant'])}")
-    logger.info(f"    - Theme relevant: {sum(1 for c in theme_classifications if c['isRelevant'])}")
+    logger.info(f"    - Relevant: {sum(1 for c in all_classifications if c['isRelevant'])}")
     logger.info(f"  Pairs assessed: {len(alignment_results)}")
     levels = {}
     for r in alignment_results:
