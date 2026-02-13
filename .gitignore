@@ -41,7 +41,7 @@ __pycache__/
 venv/
 .uv/
 *.egg-info/
-python/output/
+
 
 # Testing
 coverage/

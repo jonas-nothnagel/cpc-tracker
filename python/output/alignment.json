@@ -1,0 +1,1538 @@
+[
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets aim for sustainability in resource management, they focus on different ecosystems: livestock management versus forestry and agriculture. The thematic overlap is too broad, and the distinct target audiences and actions limit the potential for practical coordination in real-world implementation."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets aim to improve sustainability in agricultural practices, they focus on different ecosystems (livestock production vs. forestry and agriculture) and have distinct target audiences. The thematic overlap is insufficient for practical coordination, as the specific actions and expected outcomes do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NBT_7",
+    "alignment": "medium",
+    "description": "The targets share a common focus on sustainable agricultural practices and improving productivity, with overlapping target audiences of farmers and agricultural producers. While they operate in related ecosystems (agriculture and forestry), their specific actions and goals differ, allowing for potential coordination but not necessitating it."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NBT_7",
+    "alignment": "medium",
+    "description": "Both targets focus on agricultural practices and sustainability, with overlapping audiences of farmers and agricultural practitioners. They could support each other through shared practices and knowledge exchange, but they maintain distinct primary goals and ecosystems, which allows for independent implementation."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "high",
+    "description": "Both targets focus on the livestock management sector and share a common goal of enhancing resilience and sustainability. Their actions are closely related, addressing water and feed supply management, which directly supports the overarching objectives of both targets, making coordinated implementation highly beneficial for achieving measurable outcomes."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_AnimalHusbandry_3",
+    "alignment": "medium",
+    "description": "Both targets focus on sustainable livestock management and share a common audience of livestock producers, indicating a thematic overlap. While the NAP target emphasizes climate resilience and resource alignment, the NDC target focuses on efficiency and technology, suggesting that they could complement each other through coordinated efforts, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "medium",
+    "description": "The targets share a common focus on sustainable management practices within the livestock and pasture ecosystems, indicating a thematic overlap. While they address different specific areas (livestock management vs. pasture restoration), they could benefit from coordinated efforts in resource management and stakeholder engagement, enhancing overall sustainability outcomes."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "medium",
+    "description": "The targets share a common focus on the livestock management sector and aim to improve sustainability and reduce CO2 emissions, indicating compatible priorities. However, while they could support each other through shared enabling conditions, they remain independently implementable with distinct primary goals and actions."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and sustainability, they focus on different ecosystems and target audiences. The NAP target is specific to livestock management, while the NDC target pertains to crop production systems, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets aim for sustainability and resilience in their respective sectors, they focus on different ecosystems (livestock management vs. crop production) and target distinct audiences (livestock producers vs. farmers). The thematic overlap is insufficient for practical coordination, as their actions and intended outcomes do not create a direct synergy."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets aim to enhance resilience in the face of climate challenges, they focus on different ecosystems (livestock management vs. agriculture) and target distinct audiences (livestock producers vs. farmers). The thematic overlap is insufficient for practical coordination, as their actions and intended outcomes do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "medium",
+    "description": "The targets share a focus on livestock management and target similar audiences, which allows for potential synergies in improving livestock quality and resilience. However, they have distinct primary goals and actions, indicating that while they can complement each other, they do not depend on one another for successful implementation."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_AnimalHusbandry_3",
+    "alignment": "medium",
+    "description": "Both targets focus on improving livestock production and pasture management, sharing a common audience of livestock producers and farmers. While they differ in specific actions\u2014one emphasizing value chains and the other smart technologies\u2014they could complement each other through coordinated efforts to enhance sustainability and efficiency in the sector."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "medium",
+    "description": "Both targets focus on improving sustainability in pasture management and livestock production, sharing a common ecosystem and target audience. They could support each other through joint efforts in sustainable practices and market development, though they remain independently implementable with distinct primary goals."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "medium",
+    "description": "The targets share a common focus on livestock production and sustainability, with overlapping target audiences of farmers and livestock producers. While they have distinct primary goals\u2014one emphasizing sustainability and marketability and the other focusing on CO2 emissions reduction\u2014they could benefit from coordinated efforts in improving livestock practices that enhance both economic performance and environmental outcomes."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and involve farmers as the target audience, they focus on different ecosystems and specific interventions. The NAP target emphasizes livestock production and sustainability, whereas the NDC target is centered on soil fertility and crop production, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets aim to enhance sustainability in agricultural practices, they focus on different sectors: livestock production versus crop production. The lack of shared ecosystems and specific actions limits the potential for practical coordination or resource optimization."
+  },
+  {
+    "targetAId": "NAP_11",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address agricultural stakeholders and aim to improve production systems, they focus on different aspects: one on livestock quality and sustainability, and the other on crop resilience against climate challenges. The thematic overlap is insufficient for practical coordination, as their actions and ecosystems differ significantly."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and aim to improve resilience and productivity, they focus on different ecosystems (crops vs. livestock) and target distinct audiences. The lack of direct overlap in actions and expected outcomes limits the potential for practical coordination or resource optimization."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_AnimalHusbandry_3",
+    "alignment": "low",
+    "description": "While both targets aim to enhance agricultural productivity and sustainability, they focus on different sectors: one on crop production and the other on livestock. The lack of shared ecosystems and target audiences limits the potential for practical coordination or resource optimization."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "low",
+    "description": "While both targets aim for sustainable agricultural practices, they focus on different ecosystems (crops vs. pastures) and have distinct target audiences and expected outcomes. The thematic overlap is insufficient for practical coordination, as their implementation pathways do not align effectively."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address the agricultural sector and involve farmers as a target audience, their goals and actions diverge significantly. The NAP target focuses on sustainable crop development and soil health, whereas the NDC target is centered on reducing CO2 emissions through livestock management, leading to weak practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "medium",
+    "description": "Both targets focus on improving soil health and involve agricultural practices, indicating a shared interest in sustainable agriculture. While they have compatible goals and actions, they target slightly different practices and audiences, allowing for potential coordination but not requiring it for success."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "high",
+    "description": "Both targets aim to sustainably develop high-yield crops and share a focus on agriculture as the ecosystem. They utilize compatible actions involving climate-adapted and climate-smart technologies, target similar audiences of farmers and agricultural stakeholders, and seek to achieve increased crop yields while improving resilience to climate change, making coordinated implementation highly beneficial."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "high",
+    "description": "Both targets focus on the same ecosystem (agriculture) and share a common goal of increasing crop yields while addressing climate challenges. Their actions are complementary, with one emphasizing climate-adapted technologies and soil conservation, while the other focuses on introducing resilient crop varieties, creating a synergistic approach to enhancing agricultural productivity and resilience."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and resilience, they focus on different ecosystems (soil fertility in agriculture versus livestock management) and distinct target audiences. The thematic overlap is insufficient for practical coordination, as their specific actions and intended outcomes do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_AnimalHusbandry_3",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and involve farmers, they focus on different aspects of agriculture: one on soil fertility and the other on livestock production. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support each other in a meaningful way."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "medium",
+    "description": "The targets share a common goal of improving land management practices and sustainability, with both focusing on agricultural ecosystems. While they target different specific areas (soil fertility in agriculture versus pasture management), their complementary nature allows for potential coordination in practices that enhance overall land health and resilience."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address the agricultural sector and involve farmers, their specific goals and actions diverge significantly. The NAP target focuses on soil fertility and climate-smart practices, whereas the NDC target is centered on reducing CO2 emissions through livestock management, leading to weak practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "medium",
+    "description": "Both targets focus on soil fertility within the agricultural ecosystem and aim to improve practices for farmers. While they differ in specific actions\u2014climate-smart practices versus minimal and zero tillage technologies\u2014they share a common audience and expected outcomes, suggesting that coordinated efforts could enhance overall soil health and resilience."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "medium",
+    "description": "Both targets focus on agriculture and aim to enhance resilience to climate change, with the NAP target emphasizing soil fertility and the NDC target focusing on sustainable crop yields. While they have compatible priorities and could benefit from coordinated efforts, they address different aspects of agricultural sustainability and are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "medium",
+    "description": "Both targets focus on agriculture and aim to enhance resilience to climate challenges, with the NAP target emphasizing soil fertility and the NDC target addressing crop variety adaptation. While they have compatible priorities and could support each other through shared practices, they are not mutually dependent and can be implemented independently."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and involve farmers, they focus on different ecosystems and specific interventions. The NBT target emphasizes sustainable forestry and agricultural production, whereas the NDC target is centered on livestock management, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_AnimalHusbandry_3",
+    "alignment": "low",
+    "description": "While both targets aim to enhance productivity and sustainability in agricultural contexts, they focus on different ecosystems and specific practices. The NBT target addresses forestry and agriculture with environmentally friendly practices, whereas the NDC target is centered on livestock production and smart technologies, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "medium",
+    "description": "The targets share a common goal of promoting sustainability in agricultural practices, with both addressing the needs of farmers and land managers. While they focus on different ecosystems\u2014forestry and agriculture versus pastures\u2014they could benefit from coordinated efforts in sustainable land management practices, enhancing overall productivity and environmental health."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "Both targets address the agricultural sector and involve farmers as a target audience, but they focus on different aspects: one emphasizes sustainable forestry and agricultural practices, while the other targets livestock emissions reduction. The thematic overlap is insufficient for practical coordination, as their specific goals and actions diverge significantly."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and involve farmers as the target audience, they focus on different aspects of agricultural sustainability. The NBT target emphasizes overall productivity and sustainability in forestry and agriculture, while the NDC target specifically targets soil fertility and moisture conservation through tillage practices, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "medium",
+    "description": "Both targets focus on sustainable agricultural practices and share a common target audience of farmers and agricultural producers. While the NBT target emphasizes environmentally friendly practices in both forestry and agriculture, the NDC target specifically targets crop production systems with climate-smart technologies, indicating a complementary but distinct focus that could benefit from coordinated efforts."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "medium",
+    "description": "The targets share a common focus on agriculture and aim to enhance productivity and resilience, which could complement each other through improved practices and crop varieties. While they address different aspects of agricultural sustainability, their overlapping target audience of farmers suggests potential for coordinated efforts that could enhance overall agricultural outcomes."
+  },
+  {
+    "targetAId": "NBT_2",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "medium",
+    "description": "The targets share a common goal of improving ecosystem health, with the NBT target focusing on broader ecosystems and the NDC target specifically on forests. While they address different ecosystems, their complementary objectives could benefit from coordinated efforts in ecosystem restoration and protection, enhancing overall ecological integrity."
+  },
+  {
+    "targetAId": "NBT_2",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "low",
+    "description": "While both targets focus on ecosystem restoration, they operate in different ecological contexts: one emphasizes degraded ecosystems broadly, while the other specifically targets afforestation and forest restoration. The differences in action, ecosystem focus, and intended outcomes limit the potential for practical coordination or synergy in real-world implementation."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and specific actions. The NBT target emphasizes reducing greenhouse gas emissions and enhancing carbon sinks at a national level, while the NDC target is centered on forest health and regeneration, making their operational overlap weak and impractical for coordinated implementation."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "low",
+    "description": "While both targets address climate-related goals, they focus on different ecosystems and specific actions. The NBT target emphasizes reducing greenhouse gas emissions and enhancing carbon sinks at a national level, while the NDC target is centered on afforestation and forest restoration, targeting a more localized stakeholder group, which limits practical coordination."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_6",
+    "alignment": "low",
+    "description": "While both targets address climate change adaptation, they focus on different aspects: the NAP target emphasizes enhancing policies and capacities across all sectors, while the NBT target is specifically about reducing greenhouse gas emissions and enhancing carbon sinks within the climate ecosystem. This thematic overlap is too broad and lacks the necessary operational synergy for effective coordination."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences, with the NAP target encompassing all sectors and the NBT target specifically targeting forestry and agriculture. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_6",
+    "alignment": "low",
+    "description": "While both targets address climate change adaptation, they focus on different aspects: the NAP target emphasizes knowledge and capacity building among stakeholders, whereas the NBT target is centered on reducing greenhouse gas emissions and enhancing carbon sinks. This thematic overlap is too broad and lacks practical coordination opportunities, as they target different audiences and operational strategies."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences, with the NAP target emphasizing climate change adaptation knowledge and the NBT target concentrating on sustainable agricultural practices. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_6",
+    "alignment": "low",
+    "description": "While both targets address resilience in the context of environmental change, they focus on different aspects: the NAP target emphasizes ecosystem resilience and biodiversity, while the NBT target centers on climate adaptation through greenhouse gas reduction. The thematic overlap is too broad and lacks practical coordination opportunities due to differing target audiences and specific actions."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences, with the NAP emphasizing biodiversity resilience and the NBT concentrating on agricultural productivity. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NBT_6",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience to climate change, with the NAP target focusing on forestry and wood-based industries while the NBT target addresses broader climate adaptation strategies. They could support each other through shared objectives and complementary actions, but they operate in different ecosystems and target different audiences, which limits the potential for direct coordination."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NBT_7",
+    "alignment": "medium",
+    "description": "The targets share a common focus on the forestry sector and aim to promote sustainability, but they differ in their specific goals and target audiences. While the NAP target emphasizes climate resilience and wood-based industries, the NBT target focuses on productivity in both forestry and agriculture, suggesting that they could complement each other through coordinated efforts, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NBT_6",
+    "alignment": "medium",
+    "description": "Both targets focus on climate resilience and adaptation, with overlapping goals of reducing vulnerability to climate change. They could support each other through shared strategies and resources, but they operate at different levels of implementation, with the NAP target being more community-focused and the NBT target aimed at national policy."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences, with the NAP target centered on climate change resilience and disaster management, and the NBT target emphasizing sustainable forestry and agriculture. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NBT_6",
+    "alignment": "low",
+    "description": "While both targets address climate resilience, they focus on different ecosystems and target audiences, with the NAP target specifically aimed at livestock management and producers, and the NBT target directed towards national governments and policymakers. The thematic overlap is insufficient for practical coordination, as their implementation pathways and intended outcomes diverge significantly."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NBT_6",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences. The NAP target is centered on agricultural practices and improving crop yields, whereas the NBT target emphasizes national climate adaptation through greenhouse gas reduction, leading to weak practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NBT_6",
+    "alignment": "low",
+    "description": "While both targets address climate change and resilience, they focus on different ecosystems and target audiences. The NAP target is specifically aimed at agricultural practices for farmers, whereas the NBT target is directed at national governments and policymakers, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_6",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience to climate-related challenges, with the NAP focusing on health risks and the NBT on climate adaptation. While they target different audiences and ecosystems, their complementary nature suggests that coordinated efforts could yield benefits in public health and climate adaptation strategies."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences, with the NAP target centered on public health in relation to climate change and the NBT target on sustainable forestry and agriculture. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing adaptive capacity in the face of climate change, with the NAP target focusing on broader policy and organizational capacities while the NDC target specifically addresses biodiversity. They could complement each other through coordinated efforts in policy-making and legal frameworks that support both climate adaptation and biodiversity protection, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience to climate change, with the NAP focusing on broad adaptation across all sectors and the NDC specifically targeting vulnerable groups. While they address different audiences and scales, their complementary nature suggests that coordinated efforts could improve overall outcomes for climate adaptation and welfare enhancement."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: the NAP target emphasizes policy and organizational capacity for adaptation across all sectors, whereas the NDC target centers on climate education and public engagement. This thematic overlap is too broad to facilitate practical coordination or resource optimization in real-world implementation."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences. The NAP target is broad and encompasses all sectors for climate adaptation, whereas the NDC target is specifically aimed at reducing CO2 emissions in the agricultural sector, particularly livestock, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "low",
+    "description": "While both targets address climate change, they focus on different sectors and have distinct goals and actions. The NAP target aims for broad climate adaptation across all sectors, whereas the NDC target specifically targets CO2 emissions reduction in the livestock sector, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "high",
+    "description": "Both targets aim to improve the policy, legal, and organizational frameworks for climate change adaptation, addressing the same ecosystem of climate change adaptation. Their shared focus on enhancing capacities and creating a supportive environment for stakeholders involved in policy-making indicates that coordinated implementation would significantly enhance outcomes and efficiency in climate adaptation efforts."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address climate change and involve stakeholders in their respective fields, they focus on different ecosystems and specific outcomes. The NAP target is broad and encompasses all sectors, whereas the NDC target is narrowly focused on agriculture, making practical coordination between them unclear and limited."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address climate change adaptation, they focus on different ecosystems and specific audiences, with the NAP target encompassing all sectors and the NDC target specifically targeting agriculture. The thematic overlap is insufficient for practical coordination, as their implementation pathways and intended outcomes diverge significantly."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "low",
+    "description": "While both targets address climate change adaptation, they focus on different aspects: the NAP target emphasizes knowledge and capacity building among stakeholders, whereas the NDC target is centered on legal protections for biodiversity. This thematic overlap is too broad to facilitate practical coordination, as their implementation pathways and target audiences differ significantly."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "Both targets focus on climate change adaptation and aim to enhance the capacity and resilience of affected groups, albeit with different specific audiences and actions. They could support each other through shared knowledge and training initiatives, but they remain independently implementable and serve somewhat distinct primary goals."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_Education",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing knowledge and capacity related to climate change, with the NAP target emphasizing adaptation and the NDC target highlighting education and public participation. They could support each other through shared training initiatives and information dissemination, but they address different aspects of climate action and are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "none",
+    "description": "The targets focus on distinct ecosystems and objectives, with one centered on climate change adaptation knowledge and the other on reducing CO2 emissions in the livestock sector. There is no shared audience or operational overlap that would facilitate coordinated implementation or mutual benefits."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and specific actions. The NAP target emphasizes knowledge and capacity building for climate change adaptation, while the NDC target is centered on reducing livestock emissions, making their operational synergy weak and impractical for coordinated implementation."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "medium",
+    "description": "Both targets focus on climate change adaptation and share a common target audience of stakeholders, indicating a thematic overlap. While the NAP target emphasizes knowledge and capacity building, the NDC target aims to improve the policy and structural environment, suggesting that they could complement each other through coordinated efforts, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences. The NAP target emphasizes knowledge and capacity building for stakeholders in climate change adaptation, whereas the NDC target is centered on sustainable agricultural practices for farmers, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address climate-related challenges, they focus on different ecosystems and target audiences. The NAP target emphasizes knowledge and capacity building for stakeholders in climate change adaptation, whereas the NDC target is specifically about enhancing agricultural resilience through crop adaptation, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "high",
+    "description": "Both targets focus on enhancing the resilience and adaptability of ecosystems and biodiversity, specifically addressing climate change impacts. They share similar target audiences and expected outcomes, and coordinated implementation of legal protections and adaptive strategies would significantly amplify their effectiveness in improving ecosystem health and biodiversity resilience."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience, albeit in different contexts: one focuses on ecosystems and biodiversity, while the other addresses vulnerable groups affected by climate change. They could complement each other through coordinated efforts that integrate ecosystem health with the welfare of vulnerable populations, but they remain distinct in their primary objectives and implementation strategies."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different aspects: one emphasizes ecosystem resilience and biodiversity, while the other centers on climate education and public participation. The thematic overlap is too broad and lacks practical coordination opportunities, as they operate in distinct domains with different target audiences and implementation strategies."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences, with the NAP emphasizing biodiversity resilience and the NDC concentrating on CO2 emissions in the agricultural sector. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "none",
+    "description": "The targets focus on entirely different sectors, with one addressing ecosystem resilience and biodiversity while the other targets CO2 emissions from the livestock sector. There is no shared geography, actors, or implementation pathways that would allow for meaningful coordination or mutual benefit."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience and adaptation, with the NAP focusing on ecosystems and biodiversity while the NDC emphasizes the policy environment for climate adaptation. They could support each other through coordinated efforts in policy implementation and ecosystem management, although they operate at different levels of intervention."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address environmental resilience, they focus on different ecosystems and target audiences, with one centered on biodiversity and ecosystems and the other on agricultural productivity. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets aim to enhance resilience in their respective ecosystems, they focus on different areas: one on ecosystems and biodiversity broadly, and the other specifically on agricultural resilience. The thematic overlap is limited, as the actions and target audiences differ significantly, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience in ecosystems affected by climate change, with both focusing on the broader theme of sustainability. While the NAP target emphasizes forest resilience and sustainable wood-based industries, and the NDC target focuses on biodiversity protection, they could complement each other through coordinated efforts in forest management and conservation strategies, although they remain independently implementable."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience to climate change, with the NAP focusing on forests and wood-based industries while the NDC emphasizes vulnerable groups. They could support each other through joint initiatives that promote sustainable practices in forestry while also addressing the needs of vulnerable populations, but they remain independently implementable with distinct primary objectives."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and audiences, with one centered on forestry and wood-based industries and the other on climate education and public engagement. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and sectors: forestry versus agriculture. The thematic overlap is limited, as the NAP target emphasizes forest resilience and wood-based industries, while the NDC target is centered on livestock emissions reduction, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "none",
+    "description": "The targets focus on entirely different ecosystems and sectors, with one addressing forestry and wood-based industries while the other targets the livestock sector. There is no shared goal, action, or audience that would facilitate any meaningful coordination or resource optimization between them."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "low",
+    "description": "While both targets address climate change and involve stakeholders in related sectors, they focus on different aspects of climate adaptation and operate in distinct ecosystems. The NAP target is specifically centered on forestry and wood-based industries, whereas the NDC target is broader, dealing with the overall policy and organizational environment for climate adaptation, limiting practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address climate resilience and sustainability, they focus on different ecosystems (forestry vs. agriculture) and target distinct audiences (wood industry stakeholders vs. agricultural producers). The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address climate resilience, they focus on different ecosystems (forestry vs. agriculture) and target distinct audiences with specific actions. The thematic overlap is limited, making practical coordination for implementation unclear and unlikely to yield significant mutual benefits."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on enhancing resilience in the face of climate change, with the NAP target addressing community resilience and the NDC target focusing on biodiversity resilience. While they operate in different but related ecosystems, their complementary goals could benefit from coordinated efforts, such as integrating biodiversity considerations into disaster risk reduction strategies."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing resilience to climate change, with overlapping goals related to vulnerable populations and disaster management. They could support each other through shared strategies for identifying and addressing vulnerabilities, though they remain independently implementable with distinct primary objectives."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one emphasizes disaster risk reduction and resilience, while the other centers on climate education and public participation. The thematic overlap is too broad and lacks practical coordination opportunities, as they target distinct audiences and operational frameworks."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "none",
+    "description": "The targets focus on distinct ecosystems and objectives, with the NAP target addressing climate change resilience in disaster management and the NDC target concentrating on CO2 emissions reduction in the agricultural sector. There is no shared audience or operational overlap that would facilitate coordinated implementation or mutual benefits."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "none",
+    "description": "The targets focus on distinct ecosystems and sectors, with the NAP target addressing climate change resilience in disaster management and the NDC target concentrating on reducing livestock CO2 emissions. There is no shared audience, action, or expected outcome that would facilitate meaningful coordination or resource optimization between these two targets."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on climate change adaptation and resilience, with overlapping audiences involved in disaster risk reduction and policy-making. While they address different aspects of the climate adaptation framework, their complementary nature suggests that coordinated efforts could enhance overall effectiveness in building resilience against climate-induced disasters."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address climate change and resilience, they focus on different ecosystems and target audiences, with one centered on disaster management and the other on agricultural productivity. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address climate resilience, they focus on different ecosystems and target audiences, with one centered on disaster management and the other on agricultural resilience. The thematic overlap is insufficient for practical coordination, as their implementation pathways and specific goals diverge significantly."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "low",
+    "description": "While both targets address climate resilience, they focus on different ecosystems and target audiences. The NAP target is centered on sustainable livestock management, whereas the NDC target emphasizes biodiversity protection, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address climate resilience, they focus on different sectors and target audiences. The NAP target is specific to livestock management, whereas the NDC target is broader, aimed at vulnerable groups affected by climate change, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one on sustainable livestock management and the other on climate education and public participation. The thematic overlap is too broad and lacks practical coordination opportunities, as they target distinct audiences and ecosystems."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on the livestock sector and aim to improve sustainability and reduce emissions, indicating compatible priorities. While the NAP target emphasizes sustainable management practices, the NDC target focuses on emission reduction, suggesting that coordinated efforts could enhance overall outcomes, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "low",
+    "description": "While both targets address climate resilience and adaptation, they operate in different sectors with distinct target audiences and specific actions. The NAP target focuses on sustainable livestock management, whereas the NDC target emphasizes broader policy and structural improvements for climate adaptation, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences. The NAP target is centered on agricultural productivity and soil health, whereas the NDC target emphasizes biodiversity protection and resilience, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one on agricultural productivity and the other on the welfare of vulnerable groups. The thematic overlap is insufficient for practical coordination, as their goals, actions, and target audiences diverge significantly."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one on sustainable agriculture and crop yield, and the other on climate education and public engagement. The thematic overlap is too broad and lacks practical coordination opportunities, as they operate in distinct domains with different target audiences and expected outcomes."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "low",
+    "description": "While both targets address agricultural practices and environmental outcomes, they focus on different sectors (crops vs. livestock) and have distinct target audiences and actions. The thematic overlap is insufficient for practical coordination, as the goals and interventions do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "low",
+    "description": "While both targets address agricultural and climate-related issues, they focus on different aspects: one emphasizes sustainable crop development, while the other aims to improve the policy environment for climate adaptation. The thematic overlap is insufficient for practical coordination, as they operate in distinct domains with different target audiences and implementation strategies."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "low",
+    "description": "While both targets address climate change and resilience, they focus on different ecosystems and target audiences. The NAP target is centered on agricultural practices for soil fertility, whereas the NDC target emphasizes biodiversity protection through legal measures, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience to climate change, with the NAP focusing on soil fertility in agriculture and the NDC addressing the welfare of vulnerable groups. While they target different audiences and ecosystems, their complementary nature suggests that coordinated efforts could improve agricultural practices for vulnerable populations, thereby enhancing overall resilience and sustainability."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one emphasizes soil fertility in agriculture, while the other centers on climate education and public engagement. The thematic overlap is too broad and lacks practical coordination opportunities, as they target distinct audiences and ecosystems."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems (agriculture vs. livestock) and have distinct goals and actions. The thematic overlap in promoting climate-smart practices does not provide a strong basis for practical coordination or resource optimization in real-world implementation."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one emphasizes on-the-ground agricultural practices for soil fertility, while the other targets policy and organizational frameworks for climate adaptation. The thematic overlap is insufficient for practical coordination, as they operate at different levels of implementation and involve distinct audiences."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common theme of enhancing resilience in the face of climate change, with the NAP focusing on public health and the NDC on biodiversity. While they address different ecosystems and audiences, their goals could complement each other through coordinated efforts that recognize the interdependence of human health and ecosystem health, allowing for modest collaboration in implementation."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "Both targets address climate resilience but focus on different aspects: the NAP target emphasizes public health and capacity-building, while the NDC target centers on vulnerable groups and economic sustainability. They could complement each other through shared efforts in enhancing resilience, but their distinct primary goals and target audiences suggest that they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: the NAP target emphasizes public health resilience to climate risks, whereas the NDC target centers on climate education and public engagement. The thematic overlap is insufficient for practical coordination, as their intended outcomes and target audiences diverge significantly."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences. The NAP target emphasizes public health and climate resilience, whereas the NDC target is centered on reducing CO2 emissions in the agricultural sector, leading to weak practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "none",
+    "description": "The targets focus on entirely different ecosystems and objectives, with one addressing public health in relation to climate change and the other targeting CO2 emissions in the livestock sector. There is no shared audience, action, or expected outcome that would facilitate any meaningful coordination or resource optimization between them."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on climate change and health adaptation, with overlapping audiences of policymakers and stakeholders. While they address different aspects of climate resilience\u2014public health versus policy frameworks\u2014they could benefit from coordinated efforts in research and capacity-building to enhance overall effectiveness."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences, with one centered on public health and the other on agriculture. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address climate-related challenges, they focus on different ecosystems and target audiences, with one centered on public health and the other on agriculture. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support each other in a real-world context."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing resilience to climate change, with the NBT target focusing on climate adaptation through greenhouse gas reduction and carbon sequestration, while the NDC target emphasizes biodiversity protection and resilience. Although they target different ecosystems (climate vs. biodiversity), their complementary nature suggests that coordinated efforts could yield mutual benefits, particularly in areas where climate adaptation and biodiversity conservation intersect."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "The targets share a common focus on enhancing resilience to climate change, albeit from different perspectives: one targeting national policy and the other focusing on vulnerable groups. They could support each other through coordinated efforts, such as integrating national adaptation strategies with localized support for vulnerable populations, but they remain independently implementable with distinct primary goals."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different aspects: one emphasizes reducing greenhouse gas emissions and enhancing carbon sinks, while the other prioritizes climate education and public participation. The thematic overlap is insufficient for practical coordination, as their intended audiences and expected outcomes diverge significantly."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_LivestockMitigation",
+    "alignment": "low",
+    "description": "While both targets address climate change and aim to reduce greenhouse gas emissions, they operate in distinct ecosystems and target different audiences. The NBT target focuses on national-level climate adaptation strategies, while the NDC target is specifically concerned with the agricultural sector and livestock management, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "none",
+    "description": "The targets focus on different ecosystems and audiences, with the NBT target addressing national climate adaptation through greenhouse gas reduction in a broad context, while the NDC target specifically targets livestock emissions reduction. There is no operational overlap or shared goals that would facilitate coordinated implementation or mutual benefits."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "medium",
+    "description": "Both targets focus on climate adaptation and share a common ecosystem area, but they differ in their specific actions and target audiences. The NBT target emphasizes reducing greenhouse gas emissions and enhancing carbon sinks, while the NDC target is more about improving the policy and organizational environment for adaptation, suggesting that they could complement each other through coordinated efforts but are not directly dependent on one another."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_ArableFarming_2",
+    "alignment": "low",
+    "description": "While both targets address climate change and resilience, they focus on different ecosystems and target audiences. The NBT target is centered on national-level climate adaptation through emissions reduction, whereas the NDC target emphasizes sustainable agricultural practices for farmers, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_ArableFarming_3",
+    "alignment": "low",
+    "description": "While both targets address climate-related challenges, they focus on different ecosystems (climate vs. agriculture) and target distinct audiences (national governments vs. farmers). The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences. The NBT target emphasizes agricultural and forestry productivity, whereas the NDC target is centered on biodiversity resilience to climate change, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address sustainability and resilience, they focus on different ecosystems and target audiences. The NBT target is centered on agricultural and forestry productivity, whereas the NDC target emphasizes the welfare of vulnerable groups affected by climate change, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences. The NBT target is centered on forestry and agriculture, while the NDC target emphasizes climate education and public engagement, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Mitigation_1",
+    "alignment": "low",
+    "description": "While both targets aim to improve environmental outcomes, they focus on different ecosystems (forestry/agriculture vs. livestock) and have distinct target audiences and actions. The thematic overlap in sustainability is too broad to facilitate practical coordination or resource optimization in real-world implementation."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_WaterResources_1",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and audiences, with the NBT target emphasizing forestry and agriculture and the NDC target centered on climate change adaptation policy. The thematic overlap is insufficient for practical coordination, as their implementation pathways and intended outcomes do not align closely."
+  },
+  {
+    "targetAId": "NAP_4",
+    "targetBId": "NBT_2",
+    "alignment": "medium",
+    "description": "The targets share a common goal of improving ecosystem health and resilience, with both addressing land and ecosystem degradation. While the NAP target focuses specifically on desertification and permafrost, and the NBT target on broader ecosystem restoration, their complementary objectives could benefit from coordinated efforts in land management and restoration practices."
+  },
+  {
+    "targetAId": "NAP_4",
+    "targetBId": "NBT_7",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences, with the NAP target emphasizing land health and desertification, and the NBT target concentrating on sustainable forestry and agriculture. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NBT_2",
+    "alignment": "medium",
+    "description": "The targets share a common goal of improving ecological health, with the NAP target focusing on soil fertility in agriculture and the NBT target on restoring degraded ecosystems. While they address different aspects of ecosystem management, their complementary nature allows for potential synergies in practices that enhance both soil health and broader ecological integrity, suggesting that modest coordination could yield beneficial outcomes."
+  },
+  {
+    "targetAId": "NAP_4",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address land health and degradation, they focus on different ecosystems and specific interventions. The NAP target is broader, aiming to mitigate desertification and permafrost loss across various land ecosystems, whereas the NDC target is specifically about restoring rangelands, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address soil health, they focus on different ecosystems and target audiences, with the NAP targeting agricultural practices and farmers, and the NDC focusing on rangeland restoration and land managers. The thematic overlap is insufficient for practical coordination, as their specific actions and intended outcomes diverge significantly."
+  },
+  {
+    "targetAId": "NBT_2",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address ecosystem restoration, they focus on different ecosystems and have distinct goals and actions. The NBT target aims for a broad restoration of degraded ecosystems, while the NDC target specifically targets soil organic carbon loss in rangelands, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and specific actions. The NBT target emphasizes sustainable forestry and agriculture, whereas the NDC target is concerned with soil organic carbon in rangelands, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_1",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing ecosystem resilience and biodiversity, with overlapping target audiences that include conservation organizations and local communities. While the NAP target emphasizes adaptability to changing conditions and the NBT target focuses on conservation and ecological connectivity, their complementary goals could benefit from coordinated efforts, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_2",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing ecosystem health and resilience, with the NAP target emphasizing adaptability to changing conditions and the NBT target focusing on restoration efforts. They share a common audience of stakeholders involved in ecosystem management, and coordinated efforts could lead to improved ecological outcomes, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_3",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing biodiversity and ecosystem health, with overlapping target audiences and complementary actions. While the NAP target emphasizes ecosystem resilience broadly, the NBT target specifically addresses rare and endangered species, suggesting that coordinated efforts could enhance overall biodiversity outcomes without being mutually dependent."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_4",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem health and resilience, with both addressing biodiversity. While the NAP target focuses on broader ecosystem resilience and adaptability, the NBT target specifically targets invasive alien species management in Mongolia, which could be a component of broader ecosystem resilience efforts. Coordinated efforts could enhance biodiversity outcomes, but they are not mutually dependent and operate at different scales."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_8",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing ecosystems and biodiversity, with a shared interest in improving resilience and ecosystem services. They could support each other through coordinated efforts in conservation and sustainable practices, although they have distinct primary goals and target audiences."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_9",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing biodiversity and ecosystem health, albeit in different contexts (ecosystems vs. urban environments). They could support each other through coordinated efforts in urban planning that incorporates ecosystem resilience strategies, but they remain independently implementable with distinct primary focuses."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_10",
+    "alignment": "low",
+    "description": "While both targets address aspects of biodiversity and ecosystem management, they focus on different elements: the NAP target emphasizes ecosystem resilience broadly, while the NBT target is specifically concerned with genetic resources and traditional knowledge. This thematic overlap is too general to facilitate practical coordination or resource optimization in real-world implementation."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_11",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing biodiversity, with the NAP target emphasizing ecosystem resilience and the NBT target integrating biodiversity into policy processes. They share a common audience of policymakers and conservation organizations, and while they can complement each other, they operate at different levels of implementation, which may require modest coordination for effective outcomes."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_15",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing biodiversity and ecosystem health, with the NAP target emphasizing resilience and adaptability while the NBT target aims to create supportive financial mechanisms. They could complement each other through coordinated efforts in policy implementation and resource allocation, but they remain independently actionable and serve distinct primary purposes."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NBT_17",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing biodiversity and ecosystem resilience, sharing a common audience of conservation organizations and policymakers. While they have compatible priorities, the NAP target emphasizes resilience strategies, whereas the NBT target centers on collaboration and knowledge sharing, allowing for potential synergies but not requiring direct interdependence."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing ecosystem resilience and biodiversity, with overlapping target audiences and a shared interest in conservation. While they address different aspects of ecosystem health\u2014one emphasizing adaptability and the other regeneration\u2014they could benefit from coordinated efforts in monitoring and research to support their respective goals."
+  },
+  {
+    "targetAId": "NAP_3",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem resilience and protection, with the NAP focusing on broader ecosystems and biodiversity while the NDC specifically targets forest ecosystems. They could support each other through coordinated efforts in sustainable management practices, but they are not mutually dependent and operate at slightly different scales and scopes."
+  },
+  {
+    "targetAId": "NBT_1",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on the conservation of ecosystems and biodiversity, with a shared audience of government agencies and conservation organizations. They complement each other through their emphasis on enhancing ecological connectivity and resilience, suggesting that coordinated efforts could yield better outcomes, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_1",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on ecosystem conservation, with the NBT target emphasizing the conservation of a broader range of ecosystems while the NDC target specifically addresses vulnerable and unique ecosystems. They share a common audience of conservation organizations and local communities, and their complementary goals could benefit from coordinated efforts, although they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_1",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common goal of ecosystem protection and conservation, with the NBT target focusing on a broader range of ecosystems while the NDC target specifically addresses forest ecosystems. They could complement each other through coordinated efforts in land management and conservation strategies, but they remain independently implementable and serve distinct primary objectives."
+  },
+  {
+    "targetAId": "NBT_2",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on ecosystems and biodiversity, with both aiming to improve ecological integrity and resilience. While they have different specific actions and audiences, they could benefit from coordinated efforts in ecosystem restoration and legal protection, enhancing overall outcomes for biodiversity management."
+  },
+  {
+    "targetAId": "NBT_2",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on ecosystem restoration and protection, with the NBT target emphasizing the restoration of degraded ecosystems and the NDC target concentrating on the protection and sustainable use of vulnerable ecosystems. While they address different aspects of ecosystem management, their complementary goals and shared target audiences suggest that coordinated efforts could enhance overall ecological outcomes, even though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NBT_2",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common goal of improving ecosystem health, with the NBT target focusing on broader ecosystem restoration and the NDC target specifically on forest ecosystems. While they address different ecosystems, their complementary objectives could benefit from coordinated efforts in ecosystem management and restoration, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_3",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity conservation and involve similar target audiences, including conservation organizations and policymakers. While the NBT target emphasizes mitigating extinction risks and human-wildlife conflicts, the NDC target aims to enhance resilience against climate change, suggesting that coordinated efforts could support both goals through shared strategies, though they remain distinct in their primary objectives."
+  },
+  {
+    "targetAId": "NBT_3",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on conservation efforts, with the NBT target emphasizing the protection of rare and endangered species and the NDC target concentrating on the regeneration of vulnerable ecosystems. They share a common audience of conservation organizations and policymakers, and while they address different aspects of biodiversity, their complementary goals could benefit from coordinated efforts in conservation strategies."
+  },
+  {
+    "targetAId": "NBT_3",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets address environmental protection, they focus on different ecosystems and specific issues. The NBT target emphasizes biodiversity and endangered species, whereas the NDC target is centered on forest management, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on biodiversity and ecosystem management in Mongolia, with both addressing the impacts of external pressures (invasive species and climate change). While they have distinct actions and specific goals, they could benefit from coordinated efforts in monitoring and protecting ecosystems, enhancing overall resilience and management strategies."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on ecosystem management and conservation, with the NBT target addressing invasive alien species in Mongolia and the NDC target emphasizing the protection and sustainable use of vulnerable ecosystems. While they have compatible priorities and could benefit from shared monitoring efforts, they operate in slightly different contexts and do not directly depend on each other for implementation."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets address ecosystem management, they focus on different ecosystems and have distinct goals. The NBT target is specific to invasive alien species in Mongolia's biodiversity, whereas the NDC target is centered on forest ecosystem protection, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_8",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity and ecosystem services, with the NBT target emphasizing the enhancement of ecosystem services and the NDC target aiming to improve resilience against climate change. While they share compatible priorities and could benefit from coordinated efforts, they address different aspects of biodiversity management and are not mutually dependent."
+  },
+  {
+    "targetAId": "NBT_8",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing ecosystem services and the sustainable use of biodiversity, with a shared interest in conservation efforts. While they address different ecosystems\u2014biodiversity in general versus vulnerable and unique ecosystems\u2014they could complement each other through coordinated conservation strategies and shared stakeholder engagement."
+  },
+  {
+    "targetAId": "NBT_8",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem services and protection, with both focusing on biodiversity and ecosystem health. While the NBT target emphasizes a broader approach to biodiversity, the NDC target specifically addresses forest ecosystems, suggesting that coordinated efforts could yield complementary benefits, though they remain distinct in their specific focus and implementation strategies."
+  },
+  {
+    "targetAId": "NBT_9",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing biodiversity and ecosystem integrity, with the NBT target emphasizing urban planning and green infrastructure, while the NDC target addresses broader ecological resilience against climate change. They could support each other through joint initiatives in urban areas that incorporate ecological corridors and green spaces, but they remain independently implementable with distinct primary goals."
+  },
+  {
+    "targetAId": "NBT_9",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem integrity and sustainability, with both focusing on urban and vulnerable ecosystems. While they target different specific areas and audiences, their complementary nature allows for potential coordination in urban planning and conservation efforts, particularly in urban protected areas that may include vulnerable ecosystems."
+  },
+  {
+    "targetAId": "NBT_9",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets aim to protect ecosystems, they focus on different environments: urban areas for the NBT target and forests for the NDC target. The thematic overlap is limited, as the specific actions and target audiences do not create a practical basis for coordinated implementation."
+  },
+  {
+    "targetAId": "NBT_10",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a thematic focus on biodiversity and the management of natural resources, with both aiming to improve conditions for vulnerable ecosystems and communities. While they address different aspects\u2014benefit-sharing from genetic resources versus enhancing resilience to climate change\u2014they could complement each other through coordinated efforts in stakeholder engagement and policy development."
+  },
+  {
+    "targetAId": "NBT_10",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "low",
+    "description": "While both targets address ecosystem management, they focus on different aspects: one on genetic resources and traditional knowledge, and the other on vulnerable ecosystems. The thematic overlap is insufficient for practical coordination, as their goals, actions, and target audiences diverge significantly."
+  },
+  {
+    "targetAId": "NBT_10",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets address ecosystem management, they focus on different ecosystems (genetic resources and forests) and have distinct goals and actions. The thematic overlap is limited, as the NBT target emphasizes equitable benefit-sharing from genetic resources, whereas the NDC target is centered on forest protection, making real-world coordination impractical."
+  },
+  {
+    "targetAId": "NBT_11",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity and involve policymakers and stakeholders, but they address different aspects: one emphasizes integrating biodiversity into all policy sectors, while the other specifically targets climate change resilience through legal protections. Their complementary nature suggests that coordinated efforts could enhance overall biodiversity outcomes, though they remain distinct in their primary objectives."
+  },
+  {
+    "targetAId": "NBT_11",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing biodiversity and ecosystem health, with the NBT target focusing on integrating biodiversity into broader policy and planning processes, while the NDC target emphasizes the protection and regeneration of specific vulnerable ecosystems. Although they target different audiences and ecosystems, their complementary nature suggests that coordinated efforts could enhance overall biodiversity outcomes through shared strategies and resources."
+  },
+  {
+    "targetAId": "NBT_11",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets address environmental protection, they focus on different ecosystems and have distinct goals and actions. The NBT target is broad and encompasses all sectors, while the NDC target is specifically aimed at forest ecosystems, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NBT_15",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity and share a common goal of enhancing ecological health, but they address different aspects of biodiversity management. The NBT target emphasizes subsidies and incentives for biodiversity-friendly practices, while the NDC target focuses on legal protections and resilience against climate change, suggesting that they could complement each other through coordinated efforts but are not mutually dependent."
+  },
+  {
+    "targetAId": "NBT_15",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing ecosystem health, with the NBT target emphasizing subsidies for biodiversity and the NDC target aiming to protect vulnerable ecosystems. They share a common audience of policymakers and stakeholders, and their complementary approaches could lead to improved ecological outcomes through coordinated efforts, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_15",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem health, with the NBT target focusing on biodiversity and the NDC target specifically addressing forest ecosystems. While they operate in different but related areas, coordinated efforts could lead to improved outcomes for both biodiversity and forest protection, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_17",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity conservation but address different aspects: the NBT target emphasizes collaboration and knowledge sharing, while the NDC target aims to enhance resilience against climate change through legal protections. They could complement each other through shared stakeholders and initiatives, but their distinct primary goals and actions suggest they are not mutually dependent."
+  },
+  {
+    "targetAId": "NBT_17",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity conservation and involve similar target audiences, including researchers and conservation organizations. While the NBT target emphasizes collaboration and knowledge sharing, the NDC target is more specific about actions for vulnerable ecosystems, suggesting that they could complement each other through shared efforts, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NBT_17",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets address ecosystem protection and involve stakeholders in conservation efforts, they focus on different ecosystems (biodiversity conservation vs. forest ecosystems) and have distinct actions and goals. The thematic overlap is insufficient to create practical synergies for coordinated implementation."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "medium",
+    "description": "Both targets focus on forest ecosystems and share a common audience of forestry managers and policymakers, indicating potential for collaboration. However, while the NAP target emphasizes sustainable wood-based industries and economic development, the NDC target is more focused on forest health and regeneration, suggesting they could complement each other but are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "medium",
+    "description": "Both targets focus on the forestry sector and aim to enhance forest resilience and restoration, indicating a shared thematic area. While the NAP target emphasizes sustainable practices in wood-based industries and resilience to climate change, the NDC target specifically addresses afforestation and restoration, suggesting that they could complement each other through coordinated efforts, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common focus on forest ecosystems and aim to enhance sustainability and protection within this sector. While the NAP target emphasizes resilience and sustainable practices in wood-based industries, the NDC target focuses on legal frameworks for forest management, suggesting that they could complement each other through coordinated efforts, though they are not mutually dependent."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "low",
+    "description": "While both targets aim to promote sustainability within their respective ecosystems, they focus on different areas: forests and wood-based industries versus pastures and grasslands. The thematic overlap is limited, as the specific actions and target audiences differ significantly, making real-world coordination impractical."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and specific issues: one on forest resilience and wood-based industries, and the other on soil organic carbon in rangelands. The thematic overlap is insufficient for practical coordination, as their goals, actions, and target audiences do not align closely enough to create meaningful synergies."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences, with one centered on forestry and wood-based industries and the other on agricultural practices. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems (livestock management vs. forests) and have distinct target audiences and actions. The thematic overlap is insufficient to create practical coordination or resource optimization in real-world implementation."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences, with one centered on livestock management and the other on forestry. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "none",
+    "description": "The targets focus on entirely different ecosystems and objectives, with one centered on livestock management and the other on forest ecosystem protection. There is no shared audience or operational overlap that would facilitate coordinated implementation or mutual benefits."
+  },
+  {
+    "targetAId": "NAP_10",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address aspects of land management and sustainability, they focus on different ecosystems and have distinct goals. The NAP target emphasizes sustainable livestock management, whereas the NDC target is concerned with soil organic carbon and rangeland restoration, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "low",
+    "description": "While both targets aim to improve ecosystem health, they focus on different ecosystems (agriculture vs. forests) and target distinct audiences. The thematic overlap is limited, and the differences in goals and actions make practical coordination challenging."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems (agriculture vs. forestry) and have distinct goals and target audiences. The thematic overlap is limited, making practical coordination for implementation unclear and unlikely to yield significant mutual benefits."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "none",
+    "description": "The targets focus on entirely different ecosystems (agriculture vs. forests) and have distinct goals and actions that do not intersect. Aligning them would not yield any mutual benefits or efficiencies, as they cater to different audiences and operational contexts."
+  },
+  {
+    "targetAId": "NAP_12",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address soil health and agricultural practices, they focus on different ecosystems and target audiences. The NAP target is centered on high-yield crops in agriculture, whereas the NDC target aims at restoring rangelands, making their operational contexts and intended outcomes too distinct for effective coordination."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "low",
+    "description": "While both targets aim to protect and enhance ecosystem health, they focus on different ecosystems (agriculture vs. forests) and target distinct audiences (farmers vs. forestry managers and conservation organizations). The thematic overlap is insufficient for practical coordination, as the actions and expected outcomes do not create a direct synergy between the two."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems (agriculture vs. forestry) and have distinct goals and actions. The thematic overlap is limited, as the NAP target emphasizes soil fertility in agricultural practices, while the NDC target is centered on afforestation and forest restoration, making real-world coordination impractical."
+  },
+  {
+    "targetAId": "NAP_13",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "none",
+    "description": "The targets focus on distinct ecosystems (agriculture vs. forests) with different goals and actions, targeting separate audiences. Aligning them would not yield mutual benefits or operational efficiencies, as they operate in separate domains with no direct interdependencies."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and have distinct goals and actions. The NBT target emphasizes climate adaptation through greenhouse gas reduction, while the NDC target is centered on forest ecosystem protection, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_AnimalHusbandry_4",
+    "alignment": "low",
+    "description": "While both targets address environmental sustainability, they focus on different ecosystems and target audiences, with one centered on climate adaptation through greenhouse gas reduction and the other on pasture management and restoration. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_Mitigation_3",
+    "alignment": "low",
+    "description": "While both targets address climate-related issues, they focus on different ecosystems and target audiences, with the NBT target emphasizing national-level climate adaptation and greenhouse gas emissions, and the NDC target concentrating on soil organic carbon restoration in specific ecological zones. The thematic overlap is insufficient for practical coordination, as their goals and implementation strategies diverge significantly."
+  },
+  {
+    "targetAId": "NBT_6",
+    "targetBId": "NDC_ArableFarming_1",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences. The NBT target is centered on national climate adaptation through greenhouse gas reduction, while the NDC target emphasizes soil health and moisture conservation for agricultural producers, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on forestry and sustainable practices, with overlapping target audiences of forestry managers. While the NBT target emphasizes agricultural productivity alongside sustainability, the NDC target is specifically aimed at forest health and regeneration, suggesting that coordinated efforts could enhance both agricultural and forestry outcomes, though they remain distinct in their primary objectives."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "medium",
+    "description": "The targets share a common focus on forestry and sustainable practices, with both aiming to enhance productivity and ecosystem health. While they have different specific actions and audiences, they could benefit from coordinated efforts in promoting sustainable forestry and afforestation, creating synergies in resource use and stakeholder engagement."
+  },
+  {
+    "targetAId": "NBT_7",
+    "targetBId": "NDC_Forests_3",
+    "alignment": "medium",
+    "description": "The targets share a common focus on forestry and sustainable practices, with the NBT target emphasizing productivity and sustainability in both forestry and agriculture, while the NDC target specifically aims at forest ecosystem protection. They could complement each other through coordinated efforts in sustainable management practices, but they are not mutually dependent and serve distinct primary goals."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_4",
+    "alignment": "low",
+    "description": "While both targets address environmental management, they focus on different ecosystems and specific issues: one on climate change adaptation across all sectors and the other on managing invasive alien species in Mongolia. The thematic overlap is too broad and lacks practical coordination opportunities, as their goals and target audiences do not align closely enough for effective collaboration."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_10",
+    "alignment": "low",
+    "description": "While both targets address important environmental issues, they focus on different ecosystems and target audiences. The NAP target is broad and encompasses all sectors related to climate change adaptation, whereas the NBT target is specifically concerned with genetic resources and traditional knowledge, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_12",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with the NAP target emphasizing climate change adaptation across all sectors and the NBT target concentrating on biodiversity impacts from business activities. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another in a real-world context."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_17",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with the NAP target emphasizing climate change adaptation across all sectors and the NBT target concentrating specifically on biodiversity conservation. The thematic overlap is too broad and lacks practical coordination opportunities, as their goals and actions do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_1",
+    "targetBId": "NBT_18",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with the NAP target emphasizing climate change adaptation across all sectors and the NBT target concentrating on biodiversity information access. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_4",
+    "alignment": "low",
+    "description": "While both targets address capacity building and ecosystem management, they focus on different ecosystems and specific issues: climate change adaptation versus invasive alien species management. The thematic overlap is insufficient for practical coordination, as their goals and target audiences diverge significantly."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_10",
+    "alignment": "low",
+    "description": "While both targets involve stakeholders and aim to enhance knowledge and capacity, they focus on different ecosystems and specific areas of intervention. The NAP target is centered on climate change adaptation, whereas the NBT target deals with genetic resources and traditional knowledge, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_12",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with the NAP target centered on climate change adaptation knowledge and the NBT target on biodiversity management in business contexts. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support one another."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_17",
+    "alignment": "low",
+    "description": "While both targets address knowledge enhancement and capacity building, they focus on different ecosystems and specific stakeholder groups. The thematic overlap is insufficient for practical coordination, as the NAP target is centered on climate change adaptation, whereas the NBT target is focused on biodiversity conservation."
+  },
+  {
+    "targetAId": "NAP_2",
+    "targetBId": "NBT_18",
+    "alignment": "low",
+    "description": "While both targets address knowledge enhancement related to environmental issues, they focus on different ecosystems: climate change adaptation versus biodiversity. The thematic overlap is insufficient for practical coordination, as their target audiences and expected outcomes diverge significantly."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_4",
+    "alignment": "none",
+    "description": "The targets focus on entirely different ecosystems and issues, with one addressing climate-related health risks and the other managing invasive alien species in Mongolia. There is no shared goal, action, or audience that would facilitate any meaningful coordination or resource optimization between them."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_10",
+    "alignment": "none",
+    "description": "The targets focus on entirely different ecosystems and issues, with one addressing climate-related health risks and the other concerning genetic resources and traditional knowledge. There is no shared audience, action, or expected outcome that would facilitate any meaningful coordination or resource optimization."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_12",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences, with one centered on public health related to climate change and the other on biodiversity impacts from business activities. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_17",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with one centered on climate-related health risks and the other on biodiversity conservation. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support each other in a real-world context."
+  },
+  {
+    "targetAId": "NAP_14",
+    "targetBId": "NBT_18",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with one centered on climate-related health risks and the other on biodiversity information access. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with the NBT target concentrating on invasive alien species in Mongolia and the NDC target emphasizing climate education and public participation on a broader scale. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other."
+  },
+  {
+    "targetAId": "NBT_10",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address important societal issues, they focus on different ecosystems and audiences, with the NBT target centered on genetic resources and traditional knowledge, and the NDC target on climate education and public participation. The thematic overlap is limited, as the connection between equitable benefit-sharing of genetic resources and climate education does not provide a clear pathway for coordinated implementation."
+  },
+  {
+    "targetAId": "NBT_12",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with one centered on biodiversity management in business activities and the other on climate education and public engagement. The thematic overlap is insufficient for practical coordination, as their goals and actions do not directly support or enhance each other in a real-world context."
+  },
+  {
+    "targetAId": "NBT_17",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and audiences, with the NBT target centered on biodiversity conservation and the NDC target on climate education and public engagement. The thematic overlap is too broad to facilitate practical coordination or resource optimization in real-world implementation."
+  },
+  {
+    "targetAId": "NBT_18",
+    "targetBId": "NDC_Education",
+    "alignment": "low",
+    "description": "Both targets address environmental education and awareness, but they focus on different ecosystems and audiences, with one centered on biodiversity and the other on climate action. The thematic overlap is insufficient for practical coordination, as their specific goals and implementation strategies diverge significantly."
+  },
+  {
+    "targetAId": "NBT_5",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "The targets share a common focus on biodiversity and environmental health, with both addressing the impacts of pollution and climate change. While they have different specific actions and goals, they could complement each other through coordinated efforts to enhance ecosystem resilience and reduce pollution, thereby supporting overall biodiversity health."
+  },
+  {
+    "targetAId": "NBT_5",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different aspects: one on pollution reduction for biodiversity and human health, and the other on enhancing resilience for vulnerable groups affected by climate change. The thematic overlap is insufficient for practical coordination, as their goals, actions, and target audiences diverge significantly."
+  },
+  {
+    "targetAId": "NBT_8",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address aspects of sustainability and resilience, they focus on different ecosystems and target audiences. The NBT target emphasizes biodiversity conservation for ecosystem services, whereas the NDC target is centered on enhancing resilience for vulnerable groups affected by climate change, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_9",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing urban environments and addressing vulnerabilities, with both focusing on improving community welfare and ecological integrity. While they target different audiences and ecosystems, their complementary nature suggests that coordinated efforts could yield benefits in urban resilience and biodiversity, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_11",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address sustainability and resilience, they focus on different ecosystems and target audiences. The NBT target emphasizes biodiversity in policy and planning across all sectors, whereas the NDC target specifically aims to enhance resilience for vulnerable groups affected by climate change, leading to a disconnect in their operational contexts."
+  },
+  {
+    "targetAId": "NBT_12",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity but address different aspects: the NBT target emphasizes monitoring and sustainable consumer practices, while the NDC target aims at enhancing resilience through legal protections. They could complement each other through shared data and stakeholder engagement, but their primary goals and actions are distinct enough to remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_12",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address sustainability and resilience, they focus on different ecosystems and target audiences. The NBT target is centered on biodiversity management in business activities, whereas the NDC target emphasizes climate change adaptation for vulnerable groups, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_15",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address environmental and social issues, they focus on different ecosystems and target audiences. The NBT target emphasizes biodiversity and environmental health through subsidies, whereas the NDC target is centered on climate change adaptation for vulnerable groups, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_19",
+    "targetBId": "NDC_Biodiversity_1",
+    "alignment": "medium",
+    "description": "Both targets focus on biodiversity and involve local communities, but they address different aspects: one emphasizes inclusive governance while the other targets climate resilience through legal protections. Their complementary nature suggests that coordinated efforts could enhance overall biodiversity management, though they remain independently implementable."
+  },
+  {
+    "targetAId": "NBT_19",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address vulnerable groups and aim to enhance their welfare, they focus on different ecosystems and specific issues: one on biodiversity governance and the other on climate change adaptation. The thematic overlap is too broad and lacks practical coordination opportunities, as their implementation pathways and target audiences differ significantly."
+  },
+  {
+    "targetAId": "NAP_5",
+    "targetBId": "NDC_WaterResources_2",
+    "alignment": "medium",
+    "description": "Both targets focus on the water sector and share a common goal of improving water resource management and resilience. They could support each other through the use of advanced technologies and data-driven decision-making, although they have distinct primary objectives and are independently implementable."
+  },
+  {
+    "targetAId": "NAP_6",
+    "targetBId": "NDC_WaterResources_2",
+    "alignment": "medium",
+    "description": "Both targets focus on the water ecosystem, with shared goals of conservation and resilience, and involve similar stakeholders in water management. While they have compatible priorities and could benefit from coordinated efforts, they remain independently implementable and serve distinct primary outcomes."
+  },
+  {
+    "targetAId": "NAP_7",
+    "targetBId": "NBT_8",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem resilience and sustainability, with both focusing on the forestry and biodiversity sectors. They could support each other through coordinated efforts in sustainable practices and conservation, although they address different aspects and audiences within the broader environmental context."
+  },
+  {
+    "targetAId": "NBT_8",
+    "targetBId": "NDC_Forests_1",
+    "alignment": "medium",
+    "description": "The targets share a common goal of enhancing ecosystem health and services, with both focusing on biodiversity and conservation. While the NBT target is broader in scope, encompassing various ecosystem services, and the NDC target is specifically focused on forest health, they could complement each other through coordinated efforts in biodiversity conservation and sustainable management practices."
+  },
+  {
+    "targetAId": "NBT_8",
+    "targetBId": "NDC_Forests_2",
+    "alignment": "low",
+    "description": "While both targets address ecosystem services and involve stakeholders in conservation efforts, they focus on different ecosystems and specific actions. The NBT target emphasizes biodiversity broadly, while the NDC target is specifically about afforestation and forest restoration, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NAP_6",
+    "targetBId": "NDC_Biodiversity_2",
+    "alignment": "medium",
+    "description": "Both targets focus on ecosystem services and conservation, with the NAP targeting water resources and the NDC emphasizing vulnerable ecosystems. They could complement each other through shared efforts in conservation and monitoring, but they address different ecosystems and specific actions, allowing for some coordination without being mutually dependent."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NBT_4",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and specific challenges: one on climate change resilience and disaster management, and the other on invasive alien species management in Mongolia. The thematic overlap is too broad and lacks practical coordination opportunities, as their goals and target audiences do not intersect meaningfully."
+  },
+  {
+    "targetAId": "NAP_9",
+    "targetBId": "NBT_4",
+    "alignment": "low",
+    "description": "While both targets address environmental management, they focus on different ecosystems and issues: one on disaster management related to extreme events and the other on managing invasive species in Mongolia. The thematic overlap is minimal, and the distinct geographic and operational contexts limit the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_NatDisasters_1",
+    "alignment": "medium",
+    "description": "Both targets focus on enhancing resilience to disasters and reducing vulnerability, indicating a shared thematic area of disaster risk management. They could support each other through coordinated efforts in legal frameworks and community engagement, although they operate at slightly different levels of intervention and specificity."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_NatDisasters_2",
+    "alignment": "high",
+    "description": "Both targets focus on enhancing resilience and preparedness against climate-induced disasters, sharing similar ecosystems and target audiences. Coordinated implementation would significantly improve disaster risk reduction efforts and resource efficiency, as both targets aim to reduce vulnerability and enhance community resilience in the face of climate change."
+  },
+  {
+    "targetAId": "NAP_8",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "low",
+    "description": "While both targets address resilience in the face of natural risks, they focus on different ecosystems and target audiences. The NAP target is broader, encompassing climate change and disaster management for communities and organizations, whereas the NDC target is specifically about livestock management for farmers, limiting the potential for practical coordination."
+  },
+  {
+    "targetAId": "NAP_9",
+    "targetBId": "NDC_NatDisasters_1",
+    "alignment": "medium",
+    "description": "Both targets focus on disaster management and risk reduction, sharing a common goal of improving preparedness and resilience to extreme events. They could benefit from coordinated efforts, such as integrating early warning systems into the legal and regulatory framework, but they remain independently implementable with distinct primary actions."
+  },
+  {
+    "targetAId": "NAP_9",
+    "targetBId": "NDC_NatDisasters_2",
+    "alignment": "high",
+    "description": "Both targets focus on enhancing disaster preparedness and resilience through the development and strengthening of early warning systems, directly addressing the same ecosystem of disaster management. Coordinated implementation would significantly improve efficiency and effectiveness in reducing disaster risks and impacts, benefiting the same target audiences."
+  },
+  {
+    "targetAId": "NAP_9",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "low",
+    "description": "While both targets address resilience in the face of natural risks, they focus on different ecosystems and target audiences. The NAP target is centered on disaster management for extreme events, while the NDC target is specifically about livestock management, making practical coordination between them unclear and limited."
+  },
+  {
+    "targetAId": "NAP_9",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address resilience and preparedness in the face of extreme events and climate change, they focus on different aspects and audiences. The NAP target is centered on disaster management for emergency response agencies, whereas the NDC target emphasizes welfare and resilience for vulnerable groups, leading to a lack of practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_NatDisasters_1",
+    "alignment": "low",
+    "description": "While both targets involve government agencies and aim to improve environmental conditions, they focus on different issues: one on invasive alien species management and the other on disaster risk reduction. The thematic overlap is too broad and lacks practical coordination opportunities, as their specific goals and actions do not directly support each other."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_NatDisasters_2",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different aspects: one on managing invasive species and the other on disaster preparedness. The thematic overlap is limited, as the ecosystems and target audiences differ significantly, making practical coordination challenging."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_AnimalHusbandry_2",
+    "alignment": "low",
+    "description": "While both targets address environmental management, they focus on different ecosystems and target audiences. The NBT target is centered on invasive alien species in biodiversity contexts, whereas the NDC target pertains to livestock management, leading to limited practical coordination opportunities."
+  },
+  {
+    "targetAId": "NBT_4",
+    "targetBId": "NDC_SocialProtection",
+    "alignment": "low",
+    "description": "While both targets address environmental issues, they focus on different ecosystems and target audiences. The NBT target is specific to managing invasive alien species in Mongolia's biodiversity, whereas the NDC target is centered on enhancing resilience for vulnerable groups affected by climate change, lacking a direct connection for coordinated implementation."
+  }
+]
