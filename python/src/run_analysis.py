@@ -47,7 +47,7 @@ def load_input_data() -> tuple[list, list, list]:
     themes = cats["themes"]
     logger.info(
         f"Loaded {len(targets)} targets, "
-        f"{len(nbs)} NBS + {len(themes)} themes (from themes_18Jul25.xlsx)"
+        f"{len(nbs)} NBS + {len(themes)} themes (from methodology PDF Tables 2-3)"
     )
     return targets, nbs, themes
 
