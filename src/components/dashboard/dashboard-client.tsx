@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { countByCategory } from "@/lib/utils";
+import { countByCategory, DOC_LABELS } from "@/lib/utils";
 import { NbsBarChart } from "@/components/viz/nbs-bar-chart";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
@@ -71,12 +71,15 @@ function normalizeTheme(t: Record<string, unknown>): Theme {
   };
 }
 
-export function DashboardClient() {
+export function DashboardClient({ analysisId }: { analysisId?: string }) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/dashboard")
+    const url = analysisId
+      ? `/api/dashboard?analysisId=${encodeURIComponent(analysisId)}`
+      : "/api/dashboard";
+    fetch(url)
       .then((r) => {
         if (!r.ok) return r.json().then((e) => Promise.reject(e));
         return r.json();
@@ -91,7 +94,7 @@ export function DashboardClient() {
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
-  }, []);
+  }, [analysisId]);
 
   if (error) {
     return (
@@ -121,9 +124,18 @@ export function DashboardClient() {
   }
 
   const targets = data.targets;
-  const napTargets = targets.filter((t) => t.sourceDocument === "NAP");
-  const ndcTargets = targets.filter((t) => t.sourceDocument === "NDC");
-  const nbtTargets = targets.filter((t) => t.sourceDocument === "NBSAP");
+
+  // Group targets by document type (dynamic)
+  const targetsByDoc = new Map<string, Target[]>();
+  for (const t of targets) {
+    const list = targetsByDoc.get(t.sourceDocument) || [];
+    list.push(t);
+    targetsByDoc.set(t.sourceDocument, list);
+  }
+
+  const napTargets = targetsByDoc.get("NAP") ?? [];
+  const ndcTargets = targetsByDoc.get("NDC") ?? [];
+  const nbtTargets = targetsByDoc.get("NBSAP") ?? [];
 
   const nbsClassifications = data.classifications.filter(
     (c) => c.taxonomyType === "nbs"
@@ -147,28 +159,29 @@ export function DashboardClient() {
     nbsClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
   ).size;
 
-  const documentTypes = ["NDC", "NBSAP", "NAP"] as const;
+  const documentTypes = Array.from(targetsByDoc.keys()) as Target["sourceDocument"][];
   const nbsSorted = [...nbsCounts].sort((a, b) => b.total - a.total);
   const themeSorted = [...themeCounts].sort((a, b) => b.total - a.total);
 
-  const nbtNdcAlignment = filterAlignmentByDocPair(
-    data.alignment,
-    targets,
-    "NBSAP",
-    "NDC"
-  );
-  const nbtNapAlignment = filterAlignmentByDocPair(
-    data.alignment,
-    targets,
-    "NBSAP",
-    "NAP"
-  );
-  const ndcNapAlignment = filterAlignmentByDocPair(
-    data.alignment,
-    targets,
-    "NDC",
-    "NAP"
-  );
+  // Generate all document-type pair combinations for heatmaps
+  const docPairs: { docA: string; docB: string; label: string; rowTargets: Target[]; colTargets: Target[] }[] = [];
+  for (let i = 0; i < documentTypes.length; i++) {
+    for (let j = i + 1; j < documentTypes.length; j++) {
+      const docA = documentTypes[i];
+      const docB = documentTypes[j];
+      const rowTargets = targetsByDoc.get(docA) ?? [];
+      const colTargets = targetsByDoc.get(docB) ?? [];
+      if (rowTargets.length > 0 && colTargets.length > 0) {
+        docPairs.push({
+          docA,
+          docB,
+          label: `${DOC_LABELS[docA]} Targets × ${DOC_LABELS[docB]} Targets`,
+          rowTargets,
+          colTargets,
+        });
+      }
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -187,7 +200,9 @@ export function DashboardClient() {
                 <p className="text-sm font-medium text-[var(--undp-black)]">
                   Policy Coherence Tracker
                 </p>
-                <p className="text-xs text-[var(--undp-gray)]">Mongolia Pilot</p>
+                <p className="text-xs text-[var(--undp-gray)]">
+                  {data?.targets[0]?.country ?? "Dashboard"}
+                </p>
               </div>
             </Link>
           </div>
@@ -211,7 +226,7 @@ export function DashboardClient() {
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
         <section className="mb-10">
           <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-1">
-            Mongolia Nature-Climate Target Assessment
+            {data.targets[0]?.country ?? "Country"} Nature-Climate Target Assessment
           </h1>
           <p className="text-sm text-[var(--undp-gray)]">
             AI-assisted assessment for national review and consideration
@@ -276,38 +291,18 @@ export function DashboardClient() {
             </p>
           </div>
 
-          <div className="bg-[var(--undp-light)] p-6 mb-6">
-            <AlignmentHeatmap
-              title="National Biodiversity Targets × NDC Targets"
-              alignmentData={nbtNdcAlignment}
-              rowTargets={nbtTargets}
-              colTargets={ndcTargets}
-              rowLabel="NBTs ↓"
-              colLabel="NDC Targets →"
-            />
-          </div>
-
-          <div className="bg-[var(--undp-light)] p-6 mb-6">
-            <AlignmentHeatmap
-              title="National Biodiversity Targets × NAP Targets"
-              alignmentData={nbtNapAlignment}
-              rowTargets={nbtTargets}
-              colTargets={napTargets}
-              rowLabel="NBTs ↓"
-              colLabel="NAP Targets →"
-            />
-          </div>
-
-          <div className="bg-[var(--undp-light)] p-6 mb-6">
-            <AlignmentHeatmap
-              title="NDC Targets × NAP Targets"
-              alignmentData={ndcNapAlignment}
-              rowTargets={ndcTargets}
-              colTargets={napTargets}
-              rowLabel="NDC Targets ↓"
-              colLabel="NAP Targets →"
-            />
-          </div>
+          {docPairs.map((pair) => (
+            <div key={`${pair.docA}-${pair.docB}`} className="bg-[var(--undp-light)] p-6 mb-6">
+              <AlignmentHeatmap
+                title={pair.label}
+                alignmentData={filterAlignmentByDocPair(data.alignment, targets, pair.docA, pair.docB)}
+                rowTargets={pair.rowTargets}
+                colTargets={pair.colTargets}
+                rowLabel={`${DOC_LABELS[pair.docA as Target["sourceDocument"]]} ↓`}
+                colLabel={`${DOC_LABELS[pair.docB as Target["sourceDocument"]]} →`}
+              />
+            </div>
+          ))}
         </section>
 
         <section className="mb-10 bg-[var(--undp-light)] p-6">

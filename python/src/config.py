@@ -30,9 +30,14 @@ LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0"))
 # Paths
 # ---------------------------------------------------------------------------
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
-CACHE_DIR = OUTPUT_DIR / ".cache"
+_DEFAULT_DATA = Path(__file__).resolve().parent.parent / "data"
+_DEFAULT_OUTPUT = Path(__file__).resolve().parent.parent / "output"
+
+DATA_DIR = Path(os.getenv("CPC_DATA_DIR") or str(_DEFAULT_DATA))
+OUTPUT_DIR = Path(os.getenv("CPC_OUTPUT_DIR") or str(_DEFAULT_OUTPUT))
+
+# Cache is always shared across analyses for efficiency
+CACHE_DIR = _DEFAULT_OUTPUT / ".cache"
 
 # Ensure directories exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

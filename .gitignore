@@ -52,6 +52,9 @@ coverage/
 .specstory/
 .cursorrules
 # Project-specific
-documents/
 old_scripts/
+docs/
 to-dos.txt
+
+# Analysis runs (ephemeral)
+python/analyses/

@@ -1,9 +1,19 @@
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 
-export const metadata = {
-  title: "Mongolia Dashboard — CPC Tracker",
-};
+interface DashboardPageProps {
+  searchParams: Promise<{ analysisId?: string }>;
+}
 
-export default function DashboardPage() {
-  return <DashboardClient />;
+export async function generateMetadata({ searchParams }: DashboardPageProps) {
+  const { analysisId } = await searchParams;
+  return {
+    title: analysisId
+      ? `Analysis ${analysisId} — CPC Tracker`
+      : "Mongolia Dashboard — CPC Tracker",
+  };
+}
+
+export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+  const { analysisId } = await searchParams;
+  return <DashboardClient analysisId={analysisId} />;
 }

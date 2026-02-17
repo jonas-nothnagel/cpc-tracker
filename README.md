@@ -38,7 +38,7 @@ pnpm install
 
 # Configure environment
 cp .env.example .env
-# Edit .env with your OPENROUTER_API_KEY
+# Edit .env with your OPENROUTER_API_KEY 
 
 # Run development server
 pnpm dev
@@ -50,12 +50,6 @@ pnpm dev
 
 - [Project Guidelines](./PROJECT_GUIDELINES.md) - Design decisions and architecture
 - [Python Pipeline](./python/README.md) - LLM analysis pipeline
-
-## Pilot Countries
-
-- Mongolia
-- Panama
-- Morocco
 
 ## Status
 
