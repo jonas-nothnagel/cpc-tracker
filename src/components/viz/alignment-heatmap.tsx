@@ -159,7 +159,11 @@ export function AlignmentHeatmap({
                       height: cellSize,
                       backgroundColor: ALIGNMENT_COLORS[level],
                     }}
-                    className="border border-white/50 cursor-pointer hover:ring-2 hover:ring-[var(--undp-blue)] hover:z-10 relative transition-shadow"
+                    className={`cursor-pointer hover:ring-2 hover:ring-[var(--undp-blue)] hover:z-10 relative transition-shadow ${
+                      level === "high"
+                        ? "border-2 border-[#0d3d1a]"
+                        : "border border-white/50"
+                    }`}
                     onMouseEnter={(e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
                       setHoveredCell({
