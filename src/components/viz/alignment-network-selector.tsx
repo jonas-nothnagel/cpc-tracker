@@ -158,9 +158,9 @@ export function AlignmentNetworkSelector({
       </div>
 
       {/* Taxonomy type toggle + category selector */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-5">
+      <div className="flex flex-col gap-3 mb-5">
         {/* Toggle: NBS vs Themes */}
-        <div className="flex rounded-lg border border-gray-200 overflow-hidden text-sm shrink-0">
+        <div className="flex rounded-lg border border-gray-200 overflow-hidden text-sm w-fit">
           <button
             onClick={() => handleTaxonomyChange("nbs")}
             className={`px-4 py-2 transition-colors ${

@@ -20,7 +20,7 @@ function OutcomeStatCard({ percentage, label, targets }: OutcomeStatCardProps) {
       <button
         type="button"
         onClick={() => isClickable && setIsOpen(true)}
-        className={`bg-[var(--undp-light)] p-6 flex-1 flex flex-col items-center justify-center text-center w-full transition-colors ${
+        className={`bg-[var(--undp-light)] border border-gray-100 p-6 flex-1 flex flex-col items-center justify-center text-center w-full transition-colors ${
           isClickable ? "hover:bg-gray-200/60 cursor-pointer" : "cursor-default"
         }`}
       >
@@ -100,7 +100,7 @@ export function OutcomeStats({
   const timeBoundPct = Math.round((timeBoundTargets.length / totalTargets) * 100);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full">
       <OutcomeStatCard
         percentage={quantitativePct}
         label="of targets include measurable outcomes"

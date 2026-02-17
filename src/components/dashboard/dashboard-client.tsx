@@ -10,8 +10,10 @@ import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
 import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-selector";
 import { DashboardStats } from "@/components/viz/dashboard-stats";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
+import { CoherencyChord } from "@/components/viz/coherency-chord";
 import type {
   Target,
+  PolicyDocumentType,
   ThematicClassification,
   AlignmentResult,
   NbsCategory,
@@ -133,10 +135,6 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
     targetsByDoc.set(t.sourceDocument, list);
   }
 
-  const napTargets = targetsByDoc.get("NAP") ?? [];
-  const ndcTargets = targetsByDoc.get("NDC") ?? [];
-  const nbtTargets = targetsByDoc.get("NBSAP") ?? [];
-
   const nbsClassifications = data.classifications.filter(
     (c) => c.taxonomyType === "nbs"
   );
@@ -234,32 +232,43 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
         </section>
 
         <DashboardStats
-          totalTargets={targets.length}
-          nbtTargets={nbtTargets}
-          ndcTargets={ndcTargets}
-          napTargets={napTargets}
+          targets={targets}
           alignmentCount={data.alignment.length}
         />
 
-        <section className="grid md:grid-cols-3 gap-6 mb-10">
-          <div className="md:col-span-2 bg-[var(--undp-light)] p-6">
-            <NbsBarChart
-              title="Nature-Based Solutions Breakdown"
-              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) appear to refer to Nature-Based Solutions. Click a segment to see which targets.`}
-              data={nbsSorted}
-              documentTypes={[...documentTypes]}
-              targets={targets}
-              nbsClassifications={nbsClassifications}
-            />
+        {/* --- Thematic Classification --- */}
+        <section className="mb-10">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+              Thematic Classification
+            </h2>
+            <p className="text-sm text-[var(--undp-gray)] mt-1">
+              How targets map to nature-based solutions and cross-cutting themes.
+            </p>
           </div>
-          <OutcomeStats
-            quantitativeTargets={targets.filter((t) => t.isQuantitative)}
-            timeBoundTargets={targets.filter((t) => t.isTimeBound)}
-            totalTargets={targets.length}
-          />
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="md:col-span-2 bg-[var(--undp-light)] border border-gray-100 p-6">
+              <NbsBarChart
+                title="Nature-Based Solutions Breakdown"
+                subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) appear to refer to Nature-Based Solutions. Click a segment to see which targets.`}
+                data={nbsSorted}
+                documentTypes={[...documentTypes]}
+                targets={targets}
+                nbsClassifications={nbsClassifications}
+              />
+            </div>
+            <div className="flex flex-col h-full">
+              <OutcomeStats
+                quantitativeTargets={targets.filter((t) => t.isQuantitative)}
+                timeBoundTargets={targets.filter((t) => t.isTimeBound)}
+                totalTargets={targets.length}
+              />
+            </div>
+          </div>
         </section>
 
-        <section className="bg-[var(--undp-light)] p-6 mb-10">
+        <section className="bg-[var(--undp-light)] border border-gray-100 p-6 mb-10">
           <ThemeBarChart
             title="Cross-Cutting Themes"
             subtitle="Number of targets that appear to pertain to each theme. Click a segment to see which targets."
@@ -270,20 +279,46 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           />
         </section>
 
-        <section className="bg-[var(--undp-light)] p-6 mb-10">
-          <AlignmentNetworkSelector
-            alignmentData={data.alignment}
-            targets={targets}
-            nbsCategories={data.nbsCategories}
-            themes={data.themes}
-            classifications={data.classifications}
-          />
+        {/* --- Alignment Analysis --- */}
+        <section className="mb-10">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+              Cross-Document Alignment
+            </h2>
+            <p className="text-sm text-[var(--undp-gray)] mt-1">
+              How targets across policy documents align with each other.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="bg-[var(--undp-light)] border border-gray-100 p-6">
+              <CoherencyChord
+                alignmentData={data.alignment}
+                targets={targets}
+                onPairClick={(docA: PolicyDocumentType, docB: PolicyDocumentType) => {
+                  const el = document.getElementById(`heatmap-${docA}-${docB}`) ??
+                    document.getElementById(`heatmap-${docB}-${docA}`);
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              />
+            </div>
+            <div className="bg-[var(--undp-light)] border border-gray-100 p-6 overflow-hidden">
+              <AlignmentNetworkSelector
+                alignmentData={data.alignment}
+                targets={targets}
+                nbsCategories={data.nbsCategories}
+                themes={data.themes}
+                classifications={data.classifications}
+              />
+            </div>
+          </div>
         </section>
 
+        {/* --- Pairwise Detail --- */}
         <section className="mb-10">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-[var(--undp-black)]">
-              Pairwise Alignment Analysis
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+              Pairwise Alignment Detail
             </h2>
             <p className="text-sm text-[var(--undp-gray)] mt-1">
               Hover over cells to see alignment rationale between target pairs.
@@ -292,7 +327,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           </div>
 
           {docPairs.map((pair) => (
-            <div key={`${pair.docA}-${pair.docB}`} className="bg-[var(--undp-light)] p-6 mb-6">
+            <div key={`${pair.docA}-${pair.docB}`} id={`heatmap-${pair.docA}-${pair.docB}`} className="bg-[var(--undp-light)] border border-gray-100 p-6 mb-4 scroll-mt-20">
               <AlignmentHeatmap
                 title={pair.label}
                 alignmentData={filterAlignmentByDocPair(data.alignment, targets, pair.docA, pair.docB)}
@@ -305,23 +340,20 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           ))}
         </section>
 
-        <section className="mb-10 bg-[var(--undp-light)] p-6">
+        <section className="mb-10 bg-[var(--undp-light)] border border-gray-100 p-6">
           <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-2">
             About this analysis
           </h3>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-3">
             This dashboard displays results from the Nature-Climate Target
-            Alignment Assessment pipeline. {targets.length} targets from the NAP,
-            NDC, and National Biodiversity Targets were classified against{" "}
-            {data.nbsCategories.length} NBS categories and {data.themes.length}{" "}
-            cross-cutting themes. Alignment is assessed pairwise across documents.
+            Alignment Assessment pipeline. {targets.length} targets
+            from {documentTypes.length} document source{documentTypes.length !== 1 ? "s" : ""} were
+            classified against {data.nbsCategories.length} NBS categories
+            and {data.themes.length} cross-cutting themes. Alignment is assessed
+            pairwise across documents.
           </p>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
-            <strong>Note:</strong> Data is loaded from the pipeline output. Run{" "}
-            <code className="bg-white px-1 rounded">
-              cd python && uv run python -m src.run_analysis
-            </code>{" "}
-            to regenerate. All results should be validated with national
+            <strong>Note:</strong> All results should be validated with national
             experts.
           </p>
         </section>

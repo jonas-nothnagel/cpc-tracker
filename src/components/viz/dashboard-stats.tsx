@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
 import { TargetTextWithHighlights } from "./target-text";
-import type { Target } from "@/types";
+import type { Target, PolicyDocumentType } from "@/types";
 
 interface StatCardProps {
   value: number;
   label: string;
-  colorClass: string;
+  color: string;
   targets?: Target[];
 }
 
-function StatCard({ value, label, colorClass, targets }: StatCardProps) {
+function StatCard({ value, label, color, targets }: StatCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isClickable = targets && targets.length > 0;
@@ -22,11 +22,11 @@ function StatCard({ value, label, colorClass, targets }: StatCardProps) {
       <button
         type="button"
         onClick={() => isClickable && setIsOpen(true)}
-        className={`bg-[var(--undp-light)] p-5 text-left w-full transition-colors ${
+        className={`bg-[var(--undp-light)] border border-gray-100 p-5 text-left w-full h-full transition-colors ${
           isClickable ? "hover:bg-gray-200/60 cursor-pointer" : "cursor-default"
         }`}
       >
-        <p className={`text-2xl md:text-3xl font-medium tabular-nums ${colorClass}`}>
+        <p className="text-2xl md:text-3xl font-medium tabular-nums" style={{ color }}>
           {value}
         </p>
         <p className="text-xs text-[var(--undp-gray)] mt-1 leading-snug">
@@ -87,64 +87,65 @@ function StatCard({ value, label, colorClass, targets }: StatCardProps) {
   );
 }
 
+/** Full labels for document types in stat cards */
+const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
+  NDC: "Nationally Determined Contributions",
+  NBSAP: "National Biodiversity Targets",
+  NAP: "National Adaptation Plan Targets",
+  LDN: "Land Degradation Neutrality Targets",
+  SECTORAL: "Sectoral Policy Targets",
+  OTHER: "Other Targets",
+};
+
 interface DashboardStatsProps {
-  totalTargets: number;
-  nbtTargets: Target[];
-  ndcTargets: Target[];
-  napTargets: Target[];
+  targets: Target[];
   alignmentCount: number;
 }
 
 export function DashboardStats({
-  totalTargets,
-  nbtTargets,
-  ndcTargets,
-  napTargets,
+  targets,
   alignmentCount,
 }: DashboardStatsProps) {
-  const allTargets = [...nbtTargets, ...ndcTargets, ...napTargets];
+  const targetsByDoc = new Map<PolicyDocumentType, Target[]>();
+  for (const t of targets) {
+    const list = targetsByDoc.get(t.sourceDocument) || [];
+    list.push(t);
+    targetsByDoc.set(t.sourceDocument, list);
+  }
+
+  const docTypes = Array.from(targetsByDoc.keys());
+  const colCount = docTypes.length + 2;
 
   return (
-    <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-      <div className="col-span-2 md:col-span-1">
-        <StatCard
-          value={totalTargets}
-          label="targets from 3 sources"
-          colorClass="text-[var(--chart-ndc)]"
-          targets={allTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={nbtTargets.length}
-          label="National Biodiversity Targets"
-          colorClass="text-[var(--chart-nbt)]"
-          targets={nbtTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={ndcTargets.length}
-          label="Nationally Determined Contributions"
-          colorClass="text-[var(--chart-ndc)]"
-          targets={ndcTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={napTargets.length}
-          label="National Adaptation Plan Targets"
-          colorClass="text-[var(--chart-nap)]"
-          targets={napTargets}
-        />
-      </div>
-      <div>
-        <StatCard
-          value={alignmentCount}
-          label="Alignment Opportunities"
-          colorClass="text-[var(--chart-alignment)]"
-        />
-      </div>
+    <section
+      className="grid gap-3 mb-10"
+      style={{
+        gridTemplateColumns: `repeat(${Math.min(colCount, 6)}, minmax(0, 1fr))`,
+      }}
+    >
+      <StatCard
+        value={targets.length}
+        label={`targets from ${docTypes.length} source${docTypes.length !== 1 ? "s" : ""}`}
+        color="var(--undp-blue, #0468b1)"
+        targets={targets}
+      />
+      {docTypes.map((docType) => {
+        const docTargets = targetsByDoc.get(docType) ?? [];
+        return (
+          <StatCard
+            key={docType}
+            value={docTargets.length}
+            label={DOC_FULL_LABELS[docType]}
+            color={DOC_COLORS[docType]}
+            targets={docTargets}
+          />
+        );
+      })}
+      <StatCard
+        value={alignmentCount}
+        label="Alignment Opportunities"
+        color="var(--chart-alignment, #196127)"
+      />
     </section>
   );
 }

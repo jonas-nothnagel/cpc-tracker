@@ -238,11 +238,10 @@ export function AlignmentNetwork({
       </div>
 
       {/* SVG Network */}
-      <div className="flex justify-center">
+      <div className="flex justify-center overflow-hidden">
         <svg
-          viewBox={`0 0 ${width} ${height}`}
+          viewBox={`-40 0 ${width + 80} ${height}`}
           className="w-full max-w-[600px]"
-          style={{ overflow: "visible" }}
         >
           {/* Dashed circle boundary */}
           <circle
