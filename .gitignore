@@ -52,8 +52,8 @@ coverage/
 .specstory/
 .cursorrules
 # Project-specific
-old_scripts/
 docs/
+old_scripts/
 to-dos.txt
 
 # Analysis runs (ephemeral)

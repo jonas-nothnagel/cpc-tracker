@@ -437,9 +437,9 @@ export default function UploadPage() {
               <Image
                 src="/undp-logo.png"
                 alt="UNDP"
-                width={40}
-                height={64}
-                className="h-9 w-auto"
+                width={48}
+                height={72}
+                className="h-12 w-auto"
               />
               <div>
                 <p className="text-sm font-medium text-[var(--undp-black)]">

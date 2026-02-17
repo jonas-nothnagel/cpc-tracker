@@ -10,9 +10,13 @@ import type { PolicyDocumentType } from "@/types";
  *
  * Accepts targets + country + optional custom categories,
  * creates an analysis run, spawns the Python pipeline, returns the analysis ID.
+ *
+ * NOTE: This endpoint requires a local environment with Python and uv installed.
+ * It will not work on serverless platforms like Vercel.
  */
 
 const MAX_TARGETS = 150;
+const IS_SERVERLESS = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
 
 interface AnalyzeRequest {
   country: string;
@@ -21,9 +25,7 @@ interface AnalyzeRequest {
     sourceDocument: PolicyDocumentType;
     sourceLabel: string;
   }[];
-  /** Optional custom NBS categories (if omitted, uses defaults) */
   nbsCategories?: { id: string; name: string; description: string }[];
-  /** Optional custom themes (if omitted, uses defaults) */
   themes?: { id: string; name: string; description: string }[];
 }
 
@@ -32,25 +34,45 @@ const ANALYSES_DIR = join(PROJECT_ROOT, "python", "analyses");
 const DEFAULT_CATEGORIES = join(PROJECT_ROOT, "python", "data", "categories.json");
 
 export async function POST(request: NextRequest) {
+  if (IS_SERVERLESS) {
+    return NextResponse.json(
+      {
+        error:
+          "Running new analyses is not available in the hosted preview. " +
+          "The AI pipeline requires a local or Docker environment with Python. " +
+          "You can explore the pre-computed Mongolia pilot on the Dashboard.",
+      },
+      { status: 501 }
+    );
+  }
+
+  let body: AnalyzeRequest;
   try {
-    const body: AnalyzeRequest = await request.json();
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Could not parse request body" },
+      { status: 400 }
+    );
+  }
 
-    if (!body.targets || body.targets.length === 0) {
-      return NextResponse.json(
-        { error: "No targets provided" },
-        { status: 400 }
-      );
-    }
+  if (!body.targets || body.targets.length === 0) {
+    return NextResponse.json(
+      { error: "No targets provided" },
+      { status: 400 }
+    );
+  }
 
-    if (body.targets.length > MAX_TARGETS) {
-      return NextResponse.json(
-        {
-          error: `Too many targets (${body.targets.length}). Maximum is ${MAX_TARGETS} per analysis to keep costs under ~$1.`,
-        },
-        { status: 400 }
-      );
-    }
+  if (body.targets.length > MAX_TARGETS) {
+    return NextResponse.json(
+      {
+        error: `Too many targets (${body.targets.length}). Maximum is ${MAX_TARGETS} per analysis to keep costs under ~$1.`,
+      },
+      { status: 400 }
+    );
+  }
 
+  try {
     const id = randomUUID().slice(0, 8);
     const inputDir = join(ANALYSES_DIR, id, "input");
     const outputDir = join(ANALYSES_DIR, id, "output");
@@ -132,10 +154,13 @@ export async function POST(request: NextRequest) {
     child.unref();
 
     return NextResponse.json({ analysisId: id });
-  } catch {
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "An unexpected error occurred";
+    console.error("Analysis setup failed:", message);
     return NextResponse.json(
-      { error: "Invalid request body" },
-      { status: 400 }
+      { error: `Analysis setup failed: ${message}` },
+      { status: 500 }
     );
   }
 }

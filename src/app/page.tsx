@@ -12,9 +12,9 @@ export default function Home() {
               <Image
                 src="/undp-logo.png"
                 alt="UNDP"
-                width={40}
-                height={60}
-                className="h-9 w-auto"
+                width={48}
+                height={72}
+                className="h-12 w-auto"
               />
               <span className="text-sm font-medium text-[var(--undp-black)] tracking-wide hidden sm:block">
                 Policy Coherence Tracker
@@ -126,9 +126,9 @@ export default function Home() {
             <Image
               src="/undp-logo.png"
               alt="UNDP"
-              width={36}
-              height={56}
-              className="h-8 w-auto"
+              width={44}
+              height={68}
+              className="h-10 w-auto"
             />
             <span className="text-sm text-[var(--undp-gray)]">
               United Nations Development Programme
