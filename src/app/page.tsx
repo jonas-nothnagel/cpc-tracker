@@ -32,48 +32,46 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero — image spans content width, layered behind text */}
-      <section className="relative">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="relative min-h-[380px] md:min-h-[420px] flex items-center">
-            {/* Background image — full width of content area */}
-            <div className="absolute inset-0 -mx-6 overflow-hidden">
-              <Image
-                src="/fahrul-razi-bM5vdILsfz4-unsplash.jpg"
-                alt="Mongolia steppe landscape"
-                fill
-                className="object-cover object-center"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent" />
-            </div>
-            {/* Content on top */}
-            <div className="relative z-10 max-w-xl py-16 md:py-20">
-              <p className="text-xs uppercase tracking-widest text-[var(--undp-blue-light)] mb-3">
-                UNDP AI Sprint Initiative
-              </p>
-              <h1 className="text-3xl md:text-4xl font-light text-[var(--undp-black)] mb-4 leading-tight tracking-tight">
-                Nature-Climate Policy Coherence Tracker
-              </h1>
-              <p className="text-base text-[var(--undp-gray)] mb-8 leading-relaxed">
-                Upload national policy targets. Run AI-powered alignment analysis.
-                Explore interactive coherence insights across climate, biodiversity,
-                and sectoral policies.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/dashboard"
-                  className="px-5 py-2.5 bg-[var(--undp-blue)] text-white text-sm font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
-                >
-                  View Mongolia Pilot
-                </Link>
-                <Link
-                  href="/upload"
-                  className="px-5 py-2.5 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-sm font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
-                >
-                  Upload Targets
-                </Link>
-              </div>
+      {/* Hero — image spans full viewport width, text constrained */}
+      <section className="relative min-h-[380px] md:min-h-[420px] flex items-center">
+        {/* Background image — full bleed */}
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src="/biodiversity.jpg"
+            alt="Mongolia steppe landscape"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent" />
+        </div>
+        {/* Content on top */}
+        <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
+          <div className="max-w-xl py-16 md:py-20">
+            <p className="text-xs uppercase tracking-widest text-[var(--undp-blue-light)] mb-3">
+              UNDP AI Sprint Initiative
+            </p>
+            <h1 className="text-3xl md:text-4xl font-light text-[var(--undp-black)] mb-4 leading-tight tracking-tight">
+              Nature-Climate Policy Coherence Tracker
+            </h1>
+            <p className="text-base text-[var(--undp-gray)] mb-8 leading-relaxed">
+              Upload national policy targets. Run AI-powered alignment analysis.
+              Explore interactive coherence insights across climate, biodiversity,
+              and sectoral policies.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/dashboard"
+                className="px-5 py-2.5 bg-[var(--undp-blue)] text-white text-sm font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
+              >
+                View Mongolia Pilot
+              </Link>
+              <Link
+                href="/upload"
+                className="px-5 py-2.5 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-sm font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
+              >
+                Upload Targets
+              </Link>
             </div>
           </div>
         </div>
