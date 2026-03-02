@@ -58,13 +58,23 @@ from the target.
 # Agent 2: Alignment Advisor prompts (from old scripts)
 # ---------------------------------------------------------------------------
 
-ADVISOR_SYSTEM = "You are a Target Alignment Advisor, ensuring factual, graded alignment assessments."
+ADVISOR_SYSTEM = "You are a Target Alignment Advisor, ensuring factual, graded alignment assessments. Most policy target pairs within climate-nature frameworks share some degree of alignment."
 
 ADVISOR_USER_TEMPLATE = """    Role: Alignment Advisor
-    Goal: Compare two structured targets from different policies and assign an alignment level from four clearly defined categories.
+    Goal: Compare two structured targets from different policies and assign an alignment level from seven clearly defined categories.
 
     Backstory: You specialize in evaluating alignment potential between policy targets. Your assessments are based on \
-real-world feasibility, operational synergy, and strategic overlap. You never assume alignment based on superficial wording alone.
+real-world feasibility, operational synergy, and strategic overlap. You never assume alignment based on superficial wording alone. \
+You also identify genuine contradictions when targets truly work against each other, but you recognize that most targets within \
+national climate-nature policy frameworks (NAP, NDC, NBSAP, LDN) share some degree of alignment since they are all working \
+toward environmental and climate goals.
+
+    IMPORTANT: High and moderate contradictions should be reserved for cases where implementing one target genuinely \
+undermines, opposes, or competes with the other. Two targets operating in different sectors or at different scales are NOT \
+contradictory — they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Low tension" \
+when targets create real-world trade-offs even if both are positively framed. For example, a target to expand livestock \
+production inherently creates tension with a target to reduce grazing pressure on rangelands, even if both targets mention \
+"sustainability." Look for implicit resource competition, not just explicit opposition.
 
     Task:
     1. Analyze the following two targets (structured analysis from Target Analyst):
@@ -78,16 +88,16 @@ efficiency. Consider enabling relationships when one target creates the conditio
     5. Ensure that alignment would lead to tangible, measurable outcomes and not just theoretical synergy. Avoid aligning \
 targets that operate at different levels (e.g., policy vs. on-the-ground implementation) without some operational overlap.
     6. Focus on real-world feasibility — do not propose alignment based solely on similar wording or superficial themes.
-    7. Do not focus only on action verbs; consider the broader context and strategic intent.
+    7. Only flag contradictions when targets have genuinely opposing objectives, compete for the same specific resources, \
+or when implementing one would actively undermine the other. Different approaches to environmental goals are NOT contradictions.
 
-    Classify the alignment into one of four distinct levels below. Always use the exact label and format:
+    Classify the relationship into one of the seven levels below. Always use the exact label and format:
 
     **1.** "No alignment" – The targets have no shared goals, actions, ecosystems, or actors. Aligning them would not make sense in a \
-real-world implementation or policy context, and could even be counterproductive.
+real-world implementation or policy context.
         Return: No alignment - [Concise 2-sentence explanation.]
 
     Example:
-
       Target 1: Reduce GHG emissions in the transportation sector by 40% by 2030.
       Target 2: Establish 15 urban pollinator gardens to support bee populations.
       Output:
@@ -97,40 +107,80 @@ or implementation pathways. Aligning them would not yield any mutual benefit or 
     **2.** "Low alignment" – The targets share superficial similarities—such as common terminology or a broad thematic area—but \
 differ significantly in intent, scale, timeline, or geographic scope. Any synergy is weak, \
 unclear, or impractical for coordinated implementation.
-       Return: Low alignment - [Concise 2-sentence explanation of the minor thematic overlap and why it does not allow for real-world alignment.]
+       Return: Low alignment - [Concise 2-sentence explanation.]
 
     Example:
       Target 1: Promote nature-based solutions to sequester carbon through wetland restoration.
       Target 2: Protect migratory bird corridors in high-altitude forest zones.
-
       Output:
       Low alignment - Both mention natural ecosystems, but they focus on different geographies, species, and purposes. \
 The thematic overlap is too broad for practical coordination.
 
     **3.** "Medium alignment" – The targets share clear thematic or geographic overlap and reflect compatible priorities. \
 They could support each other through shared enabling conditions or parallel efforts, though they are not mutually dependent.
-       Return: Medium alignment - [Concise 2-sentence explanation of how the targets complement each other and could align with modest coordination.]
+       Return: Medium alignment - [Concise 2-sentence explanation.]
 
     Example:
       Target 1: Increase national forest cover by 10% by 2035 to enhance carbon sinks.
       Target 2: Implement afforestation and soil restoration programs in degraded upland regions.
-
       Output:
       Medium alignment - The targets share goals around reforestation and ecosystem recovery, and could align through joint \
 planning or funding. However, they remain independently implementable and serve somewhat distinct primary goals.
 
     **4.** "High alignment" – The targets are strongly aligned across goals, actions, ecosystems, and actors. Coordinated \
 implementation would significantly enhance outcomes, efficiency, or scale; the targets directly support or amplify each other.
-       Return: High alignment - [Concise 2-sentence explanation of how the targets reinforce each other and why joint implementation would be beneficial.]
+       Return: High alignment - [Concise 2-sentence explanation.]
 
     Example:
       Target 1: Restore 20,000 hectares of mangroves by 2030 for biodiversity and coastal protection.
       Target 2: Enhance climate resilience by restoring coastal blue carbon ecosystems, including mangroves, by 2030.
-
       Output:
       High alignment - Both targets focus on the same ecosystem (mangroves), within the same timeframe, and involve similar actions and actors. \
 Coordinated implementation would clearly enhance efficiency and maximize both climate and biodiversity outcomes.
-      - Your output should be in English.
+
+    === CONTRADICTION LEVELS (use only when targets genuinely conflict) ===
+
+    For contradiction levels, you MUST also specify the contradiction type in parentheses after the label. \
+The four types are:
+    - Goal conflict: Targets have directly opposing objectives (e.g., expand agriculture vs protect forests).
+    - Resource competition: Targets compete for the same specific limited resources in ways that are mutually exclusive.
+    - Implementation tension: Achieving one target actively undermines the feasibility of achieving the other.
+    - Scale/scope mismatch: Targets set incompatible geographic scales, timelines, or intensity levels that cannot coexist.
+
+    **5.** "Low tension" – There is minor friction or an implicit trade-off between the targets, but they are not \
+fundamentally incompatible. The tension is manageable with coordination.
+       Return: Low tension (Type) - [Concise 2-sentence explanation.]
+
+    Example:
+      Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
+      Target 2: Protect watershed ecosystems and maintain minimum environmental water flows.
+      Output:
+      Low tension (Resource competition) - Rapid irrigation expansion could reduce water availability that the watershed target aims to protect. \
+However, the targets are not fundamentally incompatible and could coexist with careful water allocation planning.
+
+    **6.** "Moderate contradiction" – There is a clear conflict in approach, resources, or expected outcomes, though \
+partial coexistence may be possible with significant trade-offs.
+       Return: Moderate contradiction (Type) - [Concise 2-sentence explanation.]
+
+    Example:
+      Target 1: Maximize livestock production by increasing the national herd to 80 million head by 2035.
+      Target 2: Restore 30% of degraded rangelands by reducing grazing pressure in steppe ecosystems.
+      Output:
+      Moderate contradiction (Resource competition) - Both targets place competing demands on the same rangeland resources. \
+Increasing herd size would intensify grazing pressure on the very ecosystems the second target aims to restore.
+
+    **7.** "High contradiction" – The targets directly oppose each other in goals, actions, or expected outcomes. \
+Implementing both would be counterproductive.
+       Return: High contradiction (Type) - [Concise 2-sentence explanation.]
+
+    Example:
+      Target 1: Convert 500,000 hectares of forest land to commercial agriculture by 2030.
+      Target 2: Increase national forest cover by 20% and halt all deforestation by 2030.
+      Output:
+      High contradiction (Goal conflict) - These targets have directly opposing objectives for the same land resource. \
+Implementing commercial agricultural expansion on forest land fundamentally contradicts the goal of increasing forest cover and halting deforestation.
+
+    Your output should be in English.
     """
 
 
@@ -139,10 +189,22 @@ Coordinated implementation would clearly enhance efficiency and maximize both cl
 # ---------------------------------------------------------------------------
 
 ALIGNMENT_MAP = {
+    "high contradiction": "high_contradiction",
+    "moderate contradiction": "moderate_contradiction",
+    "low tension": "low_tension",
     "no alignment": "none",
     "low alignment": "low",
     "medium alignment": "medium",
     "high alignment": "high",
+}
+
+CONTRADICTION_LEVELS = {"high_contradiction", "moderate_contradiction", "low_tension"}
+
+CONTRADICTION_TYPE_MAP = {
+    "goal conflict": "goal_conflict",
+    "resource competition": "resource_competition",
+    "implementation tension": "implementation_tension",
+    "scale/scope mismatch": "scale_scope_mismatch",
 }
 
 DOC_TYPE_LABELS = {
@@ -190,35 +252,63 @@ def parse_decomposition(raw: str) -> dict[str, str]:
     }
 
 
-def parse_alignment(raw: str) -> tuple[str, str]:
-    """Parse alignment level and explanation from Agent 2.
+def _extract_contradiction_type(text: str) -> str | None:
+    """Extract contradiction type from parenthesized label, e.g. '(Goal conflict)'."""
+    m = re.search(r"\(([^)]+)\)", text)
+    if m:
+        inner = m.group(1).strip().lower()
+        return CONTRADICTION_TYPE_MAP.get(inner)
+    return None
 
-    The original output format is: "Label - explanation"
-    e.g. "Medium alignment - The targets share goals around..."
+
+def parse_alignment(raw: str) -> tuple[str, str, str | None]:
+    """Parse relationship level, explanation, and optional contradiction type.
+
+    Returns (level_code, explanation, contradiction_type).
+    contradiction_type is non-None only for negative levels.
+
+    Output format: "Label (Type) - explanation" for contradictions,
+                   "Label - explanation" for alignment/neutral.
     """
     raw_stripped = raw.strip()
+    lower = raw_stripped.lower()
 
-    # Primary: "Label - explanation" text format (original format)
+    # Primary: "Label - explanation" text format
+    # Check contradiction levels first (they must be matched before "alignment" labels
+    # since "no alignment" could be a substring issue)
     for label_text, level_code in ALIGNMENT_MAP.items():
-        if label_text in raw_stripped.lower():
-            # Try to extract explanation after the label
-            parts = raw_stripped.split("-", 1)
-            explanation = parts[1].strip() if len(parts) > 1 else ""
-            return level_code, explanation
+        if label_text in lower:
+            contradiction_type = None
+            if level_code in CONTRADICTION_LEVELS:
+                contradiction_type = _extract_contradiction_type(raw_stripped)
 
-    # Fallback: JSON format (in case model returns JSON anyway)
+            # Extract explanation: split on first " - " after the label
+            idx = lower.index(label_text)
+            after_label = raw_stripped[idx + len(label_text):]
+            # Skip past optional "(Type)" parenthetical
+            after_paren = re.sub(r"^\s*\([^)]*\)\s*", "", after_label)
+            parts = after_paren.split("-", 1)
+            explanation = parts[1].strip() if len(parts) > 1 else after_paren.strip().lstrip("-").strip()
+            return level_code, explanation, contradiction_type
+
+    # Fallback: JSON format
     try:
         cleaned = re.sub(r"```(?:json)?\s*", "", raw_stripped).strip().rstrip("`")
         data = json.loads(cleaned)
-        label = data.get("alignment", "No alignment").strip().lower()
-        explanation = data.get("explanation", "")
+        label = data.get("alignment", data.get("relationship", "No alignment")).strip().lower()
+        explanation = data.get("explanation", data.get("description", ""))
         level = ALIGNMENT_MAP.get(label, "none")
-        return level, explanation
+        contradiction_type = None
+        if level in CONTRADICTION_LEVELS:
+            ct = data.get("contradictionType", data.get("contradiction_type", ""))
+            if ct:
+                contradiction_type = CONTRADICTION_TYPE_MAP.get(ct.lower(), ct.lower())
+        return level, explanation, contradiction_type
     except (json.JSONDecodeError, AttributeError):
         pass
 
     logger.warning(f"Could not parse alignment from: {raw_stripped[:100]}")
-    return "none", ""
+    return "none", "", None
 
 
 # ---------------------------------------------------------------------------
@@ -372,17 +462,20 @@ async def assess_alignment(
     )
 
     alignment_results = []
-    level_counts: dict[str, int] = {"none": 0, "low": 0, "medium": 0, "high": 0}
+    level_counts: dict[str, int] = {}
 
     for (aid, bid), raw in zip(pair_keys, results):
-        level, explanation = parse_alignment(raw)
+        level, explanation, contradiction_type = parse_alignment(raw)
         level_counts[level] = level_counts.get(level, 0) + 1
-        alignment_results.append({
+        result: dict[str, Any] = {
             "targetAId": aid,
             "targetBId": bid,
             "alignment": level,
             "description": explanation,
-        })
+        }
+        if contradiction_type:
+            result["contradictionType"] = contradiction_type
+        alignment_results.append(result)
 
     logger.info(
         f"  Alignment done: {level_counts}"

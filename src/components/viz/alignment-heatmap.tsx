@@ -1,38 +1,23 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS } from "@/lib/utils";
+import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, Target } from "@/types";
 
 interface AlignmentHeatmapProps {
-  /** Alignment results for a specific document pair comparison */
   alignmentData: AlignmentResult[];
-  /** Row targets (e.g. NBTs) */
   rowTargets: Target[];
-  /** Column targets (e.g. NDCs) */
   colTargets: Target[];
   title: string;
   rowLabel: string;
   colLabel: string;
 }
 
-const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
-  none: "#f7f7f7",
-  low: "#c6e48b",
-  medium: "#7bc96f",
-  high: "#196127",
-};
-
-const ALIGNMENT_LABELS: Record<AlignmentLevel, string> = {
-  none: "No alignment",
-  low: "Low",
-  medium: "Medium",
-  high: "High",
-};
-
 /**
- * Interactive heatmap for pairwise target alignment.
+ * Interactive heatmap for pairwise target relationships.
  * Rows = targets from document A, Columns = targets from document B.
- * Cell color encodes alignment level. Hovering shows full details.
+ * Cell color encodes relationship level: green for alignment, red/amber for contradictions.
  */
 export function AlignmentHeatmap({
   alignmentData,
@@ -47,13 +32,13 @@ export function AlignmentHeatmap({
     col: string;
     alignment: AlignmentLevel;
     description: string;
+    contradictionType?: string;
     rowLabel: string;
     colLabel: string;
     x: number;
     y: number;
   } | null>(null);
 
-  // Build lookup map
   const alignmentMap = useMemo(() => {
     const map = new Map<string, AlignmentResult>();
     for (const a of alignmentData) {
@@ -63,12 +48,10 @@ export function AlignmentHeatmap({
     return map;
   }, [alignmentData]);
 
-  // Summary stats
   const highCount = alignmentData.filter((a) => a.alignment === "high").length;
-  const mediumCount = alignmentData.filter(
-    (a) => a.alignment === "medium"
-  ).length;
+  const mediumCount = alignmentData.filter((a) => a.alignment === "medium").length;
   const lowCount = alignmentData.filter((a) => a.alignment === "low").length;
+  const contradictionCount = alignmentData.filter((a) => isContradiction(a.alignment)).length;
 
   const cellSize = Math.min(
     40,
@@ -77,37 +60,36 @@ export function AlignmentHeatmap({
 
   return (
     <div>
-      {/* Title + summary */}
       <div className="mb-2">
         <h3 className="text-lg font-semibold text-[var(--undp-black)]">
           {title}
         </h3>
         <p className="text-sm text-[var(--undp-gray)]">
           {highCount} high · {mediumCount} medium · {lowCount} low alignment
-          opportunities
+          {contradictionCount > 0 && (
+            <span className="text-red-600 ml-1">
+              · {contradictionCount} contradiction{contradictionCount !== 1 ? "s" : ""}
+            </span>
+          )}
         </p>
       </div>
-      {/* Legend — separate row to avoid overlap */}
+
       <div className="flex flex-wrap gap-3 text-xs items-center mb-4">
-        {(["high", "medium", "low", "none"] as AlignmentLevel[]).map(
-          (level) => (
-            <div key={level} className="flex items-center gap-1">
-              <span
-                className="w-4 h-4 rounded-sm inline-block border border-gray-200/80"
-                style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
-              />
-              <span className="text-[var(--undp-gray)]">
-                {ALIGNMENT_LABELS[level]}
-              </span>
-            </div>
-          )
-        )}
+        {ALIGNMENT_LEVEL_ORDER.map((level) => (
+          <div key={level} className="flex items-center gap-1">
+            <span
+              className="w-4 h-4 rounded-sm inline-block border border-gray-200/80"
+              style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
+            />
+            <span className="text-[var(--undp-gray)]">
+              {ALIGNMENT_LABELS[level]}
+            </span>
+          </div>
+        ))}
       </div>
 
-      {/* Heatmap grid */}
       <div className="overflow-x-auto relative">
         <div className="inline-block">
-          {/* Column headers */}
           <div className="flex" style={{ marginLeft: "140px" }}>
             {colTargets.map((t) => (
               <div
@@ -135,22 +117,18 @@ export function AlignmentHeatmap({
             {colLabel}
           </div>
 
-          {/* Rows */}
           {rowTargets.map((rowT) => (
             <div key={rowT.id} className="flex items-center">
-              {/* Row label */}
               <div
                 className="w-[140px] pr-2 text-right text-[11px] text-[var(--undp-gray)] shrink-0 truncate"
                 title={`${rowT.sourceLabel}: ${rowT.text}`}
               >
                 {rowT.sourceLabel}
               </div>
-              {/* Cells */}
               {colTargets.map((colT) => {
-                const result = alignmentMap.get(
-                  `${rowT.id}__${colT.id}`
-                );
+                const result = alignmentMap.get(`${rowT.id}__${colT.id}`);
                 const level: AlignmentLevel = result?.alignment ?? "none";
+                const isContra = isContradiction(level);
                 return (
                   <div
                     key={colT.id}
@@ -162,7 +140,9 @@ export function AlignmentHeatmap({
                     className={`cursor-pointer hover:ring-2 hover:ring-[var(--undp-blue)] hover:z-10 relative transition-shadow ${
                       level === "high"
                         ? "border-2 border-[#0d3d1a]"
-                        : "border border-white/50"
+                        : isContra
+                          ? "border-2 border-red-800/60"
+                          : "border border-white/50"
                     }`}
                     onMouseEnter={(e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
@@ -171,6 +151,7 @@ export function AlignmentHeatmap({
                         col: colT.id,
                         alignment: level,
                         description: result?.description ?? "",
+                        contradictionType: result?.contradictionType,
                         rowLabel: `${rowT.sourceLabel}`,
                         colLabel: `${colT.sourceLabel}`,
                         x: rect.left + rect.width / 2,
@@ -184,13 +165,11 @@ export function AlignmentHeatmap({
             </div>
           ))}
 
-          {/* Row axis label */}
           <div className="text-[10px] text-[var(--undp-gray)] text-right pr-2 font-medium w-[140px] mt-1">
             {rowLabel}
           </div>
         </div>
 
-        {/* Tooltip */}
         {hoveredCell && (
           <div
             className="fixed z-50 bg-white border border-gray-200 rounded-lg shadow-lg p-3 max-w-xs pointer-events-none"
@@ -220,9 +199,14 @@ export function AlignmentHeatmap({
                       : ALIGNMENT_COLORS[hoveredCell.alignment],
                 }}
               >
-                {ALIGNMENT_LABELS[hoveredCell.alignment]} alignment
+                {ALIGNMENT_LABELS[hoveredCell.alignment]}
               </span>
             </div>
+            {hoveredCell.contradictionType && (
+              <p className="text-xs text-red-600 font-medium mb-1">
+                {CONTRADICTION_TYPE_LABELS[hoveredCell.contradictionType as keyof typeof CONTRADICTION_TYPE_LABELS]}
+              </p>
+            )}
             <p className="text-xs text-[var(--undp-black)] font-medium">
               {hoveredCell.rowLabel} ↔ {hoveredCell.colLabel}
             </p>

@@ -11,6 +11,8 @@ import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-sel
 import { DashboardStats } from "@/components/viz/dashboard-stats";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
 import { CoherencyChord } from "@/components/viz/coherency-chord";
+import { ContradictionSummary } from "@/components/viz/contradiction-summary";
+import { isContradiction } from "@/types";
 import type {
   Target,
   PolicyDocumentType,
@@ -233,7 +235,8 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
 
         <DashboardStats
           targets={targets}
-          alignmentCount={data.alignment.length}
+          alignmentCount={data.alignment.filter((a) => !isContradiction(a.alignment) && a.alignment !== "none").length}
+          contradictionCount={data.alignment.filter((a) => isContradiction(a.alignment)).length}
         />
 
         {/* --- Thematic Classification --- */}
@@ -279,14 +282,14 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           />
         </section>
 
-        {/* --- Alignment Analysis --- */}
+        {/* --- Alignment & Contradictions Analysis --- */}
         <section className="mb-10">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-              Cross-Document Alignment
+              Cross-Document Alignment &amp; Contradictions
             </h2>
             <p className="text-sm text-[var(--undp-gray)] mt-1">
-              How targets across policy documents align with each other.
+              How targets across policy documents align with or contradict each other.
             </p>
           </div>
 
@@ -314,15 +317,21 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           </div>
         </section>
 
+        {/* --- Contradiction Summary --- */}
+        <ContradictionSummary
+          alignmentData={data.alignment}
+          targets={targets}
+        />
+
         {/* --- Pairwise Detail --- */}
         <section className="mb-10">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-              Pairwise Alignment Detail
+              Pairwise Detail
             </h2>
             <p className="text-sm text-[var(--undp-gray)] mt-1">
-              Hover over cells to see alignment rationale between target pairs.
-              Green intensity indicates alignment strength.
+              Hover over cells to see relationship rationale between target pairs.
+              Green indicates alignment, red/amber indicates contradiction.
             </p>
           </div>
 
@@ -346,11 +355,11 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           </h3>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-3">
             This dashboard displays results from the Nature-Climate Target
-            Alignment Assessment pipeline. {targets.length} targets
+            Assessment pipeline. {targets.length} targets
             from {documentTypes.length} document source{documentTypes.length !== 1 ? "s" : ""} were
             classified against {data.nbsCategories.length} NBS categories
-            and {data.themes.length} cross-cutting themes. Alignment is assessed
-            pairwise across documents.
+            and {data.themes.length} cross-cutting themes. Alignment and
+            contradictions are assessed pairwise across documents.
           </p>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
             <strong>Note:</strong> All results should be validated with national

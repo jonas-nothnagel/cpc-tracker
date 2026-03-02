@@ -185,8 +185,17 @@ async def main() -> None:
         levels = {}
         for r in alignment_results:
             levels[r["alignment"]] = levels.get(r["alignment"], 0) + 1
-        for level in ["high", "medium", "low", "none"]:
+        contradiction_levels = ["high_contradiction", "moderate_contradiction", "low_tension"]
+        alignment_levels = ["high", "medium", "low", "none"]
+        total_contradictions = sum(levels.get(l, 0) for l in contradiction_levels)
+        logger.info("  Alignment:")
+        for level in alignment_levels:
             logger.info(f"    - {level}: {levels.get(level, 0)}")
+        logger.info(f"  Contradictions: {total_contradictions}")
+        for level in contradiction_levels:
+            count = levels.get(level, 0)
+            if count > 0:
+                logger.info(f"    - {level}: {count}")
         logger.info(f"  Output dir: {OUTPUT_DIR}")
 
         summary = {
@@ -195,6 +204,7 @@ async def main() -> None:
             "relevantClassifications": sum(1 for c in all_classifications if c["isRelevant"]),
             "totalPairs": len(alignment_results),
             "alignmentLevels": levels,
+            "totalContradictions": total_contradictions,
             "elapsedSeconds": round(elapsed, 1),
         }
         write_status(TOTAL_STEPS, "Complete", f"Pipeline finished in {elapsed:.1f}s", status="completed", started_at=started_at, summary=summary)

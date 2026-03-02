@@ -58,3 +58,7 @@ to-dos.txt
 
 # Analysis runs (ephemeral)
 python/analyses/
+python/output/.cache/
+
+# External docs
+external-docs/

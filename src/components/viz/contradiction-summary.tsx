@@ -1,0 +1,231 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, CONTRADICTION_TYPE_LABELS, DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { isContradiction } from "@/types";
+import type { AlignmentResult, AlignmentLevel, Target, ContradictionType, PolicyDocumentType } from "@/types";
+
+interface ContradictionSummaryProps {
+  alignmentData: AlignmentResult[];
+  targets: Target[];
+}
+
+const SEVERITY_ORDER: AlignmentLevel[] = [
+  "high_contradiction",
+  "moderate_contradiction",
+  "low_tension",
+];
+
+/**
+ * Dedicated panel showing policy contradictions sorted by severity,
+ * grouped by contradiction type, and filterable by document type.
+ */
+export function ContradictionSummary({
+  alignmentData,
+  targets,
+}: ContradictionSummaryProps) {
+  const [filterType, setFilterType] = useState<ContradictionType | "all">("all");
+  const [filterDoc, setFilterDoc] = useState<PolicyDocumentType | "all">("all");
+
+  const targetMap = useMemo(
+    () => new Map(targets.map((t) => [t.id, t])),
+    [targets]
+  );
+
+  const contradictions = useMemo(() => {
+    return alignmentData
+      .filter((a) => isContradiction(a.alignment))
+      .sort((a, b) => {
+        const aIdx = SEVERITY_ORDER.indexOf(a.alignment);
+        const bIdx = SEVERITY_ORDER.indexOf(b.alignment);
+        return aIdx - bIdx;
+      });
+  }, [alignmentData]);
+
+  const documentTypes = useMemo(() => {
+    const types = new Set<PolicyDocumentType>();
+    for (const t of targets) types.add(t.sourceDocument);
+    return Array.from(types);
+  }, [targets]);
+
+  const contradictionTypes = useMemo(() => {
+    const types = new Set<ContradictionType>();
+    for (const c of contradictions) {
+      if (c.contradictionType) types.add(c.contradictionType);
+    }
+    return Array.from(types);
+  }, [contradictions]);
+
+  const filtered = useMemo(() => {
+    return contradictions.filter((c) => {
+      if (filterType !== "all" && c.contradictionType !== filterType) return false;
+      if (filterDoc !== "all") {
+        const tA = targetMap.get(c.targetAId);
+        const tB = targetMap.get(c.targetBId);
+        if (tA?.sourceDocument !== filterDoc && tB?.sourceDocument !== filterDoc) return false;
+      }
+      return true;
+    });
+  }, [contradictions, filterType, filterDoc, targetMap]);
+
+  const typeCounts = useMemo(() => {
+    const counts: Partial<Record<ContradictionType, number>> = {};
+    for (const c of filtered) {
+      if (c.contradictionType) {
+        counts[c.contradictionType] = (counts[c.contradictionType] ?? 0) + 1;
+      }
+    }
+    return counts;
+  }, [filtered]);
+
+  if (contradictions.length === 0) return null;
+
+  return (
+    <section className="mb-10">
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+          Policy Contradictions
+        </h2>
+        <p className="text-sm text-[var(--undp-gray)] mt-1">
+          {contradictions.length} potential contradiction{contradictions.length !== 1 ? "s" : ""} detected
+          across policy targets. These represent areas where policies may work against each other.
+        </p>
+      </div>
+
+      {/* Type summary badges */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {contradictionTypes.map((type) => (
+          <span
+            key={type}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200"
+          >
+            {CONTRADICTION_TYPE_LABELS[type]}
+            <span className="bg-red-100 text-red-800 px-1.5 py-0.5 rounded-full text-[10px]">
+              {typeCounts[type] ?? 0}
+            </span>
+          </span>
+        ))}
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-3 mb-4">
+        <select
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value as ContradictionType | "all")}
+          className="text-xs border border-gray-200 rounded px-2 py-1.5 bg-white text-[var(--undp-black)]"
+        >
+          <option value="all">All contradiction types</option>
+          {contradictionTypes.map((type) => (
+            <option key={type} value={type}>
+              {CONTRADICTION_TYPE_LABELS[type]}
+            </option>
+          ))}
+        </select>
+        <select
+          value={filterDoc}
+          onChange={(e) => setFilterDoc(e.target.value as PolicyDocumentType | "all")}
+          className="text-xs border border-gray-200 rounded px-2 py-1.5 bg-white text-[var(--undp-black)]"
+        >
+          <option value="all">All document types</option>
+          {documentTypes.map((dt) => (
+            <option key={dt} value={dt}>
+              {DOC_LABELS[dt]}
+            </option>
+          ))}
+        </select>
+        {(filterType !== "all" || filterDoc !== "all") && (
+          <button
+            type="button"
+            onClick={() => { setFilterType("all"); setFilterDoc("all"); }}
+            className="text-xs text-[var(--undp-blue)] hover:underline"
+          >
+            Clear filters
+          </button>
+        )}
+      </div>
+
+      {/* List */}
+      <div className="space-y-3">
+        {filtered.map((c) => {
+          const tA = targetMap.get(c.targetAId);
+          const tB = targetMap.get(c.targetBId);
+          if (!tA || !tB) return null;
+
+          return (
+            <div
+              key={`${c.targetAId}__${c.targetBId}`}
+              className="bg-white border border-gray-100 rounded-lg p-4 hover:shadow-sm transition-shadow"
+            >
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span
+                    className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
+                    style={{ backgroundColor: ALIGNMENT_COLORS[c.alignment] }}
+                  />
+                  <span
+                    className="text-xs font-semibold"
+                    style={{ color: ALIGNMENT_COLORS[c.alignment] }}
+                  >
+                    {ALIGNMENT_LABELS[c.alignment]}
+                  </span>
+                  {c.contradictionType && (
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">
+                      {CONTRADICTION_TYPE_LABELS[c.contradictionType]}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
+                <div className="flex gap-2 items-start">
+                  <span
+                    className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-white mt-0.5"
+                    style={{ backgroundColor: DOC_COLORS[tA.sourceDocument] }}
+                  >
+                    {DOC_LABELS[tA.sourceDocument]}
+                  </span>
+                  <div>
+                    <p className="text-xs font-medium text-[var(--undp-black)]">
+                      {tA.sourceLabel}
+                    </p>
+                    <p className="text-xs text-[var(--undp-gray)] leading-relaxed mt-0.5">
+                      {tA.text}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <span
+                    className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-white mt-0.5"
+                    style={{ backgroundColor: DOC_COLORS[tB.sourceDocument] }}
+                  >
+                    {DOC_LABELS[tB.sourceDocument]}
+                  </span>
+                  <div>
+                    <p className="text-xs font-medium text-[var(--undp-black)]">
+                      {tB.sourceLabel}
+                    </p>
+                    <p className="text-xs text-[var(--undp-gray)] leading-relaxed mt-0.5">
+                      {tB.text}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {c.description && (
+                <p className="text-xs text-[var(--undp-gray)] leading-relaxed border-t border-gray-50 pt-2 mt-2">
+                  {c.description}
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {filtered.length === 0 && contradictions.length > 0 && (
+        <p className="text-sm text-[var(--undp-gray)] text-center py-8">
+          No contradictions match the current filters.
+        </p>
+      )}
+    </section>
+  );
+}
