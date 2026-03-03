@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
 import { TargetTextWithHighlights } from "./target-text";
 import type { Target, PolicyDocumentType, BtrData } from "@/types";
-
-// ─── Metadata ─────────────────────────────────────────────────────────────────
 
 const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
   NDC: "Nationally Determined Contribution",
@@ -17,14 +15,12 @@ const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
   OTHER: "Other Policy Document",
 };
 
-const DOC_CONVENTION: Partial<Record<PolicyDocumentType, { logo: string; color: string }>> = {
-  NDC:   { logo: "/unfccc-logo.svg", color: "#009EDB" },
-  NAP:   { logo: "/unfccc-logo.svg", color: "#009EDB" },
-  NBSAP: { logo: "/cbd-logo.svg",    color: "#00853F" },
-  LDN:   { logo: "/unccd-logo.svg",  color: "#B8541A" },
+const DOC_LOGO: Partial<Record<PolicyDocumentType, string>> = {
+  NDC: "/unfccc-logo.svg",
+  NAP: "/unfccc-logo.svg",
+  NBSAP: "/cbd-logo.svg",
+  LDN: "/unccd-logo.svg",
 };
-
-// ─── Target list modal ────────────────────────────────────────────────────────
 
 function TargetListModal({ label, targets, color, onClose }: {
   label: string; targets: Target[]; color: string; onClose: () => void;
@@ -58,44 +54,15 @@ function TargetListModal({ label, targets, color, onClose }: {
   );
 }
 
-// ─── Curved SVG connector ─────────────────────────────────────────────────────
-
-function CurvedConnector({ fromRef, toRef, containerRef }: {
-  fromRef: React.RefObject<HTMLElement | null>;
-  toRef: React.RefObject<HTMLElement | null>;
-  containerRef: React.RefObject<HTMLElement | null>;
-}) {
-  const [path, setPath] = useState("");
-
-  useEffect(() => {
-    function compute() {
-      const c = containerRef.current;
-      const f = fromRef.current;
-      const t = toRef.current;
-      if (!c || !f || !t) return;
-      const cb = c.getBoundingClientRect();
-      const fb = f.getBoundingClientRect();
-      const tb = t.getBoundingClientRect();
-      const x1 = fb.right - cb.left;
-      const y1 = fb.top + fb.height / 2 - cb.top;
-      const x2 = tb.left - cb.left;
-      const y2 = tb.top + tb.height / 2 - cb.top;
-      const cx = (x1 + x2) / 2;
-      setPath(`M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`);
-    }
-    compute();
-    window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
-  }, [fromRef, toRef, containerRef]);
-
-  if (!path) return null;
+function Arrow() {
   return (
-    <path d={path} fill="none" stroke="#c8d4e0" strokeWidth="1.5"
-      strokeDasharray="5 3" markerEnd="url(#cpc-arrow)" />
+    <div className="flex items-center self-center px-1 shrink-0 text-gray-300">
+      <svg width="24" height="12" viewBox="0 0 24 12" fill="none">
+        <path d="M0 6h18M15 2l6 4-6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
   );
 }
-
-// ─── Main component ────────────────────────────────────────────────────────────
 
 interface DataSourcesOverviewProps {
   targets: Target[];
@@ -114,140 +81,135 @@ export function DataSourcesOverview({ targets, alignmentOpportunities, btrData }
   }
   const docTypes = Array.from(targetsByDoc.keys());
 
-  const btrMeasures  = btrData?.mitigationMeasures.length ?? 0;
+  const btrMeasures = btrData?.mitigationMeasures.length ?? 0;
   const btrImplemented = btrData?.mitigationMeasures.filter(
     (m) => m.status.toLowerCase().includes("implemented")
   ).length ?? 0;
 
-  // Refs for curved connectors
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sourcesRef   = useRef<HTMLDivElement>(null);
-  const pipelineRef  = useRef<HTMLDivElement>(null);
-  const statsRef     = useRef<HTMLDivElement>(null);
-
   return (
     <>
-      <div
-        className="mb-10 bg-[var(--undp-light)] border border-gray-100 rounded-lg p-4 relative overflow-hidden"
-        ref={containerRef}
-      >
-        {/* Curved SVG connectors */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
-          <defs>
-            <marker id="cpc-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L6,3 z" fill="#c8d4e0" />
-            </marker>
-          </defs>
-          <CurvedConnector fromRef={sourcesRef} toRef={pipelineRef} containerRef={containerRef} />
-          <CurvedConnector fromRef={pipelineRef} toRef={statsRef}   containerRef={containerRef} />
-        </svg>
+      <div className="mb-10 bg-white border border-gray-100 rounded-lg px-5 py-4">
+        <div className="flex items-stretch gap-0">
 
-        <div className="relative z-10 flex items-start gap-2">
-
-          {/* ── 1. Data sources (prominent) ───────────────────────────── */}
-          <div className="flex flex-col gap-2 min-w-[190px]" ref={sourcesRef}>
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--undp-gray)]">
+          {/* ── Data sources ─────────────────────────────────────── */}
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2.5">
               Data sources
             </p>
-
-            {/* Active documents */}
-            {docTypes.map((docType) => {
-              const docTargets = targetsByDoc.get(docType) ?? [];
-              const color      = DOC_COLORS[docType];
-              const conv       = DOC_CONVENTION[docType];
-              return (
-                <button
-                  key={docType}
-                  type="button"
-                  onClick={() => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color })}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg border text-left transition-all hover:shadow-sm hover:bg-white group"
-                  style={{ borderColor: `${color}40`, backgroundColor: `${color}0d` }}
-                >
-                  <div className="min-w-0 flex-1">
-                    {conv?.logo && (
-                      <Image src={conv.logo} alt="" width={52} height={14} className="h-3.5 w-auto mb-1" unoptimized />
+            <div className="flex flex-col gap-1.5">
+              {docTypes.map((docType) => {
+                const docTargets = targetsByDoc.get(docType) ?? [];
+                const color = DOC_COLORS[docType];
+                const logo = DOC_LOGO[docType];
+                return (
+                  <button
+                    key={docType}
+                    type="button"
+                    onClick={() => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color })}
+                    className="flex items-center gap-2.5 px-3 py-1.5 rounded border text-left transition-all hover:bg-gray-50/80 group"
+                    style={{ borderColor: `${color}25` }}
+                  >
+                    {logo && (
+                      <Image src={logo} alt="" width={48} height={14} className="h-3.5 w-auto shrink-0" unoptimized />
                     )}
-                    <p className="text-[11px] font-semibold leading-tight" style={{ color }}>{DOC_FULL_LABELS[docType]}</p>
-                    <p className="text-[9px] text-[var(--undp-gray)] leading-tight mt-0.5">{DOC_LABELS[docType]}</p>
-                  </div>
-                  <span className="text-sm font-bold tabular-nums shrink-0" style={{ color }}>{docTargets.length}</span>
-                </button>
-              );
-            })}
+                    <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
+                      {DOC_FULL_LABELS[docType]}
+                    </span>
+                    <span className="text-[11px] font-semibold tabular-nums shrink-0" style={{ color }}>
+                      {docTargets.length}
+                    </span>
+                  </button>
+                );
+              })}
 
-            {/* BTR source */}
-            {btrData && (
-              <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg border border-[#009EDB]/30 bg-[#009EDB]/07">
-                <div className="min-w-0 flex-1">
-                  <Image src="/unfccc-logo.svg" alt="UNFCCC" width={52} height={14} className="h-3.5 w-auto mb-1" unoptimized />
-                  <p className="text-[11px] font-semibold text-[#009EDB] leading-tight">Biennial Transparency Report</p>
-                  <p className="text-[9px] text-[var(--undp-gray)] leading-tight mt-0.5">BTR / CTF</p>
+              {btrData && (
+                <div className="flex items-center gap-2.5 px-3 py-1.5 rounded border border-[#009EDB]/20">
+                  <Image src="/unfccc-logo.svg" alt="" width={48} height={14} className="h-3.5 w-auto shrink-0" unoptimized />
+                  <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
+                    Biennial Transparency Report
+                  </span>
+                  <span className="text-[11px] font-semibold tabular-nums text-[#009EDB] shrink-0">
+                    {btrMeasures}
+                  </span>
                 </div>
-                <span className="text-sm font-bold tabular-nums text-[#009EDB] shrink-0">{btrMeasures}m</span>
-              </div>
-            )}
+              )}
 
-            {/* Planned sources */}
-            <div className="mt-0.5 pt-2 border-t border-dashed border-gray-200">
-              <p className="text-[8px] font-semibold uppercase tracking-widest text-gray-400 mb-1.5">Planned</p>
-              <div className="flex flex-col gap-1">
-                {[
-                  { abbr: "NR7",  label: "CBD National Report",  color: "#00853F" },
-                  { abbr: "FTC",  label: "UNFCCC Finance data",  color: "#009EDB" },
-                  { abbr: "POL",  label: "Sectoral policies",    color: "#555" },
-                  { abbr: "···",  label: "More to come",         color: "#aaa" },
-                ].map((p) => (
-                  <div key={p.abbr} className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-dashed border-gray-200 bg-gray-50/60 opacity-55">
-                    <span className="text-[10px] font-bold shrink-0 w-7" style={{ color: p.color }}>{p.abbr}</span>
-                    <span className="text-[9px] text-gray-400 truncate">{p.label}</span>
-                  </div>
-                ))}
+              {/* Planned — more visible placeholder */}
+              <div className="flex items-center gap-2 px-3 py-2 rounded border border-dashed border-gray-300 bg-gray-50/60">
+                <span className="text-[10px] font-medium text-gray-500">
+                  + NR7, FTC Finance, Sectoral policies, …
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Spacer for connector line */}
-          <div className="w-10 shrink-0" />
+          <Arrow />
 
-          {/* ── 2. Pipeline (compact, subtle) ─────────────────────────── */}
-          <div className="flex flex-col gap-1.5 min-w-[130px]" ref={pipelineRef}>
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--undp-gray)]">
-              AI pipeline
+          {/* ── Pipeline ─────────────────────────────────────────── */}
+          <div className="min-w-[140px] shrink-0">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2.5">
+              Analysis
             </p>
-            {[
-              { label: "Extract targets",  color: "#0468b1" },
-              { label: "Classify NBS",     color: "#00853F" },
-              { label: "Tag IPCC sectors", color: "#0d9488" },
-              { label: "Score alignment",  color: "#7c3aed" },
-              { label: "Link BTR data",    color: "#009EDB", dim: !btrData },
-            ].map((s) => (
-              <div
-                key={s.label}
-                className={`flex items-center gap-2 px-2 py-1 rounded text-[10px] ${s.dim ? "opacity-35" : ""}`}
-                style={{ backgroundColor: `${s.color}0c`, borderLeft: `2px solid ${s.dim ? "#ccc" : s.color}` }}
-              >
-                <span className="font-medium" style={{ color: s.dim ? "#aaa" : s.color }}>{s.label}</span>
-              </div>
-            ))}
+            <div className="flex flex-col gap-1 text-[11px]">
+              {[
+                { label: "Target extraction",  color: "#0468b1" },
+                { label: "NBS classification", color: "#00853F" },
+                { label: "IPCC sector tagging", color: "#0d9488" },
+                { label: "Alignment scoring",  color: "#7c3aed" },
+                { label: "BTR integration",    color: "#009EDB", dim: !btrData },
+                { label: "…",                  color: "#d1d5db", placeholder: true },
+              ].map((s) => (
+                <div
+                  key={"placeholder" in s ? "pipeline-placeholder" : s.label}
+                  className="flex items-center gap-1.5 py-0.5"
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                    style={{ backgroundColor: "placeholder" in s ? "#d1d5db" : s.dim ? "#d1d5db" : s.color }}
+                  />
+                  <span className={"placeholder" in s ? "text-gray-400 italic" : s.dim ? "text-gray-400" : "text-[var(--undp-gray)]"}>
+                    {"placeholder" in s ? "More steps planned" : s.label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Spacer for connector line */}
-          <div className="w-10 shrink-0" />
+          <Arrow />
 
-          {/* ── 3. Key numbers ────────────────────────────────────────── */}
-          <div className="flex flex-col gap-2 min-w-[120px]" ref={statsRef}>
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--undp-gray)]">
-              Key findings
+          {/* ── Key numbers ───────────────────────────────────────── */}
+          <div className="min-w-[120px] shrink-0">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2.5">
+              Results
             </p>
-
-            <StatTile value={targets.length} label="policy targets" color="#0468b1" />
-            <StatTile value={alignmentOpportunities} label="alignment opportunities" color="#7c3aed" />
-            {btrData && (
-              <>
-                <StatTile value={btrMeasures}    label="mitigation measures" color="#009EDB" />
-                <StatTile value={btrImplemented} label="fully implemented"   color="#4c9f38" />
-              </>
-            )}
+            <div className="flex flex-col gap-2">
+              {[
+                {
+                  value: targets.length,
+                  label: "policy targets",
+                  color: "#0468b1",
+                  onClick: () => setModal({ label: "All policy targets", targets, color: "#0468b1" }),
+                },
+                { value: alignmentOpportunities, label: "alignment opportunities", color: "#7c3aed" },
+                ...(btrData ? [
+                  { value: btrMeasures, label: "BTR measures", color: "#009EDB" },
+                  { value: btrImplemented, label: "fully implemented", color: "#4c9f38" },
+                ] : []),
+              ].map((s) => (
+                <div
+                  key={s.label}
+                  role={"onClick" in s && s.onClick ? "button" : undefined}
+                  tabIndex={"onClick" in s && s.onClick ? 0 : undefined}
+                  onClick={"onClick" in s ? (s as { onClick: () => void }).onClick : undefined}
+                  className={`${"onClick" in s && s.onClick ? "cursor-pointer hover:bg-gray-50 transition-colors" : ""}`}
+                >
+                  <span className="text-lg font-semibold tabular-nums leading-none" style={{ color: s.color }}>
+                    {s.value}
+                  </span>
+                  <span className="text-[10px] text-[var(--undp-gray)] ml-1.5">{s.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>
@@ -262,17 +224,5 @@ export function DataSourcesOverview({ targets, alignmentOpportunities, btrData }
         />
       )}
     </>
-  );
-}
-
-function StatTile({ value, label, color }: { value: number; label: string; color: string }) {
-  return (
-    <div
-      className="px-3 py-2 rounded-lg border text-center"
-      style={{ borderColor: `${color}30`, backgroundColor: `${color}08` }}
-    >
-      <p className="text-2xl font-bold tabular-nums leading-none" style={{ color }}>{value}</p>
-      <p className="text-[9px] text-[var(--undp-gray)] mt-0.5 leading-tight">{label}</p>
-    </div>
   );
 }
