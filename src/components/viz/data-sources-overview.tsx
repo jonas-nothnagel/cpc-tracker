@@ -142,10 +142,10 @@ export function DataSourcesOverview({ targets, alignmentOpportunities, btrData }
           <CurvedConnector fromRef={pipelineRef} toRef={statsRef}   containerRef={containerRef} />
         </svg>
 
-        <div className="relative z-10 flex items-start gap-2">
+        <div className="relative z-10 flex items-start gap-2 w-full">
 
           {/* ── 1. Data sources (prominent) ───────────────────────────── */}
-          <div className="flex flex-col gap-2 min-w-[190px]" ref={sourcesRef}>
+          <div className="flex flex-col gap-2 flex-1 min-w-0" ref={sourcesRef}>
             <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--undp-gray)]">
               Data sources
             </p>
@@ -210,7 +210,7 @@ export function DataSourcesOverview({ targets, alignmentOpportunities, btrData }
           <div className="w-10 shrink-0" />
 
           {/* ── 2. Pipeline (compact, subtle) ─────────────────────────── */}
-          <div className="flex flex-col gap-1.5 min-w-[130px]" ref={pipelineRef}>
+          <div className="flex flex-col gap-1.5 flex-1 min-w-0" ref={pipelineRef}>
             <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--undp-gray)]">
               AI pipeline
             </p>
@@ -235,7 +235,7 @@ export function DataSourcesOverview({ targets, alignmentOpportunities, btrData }
           <div className="w-10 shrink-0" />
 
           {/* ── 3. Key numbers ────────────────────────────────────────── */}
-          <div className="flex flex-col gap-2 min-w-[120px]" ref={statsRef}>
+          <div className="flex flex-col gap-2 flex-1 min-w-0" ref={statsRef}>
             <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--undp-gray)]">
               Key findings
             </p>
