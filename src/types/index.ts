@@ -97,19 +97,40 @@ export interface ThematicClassification {
 // Pairwise Alignment
 // ---------------------------------------------------------------------------
 
-/** The four alignment levels from the methodology. */
-export type AlignmentLevel = "none" | "low" | "medium" | "high";
+/** Bidirectional relationship scale from contradiction to alignment. */
+export type AlignmentLevel =
+  | "high_contradiction"
+  | "moderate_contradiction"
+  | "low_tension"
+  | "none"
+  | "low"
+  | "medium"
+  | "high";
 
-/** Result of comparing two targets for alignment opportunity. */
+/** Types of policy contradiction, assigned when the relationship is negative. */
+export type ContradictionType =
+  | "goal_conflict"
+  | "resource_competition"
+  | "implementation_tension"
+  | "scale_scope_mismatch";
+
+/** Result of comparing two targets for alignment or contradiction. */
 export interface AlignmentResult {
   /** First target id */
   targetAId: string;
   /** Second target id */
   targetBId: string;
-  /** Assessed alignment level */
+  /** Assessed relationship level (negative = contradiction, positive = alignment) */
   alignment: AlignmentLevel;
+  /** Type of contradiction, present only when relationship is negative */
+  contradictionType?: ContradictionType;
   /** AI-generated rationale for the classification */
   description: string;
+}
+
+/** Whether an alignment level represents a contradiction. */
+export function isContradiction(level: AlignmentLevel): boolean {
+  return level === "high_contradiction" || level === "moderate_contradiction" || level === "low_tension";
 }
 
 // ---------------------------------------------------------------------------

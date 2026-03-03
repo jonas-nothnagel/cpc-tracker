@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, Target, PolicyDocumentType } from "@/types";
-import { DOC_COLORS } from "@/lib/utils";
+import { DOC_COLORS, ALIGNMENT_COLORS, ALIGNMENT_LABELS } from "@/lib/utils";
 import { TargetTextWithHighlights } from "./target-text";
 
 interface AlignmentNetworkProps {
@@ -15,6 +16,9 @@ interface AlignmentNetworkProps {
 }
 
 const ALIGNMENT_EDGE_COLORS: Record<AlignmentLevel, string> = {
+  high_contradiction: ALIGNMENT_COLORS.high_contradiction,
+  moderate_contradiction: ALIGNMENT_COLORS.moderate_contradiction,
+  low_tension: ALIGNMENT_COLORS.low_tension,
   none: "transparent",
   low: "#c6e48b",
   medium: "#7bc96f",
@@ -22,6 +26,9 @@ const ALIGNMENT_EDGE_COLORS: Record<AlignmentLevel, string> = {
 };
 
 const ALIGNMENT_EDGE_WIDTH: Record<AlignmentLevel, number> = {
+  high_contradiction: 2.5,
+  moderate_contradiction: 2,
+  low_tension: 2,
   none: 0,
   low: 2,
   medium: 2,
@@ -29,6 +36,9 @@ const ALIGNMENT_EDGE_WIDTH: Record<AlignmentLevel, number> = {
 };
 
 const ALIGNMENT_EDGE_DASH: Record<AlignmentLevel, string> = {
+  high_contradiction: "6 3",
+  moderate_contradiction: "6 3",
+  low_tension: "4 4",
   none: "none",
   low: "4 4",
   medium: "8 4",
@@ -234,6 +244,22 @@ export function AlignmentNetwork({
               <span className="text-[var(--undp-gray)] capitalize">{level} alignment</span>
             </div>
           ))}
+          {(["low_tension", "high_contradiction"] as AlignmentLevel[]).map((level) => (
+            <div key={level} className="flex items-center gap-1.5">
+              <svg width={28} height={8} className="shrink-0">
+                <line
+                  x1={0}
+                  y1={4}
+                  x2={28}
+                  y2={4}
+                  stroke={ALIGNMENT_EDGE_COLORS[level]}
+                  strokeWidth={ALIGNMENT_EDGE_WIDTH[level]}
+                  strokeDasharray={ALIGNMENT_EDGE_DASH[level]}
+                />
+              </svg>
+              <span className="text-[var(--undp-gray)]">{ALIGNMENT_LABELS[level]}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -408,12 +434,12 @@ export function AlignmentNetwork({
               }}
             />
             <span
-              className="text-xs font-semibold capitalize"
+              className="text-xs font-semibold"
               style={{
                 color: ALIGNMENT_EDGE_COLORS[hoveredEdge.alignment],
               }}
             >
-              {hoveredEdge.alignment} alignment
+              {ALIGNMENT_LABELS[hoveredEdge.alignment]}
             </span>
           </div>
           <p className="text-xs text-[var(--undp-black)] font-medium">

@@ -11,8 +11,10 @@ import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-sel
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
 import { CoherencyChord } from "@/components/viz/coherency-chord";
+import { ContradictionSummary } from "@/components/viz/contradiction-summary";
 import { SectorScorecard } from "@/components/viz/sector-scorecard";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
+import { isContradiction } from "@/types";
 import type {
   Target,
   PolicyDocumentType,
@@ -150,19 +152,25 @@ function AlignmentSection({
 }) {
   const [showDetail, setShowDetail] = useState(false);
 
-  // High / medium alignment pair counts for the summary teaser
   const high = alignment.filter((a) => a.alignment === "high").length;
   const medium = alignment.filter((a) => a.alignment === "medium").length;
+  const contradictionCount = alignment.filter((a) => isContradiction(a.alignment)).length;
 
   return (
     <section className="mb-10">
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[var(--undp-black)]">Cross-Document Alignment</h2>
+          <h2 className="text-lg font-semibold text-[var(--undp-black)]">Cross-Document Alignment &amp; Contradictions</h2>
           <p className="text-sm text-[var(--undp-gray)] mt-1">
             {alignment.length} target pairs assessed across policy documents —{" "}
             <span className="text-[#4c9f38] font-medium">{high} high</span> and{" "}
-            <span className="text-[#0468b1] font-medium">{medium} medium</span> alignment found.
+            <span className="text-[#0468b1] font-medium">{medium} medium</span> alignment found
+            {contradictionCount > 0 && (
+              <span className="text-red-600 font-medium">
+                , {contradictionCount} contradiction{contradictionCount !== 1 ? "s" : ""}
+              </span>
+            )}
+            .
           </p>
         </div>
         <button
@@ -423,15 +431,21 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           classifications={data.classifications}
         />
 
+        {/* --- Contradiction Summary --- */}
+        <ContradictionSummary
+          alignmentData={data.alignment}
+          targets={targets}
+        />
+
         {/* --- Pairwise Detail --- */}
         {docPairs.length > 0 && (
           <section className="mb-10" id="heatmap-section">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-                Pairwise Alignment Detail
+                Pairwise Detail
               </h2>
               <p className="text-sm text-[var(--undp-gray)] mt-1">
-                Select a document pair to explore target-level alignment. Hover cells for rationale.
+                Select a document pair to explore target-level relationships. Hover cells for rationale.
               </p>
             </div>
             <HeatmapWithSelector
@@ -479,8 +493,8 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
             Alignment Assessment pipeline. {targets.length} targets
             from {documentTypes.length} document source{documentTypes.length !== 1 ? "s" : ""} were
             classified against {data.nbsCategories.length} NBS categories
-            and {data.sectors.length} IPCC sectors. Alignment is assessed
-            pairwise across documents.
+            and {data.sectors.length} IPCC sectors. Alignment and
+            contradictions are assessed pairwise across documents.
           </p>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
             <strong>Note:</strong> All results should be validated with national

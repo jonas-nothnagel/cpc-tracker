@@ -3,26 +3,34 @@
 import { useState, useMemo } from "react";
 import { chord as d3Chord, ribbon as d3Ribbon } from "d3-chord";
 import { arc as d3Arc } from "d3-shape";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { DOC_COLORS, DOC_LABELS, ALIGNMENT_COLORS, ALIGNMENT_WEIGHTS } from "@/lib/utils";
+import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, Target, PolicyDocumentType } from "@/types";
 
 interface CoherencyChordProps {
   alignmentData: AlignmentResult[];
   targets: Target[];
-  /** Callback when a chord ribbon is clicked — receives the two document types */
   onPairClick?: (docA: PolicyDocumentType, docB: PolicyDocumentType) => void;
 }
 
-const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
-  none: "#e5e7eb",
-  low: "#c6e48b",
-  medium: "#7bc96f",
-  high: "#196127",
+type DetailBreakdown = {
+  high: number;
+  medium: number;
+  low: number;
+  none: number;
+  low_tension: number;
+  moderate_contradiction: number;
+  high_contradiction: number;
+};
+
+const EMPTY_DETAIL: DetailBreakdown = {
+  high: 0, medium: 0, low: 0, none: 0,
+  low_tension: 0, moderate_contradiction: 0, high_contradiction: 0,
 };
 
 /**
  * Aggregate alignment data into a document-type-level matrix and
- * render as an interactive chord diagram.
+ * render as an interactive chord diagram with contradiction support.
  */
 export function CoherencyChord({ alignmentData, targets, onPairClick }: CoherencyChordProps) {
   const [hoveredArc, setHoveredArc] = useState<number | null>(null);
@@ -54,7 +62,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
     }
 
     const mat: number[][] = Array.from({ length: n }, () => new Array(n).fill(0));
-    const detail: Record<string, Record<AlignmentLevel, number>>[] = Array.from(
+    const detail: Record<string, DetailBreakdown>[] = Array.from(
       { length: n },
       () => ({})
     );
@@ -75,27 +83,30 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
 
       const keyAB = `${iA}-${iB}`;
       const keyBA = `${iB}-${iA}`;
-      if (!detail[iA][keyAB])
-        detail[iA][keyAB] = { none: 0, low: 0, medium: 0, high: 0 };
-      if (!detail[iB][keyBA])
-        detail[iB][keyBA] = { none: 0, low: 0, medium: 0, high: 0 };
+      if (!detail[iA][keyAB]) detail[iA][keyAB] = { ...EMPTY_DETAIL };
+      if (!detail[iB][keyBA]) detail[iB][keyBA] = { ...EMPTY_DETAIL };
       detail[iA][keyAB][a.alignment]++;
       detail[iB][keyBA][a.alignment]++;
     }
 
-    // Compute coherency scores per document pair
-    // Score = (3×high + 2×medium + 1×low) / (3 × possible_pairs) × 100
-    const scores: { iA: number; iB: number; score: number; coverage: number }[] = [];
+    const scores: {
+      iA: number;
+      iB: number;
+      score: number;
+      coverage: number;
+      contradictions: number;
+    }[] = [];
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
         const key = `${i}-${j}`;
-        const d = detail[i][key] ?? { high: 0, medium: 0, low: 0 };
+        const d = detail[i][key] ?? { ...EMPTY_DETAIL };
         const weighted = 3 * d.high + 2 * d.medium + 1 * d.low;
         const possible = counts[i] * counts[j];
         const score = possible > 0 ? Math.round((weighted / (3 * possible)) * 100) : 0;
         const aligned = d.high + d.medium + d.low;
         const coverage = possible > 0 ? Math.round((aligned / possible) * 100) : 0;
-        scores.push({ iA: i, iB: j, score, coverage });
+        const contradictions = d.high_contradiction + d.moderate_contradiction + d.low_tension;
+        scores.push({ iA: i, iB: j, score, coverage, contradictions });
       }
     }
     scores.sort((a, b) => b.score - a.score);
@@ -122,12 +133,13 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
   if (totalAligned === 0) {
     return (
       <div className="text-center py-12 text-sm text-[var(--undp-gray)]">
-        No alignment relationships found between documents.
+        No alignment or contradiction relationships found between documents.
       </div>
     );
   }
 
-  // SVG dimensions
+  const totalContradictions = alignmentData.filter((a) => isContradiction(a.alignment)).length;
+
   const size = 420;
   const outerRadius = size / 2 - 40;
   const innerRadius = outerRadius - 20;
@@ -141,21 +153,26 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
     { startAngle: number; endAngle: number }
   >().radius(innerRadius);
 
-  // Helper to get detail for a chord
-  function getChordDetail(sourceIdx: number, targetIdx: number) {
+  function getChordDetail(sourceIdx: number, targetIdx: number): DetailBreakdown {
     const key = `${sourceIdx}-${targetIdx}`;
-    const d = detailMatrix[sourceIdx]?.[key];
-    if (!d) return { high: 0, medium: 0, low: 0 };
-    return d;
+    return detailMatrix[sourceIdx]?.[key] ?? { ...EMPTY_DETAIL };
   }
 
-  // Determine dominant alignment level for chord color
   function chordColor(sourceIdx: number, targetIdx: number): string {
     const d = getChordDetail(sourceIdx, targetIdx);
+    const contraTotal = d.high_contradiction + d.moderate_contradiction + d.low_tension;
+    const alignTotal = d.high + d.medium + d.low;
+
+    if (contraTotal > alignTotal) {
+      if (d.high_contradiction > 0) return ALIGNMENT_COLORS.high_contradiction;
+      if (d.moderate_contradiction > 0) return ALIGNMENT_COLORS.moderate_contradiction;
+      return ALIGNMENT_COLORS.low_tension;
+    }
     if (d.high > 0 && d.high >= d.medium && d.high >= d.low) return ALIGNMENT_COLORS.high;
     if (d.medium > 0 && d.medium >= d.low) return ALIGNMENT_COLORS.medium;
     if (d.low > 0) return ALIGNMENT_COLORS.low;
-    return ALIGNMENT_COLORS.none;
+    if (contraTotal > 0) return ALIGNMENT_COLORS.low_tension;
+    return "#e5e7eb";
   }
 
   return (
@@ -166,8 +183,13 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
           Across {docTypes.length} document types, {totalAligned} target
-          pair{totalAligned !== 1 ? "s" : ""} show alignment opportunities.
-          Click a ribbon or table row to jump to the detailed pairwise heatmap.
+          pair{totalAligned !== 1 ? "s" : ""} show relationships
+          {totalContradictions > 0 && (
+            <span className="text-red-600">
+              {" "}({totalContradictions} contradiction{totalContradictions !== 1 ? "s" : ""})
+            </span>
+          )}
+          . Click a ribbon or table row to jump to the detailed pairwise heatmap.
         </p>
       </div>
 
@@ -196,6 +218,20 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
               <span className="text-[var(--undp-gray)] capitalize">{level}</span>
             </div>
           ))}
+          <div className="flex items-center gap-1.5">
+            <span
+              className="w-3.5 h-3.5 rounded-sm inline-block"
+              style={{ backgroundColor: ALIGNMENT_COLORS.low_tension }}
+            />
+            <span className="text-[var(--undp-gray)]">Tension</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span
+              className="w-3.5 h-3.5 rounded-sm inline-block"
+              style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }}
+            />
+            <span className="text-[var(--undp-gray)]">Contradiction</span>
+          </div>
         </div>
       </div>
 
@@ -309,13 +345,14 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
               <th className="text-left py-1.5 font-medium">Document Pair</th>
               <th className="text-right py-1.5 font-medium">Coherency</th>
               <th className="text-right py-1.5 font-medium">Coverage</th>
-              <th className="text-right py-1.5 font-medium">Pairs</th>
+              <th className="text-right py-1.5 font-medium">Aligned</th>
+              <th className="text-right py-1.5 font-medium text-red-600">Conflicts</th>
             </tr>
           </thead>
           <tbody>
             {pairScores.map((ps) => {
               const d = getChordDetail(ps.iA, ps.iB);
-              const total = d.high + d.medium + d.low;
+              const totalAlignPairs = d.high + d.medium + d.low;
               return (
                 <tr
                   key={`${ps.iA}-${ps.iB}`}
@@ -338,7 +375,13 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
                     {ps.coverage}%
                   </td>
                   <td className="py-1.5 text-right text-[var(--undp-gray)] tabular-nums">
-                    {total}
+                    {totalAlignPairs}
+                  </td>
+                  <td className="py-1.5 text-right tabular-nums" style={{
+                    color: ps.contradictions > 0 ? ALIGNMENT_COLORS.high_contradiction : "#94a3b8",
+                    fontWeight: ps.contradictions > 0 ? 600 : 400,
+                  }}>
+                    {ps.contradictions}
                   </td>
                 </tr>
               );
@@ -347,14 +390,16 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
         </table>
         <p className="text-[10px] text-[var(--undp-gray)]/70 mt-2 leading-relaxed">
           <strong>Coherency</strong> = quality-weighted alignment score (high=3, medium=2, low=1 per pair, normalized to max possible).
-          <strong> Coverage</strong> = % of possible cross-document target pairs that show any alignment.
+          <strong> Coverage</strong> = % of possible cross-document target pairs that show alignment.
+          <strong> Conflicts</strong> = number of target pairs showing contradiction or tension.
         </p>
       </div>
 
       {/* Chord tooltip */}
       {hoveredChord && (() => {
         const d = getChordDetail(hoveredChord.source, hoveredChord.target);
-        const total = d.high + d.medium + d.low;
+        const totalAlign = d.high + d.medium + d.low;
+        const totalContra = d.high_contradiction + d.moderate_contradiction + d.low_tension;
         const srcType = docTypes[hoveredChord.source];
         const tgtType = docTypes[hoveredChord.target];
         const ps = pairScores.find(
@@ -383,7 +428,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
               </p>
             )}
             <p className="text-xs text-[var(--undp-gray)]">
-              {total} aligned pair{total !== 1 ? "s" : ""}
+              {totalAlign} aligned pair{totalAlign !== 1 ? "s" : ""}
               {ps ? ` · ${ps.coverage}% coverage` : ""}
             </p>
             <div className="flex gap-3 mt-1.5 text-xs">
@@ -406,6 +451,28 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
                 </span>
               )}
             </div>
+            {totalContra > 0 && (
+              <div className="flex gap-3 mt-1 text-xs">
+                {d.high_contradiction > 0 && (
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />
+                    {d.high_contradiction} high contr.
+                  </span>
+                )}
+                {d.moderate_contradiction > 0 && (
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.moderate_contradiction }} />
+                    {d.moderate_contradiction} mod. contr.
+                  </span>
+                )}
+                {d.low_tension > 0 && (
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.low_tension }} />
+                    {d.low_tension} tension
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         );
       })()}
@@ -421,7 +488,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
             {" · "}
             {count} target{count !== 1 ? "s" : ""}
             {" · "}
-            {Math.round(totalConnections)} alignment connection{totalConnections !== 1 ? "s" : ""} with other documents
+            {Math.round(totalConnections)} connection{totalConnections !== 1 ? "s" : ""} with other documents
           </div>
         );
       })()}

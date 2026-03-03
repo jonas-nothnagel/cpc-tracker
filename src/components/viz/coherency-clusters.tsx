@@ -31,6 +31,9 @@ interface Cluster {
 }
 
 const LEVEL_WEIGHT: Record<AlignmentLevel, number> = {
+  high_contradiction: -3,
+  moderate_contradiction: -2,
+  low_tension: -1,
   none: 0,
   low: 1,
   medium: 2,

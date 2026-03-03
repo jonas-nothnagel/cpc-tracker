@@ -100,11 +100,13 @@ const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
 interface DashboardStatsProps {
   targets: Target[];
   alignmentCount: number;
+  contradictionCount: number;
 }
 
 export function DashboardStats({
   targets,
   alignmentCount,
+  contradictionCount,
 }: DashboardStatsProps) {
   const targetsByDoc = new Map<PolicyDocumentType, Target[]>();
   for (const t of targets) {
@@ -146,6 +148,13 @@ export function DashboardStats({
         label="Alignment Opportunities"
         color="var(--chart-alignment, #196127)"
       />
+      {contradictionCount > 0 && (
+        <StatCard
+          value={contradictionCount}
+          label="Contradictions Found"
+          color="#b91c1c"
+        />
+      )}
     </section>
   );
 }
