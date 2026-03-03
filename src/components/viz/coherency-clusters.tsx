@@ -9,14 +9,14 @@ import type {
   Target,
   PolicyDocumentType,
   ThematicClassification,
-  Theme,
+  IpccSector,
 } from "@/types";
 
 interface CoherencyClustersProps {
   alignmentData: AlignmentResult[];
   targets: Target[];
   classifications: ThematicClassification[];
-  themes: Theme[];
+  sectors: IpccSector[];
 }
 
 interface Cluster {
@@ -26,11 +26,14 @@ interface Cluster {
   edges: AlignmentResult[];
   /** Weighted strength: 3×high + 2×medium + 1×low, normalized */
   strength: number;
-  /** Top shared themes across cluster targets */
-  sharedThemes: { name: string; count: number }[];
+  /** Top shared sectors across cluster targets */
+  sharedSectors: { name: string; count: number }[];
 }
 
 const LEVEL_WEIGHT: Record<AlignmentLevel, number> = {
+  high_contradiction: -3,
+  moderate_contradiction: -2,
+  low_tension: -1,
   none: 0,
   low: 1,
   medium: 2,
@@ -46,7 +49,7 @@ export function CoherencyClusters({
   alignmentData,
   targets,
   classifications,
-  themes,
+  sectors,
 }: CoherencyClustersProps) {
   const [expandedCluster, setExpandedCluster] = useState<number | null>(null);
 
@@ -55,9 +58,9 @@ export function CoherencyClusters({
     [targets]
   );
 
-  const themeMap = useMemo(
-    () => new Map(themes.map((th) => [th.id, th])),
-    [themes]
+  const sectorMap = useMemo(
+    () => new Map(sectors.map((s) => [s.id, s])),
+    [sectors]
   );
 
   const clusters = useMemo(() => {
@@ -136,25 +139,25 @@ export function CoherencyClusters({
       const maxWeight = clusterEdges.length * 3;
       const strength = maxWeight > 0 ? totalWeight / maxWeight : 0;
 
-      // Find shared themes: themes that apply to targets from 2+ doc types in cluster
-      const themeToDocTypes = new Map<string, Set<PolicyDocumentType>>();
+      // Find shared sectors: sectors that apply to targets from 2+ doc types in cluster
+      const sectorToDocTypes = new Map<string, Set<PolicyDocumentType>>();
       for (const tid of comp.targetIds) {
         const t = targetMap.get(tid);
         if (!t) continue;
-        const targetThemes = classifications.filter(
-          (c) => c.targetId === tid && c.taxonomyType === "theme" && c.isRelevant
+        const targetSectors = classifications.filter(
+          (c) => c.targetId === tid && c.taxonomyType === "sector" && c.isRelevant
         );
-        for (const tc of targetThemes) {
-          if (!themeToDocTypes.has(tc.categoryId))
-            themeToDocTypes.set(tc.categoryId, new Set());
-          themeToDocTypes.get(tc.categoryId)!.add(t.sourceDocument);
+        for (const tc of targetSectors) {
+          if (!sectorToDocTypes.has(tc.categoryId))
+            sectorToDocTypes.set(tc.categoryId, new Set());
+          sectorToDocTypes.get(tc.categoryId)!.add(t.sourceDocument);
         }
       }
 
-      const sharedThemes = Array.from(themeToDocTypes.entries())
+      const sharedSectors = Array.from(sectorToDocTypes.entries())
         .filter(([, docs]) => docs.size >= 2)
-        .map(([themeId, docs]) => ({
-          name: themeMap.get(themeId)?.name ?? themeId,
+        .map(([sectorId, docs]) => ({
+          name: sectorMap.get(sectorId)?.name ?? sectorId,
           count: docs.size,
         }))
         .sort((a, b) => b.count - a.count)
@@ -166,7 +169,7 @@ export function CoherencyClusters({
         docTypes,
         edges: clusterEdges,
         strength,
-        sharedThemes,
+        sharedSectors,
       });
     }
 
@@ -178,7 +181,7 @@ export function CoherencyClusters({
     });
 
     return richClusters;
-  }, [alignmentData, classifications, targetMap, themeMap]);
+  }, [alignmentData, classifications, targetMap, sectorMap]);
 
   if (clusters.length === 0) {
     return (
@@ -243,10 +246,10 @@ export function CoherencyClusters({
                       ))}
                     </div>
 
-                    {cluster.sharedThemes.length > 0 && (
+                    {cluster.sharedSectors.length > 0 && (
                       <p className="text-xs text-[var(--undp-gray)] mb-1">
-                        Shared themes:{" "}
-                        {cluster.sharedThemes.map((th) => th.name).join(", ")}
+                        Shared sectors:{" "}
+                        {cluster.sharedSectors.map((s) => s.name).join(", ")}
                       </p>
                     )}
 

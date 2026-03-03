@@ -4,11 +4,14 @@
 
 *Last updated: February 2026*
 
+The main users of this application will be policy makers, UN country offices, ministries, etc. Therefore, insights have to be clear, actionable, transparent and genuinly helpful. If methodologies are used for calculating, this should always be well thought through, explained and serve the purpose to establish real insights and not for adding or even impostering complexity. 
+
+For additional brainstorming notes, test data and other things that concern development, prototyping and scoping ideas, see /dev_data_scripts folder. Note that all information and data in this is not treated as confirmed plans or even as factual correct information. However, it should be used to add to context and see how and what actually makes sense along the project and can be transformed and clear, technical steps. Everything should always lead to technical implementation. If we can establish even one or two very well functioning insightful use cases that would be a clear win already.
 ---
 
 ## 1. Product Vision
 
-An interactive web application that allows UNDP country offices and national partners to **input their policy targets and documents**, and potentially other data (budget, fiscal, sectoral, etc) run AI-powered coherency analysis, and explore the results through interactive visualizations. The tool automates and enhances the process currently done manually in static reports (e.g. the Mongolia Target Alignment Assessment). 
+An interactive web application that allows UNDP country offices and national partners to, for example, **input their policy targets and documents**, and potentially other data (budget, fiscal, sectoral, etc) run AI-powered coherency analysis, and explore the results through interactive visualizations. The tool automates and enhances the process currently done manually in static reports (e.g. the Mongolia Target Alignment Assessment). 
 We also aim to track and visualise implementation and budget, fiscal flows as well for better understanding. 
 We may also include geospatial data in later iterations if it makes sense and work also towards assessing causal relationships, for example, impact on job creation, impact of funding on implemenation etc.
 
@@ -110,3 +113,5 @@ These items must be addressed before production deployment:
 - Users can currently add/remove NBS categories and themes per analysis.
 - In production, consider country-specific presets (e.g., Mongolia has different NBS relevance than Panama).
 - Theme definitions should be versioned so analyses can be reproduced.
+
+

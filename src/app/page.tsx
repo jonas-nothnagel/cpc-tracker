@@ -101,7 +101,7 @@ export default function Home() {
               </h3>
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
                 Multi-agent LLM pipeline classifies targets against NBS
-                categories, cross-cutting themes, and assesses pairwise
+                categories and IPCC sectors, then assesses pairwise
                 alignment.
               </p>
             </div>
@@ -111,7 +111,7 @@ export default function Home() {
                 Explore Results
               </h3>
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
-                Interactive dashboard with NBS breakdown, theme coverage,
+                Interactive dashboard with NBS breakdown, sector coverage,
                 alignment heatmaps, and exportable insights.
               </p>
             </div>

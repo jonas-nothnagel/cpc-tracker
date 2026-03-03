@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import type { PolicyDocumentType, NbsCategory, Theme } from "@/types";
+import type { PolicyDocumentType, NbsCategory, IpccSector } from "@/types";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
 import { NBS_CATEGORIES } from "@/data/nbs-categories";
-import { THEMES } from "@/data/themes";
+import { IPCC_SECTORS } from "@/data/sectors";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -284,13 +284,13 @@ export default function UploadPage() {
   const [nbsCategories, setNbsCategories] = useState<CategoryItem[]>(
     NBS_CATEGORIES.map((c) => ({ ...c, enabled: true, isCustom: false }))
   );
-  const [themes, setThemes] = useState<CategoryItem[]>(
-    THEMES.map((t) => ({ ...t, enabled: true, isCustom: false }))
+  const [sectors, setSectors] = useState<CategoryItem[]>(
+    IPCC_SECTORS.map((s) => ({ ...s, enabled: true, isCustom: false }))
   );
   const [showCategories, setShowCategories] = useState(false);
   const [newCatName, setNewCatName] = useState("");
   const [newCatDesc, setNewCatDesc] = useState("");
-  const [addingTo, setAddingTo] = useState<"nbs" | "theme" | null>(null);
+  const [addingTo, setAddingTo] = useState<"nbs" | "sector" | null>(null);
 
   // Submission
   const [submitting, setSubmitting] = useState(false);
@@ -299,11 +299,11 @@ export default function UploadPage() {
   // ─── Derived values ──────────────────────────────────────────────────────
 
   const activeNbs = useMemo(() => nbsCategories.filter((c) => c.enabled), [nbsCategories]);
-  const activeThemes = useMemo(() => themes.filter((t) => t.enabled), [themes]);
+  const activeSectors = useMemo(() => sectors.filter((s) => s.enabled), [sectors]);
 
   const estimate = useMemo(() => {
     const n = targets.length;
-    const cats = activeNbs.length + activeThemes.length;
+    const cats = activeNbs.length + activeSectors.length;
     if (n === 0) return null;
     const quantCalls = n;
     const classCalls = n * cats;
@@ -313,7 +313,7 @@ export default function UploadPage() {
     const totalCalls = quantCalls + classCalls + decompCalls + estPairs;
     const estCost = totalCalls * COST_PER_CALL;
     return { totalCalls, estCost, estPairs, docTypes };
-  }, [targets, activeNbs.length, activeThemes.length]);
+  }, [targets, activeNbs.length, activeSectors.length]);
 
   // ─── Target management ───────────────────────────────────────────────────
 
@@ -356,15 +356,15 @@ export default function UploadPage() {
 
   // ─── Category management ─────────────────────────────────────────────────
 
-  function toggleCategory(type: "nbs" | "theme", id: string) {
-    const setter = type === "nbs" ? setNbsCategories : setThemes;
+  function toggleCategory(type: "nbs" | "sector", id: string) {
+    const setter = type === "nbs" ? setNbsCategories : setSectors;
     setter((prev) =>
       prev.map((c) => (c.id === id ? { ...c, enabled: !c.enabled } : c))
     );
   }
 
-  function removeCategory(type: "nbs" | "theme", id: string) {
-    const setter = type === "nbs" ? setNbsCategories : setThemes;
+  function removeCategory(type: "nbs" | "sector", id: string) {
+    const setter = type === "nbs" ? setNbsCategories : setSectors;
     setter((prev) => prev.filter((c) => c.id !== id));
   }
 
@@ -380,7 +380,7 @@ export default function UploadPage() {
     if (addingTo === "nbs") {
       setNbsCategories((prev) => [...prev, newItem]);
     } else {
-      setThemes((prev) => [...prev, newItem]);
+      setSectors((prev) => [...prev, newItem]);
     }
     setNewCatName("");
     setNewCatDesc("");
@@ -404,7 +404,7 @@ export default function UploadPage() {
             name,
             description,
           })),
-          themes: activeThemes.map(({ id, name, description }) => ({
+          sectors: activeSectors.map(({ id, name, description }) => ({
             id,
             name,
             description,
@@ -477,7 +477,7 @@ export default function UploadPage() {
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
             Enter your national policy targets from NDCs, NBSAPs, NAPs, and
             other documents. The AI pipeline will classify each target against
-            Nature-Based Solutions categories and cross-cutting themes, then
+            Nature-Based Solutions categories and IPCC sectors, then
             assess pairwise alignment across documents.
           </p>
         </div>
@@ -831,15 +831,15 @@ export default function UploadPage() {
                 ▸
               </span>
               Analysis Configuration — NBS Categories ({activeNbs.length}) &
-              Themes ({activeThemes.length})
+              IPCC Sectors ({activeSectors.length})
             </button>
 
             {showCategories && (
               <div className="bg-[var(--undp-light)] rounded-lg p-6 space-y-6">
                 <p className="text-xs text-[var(--undp-gray)] leading-relaxed">
-                  Each target will be classified against every enabled category
-                  and theme below. You can disable categories that are not
-                  relevant to your country context, or add custom ones.
+                  Each target will be classified against every enabled NBS
+                  category and IPCC sector below. You can disable categories that
+                  are not relevant to your country context, or add custom ones.
                 </p>
 
                 {/* NBS Categories */}
@@ -932,38 +932,38 @@ export default function UploadPage() {
                   )}
                 </div>
 
-                {/* Themes */}
+                {/* IPCC Sectors */}
                 <div>
                   <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-                    Cross-Cutting Themes ({activeThemes.length} active)
+                    IPCC Sectors ({activeSectors.length} active)
                   </h3>
                   <div className="space-y-2">
-                    {themes.map((theme) => (
+                    {sectors.map((sector) => (
                       <label
-                        key={theme.id}
+                        key={sector.id}
                         className="flex items-start gap-3 text-sm cursor-pointer group"
                       >
                         <input
                           type="checkbox"
-                          checked={theme.enabled}
-                          onChange={() => toggleCategory("theme", theme.id)}
+                          checked={sector.enabled}
+                          onChange={() => toggleCategory("sector", sector.id)}
                           className="mt-0.5 rounded border-gray-300 text-[var(--undp-blue)] focus:ring-[var(--undp-blue)]"
                         />
                         <div className="flex-1 min-w-0">
                           <span
                             className={
-                              theme.enabled
+                              sector.enabled
                                 ? "text-[var(--undp-black)]"
                                 : "text-gray-400 line-through"
                             }
                           >
-                            {theme.name}
+                            {sector.name}
                           </span>
-                          {theme.isCustom && (
+                          {sector.isCustom && (
                             <button
                               onClick={(e) => {
                                 e.preventDefault();
-                                removeCategory("theme", theme.id);
+                                removeCategory("sector", sector.id);
                               }}
                               className="ml-2 text-xs text-gray-400 hover:text-[var(--undp-red)]"
                             >
@@ -974,14 +974,14 @@ export default function UploadPage() {
                       </label>
                     ))}
                   </div>
-                  {addingTo === "theme" ? (
+                  {addingTo === "sector" ? (
                     <div className="mt-3 flex gap-2 items-end">
                       <div className="flex-1">
                         <input
                           type="text"
                           value={newCatName}
                           onChange={(e) => setNewCatName(e.target.value)}
-                          placeholder="Theme name"
+                          placeholder="Sector name"
                           className="w-full px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[var(--undp-blue)]"
                         />
                       </div>
@@ -1014,10 +1014,10 @@ export default function UploadPage() {
                     </div>
                   ) : (
                     <button
-                      onClick={() => setAddingTo("theme")}
+                      onClick={() => setAddingTo("sector")}
                       className="mt-3 text-xs text-[var(--undp-blue)] hover:underline"
                     >
-                      + Add custom theme
+                      + Add custom sector
                     </button>
                   )}
                 </div>
@@ -1046,8 +1046,8 @@ export default function UploadPage() {
                 </li>
                 <li>
                   Classification against {activeNbs.length} NBS categories and{" "}
-                  {activeThemes.length} themes (
-                  {targets.length * (activeNbs.length + activeThemes.length)}{" "}
+                  {activeSectors.length} IPCC sectors (
+                  {targets.length * (activeNbs.length + activeSectors.length)}{" "}
                   LLM calls)
                 </li>
                 <li>Target decomposition ({targets.length} LLM calls)</li>

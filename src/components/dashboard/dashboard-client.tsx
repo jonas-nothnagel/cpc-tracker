@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { countByCategory, DOC_LABELS } from "@/lib/utils";
@@ -8,10 +8,12 @@ import { NbsBarChart } from "@/components/viz/nbs-bar-chart";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { AlignmentHeatmap } from "@/components/viz/alignment-heatmap";
 import { AlignmentNetworkSelector } from "@/components/viz/alignment-network-selector";
-import { DashboardStats } from "@/components/viz/dashboard-stats";
+import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
 import { CoherencyChord } from "@/components/viz/coherency-chord";
 import { ContradictionSummary } from "@/components/viz/contradiction-summary";
+import { SectorScorecard } from "@/components/viz/sector-scorecard";
+import { EmissionsTrend } from "@/components/viz/emissions-trend";
 import { isContradiction } from "@/types";
 import type {
   Target,
@@ -19,15 +21,17 @@ import type {
   ThematicClassification,
   AlignmentResult,
   NbsCategory,
-  Theme,
+  IpccSector,
+  BtrData,
 } from "@/types";
 
 interface DashboardData {
   targets: Target[];
   nbsCategories: NbsCategory[];
-  themes: (Theme & { isCustom?: boolean })[];
+  sectors: IpccSector[];
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
+  btrData: BtrData | null;
 }
 
 /** Filter alignment to pairs between two document types */
@@ -65,14 +69,146 @@ function normalizeTarget(t: Record<string, unknown>): Target {
   };
 }
 
-/** Add isCustom to themes from API */
-function normalizeTheme(t: Record<string, unknown>): Theme {
+function normalizeSector(t: Record<string, unknown>): IpccSector {
   return {
     id: String(t.id),
     name: String(t.name),
     description: String(t.description ?? ""),
-    isCustom: false,
   };
+}
+
+interface DocPair {
+  docA: string;
+  docB: string;
+  label: string;
+  rowTargets: Target[];
+  colTargets: Target[];
+}
+
+/** Single heatmap with a tab strip to select which document pair to view. */
+function HeatmapWithSelector({
+  docPairs,
+  alignment,
+  targets,
+}: {
+  docPairs: DocPair[];
+  alignment: AlignmentResult[];
+  targets: Target[];
+}) {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const pair = docPairs[selectedIdx] ?? docPairs[0];
+
+  const filteredAlignment = useMemo(
+    () => pair ? filterAlignmentByDocPair(alignment, targets, pair.docA, pair.docB) : [],
+    [alignment, targets, pair]
+  );
+
+  if (!pair) return null;
+
+  return (
+    <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg overflow-hidden">
+      {/* Tab strip — only shown when more than one pair */}
+      {docPairs.length > 1 && (
+        <div className="flex flex-wrap gap-0 border-b border-gray-100 bg-white/60">
+          {docPairs.map((p, i) => (
+            <button
+              key={`${p.docA}-${p.docB}`}
+              type="button"
+              onClick={() => setSelectedIdx(i)}
+              className={`px-4 py-2.5 text-xs font-medium transition-colors border-b-2 ${
+                i === selectedIdx
+                  ? "border-[var(--undp-blue)] text-[var(--undp-blue)] bg-white"
+                  : "border-transparent text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:bg-gray-50"
+              }`}
+            >
+              {DOC_LABELS[p.docA as Target["sourceDocument"]]} × {DOC_LABELS[p.docB as Target["sourceDocument"]]}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="p-6">
+        <AlignmentHeatmap
+          title={pair.label}
+          alignmentData={filteredAlignment}
+          rowTargets={pair.rowTargets}
+          colTargets={pair.colTargets}
+          rowLabel={`${DOC_LABELS[pair.docA as Target["sourceDocument"]]} ↓`}
+          colLabel={`${DOC_LABELS[pair.docB as Target["sourceDocument"]]} →`}
+        />
+      </div>
+    </div>
+  );
+}
+
+/** Alignment section — chord + network collapsed behind a toggle by default */
+function AlignmentSection({
+  alignment, targets, nbsCategories, sectors, classifications,
+}: {
+  alignment: AlignmentResult[];
+  targets: Target[];
+  nbsCategories: NbsCategory[];
+  sectors: IpccSector[];
+  classifications: ThematicClassification[];
+}) {
+  const [showDetail, setShowDetail] = useState(false);
+
+  const high = alignment.filter((a) => a.alignment === "high").length;
+  const medium = alignment.filter((a) => a.alignment === "medium").length;
+  const contradictionCount = alignment.filter((a) => isContradiction(a.alignment)).length;
+
+  return (
+    <section className="mb-10">
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-semibold text-[var(--undp-black)]">Cross-Document Alignment &amp; Contradictions</h2>
+          <p className="text-sm text-[var(--undp-gray)] mt-1">
+            {alignment.length} target pairs assessed across policy documents —{" "}
+            <span className="text-[#4c9f38] font-medium">{high} high</span> and{" "}
+            <span className="text-[#0468b1] font-medium">{medium} medium</span> alignment found.
+            {contradictionCount > 0 && (
+              <>
+                {" "}<span className="text-red-600 font-medium">{contradictionCount} contradiction{contradictionCount !== 1 ? "s" : ""}</span> detected.
+              </>
+            )}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowDetail((v) => !v)}
+          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded-lg hover:bg-[var(--undp-blue)]/05 transition-colors"
+        >
+          {showDetail ? "Hide detail" : "Show detail"}
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${showDetail ? "rotate-180" : ""}`}>
+            <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+      {showDetail && (
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-[var(--undp-light)] border border-gray-100 p-6">
+            <CoherencyChord
+              alignmentData={alignment}
+              targets={targets}
+              onPairClick={() => {
+                const el = document.getElementById("heatmap-section");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            />
+          </div>
+          <div className="bg-[var(--undp-light)] border border-gray-100 p-6 overflow-hidden">
+            <AlignmentNetworkSelector
+              alignmentData={alignment}
+              targets={targets}
+              nbsCategories={nbsCategories}
+              sectors={sectors}
+              classifications={classifications}
+            />
+          </div>
+        </div>
+      )}
+    </section>
+  );
 }
 
 export function DashboardClient({ analysisId }: { analysisId?: string }) {
@@ -92,9 +228,10 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
         setData({
           targets: (raw.targets ?? []).map(normalizeTarget),
           nbsCategories: raw.nbsCategories ?? [],
-          themes: (raw.themes ?? []).map(normalizeTheme),
+          sectors: (raw.sectors ?? []).map(normalizeSector),
           classifications: raw.classifications ?? [],
           alignment: raw.alignment ?? [],
+          btrData: raw.btrData ?? null,
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
@@ -140,8 +277,8 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
   const nbsClassifications = data.classifications.filter(
     (c) => c.taxonomyType === "nbs"
   );
-  const themeClassifications = data.classifications.filter(
-    (c) => c.taxonomyType === "theme"
+  const sectorClassifications = data.classifications.filter(
+    (c) => c.taxonomyType === "sector"
   );
 
   const nbsCounts = countByCategory(
@@ -149,10 +286,10 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
     nbsClassifications,
     data.nbsCategories
   );
-  const themeCounts = countByCategory(
+  const sectorCounts = countByCategory(
     targets,
-    themeClassifications,
-    data.themes
+    sectorClassifications,
+    data.sectors
   );
 
   const targetsWithNbs = new Set(
@@ -161,7 +298,8 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
 
   const documentTypes = Array.from(targetsByDoc.keys()) as Target["sourceDocument"][];
   const nbsSorted = [...nbsCounts].sort((a, b) => b.total - a.total);
-  const themeSorted = [...themeCounts].sort((a, b) => b.total - a.total);
+  const sectorSorted = [...sectorCounts].sort((a, b) => b.total - a.total);
+
 
   // Generate all document-type pair combinations for heatmaps
   const docPairs: { docA: string; docB: string; label: string; rowTargets: Target[]; colTargets: Target[] }[] = [];
@@ -233,10 +371,10 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           </p>
         </section>
 
-        <DashboardStats
+        <DataSourcesOverview
           targets={targets}
-          alignmentCount={data.alignment.filter((a) => !isContradiction(a.alignment) && a.alignment !== "none").length}
-          contradictionCount={data.alignment.filter((a) => isContradiction(a.alignment)).length}
+          alignmentOpportunities={data.alignment.filter((a) => a.alignment === "high" || a.alignment === "medium").length}
+          btrData={data.btrData}
         />
 
         {/* --- Thematic Classification --- */}
@@ -246,7 +384,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
               Thematic Classification
             </h2>
             <p className="text-sm text-[var(--undp-gray)] mt-1">
-              How targets map to nature-based solutions and cross-cutting themes.
+              How targets map to nature-based solutions and IPCC sectors.
             </p>
           </div>
 
@@ -273,49 +411,24 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
 
         <section className="bg-[var(--undp-light)] border border-gray-100 p-6 mb-10">
           <ThemeBarChart
-            title="Cross-Cutting Themes"
-            subtitle="Number of targets that appear to pertain to each theme. Click a segment to see which targets."
-            data={themeSorted}
+            title="IPCC Sector Classification"
+            subtitle="Number of targets per IPCC sector. Click a segment to see which targets."
+            data={sectorSorted}
             documentTypes={[...documentTypes]}
             targets={targets}
-            themeClassifications={themeClassifications}
+            themeClassifications={sectorClassifications}
+            taxonomyType="sector"
           />
         </section>
 
         {/* --- Alignment & Contradictions Analysis --- */}
-        <section className="mb-10">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-              Cross-Document Alignment &amp; Contradictions
-            </h2>
-            <p className="text-sm text-[var(--undp-gray)] mt-1">
-              How targets across policy documents align with or contradict each other.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div className="bg-[var(--undp-light)] border border-gray-100 p-6">
-              <CoherencyChord
-                alignmentData={data.alignment}
-                targets={targets}
-                onPairClick={(docA: PolicyDocumentType, docB: PolicyDocumentType) => {
-                  const el = document.getElementById(`heatmap-${docA}-${docB}`) ??
-                    document.getElementById(`heatmap-${docB}-${docA}`);
-                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-              />
-            </div>
-            <div className="bg-[var(--undp-light)] border border-gray-100 p-6 overflow-hidden">
-              <AlignmentNetworkSelector
-                alignmentData={data.alignment}
-                targets={targets}
-                nbsCategories={data.nbsCategories}
-                themes={data.themes}
-                classifications={data.classifications}
-              />
-            </div>
-          </div>
-        </section>
+        <AlignmentSection
+          alignment={data.alignment}
+          targets={targets}
+          nbsCategories={data.nbsCategories}
+          sectors={data.sectors}
+          classifications={data.classifications}
+        />
 
         {/* --- Contradiction Summary --- */}
         <ContradictionSummary
@@ -324,30 +437,52 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
         />
 
         {/* --- Pairwise Detail --- */}
-        <section className="mb-10">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-              Pairwise Detail
-            </h2>
-            <p className="text-sm text-[var(--undp-gray)] mt-1">
-              Hover over cells to see relationship rationale between target pairs.
-              Green indicates alignment, red/amber indicates contradiction.
-            </p>
-          </div>
-
-          {docPairs.map((pair) => (
-            <div key={`${pair.docA}-${pair.docB}`} id={`heatmap-${pair.docA}-${pair.docB}`} className="bg-[var(--undp-light)] border border-gray-100 p-6 mb-4 scroll-mt-20">
-              <AlignmentHeatmap
-                title={pair.label}
-                alignmentData={filterAlignmentByDocPair(data.alignment, targets, pair.docA, pair.docB)}
-                rowTargets={pair.rowTargets}
-                colTargets={pair.colTargets}
-                rowLabel={`${DOC_LABELS[pair.docA as Target["sourceDocument"]]} ↓`}
-                colLabel={`${DOC_LABELS[pair.docB as Target["sourceDocument"]]} →`}
-              />
+        {docPairs.length > 0 && (
+          <section className="mb-10" id="heatmap-section">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+                Pairwise Alignment Detail
+              </h2>
+              <p className="text-sm text-[var(--undp-gray)] mt-1">
+                Select a document pair to explore target-level alignment. Hover cells for rationale.
+                Green indicates alignment, red/amber indicates contradiction.
+              </p>
             </div>
-          ))}
-        </section>
+            <HeatmapWithSelector
+              docPairs={docPairs}
+              alignment={data.alignment}
+              targets={targets}
+            />
+          </section>
+        )}
+
+        {/* --- Implementation Gap Analysis (BTR data) --- */}
+        {data.btrData && data.btrData.mitigationMeasures.length > 0 && (
+          <section className="mb-10">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+                Policy-to-Implementation Overview
+              </h2>
+              <p className="text-sm text-[var(--undp-gray)] mt-1">
+                How national policy targets connect to reported implementation measures by sector.{" "}
+                {data.btrData.mitigationMeasures.length} mitigation measures and{" "}
+                {data.btrData.technologySupport.length + data.btrData.capacityBuilding.length} support
+                projects from the Biennial Transparency Report.
+              </p>
+            </div>
+
+            <SectorScorecard
+              btrData={data.btrData}
+              targets={targets}
+              sectors={data.sectors}
+              classifications={data.classifications}
+            />
+
+            <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">
+              <EmissionsTrend btrData={data.btrData} />
+            </div>
+          </section>
+        )}
 
         <section className="mb-10 bg-[var(--undp-light)] border border-gray-100 p-6">
           <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-2">
@@ -358,7 +493,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
             Assessment pipeline. {targets.length} targets
             from {documentTypes.length} document source{documentTypes.length !== 1 ? "s" : ""} were
             classified against {data.nbsCategories.length} NBS categories
-            and {data.themes.length} cross-cutting themes. Alignment and
+            and {data.sectors.length} IPCC sectors. Alignment and
             contradictions are assessed pairwise across documents.
           </p>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed">

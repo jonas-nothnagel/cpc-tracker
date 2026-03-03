@@ -172,7 +172,7 @@ function PipelineViz({ status }: { status: AnalysisStatus }) {
       <div className="flex items-center justify-center gap-3 mb-4">
         <InputChip label="Your policy targets" state={step >= 1 ? "active" : "pending"} />
         <span className={`text-xs transition-colors duration-500 ${step >= 1 ? "text-[var(--undp-gray)]" : "text-gray-200"}`}>+</span>
-        <InputChip label="NBS categories & themes" state={step >= 1 ? "active" : "pending"} />
+        <InputChip label="NBS categories & IPCC sectors" state={step >= 1 ? "active" : "pending"} />
       </div>
 
       {/* Merge arrow */}
@@ -192,7 +192,7 @@ function PipelineViz({ status }: { status: AnalysisStatus }) {
         <PipelineNode
           step={2}
           title="Thematic classification"
-          detail="Mapping each target to relevant NBS categories and cross-cutting themes"
+          detail="Mapping each target to relevant NBS categories and IPCC sectors"
           output={
             getState(2) === "done" && summary
               ? `${summary.relevantClassifications} relevant matches found across ${summary.totalClassifications.toLocaleString()} comparisons`
@@ -203,7 +203,7 @@ function PipelineViz({ status }: { status: AnalysisStatus }) {
         <PipelineNode
           step={3}
           title="Cross-document pairing"
-          detail="Identifying targets from different documents that share common themes"
+          detail="Identifying targets from different documents that share common IPCC sectors"
           output={
             getState(3) === "done"
               ? `${pairCount} target pairs identified for comparison`

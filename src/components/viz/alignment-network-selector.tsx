@@ -7,37 +7,34 @@ import type {
   Target,
   ThematicClassification,
   NbsCategory,
-  Theme,
+  IpccSector,
 } from "@/types";
 
-type TaxonomyType = "nbs" | "theme";
+type TaxonomyType = "nbs" | "sector";
 
 interface AlignmentNetworkSelectorProps {
   alignmentData: AlignmentResult[];
   targets: Target[];
   nbsCategories: NbsCategory[];
-  themes: Theme[];
+  sectors: IpccSector[];
   classifications: ThematicClassification[];
 }
 
 /**
  * Wrapper around AlignmentNetwork that lets the user pick an
- * NBS category or cross-cutting theme to filter the network.
- *
- * Mirrors the report structure: one network diagram per category/theme
- * (Figures 4.2–4.10 for NBS, 4.12–4.17+ for themes).
+ * NBS category or IPCC sector to filter the network.
  */
 export function AlignmentNetworkSelector({
   alignmentData,
   targets,
   nbsCategories,
-  themes,
+  sectors,
   classifications,
 }: AlignmentNetworkSelectorProps) {
   const [taxonomyType, setTaxonomyType] = useState<TaxonomyType>("nbs");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
 
-  const baseCategories = taxonomyType === "nbs" ? nbsCategories : themes;
+  const baseCategories = taxonomyType === "nbs" ? nbsCategories : sectors;
 
   // Sort by alignment activity: categories with most cross-document pairs first,
   // sparse/empty ones last (avoids defaulting to "nothing shown")
@@ -152,8 +149,8 @@ export function AlignmentNetworkSelector({
           Target Alignment Network
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
-          One network per category/theme, showing alignment opportunities between
-          targets. As reported in the assessment (Figures 4.2–4.17).
+          One network per NBS category or IPCC sector, showing alignment
+          opportunities between targets.
         </p>
       </div>
 
@@ -172,14 +169,14 @@ export function AlignmentNetworkSelector({
             NBS Categories
           </button>
           <button
-            onClick={() => handleTaxonomyChange("theme")}
+            onClick={() => handleTaxonomyChange("sector")}
             className={`px-4 py-2 transition-colors ${
-              taxonomyType === "theme"
+              taxonomyType === "sector"
                 ? "bg-[var(--undp-blue)] text-white"
                 : "bg-white text-[var(--undp-gray)] hover:bg-gray-50"
             }`}
           >
-            Cross-Cutting Themes
+            IPCC Sectors
           </button>
         </div>
 
@@ -221,7 +218,7 @@ export function AlignmentNetworkSelector({
       {filteredTargets.length === 0 ? (
         <div className="text-center py-16 text-sm text-[var(--undp-gray)]">
           No targets classified under this{" "}
-          {taxonomyType === "nbs" ? "NBS category" : "theme"}.
+          {taxonomyType === "nbs" ? "NBS category" : "IPCC sector"}.
         </div>
       ) : filteredAlignment.length === 0 ? (
         <div className="text-center py-16 text-sm text-[var(--undp-gray)]">

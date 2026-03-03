@@ -39,6 +39,14 @@ export function AlignmentHeatmap({
     y: number;
   } | null>(null);
 
+  const [selectedCell, setSelectedCell] = useState<{
+    rowTarget: Target;
+    colTarget: Target;
+    alignment: AlignmentLevel;
+    description: string;
+    contradictionType?: string;
+  } | null>(null);
+
   const alignmentMap = useMemo(() => {
     const map = new Map<string, AlignmentResult>();
     for (const a of alignmentData) {
@@ -144,6 +152,16 @@ export function AlignmentHeatmap({
                           ? "border-2 border-red-800/60"
                           : "border border-white/50"
                     }`}
+                    onClick={() => {
+                      setHoveredCell(null);
+                      setSelectedCell({
+                        rowTarget: rowT,
+                        colTarget: colT,
+                        alignment: level,
+                        description: result?.description ?? "",
+                        contradictionType: result?.contradictionType,
+                      });
+                    }}
                     onMouseEnter={(e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
                       setHoveredCell({
@@ -170,6 +188,86 @@ export function AlignmentHeatmap({
           </div>
         </div>
 
+        {/* Click-to-detail modal */}
+        {selectedCell && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+            onClick={() => setSelectedCell(null)}
+          >
+            <div
+              className="bg-white rounded-lg shadow-xl max-w-xl w-full flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-3 h-3 rounded-sm shrink-0"
+                    style={{ backgroundColor: ALIGNMENT_COLORS[selectedCell.alignment], border: selectedCell.alignment === "none" ? "1px solid #e2e8f0" : "none" }}
+                  />
+                  <span className="text-sm font-semibold text-[var(--undp-black)]">
+                    {ALIGNMENT_LABELS[selectedCell.alignment]} {isContradiction(selectedCell.alignment) ? "contradiction" : "alignment"}
+                  </span>
+                  <span className="text-xs text-[var(--undp-gray)] ml-1">
+                    {selectedCell.rowTarget.sourceLabel} ↔ {selectedCell.colTarget.sourceLabel}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCell(null)}
+                  className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* Contradiction type badge */}
+              {selectedCell.contradictionType && (
+                <div className="px-5 pt-3">
+                  <span className="inline-block px-2 py-0.5 text-xs font-medium rounded bg-red-50 text-red-700 border border-red-200">
+                    {CONTRADICTION_TYPE_LABELS[selectedCell.contradictionType as keyof typeof CONTRADICTION_TYPE_LABELS]}
+                  </span>
+                </div>
+              )}
+
+              {/* Target texts */}
+              <div className="px-5 py-4 grid grid-cols-2 gap-4 border-b border-gray-100">
+                {[
+                  { target: selectedCell.rowTarget, axis: rowLabel },
+                  { target: selectedCell.colTarget, axis: colLabel },
+                ].map(({ target, axis }) => (
+                  <div key={target.id}>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                      {axis.replace(" ↓", "").replace(" →", "")} — {target.sourceLabel}
+                    </p>
+                    <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
+                      {target.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Rationale */}
+              {selectedCell.description && (
+                <div className="px-5 py-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                    AI rationale
+                  </p>
+                  <p className="text-xs text-[var(--undp-black)] leading-relaxed">
+                    {selectedCell.description}
+                  </p>
+                </div>
+              )}
+              {!selectedCell.description && (
+                <div className="px-5 py-4">
+                  <p className="text-xs text-[var(--undp-gray)] italic">No alignment rationale recorded for this pair.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Hover tooltip */}
         {hoveredCell && (
           <div
             className="fixed z-50 bg-white border border-gray-200 rounded-lg shadow-lg p-3 max-w-xs pointer-events-none"

@@ -26,7 +26,7 @@ interface AnalyzeRequest {
     sourceLabel: string;
   }[];
   nbsCategories?: { id: string; name: string; description: string }[];
-  themes?: { id: string; name: string; description: string }[];
+  sectors?: { id: string; name: string; description: string }[];
 }
 
 const PROJECT_ROOT = process.cwd();
@@ -100,10 +100,10 @@ export async function POST(request: NextRequest) {
     );
 
     // Write categories (custom if provided, otherwise copy defaults)
-    if (body.nbsCategories || body.themes) {
+    if (body.nbsCategories || body.sectors) {
       const categories = {
         nbs_categories: body.nbsCategories ?? [],
-        themes: body.themes ?? [],
+        ipcc_sectors: body.sectors ?? [],
       };
       writeFileSync(
         join(inputDir, "categories.json"),

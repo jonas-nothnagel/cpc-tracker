@@ -3541,3896 +3541,2480 @@
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_4",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_4",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_4",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_4",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_4",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_5",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_5",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_5",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_5",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_5",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_6",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_6",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_6",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_6",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_6",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_7",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_7",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_7",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_7",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_7",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_7",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_7",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_7",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_7",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_7",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_7",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_8",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_8",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_8",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_8",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_8",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_9",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_9",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_9",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_9",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_9",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_10",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_10",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_10",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_10",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_10",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_11",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_11",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_11",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_11",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_11",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_12",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_12",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_12",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_12",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_12",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_13",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_13",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_13",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_13",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_13",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_13",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_13",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_13",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_13",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_13",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_13",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_14",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_14",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_14",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_14",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_14",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NAP_15",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NAP_15",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_15",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_15",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NAP_15",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Forests_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Forests_2",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Forests_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_3",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_4",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_PublicHealth",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_SocialProtection",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Education",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NDC_Education",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Education",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Education",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Education",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Culture",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "targetId": "NDC_Education",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Education",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Education",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Culture",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Culture",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Culture",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Culture",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_LivestockMitigation",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_LivestockMitigation",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Mitigation_1",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Mitigation_2",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Mitigation_3",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Mitigation_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_WaterResources_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_WaterResources_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_ArableFarming_1",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_ArableFarming_4",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_4",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_4",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_4",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_4",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_4",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_5",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_5",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_5",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_5",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_5",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_6",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_6",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NBT_6",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_6",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBT_6",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_6",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBT_6",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_6",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_7",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_7",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_7",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_7",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_7",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_7",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_7",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_7",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NBT_7",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBT_7",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_7",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_7",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_8",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_8",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_8",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_8",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_8",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_9",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_9",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_9",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_9",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_9",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_10",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_10",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_10",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_10",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_10",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_11",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_11",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_11",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_11",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_11",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NBT_12",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_12",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_12",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_12",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_12",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
-    "targetId": "NBT_13",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "targetId": "NBT_12",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
-    "targetId": "NBT_13",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "targetId": "NBT_12",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
-    "targetId": "NBT_13",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_13",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_13",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "targetId": "NBT_12",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NBT_13",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_13",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_13",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_13",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_13",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_13",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_14",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
-    "targetId": "NBT_15",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_15",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
+    "targetId": "NBT_13",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
-    "targetId": "NBT_15",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
+    "targetId": "NBT_14",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_14",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_14",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_14",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_14",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_14",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_14",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_15",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": true
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false
   },
   {
     "targetId": "NBT_15",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_15",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_15",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_15",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_15",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_15",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_16",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_16",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_16",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_16",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_16",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
   },
   {
     "targetId": "NBT_17",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_17",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NBT_17",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_17",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_17",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_17",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_17",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_18",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBT_19",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
     "isRelevant": true
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_17",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_18",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NBT_19",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
   }
 ]
