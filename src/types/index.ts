@@ -44,7 +44,7 @@ export interface Target {
 // Nature-Based Solution Categories
 // ---------------------------------------------------------------------------
 
-/** One of the 10 predefined NBS categories (IPCC / Griscom et al.) */
+/** One of the 10 predefined NBS categories or added by users (IPCC / Griscom et al.) */
 export interface NbsCategory {
   id: string;
   name: string;
