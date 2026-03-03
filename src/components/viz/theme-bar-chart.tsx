@@ -28,13 +28,15 @@ interface ThemeBarChartProps {
   documentTypes: PolicyDocumentType[];
   targets: Target[];
   themeClassifications: ThematicClassification[];
+  taxonomyType?: "theme" | "sector";
 }
 
 function getTargetsForThemeAndDoc(
   themeId: string,
   docType: PolicyDocumentType,
   targets: Target[],
-  classifications: ThematicClassification[]
+  classifications: ThematicClassification[],
+  taxonomyType: "theme" | "sector" = "sector",
 ): Target[] {
   const targetIds = new Set(
     classifications
@@ -42,7 +44,7 @@ function getTargetsForThemeAndDoc(
         (c) =>
           c.categoryId === themeId &&
           c.isRelevant &&
-          c.taxonomyType === "theme"
+          c.taxonomyType === taxonomyType
       )
       .map((c) => c.targetId)
   );
@@ -62,6 +64,7 @@ export function ThemeBarChart({
   documentTypes,
   targets,
   themeClassifications,
+  taxonomyType = "sector",
 }: ThemeBarChartProps) {
   const [modal, setModal] = useState<{
     themeName: string;
@@ -87,7 +90,8 @@ export function ThemeBarChart({
       data.categoryId,
       docType,
       targets,
-      themeClassifications
+      themeClassifications,
+      taxonomyType,
     );
     if (segmentTargets.length > 0) {
       setModal({
@@ -187,7 +191,7 @@ export function ThemeBarChart({
             </div>
             <div className="overflow-auto flex-1 px-6 py-4">
               <p className="text-xs text-[var(--undp-gray)] mb-3">
-                {DOC_LABELS[modal.docType]} targets that refer to this theme
+                {DOC_LABELS[modal.docType]} targets classified under this category
               </p>
               <ul className="space-y-3">
                 {modal.targets.map((t) => (

@@ -50,9 +50,12 @@ export async function GET(request: NextRequest) {
   }
 
   const targets = readJson<unknown[]>(join(dataDir, targetsFile));
-  const categories = readJson<{ nbs_categories: unknown[]; themes: unknown[] }>(
-    join(dataDir, "categories.json")
-  );
+  const categories = readJson<{
+    nbs_categories: unknown[];
+    ipcc_sectors?: unknown[];
+    themes?: unknown[];
+    _themes_deprecated?: unknown[];
+  }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
   const alignment = readJson<unknown[]>(join(outputDir, "alignment.json"));
   const quantFlags = readJson<
@@ -104,11 +107,15 @@ export async function GET(request: NextRequest) {
     };
   });
 
+  const btrData = readJson<unknown>(join(outputDir, "btr_data.json"));
+
   return NextResponse.json({
     targets: enrichedTargets,
     nbsCategories: categories.nbs_categories,
-    themes: categories.themes,
+    sectors: categories.ipcc_sectors ?? [],
+    themes: categories.themes ?? categories._themes_deprecated ?? [],
     classifications,
     alignment,
+    btrData: btrData ?? null,
   });
 }
