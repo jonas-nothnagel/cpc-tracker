@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "step": 5,
+  "totalSteps": 5,
+  "currentStep": "Complete",
+  "message": "Pipeline finished in 35.2s",
+  "startedAt": "2026-03-02T15:31:47.923608+00:00",
+  "completedAt": "2026-03-02T15:32:23.165777+00:00",
+  "error": null,
+  "summary": {
+    "totalTargets": 59,
+    "totalClassifications": 1239,
+    "relevantClassifications": 134,
+    "totalPairs": 275,
+    "alignmentLevels": {
+      "high": 103,
+      "medium": 124,
+      "low": 46,
+      "low_tension": 2
+    },
+    "totalContradictions": 2,
+    "elapsedSeconds": 35.2
+  }
+}
