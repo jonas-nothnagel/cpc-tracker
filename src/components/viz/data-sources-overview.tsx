@@ -16,11 +16,13 @@ const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
 };
 
 const DOC_LOGO: Partial<Record<PolicyDocumentType, string>> = {
-  NDC: "/unfccc-logo.svg",
-  NAP: "/unfccc-logo.svg",
-  NBSAP: "/cbd-logo.svg",
-  LDN: "/unccd-logo.svg",
+  NDC:      "/unfccc.png",
+  NAP:      "/unfccc.png",
+  NBSAP:    "/cbd_logo.png",
+  LDN:      "/unccd.png",
 };
+
+// ─── Target list modal ────────────────────────────────────────────────────────
 
 function TargetListModal({ label, targets, color, onClose }: {
   label: string; targets: Target[]; color: string; onClose: () => void;
@@ -54,15 +56,100 @@ function TargetListModal({ label, targets, color, onClose }: {
   );
 }
 
+// ─── Arrow ───────────────────────────────────────────────────────────────────
+
 function Arrow() {
   return (
-    <div className="flex items-center self-center px-1 shrink-0 text-gray-300">
-      <svg width="24" height="12" viewBox="0 0 24 12" fill="none">
-        <path d="M0 6h18M15 2l6 4-6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <div className="flex items-center shrink-0 px-1.5 text-gray-300">
+      <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
+        <path d="M0 5h14M11 1l6 4-6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   );
 }
+
+// ─── Individual source box ────────────────────────────────────────────────────
+
+function SourceBox({ logo, name, abbr, count, color, onClick, planned = false }: {
+  logo?: string;
+  name: string;
+  abbr?: string;
+  count?: number;
+  color: string;
+  onClick?: () => void;
+  planned?: boolean;
+}) {
+  const Tag = onClick ? "button" : "div";
+  return (
+    <Tag
+      type={onClick ? "button" : undefined}
+      onClick={onClick}
+      className={[
+        "flex items-center gap-3 px-3 py-2.5 rounded border text-left w-full",
+        planned
+          ? "border-dashed border-gray-300 bg-white/50 opacity-50"
+          : "border-gray-200 bg-white",
+        onClick ? "hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer" : "",
+      ].join(" ")}
+    >
+      {/* Logo */}
+      <div className="w-16 shrink-0 flex items-center justify-center">
+        {logo && !planned ? (
+          <Image src={logo} alt="" width={64} height={32} className="max-h-10 w-auto object-contain" unoptimized />
+        ) : (
+          <span className="text-[10px] font-bold text-gray-400">{abbr}</span>
+        )}
+      </div>
+
+      {/* Name + count */}
+      <div className="min-w-0 flex-1">
+        <p className={`text-[11px] font-medium leading-tight truncate ${planned ? "text-gray-400" : "text-[var(--undp-black)]"}`}>
+          {name}
+        </p>
+        {abbr && !planned && (
+          <p className="text-[9px] text-[var(--undp-gray)] mt-0.5">{abbr}</p>
+        )}
+      </div>
+
+      {/* Count badge */}
+      {count !== undefined && !planned && (
+        <span className="text-[11px] font-semibold tabular-nums shrink-0 text-[var(--undp-gray)]">
+          {count}
+        </span>
+      )}
+    </Tag>
+  );
+}
+
+// ─── Bracket connector: many boxes → one arrow ───────────────────────────────
+// A thin vertical line with a horizontal tick at each box's midpoint, joining
+// into a single horizontal arrow pointing right. Rendered purely with CSS.
+
+function BracketConnector({ rowCount }: { rowCount: number }) {
+  // Each SourceBox: ~52px height + 6px gap
+  const rowH = 52;
+  const gap = 6;
+  const totalH = rowCount * rowH + (rowCount - 1) * gap;
+  const midY = totalH / 2;
+
+  return (
+    <svg width="28" height={totalH} viewBox={`0 0 28 ${totalH}`} fill="none" className="text-gray-300" style={{ display: "block" }}>
+      {/* Vertical bar on left */}
+      <line x1="4" y1="0" x2="4" y2={totalH} stroke="currentColor" strokeWidth="1.5" />
+      {/* Tick at each row midpoint */}
+      {Array.from({ length: rowCount }).map((_, i) => {
+        const y = i * (rowH + gap) + rowH / 2;
+        return <line key={i} x1="0" y1={y} x2="4" y2={y} stroke="currentColor" strokeWidth="1.5" />;
+      })}
+      {/* Stem from bar to arrowhead */}
+      <line x1="4" y1={midY} x2="22" y2={midY} stroke="currentColor" strokeWidth="1.5" />
+      {/* Arrowhead */}
+      <path d={`M16 ${midY - 4} L22 ${midY} L16 ${midY + 4}`} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// ─── Main component ────────────────────────────────────────────────────────────
 
 interface DataSourcesOverviewProps {
   targets: Target[];
@@ -81,135 +168,114 @@ export function DataSourcesOverview({ targets, alignmentOpportunities, btrData }
   }
   const docTypes = Array.from(targetsByDoc.keys());
 
+  const dataSourceCount = docTypes.length + (btrData ? 1 : 0);
   const btrMeasures = btrData?.mitigationMeasures.length ?? 0;
-  const btrImplemented = btrData?.mitigationMeasures.filter(
-    (m) => m.status.toLowerCase().includes("implemented")
-  ).length ?? 0;
+
+  // All source boxes (active + BTR + planned placeholder)
+  const activeSourceCount = docTypes.length + (btrData ? 1 : 0) + 1; // +1 for planned
+
+  const colHeaderClass = "text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]";
 
   return (
     <>
-      <div className="mb-10 bg-white border border-gray-100 rounded-lg px-5 py-4">
-        <div className="flex items-stretch gap-0">
+      <div className="mb-10 bg-white border border-gray-100 rounded-lg px-5 pt-4 pb-5">
 
-          {/* ── Data sources ─────────────────────────────────────── */}
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2.5">
-              Data sources
-            </p>
-            <div className="flex flex-col gap-1.5">
-              {docTypes.map((docType) => {
-                const docTargets = targetsByDoc.get(docType) ?? [];
-                const color = DOC_COLORS[docType];
-                const logo = DOC_LOGO[docType];
-                return (
-                  <button
-                    key={docType}
-                    type="button"
-                    onClick={() => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color })}
-                    className="flex items-center gap-2.5 px-3 py-1.5 rounded border text-left transition-all hover:bg-gray-50/80 group"
-                    style={{ borderColor: `${color}25` }}
-                  >
-                    {logo && (
-                      <Image src={logo} alt="" width={48} height={14} className="h-3.5 w-auto shrink-0" unoptimized />
-                    )}
-                    <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
-                      {DOC_FULL_LABELS[docType]}
-                    </span>
-                    <span className="text-[11px] font-semibold tabular-nums shrink-0" style={{ color }}>
-                      {docTargets.length}
-                    </span>
-                  </button>
-                );
-              })}
+        {/* ── Header row ───────────────────────────────────────────── */}
+        <div className="flex items-end mb-2.5 gap-0">
+          <div className="min-w-[220px] max-w-[260px]">
+            <p className={colHeaderClass}>Data sources</p>
+          </div>
+          {/* bracket + spacer width */}
+          <div style={{ width: 28 }} />
+          <div className="min-w-[110px] mx-2">
+            <p className={colHeaderClass}>Analysis</p>
+          </div>
+          {/* arrow spacer */}
+          <div style={{ width: 32 }} />
+          <div>
+            <p className={colHeaderClass}>Results</p>
+          </div>
+        </div>
 
-              {btrData && (
-                <div className="flex items-center gap-2.5 px-3 py-1.5 rounded border border-[#009EDB]/20">
-                  <Image src="/unfccc-logo.svg" alt="" width={48} height={14} className="h-3.5 w-auto shrink-0" unoptimized />
-                  <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
-                    Biennial Transparency Report
-                  </span>
-                  <span className="text-[11px] font-semibold tabular-nums text-[#009EDB] shrink-0">
-                    {btrMeasures}
-                  </span>
-                </div>
-              )}
+        {/* ── Content row ──────────────────────────────────────────── */}
+        <div className="flex items-center gap-0">
 
-              {/* Planned — more visible placeholder */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded border border-dashed border-gray-300 bg-gray-50/60">
-                <span className="text-[10px] font-medium text-gray-500">
-                  + NR7, FTC Finance, Sectoral policies, …
-                </span>
+          {/* Source boxes */}
+          <div className="flex flex-col gap-1.5 min-w-[220px] max-w-[260px] self-stretch justify-center">
+            {docTypes.map((docType) => {
+              const docTargets = targetsByDoc.get(docType) ?? [];
+              return (
+                <SourceBox
+                  key={docType}
+                  logo={DOC_LOGO[docType]}
+                  name={DOC_FULL_LABELS[docType]}
+                  abbr={DOC_LABELS[docType]}
+                  count={docTargets.length}
+                  color={DOC_COLORS[docType]}
+                  onClick={() => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color: DOC_COLORS[docType] })}
+                />
+              );
+            })}
+            {btrData && (
+              <SourceBox
+                logo="/unfccc.png"
+                name="Biennial Transparency Report"
+                abbr="BTR / CTF"
+                count={btrMeasures}
+                color="#009EDB"
+              />
+            )}
+            <SourceBox
+              name="NR7, FTC Finance, Sectoral policies, …"
+              abbr="+"
+              color="#9ca3af"
+              planned
+            />
+          </div>
+
+          {/* Bracket connector — self-stretch so SVG spans the sources height */}
+          <div className="self-stretch mx-0 shrink-0 flex items-center" style={{ width: 28 }}>
+            <BracketConnector rowCount={activeSourceCount} />
+          </div>
+
+          {/* Pipeline */}
+          <div className="shrink-0 min-w-[110px] mx-2 px-3 py-2.5 rounded border border-gray-200 bg-[var(--undp-light)] self-center">
+            <ul className="flex flex-col gap-1 text-[10px] text-[var(--undp-gray)]">
+              {["Target extraction", "NBS classification", "IPCC sectors", "Alignment scoring", "BTR integration", "…"].map((label, i) => (
+                <li key={i} className={`flex items-center gap-1.5 ${label === "…" ? "text-gray-400 italic" : ""}`}>
+                  {label !== "…" && <span className="w-1 h-1 rounded-full bg-gray-400 shrink-0" />}
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Arrow */}
+          <div className="flex items-center shrink-0 px-2 text-gray-300">
+            <svg width="24" height="12" viewBox="0 0 24 12" fill="none">
+              <path d="M0 6h18M15 2l7 4-7 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {/* Results */}
+          <div className="shrink-0 flex flex-col gap-3">
+            {[
+              { value: dataSourceCount, label: "data sources" },
+              { value: targets.length, label: "policy targets", onClick: () => setModal({ label: "All policy targets", targets, color: "#0468b1" }) },
+              { value: alignmentOpportunities, label: "alignment opportunities" },
+            ].map((s) => (
+              <div
+                key={s.label}
+                role={"onClick" in s ? "button" : undefined}
+                tabIndex={"onClick" in s ? 0 : undefined}
+                onClick={"onClick" in s ? (s as { onClick: () => void }).onClick : undefined}
+                onKeyDown={"onClick" in s ? (e: React.KeyboardEvent) => { if (e.key === "Enter") (s as { onClick: () => void }).onClick(); } : undefined}
+                className={"onClick" in s ? "cursor-pointer rounded px-1 -mx-1 hover:bg-gray-50 transition-colors" : ""}
+              >
+                <span className="text-xl font-semibold tabular-nums leading-none text-[var(--undp-blue)]">{s.value}</span>
+                <span className="text-[10px] text-[var(--undp-gray)] ml-1.5 leading-none">{s.label}</span>
               </div>
-            </div>
-          </div>
-
-          <Arrow />
-
-          {/* ── Pipeline ─────────────────────────────────────────── */}
-          <div className="min-w-[140px] shrink-0">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2.5">
-              Analysis
-            </p>
-            <div className="flex flex-col gap-1 text-[11px]">
-              {[
-                { label: "Target extraction",  color: "#0468b1" },
-                { label: "NBS classification", color: "#00853F" },
-                { label: "IPCC sector tagging", color: "#0d9488" },
-                { label: "Alignment scoring",  color: "#7c3aed" },
-                { label: "BTR integration",    color: "#009EDB", dim: !btrData },
-                { label: "…",                  color: "#d1d5db", placeholder: true },
-              ].map((s) => (
-                <div
-                  key={"placeholder" in s ? "pipeline-placeholder" : s.label}
-                  className="flex items-center gap-1.5 py-0.5"
-                >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ backgroundColor: "placeholder" in s ? "#d1d5db" : s.dim ? "#d1d5db" : s.color }}
-                  />
-                  <span className={"placeholder" in s ? "text-gray-400 italic" : s.dim ? "text-gray-400" : "text-[var(--undp-gray)]"}>
-                    {"placeholder" in s ? "More steps planned" : s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Arrow />
-
-          {/* ── Key numbers ───────────────────────────────────────── */}
-          <div className="min-w-[120px] shrink-0">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2.5">
-              Results
-            </p>
-            <div className="flex flex-col gap-2">
-              {[
-                {
-                  value: targets.length,
-                  label: "policy targets",
-                  color: "#0468b1",
-                  onClick: () => setModal({ label: "All policy targets", targets, color: "#0468b1" }),
-                },
-                { value: alignmentOpportunities, label: "alignment opportunities", color: "#7c3aed" },
-                ...(btrData ? [
-                  { value: btrMeasures, label: "BTR measures", color: "#009EDB" },
-                  { value: btrImplemented, label: "fully implemented", color: "#4c9f38" },
-                ] : []),
-              ].map((s) => (
-                <div
-                  key={s.label}
-                  role={"onClick" in s && s.onClick ? "button" : undefined}
-                  tabIndex={"onClick" in s && s.onClick ? 0 : undefined}
-                  onClick={"onClick" in s ? (s as { onClick: () => void }).onClick : undefined}
-                  className={`${"onClick" in s && s.onClick ? "cursor-pointer hover:bg-gray-50 transition-colors" : ""}`}
-                >
-                  <span className="text-lg font-semibold tabular-nums leading-none" style={{ color: s.color }}>
-                    {s.value}
-                  </span>
-                  <span className="text-[10px] text-[var(--undp-gray)] ml-1.5">{s.label}</span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
 
         </div>

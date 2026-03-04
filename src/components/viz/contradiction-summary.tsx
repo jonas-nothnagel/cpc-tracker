@@ -24,6 +24,7 @@ export function ContradictionSummary({
   alignmentData,
   targets,
 }: ContradictionSummaryProps) {
+  const [expanded, setExpanded] = useState(false);
   const [filterType, setFilterType] = useState<ContradictionType | "all">("all");
   const [filterDoc, setFilterDoc] = useState<PolicyDocumentType | "all">("all");
 
@@ -82,15 +83,30 @@ export function ContradictionSummary({
 
   return (
     <section className="mb-10">
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-          Policy Contradictions
-        </h2>
-        <p className="text-sm text-[var(--undp-gray)] mt-1">
-          {contradictions.length} potential contradiction{contradictions.length !== 1 ? "s" : ""} detected
-          across policy targets. These represent areas where policies may work against each other.
-        </p>
-      </div>
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="w-full flex items-start justify-between gap-4 text-left mb-4"
+      >
+        <div>
+          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+            Policy Contradictions
+          </h2>
+          <p className="text-sm text-[var(--undp-gray)] mt-1">
+            {contradictions.length} potential contradiction{contradictions.length !== 1 ? "s" : ""} detected
+            across policy targets.
+            {!expanded && " Click to expand details."}
+          </p>
+        </div>
+        <span className="shrink-0 mt-1 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded-lg hover:bg-[var(--undp-blue)]/5 transition-colors">
+          {expanded ? "Hide" : "Details"}
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${expanded ? "rotate-180" : ""}`}>
+            <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </button>
+
+      {!expanded ? null : <>
 
       {/* Type summary badges */}
       <div className="flex flex-wrap gap-2 mb-4">
@@ -226,6 +242,8 @@ export function ContradictionSummary({
           No contradictions match the current filters.
         </p>
       )}
+
+      </>}
     </section>
   );
 }

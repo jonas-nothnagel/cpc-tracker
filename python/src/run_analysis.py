@@ -67,19 +67,18 @@ def write_status(
     (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))
 
 
-def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list]:
+def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list, list]:
     """Load targets and categories from JSON files."""
     targets = json.loads((DATA_DIR / targets_file).read_text())
     cats = json.loads((DATA_DIR / "categories.json").read_text())
     nbs = cats["nbs_categories"]
     sectors = cats["ipcc_sectors"]
-    # Themes are preserved under _themes_deprecated if needed later:
-    # themes = cats.get("_themes_deprecated", [])
+    themes = cats.get("_themes_deprecated", [])
     logger.info(
         f"Loaded {len(targets)} targets, "
-        f"{len(nbs)} NBS + {len(sectors)} IPCC sectors"
+        f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + {len(themes)} themes"
     )
-    return targets, nbs, sectors
+    return targets, nbs, sectors, themes
 
 
 def parse_args() -> argparse.Namespace:
@@ -101,7 +100,7 @@ async def main() -> None:
 
     try:
         # 1. Load data
-        targets, nbs_categories, sectors = load_input_data(args.targets_file)
+        targets, nbs_categories, sectors, themes = load_input_data(args.targets_file)
 
         # 2. Quantitative and time-bound detection
         write_status(1, "Quantitative detection", f"Analysing {len(targets)} targets for quantitative and time-bound phrases", started_at=started_at)
@@ -115,17 +114,16 @@ async def main() -> None:
         logger.info(f"Saved quantitative flags: {q_count} quantitative, {t_count} time-bound")
 
         # 3. Thematic classification (NBS + IPCC sectors)
-        write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against NBS categories and IPCC sectors", started_at=started_at)
+        write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against NBS categories, IPCC sectors, and cross-cutting themes", started_at=started_at)
         logger.info("")
         logger.info("STEP 2: Thematic classification")
         logger.info("-" * 40)
 
         nbs_classifications = await run_classification(targets, nbs_categories, "nbs")
         sector_classifications = await run_classification(targets, sectors, "sector")
-        # Themes deprecated — kept in categories.json under _themes_deprecated.
-        # To re-enable: theme_classifications = await run_classification(targets, themes, "theme")
+        theme_classifications = await run_classification(targets, themes, "theme")
 
-        all_classifications = nbs_classifications + sector_classifications
+        all_classifications = nbs_classifications + sector_classifications + theme_classifications
 
         # Save classifications
         out_path = OUTPUT_DIR / "classifications.json"

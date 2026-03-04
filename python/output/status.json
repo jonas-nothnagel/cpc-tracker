@@ -3,22 +3,22 @@
   "step": 5,
   "totalSteps": 5,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 14.6s",
-  "startedAt": "2026-03-03T17:04:37.454458+00:00",
-  "completedAt": "2026-03-03T17:04:52.066538+00:00",
+  "message": "Pipeline finished in 17.6s",
+  "startedAt": "2026-03-04T13:29:18.734157+00:00",
+  "completedAt": "2026-03-04T13:29:36.338352+00:00",
   "error": null,
   "summary": {
     "totalTargets": 59,
-    "totalClassifications": 1003,
-    "relevantClassifications": 79,
-    "totalPairs": 131,
+    "totalClassifications": 1652,
+    "relevantClassifications": 162,
+    "totalPairs": 306,
     "alignmentLevels": {
-      "high": 54,
-      "medium": 55,
-      "low": 21,
+      "high": 101,
+      "medium": 161,
+      "low": 43,
       "low_tension": 1
     },
     "totalContradictions": 1,
-    "elapsedSeconds": 14.6
+    "elapsedSeconds": 17.6
   }
 }
