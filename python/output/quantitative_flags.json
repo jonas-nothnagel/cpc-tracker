@@ -213,28 +213,28 @@
     "targetId": "NDC_LivestockMitigation",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "5.277 million tons, 9.78 million tons, 50 million head",
-    "timeBoundDetails": "until 2030, until 2035"
+    "quantitativeDetails": "['5.277 million tons', '9.78 million tons', '50 million head']",
+    "timeBoundDetails": "['until 2030', 'until 2035']"
   },
   {
     "targetId": "NDC_Mitigation_1",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "4.15 million tons, 7.48 million tons",
-    "timeBoundDetails": "by 2030, by 2035"
+    "quantitativeDetails": "['4.15 million tons', '7.48 million tons']",
+    "timeBoundDetails": "['by 2030', 'by 2035']"
   },
   {
     "targetId": "NDC_Mitigation_2",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "1.12 million tons, 2.29 million tons",
-    "timeBoundDetails": "by 2030, by 2035"
+    "quantitativeDetails": "['1.12 million tons', '2.29 million tons']",
+    "timeBoundDetails": "['by 2030', 'by 2035']"
   },
   {
     "targetId": "NDC_Mitigation_3",
     "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "10%, 3%, 7%",
+    "quantitativeDetails": "['10%', '3%', '7%']",
     "timeBoundDetails": ""
   },
   {
