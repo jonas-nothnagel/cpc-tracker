@@ -31,6 +31,12 @@ from .config import DATA_DIR, LLM_MODEL, OUTPUT_DIR
 from .classify import run_classification
 from .align import decompose_targets, generate_pairs, assess_alignment
 from .quantitative import assess_quantitative_flags
+from .measure_align import (
+    measures_to_pseudo_targets,
+    generate_measure_pairs,
+    decompose_measures,
+    assess_measure_alignment,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,7 +45,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOTAL_STEPS = 5
+TOTAL_STEPS = 6
 
 
 def write_status(
@@ -176,6 +182,40 @@ async def main() -> None:
         out_path.write_text(json.dumps(alignment_results, indent=2))
         logger.info(f"Saved {len(alignment_results)} alignment results to {out_path}")
 
+        # 7. Target-to-Measure alignment (if BTR data exists)
+        btr_path = OUTPUT_DIR / "btr_data.json"
+        measure_alignment_results: list[dict] = []
+        measure_pseudo_targets: list[dict] = []
+        if btr_path.exists():
+            write_status(6, "Measure alignment", "Assessing alignment between targets and BTR measures", started_at=started_at)
+            logger.info("")
+            logger.info("STEP 6: Target-to-Measure alignment")
+            logger.info("-" * 40)
+
+            btr = json.loads(btr_path.read_text())
+            raw_measures = btr.get("mitigationMeasures", [])
+            measure_pseudo_targets = measures_to_pseudo_targets(raw_measures)
+            logger.info(f"  {len(raw_measures)} raw measures → {len(measure_pseudo_targets)} valid pseudo-targets")
+
+            if measure_pseudo_targets:
+                m_pairs = generate_measure_pairs(targets, measure_pseudo_targets, all_classifications)
+
+                if m_pairs:
+                    measure_decomps = await decompose_measures(measure_pseudo_targets)
+                    all_decomps = {**decompositions, **measure_decomps}
+                    measure_alignment_results = await assess_measure_alignment(m_pairs, all_decomps)
+
+                    out_path = OUTPUT_DIR / "measure_alignment.json"
+                    out_path.write_text(json.dumps(measure_alignment_results, indent=2))
+                    logger.info(f"Saved {len(measure_alignment_results)} measure alignment results")
+
+                    out_path = OUTPUT_DIR / "measure_pseudo_targets.json"
+                    out_path.write_text(json.dumps(measure_pseudo_targets, indent=2))
+                    logger.info(f"Saved {len(measure_pseudo_targets)} pseudo-targets")
+        else:
+            logger.info("")
+            logger.info("STEP 6: Skipped (no btr_data.json)")
+
         # Summary
         elapsed = time.time() - start
         logger.info("")
@@ -200,6 +240,13 @@ async def main() -> None:
                 logger.info(f"    - {level}: {count}")
         logger.info(f"  Output dir: {OUTPUT_DIR}")
 
+        if measure_alignment_results:
+            m_levels: dict[str, int] = {}
+            for r in measure_alignment_results:
+                m_levels[r["alignment"]] = m_levels.get(r["alignment"], 0) + 1
+            logger.info(f"  Measure alignment pairs: {len(measure_alignment_results)}")
+            logger.info(f"    Levels: {m_levels}")
+
         summary = {
             "totalTargets": len(targets),
             "totalClassifications": len(all_classifications),
@@ -207,6 +254,8 @@ async def main() -> None:
             "totalPairs": len(alignment_results),
             "alignmentLevels": levels,
             "totalContradictions": total_contradictions,
+            "measureAlignmentPairs": len(measure_alignment_results),
+            "measurePseudoTargets": len(measure_pseudo_targets),
             "elapsedSeconds": round(elapsed, 1),
         }
         write_status(TOTAL_STEPS, "Complete", f"Pipeline finished in {elapsed:.1f}s", status="completed", started_at=started_at, summary=summary)

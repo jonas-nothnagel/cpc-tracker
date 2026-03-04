@@ -348,10 +348,19 @@ function DetailPanel({
               >
                 <div className="flex items-center gap-2 mb-0.5">
                   <span className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[conn.alignment] }} />
-                  <span className="text-xs font-medium text-[var(--undp-black)] truncate">
-                    {DOC_LABELS[conn.otherTarget.sourceDocument]} · {conn.otherTarget.sourceLabel}
+                  <span
+                    className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold text-white leading-none"
+                    style={{ backgroundColor: DOC_COLORS[conn.otherTarget.sourceDocument] }}
+                  >
+                    {DOC_LABELS[conn.otherTarget.sourceDocument]}
                   </span>
-                  <span className="text-[10px] text-[var(--undp-gray)] ml-auto shrink-0">
+                  <span className="text-xs font-medium text-[var(--undp-black)] truncate">
+                    {conn.otherTarget.sourceLabel}
+                  </span>
+                  <span
+                    className="text-[10px] font-medium ml-auto shrink-0"
+                    style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
+                  >
                     {ALIGNMENT_LABELS[conn.alignment]}
                   </span>
                 </div>
@@ -396,20 +405,42 @@ export function PolicyCoherenceExplorer({
     result: AlignmentResult;
     other: Target;
   } | null>(null);
+  const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
+  const [showBtr, setShowBtr] = useState(false);
+
+  const hasBtr = useMemo(
+    () => targets.some((t) => t.sourceDocument === "BTR"),
+    [targets],
+  );
+
+  const visibleTargets = useMemo(
+    () => (showBtr ? targets : targets.filter((t) => t.sourceDocument !== "BTR")),
+    [targets, showBtr],
+  );
+  const visibleTargetIds = useMemo(
+    () => new Set(visibleTargets.map((t) => t.id)),
+    [visibleTargets],
+  );
+  const visibleAlignment = useMemo(
+    () =>
+      alignment.filter(
+        (a) => visibleTargetIds.has(a.targetAId) && visibleTargetIds.has(a.targetBId),
+      ),
+    [alignment, visibleTargetIds],
+  );
 
   const activeId = selectedId ?? hoveredId;
 
   const groups = useMemo(
-    () => buildGroups(targets, groupMode, sectors, themes, nbsCategories, classifications),
-    [targets, groupMode, sectors, themes, nbsCategories, classifications],
+    () => buildGroups(visibleTargets, groupMode, sectors, themes, nbsCategories, classifications),
+    [visibleTargets, groupMode, sectors, themes, nbsCategories, classifications],
   );
 
-  const filtered = useMemo(() => filterAlign(alignment, filter), [alignment, filter]);
+  const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
 
-  // Layout uses ALL alignment for stable node sizing; display uses filtered
   const { nodes, arcs } = useMemo(
-    () => computeLayout(groups, alignment),
-    [groups, alignment],
+    () => computeLayout(groups, visibleAlignment),
+    [groups, visibleAlignment],
   );
 
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
@@ -419,8 +450,8 @@ export function PolicyCoherenceExplorer({
   const ambientConns = useMemo(() => {
     if (filter === "contradictions")
       return filtered;
-    return alignment.filter((a) => a.alignment === "high");
-  }, [alignment, filtered, filter]);
+    return visibleAlignment.filter((a) => a.alignment === "high");
+  }, [visibleAlignment, filtered, filter]);
 
   // Connections for the active node (from filtered set)
   const activeConns = useMemo(() => {
@@ -450,8 +481,8 @@ export function PolicyCoherenceExplorer({
       .filter((c) => c.otherTarget);
   }, [selectedId, filtered, targetMap]);
 
-  const totalAligned = alignment.filter((a) => a.alignment !== "none").length;
-  const totalContra = alignment.filter((a) => isContradiction(a.alignment)).length;
+  const totalAligned = visibleAlignment.filter((a) => a.alignment !== "none").length;
+  const totalContra = visibleAlignment.filter((a) => isContradiction(a.alignment)).length;
 
   const handleNodeClick = useCallback((id: string) => {
     setComparedPair(null);
@@ -461,12 +492,14 @@ export function PolicyCoherenceExplorer({
   const handleBgClick = useCallback(() => {
     setSelectedId(null);
     setComparedPair(null);
+    setExpandedGroupId(null);
   }, []);
 
   const handleGroupChange = useCallback((m: GroupMode) => {
     setGroupMode(m);
     setSelectedId(null);
     setComparedPair(null);
+    setExpandedGroupId(null);
   }, []);
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
@@ -524,6 +557,20 @@ export function PolicyCoherenceExplorer({
             <option value="high">High only</option>
             <option value="contradictions">Contradictions only</option>
           </select>
+          {hasBtr && (
+            <button
+              type="button"
+              onClick={() => setShowBtr((v) => !v)}
+              className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                showBtr
+                  ? "border-[#7c3aed]/40 bg-[#7c3aed]/10 text-[#7c3aed]"
+                  : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-[#7c3aed]/30 hover:text-[#7c3aed]"
+              }`}
+            >
+              <span className={`w-2 h-2 rounded-sm ${showBtr ? "bg-[#7c3aed]" : "bg-gray-300"}`} />
+              BTR Measures
+            </button>
+          )}
         </div>
       </div>
 
@@ -669,6 +716,8 @@ export function PolicyCoherenceExplorer({
                 if (!isActive && !isConnected && activeId) return null;
                 const lx = LABEL_R * Math.sin(node.angle);
                 const ly = -LABEL_R * Math.cos(node.angle);
+                const showDocCtx = groupMode !== "document";
+                const docColor = DOC_COLORS[node.target.sourceDocument];
                 return (
                   <text
                     key={`lbl-${node.id}`}
@@ -679,9 +728,22 @@ export function PolicyCoherenceExplorer({
                     className="select-none pointer-events-none"
                     fontSize={isActive ? 11 : 9}
                     fontWeight={isActive ? 700 : 400}
-                    fill={isActive || isConnected ? "#334155" : "#b0b8c4"}
+                    fill={
+                      showDocCtx
+                        ? isActive || isConnected
+                          ? docColor
+                          : `${docColor}60`
+                        : isActive || isConnected
+                          ? "#334155"
+                          : "#b0b8c4"
+                    }
                     style={{ transition: "fill 200ms, font-size 200ms" }}
                   >
+                    {showDocCtx && (isActive || isConnected) && (
+                      <tspan fontWeight={700} fontSize={isActive ? 9 : 7}>
+                        {DOC_LABELS[node.target.sourceDocument]}{" "}
+                      </tspan>
+                    )}
                     {node.target.sourceLabel}
                   </text>
                 );
@@ -691,7 +753,9 @@ export function PolicyCoherenceExplorer({
               {arcs.map((arc) => {
                 const lx = GRP_LABEL_R * Math.sin(arc.midAngle);
                 const ly = -GRP_LABEL_R * Math.cos(arc.midAngle);
-                const short = truncLabel(arc.label);
+                const isTruncated = arc.label.length > MAX_LABEL_LEN;
+                const isExpanded = expandedGroupId === arc.id;
+                const displayLabel = isExpanded ? arc.label : truncLabel(arc.label);
                 return (
                   <text
                     key={`grp-${arc.id}`}
@@ -700,13 +764,25 @@ export function PolicyCoherenceExplorer({
                     textAnchor={anchorFor(arc.midAngle)}
                     dominantBaseline="middle"
                     className="select-none"
-                    fontSize={13}
+                    fontSize={isExpanded ? 12 : 13}
                     fontWeight={600}
-                    fill={activeId ? "#94a3b8" : "#1e293b"}
-                    style={{ transition: "fill 200ms", cursor: short !== arc.label ? "help" : "default" }}
+                    fill={isExpanded ? arc.color : activeId ? "#94a3b8" : "#1e293b"}
+                    stroke={isExpanded ? "white" : "none"}
+                    strokeWidth={isExpanded ? 4 : 0}
+                    paintOrder="stroke"
+                    style={{
+                      transition: "fill 200ms",
+                      cursor: isTruncated ? "pointer" : "default",
+                    }}
+                    onClick={(e) => {
+                      if (isTruncated) {
+                        e.stopPropagation();
+                        setExpandedGroupId(isExpanded ? null : arc.id);
+                      }
+                    }}
                   >
-                    {short}
-                    {short !== arc.label && <title>{arc.label}</title>}
+                    {displayLabel}
+                    {!isExpanded && isTruncated && <title>{arc.label}</title>}
                   </text>
                 );
               })}

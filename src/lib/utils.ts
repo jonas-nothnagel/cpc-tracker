@@ -13,6 +13,7 @@ export const DOC_COLORS: Record<PolicyDocumentType, string> = {
   NAP: "#b45309",    // Warm amber — softer than bright yellow
   LDN: "#dc2626",    // Muted red
   SECTORAL: "#64748b",
+  BTR: "#7c3aed",    // Violet — implementation / M&E data
   OTHER: "#94a3b8",
 };
 
@@ -23,6 +24,7 @@ export const DOC_LABELS: Record<PolicyDocumentType, string> = {
   NAP: "NAP",
   LDN: "LDN",
   SECTORAL: "Sectoral",
+  BTR: "BTR Measure",
   OTHER: "Other",
 };
 
@@ -104,6 +106,7 @@ export function countByCategory(
       NAP: 0,
       LDN: 0,
       SECTORAL: 0,
+      BTR: 0,
       OTHER: 0,
     };
     for (const c of relevant) {

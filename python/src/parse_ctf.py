@@ -178,9 +178,16 @@ def _parse_table5(ws: Worksheet) -> list[dict[str, Any]]:
             if year_match:
                 estimate_cols[year_match.group()] = col_idx
 
+    _footnote_re_t5 = re.compile(r"^[a-z]\s+[A-Z]")
+
     for row_idx in range(header_row + 1, ws.max_row + 1):
         name = _str(ws.cell(row=row_idx, column=col_map.get("name", 2)).value)
         if not name or name.lower().startswith("footnote") or len(name) < 3:
+            continue
+        if _footnote_re_t5.match(name):
+            continue
+        status = _str(ws.cell(row=row_idx, column=col_map.get("status", 6)).value)
+        if not status:
             continue
 
         estimates: dict[str, float | None] = {}

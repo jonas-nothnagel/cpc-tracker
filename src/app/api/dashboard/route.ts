@@ -109,13 +109,29 @@ export async function GET(request: NextRequest) {
 
   const btrData = readJson<unknown>(join(outputDir, "btr_data.json"));
 
+  // Merge measure pseudo-targets and alignment if available
+  const measurePseudoTargets = readJson<Record<string, unknown>[]>(
+    join(outputDir, "measure_pseudo_targets.json")
+  );
+  const measureAlignment = readJson<unknown[]>(
+    join(outputDir, "measure_alignment.json")
+  );
+
+  const allTargets = measurePseudoTargets
+    ? [...enrichedTargets, ...measurePseudoTargets]
+    : enrichedTargets;
+
+  const allAlignment = measureAlignment
+    ? [...(alignment as unknown[]), ...measureAlignment]
+    : alignment;
+
   return NextResponse.json({
-    targets: enrichedTargets,
+    targets: allTargets,
     nbsCategories: categories.nbs_categories,
     sectors: categories.ipcc_sectors ?? [],
     themes: categories.themes ?? categories._themes_deprecated ?? [],
     classifications,
-    alignment,
+    alignment: allAlignment,
     btrData: btrData ?? null,
   });
 }

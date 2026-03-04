@@ -16,6 +16,7 @@ export type PolicyDocumentType =
   | "NAP"
   | "LDN"
   | "SECTORAL"
+  | "BTR"
   | "OTHER";
 
 /** A single policy target entered by a user. */

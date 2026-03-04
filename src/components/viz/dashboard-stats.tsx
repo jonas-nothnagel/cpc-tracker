@@ -94,6 +94,7 @@ const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
   NAP: "National Adaptation Plan Targets",
   LDN: "Land Degradation Neutrality Targets",
   SECTORAL: "Sectoral Policy Targets",
+  BTR: "BTR Reported Measures",
   OTHER: "Other Targets",
 };
 
