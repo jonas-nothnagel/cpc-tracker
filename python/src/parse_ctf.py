@@ -555,6 +555,11 @@ if __name__ == "__main__":
 
     if ftype == "support":
         data = parse_ctf_support(fpath)
+    elif ftype == "all":
+        data = parse_ctf_ndc(fpath)
+        support = parse_ctf_support(fpath)
+        data["technologySupport"] = support.get("technologySupport", [])
+        data["capacityBuilding"] = support.get("capacityBuilding", [])
     else:
         data = parse_ctf_ndc(fpath)
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import type { PolicyDocumentType, NbsCategory, IpccSector } from "@/types";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
@@ -25,6 +25,60 @@ interface CategoryItem {
   isCustom: boolean;
 }
 
+interface BtrSummary {
+  mitigationMeasures: number;
+  sectorEmissions: number;
+  projections: number;
+  technologySupport: number;
+  capacityBuilding: number;
+}
+
+interface UploadedDoc {
+  id: string;
+  fileName: string;
+  fileType: "targets" | "btr";
+  status: "parsing" | "ready" | "error";
+  error?: string;
+  targetCount?: number;
+  docTypeCounts?: Record<string, number>;
+  btrSummary?: BtrSummary;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/** Detect whether an Excel BTR file is an FTC-Support or NDC file from its name. */
+function detectBtrType(fileName: string): "support" | "ndc" {
+  return /ftc|support/i.test(fileName) ? "support" : "ndc";
+}
+
+type BtrData = Record<string, unknown>;
+
+/**
+ * Merge two BTR data objects. Arrays are concatenated; sectorEmissions uses
+ * whichever has actual data; scalar fields prefer the second value.
+ */
+function mergeBtrData(existing: BtrData | null, incoming: BtrData): BtrData {
+  if (!existing) return incoming;
+
+  const mergeArr = (a: unknown, b: unknown): unknown[] =>
+    [...((a as unknown[]) ?? []), ...((b as unknown[]) ?? [])];
+
+  const existingEmissions = existing.sectorEmissions as { bySector: unknown[] } | undefined;
+  const incomingEmissions = incoming.sectorEmissions as { bySector: unknown[] } | undefined;
+  const aSectors = existingEmissions?.bySector ?? [];
+  const bSectors = incomingEmissions?.bySector ?? [];
+
+  return {
+    sourceFile: [existing.sourceFile, incoming.sourceFile].filter(Boolean).join(", "),
+    progressIndicators: mergeArr(existing.progressIndicators, incoming.progressIndicators),
+    mitigationMeasures: mergeArr(existing.mitigationMeasures, incoming.mitigationMeasures),
+    sectorEmissions: { bySector: aSectors.length > 0 ? aSectors : bSectors },
+    projections: mergeArr(existing.projections, incoming.projections),
+    technologySupport: mergeArr(existing.technologySupport, incoming.technologySupport),
+    capacityBuilding: mergeArr(existing.capacityBuilding, incoming.capacityBuilding),
+  };
+}
+
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const MAX_TARGETS = 150;
@@ -39,6 +93,7 @@ const DOCUMENT_TYPES: { value: PolicyDocumentType; label: string; hint?: string 
 ];
 
 const COST_PER_CALL = 0.00015; // rough average for gpt-4o-mini via OpenRouter
+const CROSS_CUTTING_THEMES_COUNT = 11; // from python/data/categories.json _themes_deprecated
 
 const KNOWN_DOC_TYPES: Record<string, PolicyDocumentType> = {
   ndc: "NDC",
@@ -278,7 +333,13 @@ export default function UploadPage() {
   const [customDocName, setCustomDocName] = useState("");
   const [pasteInput, setPasteInput] = useState("");
   const [pastePreview, setPastePreview] = useState<ParsedPreview | null>(null);
-  const [mode, setMode] = useState<"manual" | "paste">("manual");
+  const [mode, setMode] = useState<"manual" | "paste" | "file">("file");
+
+  // File upload
+  const [dragging, setDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedDocs, setUploadedDocs] = useState<UploadedDoc[]>([]);
+  const [btrParsedData, setBtrParsedData] = useState<BtrData | null>(null);
 
   // Categories
   const [nbsCategories, setNbsCategories] = useState<CategoryItem[]>(
@@ -303,7 +364,7 @@ export default function UploadPage() {
 
   const estimate = useMemo(() => {
     const n = targets.length;
-    const cats = activeNbs.length + activeSectors.length;
+    const cats = activeNbs.length + activeSectors.length + CROSS_CUTTING_THEMES_COUNT;
     if (n === 0) return null;
     const quantCalls = n;
     const classCalls = n * cats;
@@ -352,6 +413,95 @@ export default function UploadPage() {
     setTargets([...targets, ...pastePreview.rows].slice(0, MAX_TARGETS));
     setPasteInput("");
     setPastePreview(null);
+  }
+
+  // ─── File upload ─────────────────────────────────────────────────────────
+
+  const handleFile = useCallback((file: File) => {
+    const isExcel = /\.xlsx?$/i.test(file.name);
+    const docId = `doc_${Date.now()}`;
+
+    if (isExcel) {
+      setUploadedDocs((prev) => [...prev, {
+        id: docId, fileName: file.name, fileType: "btr", status: "parsing",
+      }]);
+
+      const form = new FormData();
+      form.append("file", file);
+      form.append("type", detectBtrType(file.name));
+      fetch("/api/parse-btr", { method: "POST", body: form })
+        .then(async (res) => {
+          if (!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error || "Failed to parse BTR file");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setBtrParsedData((prev) => mergeBtrData(prev, data as BtrData));
+          setUploadedDocs((prev) => prev.map((d) =>
+            d.id === docId ? {
+              ...d,
+              status: "ready" as const,
+              btrSummary: {
+                mitigationMeasures: data.mitigationMeasures?.length ?? 0,
+                sectorEmissions: data.sectorEmissions?.bySector?.length ?? 0,
+                projections: data.projections?.length ?? 0,
+                technologySupport: data.technologySupport?.length ?? 0,
+                capacityBuilding: data.capacityBuilding?.length ?? 0,
+              },
+            } : d
+          ));
+        })
+        .catch((err) => {
+          setUploadedDocs((prev) => prev.map((d) =>
+            d.id === docId ? { ...d, status: "error" as const, error: err.message } : d
+          ));
+        });
+    } else {
+      setUploadedDocs((prev) => [...prev, {
+        id: docId, fileName: file.name, fileType: "targets", status: "parsing",
+      }]);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        if (!text) return;
+        const result = smartParse(text);
+        if (result && result.rows.length > 0) {
+          setTargets((prev) => [...prev, ...result.rows].slice(0, MAX_TARGETS));
+          const counts: Record<string, number> = {};
+          for (const r of result.rows) counts[r.sourceDocument] = (counts[r.sourceDocument] || 0) + 1;
+          setUploadedDocs((prev) => prev.map((d) =>
+            d.id === docId ? { ...d, status: "ready" as const, targetCount: result.rows.length, docTypeCounts: counts } : d
+          ));
+        } else {
+          setUploadedDocs((prev) => prev.map((d) =>
+            d.id === docId ? { ...d, status: "error" as const, error: "No targets found in file" } : d
+          ));
+        }
+      };
+      reader.readAsText(file);
+    }
+  }, []);
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragging(false);
+    const files = Array.from(e.dataTransfer.files);
+    for (const file of files) handleFile(file);
+  }
+
+  function handleFileInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    for (const file of files) handleFile(file);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removeDoc(docId: string) {
+    const doc = uploadedDocs.find((d) => d.id === docId);
+    if (doc?.fileType === "btr") setBtrParsedData(null);
+    setUploadedDocs((prev) => prev.filter((d) => d.id !== docId));
   }
 
   // ─── Category management ─────────────────────────────────────────────────
@@ -409,6 +559,7 @@ export default function UploadPage() {
             name,
             description,
           })),
+          ...(btrParsedData ? { btrData: btrParsedData } : {}),
         }),
       });
       if (!res.ok) {
@@ -517,6 +668,16 @@ export default function UploadPage() {
             }`}
           >
             Paste CSV / Excel
+          </button>
+          <button
+            onClick={() => setMode("file")}
+            className={`px-4 py-2 text-sm rounded-md border transition-colors ${
+              mode === "file"
+                ? "bg-[var(--undp-blue)] text-white border-transparent"
+                : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400"
+            }`}
+          >
+            Upload File
           </button>
         </div>
 
@@ -736,6 +897,181 @@ export default function UploadPage() {
           </div>
         )}
 
+        {/* ─── Upload File ────────────────────────────────────── */}
+        {mode === "file" && (
+          <div className="mb-6 space-y-4">
+            {/* Drop zone — always visible */}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-lg text-center cursor-pointer transition-all ${
+                uploadedDocs.length > 0 ? "p-6" : "p-12"
+              } ${
+                dragging
+                  ? "border-[var(--undp-blue)] bg-blue-50/50"
+                  : "border-gray-300 hover:border-gray-400 bg-[var(--undp-light)]"
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv,.tsv,.txt,.xlsx,.xls"
+                multiple
+                onChange={handleFileInput}
+                className="hidden"
+              />
+              <svg className="mx-auto mb-2 text-[var(--undp-gray)]" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              <p className="text-sm text-[var(--undp-black)] mb-0.5">
+                Drag and drop files here
+              </p>
+              <p className="text-xs text-[var(--undp-gray)]">
+                <span className="text-[var(--undp-blue)] underline">Browse files</span>
+                {" "}&mdash; .csv for policy targets, .xlsx for BTR/CTF data
+              </p>
+            </div>
+
+            {/* Document pipeline flowchart */}
+            {uploadedDocs.length > 0 && (
+              <div className="border border-gray-200 rounded-lg bg-white overflow-hidden">
+                <div className="px-4 py-2.5 border-b border-gray-100 bg-gray-50/50">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                    Document Pipeline
+                  </p>
+                </div>
+                <div className="p-4">
+                  {uploadedDocs.map((doc, i) => (
+                    <div key={doc.id}>
+                      {/* Connector line */}
+                      {i > 0 && (
+                        <div className="flex justify-center py-1.5">
+                          <svg width="2" height="20" className="text-gray-300">
+                            <line x1="1" y1="0" x2="1" y2="20" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+                          </svg>
+                        </div>
+                      )}
+                      {/* Document card */}
+                      <div className={`border rounded-lg p-3 transition-all ${
+                        doc.status === "error"
+                          ? "border-red-200 bg-red-50/50"
+                          : doc.status === "parsing"
+                          ? "border-gray-200 bg-gray-50/30"
+                          : doc.fileType === "btr"
+                          ? "border-[var(--undp-blue)]/30 bg-blue-50/30"
+                          : "border-green-200 bg-green-50/30"
+                      }`}>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-3 min-w-0 flex-1">
+                            {/* File icon */}
+                            <div className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center ${
+                              doc.fileType === "btr" ? "bg-[var(--undp-blue)]/10" : "bg-green-100"
+                            }`}>
+                              {doc.fileType === "btr" ? (
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--undp-blue)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                                  <path d="M9 3v18M3 9h18M3 15h18" />
+                                </svg>
+                              ) : (
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                  <polyline points="14 2 14 8 20 8" />
+                                  <line x1="16" y1="13" x2="8" y2="13" />
+                                  <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                              )}
+                            </div>
+
+                            <div className="min-w-0 flex-1">
+                              {/* File name + status */}
+                              <div className="flex items-center gap-2 mb-1">
+                                <p className="text-sm font-medium text-[var(--undp-black)] truncate">
+                                  {doc.fileName}
+                                </p>
+                                {doc.status === "parsing" && (
+                                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] animate-pulse">
+                                    Parsing...
+                                  </span>
+                                )}
+                                {doc.status === "ready" && (
+                                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700">
+                                    Ready
+                                  </span>
+                                )}
+                                {doc.status === "error" && (
+                                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-red-700">
+                                    Error
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Summary content */}
+                              {doc.status === "error" && doc.error && (
+                                <p className="text-xs text-red-600">{doc.error}</p>
+                              )}
+
+                              {doc.status === "ready" && doc.fileType === "targets" && doc.docTypeCounts && (
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  {Object.entries(doc.docTypeCounts).map(([docType, count]) => (
+                                    <span
+                                      key={docType}
+                                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium text-white"
+                                      style={{ backgroundColor: DOC_COLORS[docType as PolicyDocumentType] ?? "#a9b1b7" }}
+                                    >
+                                      {docType}
+                                      <span className="opacity-80">{count}</span>
+                                    </span>
+                                  ))}
+                                  <span className="text-xs text-[var(--undp-gray)] ml-1">
+                                    {doc.targetCount} policy targets
+                                  </span>
+                                </div>
+                              )}
+
+                              {doc.status === "ready" && doc.fileType === "btr" && doc.btrSummary && (
+                                <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-[var(--undp-gray)]">
+                                  {doc.btrSummary.mitigationMeasures > 0 && (
+                                    <span>{doc.btrSummary.mitigationMeasures} mitigation measures</span>
+                                  )}
+                                  {doc.btrSummary.sectorEmissions > 0 && (
+                                    <span>{doc.btrSummary.sectorEmissions} emission series</span>
+                                  )}
+                                  {doc.btrSummary.projections > 0 && (
+                                    <span>{doc.btrSummary.projections} projections</span>
+                                  )}
+                                  {doc.btrSummary.technologySupport > 0 && (
+                                    <span>{doc.btrSummary.technologySupport} tech support projects</span>
+                                  )}
+                                  {doc.btrSummary.capacityBuilding > 0 && (
+                                    <span>{doc.btrSummary.capacityBuilding} capacity building</span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Remove button */}
+                          <button
+                            onClick={() => removeDoc(doc.id)}
+                            className="shrink-0 text-[var(--undp-gray)] hover:text-[var(--undp-red)] transition-colors text-lg leading-none mt-0.5"
+                            title="Remove"
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ─── Error display ──────────────────────────────────── */}
         {submitError && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -830,16 +1166,15 @@ export default function UploadPage() {
               >
                 ▸
               </span>
-              Analysis Configuration — NBS Categories ({activeNbs.length}) &
-              IPCC Sectors ({activeSectors.length})
+              Analysis Configuration — NBS ({activeNbs.length}), IPCC Sectors ({activeSectors.length}), Themes ({CROSS_CUTTING_THEMES_COUNT})
             </button>
 
             {showCategories && (
               <div className="bg-[var(--undp-light)] rounded-lg p-6 space-y-6">
                 <p className="text-xs text-[var(--undp-gray)] leading-relaxed">
                   Each target will be classified against every enabled NBS
-                  category and IPCC sector below. You can disable categories that
-                  are not relevant to your country context, or add custom ones.
+                  category, IPCC sector, and {CROSS_CUTTING_THEMES_COUNT} cross-cutting themes.
+                  You can disable NBS/sector categories or add custom ones.
                 </p>
 
                 {/* NBS Categories */}
@@ -1045,9 +1380,9 @@ export default function UploadPage() {
                   LLM calls)
                 </li>
                 <li>
-                  Classification against {activeNbs.length} NBS categories and{" "}
-                  {activeSectors.length} IPCC sectors (
-                  {targets.length * (activeNbs.length + activeSectors.length)}{" "}
+                  Classification against {activeNbs.length} NBS categories,{" "}
+                  {activeSectors.length} IPCC sectors, and {CROSS_CUTTING_THEMES_COUNT} cross-cutting themes (
+                  {targets.length * (activeNbs.length + activeSectors.length + CROSS_CUTTING_THEMES_COUNT)}{" "}
                   LLM calls)
                 </li>
                 <li>Target decomposition ({targets.length} LLM calls)</li>
@@ -1057,6 +1392,9 @@ export default function UploadPage() {
                     ? " (requires targets from at least 2 document types)"
                     : ` (~${estimate?.estPairs ?? 0} pairs)`}
                 </li>
+                {btrParsedData && (
+                  <li>BTR/CTF data integration (emissions, measures, projections)</li>
+                )}
               </ol>
               {(estimate?.docTypes ?? 0) < 2 && (
                 <p className="text-amber-600 text-xs mt-2">

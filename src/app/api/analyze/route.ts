@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { spawn } from "child_process";
-import { writeFileSync, mkdirSync, copyFileSync } from "fs";
+import { writeFileSync, mkdirSync, copyFileSync, readFileSync } from "fs";
 import { join } from "path";
 import type { PolicyDocumentType } from "@/types";
 
@@ -27,6 +27,7 @@ interface AnalyzeRequest {
   }[];
   nbsCategories?: { id: string; name: string; description: string }[];
   sectors?: { id: string; name: string; description: string }[];
+  btrData?: Record<string, unknown>;
 }
 
 const PROJECT_ROOT = process.cwd();
@@ -101,9 +102,12 @@ export async function POST(request: NextRequest) {
 
     // Write categories (custom if provided, otherwise copy defaults)
     if (body.nbsCategories || body.sectors) {
+      const defaultCats = JSON.parse(readFileSync(DEFAULT_CATEGORIES, "utf-8"));
+      const themes = defaultCats.themes ?? defaultCats._themes_deprecated ?? [];
       const categories = {
-        nbs_categories: body.nbsCategories ?? [],
-        ipcc_sectors: body.sectors ?? [],
+        nbs_categories: body.nbsCategories ?? defaultCats.nbs_categories ?? [],
+        ipcc_sectors: body.sectors ?? defaultCats.ipcc_sectors ?? [],
+        _themes_deprecated: themes,
       };
       writeFileSync(
         join(inputDir, "categories.json"),
@@ -111,6 +115,14 @@ export async function POST(request: NextRequest) {
       );
     } else {
       copyFileSync(DEFAULT_CATEGORIES, join(inputDir, "categories.json"));
+    }
+
+    // Write BTR data if provided (pre-parsed from Excel upload)
+    if (body.btrData) {
+      writeFileSync(
+        join(outputDir, "btr_data.json"),
+        JSON.stringify(body.btrData, null, 2)
+      );
     }
 
     // Write initial status

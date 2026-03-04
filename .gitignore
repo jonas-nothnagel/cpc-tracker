@@ -60,6 +60,7 @@ dev_data_scripts/
 # Analysis runs (ephemeral)
 python/analyses/
 python/output/.cache/
+python/tmp/
 
 # External docs
 external-docs/
