@@ -153,7 +153,7 @@
     "targetId": "NAP_3",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_3",
@@ -255,7 +255,7 @@
     "targetId": "NAP_5",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_5",
@@ -315,7 +315,7 @@
     "targetId": "NAP_6",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_6",
@@ -327,7 +327,7 @@
     "targetId": "NAP_6",
     "categoryId": "nbs_4",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_6",
@@ -381,7 +381,7 @@
     "targetId": "NAP_7",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_7",
@@ -465,7 +465,7 @@
     "targetId": "NAP_8",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_8",
@@ -525,7 +525,7 @@
     "targetId": "NAP_9",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_9",
@@ -549,7 +549,7 @@
     "targetId": "NAP_10",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_10",
@@ -609,7 +609,7 @@
     "targetId": "NAP_11",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_11",
@@ -669,7 +669,7 @@
     "targetId": "NAP_12",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_12",
@@ -699,7 +699,7 @@
     "targetId": "NAP_12",
     "categoryId": "nbs_6",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_12",
@@ -729,7 +729,7 @@
     "targetId": "NAP_13",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_13",
@@ -759,7 +759,7 @@
     "targetId": "NAP_13",
     "categoryId": "nbs_6",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_13",
@@ -933,7 +933,7 @@
     "targetId": "NDC_Biodiversity_1",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Biodiversity_1",
@@ -993,7 +993,7 @@
     "targetId": "NDC_Biodiversity_2",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Biodiversity_2",
@@ -1041,7 +1041,7 @@
     "targetId": "NDC_Forests_1",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_1",
@@ -1071,7 +1071,7 @@
     "targetId": "NDC_Forests_1",
     "categoryId": "nbs_8",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_1",
@@ -1101,7 +1101,7 @@
     "targetId": "NDC_Forests_2",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_2",
@@ -1131,7 +1131,7 @@
     "targetId": "NDC_Forests_2",
     "categoryId": "nbs_8",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_2",
@@ -1161,7 +1161,7 @@
     "targetId": "NDC_Forests_3",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_3",
@@ -1173,7 +1173,7 @@
     "targetId": "NDC_Forests_3",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_3",
@@ -1305,7 +1305,7 @@
     "targetId": "NDC_NatDisasters_2",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_NatDisasters_2",
@@ -1389,7 +1389,7 @@
     "targetId": "NDC_AnimalHusbandry_2",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
@@ -1425,7 +1425,7 @@
     "targetId": "NDC_AnimalHusbandry_2",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_AnimalHusbandry_2",
@@ -1449,7 +1449,7 @@
     "targetId": "NDC_AnimalHusbandry_3",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
@@ -1509,7 +1509,7 @@
     "targetId": "NDC_AnimalHusbandry_4",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
@@ -1665,7 +1665,7 @@
     "targetId": "NDC_SocialProtection",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_SocialProtection",
@@ -1809,7 +1809,7 @@
     "targetId": "NDC_LivestockMitigation",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_LivestockMitigation",
@@ -1989,7 +1989,7 @@
     "targetId": "NDC_Mitigation_3",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_3",
@@ -2019,7 +2019,7 @@
     "targetId": "NDC_Mitigation_3",
     "categoryId": "nbs_6",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_3",
@@ -2115,7 +2115,7 @@
     "targetId": "NDC_WaterResources_2",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_WaterResources_2",
@@ -2169,7 +2169,7 @@
     "targetId": "NDC_ArableFarming_1",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_ArableFarming_1",
@@ -2199,7 +2199,7 @@
     "targetId": "NDC_ArableFarming_1",
     "categoryId": "nbs_6",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_ArableFarming_1",
@@ -2433,7 +2433,7 @@
     "targetId": "NBT_1",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_1",
@@ -2493,7 +2493,7 @@
     "targetId": "NBT_2",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_2",
@@ -2553,7 +2553,7 @@
     "targetId": "NBT_3",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_3",
@@ -2613,7 +2613,7 @@
     "targetId": "NBT_4",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_4",
@@ -2625,7 +2625,7 @@
     "targetId": "NBT_4",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_4",
@@ -2721,7 +2721,7 @@
     "targetId": "NBT_6",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -2751,7 +2751,7 @@
     "targetId": "NBT_6",
     "categoryId": "nbs_8",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -2769,7 +2769,7 @@
     "targetId": "NBT_7",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -2781,7 +2781,7 @@
     "targetId": "NBT_7",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -2799,7 +2799,7 @@
     "targetId": "NBT_7",
     "categoryId": "nbs_6",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -2823,7 +2823,7 @@
     "targetId": "NBT_8",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_8",
@@ -2841,19 +2841,19 @@
     "targetId": "NBT_8",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_8",
     "categoryId": "nbs_4",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_8",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_8",
@@ -2913,7 +2913,7 @@
     "targetId": "NBT_9",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
@@ -2925,7 +2925,7 @@
     "targetId": "NBT_9",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
@@ -2937,7 +2937,7 @@
     "targetId": "NBT_9",
     "categoryId": "nbs_9",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_10",
@@ -3579,7 +3579,7 @@
     "targetId": "NAP_1",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_2",
@@ -3819,7 +3819,7 @@
     "targetId": "NAP_7",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_7",
@@ -3939,7 +3939,7 @@
     "targetId": "NAP_10",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_10",
@@ -4065,7 +4065,7 @@
     "targetId": "NAP_13",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_13",
@@ -4125,7 +4125,7 @@
     "targetId": "NAP_14",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_15",
@@ -4323,7 +4323,7 @@
     "targetId": "NDC_Forests_2",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Forests_2",
@@ -4569,7 +4569,7 @@
     "targetId": "NDC_AnimalHusbandry_3",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_AnimalHusbandry_3",
@@ -4713,7 +4713,7 @@
     "targetId": "NDC_SocialProtection",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Education",
@@ -4755,7 +4755,7 @@
     "targetId": "NDC_Education",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Culture",
@@ -4821,13 +4821,13 @@
     "targetId": "NDC_LivestockMitigation",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_LivestockMitigation",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_LivestockMitigation",
@@ -4863,7 +4863,7 @@
     "targetId": "NDC_Mitigation_1",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_1",
@@ -4905,7 +4905,7 @@
     "targetId": "NDC_Mitigation_2",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_2",
@@ -4953,7 +4953,7 @@
     "targetId": "NDC_Mitigation_3",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_3",
@@ -5199,7 +5199,7 @@
     "targetId": "NDC_ArableFarming_4",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_ArableFarming_4",
@@ -5433,7 +5433,7 @@
     "targetId": "NBT_6",
     "categoryId": "sector_energy",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -5445,7 +5445,7 @@
     "targetId": "NBT_6",
     "categoryId": "sector_ippu",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -5457,7 +5457,7 @@
     "targetId": "NBT_6",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -5493,13 +5493,13 @@
     "targetId": "NBT_7",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -5595,7 +5595,7 @@
     "targetId": "NBT_9",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_10",
@@ -5679,7 +5679,7 @@
     "targetId": "NBT_11",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_12",
@@ -5721,7 +5721,7 @@
     "targetId": "NBT_12",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_13",
@@ -5763,7 +5763,7 @@
     "targetId": "NBT_13",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_14",
@@ -5889,7 +5889,7 @@
     "targetId": "NBT_16",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_17",
@@ -6015,13 +6015,13 @@
     "targetId": "NBT_19",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_1",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_1",
@@ -6057,7 +6057,7 @@
     "targetId": "NAP_1",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_1",
@@ -6087,7 +6087,7 @@
     "targetId": "NAP_2",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_2",
@@ -6123,7 +6123,7 @@
     "targetId": "NAP_2",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_2",
@@ -6153,7 +6153,7 @@
     "targetId": "NAP_3",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_3",
@@ -6171,7 +6171,7 @@
     "targetId": "NAP_3",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_3",
@@ -6231,7 +6231,7 @@
     "targetId": "NAP_4",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_4",
@@ -6369,7 +6369,7 @@
     "targetId": "NAP_6",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_6",
@@ -6417,7 +6417,7 @@
     "targetId": "NAP_7",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_7",
@@ -6483,7 +6483,7 @@
     "targetId": "NAP_8",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_8",
@@ -6615,7 +6615,7 @@
     "targetId": "NAP_10",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_10",
@@ -6627,7 +6627,7 @@
     "targetId": "NAP_10",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_10",
@@ -6657,7 +6657,7 @@
     "targetId": "NAP_10",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_10",
@@ -6747,7 +6747,7 @@
     "targetId": "NAP_12",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_12",
@@ -6813,7 +6813,7 @@
     "targetId": "NAP_13",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_13",
@@ -6825,7 +6825,7 @@
     "targetId": "NAP_13",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_13",
@@ -6915,7 +6915,7 @@
     "targetId": "NAP_14",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_14",
@@ -6939,13 +6939,13 @@
     "targetId": "NAP_14",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_15",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NAP_15",
@@ -7029,7 +7029,7 @@
     "targetId": "NDC_Biodiversity_1",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Biodiversity_1",
@@ -7051,77 +7051,77 @@
   },
   {
     "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Biodiversity_2",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
     "isRelevant": true
   },
   {
+    "targetId": "NDC_Biodiversity_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Biodiversity_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
     "targetId": "NDC_Biodiversity_2",
     "categoryId": "theme_8",
     "taxonomyType": "theme",
@@ -7147,401 +7147,401 @@
   },
   {
     "targetId": "NDC_Forests_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
     "isRelevant": true
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_5",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_8",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_1",
+    "targetId": "NDC_Forests_2",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
-    "targetId": "NDC_Forests_2",
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_Forests_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_NatDisasters_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_AnimalHusbandry_2",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
     "isRelevant": true
   },
   {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_Forests_3",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_NatDisasters_2",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_1",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_1",
-    "categoryId": "theme_10",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "NDC_AnimalHusbandry_2",
-    "categoryId": "theme_0",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
     "targetId": "NDC_AnimalHusbandry_2",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
@@ -7683,7 +7683,7 @@
     "targetId": "NDC_AnimalHusbandry_4",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_AnimalHusbandry_4",
@@ -7797,13 +7797,13 @@
     "targetId": "NDC_PublicHealth",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_SocialProtection",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_SocialProtection",
@@ -7845,7 +7845,7 @@
     "targetId": "NDC_SocialProtection",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_SocialProtection",
@@ -7875,7 +7875,7 @@
     "targetId": "NDC_Education",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Education",
@@ -7905,7 +7905,7 @@
     "targetId": "NDC_Education",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Education",
@@ -7935,7 +7935,7 @@
     "targetId": "NDC_Culture",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Culture",
@@ -8007,13 +8007,13 @@
     "targetId": "NDC_LivestockMitigation",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_LivestockMitigation",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_LivestockMitigation",
@@ -8073,7 +8073,7 @@
     "targetId": "NDC_Mitigation_1",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_1",
@@ -8139,7 +8139,7 @@
     "targetId": "NDC_Mitigation_2",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_2",
@@ -8211,7 +8211,7 @@
     "targetId": "NDC_Mitigation_3",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_Mitigation_3",
@@ -8265,7 +8265,7 @@
     "targetId": "NDC_WaterResources_1",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_WaterResources_1",
@@ -8331,7 +8331,7 @@
     "targetId": "NDC_WaterResources_2",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_WaterResources_2",
@@ -8529,7 +8529,7 @@
     "targetId": "NDC_ArableFarming_3",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_ArableFarming_3",
@@ -8679,7 +8679,7 @@
     "targetId": "NBT_1",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_1",
@@ -8739,13 +8739,13 @@
     "targetId": "NBT_2",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_2",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_2",
@@ -8811,7 +8811,7 @@
     "targetId": "NBT_3",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_3",
@@ -8877,7 +8877,7 @@
     "targetId": "NBT_4",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_4",
@@ -8895,7 +8895,7 @@
     "targetId": "NBT_4",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_4",
@@ -8919,7 +8919,7 @@
     "targetId": "NBT_4",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_5",
@@ -8943,13 +8943,13 @@
     "targetId": "NBT_5",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_5",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_5",
@@ -8967,7 +8967,7 @@
     "targetId": "NBT_5",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_5",
@@ -8985,19 +8985,19 @@
     "targetId": "NBT_5",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -9045,7 +9045,7 @@
     "targetId": "NBT_6",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_6",
@@ -9069,7 +9069,7 @@
     "targetId": "NBT_7",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -9081,7 +9081,7 @@
     "targetId": "NBT_7",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -9099,7 +9099,7 @@
     "targetId": "NBT_7",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_7",
@@ -9141,7 +9141,7 @@
     "targetId": "NBT_8",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_8",
@@ -9165,7 +9165,7 @@
     "targetId": "NBT_8",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_8",
@@ -9183,7 +9183,7 @@
     "targetId": "NBT_8",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
@@ -9207,13 +9207,13 @@
     "targetId": "NBT_9",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
@@ -9231,7 +9231,7 @@
     "targetId": "NBT_9",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
@@ -9243,13 +9243,13 @@
     "targetId": "NBT_9",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_9",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_10",
@@ -9273,7 +9273,7 @@
     "targetId": "NBT_10",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_10",
@@ -9291,7 +9291,7 @@
     "targetId": "NBT_10",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_10",
@@ -9303,7 +9303,7 @@
     "targetId": "NBT_10",
     "categoryId": "theme_8",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_10",
@@ -9339,7 +9339,7 @@
     "targetId": "NBT_11",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_11",
@@ -9363,7 +9363,7 @@
     "targetId": "NBT_11",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_11",
@@ -9411,7 +9411,7 @@
     "targetId": "NBT_12",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_12",
@@ -9423,13 +9423,13 @@
     "targetId": "NBT_12",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_12",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_12",
@@ -9477,7 +9477,7 @@
     "targetId": "NBT_13",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_13",
@@ -9495,7 +9495,7 @@
     "targetId": "NBT_13",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_13",
@@ -9603,7 +9603,7 @@
     "targetId": "NBT_15",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_15",
@@ -9627,7 +9627,7 @@
     "targetId": "NBT_15",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_15",
@@ -9639,7 +9639,7 @@
     "targetId": "NBT_15",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_15",
@@ -9705,7 +9705,7 @@
     "targetId": "NBT_16",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_16",
@@ -9735,7 +9735,7 @@
     "targetId": "NBT_17",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_17",
@@ -9753,7 +9753,7 @@
     "targetId": "NBT_17",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_17",
@@ -9819,7 +9819,7 @@
     "targetId": "NBT_18",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_18",
@@ -9879,7 +9879,7 @@
     "targetId": "NBT_19",
     "categoryId": "theme_5",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_19",
@@ -9891,13 +9891,13 @@
     "targetId": "NBT_19",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_19",
     "categoryId": "theme_8",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBT_19",
