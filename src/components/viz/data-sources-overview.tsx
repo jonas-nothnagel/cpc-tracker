@@ -29,29 +29,53 @@ function TargetListModal({ label, targets, color, onClose }: {
   label: string; targets: Target[]; color: string; onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h3 className="font-medium text-[var(--undp-black)] flex items-center gap-2">
-            <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
-            {label} ({targets.length})
-          </h3>
-          <button type="button" onClick={onClose} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none">×</button>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-xl shadow-2xl max-w-xl w-full max-h-[80vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: color }} />
+            <span className="text-sm font-semibold text-[var(--undp-black)]">{label}</span>
+            <span className="text-xs text-[var(--undp-gray)] bg-gray-100 px-1.5 py-0.5 rounded-full">
+              {targets.length}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-7 h-7 flex items-center justify-center rounded-full text-[var(--undp-gray)] hover:bg-gray-100 hover:text-[var(--undp-black)] transition-colors text-lg leading-none"
+          >
+            ×
+          </button>
         </div>
-        <div className="overflow-auto flex-1 px-6 py-4">
-          <ul className="space-y-3">
-            {targets.map((t) => (
-              <li key={t.id} className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0">
-                <span className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white" style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}>
-                  {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
+
+        {/* List */}
+        <ul className="overflow-y-auto flex-1 divide-y divide-gray-50 px-5 py-2">
+          {targets.map((t) => (
+            <li key={t.id} className="py-3.5">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span
+                  className="inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold text-white leading-none"
+                  style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                >
+                  {DOC_LABELS[t.sourceDocument]}
                 </span>
-                <span className="text-[var(--undp-black)] leading-relaxed">
-                  <TargetTextWithHighlights target={t} />
+                <span className="text-xs font-medium text-[var(--undp-black)]">
+                  {t.sourceLabel}
                 </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </div>
+              <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+                <TargetTextWithHighlights target={t} />
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
