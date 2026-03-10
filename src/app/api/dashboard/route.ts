@@ -85,13 +85,28 @@ export async function GET(request: NextRequest) {
     string,
     { isQuantitative: boolean; isTimeBound: boolean; quantitativeDetails?: string; timeBoundDetails?: string }
   >();
+  // Normalise details that may be Python list repr: "['foo', 'bar']" → "foo, bar"
+  function normaliseDetails(raw: string | undefined): string | undefined {
+    if (!raw) return undefined;
+    const trimmed = raw.trim();
+    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+      return trimmed
+        .slice(1, -1)
+        .split(/,\s*/)
+        .map((s) => s.replace(/^['"]|['"]$/g, "").trim())
+        .filter(Boolean)
+        .join(", ");
+    }
+    return trimmed || undefined;
+  }
+
   if (quantFlags) {
     for (const f of quantFlags) {
       flagsByTarget.set(f.targetId, {
         isQuantitative: f.isQuantitative,
         isTimeBound: f.isTimeBound,
-        quantitativeDetails: f.quantitativeDetails,
-        timeBoundDetails: f.timeBoundDetails,
+        quantitativeDetails: normaliseDetails(f.quantitativeDetails),
+        timeBoundDetails: normaliseDetails(f.timeBoundDetails),
       });
     }
   }
