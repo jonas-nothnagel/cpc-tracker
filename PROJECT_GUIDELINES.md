@@ -7,6 +7,8 @@
 The main users of this application will be policy makers, UN country offices, ministries, etc. Therefore, insights have to be clear, actionable, transparent and genuinly helpful. If methodologies are used for calculating, this should always be well thought through, explained and serve the purpose to establish real insights and not for adding or even impostering complexity. 
 
 For additional brainstorming notes, test data and other things that concern development, prototyping and scoping ideas, see /dev_data_scripts folder. Note that all information and data in this is not treated as confirmed plans or even as factual correct information. However, it should be used to add to context and see how and what actually makes sense along the project and can be transformed and clear, technical steps. Everything should always lead to technical implementation. If we can establish even one or two very well functioning insightful use cases that would be a clear win already.
+
+More up-to-date notes and context can be found under the /dev_data_scripts/rolling_context/ folder. Always inspect. 
 ---
 
 ## 1. Product Vision
