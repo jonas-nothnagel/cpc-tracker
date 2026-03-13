@@ -20,6 +20,8 @@ import type {
   NbsCategory,
   IpccSector,
   BtrData,
+  Nr7Data,
+  Nr7ProgressItem,
 } from "@/types";
 
 interface TaxonomyCategory {
@@ -36,6 +38,7 @@ interface DashboardData {
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
   btrData: BtrData | null;
+  nr7Data: Nr7Data | null;
 }
 
 /** Ensure targets have optional fields */
@@ -66,7 +69,7 @@ type ClassificationView = "nbs" | "sector" | "theme";
 function ClassificationSection({
   targets, documentTypes, nbsSorted, sectorSorted, themeSorted,
   nbsClassifications, sectorClassifications, themeClassifications,
-  targetsWithNbs,
+  targetsWithNbs, targetsWithSectors, targetsWithThemes,
 }: {
   targets: Target[];
   documentTypes: PolicyDocumentType[];
@@ -77,8 +80,16 @@ function ClassificationSection({
   sectorClassifications: ThematicClassification[];
   themeClassifications: ThematicClassification[];
   targetsWithNbs: number;
+  targetsWithSectors: number;
+  targetsWithThemes: number;
 }) {
   const [view, setView] = useState<ClassificationView>("nbs");
+
+  const mappedTargetsByView: Record<ClassificationView, { count: number; label: string }> = {
+    nbs: { count: targetsWithNbs, label: "of targets mapped to nature-based solutions" },
+    sector: { count: targetsWithSectors, label: "of targets mapped to IPCC sectors" },
+    theme: { count: targetsWithThemes, label: "of targets mapped to cross-cutting themes" },
+  };
 
   const viewOptions: { value: ClassificationView; label: string }[] = [
     { value: "nbs", label: "Nature-Based Solutions" },
@@ -89,14 +100,9 @@ function ClassificationSection({
   return (
     <section className="mb-10">
       <div className="mb-4 flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-            Thematic Classification
-          </h2>
-          <p className="text-sm text-[var(--undp-gray)] mt-1">
-            How targets map to nature-based solutions, IPCC sectors, and cross-cutting themes.
-          </p>
-        </div>
+        <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+          Thematic Classification
+        </h2>
         <div className="flex rounded-md border border-gray-200 text-xs overflow-hidden">
           {viewOptions.map((opt) => (
             <button
@@ -120,7 +126,7 @@ function ClassificationSection({
           {view === "nbs" && (
             <NbsBarChart
               title="Nature-Based Solutions Breakdown"
-              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) refer to Nature-Based Solutions. Click a segment to see which targets.`}
+              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) refer to NBS. Click a segment to see which targets.`}
               data={nbsSorted}
               documentTypes={[...documentTypes]}
               targets={targets}
@@ -155,9 +161,131 @@ function ClassificationSection({
             quantitativeTargets={targets.filter((t) => t.isQuantitative)}
             timeBoundTargets={targets.filter((t) => t.isTimeBound)}
             totalTargets={targets.length}
+            mappedTargets={mappedTargetsByView[view]}
           />
         </div>
       </div>
+    </section>
+  );
+}
+
+// ─── NR7 Implementation Progress (collapsible) ──────────────────────────────
+
+const NR7_COLORS: Record<string, string> = {
+  on_track: "#16a34a", limited: "#d97706",
+  no_progress: "#dc2626", unknown: "#9ca3af",
+};
+const NR7_LABELS: Record<string, string> = {
+  on_track: "On track", limited: "Limited progress",
+  no_progress: "No progress", unknown: "Unknown",
+};
+
+function Nr7Section({ nr7Data }: { nr7Data: Nr7Data }) {
+  const [collapsed, setCollapsed] = useState(true);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
+  const displayLabel = (item: Nr7ProgressItem) =>
+    item.nbsapTargetId ? `NBT ${item.nbsapTargetId.replace("NBT_", "")}` : item.targetId;
+
+  const statusCounts = (["on_track", "limited", "no_progress", "unknown"] as const)
+    .map((s) => ({ status: s, count: nr7Data.progressItems.filter((p) => p.progressStatus === s).length }))
+    .filter((s) => s.count > 0);
+
+  return (
+    <section className="mb-10">
+      <button
+        type="button"
+        onClick={() => setCollapsed((v) => !v)}
+        className="w-full flex items-center justify-between mb-3 group text-left"
+      >
+        <div>
+          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+            NR7 Implementation Progress
+          </h2>
+          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+            {nr7Data.progressItems.length} national biodiversity targets — 7th National Report to the CBD
+            {nr7Data.reportingPeriod ? ` (${nr7Data.reportingPeriod})` : ""}
+          </p>
+        </div>
+        <span className="text-[var(--undp-gray)] group-hover:text-[var(--undp-black)] transition-colors text-lg">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </button>
+
+      {/* Summary badges — always visible */}
+      <div className="flex flex-wrap gap-3 mb-3 text-sm">
+        {statusCounts.map(({ status, count }) => (
+          <span key={status} className="flex items-center gap-1.5 bg-white border border-gray-100 rounded-full px-3 py-1">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: NR7_COLORS[status] }} />
+            <span className="font-semibold text-[var(--undp-black)]">{count}</span>
+            <span className="text-[var(--undp-gray)]">{NR7_LABELS[status]}</span>
+          </span>
+        ))}
+      </div>
+
+      {/* Expandable target list */}
+      {!collapsed && (
+        <div className="grid gap-1.5">
+          {nr7Data.progressItems.map((item) => {
+            const isExpanded = expandedItem === item.targetId;
+            const hasDetail = item.progressSummary || item.challenges;
+            return (
+              <div
+                key={item.targetId}
+                className={`rounded-lg border transition-colors ${isExpanded ? "border-gray-200 bg-white shadow-sm" : "border-gray-100 bg-[var(--undp-light)]"}`}
+              >
+                <button
+                  type="button"
+                  onClick={() => hasDetail && setExpandedItem(isExpanded ? null : item.targetId)}
+                  className={`w-full flex items-center gap-3 px-4 py-2.5 text-left ${hasDetail ? "cursor-pointer" : "cursor-default"}`}
+                >
+                  <span
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    style={{ backgroundColor: NR7_COLORS[item.progressStatus] ?? "#9ca3af" }}
+                  />
+                  <span className="text-xs font-semibold text-[var(--undp-black)] w-12 shrink-0">
+                    {displayLabel(item)}
+                  </span>
+                  <span className="text-xs text-[var(--undp-gray)] flex-1 truncate">
+                    {item.targetText}
+                  </span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0" style={{
+                    backgroundColor: `${NR7_COLORS[item.progressStatus]}15`,
+                    color: NR7_COLORS[item.progressStatus],
+                  }}>
+                    {NR7_LABELS[item.progressStatus] ?? "Unknown"}
+                  </span>
+                  {hasDetail && (
+                    <span className="text-[10px] text-[var(--undp-gray)] shrink-0">{isExpanded ? "▾" : "▸"}</span>
+                  )}
+                </button>
+                {isExpanded && hasDetail && (
+                  <div className="px-4 pb-3 pt-0 border-t border-gray-50 ml-[42px] text-xs text-[var(--undp-gray)] space-y-2">
+                    {item.progressSummary && (
+                      <div>
+                        <span className="font-medium text-[var(--undp-black)]">Progress: </span>
+                        {item.progressSummary}
+                      </div>
+                    )}
+                    {item.challenges && (
+                      <div>
+                        <span className="font-medium text-[var(--undp-black)]">Challenges: </span>
+                        {item.challenges}
+                      </div>
+                    )}
+                    {item.examples && (
+                      <div>
+                        <span className="font-medium text-[var(--undp-black)]">Examples: </span>
+                        {item.examples}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }
@@ -184,6 +312,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           classifications: raw.classifications ?? [],
           alignment: raw.alignment ?? [],
           btrData: raw.btrData ?? null,
+          nr7Data: raw.nr7Data ?? null,
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
@@ -242,6 +371,12 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
 
   const targetsWithNbs = new Set(
     nbsClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
+  ).size;
+  const targetsWithSectors = new Set(
+    sectorClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
+  ).size;
+  const targetsWithThemes = new Set(
+    themeClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
   ).size;
 
   const documentTypes = Array.from(targetsByDoc.keys()) as Target["sourceDocument"][];
@@ -303,6 +438,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           targets={targets}
           alignmentOpportunities={data.alignment.filter((a) => a.alignment === "high" || a.alignment === "medium").length}
           btrData={data.btrData}
+          nr7Data={data.nr7Data}
         />
 
         {/* --- Thematic Classification (switchable) --- */}
@@ -316,6 +452,8 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           sectorClassifications={sectorClassifications}
           themeClassifications={themeClassifications}
           targetsWithNbs={targetsWithNbs}
+          targetsWithSectors={targetsWithSectors}
+          targetsWithThemes={targetsWithThemes}
         />
 
         {/* --- Policy Coherence Explorer --- */}
@@ -326,7 +464,13 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           themes={data.themes}
           nbsCategories={data.nbsCategories}
           classifications={data.classifications}
+          nr7Data={data.nr7Data}
         />
+
+        {/* --- NR7 Implementation Progress --- */}
+        {data.nr7Data && data.nr7Data.progressItems.length > 0 && (
+          <Nr7Section nr7Data={data.nr7Data} />
+        )}
 
         {/* --- Contradiction Summary --- */}
         <ContradictionSummary

@@ -224,6 +224,28 @@ export interface BtrData {
 }
 
 // ---------------------------------------------------------------------------
+// NR7 Progress Data (CBD National Report 7)
+// ---------------------------------------------------------------------------
+
+export interface Nr7ProgressItem {
+  targetId: string;
+  targetText: string;
+  progressStatus: "on_track" | "limited" | "no_progress" | "unknown";
+  reportedActions: string[];
+  progressSummary?: string | null;
+  challenges?: string | null;
+  examples?: string | null;
+  /** Maps to an NBSAP target (e.g. "NBT_1") for direct lookup */
+  nbsapTargetId?: string;
+}
+
+export interface Nr7Data {
+  country: string;
+  reportingPeriod: string;
+  progressItems: Nr7ProgressItem[];
+}
+
+// ---------------------------------------------------------------------------
 // Full Analysis (assembled result for a country)
 // ---------------------------------------------------------------------------
 
@@ -240,5 +262,6 @@ export interface AnalysisResult {
   alignmentResults: AlignmentResult[];
   decompositions?: TargetDecomposition[];
   btrData?: BtrData;
+  nr7Data?: Nr7Data;
 }
 

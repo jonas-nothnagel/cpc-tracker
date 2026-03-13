@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { arc as d3Arc } from "d3-shape";
 import {
   DOC_COLORS,
@@ -17,6 +17,8 @@ import type {
   AlignmentLevel,
   IpccSector,
   ThematicClassification,
+  Nr7Data,
+  Nr7ProgressItem,
 } from "@/types";
 
 // ─── Internal types ─────────────────────────────────────────────────
@@ -232,6 +234,8 @@ function DetailPanel({
   onSelectPair,
   comparedPair,
   onBackFromPair,
+  nr7Item,
+  nr7ProgressMap,
 }: {
   node: NodePos;
   connections: (AlignmentResult & { otherTarget: Target })[];
@@ -239,7 +243,26 @@ function DetailPanel({
   onSelectPair: (r: AlignmentResult) => void;
   comparedPair: { result: AlignmentResult; other: Target } | null;
   onBackFromPair: () => void;
+  nr7Item?: Nr7ProgressItem | null;
+  nr7ProgressMap?: Map<string, string>;
 }) {
+  const [expandedRationaleId, setExpandedRationaleId] = useState<string | null>(null);
+
+  const sorted = [...connections].sort((a, b) => {
+    const order: Record<AlignmentLevel, number> = {
+      high: 0, medium: 1, low: 2,
+      low_tension: 3, moderate_contradiction: 4, high_contradiction: 5,
+      none: 6,
+    };
+    return order[a.alignment] - order[b.alignment];
+  });
+
+  // Show the first rationale by default so the interaction pattern is obvious.
+  useEffect(() => {
+    const firstExpandable = sorted.find((conn) => conn.description)?.otherTarget.id ?? null;
+    setExpandedRationaleId(firstExpandable);
+  }, [node.id]);
+
   if (comparedPair) {
     return (
       <div className="border border-gray-200 rounded-lg bg-white shadow-lg overflow-hidden">
@@ -260,9 +283,13 @@ function DetailPanel({
         </div>
 
         <div className="px-4 py-3 flex items-center gap-2 border-b border-gray-100">
-          <span className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[comparedPair.result.alignment] }} />
+          <span className="text-xs text-[var(--undp-gray)] mr-1">Alignment</span>
+          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[comparedPair.result.alignment] }} />
           <span className="text-sm font-semibold text-[var(--undp-black)]">
             {ALIGNMENT_LABELS[comparedPair.result.alignment]}
+          </span>
+          <span className="text-xs text-[var(--undp-gray)] ml-auto">
+            {connections.length} connections
           </span>
         </div>
 
@@ -293,22 +320,16 @@ function DetailPanel({
     );
   }
 
-  const sorted = [...connections].sort((a, b) => {
-    const order: Record<AlignmentLevel, number> = {
-      high: 0, medium: 1, low: 2,
-      low_tension: 3, moderate_contradiction: 4, high_contradiction: 5,
-      none: 6,
-    };
-    return order[a.alignment] - order[b.alignment];
-  });
-
   const hi = connections.filter((c) => c.alignment === "high").length;
   const md = connections.filter((c) => c.alignment === "medium").length;
   const lo = connections.filter((c) => c.alignment === "low").length;
   const ct = connections.filter((c) => isContradiction(c.alignment)).length;
 
+  const hasNr7InConns = nr7ProgressMap && connections.some((c) => nr7ProgressMap.has(c.otherTarget.id));
+
   return (
     <div className="border border-gray-200 rounded-lg bg-white shadow-lg overflow-hidden flex flex-col max-h-[620px]">
+      {/* Target header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: DOC_COLORS[node.target.sourceDocument] }} />
@@ -321,57 +342,140 @@ function DetailPanel({
         </button>
       </div>
 
-      <div className="px-4 py-3 border-b border-gray-100 shrink-0">
+      <div className="px-4 py-3 shrink-0">
         <p className="text-xs text-[var(--undp-black)] leading-relaxed">
           <TargetTextWithHighlights target={node.target} />
         </p>
       </div>
 
-      <div className="px-4 py-2 border-b border-gray-100 shrink-0 flex flex-wrap gap-3 text-[11px]">
-        {hi > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm" style={{ backgroundColor: ALIGNMENT_COLORS.high }} />{hi} high</span>}
-        {md > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm" style={{ backgroundColor: ALIGNMENT_COLORS.medium }} />{md} medium</span>}
-        {lo > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm" style={{ backgroundColor: ALIGNMENT_COLORS.low }} />{lo} low</span>}
-        {ct > 0 && <span className="flex items-center gap-1 text-red-600"><span className="w-2 h-2 rounded-sm" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />{ct} conflict</span>}
+      <div className="px-4 py-2 shrink-0 flex flex-wrap gap-3 text-[11px]">
+        {hi > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.high }} />{hi} high</span>}
+        {md > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.medium }} />{md} medium</span>}
+        {lo > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.low }} />{lo} low</span>}
+        {ct > 0 && <span className="flex items-center gap-1 text-red-600"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />{ct} conflict</span>}
       </div>
 
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] px-4 pt-3 pb-1">
-          Connections ({connections.length})
-        </p>
+      {nr7Item && (
+        <div className="px-4 py-3 border-t border-gray-100 shrink-0">
+          <div className="flex items-center gap-2 mb-2">
+            <span
+              className="w-2.5 h-2.5 rounded-full shrink-0"
+              style={{ backgroundColor: NR7_BADGE_COLORS[nr7Item.progressStatus] ?? "#9ca3af" }}
+            />
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+              NR7 Progress: {NR7_BADGE_LABELS[nr7Item.progressStatus] ?? "Unknown"}
+            </span>
+          </div>
+          {nr7Item.progressSummary && (
+            <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mb-1.5">
+              {nr7Item.progressSummary.length > 300
+                ? nr7Item.progressSummary.slice(0, 300) + "..."
+                : nr7Item.progressSummary}
+            </p>
+          )}
+          {nr7Item.challenges && (
+            <details className="text-[11px]">
+              <summary className="text-[var(--undp-gray)] cursor-pointer hover:text-[var(--undp-blue)]">
+                Key challenges
+              </summary>
+              <p className="text-[var(--undp-black)] leading-relaxed mt-1 pl-2 border-l-2 border-gray-200">
+                {nr7Item.challenges.length > 300
+                  ? nr7Item.challenges.slice(0, 300) + "..."
+                  : nr7Item.challenges}
+              </p>
+            </details>
+          )}
+        </div>
+      )}
+
+      {/* Connections section — visually separated */}
+      <div className="flex-1 overflow-y-auto min-h-0 border-t-2 border-gray-100">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2 shrink-0">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+            Connections ({connections.length})
+          </p>
+          {hasNr7InConns && (
+            <div className="flex items-center gap-2 text-[10px] text-[var(--undp-gray)]">
+              <span>NR7:</span>
+              <span className="flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.on_track }} />
+                on track
+              </span>
+              <span className="flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.limited }} />
+                limited
+              </span>
+              <span className="flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.no_progress }} />
+                none
+              </span>
+            </div>
+          )}
+        </div>
         <ul className="divide-y divide-gray-50">
-          {sorted.map((conn) => (
-            <li key={conn.otherTarget.id}>
-              <button
-                type="button"
-                onClick={() => onSelectPair(conn)}
-                className="w-full text-left px-4 py-2.5 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[conn.alignment] }} />
-                  <span
-                    className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold text-white leading-none"
-                    style={{ backgroundColor: DOC_COLORS[conn.otherTarget.sourceDocument] }}
-                  >
-                    {DOC_LABELS[conn.otherTarget.sourceDocument]}
-                  </span>
-                  <span className="text-xs font-medium text-[var(--undp-black)] truncate">
-                    {conn.otherTarget.sourceLabel}
-                  </span>
-                  <span
-                    className="text-[10px] font-medium ml-auto shrink-0"
-                    style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
-                  >
-                    {ALIGNMENT_LABELS[conn.alignment]}
-                  </span>
-                </div>
+          {sorted.map((conn) => {
+            const isExpanded = expandedRationaleId === conn.otherTarget.id;
+            const nr7Status = nr7ProgressMap?.get(conn.otherTarget.id);
+            return (
+              <li key={conn.otherTarget.id}>
+                <button
+                  type="button"
+                  onClick={() => onSelectPair(conn)}
+                  className="w-full text-left px-4 py-2.5 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold text-white leading-none"
+                      style={{ backgroundColor: DOC_COLORS[conn.otherTarget.sourceDocument] }}
+                    >
+                      {DOC_LABELS[conn.otherTarget.sourceDocument]}
+                    </span>
+                    <span className="text-xs font-medium text-[var(--undp-black)] truncate flex-1">
+                      {conn.otherTarget.sourceLabel}
+                    </span>
+                    {nr7Status && (
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: NR7_BADGE_COLORS[nr7Status] ?? "#9ca3af" }}
+                        title={`NR7: ${NR7_BADGE_LABELS[nr7Status] ?? "Unknown"}`}
+                      />
+                    )}
+                    <span
+                      className="text-[10px] font-medium shrink-0"
+                      style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
+                    >
+                      {ALIGNMENT_LABELS[conn.alignment]}
+                    </span>
+                  </div>
+                </button>
                 {conn.description && (
-                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug line-clamp-2 pl-4">
-                    {conn.description}
-                  </p>
+                  <div className="px-4 pb-1">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedRationaleId(isExpanded ? null : conn.otherTarget.id);
+                      }}
+                      className="flex items-center gap-1 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors mb-1"
+                    >
+                      <svg
+                        width="10" height="10" viewBox="0 0 10 10" fill="none"
+                        className={`transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                      >
+                        <path d="M3 2l4 3-4 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Rationale
+                    </button>
+                    {isExpanded && (
+                      <p className="text-[11px] text-[var(--undp-gray)] leading-snug pl-3 pb-1.5 border-l-2 border-gray-100">
+                        {conn.description}
+                      </p>
+                    )}
+                  </div>
                 )}
-              </button>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
@@ -380,6 +484,20 @@ function DetailPanel({
 
 // ─── Main component ─────────────────────────────────────────────────
 
+const NR7_BADGE_COLORS: Record<string, string> = {
+  on_track: "#16a34a",
+  limited: "#d97706",
+  no_progress: "#dc2626",
+  unknown: "#9ca3af",
+};
+
+const NR7_BADGE_LABELS: Record<string, string> = {
+  on_track: "On track",
+  limited: "Limited progress",
+  no_progress: "No progress",
+  unknown: "Unknown",
+};
+
 interface PolicyCoherenceExplorerProps {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -387,6 +505,7 @@ interface PolicyCoherenceExplorerProps {
   themes: TaxCategory[];
   nbsCategories: TaxCategory[];
   classifications: ThematicClassification[];
+  nr7Data?: Nr7Data | null;
 }
 
 export function PolicyCoherenceExplorer({
@@ -396,6 +515,7 @@ export function PolicyCoherenceExplorer({
   themes,
   nbsCategories,
   classifications,
+  nr7Data,
 }: PolicyCoherenceExplorerProps) {
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
   const [filter, setFilter] = useState<AlignFilter>("all");
@@ -407,11 +527,40 @@ export function PolicyCoherenceExplorer({
   } | null>(null);
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [showBtr, setShowBtr] = useState(false);
+  const [showNr7, setShowNr7] = useState(true);
 
   const hasBtr = useMemo(
     () => targets.some((t) => t.sourceDocument === "BTR"),
     [targets],
   );
+  const hasNr7 = useMemo(
+    () => !!nr7Data?.progressItems?.length,
+    [nr7Data],
+  );
+
+  // Map NBSAP target IDs to NR7 progress items via nbsapTargetId
+  const nr7ProgressMap = useMemo(() => {
+    const map = new Map<string, string>();
+    if (!nr7Data?.progressItems?.length) return map;
+    for (const item of nr7Data.progressItems) {
+      if (item.nbsapTargetId) {
+        map.set(item.nbsapTargetId, item.progressStatus);
+      }
+    }
+    return map;
+  }, [nr7Data]);
+
+  // Full NR7 item lookup by NBSAP target ID (for detail panel)
+  const nr7ItemMap = useMemo(() => {
+    const map = new Map<string, Nr7ProgressItem>();
+    if (!nr7Data?.progressItems?.length) return map;
+    for (const item of nr7Data.progressItems) {
+      if (item.nbsapTargetId) {
+        map.set(item.nbsapTargetId, item);
+      }
+    }
+    return map;
+  }, [nr7Data]);
 
   const visibleTargets = useMemo(
     () => (showBtr ? targets : targets.filter((t) => t.sourceDocument !== "BTR")),
@@ -529,9 +678,16 @@ export function PolicyCoherenceExplorer({
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {targets.length} targets · {totalAligned} aligned pairs
             {totalContra > 0 && (
-              <span className="text-red-600">
-                {" "}· {totalContra} contradiction{totalContra !== 1 ? "s" : ""}
-              </span>
+              <>
+                {" "}·{" "}
+                <button
+                  type="button"
+                  onClick={() => setFilter(filter === "contradictions" ? "all" : "contradictions")}
+                  className="text-red-600 hover:underline font-medium"
+                >
+                  {totalContra} contradiction{totalContra !== 1 ? "s" : ""}
+                </button>
+              </>
             )}
             {" "}— hover or click a target to explore connections
           </p>
@@ -569,6 +725,20 @@ export function PolicyCoherenceExplorer({
             >
               <span className={`w-2 h-2 rounded-sm ${showBtr ? "bg-[#7c3aed]" : "bg-gray-300"}`} />
               BTR Measures
+            </button>
+          )}
+          {hasNr7 && (
+            <button
+              type="button"
+              onClick={() => setShowNr7((v) => !v)}
+              className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                showNr7
+                  ? "border-[#16a34a]/40 bg-[#16a34a]/10 text-[#16a34a]"
+                  : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-[#16a34a]/30 hover:text-[#16a34a]"
+              }`}
+            >
+              <span className={`w-2 h-2 rounded-full ${showNr7 ? "bg-[#16a34a]" : "bg-gray-300"}`} />
+              NR7 Progress
             </button>
           )}
         </div>
@@ -705,6 +875,21 @@ export function PolicyCoherenceExplorer({
                         handleNodeClick(node.id);
                       }}
                     />
+                    {showNr7 && nr7ProgressMap.has(node.id) && !isDimmed && (
+                      <circle
+                        cx={node.x + r * 0.7}
+                        cy={node.y - r * 0.7}
+                        r={3.5}
+                        fill={NR7_BADGE_COLORS[nr7ProgressMap.get(node.id)!] ?? "#9ca3af"}
+                        stroke="white"
+                        strokeWidth={1}
+                        style={{ pointerEvents: "none" }}
+                      >
+                        <title>
+                          NR7: {NR7_BADGE_LABELS[nr7ProgressMap.get(node.id)!] ?? "Unknown"}
+                        </title>
+                      </circle>
+                    )}
                   </g>
                 );
               })}
@@ -812,28 +997,53 @@ export function PolicyCoherenceExplorer({
               </text>
             </svg>
 
-            {/* Legend */}
-            <div className="flex flex-wrap gap-x-5 gap-y-1.5 mt-3 text-[11px]">
-              {arcs.map((arc) => (
-                <span key={arc.id} className="flex items-center gap-1.5" title={arc.label}>
-                  <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: arc.color }} />
-                  <span className="text-[var(--undp-gray)]">
-                    {truncLabel(arc.label, 28)} ({arc.count})
-                  </span>
-                </span>
-              ))}
-              <span className="w-px h-3 bg-gray-200 self-center mx-1" />
-              {(["high", "medium", "low"] as AlignmentLevel[]).map((level) => (
-                <span key={level} className="flex items-center gap-1.5">
-                  <span className="w-5 h-0.5 rounded" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
-                  <span className="text-[var(--undp-gray)] capitalize">{level}</span>
-                </span>
-              ))}
-              {totalContra > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <span className="w-5 h-0.5 rounded" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />
-                  <span className="text-[var(--undp-gray)]">Contradiction</span>
-                </span>
+            {/* Legend — structured grid */}
+            <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
+              {/* Document column */}
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Document</p>
+                <div className="flex flex-col gap-1">
+                  {arcs.map((arc) => (
+                    <span key={arc.id} className="flex items-center gap-1.5" title={arc.label}>
+                      <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: arc.color }} />
+                      <span className="text-[var(--undp-gray)]">
+                        {truncLabel(arc.label, 22)} ({arc.count})
+                      </span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              {/* Connection strength column */}
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Connection strength</p>
+                <div className="flex flex-col gap-1">
+                  {(["high", "medium", "low"] as AlignmentLevel[]).map((level) => (
+                    <span key={level} className="flex items-center gap-1.5">
+                      <span className="w-5 h-0.5 rounded shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
+                      <span className="text-[var(--undp-gray)] capitalize">{level}</span>
+                    </span>
+                  ))}
+                  {totalContra > 0 && (
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-5 h-0.5 rounded shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction, borderBottom: "2px dashed" }} />
+                      <span className="text-[var(--undp-gray)]">Contradiction</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+              {/* NR7 column */}
+              {showNr7 && nr7ProgressMap.size > 0 && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">NR7 Progress</p>
+                  <div className="flex flex-col gap-1">
+                    {(["on_track", "limited", "no_progress"] as const).map((status) => (
+                      <span key={status} className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: NR7_BADGE_COLORS[status] }} />
+                        <span className="text-[var(--undp-gray)]">{NR7_BADGE_LABELS[status]}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -857,6 +1067,8 @@ export function PolicyCoherenceExplorer({
               }}
               comparedPair={comparedPair}
               onBackFromPair={() => setComparedPair(null)}
+              nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
+              nr7ProgressMap={showNr7 ? nr7ProgressMap : undefined}
             />
           </div>
         )}

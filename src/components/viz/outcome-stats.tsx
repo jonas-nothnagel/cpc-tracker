@@ -89,15 +89,19 @@ interface OutcomeStatsProps {
   quantitativeTargets: Target[];
   timeBoundTargets: Target[];
   totalTargets: number;
+  /** Third tile: dynamic based on active view (NBS / IPCC / Themes) */
+  mappedTargets?: { count: number; label: string };
 }
 
 export function OutcomeStats({
   quantitativeTargets,
   timeBoundTargets,
   totalTargets,
+  mappedTargets,
 }: OutcomeStatsProps) {
   const quantitativePct = Math.round((quantitativeTargets.length / totalTargets) * 100);
   const timeBoundPct = Math.round((timeBoundTargets.length / totalTargets) * 100);
+  const mappedPct = mappedTargets ? Math.round((mappedTargets.count / totalTargets) * 100) : null;
 
   return (
     <div className="flex flex-col gap-4 h-full">
@@ -111,6 +115,13 @@ export function OutcomeStats({
         label="of targets include time-bound commitments"
         targets={timeBoundTargets}
       />
+      {mappedPct !== null && mappedTargets && (
+        <OutcomeStatCard
+          percentage={mappedPct}
+          label={mappedTargets.label}
+          targets={[]}
+        />
+      )}
     </div>
   );
 }

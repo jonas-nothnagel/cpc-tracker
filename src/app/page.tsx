@@ -34,16 +34,17 @@ export default function Home() {
 
       {/* Hero — image spans full viewport width, text constrained */}
       <section className="relative min-h-[380px] md:min-h-[420px] flex items-center">
-        {/* Background image — full bleed */}
+        {/* Background video — full bleed */}
         <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src="/biodiversity.jpg"
-            alt="Mongolia steppe landscape"
-            fill
-            className="object-cover object-center"
-            priority
+          <video
+            src="/15470041_3840_2160_30fps%20(1).mov"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/35 to-transparent" />
         </div>
         {/* Content on top */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
@@ -91,7 +92,7 @@ export default function Home() {
               </h3>
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
                 Enter policy targets from NDC, NBSAP, NAP, LDN, and sectoral
-                documents. Paste, type, or upload a CSV.
+                documents. Upload files or type manually.
               </p>
             </div>
             <div>

@@ -1,11 +1,11 @@
 {
   "status": "completed",
-  "step": 6,
-  "totalSteps": 6,
+  "step": 7,
+  "totalSteps": 7,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 0.7s",
-  "startedAt": "2026-03-05T12:03:34.181225+00:00",
-  "completedAt": "2026-03-05T12:03:34.907547+00:00",
+  "message": "Pipeline finished in 0.5s",
+  "startedAt": "2026-03-11T13:37:54.125208+00:00",
+  "completedAt": "2026-03-11T13:37:54.588471+00:00",
   "error": null,
   "summary": {
     "totalTargets": 59,
@@ -21,6 +21,8 @@
     "totalContradictions": 5,
     "measureAlignmentPairs": 27,
     "measurePseudoTargets": 15,
-    "elapsedSeconds": 0.7
+    "nr7AlignmentPairs": 0,
+    "nr7PseudoTargets": 0,
+    "elapsedSeconds": 0.5
   }
 }

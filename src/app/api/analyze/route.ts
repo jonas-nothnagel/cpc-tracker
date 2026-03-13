@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
       JSON.stringify({
         status: "starting",
         step: 0,
-        totalSteps: 5,
+        totalSteps: 6,
         currentStep: "Initializing pipeline",
         message: `Starting analysis for ${targets.length} targets from ${body.country || "Unknown"}`,
         startedAt: new Date().toISOString(),

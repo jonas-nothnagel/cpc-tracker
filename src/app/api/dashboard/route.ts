@@ -124,6 +124,18 @@ export async function GET(request: NextRequest) {
 
   const btrData = readJson<unknown>(join(outputDir, "btr_data.json"));
 
+  // Load NR7 progress data if available
+  const externalDir = join(PROJECT_ROOT, "python", "data", "external");
+  const country = (enrichedTargets[0] as Record<string, unknown>)?.country as string | undefined;
+  let nr7Data = null;
+  if (country) {
+    const countryLower = country.toLowerCase();
+    const isoMap2: Record<string, string> = { mongolia: "mng", panama: "pan", morocco: "mar" };
+    const iso3Lower = isoMap2[countryLower] || country.slice(0, 3).toLowerCase();
+    const nr7Path = join(externalDir, `nr7_${iso3Lower}.json`);
+    nr7Data = readJson<unknown>(nr7Path);
+  }
+
   // Merge measure pseudo-targets and alignment if available
   const measurePseudoTargets = readJson<Record<string, unknown>[]>(
     join(outputDir, "measure_pseudo_targets.json")
@@ -148,5 +160,6 @@ export async function GET(request: NextRequest) {
     classifications,
     alignment: allAlignment,
     btrData: btrData ?? null,
+    nr7Data: nr7Data ?? null,
   });
 }

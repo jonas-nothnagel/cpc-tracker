@@ -15,6 +15,7 @@ interface TargetRow {
   text: string;
   sourceDocument: PolicyDocumentType;
   sourceLabel: string;
+  source?: "extraction" | "manual" | "file";
 }
 
 interface CategoryItem {
@@ -331,15 +332,36 @@ export default function UploadPage() {
   const [currentDoc, setCurrentDoc] = useState<PolicyDocumentType>("NDC");
   const [currentLabel, setCurrentLabel] = useState("");
   const [customDocName, setCustomDocName] = useState("");
-  const [pasteInput, setPasteInput] = useState("");
-  const [pastePreview, setPastePreview] = useState<ParsedPreview | null>(null);
-  const [mode, setMode] = useState<"manual" | "paste" | "file">("file");
+  const [mode, setMode] = useState<"upload" | "manual">("upload");
 
-  // File upload
+  // Unified file upload
+  const [uploadMode, setUploadMode] = useState<"policy" | "list" | "btr">("policy");
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedDocs, setUploadedDocs] = useState<UploadedDoc[]>([]);
   const [btrParsedData, setBtrParsedData] = useState<BtrData | null>(null);
+  const [extracting, setExtracting] = useState(false);
+  const [extractedItems, setExtractedItems] = useState<
+    { text: string; label: string; sourceDocument: string; accepted: boolean }[]
+  >([]);
+  const [extractFileName, setExtractFileName] = useState("");
+  const [extractDocType, setExtractDocType] = useState<PolicyDocumentType>("SECTORAL");
+  const [extractDocLabel, setExtractDocLabel] = useState("");
+  const [extractError, setExtractError] = useState<string | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<Set<PolicyDocumentType>>(new Set());
+  const TARGETS_PREVIEW = 5;
+  const [extractManualLabel, setExtractManualLabel] = useState("");
+  const [extractManualText, setExtractManualText] = useState("");
+  const [editingManualTargets, setEditingManualTargets] = useState<{
+    docType: PolicyDocumentType;
+    targets: TargetRow[];
+  } | null>(null);
+  const [extractionBackup, setExtractionBackup] = useState<{
+    items: { text: string; label: string; sourceDocument: string; accepted: boolean }[];
+    fileName: string;
+    docLabel: string;
+    addedTargets: TargetRow[];
+  } | null>(null);
 
   // Categories
   const [nbsCategories, setNbsCategories] = useState<CategoryItem[]>(
@@ -361,6 +383,20 @@ export default function UploadPage() {
 
   const activeNbs = useMemo(() => nbsCategories.filter((c) => c.enabled), [nbsCategories]);
   const activeSectors = useMemo(() => sectors.filter((s) => s.enabled), [sectors]);
+
+  const targetsByDocument = useMemo(() => {
+    const groups: { docType: PolicyDocumentType; targets: { t: TargetRow; idx: number }[] }[] = [];
+    const order: PolicyDocumentType[] = [];
+    const map = new Map<PolicyDocumentType, { t: TargetRow; idx: number }[]>();
+    targets.forEach((t, idx) => {
+      if (!map.has(t.sourceDocument)) {
+        order.push(t.sourceDocument);
+        map.set(t.sourceDocument, []);
+      }
+      map.get(t.sourceDocument)!.push({ t, idx });
+    });
+    return order.map((docType) => ({ docType, targets: map.get(docType)! }));
+  }, [targets]);
 
   const estimate = useMemo(() => {
     const n = targets.length;
@@ -393,6 +429,7 @@ export default function UploadPage() {
         text: currentText.trim(),
         sourceDocument: currentDoc,
         sourceLabel: label,
+        source: "manual",
       },
     ]);
     setCurrentText("");
@@ -401,18 +438,6 @@ export default function UploadPage() {
 
   function removeTarget(index: number) {
     setTargets(targets.filter((_, i) => i !== index));
-  }
-
-  function previewPaste() {
-    const result = smartParse(pasteInput);
-    setPastePreview(result);
-  }
-
-  function addFromPreview() {
-    if (!pastePreview) return;
-    setTargets([...targets, ...pastePreview.rows].slice(0, MAX_TARGETS));
-    setPasteInput("");
-    setPastePreview(null);
   }
 
   // ─── File upload ─────────────────────────────────────────────────────────
@@ -469,7 +494,8 @@ export default function UploadPage() {
         if (!text) return;
         const result = smartParse(text);
         if (result && result.rows.length > 0) {
-          setTargets((prev) => [...prev, ...result.rows].slice(0, MAX_TARGETS));
+          const rowsWithSource = result.rows.map((r) => ({ ...r, source: "file" as const }));
+          setTargets((prev) => [...prev, ...rowsWithSource].slice(0, MAX_TARGETS));
           const counts: Record<string, number> = {};
           for (const r of result.rows) counts[r.sourceDocument] = (counts[r.sourceDocument] || 0) + 1;
           setUploadedDocs((prev) => prev.map((d) =>
@@ -485,23 +511,158 @@ export default function UploadPage() {
     }
   }, []);
 
-  function handleDrop(e: React.DragEvent) {
+  function handleUnifiedDrop(e: React.DragEvent) {
     e.preventDefault();
     setDragging(false);
     const files = Array.from(e.dataTransfer.files);
-    for (const file of files) handleFile(file);
+    const docs = files.filter((f) => /\.(pdf|docx|txt)$/i.test(f.name));
+    const others = files.filter((f) => /\.(csv|tsv|xlsx?)$/i.test(f.name));
+    if (docs.length > 0) handleDocExtract(docs[0]);
+    for (const file of others) handleFile(file);
   }
 
-  function handleFileInput(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUnifiedFileInput(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
-    for (const file of files) handleFile(file);
+    const docs = files.filter((f) => /\.(pdf|docx|txt)$/i.test(f.name));
+    const others = files.filter((f) => /\.(csv|tsv|xlsx?)$/i.test(f.name));
+    if (docs.length > 0) handleDocExtract(docs[0]);
+    for (const file of others) handleFile(file);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
+
+  const uploadModeAccept = uploadMode === "policy"
+    ? ".pdf,.docx,.txt"
+    : uploadMode === "list"
+    ? ".csv,.tsv"
+    : ".xlsx,.xls";
 
   function removeDoc(docId: string) {
     const doc = uploadedDocs.find((d) => d.id === docId);
     if (doc?.fileType === "btr") setBtrParsedData(null);
     setUploadedDocs((prev) => prev.filter((d) => d.id !== docId));
+  }
+
+  // ─── Document extraction ─────────────────────────────────────────────────
+
+  async function handleDocExtract(file: File) {
+    setExtracting(true);
+    setExtractError(null);
+    setExtractedItems([]);
+    setExtractFileName(file.name);
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("docType", extractDocType);
+    form.append("sourceDocument", extractDocType);
+
+    try {
+      const res = await fetch("/api/extract", { method: "POST", body: form });
+      if (!res.ok) {
+        const body = await res.json();
+        throw new Error(body.error || "Extraction failed");
+      }
+      const data = await res.json();
+      const rawItems = data.items || [];
+      const items = rawItems.map((item: { text: string; label: string; sourceDocument: string }) => ({
+        text: item.text,
+        label: item.label,
+        sourceDocument: item.sourceDocument,
+        accepted: true,
+      }));
+      setExtractedItems(items);
+    } catch (err) {
+      setExtractError(err instanceof Error ? err.message : "Extraction failed");
+    } finally {
+      setExtracting(false);
+    }
+  }
+
+  function addManualExtractedItem() {
+    if (!extractManualText.trim()) return;
+    const acceptedCount = extractedItems.filter((i) => i.accepted).length;
+    setExtractedItems((prev) => [
+      ...prev,
+      {
+        text: extractManualText.trim(),
+        label: extractManualLabel.trim() || `Target ${acceptedCount + 1}`,
+        sourceDocument: extractDocType,
+        accepted: true,
+      },
+    ]);
+    setExtractManualLabel("");
+    setExtractManualText("");
+  }
+
+  function addExtractedToTargets() {
+    const accepted = extractedItems.filter((item) => item.accepted);
+    const prefix = extractDocLabel.trim();
+    const newTargets: TargetRow[] = accepted.map((item, i) => ({
+      text: item.text,
+      sourceDocument: item.sourceDocument as PolicyDocumentType,
+      sourceLabel: prefix ? `${prefix} ${i + 1}` : item.label,
+      source: "extraction",
+    }));
+    setExtractionBackup({
+      items: [...extractedItems],
+      fileName: extractFileName,
+      docLabel: extractDocLabel,
+      addedTargets: newTargets,
+    });
+    setTargets((prev) => [...prev, ...newTargets].slice(0, MAX_TARGETS));
+    setExtractedItems([]);
+    setExtractFileName("");
+    setExtractDocLabel("");
+  }
+
+  function restoreExtractionReview() {
+    if (!extractionBackup) return;
+    setTargets((prev) =>
+      prev.filter(
+        (t) =>
+          !extractionBackup.addedTargets.some(
+            (a) => a.text === t.text && a.sourceLabel === t.sourceLabel
+          )
+      )
+    );
+    setExtractedItems(extractionBackup.items);
+    setExtractFileName(extractionBackup.fileName);
+    setExtractDocLabel(extractionBackup.docLabel);
+    setExtractionBackup(null);
+  }
+
+  function startEditManualTargets(docType: PolicyDocumentType) {
+    const manualTargets = targets.filter(
+      (t) => t.sourceDocument === docType && t.source === "manual"
+    );
+    if (manualTargets.length === 0) return;
+    setTargets((prev) =>
+      prev.filter((t) => !(t.sourceDocument === docType && t.source === "manual"))
+    );
+    setEditingManualTargets({ docType, targets: manualTargets });
+  }
+
+  function saveManualTargetsEdits() {
+    if (!editingManualTargets) return;
+    setTargets((prev) => [...prev, ...editingManualTargets.targets].slice(0, MAX_TARGETS));
+    setEditingManualTargets(null);
+  }
+
+  function updateEditingManualTarget(idx: number, updates: Partial<TargetRow>) {
+    if (!editingManualTargets) return;
+    setEditingManualTargets({
+      ...editingManualTargets,
+      targets: editingManualTargets.targets.map((t, i) =>
+        i === idx ? { ...t, ...updates } : t
+      ),
+    });
+  }
+
+  function removeFromEditingManual(idx: number) {
+    if (!editingManualTargets) return;
+    const newTargets = editingManualTargets.targets.filter((_, i) => i !== idx);
+    setEditingManualTargets(
+      newTargets.length > 0 ? { ...editingManualTargets, targets: newTargets } : null
+    );
   }
 
   // ─── Category management ─────────────────────────────────────────────────
@@ -622,15 +783,20 @@ export default function UploadPage() {
       <main className="flex-1 max-w-5xl mx-auto px-6 py-8 w-full">
         {/* Title */}
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-2">
-            Upload Policy Targets
+          <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-1">
+            {targets.length > 0 ? "New analysis" : "Upload Policy Targets"}
           </h1>
-          <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
-            Enter your national policy targets from NDCs, NBSAPs, NAPs, and
-            other documents. The AI pipeline will classify each target against
-            Nature-Based Solutions categories and IPCC sectors, then
-            assess pairwise alignment across documents.
-          </p>
+          {targets.length > 0 ? (
+            <p className="text-sm text-[var(--undp-gray)]">
+              {targets.length} target{targets.length !== 1 ? "s" : ""} across{" "}
+              {new Set(targets.map((t) => t.sourceDocument)).size} document type{new Set(targets.map((t) => t.sourceDocument)).size !== 1 ? "s" : ""}
+            </p>
+          ) : (
+            <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+              Upload policy documents (PDF/DOCX), CSV/Excel target lists, or raw BTR Excel
+              sheets. You may also add targets manually if needed.
+            </p>
+          )}
         </div>
 
         {/* ─── Country ────────────────────────────────────────── */}
@@ -650,6 +816,16 @@ export default function UploadPage() {
         {/* ─── Mode toggle ────────────────────────────────────── */}
         <div className="flex gap-2 mb-6">
           <button
+            onClick={() => setMode("upload")}
+            className={`px-4 py-2 text-sm rounded-md border transition-colors ${
+              mode === "upload"
+                ? "bg-[var(--undp-blue)] text-white border-transparent"
+                : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400"
+            }`}
+          >
+            Upload
+          </button>
+          <button
             onClick={() => setMode("manual")}
             className={`px-4 py-2 text-sm rounded-md border transition-colors ${
               mode === "manual"
@@ -658,26 +834,6 @@ export default function UploadPage() {
             }`}
           >
             Manual Entry
-          </button>
-          <button
-            onClick={() => setMode("paste")}
-            className={`px-4 py-2 text-sm rounded-md border transition-colors ${
-              mode === "paste"
-                ? "bg-[var(--undp-blue)] text-white border-transparent"
-                : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400"
-            }`}
-          >
-            Paste CSV / Excel
-          </button>
-          <button
-            onClick={() => setMode("file")}
-            className={`px-4 py-2 text-sm rounded-md border transition-colors ${
-              mode === "file"
-                ? "bg-[var(--undp-blue)] text-white border-transparent"
-                : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400"
-            }`}
-          >
-            Upload File
           </button>
         </div>
 
@@ -762,183 +918,324 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* ─── Paste CSV / Excel ──────────────────────────────── */}
-        {mode === "paste" && (
-          <div className="bg-[var(--undp-light)] rounded-lg p-6 mb-6">
-            <p className="text-xs text-[var(--undp-gray)] mb-4 leading-relaxed">
-              Paste data from <strong>Excel</strong>, <strong>CSV</strong>, or
-              any delimited format. The parser auto-detects delimiters
-              (tab, semicolon, comma), headers, and column mapping.
-            </p>
-            <textarea
-              value={pasteInput}
-              onChange={(e) => {
-                setPasteInput(e.target.value);
-                setPastePreview(null);
-              }}
-              placeholder={`Paste your data here — for example:\n\nTarget Name;Target Text;Source;Target Type\nNBT 1;Ensure that 30% of land area is conserved...;https://...;NBSAP\nTarget 1;Enhance policies for climate adaptation...;https://...;NAP`}
-              rows={7}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono focus:outline-none focus:border-[var(--undp-blue)] resize-y mb-4"
-            />
+        {/* ─── Upload (unified) ──────────────────────────────────── */}
+        {mode === "upload" && (
+          <div className="mb-6 space-y-4">
+            <div className="space-y-4">
 
-            {!pastePreview && (
-              <button
-                onClick={previewPaste}
-                disabled={!pasteInput.trim()}
-                className="px-4 py-2 bg-[var(--undp-blue)] text-white text-sm rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                Preview Parse
-              </button>
-            )}
+              {/* ── File type cards ── */}
+              <div className="grid grid-cols-3 gap-3">
+                {([
+                  { id: "policy" as const, title: "Policy document", subtitle: "PDF or DOCX — targets extracted automatically" },
+                  { id: "list" as const, title: "Target list", subtitle: "CSV or TSV with text, type, label columns" },
+                  { id: "btr" as const, title: "BTR Excel sheet", subtitle: "XLSX — emissions, mitigation, projections data" },
+                ] as const).map((card) => (
+                  <button
+                    key={card.id}
+                    type="button"
+                    onClick={() => setUploadMode(card.id)}
+                    className={`text-left p-4 rounded-xl border-2 transition-all ${
+                      uploadMode === card.id
+                        ? "border-[var(--undp-blue)] bg-blue-50/40"
+                        : "border-gray-200 hover:border-gray-300 bg-white"
+                    }`}
+                  >
+                    <p className={`text-sm font-semibold mb-0.5 ${uploadMode === card.id ? "text-[var(--undp-blue)]" : "text-[var(--undp-black)]"}`}>
+                      {card.title}
+                    </p>
+                    <p className="text-xs text-[var(--undp-gray)] leading-snug">
+                      {card.subtitle}
+                    </p>
+                  </button>
+                ))}
+              </div>
 
-            {/* Parse preview */}
-            {pastePreview && (
-              <div className="mt-4 border border-gray-200 rounded-lg bg-white">
-                <div className="px-4 py-3 border-b border-gray-100">
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-[var(--undp-black)]">
-                      <strong>{pastePreview.rows.length}</strong> target
-                      {pastePreview.rows.length !== 1 && "s"} detected
-                    </div>
-                    <div className="text-xs text-[var(--undp-gray)] space-x-3">
-                      <span>
-                        Delimiter:{" "}
-                        {pastePreview.delimiter === "\t"
-                          ? "tab"
-                          : pastePreview.delimiter === ";"
-                          ? "semicolon"
-                          : "comma"}
-                      </span>
-                      {pastePreview.hasHeader && <span>Header detected</span>}
-                      {pastePreview.skippedRows > 0 && (
-                        <span>
-                          {pastePreview.skippedRows} empty row
-                          {pastePreview.skippedRows !== 1 && "s"} skipped
-                        </span>
-                      )}
-                    </div>
+              {/* ── Policy doc type selector (only shown for policy mode) ── */}
+              {uploadMode === "policy" && (
+                <div className="flex items-end gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
+                      Document type
+                    </label>
+                    <select
+                      value={extractDocType}
+                      onChange={(e) => setExtractDocType(e.target.value as PolicyDocumentType)}
+                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+                    >
+                      {DOCUMENT_TYPES.map((d) => (
+                        <option key={d.value} value={d.value}>{d.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex-1 max-w-[200px]">
+                    <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
+                      Label prefix <span className="font-normal">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={extractDocLabel}
+                      onChange={(e) => setExtractDocLabel(e.target.value)}
+                      placeholder="e.g. NDC Target, NBT"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+                    />
                   </div>
                 </div>
+              )}
 
-                {/* Preview table (first 5 rows) */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="border-b border-gray-100">
-                        <th className="text-left px-4 py-2 font-medium text-[var(--undp-gray)] w-24">
-                          Type
-                        </th>
-                        <th className="text-left px-4 py-2 font-medium text-[var(--undp-gray)] w-32">
-                          Label
-                        </th>
-                        <th className="text-left px-4 py-2 font-medium text-[var(--undp-gray)]">
-                          Target Text
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pastePreview.rows.slice(0, 5).map((r, i) => (
-                        <tr
-                          key={i}
-                          className="border-b border-gray-50 last:border-0"
-                        >
-                          <td className="px-4 py-2">
-                            <span
-                              className="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-white"
-                              style={{
-                                backgroundColor:
-                                  DOC_COLORS[r.sourceDocument] ?? "#a9b1b7",
-                              }}
-                            >
-                              {r.sourceDocument}
-                            </span>
-                          </td>
-                          <td className="px-4 py-2 text-[var(--undp-black)]">
-                            {r.sourceLabel}
-                          </td>
-                          <td className="px-4 py-2 text-[var(--undp-gray)]">
-                            {r.text.length > 120
-                              ? r.text.slice(0, 120) + "..."
-                              : r.text}
-                          </td>
-                        </tr>
-                      ))}
-                      {pastePreview.rows.length > 5 && (
-                        <tr>
-                          <td
-                            colSpan={3}
-                            className="px-4 py-2 text-[var(--undp-gray)] text-center"
-                          >
-                            ... and {pastePreview.rows.length - 5} more
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="px-4 py-3 border-t border-gray-100 flex items-center gap-3">
-                  <button
-                    onClick={addFromPreview}
-                    className="px-4 py-2 bg-[var(--undp-blue)] text-white text-sm rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors"
-                  >
-                    Add {pastePreview.rows.length} Target
-                    {pastePreview.rows.length !== 1 && "s"}
-                  </button>
-                  <button
-                    onClick={() => setPastePreview(null)}
-                    className="px-4 py-2 text-sm text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
+              {/* ── Drop zone ── */}
+              <div
+                onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+                onDragLeave={() => setDragging(false)}
+                onDrop={handleUnifiedDrop}
+                onClick={() => !extracting && fileInputRef.current?.click()}
+                className={`border-2 border-dashed rounded-xl text-center cursor-pointer transition-all py-10 ${
+                  dragging
+                    ? "border-[var(--undp-blue)] bg-blue-50/50"
+                    : "border-gray-300 hover:border-gray-400 bg-white"
+                } ${extracting ? "pointer-events-none opacity-60" : ""}`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept={uploadModeAccept}
+                  multiple
+                  onChange={handleUnifiedFileInput}
+                  className="hidden"
+                />
+                <svg className="mx-auto mb-3 text-[var(--undp-gray)]" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <p className="text-sm text-[var(--undp-black)] mb-0.5">
+                  Drag and drop your file here, or{" "}
+                  <span className="text-[var(--undp-blue)]">browse</span>
+                </p>
+                <p className="text-xs text-[var(--undp-gray)]">
+                  {uploadMode === "policy" && "PDF, DOCX accepted"}
+                  {uploadMode === "list" && "CSV, TSV accepted"}
+                  {uploadMode === "btr" && "XLSX accepted"}
+                </p>
               </div>
-            )}
-          </div>
-        )}
 
-        {/* ─── Upload File ────────────────────────────────────── */}
-        {mode === "file" && (
-          <div className="mb-6 space-y-4">
-            {/* Drop zone — always visible */}
-            <div
-              onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-lg text-center cursor-pointer transition-all ${
-                uploadedDocs.length > 0 ? "p-6" : "p-12"
-              } ${
-                dragging
-                  ? "border-[var(--undp-blue)] bg-blue-50/50"
-                  : "border-gray-300 hover:border-gray-400 bg-[var(--undp-light)]"
-              }`}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv,.tsv,.txt,.xlsx,.xls"
-                multiple
-                onChange={handleFileInput}
-                className="hidden"
-              />
-              <svg className="mx-auto mb-2 text-[var(--undp-gray)]" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <p className="text-sm text-[var(--undp-black)] mb-0.5">
-                Drag and drop files here
-              </p>
-              <p className="text-xs text-[var(--undp-gray)]">
-                <span className="text-[var(--undp-blue)] underline">Browse files</span>
-                {" "}&mdash; .csv for policy targets, .xlsx for BTR/CTF data
-              </p>
+              {extracting && (
+                <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200">
+                  <div className="w-5 h-5 border-2 border-[var(--undp-blue)] border-t-transparent rounded-full animate-spin shrink-0" />
+                  <div>
+                    <p className="text-sm text-[var(--undp-black)]">
+                      Extracting from <strong>{extractFileName}</strong>...
+                    </p>
+                    <p className="text-xs text-[var(--undp-gray)]">
+                      This may take 1–2 minutes depending on document length.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {extractError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+                  <p className="text-sm text-red-700">{extractError}</p>
+                </div>
+              )}
+
+              {/* ── Review extracted targets ── */}
+              {extractedItems.length > 0 && (() => {
+                const keptCount = extractedItems.filter((i) => i.accepted).length;
+                return (
+                  <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
+
+                    {/* Header */}
+                    <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-semibold text-[var(--undp-black)]">Review extracted targets</h3>
+                        <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+                          {keptCount} of {extractedItems.length} kept · {extractFileName}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setExtractedItems((prev) => prev.map((i) => ({ ...i, accepted: true })))}
+                          className="px-3 py-1.5 text-xs border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-[var(--undp-black)]"
+                        >
+                          Keep all
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setExtractedItems((prev) => prev.map((i) => ({ ...i, accepted: false })))}
+                          className="px-3 py-1.5 text-xs border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-[var(--undp-black)]"
+                        >
+                          Remove all
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Single list */}
+                    <div className="divide-y divide-gray-100">
+                      {extractedItems.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className={`flex items-start gap-3 px-4 py-3 transition-colors ${
+                            item.accepted ? "hover:bg-gray-50/40" : "bg-gray-50/60"
+                          }`}
+                        >
+                          {/* Drag handle */}
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="shrink-0 mt-1 text-gray-300 cursor-grab select-none"
+                          >
+                            <circle cx="9" cy="6" r="1.5" /><circle cx="15" cy="6" r="1.5" />
+                            <circle cx="9" cy="12" r="1.5" /><circle cx="15" cy="12" r="1.5" />
+                            <circle cx="9" cy="18" r="1.5" /><circle cx="15" cy="18" r="1.5" />
+                          </svg>
+
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            <input
+                              type="text"
+                              value={item.label}
+                              onChange={(e) =>
+                                setExtractedItems((prev) =>
+                                  prev.map((it, i) => (i === idx ? { ...it, label: e.target.value } : it))
+                                )
+                              }
+                              disabled={!item.accepted}
+                              className={`w-full text-sm font-semibold bg-transparent border-0 px-0 py-0 focus:outline-none focus:ring-0 ${
+                                item.accepted ? "text-[var(--undp-black)]" : "line-through text-gray-400"
+                              }`}
+                            />
+                            <textarea
+                              value={item.text}
+                              onChange={(e) =>
+                                setExtractedItems((prev) =>
+                                  prev.map((it, i) => (i === idx ? { ...it, text: e.target.value } : it))
+                                )
+                              }
+                              disabled={!item.accepted}
+                              rows={2}
+                              className={`mt-0.5 w-full text-sm bg-transparent border-0 px-0 py-0 resize-none focus:outline-none focus:ring-0 leading-snug ${
+                                item.accepted ? "text-[var(--undp-gray)]" : "line-through text-gray-400"
+                              }`}
+                            />
+                          </div>
+
+                          {/* Status badge + toggle */}
+                          <div className="shrink-0 flex items-center gap-2 mt-0.5">
+                            {item.accepted ? (
+                              <>
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">
+                                  Keep
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setExtractedItems((prev) =>
+                                      prev.map((it, i) => (i === idx ? { ...it, accepted: false } : it))
+                                    )
+                                  }
+                                  className="w-7 h-7 flex items-center justify-center border border-gray-200 rounded-lg hover:border-gray-300 text-green-600 transition-colors"
+                                  title="Remove"
+                                >
+                                  ✓
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <span className="text-[10px] px-2 py-0.5 rounded-full text-red-500 font-medium">
+                                  Removed
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setExtractedItems((prev) =>
+                                      prev.map((it, i) => (i === idx ? { ...it, accepted: true } : it))
+                                    )
+                                  }
+                                  className="w-7 h-7 flex items-center justify-center border border-gray-200 rounded-lg hover:border-gray-300 text-gray-400 hover:text-[var(--undp-black)] transition-colors"
+                                  title="Restore"
+                                >
+                                  ↩
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Manual add inline */}
+                    <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/40">
+                      <p className="text-xs font-medium text-[var(--undp-gray)] mb-2">
+                        Add a target that wasn&apos;t extracted
+                      </p>
+                      <textarea
+                        value={extractManualText}
+                        onChange={(e) => setExtractManualText(e.target.value)}
+                        placeholder="Target text..."
+                        rows={2}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) addManualExtractedItem();
+                        }}
+                        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)]"
+                      />
+                      <div className="flex items-center justify-between mt-2">
+                        <input
+                          type="text"
+                          value={extractManualLabel}
+                          onChange={(e) => setExtractManualLabel(e.target.value)}
+                          placeholder="Label (optional)"
+                          className="w-44 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[var(--undp-blue)]"
+                        />
+                        <button
+                          type="button"
+                          onClick={addManualExtractedItem}
+                          disabled={!extractManualText.trim()}
+                          className="px-3 py-1.5 text-sm bg-[var(--undp-blue)] text-white rounded-lg hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="px-4 py-3 border-t border-gray-200 bg-white flex items-center justify-between sticky bottom-0 rounded-b-xl">
+                      <p className="text-sm text-[var(--undp-gray)]">
+                        <strong className="text-[var(--undp-black)]">{keptCount}</strong> target{keptCount !== 1 ? "s" : ""} will be added to this analysis
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setExtractedItems([]);
+                            setExtractFileName("");
+                          }}
+                          className="px-4 py-2 text-sm border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-[var(--undp-black)]"
+                        >
+                          Discard
+                        </button>
+                        <button
+                          type="button"
+                          onClick={addExtractedToTargets}
+                          disabled={keptCount === 0}
+                          className="px-4 py-2 text-sm bg-[var(--undp-blue)] text-white rounded-lg hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          Add {keptCount} target{keptCount !== 1 ? "s" : ""} →
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                );
+              })()}
+
             </div>
 
-            {/* Document pipeline flowchart */}
+            {/* Document pipeline (CSV/Excel uploads) */}
             {uploadedDocs.length > 0 && (
-              <div className="border border-gray-200 rounded-lg bg-white overflow-hidden">
+              <div className="mt-4 border border-gray-200 rounded-xl bg-white overflow-hidden">
                 <div className="px-4 py-2.5 border-b border-gray-100 bg-gray-50/50">
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
                     Document Pipeline
@@ -1079,72 +1376,163 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* ─── Targets table ──────────────────────────────────── */}
+        {/* ─── Editing manual targets ───────────────────────────── */}
+        {editingManualTargets && (
+          <div className="mb-8 rounded-lg border-2 border-[var(--undp-blue)]/30 bg-blue-50/20 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-[var(--undp-black)]">
+                Edit manual targets — {editingManualTargets.docType}
+              </h3>
+              <button
+                type="button"
+                onClick={saveManualTargetsEdits}
+                className="px-3 py-1.5 text-sm bg-[var(--undp-blue)] text-white rounded hover:bg-[var(--undp-blue-dark)] transition-colors"
+              >
+                Done
+              </button>
+            </div>
+            <div className="space-y-2 max-h-[16rem] overflow-y-auto">
+              {editingManualTargets.targets.map((t, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 py-2 px-3 rounded border border-gray-200 bg-white"
+                >
+                  <input
+                    type="text"
+                    value={t.sourceLabel}
+                    onChange={(e) => updateEditingManualTarget(idx, { sourceLabel: e.target.value })}
+                    placeholder="Label"
+                    className="w-28 shrink-0 px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:border-[var(--undp-blue)]"
+                  />
+                  <textarea
+                    value={t.text}
+                    onChange={(e) => updateEditingManualTarget(idx, { text: e.target.value })}
+                    placeholder="Target text..."
+                    rows={2}
+                    className="flex-1 min-w-0 px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeFromEditingManual(idx)}
+                    className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-red)] hover:bg-red-50 rounded"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ─── Targets (card layout) ───────────────────────────── */}
         {targets.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-lg font-semibold text-[var(--undp-black)] mb-4">
-              Targets ({targets.length}
-              {targets.length >= MAX_TARGETS && ` / ${MAX_TARGETS} max`})
-            </h2>
-            <div className="bg-[var(--undp-light)] rounded-lg overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-white/80 border-b border-gray-100">
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--undp-gray)] w-36">
-                      Source
-                    </th>
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--undp-gray)]">
-                      Target
-                    </th>
-                    <th className="w-12" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {targets.map((t, i) => (
-                    <tr
-                      key={i}
-                      className="border-b border-gray-100/50 last:border-0"
-                    >
-                      <td className="px-4 py-2.5 align-top">
+            <div className="space-y-5">
+              {targetsByDocument.map(({ docType, targets: docTargets }) => {
+                const extractionDocType = extractionBackup?.addedTargets[0]?.sourceDocument;
+                const hasExtractionTargets =
+                  extractionBackup &&
+                  extractionDocType === docType &&
+                  docTargets.some(({ t }) =>
+                    extractionBackup.addedTargets.some(
+                      (a) => a.text === t.text && a.sourceLabel === t.sourceLabel
+                    )
+                  );
+                const hasManualTargets = docTargets.some(({ t }) => t.source === "manual");
+                const isExpanded = expandedGroups.has(docType);
+                const visible = isExpanded ? docTargets : docTargets.slice(0, TARGETS_PREVIEW);
+                const hidden = docTargets.length - TARGETS_PREVIEW;
+                return (
+                  <div key={docType}>
+                    {/* Group header */}
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
                         <span
-                          className="inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
-                          style={{
-                            backgroundColor:
-                              DOC_COLORS[t.sourceDocument] ?? "#a9b1b7",
-                          }}
+                          className="inline-block px-2 py-0.5 rounded text-xs font-semibold text-white"
+                          style={{ backgroundColor: DOC_COLORS[docType] ?? "#a9b1b7" }}
                         >
-                          {t.sourceLabel}
+                          {docType}
                         </span>
-                      </td>
-                      <td className="px-4 py-2.5 text-[var(--undp-black)] leading-relaxed">
-                        {t.text.length > 200
-                          ? t.text.slice(0, 200) + "..."
-                          : t.text}
-                      </td>
-                      <td className="px-4 py-2.5 text-center">
-                        <button
-                          onClick={() => removeTarget(i)}
-                          className="text-[var(--undp-gray)] hover:text-[var(--undp-red)] transition-colors text-lg leading-none"
-                          title="Remove"
+                        <span className="text-sm text-[var(--undp-gray)]">
+                          {docTargets.length} target{docTargets.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {hasExtractionTargets && (
+                          <button type="button" onClick={restoreExtractionReview}
+                            className="text-xs text-[var(--undp-blue)] hover:underline">
+                            Edit extraction
+                          </button>
+                        )}
+                        {hasManualTargets && (
+                          <button type="button" onClick={() => startEditManualTargets(docType)}
+                            className="text-xs text-[var(--undp-blue)] hover:underline">
+                            Edit manually
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Target rows */}
+                    <div className="space-y-1.5">
+                      {visible.map(({ t, idx }) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-3 px-3 py-2.5 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors group"
                         >
-                          ×
+                          <span
+                            className="shrink-0 mt-0.5 px-2 py-0.5 rounded text-[10px] font-medium text-white max-w-[8rem] truncate"
+                            style={{ backgroundColor: DOC_COLORS[t.sourceDocument] ?? "#a9b1b7" }}
+                            title={t.sourceLabel}
+                          >
+                            {t.sourceLabel}
+                          </span>
+                          <p className="flex-1 min-w-0 text-sm text-[var(--undp-black)] leading-snug">
+                            {t.text}
+                          </p>
+                          <button
+                            onClick={() => removeTarget(idx)}
+                            className="shrink-0 mt-0.5 w-5 h-5 flex items-center justify-center text-gray-300 hover:text-[var(--undp-red)] rounded transition-colors text-sm leading-none opacity-0 group-hover:opacity-100"
+                            title="Remove"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+
+                      {/* Show more / less */}
+                      {!isExpanded && hidden > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setExpandedGroups((prev) => new Set([...prev, docType]))}
+                          className="w-full px-3 py-1.5 text-xs text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors text-left"
+                        >
+                          + {hidden} more target{hidden !== 1 ? "s" : ""}
                         </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      )}
+                      {isExpanded && docTargets.length > TARGETS_PREVIEW && (
+                        <button
+                          type="button"
+                          onClick={() => setExpandedGroups((prev) => { const s = new Set(prev); s.delete(docType); return s; })}
+                          className="w-full px-3 py-1.5 text-xs text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors text-left"
+                        >
+                          Show less
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
 
         {/* ─── Empty state ────────────────────────────────────── */}
-        {targets.length === 0 && (
+        {targets.length === 0 && !editingManualTargets && (
           <div className="text-center py-16 text-[var(--undp-gray)]">
             <p className="text-lg mb-2">No targets added yet</p>
             <p className="text-sm">
-              Use manual entry or paste from Excel / CSV above to add policy
-              targets for analysis.
+              Upload files (documents, CSV, or raw BTR Excel) or add targets manually above.
             </p>
           </div>
         )}
@@ -1154,20 +1542,27 @@ export default function UploadPage() {
           <div className="mb-8">
             <button
               onClick={() => setShowCategories(!showCategories)}
-              className="flex items-center gap-2 text-sm font-medium text-[var(--undp-black)] mb-4 hover:text-[var(--undp-blue)] transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-[var(--undp-black)] mb-3 hover:text-[var(--undp-blue)] transition-colors w-full"
             >
-              <span
-                className="inline-block transition-transform"
-                style={{
-                  transform: showCategories
-                    ? "rotate(90deg)"
-                    : "rotate(0deg)",
-                }}
-              >
-                ▸
-              </span>
-              Analysis Configuration — NBS ({activeNbs.length}), IPCC Sectors ({activeSectors.length}), Themes ({CROSS_CUTTING_THEMES_COUNT})
+              <span className="flex-1 text-left">Analysis configuration</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                className={`transition-transform shrink-0 ${showCategories ? "rotate-180" : ""}`}>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
             </button>
+            {!showCategories && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-xs text-[var(--undp-gray)]">
+                  {activeNbs.length} NBS categories
+                </span>
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-xs text-[var(--undp-gray)]">
+                  {activeSectors.length} IPCC sectors
+                </span>
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-xs text-[var(--undp-gray)]">
+                  {CROSS_CUTTING_THEMES_COUNT} themes
+                </span>
+              </div>
+            )}
 
             {showCategories && (
               <div className="bg-[var(--undp-light)] rounded-lg p-6 space-y-6">
@@ -1361,65 +1756,44 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* ─── What Happens + Run ─────────────────────────────── */}
+        {/* ─── Run Analysis ───────────────────────────────────── */}
         {targets.length > 0 && (
-          <div className="border border-gray-200 rounded-lg p-6 mb-8">
-            <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-              What happens when you run this analysis
-            </h3>
-            <div className="text-sm text-[var(--undp-gray)] space-y-2 mb-5">
-              <p>
-                <strong>{targets.length}</strong> target{targets.length !== 1 && "s"} from{" "}
-                <strong>{estimate?.docTypes ?? 0}</strong> document type
-                {(estimate?.docTypes ?? 0) !== 1 && "s"} will be processed
-                through the AI pipeline:
-              </p>
-              <ol className="list-decimal list-inside space-y-1 pl-2">
-                <li>
-                  Quantitative and time-bound phrase detection ({targets.length}{" "}
-                  LLM calls)
-                </li>
-                <li>
-                  Classification against {activeNbs.length} NBS categories,{" "}
-                  {activeSectors.length} IPCC sectors, and {CROSS_CUTTING_THEMES_COUNT} cross-cutting themes (
-                  {targets.length * (activeNbs.length + activeSectors.length + CROSS_CUTTING_THEMES_COUNT)}{" "}
-                  LLM calls)
-                </li>
-                <li>Target decomposition ({targets.length} LLM calls)</li>
-                <li>
-                  Pairwise alignment assessment
-                  {(estimate?.docTypes ?? 0) < 2
-                    ? " (requires targets from at least 2 document types)"
-                    : ` (~${estimate?.estPairs ?? 0} pairs)`}
-                </li>
-                {btrParsedData && (
-                  <li>BTR/CTF data integration (emissions, measures, projections)</li>
+          <div className="bg-[var(--undp-light)] rounded-lg p-5 mb-8">
+            <div className="flex items-start justify-between gap-6">
+              <div className="flex-1 min-w-0">
+                <ul className="space-y-1 text-sm text-[var(--undp-gray)] mb-3">
+                  <li>· Quantitative phrase detection — {targets.length} calls</li>
+                  <li>· Classification against NBS, IPCC, themes — {targets.length * (activeNbs.length + activeSectors.length + CROSS_CUTTING_THEMES_COUNT)} calls</li>
+                  <li>· Target decomposition — {targets.length} calls</li>
+                  <li>
+                    · Pairwise alignment —{" "}
+                    {(estimate?.docTypes ?? 0) < 2
+                      ? "requires 2+ document types"
+                      : `~${estimate?.estPairs ?? 0} pairs`}
+                  </li>
+                  {btrParsedData && <li>· BTR/CTF data integration</li>}
+                </ul>
+                {(estimate?.docTypes ?? 0) < 2 && (
+                  <p className="text-amber-600 text-xs">
+                    Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.
+                  </p>
                 )}
-              </ol>
-              {(estimate?.docTypes ?? 0) < 2 && (
-                <p className="text-amber-600 text-xs mt-2">
-                  Note: Alignment analysis requires targets from at least 2
-                  different document types (e.g. NDC + NBSAP). Currently only{" "}
-                  {estimate?.docTypes ?? 0} type present.
-                </p>
-              )}
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="text-xs text-[var(--undp-gray)]">
                 {estimate && (
-                  <>
-                    ~{estimate.totalCalls.toLocaleString()} LLM calls · estimated
-                    cost ~${estimate.estCost.toFixed(2)} (gpt-4o-mini)
-                  </>
+                  <p className="text-xs text-[var(--undp-gray)]">
+                    ~{estimate.totalCalls.toLocaleString()} LLM calls · estimated cost{" "}
+                    <strong>${estimate.estCost.toFixed(2)}</strong>
+                  </p>
                 )}
               </div>
-              <button
-                onClick={runAnalysis}
-                disabled={submitting}
-                className="px-6 py-2.5 bg-[var(--undp-blue)] text-white text-sm font-medium rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {submitting ? "Starting..." : "Run Analysis →"}
-              </button>
+              <div className="shrink-0">
+                <button
+                  onClick={runAnalysis}
+                  disabled={submitting}
+                  className="px-6 py-2.5 bg-[var(--undp-blue)] text-white text-sm font-medium rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                >
+                  {submitting ? "Starting..." : "Run analysis →"}
+                </button>
+              </div>
             </div>
           </div>
         )}

@@ -9,12 +9,12 @@ import type {
 /** Color palette for policy document types — clean UNDP palette */
 export const DOC_COLORS: Record<PolicyDocumentType, string> = {
   NDC: "#0468b1",     // UNDP primary blue
-  NBSAP: "#0d9488",  // Teal — distinct, professional
-  NAP: "#b45309",    // Warm amber — softer than bright yellow
-  LDN: "#dc2626",    // Muted red
-  SECTORAL: "#64748b",
+  NBSAP: "#0d9488",  // Teal
+  NAP: "#b45309",    // Warm amber
+  LDN: "#dc2626",    // Red
+  SECTORAL: "#4f7942", // Forest green — sectoral/land policies
   BTR: "#7c3aed",    // Violet — implementation / M&E data
-  OTHER: "#94a3b8",
+  OTHER: "#78716c",  // Warm brown-grey — neutral but not cold
 };
 
 /** Shorter labels for chart axes */

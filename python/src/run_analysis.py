@@ -10,12 +10,12 @@ Or with plain Python:
     python -m src.run_analysis
 
 Steps:
-    1. Load input data (targets + categories)
-    2. Run thematic classification (NBS + themes)
+    1. Quantitative flag detection
+    2. Run thematic classification (NBS + sectors + themes)
     3. Generate theme-filtered pairs
     4. Decompose targets (Agent 1)
     5. Assess alignment (Agent 2)
-    6. Save all results as JSON
+    6. BTR measure alignment (if available)
 """
 
 from __future__ import annotations
