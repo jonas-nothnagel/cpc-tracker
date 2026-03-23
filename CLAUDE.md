@@ -12,7 +12,7 @@ AI-powered web application that helps UNDP country offices and national policy m
 
 **Digital Public Good**: Code must be handoverable to vendors. Prioritize UNDP Design System (https://react.design.undp.org/) and UNDP Data Viz Guidelines (https://dataviz.design.undp.org/) for UI and charts. Other libraries may be used where they add clear UX value.
 
-**Scope**: This project is under active development. See `PROJECT_GUIDELINES.md` and `dev_data_scripts/` for more dev notes, meeting notes, and domain context — consult `dev_data_scripts/rolling_context/` for the most up-to-date notes.
+**Scope**: This project is under active development. See `PROJECT_GUIDELINES.md` and `dev_data_scripts/` for more dev notes, meeting notes, and domain context — consult `dev_data_scripts/rolling_context/` for the most up-to-date notes. It will eventually be hosted on Azure and should be easily buildable through docker image. Keep that in mind to not overfitt architecture for dev purposes now.
 
 ## Commands
 
@@ -61,6 +61,8 @@ Architecture is evolving — treat the actual code as source of truth.
 - PRs should include a brief "why" — not just what changed, but the intent behind it.
 
 ## Guardrails and Previous Learnings
+
+When a design decision (especially AI/pipeline) is revised and the learning would materially change future implementation choices, propose adding it here. High bar — only non-obvious insights that prevent repeating a real mistake or validate a reusable approach. Format: short rule + `Why:` line.
 
 - No hallucination of policy content — AI classifies and compares only user-provided targets.
 - Data sovereignty: no external API calls with government data without consent.
