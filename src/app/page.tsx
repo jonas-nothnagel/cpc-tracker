@@ -33,7 +33,7 @@ export default function Home() {
       </header>
 
       {/* Hero — image spans full viewport width, text constrained */}
-      <section className="relative min-h-[380px] md:min-h-[420px] flex items-center">
+      <section className="relative min-h-[420px] md:min-h-[480px] flex items-center">
         {/* Background image — full bleed */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
@@ -44,32 +44,32 @@ export default function Home() {
             sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/35 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent" />
         </div>
         {/* Content on top */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
           <div className="max-w-xl py-16 md:py-20">
-            <p className="text-xs uppercase tracking-widest text-[var(--undp-blue-light)] mb-3">
+            <p className="text-sm uppercase tracking-widest text-[var(--undp-blue-light)] mb-3">
               UNDP AI Sprint Initiative
             </p>
-            <h1 className="text-3xl md:text-4xl font-light text-[var(--undp-black)] mb-4 leading-tight tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-normal text-[var(--undp-black)] mb-4 leading-tight tracking-tight">
               Nature-Climate Policy Coherence Tracker
             </h1>
-            <p className="text-base text-[var(--undp-gray)] mb-8 leading-relaxed">
-              Upload national policy targets. Run AI-powered alignment analysis.
-              Explore interactive coherence insights across climate, biodiversity,
-              and sectoral policies.
+            <p className="text-lg text-[var(--undp-gray)] mb-8 leading-relaxed">
+              Identify gaps, overlaps, and synergies across national climate,
+              biodiversity, and land-use policies — so country offices can
+              strengthen coherence and track progress.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/dashboard"
-                className="px-5 py-2.5 bg-[var(--undp-blue)] text-white text-sm font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
+                className="px-6 py-3 bg-[var(--undp-blue)] text-white text-base font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
               >
-                View Mongolia Pilot
+                Explore Demo Dashboard
               </Link>
               <Link
                 href="/upload"
-                className="px-5 py-2.5 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-sm font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
+                className="px-6 py-3 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-base font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
               >
                 Upload Targets
               </Link>
@@ -86,34 +86,34 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <span className="text-sm font-medium text-[var(--undp-blue)]">1</span>
+              <span className="w-7 h-7 rounded-full bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] flex items-center justify-center text-sm font-semibold">1</span>
               <h3 className="font-medium text-[var(--undp-black)] mt-2 mb-2">
                 Upload Targets
               </h3>
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
-                Enter policy targets from NDC, NBSAP, NAP, LDN, and sectoral
-                documents. Upload files or type manually.
+                Enter targets from your NDC, NBSAP, NAP, and other national
+                policy documents. Upload files directly or type them in.
               </p>
             </div>
             <div>
-              <span className="text-sm font-medium text-[var(--undp-blue)]">2</span>
+              <span className="w-7 h-7 rounded-full bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] flex items-center justify-center text-sm font-semibold">2</span>
               <h3 className="font-medium text-[var(--undp-black)] mt-2 mb-2">
-                AI Analysis
+                Automated Analysis
               </h3>
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
-                Multi-agent LLM pipeline classifies targets against NBS
-                categories and IPCC sectors, then assesses pairwise
-                alignment.
+                AI classifies each target by theme and sector, then assesses
+                how well targets across different policies align with each
+                other.
               </p>
             </div>
             <div>
-              <span className="text-sm font-medium text-[var(--undp-blue)]">3</span>
+              <span className="w-7 h-7 rounded-full bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] flex items-center justify-center text-sm font-semibold">3</span>
               <h3 className="font-medium text-[var(--undp-black)] mt-2 mb-2">
                 Explore Results
               </h3>
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
-                Interactive dashboard with NBS breakdown, sector coverage,
-                alignment heatmaps, and exportable insights.
+                Interactive dashboard showing policy coverage, alignment
+                patterns, and areas where coordination could be strengthened.
               </p>
             </div>
           </div>
