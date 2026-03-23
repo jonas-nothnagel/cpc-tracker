@@ -34,7 +34,7 @@ export function ManualTargetEditor({
       <div className="space-y-2 max-h-[16rem] overflow-y-auto">
         {targets.map((t, idx) => (
           <div
-            key={idx}
+            key={`${t.sourceDocument}-${t.sourceLabel}-${idx}`}
             className="flex items-center gap-2 py-2 px-3 rounded border border-gray-200 bg-white"
           >
             <input

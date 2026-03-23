@@ -84,7 +84,7 @@ export function TargetsByDocument({
             <div className="space-y-1.5">
               {visible.map(({ t, idx }) => (
                 <div
-                  key={idx}
+                  key={`${t.sourceDocument}-${t.sourceLabel}-${idx}`}
                   className="flex items-start gap-3 px-3 py-2.5 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors group"
                 >
                   <span

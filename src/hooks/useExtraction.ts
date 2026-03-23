@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import type { PolicyDocumentType } from "@/types";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 
@@ -14,7 +14,6 @@ export function useExtraction() {
 
   // Multi-file queue
   const [extractionQueue, setExtractionQueue] = useState<File[]>([]);
-  const processingRef = useRef(false);
 
   const handleDocExtract = useCallback(
     async (file: File, docType: PolicyDocumentType, sourceDocument: string) => {

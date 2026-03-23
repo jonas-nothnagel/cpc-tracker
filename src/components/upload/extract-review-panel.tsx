@@ -69,7 +69,7 @@ export function ExtractReviewPanel({
       <div className="divide-y divide-gray-100">
         {items.map((item, idx) => (
           <div
-            key={idx}
+            key={`${item.sourceDocument}-${item.label}-${idx}`}
             className={`flex items-start gap-3 px-4 py-3 transition-colors ${
               item.accepted ? "hover:bg-gray-50/40" : "bg-gray-50/60"
             }`}

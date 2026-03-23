@@ -33,10 +33,12 @@ export function useTargets() {
 
   const addTarget = useCallback(
     (row: TargetRow) => {
-      if (targets.length >= MAX_TARGETS) return;
-      setTargets((prev) => [...prev, row]);
+      setTargets((prev) => {
+        if (prev.length >= MAX_TARGETS) return prev;
+        return [...prev, row];
+      });
     },
-    [targets.length]
+    []
   );
 
   const removeTarget = useCallback((index: number) => {
@@ -99,16 +101,16 @@ export function useTargets() {
 
   const startEditManualTargets = useCallback(
     (docType: PolicyDocumentType) => {
-      const manualTargets = targets.filter(
-        (t) => t.sourceDocument === docType && t.source === "manual"
-      );
-      if (manualTargets.length === 0) return;
-      setTargets((prev) =>
-        prev.filter((t) => !(t.sourceDocument === docType && t.source === "manual"))
-      );
-      setEditingManualTargets({ docType, targets: manualTargets });
+      setTargets((prev) => {
+        const manualTargets = prev.filter(
+          (t) => t.sourceDocument === docType && t.source === "manual"
+        );
+        if (manualTargets.length === 0) return prev;
+        setEditingManualTargets({ docType, targets: manualTargets });
+        return prev.filter((t) => !(t.sourceDocument === docType && t.source === "manual"));
+      });
     },
-    [targets]
+    []
   );
 
   const saveManualTargetsEdits = useCallback(() => {
