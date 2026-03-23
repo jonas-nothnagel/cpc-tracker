@@ -34,15 +34,15 @@ export default function Home() {
 
       {/* Hero — image spans full viewport width, text constrained */}
       <section className="relative min-h-[380px] md:min-h-[420px] flex items-center">
-        {/* Background video — full bleed */}
+        {/* Background image — full bleed */}
         <div className="absolute inset-0 overflow-hidden">
-          <video
-            src="/15470041_3840_2160_30fps%20(1).mov"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover object-center"
+          <Image
+            src="/biodiversity.jpg"
+            alt="Dense forest canopy over a misty valley"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/35 to-transparent" />
         </div>
