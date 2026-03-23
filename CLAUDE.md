@@ -12,7 +12,8 @@ AI-powered web application that helps UNDP country offices and national policy m
 
 **Digital Public Good**: Code must be handoverable to vendors. Prioritize UNDP Design System (https://react.design.undp.org/) and UNDP Data Viz Guidelines (https://dataviz.design.undp.org/) for UI and charts. Other libraries may be used where they add clear UX value.
 
-**Scope**: This project is under active development. See `PROJECT_GUIDELINES.md` and `dev_data_scripts/` for more dev notes, meeting notes, and domain context — consult `dev_data_scripts/rolling_context/` for the most up-to-date notes. It will eventually be hosted on Azure and should be easily buildable through docker image. Keep that in mind to not overfitt architecture for dev purposes now.
+**Scope**: This project is under active development. See `PROJECT_GUIDELINES.md` and `dev_data_scripts/` for more dev notes, meeting notes, and domain context — consult `dev_data_scripts/rolling_context/` for the most up-to-date notes and `dev_data_scripts/rolling_context/feedback_log.pdf` for feedback summaries and product brainstorming. 
+The tool It will be eventually hosted on Azure and should be easily buildable through docker image. Keep that in mind to not overfitt architecture for dev purposes now.
 
 ## Commands
 
