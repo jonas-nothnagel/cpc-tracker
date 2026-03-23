@@ -57,8 +57,7 @@ export default function Home() {
             </h1>
             <p className="text-lg text-[var(--undp-gray)] mb-8 leading-relaxed">
               Identify gaps, overlaps, and synergies across national climate,
-              biodiversity, and land-use policies — so country offices can
-              strengthen coherence and track progress.
+              biodiversity, and land-use policies for strengthening coherence and tracking progress.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
