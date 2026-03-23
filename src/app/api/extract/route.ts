@@ -16,6 +16,8 @@ const PROJECT_ROOT = process.cwd();
 const TMP_DIR = join(PROJECT_ROOT, "python", "tmp");
 
 const ALLOWED_EXTENSIONS = [".pdf", ".docx", ".txt"];
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+const MIN_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function POST(request: NextRequest) {
   if (IS_SERVERLESS) {
@@ -43,6 +45,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
+  // File size guard
+  if (file.size > MAX_FILE_SIZE) {
+    const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+    return NextResponse.json(
+      { error: `File too large (${sizeMb} MB). Maximum allowed is 50 MB.` },
+      { status: 413 }
+    );
+  }
+
   const ext = "." + file.name.split(".").pop()?.toLowerCase();
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
     return NextResponse.json(
@@ -57,6 +68,11 @@ export async function POST(request: NextRequest) {
 
   const inputPath = join(tmpRunDir, `input${ext}`);
   const outputPath = join(tmpRunDir, "extracted.json");
+
+  // Dynamic timeout: 5 min base + 1 min per MB
+  const fileSizeMb = file.size / (1024 * 1024);
+  const timeoutMs = Math.max(MIN_TIMEOUT_MS, Math.ceil(fileSizeMb) * 60 * 1000);
+  const timeoutMinutes = Math.round(timeoutMs / 60000);
 
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -86,8 +102,8 @@ export async function POST(request: NextRequest) {
 
       const timeout = setTimeout(() => {
         child.kill();
-        reject(new Error("Extraction timed out after 5 minutes"));
-      }, 5 * 60 * 1000);
+        reject(new Error(`Extraction timed out after ${timeoutMinutes} minutes`));
+      }, timeoutMs);
 
       child.on("close", (code) => {
         clearTimeout(timeout);

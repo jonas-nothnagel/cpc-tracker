@@ -5,8 +5,9 @@ Accepts a PDF, DOCX, or plain text file, extracts text, and uses the LLM to
 identify high-level policy targets — the kind a human expert would pick out
 for a cross-document coherence analysis.
 
-Two-pass approach:
-  1. Per-chunk extraction of candidate targets.
+Three-phase approach:
+  0. (Optional) Relevance filter — discard chunks unlikely to contain targets.
+  1. Per-chunk extraction of candidate targets (concurrent).
   2. Consolidation pass that deduplicates, merges, and filters candidates
      across the whole document into a final expert-quality list.
 
@@ -20,13 +21,23 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import re
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .llm import call_llm
+from .llm import call_llm, call_llm_batch
 
 logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Configuration
+# ---------------------------------------------------------------------------
+
+MAX_CHUNK_CHARS = int(os.getenv("CPC_MAX_CHUNK_CHARS", "30000"))
+OVERLAP_CHARS = int(os.getenv("CPC_OVERLAP_CHARS", "2000"))
+MIN_TARGET_LENGTH = int(os.getenv("CPC_MIN_TARGET_LENGTH", "10"))
 
 # ---------------------------------------------------------------------------
 # Expected target counts by document type (order of magnitude guidance)
@@ -48,19 +59,31 @@ Use these as a reference for the level of abstraction and specificity expected.
 
 NDC examples:
 - "Protect natural forests, improve forest health, and enhance forest regeneration capacity"
-- "Reduce Soil Organic Carbon loss by restoring 10% of heavily degraded rangelands within the forest-steppe (3%) and steppe (7%) ecological zones, moving land from Recovery Class IV (heavily degraded) to Recovery Class III (moderately degraded)."
-- "Strengthen the health care system for early detection, warning, and response to climate change related threats to human health."
-- "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological carrying capacity of rangelands and improving livestock economic turnover through increasing export and meat supply to the domestic."
+- "Reduce Soil Organic Carbon loss by restoring 10% of heavily degraded rangelands within \
+the forest-steppe (3%) and steppe (7%) ecological zones, moving land from Recovery Class IV \
+(heavily degraded) to Recovery Class III (moderately degraded)."
+- "Strengthen the health care system for early detection, warning, and response to climate \
+change related threats to human health."
+- "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million \
+tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological \
+carrying capacity of rangelands and improving livestock economic turnover through increasing \
+export and meat supply to the domestic."
 
 NBSAP examples:
-- "Restore at least 30 percent of degraded ecosystems and improve ecological integrity and connectivity"
-- "Ensure that each representative type of the main ecosystems is included and that 30% of the country's total land area is effectively conserved within the National Protected Area Network, while strengthening ecological connectivity across the landscape."
-- "Redesign subsidies and incentives that negatively impact biodiversity to be environment and biodiversity-friendly."
+- "Restore at least 30 percent of degraded ecosystems and improve ecological integrity and \
+connectivity"
+- "Ensure that each representative type of the main ecosystems is included and that 30% of \
+the country's total land area is effectively conserved within the National Protected Area \
+Network, while strengthening ecological connectivity across the landscape."
+- "Redesign subsidies and incentives that negatively impact biodiversity to be environment \
+and biodiversity-friendly."
 
 NAP examples:
 - "Minimize risks from climate change induced disasters and improve resilience"
-- "Develop multi-hazard, impact-based early warning systems to enable quick and effective responses to extreme events."
-- "Sustainably develop high-yield crops through climate-adapted technologies and soil conservation."
+- "Develop multi-hazard, impact-based early warning systems to enable quick and effective \
+responses to extreme events."
+- "Sustainably develop high-yield crops through climate-adapted technologies and soil \
+conservation."
 
 Notice that these are policy-level OBJECTIVES, not:
 - Individual implementation measures or activities (too granular)
@@ -99,10 +122,21 @@ RULES:
 5. If a section has no policy targets, return an empty array: []
 6. A typical {doc_type} document contains {expected_count} targets total. \
    This section may contain 0-5. Be selective.
+7. If the document explicitly labels targets (e.g. "Target 1", "Goal 2.3"), \
+   use those exact names as the label — do not rephrase or replace them.
+8. When possible, begin the target text with an action verb to phrase it as \
+   an actionable goal.
+9. Include all measurable details in the target text: percentages, quantities, \
+   deadlines, years, baselines, or geographic scope.
+10. Do not extract each itemized line as its own target unless it is \
+    independently tracked or measured. Group related items under a single target.
+11. If a table contains policy targets, extract from the full table context — \
+    do not ignore targets just because they appear in tabular format.
 
 Return a JSON array. Each object must have:
 - "text": the policy target (verbatim or lightly cleaned)
-- "label": a short descriptive label (max 8 words)
+- "label": a short descriptive label (max 8 words; use document-provided \
+  names verbatim when available)
 
 Output valid JSON only — no markdown fences, no explanation."""
 
@@ -114,6 +148,42 @@ Extract the high-level policy targets from the following section of a {doc_type}
 ---
 
 Return a JSON array of extracted targets."""
+
+# ---------------------------------------------------------------------------
+# Relevance filter prompt
+# ---------------------------------------------------------------------------
+
+RELEVANCE_FILTER_SYSTEM = """\
+You are filtering a section of a policy document for a target extraction \
+pipeline. Your task is to classify whether this section is likely to contain \
+policy targets, goals, or commitments.
+
+Sections that are NOT relevant (return false):
+- Table of contents, lists of abbreviations, acknowledgments, forewords
+- Administrative/procedural text (stakeholder lists, meeting schedules)
+- Background/context with no policy commitments or goals
+- Annexes with only reference data, indicators, or methodology descriptions
+- Repeated headers/footers, formatting artifacts, cover pages
+
+Sections that ARE relevant (return true):
+- Chapters describing policy goals, targets, or commitments
+- Sections with measurable objectives, timelines, or deadlines
+- Strategy/action sections with specific interventions
+- Tables listing targets, measures, or actions
+- Sections referencing specific policies, laws, or frameworks with goals
+
+When uncertain, return true — it is better to keep a section than miss a target.
+
+Return ONLY a JSON object: {"relevant": true} or {"relevant": false}
+No explanation, no markdown fences."""
+
+RELEVANCE_FILTER_USER = """\
+Classify whether the following section of a {doc_type} document is likely to \
+contain policy targets:
+
+---
+{text}
+---"""
 
 # ---------------------------------------------------------------------------
 # Consolidation prompt (second pass)
@@ -135,9 +205,14 @@ Your task is to produce the FINAL, CLEAN list of distinct policy targets by:
 A typical {doc_type} contains roughly {expected_count} targets. If you have \
 significantly more, you are likely including too many sub-measures or context.
 
+Each candidate includes a "pageNumbers" array showing which pages it was \
+found on. When merging candidates, combine their page numbers (union of all \
+pages from merged items).
+
 Return a JSON array. Each object must have:
 - "text": the policy target
 - "label": a short descriptive label (max 8 words)
+- "pageNumbers": array of page numbers where this target appears
 
 Output valid JSON only — no markdown fences, no explanation."""
 
@@ -147,65 +222,269 @@ Produce the final consolidated list.
 
 {candidates_json}"""
 
-MAX_CHUNK_CHARS = 12000
+# ---------------------------------------------------------------------------
+# Multi-language extraction prompt addendum
+# ---------------------------------------------------------------------------
+
+MULTILANG_ADDENDUM = """\
+
+LANGUAGE NOTE: This document is written in {language_name} (not English).
+- Extract "text" and "label" in the document's original language.
+- Additionally provide:
+  - "text_eng": English translation of the target text
+  - "label_eng": English translation of the label
+"""
+
+# ---------------------------------------------------------------------------
+# Data structures
+# ---------------------------------------------------------------------------
 
 
-def _extract_text_pdf(path: Path) -> str:
+@dataclass
+class PageSpan:
+    """A span of text mapped to its source page number."""
+    page: int
+    text: str
+
+
+@dataclass
+class DocumentText:
+    """Full document text with page-level provenance."""
+    pages: list[PageSpan] = field(default_factory=list)
+
+    @property
+    def full_text(self) -> str:
+        return "\n\n".join(p.text for p in self.pages)
+
+    def pages_for_range(self, start: int, end: int) -> list[int]:
+        """Return page numbers that overlap with the character range [start, end)."""
+        result: list[int] = []
+        offset = 0
+        for page_span in self.pages:
+            page_end = offset + len(page_span.text) + 2  # +2 for \n\n separator
+            if offset < end and page_end > start:
+                if page_span.page not in result:
+                    result.append(page_span.page)
+            offset = page_end
+        return result
+
+
+@dataclass
+class Chunk:
+    """A text chunk with provenance metadata."""
+    text: str
+    pages: list[int]
+
+
+# ---------------------------------------------------------------------------
+# Text extraction
+# ---------------------------------------------------------------------------
+
+
+def _table_to_text(table) -> str:
+    """Convert a pymupdf table to pipe-delimited text."""
     try:
-        import pymupdf  # noqa: F811
+        rows = table.extract()
+        if not rows:
+            return ""
+        lines = []
+        for row in rows:
+            cells = [str(c or "").strip().replace("\n", " ") for c in row]
+            lines.append(" | ".join(cells))
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
+def _extract_text_pdf(path: Path) -> list[PageSpan]:
+    """Extract text from PDF with page-level tracking and table support."""
+    try:
+        import pymupdf
     except ImportError:
         import fitz as pymupdf  # type: ignore[no-redef]
 
     doc = pymupdf.open(str(path))
-    pages = []
-    for page in doc:
-        pages.append(page.get_text())
+    result: list[PageSpan] = []
+
+    for i, page in enumerate(doc):
+        page_num = i + 1
+        text = page.get_text("text") or ""
+
+        # Extract tables and append as structured text
+        try:
+            tables = page.find_tables()
+            for table in tables:
+                table_text = _table_to_text(table)
+                if table_text:
+                    text += f"\n\n[TABLE]\n{table_text}\n"
+        except Exception:
+            pass  # fall back to text-only if table extraction fails
+
+        if text.strip():
+            result.append(PageSpan(page=page_num, text=text.strip()))
+
     doc.close()
-    return "\n\n".join(pages)
+    return result
 
 
-def _extract_text_docx(path: Path) -> str:
+def _docx_table_to_text(table) -> str:
+    """Convert a python-docx table to pipe-delimited text."""
+    lines = []
+    for row in table.rows:
+        cells = [cell.text.strip().replace("\n", " ") for cell in row.cells]
+        lines.append(" | ".join(cells))
+    return "\n".join(lines)
+
+
+def _extract_text_docx(path: Path) -> list[PageSpan]:
+    """Extract text from DOCX with table support.
+
+    DOCX does not have reliable page boundaries, so we return a single
+    PageSpan with page=0 (unknown).
+    """
     from docx import Document
 
     doc = Document(str(path))
-    paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
-    return "\n\n".join(paragraphs)
+    parts: list[str] = []
+
+    for element in doc.element.body:
+        tag = element.tag.split("}")[-1] if "}" in element.tag else element.tag
+        if tag == "p":
+            # Paragraph
+            text = element.text or ""
+            # python-docx element.text only gets direct text; use the paragraph API
+            for para in doc.paragraphs:
+                if para._element is element:
+                    text = para.text
+                    break
+            if text.strip():
+                parts.append(text.strip())
+        elif tag == "tbl":
+            # Table
+            for table in doc.tables:
+                if table._element is element:
+                    table_text = _docx_table_to_text(table)
+                    if table_text:
+                        parts.append(f"[TABLE]\n{table_text}")
+                    break
+
+    full_text = "\n\n".join(parts)
+    if not full_text.strip():
+        # Fallback: just paragraphs
+        paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
+        full_text = "\n\n".join(paragraphs)
+
+    return [PageSpan(page=0, text=full_text)] if full_text.strip() else []
 
 
-def extract_text(path: Path) -> str:
-    """Extract text from a PDF, DOCX, or plain-text file."""
+def extract_text(path: Path) -> DocumentText:
+    """Extract text from a PDF, DOCX, or plain-text file with provenance."""
     suffix = path.suffix.lower()
     if suffix == ".pdf":
-        return _extract_text_pdf(path)
+        pages = _extract_text_pdf(path)
     elif suffix == ".docx":
-        return _extract_text_docx(path)
+        pages = _extract_text_docx(path)
     else:
-        return path.read_text(encoding="utf-8", errors="replace")
+        text = path.read_text(encoding="utf-8", errors="replace")
+        pages = [PageSpan(page=0, text=text)] if text.strip() else []
+
+    return DocumentText(pages=pages)
 
 
-def chunk_text(text: str, max_chars: int = MAX_CHUNK_CHARS) -> list[str]:
-    """Split text into chunks, trying to break at paragraph boundaries."""
-    paragraphs = re.split(r"\n{2,}", text)
-    chunks: list[str] = []
+# ---------------------------------------------------------------------------
+# Chunking
+# ---------------------------------------------------------------------------
+
+
+def chunk_text(
+    doc: DocumentText,
+    max_chars: int = MAX_CHUNK_CHARS,
+    overlap_chars: int = OVERLAP_CHARS,
+) -> list[Chunk]:
+    """Split document text into chunks with overlap, tracking source pages."""
+    full_text = doc.full_text
+    paragraphs = re.split(r"\n{2,}", full_text)
+    chunks: list[Chunk] = []
     current = ""
+    current_start = 0
+    char_offset = 0
 
     for para in paragraphs:
         para = para.strip()
         if not para:
             continue
+
         if len(current) + len(para) + 2 > max_chars and current:
-            chunks.append(current)
-            current = para
+            # Save this chunk
+            current_end = char_offset
+            pages = doc.pages_for_range(current_start, current_end)
+            chunks.append(Chunk(text=current, pages=pages))
+
+            # Overlap: keep the tail of the current chunk
+            if overlap_chars > 0 and len(current) > overlap_chars:
+                overlap_text = current[-overlap_chars:]
+                current_start = current_end - overlap_chars
+                current = overlap_text + "\n\n" + para
+            else:
+                current_start = char_offset
+                current = para
         else:
             current = f"{current}\n\n{para}" if current else para
 
+        char_offset += len(para) + 2  # +2 for \n\n separator
+
     if current.strip():
-        chunks.append(current)
+        pages = doc.pages_for_range(current_start, char_offset)
+        chunks.append(Chunk(text=current, pages=pages))
 
     return chunks
 
 
-def _parse_json_array(raw: str) -> list[dict[str, str]]:
+# ---------------------------------------------------------------------------
+# Language detection
+# ---------------------------------------------------------------------------
+
+
+def detect_language(text: str) -> tuple[str, str]:
+    """Detect language of text. Returns (iso_code, language_name).
+
+    Uses lingua-language-detector if available, falls back to langdetect,
+    and ultimately defaults to English.
+    """
+    sample = text[:5000]  # Only need a sample for detection
+
+    try:
+        from lingua import Language, LanguageDetectorBuilder
+        detector = LanguageDetectorBuilder.from_all_languages().build()
+        detected = detector.detect_language_of(sample)
+        if detected and detected != Language.ENGLISH:
+            return detected.iso_code_639_1.name.lower(), detected.name.title()
+        return "en", "English"
+    except ImportError:
+        pass
+
+    try:
+        from langdetect import detect
+        code = detect(sample)
+        if code and code != "en":
+            # langdetect returns ISO 639-1 codes
+            return code, code.upper()
+        return "en", "English"
+    except ImportError:
+        pass
+
+    return "en", "English"
+
+
+# ---------------------------------------------------------------------------
+# JSON parsing
+# ---------------------------------------------------------------------------
+
+
+def _parse_json_array(
+    raw: str,
+    min_length: int = MIN_TARGET_LENGTH,
+) -> list[dict[str, Any]]:
     """Parse LLM JSON response, handling common formatting issues."""
     raw = raw.strip()
     if raw.startswith("```"):
@@ -232,67 +511,195 @@ def _parse_json_array(raw: str) -> list[dict[str, str]]:
     for item in items:
         if isinstance(item, dict) and "text" in item:
             text = str(item["text"]).strip()
-            if len(text) < 20:
+            if len(text) < min_length:
+                logger.debug(f"Skipping short target ({len(text)} chars): {text[:50]}")
                 continue
-            valid.append({
+            if min_length < 20 <= len(text):
+                pass  # normal
+            elif len(text) < 20:
+                logger.info(f"Keeping short target ({len(text)} chars): {text[:50]}")
+
+            entry: dict[str, Any] = {
                 "text": text,
-                "label": str(item.get("label", "")).strip()[:80] or f"Target {len(valid) + 1}",
-            })
+                "label": str(item.get("label", "")).strip()[:80]
+                    or f"Target {len(valid) + 1}",
+            }
+
+            # Preserve page numbers if present
+            if "pageNumbers" in item and isinstance(item["pageNumbers"], list):
+                entry["pageNumbers"] = item["pageNumbers"]
+
+            # Preserve translation fields if present
+            for tfield in ("text_eng", "label_eng"):
+                if tfield in item and item[tfield]:
+                    entry[tfield] = str(item[tfield]).strip()
+
+            valid.append(entry)
     return valid
 
 
+def _parse_relevance(raw: str) -> bool:
+    """Parse relevance filter response. Defaults to True (conservative)."""
+    raw = raw.strip()
+    if raw.startswith("```"):
+        raw = re.sub(r"^```(?:json)?\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+    try:
+        data = json.loads(raw)
+        if isinstance(data, dict):
+            return data.get("relevant", True)
+    except json.JSONDecodeError:
+        pass
+    # Default to relevant when uncertain
+    return True
+
+
+# ---------------------------------------------------------------------------
+# Main extraction pipeline
+# ---------------------------------------------------------------------------
+
+
 async def extract_from_text(
-    text: str,
+    text: str | DocumentText,
     doc_type: str = "NDC",
     source_document: str = "NDC",
+    *,
+    min_length: int = MIN_TARGET_LENGTH,
+    max_chunk_chars: int = MAX_CHUNK_CHARS,
+    overlap_chars: int = OVERLAP_CHARS,
+    skip_relevance_filter: bool = False,
+    language: str | None = None,
 ) -> list[dict[str, Any]]:
     """
-    Extract policy targets from document text using a two-pass LLM approach.
+    Extract policy targets from document text using a multi-phase LLM approach.
 
-    Returns a list of dicts with keys: text, label, sourceDocument.
+    Returns a list of dicts with keys: text, label, sourceDocument, pageNumbers.
     """
-    chunks = chunk_text(text)
-    expected = EXPECTED_COUNTS.get(source_document, "10-30")
-    logger.info(f"Extracting from {len(chunks)} text chunks ({len(text)} chars total)")
+    # Normalize input
+    if isinstance(text, str):
+        doc = DocumentText(pages=[PageSpan(page=0, text=text)])
+    else:
+        doc = text
 
+    full_text = doc.full_text
+    if not full_text.strip():
+        return []
+
+    # Language detection
+    lang_code = language or "en"
+    lang_name = "English"
+    if not language:
+        lang_code, lang_name = detect_language(full_text)
+
+    is_english = lang_code == "en"
+
+    # Chunking
+    chunks = chunk_text(doc, max_chars=max_chunk_chars, overlap_chars=overlap_chars)
+    expected = EXPECTED_COUNTS.get(source_document, "10-30")
+    logger.info(
+        f"Extracting from {len(chunks)} chunks ({len(full_text)} chars, "
+        f"language={lang_code})"
+    )
+
+    # Phase 0: Relevance filter (concurrent)
+    if not skip_relevance_filter and len(chunks) > 1:
+        filterable = [c for c in chunks if len(c.text.strip()) >= 80]
+        if filterable:
+            filter_calls = [
+                {
+                    "system": RELEVANCE_FILTER_SYSTEM,
+                    "user": RELEVANCE_FILTER_USER.format(
+                        doc_type=doc_type,
+                        text=chunk.text[:8000],  # limit filter input size
+                    ),
+                    "max_tokens": 50,
+                }
+                for chunk in filterable
+            ]
+            filter_results = await call_llm_batch(
+                filter_calls,
+                cache_namespace="relevance_filter",
+                desc="Relevance filter",
+            )
+            relevant_chunks = []
+            for chunk, raw in zip(filterable, filter_results):
+                if _parse_relevance(raw):
+                    relevant_chunks.append(chunk)
+                else:
+                    logger.info(
+                        f"  Filtered out chunk (pages {chunk.pages}): irrelevant"
+                    )
+
+            # Add back any very short chunks that were skipped
+            short_chunks = [c for c in chunks if len(c.text.strip()) < 80]
+            chunks = relevant_chunks + short_chunks
+            logger.info(
+                f"Relevance filter: {len(filterable)} -> {len(relevant_chunks)} "
+                f"relevant chunks"
+            )
+    else:
+        logger.info("Skipping relevance filter")
+
+    # Filter out very short chunks
+    chunks = [c for c in chunks if len(c.text.strip()) >= 80]
+    if not chunks:
+        return []
+
+    # Build system prompt with optional language addendum
     system = EXTRACT_SYSTEM.format(
         few_shot=FEW_SHOT_EXAMPLES,
         doc_type=doc_type,
         expected_count=expected,
     )
+    if not is_english:
+        system += MULTILANG_ADDENDUM.format(language_name=lang_name)
 
-    # Pass 1: per-chunk extraction
+    # Phase 1: Per-chunk extraction (concurrent)
+    extract_calls = [
+        {
+            "system": system,
+            "user": EXTRACT_USER.format(doc_type=doc_type, text=chunk.text),
+            "max_tokens": 4000,
+        }
+        for chunk in chunks
+    ]
+    raw_results = await call_llm_batch(
+        extract_calls,
+        cache_namespace="extract",
+        desc="Target extraction",
+    )
+
     all_candidates: list[dict[str, Any]] = []
-    for i, chunk in enumerate(chunks):
-        if len(chunk.strip()) < 80:
-            continue
-
-        user_msg = EXTRACT_USER.format(doc_type=doc_type, text=chunk)
-        raw = await call_llm(
-            system=system,
-            user=user_msg,
-            cache_namespace="extract",
-            max_tokens=4000,
-        )
-        items = _parse_json_array(raw)
-        logger.info(f"  Chunk {i + 1}/{len(chunks)}: {len(items)} candidates")
+    for chunk, raw in zip(chunks, raw_results):
+        items = _parse_json_array(raw, min_length=min_length)
+        logger.info(f"  Chunk (pages {chunk.pages}): {len(items)} candidates")
 
         for item in items:
             item["sourceDocument"] = source_document
+            item["pageNumbers"] = chunk.pages
+            if not is_english:
+                item["language"] = lang_code
             all_candidates.append(item)
 
-    logger.info(f"Pass 1 total: {len(all_candidates)} candidates")
+    logger.info(f"Phase 1 total: {len(all_candidates)} candidates")
 
     if len(all_candidates) == 0:
         return []
 
-    # Pass 2: consolidation (skip if very few candidates)
+    # Phase 2: Consolidation (skip if very few candidates)
     if len(all_candidates) <= 5:
         logger.info("Skipping consolidation (<=5 candidates)")
         return all_candidates
 
     candidates_json = json.dumps(
-        [{"text": c["text"], "label": c["label"]} for c in all_candidates],
+        [
+            {
+                "text": c["text"],
+                "label": c["label"],
+                "pageNumbers": c.get("pageNumbers", []),
+            }
+            for c in all_candidates
+        ],
         indent=2,
         ensure_ascii=False,
     )
@@ -313,11 +720,21 @@ async def extract_from_text(
         cache_namespace="extract_consolidate",
         max_tokens=8000,
     )
-    final = _parse_json_array(raw_consolidated)
-    logger.info(f"Pass 2 consolidation: {len(all_candidates)} -> {len(final)} targets")
+    final = _parse_json_array(raw_consolidated, min_length=min_length)
+    logger.info(
+        f"Phase 2 consolidation: {len(all_candidates)} -> {len(final)} targets"
+    )
 
     for item in final:
         item["sourceDocument"] = source_document
+        if not is_english:
+            item["language"] = lang_code
+        # Ensure pageNumbers survive consolidation
+        if "pageNumbers" not in item:
+            # Fallback: collect all pages from candidates
+            item["pageNumbers"] = sorted(
+                set(p for c in all_candidates for p in c.get("pageNumbers", []))
+            )
 
     return final
 
@@ -326,14 +743,29 @@ async def extract_from_file(
     file_path: Path,
     doc_type: str = "NDC",
     source_document: str = "NDC",
+    *,
+    min_length: int = MIN_TARGET_LENGTH,
+    max_chunk_chars: int = MAX_CHUNK_CHARS,
+    overlap_chars: int = OVERLAP_CHARS,
+    skip_relevance_filter: bool = False,
+    language: str | None = None,
 ) -> list[dict[str, Any]]:
     """Extract policy targets from a supported document file."""
     logger.info(f"Extracting text from {file_path.name}...")
-    text = extract_text(file_path)
-    if not text.strip():
+    doc_text = extract_text(file_path)
+    if not doc_text.full_text.strip():
         logger.warning(f"No text extracted from {file_path.name}")
         return []
-    return await extract_from_text(text, doc_type, source_document)
+    return await extract_from_text(
+        doc_text,
+        doc_type,
+        source_document,
+        min_length=min_length,
+        max_chunk_chars=max_chunk_chars,
+        overlap_chars=overlap_chars,
+        skip_relevance_filter=skip_relevance_filter,
+        language=language,
+    )
 
 
 async def main_async(args: argparse.Namespace) -> None:
@@ -346,6 +778,11 @@ async def main_async(args: argparse.Namespace) -> None:
         file_path,
         doc_type=args.doc_type,
         source_document=args.source_document,
+        min_length=args.min_length,
+        max_chunk_chars=args.max_chunk_chars,
+        overlap_chars=args.overlap_chars,
+        skip_relevance_filter=args.skip_relevance_filter,
+        language=args.language,
     )
 
     if args.output:
@@ -358,16 +795,54 @@ async def main_async(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s"
+    )
 
-    parser = argparse.ArgumentParser(description="Extract policy targets from documents")
-    parser.add_argument("--file", required=True, help="Path to PDF, DOCX, or text file")
-    parser.add_argument("--doc-type", default="NDC", help="Document type label for the prompt")
+    parser = argparse.ArgumentParser(
+        description="Extract policy targets from documents"
+    )
     parser.add_argument(
-        "--source-document", default="NDC",
+        "--file", required=True, help="Path to PDF, DOCX, or text file"
+    )
+    parser.add_argument(
+        "--doc-type", default="NDC", help="Document type label for the prompt"
+    )
+    parser.add_argument(
+        "--source-document",
+        default="NDC",
         help="PolicyDocumentType value (NDC, NBSAP, NAP, LDN, SECTORAL, OTHER)",
     )
     parser.add_argument("--output", default=None, help="Output JSON file path")
+    parser.add_argument(
+        "--min-length",
+        type=int,
+        default=MIN_TARGET_LENGTH,
+        help=f"Minimum target text length (default: {MIN_TARGET_LENGTH})",
+    )
+    parser.add_argument(
+        "--max-chunk-chars",
+        type=int,
+        default=MAX_CHUNK_CHARS,
+        help=f"Maximum characters per chunk (default: {MAX_CHUNK_CHARS})",
+    )
+    parser.add_argument(
+        "--overlap-chars",
+        type=int,
+        default=OVERLAP_CHARS,
+        help=f"Overlap characters between chunks (default: {OVERLAP_CHARS})",
+    )
+    parser.add_argument(
+        "--skip-relevance-filter",
+        action="store_true",
+        help="Skip the relevance filter pre-processing step",
+    )
+    parser.add_argument(
+        "--language",
+        default=None,
+        help="ISO 639-1 language code (e.g. 'mn' for Mongolian). "
+        "Auto-detected if not provided.",
+    )
     args = parser.parse_args()
 
     asyncio.run(main_async(args))
