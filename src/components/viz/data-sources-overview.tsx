@@ -116,7 +116,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
               These are the policy documents analyzed. Click any document source to see the individual targets extracted from it.
               <br /><br />
               <strong>NDC</strong> = Nationally Determined Contribution<br />
-              <strong>NBT</strong> = National Biodiversity Targets (from the NBSAP)<br />
+              <strong>NBSAP</strong> = National Biodiversity Strategy and Action Plan<br />
               <strong>NAP</strong> = National Adaptation Plan
             </InfoBox>
           </h2>

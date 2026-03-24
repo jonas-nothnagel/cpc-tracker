@@ -14,6 +14,7 @@ import {
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
 import { TargetTextWithHighlights } from "./target-text";
 import type {
+  AlignmentResult,
   BtrData,
   MitigationMeasure,
   Target,
@@ -650,7 +651,10 @@ interface SectorScorecardProps {
   sectors: IpccSector[];
   classifications: ThematicClassification[];
   highlightSector?: string | null;
+  alignmentData?: AlignmentResult[];
 }
+
+const POSITIVE_ALIGNMENT_LEVELS = new Set(["low", "medium", "high"]);
 
 export function SectorScorecard({
   btrData,
@@ -658,6 +662,7 @@ export function SectorScorecard({
   sectors,
   classifications,
   highlightSector,
+  alignmentData,
 }: SectorScorecardProps) {
   const [expandedSector, setExpandedSector] = useState<string | null>(null);
 
@@ -666,6 +671,35 @@ export function SectorScorecard({
     [btrData, targets, sectors, classifications]
   );
 
+  /* Count NBSAP targets with positive alignment to NDC targets, per sector */
+  const nbsapAlignmentBySector = useMemo(() => {
+    if (!alignmentData) return new Map<string, number>();
+    const ndcIds = new Set(targets.filter((t) => t.sourceDocument === "NDC").map((t) => t.id));
+    const nbsapTargets = targets.filter((t) => t.sourceDocument === "NBSAP");
+    const nbsapIds = new Set(nbsapTargets.map((t) => t.id));
+    // Build NBSAP target → sectors lookup via classifications with taxonomyType "sector"
+    const nbsapSectors = new Map<string, Set<string>>();
+    for (const c of classifications) {
+      if (!nbsapIds.has(c.targetId) || c.taxonomyType !== "sector" || !c.isRelevant) continue;
+      if (!nbsapSectors.has(c.targetId)) nbsapSectors.set(c.targetId, new Set());
+      nbsapSectors.get(c.targetId)!.add(c.categoryId);
+    }
+    // Find NBSAP targets that align with any NDC target
+    const alignedNbsap = new Set<string>();
+    for (const pair of alignmentData) {
+      if (!POSITIVE_ALIGNMENT_LEVELS.has(pair.alignment)) continue;
+      if (nbsapIds.has(pair.targetAId) && ndcIds.has(pair.targetBId)) alignedNbsap.add(pair.targetAId);
+      else if (nbsapIds.has(pair.targetBId) && ndcIds.has(pair.targetAId)) alignedNbsap.add(pair.targetBId);
+    }
+    // Aggregate per sector
+    const result = new Map<string, number>();
+    for (const id of alignedNbsap) {
+      for (const sector of nbsapSectors.get(id) ?? []) {
+        result.set(sector, (result.get(sector) ?? 0) + 1);
+      }
+    }
+    return result;
+  }, [alignmentData, targets, classifications]);
 
   const toggleRow = useCallback((id: string) => {
     setExpandedSector((prev) => (prev === id ? null : id));
@@ -704,6 +738,7 @@ export function SectorScorecard({
         const isHighlighted = highlightSector === row.sector.id;
         const color = SECTOR_COLORS[row.sector.id] ?? "#a9b1b7";
         const insightText = buildGapInsightText(row);
+        const nbsapCount = nbsapAlignmentBySector.get(row.sector.id) ?? 0;
 
         return (
           <div
@@ -764,6 +799,20 @@ export function SectorScorecard({
                   {isExpanded ? "▾" : "▸"}
                 </span>
               </div>
+
+              {/* NBSAP cross-reference */}
+              {nbsapCount > 0 && (
+                <div
+                  className="grid items-center gap-3 mt-1"
+                  style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(160px, 2fr) 100px 102px 16px" }}
+                >
+                  <div />
+                  <span className="text-[10px] font-medium text-[#0468b1]">
+                    ↔ {nbsapCount} aligned NBSAP target{nbsapCount !== 1 ? "s" : ""} in this sector
+                  </span>
+                  <div /><div /><div />
+                </div>
+              )}
 
               {/* Subtitle: insight text + impl fraction — same grid so text sits under the pipeline bar */}
               {insightText && (

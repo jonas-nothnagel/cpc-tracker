@@ -46,7 +46,7 @@ const ALIGNMENT_EDGE_DASH: Record<AlignmentLevel, string> = {
 };
 
 const DOC_TYPE_LABELS: Record<string, string> = {
-  NBSAP: "NBTs",
+  NBSAP: "NBSAP targets",
   NDC: "NDC targets",
   NAP: "NAP targets",
 };

@@ -100,7 +100,7 @@ export function DocumentUploadZone({
               type="text"
               value={extractDocLabel}
               onChange={(e) => onExtractDocLabelChange(e.target.value)}
-              placeholder="e.g. NDC Target, NBT"
+              placeholder="e.g. NDC Target, NBSAP"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
             />
           </div>
