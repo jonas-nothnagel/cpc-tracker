@@ -5,6 +5,8 @@ import { arc as d3Arc } from "d3-shape";
 import {
   DOC_COLORS,
   DOC_LABELS,
+  DOC_MEDIUM_LABELS,
+  DOC_FULL_LABELS,
   ALIGNMENT_COLORS,
   ALIGNMENT_LABELS,
 } from "@/lib/utils";
@@ -60,17 +62,16 @@ interface TaxCategory {
 type GroupMode = "document" | "sector" | "theme" | "nbs";
 type AlignFilter = "all" | "high_medium" | "high" | "contradictions";
 
-const MAX_LABEL_LEN = 20;
 
 // ─── SVG layout constants ───────────────────────────────────────────
 
 const GAP = 0.08;
-const OUTER_R = 240;
-const INNER_R = 224;
+const OUTER_R = 225;
+const INNER_R = 218;
 const NODE_R = 210;
-const LABEL_R = 254;
-const GRP_LABEL_R = 270;
-const VB = 630;
+const LABEL_R = 238;
+const GRP_LABEL_R = 292;
+const VB = 720;
 const SECTOR_PAL = [
   "#0468b1", "#0d9488", "#b45309", "#7c3aed",
   "#dc2626", "#059669", "#d97706", "#6366f1",
@@ -132,7 +133,7 @@ function buildGroups(
     }
     return Array.from(m.entries()).map(([d, ts]) => ({
       id: d,
-      label: DOC_LABELS[d],
+      label: DOC_FULL_LABELS[d],
       color: DOC_COLORS[d],
       targets: ts,
     }));
@@ -222,9 +223,6 @@ function anchorFor(rad: number): "start" | "middle" | "end" {
   return "middle";
 }
 
-function truncLabel(s: string, max = MAX_LABEL_LEN): string {
-  return s.length > max ? s.slice(0, max - 1) + "…" : s;
-}
 
 // ─── Detail panel ───────────────────────────────────────────────────
 
@@ -528,8 +526,9 @@ export function PolicyCoherenceExplorer({
     result: AlignmentResult;
     other: Target;
   } | null>(null);
-  const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [showBtr, setShowBtr] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const hasBtr = useMemo(
     () => targets.some((t) => t.sourceDocument === "BTR"),
@@ -591,6 +590,7 @@ export function PolicyCoherenceExplorer({
   );
 
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
+  const groupColorMap = useMemo(() => new Map(arcs.map((a) => [a.id, a.color])), [arcs]);
   const targetMap = useMemo(() => new Map(targets.map((t) => [t.id, t])), [targets]);
 
   // Ambient connections — shown faintly when no node is active
@@ -639,14 +639,12 @@ export function PolicyCoherenceExplorer({
   const handleBgClick = useCallback(() => {
     setSelectedId(null);
     setComparedPair(null);
-    setExpandedGroupId(null);
   }, []);
 
   const handleGroupChange = useCallback((m: GroupMode) => {
     setGroupMode(m);
     setSelectedId(null);
     setComparedPair(null);
-    setExpandedGroupId(null);
   }, []);
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
@@ -679,7 +677,11 @@ export function PolicyCoherenceExplorer({
             </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {totalAligned} alignment opportunit{totalAligned !== 1 ? "ies" : "y"} across {groups.length} document type{groups.length !== 1 ? "s" : ""}
+            {totalAligned} alignment opportunit{totalAligned !== 1 ? "ies" : "y"} across {groups.length} {
+              groupMode === "document" ? "document type" :
+              groupMode === "theme" ? "cross-cutting theme" :
+              groupMode === "sector" ? "sector" : "NBS categor"
+            }{groups.length !== 1 ? (groupMode === "nbs" ? "ies" : "s") : (groupMode === "nbs" ? "y" : "")}
             {totalContra > 0 && (
               <>
                 {", "}
@@ -730,8 +732,69 @@ export function PolicyCoherenceExplorer({
               BTR Measures
             </button>
           )}
+
+          {/* Target search */}
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setSearchOpen(true);
+              }}
+              onFocus={() => setSearchOpen(true)}
+              placeholder="Find a target…"
+              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30 w-44"
+            />
+            {searchOpen && searchQuery.length >= 2 && (() => {
+              const q = searchQuery.toLowerCase();
+              const matches = visibleTargets
+                .filter((t) =>
+                  t.sourceLabel.toLowerCase().includes(q) ||
+                  t.text.toLowerCase().includes(q) ||
+                  DOC_FULL_LABELS[t.sourceDocument].toLowerCase().includes(q),
+                )
+                .slice(0, 8);
+              if (matches.length === 0) return null;
+              return (
+                <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 max-h-60 overflow-y-auto">
+                  {matches.map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      className="w-full text-left px-3 py-1.5 hover:bg-gray-50 flex items-center gap-2"
+                      onClick={() => {
+                        handleNodeClick(t.id);
+                        setSearchQuery("");
+                        setSearchOpen(false);
+                      }}
+                    >
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                      />
+                      <span className="text-xs text-[var(--undp-black)] truncate">
+                        <span className="font-medium text-[var(--undp-gray)]">
+                          {DOC_LABELS[t.sourceDocument]}
+                        </span>
+                        {" "}{t.sourceLabel}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
         </div>
       </div>
+
+      {/* Click-away handler for search dropdown */}
+      {searchOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setSearchOpen(false)}
+        />
+      )}
 
       {/* Main content: wheel + detail panel */}
       <div className="flex gap-4 items-start">
@@ -757,15 +820,34 @@ export function PolicyCoherenceExplorer({
                       n.groupId === arc.id &&
                       (n.id === activeId || connectedIds.has(n.id)),
                   );
+                const arcMidR = (INNER_R + OUTER_R) / 2;
+                const badgeX = arcMidR * Math.sin(arc.midAngle);
+                const badgeY = -arcMidR * Math.cos(arc.midAngle);
                 return (
-                  <path
-                    key={arc.id}
-                    d={d ?? ""}
-                    fill={arc.color}
-                    opacity={activeId ? (hasActiveNode ? 0.8 : 0.12) : 0.65}
-                    className="transition-opacity duration-200"
-                    style={{ pointerEvents: "none" }}
-                  />
+                  <g key={arc.id}>
+                    <path
+                      d={d ?? ""}
+                      fill={arc.color}
+                      opacity={activeId ? (hasActiveNode ? 0.8 : 0.12) : 0.65}
+                      className="transition-opacity duration-200"
+                      style={{ pointerEvents: "none" }}
+                    />
+                    {/* Count badge on arc in overview mode */}
+                    {!activeId && arc.count > 0 && (
+                      <text
+                        x={badgeX}
+                        y={badgeY}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontSize={9}
+                        fontWeight={600}
+                        fill="white"
+                        className="select-none pointer-events-none"
+                      >
+                        {arc.count}
+                      </text>
+                    )}
+                  </g>
                 );
               })}
 
@@ -824,13 +906,17 @@ export function PolicyCoherenceExplorer({
                 const isActive = node.id === activeId;
                 const isConnected = connectedIds.has(node.id);
                 const isDimmed = !!activeId && !isActive && !isConnected;
+                const useGroupColor = groupMode !== "document";
+                const nodeColor = useGroupColor
+                  ? (groupColorMap.get(node.groupId) ?? DOC_COLORS[node.target.sourceDocument])
+                  : DOC_COLORS[node.target.sourceDocument];
                 return (
                   <g key={node.id}>
                     {isActive && (
                       <circle
                         cx={node.x} cy={node.y} r={r + 5}
                         fill="none"
-                        stroke={DOC_COLORS[node.target.sourceDocument]}
+                        stroke={nodeColor}
                         strokeWidth={2}
                         opacity={0.4}
                         style={{ pointerEvents: "none" }}
@@ -840,7 +926,7 @@ export function PolicyCoherenceExplorer({
                       <circle
                         cx={node.x} cy={node.y} r={r + 3}
                         fill="none"
-                        stroke={DOC_COLORS[node.target.sourceDocument]}
+                        stroke={nodeColor}
                         strokeWidth={1.5}
                         opacity={0.25}
                         style={{ pointerEvents: "none" }}
@@ -850,7 +936,7 @@ export function PolicyCoherenceExplorer({
                       cx={node.x}
                       cy={node.y}
                       r={r}
-                      fill={DOC_COLORS[node.target.sourceDocument]}
+                      fill={nodeColor}
                       stroke="white"
                       strokeWidth={1.5}
                       opacity={isDimmed ? 0.12 : 1}
@@ -863,88 +949,164 @@ export function PolicyCoherenceExplorer({
                         e.stopPropagation();
                         handleNodeClick(node.id);
                       }}
-                    />
+                    >
+                      <title>{DOC_MEDIUM_LABELS[node.target.sourceDocument]} — {node.target.sourceLabel}</title>
+                    </circle>
+                    {/* Small doc-type indicator dot in non-document modes */}
+                    {useGroupColor && r >= 4 && !isDimmed && (
+                      <circle
+                        cx={node.x}
+                        cy={node.y}
+                        r={2.5}
+                        fill={DOC_COLORS[node.target.sourceDocument]}
+                        stroke="white"
+                        strokeWidth={0.5}
+                        className="pointer-events-none"
+                      />
+                    )}
                   </g>
                 );
               })}
 
-              {/* Node labels — only for active + connected nodes */}
-              {nodes.map((node) => {
-                const isActive = node.id === activeId;
-                const isConnected = connectedIds.has(node.id);
-                if (!isActive && !isConnected && activeId) return null;
-                const lx = LABEL_R * Math.sin(node.angle);
-                const ly = -LABEL_R * Math.cos(node.angle);
+              {/* Node labels — only when a node is active/hovered, with collision avoidance */}
+              {activeId && (() => {
+                // Collect connected nodes and sort by alignment strength
+                const labelNodes: { node: NodePos; isActive: boolean }[] = [];
+                for (const node of nodes) {
+                  if (node.id === activeId) labelNodes.push({ node, isActive: true });
+                  else if (connectedIds.has(node.id)) labelNodes.push({ node, isActive: false });
+                }
+                // Deduplicate and sort: active first, then by angle for spacing check
+                const sorted = labelNodes.sort((a, b) => {
+                  if (a.isActive) return -1;
+                  if (b.isActive) return 1;
+                  return a.node.angle - b.node.angle;
+                });
+                // Greedily filter: skip labels too close to an already-placed label
+                const MIN_ANGLE_GAP = 0.12; // ~7 degrees minimum between labels
+                const placed: number[] = [];
+                const visible: typeof sorted = [];
+                for (const entry of sorted) {
+                  const tooClose = placed.some(
+                    (a) => Math.abs(entry.node.angle - a) < MIN_ANGLE_GAP,
+                  );
+                  if (entry.isActive || !tooClose) {
+                    visible.push(entry);
+                    placed.push(entry.node.angle);
+                  }
+                }
                 const showDocCtx = groupMode !== "document";
-                const docColor = DOC_COLORS[node.target.sourceDocument];
-                return (
-                  <text
-                    key={`lbl-${node.id}`}
-                    x={lx}
-                    y={ly}
-                    textAnchor={anchorFor(node.angle)}
-                    dominantBaseline="middle"
-                    className="select-none pointer-events-none"
-                    fontSize={isActive ? 11 : 9}
-                    fontWeight={isActive ? 700 : 400}
-                    fill={
-                      showDocCtx
-                        ? isActive || isConnected
+                return visible.map(({ node, isActive }) => {
+                  const lx = LABEL_R * Math.sin(node.angle);
+                  const ly = -LABEL_R * Math.cos(node.angle);
+                  const docColor = DOC_COLORS[node.target.sourceDocument];
+                  return (
+                    <text
+                      key={`lbl-${node.id}`}
+                      x={lx}
+                      y={ly}
+                      textAnchor={anchorFor(node.angle)}
+                      dominantBaseline="middle"
+                      className="select-none pointer-events-none"
+                      fontSize={isActive ? 11 : 9}
+                      fontWeight={isActive ? 700 : 400}
+                      fill={
+                        showDocCtx
                           ? docColor
-                          : `${docColor}60`
-                        : isActive || isConnected
-                          ? "#334155"
-                          : "#b0b8c4"
-                    }
-                    style={{ transition: "fill 200ms, font-size 200ms" }}
-                  >
-                    {showDocCtx && (isActive || isConnected) && (
-                      <tspan fontWeight={700} fontSize={isActive ? 9 : 7}>
-                        {DOC_LABELS[node.target.sourceDocument]}{" "}
-                      </tspan>
-                    )}
-                    {node.target.sourceLabel}
-                  </text>
-                );
-              })}
-
-              {/* Group labels */}
-              {arcs.map((arc) => {
-                const lx = GRP_LABEL_R * Math.sin(arc.midAngle);
-                const ly = -GRP_LABEL_R * Math.cos(arc.midAngle);
-                const isTruncated = arc.label.length > MAX_LABEL_LEN;
-                const isExpanded = expandedGroupId === arc.id;
-                const displayLabel = isExpanded ? arc.label : truncLabel(arc.label);
-                return (
-                  <text
-                    key={`grp-${arc.id}`}
-                    x={lx}
-                    y={ly}
-                    textAnchor={anchorFor(arc.midAngle)}
-                    dominantBaseline="middle"
-                    className="select-none"
-                    fontSize={isExpanded ? 12 : 13}
-                    fontWeight={600}
-                    fill={isExpanded ? arc.color : activeId ? "#94a3b8" : "#1e293b"}
-                    stroke={isExpanded ? "white" : "none"}
-                    strokeWidth={isExpanded ? 4 : 0}
-                    paintOrder="stroke"
-                    style={{
-                      transition: "fill 200ms",
-                      cursor: isTruncated ? "pointer" : "default",
-                    }}
-                    onClick={(e) => {
-                      if (isTruncated) {
-                        e.stopPropagation();
-                        setExpandedGroupId(isExpanded ? null : arc.id);
+                          : "#334155"
                       }
-                    }}
-                  >
-                    {displayLabel}
-                    {!isExpanded && isTruncated && <title>{arc.label}</title>}
-                  </text>
-                );
-              })}
+                      style={{ transition: "fill 200ms, font-size 200ms" }}
+                    >
+                      {showDocCtx && (
+                        <tspan fontWeight={700} fontSize={isActive ? 9 : 7}>
+                          {DOC_MEDIUM_LABELS[node.target.sourceDocument]}{" "}
+                        </tspan>
+                      )}
+                      {node.target.sourceLabel}
+                    </text>
+                  );
+                });
+              })()}
+
+              {/* Group labels — positioned radially with collision avoidance */}
+              {(() => {
+                // Estimate label height in SVG units (~14px per label)
+                const LABEL_H = 14;
+                // Minimum angular gap to avoid overlap (based on label height / radius)
+                const MIN_GAP = LABEL_H / GRP_LABEL_R;
+
+                // First pass: detect clusters of overlapping labels
+                const entries = arcs.map((arc) => ({
+                  arc,
+                  angle: arc.midAngle,
+                  radius: GRP_LABEL_R,
+                }));
+
+                // Sort by angle for overlap detection
+                const sorted = [...entries].sort((a, b) => a.angle - b.angle);
+
+                // Spread overlapping labels by adjusting their angles
+                for (let i = 1; i < sorted.length; i++) {
+                  const prev = sorted[i - 1];
+                  const curr = sorted[i];
+                  const gap = curr.angle - prev.angle;
+                  if (gap < MIN_GAP) {
+                    // Push current label forward
+                    curr.angle = prev.angle + MIN_GAP;
+                  }
+                }
+
+                // If last label wraps past 2π, compress the whole spread backward
+                if (sorted.length > 1) {
+                  const maxAngle = 2 * Math.PI - MIN_GAP;
+                  if (sorted[sorted.length - 1].angle > maxAngle) {
+                    const overflow = sorted[sorted.length - 1].angle - maxAngle;
+                    for (const entry of sorted) {
+                      entry.angle -= overflow / sorted.length;
+                    }
+                  }
+                }
+
+                return sorted.map(({ arc, angle }) => {
+                  // Leader line: from arc outer edge (at original midAngle) to label position
+                  const arcX = (OUTER_R + 3) * Math.sin(arc.midAngle);
+                  const arcY = -(OUTER_R + 3) * Math.cos(arc.midAngle);
+                  const lx = GRP_LABEL_R * Math.sin(angle);
+                  const ly = -GRP_LABEL_R * Math.cos(angle);
+                  // Small elbow point just outside arc
+                  const elbowR = OUTER_R + 14;
+                  const elbowX = elbowR * Math.sin(angle);
+                  const elbowY = -elbowR * Math.cos(angle);
+                  const anchor = anchorFor(angle);
+                  // Nudge label slightly away from leader endpoint
+                  const nudge = anchor === "start" ? 3 : anchor === "end" ? -3 : 0;
+                  return (
+                    <g key={`grp-${arc.id}`}>
+                      <path
+                        d={`M${arcX},${arcY} L${elbowX},${elbowY} L${lx},${ly}`}
+                        fill="none"
+                        stroke={arc.color}
+                        strokeWidth={1}
+                        opacity={activeId ? 0.2 : 0.35}
+                        className="pointer-events-none"
+                      />
+                      <text
+                        x={lx + nudge}
+                        y={ly}
+                        textAnchor={anchor}
+                        dominantBaseline="middle"
+                        className="select-none"
+                        fontSize={11}
+                        fontWeight={600}
+                        fill={activeId ? "#94a3b8" : arc.color}
+                        style={{ letterSpacing: "0.04em", transition: "fill 200ms" }}
+                      >
+                        {arc.label}
+                      </text>
+                    </g>
+                  );
+                });
+              })()}
 
               {/* Center content */}
               <text
@@ -975,13 +1137,15 @@ export function PolicyCoherenceExplorer({
             <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
               {/* Document column */}
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Document</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                  {groupMode === "document" ? "Document" : groupMode === "theme" ? "Theme" : groupMode === "sector" ? "Sector" : "NBS Category"}
+                </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (
-                    <span key={arc.id} className="flex items-center gap-1.5" title={arc.label}>
+                    <span key={arc.id} className="flex items-center gap-1.5">
                       <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: arc.color }} />
                       <span className="text-[var(--undp-gray)]">
-                        {truncLabel(arc.label, 22)} ({arc.count})
+                        {arc.label} ({arc.count})
                       </span>
                     </span>
                   ))}
