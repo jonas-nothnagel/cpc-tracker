@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { InfoBox } from "@/components/ui/info-box";
-import type { Nr7Data, Nr7ProgressItem } from "@/types";
+import type { Nr7Data, Nr7ProgressItem, AlignmentResult, Target, AlignmentLevel } from "@/types";
 
 const NR7_COLORS: Record<string, string> = {
   on_track: "#16a34a",
@@ -22,19 +22,23 @@ const STATUS_ORDER = ["on_track", "limited", "no_progress", "unknown"] as const;
 /*  Target card                                                        */
 /* ------------------------------------------------------------------ */
 
+const POSITIVE_LEVELS = new Set<AlignmentLevel>(["low", "medium", "high"]);
+
 function Nr7TargetCard({
   item,
   isExpanded,
   onToggle,
   statusColor,
+  ndcAlignmentCount,
 }: {
   item: Nr7ProgressItem;
   isExpanded: boolean;
   onToggle: () => void;
   statusColor: string;
+  ndcAlignmentCount?: number;
 }) {
   const displayLabel = item.nbsapTargetId
-    ? `NBT ${item.nbsapTargetId.replace("NBT_", "")}`
+    ? `NBSAP ${item.nbsapTargetId.replace("NBT_", "")}`
     : item.targetId;
   const hasDetail = item.progressSummary || item.challenges || item.examples;
   const cleanSummary = item.progressSummary?.replace(/\n/g, " ") ?? null;
@@ -107,6 +111,13 @@ function Nr7TargetCard({
               {item.examples.replace(/\n/g, " ")}
             </div>
           )}
+          {ndcAlignmentCount != null && ndcAlignmentCount > 0 && (
+            <div className="flex items-center gap-1.5 pt-1">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#0468b1] bg-blue-50 rounded px-2 py-0.5">
+                ↔ Aligns with {ndcAlignmentCount} NDC target{ndcAlignmentCount !== 1 ? "s" : ""}
+              </span>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -117,8 +128,15 @@ function Nr7TargetCard({
 /*  Main component                                                     */
 /* ------------------------------------------------------------------ */
 
-export function Nr7Progress({ nr7Data }: { nr7Data: Nr7Data }) {
-  const [collapsed, setCollapsed] = useState(false);
+export function Nr7Progress({
+  nr7Data,
+  alignmentData,
+  targets,
+}: {
+  nr7Data: Nr7Data;
+  alignmentData?: AlignmentResult[];
+  targets?: Target[];
+}) {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     () => new Set()
   );
@@ -142,6 +160,23 @@ export function Nr7Progress({ nr7Data }: { nr7Data: Nr7Data }) {
       return { status, count, percentage: total > 0 ? Math.round((count / total) * 100) : 0 };
     }).filter((s) => s.count > 0);
   }, [nr7Data.progressItems]);
+
+  /* Count NDC alignment pairs per NBSAP target */
+  const ndcAlignmentCounts = useMemo(() => {
+    if (!alignmentData || !targets) return new Map<string, number>();
+    const ndcIds = new Set(targets.filter((t) => t.sourceDocument === "NDC").map((t) => t.id));
+    const nbsapIds = new Set(targets.filter((t) => t.sourceDocument === "NBSAP").map((t) => t.id));
+    const counts = new Map<string, number>();
+    for (const pair of alignmentData) {
+      if (!POSITIVE_LEVELS.has(pair.alignment)) continue;
+      if (nbsapIds.has(pair.targetAId) && ndcIds.has(pair.targetBId)) {
+        counts.set(pair.targetAId, (counts.get(pair.targetAId) ?? 0) + 1);
+      } else if (nbsapIds.has(pair.targetBId) && ndcIds.has(pair.targetAId)) {
+        counts.set(pair.targetBId, (counts.get(pair.targetBId) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [alignmentData, targets]);
 
   const toggleGroup = (status: string) => {
     setExpandedGroups((prev) => {
@@ -167,38 +202,23 @@ export function Nr7Progress({ nr7Data }: { nr7Data: Nr7Data }) {
   };
 
   return (
-    <section className="mb-10">
+    <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-            NR7 Implementation Progress
-            <InfoBox>
-              Progress data from the 7th National Report to the Convention on Biological Diversity (CBD).{" "}
-              Each national biodiversity target is assessed as <strong>on track</strong>,{" "}
-              <strong>limited progress</strong>, or <strong>no progress</strong> based on reported
-              implementation status.
-            </InfoBox>
-          </h2>
-          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {nr7Data.progressItems.length} national biodiversity targets — 7th National Report to the CBD
-            {nr7Data.reportingPeriod ? ` (${nr7Data.reportingPeriod})` : ""}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setCollapsed((v) => !v)}
-          className="shrink-0 mt-1 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded-lg hover:bg-[var(--undp-blue)]/5 transition-colors"
-        >
-          {collapsed ? "Details" : "Hide"}
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${collapsed ? "" : "rotate-180"}`}>
-            <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+      <div className="mb-3">
+        <h3 className="text-base font-semibold text-[var(--undp-black)]">
+          NBSAP Progress
+          <InfoBox>
+            Progress data from the 7th National Report to the Convention on Biological Diversity (CBD).{" "}
+            Each national biodiversity target is assessed as on track,{" "}
+            limited progress, or no progress based on reported
+            implementation status.
+          </InfoBox>
+        </h3>
+        <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+          {nr7Data.progressItems.length} national biodiversity targets — 7th National Report to the CBD
+          {nr7Data.reportingPeriod ? ` (${nr7Data.reportingPeriod})` : ""}
+        </p>
       </div>
-
-      {!collapsed && (
-        <>
           {/* ── Stacked progress bar ── */}
           <div className="mb-6">
             <div className="flex h-8 rounded-lg overflow-hidden border border-gray-100">
@@ -286,6 +306,7 @@ export function Nr7Progress({ nr7Data }: { nr7Data: Nr7Data }) {
                           setExpandedItem(expandedItem === item.targetId ? null : item.targetId)
                         }
                         statusColor={NR7_COLORS[status]}
+                        ndcAlignmentCount={ndcAlignmentCounts.get(item.nbsapTargetId ?? item.targetId)}
                       />
                     ))}
                   </div>
@@ -293,8 +314,6 @@ export function Nr7Progress({ nr7Data }: { nr7Data: Nr7Data }) {
               </div>
             );
           })}
-        </>
-      )}
-    </section>
+    </div>
   );
 }

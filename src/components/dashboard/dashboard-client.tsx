@@ -327,6 +327,19 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           nr7Data={data.nr7Data}
         />
 
+        {/* --- Level 1: Policy Coherence --- */}
+        <div className="pt-8 mb-6 border-t-2 border-[var(--undp-blue)]/20">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--undp-blue)] mb-1">
+            Level 1 — Policy Coherence
+          </p>
+          <h2 className="text-xl font-semibold text-[var(--undp-black)]">
+            Cross-Policy Alignment
+          </h2>
+          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+            How targets across {documentTypes.length} policy document{documentTypes.length !== 1 ? "s" : ""} relate to each other — alignment, gaps, and contradictions.
+          </p>
+        </div>
+
         {/* --- Thematic Classification (switchable) --- */}
         <ClassificationSection
           targets={targets}
@@ -359,41 +372,88 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           targets={targets}
         />
 
-        {/* --- NR7 Implementation Progress --- */}
-        {data.nr7Data && data.nr7Data.progressItems.length > 0 && (
-          <Nr7Progress nr7Data={data.nr7Data} />
-        )}
+        {/* --- Level 2: Financial Alignment (placeholder) --- */}
+        <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
+          <div className="mb-4">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--undp-blue)] mb-1">
+              Level 2 — Financial Alignment
+            </p>
+            <h2 className="text-xl font-semibold text-[var(--undp-black)]">
+              Budget &amp; Finance Flows
+            </h2>
+            <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+              Financial flows and budget allocations analysis.
+            </p>
+          </div>
+          <div className="bg-gray-50 border border-gray-200 border-dashed rounded-lg px-5 py-6 text-center">
+            <p className="text-sm text-[var(--undp-gray)]">
+              Under Development
+            </p>
+          </div>
+        </section>
 
-        {/* --- Implementation Gap Analysis (BTR data) --- */}
-        {data.btrData && data.btrData.mitigationMeasures.length > 0 && (
-          <section className="mb-10">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-                Policy-to-Implementation Overview
+        {/* --- Level 3: Progress Alignment (unified NR7 + BTR) --- */}
+        {((data.nr7Data && data.nr7Data.progressItems.length > 0) ||
+          (data.btrData && data.btrData.mitigationMeasures.length > 0)) && (
+          <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
+            <div className="mb-6">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--undp-blue)] mb-1">
+                Level 3 — Progress Alignment
+              </p>
+              <h2 className="text-xl font-semibold text-[var(--undp-black)]">
+                Implementation Progress
                 <InfoBox>
-                  This section connects policy targets to implementation measures reported in the Biennial Transparency Report (BTR).{" "}
-                  The scorecard shows which sectors have concrete measures in place, emissions trends,{" "}
-                  and identifies implementation gaps where targets exist without corresponding action.
+                  Reported progress on national biodiversity and climate commitments from official reporting mechanisms.{" "}
+                  NBSAP progress is drawn from the 7th National Report to the CBD; NDC implementation from the Biennial Transparency Report.
                 </InfoBox>
               </h2>
-              <p className="text-sm text-[var(--undp-gray)] mt-1">
-                How national policy targets connect to reported implementation measures by sector.{" "}
-                {data.btrData.mitigationMeasures.length} mitigation measures and{" "}
-                {data.btrData.technologySupport.length + data.btrData.capacityBuilding.length} support
-                projects from the Biennial Transparency Report.
+              <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+                Tracking reported progress across national biodiversity and climate commitments.
               </p>
             </div>
 
-            <SectorScorecard
-              btrData={data.btrData}
-              targets={targets}
-              sectors={data.sectors}
-              classifications={data.classifications}
-            />
+            {data.nr7Data && data.nr7Data.progressItems.length > 0 && (
+              <Nr7Progress
+                nr7Data={data.nr7Data}
+                alignmentData={data.alignment}
+                targets={targets}
+              />
+            )}
 
-            <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">
-              <EmissionsTrend btrData={data.btrData} />
-            </div>
+            {data.btrData && data.btrData.mitigationMeasures.length > 0 && (
+              <div className={data.nr7Data && data.nr7Data.progressItems.length > 0 ? "mt-8" : ""}>
+                <div className="mb-4">
+                  <h3 className="text-base font-semibold text-[var(--undp-black)]">
+                    NDC Implementation
+                    <InfoBox>
+                      Connects NDC policy targets to implementation measures reported in the Biennial Transparency Report (BTR).{" "}
+                      The scorecard shows which sectors have concrete measures in place, emissions trends,{" "}
+                      and identifies implementation gaps where targets exist without corresponding action.
+                    </InfoBox>
+                  </h3>
+                  <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+                    {data.btrData.mitigationMeasures.length} mitigation measures and{" "}
+                    {data.btrData.technologySupport.length + data.btrData.capacityBuilding.length} support
+                    projects — Biennial Transparency Report
+                    {data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]
+                      ? ` (${data.btrData.sourceFile.match(/BTR(\d+)/)?.[0]})`
+                      : ""}
+                  </p>
+                </div>
+
+                <SectorScorecard
+                  btrData={data.btrData}
+                  targets={targets}
+                  sectors={data.sectors}
+                  classifications={data.classifications}
+                  alignmentData={data.alignment}
+                />
+
+                <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">
+                  <EmissionsTrend btrData={data.btrData} />
+                </div>
+              </div>
+            )}
           </section>
         )}
 

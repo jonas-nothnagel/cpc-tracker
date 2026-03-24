@@ -20,7 +20,7 @@ export const DOC_COLORS: Record<PolicyDocumentType, string> = {
 /** Shorter labels for chart axes */
 export const DOC_LABELS: Record<PolicyDocumentType, string> = {
   NDC: "NDC",
-  NBSAP: "NBT",
+  NBSAP: "NBSAP",
   NAP: "NAP",
   LDN: "LDN",
   SECTORAL: "Sectoral",
@@ -31,7 +31,7 @@ export const DOC_LABELS: Record<PolicyDocumentType, string> = {
 /** Medium-length labels for contexts with moderate space */
 export const DOC_MEDIUM_LABELS: Record<PolicyDocumentType, string> = {
   NDC: "NDC (Climate)",
-  NBSAP: "NBT (Biodiversity)",
+  NBSAP: "NBSAP (Biodiversity)",
   NAP: "NAP (Adaptation)",
   LDN: "LDN (Land)",
   SECTORAL: "Sectoral Policy",

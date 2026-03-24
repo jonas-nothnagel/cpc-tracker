@@ -53,7 +53,7 @@ export function InfoBox({ children }: InfoBoxProps) {
       </span>
       {open && (
         <div
-          className="absolute left-0 top-full mt-2 z-40 bg-white border border-gray-200 rounded-lg shadow-lg px-4 py-3.5 w-80 text-sm text-[var(--undp-black)] leading-relaxed"
+          className="absolute left-0 top-full mt-2 z-40 bg-white border border-gray-200 rounded-lg shadow-lg px-4 py-3.5 w-80 text-sm font-normal text-[var(--undp-black)] leading-relaxed"
           onClick={(e) => e.stopPropagation()}
         >
           {children}
