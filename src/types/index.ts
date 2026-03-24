@@ -39,6 +39,10 @@ export interface Target {
   quantitativeDetails?: string;
   /** Extracted time-bound phrase(s) for highlighting (e.g. "by 2030") */
   timeBoundDetails?: string;
+  /** Implementation activities associated with this target (from structured upload or manual entry) */
+  activities?: string;
+  /** Actions or measures to implement the target (from structured upload or manual entry) */
+  actions?: string;
 }
 
 // ---------------------------------------------------------------------------

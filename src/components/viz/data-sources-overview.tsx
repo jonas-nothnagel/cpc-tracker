@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
-import { TargetTextWithHighlights } from "./target-text";
+import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type { Target, PolicyDocumentType, BtrData, Nr7Data } from "@/types";
 
 const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
@@ -62,6 +62,7 @@ function TargetListModal({ label, targets, color, onClose }: {
               <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
                 <TargetTextWithHighlights target={t} />
               </p>
+              <ActivitiesActions target={t} />
             </li>
           ))}
         </ul>

@@ -195,7 +195,12 @@ async def decompose_measures(
     calls = []
     ids = []
     for pt in pseudo_targets:
-        user = ANALYST_USER_TEMPLATE.format(target_text=pt["text"])
+        user = ANALYST_USER_TEMPLATE.format(
+            target_text=pt["text"],
+            activities_block="",
+            actions_block="",
+            action_instruction="",
+        )
         calls.append({"system": ANALYST_SYSTEM, "user": user})
         ids.append(pt["id"])
 

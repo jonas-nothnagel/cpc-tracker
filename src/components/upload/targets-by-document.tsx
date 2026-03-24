@@ -5,6 +5,7 @@ import type { TargetRow } from "@/lib/csv-parser";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 import { TARGETS_PREVIEW } from "@/lib/upload-helpers";
 import { DOC_COLORS } from "@/lib/utils";
+import { ActivitiesActions } from "@/components/viz/target-text";
 
 interface TargetsByDocumentProps {
   targetsByDocument: {
@@ -94,9 +95,12 @@ export function TargetsByDocument({
                   >
                     {t.sourceLabel}
                   </span>
-                  <p className="flex-1 min-w-0 text-sm text-[var(--undp-black)] leading-snug">
-                    {t.text}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-[var(--undp-black)] leading-snug">
+                      {t.text}
+                    </p>
+                    <ActivitiesActions target={t} />
+                  </div>
                   <button
                     onClick={() => onRemoveTarget(idx)}
                     className="shrink-0 mt-0.5 w-5 h-5 flex items-center justify-center text-gray-300 hover:text-[var(--undp-red)] rounded transition-colors text-sm leading-none opacity-0 group-hover:opacity-100"

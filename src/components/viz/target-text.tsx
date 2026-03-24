@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import type { Target } from "@/types";
+import type { TargetRow } from "@/lib/csv-parser";
 
 /**
  * Renders target text with quantitative and time-bound phrases highlighted.
@@ -63,4 +65,56 @@ export function TargetTextWithHighlights({ target }: { target: Target }) {
   }
 
   return <span>{parts}</span>;
+}
+
+/**
+ * Collapsible display of activities and actions/measures for a target.
+ * Shows nothing if both fields are empty.
+ */
+export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
+  const [open, setOpen] = useState(false);
+  const { activities, actions } = target;
+
+  if (!activities && !actions) return null;
+
+  const count = (activities ? 1 : 0) + (actions ? 1 : 0);
+
+  return (
+    <div className="mt-1.5">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="text-[10px] text-[var(--undp-blue)] hover:underline flex items-center gap-1"
+      >
+        <span className="inline-block transition-transform" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>
+          &#9654;
+        </span>
+        Activities &amp; Actions ({count})
+      </button>
+      {open && (
+        <div className="mt-1 space-y-1.5 pl-2 border-l-2 border-[var(--undp-blue)]/20">
+          {activities && (
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                Activities
+              </span>
+              <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mt-0.5">
+                {activities}
+              </p>
+            </div>
+          )}
+          {actions && (
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                Actions / Measures
+              </span>
+              <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mt-0.5">
+                {actions}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }

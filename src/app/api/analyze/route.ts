@@ -24,6 +24,8 @@ interface AnalyzeRequest {
     text: string;
     sourceDocument: PolicyDocumentType;
     sourceLabel: string;
+    activities?: string;
+    actions?: string;
   }[];
   nbsCategories?: { id: string; name: string; description: string }[];
   sectors?: { id: string; name: string; description: string }[];
@@ -91,6 +93,8 @@ export async function POST(request: NextRequest) {
         sourceDocument: doc,
         sourceLabel: t.sourceLabel || `${doc} ${docCounters[doc]}`,
         country: body.country || "Unknown",
+        ...(t.activities ? { activities: t.activities } : {}),
+        ...(t.actions ? { actions: t.actions } : {}),
       };
     });
 

@@ -53,6 +53,8 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     isTimeBound: Boolean(t.isTimeBound),
     quantitativeDetails: t.quantitativeDetails ? String(t.quantitativeDetails) : undefined,
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
+    activities: t.activities ? String(t.activities) : undefined,
+    actions: t.actions ? String(t.actions) : undefined,
   };
 }
 

@@ -7,12 +7,16 @@ export interface TargetRow {
   sourceDocument: PolicyDocumentType;
   sourceLabel: string;
   source?: "extraction" | "manual" | "file";
+  activities?: string;
+  actions?: string;
 }
 
 export interface ColumnMapping {
   textCol: number;
   labelCol: number;
   docTypeCol: number;
+  activitiesCol: number;
+  actionsCol: number;
 }
 
 export interface ParsedPreview {
@@ -105,6 +109,8 @@ export function detectColumns(headers: string[]): ColumnMapping {
   let textCol = -1;
   let labelCol = -1;
   let docTypeCol = -1;
+  let activitiesCol = -1;
+  let actionsCol = -1;
 
   for (let i = 0; i < lower.length; i++) {
     const h = lower[i];
@@ -129,9 +135,20 @@ export function detectColumns(headers: string[]): ColumnMapping {
       h === "target"
     ) {
       labelCol = i;
+    } else if (
+      h.includes("activities") ||
+      h.includes("activity")
+    ) {
+      activitiesCol = i;
+    } else if (
+      h.includes("measures") ||
+      h.includes("measure") ||
+      (h.includes("action") && !h.includes("target text"))
+    ) {
+      actionsCol = i;
     }
   }
-  return { textCol, labelCol, docTypeCol };
+  return { textCol, labelCol, docTypeCol, activitiesCol, actionsCol };
 }
 
 /** Check if a row looks like a header (contains common header keywords). */
@@ -169,16 +186,16 @@ export function smartParse(text: string): ParsedPreview | null {
         Object.keys(KNOWN_DOC_TYPES).some((k) => v.startsWith(k))
       );
       if (lastIsDocType) {
-        mapping = { labelCol: 0, textCol: 1, docTypeCol: colCount - 1 };
+        mapping = { labelCol: 0, textCol: 1, docTypeCol: colCount - 1, activitiesCol: -1, actionsCol: -1 };
       } else {
-        mapping = { docTypeCol: 0, labelCol: 1, textCol: 2 };
+        mapping = { docTypeCol: 0, labelCol: 1, textCol: 2, activitiesCol: -1, actionsCol: -1 };
       }
     } else if (colCount === 3) {
-      mapping = { docTypeCol: 0, labelCol: 1, textCol: 2 };
+      mapping = { docTypeCol: 0, labelCol: 1, textCol: 2, activitiesCol: -1, actionsCol: -1 };
     } else if (colCount === 2) {
-      mapping = { labelCol: 0, textCol: 1, docTypeCol: -1 };
+      mapping = { labelCol: 0, textCol: 1, docTypeCol: -1, activitiesCol: -1, actionsCol: -1 };
     } else {
-      mapping = { textCol: 0, labelCol: -1, docTypeCol: -1 };
+      mapping = { textCol: 0, labelCol: -1, docTypeCol: -1, activitiesCol: -1, actionsCol: -1 };
     }
   }
 
@@ -211,11 +228,15 @@ export function smartParse(text: string): ParsedPreview | null {
     const rawLabel = mapping.labelCol >= 0 ? row[mapping.labelCol] ?? "" : "";
     const rawType = mapping.docTypeCol >= 0 ? row[mapping.docTypeCol] ?? "" : "";
     const cleanLabel = rawLabel.replace(/\s*\n\s*/g, " ").trim();
+    const activities = mapping.activitiesCol >= 0 ? (row[mapping.activitiesCol] ?? "").replace(/\s*\n\s*/g, " ").trim() : "";
+    const actions = mapping.actionsCol >= 0 ? (row[mapping.actionsCol] ?? "").replace(/\s*\n\s*/g, " ").trim() : "";
 
     rows.push({
       text: text.replace(/\s*\n\s*/g, " ").trim(),
       sourceDocument: rawType ? matchDocType(rawType) : "OTHER",
       sourceLabel: cleanLabel || `Target ${rows.length + 1}`,
+      ...(activities ? { activities } : {}),
+      ...(actions ? { actions } : {}),
     });
   }
 

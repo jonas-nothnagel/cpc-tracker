@@ -1,61 +1,494 @@
 [
-  {"id": "NAP_1", "text": "Enhance policies, legal structures, and organizational capacities to support climate change adaptation across all sectors", "sourceDocument": "NAP", "sourceLabel": "Target 1", "country": "Mongolia"},
-  {"id": "NAP_2", "text": "Improve climate change adaptation knowledge and capacity among stakeholders through research, training, and information dissemination", "sourceDocument": "NAP", "sourceLabel": "Target 2", "country": "Mongolia"},
-  {"id": "NAP_3", "text": "Improve the adaptive capacity of ecosystems and biodiversity", "sourceDocument": "NAP", "sourceLabel": "Target 3", "country": "Mongolia"},
-  {"id": "NAP_4", "text": "Reduce desertification, land degradation, and permafrost loss.", "sourceDocument": "NAP", "sourceLabel": "Target 4", "country": "Mongolia"},
-  {"id": "NAP_5", "text": "Establish a continuous water monitoring system using advanced technology for sustainable management", "sourceDocument": "NAP", "sourceLabel": "Target 5", "country": "Mongolia"},
-  {"id": "NAP_6", "text": "Strengthen water ecosystem services by conserving and restoring water resources, utilizing technology to boost surface water", "sourceDocument": "NAP", "sourceLabel": "Target 6", "country": "Mongolia"},
-  {"id": "NAP_7", "text": "Establish climate-resilient forests and sustainable wood-based industries", "sourceDocument": "NAP", "sourceLabel": "Target 7", "country": "Mongolia"},
-  {"id": "NAP_8", "text": "Minimize risks from climate change induced disasters and improve resilience", "sourceDocument": "NAP", "sourceLabel": "Target 8", "country": "Mongolia"},
-  {"id": "NAP_9", "text": "Develop multi-hazard, impact-based early warning systems to enable quick and effective responses to extreme events.", "sourceDocument": "NAP", "sourceLabel": "Target 9", "country": "Mongolia"},
-  {"id": "NAP_10", "text": "Foster sustainable livestock management that aligns with water and pasture resources and is climate-resilient.", "sourceDocument": "NAP", "sourceLabel": "Target 10", "country": "Mongolia"},
-  {"id": "NAP_11", "text": "Improve livestock quality, reduce pasture overuse, and develop value chains for marketable livestock products.", "sourceDocument": "NAP", "sourceLabel": "Target 11", "country": "Mongolia"},
-  {"id": "NAP_12", "text": "Sustainably develop high-yield crops through climate-adapted technologies and soil conservation.", "sourceDocument": "NAP", "sourceLabel": "Target 12", "country": "Mongolia"},
-  {"id": "NAP_13", "text": "Protect and sustain soil fertility through climate-smart agricultural practices.", "sourceDocument": "NAP", "sourceLabel": "Target 13", "country": "Mongolia"},
-  {"id": "NAP_14", "text": "Enhance research, preparedness, and capacity-building to mitigate climate-related health risks.", "sourceDocument": "NAP", "sourceLabel": "Target 14", "country": "Mongolia"},
-  {"id": "NAP_15", "text": "Create social safety nets, protection systems, and insurance mechanisms to reduce the vulnerability of communities", "sourceDocument": "NAP", "sourceLabel": "Target 15", "country": "Mongolia"},
-  {"id": "NDC_Biodiversity_1", "text": "Expand the legal protection of land by enlarging the boundaries of protected areas, designating ecological corridors, and enabling species migration and movement. This will improve the adaptive capacity and resilience of biodiversity vulnerable to climate change.", "sourceDocument": "NDC", "sourceLabel": "Biodiversity 1", "country": "Mongolia"},
-  {"id": "NDC_Biodiversity_2", "text": "Strengthen protection and sustainable use measures that support the regeneration of vulnerable and unique ecosystems. Establish long-term ecological monitoring sites and carry out targeted conservation research and actions.", "sourceDocument": "NDC", "sourceLabel": "Biodiversity 2", "country": "Mongolia"},
-  {"id": "NDC_Forests_1", "text": "Protect natural forests, improve forest health, and enhance forest regeneration capacity", "sourceDocument": "NDC", "sourceLabel": "Forests 1", "country": "Mongolia"},
-  {"id": "NDC_Forests_2", "text": "Expand the scope of afforestation and forest restoration through advanced technologies and innovation.", "sourceDocument": "NDC", "sourceLabel": "Forests 2", "country": "Mongolia"},
-  {"id": "NDC_Forests_3", "text": "Establish a legal framework for sustainable forest management aimed at improving forest ecosystem protection.", "sourceDocument": "NDC", "sourceLabel": "Forests 3", "country": "Mongolia"},
-  {"id": "NDC_NatDisasters_1", "text": "Enhance the legal and regulatory framework related to disaster risk reduction.", "sourceDocument": "NDC", "sourceLabel": "Natural disasters 1", "country": "Mongolia"},
-  {"id": "NDC_NatDisasters_2", "text": "Strengthen early warning systems and reduce disaster risks at all levels.", "sourceDocument": "NDC", "sourceLabel": "Natural disasters 2", "country": "Mongolia"},
-  {"id": "NDC_AnimalHusbandry_1", "text": "Reduce pasture pressure by raising young livestock using advanced methods and technologies, developing biosecure compartment farming and supplying meat to target markets.", "sourceDocument": "NDC", "sourceLabel": "Animal husbandry and pastureland 1", "country": "Mongolia"},
-  {"id": "NDC_AnimalHusbandry_2", "text": "Improve livestock water and feed supply, quality and management to strengthen resilience against natural risks.", "sourceDocument": "NDC", "sourceLabel": "Animal husbandry and pastureland 2", "country": "Mongolia"},
-  {"id": "NDC_AnimalHusbandry_3", "text": "Introduce smart technologies in livestock production and pasture utilization.", "sourceDocument": "NDC", "sourceLabel": "Animal husbandry and pastureland 3", "country": "Mongolia"},
-  {"id": "NDC_AnimalHusbandry_4", "text": "Establish sustainable and rational collaborative management practices for pastures and expand the scope of pasture restoration.", "sourceDocument": "NDC", "sourceLabel": "Animal husbandry and pastureland 4", "country": "Mongolia"},
-  {"id": "NDC_PublicHealth", "text": "Strengthen the health care system for early detection, warning, and response to climate change related threats to human health.", "sourceDocument": "NDC", "sourceLabel": "Public health", "country": "Mongolia"},
-  {"id": "NDC_SocialProtection", "text": "Identify groups most vulnerable to climate change, enhance their resilience, strengthen welfare, protection, insurance, and prevention systems to address vulnerabilities, and diversify the economic activities of citizens to ensure sustainable livelihoods.", "sourceDocument": "NDC", "sourceLabel": "Social protection and livelihood", "country": "Mongolia"},
-  {"id": "NDC_Education", "text": "Increase climate education, green skills, and public participation, while ensuring the implementation of UNFCCC, Article 12 of the Paris Agreement, and the UNFCCC Action for Climate Empowerment (ACE) framework.", "sourceDocument": "NDC", "sourceLabel": "Education", "country": "Mongolia"},
-  {"id": "NDC_Culture", "text": "Establish a system to protect tangible and intangible cultural heritage and traditional knowledge, and ensure their adaptation to climate change.", "sourceDocument": "NDC", "sourceLabel": "Culture", "country": "Mongolia"},
-  {"id": "NDC_LivestockMitigation", "text": "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological carrying capacity of rangelands and improving livestock economic turnover through increasing export and meat supply to the domestic.", "sourceDocument": "NDC", "sourceLabel": "Livestock mitigation", "country": "Mongolia"},
-  {"id": "NDC_Mitigation_1", "text": "By improving the circulation of livestock and livestock raw materials and increasing exports, Livestock CO2 emissions shall be reduced by 4.15 million tons by 2030 and 7.48 million tons by 2035.", "sourceDocument": "NDC", "sourceLabel": "Mitigation 1", "country": "Mongolia"},
-  {"id": "NDC_Mitigation_2", "text": "By increasing meat supply to the domestic market will reduce livestock CO2 emissions by 1.12 million tons by 2030 and by 2.29 million tons by 2035", "sourceDocument": "NDC", "sourceLabel": "Mitigation 2", "country": "Mongolia"},
-  {"id": "NDC_Mitigation_3", "text": "Reduce Soil Organic Carbon loss by restoring 10% of heavily degraded rangelands within the forest-steppe (3%) and steppe (7%) ecological zones, moving land from Recovery Class IV (heavily degraded) to Recovery Class III (moderately degraded).", "sourceDocument": "NDC", "sourceLabel": "Mitigation 3", "country": "Mongolia"},
-  {"id": "NDC_WaterResources_1", "text": "Improve the policy, legal, structural, and organizational environment for the climate change adaptation of the sector.", "sourceDocument": "NDC", "sourceLabel": "Water resources 1", "country": "Mongolia"},
-  {"id": "NDC_WaterResources_2", "text": "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability.", "sourceDocument": "NDC", "sourceLabel": "Water resources 2", "country": "Mongolia"},
-  {"id": "NDC_ArableFarming_1", "text": "Expand the adoption of minimal and zero tillage technologies to conserve soil fertility and minimize moisture loss across grain, fodder, and industrial crop production systems.", "sourceDocument": "NDC", "sourceLabel": "Arable farming 1", "country": "Mongolia"},
-  {"id": "NDC_ArableFarming_2", "text": "Integrate cutting-edge climate-smart technologies into crop production systems to ensure consistent, sustainable high yields.", "sourceDocument": "NDC", "sourceLabel": "Arable farming 2", "country": "Mongolia"},
-  {"id": "NDC_ArableFarming_3", "text": "Introduce and adapt drought, disease, and pest-resistant crop varieties.", "sourceDocument": "NDC", "sourceLabel": "Arable farming 3", "country": "Mongolia"},
-  {"id": "NDC_ArableFarming_4", "text": "Implement environmentally friendly smart technologies in crop production.", "sourceDocument": "NDC", "sourceLabel": "Arable farming 4", "country": "Mongolia"},
-  {"id": "NBT_1", "text": "Ensure that each representative type of the main ecosystems is included and that 30% of the country's total land area is effectively conserved within the National Protected Area Network, while strengthening ecological connectivity across the landscape.", "sourceDocument": "NBSAP", "sourceLabel": "NBT 1", "country": "Mongolia"},
-  {"id": "NBT_2", "text": "Restore at least 30 percent of degraded ecosystems and improve ecological integrity and connectivity", "sourceDocument": "NBSAP", "sourceLabel": "NBT 2", "country": "Mongolia"},
-  {"id": "NBT_3", "text": "Mitigate the risk of extinction for rare and endangered species, protect genetic diversity, and mitigate conflicts between humans and wildlife", "sourceDocument": "NBSAP", "sourceLabel": "NBT 3", "country": "Mongolia"},
-  {"id": "NBT_4", "text": "Establish capacity in Mongolia to record, monitor, and assess the impacts of invasive alien species, and to implement response measures to prevent their negative effects", "sourceDocument": "NBSAP", "sourceLabel": "NBT 4", "country": "Mongolia"},
-  {"id": "NBT_5", "text": "Reduce pollution levels from all sources that negatively impact biodiversity to levels that are safe for human health, ecosystem functioning and the environment", "sourceDocument": "NBSAP", "sourceLabel": "NBT 5", "country": "Mongolia"},
-  {"id": "NBT_6", "text": "Strengthen National Climate Adaptation by Reducing Greenhouse Gas Emissions and Enhancing Carbon Sink", "sourceDocument": "NBSAP", "sourceLabel": "NBT 6", "country": "Mongolia"},
-  {"id": "NBT_7", "text": "Develop highly productive and sustainable forestry and agricultural production through the adoption of environmentally friendly practices", "sourceDocument": "NBSAP", "sourceLabel": "NBT 7", "country": "Mongolia"},
-  {"id": "NBT_8", "text": "Restore and Enhance Nature's Contributions to People by Enhancing Ecosystem services through the conservation and sustainable use of biodiversity", "sourceDocument": "NBSAP", "sourceLabel": "NBT 8", "country": "Mongolia"},
-  {"id": "NBT_9", "text": "Create sustainable urban planning that fully protects and ensures the integrity of biodiversity, contributing to health activities and services, and increases the ecological area of green and blue structures in urban protected areas to 30%", "sourceDocument": "NBSAP", "sourceLabel": "NBT 9", "country": "Mongolia"},
-  {"id": "NBT_10", "text": "Establish and develop a register of genetic resources and traditional knowledge and to establish legal and administrative capacity regulates the fair and equitable sharing of benefits arising from the utilization of genetic resources and traditional knowledge associated with those resources", "sourceDocument": "NBSAP", "sourceLabel": "NBT 10", "country": "Mongolia"},
-  {"id": "NBT_11", "text": "Integrating biodiversity issues into policy and planning across all sectors.", "sourceDocument": "NBSAP", "sourceLabel": "NBT 11", "country": "Mongolia"},
-  {"id": "NBT_12", "text": "Establish and implement a system that monitors, transparently reports, and manages the impact, risks, and consequences of business activities on biodiversity. Additionally, create market conditions that support sustainable consumer habits and practices.", "sourceDocument": "NBSAP", "sourceLabel": "NBT 12", "country": "Mongolia"},
-  {"id": "NBT_13", "text": "Promote Sustainable Consumption and Reduce Waste through Public Education", "sourceDocument": "NBSAP", "sourceLabel": "NBT 13", "country": "Mongolia"},
-  {"id": "NBT_14", "text": "Strengthening the biosafety regulatory environment, management and control system to ensure biosafety", "sourceDocument": "NBSAP", "sourceLabel": "NBT 14", "country": "Mongolia"},
-  {"id": "NBT_15", "text": "Redesign subsidies and incentives that negatively impact biodiversity to be environment and biodiversity-friendly.", "sourceDocument": "NBSAP", "sourceLabel": "NBT 15", "country": "Mongolia"},
-  {"id": "NBT_16", "text": "Mobilize funding from multiple sources, including government, private sector, and international finance, to support conservation activities and enhance the effectiveness of environmental financing.", "sourceDocument": "NBSAP", "sourceLabel": "NBT 16", "country": "Mongolia"},
-  {"id": "NBT_17", "text": "Expand innovation, scientific, and technical cooperation in the field of biodiversity conservation", "sourceDocument": "NBSAP", "sourceLabel": "NBT 17", "country": "Mongolia"},
-  {"id": "NBT_18", "text": "Enhance access to information and knowledge related to biodiversity for decision-makers, professionals, and the public", "sourceDocument": "NBSAP", "sourceLabel": "NBT 18", "country": "Mongolia"},
-  {"id": "NBT_19", "text": "Strengthen inclusive environmental governance that reflects the diverse perspectives of local communities, women, girls, and youth, ensuring gender equality in biodiversity-related decision-making at all levels.", "sourceDocument": "NBSAP", "sourceLabel": "NBT 19", "country": "Mongolia"}
+  {
+    "id": "NBSAP_1",
+    "text": "By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "1 Spatial planning",
+    "country": "Mongolia",
+    "activities": "1.1. Conduct Red List of Ecosystems assessments\n1.2.  Maintain the proportion of natural ecosystems and prevent further decline\n1.3. Integrate biodiversity considerations into general land-use plans and soum territorial development plans to reduce biodiversity loss, and systematically reflect rare fauna, flora, and their habitats in these planning documents"
+  },
+  {
+    "id": "NBSAP_2",
+    "text": "By 2030, restore at least 30 percent of degraded ecosystems and improve ecological integrity and connectivity.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "2 Land restoration",
+    "country": "Mongolia",
+    "activities": "2.1 Restore degraded forest ecosystems;\n2.2 Restore land degraded by mining activities;\n2.3 Restore degraded land, pastureland and abandoned land;\n2.4 Restore water, wetlands, river and lake ecosystems"
+  },
+  {
+    "id": "NBSAP_3",
+    "text": "By 2030, 30% of the country's total area will be included in the special protected area network, representing major ecosystem types and strengthening ecological connectivity.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "3 Protected areas",
+    "country": "Mongolia",
+    "activities": "3.1. Identify and assess areas under Other Effective area-based Conservation Measures (OECMs);\n3.2. Develop, legalize and implement a national protected areas and conservation area strategy and action plan;\n3.3. Designate forest, steppe and peatland areas under protection, including representative ecosystems;\n3.4. Update the legal framework for protected areas and implement participatory conservation management;\n3.5. Increase management effectiveness of protected areas;\n3.6. Expand and conserve ecological corridors and connectivity areas;\n3.7. Improve management through strengthened transboundary protected area cooperation"
+  },
+  {
+    "id": "NBSAP_4",
+    "text": "By 2030, Reduce the risk of extinction of threatened species and conserve genetic diversity",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "4 Species conservation",
+    "country": "Mongolia",
+    "activities": "4.1. Conduct baseline surveys on distribution and abundance\n4.2. Undertake assessments every 5 years in line with the international Red List criteria\n4.3. Protect wildlife migration routes and connectivity areas, and increase wildlife-friendly linear infrastructure in line with standards\n4.4. Strengthen the legal framework for biodiversity conservation, sustainable use and reducing biodiversity loss"
+  },
+  {
+    "id": "NBSAP_5",
+    "text": "By 2030, register, control, and assess the impacts of invasive alien species, while building the capacity to combat and prevent their adverse effects.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "5 Invasive alien species",
+    "country": "Mongolia",
+    "activities": "5.1. Strengthen the legal and policy framework related to alien species\n5.2. Undertake research and establish a registry/database on alien species\n5.3. Assess risks, develop response plans and strengthen capacity"
+  },
+  {
+    "id": "NBSAP_6",
+    "text": "By 2030, reduce pollution from all sources to levels that are not harmful to biodiversity and ecosystem functions and human health.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "6 Pollution",
+    "country": "Mongolia",
+    "activities": "6.1. Promote sound pesticide use, establish a pesticide tracking system, and introduce alternatives to chemical pesticides\n6.2. Identify soil contaminated by pesticide residues and strengthen laboratory capacity to determine soil pesticide residues\n6.3. Remediate soil contaminated by pesticides\n6.4. Adopt international IPSM standards\n6.5. Improve economic instruments for waste management and establish legal provisions based on extended producer responsibility and the polluter-pays principle\n6.6. Establish temporary hazardous waste storage facilities\n6.7. Translate and approve ISO standards on micro- and macroplastics in the environment\n6.8. Prohibit import and use in Mongolia of chemicals newly added to Annex III of the Rotterdam Convention"
+  },
+  {
+    "id": "NBSAP_7",
+    "text": "By 2030, minimize the impact of climate change on biodiversity and increase its resilience through mitigation, adaptation, and disaster risk reduction actions through nature-based solution and ecosystem-based approaches.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "7 Climate change",
+    "country": "Mongolia",
+    "activities": "7.1. Conduct and expand long-term monitoring and establish monitoring points for climate change\n7.2. Increase carbon sequestration by expanding forest cover\n7.3. Strengthen risk assessment, early warning systems and local preparedness under the Sendai Framework, and integrate nature-based solutions into disaster risk management to reduce climate-related disaster risks"
+  },
+  {
+    "id": "NBSAP_8",
+    "text": "By 2030, reduce ecosystem degradation by supporting the development of sustainable, highly productive forestry and agriculture, while introducing nature-based practices.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "8 Sustainable agriculture",
+    "country": "Mongolia",
+    "activities": "8.1. Strengthen accountability systems by enabling contractual pasture use through primary herder groups\n8.2. Conduct pasture-use assessments\n8.3. Develop a methodology to determine pasture carrying capacity considering overlap between livestock and wild herbivore grazing\n8.4. Develop suitable methodologies to estimate greenhouse gas emissions from pastoral livestock production\n8.5. Protect cropland soil from erosion and degradation and implement response measures\n8.6. Reduce fertilizer and pesticide use through smart technologies\n8.7. Reduce chemical plant protection inputs by promoting mixed cropping\n8.8. Establish shelterbelts on cropland\n8.9. Identify agricultural lands negatively affecting biodiversity\n8.10. Diversify and develop model forestry/agroforestry"
+  },
+  {
+    "id": "NBSAP_9",
+    "text": "By 2030, increase the benefits of nature to people through ecosystem services derived from nature-based solutions.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "9 Nature's contribution",
+    "country": "Mongolia",
+    "activities": "9.1. Use ecosystem services valuation in policy, land use and sector planning to restore nature’s benefits in real terms\n9.2. Reduce sources of air pollution\n9.3. Improve air quality monitoring\n9.4. Increase secure sources of drinking water for the population and promote efficient use"
+  },
+  {
+    "id": "NBSAP_10",
+    "text": "By 2030, increase the area of urban green and blue infrastructure.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "10 Urban green & blue infrastructure",
+    "country": "Mongolia",
+    "activities": "10.1. Conduct campaigns for maintenance and protection of green and blue infrastructure\n10.2. Increase per capita urban green space to international benchmarks\n10.3. Organize citizen-based tree planting and maintenance campaigns\n10.4. Create artificial lakes and water features\n10.5. Integrate green/blue infrastructure into urban master plans and partial development plans\n10.6. Establish new urban forests, parks and green spaces"
+  },
+  {
+    "id": "NBSAP_11",
+    "text": "By 2030, develop a comprehensive database for genetic resources and traditional knowledge, while strengthening legal and governance frameworks to ensure the fair and equitable sharing of benefits.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "11 ABS",
+    "country": "Mongolia",
+    "activities": "11.1. Create the legal framework for benefit-sharing from the utilization of genetic resources and associated traditional knowledge\n11.2. Strengthen and enrich the electronic registry on the use of genetic resources and associated traditional knowledge\n11.3. Establish and develop a digital gene bank database, including detailed records of samples/specimens held in various collections and sequence information\n11.4. Translate and approve a series of biobank standards\n11.5. Establish a seed bank for wild plants\n11.6. Undertake genetic evaluation of high-value livestock breeds and establish a database\n11.7. Improve the legal framework governing conservation, storage, use, commercialization and benefit-sharing of food and agricultural crop genetic resources"
+  },
+  {
+    "id": "NBSAP_12",
+    "text": "By 2030, Integrate biodiversity issues into the policies and planning of all sectors.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "12 Biodiversity mainstreaming",
+    "country": "Mongolia",
+    "activities": "12.1. Integrate biodiversity conservation, sustainable use and restoration into medium- and short-term planning at all levels\n12.2. Apply the One Health approach in food, agriculture, health and environment sector planning and implementation\n12.3. Undertake social and environmental impact assessments for policies, projects and programmes at all levels\n12.4. Organize phased trainings and outreach for decision-makers and professionals across sectors on biodiversity conservation, sustainable use and restoration"
+  },
+  {
+    "id": "NBSAP_13",
+    "text": "By 2030, establish systems to monitor and transparently report the impacts, risks, and outcomes of business activities regarding biodiversity.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "13 Sustainable business and disclosure",
+    "country": "Mongolia",
+    "activities": "13.1. Create an incentive system to support biodiversity-friendly start-ups\n13.2. Develop and introduce financial products dedicated to biodiversity conservation\n13.3. Assess contributions of businesses to conservation and increase the number of enterprises eligible for tax incentives\n13.4. Adopt international sustainability standards, including standards for reporting environmental impacts under international financial reporting frameworks"
+  },
+  {
+    "id": "NBSAP_14",
+    "text": "By 2030, minimize overconsumption and waste through supporting public education on sustainable consumption.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "14 Sustainable consumption",
+    "country": "Mongolia",
+    "activities": "14.1. Develop ecological footprint accounting using international standard methodologies and establish a database\n14.2. Promote conscious purchasing and the use of nature-friendly products and services through behavioural change campaigns\n14.3. Promote zero waste and circular economy values through traditional nomadic culture and nature-friendly practices\n14.4. Support sustainable consumption initiatives to reduce food waste\n14.5. Promote household and institutional practices for water and energy saving and greywater reuse\n14.6. Integrate biodiversity, climate change and sustainable development content into general, technical/vocational and higher education curricula"
+  },
+  {
+    "id": "NBSAP_15",
+    "text": "By 2030, enhance the legislative, governance, and monitoring systems for genetically modified organisms.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "15 Biosafety",
+    "country": "Mongolia",
+    "activities": "15.1. Improve the legal and policy framework on LMOs\n15.2. Establish a national biosafety clearing-house information system\n15.3. Develop and approve a package of MNS standards for LMO risk assessment\n15.4. Conduct baseline studies and risk assessments of genetically modified crop plants\n15.5. Accredit laboratories capable of LMO detection and risk assessment, and strengthen technical and human capacities\n15.6. Improve LMO monitoring and import control"
+  },
+  {
+    "id": "NBSAP_16",
+    "text": "By 2030, reform subsidies and incentives that have negative impacts on biodiversity, while increasing environmentally positive (green) incentives.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "16 Harmful subsidies",
+    "country": "Mongolia",
+    "activities": "16.1. Ensure intersectoral coordination in subsidy and incentive policy planning\n16.2. Conduct environmental monitoring and evaluation of subsidies and incentives\n16.3. Repurpose potentially harmful subsidies and incentives in the agriculture sector\n16.4. Repurpose potentially harmful subsidies and incentives in the energy sector\n16.5. Repurpose potentially harmful subsidies and incentives in the transport sector\n16.6. Revise up to five regulations and policies on harmful subsidies and incentives using green criteria"
+  },
+  {
+    "id": "NBSAP_17",
+    "text": "Substantially and progressively increase financial resources towards biodiversity conservation from all sources, in an effective, timely, innovative and easily accessible manner.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "17 Biodiversity finance",
+    "country": "Mongolia",
+    "activities": "17.1. Increase private sector financing for biodiversity within biodiversity finance systems and environmental and social responsibility frameworks\n17.2. Raise public expenditure on the environment sector to internationally comparable levels as a share of GDP\n17.3. Adopt the revised Law on Natural Resource Use Fees and strengthen implementation\n17.4. Transition total environmental sector financing to results-based budgeting\n17.5. Comprehensively upgrade the budget and expenditure database for environmental protection and restoration measures by linking it with databases and systems of other government agencies\n17.6. Establish the legal basis to collect a “Nature Benefit Fee” from foreign citizens and allocate it to biodiversity conservation\n17.7. Increase conservation revenues by strengthening the legal framework and implementation of biodiversity offsetting\n17.8. Study and pilot biodiversity credits and other innovative mechanisms for biodiversity action"
+  },
+  {
+    "id": "NBSAP_18",
+    "text": "Strengthen capacity-building and development, access to and transfer of technology, and promote development of and access to innovation and technical and scientific cooperation in biodiversity conservation.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "18 Innovation, science, and cooperation",
+    "country": "Mongolia",
+    "activities": "18.1. Increase the number and financing of projects supported by the Science and Technology Fund for biodiversity conservation\n18.2. Strengthen cooperation among government, private sector and international programmes to expand innovation and technical cooperation in the environment sector\n18.3. Support environmental sector professionals and provide scholarships for students and researchers\n18.4. Upgrade research laboratories and equipment in the environment sector, improve accessibility, and strengthen monitoring and human resource capacity"
+  },
+  {
+    "id": "NBSAP_19",
+    "text": "By 2030, data and information relevant to biodiversity and ecosystem services are widely accessible to decision makers, scientists and the public to guide effective and equitable governance, integrated and participatory management of biodiversity.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "19 Biodiversity knowledge access",
+    "country": "Mongolia",
+    "activities": "19.1. Conduct trainings and outreach to promote sustainable use of natural resources, associated traditional knowledge related to genetic resources, prevention of illegal wildlife and plant trade, and awareness on LMOs and alien species\n19.2. Increase access to information and conduct trainings and outreach among customs, judiciary, prosecutors, environmental police and relevant public officials on prevention of illegal wildlife and plant trade and environmental crimes and offences\n19.3. Promote nature-based solutions and green technologies through multi-stakeholder outreach and encourage active participation\n19.4. Broadcast environmental news, information and educational programmes for at least 2 per cent of total airtime on Mongolia’s national public radio and television\n19.5. Organize multi-stakeholder campaigns on environmentally friendly green technologies and encourage participation\n19.6. Systematically incorporate information on the value and importance of biodiversity into editorial policies of media outlets and strengthen journalists’ capacity\n19.7. Establish a master’s programme in environmental journalism and train specialized journalists"
+  },
+  {
+    "id": "NBSAP_20",
+    "text": "By 2030, ensure full, equitable, inclusive, effective, and gender-responsive representation and participation in decision-making and implementation related to biodiversity and ensure rights over relevant resources of local communities, women and girls as well as youth.",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "20 Inclusive participation and gender equality",
+    "country": "Mongolia",
+    "activities": "20.1. Organize annual regional trainings on women’s participation and leadership in environmental sector decision-making\n20.2. Undertake research and develop recommendations on the linkages between biodiversity, traditional conservation knowledge and gender\n20.3. Build the capacity of local communities, women and youth engaged in nature-dependent businesses by supporting nature-friendly good practices\n20.4. Strengthen knowledge and capacity of institutions implementing the biodiversity strategy and action plan to use sex-disaggregated data in policy and planning and to develop and apply gender-responsive indicators"
+  },
+  {
+    "id": "NAP_1",
+    "text": "Enhance policies, legal structures, and organizational capacities to support climate change adaptation across all sectors",
+    "sourceDocument": "NAP",
+    "sourceLabel": "1 Legal Environment",
+    "country": "Mongolia",
+    "actions": "1.1. Establish legal regulations to ensure integrated coordination for reducing disaster risks induced by climate, water, and weather, and adapting to climate change, and improve intersectoral coordination. \n1.6. Approve and ensure implementation of the National Biodiversity programme and Plan"
+  },
+  {
+    "id": "NAP_2",
+    "text": "Improve climate change adaptation knowledge and capacity among stakeholders through research, training, and information dissemination",
+    "sourceDocument": "NAP",
+    "sourceLabel": "2 Capacity Development",
+    "country": "Mongolia",
+    "actions": "2.7. Identify social groups vulnerable to climate change and study the dynamics of their livelihoods.\n2.10. Organize capacity development activities at the national level to educate and provide information on climate change risks, and adaptation measures to government employees as well as populations  vulnerable to climate change."
+  },
+  {
+    "id": "NAP_3",
+    "text": "Improve the adaptive capacity of ecosystems and biodiversity",
+    "sourceDocument": "NAP",
+    "sourceLabel": "3 Ecosystem, biodiversity",
+    "country": "Mongolia",
+    "actions": "3.1. Take under special protection and improve management of at least 35 percent of each main representative ecosystems, and entire ecosystems that are unique and vulnerable to climate change. \n3.7. Establish a comprehensuve surveillance and control system for changes in the population number, habitat, and species migration of wild animals due to climate change"
+  },
+  {
+    "id": "NAP_4",
+    "text": "Reduce desertification, land degradation, and permafrost loss.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "4 Soil protection",
+    "country": "Mongolia",
+    "actions": "4.1. Reducing the area of land affected by desertification and degradation by implementing actions to protect and increase water resources by establishing forest strips suitable to the geographical location and regional features in areas affected by desertification. \n4.2.  Peatlands should be taken under special state protection and promote rehabilitation and sustainable use of degraded lands"
+  },
+  {
+    "id": "NAP_5",
+    "text": "Establish a continuous water monitoring system using advanced technology for sustainable management",
+    "sourceDocument": "NAP",
+    "sourceLabel": "5 Water monitoring",
+    "country": "Mongolia",
+    "actions": "5.3.Establish a monitoring network for water quality and water resource replenishment of underground water replenishment facilities (MAP)."
+  },
+  {
+    "id": "NAP_6",
+    "text": "Strengthen water ecosystem services by conserving and restoring water resources, utilizing technology to boost surface water",
+    "sourceDocument": "NAP",
+    "sourceLabel": "6 Water ecosystem services",
+    "country": "Mongolia",
+    "actions": "6.1. Accumulate a total of 6.4 km3 of water resources through surface water collection\n6.5. Build ponds for hay and crop irrigation and ponds for breeding of fish and aquatic animals, and create overfloading sites by constructing traditional small-scale ponds, to solve water supply of wildlife and livestock"
+  },
+  {
+    "id": "NAP_7",
+    "text": "Establish sustainable forest management and climate-resilient natural forests and better re/afforestation capacity",
+    "sourceDocument": "NAP",
+    "sourceLabel": "7 Forests",
+    "country": "Mongolia",
+    "actions": "7.1. Establish of forest seed bank and supply of reproductive materials\n7.2. Implementation of the  national movement  reforestation and afforestation incl. urban \n7.3. Sustainable forest management and protection"
+  },
+  {
+    "id": "NAP_8",
+    "text": "Minimize risks from climate change induced disasters and improve resilience",
+    "sourceDocument": "NAP",
+    "sourceLabel": "8 CC disaster & risk reduction",
+    "country": "Mongolia",
+    "actions": "8.2. Develop a database for weather and climate change disasters, risks, damage, risk insurance information, data sharing management\n8.5. Improve insurance system to reduce the climate and hydrometeorological hazards and disaster risks."
+  },
+  {
+    "id": "NAP_9",
+    "text": "Develop multi-hazard, impact-based early warning systems to enable quick and effective responses to extreme events.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "9 Early warning system",
+    "country": "Mongolia",
+    "actions": "9.1. Increase the forecasting and computing capacity of supercomputers, provide early warning of catastrophic events, and improve spatial and temporal accuracy, probability, and accuracy of forecasting. \n9.2. Establish and introduce an early warning system based on multiple impacts (drought, dzud, flood, strong wind, heavy snow and rain, etc.) at the urban and regional level."
+  },
+  {
+    "id": "NAP_10",
+    "text": "Foster sustainable livestock management that aligns with water and pasture resources and is climate-resilient.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "10 Pasture management",
+    "country": "Mongolia",
+    "actions": "10.1. Set the boundaries of the winter-spring pastures of herders and their communities and ensure the management of the long-term use of the pastures by the herders.\n10.3. Establish water points, wells and ponds to improve the water supply of pastures."
+  },
+  {
+    "id": "NAP_11",
+    "text": "Improve livestock quality, reduce pasture overuse, and develop value chains for marketable livestock products.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "11 Livestock management",
+    "country": "Mongolia",
+    "actions": "11.1. Developing marketing strategies to enhance the sale of livestock and livestock products. \n11.4. Introducing technologies to track the registry of origin, movement of livestock, establish protected farms with veterinary quarantine, and reduce the number of livestock suffering from emerging and resurgent veterinary diseases."
+  },
+  {
+    "id": "NAP_12",
+    "text": "Sustainably develop high-yield crops through climate-adapted technologies and soil conservation.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "12 Farm soil conservation",
+    "country": "Mongolia",
+    "actions": "12.2. Increase the number of crop rotations that are beneficial for the soil fertility and economically efficient, reduce the percentage of black fallow, and increase the cultivation of leguminous and other food and fodder crops.\n12.4. Build reservoirs, marshes, ponds to use snow and rain flood water for improving the water supply and use it for irrigation of fodder crops, potatoes and vegetables.\n12.6.Grow a forest strip on the agricultural fields fenced off by farmers."
+  },
+  {
+    "id": "NAP_13",
+    "text": "Protect and sustain soil fertility through climate-smart agricultural practices.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "13 Crop production",
+    "country": "Mongolia",
+    "actions": "13.3. Introduction of crops and varieties resistant to drought, diseases and pests, improvement of seed supply of varieties."
+  },
+  {
+    "id": "NAP_14",
+    "text": "Enhance research, preparedness, and capacity-building to mitigate climate-related health risks.",
+    "sourceDocument": "NAP",
+    "sourceLabel": "14 Public health",
+    "country": "Mongolia",
+    "actions": "14.1.  Develop evidence-based public health recommendations versus climate change-induced morbidity and mortality."
+  },
+  {
+    "id": "NAP_15",
+    "text": "Create social safety nets, protection systems, and insurance mechanisms to reduce the vulnerability of communities",
+    "sourceDocument": "NAP",
+    "sourceLabel": "15 Social security, livelihood",
+    "country": "Mongolia",
+    "actions": "15.1. Engage target groups vulnerable to climate change, and people migrated to urban areas due to loss of their livelihood sources through natural disasters, in occupational orientation training."
+  },
+  {
+    "id": "NDC_1",
+    "text": "Expand the legal protection of land by enlarging the boundaries of protected areas, designating ecological corridors, and enabling species migration and movement. This will improve the adaptive capacity and resilience of biodiversity vulnerable to climate change.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 1",
+    "country": "Mongolia",
+    "actions": "Measures: 1. Update the Red List assessments for flora and fauna to identify climate-vulnerable species and enhance their protection, 2. Conduct vegetation and resource assessments by ecological zones and plant communities, 3. Carry out phased research and monitoring of animal species, their populations, and distribution"
+  },
+  {
+    "id": "NDC_2",
+    "text": "Strengthen protection and sustainable use measures that support the regeneration of vulnerable and unique ecosystems. Establish long-term ecological monitoring sites and carry out targeted conservation research and actions.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 2",
+    "country": "Mongolia",
+    "actions": "Measures: 4. Implement conservation and sustainable use projects tailored to the recovery capacity of ecosystems across ecological zones, peatland restoration areas, ecological corridors and ecological infostructures, 5. Apply species-specific protection measures within protected areas to support the recovery of critically endangered and rare species, 6. Preserve genetic diversity of plants, crops, and animals by establishing gene banks and promoting sustainable use through policy and planning.\nConditional measure:\n1. 30% and additional 3.1% of total area will be protected aiming to achieve target of 33.1%\nof total territory of the country to be protected in 2035 in Mongolia."
+  },
+  {
+    "id": "NDC_3",
+    "text": "Improve the policy, legal, structural, and organizational environment for the climate change adaptation of the sector.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water resources\n 1",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Revising irrigation regimes and water use norms for pastures, agriculture, forests,\nindustry, and mining to increase recycling and introduce water-efficient technologies.\nEstablish a permanent monitoring system for water use,\n2. Determining ecological flows and sustainable abstraction levels through hydrological and\nbiological studies to guide rational water management,\n3. Updating flood runoff standards and implementing structural standards for protective\ninfrastructure and flow capacity assessments."
+  },
+  {
+    "id": "NDC_4",
+    "text": "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water resources\n 2",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Including river headwater sources under special protection,\n2. Expanding medium-scale hydrogeological mapping to assess water resources,\n3. Increasing monitoring of groundwater wells, improving databases and reporting\nmechanisms,\n4. Creating water accumulation facilities and ponds in humid and sub-humid zones,\n5. Supporting national satellite technology to monitor glaciers, lakes, and reservoirs, and\nautomating hydrological data transmission and acquisition,\n6. Regulating the thermal regime of water through riparian forestation and monitoring its\neffectiveness,\n7. Restoring and expanding surface–groundwater interaction monitoring networks and\nwater balance assessment systems,\n8. Implement projects in arid and semi-arid regions through partnerships between local\ngovernments, the private sector, the mining industry, and light and heavy industry to\nestablish Managed Aquifer Recharge (MAR) systems, covered reservoirs, and infiltration\nwells for the replenishment of groundwater resources,\n9. In cool and moderately humid zones, construct irrigation ponds for hay and crop\ncultivation, fish and aquatic species breeding ponds, and community ponds (ardyn khuv).\nDevelop natural overflow systems (khalia-toshin) and, through canals and pipelines,\ndeliver water to wildlife and livestock in semi-arid and arid areas to improve water access,\n10. Support pasture irrigation and household water use by delivering water to drying\nendorheic lakes, enabling the cultivation of berries, vegetables, and household-level fish\nfarming,\n11. Regulate the thermal regime of river and lake waters through shading from riparian\nforests, implement ecosystem protection measures, and support the breeding of native\nfish species such as taimen (Hucho taimen), lenok (Brachymystax), Arctic\ngrayling (Thymallus arcticus), and other indigenous aquatic species.\nConditional measures:\n12. Retaining the projected 6.4 km³ of meltwater in upstream basins of rivers such as Khovd\n(Altangadas, Bukhmurun), Bulgan, Kharkhiraa, Turgun, Zuil, Khushoot, Namir, Bayan, and\nGorkhon,\n13. Developing feasibility studies (FS) for Orkhon-Gobi and Shuren Hydropower Plants (HPPs)\nfor hydropower generation and flow transfer from the Selenge and Orkhon River Basins\nto Gobi region,\n14. Establish water accumulation zones in low-evaporation areas such as the upper and\nmiddle reaches of the Baidrag, Ongi, Taats, Ar-Aguit, and Tuin river basins, and address\nwater supply issues along these rivers. At the same time, restore and protect ecosystems\nof Ulaan, Orog, Taatsiin Tsagaan, and Khaya lakes and associated wetlands, while\ndeveloping infrastructure and capacity to regulate lake water regimes."
+  },
+  {
+    "id": "NDC_5",
+    "text": "Protect natural forests, improve forest health, and enhance forest regeneration capacity",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forests 1",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Expand forest protection zones and increase climate-resilient forest resources,\n2. Improve forest structure and condition through implementation of forest maintenance\nand cleaning measures,\n3. Enhance measures to control forest diseases and harmful insects,\n4. Strengthen the forest fire prevention system"
+  },
+  {
+    "id": "NDC_6",
+    "text": "Expand the scope of afforestation and forest restoration through advanced technologies and innovation.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forests 2",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Support and implement public and private sector initiatives to localize and introduce\nadvanced technologies and innovations in afforestation,\n2. Implement optimal irrigation technologies and management solutions for afforestation.\nConditional measures:\n3. Build forest seed banks maintaining genetic diversity and enhance tree species variety."
+  },
+  {
+    "id": "NDC_7",
+    "text": "Establish a legal framework for sustainable forest management aimed at improving forest ecosystem protection.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forests 3",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Strengthen forest sector policies and strategies in alignment with climate change\nadaptation, while enhancing legal frameworks and forest protection standards,\n2. Improve forest resource management through advanced planning and monitoring\nsystems,\n3. Strengthen the capacity of professional forestry organizations,\n4. Improve sustainable management for the protection and rational use of forest byproducts.\n29\nConditional measure:\n5. Establish and implement a comprehensive payment mechanism for forest ecosystem\nservices."
+  },
+  {
+    "id": "NDC_8",
+    "text": "Enhance the legal and regulatory framework related to disaster risk reduction.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Natural disasters 1",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Strengthen forest sector policies and strategies in alignment with climate change\nadaptation, while enhancing legal frameworks and forest protection standards,\n2. Improve forest resource management through advanced planning and monitoring\nsystems,\n3. Strengthen the capacity of professional forestry organizations,\n4. Improve sustainable management for the protection and rational use of forest byproducts.\n29\nConditional measure:\n5. Establish and implement a comprehensive payment mechanism for forest ecosystem\nservices."
+  },
+  {
+    "id": "NDC_9",
+    "text": "Strengthen early warning systems and reduce disaster risks at all levels.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Natural disasters 2",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Establish and maintain a centralized disaster risk information platform and database,\n2. Improve impact-based forecasting tools and supercomputer technology, and expand\npublic access to forecasts; enhance flood early warning observation networks by adding\n10 new hydrology monitoring stations,\n3. Introduce an integrated emergency alert system capable of disseminating early warnings\nto the public in real time,\n4. Implement a city level and nationwide rapid alert system to ensure timely delivery of\nearly warnings to the public,\n5. Establish a national weather radar network,\n6. Develop a strategy and master plan for flood protection infrastructure and monitor its\nimplementation in major cities.\nConditional measures:\n7. Implement a nationwide and city level rapid alert system to ensure timely delivery of\nearly warnings to the public,\n8. Establish a national weather radar network for timely detecting natural disasters in the\ncountry."
+  },
+  {
+    "id": "NDC_10",
+    "text": "Reduce pasture pressure by raising young livestock using advanced methods and technologies, developing biosecure compartment farming and supplying meat to target markets.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Animal husbandry and pastureland 1",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Support private sector initiatives to raise young livestock using advanced methods and\ntechnologies for meat production,\n2. Develop protected farms aimed at preparing meat for target markets and implement\ntraceability technology,\n3. Develop and implement response strategies for new and re-emerging livestock and\nanimal infectious diseases.\nConditional measure:\n4. Provide financial and land support to farmers engaged in intensive young livestock\nbreeding and biosecure compartment livestock farming."
+  },
+  {
+    "id": "NDC_11",
+    "text": "Improve livestock water and feed supply, quality and management to strengthen resilience against natural risks.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Animal husbandry and pastureland 2",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Increase pasture well supply based on exploration surveys and improve usage and\nprotection management,\n2. Develop small-scale water collection facilities such as reservoirs, ponds, and pools\nutilizing excess snow and rainwater,\n3. Improve the demand and supply of livestock feed production and support herders'\ninitiatives to grow fodder crops in winter-spring camps,\n4. Implement supplementary feeding systems adapted to livestock nutritional\nrequirements and weather conditions,\n5. Establish mandatory hay and feed reserves for herder households and implement them\nin conjunction with incentive mechanisms.\nConditional measure:\n6. Develop wholesale trade and warehouse operations through herders' cooperatives in\nprovinces and soums where hay and feed preparation is not possible."
+  },
+  {
+    "id": "NDC_12",
+    "text": "Introduce smart technologies in livestock production and pasture utilization.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Animal husbandry and pastureland 3",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Test and implement smart livestock movement monitoring systems and smart pasture\nmanagement practices,\n2. Create and implement a mobile app that provides herders with weather and market\ninformation,\n3. Conduct extension training services among herders and farmers on smart technologies\nfor livestock production and pasture utilization.\nConditional measures:\n4. Strengthen technical and technological capacity for remote sensing monitoring of\npasture conditions,\n5. Train specialists and implement international projects in smart technologies for livestock\nproduction and pasture utilization."
+  },
+  {
+    "id": "NDC_13",
+    "text": "Establish sustainable and rational collaborative management practices for pastures and expand the scope of pasture restoration.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Animal husbandry and pastureland 4",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Improve legal regulations regarding rights and responsibilities of stakeholders in pasture\nuse and protection,\n2. Secure and implement long-term contractual pasture use rights for primary herder\nhousehold associations,\n3. Incorporate collaborative pasture management into soum-level mid-term land\nmanagement plans and enforce sustainable pasture use standards and certification,\n4. Establish and implement financial mechanisms for sustainable pasture management.\nConditional measure:\n5. Introduce and expand the scope of pasture restoration technologies and innovations."
+  },
+  {
+    "id": "NDC_14",
+    "text": "Expand the adoption of minimal and zero tillage technologies to conserve soil fertility and minimize moisture loss across grain, fodder, and industrial crop production systems.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Arable farming\n 1",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Expand the application of selective herbicides to support zero tillage farming practices,\n2. Conduct extension training on machinery and technology among farmers,\n3. Offer financial incentives to farmers adopting minimal and zero tillage agricultural\npractices.\nConditional measures:\n4. Enhance the availability of smart-controlled machinery and equipment capable of\nperforming multiple operations simultaneously in a single pass,\n5. Implement fencing measures to protect crop stalks and straw in zero-tillage fields from\nlivestock."
+  },
+  {
+    "id": "NDC_15",
+    "text": "Integrate cutting-edge climate-smart technologies into crop production systems to ensure consistent, sustainable high yields.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Arable farming\n 2",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Establish forest strip infrastructure for irrigation and seedling production, while expanding\nforested areas through the cultivation of economically valuable tree species (pine nut, bird\ncherry, sea buckthorn, etc.),\n2. Promote wider adoption of plastic film mulching and precision drip irrigation systems\nacross irrigated potato and vegetable fields, greenhouses, and fruit and berry production\nareas,\n32\n3. Implement integrated snow and rainwater harvesting systems to enhance agricultural\nirrigation capacity.\nConditional measures:\n4. Establish and operate inter-soums service units for cloud seeding and artificial rain\nenhancement (in crop-growing regions)."
+  },
+  {
+    "id": "NDC_16",
+    "text": "Introduce and adapt drought, disease, and pest-resistant crop varieties.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Arable farming\n 3",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Increase the planting area of locally-adapted, resilient crop varieties suitable for regional\nconditions,\n2. Implement programs to breed, localize, and improve the supply of climate-resilient crop\nvarieties.\nConditional measures:\n3. Establish seed banks for climate-adapted varieties."
+  },
+  {
+    "id": "NDC_17",
+    "text": "Implement environmentally friendly smart technologies in crop production.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Arable farming\n 4",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Implement smart precision systems for optimal management of agricultural inputs (water,\nfertilizer, pesticides) and integrated pest and disease control,\n2. Train specialists in smart technology for crop production and pasture utilization, and\nimplement foreign projects,\n3. Conduct extension training among farmers on smart agricultural technologies and create\nopportunities to provide advice and information to them using mobile applications.\nConditional measures:\n4. Increase the supply and utilization of smart technology equipment and software for\nagricultural applications."
+  },
+  {
+    "id": "NDC_18",
+    "text": "Strengthen the health care system for early detection, warning, and response to climate change related threats to human health.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Public health",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Enhance institutional capacity for early detection, warning, response, and mitigation of\nclimate change related health threats,\n2. Expand data collection and research on climate change-related diseases, and develop\nsurveillance, information management, and early warning systems,\n3. Develop climate resilient and environmentally sustainable health care infrastructure, and\nincrease investment in these facilities,\n4. Raise public awareness and understanding of the impacts of climate change on human\nhealth, and promote health preserving habits and behaviors across population."
+  },
+  {
+    "id": "NDC_19",
+    "text": "Identify groups most vulnerable to climate change, enhance their resilience, strengthen welfare, protection, insurance, and prevention systems to address vulnerabilities, and diversify the economic activities of citizens to ensure sustainable livelihoods.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Social protection and livelihood",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Implement women and men sensitive policies to empower and prevent risks for\nhouseholds and individuals exposed or vulnerable to climate change,\n2. Strengthen child protection systems to prevent, prepare for, and respond to the impacts\nof climate change,\n3. Welfare, protection and insurance preventive system is established to reduce the\nvulnerability through identification and building capacity of vulnerable to climate change\nimpact groups and increasing their income."
+  },
+  {
+    "id": "NDC_20",
+    "text": "Increase climate education, green skills, and public participation, while ensuring the implementation of UNFCCC, Article 12 of the Paris Agreement, and the UNFCCC Action for Climate Empowerment (ACE) framework.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Education",
+    "country": "Mongolia",
+    "actions": "Measures:\n1. Integrate climate change content into all levels of curricula and strengthen universal\nclimate education,\n2. Develop a workforce equipped with climate change knowledge and green skills,\n3. Forster public knowledge, attitudes, and behaviors that enable adaptation to and coping\nwith climate change,\n4. Promote public participation and leadership in climate change action, with a focus on\nchildren, adolescents, and youth,\n5. Expand public awareness to information and establish knowledge sharing platforms."
+  },
+  {
+    "id": "NDC_21",
+    "text": "Establish a system to protect tangible and intangible cultural heritage and traditional knowledge, and ensure their adaptation to climate change.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Culture",
+    "country": "Mongolia",
+    "actions": "Measure:\n1. Safeguard tangible and intangible cultural heritage at risk from climate change, and\npreserve traditional knowledge."
+  },
+  {
+    "id": "NDC_22",
+    "text": "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological carrying capacity of rangelands and improving livestock economic turnover through increasing export and meat supply to the domestic.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock mitigation",
+    "country": "Mongolia"
+  },
+  {
+    "id": "NDC_23",
+    "text": "By improving the circulation of livestock and livestock raw materials and increasing exports, Livestock CO2 emissions shall be reduced by 4.15 million tons by 2030 and 7.48 million tons by 2035.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Mitigation 1",
+    "country": "Mongolia"
+  },
+  {
+    "id": "NDC_24",
+    "text": "By increasing meat supply to the domestic market will reduce livestock CO2 emissions by 1.12 million tons by 2030 and by 2.29 million tons by 2035",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Mitigation 2",
+    "country": "Mongolia"
+  },
+  {
+    "id": "NDC_25",
+    "text": "Reduce Soil Organic Carbon loss by restoring 10% of heavily degraded rangelands within the forest-steppe (3%) and steppe (7%) ecological zones, moving land from Recovery Class IV (heavily degraded) to Recovery Class III (moderately degraded).",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Mitigation 3",
+    "country": "Mongolia"
+  },
+  {
+    "id": "NDC_26",
+    "text": "Ensure the inclusion of all social groups—including men, women, persons with disabilities, vulnerable communities, youth, and the elderly—in climate actions, while adhering to the core principles of gender-responsive climate budgeting",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Inclusion",
+    "country": "Mongolia",
+    "actions": "Promote the full, equal and meaningful participation of diverse social groups - women, youth and differently abled people- at all levels of climate-related decision-making processes\nStrengthen the skills of relevant decision-makers/officials in gender-responsive climate budgeting and allocate dedicated funding to support gender-inclusive climate initiatives that promote gender equality and women’s empowerment\nEstablish mechanisms to collect sex-disaggregated data and develop national gender and climate change indicators and tools across all levels of climate action implementation to support evidence-based and inclusive policymaking"
+  },
+  {
+    "id": "NDC_27",
+    "text": "Ensure that all climate change mitigation and adaptation actions are gender-responsive by explicitly respecting, promoting, and considering gender equality and the empowerment of women, in line with the Paris Agreement, particularly Article 7.5 on gender-responsive adaptation.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Gender equality",
+    "country": "Mongolia",
+    "actions": "Integrate gender equality into all climate policy, programme, and project cycles (design, implementation, and evaluation stages) and conduct gender assessments using national gender indicators and tools to track progress on gender equality within climate policies and programmes\nProvide capacity development training for policymakers, planners, and implementers on gender-responsive climate action\nSupport women's leadership and capacity in climate-related sectors, especially in local and vulnerable communities"
+  }
 ]

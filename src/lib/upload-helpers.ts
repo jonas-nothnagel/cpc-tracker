@@ -60,6 +60,11 @@ export const DOCUMENT_TYPES: { value: PolicyDocumentType; label: string; hint?: 
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
+/** Check if an Excel file looks like a BTR/CTF file based on its name. */
+export function isBtrExcel(fileName: string): boolean {
+  return /btr|ctf|btf/i.test(fileName);
+}
+
 /** Detect whether an Excel BTR file is an FTC-Support or NDC file from its name. */
 export function detectBtrType(fileName: string): "support" | "ndc" {
   return /ftc|support/i.test(fileName) ? "support" : "ndc";
