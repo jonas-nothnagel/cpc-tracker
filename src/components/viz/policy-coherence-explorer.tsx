@@ -8,6 +8,7 @@ import {
   ALIGNMENT_COLORS,
   ALIGNMENT_LABELS,
 } from "@/lib/utils";
+import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
 import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type {
@@ -296,7 +297,7 @@ function DetailPanel({
         <div className="px-4 py-3 space-y-3 border-b border-gray-100">
           {[node.target, comparedPair.other].map((t) => (
             <div key={t.id}>
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
                 {DOC_LABELS[t.sourceDocument]} — {t.sourceLabel}
               </p>
               <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
@@ -309,7 +310,7 @@ function DetailPanel({
 
         {comparedPair.result.description && (
           <div className="px-4 py-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
               AI Rationale
             </p>
             <p className="text-xs text-[var(--undp-black)] leading-relaxed">
@@ -364,7 +365,7 @@ function DetailPanel({
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: NR7_BADGE_COLORS[nr7Item.progressStatus] ?? "#9ca3af" }}
             />
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
               NR7 Progress: {NR7_BADGE_LABELS[nr7Item.progressStatus] ?? "Unknown"}
             </span>
           </div>
@@ -393,11 +394,11 @@ function DetailPanel({
       {/* Connections section — visually separated */}
       <div className="flex-1 overflow-y-auto min-h-0 border-t-2 border-gray-100">
         <div className="flex items-center justify-between px-4 pt-3 pb-2 shrink-0">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
             Connections ({connections.length})
           </p>
           {hasNr7InConns && (
-            <div className="flex items-center gap-2 text-[10px] text-[var(--undp-gray)]">
+            <div className="flex items-center gap-2 text-[11px] text-[var(--undp-gray)]">
               <span>NR7:</span>
               <span className="flex items-center gap-0.5">
                 <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.on_track }} />
@@ -427,7 +428,7 @@ function DetailPanel({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold text-white leading-none"
+                      className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
                       style={{ backgroundColor: DOC_COLORS[conn.otherTarget.sourceDocument] }}
                     >
                       {DOC_LABELS[conn.otherTarget.sourceDocument]}
@@ -443,7 +444,7 @@ function DetailPanel({
                       />
                     )}
                     <span
-                      className="text-[10px] font-medium shrink-0"
+                      className="text-[11px] font-medium shrink-0"
                       style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
                     >
                       {ALIGNMENT_LABELS[conn.alignment]}
@@ -458,7 +459,7 @@ function DetailPanel({
                         e.stopPropagation();
                         setExpandedRationaleId(isExpanded ? null : conn.otherTarget.id);
                       }}
-                      className="flex items-center gap-1 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors mb-1"
+                      className="flex items-center gap-1 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors mb-1"
                     >
                       <svg
                         width="10" height="10" viewBox="0 0 10 10" fill="none"
@@ -529,15 +530,10 @@ export function PolicyCoherenceExplorer({
   } | null>(null);
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [showBtr, setShowBtr] = useState(false);
-  const [showNr7, setShowNr7] = useState(true);
 
   const hasBtr = useMemo(
     () => targets.some((t) => t.sourceDocument === "BTR"),
     [targets],
-  );
-  const hasNr7 = useMemo(
-    () => !!nr7Data?.progressItems?.length,
-    [nr7Data],
   );
 
   // Map NBSAP target IDs to NR7 progress items via nbsapTargetId
@@ -676,12 +672,17 @@ export function PolicyCoherenceExplorer({
         <div>
           <h2 className="text-lg font-semibold text-[var(--undp-black)]">
             Policy Coherence Explorer
+            <InfoBox>
+              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships — thicker, darker lines show stronger alignment. Dashed red lines indicate contradictions.
+              <br /><br />
+              The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.
+            </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {targets.length} targets · {totalAligned} aligned pairs
+            {totalAligned} alignment opportunit{totalAligned !== 1 ? "ies" : "y"} across {groups.length} document type{groups.length !== 1 ? "s" : ""}
             {totalContra > 0 && (
               <>
-                {" "}·{" "}
+                {", "}
                 <button
                   type="button"
                   onClick={() => setFilter(filter === "contradictions" ? "all" : "contradictions")}
@@ -691,7 +692,7 @@ export function PolicyCoherenceExplorer({
                 </button>
               </>
             )}
-            {" "}— hover or click a target to explore connections
+            . Hover or click a target to explore connections.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -727,20 +728,6 @@ export function PolicyCoherenceExplorer({
             >
               <span className={`w-2 h-2 rounded-sm ${showBtr ? "bg-[#7c3aed]" : "bg-gray-300"}`} />
               BTR Measures
-            </button>
-          )}
-          {hasNr7 && (
-            <button
-              type="button"
-              onClick={() => setShowNr7((v) => !v)}
-              className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                showNr7
-                  ? "border-[#16a34a]/40 bg-[#16a34a]/10 text-[#16a34a]"
-                  : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-[#16a34a]/30 hover:text-[#16a34a]"
-              }`}
-            >
-              <span className={`w-2 h-2 rounded-full ${showNr7 ? "bg-[#16a34a]" : "bg-gray-300"}`} />
-              NR7 Progress
             </button>
           )}
         </div>
@@ -877,21 +864,6 @@ export function PolicyCoherenceExplorer({
                         handleNodeClick(node.id);
                       }}
                     />
-                    {showNr7 && nr7ProgressMap.has(node.id) && !isDimmed && (
-                      <circle
-                        cx={node.x + r * 0.7}
-                        cy={node.y - r * 0.7}
-                        r={3.5}
-                        fill={NR7_BADGE_COLORS[nr7ProgressMap.get(node.id)!] ?? "#9ca3af"}
-                        stroke="white"
-                        strokeWidth={1}
-                        style={{ pointerEvents: "none" }}
-                      >
-                        <title>
-                          NR7: {NR7_BADGE_LABELS[nr7ProgressMap.get(node.id)!] ?? "Unknown"}
-                        </title>
-                      </circle>
-                    )}
                   </g>
                 );
               })}
@@ -1000,10 +972,10 @@ export function PolicyCoherenceExplorer({
             </svg>
 
             {/* Legend — structured grid */}
-            <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
+            <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
               {/* Document column */}
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Document</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Document</p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (
                     <span key={arc.id} className="flex items-center gap-1.5" title={arc.label}>
@@ -1017,36 +989,26 @@ export function PolicyCoherenceExplorer({
               </div>
               {/* Connection strength column */}
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Connection strength</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Connection strength</p>
                 <div className="flex flex-col gap-1">
-                  {(["high", "medium", "low"] as AlignmentLevel[]).map((level) => (
+                  {([
+                    ["high", "High — strong synergy"],
+                    ["medium", "Medium — complementary"],
+                    ["low", "Low — loosely related"],
+                  ] as [AlignmentLevel, string][]).map(([level, desc]) => (
                     <span key={level} className="flex items-center gap-1.5">
-                      <span className="w-5 h-0.5 rounded shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
-                      <span className="text-[var(--undp-gray)] capitalize">{level}</span>
+                      <span className="w-6 h-1 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
+                      <span className="text-[var(--undp-gray)]">{desc}</span>
                     </span>
                   ))}
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
-                      <span className="w-5 h-0.5 rounded shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction, borderBottom: "2px dashed" }} />
-                      <span className="text-[var(--undp-gray)]">Contradiction</span>
+                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.high_contradiction} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
+                      <span className="text-[var(--undp-gray)]">Contradiction — potential conflict</span>
                     </span>
                   )}
                 </div>
               </div>
-              {/* NR7 column */}
-              {showNr7 && nr7ProgressMap.size > 0 && (
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">NR7 Progress</p>
-                  <div className="flex flex-col gap-1">
-                    {(["on_track", "limited", "no_progress"] as const).map((status) => (
-                      <span key={status} className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: NR7_BADGE_COLORS[status] }} />
-                        <span className="text-[var(--undp-gray)]">{NR7_BADGE_LABELS[status]}</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -1070,7 +1032,7 @@ export function PolicyCoherenceExplorer({
               comparedPair={comparedPair}
               onBackFromPair={() => setComparedPair(null)}
               nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
-              nr7ProgressMap={showNr7 ? nr7ProgressMap : undefined}
+              nr7ProgressMap={nr7ProgressMap}
             />
           </div>
         )}

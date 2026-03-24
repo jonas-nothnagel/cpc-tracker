@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { Modal } from "@/components/ui/modal";
 import { TargetTextWithHighlights } from "./target-text";
 import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
@@ -31,12 +32,12 @@ interface ThemeBarChartProps {
   taxonomyType?: "theme" | "sector";
 }
 
-function getTargetsForThemeAndDoc(
+function getTargetsForTheme(
   themeId: string,
-  docType: PolicyDocumentType,
   targets: Target[],
   classifications: ThematicClassification[],
   taxonomyType: "theme" | "sector" = "sector",
+  docType?: PolicyDocumentType,
 ): Target[] {
   const targetIds = new Set(
     classifications
@@ -49,19 +50,23 @@ function getTargetsForThemeAndDoc(
       .map((c) => c.targetId)
   );
   return targets.filter(
-    (t) => targetIds.has(t.id) && t.sourceDocument === docType
+    (t) => targetIds.has(t.id) && (!docType || t.sourceDocument === docType)
   );
 }
 
 const MAX_Y_LABEL = 32;
 
-function TruncatedYTick({ x, y, payload }: { x?: number; y?: number; payload?: { value: string } }) {
+function TruncatedYTick({ x, y, payload, onLabelClick }: { x?: number; y?: number; payload?: { value: string }; onLabelClick?: (name: string) => void }) {
   const label = payload?.value ?? "";
   const display = label.length > MAX_Y_LABEL ? label.slice(0, MAX_Y_LABEL - 1) + "…" : label;
   return (
-    <g transform={`translate(${x},${y})`}>
+    <g
+      transform={`translate(${x},${y})`}
+      onClick={(e) => { e.stopPropagation(); onLabelClick?.(label); }}
+      style={{ cursor: onLabelClick ? "pointer" : "default" }}
+    >
       <title>{label}</title>
-      <text x={0} y={0} dy={4} textAnchor="end" fill="#64748b" fontSize={11}>
+      <text x={0} y={0} dy={4} textAnchor="end" fill="#64748b" fontSize={11} className="hover:fill-[#0468b1]">
         {display}
       </text>
     </g>
@@ -83,7 +88,7 @@ export function ThemeBarChart({
 }: ThemeBarChartProps) {
   const [modal, setModal] = useState<{
     themeName: string;
-    docType: PolicyDocumentType;
+    docType?: PolicyDocumentType;
     targets: Target[];
   } | null>(null);
 
@@ -101,12 +106,12 @@ export function ThemeBarChart({
     docType: PolicyDocumentType
   ) => {
     if (!data?.categoryId || !data?.name) return;
-    const segmentTargets = getTargetsForThemeAndDoc(
+    const segmentTargets = getTargetsForTheme(
       data.categoryId,
-      docType,
       targets,
       themeClassifications,
       taxonomyType,
+      docType,
     );
     if (segmentTargets.length > 0) {
       setModal({
@@ -114,6 +119,20 @@ export function ThemeBarChart({
         docType,
         targets: segmentTargets,
       });
+    }
+  };
+
+  const handleLabelClick = (categoryName: string) => {
+    const row = data.find((d) => d.categoryName === categoryName);
+    if (!row) return;
+    const allTargets = getTargetsForTheme(
+      row.categoryId,
+      targets,
+      themeClassifications,
+      taxonomyType,
+    );
+    if (allTargets.length > 0) {
+      setModal({ themeName: categoryName, targets: allTargets });
     }
   };
 
@@ -154,7 +173,7 @@ export function ThemeBarChart({
           <YAxis
             dataKey="name"
             type="category"
-            tick={<TruncatedYTick />}
+            tick={<TruncatedYTick onLabelClick={handleLabelClick} />}
             width={170}
           />
           <Tooltip
@@ -182,54 +201,38 @@ export function ThemeBarChart({
         </BarChart>
       </ResponsiveContainer>
 
-      {/* Modal: targets for theme + document type */}
-      {modal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-          onClick={() => setModal(null)}
-        >
-          <div
-            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h3 className="font-medium text-[var(--undp-black)]">
-                {modal.themeName} — {DOC_LABELS[modal.docType]} ({modal.targets.length})
-              </h3>
-              <button
-                type="button"
-                onClick={() => setModal(null)}
-                className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
-              >
-                x
-              </button>
-            </div>
-            <div className="overflow-auto flex-1 px-6 py-4">
-              <p className="text-xs text-[var(--undp-gray)] mb-3">
-                {DOC_LABELS[modal.docType]} targets classified under this category
-              </p>
-              <ul className="space-y-3">
-                {modal.targets.map((t) => (
-                  <li
-                    key={t.id}
-                    className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
+      <Modal
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal ? `${modal.themeName}${modal.docType ? ` — ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
+        maxWidth="max-w-2xl"
+      >
+        {modal && (
+          <div className="px-6 py-4">
+            <p className="text-xs text-[var(--undp-gray)] mb-3">
+              {modal.docType ? `${DOC_LABELS[modal.docType]} targets` : "All targets"} classified under this category
+            </p>
+            <ul className="space-y-3">
+              {modal.targets.map((t) => (
+                <li
+                  key={t.id}
+                  className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
+                >
+                  <span
+                    className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
+                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
                   >
-                    <span
-                      className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
-                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                    >
-                      {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
-                    </span>
-                    <span className="text-[var(--undp-black)] leading-relaxed">
-                      <TargetTextWithHighlights target={t} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
+                  </span>
+                  <span className="text-[var(--undp-black)] leading-relaxed">
+                    <TargetTextWithHighlights target={t} />
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      )}
+        )}
+      </Modal>
     </div>
   );
 }

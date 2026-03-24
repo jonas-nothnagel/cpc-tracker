@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS } from "@/lib/utils";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS, DOC_LABELS } from "@/lib/utils";
+import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, Target } from "@/types";
 
@@ -108,12 +109,12 @@ export function AlignmentHeatmap({
                 className="flex items-end justify-center"
               >
                 <span
-                  className="text-[10px] text-[var(--undp-gray)] origin-bottom-left whitespace-nowrap"
+                  className="text-[11px] text-[var(--undp-gray)] origin-bottom-left whitespace-nowrap"
                   style={{
                     transform: "rotate(-60deg)",
                     transformOrigin: "bottom left",
                   }}
-                  title={`${t.sourceLabel}: ${t.text}`}
+                  title={`${DOC_LABELS[t.sourceDocument]} — ${t.sourceLabel}: ${t.text}`}
                 >
                   {t.sourceLabel}
                 </span>
@@ -121,7 +122,7 @@ export function AlignmentHeatmap({
             ))}
           </div>
           <div
-            className="text-[10px] text-[var(--undp-gray)] text-center mb-1 font-medium"
+            className="text-[11px] text-[var(--undp-gray)] text-center mb-1 font-medium"
             style={{ marginLeft: "140px" }}
           >
             {colLabel}
@@ -133,7 +134,7 @@ export function AlignmentHeatmap({
               {/* Row label */}
               <div
                 className="w-[140px] pr-2 text-right text-[11px] text-[var(--undp-gray)] shrink-0 truncate"
-                title={`${rowT.sourceLabel}: ${rowT.text}`}
+                title={`${DOC_LABELS[rowT.sourceDocument]} — ${rowT.sourceLabel}: ${rowT.text}`}
               >
                 {rowT.sourceLabel}
               </div>
@@ -187,44 +188,20 @@ export function AlignmentHeatmap({
           ))}
 
           {/* Row axis label */}
-          <div className="text-[10px] text-[var(--undp-gray)] text-right pr-2 font-medium w-[140px] mt-1">
+          <div className="text-[11px] text-[var(--undp-gray)] text-right pr-2 font-medium w-[140px] mt-1">
             {rowLabel}
           </div>
         </div>
 
         {/* Click-to-detail modal */}
-        {selectedCell && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            onClick={() => setSelectedCell(null)}
-          >
-            <div
-              className="bg-white rounded-lg shadow-xl max-w-xl w-full flex flex-col"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-3 h-3 rounded-sm shrink-0"
-                    style={{ backgroundColor: ALIGNMENT_COLORS[selectedCell.alignment], border: selectedCell.alignment === "none" ? "1px solid #e2e8f0" : "none" }}
-                  />
-                  <span className="text-sm font-semibold text-[var(--undp-black)]">
-                    {ALIGNMENT_LABELS[selectedCell.alignment]} alignment
-                  </span>
-                  <span className="text-xs text-[var(--undp-gray)] ml-1">
-                    {selectedCell.rowTarget.sourceLabel} ↔ {selectedCell.colTarget.sourceLabel}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCell(null)}
-                  className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
-                >
-                  ×
-                </button>
-              </div>
-
+        <Modal
+          open={!!selectedCell}
+          onClose={() => setSelectedCell(null)}
+          title={selectedCell ? `${ALIGNMENT_LABELS[selectedCell.alignment]} alignment — ${selectedCell.rowTarget.sourceLabel} ↔ ${selectedCell.colTarget.sourceLabel}` : ""}
+          maxWidth="max-w-xl"
+        >
+          {selectedCell && (
+            <>
               {/* Target texts */}
               <div className="px-5 py-4 grid grid-cols-2 gap-4 border-b border-gray-100">
                 {[
@@ -232,7 +209,7 @@ export function AlignmentHeatmap({
                   { target: selectedCell.colTarget, axis: colLabel },
                 ].map(({ target, axis }) => (
                   <div key={target.id}>
-                    <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
                       {axis.replace(" ↓", "").replace(" →", "")} — {target.sourceLabel}
                     </p>
                     <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
@@ -245,7 +222,7 @@ export function AlignmentHeatmap({
               {/* Rationale */}
               {selectedCell.description && (
                 <div className="px-5 py-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
                     AI rationale
                   </p>
                   <p className="text-xs text-[var(--undp-black)] leading-relaxed">
@@ -258,9 +235,9 @@ export function AlignmentHeatmap({
                   <p className="text-xs text-[var(--undp-gray)] italic">No alignment rationale recorded for this pair.</p>
                 </div>
               )}
-            </div>
-          </div>
-        )}
+            </>
+          )}
+        </Modal>
 
         {/* Hover tooltip */}
         {hoveredCell && (

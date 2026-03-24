@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
+import { Header } from "@/components/ui/header";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -301,41 +301,7 @@ export default function AnalysisPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
-        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-4">
-              <Image
-                src="/undp-logo.png"
-                alt="UNDP"
-                width={48}
-                height={72}
-                className="h-12 w-auto"
-              />
-              <div>
-                <p className="text-sm font-medium text-[var(--undp-black)]">
-                  Policy Coherence Tracker
-                </p>
-                <p className="text-xs text-[var(--undp-gray)]">Analysis</p>
-              </div>
-            </Link>
-          </div>
-          <nav className="flex items-center gap-6 text-sm">
-            <Link
-              href="/upload"
-              className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors"
-            >
-              Upload Data
-            </Link>
-            <Link
-              href="/"
-              className="text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors"
-            >
-              Home
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Header subtitle="Analysis" />
 
       <main className="flex-1 max-w-3xl mx-auto px-6 py-12 w-full">
         {/* ─── Error state ──────────────────────────────────── */}

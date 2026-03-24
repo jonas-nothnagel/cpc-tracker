@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
 html {
-  font-size: 12.8px !important; /* 80% of 16px for less zoomed-in feel */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   width: 100%;
   overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 :root {
@@ -32,4 +40,12 @@ body {
   color: var(--undp-black);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Prevent Recharts focus outline on chart click */
+.recharts-surface:focus {
+  outline: none;
+}
+.recharts-wrapper:focus {
+  outline: none;
 }
