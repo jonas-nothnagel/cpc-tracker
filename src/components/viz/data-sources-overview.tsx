@@ -9,8 +9,8 @@ import type { Target, PolicyDocumentType, BtrData, Nr7Data } from "@/types";
 
 // ─── Target list modal ────────────────────────────────────────────────────────
 
-function TargetListModal({ label, targets, color, onClose }: {
-  label: string; targets: Target[]; color: string; onClose: () => void;
+function TargetListModal({ label, targets, onClose }: {
+  label: string; targets: Target[]; onClose: () => void;
 }) {
   return (
     <Modal open={true} onClose={onClose} title={label} maxWidth="max-w-xl">
@@ -163,7 +163,6 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
         <TargetListModal
           label={modal.label}
           targets={modal.targets}
-          color={modal.color}
           onClose={() => setModal(null)}
         />
       )}

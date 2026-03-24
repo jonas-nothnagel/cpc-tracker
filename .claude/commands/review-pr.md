@@ -27,3 +27,4 @@ Important:
 - Reference file paths and line numbers
 - Distinguish blocking issues from suggestions
 - If the PR looks good, say so clearly and approve with `gh pr review <pr> --approve --body "<summary>"`
+- Never add "Generated with Claude Code" or similar AI attribution to review comments

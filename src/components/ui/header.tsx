@@ -38,10 +38,11 @@ export function Header({ subtitle }: HeaderProps) {
           </div>
         </Link>
         <nav className="flex items-center gap-6 text-sm">
-          {NAV_ITEMS.filter((item) => item.href !== pathname).map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
+              aria-current={pathname === item.href ? "page" : undefined}
               className={`transition-colors ${
                 pathname === item.href
                   ? "text-[var(--undp-blue)] font-medium"

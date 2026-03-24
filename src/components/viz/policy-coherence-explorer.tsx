@@ -530,15 +530,10 @@ export function PolicyCoherenceExplorer({
   } | null>(null);
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [showBtr, setShowBtr] = useState(false);
-  const [showNr7, setShowNr7] = useState(true);
 
   const hasBtr = useMemo(
     () => targets.some((t) => t.sourceDocument === "BTR"),
     [targets],
-  );
-  const hasNr7 = useMemo(
-    () => !!nr7Data?.progressItems?.length,
-    [nr7Data],
   );
 
   // Map NBSAP target IDs to NR7 progress items via nbsapTargetId
@@ -1037,7 +1032,7 @@ export function PolicyCoherenceExplorer({
               comparedPair={comparedPair}
               onBackFromPair={() => setComparedPair(null)}
               nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
-              nr7ProgressMap={showNr7 ? nr7ProgressMap : undefined}
+              nr7ProgressMap={nr7ProgressMap}
             />
           </div>
         )}

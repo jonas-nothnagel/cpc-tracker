@@ -51,6 +51,7 @@ function Nr7TargetCard({
       <button
         type="button"
         onClick={() => hasDetail && onToggle()}
+        aria-expanded={hasDetail ? isExpanded : undefined}
         className={`w-full text-left px-4 py-3 ${
           hasDetail ? "cursor-pointer" : "cursor-default"
         }`}
@@ -254,6 +255,7 @@ export function Nr7Progress({ nr7Data }: { nr7Data: Nr7Data }) {
                 <button
                   type="button"
                   onClick={() => toggleGroup(status)}
+                  aria-expanded={isGroupExpanded}
                   className="w-full flex items-center gap-3 py-2 group cursor-pointer"
                 >
                   <span

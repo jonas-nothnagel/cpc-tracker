@@ -15,3 +15,4 @@ Important:
 - Never force push or amend commits
 - Never commit .env files or credentials
 - If the branch already exists, ask before overwriting
+- Never add "Generated with Claude Code" or similar AI attribution to PR body, comments, or commit messages
