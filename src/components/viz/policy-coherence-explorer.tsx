@@ -9,7 +9,7 @@ import {
   ALIGNMENT_LABELS,
 } from "@/lib/utils";
 import { isContradiction } from "@/types";
-import { TargetTextWithHighlights } from "./target-text";
+import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type {
   Target,
   PolicyDocumentType,
@@ -302,6 +302,7 @@ function DetailPanel({
               <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
                 <TargetTextWithHighlights target={t} />
               </p>
+              <ActivitiesActions target={t} />
             </div>
           ))}
         </div>
@@ -346,6 +347,7 @@ function DetailPanel({
         <p className="text-xs text-[var(--undp-black)] leading-relaxed">
           <TargetTextWithHighlights target={node.target} />
         </p>
+        <ActivitiesActions target={node.target} />
       </div>
 
       <div className="px-4 py-2 shrink-0 flex flex-wrap gap-3 text-[11px]">

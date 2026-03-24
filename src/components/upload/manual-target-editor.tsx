@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { TargetRow } from "@/lib/csv-parser";
 
 interface ManualTargetEditorProps {
@@ -17,6 +18,8 @@ export function ManualTargetEditor({
   onRemove,
   onSave,
 }: ManualTargetEditorProps) {
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+
   return (
     <div className="mb-8 rounded-lg border-2 border-[var(--undp-blue)]/30 bg-blue-50/20 p-4">
       <div className="flex items-center justify-between mb-3">
@@ -31,33 +34,71 @@ export function ManualTargetEditor({
           Done
         </button>
       </div>
-      <div className="space-y-2 max-h-[16rem] overflow-y-auto">
+      <div className="space-y-2 max-h-[24rem] overflow-y-auto">
         {targets.map((t, idx) => (
           <div
             key={`${t.sourceDocument}-${t.sourceLabel}-${idx}`}
-            className="flex items-center gap-2 py-2 px-3 rounded border border-gray-200 bg-white"
+            className="py-2 px-3 rounded border border-gray-200 bg-white"
           >
-            <input
-              type="text"
-              value={t.sourceLabel}
-              onChange={(e) => onUpdate(idx, { sourceLabel: e.target.value })}
-              placeholder="Label"
-              className="w-28 shrink-0 px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:border-[var(--undp-blue)]"
-            />
-            <textarea
-              value={t.text}
-              onChange={(e) => onUpdate(idx, { text: e.target.value })}
-              placeholder="Target text..."
-              rows={2}
-              className="flex-1 min-w-0 px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
-            />
-            <button
-              type="button"
-              onClick={() => onRemove(idx)}
-              className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-red)] hover:bg-red-50 rounded"
-            >
-              &times;
-            </button>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={t.sourceLabel}
+                onChange={(e) => onUpdate(idx, { sourceLabel: e.target.value })}
+                placeholder="Label"
+                className="w-28 shrink-0 px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:border-[var(--undp-blue)]"
+              />
+              <textarea
+                value={t.text}
+                onChange={(e) => onUpdate(idx, { text: e.target.value })}
+                placeholder="Target text..."
+                rows={2}
+                className="flex-1 min-w-0 px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+              />
+              <button
+                type="button"
+                onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
+                className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-blue)] rounded transition-colors text-xs"
+                title="Add activities & actions"
+              >
+                {expandedIdx === idx ? "−" : "+"}
+              </button>
+              <button
+                type="button"
+                onClick={() => onRemove(idx)}
+                className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-red)] hover:bg-red-50 rounded"
+              >
+                &times;
+              </button>
+            </div>
+            {expandedIdx === idx && (
+              <div className="mt-2 pl-[7.5rem] space-y-1.5">
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                    Activities
+                  </label>
+                  <textarea
+                    value={t.activities ?? ""}
+                    onChange={(e) => onUpdate(idx, { activities: e.target.value || undefined })}
+                    placeholder="Implementation activities (optional)..."
+                    rows={2}
+                    className="w-full px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                    Actions / Measures
+                  </label>
+                  <textarea
+                    value={t.actions ?? ""}
+                    onChange={(e) => onUpdate(idx, { actions: e.target.value || undefined })}
+                    placeholder="Actions or measures (optional)..."
+                    rows={2}
+                    className="w-full px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { ActivitiesActions } from "./target-text";
 import type { Target, PolicyDocumentType } from "@/types";
 
 interface TargetTableProps {
@@ -89,6 +90,7 @@ export function TargetTable({ targets }: TargetTableProps) {
                       Time-bound
                     </span>
                   )}
+                  <ActivitiesActions target={t} />
                 </td>
               </tr>
             ))}

@@ -12,6 +12,7 @@ import {
   MAX_TARGETS,
   COST_PER_CALL,
   CROSS_CUTTING_THEMES_COUNT,
+  isBtrExcel,
   detectBtrType,
   mergeBtrData,
 } from "@/lib/upload-helpers";
@@ -108,7 +109,8 @@ export default function UploadPage() {
     const isExcel = /\.xlsx?$/i.test(file.name);
     const docId = `doc_${Date.now()}`;
 
-    if (isExcel) {
+    if (isExcel && isBtrExcel(file.name)) {
+      // BTR/CTF Excel → parse as BTR data
       setUploadedDocs((prev) => [...prev, {
         id: docId, fileName: file.name, fileType: "btr", status: "parsing",
       }]);
@@ -139,6 +141,46 @@ export default function UploadPage() {
               },
             } : d
           ));
+        })
+        .catch((err) => {
+          setUploadedDocs((prev) => prev.map((d) =>
+            d.id === docId ? { ...d, status: "error" as const, error: err.message } : d
+          ));
+        });
+    } else if (isExcel) {
+      // General target-list Excel → parse as targets
+      setUploadedDocs((prev) => [...prev, {
+        id: docId, fileName: file.name, fileType: "targets", status: "parsing",
+      }]);
+
+      const form = new FormData();
+      form.append("file", file);
+      fetch("/api/parse-excel-targets", { method: "POST", body: form })
+        .then(async (res) => {
+          if (!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error || "Failed to parse Excel file");
+          }
+          return res.json();
+        })
+        .then((data: { targets: { text: string; sourceDocument: string; sourceLabel: string; activities?: string; actions?: string }[] }) => {
+          if (data.targets && data.targets.length > 0) {
+            const rowsWithSource = data.targets.map((r) => ({
+              ...r,
+              sourceDocument: r.sourceDocument as import("@/types").PolicyDocumentType,
+              source: "file" as const,
+            }));
+            setTargets((prev) => [...prev, ...rowsWithSource].slice(0, MAX_TARGETS));
+            const counts: Record<string, number> = {};
+            for (const r of data.targets) counts[r.sourceDocument] = (counts[r.sourceDocument] || 0) + 1;
+            setUploadedDocs((prev) => prev.map((d) =>
+              d.id === docId ? { ...d, status: "ready" as const, targetCount: data.targets.length, docTypeCounts: counts } : d
+            ));
+          } else {
+            setUploadedDocs((prev) => prev.map((d) =>
+              d.id === docId ? { ...d, status: "error" as const, error: "No targets found in Excel file" } : d
+            ));
+          }
         })
         .catch((err) => {
           setUploadedDocs((prev) => prev.map((d) =>

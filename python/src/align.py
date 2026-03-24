@@ -38,8 +38,10 @@ of Climate and Nature/Biodiversity.
 
     Task:
     1. Analyze the target: "{target_text}".
+{activities_block}{actions_block}\
     2. Identify **Goal/Purpose** – objective or intended impact of the target.
-    3. Identify **Action/Intervention** – specific measures or actions that need to be taken to achieve the target.
+    3. Identify **Action/Intervention** – specific measures or actions that need to be taken to achieve the target. \
+{action_instruction}
     4. Identify **Ecosystem/Area** – the sector, environment, or domain to which the target applies.
     5. Identify **Target Audience** – the primary group(s) or stakeholders responsible for implementation or who will benefit \
 from the target.
@@ -81,6 +83,8 @@ production inherently creates tension with a target to reduce grazing pressure o
        - {target_1_type} target: {target_1_decomp}
        - {target_2_type} target: {target_2_decomp}
     2. Compare the goal, action, ecosystem, target audience, and expected impact of both targets to assess their relationship.
+    2a. Pay particular attention to overlaps or conflicts in specific implementation activities and actions/measures, \
+not only high-level goals.
     3. Consider hierarchical relationships between ecosystems. Recognize that specific ecosystems (e.g., mangroves, coral reefs) \
 may fall under broader categories such as coastal-marine ecosystems.
     4. Determine whether aligning these targets would optimize resources, avoid duplication, or create synergies that enhance \
@@ -404,7 +408,29 @@ async def decompose_targets(
     calls = []
     target_ids = []
     for t in targets:
-        user = ANALYST_USER_TEMPLATE.format(target_text=t["text"])
+        activities = (t.get("activities") or "").strip()
+        actions = (t.get("actions") or "").strip()
+
+        activities_block = (
+            f'    The target has associated implementation activities: "{activities}"\n'
+            if activities else ""
+        )
+        actions_block = (
+            f'    The target has associated actions/measures: "{actions}"\n'
+            if actions else ""
+        )
+        action_instruction = (
+            "Use the provided activities and actions/measures to inform this field, "
+            "integrating them with any actions described in the target text itself."
+            if (activities or actions) else ""
+        )
+
+        user = ANALYST_USER_TEMPLATE.format(
+            target_text=t["text"],
+            activities_block=activities_block,
+            actions_block=actions_block,
+            action_instruction=action_instruction,
+        )
         calls.append({"system": ANALYST_SYSTEM, "user": user})
         target_ids.append(t["id"])
 

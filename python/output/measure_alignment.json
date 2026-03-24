@@ -1,164 +1,86 @@
 [
   {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_1",
-    "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target. While the reported measure focuses on reducing reliance on coal and promoting renewable energy, which can lead to lower greenhouse gas emissions, it does not directly address the specific goal of strengthening national climate adaptation or enhancing carbon sinks as outlined in the target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_2",
-    "alignment": "medium",
-    "description": "The reported measure focuses on modernizing energy infrastructure, which can lead to lower greenhouse gas emissions and improved energy efficiency, aligning with the broader goal of reducing emissions. However, it does not directly address the specific objectives of strengthening national climate adaptation or enhancing carbon sinks as outlined in the NBT policy target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_3",
-    "alignment": "medium",
-    "description": "The measure focuses on reducing greenhouse gas emissions and enhancing energy efficiency, which aligns with the target's goal of strengthening climate adaptation through emissions reduction. However, it primarily addresses the energy sector and does not fully encompass the broader aspects of climate adaptation and carbon sink enhancement outlined in the target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_4",
-    "alignment": "medium",
-    "description": "\" \u2013 The reported measure focuses on reducing greenhouse gas emissions, which aligns with the NBT policy target's goal of enhancing carbon sink and resilience to climate change. However, the measure primarily addresses air pollution and fuel quality in the transportation and industrial sectors, which does not fully encompass the broader climate adaptation aspects of the target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_5",
-    "alignment": "medium",
-    "description": "The reported measure focuses on reducing greenhouse gas emissions through improvements in transportation logistics, which aligns with the broader goal of strengthening national climate adaptation. However, it does not directly address the specific actions related to enhancing carbon sinks or improving resilience to climate change as outlined in the policy target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_6",
-    "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target by focusing on reducing greenhouse gas emissions through energy efficiency improvements in urban residential buildings. However, it does not fully address the broader goals of strengthening national climate adaptation or enhancing carbon sinks, which are central to the target's objectives."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_7",
-    "alignment": "medium",
-    "description": "The reported measure focuses on reducing air pollution and lowering GHG emissions in Ulaanbaatar, which aligns with the broader goal of strengthening national climate adaptation. However, it primarily targets urban air quality and public health rather than directly enhancing carbon sinks or resilience to climate change, which are core objectives of the NBT policy target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_energy_8",
-    "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target. While both the target and the measure focus on reducing greenhouse gas emissions and enhancing resilience, the measure primarily addresses energy efficiency in specific sectors rather than a broader climate adaptation strategy."
+    "targetAId": "NBSAP_8",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "high",
+    "description": "\" \u2013 The measure directly implements and strongly supports the target by addressing sustainable land management practices, regulating livestock numbers, and promoting sustainable grazing, which are all essential for reducing ecosystem degradation. Both the target and the measure aim to improve ecosystem health, enhance biodiversity, and reduce greenhouse gas emissions, indicating a concrete step toward achieving the target's goals."
   },
   {
     "targetAId": "NAP_10",
     "targetBId": "BTR_agriculture_1",
     "alignment": "high",
-    "description": "\" \u2013 The measure directly implements and strongly supports the target by promoting sustainable livestock management practices that align with water and pasture resources. Both the NAP policy target and the BTR reported measure aim to improve sustainability and resilience in livestock management, addressing similar ecosystems and target audiences."
+    "description": "The reported measure directly implements and strongly supports the NAP policy target by promoting sustainable livestock management practices, regulating livestock numbers, and improving water supply, which are all essential for fostering resilience to climate change. Both the measure and target aim to enhance the sustainable management of pastures and water resources for herders and their communities, aligning their goals and expected outcomes closely."
   },
   {
     "targetAId": "NAP_13",
     "targetBId": "BTR_agriculture_1",
     "alignment": "medium",
-    "description": "smart agricultural practices aimed at enhancing soil fertility as outlined in the target."
+    "description": "The measure partially implements or supports the target by addressing sustainable land management practices, which can indirectly benefit soil fertility. However, it does not specifically focus on the introduction of drought-resistant crops or seed supply improvements, which are core objectives of the target."
   },
   {
-    "targetAId": "NDC_AnimalHusbandry_3",
+    "targetAId": "NDC_12",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target. While both the NDC policy target and the BTR reported measure focus on improving livestock management and sustainability, the BTR's emphasis on regulating livestock numbers may conflict with the target's goal of enhancing livestock production efficiency through smart technologies."
+  },
+  {
+    "targetAId": "NDC_17",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on livestock management and sustainable grazing practices, which are related to agricultural sustainability but do not directly address the implementation of smart technologies in crop production. While both aim to promote sustainable agricultural practices, the specific actions and target audiences differ significantly, limiting the measure's relevance to the NDC policy target."
+  },
+  {
+    "targetAId": "NDC_22",
     "targetBId": "BTR_agriculture_1",
     "alignment": "high",
-    "description": "\" \u2013 The measure directly implements and strongly supports the target by introducing technological services aimed at improving livestock quality and efficiency, which aligns with the target's goal of enhancing efficiency and sustainability in livestock production. Additionally, both the measure and target focus on reducing environmental impacts and improving productivity in livestock systems, indicating a concrete step toward achieving the target's objectives."
+    "description": "The reported measure directly implements the NDC policy target by regulating livestock numbers and promoting sustainable practices, which aligns with the goal of reducing CO2 emissions in the agricultural sector. Both the target and the measure focus on improving livestock management and economic performance while aiming for a reduction in greenhouse gas emissions."
   },
   {
-    "targetAId": "NDC_LivestockMitigation",
-    "targetBId": "BTR_agriculture_1",
-    "alignment": "high",
-    "description": "The reported measure directly implements the NDC policy target by regulating livestock numbers and promoting sustainable practices, which aligns with the goal of reducing CO2 emissions in the livestock sector. Both the target and the measure aim to improve livestock management and economic performance while addressing environmental concerns, indicating a strong coherence in their objectives."
-  },
-  {
-    "targetAId": "NDC_Mitigation_1",
+    "targetAId": "NDC_23",
     "targetBId": "BTR_agriculture_1",
     "alignment": "medium",
-    "description": "The reported measure includes actions that could contribute to reducing greenhouse gas emissions in the livestock sector, such as regulating livestock numbers and promoting sustainable practices. However, it does not specifically target the reduction of CO2 emissions by the specified tonnage outlined in the NDC policy target, which focuses on improving circulation and increasing exports."
+    "description": "\" \u2013 The measure partially implements or supports the target. While both the NDC target and the BTR measure focus on the livestock sector and aim to reduce greenhouse gas emissions, the BTR's emphasis on regulating livestock numbers and promoting sustainable grazing practices does not directly address the specific goal of reducing CO2 emissions by the specified tonnage. However, it does contribute to broader sustainability and emission reduction efforts."
   },
   {
-    "targetAId": "NDC_Mitigation_2",
-    "targetBId": "BTR_agriculture_1",
+    "targetAId": "NBSAP_8",
+    "targetBId": "BTR_agriculture_2",
     "alignment": "medium",
-    "description": "The reported measure includes actions that could support the reduction of livestock CO2 emissions, such as improving livestock management and promoting sustainable practices. However, the focus on regulating and reducing livestock numbers may conflict with the target's goal of increasing meat supply to the domestic market, which could hinder achieving the specified emissions reduction outcomes."
-  },
-  {
-    "targetAId": "NDC_ArableFarming_4",
-    "targetBId": "BTR_agriculture_1",
-    "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target. While both the NDC policy target and the BTR reported measure focus on enhancing sustainability in agriculture, the BTR's emphasis on livestock management and reduction does not directly address the specific goal of implementing smart technologies for crop production. However, both aim to improve environmental outcomes in the agricultural sector, indicating some thematic overlap."
-  },
-  {
-    "targetAId": "NBT_7",
-    "targetBId": "BTR_agriculture_1",
-    "alignment": "medium",
-    "description": "\" \u2013 The reported measure addresses sustainable land management and environmental degradation, which aligns with the NBT policy target's focus on sustainable forestry and agricultural production. However, the measure primarily emphasizes livestock management and grazing practices, which does not fully encompass the broader scope of environmentally friendly practices in both forestry and agriculture as outlined in the target."
+    "description": "\" \u2013 The reported measure focuses on reducing greenhouse gas emissions and promoting sustainable practices within the pastoral farming sector, which aligns with the target's goal of reducing ecosystem degradation and enhancing sustainability. However, it does not fully address the broader objectives of sustainable forestry and agriculture development or the specific actions outlined in the target."
   },
   {
     "targetAId": "NAP_10",
     "targetBId": "BTR_agriculture_2",
-    "alignment": "high",
-    "description": "The reported measure of implementing proper manure storage and promoting biogas systems directly supports the NAP policy target of fostering sustainable livestock management by addressing resource alignment and enhancing climate resilience. Both the measure and target aim to improve sustainability in the livestock management sector, with expected outcomes that align closely in reducing emissions and promoting sustainable practices."
+    "alignment": "medium",
+    "description": "\" \u2013 The reported measure focuses on sustainable practices in the pastoral farming sector, which aligns with the NAP target's goal of fostering sustainable livestock management. However, while it addresses some aspects of sustainability, it does not fully encompass the specific actions related to pasture management and water supply outlined in the target."
   },
   {
     "targetAId": "NAP_13",
     "targetBId": "BTR_agriculture_2",
     "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target. While both the NAP policy target and the BTR reported measure focus on agricultural practices and sustainability, the BTR measure specifically addresses the pastoral farming sector and emphasizes GHG reduction rather than directly improving soil fertility, which is the core objective of the NAP target."
+    "description": "The reported measure focuses on reducing greenhouse gas emissions and enhancing land sustainability, which can indirectly support the NAP target of protecting soil fertility through improved agricultural practices. However, the specific actions of manure management and energy production do not directly address the introduction of drought-resistant crops or seed supply improvements outlined in the NAP target."
   },
   {
-    "targetAId": "NDC_AnimalHusbandry_3",
+    "targetAId": "NDC_12",
     "targetBId": "BTR_agriculture_2",
     "alignment": "medium",
-    "description": "The reported measure focuses on reducing greenhouse gas emissions and enhancing land sustainability, which aligns with the NDC target of improving efficiency and sustainability in livestock production. However, while both aim for sustainability, the specific actions of manure management and energy production do not fully address the introduction of smart technologies as a means to enhance productivity and reduce environmental impact in livestock systems."
+    "description": "\" \u2013 The measure partially implements or supports the target. While the reported measure focuses on manure management and reducing GHG emissions, which can contribute to sustainability in livestock production, it does not directly address the specific goals of enhancing livestock production efficiency and pasture utilization through smart technologies."
   },
   {
-    "targetAId": "NDC_LivestockMitigation",
+    "targetAId": "NDC_17",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on the pastoral farming sector and addresses manure management, which is only tangentially related to the NDC target of implementing smart technologies in crop production. While both aim to promote sustainable agricultural practices, the specific actions and intended outcomes do not directly advance the core objectives of the NDC target."
+  },
+  {
+    "targetAId": "NDC_22",
     "targetBId": "BTR_agriculture_2",
     "alignment": "medium",
     "description": "\" \u2013 The measure partially implements or supports the target. While both the NDC target and the BTR measure focus on the agricultural sector and aim to reduce emissions, the BTR's emphasis on manure management and energy production does not fully address the specific goal of reducing CO2 emissions from livestock herd management and economic turnover."
   },
   {
-    "targetAId": "NDC_Mitigation_1",
+    "targetAId": "NDC_23",
     "targetBId": "BTR_agriculture_2",
     "alignment": "medium",
-    "description": "The reported measure focuses on reducing methane emissions and promoting sustainable practices in the pastoral farming sector, which is related to the livestock sector. However, it does not directly address the specific goal of reducing CO2 emissions from livestock, thus only partially supporting the NDC policy target."
-  },
-  {
-    "targetAId": "NDC_Mitigation_2",
-    "targetBId": "BTR_agriculture_2",
-    "alignment": "medium",
-    "description": "The reported measure focuses on reducing methane emissions and promoting sustainable practices in the pastoral farming sector, which can indirectly support the NDC target of reducing CO2 emissions by increasing meat supply. However, it does not directly address the specific goal of increasing meat supply to the domestic market, which is central to the NDC target's objectives."
-  },
-  {
-    "targetAId": "NDC_ArableFarming_4",
-    "targetBId": "BTR_agriculture_2",
-    "alignment": "medium",
-    "description": "The reported measure focuses on reducing greenhouse gas emissions and enhancing land sustainability within the pastoral farming sector, which shares thematic overlap with the NDC target of enhancing sustainability and efficiency in crop production. However, the specific actions of manure management and biogas production do not fully address the core objective of implementing environmentally friendly smart technologies in crop production."
-  },
-  {
-    "targetAId": "NBT_7",
-    "targetBId": "BTR_agriculture_2",
-    "alignment": "medium",
-    "description": "The reported measure focuses on reducing greenhouse gas emissions and enhancing land sustainability within the pastoral farming sector, which shares thematic overlap with the NBT policy target of developing sustainable forestry and agricultural production. However, the measure's specific actions and target audience do not fully address the broader goals of increasing productivity and sustainability in both forestry and agriculture as outlined in the NBT target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_ippu_1",
-    "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target. While the focus on reducing greenhouse gas emissions in the cement industry aligns with the broader goal of strengthening national climate adaptation, it does not fully address the target's emphasis on enhancing carbon sinks and improving resilience to climate change."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_ippu_2",
-    "alignment": "medium",
-    "description": "The measure promotes the use of fly ash in cement production, which can reduce greenhouse gas emissions, aligning with the target's goal of reducing emissions. However, it does not directly address the broader objectives of strengthening national climate adaptation or enhancing carbon sinks, which are central to the target."
-  },
-  {
-    "targetAId": "NBT_6",
-    "targetBId": "BTR_ippu_3",
-    "alignment": "medium",
-    "description": "\" \u2013 The measure partially implements or supports the target. While the reported measure focuses on reducing methane emissions and enhancing energy security through coal mining, it does not fully address the broader goal of strengthening national climate adaptation and increasing carbon sequestration as outlined in the target."
+    "description": "The measure partially implements or supports the target by addressing greenhouse gas emissions through improved manure management, which can contribute to reducing overall emissions in the livestock sector. However, it does not directly focus on the specific goal of reducing CO2 emissions from livestock by the specified tonnage, nor does it address the circulation and export aspects outlined in the target."
   }
 ]
