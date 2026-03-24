@@ -678,10 +678,8 @@ export function PolicyCoherenceExplorer({
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {totalAligned} alignment opportunit{totalAligned !== 1 ? "ies" : "y"} across {groups.length} {
-              groupMode === "document" ? "document type" :
-              groupMode === "theme" ? "cross-cutting theme" :
-              groupMode === "sector" ? "sector" : "NBS categor"
-            }{groups.length !== 1 ? (groupMode === "nbs" ? "ies" : "s") : (groupMode === "nbs" ? "y" : "")}
+              ({ document: ["document type", "document types"], theme: ["cross-cutting theme", "cross-cutting themes"], sector: ["sector", "sectors"], nbs: ["NBS category", "NBS categories"] } as Record<GroupMode, [string, string]>)[groupMode][groups.length !== 1 ? 1 : 0]
+            }
             {totalContra > 0 && (
               <>
                 {", "}
@@ -788,8 +786,8 @@ export function PolicyCoherenceExplorer({
         </div>
       </div>
 
-      {/* Click-away handler for search dropdown */}
-      {searchOpen && (
+      {/* Click-away handler for search dropdown — only when dropdown is visible */}
+      {searchOpen && searchQuery.length >= 2 && (
         <div
           className="fixed inset-0 z-40"
           onClick={() => setSearchOpen(false)}
@@ -976,7 +974,7 @@ export function PolicyCoherenceExplorer({
                   if (node.id === activeId) labelNodes.push({ node, isActive: true });
                   else if (connectedIds.has(node.id)) labelNodes.push({ node, isActive: false });
                 }
-                // Deduplicate and sort: active first, then by angle for spacing check
+                // Sort: active first, then by angle for spacing check
                 const sorted = labelNodes.sort((a, b) => {
                   if (a.isActive) return -1;
                   if (b.isActive) return 1;
@@ -1035,34 +1033,29 @@ export function PolicyCoherenceExplorer({
                 // Minimum angular gap to avoid overlap (based on label height / radius)
                 const MIN_GAP = LABEL_H / GRP_LABEL_R;
 
-                // First pass: detect clusters of overlapping labels
                 const entries = arcs.map((arc) => ({
                   arc,
                   angle: arc.midAngle,
-                  radius: GRP_LABEL_R,
                 }));
 
                 // Sort by angle for overlap detection
                 const sorted = [...entries].sort((a, b) => a.angle - b.angle);
 
-                // Spread overlapping labels by adjusting their angles
+                // Bi-directional spread: find clusters and spread from center
+                // First pass: push forward to enforce minimum gap
                 for (let i = 1; i < sorted.length; i++) {
-                  const prev = sorted[i - 1];
-                  const curr = sorted[i];
-                  const gap = curr.angle - prev.angle;
+                  const gap = sorted[i].angle - sorted[i - 1].angle;
                   if (gap < MIN_GAP) {
-                    // Push current label forward
-                    curr.angle = prev.angle + MIN_GAP;
+                    sorted[i].angle = sorted[i - 1].angle + MIN_GAP;
                   }
                 }
-
-                // If last label wraps past 2π, compress the whole spread backward
-                if (sorted.length > 1) {
-                  const maxAngle = 2 * Math.PI - MIN_GAP;
-                  if (sorted[sorted.length - 1].angle > maxAngle) {
-                    const overflow = sorted[sorted.length - 1].angle - maxAngle;
-                    for (const entry of sorted) {
-                      entry.angle -= overflow / sorted.length;
+                // Second pass: if labels were pushed too far, pull back from the end
+                const maxAngle = 2 * Math.PI - MIN_GAP;
+                if (sorted.length > 1 && sorted[sorted.length - 1].angle > maxAngle) {
+                  for (let i = sorted.length - 2; i >= 0; i--) {
+                    const gap = sorted[i + 1].angle - sorted[i].angle;
+                    if (gap < MIN_GAP) {
+                      sorted[i].angle = sorted[i + 1].angle - MIN_GAP;
                     }
                   }
                 }
