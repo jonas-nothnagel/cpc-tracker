@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { chord as d3Chord, ribbon as d3Ribbon } from "d3-chord";
 import { arc as d3Arc } from "d3-shape";
 import { DOC_COLORS, DOC_LABELS, ALIGNMENT_COLORS, ALIGNMENT_WEIGHTS } from "@/lib/utils";
+import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, Target, PolicyDocumentType } from "@/types";
 
@@ -140,7 +141,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
 
   const totalContradictions = alignmentData.filter((a) => isContradiction(a.alignment)).length;
 
-  const size = 420;
+  const size = 460;
   const outerRadius = size / 2 - 40;
   const innerRadius = outerRadius - 20;
 
@@ -180,14 +181,25 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-[var(--undp-black)]">
           Document Coherency Overview
+          <InfoBox>
+            This shows the overall alignment between document types.
+            <br /><br />
+            <strong>Coherency %</strong> — quality-weighted score (high = 3pts, medium = 2, low = 1), normalized against maximum possible pairs.<br />
+            <strong>Coverage %</strong> — share of possible cross-document target pairs that show any alignment.<br />
+            <strong>Conflicts</strong> — pairs where targets work against each other.
+          </InfoBox>
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
           Across {docTypes.length} document types, {totalAligned} target
           pair{totalAligned !== 1 ? "s" : ""} show relationships
           {totalContradictions > 0 && (
-            <span className="text-red-600">
-              {" "}({totalContradictions} contradiction{totalContradictions !== 1 ? "s" : ""})
-            </span>
+            <>
+              {" "}(
+              <a href="#contradictions" className="text-red-600 hover:underline">
+                {totalContradictions} contradiction{totalContradictions !== 1 ? "s" : ""}
+              </a>
+              )
+            </>
           )}
           . Click a ribbon or table row to jump to the detailed pairwise heatmap.
         </p>
@@ -238,7 +250,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
       <div className="flex justify-center">
         <svg
           viewBox={`0 0 ${size} ${size}`}
-          className="w-full max-w-[420px]"
+          className="w-full max-w-[460px]"
           style={{ overflow: "visible" }}
         >
           <g transform={`translate(${size / 2}, ${size / 2})`}>
@@ -304,7 +316,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
 
               // Label position at midpoint of arc
               const midAngle = (g.startAngle + g.endAngle) / 2;
-              const labelRadius = outerRadius + 16;
+              const labelRadius = outerRadius + 28;
               const lx = labelRadius * Math.sin(midAngle);
               const ly = -labelRadius * Math.cos(midAngle);
               const textAnchor =
@@ -388,7 +400,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
             })}
           </tbody>
         </table>
-        <p className="text-[10px] text-[var(--undp-gray)]/70 mt-2 leading-relaxed">
+        <p className="text-[11px] text-[var(--undp-gray)]/70 mt-2 leading-relaxed">
           <strong>Coherency</strong> = quality-weighted alignment score (high=3, medium=2, low=1 per pair, normalized to max possible).
           <strong> Coverage</strong> = % of possible cross-document target pairs that show alignment.
           <strong> Conflicts</strong> = number of target pairs showing contradiction or tension.

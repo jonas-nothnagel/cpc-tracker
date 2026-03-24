@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
 import { ActivitiesActions } from "./target-text";
 import type { Target, PolicyDocumentType } from "@/types";
 
@@ -47,6 +47,7 @@ export function TargetTable({ targets }: TargetTableProps) {
                   ? { backgroundColor: DOC_COLORS[doc] }
                   : undefined
               }
+              title={DOC_FULL_LABELS[doc]}
             >
               {DOC_LABELS[doc]} ({count})
             </button>
@@ -74,6 +75,7 @@ export function TargetTable({ targets }: TargetTableProps) {
                   <span
                     className="inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
                     style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    title={DOC_FULL_LABELS[t.sourceDocument]}
                   >
                     {t.sourceLabel}
                   </span>

@@ -28,11 +28,33 @@ export const DOC_LABELS: Record<PolicyDocumentType, string> = {
   OTHER: "Other",
 };
 
+/** Medium-length labels for contexts with moderate space */
+export const DOC_MEDIUM_LABELS: Record<PolicyDocumentType, string> = {
+  NDC: "NDC (Climate)",
+  NBSAP: "NBT (Biodiversity)",
+  NAP: "NAP (Adaptation)",
+  LDN: "LDN (Land)",
+  SECTORAL: "Sectoral Policy",
+  BTR: "BTR (Transparency)",
+  OTHER: "Other",
+};
+
+/** Full human-readable document names */
+export const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
+  NDC: "Nationally Determined Contribution",
+  NBSAP: "National Biodiversity Strategy & Action Plan",
+  NAP: "National Adaptation Plan",
+  LDN: "Land Degradation Neutrality",
+  SECTORAL: "Sectoral Policy",
+  BTR: "Biennial Transparency Report",
+  OTHER: "Other Policy Document",
+};
+
 /** Bidirectional color scale: red for contradictions, green for alignment */
 export const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
   high_contradiction: "#b91c1c",
   moderate_contradiction: "#dc2626",
-  low_tension: "#f59e0b",
+  low_tension: "#f87171",
   none: "#f7f7f7",
   low: "#c6e48b",
   medium: "#7bc96f",
