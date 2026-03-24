@@ -435,9 +435,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
                     {data.btrData.mitigationMeasures.length} mitigation measures and{" "}
                     {data.btrData.technologySupport.length + data.btrData.capacityBuilding.length} support
                     projects — Biennial Transparency Report
-                    {data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]
-                      ? ` (${data.btrData.sourceFile.match(/BTR(\d+)/)?.[0]})`
-                      : ""}
+                    {(() => { const v = data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]; return v ? ` (${v})` : ""; })()}
                   </p>
                 </div>
 

@@ -701,7 +701,6 @@ export function SectorScorecard({
     return result;
   }, [alignmentData, targets, classifications]);
 
-
   const toggleRow = useCallback((id: string) => {
     setExpandedSector((prev) => (prev === id ? null : id));
   }, []);
@@ -739,6 +738,7 @@ export function SectorScorecard({
         const isHighlighted = highlightSector === row.sector.id;
         const color = SECTOR_COLORS[row.sector.id] ?? "#a9b1b7";
         const insightText = buildGapInsightText(row);
+        const nbsapCount = nbsapAlignmentBySector.get(row.sector.id) ?? 0;
 
         return (
           <div
@@ -801,14 +801,14 @@ export function SectorScorecard({
               </div>
 
               {/* NBSAP cross-reference */}
-              {nbsapAlignmentBySector.get(row.sector.id) != null && nbsapAlignmentBySector.get(row.sector.id)! > 0 && (
+              {nbsapCount > 0 && (
                 <div
                   className="grid items-center gap-3 mt-1"
                   style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(160px, 2fr) 100px 102px 16px" }}
                 >
                   <div />
                   <span className="text-[10px] font-medium text-[#0468b1]">
-                    ↔ {nbsapAlignmentBySector.get(row.sector.id)} aligned NBSAP target{nbsapAlignmentBySector.get(row.sector.id)! !== 1 ? "s" : ""} in this sector
+                    ↔ {nbsapCount} aligned NBSAP target{nbsapCount !== 1 ? "s" : ""} in this sector
                   </span>
                   <div /><div /><div />
                 </div>
