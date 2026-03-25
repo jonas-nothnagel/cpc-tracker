@@ -35,6 +35,15 @@ Primary users are **UNDP country office staff** and **national policy makers**. 
 - An **interactive dashboard** that visualizes coherency results
 - A tool potentially designed for **human-in-the-loop** validation
 
+### Scope Boundaries — Existing Tools (complement, don't duplicate)
+
+- **SDG Push / SDG Nexus** — SDG interlinkage analysis (already exists)
+- **NDC Scan taxonomy** — basic NDC classification (limited: doesn't cover Energy, Transport, Industry)
+- **Climate Promise Forward** — NDC tracking
+- **National Climate Transparency Platform** — open-source MRV system (potential integration point, not duplication target: https://github.com/undp/National-Climate-Transparency-Platform/)
+
+**UNSDCF entry points**: ~30 countries designing new UN development cooperation frameworks. Two entry points for this tool: pre-assessment phase (identify coherence gaps before framework design) and validation phase (check coherence of draft frameworks).
+
 ---
 
 ## 2. Some Guding Questions
@@ -47,7 +56,22 @@ Primary users are **UNDP country office staff** and **national policy makers**. 
 
 * We are particularly interested in expanding the vision away from comparing nature & climate policies (NDC vs NBSAP) to other sectoral policies. Instead we should look into how we can connect these policies with sectoral policies such as transport, energy, & agriculture.
 
-## 4. Data 
+## 3. Three-Insight Framework
+
+The tool delivers three strategic insights. Every feature and data integration should map to one of these:
+
+### Insight 1: Policy Alignment (current focus, MVP core)
+Coherence across NDC, NBSAP, NAP, LDN, NDP, and sectoral policies. Classification by NbS themes, cross-cutting themes, and IPCC sectors. Detection of contradictions and co-benefits. This is the most mature insight and the core of the MVP.
+
+### Insight 2: Financial Flows (planned)
+Whether finance follows policy commitments. Dimensions include: positive flows supporting nature-climate goals, harmful subsidies undermining them, BIOFIN budget tagging, climate finance tracking, and budget interoperability across methodologies (CPEIR, CBT, CFF, BIOFIN, B4SDGs, GRCB). The approach should be "plug-and-play" — country-specific, not one-size-fits-all. Three data types matter: stated allocations, actual allocations, and actual expenditures.
+
+### Insight 3: Progress & Implementation (partially started)
+Track implementation via BTR/ETF reporting, national RBM systems, and national reports (7NR for biodiversity, NDC progress). Exploratory temporal views showing whether commitments translate to action.
+
+---
+
+## 4. Data
 
 ### 4.1 Policy Documents Examples (Sources)
 
@@ -81,6 +105,16 @@ NBSAP targes: https://www.cbd.int/nbsap/targets/ Alternative: [https://wwf.panda
 NAP Official: https://napcentral.org/ https://trends.napglobalnetwork.org/
 
 LDN Target Explorer: https://data.unccd.int/country-targets
+
+### 4.2 Data Types Beyond Policy Documents
+
+The tool will progressively incorporate:
+- **BTR/ETF tables** — Common Reporting Tables (CRT), Common Tabular Formats (CTF). Structured climate reporting datasets.
+- **Budget/expenditure data** — BIOFIN-tagged, climate-tagged. Three levels: stated allocations, actual allocations, actual expenditures.
+- **Harmful subsidies data** — IMF for fossil fuel, OECD for agriculture. Signals often hidden in non-biodiversity language (agriculture, water, pesticide policies).
+- **National reports** — 7NR (CBD), NDC progress reports.
+- **Finance needs assessments** — Gap between committed and needed resources.
+- **Geospatial data** — Later iterations only.
 
 ---
 
@@ -116,4 +150,9 @@ These items must be addressed before production deployment:
 - In production, consider country-specific presets (e.g., Mongolia has different NBS relevance than Panama).
 - Theme definitions should be versioned so analyses can be reproduced.
 
-
+### 5.6 Harmful Subsidies Analysis
+- TAG identified harmful subsidies as a critical analysis dimension for Insight 2.
+- Subsidies harmful to biodiversity/climate are often coded in non-obvious budget categories (agriculture support, water infrastructure, pesticide programs).
+- OECD data is the definitive source for agricultural subsidies; IMF for fossil fuel subsidies (already started in `python/src/data_sources/imf_subsidies.py`).
+- No existing UNDP approach links BIOFIN budget tagging with harmful subsidy identification — this is a novel contribution.
+- Needs a structured negative indicator taxonomy that maps budget line items to biodiversity/climate harm categories.

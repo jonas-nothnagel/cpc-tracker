@@ -8,11 +8,17 @@ AI-powered web application that helps UNDP country offices and national policy m
 
 **Core principle**: Every feature, visualization, and component must deliver real, actionable value for policy making. We do not build things that are merely technically impressive or already available via a quick internet search. Insights must be actionable, easy to grasp for non-technical users and genuinely useful for decision-making. Raise a warning if you think we deviate from this.
 
+**Positioning**: Decision-support system, not a decision-maker. Final interpretation remains with policymakers. Never generate extended AI-written narrative reports — prefer visuals + short factual insights. All AI outputs must be clearly labeled as AI-generated with confidence caveats.
+
 **Target users**: UNDP country office staff and national policy makers — avoid developer jargon in UI copy. Show what happened in human terms, not system terms.
 
 **Digital Public Good**: Code must be handoverable to vendors. Prioritize UNDP Design System (https://react.design.undp.org/) and UNDP Data Viz Guidelines (https://dataviz.design.undp.org/) for UI and charts. Other libraries may be used where they add clear UX value.
 
-**Scope**: This project is under active development. See `PROJECT_GUIDELINES.md` and `dev_data_scripts/` for more dev notes, meeting notes, and domain context — consult `dev_data_scripts/rolling_context/` for the most up-to-date notes and `dev_data_scripts/rolling_context/feedback_log.pdf` for feedback summaries and product brainstorming. 
+**Scope**: This project is under active development. For domain context, meeting notes, and materials:
+- **Primary source (most up-to-date)**: `dev_data_scripts/sharepoint_sync/` — symlink to the team's shared SharePoint/OneDrive folder. Country materials (Mongolia, Panama), scoping docs, TAG notes, and the authoritative feedback log (`Scoping materials/Feedback log for AI Flagship.docx`) live here. Always check this first.
+- **Secondary**: `dev_data_scripts/rolling_context/` — local dev notes (may be older copies).
+- See also `PROJECT_GUIDELINES.md` for dev conventions.
+
 The tool will be eventually hosted on Azure and should be easily buildable through a docker image. Keep that in mind to not overfit architecture for dev purposes now.
 
 ## Commands
@@ -54,6 +60,7 @@ Architecture is evolving — treat the actual code as source of truth.
 - Python uses `uv` for package management
 - LLM provider: OpenRouter for dev, Azure OpenAI for production
 - `AlignmentLevel` is bidirectional: negative values (high_contradiction, moderate_contradiction, low_tension) and positive (low, medium, high alignment)
+- Display labels for positive `AlignmentLevel` values: avoid "Low" — use "Partial" or "Emerging" instead. See guardrails.
 - API routes require local/Docker/server with Python — won't work on serverless (Vercel)
 
 ## Collaboration Workflow
@@ -67,3 +74,6 @@ When a design decision (especially AI/pipeline) is revised and the learning woul
 
 - No hallucination of policy content — AI classifies and compares only user-provided targets.
 - Data sovereignty: no external API calls with government data without consent.
+- Political sensitivity in comparative outputs — never frame results as blame toward specific sectors or ministries. Use neutral language (e.g., "opportunity for stronger alignment" not "ministry X is lagging"). Why: Previous SDG-mapping outputs were used to assign blame, creating political tensions. Government sounding boards validate outputs before broader distribution.
+- Terminology sensitivity — avoid "low" as a standalone positive label (reads as negative culturally). Prefer "emerging" or "partial". All abbreviations (NBS, NDC, NAP, NBSAP, LDN, BTR) must have tooltips or inline expansions on first use. Why: Mongolia user testing showed abbreviations are opaque and "low" is perceived negatively.
+- No AI-generated narrative reports — the tool outputs structured visuals, short factual callouts, and classification results. Not written policy analysis in paragraph form. Why: TAG guidance — narratives carry hallucination risk and position the tool as decision-maker rather than decision-support.
