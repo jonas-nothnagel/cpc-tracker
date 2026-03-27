@@ -10414,5 +10414,1985 @@
     "categoryId": "theme_10",
     "taxonomyType": "theme",
     "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_1",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_2",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_3",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_4",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_5",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_6",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_7",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_energy_8",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_1",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_agriculture_2",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_1",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_2",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_ippu_3",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_1",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "BTR_waste_2",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": true
   }
 ]

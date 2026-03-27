@@ -12,7 +12,7 @@ Or with plain Python:
 Steps:
     1. Quantitative flag detection
     2. Run thematic classification (NBS + sectors + themes)
-    3. Generate theme-filtered pairs
+    3. Generate all cross-document pairs
     4. Decompose targets (Agent 1)
     5. Assess alignment (Agent 2)
     6. BTR measure alignment (if available)
@@ -136,13 +136,13 @@ async def main() -> None:
         out_path.write_text(json.dumps(all_classifications, indent=2))
         logger.info(f"Saved {len(all_classifications)} classifications to {out_path}")
 
-        # 4. Generate sector-filtered pairs
-        write_status(3, "Generating pairs", "Generating cross-document target pairs based on shared IPCC sectors", started_at=started_at)
+        # 4. Generate cross-document pairs
+        write_status(3, "Generating pairs", "Generating all cross-document target pairs", started_at=started_at)
         logger.info("")
-        logger.info("STEP 3: Generate sector-filtered pairs")
+        logger.info("STEP 3: Generate cross-document pairs")
         logger.info("-" * 40)
 
-        pairs = generate_pairs(targets, all_classifications)
+        pairs = generate_pairs(targets)
         logger.info(f"Total cross-document pairs to assess: {len(pairs)}")
 
         if not pairs:
@@ -198,7 +198,26 @@ async def main() -> None:
             logger.info(f"  {len(raw_measures)} raw measures → {len(measure_pseudo_targets)} valid pseudo-targets")
 
             if measure_pseudo_targets:
-                m_pairs = generate_measure_pairs(targets, measure_pseudo_targets, all_classifications)
+                # Classify BTR measures against NBS and themes (not sectors — ground truth)
+                btr_nbs = await run_classification(measure_pseudo_targets, nbs_categories, "nbs")
+                btr_themes = await run_classification(measure_pseudo_targets, themes, "theme")
+                all_classifications.extend(btr_nbs + btr_themes)
+
+                # Inject ground-truth IPCC sector classifications from BTR data
+                for pt in measure_pseudo_targets:
+                    all_classifications.append({
+                        "targetId": pt["id"],
+                        "categoryId": pt["sector"],
+                        "taxonomyType": "sector",
+                        "isRelevant": True,
+                    })
+
+                # Re-save classifications with BTR entries included
+                out_path = OUTPUT_DIR / "classifications.json"
+                out_path.write_text(json.dumps(all_classifications, indent=2))
+                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_themes)} themes + {len(measure_pseudo_targets)} ground-truth sectors)")
+
+                m_pairs = generate_measure_pairs(targets, measure_pseudo_targets)
 
                 if m_pairs:
                     measure_decomps = await decompose_measures(measure_pseudo_targets)
