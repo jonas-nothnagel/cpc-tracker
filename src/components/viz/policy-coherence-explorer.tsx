@@ -597,7 +597,9 @@ export function PolicyCoherenceExplorer({
   const ambientConns = useMemo(() => {
     if (filter === "contradictions")
       return filtered;
-    return visibleAlignment.filter((a) => a.alignment === "high");
+    return visibleAlignment.filter(
+      (a) => a.alignment === "high" || isContradiction(a.alignment),
+    );
   }, [visibleAlignment, filtered, filter]);
 
   // Connections for the active node (from filtered set)
