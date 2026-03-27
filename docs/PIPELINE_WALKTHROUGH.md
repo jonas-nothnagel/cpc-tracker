@@ -46,17 +46,16 @@ For each **(target, theme)** pair, the LLM returns 0 or 1: does the target cover
 
 ## Step 3: Generate Pairs
 
-Pairs are created only when two targets from different documents share at least one theme.
+All cross-document pairs are generated — every target is paired with every target from a different document type. Classification (Step 2) is used for visualization grouping only, not as a pairing filter.
 
 **Logic:**
-1. For each theme, collect targets with `isRelevant=true`
-2. For each pair of document types (NBSAP×NDC, NBSAP×NAP, NDC×NAP), take the Cartesian product of targets in that theme
-3. Deduplicate by target pair (same pair can share multiple themes)
+1. Group targets by document type
+2. For each pair of document types (NBSAP×NDC, NBSAP×NAP, NDC×NAP), take the Cartesian product
+3. Deduplicate by target pair
 
 **For (NBT_7, NDC_AnimalHusbandry_4):**
-- Both are in theme_1 (Agriculture)
 - NBT_7 is NBSAP, NDC_AnimalHusbandry_4 is NDC → different document types
-- Pair is included → 1 of 306 pairs
+- Pair is included (as are all cross-document pairs)
 
 ---
 

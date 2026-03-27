@@ -31,16 +31,19 @@ Input: Policy targets (text + source document type)
   │     ├─ NBS categories: 10 nature-based solution categories
   │     └─ Cross-cutting themes: 11+ policy themes
   │
-  ├─ Step 3: Theme-Filtered Pair Generation (computation)
-  │     └─ Only compare targets from different documents that share themes
+  ├─ Step 3: Cross-Document Pair Generation (computation)
+  │     └─ All cross-document pairs (classification is for grouping only)
   │
   ├─ Step 4: Target Decomposition — Agent 1 (LLM)
   │     └─ Break each target into structured components
   │
   ├─ Step 5: Pairwise Alignment Assessment — Agent 2 (LLM)
-  │     └─ Classify each pair: none / low / medium / high alignment
+  │     └─ 7-level scale: contradictions ↔ none ↔ low/medium/high alignment
   │
-  └─ Step 6: Derived Metrics (frontend computation)
+  ├─ Step 6: BTR Measure-Target Alignment (LLM, if BTR data available)
+  │     └─ Assess implementation coherence between measures and targets
+  │
+  └─ Step 7: Derived Metrics (frontend computation)
         ├─ Document coherency scores
         └─ Aggregated visualizations
 ```
@@ -68,7 +71,7 @@ Administrative references (e.g., "Article 2", "Target 3") are explicitly exclude
 
 ## Step 2: Thematic Classification
 
-**Purpose:** Map each target to predefined nature-based solution (NBS) categories and cross-cutting themes. This identifies thematic coverage, gaps, and — critically — determines which target pairs should be compared in Step 5.
+**Purpose:** Map each target to predefined nature-based solution (NBS) categories and cross-cutting themes. This identifies thematic coverage and gaps, and provides the grouping dimensions used in dashboard visualizations (bar charts, chord diagram sector/theme modes).
 
 **Method:** For every (target, category) combination, the LLM performs a binary classification: *does this target pertain to this category?*
 
@@ -122,17 +125,15 @@ Users can add custom themes relevant to their national context before running th
 
 ---
 
-## Step 3: Theme-Filtered Pair Generation
+## Step 3: Cross-Document Pair Generation
 
-**Purpose:** Determine which target pairs should be compared for alignment. Comparing every possible cross-document pair would be O(n²) and wasteful — most pairs are unrelated.
+**Purpose:** Determine which target pairs should be compared for alignment.
 
-**Method:** Two targets are paired for comparison only if:
-1. They come from **different document types** (e.g., NDC vs NBSAP, not NDC vs NDC)
-2. They **share at least one theme** — both were classified as relevant to the same cross-cutting theme in Step 2
+**Method:** Every target is paired with every target from a **different document type** (e.g., NDC vs NBSAP, not NDC vs NDC). Classification results from Step 2 are used for visualization grouping (bar charts, chord diagram sector mode) but **not** as a pairing filter.
 
-This filtering typically reduces the comparison space by 60–80% while preserving all meaningful comparisons.
+**Rationale for assessing all pairs:** The alignment LLM (Agent 2) works from decomposed target text and never sees classification data. Using classification as a pre-filter created a noisy binary gate that blocked the alignment LLM from ever seeing most pairs — including valid cross-sector connections. The alignment LLM itself is better positioned to judge relevance.
 
-**Example:** If 4 NDC targets, 2 NBSAP targets, and 2 NAP targets all pertain to the "Gender Equality" theme, 16 cross-document pairs are generated (4×2 + 4×2 + 2×2).
+**Example:** With 20 NBSAP targets, 27 NDC targets, and 15 NAP targets: 20×27 + 20×15 + 27×15 = 1,245 cross-document pairs.
 
 **Output:** A list of `(targetA_id, targetB_id)` pairs to evaluate in Steps 4–5.
 
@@ -154,7 +155,7 @@ This filtering typically reduces the comparison space by 60–80% while preservi
 
 The agent is instructed to remain factual — no speculation or inference beyond what is explicitly stated in the target text.
 
-Only targets that appear in at least one pair from Step 3 are decomposed (typically 30–70% of all targets), reducing unnecessary LLM calls.
+All targets are decomposed since all appear in cross-document pairs.
 
 **Output:** `decompositions.json` — structured breakdown for each decomposed target.
 
@@ -164,7 +165,9 @@ Only targets that appear in at least one pair from Step 3 are decomposed (typica
 
 **Purpose:** For each target pair, assess the degree of policy alignment — are these targets working toward compatible goals through compatible means?
 
-**Method:** A separate LLM agent ("Alignment Advisor") receives the structured decompositions of both targets and classifies their alignment into one of four levels:
+**Method:** A separate LLM agent ("Alignment Advisor") receives the structured decompositions of both targets and classifies their relationship into one of seven levels on a bidirectional scale:
+
+**Alignment levels (positive):**
 
 | Level | Meaning |
 |-------|---------|
@@ -173,7 +176,17 @@ Only targets that appear in at least one pair from Step 3 are decomposed (typica
 | **Medium alignment** | Clear overlap in themes, geography, or priorities; meaningful synergies possible with some effort |
 | **High alignment** | Robust overlap across goals, actions, ecosystems, and actors; strong potential for coordinated implementation |
 
-The agent evaluates alignment based on strategic intent, feasibility, synergies, and ecosystem interactions — not simple textual similarity.
+**Contradiction levels (negative):**
+
+| Level | Meaning |
+|-------|---------|
+| **Low tension** | Minor friction or implicit trade-off; manageable with coordination |
+| **Moderate contradiction** | Clear conflict in approach or resources; partial coexistence possible with significant trade-offs |
+| **High contradiction** | Targets directly oppose each other in goals, actions, or expected outcomes |
+
+Each contradiction is also classified by **type**: goal conflict, resource competition, implementation tension, or scale/scope mismatch.
+
+The agent evaluates alignment based on strategic intent, feasibility, synergies, and ecosystem interactions — not simple textual similarity. Contradictions are reserved for genuine conflicts, not differences in sector or scale.
 
 **Multi-agent design rationale:** By separating decomposition (Agent 1) from alignment assessment (Agent 2), the methodology ensures that alignment classifications are based on structured policy content. This separation supports consistency across countries and policy frameworks.
 
@@ -181,7 +194,23 @@ The agent evaluates alignment based on strategic intent, feasibility, synergies,
 
 ---
 
-## Step 6: Derived Metrics (Frontend Computation)
+## Step 6: BTR Measure-Target Alignment
+
+**Purpose:** Assess whether government-reported implementation measures (from Biennial Transparency Reports) genuinely implement or support stated policy targets.
+
+**Method:** BTR mitigation measures are converted to pseudo-targets and processed through the same two-agent workflow:
+
+1. **Classification:** Measures are LLM-classified against NBS categories and cross-cutting themes. IPCC sector tags from government reporting are used as ground truth (not LLM-classified).
+2. **Pairing:** Every measure is paired with every policy target (no pre-filtering).
+3. **Decomposition + Alignment:** Agent 1 decomposes measures, then an adapted Agent 2 assesses implementation coherence using the same 7-level scale.
+
+The adapted prompt for Agent 2 is tuned for policy-target vs. reported-measure comparisons, asking whether the measure "directly implements, partially supports, or has no relationship to" the target.
+
+**Output:** `measure_alignment.json` and `measure_pseudo_targets.json`.
+
+---
+
+## Step 7: Derived Metrics (Frontend Computation)
 
 These metrics are computed from the pipeline outputs — no additional LLM calls required.
 
@@ -220,15 +249,17 @@ The dashboard computes several aggregate views from the raw data:
 
 ## Cost and Performance
 
-| Step | API Calls | Example (50 targets, 21 categories) |
+| Step | API Calls | Example (62 targets, 21 categories, 15 BTR measures) |
 |------|-----------|-------------------------------------|
-| Quantitative detection | ceil(targets / 12) | ~5 calls |
-| Thematic classification | targets × categories | ~1,050 calls |
-| Target decomposition | targets in pairs | ~25–35 calls |
-| Alignment assessment | unique pairs | ~100–500 calls |
+| Quantitative detection | ceil(targets / 12) | ~6 calls |
+| Thematic classification | targets × categories | ~1,302 calls |
+| Target decomposition | all targets | ~62 calls |
+| Alignment assessment | all cross-doc pairs | ~1,245 calls |
+| BTR classification | measures × (NBS + themes) | ~315 calls |
+| Measure alignment | measures × targets | ~930 calls |
 | Derived metrics | 0 (computed locally) | 0 calls |
 
-**Estimated cost:** ~$0.50–2.00 per analysis with GPT-4o-mini (varies with target count and theme overlap).
+**Estimated cost:** ~$1.50–3.50 per full analysis with GPT-4o-mini (varies with target count and number of BTR measures).
 
 **Caching:** All LLM calls are cached by a SHA-256 hash of `{system_prompt, user_prompt, model}`. Re-running with the same inputs uses cached results with zero API calls.
 
