@@ -12,7 +12,7 @@ Or with plain Python:
 Steps:
     1. Quantitative flag detection
     2. Run thematic classification (NBS + sectors + themes)
-    3. Generate theme-filtered pairs
+    3. Generate all cross-document pairs
     4. Decompose targets (Agent 1)
     5. Assess alignment (Agent 2)
     6. BTR measure alignment (if available)
@@ -136,33 +136,27 @@ async def main() -> None:
         out_path.write_text(json.dumps(all_classifications, indent=2))
         logger.info(f"Saved {len(all_classifications)} classifications to {out_path}")
 
-        # 4. Generate sector-filtered pairs
-        write_status(3, "Generating pairs", "Generating cross-document target pairs based on shared IPCC sectors", started_at=started_at)
+        # 4. Generate cross-document pairs
+        write_status(3, "Generating pairs", "Generating all cross-document target pairs", started_at=started_at)
         logger.info("")
-        logger.info("STEP 3: Generate sector-filtered pairs")
+        logger.info("STEP 3: Generate cross-document pairs")
         logger.info("-" * 40)
 
-        pairs = generate_pairs(targets, all_classifications)
+        pairs = generate_pairs(targets)
         logger.info(f"Total cross-document pairs to assess: {len(pairs)}")
 
         if not pairs:
-            logger.warning("No pairs generated! Check classification results.")
-            write_status(3, "Generating pairs", "No pairs generated — check classification results", status="failed", started_at=started_at, error="No cross-document pairs found")
+            logger.warning("No pairs generated! Check input data — need targets from at least 2 document types.")
+            write_status(3, "Generating pairs", "No pairs generated — need targets from at least 2 document types", status="failed", started_at=started_at, error="No cross-document pairs found")
             return
 
-        # 5. Decompose targets (only those that appear in pairs)
-        write_status(4, "Target decomposition", f"Decomposing {len(set(id for ta, tb in pairs for id in (ta['id'], tb['id'])))} targets with Agent 1", started_at=started_at)
+        # 5. Decompose targets
+        write_status(4, "Target decomposition", f"Decomposing {len(targets)} targets with Agent 1", started_at=started_at)
         logger.info("")
         logger.info("STEP 4: Decompose targets (Agent 1)")
         logger.info("-" * 40)
 
-        pair_target_ids = set()
-        for ta, tb in pairs:
-            pair_target_ids.add(ta["id"])
-            pair_target_ids.add(tb["id"])
-
-        targets_for_decomp = [t for t in targets if t["id"] in pair_target_ids]
-        decompositions = await decompose_targets(targets_for_decomp)
+        decompositions = await decompose_targets(targets)
 
         # Save decompositions
         out_path = OUTPUT_DIR / "decompositions.json"
@@ -198,7 +192,26 @@ async def main() -> None:
             logger.info(f"  {len(raw_measures)} raw measures → {len(measure_pseudo_targets)} valid pseudo-targets")
 
             if measure_pseudo_targets:
-                m_pairs = generate_measure_pairs(targets, measure_pseudo_targets, all_classifications)
+                # Classify BTR measures against NBS and themes (not sectors — ground truth)
+                btr_nbs = await run_classification(measure_pseudo_targets, nbs_categories, "nbs")
+                btr_themes = await run_classification(measure_pseudo_targets, themes, "theme")
+                all_classifications.extend(btr_nbs + btr_themes)
+
+                # Inject ground-truth IPCC sector classifications from BTR data
+                for pt in measure_pseudo_targets:
+                    all_classifications.append({
+                        "targetId": pt["id"],
+                        "categoryId": pt["sector"],
+                        "taxonomyType": "sector",
+                        "isRelevant": True,
+                    })
+
+                # Re-save classifications with BTR entries included
+                out_path = OUTPUT_DIR / "classifications.json"
+                out_path.write_text(json.dumps(all_classifications, indent=2))
+                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_themes)} themes + {len(measure_pseudo_targets)} ground-truth sectors)")
+
+                m_pairs = generate_measure_pairs(targets, measure_pseudo_targets)
 
                 if m_pairs:
                     measure_decomps = await decompose_measures(measure_pseudo_targets)

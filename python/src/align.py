@@ -7,8 +7,8 @@ Two-agent workflow from the original pipeline
   Agent 1 (Target Analyst): decomposes each target into 5 structured fields.
   Agent 2 (Alignment Advisor): compares pairs and classifies alignment level.
 
-Pairs are only formed between targets from different document types
-that share at least one theme (from Step 1 classification results).
+All cross-document pairs are assessed — classification is used for
+visualization grouping only, not as a pairing filter.
 """
 
 from __future__ import annotations
@@ -18,6 +18,8 @@ import logging
 import re
 from itertools import combinations
 from typing import Any
+
+from collections import defaultdict
 
 from .llm import call_llm, call_llm_batch
 
@@ -318,71 +320,37 @@ def parse_alignment(raw: str) -> tuple[str, str, str | None]:
 
 
 # ---------------------------------------------------------------------------
-# Step 2: Generate theme-filtered pairs
+# Step 2: Generate cross-document pairs
 # ---------------------------------------------------------------------------
 
 
 def generate_pairs(
     targets: list[dict[str, Any]],
-    classifications: list[dict[str, Any]],
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    """Generate ALL cross-document target pairs.
+
+    Every target is paired with every target from a different document type.
+    Classification is no longer used as a pairing filter — the alignment LLM
+    (Agent 2) decides relevance directly.
     """
-    Generate cross-document target pairs matching the original methodology.
-
-    Original approach (old_scripts cell 18 + 22-25):
-    1. Input data has one row per (target, theme) where target is relevant
-    2. Group by document type
-    3. Cartesian product across document types
-    4. Filter: Target 1 Theme == Target 2 Theme (same theme)
-
-    This means the same target pair can appear multiple times if they share
-    multiple themes, but each assessment is for a specific shared theme.
-
-    For our pipeline we deduplicate to unique pairs (since the alignment prompt
-    doesn't include theme context, assessing the same pair twice would be
-    redundant). But the FILTERING is per-theme: a pair is included only if
-    both targets share at least one theme.
-    """
-    target_map = {t["id"]: t for t in targets}
-
-    # Build per-theme target lists (only relevant classifications)
-    from collections import defaultdict
-    theme_targets: dict[str, set[str]] = defaultdict(set)
-    for c in classifications:
-        if c["isRelevant"]:
-            theme_targets[c["categoryId"]].add(c["targetId"])
-
-    # Group targets by document type
-    by_doc: dict[str, list[dict[str, Any]]] = {}
+    by_doc: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for t in targets:
-        doc = t["sourceDocument"]
-        if doc not in by_doc:
-            by_doc[doc] = []
-        by_doc[doc].append(t)
+        by_doc[t["sourceDocument"]].append(t)
 
-    # Generate per-theme cross-document pairs, then deduplicate
-    # (Original creates per-theme pairs in cell 25; we dedup because the
-    # alignment prompt is theme-agnostic so duplicates would give same result)
     pairs: list[tuple[dict[str, Any], dict[str, Any]]] = []
     seen: set[tuple[str, str]] = set()
-    per_theme_count = 0
 
-    for theme_id, theme_target_ids in sorted(theme_targets.items()):
-        for doc_a, doc_b in combinations(sorted(by_doc.keys()), 2):
-            targets_a = [t for t in by_doc[doc_a] if t["id"] in theme_target_ids]
-            targets_b = [t for t in by_doc[doc_b] if t["id"] in theme_target_ids]
-            for ta in targets_a:
-                for tb in targets_b:
-                    per_theme_count += 1
-                    pair_key = tuple(sorted([ta["id"], tb["id"]]))
-                    if pair_key not in seen:
-                        seen.add(pair_key)
-                        pairs.append((ta, tb))
+    for doc_a, doc_b in combinations(sorted(by_doc.keys()), 2):
+        for ta in by_doc[doc_a]:
+            for tb in by_doc[doc_b]:
+                key = tuple(sorted([ta["id"], tb["id"]]))
+                if key not in seen:
+                    seen.add(key)
+                    pairs.append((ta, tb))
 
     logger.info(
-        f"Generated {per_theme_count} per-theme pairs "
-        f"({len(pairs)} unique) from {len(by_doc)} document types, "
-        f"{len(theme_targets)} themes"
+        f"Generated {len(pairs)} cross-document pairs "
+        f"from {len(by_doc)} document types"
     )
     return pairs
 

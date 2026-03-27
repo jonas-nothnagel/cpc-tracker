@@ -146,33 +146,23 @@ def measures_to_pseudo_targets(measures: list[dict[str, Any]]) -> list[dict[str,
 
 
 # ---------------------------------------------------------------------------
-# Sector-based pairing
+# Measure-target pairing (all combinations)
 # ---------------------------------------------------------------------------
 
 
 def generate_measure_pairs(
     targets: list[dict[str, Any]],
     pseudo_targets: list[dict[str, Any]],
-    classifications: list[dict[str, Any]],
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
-    """Pair each measure with real targets that share the same IPCC sector."""
-    target_sectors: dict[str, set[str]] = defaultdict(set)
-    for c in classifications:
-        if c.get("taxonomyType") == "sector" and c.get("isRelevant"):
-            target_sectors[c["targetId"]].add(c["categoryId"])
+    """Pair every BTR measure with every target.
 
+    Classification is no longer used as a pairing filter — the alignment LLM
+    decides relevance directly.
+    """
     pairs: list[tuple[dict[str, Any], dict[str, Any]]] = []
-    seen: set[tuple[str, str]] = set()
-
     for pt in pseudo_targets:
-        measure_sector = pt["sector"]
         for t in targets:
-            t_sectors = target_sectors.get(t["id"], set())
-            if measure_sector in t_sectors:
-                key = (t["id"], pt["id"])
-                if key not in seen:
-                    seen.add(key)
-                    pairs.append((t, pt))
+            pairs.append((t, pt))
 
     logger.info(
         f"Generated {len(pairs)} target-measure pairs "
