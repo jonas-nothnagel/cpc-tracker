@@ -19,6 +19,8 @@ import re
 from itertools import combinations
 from typing import Any
 
+from collections import defaultdict
+
 from .llm import call_llm, call_llm_batch
 
 logger = logging.getLogger(__name__)
@@ -331,8 +333,6 @@ def generate_pairs(
     Classification is no longer used as a pairing filter — the alignment LLM
     (Agent 2) decides relevance directly.
     """
-    from collections import defaultdict
-
     by_doc: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for t in targets:
         by_doc[t["sourceDocument"]].append(t)

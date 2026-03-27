@@ -146,23 +146,17 @@ async def main() -> None:
         logger.info(f"Total cross-document pairs to assess: {len(pairs)}")
 
         if not pairs:
-            logger.warning("No pairs generated! Check classification results.")
-            write_status(3, "Generating pairs", "No pairs generated — check classification results", status="failed", started_at=started_at, error="No cross-document pairs found")
+            logger.warning("No pairs generated! Check input data — need targets from at least 2 document types.")
+            write_status(3, "Generating pairs", "No pairs generated — need targets from at least 2 document types", status="failed", started_at=started_at, error="No cross-document pairs found")
             return
 
-        # 5. Decompose targets (only those that appear in pairs)
-        write_status(4, "Target decomposition", f"Decomposing {len(set(id for ta, tb in pairs for id in (ta['id'], tb['id'])))} targets with Agent 1", started_at=started_at)
+        # 5. Decompose targets
+        write_status(4, "Target decomposition", f"Decomposing {len(targets)} targets with Agent 1", started_at=started_at)
         logger.info("")
         logger.info("STEP 4: Decompose targets (Agent 1)")
         logger.info("-" * 40)
 
-        pair_target_ids = set()
-        for ta, tb in pairs:
-            pair_target_ids.add(ta["id"])
-            pair_target_ids.add(tb["id"])
-
-        targets_for_decomp = [t for t in targets if t["id"] in pair_target_ids]
-        decompositions = await decompose_targets(targets_for_decomp)
+        decompositions = await decompose_targets(targets)
 
         # Save decompositions
         out_path = OUTPUT_DIR / "decompositions.json"
