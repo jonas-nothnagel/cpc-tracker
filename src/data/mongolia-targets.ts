@@ -1,10 +1,10 @@
 import type { Target } from "@/types";
 
 /**
- * Mongolia pilot data — 59 targets from 3 policy documents.
- * Extracted from Annex I of the Mongolia Target Assessment Report (Jan 2025).
+ * Mongolia pilot data — 74 targets from 4 policy documents.
  *
- * 15 NAP targets, 25 NDC targets, 19 NBTs.
+ * 15 NAP targets, 25 NDC targets, 19 NBSAP targets.
+ * + 15 SECTORAL targets from Vision 2050 (Long-term Development Policy).
  */
 export const MONGOLIA_TARGETS: Target[] = [
   // =========================================================================
@@ -555,6 +555,163 @@ export const MONGOLIA_TARGETS: Target[] = [
     country: "Mongolia",
     isQuantitative: false,
     isTimeBound: false,
+  },
+  // =========================================================================
+  // Vision 2050 / SECTORAL Targets (15)
+  // Extracted from Vision 2050 M&E 2025 report + LTDP 2050 Green Development
+  // =========================================================================
+  {
+    id: "SECTORAL_1",
+    text: "Establish a regionally differentiated land payment system and limit livestock numbers to match pasture carrying capacity, balancing grazing pressure across ecological zones.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Pasture carrying capacity limits",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Introduce Responsible Nomad good practice standards (MNS 6891:2020) and conduct compliance certification\nImplement livestock head tax legislation to incentivize herd size management\nDevelop provincial pasture use and protection rules\nTrain herders in carrying capacity-aligned grazing practices",
+  },
+  {
+    id: "SECTORAL_2",
+    text: "Transform agriculture into an environmentally friendly, climate-change adapted, risk-resilient, socially responsive, responsible, highly productive, and sustainable leading economic sector.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Climate-resilient agriculture",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Enact law on reducing adverse climate change effects on traditional livestock husbandry\nLaunch nationwide New Cooperative movement to strengthen herder livelihoods\nEstablish climate-adapted agricultural zones in central provinces\nDevelop green economy-oriented production and sustainable resource use across the sector",
+  },
+  {
+    id: "SECTORAL_3",
+    text: "Strengthen capacity for climate adaptation and risk reduction in agriculture, improve agricultural insurance systems, and reduce economic losses from sudden climate-related disasters.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Agricultural climate adaptation",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Improve indexed livestock insurance with revised loss thresholds and broader coverage\nDevelop crop insurance legislation\nProvide restocking support for herders who lost 50% or more of livestock to climate disasters\nImplement ECCO-FARM climate adaptation project across five provinces",
+  },
+  {
+    id: "SECTORAL_4",
+    text: "Establish a clear legal framework for pasture use, improvement, and protection; create a unified pasture management system to reduce pasture degradation and desertification.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Pasture management & anti-desertification",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Pass Herder Primary Union legal status law enabling seasonal pasture contracts\nEstablish 4-season pasture use contract system for herder unions\nRequire herders to follow 3 packages of good practices including pasture management\nDevelop pasture management plans aligned with soum land-use plans",
+  },
+  {
+    id: "SECTORAL_5",
+    text: "Set upper limits on livestock numbers, types, and composition aligned with ecology and pasture carrying capacity; combat pasture pests and rodents; and increase pasture, fodder, and water supply to reduce agricultural risks.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Livestock-ecology balance",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Conduct pasture pest control on 650,000 to 1,000,000 ha annually\nDrill 100-200 deep wells and 400-500 simple wells annually for pasture water supply\nDesignate approximately 3 million ha of reserve pasture zones\nSet annual overwintering livestock limits based on carrying capacity assessments\nProduce and distribute improved fodder crop seeds",
+  },
+  {
+    id: "SECTORAL_6",
+    text: "Develop green economy-oriented livestock husbandry that preserves traditional nomadic cultural heritage in rangelands while establishing intensified, technology-driven farming near urban areas, sustainably using resources.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Green economy livestock",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Maintain traditional nomadic rangeland-based herding as the dominant pastoral system\nEstablish intensified meat and dairy farming zones near Darkhan-Uul, Selenge, and Tuv provinces\nDirect cooperative investment loans toward 14 climate adaptation measures\nPromote sustainable resource use through herder cooperatives",
+  },
+  {
+    id: "SECTORAL_7",
+    text: "Develop smart technology-based agriculture to increase competitiveness and value of Mongolian crops grown in fertile soils, and increase agricultural exports.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Smart agriculture & soil fertility",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Introduce precision agriculture and smart farming technologies\nImprove soil fertility through fallow management and soil enrichment\nSupport crop seed quality improvement and certification\nExpand export-oriented crop production",
+  },
+  {
+    id: "SECTORAL_8",
+    text: "Expand irrigated agricultural production capacity by investing in modern irrigation infrastructure and bringing fallow lands into efficient cultivation.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Irrigated agriculture expansion",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Install modern irrigation equipment across agricultural enterprises\nBring fallow and abandoned cropland back into irrigated rotation\nReplace traditional tillage with water-efficient agrotechnical methods\nImprove fallow preparation using chemical and combined approaches",
+  },
+  {
+    id: "SECTORAL_9",
+    text: "Promote cooperative initiatives, eco-initiatives, and investment in agriculture to increase sustainable resource utilization.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Agricultural eco-initiatives",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Establish herder cooperatives as primary units for sustainable resource management\nChannel cooperative investment loans toward climate change adaptation activities\nPromote eco-friendly and sustainable production practices through cooperative networks",
+  },
+  {
+    id: "SECTORAL_10",
+    text: "Expand state specially protected areas to cover 30% of national territory by 2030, 33% by 2040, and 35% by 2050, ensuring representation of major ecosystem types and freshwater source areas.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Protected areas 30% by 2030",
+    country: "Mongolia",
+    isQuantitative: true,
+    isTimeBound: true,
+    quantitativeDetails: "30% by 2030, 33% by 2040, 35% by 2050",
+    timeBoundDetails: "2030, 2040, 2050",
+    activities: "Conduct studies to identify freshwater, forest, and biodiversity-important areas for protection\nExpand the state specially protected areas network from 20.1% to 30% by 2030\nIncrease protected river source areas from 48.3% to 60% by 2030 and 75% by 2050\nIncrease protected forest area from 39.1% to 50% by 2030 and 60% by 2050",
+  },
+  {
+    id: "SECTORAL_11",
+    text: "Increase forest cover to 9% of national territory through reforestation, supporting natural forest regeneration, and strengthening forest protection measures, thereby increasing carbon dioxide sequestration.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Forest cover to 9%",
+    country: "Mongolia",
+    isQuantitative: true,
+    isTimeBound: false,
+    quantitativeDetails: "9% of national territory",
+    activities: "Conduct reforestation and afforestation programmes\nSupport natural forest regeneration and expansion\nStrengthen forest protection against fire, illegal logging, and pest outbreaks\nEstablish forest agroparks to reduce direct harvesting pressure",
+  },
+  {
+    id: "SECTORAL_12",
+    text: "Implement a national programme to protect soil, reduce land degradation, and combat desertification.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "National anti-desertification programme",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Protect soil fertility and moisture to prevent land degradation\nPrevent and reverse desertification in affected zones\nRestore degraded and contaminated land and return it to productive use\nDevelop smart environmental monitoring systems for land condition",
+  },
+  {
+    id: "SECTORAL_13",
+    text: "Implement the Green Belt project to rehabilitate land degraded by mining, agriculture, infrastructure, and urban development, increasing user accountability and restoring land for productive reuse.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Green Belt land rehabilitation",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Rehabilitate land degraded by mining operations\nRestore agricultural land damaged by overuse and erosion\nReclaim areas affected by infrastructure and urban development\nIncrease land user accountability for environmental restoration",
+  },
+  {
+    id: "SECTORAL_14",
+    text: "Improve the regulatory framework for valuing ecosystem services, update ecological-economic assessments, and raise public awareness of ecosystem service values and benefits.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Ecosystem services valuation",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Develop and improve regulations for ecosystem service valuation\nUpdate ecological-economic assessments of natural resources\nCommunicate ecosystem service values and benefits to the public\nIntegrate ecosystem service valuation into policy and planning decisions",
+  },
+  {
+    id: "SECTORAL_15",
+    text: "Reduce subsidies to economic activities that negatively affect ecosystems and biodiversity, and support ecosystem conservation and protection activities.",
+    sourceDocument: "SECTORAL",
+    sourceLabel: "Reduce harmful subsidies",
+    country: "Mongolia",
+    isQuantitative: false,
+    isTimeBound: false,
+    activities: "Identify and assess subsidies that negatively impact ecosystems and biodiversity\nPhase down harmful subsidies in agriculture, mining, and other sectors\nRedirect financial support toward ecosystem conservation and protection\nDevelop science-based professional education for environmental conservation",
   },
 ];
 

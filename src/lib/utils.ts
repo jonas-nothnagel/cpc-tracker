@@ -34,7 +34,7 @@ export const DOC_MEDIUM_LABELS: Record<PolicyDocumentType, string> = {
   NBSAP: "NBSAP (Biodiversity)",
   NAP: "NAP (Adaptation)",
   LDN: "LDN (Land)",
-  SECTORAL: "Sectoral Policy",
+  SECTORAL: "Vision 2050",
   BTR: "BTR (Transparency)",
   OTHER: "Other",
 };
@@ -45,7 +45,7 @@ export const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
   NBSAP: "National Biodiversity Strategy & Action Plan",
   NAP: "National Adaptation Plan",
   LDN: "Land Degradation Neutrality",
-  SECTORAL: "Sectoral Policy",
+  SECTORAL: "Vision 2050 (Long-term Development Policy)",
   BTR: "Biennial Transparency Report",
   OTHER: "Other Policy Document",
 };

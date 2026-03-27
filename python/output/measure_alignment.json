@@ -372,6 +372,96 @@
     "description": "responsive climate actions, while the BTR reported measure is centered on transitioning to renewable energy sources, lacking any direct connection to gender equality or women's empowerment."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing reliance on coal and transitioning to renewable energy sources, which is unrelated to the sustainable land payment system and livestock management target. There is no thematic or operational overlap between the energy sector and the pastoral and grazing lands sector."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on the energy sector and the transition to renewable energy, while the policy target is centered on transforming the agriculture sector."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on reducing reliance on coal and transitioning to renewable energy, while the policy target is centered on strengthening climate adaptation and risk reduction in agriculture."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on transitioning to renewable energy sources, while the target is centered on establishing a legal framework for pasture use and management, which are unrelated sectors."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on managing livestock and pasture resources, while the reported measure is centered on transitioning to renewable energy sources, which does not relate to agricultural practices or livestock management."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure is centered on transitioning to renewable energy sources, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on enhancing agricultural productivity and exports, while the reported measure is centered on transitioning to renewable energy sources, which does not directly relate to agricultural competitiveness or crop production."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure is centered on reducing reliance on coal and promoting renewable energy sources, which do not intersect with agricultural irrigation practices."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure is centered on reducing reliance on coal and transitioning to renewable energy sources in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on transitioning to renewable energy sources, which does not directly relate to biodiversity or protected area expansion."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure is centered on reducing reliance on coal and promoting renewable energy sources, which do not directly relate to forest management or conservation."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on transitioning to renewable energy sources, which does not address land and soil ecosystems directly."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and restoration, while the reported measure is centered on transitioning to renewable energy sources, which does not address land degradation or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure is centered on transitioning to renewable energy sources, lacking any direct connection to ecosystem services."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on reducing reliance on coal and promoting renewable energy, which is a different sector than the target's emphasis on harmful subsidies in agriculture and mining. While both aim to improve environmental outcomes, they do not directly address the specific goals of reducing harmful subsidies or enhancing ecosystem conservation."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_energy_2",
     "alignment": "none",
@@ -742,6 +832,96 @@
     "targetBId": "BTR_energy_2",
     "alignment": "none",
     "description": "responsive climate actions, while the BTR reported measure is centered on energy efficiency and infrastructure improvements, lacking any direct connection to gender equality or women's empowerment."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "The reported measure focuses on modernizing energy infrastructure and improving energy efficiency, which is unrelated to the sustainable land payment system and livestock management outlined in the policy target. There is no thematic or operational overlap between the energy sector and the pastoral and grazing lands targeted by the policy."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on energy sector improvements, while the policy target is centered on transforming agriculture, indicating no direct relationship between the two."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy infrastructure and reducing greenhouse gas emissions in the energy sector, which is unrelated to the agricultural adaptation and risk reduction goals outlined in the policy target. There is no thematic or operational overlap between the two."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on pasture management and legal frameworks for herders, while the reported measure addresses energy efficiency and infrastructure improvements in urban areas."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "The reported measure focuses on modernizing energy infrastructure and improving energy efficiency, which is unrelated to managing livestock populations or enhancing pasture resources. The goals, actions, and expected outcomes of the measure do not intersect with the agricultural and ecological objectives outlined in the policy target."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure is centered on modernizing energy infrastructure, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on enhancing agricultural productivity and exports, while the reported measure is centered on improving energy infrastructure and reducing grid losses, which does not relate to agricultural objectives."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure addresses improvements in the energy sector, specifically related to electricity and heat supply."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses energy efficiency and grid modernization in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on modernizing energy infrastructure, which does not relate to biodiversity or ecosystem protection."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on energy efficiency and reducing grid losses, while the policy target is centered on increasing forest cover and enhancing carbon sequestration."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on energy efficiency and modernizing power grids, which do not relate to land and soil ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and environmental restoration, while the reported measure is centered on energy efficiency and grid modernization, which do not address land degradation or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure is centered on energy efficiency and infrastructure improvements in the electricity and heat supply sector."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on reducing harmful economic activities affecting ecosystems and biodiversity, while the reported measure is centered on improving energy efficiency and reducing grid losses in the energy sector."
   },
   {
     "targetAId": "NBSAP_1",
@@ -1116,6 +1296,96 @@
     "description": "responsive climate actions, while the BTR reported measure is centered on energy efficiency in Combined Heat and Power Plants, with no mention of gender considerations."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency in Combined Heat and Power Plants, which is unrelated to the sustainable land payment system and livestock management target. There is no thematic or operational overlap between the energy sector and the pastoral and grazing lands sector."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on energy efficiency in power generation, while the policy target is centered on transforming agriculture and enhancing climate resilience in that sector."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing energy consumption and enhancing efficiency in Combined Heat and Power Plants, which is unrelated to the agricultural adaptation and risk reduction goals outlined in the policy target. There is no thematic or operational overlap between the energy sector measures and the agricultural sector objectives."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The target focuses on pasture management and legal frameworks for herders, while the measure addresses energy efficiency in power plants, which does not relate to pastureland or rangeland ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency in Combined Heat and Power Plants, which is unrelated to managing livestock populations or enhancing pasture resources. The sectors and intended outcomes of the measure and target do not intersect, indicating no shared goals or actions."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure is centered on energy efficiency in power generation, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the reported measure is centered on improving energy efficiency in power generation, which does not directly relate to agricultural competitiveness or productivity."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing energy consumption and enhancing efficiency in the energy sector, which does not relate to expanding irrigated agricultural production capacity. There is no shared goal, action, or outcome between the agricultural target and the energy measure."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses energy efficiency in power generation, indicating no direct relationship between the two."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on improving energy efficiency in Combined Heat and Power Plants, which does not relate to biodiversity or ecosystem protection."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure is centered on improving energy efficiency in Combined Heat and Power Plants, which does not relate to forestry or land management."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil health and land degradation, while the reported measure is centered on energy efficiency in power plants, with no direct connection to land or soil ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing energy consumption and enhancing efficiency in Combined Heat and Power Plants, which is unrelated to the rehabilitation of degraded land. The sectors and intended outcomes of the measure do not intersect with the goals of restoring land for productive reuse."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and natural resource management, while the reported measure is centered on energy efficiency in Combined Heat and Power Plants, which does not relate to ecosystem services."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on reducing harmful subsidies in sectors like agriculture and mining to promote ecosystem health, while the reported measure is centered on improving energy efficiency in Combined Heat and Power Plants, which does not address the target's specific objectives related to biodiversity and ecosystem conservation."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_energy_4",
     "alignment": "none",
@@ -1486,6 +1756,96 @@
     "targetBId": "BTR_energy_4",
     "alignment": "none",
     "description": "responsive climate actions, while the BTR reported measure addresses air pollution and greenhouse gas emissions without any mention of gender considerations or empowerment of women."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, which is unrelated to the sustainable land payment system and livestock management target. There is no thematic or operational overlap between the two, as they address different environmental issues and sectors."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on transportation and industrial sectors, while the policy target is centered on transforming agriculture, indicating no direct relationship between the two."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, which does not relate to the agricultural adaptation and risk reduction goals outlined in the policy target. There is no shared thematic area or intended outcomes between the two."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, while the target is centered on establishing a legal framework for pasture use and management in pastureland ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on managing livestock and pasture resources, while the reported measure addresses air pollution and emissions in transportation and industrial sectors, which do not intersect with agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, while the policy target is centered on sustainable livestock husbandry and preserving nomadic cultural heritage in agricultural areas."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the reported measure addresses air pollution and emissions in the transportation and industrial sectors, which do not intersect with agricultural objectives."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure addresses air pollution and emissions in the transportation and industrial sectors, which do not intersect with agricultural irrigation practices."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses air pollution and emissions in transportation and industrial sectors, lacking any direct connection to agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure addresses air pollution and greenhouse gas emissions in the transportation and industrial sectors."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, while the policy target is centered on increasing forest cover and enhancing carbon sequestration in terrestrial ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, while the policy target is centered on soil protection and combating desertification in land and soil ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_4",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on reducing air pollution and improving fuel quality in the transportation and industrial sectors, while the policy target is centered on rehabilitating degraded land and restoring it for productive reuse."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_4",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on reducing air pollution and improving fuel quality, which is somewhat related to ecosystem services but does not directly address the valuation or awareness of ecosystem services as outlined in the target. While both aim for environmental improvement, the specific actions and intended outcomes do not meaningfully advance the target's core objectives of enhancing regulatory frameworks and public awareness regarding ecosystem services."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_4",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target. While the reported measure focuses on reducing air pollution and GHG emissions in the transportation and industrial sectors, it does not directly address the harmful subsidies in agriculture and mining that the target aims to phase down. However, both measures share a broader environmental goal, indicating some thematic overlap."
   },
   {
     "targetAId": "NBSAP_1",
@@ -1860,6 +2220,96 @@
     "description": "responsive climate actions, while the BTR reported measure is centered on reducing GHG emissions through transportation logistics in the coal export sector, with no mention of gender considerations."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions in the transportation and coal export sector, which is unrelated to the sustainable land payment system and livestock management target. There is no shared goal, action, or outcome between the two."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on transportation and coal export, while the policy target is centered on transforming agriculture into a sustainable sector."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions in the transportation and coal export sector, which does not relate to the agricultural adaptation and risk reduction goals outlined in the policy target. There is no shared action or outcome between the two, indicating a complete disconnect."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The target focuses on pasture management and legal frameworks for herders, while the measure addresses transportation logistics for coal exports, which does not relate to pastureland or herder practices."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions in the transportation and coal export sector, which is unrelated to managing livestock populations and enhancing pasture resources. There is no shared goal, action, or outcome between the measure and the sectoral policy target."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure addresses transportation and coal export, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the reported measure is centered on reducing GHG emissions in the transportation and coal export sector, which does not relate to agricultural competitiveness or productivity."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions in the transportation and coal export sector, which does not relate to expanding irrigated agricultural production capacity. The goals, actions, and expected outcomes of the measure and target are entirely different, with no shared objectives or operational overlap."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions in the transportation and coal export sector, which does not relate to the agricultural and resource management goals of the policy target. There is no shared action or outcome between the two, indicating a complete disconnect."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure addresses transportation efficiency in the coal export sector, which does not relate to biodiversity or ecosystem protection."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure addresses transportation efficiency in the coal export sector, which does not relate to forestry or land management."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on improving transportation efficiency for coal exports, which does not relate to land or soil ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The target focuses on land rehabilitation and restoration, while the measure addresses transportation efficiency in the coal export sector, which does not contribute to land restoration or environmental health."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_5",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure addresses transportation efficiency in the coal export sector, which does not relate to ecosystem services or their valuation."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_5",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on reducing greenhouse gas emissions in the transportation sector, which is only tangentially related to the target of reducing harmful economic activities affecting ecosystems and biodiversity. While both aim to improve environmental outcomes, the specific actions and sectors addressed do not meaningfully advance the core objectives of the target."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_energy_6",
     "alignment": "none",
@@ -2230,6 +2680,96 @@
     "targetBId": "BTR_energy_6",
     "alignment": "none",
     "description": "responsive climate actions, while the BTR reported measure is centered on improving energy efficiency in urban residential buildings without any mention of gender considerations."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing greenhouse gas emissions in urban residential buildings, which is unrelated to the sustainable land payment system and livestock management target aimed at pastoral and grazing lands. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on transforming agriculture for sustainability and climate resilience, while the reported measure addresses energy efficiency in urban residential buildings, which does not relate to agricultural practices or outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing greenhouse gas emissions in urban residential buildings, which is unrelated to the agricultural adaptation and risk reduction goals outlined in the policy target. There is no thematic or operational overlap between the two."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The pasture management target focuses on legal frameworks and practices for herders, while the reported measure addresses energy efficiency in urban residential buildings, which does not relate to pastureland or rangeland ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The livestock management target focuses on agricultural practices and ecological sustainability, while the reported measure addresses urban energy efficiency and air quality in a specific city, Ulaanbaatar."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on sustainable livestock husbandry and preserving nomadic cultural heritage, while the reported measure addresses energy efficiency in urban residential buildings, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing greenhouse gas emissions in urban residential buildings, which is unrelated to the agricultural sector and the specific goals of increasing competitiveness and exports of Mongolian crops. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing greenhouse gas emissions in urban residential buildings, which is unrelated to the agricultural sector's goal of expanding irrigated agricultural production capacity. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses energy efficiency in urban residential buildings, which does not relate to agricultural practices or resource management."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure aims to improve energy efficiency in urban residential buildings, which does not relate to biodiversity or ecosystem protection."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure addresses energy efficiency in urban residential buildings, which does not relate to forest management or terrestrial ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on improving energy efficiency in urban residential buildings, which does not relate to land or soil ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency in urban residential buildings, which is unrelated to the target of rehabilitating degraded land. The goals, actions, and expected outcomes of the two initiatives do not intersect in any meaningful way."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure addresses energy efficiency in urban residential buildings, which does not relate to ecosystem services or their valuation."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_6",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on reducing harmful subsidies in sectors like agriculture and mining to promote ecosystem health, while the reported measure is centered on improving energy efficiency in urban residential buildings in Ulaanbaatar, which does not address the target's objectives related to ecosystems and biodiversity."
   },
   {
     "targetAId": "NBSAP_1",
@@ -2604,6 +3144,96 @@
     "description": "responsive climate actions, while the BTR reported measure addresses urban air quality and public health in Ulaanbaatar without any mention of gender considerations."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "The reported measure focuses on urban air quality and energy sector improvements in Ulaanbaatar city, which is unrelated to the sustainable land payment system and livestock management target aimed at pastoral and grazing lands. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on urban air quality and energy sector improvements in Ulaanbaatar, while the policy target is centered on transforming agriculture and enhancing climate resilience in rural areas."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on agricultural adaptation and risk reduction, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar city."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on pasture management and legal frameworks for herders, while the reported measure addresses urban air quality and fuel use in Ulaanbaatar, which does not relate to pastureland or rangeland ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on managing livestock and pasture resources in agricultural ecosystems, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar city."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_7",
+    "alignment": "low",
+    "description": "oriented goals of the target. While both aim to improve environmental conditions, they do not directly support each other's specific objectives or actions."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar, with no direct connection to agricultural practices or outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar city, with no direct connection to agricultural practices or water resource management."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar city."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar, which do not relate to biodiversity or protected areas."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar city, with no direct connection to forestry or land management."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil health and land degradation, while the reported measure addresses air pollution and energy use in an urban setting, which does not relate to soil or land management."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_7",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and restoration, while the reported measure addresses urban air quality and energy sector improvements in Ulaanbaatar, which do not relate to land degradation or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_7",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on urban air quality and energy sector improvements in Ulaanbaatar, which is a different domain from the ecosystem service valuation target. While both relate to environmental management, the specific actions and intended outcomes do not meaningfully advance the core objectives of enhancing ecosystem service valuation and public awareness."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_7",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on urban air quality and energy sector improvements in Ulaanbaatar, which is a different context from the broader ecosystem and biodiversity conservation target. While both aim to improve environmental conditions, the specific actions and intended outcomes do not directly advance the core objectives of reducing harmful subsidies and promoting ecosystem conservation."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_energy_8",
     "alignment": "low",
@@ -2974,6 +3604,96 @@
     "targetBId": "BTR_energy_8",
     "alignment": "low",
     "description": "\" \u2013 The measure focuses on energy efficiency and GHG emissions reduction, which are important for climate action but do not specifically address gender equality or women's empowerment as outlined in the target. While both the measure and target relate to climate change, the measure does not advance the specific goals of integrating gender considerations into climate policies and actions."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on energy efficiency and GHG emissions in the energy sector, while the target is centered on sustainable land management and livestock practices in pastoral areas."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on energy efficiency and reducing GHG emissions in the energy sector, while the policy target is centered on transforming agriculture and enhancing climate resilience in that sector."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on climate adaptation and risk reduction in agriculture, while the reported measure is centered on energy efficiency and reducing greenhouse gas emissions in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on pasture management and legal frameworks for herders, while the reported measure is centered on energy efficiency and reducing greenhouse gas emissions in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on livestock management and pasture resources, while the reported measure is centered on energy consumption and efficiency in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_energy_8",
+    "alignment": "low",
+    "description": "oriented livestock husbandry."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on enhancing agricultural productivity and exports, while the reported measure is centered on energy efficiency and reducing greenhouse gas emissions in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure is centered on reducing energy consumption in the energy sector, with no direct connection to agricultural practices or water resource management."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure is centered on energy efficiency in the energy sector, lacking any direct connection to agricultural practices or resource management."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on energy efficiency and reducing greenhouse gas emissions in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure is centered on reducing energy consumption and improving energy efficiency in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and land degradation, while the reported measure is centered on energy consumption and efficiency in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and restoration, while the reported measure is centered on energy consumption and efficiency in the energy sector, lacking any direct connection to land management or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_energy_8",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and natural resource management, while the reported measure is centered on energy consumption and efficiency in the energy sector."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_energy_8",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on energy efficiency and reducing greenhouse gas emissions, which is a different aspect of environmental sustainability than the target's emphasis on reducing harmful subsidies and promoting ecosystem conservation. While both aim to support environmental goals, they do not directly advance each other's specific objectives."
   },
   {
     "targetAId": "NBSAP_1",
@@ -3348,6 +4068,96 @@
     "description": "responsive climate actions, while the BTR reported measure addresses livestock management and environmental degradation without any mention of gender considerations."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "high",
+    "description": "The reported measure directly implements and strongly supports the policy target by regulating livestock numbers, incentivizing sustainable grazing practices, and improving livestock management, all of which align with the target's goal of establishing a sustainable land payment system and managing livestock numbers. Both the target and the measure aim to balance grazing pressure and promote ecological sustainability in pastoral and grazing lands, indicating a concrete step toward achieving the target's objectives."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "high",
+    "description": "The reported measure directly supports the policy target by promoting sustainable livestock management practices, which aligns with the target's goal of transforming agriculture into a climate-resilient sector. Both the target and the measure aim to enhance the livelihoods of herders while reducing adverse environmental impacts, indicating a strong coherence in their objectives and expected outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "The reported measure shares a thematic overlap with the target by addressing livestock management and promoting sustainable practices, which can contribute to resilience in agriculture. However, it does not fully implement the target's specific goals related to improving agricultural insurance systems and providing restocking support for herders affected by climate disasters."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "high",
+    "description": "\" \u2013 The measure directly implements and strongly supports the target by promoting sustainable grazing practices and improving livestock management, which are essential for reducing pasture degradation and desertification. Both the target and the measure aim to enhance pasture management and legal recognition of herder unions, aligning their goals and expected outcomes closely."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "high",
+    "description": "The reported measure directly implements the target by regulating livestock numbers and promoting sustainable grazing practices, which are essential for managing livestock populations and enhancing pasture resources. Both the target and measure aim to improve ecosystem health and reduce agricultural risks, indicating a strong coherence in their goals and intended outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "The reported measure shares thematic overlap with the target by addressing sustainable livestock management and promoting practices that could enhance climate resilience. However, it does not fully support the target's specific goals of preserving traditional nomadic practices and establishing intensified farming zones, which are central to the target's objectives."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "The measure partially implements or supports the target by promoting sustainable agricultural practices and improving ecosystem health, which can indirectly benefit crop production. However, the focus on livestock management and reducing livestock numbers does not directly address the specific goals of increasing competitiveness and value of crops or enhancing agricultural exports."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on livestock management and sustainable grazing practices, which are related to agricultural land use but do not directly address the expansion of irrigated agricultural production capacity. While both aim for sustainable agricultural practices, the specific actions and outcomes of the reported measure do not advance the target's goal of increasing irrigation and agricultural productivity."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "high",
+    "description": "The reported measure directly supports the target by promoting sustainable land management practices and improving livestock management, which are essential for enhancing sustainable resource utilization in agriculture. Both the target and the measure aim to improve climate resilience and sustainable practices among herders and agricultural stakeholders in Mongolia."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on agricultural and pastoral land management, which is somewhat related to biodiversity conservation but does not directly address the expansion of protected areas or the specific goals of enhancing ecosystem representation. While both aim for improved ecosystem health, the measure's actions do not meaningfully advance the target's specific objectives of increasing protected area coverage."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure addresses livestock management and sustainable agricultural practices, which do not directly relate to forest ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "The reported measure addresses sustainable land management and aims to reduce land degradation, which aligns with the target's goal of protecting soil and combating desertification. However, it primarily focuses on livestock management and does not fully encompass all aspects of the target, such as restoring degraded land and developing environmental monitoring systems."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on livestock management and sustainable grazing practices, which are related to land use but do not directly address the rehabilitation of degraded land as specified in the target. While both aim to improve land health, the specific actions and outcomes of the measure do not meaningfully advance the target's core objectives of land restoration and increased productivity."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "The measure partially implements or supports the target by addressing sustainable land management practices, which can enhance ecosystem service valuation indirectly. However, it does not fully engage with the specific actions of developing regulations for ecosystem service valuation or integrating these values into broader policy and planning decisions."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_agriculture_1",
+    "alignment": "medium",
+    "description": "The reported measure addresses sustainable land management and environmental degradation, which are relevant to the sectoral policy target of reducing harmful economic activities. However, it primarily focuses on livestock management and does not fully encompass the broader goal of phasing down harmful subsidies across various sectors like agriculture and mining."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_agriculture_2",
     "alignment": "low",
@@ -3718,6 +4528,96 @@
     "targetBId": "BTR_agriculture_2",
     "alignment": "none",
     "description": "responsive climate actions, while the BTR reported measure is centered on reducing GHG emissions in the pastoral farming sector without any mention of gender considerations."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target by promoting sustainable practices in the pastoral farming sector, which aligns with the goal of enhancing land sustainability. However, it does not directly address the specific actions related to managing livestock numbers or establishing a sustainable land payment system, which are core objectives of the target."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target. While the reported measure focuses on reducing greenhouse gas emissions and enhancing land sustainability through manure management, it aligns with the target's broader goals of sustainability and climate adaptation in agriculture, but does not fully address the specific actions aimed at transforming the agricultural sector as outlined in the target."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "low",
+    "description": "related disasters."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions and enhancing land sustainability, which aligns with the broader goals of improving pasture management and reducing degradation. However, it does not directly address the specific legal framework and practices outlined in the target, such as the establishment of seasonal pasture contracts and the legal recognition of herder unions."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target. While both the target and the measure focus on sustainable practices in the pastoral farming sector, the measure's emphasis on manure management and energy production does not fully address the broader goals of managing livestock populations and enhancing pasture resources as outlined in the target."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "oriented livestock husbandry that preserves traditional practices and enhances resource use efficiency."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on reducing greenhouse gas emissions in the pastoral farming sector, which is somewhat related to agricultural sustainability but does not directly address the competitiveness and export goals of the crop sector. While both aim for sustainable practices, the specific actions and intended outcomes do not align with the target's emphasis on enhancing crop quality and agricultural exports."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on the pastoral farming sector and aims to reduce GHG emissions through manure management, which does not directly support the target of expanding irrigated agricultural production capacity. While both measures relate to agricultural practices, they address different aspects and do not meaningfully advance each other's specific goals."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target. While both the target and the measure focus on sustainable practices in agriculture, the measure's specific actions related to manure management do not fully encompass the broader goals of establishing herder cooperatives and promoting cooperative investment in climate adaptation."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure addresses GHG emissions reduction in the pastoral farming sector, which does not directly relate to the conservation of protected areas."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure addresses greenhouse gas emissions in the pastoral farming sector, which does not directly relate to forest management or expansion."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target. While the reported measure focuses on reducing methane emissions and promoting sustainable practices in the pastoral farming sector, it does not fully address the broader goals of protecting soil health and reversing desertification outlined in the target."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on the pastoral farming sector and addresses manure management, which is only tangentially related to the broader goal of rehabilitating land affected by mining, agriculture, and urban development. While both aim to promote sustainability, the specific actions and outcomes of the reported measure do not directly advance the core objectives of the land rehabilitation target."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "low",
+    "description": "making."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_agriculture_2",
+    "alignment": "medium",
+    "description": "\" \u2013 The measure partially implements or supports the target by promoting sustainable practices in the pastoral farming sector, which can contribute to ecosystem health. However, it does not directly address the broader goal of reducing harmful subsidies across multiple sectors, which is a core objective of the target."
   },
   {
     "targetAId": "NBSAP_1",
@@ -4092,6 +4992,96 @@
     "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The NDC policy target focuses on gender equality and women's empowerment in climate actions, while the BTR reported measure is centered on energy efficiency and emissions reduction in the cement industry, with no mention of gender considerations."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is unrelated to the sustainable land payment system and livestock management target. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "resilient, while the reported measure pertains to improving energy efficiency in the cement industry, which does not relate to agricultural practices or outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is unrelated to the agricultural adaptation and risk reduction goals outlined in the policy target. There is no thematic or operational overlap between the two domains."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The target focuses on pasture management and legal frameworks for herders, while the measure pertains to energy efficiency in the cement industry, with no connection to pastureland or herding practices."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is unrelated to managing livestock populations and enhancing pasture resources. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure pertains to energy efficiency in the cement industry, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is unrelated to the agricultural sector and the specific goals of increasing competitiveness and exports of Mongolian crops. There is no thematic or operational overlap between the two."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is unrelated to the agricultural sector's goal of expanding irrigated agricultural production capacity. There is no shared action or outcome between the two, indicating a complete lack of alignment."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure pertains to energy efficiency in the cement industry, indicating no direct relationship between the two."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "The reported measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is unrelated to the biodiversity conservation goals outlined in the policy target. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure is centered on improving energy efficiency in the cement industry, which does not relate to forestry or land management."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil health and land degradation, while the reported measure is centered on energy efficiency in the cement industry, with no direct connection to soil or land management."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and restoration, while the reported measure is centered on improving energy efficiency in the cement industry, which does not address land degradation or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure is centered on improving energy efficiency in the cement industry, with no connection to ecosystem services or natural resource management."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_ippu_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on improving energy efficiency and reducing emissions in the cement industry, which is a different sector than the agriculture and mining sectors targeted by the policy. While both aim for environmental sustainability, the specific actions and outcomes do not directly advance the core objectives of reducing harmful subsidies and promoting ecosystem conservation."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_ippu_2",
     "alignment": "none",
@@ -4462,6 +5452,96 @@
     "targetBId": "BTR_ippu_2",
     "alignment": "none",
     "description": "responsive climate actions, while the BTR reported measure is centered on reducing environmental impacts in the construction industry without any mention of gender considerations."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing environmental impact in the construction industry through cement production, which is unrelated to the sustainable land payment system and livestock management target. There is no thematic or operational overlap between the two measures."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "resilient, while the reported measure pertains to reducing environmental impacts in the construction industry, specifically through cement production."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on climate adaptation and risk reduction in agriculture, while the reported measure pertains to reducing environmental impact in the construction industry, specifically cement production."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on the construction industry and cement production, while the policy target is centered on pasture use and management for herders, indicating no relevant connection between the two."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "The reported measure focuses on the construction industry and cement production, which is entirely separate from the agricultural and livestock management goals outlined in the policy target. There are no shared actions, outcomes, or thematic connections between the two."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure pertains to reducing environmental impacts in the construction industry, specifically cement production."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the reported measure pertains to reducing environmental impacts in the construction industry, specifically cement production."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure pertains to reducing environmental impacts in the construction industry, specifically through cement production."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses sustainability in the construction industry, specifically cement production."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on reducing emissions in the construction industry through cement production practices."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "The reported measure focuses on reducing greenhouse gas emissions in the construction industry through cement production, which does not relate to increasing forest cover or enhancing carbon sequestration as outlined in the policy target. There is no thematic or operational overlap between the two initiatives."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on reducing emissions in the construction industry through cement production."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on rehabilitating degraded land for productive reuse, while the reported measure is centered on reducing emissions in the construction industry through cement production practices."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure is centered on reducing emissions in the construction industry through cement production practices."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_ippu_2",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on reducing environmental impact in the construction industry, which is a different sector from the agriculture and mining sectors targeted by the policy. While both aim for sustainability, the specific actions and outcomes of the measure do not directly advance the core objectives of the policy target related to ecosystem conservation and harmful subsidies."
   },
   {
     "targetAId": "NBSAP_1",
@@ -4836,6 +5916,96 @@
     "description": "responsive climate actions and empowerment of women, while the BTR reported measure is centered on energy production and methane supply, lacking any direct connection to gender equality or women's empowerment."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on energy production and methane emissions, while the target is centered on sustainable land management and livestock practices."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "resilient, while the reported measure is centered on energy production and reducing methane emissions from coal, which does not address agricultural practices or outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on climate adaptation and risk reduction in agriculture, while the reported measure is centered on energy production and reducing greenhouse gas emissions through methane supply, which does not address agricultural resilience or insurance systems."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The target focuses on pasture management and legal frameworks for herders, while the measure is centered on energy production and methane supply, lacking any direct connection to pastureland or herder practices."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on managing livestock and pasture resources, while the reported measure is centered on energy production and methane supply, which does not relate to agricultural practices or livestock management."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure is centered on energy production and methane supply, which does not relate to livestock or agricultural practices."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the reported measure is centered on energy production and reducing greenhouse gas emissions, with no direct connection to agricultural practices or outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure is centered on energy production and methane management, which does not relate to agricultural practices or water resource management."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure is centered on energy production and methane supply, which does not address agricultural practices or resource management."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on energy production and reducing greenhouse gas emissions, with no direct connection to biodiversity or ecosystem protection."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure is centered on energy production and reducing methane emissions from coal, which does not relate to forest management or conservation."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on energy production and reducing methane emissions from coal, which does not address land degradation or soil health."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and environmental restoration, while the reported measure is centered on energy production and methane supply, which does not address land degradation or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on energy production and reducing methane emissions, which is tangentially related to ecosystem service valuation. However, it does not meaningfully advance the specific goals of enhancing the regulatory framework for ecosystem service valuation or increasing public awareness of ecosystem services."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_ippu_3",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on reducing greenhouse gas emissions and enhancing energy security, which is a broader environmental goal but does not specifically address the reduction of harmful subsidies or the promotion of ecosystem conservation as outlined in the target. While both the measure and target relate to environmental sustainability, they do not directly support each other's specific objectives."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_waste_1",
     "alignment": "none",
@@ -5208,6 +6378,96 @@
     "description": "responsive actions or women's empowerment."
   },
   {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable land management and livestock practices, while the reported measure is centered on waste management and recycling, which do not intersect with the ecological carrying capacities of pastoral lands."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "resilient, while the reported measure is centered on waste management and recycling, which does not directly relate to agricultural practices or outcomes."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on climate adaptation and risk reduction in agriculture, while the reported measure addresses waste management and recycling, which does not relate to agricultural resilience or insurance systems."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on pasture management and legal frameworks for herders, while the reported measure addresses waste management and recycling, which are unrelated to pastureland and rangeland ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The sectoral policy target focuses on livestock management and pasture resources, while the reported measure addresses waste management and recycling, which do not intersect with agricultural practices or livestock management."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable livestock husbandry and cultural preservation, while the reported measure addresses waste management and recycling, which do not intersect with the livestock sector or its objectives."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the waste management measure addresses waste treatment and recycling, which do not directly relate to agricultural competitiveness or productivity."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure is centered on waste management and recycling, which does not contribute to agricultural productivity or water resource efficiency."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses waste management and recycling, which does not relate to agricultural practices or resource management for herders."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on waste management and recycling, which does not directly relate to biodiversity or ecosystem protection."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on increasing forest cover and enhancing carbon sequestration, while the reported measure is centered on waste management and recycling, which does not directly relate to forest ecosystems or carbon sequestration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on soil protection and combating desertification, while the reported measure is centered on waste management and recycling, which does not address soil health or land degradation directly."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and restoration, while the reported measure is centered on waste management and recycling, with no direct connection to land degradation or restoration efforts."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_waste_1",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on ecosystem service valuation and public awareness, while the reported measure is centered on waste management and recycling, lacking any direct connection to ecosystem services."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_waste_1",
+    "alignment": "low",
+    "description": "\" \u2013 The measure focuses on waste management and recycling, which is a different sector from the target's emphasis on reducing harmful subsidies in agriculture and mining. While both aim to promote environmental sustainability, the specific actions and outcomes do not directly advance the target's core objectives related to ecosystem conservation and protection."
+  },
+  {
     "targetAId": "NBSAP_1",
     "targetBId": "BTR_waste_2",
     "alignment": "none",
@@ -5578,5 +6838,95 @@
     "targetBId": "BTR_waste_2",
     "alignment": "none",
     "description": "responsive climate actions, while the BTR reported measure is centered on improving sanitation and public health, which does not address gender equality or women's empowerment in climate contexts."
+  },
+  {
+    "targetAId": "SECTORAL_1",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on improving sanitation and public health, while the policy target is centered on sustainable land management and livestock practices."
+  },
+  {
+    "targetAId": "SECTORAL_2",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on public health and sanitation, while the policy target is centered on transforming agriculture, indicating no direct relationship between the two."
+  },
+  {
+    "targetAId": "SECTORAL_3",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on public health and sanitation, while the policy target is centered on climate adaptation and risk reduction in agriculture."
+  },
+  {
+    "targetAId": "SECTORAL_4",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on improving sanitation and public health, while the policy target is centered on pasture management and reducing degradation in rangeland ecosystems."
+  },
+  {
+    "targetAId": "SECTORAL_5",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The livestock management target focuses on agricultural practices and ecological sustainability, while the sanitation measure addresses public health and hygiene infrastructure, with no direct connection to livestock or pasture management."
+  },
+  {
+    "targetAId": "SECTORAL_6",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The livestock husbandry target focuses on sustainable agricultural practices and cultural preservation, while the sanitation measure is centered on public health and hygiene infrastructure, lacking any direct connection to livestock or rangeland management."
+  },
+  {
+    "targetAId": "SECTORAL_7",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The agricultural policy target focuses on enhancing crop production and exports, while the sanitation measure is centered on improving public health and sanitation infrastructure."
+  },
+  {
+    "targetAId": "SECTORAL_8",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding irrigated agricultural production, while the reported measure is centered on improving sanitation and hygiene facilities, which do not intersect in objectives or implementation strategies."
+  },
+  {
+    "targetAId": "SECTORAL_9",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on sustainable resource utilization in agriculture, while the reported measure addresses public health and sanitation, lacking any direct connection to agricultural practices or resource management."
+  },
+  {
+    "targetAId": "SECTORAL_10",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on expanding protected areas for biodiversity conservation, while the reported measure is centered on improving sanitation and public health, with no direct connection to ecosystem protection or biodiversity."
+  },
+  {
+    "targetAId": "SECTORAL_11",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on improving public health and sanitation, while the policy target is centered on increasing forest cover and enhancing carbon sequestration, which are unrelated objectives."
+  },
+  {
+    "targetAId": "SECTORAL_12",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on improving sanitation and public health, while the policy target is centered on soil protection and combating desertification, which are unrelated areas of concern."
+  },
+  {
+    "targetAId": "SECTORAL_13",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The policy target focuses on land rehabilitation and environmental restoration, while the reported measure is centered on improving public health through sanitation and hygiene facilities."
+  },
+  {
+    "targetAId": "SECTORAL_14",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on public health and sanitation, while the policy target is centered on ecosystem service valuation and natural resource management, which do not intersect meaningfully."
+  },
+  {
+    "targetAId": "SECTORAL_15",
+    "targetBId": "BTR_waste_2",
+    "alignment": "none",
+    "description": "\" \u2013 The measure and target operate in completely different domains with no shared goals, actions, or outcomes. The reported measure focuses on improving sanitation and public health, while the policy target is centered on reducing harmful economic activities that impact ecosystems and biodiversity."
   }
 ]

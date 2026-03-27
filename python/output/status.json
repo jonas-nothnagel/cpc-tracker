@@ -3,25 +3,26 @@
   "step": 6,
   "totalSteps": 6,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 184.7s",
-  "startedAt": "2026-03-27T12:56:53.294672+00:00",
-  "completedAt": "2026-03-27T12:59:58.031340+00:00",
+  "message": "Pipeline finished in 143.9s",
+  "startedAt": "2026-03-27T15:16:52.738043+00:00",
+  "completedAt": "2026-03-27T15:19:16.652168+00:00",
   "error": null,
   "summary": {
-    "totalTargets": 62,
-    "totalClassifications": 2066,
-    "relevantClassifications": 235,
-    "totalPairs": 1245,
+    "totalTargets": 77,
+    "totalClassifications": 2486,
+    "relevantClassifications": 279,
+    "totalPairs": 2175,
     "alignmentLevels": {
-      "high": 243,
-      "medium": 577,
-      "low": 355,
-      "low_tension": 68,
-      "moderate_contradiction": 2
+      "high": 471,
+      "medium": 1020,
+      "low": 554,
+      "low_tension": 127,
+      "moderate_contradiction": 2,
+      "high_contradiction": 1
     },
-    "totalContradictions": 70,
-    "measureAlignmentPairs": 930,
+    "totalContradictions": 130,
+    "measureAlignmentPairs": 1155,
     "measurePseudoTargets": 15,
-    "elapsedSeconds": 184.7
+    "elapsedSeconds": 143.9
   }
 }

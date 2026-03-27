@@ -226,6 +226,38 @@ Produce the final consolidated list.
 # Multi-language extraction prompt addendum
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Activities extraction prompt (Phase 3)
+# ---------------------------------------------------------------------------
+
+ACTIVITIES_SYSTEM = """\
+You are a policy analyst extracting implementation details for policy targets.
+
+Given a policy target and the surrounding source text where it was found, \
+extract any explicitly listed sub-activities, measures, or actions that fall \
+under this target.
+
+RULES:
+1. Extract ONLY sub-items that are explicitly listed in the source text \
+   (numbered lists, bullet points, or clearly delineated measures).
+2. Do NOT invent, infer, or paraphrase activities that are not in the text.
+3. If there are no explicit sub-activities, return an empty array: []
+4. Each activity should be a concise one-line summary preserving key details.
+5. Include numbering from the source document when present (e.g. "2.1", "a)").
+
+Return a JSON object: {{"activities": ["activity 1", "activity 2", ...]}}
+Output valid JSON only — no markdown fences, no explanation."""
+
+ACTIVITIES_USER = """\
+Target: {target_text}
+
+Source text (from pages {pages}):
+---
+{context}
+---
+
+Extract any explicitly listed sub-activities, measures, or actions for this target."""
+
 MULTILANG_ADDENDUM = """\
 
 LANGUAGE NOTE: This document is written in {language_name} (not English).
@@ -555,6 +587,84 @@ def _parse_relevance(raw: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# Phase 3: Activities extraction
+# ---------------------------------------------------------------------------
+
+
+async def _extract_activities(
+    targets: list[dict[str, Any]],
+    doc: DocumentText,
+    chunks: list[Chunk],
+    is_english: bool,
+    lang_name: str,
+) -> list[dict[str, Any]]:
+    """For each target, extract sub-activities from the surrounding source text."""
+    # Build a lookup from page number to chunk text for context retrieval
+    page_to_chunks: dict[int, list[str]] = {}
+    for chunk in chunks:
+        for page in chunk.pages:
+            page_to_chunks.setdefault(page, []).append(chunk.text)
+
+    activity_calls = []
+    for target in targets:
+        pages = target.get("pageNumbers", [])
+        # Gather context from chunks that cover this target's pages
+        context_parts: list[str] = []
+        seen: set[int] = set()
+        for page in pages:
+            for chunk_text in page_to_chunks.get(page, []):
+                h = hash(chunk_text)
+                if h not in seen:
+                    seen.add(h)
+                    context_parts.append(chunk_text)
+
+        context = "\n\n---\n\n".join(context_parts)
+        if len(context) > 12000:
+            context = context[:12000].rsplit("\n\n", 1)[0]  # truncate at paragraph boundary
+        pages_str = ", ".join(str(p) for p in pages) if pages else "unknown"
+
+        system = ACTIVITIES_SYSTEM
+        if not is_english:
+            system += f"\n\nThe source text is in {lang_name}. Return activities in English."
+
+        activity_calls.append({
+            "system": system,
+            "user": ACTIVITIES_USER.format(
+                target_text=target.get("text_eng", target["text"]),
+                pages=pages_str,
+                context=context,
+            ),
+            "max_tokens": 2000,
+        })
+
+    raw_results = await call_llm_batch(
+        activity_calls,
+        cache_namespace="extract_activities",
+        desc="Activities extraction",
+    )
+
+    for target, raw in zip(targets, raw_results):
+        raw = raw.strip()
+        if raw.startswith("```"):
+            raw = re.sub(r"^```(?:json)?\s*", "", raw)
+            raw = re.sub(r"\s*```$", "", raw)
+        try:
+            data = json.loads(raw)
+            activities = data.get("activities", [])
+            if isinstance(activities, list) and activities:
+                target["activities"] = "\n".join(
+                    str(a).strip() for a in activities if str(a).strip()
+                )
+                logger.info(
+                    f"  '{target['label']}': {len(activities)} activities extracted"
+                )
+        except (json.JSONDecodeError, AttributeError):
+            pass  # No activities — that's fine
+
+    return targets
+
+
+# ---------------------------------------------------------------------------
 # Main extraction pipeline
 # ---------------------------------------------------------------------------
 
@@ -735,6 +845,10 @@ async def extract_from_text(
             item["pageNumbers"] = sorted(
                 set(p for c in all_candidates for p in c.get("pageNumbers", []))
             )
+
+    # Phase 3: Extract activities/sub-measures for each target
+    if final:
+        final = await _extract_activities(final, doc, chunks, is_english, lang_name)
 
     return final
 

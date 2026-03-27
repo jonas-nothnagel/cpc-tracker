@@ -432,5 +432,110 @@
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "30%, 33%, 35%",
+    "timeBoundDetails": "by 2030, by 2040, by 2050"
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "9%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
   }
 ]

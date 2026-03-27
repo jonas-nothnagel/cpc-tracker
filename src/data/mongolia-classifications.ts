@@ -17,7 +17,7 @@ function theme(targetId: string, categoryId: string): ThematicClassification {
 }
 
 export const MONGOLIA_NBS_CLASSIFICATIONS: ThematicClassification[] = [
-  // nbs_1 (14 targets)
+  // nbs_1 (21 targets)
   nbs("BTR_agriculture_1", "nbs_1"),
   nbs("BTR_agriculture_2", "nbs_1"),
   nbs("NAP_10", "nbs_1"),
@@ -32,25 +32,35 @@ export const MONGOLIA_NBS_CLASSIFICATIONS: ThematicClassification[] = [
   nbs("NDC_16", "nbs_1"),
   nbs("NDC_22", "nbs_1"),
   nbs("NDC_25", "nbs_1"),
+  nbs("SECTORAL_1", "nbs_1"),
+  nbs("SECTORAL_2", "nbs_1"),
+  nbs("SECTORAL_3", "nbs_1"),
+  nbs("SECTORAL_4", "nbs_1"),
+  nbs("SECTORAL_5", "nbs_1"),
+  nbs("SECTORAL_6", "nbs_1"),
+  nbs("SECTORAL_9", "nbs_1"),
 
-  // nbs_2 (4 targets)
+  // nbs_2 (5 targets)
   nbs("BTR_waste_2", "nbs_2"),
   nbs("NAP_5", "nbs_2"),
   nbs("NAP_6", "nbs_2"),
   nbs("NDC_4", "nbs_2"),
+  nbs("SECTORAL_10", "nbs_2"),
 
-  // nbs_3 (6 targets)
+  // nbs_3 (7 targets)
   nbs("NAP_7", "nbs_3"),
   nbs("NBSAP_2", "nbs_3"),
   nbs("NBSAP_8", "nbs_3"),
   nbs("NDC_5", "nbs_3"),
   nbs("NDC_6", "nbs_3"),
   nbs("NDC_7", "nbs_3"),
+  nbs("SECTORAL_11", "nbs_3"),
 
-  // nbs_4 (1 targets)
+  // nbs_4 (2 targets)
   nbs("NAP_6", "nbs_4"),
+  nbs("SECTORAL_10", "nbs_4"),
 
-  // nbs_5 (11 targets)
+  // nbs_5 (14 targets)
   nbs("NAP_3", "nbs_5"),
   nbs("NBSAP_1", "nbs_5"),
   nbs("NBSAP_2", "nbs_5"),
@@ -62,16 +72,20 @@ export const MONGOLIA_NBS_CLASSIFICATIONS: ThematicClassification[] = [
   nbs("NDC_1", "nbs_5"),
   nbs("NDC_2", "nbs_5"),
   nbs("NDC_7", "nbs_5"),
+  nbs("SECTORAL_10", "nbs_5"),
+  nbs("SECTORAL_11", "nbs_5"),
+  nbs("SECTORAL_15", "nbs_5"),
 
-  // nbs_6 (6 targets)
+  // nbs_6 (7 targets)
   nbs("BTR_agriculture_2", "nbs_6"),
   nbs("NAP_12", "nbs_6"),
   nbs("NAP_13", "nbs_6"),
   nbs("NBSAP_8", "nbs_6"),
   nbs("NDC_14", "nbs_6"),
   nbs("NDC_25", "nbs_6"),
+  nbs("SECTORAL_12", "nbs_6"),
 
-  // nbs_7 (9 targets)
+  // nbs_7 (10 targets)
   nbs("BTR_agriculture_1", "nbs_7"),
   nbs("BTR_waste_2", "nbs_7"),
   nbs("NAP_8", "nbs_7"),
@@ -81,14 +95,16 @@ export const MONGOLIA_NBS_CLASSIFICATIONS: ThematicClassification[] = [
   nbs("NDC_11", "nbs_7"),
   nbs("NDC_19", "nbs_7"),
   nbs("NDC_9", "nbs_7"),
+  nbs("SECTORAL_3", "nbs_7"),
 
-  // nbs_8 (6 targets)
+  // nbs_8 (7 targets)
   nbs("NAP_7", "nbs_8"),
   nbs("NBSAP_2", "nbs_8"),
   nbs("NBSAP_7", "nbs_8"),
   nbs("NBSAP_8", "nbs_8"),
   nbs("NDC_5", "nbs_8"),
   nbs("NDC_6", "nbs_8"),
+  nbs("SECTORAL_11", "nbs_8"),
 
   // nbs_9 (1 targets)
   nbs("NBSAP_10", "nbs_9"),
@@ -96,7 +112,7 @@ export const MONGOLIA_NBS_CLASSIFICATIONS: ThematicClassification[] = [
 ];
 
 export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
-  // theme_0 (23 targets)
+  // theme_0 (25 targets)
   theme("BTR_agriculture_1", "theme_0"),
   theme("BTR_agriculture_2", "theme_0"),
   theme("BTR_energy_6", "theme_0"),
@@ -120,8 +136,10 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NDC_27", "theme_0"),
   theme("NDC_3", "theme_0"),
   theme("NDC_4", "theme_0"),
+  theme("SECTORAL_2", "theme_0"),
+  theme("SECTORAL_3", "theme_0"),
 
-  // theme_1 (23 targets)
+  // theme_1 (25 targets)
   theme("BTR_agriculture_1", "theme_1"),
   theme("BTR_agriculture_2", "theme_1"),
   theme("BTR_energy_1", "theme_1"),
@@ -145,6 +163,8 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NDC_24", "theme_1"),
   theme("NDC_27", "theme_1"),
   theme("NDC_6", "theme_1"),
+  theme("SECTORAL_11", "theme_1"),
+  theme("SECTORAL_2", "theme_1"),
 
   // theme_10 (8 targets)
   theme("BTR_agriculture_1", "theme_10"),
@@ -156,7 +176,7 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NBSAP_6", "theme_10"),
   theme("NDC_18", "theme_10"),
 
-  // theme_2 (10 targets)
+  // theme_2 (16 targets)
   theme("BTR_agriculture_1", "theme_2"),
   theme("BTR_agriculture_2", "theme_2"),
   theme("NAP_10", "theme_2"),
@@ -167,8 +187,14 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NDC_13", "theme_2"),
   theme("NDC_22", "theme_2"),
   theme("NDC_25", "theme_2"),
+  theme("SECTORAL_1", "theme_2"),
+  theme("SECTORAL_12", "theme_2"),
+  theme("SECTORAL_13", "theme_2"),
+  theme("SECTORAL_4", "theme_2"),
+  theme("SECTORAL_5", "theme_2"),
+  theme("SECTORAL_6", "theme_2"),
 
-  // theme_3 (19 targets)
+  // theme_3 (22 targets)
   theme("BTR_agriculture_1", "theme_3"),
   theme("NAP_3", "theme_3"),
   theme("NAP_6", "theme_3"),
@@ -188,8 +214,11 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NDC_1", "theme_3"),
   theme("NDC_2", "theme_3"),
   theme("NDC_7", "theme_3"),
+  theme("SECTORAL_10", "theme_3"),
+  theme("SECTORAL_14", "theme_3"),
+  theme("SECTORAL_15", "theme_3"),
 
-  // theme_4 (9 targets)
+  // theme_4 (10 targets)
   theme("BTR_energy_4", "theme_4"),
   theme("BTR_energy_5", "theme_4"),
   theme("BTR_energy_6", "theme_4"),
@@ -199,13 +228,14 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("BTR_waste_2", "theme_4"),
   theme("NBSAP_14", "theme_4"),
   theme("NBSAP_6", "theme_4"),
+  theme("SECTORAL_2", "theme_4"),
 
   // theme_5 (3 targets)
   theme("NBSAP_20", "theme_5"),
   theme("NDC_26", "theme_5"),
   theme("NDC_27", "theme_5"),
 
-  // theme_6 (10 targets)
+  // theme_6 (12 targets)
   theme("BTR_agriculture_1", "theme_6"),
   theme("NAP_1", "theme_6"),
   theme("NAP_14", "theme_6"),
@@ -216,8 +246,10 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NBSAP_19", "theme_6"),
   theme("NBSAP_5", "theme_6"),
   theme("NDC_20", "theme_6"),
+  theme("SECTORAL_3", "theme_6"),
+  theme("SECTORAL_6", "theme_6"),
 
-  // theme_7 (25 targets)
+  // theme_7 (28 targets)
   theme("BTR_agriculture_1", "theme_7"),
   theme("BTR_agriculture_2", "theme_7"),
   theme("BTR_energy_1", "theme_7"),
@@ -243,16 +275,21 @@ export const MONGOLIA_THEME_CLASSIFICATIONS: ThematicClassification[] = [
   theme("NBSAP_9", "theme_7"),
   theme("NDC_1", "theme_7"),
   theme("NDC_19", "theme_7"),
+  theme("SECTORAL_15", "theme_7"),
+  theme("SECTORAL_2", "theme_7"),
+  theme("SECTORAL_6", "theme_7"),
 
   // theme_8 (1 targets)
   theme("NBSAP_20", "theme_8"),
 
-  // theme_9 (5 targets)
+  // theme_9 (7 targets)
   theme("BTR_agriculture_1", "theme_9"),
   theme("BTR_energy_6", "theme_9"),
   theme("NBSAP_16", "theme_9"),
   theme("NBSAP_17", "theme_9"),
   theme("NBSAP_7", "theme_9"),
+  theme("SECTORAL_15", "theme_9"),
+  theme("SECTORAL_9", "theme_9"),
 
 ];
 

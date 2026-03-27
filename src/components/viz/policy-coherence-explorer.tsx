@@ -526,14 +526,24 @@ export function PolicyCoherenceExplorer({
     result: AlignmentResult;
     other: Target;
   } | null>(null);
-  const [showBtr, setShowBtr] = useState(false);
+  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(() => new Set(["BTR"]));
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
-  const hasBtr = useMemo(
-    () => targets.some((t) => t.sourceDocument === "BTR"),
-    [targets],
-  );
+  /** All document types present in the data */
+  const availableDocs = useMemo(() => {
+    const order: PolicyDocumentType[] = ["NDC", "NBSAP", "NAP", "LDN", "SECTORAL", "BTR", "OTHER"];
+    const present = new Set(targets.map((t) => t.sourceDocument));
+    return order.filter((d) => present.has(d));
+  }, [targets]);
+
+  const toggleDoc = (doc: string) =>
+    setHiddenDocs((prev) => {
+      const next = new Set(prev);
+      if (next.has(doc)) next.delete(doc);
+      else next.add(doc);
+      return next;
+    });
 
   // Map NBSAP target IDs to NR7 progress items via nbsapTargetId
   const nr7ProgressMap = useMemo(() => {
@@ -560,8 +570,8 @@ export function PolicyCoherenceExplorer({
   }, [nr7Data]);
 
   const visibleTargets = useMemo(
-    () => (showBtr ? targets : targets.filter((t) => t.sourceDocument !== "BTR")),
-    [targets, showBtr],
+    () => targets.filter((t) => !hiddenDocs.has(t.sourceDocument)),
+    [targets, hiddenDocs],
   );
   const visibleTargetIds = useMemo(
     () => new Set(visibleTargets.map((t) => t.id)),
@@ -718,20 +728,29 @@ export function PolicyCoherenceExplorer({
             <option value="high">High only</option>
             <option value="contradictions">Contradictions only</option>
           </select>
-          {hasBtr && (
-            <button
-              type="button"
-              onClick={() => setShowBtr((v) => !v)}
-              className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                showBtr
-                  ? "border-[#7c3aed]/40 bg-[#7c3aed]/10 text-[#7c3aed]"
-                  : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-[#7c3aed]/30 hover:text-[#7c3aed]"
-              }`}
-            >
-              <span className={`w-2 h-2 rounded-sm ${showBtr ? "bg-[#7c3aed]" : "bg-gray-300"}`} />
-              BTR Measures
-            </button>
-          )}
+          {availableDocs.map((doc) => {
+            const active = !hiddenDocs.has(doc);
+            const color = DOC_COLORS[doc];
+            return (
+              <button
+                key={doc}
+                type="button"
+                onClick={() => toggleDoc(doc)}
+                className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                  active
+                    ? ""
+                    : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-gray-300"
+                }`}
+                style={active ? { color, borderColor: `${color}66`, backgroundColor: `${color}1a` } : undefined}
+              >
+                <span
+                  className="w-2 h-2 rounded-sm"
+                  style={{ backgroundColor: active ? color : "#d1d5db" }}
+                />
+                {DOC_LABELS[doc]}
+              </button>
+            );
+          })}
 
           {/* Target search */}
           <div className="relative">
