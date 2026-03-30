@@ -312,13 +312,6 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           <p className="text-sm text-[var(--undp-gray)]">
             AI-assisted assessment for national review and consideration
           </p>
-          <div className="bg-[var(--undp-blue)]/5 border border-[var(--undp-blue)]/15 rounded-lg px-4 py-3 mt-3">
-            <p className="text-sm text-[var(--undp-black)]">
-              This dashboard shows how policy targets across your national documents align with each other.{" "}
-              Start by exploring the <strong>data sources</strong> below, then see how targets{" "}
-              connect in the <strong>coherence explorer</strong>.
-            </p>
-          </div>
         </section>
 
         <DataSourcesOverview
@@ -328,20 +321,8 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           nr7Data={data.nr7Data}
         />
 
-        {/* --- Level 1: Policy Coherence --- */}
-        <div className="pt-8 mb-6 border-t-2 border-[var(--undp-blue)]/20">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--undp-blue)] mb-1">
-            Level 1 — Policy Coherence
-          </p>
-          <h2 className="text-xl font-semibold text-[var(--undp-black)]">
-            Cross-Policy Alignment
-          </h2>
-          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {(() => { const n = documentTypes.filter(d => d !== "BTR").length; return `How targets across ${n} policy document${n !== 1 ? "s" : ""} relate to each other: alignment, gaps, and contradictions.`; })()}
-          </p>
-        </div>
-
         {/* --- Policy Coherence Explorer --- */}
+        <div className="pt-8 border-t-2 border-[var(--undp-blue)]/20">
         <PolicyCoherenceExplorer
           targets={targets}
           alignment={data.alignment}
@@ -351,6 +332,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           classifications={data.classifications}
           nr7Data={data.nr7Data}
         />
+        </div>
 
         {/* --- Thematic Classification (switchable) --- */}
         <ClassificationSection
@@ -373,13 +355,10 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           targets={targets}
         />
 
-        {/* --- Level 2: Financial Alignment (placeholder) --- */}
+        {/* --- Financial Alignment (placeholder) --- */}
         <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
           <div className="mb-4">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--undp-blue)] mb-1">
-              Level 2 — Financial Alignment
-            </p>
-            <h2 className="text-xl font-semibold text-[var(--undp-black)]">
+            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
               Budget &amp; Finance Flows
             </h2>
             <p className="text-sm text-[var(--undp-gray)] mt-0.5">
@@ -393,15 +372,12 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           </div>
         </section>
 
-        {/* --- Level 3: Progress Alignment (unified NR7 + BTR) --- */}
+        {/* --- Progress Alignment (unified NR7 + BTR) --- */}
         {((data.nr7Data && data.nr7Data.progressItems.length > 0) ||
           (data.btrData && data.btrData.mitigationMeasures.length > 0)) && (
           <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
             <div className="mb-6">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--undp-blue)] mb-1">
-                Level 3 — Progress Alignment
-              </p>
-              <h2 className="text-xl font-semibold text-[var(--undp-black)]">
+              <h2 className="text-lg font-semibold text-[var(--undp-black)]">
                 Implementation Progress
                 <InfoBox>
                   Reported progress on national biodiversity and climate commitments from official reporting mechanisms.{" "}

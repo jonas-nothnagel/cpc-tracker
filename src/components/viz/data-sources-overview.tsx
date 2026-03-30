@@ -139,9 +139,9 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
 
   return (
     <>
-      <section className="mb-8">
-        <div className="mb-3">
-          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+      <section className="mb-6">
+        <div className="flex items-baseline gap-2 mb-2">
+          <h2 className="text-sm font-semibold text-[var(--undp-black)]">
             Data Sources
             <InfoBox>
               These are the policy documents and data sources analyzed. Click any source to see its contents.
@@ -158,39 +158,36 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
               )}
             </InfoBox>
           </h2>
-          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+          <span className="text-xs text-[var(--undp-gray)]">
             {sources.length} source{sources.length !== 1 ? "s" : ""} · {itemsSummary}
-          </p>
+          </span>
         </div>
 
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           {sources.map((s) => {
-            const Tag = s.onClick ? "button" : "div";
+            const Tag = s.onClick ? "button" : "span";
             return (
               <Tag
                 key={s.key}
                 type={s.onClick ? "button" : undefined}
                 onClick={s.onClick}
                 className={[
-                  "flex items-center gap-2.5 rounded-lg border text-left transition-all",
+                  "inline-flex items-center gap-1.5 text-left",
                   s.onClick
-                    ? "px-3.5 py-2.5 border-gray-200 bg-white hover:border-[var(--undp-blue)]/40 hover:bg-[var(--undp-blue)]/5 hover:shadow-sm cursor-pointer group"
-                    : "px-3 py-2 border-gray-100 bg-gray-50/60 opacity-70",
+                    ? "group cursor-pointer transition-colors"
+                    : "opacity-70",
                 ].join(" ")}
               >
-                <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: s.color }} />
+                <span className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: s.color }} />
                 <span className={[
-                  "text-xs font-semibold transition-colors",
-                  s.onClick ? "text-[var(--undp-black)] group-hover:text-[var(--undp-blue)]" : "text-[var(--undp-gray)]",
+                  "text-xs font-medium",
+                  s.onClick
+                    ? "text-[var(--undp-black)] underline decoration-dotted decoration-gray-300 underline-offset-2 group-hover:decoration-[var(--undp-blue)] group-hover:text-[var(--undp-blue)]"
+                    : "text-[var(--undp-gray)]",
                 ].join(" ")}>
                   {s.badge}
                 </span>
                 <span className="text-[11px] text-[var(--undp-gray)]">{s.detail}</span>
-                {s.onClick && (
-                  <span className="text-[11px] text-[var(--undp-blue)] opacity-0 group-hover:opacity-100 transition-opacity ml-0.5 whitespace-nowrap">
-                    {s.key === "doc:BTR" ? "View measures" : "View targets"} &rarr;
-                  </span>
-                )}
               </Tag>
             );
           })}
