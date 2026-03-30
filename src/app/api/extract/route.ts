@@ -17,7 +17,7 @@ const TMP_DIR = join(PROJECT_ROOT, "python", "tmp");
 
 const ALLOWED_EXTENSIONS = [".pdf", ".docx", ".txt"];
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
-const MIN_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+const MIN_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 
 export async function POST(request: NextRequest) {
   if (IS_SERVERLESS) {

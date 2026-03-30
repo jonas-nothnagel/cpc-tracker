@@ -4,13 +4,13 @@ import { useState, useMemo, useRef, useCallback } from "react";
 import { Header } from "@/components/ui/header";
 import { useRouter } from "next/navigation";
 import type { PolicyDocumentType } from "@/types";
+import type { TargetRow } from "@/lib/csv-parser";
 import { smartParse } from "@/lib/csv-parser";
 import {
   type BtrData,
   type UploadedDoc,
   MAX_TARGETS,
   COST_PER_CALL,
-  CROSS_CUTTING_THEMES_COUNT,
   isBtrExcel,
   detectBtrType,
   mergeBtrData,
@@ -18,14 +18,11 @@ import {
 import { useTargets } from "@/hooks/useTargets";
 import { useExtraction } from "@/hooks/useExtraction";
 import { useCategories } from "@/hooks/useCategories";
-import { DocumentUploadZone } from "@/components/upload/document-upload-zone";
-import { ExtractReviewPanel } from "@/components/upload/extract-review-panel";
-import { ManualEntryForm } from "@/components/upload/manual-entry-form";
-import { TargetsByDocument } from "@/components/upload/targets-by-document";
-import { ManualTargetEditor } from "@/components/upload/manual-target-editor";
-import { CategoryConfig } from "@/components/upload/category-config";
-import { AnalysisEstimate } from "@/components/upload/analysis-estimate";
-import { DocumentPipeline } from "@/components/upload/document-pipeline";
+import { WizardNav } from "@/components/upload/wizard-nav";
+import { StepCountryDocuments } from "@/components/upload/step-country-documents";
+import { StepReferenceData } from "@/components/upload/step-reference-data";
+import { StepReviewConfigure } from "@/components/upload/step-review-configure";
+import { StepSummaryRun } from "@/components/upload/step-summary-run";
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -54,6 +51,9 @@ export default function UploadPage() {
   const extraction = useExtraction();
   const categories = useCategories();
 
+  // ─── Wizard state ──────────────────────────────────────────────────────
+  const [step, setStep] = useState(0);
+
   // ─── Local state ────────────────────────────────────────────────────────
   const [country, setCountry] = useState("");
   const [currentText, setCurrentText] = useState("");
@@ -68,11 +68,28 @@ export default function UploadPage() {
   const [btrParsedData, setBtrParsedData] = useState<BtrData | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-
+  const [addedReferenceDocs, setAddedReferenceDocs] = useState<Set<PolicyDocumentType>>(new Set());
+  const [includeBtr, setIncludeBtr] = useState(true);
+  const [includeNr7, setIncludeNr7] = useState(true);
   // ─── Derived values ─────────────────────────────────────────────────────
+  const canProceed = useMemo(() => {
+    switch (step) {
+      case 0: return true;
+      case 1: return true;
+      case 2: return targets.length > 0;
+      case 3: return targets.length > 0;
+      default: return false;
+    }
+  }, [step, targets.length]);
+
+  const totalActiveCategories = useMemo(
+    () => categories.groups.reduce((sum, g) => sum + g.items.filter((c) => c.enabled).length, 0),
+    [categories.groups]
+  );
+
   const estimate = useMemo(() => {
     const n = targets.length;
-    const cats = categories.activeNbs.length + categories.activeSectors.length + CROSS_CUTTING_THEMES_COUNT;
+    const cats = totalActiveCategories;
     if (n === 0) return null;
     const quantCalls = n;
     const classCalls = n * cats;
@@ -82,7 +99,12 @@ export default function UploadPage() {
     const totalCalls = quantCalls + classCalls + decompCalls + estPairs;
     const estCost = totalCalls * COST_PER_CALL;
     return { totalCalls, estCost, estPairs, docTypes };
-  }, [targets, categories.activeNbs.length, categories.activeSectors.length]);
+  }, [targets, totalActiveCategories]);
+
+  const documentTypeCount = useMemo(
+    () => new Set(targets.map((t) => t.sourceDocument)).size,
+    [targets]
+  );
 
   // ─── Manual entry ───────────────────────────────────────────────────────
   function handleAddTarget() {
@@ -109,7 +131,6 @@ export default function UploadPage() {
     const docId = `doc_${Date.now()}`;
 
     if (isExcel && isBtrExcel(file.name)) {
-      // BTR/CTF Excel → parse as BTR data
       setUploadedDocs((prev) => [...prev, {
         id: docId, fileName: file.name, fileType: "btr", status: "parsing",
       }]);
@@ -147,7 +168,6 @@ export default function UploadPage() {
           ));
         });
     } else if (isExcel) {
-      // General target-list Excel → parse as targets
       setUploadedDocs((prev) => [...prev, {
         id: docId, fileName: file.name, fileType: "targets", status: "parsing",
       }]);
@@ -221,7 +241,6 @@ export default function UploadPage() {
     const files = Array.from(e.dataTransfer.files);
     const docs = files.filter((f) => /\.(pdf|docx|txt)$/i.test(f.name));
     const others = files.filter((f) => /\.(csv|tsv|xlsx?)$/i.test(f.name));
-    // Multi-file extraction: queue all doc files
     if (docs.length > 0) {
       extraction.queueFilesForExtraction(docs, extraction.extractDocType, extraction.extractDocType);
     }
@@ -247,7 +266,6 @@ export default function UploadPage() {
       extraction.extractDocLabel
     );
     extraction.discardExtraction();
-    // Process next in queue if available
     if (extraction.extractionQueue.length > 0) {
       extraction.processNextInQueue(extraction.extractDocType, extraction.extractDocType);
     }
@@ -264,6 +282,27 @@ export default function UploadPage() {
     const doc = uploadedDocs.find((d) => d.id === docId);
     if (doc?.fileType === "btr") setBtrParsedData(null);
     setUploadedDocs((prev) => prev.filter((d) => d.id !== docId));
+  }
+
+  // ─── Reference data ─────────────────────────────────────────────────────
+  function handleAddReferenceTargets(rows: TargetRow[]) {
+    setTargets((prev) => [...prev, ...rows].slice(0, MAX_TARGETS));
+  }
+
+  function handleRemoveReferenceTargets(docType: PolicyDocumentType) {
+    setTargets((prev) => prev.filter((t) => t.sourceDocument !== docType));
+  }
+
+  function handleMarkReferenceAdded(docType: PolicyDocumentType) {
+    setAddedReferenceDocs((prev) => new Set(prev).add(docType));
+  }
+
+  function handleMarkReferenceRemoved(docType: PolicyDocumentType) {
+    setAddedReferenceDocs((prev) => {
+      const next = new Set(prev);
+      next.delete(docType);
+      return next;
+    });
   }
 
   // ─── Submit ─────────────────────────────────────────────────────────────
@@ -283,7 +322,7 @@ export default function UploadPage() {
           sectors: categories.activeSectors.map(({ id, name, description }) => ({
             id, name, description,
           })),
-          ...(btrParsedData ? { btrData: btrParsedData } : {}),
+          ...(btrParsedData && includeBtr ? { btrData: btrParsedData } : {}),
         }),
       });
       if (!res.ok) {
@@ -301,70 +340,67 @@ export default function UploadPage() {
   // ─── Render ─────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Header */}
       <Header subtitle="New Analysis" />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-8 w-full">
         {/* Title */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-1">
-            {targets.length > 0 ? "New analysis" : "Upload Policy Targets"}
+            New Analysis
           </h1>
-          {targets.length > 0 ? (
-            <p className="text-sm text-[var(--undp-gray)]">
-              {targets.length} target{targets.length !== 1 ? "s" : ""} across{" "}
-              {new Set(targets.map((t) => t.sourceDocument)).size} document type
-              {new Set(targets.map((t) => t.sourceDocument)).size !== 1 ? "s" : ""}
-            </p>
-          ) : (
-            <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
-              Upload policy documents (PDF/DOCX), CSV/Excel target lists, or raw BTR Excel
-              sheets. You may also add targets manually if needed.
-            </p>
-          )}
+          <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+            Upload policy documents, review targets, configure categories, and run the
+            coherence analysis pipeline.
+          </p>
         </div>
 
-        {/* Country */}
-        <div className="mb-8">
-          <label className="block text-sm font-medium text-[var(--undp-black)] mb-1.5">
-            Country
-          </label>
-          <input
-            type="text"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            placeholder="e.g. Mongolia"
-            className="w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)]"
-          />
-        </div>
+        {/* Wizard navigation */}
+        <WizardNav
+          currentStep={step}
+          onStepChange={setStep}
+          canProceed={canProceed}
+          hasExtractionPending={
+            step !== 0 && extraction.extractedItems.length > 0
+          }
+        />
 
-        {/* Mode toggle */}
-        <div className="flex gap-2 mb-6">
-          <button
-            onClick={() => setMode("upload")}
-            className={`px-4 py-2 text-sm rounded-md border transition-colors ${
-              mode === "upload"
-                ? "bg-[var(--undp-blue)] text-white border-transparent"
-                : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400"
-            }`}
-          >
-            Upload
-          </button>
-          <button
-            onClick={() => setMode("manual")}
-            className={`px-4 py-2 text-sm rounded-md border transition-colors ${
-              mode === "manual"
-                ? "bg-[var(--undp-blue)] text-white border-transparent"
-                : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400"
-            }`}
-          >
-            Manual Entry
-          </button>
-        </div>
-
-        {/* Manual entry */}
-        {mode === "manual" && (
-          <ManualEntryForm
+        {/* Step content */}
+        {step === 0 && (
+          <StepCountryDocuments
+            country={country}
+            onCountryChange={setCountry}
+            mode={mode}
+            onModeChange={setMode}
+            uploadMode={uploadMode}
+            onUploadModeChange={setUploadMode}
+            extractDocType={extraction.extractDocType}
+            onExtractDocTypeChange={extraction.setExtractDocType}
+            extractDocLabel={extraction.extractDocLabel}
+            onExtractDocLabelChange={extraction.setExtractDocLabel}
+            extracting={extraction.extracting}
+            extractFileName={extraction.extractFileName}
+            onFileDrop={handleUnifiedDrop}
+            onFileInput={handleUnifiedFileInput}
+            fileInputRef={fileInputRef}
+            dragging={dragging}
+            onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+            onDragLeave={() => setDragging(false)}
+            extractionQueueLength={extraction.extractionQueue.length}
+            extractError={extraction.extractError}
+            extractedItems={extraction.extractedItems}
+            onToggleItem={extraction.toggleItem}
+            onKeepAll={extraction.keepAll}
+            onRemoveAll={extraction.removeAll}
+            onUpdateItem={extraction.updateItem}
+            onAddManual={extraction.addManualExtractedItem}
+            onAcceptExtraction={handleAcceptExtraction}
+            onDiscardExtraction={extraction.discardExtraction}
+            manualLabel={extraction.extractManualLabel}
+            onManualLabelChange={extraction.setExtractManualLabel}
+            manualText={extraction.extractManualText}
+            onManualTextChange={extraction.setExtractManualText}
+            uploadedDocs={uploadedDocs}
+            onRemoveDoc={removeDoc}
             currentDoc={currentDoc}
             onDocChange={setCurrentDoc}
             currentText={currentText}
@@ -378,113 +414,54 @@ export default function UploadPage() {
           />
         )}
 
-        {/* Upload */}
-        {mode === "upload" && (
-          <div className="mb-6 space-y-4">
-            <DocumentUploadZone
-              uploadMode={uploadMode}
-              onUploadModeChange={setUploadMode}
-              extractDocType={extraction.extractDocType}
-              onExtractDocTypeChange={extraction.setExtractDocType}
-              extractDocLabel={extraction.extractDocLabel}
-              onExtractDocLabelChange={extraction.setExtractDocLabel}
-              extracting={extraction.extracting}
-              extractFileName={extraction.extractFileName}
-              onFileDrop={handleUnifiedDrop}
-              onFileInput={handleUnifiedFileInput}
-              fileInputRef={fileInputRef}
-              dragging={dragging}
-              onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-              onDragLeave={() => setDragging(false)}
-              extractionQueueLength={extraction.extractionQueue.length}
-            />
-
-            {extraction.extractError && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-                <p className="text-sm text-red-700">{extraction.extractError}</p>
-              </div>
-            )}
-
-            {/* Review extracted targets */}
-            {extraction.extractedItems.length > 0 && (
-              <ExtractReviewPanel
-                items={extraction.extractedItems}
-                fileName={extraction.extractFileName}
-                onToggleItem={extraction.toggleItem}
-                onKeepAll={extraction.keepAll}
-                onRemoveAll={extraction.removeAll}
-                onUpdateItem={extraction.updateItem}
-                onAddManual={extraction.addManualExtractedItem}
-                onAccept={handleAcceptExtraction}
-                onDiscard={extraction.discardExtraction}
-                manualLabel={extraction.extractManualLabel}
-                onManualLabelChange={extraction.setExtractManualLabel}
-                manualText={extraction.extractManualText}
-                onManualTextChange={extraction.setExtractManualText}
-              />
-            )}
-
-            <DocumentPipeline
-              uploadedDocs={uploadedDocs}
-              onRemoveDoc={removeDoc}
-            />
-          </div>
-        )}
-
-        {/* Error display */}
-        {submitError && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-700">{submitError}</p>
-          </div>
-        )}
-
-        {/* Editing manual targets */}
-        {editingManualTargets && (
-          <ManualTargetEditor
-            docType={editingManualTargets.docType}
-            targets={editingManualTargets.targets}
-            onUpdate={updateEditingManualTarget}
-            onRemove={removeFromEditingManual}
-            onSave={saveManualTargetsEdits}
+        {step === 1 && (
+          <StepReferenceData
+            country={country}
+            btrParsedData={btrParsedData}
+            uploadedDocs={uploadedDocs}
+            targetCount={targets.length}
+            documentTypeCount={documentTypeCount}
+            onAddReferenceTargets={handleAddReferenceTargets}
+            onRemoveReferenceTargets={handleRemoveReferenceTargets}
+            addedReferenceDocs={addedReferenceDocs}
+            onMarkReferenceAdded={handleMarkReferenceAdded}
+            onMarkReferenceRemoved={handleMarkReferenceRemoved}
+            includeBtr={includeBtr}
+            onToggleBtr={() => setIncludeBtr((v) => !v)}
+            includeNr7={includeNr7}
+            onToggleNr7={() => setIncludeNr7((v) => !v)}
           />
         )}
 
-        {/* Targets grouped by document */}
-        {targets.length > 0 && (
-          <div className="mb-8">
-            <TargetsByDocument
-              targetsByDocument={targetsByDocument}
-              expandedGroups={expandedGroups}
-              onToggleExpand={toggleExpanded}
-              onRemoveTarget={removeTarget}
-              extractionBackup={extractionBackup}
-              onRestoreExtractionReview={handleRestoreExtractionReview}
-              onStartEditManualTargets={startEditManualTargets}
-            />
-          </div>
-        )}
-
-        {/* Empty state */}
-        {targets.length === 0 && !editingManualTargets && (
-          <div className="text-center py-16 text-[var(--undp-gray)]">
-            <p className="text-lg mb-2">No targets added yet</p>
-            <p className="text-sm">
-              Upload files (documents, CSV, or raw BTR Excel) or add targets manually above.
-            </p>
-          </div>
-        )}
-
-        {/* Analysis configuration */}
-        {targets.length > 0 && (
-          <CategoryConfig
-            nbsCategories={categories.nbsCategories}
-            sectors={categories.sectors}
-            activeNbs={categories.activeNbs}
-            activeSectors={categories.activeSectors}
+        {step === 2 && (
+          <StepReviewConfigure
+            targets={targets}
+            targetsByDocument={targetsByDocument}
+            expandedGroups={expandedGroups}
+            onToggleExpand={toggleExpanded}
+            onRemoveTarget={removeTarget}
+            extractionBackup={extractionBackup}
+            onRestoreExtractionReview={handleRestoreExtractionReview}
+            onStartEditManualTargets={startEditManualTargets}
+            editingManualTargets={editingManualTargets}
+            onUpdate={updateEditingManualTarget}
+            onRemoveFromEditing={removeFromEditingManual}
+            onSaveEdits={saveManualTargetsEdits}
+            currentDoc={currentDoc}
+            onDocChange={setCurrentDoc}
+            currentText={currentText}
+            onTextChange={setCurrentText}
+            currentLabel={currentLabel}
+            onLabelChange={setCurrentLabel}
+            customDocName={customDocName}
+            onCustomDocNameChange={setCustomDocName}
+            onAddTarget={handleAddTarget}
+            groups={categories.groups}
             showCategories={categories.showCategories}
-            onToggleShow={() => categories.setShowCategories(!categories.showCategories)}
+            onToggleShowCategories={() => categories.setShowCategories(!categories.showCategories)}
             toggleCategory={categories.toggleCategory}
             removeCategory={categories.removeCategory}
+            toggleAllInGroup={categories.toggleAllInGroup}
             addingTo={categories.addingTo}
             onSetAddingTo={categories.setAddingTo}
             newCatName={categories.newCatName}
@@ -492,18 +469,23 @@ export default function UploadPage() {
             newCatDesc={categories.newCatDesc}
             onNewCatDescChange={categories.setNewCatDesc}
             onAddCustomCategory={categories.addCustomCategory}
+            onAddGroup={categories.addGroup}
+            onRemoveGroup={categories.removeGroup}
           />
         )}
 
-        {/* Run Analysis */}
-        {targets.length > 0 && (
-          <AnalysisEstimate
-            targetCount={targets.length}
+        {step === 3 && (
+          <StepSummaryRun
+            country={country}
+            targets={targets}
+            targetsByDocument={targetsByDocument}
+            groups={categories.groups}
             activeNbsCount={categories.activeNbs.length}
             activeSectorsCount={categories.activeSectors.length}
             estimate={estimate}
             hasBtrData={!!btrParsedData}
             submitting={submitting}
+            submitError={submitError}
             onRunAnalysis={runAnalysis}
           />
         )}
