@@ -88,7 +88,7 @@ export function OutcomeStats({
   const mappedPct = mappedTargets ? Math.round((mappedTargets.count / totalTargets) * 100) : null;
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <OutcomeStatCard
         percentage={quantitativePct}
         label="Measurable outcomes"

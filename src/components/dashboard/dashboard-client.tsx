@@ -337,7 +337,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
             Cross-Policy Alignment
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            How targets across {documentTypes.filter(d => d !== "BTR").length} policy document{documentTypes.filter(d => d !== "BTR").length !== 1 ? "s" : ""} relate to each other: alignment, gaps, and contradictions.
+            {(() => { const n = documentTypes.filter(d => d !== "BTR").length; return `How targets across ${n} policy document${n !== 1 ? "s" : ""} relate to each other: alignment, gaps, and contradictions.`; })()}
           </p>
         </div>
 
