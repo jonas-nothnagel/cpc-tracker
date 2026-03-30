@@ -248,15 +248,19 @@ function PipelineFlow({
 
   return (
     <div className="flex items-center gap-1 flex-wrap">
-      {targetCount > 0 && (
+      {targetCount > 0 ? (
         <Chip count={targetCount} label="targets" color="#0468b1" bg="#e8f1f8" />
-      )}
-      {targetCount > 0 && adopted > 0 && (
+      ) : adopted > 0 ? (
+        <Chip count={0} label="targets" color="#b45309" bg="#fff7ed" />
+      ) : null}
+      {(targetCount > 0 || adopted > 0) && (
         <span className="text-[#cbd5e1] text-[10px] leading-none select-none mx-0.5">·</span>
       )}
-      {adopted > 0 && (
+      {adopted > 0 ? (
         <Chip count={adopted} label="actions" color="#3d8c23" bg="#eaf5e4" />
-      )}
+      ) : targetCount > 0 ? (
+        <Chip count={0} label="actions" color="#b45309" bg="#fff7ed" />
+      ) : null}
       {implemented > 0 && (
         <>
           <Arrow />
@@ -500,7 +504,7 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
   return (
     <div className="border-t border-gray-100 px-5 py-5 bg-[var(--undp-light)]/50">
       <div className="grid md:grid-cols-3 gap-6">
-        {/* Policy targets */}
+        {/* NDC targets */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
             NDC Targets ({row.targets.length})
@@ -510,15 +514,21 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
           ) : (
             <ShowMoreList
               items={row.targets}
+              className="divide-y divide-gray-100"
               renderItem={(t) => (
-                <li key={t.id} className="text-xs text-[var(--undp-black)] leading-relaxed">
-                  <span
-                    className="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-white mr-2"
-                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                  >
-                    {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
-                  </span>
-                  <TargetTextWithHighlights target={t} />
+                <li key={t.id} className="py-2 first:pt-0">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span
+                      className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold text-white leading-none"
+                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    >
+                      {DOC_LABELS[t.sourceDocument]}
+                    </span>
+                    <span className="text-xs font-medium text-[var(--undp-black)]">{t.sourceLabel}</span>
+                  </div>
+                  <p className="text-xs text-[var(--undp-gray)] leading-relaxed">
+                    <TargetTextWithHighlights target={t} />
+                  </p>
                 </li>
               )}
             />
@@ -533,23 +543,20 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
           {row.measures.length === 0 ? (
             <p className="text-xs text-[var(--undp-gray)] italic">No actions reported for this sector</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {implementedMeasures.length > 0 && (
                 <div>
-                  <p className="text-[9px] font-semibold uppercase tracking-wide text-[#4c9f38] mb-1.5 flex items-center gap-1">
+                  <p className="text-[9px] font-semibold uppercase tracking-wide text-[#4c9f38] mb-1 flex items-center gap-1">
                     <span>✓</span> Implemented ({implementedMeasures.length})
                   </p>
                   <ShowMoreList
                     items={implementedMeasures}
-                    className="space-y-1.5"
+                    className="divide-y divide-gray-100"
                     renderItem={(m, i) => (
-                      <li
-                        key={i}
-                        className="text-xs text-[var(--undp-black)] leading-relaxed border-l-2 border-[#4c9f38] pl-2"
-                      >
-                        {m.name.length > 120 ? m.name.slice(0, 120) + "…" : m.name}
+                      <li key={i} className="py-2 first:pt-0 border-l-2 border-[#4c9f38] pl-2">
+                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
                         {m.implementingEntity && (
-                          <span className="text-[var(--undp-gray)]"> &mdash; {m.implementingEntity}</span>
+                          <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
                         )}
                       </li>
                     )}
@@ -560,24 +567,23 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
               {otherMeasures.length > 0 && (
                 <div>
                   {implementedMeasures.length > 0 && (
-                    <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                    <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
                       Planned / Adopted ({otherMeasures.length})
                     </p>
                   )}
                   <ShowMoreList
                     items={otherMeasures}
-                    className="space-y-1.5"
+                    className="divide-y divide-gray-100"
                     renderItem={(m, i) => (
-                      <li key={i} className="text-xs text-[var(--undp-black)] leading-relaxed">
-                        <span
-                          className="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium mr-2"
-                          style={{ backgroundColor: "#fcc30b", color: "#333" }}
-                        >
-                          {m.status}
-                        </span>
-                        {m.name.length > 120 ? m.name.slice(0, 120) + "…" : m.name}
+                      <li key={i} className="py-2 first:pt-0">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-amber-100 text-amber-800">
+                            {m.status}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
                         {m.implementingEntity && (
-                          <span className="text-[var(--undp-gray)]"> &mdash; {m.implementingEntity}</span>
+                          <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
                         )}
                       </li>
                     )}
@@ -598,12 +604,15 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
           ) : (
             <ShowMoreList
               items={row.support}
+              className="divide-y divide-gray-100"
               renderItem={(p, i) => (
-                <li key={i} className="text-xs text-[var(--undp-black)] leading-relaxed flex gap-2">
-                  <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-[var(--undp-black)] bg-amber-100 shrink-0">
-                    {p.supportType || "Support"}
-                  </span>
-                  <span>{p.title.length > 90 ? p.title.slice(0, 90) + "…" : p.title}</span>
+                <li key={i} className="py-2 first:pt-0">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-amber-50 text-amber-700">
+                      {p.supportType || "Support"}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[var(--undp-black)] leading-relaxed">{p.title}</p>
                 </li>
               )}
             />
