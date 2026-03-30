@@ -169,10 +169,14 @@ function buildSectorRows(
     const adopted = measures.filter((m) => m.status.toLowerCase().includes("adopted")).length;
     const implemented = measures.filter((m) => m.status.toLowerCase().includes("implemented")).length;
 
-    const support = [
-      ...btrData.technologySupport.filter((p) => p.sector === sector.id),
-      ...btrData.capacityBuilding.filter((p) => p.sector === sector.id),
-    ];
+    // Use pre-merged supportProjects if available, otherwise deduplicate manually
+    const support = (btrData.supportProjects ?? [
+      ...btrData.technologySupport,
+      ...btrData.capacityBuilding,
+    ]).filter((p) =>
+      p.sector === sector.id &&
+      (p.supportType?.trim() || p.description?.trim() || p.timeFrame?.trim())
+    );
 
     const emissions = btrData.sectorEmissions.bySector.find(
       (s) => s.normalizedSector === sector.id && !s.isTotal
@@ -448,6 +452,112 @@ function GapLegend() {
 // Expanded detail panel
 // ---------------------------------------------------------------------------
 
+/** Single support project with collapsible description. */
+function SupportProjectItem({ p, displayTitle, detailText }: {
+  p: SupportProject;
+  displayTitle: string;
+  detailText?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <li className="py-2 first:pt-0">
+      <div className="flex items-center gap-1.5 mb-0.5">
+        <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-amber-50 text-amber-700">
+          {p.supportType || "Support"}
+        </span>
+        {p.implementingEntity && (
+          <span className="text-[10px] text-[var(--undp-gray)]">{p.implementingEntity}</span>
+        )}
+        {p.timeFrame && (
+          <span className="text-[10px] text-[var(--undp-gray)]">{p.timeFrame}</span>
+        )}
+      </div>
+      <p className="text-xs text-[var(--undp-black)] leading-relaxed">{displayTitle}</p>
+      {detailText && (
+        <>
+          <button
+            onClick={() => setOpen(!open)}
+            className="mt-1 flex items-center gap-1 text-[11px] font-medium text-[var(--undp-blue)] hover:underline"
+          >
+            <span className="text-[9px]">{open ? "\u25BC" : "\u25B6"}</span>
+            Description
+          </button>
+          {open && (
+            <div className="mt-1 pl-2.5 border-l-2 border-[var(--undp-blue)]/30">
+              <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">{detailText}</p>
+            </div>
+          )}
+        </>
+      )}
+    </li>
+  );
+}
+
+const NOTATION_EMPTY = new Set(["", "NA", "UA", "NR"]);
+
+/** Compact summary for support projects with collapsible detail list. */
+function SupportSummary({ projects }: { projects: SupportProject[] }) {
+  const [open, setOpen] = useState(false);
+
+  if (projects.length === 0) {
+    return (
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
+          Support Projects (0)
+        </p>
+        <p className="text-xs text-[var(--undp-gray)] italic">No support projects for this sector</p>
+      </div>
+    );
+  }
+
+  // Type breakdown
+  const typeCounts: Record<string, number> = {};
+  for (const p of projects) {
+    const t = p.supportType?.trim() || "unspecified";
+    typeCounts[t] = (typeCounts[t] || 0) + 1;
+  }
+  const typeBreakdown = Object.entries(typeCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([t, n]) => `${n} ${t.toLowerCase()}`)
+    .join(", ");
+
+  // Unique donors
+  const donors = [...new Set(
+    projects.map((p) => p.implementingEntity?.trim() ?? "").filter((e) => !NOTATION_EMPTY.has(e))
+  )].sort();
+
+  return (
+    <div>
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+        Support Projects ({projects.length})
+      </p>
+      <p className="text-xs text-[var(--undp-black)] leading-relaxed">
+        {projects.length} projects ({typeBreakdown})
+        {donors.length > 0 && <> from {donors.length} {donors.length === 1 ? "donor" : "donors"} ({donors.join(", ")})</>}
+      </p>
+      <button
+        onClick={() => setOpen(!open)}
+        className="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-[var(--undp-blue)] hover:underline"
+      >
+        <span className="text-[9px]">{open ? "\u25BC" : "\u25B6"}</span>
+        Projects ({projects.length})
+      </button>
+      {open && (
+        <div className="mt-1 pl-2.5 border-l-2 border-[var(--undp-blue)]/30">
+          <ul className="divide-y divide-gray-100">
+            {projects.map((p, i) => {
+              const hasGenericTitle = /^[A-Za-z]+-(?:Mitigation|Adaptation|Cross-cutting)$/i.test(p.title);
+              const displayTitle = hasGenericTitle && p.description ? p.description : p.title;
+              const detailText = hasGenericTitle ? undefined : p.description;
+              return <SupportProjectItem key={i} p={p} displayTitle={displayTitle} detailText={detailText} />;
+            })}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const SHOW_MORE_INITIAL = 4;
 
 function ShowMoreList<T>({
@@ -595,29 +705,7 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
         </div>
 
         {/* Support projects */}
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Support Projects ({row.support.length})
-          </p>
-          {row.support.length === 0 ? (
-            <p className="text-xs text-[var(--undp-gray)] italic">No support projects for this sector</p>
-          ) : (
-            <ShowMoreList
-              items={row.support}
-              className="divide-y divide-gray-100"
-              renderItem={(p, i) => (
-                <li key={i} className="py-2 first:pt-0">
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-amber-50 text-amber-700">
-                      {p.supportType || "Support"}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[var(--undp-black)] leading-relaxed">{p.title}</p>
-                </li>
-              )}
-            />
-          )}
-        </div>
+        <SupportSummary projects={row.support} />
       </div>
 
       {/* Sector emissions mini-chart */}

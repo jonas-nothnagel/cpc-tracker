@@ -60,7 +60,7 @@ interface TaxCategory {
 }
 
 type GroupMode = "document" | "sector" | "theme" | "nbs";
-type AlignFilter = "all" | "high_medium" | "high" | "contradictions";
+type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
 
 
 // ─── SVG layout constants ───────────────────────────────────────────
@@ -206,7 +206,9 @@ function filterAlign(a: AlignmentResult[], f: AlignFilter): AlignmentResult[] {
         x.alignment === "medium" ||
         isContradiction(x.alignment)
       );
-    return x.alignment === "high" || isContradiction(x.alignment);
+    if (f === "high_contra")
+      return x.alignment === "high" || isContradiction(x.alignment);
+    return x.alignment === "high";
   });
 }
 
@@ -519,7 +521,7 @@ export function PolicyCoherenceExplorer({
   nr7Data,
 }: PolicyCoherenceExplorerProps) {
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
-  const [filter, setFilter] = useState<AlignFilter>("all");
+  const [filter, setFilter] = useState<AlignFilter>("high_contra");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [comparedPair, setComparedPair] = useState<{
@@ -595,8 +597,8 @@ export function PolicyCoherenceExplorer({
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
 
   const { nodes, arcs } = useMemo(
-    () => computeLayout(groups, visibleAlignment),
-    [groups, visibleAlignment],
+    () => computeLayout(groups, filtered),
+    [groups, filtered],
   );
 
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
@@ -604,13 +606,17 @@ export function PolicyCoherenceExplorer({
   const targetMap = useMemo(() => new Map(targets.map((t) => [t.id, t])), [targets]);
 
   // Ambient connections — shown faintly when no node is active
-  const ambientConns = useMemo(() => {
-    if (filter === "contradictions")
-      return filtered;
-    return visibleAlignment.filter(
-      (a) => a.alignment === "high" || isContradiction(a.alignment),
-    );
-  }, [visibleAlignment, filtered, filter]);
+  // Must match the selected filter so users see what they asked for
+  const ambientConns = useMemo(() => filtered, [filtered]);
+
+  // Scale ambient opacity inversely with edge count so dense views stay readable
+  const ambientOpacity = useMemo(() => {
+    const n = ambientConns.length;
+    if (n <= 50) return 0.25;
+    if (n >= 1000) return 0.03;
+    const t = (n - 50) / (1000 - 50);
+    return 0.25 - t * 0.22;
+  }, [ambientConns.length]);
 
   // Connections for the active node (from filtered set)
   const activeConns = useMemo(() => {
@@ -670,9 +676,19 @@ export function PolicyCoherenceExplorer({
     [],
   );
 
+  const { minConn, maxConn } = useMemo(() => {
+    if (nodes.length === 0) return { minConn: 0, maxConn: 1 };
+    const vals = nodes.map((n) => n.connections);
+    return { minConn: Math.min(...vals), maxConn: Math.max(...vals) };
+  }, [nodes]);
+
   const nodeSize = useCallback(
-    (n: NodePos) => Math.max(4, Math.min(10, 3 + n.connections * 0.5)),
-    [],
+    (n: NodePos) => {
+      const range = maxConn - minConn || 1;
+      const t = (n.connections - minConn) / range; // 0..1
+      return 3.5 + t * 7; // 3.5px to 10.5px
+    },
+    [minConn, maxConn],
   );
 
   return (
@@ -723,8 +739,9 @@ export function PolicyCoherenceExplorer({
             onChange={(e) => setFilter(e.target.value as AlignFilter)}
             className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
           >
-            <option value="all">All connections</option>
+            <option value="high_contra">High + Contradictions</option>
             <option value="high_medium">High + Medium</option>
+            <option value="all">All connections</option>
             <option value="high">High only</option>
             <option value="contradictions">Contradictions only</option>
           </select>
@@ -887,7 +904,7 @@ export function PolicyCoherenceExplorer({
                       stroke={ALIGNMENT_COLORS[conn.alignment]}
                       strokeWidth={isContraMode ? 2 : 1}
                       strokeDasharray={contra ? "6 3" : "none"}
-                      opacity={isContraMode ? 0.55 : 0.1}
+                      opacity={isContraMode ? 0.55 : ambientOpacity}
                       strokeLinecap="round"
                       style={{ pointerEvents: "none" }}
                     />
@@ -912,7 +929,7 @@ export function PolicyCoherenceExplorer({
                         conn.alignment === "high" || contra ? 2.5 : conn.alignment === "medium" ? 2 : 1.5
                       }
                       strokeDasharray={contra ? "6 3" : "none"}
-                      opacity={conn.alignment === "high" ? 0.8 : conn.alignment === "medium" ? 0.6 : 0.45}
+                      opacity={conn.alignment === "high" ? 0.85 : conn.alignment === "medium" ? 0.7 : 0.6}
                       strokeLinecap="round"
                       style={{ pointerEvents: "none" }}
                     />

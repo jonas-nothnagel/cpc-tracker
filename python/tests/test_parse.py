@@ -3,9 +3,12 @@
 These test pure functions with no LLM calls.
 """
 
+import re
+
 from src.align import parse_alignment, parse_decomposition, generate_pairs
 from src.classify import parse_classification
 from src.quantitative import _parse_response
+from src.parse_ctf import _METADATA_PATTERNS, _TABLE_REF_RE, _normalize_sector
 
 
 # ---------------------------------------------------------------------------
@@ -251,3 +254,56 @@ class TestQuantitativeParsing:
         raw = '[{"targetId":"A","isQuantitative":true,"isTimeBound":false,"quantitativeDetails":"50%","timeBoundDetails":""},{"targetId":"B","isQuantitative":false,"isTimeBound":true,"quantitativeDetails":"","timeBoundDetails":"by 2035"}]'
         result = _parse_response(raw)
         assert len(result) == 2
+
+
+# ---------------------------------------------------------------------------
+# CTF support table metadata filtering
+# ---------------------------------------------------------------------------
+
+
+class TestSupportTableFiltering:
+    def test_notation_key_is_metadata(self):
+        title = "Notation keys: NA = not applicable; UA = information not available"
+        assert any(pat.match(title) for pat in _METADATA_PATTERNS)
+
+    def test_custom_footnotes_is_metadata(self):
+        title = "Custom footnotes:"
+        assert any(pat.match(title) for pat in _METADATA_PATTERNS)
+
+    def test_numbered_footnote_is_metadata(self):
+        title = "(1) The underlying assumptions, definitions and methodologies"
+        assert any(pat.match(title) for pat in _METADATA_PATTERNS)
+
+    def test_letter_footnote_is_metadata(self):
+        title = "a  This column should contain information"
+        assert any(pat.match(title) for pat in _METADATA_PATTERNS)
+
+    def test_real_project_title_passes(self):
+        title = "ADB- Promotion of the Northeast Asia Power System Interconnection"
+        assert not any(pat.match(title) for pat in _METADATA_PATTERNS)
+
+    def test_table_suffix_stripped(self):
+        raw = "ADB- Promotion of Power System - TableIII.7"
+        cleaned = _TABLE_REF_RE.sub("", raw).strip()
+        assert cleaned == "ADB- Promotion of Power System"
+
+    def test_table_suffix_different_number(self):
+        raw = "Some project - TableII.5"
+        cleaned = _TABLE_REF_RE.sub("", raw).strip()
+        assert cleaned == "Some project"
+
+    def test_no_table_suffix_unchanged(self):
+        raw = "ADB- Supporting renewable energy development"
+        cleaned = _TABLE_REF_RE.sub("", raw).strip()
+        assert cleaned == raw
+
+
+class TestNormalizeSectorEmpty:
+    def test_empty_string_returns_other(self):
+        assert _normalize_sector("") == "sector_other"
+
+    def test_whitespace_returns_other(self):
+        assert _normalize_sector("   ") == "sector_other"
+
+    def test_energy_still_works(self):
+        assert _normalize_sector("Energy") == "sector_energy"

@@ -329,6 +329,18 @@ def _parse_projections(ws: Worksheet, scenario: str) -> list[dict[str, Any]]:
 # CTF-FTC-Support: Tables 9 / 11
 # ---------------------------------------------------------------------------
 
+# Metadata rows that appear at the bottom of CTF support tables.
+_METADATA_PATTERNS = [
+    re.compile(r"^[a-z]\s+[A-Z]"),               # letter-labeled footnotes: "a  Explanation..."
+    re.compile(r"^\(\d+\)"),                       # numbered footnotes: "(1) The underlying..."
+    re.compile(r"^Notation key", re.IGNORECASE),   # notation key legend
+    re.compile(r"^Custom footnote", re.IGNORECASE),  # section header for footnotes
+]
+
+# CTF internal table references appended to titles (e.g. "- TableIII.7")
+_TABLE_REF_RE = re.compile(r"\s*-\s*Table[A-Z]+\.?\d*\s*$")
+
+
 def _parse_support_table(ws: Worksheet) -> list[dict[str, Any]]:
     """Parse a support-received table (technology or capacity-building)."""
     projects: list[dict[str, Any]] = []
@@ -371,15 +383,13 @@ def _parse_support_table(ws: Worksheet) -> list[dict[str, Any]]:
 
     title_col = col_map.get("title", 2)
 
-    # Footnote rows in CTF Excel files start with a single letter label (e.g. "a", "b")
-    # followed by explanatory text. They are not data rows.
-    _footnote_re = re.compile(r"^[a-z]\s+[A-Z]")
-
     for row_idx in range(header_row + 1, ws.max_row + 1):
         title = _str(ws.cell(row=row_idx, column=title_col).value)
         if not title or len(title) < 3:
             continue
-        if _footnote_re.match(title):
+        # Strip CTF table references (e.g. "- TableIII.7") from titles
+        title = _TABLE_REF_RE.sub("", title).strip()
+        if any(pat.match(title) for pat in _METADATA_PATTERNS):
             continue
 
         project: dict[str, Any] = {"title": title}
@@ -390,10 +400,12 @@ def _parse_support_table(ws: Worksheet) -> list[dict[str, Any]]:
             if field == "sector":
                 project[field] = _normalize_sector(val)
                 project["sectorRaw"] = val
-            elif field == "subsector":
-                project[field] = val
             else:
                 project[field] = val
+
+        # Structural guard: reject rows where all substantive fields are empty
+        if all(not project.get(f) for f in ("supportType", "description", "timeFrame", "implementingEntity")):
+            continue
 
         projects.append(project)
 
@@ -433,6 +445,8 @@ SECTOR_MAP: dict[str, str] = {
 def _normalize_sector(raw: str) -> str:
     lower = raw.lower().strip()
     lower = re.sub(r"^\d+\.\s*", "", lower)
+    if not lower:
+        return "sector_other"
 
     if lower in SECTOR_MAP:
         return SECTOR_MAP[lower]
@@ -507,39 +521,71 @@ def parse_ctf_ndc(filepath: str | Path) -> dict[str, Any]:
     return result
 
 
+def _merge_support_projects(
+    tech: list[dict[str, Any]], cb: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Deduplicate projects across technology support and capacity building.
+
+    Projects appearing in both tables are merged into a single entry with
+    supportSource="both". Fields from the technology entry take precedence,
+    with capacity-building fields filling in blanks.
+    """
+    by_key: dict[str, dict[str, Any]] = {}
+    for project in tech:
+        key = project["title"].strip().lower()
+        by_key[key] = {**project, "supportSource": "technology"}
+    for project in cb:
+        key = project["title"].strip().lower()
+        if key in by_key:
+            # Merge: fill empty fields from CB entry
+            existing = by_key[key]
+            existing["supportSource"] = "both"
+            for field, val in project.items():
+                if field == "title":
+                    continue
+                if val and not existing.get(field):
+                    existing[field] = val
+        else:
+            by_key[key] = {**project, "supportSource": "capacity_building"}
+    return list(by_key.values())
+
+
 def parse_ctf_support(filepath: str | Path) -> dict[str, Any]:
     """
     Parse a CTF-FTC-Support Excel file.
 
     Returns dict with keys:
-      technologySupport, capacityBuilding
+      technologySupport, capacityBuilding, supportProjects (merged/deduplicated)
     """
     filepath = Path(filepath)
     logger.info(f"Parsing CTF-FTC-Support: {filepath.name}")
     wb = load_workbook(filepath, data_only=True, read_only=True)
 
-    result: dict[str, Any] = {
-        "sourceFile": filepath.name,
-        "technologySupport": [],
-        "capacityBuilding": [],
-    }
+    tech: list[dict[str, Any]] = []
+    cb: list[dict[str, Any]] = []
 
     # Table 9 in FTC = technology support received
     ws9 = _find_sheet(wb, ["table9"])
     if ws9:
-        projects = _parse_support_table(ws9)
-        result["technologySupport"] = projects
-        logger.info(f"  Table9: {len(projects)} technology support projects")
+        tech = _parse_support_table(ws9)
+        logger.info(f"  Table9: {len(tech)} technology support projects")
 
     # Table 11 in FTC = capacity building received
     ws11 = _find_sheet(wb, ["table11"])
     if ws11:
-        projects = _parse_support_table(ws11)
-        result["capacityBuilding"] = projects
-        logger.info(f"  Table11: {len(projects)} capacity-building projects")
+        cb = _parse_support_table(ws11)
+        logger.info(f"  Table11: {len(cb)} capacity-building projects")
+
+    merged = _merge_support_projects(tech, cb)
+    logger.info(f"  Merged: {len(merged)} unique support projects")
 
     wb.close()
-    return result
+    return {
+        "sourceFile": filepath.name,
+        "technologySupport": tech,
+        "capacityBuilding": cb,
+        "supportProjects": merged,
+    }
 
 
 # ---------------------------------------------------------------------------
