@@ -90,7 +90,7 @@ export function DocumentPipeline({ uploadedDocs, onRemoveDoc }: DocumentPipeline
                     )}
                     {doc.status === "ready" && doc.fileType === "btr" && doc.btrSummary && (
                       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-[var(--undp-gray)]">
-                        {doc.btrSummary.mitigationMeasures > 0 && <span>{doc.btrSummary.mitigationMeasures} mitigation measures</span>}
+                        {doc.btrSummary.mitigationMeasures > 0 && <span>{doc.btrSummary.mitigationMeasures} reported actions</span>}
                         {doc.btrSummary.sectorEmissions > 0 && <span>{doc.btrSummary.sectorEmissions} emission series</span>}
                         {doc.btrSummary.projections > 0 && <span>{doc.btrSummary.projections} projections</span>}
                         {doc.btrSummary.technologySupport > 0 && <span>{doc.btrSummary.technologySupport} tech support projects</span>}
