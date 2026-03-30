@@ -40,11 +40,11 @@ const SECTOR_COLORS: Record<string, string> = {
 type GapLevel = "critical" | "significant" | "moderate" | "on_track" | "no_data";
 
 const GAP_CONFIG: Record<GapLevel, { label: string; color: string; bg: string; description: string }> = {
-  critical:    { label: "Action needed",   color: "#b45309", bg: "bg-orange-50",  description: "Policy targets are set for this sector but no implementation measures have been reported yet — this is an area to prioritize." },
-  significant: { label: "In progress",     color: "#0468b1", bg: "bg-blue-50",    description: "Measures are planned or adopted but none fully implemented — continued follow-up is recommended." },
-  moderate:    { label: "Partially active",color: "#0d9488", bg: "bg-teal-50",    description: "Some measures are underway. Further implementation can strengthen progress toward targets." },
-  on_track:    { label: "Active",          color: "#4c9f38", bg: "bg-green-50",   description: "At least one measure has been fully implemented in this sector." },
-  no_data:     { label: "No data",         color: "#94a3b8", bg: "bg-gray-50",    description: "No targets or measures have been reported for this sector." },
+  critical:    { label: "Action needed",   color: "#b45309", bg: "bg-orange-50",  description: "Policy targets are set for this sector but no reported actions have been filed yet — this is an area to prioritize." },
+  significant: { label: "In progress",     color: "#0468b1", bg: "bg-blue-50",    description: "Actions are planned or adopted but none fully implemented — continued follow-up is recommended." },
+  moderate:    { label: "Partially active",color: "#0d9488", bg: "bg-teal-50",    description: "Some actions are underway. Further implementation can strengthen progress toward targets." },
+  on_track:    { label: "Active",          color: "#4c9f38", bg: "bg-green-50",   description: "At least one action has been fully implemented in this sector." },
+  no_data:     { label: "No data",         color: "#94a3b8", bg: "bg-gray-50",    description: "No targets or actions have been reported for this sector." },
 };
 
 const GAP_ORDER: Record<GapLevel, number> = {
@@ -97,20 +97,20 @@ function buildGapInsightText(row: {
     : null;
 
   if (row.gapLevel === "on_track") {
-    return `${m} measure${m !== 1 ? "s" : ""} reported, ${impl} fully implemented.${chg !== null ? ` Emissions ${chg > 0 ? "+" : ""}${chg}% since baseline.` : ""}`;
+    return `${m} action${m !== 1 ? "s" : ""} reported, ${impl} fully implemented.${chg !== null ? ` Emissions ${chg > 0 ? "+" : ""}${chg}% since baseline.` : ""}`;
   }
   if (row.gapLevel === "no_data") {
-    return "No policy targets or implementation measures have been reported for this sector.";
+    return "No policy targets or reported actions have been filed for this sector.";
   }
 
   const parts: string[] = [];
 
   if (t > 0 && m === 0) {
-    parts.push(`${t} policy target${t !== 1 ? "s" : ""} but zero implementation measures reported`);
+    parts.push(`${t} policy target${t !== 1 ? "s" : ""} but zero reported actions filed`);
   } else if (t > 0 && impl === 0) {
-    parts.push(`${m} measure${m !== 1 ? "s" : ""} adopted but none fully implemented`);
+    parts.push(`${m} action${m !== 1 ? "s" : ""} adopted but none fully implemented`);
   } else if (m > 0 && impl < m) {
-    parts.push(`${m} measures, ${impl} fully implemented`);
+    parts.push(`${m} actions, ${impl} fully implemented`);
   }
 
   if (chg !== null && row.latestYear) {
@@ -161,9 +161,11 @@ function buildSectorRows(
         .filter((c) => c.categoryId === sector.id)
         .map((c) => c.targetId)
     );
-    const sectorTargets = targets.filter((t) => targetIds.has(t.id));
+    // NDC targets only — this section tracks NDC implementation
+    const sectorTargets = targets.filter((t) => targetIds.has(t.id) && t.sourceDocument === "NDC");
 
-    const measures = btrData.mitigationMeasures.filter((m) => m.sector === sector.id);
+    // Safety filter: skip measures with empty status (stale parser output / template rows)
+    const measures = btrData.mitigationMeasures.filter((m) => m.status?.trim() && m.sector === sector.id);
     const adopted = measures.filter((m) => m.status.toLowerCase().includes("adopted")).length;
     const implemented = measures.filter((m) => m.status.toLowerCase().includes("implemented")).length;
 
@@ -242,34 +244,34 @@ function PipelineFlow({
     <span className="text-[#cbd5e1] text-[11px] leading-none select-none">→</span>
   );
 
-  const hasNdcPipeline = targetCount > 0 || adopted > 0 || implemented > 0;
+  const hasAny = targetCount > 0 || adopted > 0 || implemented > 0;
 
   return (
     <div className="flex items-center gap-1 flex-wrap">
       {targetCount > 0 && (
         <Chip count={targetCount} label="targets" color="#0468b1" bg="#e8f1f8" />
       )}
+      {targetCount > 0 && adopted > 0 && (
+        <span className="text-[#cbd5e1] text-[10px] leading-none select-none mx-0.5">·</span>
+      )}
       {adopted > 0 && (
-        <>
-          {targetCount > 0 && <Arrow />}
-          <Chip count={adopted} label="measures" color="#3d8c23" bg="#eaf5e4" />
-        </>
+        <Chip count={adopted} label="actions" color="#3d8c23" bg="#eaf5e4" />
       )}
       {implemented > 0 && (
         <>
           <Arrow />
-          <Chip count={implemented} label="impl." color="#2d6e17" bg="#d4edcc" check />
+          <Chip count={implemented} label="implemented" color="#2d6e17" bg="#d4edcc" check />
         </>
       )}
       {supportCount > 0 && (
         <>
-          {hasNdcPipeline && (
+          {hasAny && (
             <span className="text-[#cbd5e1] text-[10px] leading-none select-none mx-0.5">|</span>
           )}
           <Chip count={supportCount} label="support" color="#92620a" bg="#fef3c7" />
         </>
       )}
-      {!hasNdcPipeline && supportCount === 0 && (
+      {!hasAny && supportCount === 0 && (
         <span className="text-[11px] text-[#94a3b8]">—</span>
       )}
     </div>
@@ -374,7 +376,7 @@ function ImplFraction({ implemented, total }: { implemented: number; total: numb
       className={`inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded ${
         hasImpl ? "bg-green-100 text-[#4c9f38]" : "bg-gray-100 text-[var(--undp-gray)]"
       }`}
-      title={`${implemented} of ${total} measures fully implemented`}
+      title={`${implemented} of ${total} actions fully implemented`}
     >
       {hasImpl && <span className="text-[#4c9f38]">✓</span>}
       {implemented}/{total} impl.
@@ -387,7 +389,7 @@ function ImplFraction({ implemented, total }: { implemented: number; total: numb
 // ---------------------------------------------------------------------------
 
 function GapLegend() {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const levels: GapLevel[] = ["critical", "significant", "moderate", "on_track", "no_data"];
 
   return (
@@ -397,7 +399,7 @@ function GapLegend() {
         onClick={() => setExpanded((v) => !v)}
         className="flex items-center gap-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors cursor-pointer"
       >
-        <span className="font-semibold uppercase tracking-wide">Gap rating legend</span>
+        <span className="font-semibold uppercase tracking-wide">Implementation status</span>
         <span>{expanded ? "▾" : "▸"}</span>
       </button>
 
@@ -430,7 +432,7 @@ function GapLegend() {
             );
           })}
           <p className="text-[10px] text-[var(--undp-gray)]/70 sm:col-span-2 mt-0.5">
-            Rating is computed from: number of policy targets, number of BTR mitigation measures, implementation status, and emissions growth trend.
+            Status is assessed based on: whether policy targets exist for this sector, whether reported actions are in place, their implementation progress, and the emissions trend.
           </p>
         </div>
       )}
@@ -501,10 +503,10 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
         {/* Policy targets */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Policy Targets ({row.targets.length})
+            NDC Targets ({row.targets.length})
           </p>
           {row.targets.length === 0 ? (
-            <p className="text-xs text-[var(--undp-gray)] italic">No targets classified in this sector</p>
+            <p className="text-xs text-[var(--undp-gray)] italic">No NDC targets classified in this sector</p>
           ) : (
             <ShowMoreList
               items={row.targets}
@@ -523,13 +525,13 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
           )}
         </div>
 
-        {/* Mitigation measures — implemented first */}
+        {/* Reported actions — implemented first */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Mitigation Measures ({row.measures.length})
+            Reported Actions — BTR ({row.measures.length})
           </p>
           {row.measures.length === 0 ? (
-            <p className="text-xs text-[var(--undp-gray)] italic">No measures reported for this sector</p>
+            <p className="text-xs text-[var(--undp-gray)] italic">No actions reported for this sector</p>
           ) : (
             <div className="space-y-3">
               {implementedMeasures.length > 0 && (
@@ -710,24 +712,31 @@ export function SectorScorecard({
       {/* Gap legend */}
       <GapLegend />
 
+      {/* Usage hint */}
+      <p className="text-[11px] text-[var(--undp-gray)] px-5 pt-3 pb-1">
+        Each row shows one IPCC sector. Click any row to see the full list of targets, reported actions, and support projects.
+      </p>
+
       {/* Table header */}
       <div className="px-5 py-2.5 border-b border-gray-100 bg-white/60">
         <div
           className="grid items-center gap-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]"
-          style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(160px, 2fr) 100px 102px 16px" }}
+          style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(200px, 2fr) 100px 102px 16px" }}
         >
           <span>Sector</span>
           <span className="flex items-center gap-1.5">
+            <span className="text-[8px] font-bold tracking-wider text-[#0468b1]/60">NDC</span>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide" style={{ color: "#0468b1", backgroundColor: "#e8f1f8" }}>targets</span>
+            <span className="text-[#cbd5e1] text-[10px] mx-0.5">·</span>
+            <span className="text-[8px] font-bold tracking-wider text-[#3d8c23]/60">BTR</span>
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide" style={{ color: "#3d8c23", backgroundColor: "#eaf5e4" }}>actions</span>
             <span className="text-[#cbd5e1] text-[10px]">→</span>
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide" style={{ color: "#3d8c23", backgroundColor: "#eaf5e4" }}>measures</span>
-            <span className="text-[#cbd5e1] text-[10px]">→</span>
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide" style={{ color: "#2d6e17", backgroundColor: "#d4edcc" }}>✓ impl.</span>
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide" style={{ color: "#2d6e17", backgroundColor: "#d4edcc" }}>✓ implemented</span>
             <span className="text-[#cbd5e1] text-[10px] mx-0.5">|</span>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide" style={{ color: "#92620a", backgroundColor: "#fef3c7" }}>support</span>
           </span>
-          <span className="text-center">Emissions trend</span>
-          <span className="text-center">Gap</span>
+          <span className="text-center">Emissions (kt CO&#x2082;eq)</span>
+          <span className="text-center">Status</span>
           <span />
         </div>
       </div>
@@ -756,7 +765,7 @@ export function SectorScorecard({
               {/* Main grid row */}
               <div
                 className="grid items-center gap-3"
-                style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(160px, 2fr) 100px 102px 16px" }}
+                style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(200px, 2fr) 100px 102px 16px" }}
               >
                 {/* Sector name */}
                 <div className="flex items-center gap-2 min-w-0">
@@ -789,7 +798,7 @@ export function SectorScorecard({
                   )}
                 </div>
 
-                {/* Gap badge */}
+                {/* Status badge */}
                 <div className="flex justify-center">
                   <GapBadge level={row.gapLevel} />
                 </div>
@@ -804,7 +813,7 @@ export function SectorScorecard({
               {nbsapCount > 0 && (
                 <div
                   className="grid items-center gap-3 mt-1"
-                  style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(160px, 2fr) 100px 102px 16px" }}
+                  style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(200px, 2fr) 100px 102px 16px" }}
                 >
                   <div />
                   <span className="text-[10px] font-medium text-[#0468b1]">
@@ -814,11 +823,26 @@ export function SectorScorecard({
                 </div>
               )}
 
+              {/* Inline action name preview */}
+              {row.measures.length > 0 && (
+                <div
+                  className="grid items-center gap-3 mt-0.5"
+                  style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(200px, 2fr) 100px 102px 16px" }}
+                >
+                  <div />
+                  <p className="text-[10px] text-[var(--undp-gray)]/70 leading-relaxed truncate">
+                    {row.measures.slice(0, 2).map((m) => m.name.length > 60 ? m.name.slice(0, 57) + "…" : m.name).join(" · ")}
+                    {row.measures.length > 2 && ` · +${row.measures.length - 2} more`}
+                  </p>
+                  <div /><div /><div />
+                </div>
+              )}
+
               {/* Subtitle: insight text + impl fraction — same grid so text sits under the pipeline bar */}
               {insightText && (
                 <div
                   className="grid items-center gap-3 mt-1"
-                  style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(160px, 2fr) 100px 102px 16px" }}
+                  style={{ gridTemplateColumns: "minmax(130px, 1.2fr) minmax(200px, 2fr) 100px 102px 16px" }}
                 >
                   <div />
                   <div className="flex items-center gap-2 col-span-1">

@@ -24,7 +24,7 @@ interface DocumentUploadZoneProps {
 const FILE_TYPE_CARDS = [
   { id: "policy" as const, title: "Policy document", subtitle: "PDF or DOCX — targets extracted automatically" },
   { id: "list" as const, title: "Target list", subtitle: "CSV or TSV with text, type, label columns" },
-  { id: "btr" as const, title: "BTR Excel sheet", subtitle: "XLSX — emissions, mitigation, projections data" },
+  { id: "btr" as const, title: "BTR Excel sheet", subtitle: "XLSX — reported actions, emissions, projections" },
 ] as const;
 
 export function DocumentUploadZone({

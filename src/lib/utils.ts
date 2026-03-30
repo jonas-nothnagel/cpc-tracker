@@ -24,7 +24,7 @@ export const DOC_LABELS: Record<PolicyDocumentType, string> = {
   NAP: "NAP",
   LDN: "LDN",
   SECTORAL: "Sectoral",
-  BTR: "BTR Measure",
+  BTR: "BTR Action",
   OTHER: "Other",
 };
 

@@ -374,7 +374,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
 
         {/* --- Progress Alignment (unified NR7 + BTR) --- */}
         {((data.nr7Data && data.nr7Data.progressItems.length > 0) ||
-          (data.btrData && data.btrData.mitigationMeasures.length > 0)) && (
+          (data.btrData && data.btrData.mitigationMeasures.some(m => m.status?.trim()))) && (
           <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
             <div className="mb-6">
               <h2 className="text-lg font-semibold text-[var(--undp-black)]">
@@ -397,19 +397,23 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
               />
             )}
 
-            {data.btrData && data.btrData.mitigationMeasures.length > 0 && (
+            {data.btrData && data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length > 0 && (
               <div className={data.nr7Data && data.nr7Data.progressItems.length > 0 ? "mt-8" : ""}>
                 <div className="mb-4">
                   <h3 className="text-base font-semibold text-[var(--undp-black)]">
                     NDC Implementation
                     <InfoBox>
-                      Connects NDC policy targets to implementation measures reported in the Biennial Transparency Report (BTR).{" "}
-                      The scorecard shows which sectors have concrete measures in place, emissions trends,{" "}
-                      and identifies implementation gaps where targets exist without corresponding action.
+                      This section brings together two data sources: <strong>policy targets</strong> from the NDC{" "}
+                      (Nationally Determined Contribution) and <strong>reported actions</strong> from the BTR{" "}
+                      (Biennial Transparency Report — where governments report what they are doing to meet their{" "}
+                      climate commitments). For each sector, it shows whether targets have corresponding actions{" "}
+                      and highlights gaps where targets exist but no actions have been reported.
+                      <br /><br />
+                      <em>Reported actions are called &ldquo;mitigation measures&rdquo; in official BTR terminology.</em>
                     </InfoBox>
                   </h3>
                   <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-                    {data.btrData.mitigationMeasures.length} mitigation measures and{" "}
+                    {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
                     {data.btrData.technologySupport.length + data.btrData.capacityBuilding.length} support
                     projects — Biennial Transparency Report
                     {(() => { const v = data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]; return v ? ` (${v})` : ""; })()}

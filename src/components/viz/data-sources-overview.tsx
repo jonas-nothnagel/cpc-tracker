@@ -75,7 +75,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
     return order.indexOf(a) - order.indexOf(b);
   });
 
-  const btrMeasures = btrData?.mitigationMeasures.length ?? 0;
+  const btrMeasures = btrData?.mitigationMeasures.filter(m => m.status?.trim()).length ?? 0;
   const nr7Count = nr7Data?.progressItems.length ?? 0;
 
   type SourceEntry = {
@@ -89,13 +89,13 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
 
   const sources: SourceEntry[] = [];
   for (const docType of docTypes) {
+    // Skip BTR pseudo-targets — BTR is shown via the "BTR (Actions)" entry below
+    if (docType === "BTR") continue;
     const docTargets = targetsByDoc.get(docType) ?? [];
-    const itemLabel = docType === "BTR" ? "measure" : "target";
-    const detailSuffix = docType === "BTR" ? " (alignment analysis)" : "";
     sources.push({
       key: `doc:${docType}`,
       name: DOC_FULL_LABELS[docType],
-      detail: `${docTargets.length} ${itemLabel}${docTargets.length === 1 ? "" : "s"}${detailSuffix}`,
+      detail: `${docTargets.length} target${docTargets.length === 1 ? "" : "s"}`,
       color: DOC_COLORS[docType],
       badge: DOC_MEDIUM_LABELS[docType],
       onClick: () => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color: DOC_COLORS[docType] }),
@@ -104,10 +104,10 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
   if (btrData && btrMeasures > 0) {
     sources.push({
       key: "data:btr",
-      name: "BTR Implementation Data",
-      detail: `${btrMeasures} mitigation measure${btrMeasures === 1 ? "" : "s"}`,
+      name: "BTR Reported Actions",
+      detail: `${btrMeasures} reported action${btrMeasures === 1 ? "" : "s"}`,
       color: "#7c3aed",
-      badge: "BTR (Implementation)",
+      badge: "BTR (Actions)",
     });
   }
   if (nr7Data && nr7Count > 0) {
@@ -129,12 +129,11 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
   if (nr7Data && nr7Count > 0) presentAbbreviations.add("NR7");
   const abbrList = ACRONYM_ORDER.filter(a => presentAbbreviations.has(a));
 
-  // Summary counts (distinguish targets from BTR measures)
-  const btrTargetCount = targets.filter(t => t.sourceDocument === "BTR").length;
-  const policyTargetCount = targets.length - btrTargetCount;
+  // Summary counts (exclude BTR pseudo-targets — those are shown via BTR Actions entry)
+  const policyTargetCount = targets.filter(t => t.sourceDocument !== "BTR").length;
   const summaryParts: string[] = [];
   if (policyTargetCount > 0) summaryParts.push(`${policyTargetCount} policy target${policyTargetCount !== 1 ? "s" : ""}`);
-  if (btrTargetCount > 0) summaryParts.push(`${btrTargetCount} BTR measure${btrTargetCount !== 1 ? "s" : ""}`);
+  if (btrMeasures > 0) summaryParts.push(`${btrMeasures} BTR action${btrMeasures !== 1 ? "s" : ""}`);
   const itemsSummary = summaryParts.join(" · ");
 
   return (
