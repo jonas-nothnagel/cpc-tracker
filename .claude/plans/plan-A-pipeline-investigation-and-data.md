@@ -1,4 +1,4 @@
-# Plan A: Pipeline Investigation & Data Expansion
+# Plan A: Pipeline Investigation & Data Expansion — DONE (2026-03-30)
 
 ## Context
 

@@ -209,6 +209,7 @@ export interface SupportProject {
   recipientEntity?: string;
   implementingEntity?: string;
   supportType?: string;
+  supportSource?: "technology" | "capacity_building" | "both";
   sector: string;
   sectorRaw?: string;
   subsector?: string;
@@ -225,6 +226,8 @@ export interface BtrData {
   projections: ProjectionSeries[];
   technologySupport: SupportProject[];
   capacityBuilding: SupportProject[];
+  /** Merged and deduplicated support projects from both tables. */
+  supportProjects?: SupportProject[];
 }
 
 // ---------------------------------------------------------------------------

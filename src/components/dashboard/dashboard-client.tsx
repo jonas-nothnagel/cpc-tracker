@@ -73,6 +73,7 @@ function ClassificationSection({
   targets, documentTypes, nbsSorted, sectorSorted, themeSorted,
   nbsClassifications, sectorClassifications, themeClassifications,
   targetsWithNbs, targetsWithSectors, targetsWithThemes,
+  nbsCategories, sectors, themes,
 }: {
   targets: Target[];
   documentTypes: PolicyDocumentType[];
@@ -85,26 +86,35 @@ function ClassificationSection({
   targetsWithNbs: number;
   targetsWithSectors: number;
   targetsWithThemes: number;
+  nbsCategories: NbsCategory[];
+  sectors: IpccSector[];
+  themes: TaxonomyCategory[];
 }) {
-  const [view, setView] = useState<ClassificationView>("nbs");
+  const viewOptions: { value: ClassificationView; label: string }[] = [
+    ...(nbsCategories.length > 0
+      ? [{ value: "nbs" as const, label: `Nature-Based Solutions (${nbsCategories.length})` }]
+      : []),
+    ...(sectors.length > 0
+      ? [{ value: "sector" as const, label: `IPCC Sectors (${sectors.length})` }]
+      : []),
+    ...(themes.length > 0
+      ? [{ value: "theme" as const, label: `Cross-Cutting Themes (${themes.length})` }]
+      : []),
+  ];
+
+  const [view, setView] = useState<ClassificationView>(viewOptions[0]?.value ?? "nbs");
 
   const mappedTargetsByView: Record<ClassificationView, { count: number; label: string }> = {
-    nbs: { count: targetsWithNbs, label: "Mapped to NBS" },
-    sector: { count: targetsWithSectors, label: "Mapped to IPCC sectors" },
-    theme: { count: targetsWithThemes, label: "Mapped to themes" },
+    nbs: { count: targetsWithNbs, label: `Mapped to NBS (${nbsCategories.length} categories)` },
+    sector: { count: targetsWithSectors, label: `Mapped to IPCC sectors (${sectors.length})` },
+    theme: { count: targetsWithThemes, label: `Mapped to themes (${themes.length})` },
   };
 
   const viewSubtitles: Record<ClassificationView, string> = {
-    nbs: `${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) refer to nature-based solutions`,
-    sector: `${targetsWithSectors} targets (${Math.round((targetsWithSectors / targets.length) * 100)}%) mapped to IPCC sectors`,
-    theme: `${targetsWithThemes} targets (${Math.round((targetsWithThemes / targets.length) * 100)}%) mapped to cross-cutting themes`,
+    nbs: `${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) classified across ${nbsCategories.length} NBS categories`,
+    sector: `${targetsWithSectors} targets (${Math.round((targetsWithSectors / targets.length) * 100)}%) classified across ${sectors.length} IPCC sectors`,
+    theme: `${targetsWithThemes} targets (${Math.round((targetsWithThemes / targets.length) * 100)}%) classified across ${themes.length} cross-cutting themes`,
   };
-
-  const viewOptions: { value: ClassificationView; label: string }[] = [
-    { value: "nbs", label: "Nature-Based Solutions" },
-    { value: "sector", label: "IPCC Sectors" },
-    { value: "theme", label: "Cross-Cutting Themes" },
-  ];
 
   return (
     <section className="mb-10">
@@ -347,6 +357,9 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           targetsWithNbs={targetsWithNbs}
           targetsWithSectors={targetsWithSectors}
           targetsWithThemes={targetsWithThemes}
+          nbsCategories={data.nbsCategories}
+          sectors={data.sectors}
+          themes={data.themes}
         />
 
         {/* --- Contradiction Summary --- */}
@@ -414,7 +427,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
                   </h3>
                   <p className="text-sm text-[var(--undp-gray)] mt-0.5">
                     {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
-                    {data.btrData.technologySupport.length + data.btrData.capacityBuilding.length} support
+                    {(data.btrData.supportProjects ?? [...data.btrData.technologySupport, ...data.btrData.capacityBuilding]).length} support
                     projects — Biennial Transparency Report
                     {(() => { const v = data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]; return v ? ` (${v})` : ""; })()}
                   </p>

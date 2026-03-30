@@ -1,15 +1,23 @@
-# Plan B: Tensions Methodology Refinement
+# Plan B: Tensions Methodology Refinement — DEPRIORITIZED
 
-## Context
+## Status (updated 2026-03-30)
 
-Only 6 `low_tension` contradictions out of 330 alignment pairs. Zero `moderate_contradiction` or `high_contradiction`. The feedback asks to fine-grain the tension methodology to surface good examples for presentation. The question is whether the prompts are too conservative or whether Mongolia's targets genuinely have few contradictions.
+**Core concern resolved.** After pre-filter removal and activities/actions injection:
+- 2,175 pairs: 471 high, 1,020 medium, 554 low, **127 low_tension, 2 moderate_contradiction, 1 high_contradiction**
+- Tensions now ~6% of all pairs — reasonable signal without false alarm inflation
+- Real contradictions identified (e.g., NDC meat supply vs. ecosystem targets)
+- Modest optimistic bias remains but aligns with CLAUDE.md guardrails (neutral language, no blame)
 
-**Important**: Don't force tensions that don't exist. But the current prompt does lean heavily toward positive alignment — worth investigating whether rebalancing produces more honest assessments.
+**Remaining tasks are refinements, not methodology fixes. Defer unless presentation quality needs improving.**
 
-## Current State
+## Original Context
+
+Only 6 `low_tension` contradictions out of 330 alignment pairs. Zero `moderate_contradiction` or `high_contradiction`. The feedback asked to fine-grain the tension methodology to surface good examples for presentation.
+
+## Original State (before fixes)
 
 - 330 pairs: 143 high, 152 medium, 29 low, 6 low_tension
-- All 6 tensions are `resource_competition` type
+- All 6 tensions were `resource_competition` type
 - Agent 2 prompt (align.py:63-160) emphasizes "most targets share some degree of alignment" and has extensive instructions to avoid false contradictions
 - Agent 1 decomposes targets into 5 fields (Goal, Action, Ecosystem, Audience, Impact)
 
