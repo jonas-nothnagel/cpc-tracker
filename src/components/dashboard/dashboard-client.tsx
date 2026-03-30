@@ -89,9 +89,15 @@ function ClassificationSection({
   const [view, setView] = useState<ClassificationView>("nbs");
 
   const mappedTargetsByView: Record<ClassificationView, { count: number; label: string }> = {
-    nbs: { count: targetsWithNbs, label: "of targets mapped to nature-based solutions" },
-    sector: { count: targetsWithSectors, label: "of targets mapped to IPCC sectors" },
-    theme: { count: targetsWithThemes, label: "of targets mapped to cross-cutting themes" },
+    nbs: { count: targetsWithNbs, label: "Mapped to NBS" },
+    sector: { count: targetsWithSectors, label: "Mapped to IPCC sectors" },
+    theme: { count: targetsWithThemes, label: "Mapped to themes" },
+  };
+
+  const viewSubtitles: Record<ClassificationView, string> = {
+    nbs: `${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) refer to nature-based solutions`,
+    sector: `${targetsWithSectors} targets (${Math.round((targetsWithSectors / targets.length) * 100)}%) mapped to IPCC sectors`,
+    theme: `${targetsWithThemes} targets (${Math.round((targetsWithThemes / targets.length) * 100)}%) mapped to cross-cutting themes`,
   };
 
   const viewOptions: { value: ClassificationView; label: string }[] = [
@@ -102,7 +108,7 @@ function ClassificationSection({
 
   return (
     <section className="mb-10">
-      <div className="mb-4 flex items-center justify-between flex-wrap gap-3">
+      <div className="mb-3 flex items-center justify-between flex-wrap gap-3">
         <h2 className="text-lg font-semibold text-[var(--undp-black)]">
           Thematic Classification
           <InfoBox>
@@ -112,16 +118,16 @@ function ClassificationSection({
             Targets may appear in multiple categories if they span several themes.
           </InfoBox>
         </h2>
-        <div className="flex rounded-md border border-gray-200 text-xs overflow-hidden">
+        <div className="flex gap-1.5 text-xs">
           {viewOptions.map((opt) => (
             <button
               key={opt.value}
               type="button"
               onClick={() => setView(opt.value)}
-              className={`px-3 py-1.5 transition-colors ${
+              className={`px-3.5 py-1.5 rounded-full transition-colors ${
                 view === opt.value
                   ? "bg-[var(--undp-blue)] text-white"
-                  : "bg-white text-[var(--undp-gray)] hover:bg-gray-50"
+                  : "bg-gray-100 text-[var(--undp-gray)] hover:bg-gray-200"
               }`}
             >
               {opt.label}
@@ -130,49 +136,44 @@ function ClassificationSection({
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="md:col-span-2 bg-[var(--undp-light)] border border-gray-100 p-6 rounded-lg">
-          {view === "nbs" && (
-            <NbsBarChart
-              title="Nature-Based Solutions Breakdown"
-              subtitle={`${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) refer to NBS. Click a segment to see which targets.`}
-              data={nbsSorted}
-              documentTypes={[...documentTypes]}
-              targets={targets}
-              nbsClassifications={nbsClassifications}
-            />
-          )}
-          {view === "sector" && (
-            <ThemeBarChart
-              title="IPCC Sector Classification"
-              subtitle="Number of targets per IPCC sector. Click a segment to see which targets."
-              data={sectorSorted}
-              documentTypes={[...documentTypes]}
-              targets={targets}
-              themeClassifications={sectorClassifications}
-              taxonomyType="sector"
-            />
-          )}
-          {view === "theme" && (
-            <ThemeBarChart
-              title="Cross-Cutting Themes"
-              subtitle="Number of targets per cross-cutting theme. Click a segment to see which targets."
-              data={themeSorted}
-              documentTypes={[...documentTypes]}
-              targets={targets}
-              themeClassifications={themeClassifications}
-              taxonomyType="theme"
-            />
-          )}
-        </div>
-        <div className="flex flex-col h-full">
-          <OutcomeStats
-            quantitativeTargets={targets.filter((t) => t.isQuantitative)}
-            timeBoundTargets={targets.filter((t) => t.isTimeBound)}
-            totalTargets={targets.length}
-            mappedTargets={mappedTargetsByView[view]}
+      <p className="text-sm text-[var(--undp-gray)] mb-4">
+        {viewSubtitles[view]}. Click a segment to see which targets.
+      </p>
+
+      <OutcomeStats
+        quantitativeTargets={targets.filter((t) => t.isQuantitative)}
+        timeBoundTargets={targets.filter((t) => t.isTimeBound)}
+        totalTargets={targets.length}
+        mappedTargets={mappedTargetsByView[view]}
+      />
+
+      <div className="mt-4">
+        {view === "nbs" && (
+          <NbsBarChart
+            data={nbsSorted}
+            documentTypes={[...documentTypes]}
+            targets={targets}
+            nbsClassifications={nbsClassifications}
           />
-        </div>
+        )}
+        {view === "sector" && (
+          <ThemeBarChart
+            data={sectorSorted}
+            documentTypes={[...documentTypes]}
+            targets={targets}
+            themeClassifications={sectorClassifications}
+            taxonomyType="sector"
+          />
+        )}
+        {view === "theme" && (
+          <ThemeBarChart
+            data={themeSorted}
+            documentTypes={[...documentTypes]}
+            targets={targets}
+            themeClassifications={themeClassifications}
+            taxonomyType="theme"
+          />
+        )}
       </div>
     </section>
   );
@@ -336,9 +337,20 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
             Cross-Policy Alignment
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            How targets across {documentTypes.length} policy document{documentTypes.length !== 1 ? "s" : ""} relate to each other — alignment, gaps, and contradictions.
+            How targets across {documentTypes.filter(d => d !== "BTR").length} policy document{documentTypes.filter(d => d !== "BTR").length !== 1 ? "s" : ""} relate to each other: alignment, gaps, and contradictions.
           </p>
         </div>
+
+        {/* --- Policy Coherence Explorer --- */}
+        <PolicyCoherenceExplorer
+          targets={targets}
+          alignment={data.alignment}
+          sectors={data.sectors}
+          themes={data.themes}
+          nbsCategories={data.nbsCategories}
+          classifications={data.classifications}
+          nr7Data={data.nr7Data}
+        />
 
         {/* --- Thematic Classification (switchable) --- */}
         <ClassificationSection
@@ -353,17 +365,6 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           targetsWithNbs={targetsWithNbs}
           targetsWithSectors={targetsWithSectors}
           targetsWithThemes={targetsWithThemes}
-        />
-
-        {/* --- Policy Coherence Explorer --- */}
-        <PolicyCoherenceExplorer
-          targets={targets}
-          alignment={data.alignment}
-          sectors={data.sectors}
-          themes={data.themes}
-          nbsCategories={data.nbsCategories}
-          classifications={data.classifications}
-          nr7Data={data.nr7Data}
         />
 
         {/* --- Contradiction Summary --- */}

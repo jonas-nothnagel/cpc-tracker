@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
-import { TargetTextWithHighlights } from "./target-text";
+import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { Modal } from "@/components/ui/modal";
+import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type { Target } from "@/types";
 
 interface OutcomeStatCardProps {
@@ -20,67 +21,50 @@ function OutcomeStatCard({ percentage, label, targets }: OutcomeStatCardProps) {
       <button
         type="button"
         onClick={() => isClickable && setIsOpen(true)}
-        className={`bg-[var(--undp-light)] border border-gray-100 p-6 flex-1 flex flex-col items-center justify-center text-center w-full transition-colors ${
-          isClickable ? "hover:bg-gray-200/60 cursor-pointer" : "cursor-default"
+        className={`bg-[var(--undp-light)] border border-gray-100 rounded-lg p-5 text-left w-full transition-colors ${
+          isClickable ? "hover:border-[var(--undp-blue)]/30 hover:bg-[var(--undp-blue)]/5 cursor-pointer" : "cursor-default"
         }`}
       >
-        <p className="text-4xl font-medium text-[var(--chart-ndc)] tabular-nums">
-          {percentage}%
-        </p>
-        <p className="text-sm text-[var(--undp-gray)] mt-2">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
           {label}
         </p>
-        {isClickable && (
-          <p className="text-[10px] text-[var(--undp-gray)]/70 mt-1">
-            Click to view
-          </p>
-        )}
+        <p className="text-3xl font-medium text-[var(--undp-blue)] tabular-nums mt-1">
+          {percentage}%
+        </p>
+        <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+          of targets
+        </p>
       </button>
 
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-          onClick={() => setIsOpen(false)}
-        >
-          <div
-            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h3 className="font-medium text-[var(--undp-black)]">
-                {label} ({targets.length})
-              </h3>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
-              >
-                x
-              </button>
-            </div>
-            <div className="overflow-auto flex-1 px-6 py-4">
-              <ul className="space-y-3">
-                {targets.map((t) => (
-                  <li
-                    key={t.id}
-                    className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
-                  >
-                    <span
-                      className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
-                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                    >
-                      {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
-                    </span>
-                    <span className="text-[var(--undp-black)] leading-relaxed">
-                      <TargetTextWithHighlights target={t} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={`${label} (${targets.length})`}
+        maxWidth="max-w-xl"
+      >
+        <ul className="divide-y divide-gray-50 px-5 py-2">
+          {targets.map((t) => (
+            <li key={t.id} className="py-3.5">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span
+                  className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
+                  style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                  title={DOC_FULL_LABELS[t.sourceDocument]}
+                >
+                  {DOC_LABELS[t.sourceDocument]}
+                </span>
+                <span className="text-xs font-medium text-[var(--undp-black)]">
+                  {t.sourceLabel}
+                </span>
+              </div>
+              <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+                <TargetTextWithHighlights target={t} />
+              </p>
+              <ActivitiesActions target={t} />
+            </li>
+          ))}
+        </ul>
+      </Modal>
     </>
   );
 }
@@ -104,15 +88,15 @@ export function OutcomeStats({
   const mappedPct = mappedTargets ? Math.round((mappedTargets.count / totalTargets) * 100) : null;
 
   return (
-    <div className="flex flex-col gap-4 h-full">
+    <div className="grid grid-cols-3 gap-4">
       <OutcomeStatCard
         percentage={quantitativePct}
-        label="of targets include measurable outcomes"
+        label="Measurable outcomes"
         targets={quantitativeTargets}
       />
       <OutcomeStatCard
         percentage={timeBoundPct}
-        label="of targets include time-bound commitments"
+        label="Time-bound commitments"
         targets={timeBoundTargets}
       />
       {mappedPct !== null && mappedTargets && (
