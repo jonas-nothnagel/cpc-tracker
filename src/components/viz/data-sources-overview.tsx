@@ -7,6 +7,18 @@ import { Modal } from "@/components/ui/modal";
 import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type { Target, PolicyDocumentType, BtrData, Nr7Data } from "@/types";
 
+// ─── Acronym descriptions for InfoBox ─────────────────────────────────────────
+
+const ACRONYM_DESCRIPTIONS: Record<string, string> = {
+  NDC: "Nationally Determined Contribution",
+  NBSAP: "National Biodiversity Strategy and Action Plan",
+  NAP: "National Adaptation Plan",
+  LDN: "Land Degradation Neutrality",
+  BTR: "Biennial Transparency Report",
+  NR7: "7th National Report to the Convention on Biological Diversity",
+};
+const ACRONYM_ORDER = ["NDC", "NBSAP", "NAP", "LDN", "BTR", "NR7"];
+
 // ─── Target list modal ────────────────────────────────────────────────────────
 
 function TargetListModal({ label, targets, onClose }: {
@@ -78,10 +90,12 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
   const sources: SourceEntry[] = [];
   for (const docType of docTypes) {
     const docTargets = targetsByDoc.get(docType) ?? [];
+    const itemLabel = docType === "BTR" ? "measure" : "target";
+    const detailSuffix = docType === "BTR" ? " (alignment analysis)" : "";
     sources.push({
       key: `doc:${docType}`,
       name: DOC_FULL_LABELS[docType],
-      detail: `${docTargets.length} target${docTargets.length === 1 ? "" : "s"}`,
+      detail: `${docTargets.length} ${itemLabel}${docTargets.length === 1 ? "" : "s"}${detailSuffix}`,
       color: DOC_COLORS[docType],
       badge: DOC_MEDIUM_LABELS[docType],
       onClick: () => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color: DOC_COLORS[docType] }),
@@ -91,20 +105,37 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
     sources.push({
       key: "data:btr",
       name: "BTR Implementation Data",
-      detail: `${btrMeasures} measure${btrMeasures === 1 ? "" : "s"}`,
+      detail: `${btrMeasures} mitigation measure${btrMeasures === 1 ? "" : "s"}`,
       color: "#7c3aed",
-      badge: "BTR",
+      badge: "BTR (Implementation)",
     });
   }
   if (nr7Data && nr7Count > 0) {
     sources.push({
       key: "data:nr7",
-      name: "NR7 Progress Reporting",
-      detail: `${nr7Count} target${nr7Count === 1 ? "" : "s"} tracked`,
+      name: "NBSAP Progress — 7th National Report",
+      detail: `tracking ${nr7Count} NBSAP target${nr7Count === 1 ? "" : "s"}`,
       color: "#16a34a",
       badge: "NR7",
     });
   }
+
+  // Dynamic abbreviation list for InfoBox
+  const presentAbbreviations = new Set<string>();
+  for (const dt of docTypes) {
+    if (dt in ACRONYM_DESCRIPTIONS) presentAbbreviations.add(dt);
+  }
+  if (btrData && btrMeasures > 0) presentAbbreviations.add("BTR");
+  if (nr7Data && nr7Count > 0) presentAbbreviations.add("NR7");
+  const abbrList = ACRONYM_ORDER.filter(a => presentAbbreviations.has(a));
+
+  // Summary counts (distinguish targets from BTR measures)
+  const btrTargetCount = targets.filter(t => t.sourceDocument === "BTR").length;
+  const policyTargetCount = targets.length - btrTargetCount;
+  const summaryParts: string[] = [];
+  if (policyTargetCount > 0) summaryParts.push(`${policyTargetCount} policy target${policyTargetCount !== 1 ? "s" : ""}`);
+  if (btrTargetCount > 0) summaryParts.push(`${btrTargetCount} BTR measure${btrTargetCount !== 1 ? "s" : ""}`);
+  const itemsSummary = summaryParts.join(" · ");
 
   return (
     <>
@@ -113,15 +144,22 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
           <h2 className="text-lg font-semibold text-[var(--undp-black)]">
             Data Sources
             <InfoBox>
-              These are the policy documents analyzed. Click any document source to see the individual targets extracted from it.
-              <br /><br />
-              <strong>NDC</strong> = Nationally Determined Contribution<br />
-              <strong>NBSAP</strong> = National Biodiversity Strategy and Action Plan<br />
-              <strong>NAP</strong> = National Adaptation Plan
+              These are the policy documents and data sources analyzed. Click any source to see its contents.
+              {abbrList.length > 0 && (
+                <>
+                  <br /><br />
+                  {abbrList.map((abbr, i) => (
+                    <span key={abbr}>
+                      <strong>{abbr}</strong> = {ACRONYM_DESCRIPTIONS[abbr]}
+                      {i < abbrList.length - 1 ? <br /> : null}
+                    </span>
+                  ))}
+                </>
+              )}
             </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {sources.length} source{sources.length !== 1 ? "s" : ""} · {targets.length} policy targets
+            {sources.length} source{sources.length !== 1 ? "s" : ""} · {itemsSummary}
           </p>
         </div>
 
@@ -150,7 +188,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
                 <span className="text-[11px] text-[var(--undp-gray)]">{s.detail}</span>
                 {s.onClick && (
                   <span className="text-[11px] text-[var(--undp-blue)] opacity-0 group-hover:opacity-100 transition-opacity ml-0.5 whitespace-nowrap">
-                    View targets &rarr;
+                    {s.key === "doc:BTR" ? "View measures" : "View targets"} &rarr;
                   </span>
                 )}
               </Tag>

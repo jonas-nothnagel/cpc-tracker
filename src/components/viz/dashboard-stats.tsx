@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
-import { TargetTextWithHighlights } from "./target-text";
+import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { Modal } from "@/components/ui/modal";
+import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type { Target, PolicyDocumentType } from "@/types";
 
 interface StatCardProps {
@@ -39,64 +40,41 @@ function StatCard({ value, label, color, targets }: StatCardProps) {
         )}
       </button>
 
-      {isOpen && targets && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-          onClick={() => setIsOpen(false)}
-        >
-          <div
-            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h3 className="font-medium text-[var(--undp-black)]">
-                {label} ({targets.length})
-              </h3>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-xl leading-none"
-              >
-                x
-              </button>
-            </div>
-            <div className="overflow-auto flex-1 px-6 py-4">
-              <ul className="space-y-3">
-                {targets.map((t) => (
-                  <li
-                    key={t.id}
-                    className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
+      <Modal
+        open={isOpen && !!targets}
+        onClose={() => setIsOpen(false)}
+        title={`${label} (${targets?.length ?? 0})`}
+        maxWidth="max-w-xl"
+      >
+        {targets && (
+          <ul className="divide-y divide-gray-50 px-5 py-2">
+            {targets.map((t) => (
+              <li key={t.id} className="py-3.5">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span
+                    className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
+                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    title={DOC_FULL_LABELS[t.sourceDocument]}
                   >
-                    <span
-                      className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
-                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                    >
-                      {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
-                    </span>
-                    <span className="text-[var(--undp-black)] leading-relaxed">
-                      <TargetTextWithHighlights target={t} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
+                    {DOC_LABELS[t.sourceDocument]}
+                  </span>
+                  <span className="text-xs font-medium text-[var(--undp-black)]">
+                    {t.sourceLabel}
+                  </span>
+                </div>
+                <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+                  <TargetTextWithHighlights target={t} />
+                </p>
+                <ActivitiesActions target={t} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </Modal>
     </>
   );
 }
 
-/** Full labels for document types in stat cards */
-const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
-  NDC: "Nationally Determined Contributions",
-  NBSAP: "National Biodiversity Targets",
-  NAP: "National Adaptation Plan Targets",
-  LDN: "Land Degradation Neutrality Targets",
-  SECTORAL: "Sectoral Policy Targets",
-  BTR: "BTR Reported Measures",
-  OTHER: "Other Targets",
-};
 
 interface DashboardStatsProps {
   targets: Target[];

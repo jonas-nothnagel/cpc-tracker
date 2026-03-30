@@ -10,9 +10,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
-import { TargetTextWithHighlights } from "./target-text";
+import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
 import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
 interface BarData {
@@ -24,7 +24,7 @@ interface BarData {
 
 interface ThemeBarChartProps {
   data: BarData[];
-  title: string;
+  title?: string;
   subtitle?: string;
   documentTypes: PolicyDocumentType[];
   targets: Target[];
@@ -54,7 +54,7 @@ function getTargetsForTheme(
   );
 }
 
-const MAX_Y_LABEL = 32;
+const MAX_Y_LABEL = 50;
 
 function TruncatedYTick({ x, y, payload, onLabelClick }: { x?: number; y?: number; payload?: { value: string }; onLabelClick?: (name: string) => void }) {
   const label = payload?.value ?? "";
@@ -138,8 +138,8 @@ export function ThemeBarChart({
 
   return (
     <div>
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 mb-4">
-        <div>
+      {title && (
+        <div className="mb-3">
           <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-1">
             {title}
           </h3>
@@ -147,26 +147,25 @@ export function ThemeBarChart({
             <p className="text-sm text-[var(--undp-gray)]">{subtitle}</p>
           )}
         </div>
-        {/* Legend placed outside chart to avoid overlap */}
-        <div className="flex flex-wrap gap-4 text-xs">
-          {documentTypes.map((doc) => (
-            <div key={doc} className="flex items-center gap-1.5">
-              <span
-                className="w-3 h-3 rounded-sm inline-block"
-                style={{ backgroundColor: DOC_COLORS[doc] }}
-              />
-              <span className="text-[var(--undp-gray)]">
-                {DOC_LABELS[doc] ?? doc}
-              </span>
-            </div>
-          ))}
-        </div>
+      )}
+      <div className="flex flex-wrap gap-4 text-xs mb-4">
+        {documentTypes.map((doc) => (
+          <div key={doc} className="flex items-center gap-1.5">
+            <span
+              className="w-3 h-3 rounded-sm inline-block"
+              style={{ backgroundColor: DOC_COLORS[doc] }}
+            />
+            <span className="text-[var(--undp-gray)]">
+              {DOC_LABELS[doc] ?? doc}
+            </span>
+          </div>
+        ))}
       </div>
-      <ResponsiveContainer width="100%" height={data.length * 40 + 40}>
+      <ResponsiveContainer width="100%" height={data.length * 48 + 48}>
         <BarChart
           data={chartData}
           layout="vertical"
-          margin={{ top: 5, right: 40, left: 100, bottom: 5 }}
+          margin={{ top: 5, right: 40, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
           <XAxis type="number" tick={{ fontSize: 12, fill: "#64748b" }} />
@@ -174,7 +173,7 @@ export function ThemeBarChart({
             dataKey="name"
             type="category"
             tick={<TruncatedYTick onLabelClick={handleLabelClick} />}
-            width={170}
+            width={280}
           />
           <Tooltip
             contentStyle={{
@@ -196,6 +195,7 @@ export function ThemeBarChart({
               fill={DOC_COLORS[doc]}
               onClick={(data) => handleSegmentClick(data, doc)}
               style={{ cursor: "pointer" }}
+              activeBar={{ stroke: "none", fillOpacity: 0.75 }}
             />
           ))}
         </BarChart>
@@ -205,32 +205,31 @@ export function ThemeBarChart({
         open={!!modal}
         onClose={() => setModal(null)}
         title={modal ? `${modal.themeName}${modal.docType ? ` — ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
-        maxWidth="max-w-2xl"
+        maxWidth="max-w-xl"
       >
         {modal && (
-          <div className="px-6 py-4">
-            <p className="text-xs text-[var(--undp-gray)] mb-3">
-              {modal.docType ? `${DOC_LABELS[modal.docType]} targets` : "All targets"} classified under this category
-            </p>
-            <ul className="space-y-3">
-              {modal.targets.map((t) => (
-                <li
-                  key={t.id}
-                  className="flex gap-3 text-sm py-2 border-b border-gray-50 last:border-0"
-                >
+          <ul className="divide-y divide-gray-50 px-5 py-2">
+            {modal.targets.map((t) => (
+              <li key={t.id} className="py-3.5">
+                <div className="flex items-center gap-2 mb-1.5">
                   <span
-                    className="shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
+                    className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
                     style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    title={DOC_FULL_LABELS[t.sourceDocument]}
                   >
-                    {DOC_LABELS[t.sourceDocument]} {t.sourceLabel}
+                    {DOC_LABELS[t.sourceDocument]}
                   </span>
-                  <span className="text-[var(--undp-black)] leading-relaxed">
-                    <TargetTextWithHighlights target={t} />
+                  <span className="text-xs font-medium text-[var(--undp-black)]">
+                    {t.sourceLabel}
                   </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+                </div>
+                <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+                  <TargetTextWithHighlights target={t} />
+                </p>
+                <ActivitiesActions target={t} />
+              </li>
+            ))}
+          </ul>
         )}
       </Modal>
     </div>
