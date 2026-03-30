@@ -528,7 +528,7 @@ export function PolicyCoherenceExplorer({
     result: AlignmentResult;
     other: Target;
   } | null>(null);
-  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(() => new Set(["BTR"]));
+  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(() => new Set(["LDN", "SECTORAL", "BTR", "OTHER"]));
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
