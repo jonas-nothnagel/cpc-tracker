@@ -49,15 +49,15 @@ export default function Home() {
         {/* Content on top */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
           <div className="max-w-xl py-16 md:py-20">
-            <p className="text-sm uppercase tracking-widest text-[var(--undp-blue-light)] mb-3">
+            <p className="text-sm uppercase tracking-widest text-[var(--undp-blue)] mb-3 font-medium">
               UNDP AI Sprint Initiative
             </p>
             <h1 className="text-4xl md:text-5xl font-normal text-[var(--undp-black)] mb-5 leading-tight tracking-tight">
               Nature-Climate Policy Coherence Tracker
             </h1>
-            <p className="text-lg text-[var(--undp-black)]/70 mb-8 leading-relaxed max-w-md">
-              Identify gaps, overlaps, and synergies across national climate,
-              biodiversity, and land-use policies for strengthening coherence and tracking progress.
+            <p className="text-lg text-[var(--undp-black)] mb-8 leading-relaxed max-w-md">
+              See where your national climate, biodiversity, and land-use targets
+              align, overlap, or contradict each other.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -70,7 +70,7 @@ export default function Home() {
                 href="/upload"
                 className="px-6 py-3 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-base font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
               >
-                Upload Targets
+                Analyse Your Policies
               </Link>
             </div>
           </div>
