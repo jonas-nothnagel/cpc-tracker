@@ -251,8 +251,8 @@ function DetailPanel({
 
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
-      high: 0, medium: 1, low: 2,
-      low_tension: 3, moderate_contradiction: 4, high_contradiction: 5,
+      high_contradiction: 0, moderate_contradiction: 1, low_tension: 2,
+      high: 3, medium: 4, low: 5,
       none: 6,
     };
     return order[a.alignment] - order[b.alignment];
@@ -509,6 +509,7 @@ interface PolicyCoherenceExplorerProps {
   nbsCategories: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
+  focusTargetId?: string | null;
 }
 
 export function PolicyCoherenceExplorer({
@@ -519,6 +520,7 @@ export function PolicyCoherenceExplorer({
   nbsCategories,
   classifications,
   nr7Data,
+  focusTargetId,
 }: PolicyCoherenceExplorerProps) {
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
   const [filter, setFilter] = useState<AlignFilter>("high_contra");
@@ -531,6 +533,14 @@ export function PolicyCoherenceExplorer({
   const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(() => new Set(["LDN", "SECTORAL", "BTR", "OTHER"]));
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+
+  // External focus: when Tensions section links to a specific target
+  useEffect(() => {
+    if (focusTargetId) {
+      setSelectedId(focusTargetId);
+      setFilter("contradictions");
+    }
+  }, [focusTargetId]);
 
   /** All document types present in the data */
   const availableDocs = useMemo(() => {
@@ -692,7 +702,7 @@ export function PolicyCoherenceExplorer({
   );
 
   return (
-    <section className="mb-10">
+    <section id="coherence-explorer" className="mb-10">
       {/* Header + controls */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
         <div>

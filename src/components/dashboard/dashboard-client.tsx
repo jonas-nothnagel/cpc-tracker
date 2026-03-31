@@ -10,7 +10,7 @@ import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
-import { ContradictionSummary } from "@/components/viz/contradiction-summary";
+import { TensionClusters } from "@/components/viz/tension-clusters";
 import { Nr7Progress } from "@/components/viz/nr7-progress";
 import { SectorScorecard } from "@/components/viz/sector-scorecard";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
@@ -195,6 +195,7 @@ function ClassificationSection({
 export function DashboardClient({ analysisId }: { analysisId?: string }) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [focusTargetId, setFocusTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     const url = analysisId
@@ -341,6 +342,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           nbsCategories={data.nbsCategories}
           classifications={data.classifications}
           nr7Data={data.nr7Data}
+          focusTargetId={focusTargetId}
         />
         </div>
 
@@ -362,10 +364,15 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           themes={data.themes}
         />
 
-        {/* --- Contradiction Summary --- */}
-        <ContradictionSummary
+        {/* --- Structural Tension Analysis --- */}
+        <TensionClusters
           alignmentData={data.alignment}
           targets={targets}
+          classifications={data.classifications}
+          sectors={data.sectors}
+          nbsCategories={data.nbsCategories}
+          themes={data.themes}
+          onFocusTarget={setFocusTargetId}
         />
 
         {/* --- Financial Alignment (placeholder) --- */}
