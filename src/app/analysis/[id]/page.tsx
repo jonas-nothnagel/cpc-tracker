@@ -224,7 +224,7 @@ function PipelineViz({ status }: { status: AnalysisStatus }) {
           detail="Comparing target pairs to determine policy coherence levels"
           output={
             getState(5) === "done" && summary
-              ? `${pairCount} pairs assessed — ${summary.alignmentLevels?.high ?? 0} high, ${summary.alignmentLevels?.medium ?? 0} medium, ${summary.alignmentLevels?.low ?? 0} low alignment`
+              ? `${pairCount} pairs assessed: ${summary.alignmentLevels?.high ?? 0} high, ${summary.alignmentLevels?.medium ?? 0} medium, ${summary.alignmentLevels?.low ?? 0} low alignment`
               : undefined
           }
           state={getState(5)}

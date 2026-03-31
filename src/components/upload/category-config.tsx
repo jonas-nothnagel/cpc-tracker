@@ -187,7 +187,7 @@ function GroupCard({
             <p className="text-xs text-[var(--undp-gray)] mt-0.5">
               {group.items.length > 0
                 ? `${activeCount} of ${group.items.length} enabled`
-                : "No categories yet — click Edit to add"}
+                : "No categories yet. Click Edit to add."}
             </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">

@@ -22,9 +22,9 @@ interface DocumentUploadZoneProps {
 }
 
 const FILE_TYPE_CARDS = [
-  { id: "policy" as const, title: "Policy document", subtitle: "PDF or DOCX — targets extracted automatically" },
+  { id: "policy" as const, title: "Policy document", subtitle: "PDF or DOCX, targets extracted automatically" },
   { id: "list" as const, title: "Target list", subtitle: "CSV or TSV with text, type, label columns" },
-  { id: "btr" as const, title: "BTR Excel sheet", subtitle: "XLSX — reported actions, emissions, projections" },
+  { id: "btr" as const, title: "BTR Excel sheet", subtitle: "XLSX with reported actions, emissions, projections" },
 ] as const;
 
 export function DocumentUploadZone({
@@ -137,7 +137,7 @@ export function DocumentUploadZone({
           <span className="text-[var(--undp-blue)]">browse</span>
         </p>
         <p className="text-xs text-[var(--undp-gray)]">
-          {uploadMode === "policy" && "PDF, DOCX accepted — multiple files supported"}
+          {uploadMode === "policy" && "PDF, DOCX accepted (multiple files supported)"}
           {uploadMode === "list" && "CSV, TSV accepted"}
           {uploadMode === "btr" && "XLSX accepted"}
         </p>

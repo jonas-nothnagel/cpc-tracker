@@ -298,7 +298,7 @@ function DetailPanel({
           {[node.target, comparedPair.other].map((t) => (
             <div key={t.id}>
               <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                {DOC_LABELS[t.sourceDocument]} — {t.sourceLabel}
+                {DOC_LABELS[t.sourceDocument]}: {t.sourceLabel}
               </p>
               <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
                 <TargetTextWithHighlights target={t} />
@@ -699,7 +699,7 @@ export function PolicyCoherenceExplorer({
           <h2 className="text-lg font-semibold text-[var(--undp-black)]">
             Policy Coherence Explorer
             <InfoBox>
-              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships — thicker, darker lines show stronger alignment. Dashed red lines indicate contradictions.
+              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate contradictions.
               <br /><br />
               The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.
             </InfoBox>
@@ -986,7 +986,7 @@ export function PolicyCoherenceExplorer({
                         handleNodeClick(node.id);
                       }}
                     >
-                      <title>{DOC_MEDIUM_LABELS[node.target.sourceDocument]} — {node.target.sourceLabel}</title>
+                      <title>{DOC_MEDIUM_LABELS[node.target.sourceDocument]}: {node.target.sourceLabel}</title>
                     </circle>
                     {/* Small doc-type indicator dot in non-document modes */}
                     {useGroupColor && r >= 4 && !isDimmed && (
@@ -1187,9 +1187,9 @@ export function PolicyCoherenceExplorer({
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Connection strength</p>
                 <div className="flex flex-col gap-1">
                   {([
-                    ["high", "High — strong synergy"],
-                    ["medium", "Medium — complementary"],
-                    ["low", "Low — loosely related"],
+                    ["high", "High: strong synergy"],
+                    ["medium", "Medium: complementary"],
+                    ["low", "Low: loosely related"],
                   ] as [AlignmentLevel, string][]).map(([level, desc]) => (
                     <span key={level} className="flex items-center gap-1.5">
                       <span className="w-6 h-1 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
@@ -1199,7 +1199,7 @@ export function PolicyCoherenceExplorer({
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
                       <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.high_contradiction} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
-                      <span className="text-[var(--undp-gray)]">Contradiction — potential conflict</span>
+                      <span className="text-[var(--undp-gray)]">Contradiction: potential conflict</span>
                     </span>
                   )}
                 </div>

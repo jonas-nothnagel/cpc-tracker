@@ -263,7 +263,7 @@ export function StepReferenceData({
                     NR7 Biodiversity Progress
                   </p>
                   <p className="text-xs text-[var(--undp-gray)]">
-                    7th National Report to the CBD — shown on dashboard
+                    7th National Report to the CBD (shown on dashboard)
                   </p>
                 </div>
                 <button

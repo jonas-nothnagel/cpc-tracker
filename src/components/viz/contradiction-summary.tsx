@@ -91,10 +91,10 @@ export function ContradictionSummary({
             <InfoBox>
               Contradictions are cases where policy targets may work against each other.
               <br /><br />
-              <strong>Goal conflict</strong> — targets aim for incompatible outcomes.<br />
-              <strong>Resource competition</strong> — targets compete for the same resources.<br />
-              <strong>Implementation tension</strong> — implementing one target makes the other harder.<br />
-              <strong>Scale/scope mismatch</strong> — targets operate at incompatible scales.
+              <strong>Goal conflict:</strong> targets aim for incompatible outcomes.<br />
+              <strong>Resource competition:</strong> targets compete for the same resources.<br />
+              <strong>Implementation tension:</strong> implementing one target makes the other harder.<br />
+              <strong>Scale/scope mismatch:</strong> targets operate at incompatible scales.
             </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-1">

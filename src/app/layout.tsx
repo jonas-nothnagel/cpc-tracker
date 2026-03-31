@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CPC Tracker — Policy Coherence Analysis",
+  title: "CPC Tracker | Policy Coherence Analysis",
   description: "AI-assisted tool for assessing coherence across nature-climate policies and tracking implementation progress.",
   icons: {
     icon: "/undp-logo.png",
   },
   openGraph: {
-    title: "CPC Tracker — Policy Coherence Analysis",
+    title: "CPC Tracker | Policy Coherence Analysis",
     description: "AI-assisted tool for assessing coherence across nature-climate policies and tracking implementation progress.",
     type: "website",
   },

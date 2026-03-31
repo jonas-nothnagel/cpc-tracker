@@ -184,9 +184,9 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
           <InfoBox>
             This shows the overall alignment between document types.
             <br /><br />
-            <strong>Coherency %</strong> — quality-weighted score (high = 3pts, medium = 2, low = 1), normalized against maximum possible pairs.<br />
-            <strong>Coverage %</strong> — share of possible cross-document target pairs that show any alignment.<br />
-            <strong>Conflicts</strong> — pairs where targets work against each other.
+            <strong>Coherency %:</strong> quality-weighted score (high = 3pts, medium = 2, low = 1), normalized against maximum possible pairs.<br />
+            <strong>Coverage %:</strong> share of possible cross-document target pairs that show any alignment.<br />
+            <strong>Conflicts:</strong> pairs where targets work against each other.
           </InfoBox>
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
