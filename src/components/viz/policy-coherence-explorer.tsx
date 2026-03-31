@@ -539,8 +539,17 @@ export function PolicyCoherenceExplorer({
     if (focusTargetId) {
       setSelectedId(focusTargetId);
       setFilter("contradictions");
+      const t = targets.find((t) => t.id === focusTargetId);
+      if (t) {
+        setHiddenDocs((prev) => {
+          if (!prev.has(t.sourceDocument)) return prev;
+          const next = new Set(prev);
+          next.delete(t.sourceDocument);
+          return next;
+        });
+      }
     }
-  }, [focusTargetId]);
+  }, [focusTargetId, targets]);
 
   /** All document types present in the data */
   const availableDocs = useMemo(() => {
