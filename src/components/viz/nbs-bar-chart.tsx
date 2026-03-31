@@ -200,7 +200,7 @@ export function NbsBarChart({
       <Modal
         open={!!modal}
         onClose={() => setModal(null)}
-        title={modal ? `${modal.categoryName}${modal.docType ? ` — ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
+        title={modal ? `${modal.categoryName}${modal.docType ? `, ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
         maxWidth="max-w-xl"
       >
         {modal && (

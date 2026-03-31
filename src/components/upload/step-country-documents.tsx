@@ -90,7 +90,7 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
     <div>
       {/* Compact intro */}
       <p className="text-sm text-[var(--undp-gray)] mb-6">
-        Select your country and upload policy documents. All common formats are accepted — the system will auto-detect how to process each file.
+        Select your country and upload policy documents. All common formats are accepted and the system will auto-detect how to process each file.
       </p>
 
       {/* Country + doc type — inline row */}
@@ -197,7 +197,7 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
               </button>
             </p>
             <p className="text-xs text-[var(--undp-gray)] mt-1">
-              PDF, DOCX, CSV, TSV, XLSX — all formats auto-detected
+              PDF, DOCX, CSV, TSV, XLSX (auto-detected)
             </p>
           </>
         )}
@@ -256,7 +256,7 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
             <span className="text-xs font-bold text-emerald-700">{props.targetCount}</span>
           </div>
           <p className="text-sm text-emerald-700">
-            target{props.targetCount !== 1 ? "s" : ""} added — click <strong>Next</strong> to continue
+            target{props.targetCount !== 1 ? "s" : ""} added. Click <strong>Next</strong> to continue.
           </p>
         </div>
       )}

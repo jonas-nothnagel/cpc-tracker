@@ -215,7 +215,7 @@ export function Nr7Progress({
           </InfoBox>
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-          {nr7Data.progressItems.length} national biodiversity targets — 7th National Report to the CBD
+          {nr7Data.progressItems.length} national biodiversity targets from the 7th National Report to the CBD
           {nr7Data.reportingPeriod ? ` (${nr7Data.reportingPeriod})` : ""}
         </p>
       </div>

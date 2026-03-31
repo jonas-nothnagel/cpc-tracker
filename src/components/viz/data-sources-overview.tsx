@@ -113,7 +113,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
   if (nr7Data && nr7Count > 0) {
     sources.push({
       key: "data:nr7",
-      name: "NBSAP Progress — 7th National Report",
+      name: "NBSAP Progress (7th National Report)",
       detail: `tracking ${nr7Count} NBSAP target${nr7Count === 1 ? "" : "s"}`,
       color: "#16a34a",
       badge: "NR7",

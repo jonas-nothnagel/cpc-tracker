@@ -203,8 +203,8 @@ export function CoherencyClusters({
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
           {clusters.length} group{clusters.length !== 1 ? "s" : ""} of targets across{" "}
-          {allDocTypes.size} document types that share medium or high alignment
-          — potential coordination opportunities for implementation.
+          {allDocTypes.size} document types that share medium or high alignment,
+          representing potential coordination opportunities for implementation.
           {" "}{totalTargetsInClusters} targets involved.
         </p>
       </div>

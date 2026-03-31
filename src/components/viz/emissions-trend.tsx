@@ -314,14 +314,14 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
 
       <p className="text-[10px] text-[var(--undp-gray)] mt-2 text-center">
         Dashed lines show WEM (With Existing Measures) projections. Click legend items to toggle sectors.
-        {!showLulucf && hasLulucf && " LULUCF hidden — acts as large carbon sink, see checkbox above."}
+        {!showLulucf && hasLulucf && " LULUCF hidden (acts as large carbon sink, see checkbox above)."}
       </p>
 
       {showLulucf && (
         <div className="mt-3 px-4 py-3 bg-[#00689d]/8 border border-[#00689d]/20 rounded-lg text-[10px] text-[var(--undp-gray)] leading-relaxed">
           <span className="font-semibold text-[#00689d]">About negative LULUCF values: </span>
           The Land Use, Land-Use Change and Forestry sector shows negative numbers because Mongolia&apos;s
-          forests and grasslands currently <strong>absorb more CO&#x2082; than they emit</strong> —
+          forests and grasslands currently <strong>absorb more CO&#x2082; than they emit</strong>,
           making this sector a net carbon sink. In international GHG accounting, removals from the atmosphere
           are reported as negative values. A value becoming <em>less negative</em> (moving toward zero)
           means the sink is weakening and absorbing less carbon over time, which is a warning sign for climate goals.

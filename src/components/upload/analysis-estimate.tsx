@@ -33,11 +33,11 @@ export function AnalysisEstimate({
       <div className="flex items-start justify-between gap-6">
         <div className="flex-1 min-w-0">
           <ul className="space-y-1 text-sm text-[var(--undp-gray)] mb-3">
-            <li>&middot; Quantitative phrase detection — {targetCount} calls</li>
-            <li>&middot; Classification against NBS, IPCC, themes — {classCalls} calls</li>
-            <li>&middot; Target decomposition — {targetCount} calls</li>
+            <li>&middot; Quantitative phrase detection: {targetCount} calls</li>
+            <li>&middot; Classification against NBS, IPCC, themes: {classCalls} calls</li>
+            <li>&middot; Target decomposition: {targetCount} calls</li>
             <li>
-              &middot; Pairwise alignment —{" "}
+              &middot; Pairwise alignment:{" "}
               {(estimate?.docTypes ?? 0) < 2
                 ? "requires 2+ document types"
                 : `~${estimate?.estPairs ?? 0} pairs`}

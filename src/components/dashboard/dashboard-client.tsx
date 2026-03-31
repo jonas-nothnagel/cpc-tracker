@@ -418,7 +418,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
                     <InfoBox>
                       This section brings together two data sources: <strong>policy targets</strong> from the NDC{" "}
                       (Nationally Determined Contribution) and <strong>reported actions</strong> from the BTR{" "}
-                      (Biennial Transparency Report — where governments report what they are doing to meet their{" "}
+                      (Biennial Transparency Report, where governments report what they are doing to meet their{" "}
                       climate commitments). For each sector, it shows whether targets have corresponding actions{" "}
                       and highlights gaps where targets exist but no actions have been reported.
                       <br /><br />
@@ -428,7 +428,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
                   <p className="text-sm text-[var(--undp-gray)] mt-0.5">
                     {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
                     {(data.btrData.supportProjects ?? [...data.btrData.technologySupport, ...data.btrData.capacityBuilding]).length} support
-                    projects — Biennial Transparency Report
+                    projects from the Biennial Transparency Report
                     {(() => { const v = data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]; return v ? ` (${v})` : ""; })()}
                   </p>
                 </div>

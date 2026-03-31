@@ -204,7 +204,7 @@ export function ThemeBarChart({
       <Modal
         open={!!modal}
         onClose={() => setModal(null)}
-        title={modal ? `${modal.themeName}${modal.docType ? ` — ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
+        title={modal ? `${modal.themeName}${modal.docType ? `, ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
         maxWidth="max-w-xl"
       >
         {modal && (

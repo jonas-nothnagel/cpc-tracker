@@ -24,7 +24,7 @@ export function ManualTargetEditor({
     <div className="mb-8 rounded-lg border-2 border-[var(--undp-blue)]/30 bg-blue-50/20 p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
-          Edit manual targets — {docType}
+          Edit manual targets: {docType}
         </h3>
         <button
           type="button"

@@ -8,8 +8,8 @@ export async function generateMetadata({ searchParams }: DashboardPageProps) {
   const { analysisId } = await searchParams;
   return {
     title: analysisId
-      ? `Analysis ${analysisId} — CPC Tracker`
-      : "Mongolia Dashboard — CPC Tracker",
+      ? `Analysis ${analysisId} | CPC Tracker`
+      : "Mongolia Dashboard | CPC Tracker",
   };
 }
 

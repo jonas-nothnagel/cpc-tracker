@@ -40,8 +40,8 @@ const SECTOR_COLORS: Record<string, string> = {
 type GapLevel = "critical" | "significant" | "moderate" | "on_track" | "no_data";
 
 const GAP_CONFIG: Record<GapLevel, { label: string; color: string; bg: string; description: string }> = {
-  critical:    { label: "Action needed",   color: "#b45309", bg: "bg-orange-50",  description: "Policy targets are set for this sector but no reported actions have been filed yet — this is an area to prioritize." },
-  significant: { label: "In progress",     color: "#0468b1", bg: "bg-blue-50",    description: "Actions are planned or adopted but none fully implemented — continued follow-up is recommended." },
+  critical:    { label: "Action needed",   color: "#b45309", bg: "bg-orange-50",  description: "Policy targets are set for this sector but no reported actions have been filed yet. This is an area to prioritize." },
+  significant: { label: "In progress",     color: "#0468b1", bg: "bg-blue-50",    description: "Actions are planned or adopted but none fully implemented. Continued follow-up is recommended." },
   moderate:    { label: "Partially active",color: "#0d9488", bg: "bg-teal-50",    description: "Some actions are underway. Further implementation can strengthen progress toward targets." },
   on_track:    { label: "Active",          color: "#4c9f38", bg: "bg-green-50",   description: "At least one action has been fully implemented in this sector." },
   no_data:     { label: "No data",         color: "#94a3b8", bg: "bg-gray-50",    description: "No targets or actions have been reported for this sector." },
@@ -648,7 +648,7 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
         {/* Reported actions — implemented first */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Reported Actions — BTR ({row.measures.length})
+            Reported Actions, BTR ({row.measures.length})
           </p>
           {row.measures.length === 0 ? (
             <p className="text-xs text-[var(--undp-gray)] italic">No actions reported for this sector</p>
@@ -712,7 +712,7 @@ function ExpandedDetail({ row }: { row: SectorRow }) {
       {combinedChart && combinedChart.length > 1 && (
         <div className="mt-5 pt-4 border-t border-gray-100">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            {row.sector.name} Emissions Trajectory (kt CO&#x2082; eq) — solid: historical, dashed: WEM projection
+            {row.sector.name} Emissions Trajectory (kt CO&#x2082; eq). Solid: historical, dashed: WEM projection.
           </p>
           <ResponsiveContainer width="100%" height={180}>
             <LineChart data={combinedChart} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>

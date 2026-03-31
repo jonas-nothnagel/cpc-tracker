@@ -114,7 +114,7 @@ export function AlignmentHeatmap({
                     transform: "rotate(-60deg)",
                     transformOrigin: "bottom left",
                   }}
-                  title={`${DOC_LABELS[t.sourceDocument]} — ${t.sourceLabel}: ${t.text}`}
+                  title={`${DOC_LABELS[t.sourceDocument]}, ${t.sourceLabel}: ${t.text}`}
                 >
                   {t.sourceLabel}
                 </span>
@@ -134,7 +134,7 @@ export function AlignmentHeatmap({
               {/* Row label */}
               <div
                 className="w-[140px] pr-2 text-right text-[11px] text-[var(--undp-gray)] shrink-0 truncate"
-                title={`${DOC_LABELS[rowT.sourceDocument]} — ${rowT.sourceLabel}: ${rowT.text}`}
+                title={`${DOC_LABELS[rowT.sourceDocument]}, ${rowT.sourceLabel}: ${rowT.text}`}
               >
                 {rowT.sourceLabel}
               </div>
@@ -197,7 +197,7 @@ export function AlignmentHeatmap({
         <Modal
           open={!!selectedCell}
           onClose={() => setSelectedCell(null)}
-          title={selectedCell ? `${ALIGNMENT_LABELS[selectedCell.alignment]} alignment — ${selectedCell.rowTarget.sourceLabel} ↔ ${selectedCell.colTarget.sourceLabel}` : ""}
+          title={selectedCell ? `${ALIGNMENT_LABELS[selectedCell.alignment]} alignment: ${selectedCell.rowTarget.sourceLabel} ↔ ${selectedCell.colTarget.sourceLabel}` : ""}
           maxWidth="max-w-xl"
         >
           {selectedCell && (
@@ -210,7 +210,7 @@ export function AlignmentHeatmap({
                 ].map(({ target, axis }) => (
                   <div key={target.id}>
                     <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                      {axis.replace(" ↓", "").replace(" →", "")} — {target.sourceLabel}
+                      {axis.replace(" ↓", "").replace(" →", "")}: {target.sourceLabel}
                     </p>
                     <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
                       {target.text}
