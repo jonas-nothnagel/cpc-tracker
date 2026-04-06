@@ -17,6 +17,7 @@ export type PolicyDocumentType =
   | "LDN"
   | "SECTORAL"
   | "BTR"
+  | "BER"
   | "OTHER";
 
 /** A single policy target entered by a user. */
@@ -231,6 +232,41 @@ export interface BtrData {
 }
 
 // ---------------------------------------------------------------------------
+// BER / Biodiversity Expenditure Review Data
+// ---------------------------------------------------------------------------
+
+/** A government budget program from the BER. */
+export interface BerBudgetProgram {
+  code: string;
+  name: string;
+  description: string;
+  type: "environmental" | "non_environmental";
+}
+
+/** Yearly expenditure series for a budget program. */
+export interface BerExpenditureSeries {
+  code: string;
+  name: string;
+  /** Values by year in the report's unit (e.g. billion MNT). null = no data. */
+  values: Record<string, number | null>;
+}
+
+/** Structured BER data for a country. */
+export interface BerData {
+  programs: BerBudgetProgram[];
+  expenditure: BerExpenditureSeries[];
+  currency: string;
+  unit: string;
+  period: { start: number; end: number };
+  keyFindings?: {
+    plannedBudget: number;
+    actualExpenditure: number;
+    gap: number;
+    programPeriod: string;
+  };
+}
+
+// ---------------------------------------------------------------------------
 // NR7 Progress Data (CBD National Report 7)
 // ---------------------------------------------------------------------------
 
@@ -269,6 +305,8 @@ export interface AnalysisResult {
   alignmentResults: AlignmentResult[];
   decompositions?: TargetDecomposition[];
   btrData?: BtrData;
+  berData?: BerData;
+  budgetAlignment?: AlignmentResult[];
   nr7Data?: Nr7Data;
 }
 

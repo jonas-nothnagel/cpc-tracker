@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { Header } from "@/components/ui/header";
 import { useRouter } from "next/navigation";
 import type { PolicyDocumentType } from "@/types";
@@ -15,6 +15,8 @@ import {
   detectBtrType,
   mergeBtrData,
 } from "@/lib/upload-helpers";
+import { buildMongolianBerPayload } from "@/lib/ber-helpers";
+import type { BerData } from "@/types";
 import { useTargets } from "@/hooks/useTargets";
 import { useExtraction } from "@/hooks/useExtraction";
 import { useCategories } from "@/hooks/useCategories";
@@ -71,6 +73,74 @@ export default function UploadPage() {
   const [addedReferenceDocs, setAddedReferenceDocs] = useState<Set<PolicyDocumentType>>(new Set());
   const [includeBtr, setIncludeBtr] = useState(true);
   const [includeNr7, setIncludeNr7] = useState(true);
+  const [includeBer, setIncludeBer] = useState(true);
+  const [berParsedData] = useState<BerData | null>(() => {
+    // Auto-populate for Mongolia; other countries will need upload support
+    return buildMongolianBerPayload();
+  });
+  const [nctpAvailable, setNctpAvailable] = useState(false);
+  const [nctpFetching, setNctpFetching] = useState(false);
+  const [nctpImported, setNctpImported] = useState(false);
+  const [nctpError, setNctpError] = useState<string | null>(null);
+  // ─── NCTP availability check ─────────────────────────────────────────────
+  useEffect(() => {
+    fetch("/api/nctp-status")
+      .then((r) => r.json())
+      .then((d) => setNctpAvailable(!!d.available))
+      .catch(() => setNctpAvailable(false));
+  }, []);
+
+  function handleFetchNctp() {
+    setNctpFetching(true);
+    setNctpError(null);
+    const docId = `nctp_${Date.now()}`;
+    setUploadedDocs((prev) => [
+      ...prev,
+      { id: docId, fileName: "NCTP API", fileType: "nctp", status: "parsing" },
+    ]);
+    fetch("/api/fetch-nctp", { method: "POST" })
+      .then(async (res) => {
+        if (!res.ok) {
+          const body = await res.json();
+          throw new Error(body.error || "Failed to fetch NCTP data");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setBtrParsedData((prev) => mergeBtrData(prev, data as BtrData));
+        setUploadedDocs((prev) =>
+          prev.map((d) =>
+            d.id === docId
+              ? {
+                  ...d,
+                  status: "ready" as const,
+                  btrSummary: {
+                    mitigationMeasures: data.mitigationMeasures?.length ?? 0,
+                    sectorEmissions: 0,
+                    projections: 0,
+                    technologySupport: data.technologySupport?.length ?? 0,
+                    capacityBuilding: data.capacityBuilding?.length ?? 0,
+                  },
+                }
+              : d
+          )
+        );
+        setNctpImported(true);
+        setNctpFetching(false);
+      })
+      .catch((err) => {
+        setNctpError(err.message);
+        setUploadedDocs((prev) =>
+          prev.map((d) =>
+            d.id === docId
+              ? { ...d, status: "error" as const, error: err.message }
+              : d
+          )
+        );
+        setNctpFetching(false);
+      });
+  }
+
   // ─── Derived values ─────────────────────────────────────────────────────
   const canProceed = useMemo(() => {
     switch (step) {
@@ -323,6 +393,7 @@ export default function UploadPage() {
             id, name, description,
           })),
           ...(btrParsedData && includeBtr ? { btrData: btrParsedData } : {}),
+          ...(berParsedData && includeBer ? { berData: berParsedData } : {}),
         }),
       });
       if (!res.ok) {
@@ -430,6 +501,13 @@ export default function UploadPage() {
             onToggleBtr={() => setIncludeBtr((v) => !v)}
             includeNr7={includeNr7}
             onToggleNr7={() => setIncludeNr7((v) => !v)}
+            includeBer={includeBer}
+            onToggleBer={() => setIncludeBer((v) => !v)}
+            nctpAvailable={nctpAvailable}
+            nctpFetching={nctpFetching}
+            nctpImported={nctpImported}
+            nctpError={nctpError}
+            onFetchNctp={handleFetchNctp}
           />
         )}
 

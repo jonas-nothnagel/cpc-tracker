@@ -152,6 +152,15 @@ export async function GET(request: NextRequest) {
     ? [...(alignment as unknown[]), ...measureAlignment]
     : alignment;
 
+  // Budget alignment (BER data)
+  const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
+    join(outputDir, "budget_pseudo_targets.json")
+  );
+  const budgetAlignment = readJson<unknown[]>(
+    join(outputDir, "budget_alignment.json")
+  );
+  const berData = readJson<unknown>(join(dataDir, "ber_data.json"));
+
   return NextResponse.json({
     targets: allTargets,
     nbsCategories: categories.nbs_categories,
@@ -161,5 +170,8 @@ export async function GET(request: NextRequest) {
     alignment: allAlignment,
     btrData: btrData ?? null,
     nr7Data: nr7Data ?? null,
+    berData: berData ?? null,
+    budgetAlignment: budgetAlignment ?? null,
+    budgetPseudoTargets: budgetPseudoTargets ?? null,
   });
 }

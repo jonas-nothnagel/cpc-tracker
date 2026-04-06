@@ -37,6 +37,12 @@ from .measure_align import (
     decompose_measures,
     assess_measure_alignment,
 )
+from .budget_align import (
+    programs_to_pseudo_targets,
+    generate_budget_pairs,
+    decompose_programs,
+    assess_budget_alignment,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -45,7 +51,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOTAL_STEPS = 6
+TOTAL_STEPS = 7
 
 
 def write_status(
@@ -229,6 +235,41 @@ async def main() -> None:
             logger.info("")
             logger.info("STEP 6: Skipped (no btr_data.json)")
 
+        # 8. Budget-to-Target alignment (if BER data exists)
+        ber_path = DATA_DIR / "ber_data.json"
+        budget_alignment_results: list[dict] = []
+        budget_pseudo_targets: list[dict] = []
+        if ber_path.exists():
+            write_status(7, "Budget alignment", "Assessing alignment between targets and budget programs", started_at=started_at)
+            logger.info("")
+            logger.info("STEP 7: Budget-to-Target alignment")
+            logger.info("-" * 40)
+
+            ber = json.loads(ber_path.read_text())
+            raw_programs = ber.get("programs", [])
+            raw_expenditure = ber.get("expenditure", [])
+            budget_pseudo_targets = programs_to_pseudo_targets(raw_programs, raw_expenditure)
+            logger.info(f"  {len(raw_programs)} raw programs → {len(budget_pseudo_targets)} valid pseudo-targets")
+
+            if budget_pseudo_targets:
+                b_pairs = generate_budget_pairs(targets, budget_pseudo_targets)
+
+                if b_pairs:
+                    budget_decomps = await decompose_programs(budget_pseudo_targets)
+                    all_decomps_budget = {**decompositions, **budget_decomps}
+                    budget_alignment_results = await assess_budget_alignment(b_pairs, all_decomps_budget)
+
+                    out_path = OUTPUT_DIR / "budget_alignment.json"
+                    out_path.write_text(json.dumps(budget_alignment_results, indent=2))
+                    logger.info(f"Saved {len(budget_alignment_results)} budget alignment results")
+
+                    out_path = OUTPUT_DIR / "budget_pseudo_targets.json"
+                    out_path.write_text(json.dumps(budget_pseudo_targets, indent=2))
+                    logger.info(f"Saved {len(budget_pseudo_targets)} budget pseudo-targets")
+        else:
+            logger.info("")
+            logger.info("STEP 7: Skipped (no ber_data.json)")
+
         # Summary
         elapsed = time.time() - start
         logger.info("")
@@ -260,6 +301,13 @@ async def main() -> None:
             logger.info(f"  Measure alignment pairs: {len(measure_alignment_results)}")
             logger.info(f"    Levels: {m_levels}")
 
+        if budget_alignment_results:
+            b_levels: dict[str, int] = {}
+            for r in budget_alignment_results:
+                b_levels[r["alignment"]] = b_levels.get(r["alignment"], 0) + 1
+            logger.info(f"  Budget alignment pairs: {len(budget_alignment_results)}")
+            logger.info(f"    Levels: {b_levels}")
+
         summary = {
             "totalTargets": len(targets),
             "totalClassifications": len(all_classifications),
@@ -269,6 +317,8 @@ async def main() -> None:
             "totalContradictions": total_contradictions,
             "measureAlignmentPairs": len(measure_alignment_results),
             "measurePseudoTargets": len(measure_pseudo_targets),
+            "budgetAlignmentPairs": len(budget_alignment_results),
+            "budgetPseudoTargets": len(budget_pseudo_targets),
             "elapsedSeconds": round(elapsed, 1),
         }
         write_status(TOTAL_STEPS, "Complete", f"Pipeline finished in {elapsed:.1f}s", status="completed", started_at=started_at, summary=summary)

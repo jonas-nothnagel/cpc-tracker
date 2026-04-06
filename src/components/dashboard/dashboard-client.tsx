@@ -14,6 +14,7 @@ import { ContradictionSummary } from "@/components/viz/contradiction-summary";
 import { Nr7Progress } from "@/components/viz/nr7-progress";
 import { SectorScorecard } from "@/components/viz/sector-scorecard";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
+import { FinancingCoherence } from "@/components/viz/financing-coherence";
 import type {
   Target,
   PolicyDocumentType,
@@ -22,6 +23,7 @@ import type {
   NbsCategory,
   IpccSector,
   BtrData,
+  BerData,
   Nr7Data,
 } from "@/types";
 
@@ -40,6 +42,9 @@ interface DashboardData {
   alignment: AlignmentResult[];
   btrData: BtrData | null;
   nr7Data: Nr7Data | null;
+  berData: BerData | null;
+  budgetAlignment: AlignmentResult[] | null;
+  budgetPseudoTargets: Target[] | null;
 }
 
 /** Ensure targets have optional fields */
@@ -215,6 +220,9 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           alignment: raw.alignment ?? [],
           btrData: raw.btrData ?? null,
           nr7Data: raw.nr7Data ?? null,
+          berData: raw.berData ?? null,
+          budgetAlignment: raw.budgetAlignment ?? null,
+          budgetPseudoTargets: (raw.budgetPseudoTargets ?? null)?.map(normalizeTarget) ?? null,
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
@@ -368,22 +376,17 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           targets={targets}
         />
 
-        {/* --- Financial Alignment (placeholder) --- */}
-        <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-              Budget &amp; Finance Flows
-            </h2>
-            <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-              Financial flows and budget allocations analysis.
-            </p>
-          </div>
-          <div className="bg-gray-50 border border-gray-200 border-dashed rounded-lg px-5 py-6 text-center">
-            <p className="text-sm text-[var(--undp-gray)]">
-              Under Development
-            </p>
-          </div>
-        </section>
+        {/* --- Budget & Financing Coherence --- */}
+        {data.berData && data.budgetAlignment && data.budgetAlignment.length > 0 && (
+          <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
+            <FinancingCoherence
+              berData={data.berData}
+              budgetAlignment={data.budgetAlignment}
+              budgetPseudoTargets={data.budgetPseudoTargets ?? []}
+              targets={targets.filter((t) => t.sourceDocument !== "BER")}
+            />
+          </section>
+        )}
 
         {/* --- Progress Alignment (unified NR7 + BTR) --- */}
         {((data.nr7Data && data.nr7Data.progressItems.length > 0) ||

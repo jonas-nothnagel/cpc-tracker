@@ -1,28 +1,30 @@
 {
   "status": "completed",
-  "step": 6,
-  "totalSteps": 6,
+  "step": 7,
+  "totalSteps": 7,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 143.9s",
-  "startedAt": "2026-03-27T15:16:52.738043+00:00",
-  "completedAt": "2026-03-27T15:19:16.652168+00:00",
+  "message": "Pipeline finished in 574.7s",
+  "startedAt": "2026-04-06T13:56:47.507338+00:00",
+  "completedAt": "2026-04-06T14:06:22.183026+00:00",
   "error": null,
   "summary": {
     "totalTargets": 77,
     "totalClassifications": 2486,
-    "relevantClassifications": 279,
+    "relevantClassifications": 276,
     "totalPairs": 2175,
     "alignmentLevels": {
-      "high": 471,
-      "medium": 1020,
-      "low": 554,
-      "low_tension": 127,
-      "moderate_contradiction": 2,
-      "high_contradiction": 1
+      "high": 494,
+      "medium": 995,
+      "low": 541,
+      "low_tension": 142,
+      "moderate_contradiction": 1,
+      "high_contradiction": 2
     },
-    "totalContradictions": 130,
+    "totalContradictions": 145,
     "measureAlignmentPairs": 1155,
     "measurePseudoTargets": 15,
-    "elapsedSeconds": 143.9
+    "budgetAlignmentPairs": 1078,
+    "budgetPseudoTargets": 14,
+    "elapsedSeconds": 574.7
   }
 }

@@ -14,6 +14,7 @@ export const DOC_COLORS: Record<PolicyDocumentType, string> = {
   LDN: "#dc2626",    // Red
   SECTORAL: "#4f7942", // Forest green — sectoral/land policies
   BTR: "#7c3aed",    // Violet — implementation / M&E data
+  BER: "#059669",    // Emerald green — financing / budget data
   OTHER: "#78716c",  // Warm brown-grey — neutral but not cold
 };
 
@@ -25,6 +26,7 @@ export const DOC_LABELS: Record<PolicyDocumentType, string> = {
   LDN: "LDN",
   SECTORAL: "Sectoral",
   BTR: "BTR Action",
+  BER: "BER Budget",
   OTHER: "Other",
 };
 
@@ -36,6 +38,7 @@ export const DOC_MEDIUM_LABELS: Record<PolicyDocumentType, string> = {
   LDN: "LDN (Land)",
   SECTORAL: "Vision 2050",
   BTR: "BTR (Transparency)",
+  BER: "BER (Financing)",
   OTHER: "Other",
 };
 
@@ -47,6 +50,7 @@ export const DOC_FULL_LABELS: Record<PolicyDocumentType, string> = {
   LDN: "Land Degradation Neutrality",
   SECTORAL: "Vision 2050 (Long-term Development Policy)",
   BTR: "Biennial Transparency Report",
+  BER: "Biodiversity Expenditure Review",
   OTHER: "Other Policy Document",
 };
 
@@ -129,6 +133,7 @@ export function countByCategory(
       LDN: 0,
       SECTORAL: 0,
       BTR: 0,
+      BER: 0,
       OTHER: 0,
     };
     for (const c of relevant) {

@@ -30,6 +30,7 @@ interface AnalyzeRequest {
   nbsCategories?: { id: string; name: string; description: string }[];
   sectors?: { id: string; name: string; description: string }[];
   btrData?: Record<string, unknown>;
+  berData?: Record<string, unknown>;
 }
 
 const PROJECT_ROOT = process.cwd();
@@ -129,13 +130,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Write BER data if provided (budget expenditure review)
+    if (body.berData) {
+      writeFileSync(
+        join(inputDir, "ber_data.json"),
+        JSON.stringify(body.berData, null, 2)
+      );
+    }
+
     // Write initial status
     writeFileSync(
       join(outputDir, "status.json"),
       JSON.stringify({
         status: "starting",
         step: 0,
-        totalSteps: 6,
+        totalSteps: 7,
         currentStep: "Initializing pipeline",
         message: `Starting analysis for ${targets.length} targets from ${body.country || "Unknown"}`,
         startedAt: new Date().toISOString(),

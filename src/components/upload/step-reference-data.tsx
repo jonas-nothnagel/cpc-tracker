@@ -9,9 +9,9 @@ import { DOC_COLORS } from "@/lib/utils";
 
 const COUNTRY_REFERENCE_DATA: Record<
   string,
-  { targets: Target[]; hasBtr: boolean; hasNr7: boolean }
+  { targets: Target[]; hasBtr: boolean; hasNr7: boolean; hasBer: boolean }
 > = {
-  Mongolia: { targets: MONGOLIA_TARGETS, hasBtr: true, hasNr7: true },
+  Mongolia: { targets: MONGOLIA_TARGETS, hasBtr: true, hasNr7: true, hasBer: true },
 };
 
 interface StepReferenceDataProps {
@@ -29,6 +29,13 @@ interface StepReferenceDataProps {
   onToggleBtr: () => void;
   includeNr7: boolean;
   onToggleNr7: () => void;
+  includeBer: boolean;
+  onToggleBer: () => void;
+  nctpAvailable?: boolean;
+  nctpFetching?: boolean;
+  nctpImported?: boolean;
+  nctpError?: string | null;
+  onFetchNctp?: () => void;
 }
 
 function groupByDoc(targets: Target[]) {
@@ -67,6 +74,13 @@ export function StepReferenceData({
   onToggleBtr,
   includeNr7,
   onToggleNr7,
+  includeBer,
+  onToggleBer,
+  nctpAvailable,
+  nctpFetching,
+  nctpImported,
+  nctpError,
+  onFetchNctp,
 }: StepReferenceDataProps) {
   const refData = COUNTRY_REFERENCE_DATA[country] ?? null;
   const refGroups = useMemo(() => (refData ? groupByDoc(refData.targets) : []), [refData]);
@@ -209,8 +223,8 @@ export function StepReferenceData({
         </div>
       )}
 
-      {/* BTR + NR7 as cards with Add/Remove */}
-      {(refData?.hasBtr || refData?.hasNr7 || (btrParsedData && btrDocs.length > 0)) && (
+      {/* BTR + NR7 + NCTP as cards with Add/Remove */}
+      {(refData?.hasBtr || refData?.hasNr7 || (btrParsedData && btrDocs.length > 0) || nctpAvailable) && (
         <div className="mb-8">
           <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
             Additional Data Sources
@@ -288,12 +302,92 @@ export function StepReferenceData({
                 </button>
               </div>
             )}
+            {/* BER (Budget Data) */}
+            {refData?.hasBer && (
+              <div className="px-4 py-3 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-bold text-emerald-600">BER</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[var(--undp-black)]">
+                    Biodiversity Expenditure Review
+                  </p>
+                  <p className="text-xs text-[var(--undp-gray)]">
+                    Government budget programs and financing data
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={onToggleBer}
+                  className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-all flex items-center gap-1.5 ${
+                    includeBer
+                      ? "bg-emerald-100 text-emerald-700 hover:bg-red-50 hover:text-red-600"
+                      : "bg-[var(--undp-blue)] text-white hover:bg-[var(--undp-blue)]/90"
+                  }`}
+                >
+                  {includeBer ? (
+                    <>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Added
+                    </>
+                  ) : (
+                    "Add"
+                  )}
+                </button>
+              </div>
+            )}
+            {/* NCTP */}
+            {nctpAvailable && onFetchNctp && (
+              <div className="px-4 py-3 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-sky-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-bold text-sky-600">NCTP</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[var(--undp-black)]">
+                    National Transparency Platform
+                  </p>
+                  <p className="text-xs text-[var(--undp-gray)]">
+                    Climate actions and support records from NCTP
+                  </p>
+                  {nctpError && (
+                    <p className="text-xs text-red-500 mt-1">{nctpError}</p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={onFetchNctp}
+                  disabled={nctpFetching || nctpImported}
+                  className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-all flex items-center gap-1.5 ${
+                    nctpImported
+                      ? "bg-sky-100 text-sky-700"
+                      : nctpFetching
+                      ? "bg-gray-100 text-gray-400 cursor-wait"
+                      : "bg-[var(--undp-blue)] text-white hover:bg-[var(--undp-blue)]/90"
+                  }`}
+                >
+                  {nctpImported ? (
+                    <>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Imported
+                    </>
+                  ) : nctpFetching ? (
+                    "Importing..."
+                  ) : (
+                    "Import"
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
 
       {/* No reference data */}
-      {!refData && !btrParsedData && targetCount === 0 && (
+      {!refData && !btrParsedData && !nctpAvailable && targetCount === 0 && (
         <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
           <p className="text-sm text-[var(--undp-gray)] mb-1">
             No pre-loaded reference data for this country.
