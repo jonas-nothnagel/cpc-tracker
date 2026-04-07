@@ -51,12 +51,6 @@ interface DriverTarget {
   categories: string[]; // resolved category names
 }
 
-interface DocPairStat {
-  docA: PolicyDocumentType;
-  docB: PolicyDocumentType;
-  count: number;
-}
-
 interface CategoryStat {
   name: string;
   tensionCount: number; // tensions involving at least one target in this category
@@ -331,9 +325,9 @@ export function TensionClusters({
   }, [classifications, categoryNameMap]);
 
   // Category concentration: how many tensions involve each category
-  const { categoryStats, taxonomyLabel } = useMemo(() => {
+  const { taxonomyLabel } = useMemo(() => {
     if (!classifications || classifications.length === 0)
-      return { categoryStats: [] as CategoryStat[], taxonomyLabel: "" };
+      return { taxonomyLabel: "" };
 
     // Pick the taxonomy type with the best coverage among tension-involved targets
     const tensionTargetIds = new Set<string>();

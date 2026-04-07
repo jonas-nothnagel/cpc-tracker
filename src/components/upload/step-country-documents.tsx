@@ -64,15 +64,58 @@ interface StepCountryDocumentsProps {
   targetCount: number;
 }
 
-export function StepCountryDocuments(props: StepCountryDocumentsProps) {
+export function StepCountryDocuments({
+  country,
+  onCountryChange,
+  mode,
+  onModeChange,
+  extractDocType,
+  onExtractDocTypeChange,
+  extractDocLabel,
+  onExtractDocLabelChange,
+  extracting,
+  extractFileName,
+  onFileDrop,
+  onFileInput,
+  fileInputRef,
+  dragging,
+  onDragOver,
+  onDragLeave,
+  extractionQueueLength,
+  extractError,
+  extractedItems,
+  onToggleItem,
+  onKeepAll,
+  onRemoveAll,
+  onUpdateItem,
+  onAddManual,
+  onAcceptExtraction,
+  onDiscardExtraction,
+  manualLabel,
+  onManualLabelChange,
+  manualText,
+  onManualTextChange,
+  uploadedDocs,
+  onRemoveDoc,
+  currentDoc,
+  onDocChange,
+  currentText,
+  onTextChange,
+  currentLabel,
+  onLabelChange,
+  customDocName,
+  onCustomDocNameChange,
+  onAddTarget,
+  targetCount,
+}: StepCountryDocumentsProps) {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const knownCountry = KNOWN_COUNTRIES.find(
-    (c) => c.value.toLowerCase() === props.country.toLowerCase()
+    (c) => c.value.toLowerCase() === country.toLowerCase()
   );
 
   // Modal state for extraction review
-  const showExtractionModal = props.extractedItems.length > 0;
+  const showExtractionModal = extractedItems.length > 0;
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -84,7 +127,7 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const needsCustomName = props.extractDocType === "SECTORAL" || props.extractDocType === "OTHER";
+  const needsCustomName = extractDocType === "SECTORAL" || extractDocType === "OTHER";
 
   return (
     <div>
@@ -102,8 +145,8 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
           <div className="relative">
             <input
               type="text"
-              value={props.country}
-              onChange={(e) => { props.onCountryChange(e.target.value); setShowDropdown(true); }}
+              value={country}
+              onChange={(e) => { onCountryChange(e.target.value); setShowDropdown(true); }}
               onFocus={() => setShowDropdown(true)}
               placeholder="e.g. Mongolia"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)] pr-8"
@@ -113,8 +156,8 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
             </button>
             {showDropdown && (
               <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                {KNOWN_COUNTRIES.filter((c) => !props.country || c.value.toLowerCase().includes(props.country.toLowerCase())).map((c) => (
-                  <button key={c.value} type="button" onClick={() => { props.onCountryChange(c.value); setShowDropdown(false); }}
+                {KNOWN_COUNTRIES.filter((c) => !country || c.value.toLowerCase().includes(country.toLowerCase())).map((c) => (
+                  <button key={c.value} type="button" onClick={() => { onCountryChange(c.value); setShowDropdown(false); }}
                     className="w-full px-3 py-2 text-left text-sm hover:bg-blue-50 flex items-center justify-between">
                     <span className="font-medium">{c.value}</span>
                     <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">Reference data</span>
@@ -136,8 +179,8 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
             Document type
           </label>
           <select
-            value={props.extractDocType}
-            onChange={(e) => props.onExtractDocTypeChange(e.target.value as PolicyDocumentType)}
+            value={extractDocType}
+            onChange={(e) => onExtractDocTypeChange(e.target.value as PolicyDocumentType)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)] bg-white"
           >
             {DOCUMENT_TYPES.map((d) => (
@@ -153,8 +196,8 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
             </label>
             <input
               type="text"
-              value={props.extractDocLabel}
-              onChange={(e) => props.onExtractDocLabelChange(e.target.value)}
+              value={extractDocLabel}
+              onChange={(e) => onExtractDocLabelChange(e.target.value)}
               placeholder="e.g. Transport Policy"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
             />
@@ -164,24 +207,24 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
 
       {/* Unified drop zone — one zone for all file types */}
       <div
-        onDrop={props.onFileDrop}
-        onDragOver={props.onDragOver}
-        onDragLeave={props.onDragLeave}
+        onDrop={onFileDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
         className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors mb-4 ${
-          props.dragging
+          dragging
             ? "border-[var(--undp-blue)] bg-blue-50"
             : "border-gray-300 hover:border-gray-400"
         }`}
       >
-        {props.extracting ? (
+        {extracting ? (
           <div className="flex flex-col items-center gap-2">
             <div className="w-8 h-8 border-2 border-[var(--undp-blue)] border-t-transparent rounded-full animate-spin" />
             <p className="text-sm text-[var(--undp-blue)] font-medium">
-              Extracting targets from {props.extractFileName}...
+              Extracting targets from {extractFileName}...
             </p>
-            {props.extractionQueueLength > 0 && (
+            {extractionQueueLength > 0 && (
               <p className="text-xs text-[var(--undp-gray)]">
-                {props.extractionQueueLength} more file{props.extractionQueueLength > 1 ? "s" : ""} queued
+                {extractionQueueLength} more file{extractionQueueLength > 1 ? "s" : ""} queued
               </p>
             )}
           </div>
@@ -192,7 +235,7 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
             </svg>
             <p className="text-sm text-[var(--undp-black)]">
               Drag and drop files here, or{" "}
-              <button type="button" onClick={() => props.fileInputRef.current?.click()} className="text-[var(--undp-blue)] underline">
+              <button type="button" onClick={() => fileInputRef.current?.click()} className="text-[var(--undp-blue)] underline">
                 browse
               </button>
             </p>
@@ -202,61 +245,61 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
           </>
         )}
         <input
-          ref={props.fileInputRef}
+          ref={fileInputRef}
           type="file"
           multiple
           accept=".pdf,.docx,.txt,.csv,.tsv,.xlsx,.xls"
-          onChange={props.onFileInput}
+          onChange={onFileInput}
           className="hidden"
         />
       </div>
 
       {/* Error */}
-      {props.extractError && (
+      {extractError && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-xl mb-4">
-          <p className="text-sm text-red-700">{props.extractError}</p>
+          <p className="text-sm text-red-700">{extractError}</p>
         </div>
       )}
 
       {/* Document pipeline (parsed files status) */}
-      <DocumentPipeline uploadedDocs={props.uploadedDocs} onRemoveDoc={props.onRemoveDoc} />
+      <DocumentPipeline uploadedDocs={uploadedDocs} onRemoveDoc={onRemoveDoc} />
 
       {/* Manual entry toggle */}
       <div className="mt-4 mb-4">
         <button
           type="button"
-          onClick={() => props.onModeChange(props.mode === "manual" ? "upload" : "manual")}
+          onClick={() => onModeChange(mode === "manual" ? "upload" : "manual")}
           className="text-xs text-[var(--undp-blue)] hover:underline font-medium"
         >
-          {props.mode === "manual" ? "Hide manual entry" : "+ Add targets manually"}
+          {mode === "manual" ? "Hide manual entry" : "+ Add targets manually"}
         </button>
       </div>
 
-      {props.mode === "manual" && (
+      {mode === "manual" && (
         <div className="p-4 border border-blue-200 rounded-xl bg-blue-50/30 mb-4">
           <ManualEntryForm
-            currentDoc={props.currentDoc}
-            onDocChange={props.onDocChange}
-            currentText={props.currentText}
-            onTextChange={props.onTextChange}
-            currentLabel={props.currentLabel}
-            onLabelChange={props.onLabelChange}
-            customDocName={props.customDocName}
-            onCustomDocNameChange={props.onCustomDocNameChange}
-            onAddTarget={props.onAddTarget}
-            targetCount={props.targetCount}
+            currentDoc={currentDoc}
+            onDocChange={onDocChange}
+            currentText={currentText}
+            onTextChange={onTextChange}
+            currentLabel={currentLabel}
+            onLabelChange={onLabelChange}
+            customDocName={customDocName}
+            onCustomDocNameChange={onCustomDocNameChange}
+            onAddTarget={onAddTarget}
+            targetCount={targetCount}
           />
         </div>
       )}
 
       {/* Status bar */}
-      {props.targetCount > 0 && (
+      {targetCount > 0 && (
         <div className="px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-bold text-emerald-700">{props.targetCount}</span>
+            <span className="text-xs font-bold text-emerald-700">{targetCount}</span>
           </div>
           <p className="text-sm text-emerald-700">
-            target{props.targetCount !== 1 ? "s" : ""} added. Click <strong>Next</strong> to continue.
+            target{targetCount !== 1 ? "s" : ""} added. Click <strong>Next</strong> to continue.
           </p>
         </div>
       )}
@@ -271,12 +314,12 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
                   Review Extracted Targets
                 </h3>
                 <p className="text-xs text-[var(--undp-gray)]">
-                  {props.extractedItems.filter((i) => i.accepted).length} of {props.extractedItems.length} targets selected from {props.extractFileName}
+                  {extractedItems.filter((i) => i.accepted).length} of {extractedItems.length} targets selected from {extractFileName}
                 </p>
               </div>
               <button
                 type="button"
-                onClick={props.onDiscardExtraction}
+                onClick={onDiscardExtraction}
                 className="text-gray-400 hover:text-gray-600"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -286,19 +329,19 @@ export function StepCountryDocuments(props: StepCountryDocumentsProps) {
             </div>
             <div className="p-5">
               <ExtractReviewPanel
-                items={props.extractedItems}
-                fileName={props.extractFileName}
-                onToggleItem={props.onToggleItem}
-                onKeepAll={props.onKeepAll}
-                onRemoveAll={props.onRemoveAll}
-                onUpdateItem={props.onUpdateItem}
-                onAddManual={props.onAddManual}
-                onAccept={props.onAcceptExtraction}
-                onDiscard={props.onDiscardExtraction}
-                manualLabel={props.manualLabel}
-                onManualLabelChange={props.onManualLabelChange}
-                manualText={props.manualText}
-                onManualTextChange={props.onManualTextChange}
+                items={extractedItems}
+                fileName={extractFileName}
+                onToggleItem={onToggleItem}
+                onKeepAll={onKeepAll}
+                onRemoveAll={onRemoveAll}
+                onUpdateItem={onUpdateItem}
+                onAddManual={onAddManual}
+                onAccept={onAcceptExtraction}
+                onDiscard={onDiscardExtraction}
+                manualLabel={manualLabel}
+                onManualLabelChange={onManualLabelChange}
+                manualText={manualText}
+                onManualTextChange={onManualTextChange}
               />
             </div>
           </div>

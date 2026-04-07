@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { spawn } from "child_process";
-import { writeFileSync, mkdirSync, readFileSync, unlinkSync, existsSync } from "fs";
+import { writeFileSync, mkdirSync, readFileSync, unlinkSync, existsSync, rmdirSync } from "fs";
 import { join } from "path";
 import { randomUUID } from "crypto";
 
@@ -133,7 +133,6 @@ export async function POST(request: NextRequest) {
       if (existsSync(inputPath)) unlinkSync(inputPath);
       if (existsSync(outputPath)) unlinkSync(outputPath);
       if (existsSync(tmpRunDir)) {
-        const { rmdirSync } = require("fs");
         rmdirSync(tmpRunDir);
       }
     } catch {

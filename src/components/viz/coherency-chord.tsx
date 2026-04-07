@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { chord as d3Chord, ribbon as d3Ribbon } from "d3-chord";
 import { arc as d3Arc } from "d3-shape";
-import { DOC_COLORS, DOC_LABELS, ALIGNMENT_COLORS, ALIGNMENT_WEIGHTS } from "@/lib/utils";
+import { DOC_COLORS, DOC_LABELS, ALIGNMENT_COLORS } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, Target, PolicyDocumentType } from "@/types";

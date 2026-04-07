@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { arc as d3Arc } from "d3-shape";
 import {
   DOC_COLORS,
@@ -18,7 +18,6 @@ import type {
   PolicyDocumentType,
   AlignmentResult,
   AlignmentLevel,
-  IpccSector,
   ThematicClassification,
   Nr7Data,
   Nr7ProgressItem,
@@ -247,8 +246,6 @@ function DetailPanel({
   nr7Item?: Nr7ProgressItem | null;
   nr7ProgressMap?: Map<string, string>;
 }) {
-  const [expandedRationaleId, setExpandedRationaleId] = useState<string | null>(null);
-
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
       high_contradiction: 0, moderate_contradiction: 1, low_tension: 2,
@@ -259,10 +256,10 @@ function DetailPanel({
   });
 
   // Show the first rationale by default so the interaction pattern is obvious.
-  useEffect(() => {
-    const firstExpandable = sorted.find((conn) => conn.description)?.otherTarget.id ?? null;
-    setExpandedRationaleId(firstExpandable);
-  }, [node.id]);
+  // Parent passes `key={node.id}`, so this initialiser re-runs when node changes.
+  const [expandedRationaleId, setExpandedRationaleId] = useState<string | null>(
+    () => sorted.find((conn) => conn.description)?.otherTarget.id ?? null,
+  );
 
   if (comparedPair) {
     return (
@@ -534,12 +531,16 @@ export function PolicyCoherenceExplorer({
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // External focus: when Tensions section links to a specific target
-  useEffect(() => {
+  // External focus: when Tensions section links to a specific target.
+  // Track prop changes during render so we don't run setState inside an effect
+  // (see React docs: "Adjusting some state when a prop changes").
+  const [trackedFocusTargetId, setTrackedFocusTargetId] = useState(focusTargetId);
+  if (focusTargetId !== trackedFocusTargetId) {
+    setTrackedFocusTargetId(focusTargetId);
     if (focusTargetId) {
       setSelectedId(focusTargetId);
       setFilter("contradictions");
-      const t = targets.find((t) => t.id === focusTargetId);
+      const t = targets.find((tt) => tt.id === focusTargetId);
       if (t) {
         setHiddenDocs((prev) => {
           if (!prev.has(t.sourceDocument)) return prev;
@@ -549,7 +550,7 @@ export function PolicyCoherenceExplorer({
         });
       }
     }
-  }, [focusTargetId, targets]);
+  }
 
   /** All document types present in the data */
   const availableDocs = useMemo(() => {
@@ -1231,6 +1232,7 @@ export function PolicyCoherenceExplorer({
         {selectedNode && (
           <div className="w-[360px] shrink-0 self-start sticky top-20">
             <DetailPanel
+              key={selectedNode.id}
               node={selectedNode}
               connections={selectedConns}
               onClose={() => {
