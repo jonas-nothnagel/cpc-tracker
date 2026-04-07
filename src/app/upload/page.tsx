@@ -322,6 +322,12 @@ export default function UploadPage() {
             id, name, description,
           })),
           ...(btrParsedData && includeBtr ? { btrData: btrParsedData } : {}),
+          // Pre-analysis footprint from document extraction runs in this
+          // session. Threaded through so the final analysis footprint in the
+          // dashboard reflects extraction + analysis together.
+          ...(extraction.extractionFootprint.call_count > 0
+            ? { initialFootprint: extraction.extractionFootprint }
+            : {}),
         }),
       });
       if (!res.ok) {
@@ -484,6 +490,7 @@ export default function UploadPage() {
             submitting={submitting}
             submitError={submitError}
             onRunAnalysis={runAnalysis}
+            extractionFootprint={extraction.extractionFootprint}
           />
         )}
       </main>

@@ -2,6 +2,26 @@ import { useState, useCallback } from "react";
 import type { PolicyDocumentType } from "@/types";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 
+interface ExtractionFootprint {
+  energy_wh: number;
+  water_ml: number;
+  co2_geq: number;
+  minerals_ugsbeq: number;
+  call_count: number;
+  tracked_call_count: number;
+  cached_call_count: number;
+}
+
+const EMPTY_FOOTPRINT: ExtractionFootprint = {
+  energy_wh: 0,
+  water_ml: 0,
+  co2_geq: 0,
+  minerals_ugsbeq: 0,
+  call_count: 0,
+  tracked_call_count: 0,
+  cached_call_count: 0,
+};
+
 export function useExtraction() {
   const [extracting, setExtracting] = useState(false);
   const [extractedItems, setExtractedItems] = useState<ExtractedItem[]>([]);
@@ -11,6 +31,12 @@ export function useExtraction() {
   const [extractError, setExtractError] = useState<string | null>(null);
   const [extractManualLabel, setExtractManualLabel] = useState("");
   const [extractManualText, setExtractManualText] = useState("");
+
+  // Accumulated environmental footprint across all extractions in this session.
+  // Threaded into /api/analyze so the final analysis footprint includes
+  // document extraction cost.
+  const [extractionFootprint, setExtractionFootprint] =
+    useState<ExtractionFootprint>(EMPTY_FOOTPRINT);
 
   // Multi-file queue
   const [extractionQueue, setExtractionQueue] = useState<File[]>([]);
@@ -34,6 +60,22 @@ export function useExtraction() {
           throw new Error(body.error || "Extraction failed");
         }
         const data = await res.json();
+        // Accumulate extraction footprint from this run into the session total
+        if (data.footprint && typeof data.footprint === "object") {
+          const fp = data.footprint as Partial<ExtractionFootprint>;
+          setExtractionFootprint((prev) => ({
+            energy_wh: prev.energy_wh + (fp.energy_wh ?? 0),
+            water_ml: prev.water_ml + (fp.water_ml ?? 0),
+            co2_geq: prev.co2_geq + (fp.co2_geq ?? 0),
+            minerals_ugsbeq:
+              prev.minerals_ugsbeq + (fp.minerals_ugsbeq ?? 0),
+            call_count: prev.call_count + (fp.call_count ?? 0),
+            tracked_call_count:
+              prev.tracked_call_count + (fp.tracked_call_count ?? 0),
+            cached_call_count:
+              prev.cached_call_count + (fp.cached_call_count ?? 0),
+          }));
+        }
         const rawItems = data.items || [];
         const items: ExtractedItem[] = rawItems.map(
           (item: {
@@ -160,6 +202,7 @@ export function useExtraction() {
     extractManualText,
     setExtractManualText,
     extractionQueue,
+    extractionFootprint,
     handleDocExtract,
     queueFilesForExtraction,
     processNextInQueue,

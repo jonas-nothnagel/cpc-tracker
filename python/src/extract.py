@@ -27,7 +27,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .llm import call_llm, call_llm_batch
+from .llm import call_llm, call_llm_batch, get_footprint_tracker
 
 logger = logging.getLogger(__name__)
 
@@ -906,6 +906,20 @@ async def main_async(args: argparse.Namespace) -> None:
 
     out.write_text(json.dumps(items, indent=2, ensure_ascii=False))
     logger.info(f"Saved {len(items)} targets to {out}")
+
+    # Persist environmental footprint of the extraction run next to the output
+    # so the API route can return it and the total can be threaded into the
+    # final analysis.
+    footprint = get_footprint_tracker().snapshot()
+    footprint_path = out.with_suffix(out.suffix + ".footprint.json")
+    footprint_path.write_text(json.dumps(footprint, indent=2))
+    if footprint.get("available"):
+        logger.info(
+            f"Extraction footprint: {footprint['energy_wh']:.4f} Wh, "
+            f"{footprint['co2_geq']:.4f} gCO2eq "
+            f"({footprint['tracked_call_count']} tracked, "
+            f"{footprint['cached_call_count']} cached)"
+        )
 
 
 def main() -> None:

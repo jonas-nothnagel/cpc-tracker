@@ -30,6 +30,7 @@ from datetime import datetime, timezone
 from .config import DATA_DIR, LLM_MODEL, OUTPUT_DIR
 from .classify import run_classification
 from .align import decompose_targets, generate_pairs, assess_alignment
+from .llm import estimate_footprint_from_counts, get_footprint_tracker
 from .quantitative import assess_quantitative_flags
 from .measure_align import (
     measures_to_pseudo_targets,
@@ -69,6 +70,7 @@ def write_status(
         "completedAt": datetime.now(timezone.utc).isoformat() if status in ("completed", "failed") else None,
         "error": error,
         "summary": summary,
+        "footprint": get_footprint_tracker().snapshot(),
     }
     (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))
 
@@ -103,6 +105,23 @@ async def main() -> None:
     started_at = datetime.now(timezone.utc).isoformat()
     logger.info(f"Starting analysis pipeline (model: {LLM_MODEL})")
     logger.info("=" * 60)
+
+    # Seed tracker with any pre-analysis footprint (e.g. from document
+    # extraction runs in the upload wizard) so the final dashboard total
+    # reflects the full upload → analysis journey.
+    initial_fp_path = DATA_DIR / "initial_footprint.json"
+    if initial_fp_path.exists():
+        try:
+            initial_fp = json.loads(initial_fp_path.read_text())
+            get_footprint_tracker().seed(initial_fp)
+            logger.info(
+                f"Seeded footprint from extraction: "
+                f"{initial_fp.get('energy_wh', 0):.4f} Wh, "
+                f"{initial_fp.get('co2_geq', 0):.4f} gCO2eq "
+                f"({initial_fp.get('call_count', 0)} calls)"
+            )
+        except Exception as e:
+            logger.warning(f"Could not seed initial footprint: {e}")
 
     try:
         # 1. Load data
@@ -259,6 +278,65 @@ async def main() -> None:
                 m_levels[r["alignment"]] = m_levels.get(r["alignment"], 0) + 1
             logger.info(f"  Measure alignment pairs: {len(measure_alignment_results)}")
             logger.info(f"    Levels: {m_levels}")
+
+        # Persist environmental footprint snapshot. Prefer live measurements;
+        # fall back to an estimate from call counts when the whole run was
+        # served from cache (so the live tracker captured nothing).
+        footprint = get_footprint_tracker().snapshot()
+        if not footprint.get("available"):
+            call_groups = [
+                {
+                    "name": "quantitative_flags",
+                    "count": len(quant_flags),
+                    "avg_output_tokens": 50,
+                    "avg_latency_s": 1.0,
+                },
+                {
+                    "name": "classification",
+                    "count": len(all_classifications),
+                    "avg_output_tokens": 50,
+                    "avg_latency_s": 1.0,
+                },
+                {
+                    "name": "decomposition",
+                    "count": len(decompositions)
+                    + (len(measure_pseudo_targets) if measure_alignment_results else 0),
+                    "avg_output_tokens": 400,
+                    "avg_latency_s": 2.5,
+                },
+                {
+                    "name": "alignment",
+                    "count": len(alignment_results),
+                    "avg_output_tokens": 200,
+                    "avg_latency_s": 2.0,
+                },
+                {
+                    "name": "measure_alignment",
+                    "count": len(measure_alignment_results),
+                    "avg_output_tokens": 200,
+                    "avg_latency_s": 2.0,
+                },
+            ]
+            estimated = estimate_footprint_from_counts(call_groups, model=LLM_MODEL)
+            if estimated.get("available"):
+                footprint = estimated
+
+        (OUTPUT_DIR / "footprint.json").write_text(json.dumps(footprint, indent=2))
+
+        if footprint.get("available"):
+            source = footprint.get("source", "measured")
+            label = "EcoLogits measurement" if source == "measured" else "EcoLogits estimate (from call counts)"
+            logger.info(f"  Footprint ({label}):")
+            logger.info(f"    Energy: {footprint['energy_wh']:.2f} Wh")
+            logger.info(f"    Water:  {footprint['water_ml']:.2f} mL")
+            logger.info(f"    CO2eq:  {footprint['co2_geq']:.2f} gCO2eq")
+            logger.info(f"    ADPe:   {footprint['minerals_ugsbeq']:.2f} ugSbeq")
+            logger.info(
+                f"    Calls:  {footprint['tracked_call_count']} tracked, "
+                f"{footprint['cached_call_count']} cached"
+            )
+        else:
+            logger.info("  Footprint: unavailable (EcoLogits did not capture impacts)")
 
         summary = {
             "totalTargets": len(targets),

@@ -27,6 +27,20 @@ interface StepSummaryRunProps {
   submitting: boolean;
   submitError: string | null;
   onRunAnalysis: () => void;
+  extractionFootprint?: {
+    energy_wh: number;
+    water_ml: number;
+    co2_geq: number;
+    minerals_ugsbeq: number;
+    call_count: number;
+  };
+}
+
+function formatFp(value: number): string {
+  if (!isFinite(value) || value <= 0) return "0";
+  if (value < 0.01) return "<0.01";
+  if (value < 100) return value.toFixed(2);
+  return Math.round(value).toLocaleString();
 }
 
 export function StepSummaryRun({
@@ -41,6 +55,7 @@ export function StepSummaryRun({
   submitting,
   submitError,
   onRunAnalysis,
+  extractionFootprint,
 }: StepSummaryRunProps) {
   const [expandedDoc, setExpandedDoc] = useState<PolicyDocumentType | null>(null);
 
@@ -130,6 +145,48 @@ export function StepSummaryRun({
             <p className="text-sm font-medium text-[var(--undp-black)]">BTR implementation data included</p>
             <p className="text-xs text-[var(--undp-gray)]">Mitigation measures compared against policy targets.</p>
           </div>
+        </div>
+      )}
+
+      {extractionFootprint && extractionFootprint.call_count > 0 && (
+        <div className="mb-4 p-4 border border-gray-200 rounded-xl bg-gray-50/60">
+          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">
+            Document extraction footprint so far
+          </p>
+          <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+            <span className="text-sm">
+              <strong className="text-[var(--undp-black)]">
+                {formatFp(extractionFootprint.energy_wh)}
+              </strong>{" "}
+              Wh energy
+            </span>
+            <span className="text-gray-300">·</span>
+            <span className="text-sm">
+              <strong className="text-[var(--undp-black)]">
+                {formatFp(extractionFootprint.water_ml)}
+              </strong>{" "}
+              mL water
+            </span>
+            <span className="text-gray-300">·</span>
+            <span className="text-sm">
+              <strong className="text-[var(--undp-black)]">
+                {formatFp(extractionFootprint.co2_geq)}
+              </strong>{" "}
+              gCO<sub>2</sub>eq
+            </span>
+            <span className="text-gray-300">·</span>
+            <span className="text-sm">
+              <strong className="text-[var(--undp-black)]">
+                {formatFp(extractionFootprint.minerals_ugsbeq)}
+              </strong>{" "}
+              µgSbeq minerals
+            </span>
+          </div>
+          <p className="text-[11px] text-[var(--undp-gray)] mt-2 leading-snug">
+            Accumulated from {extractionFootprint.call_count.toLocaleString()}{" "}
+            LLM calls during extraction. This will be added to the analysis
+            footprint on the final dashboard. Estimated via EcoLogits.
+          </p>
         </div>
       )}
 

@@ -31,6 +31,19 @@ interface TaxonomyCategory {
   description: string;
 }
 
+interface FootprintSnapshot {
+  energy_wh: number;
+  water_ml: number;
+  co2_geq: number;
+  minerals_ugsbeq: number;
+  call_count: number;
+  tracked_call_count: number;
+  cached_call_count: number;
+  model: string | null;
+  available: boolean;
+  source?: "measured" | "estimated" | "unavailable";
+}
+
 interface DashboardData {
   targets: Target[];
   nbsCategories: NbsCategory[];
@@ -40,6 +53,15 @@ interface DashboardData {
   alignment: AlignmentResult[];
   btrData: BtrData | null;
   nr7Data: Nr7Data | null;
+  footprint: FootprintSnapshot | null;
+}
+
+function formatFootprintValue(value: number): string {
+  if (!isFinite(value) || value < 0) return "0";
+  if (value === 0) return "0";
+  if (value < 0.01) return "<0.01";
+  if (value < 100) return value.toFixed(2);
+  return Math.round(value).toLocaleString();
 }
 
 /** Ensure targets have optional fields */
@@ -216,6 +238,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           alignment: raw.alignment ?? [],
           btrData: raw.btrData ?? null,
           nr7Data: raw.nr7Data ?? null,
+          footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
@@ -475,8 +498,55 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
       </main>
 
       <footer className="border-t border-gray-100 mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
-          United Nations Development Programme · CPC Tracker
+        <div className="max-w-7xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)] space-y-4">
+          {data.footprint && data.footprint.available && (
+            <div className="rounded-md border border-gray-100 bg-gray-50/60 px-4 py-3">
+              <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+                <span className="text-xs font-semibold text-[var(--undp-black)] uppercase tracking-wide">
+                  Environmental footprint
+                </span>
+                <span className="text-sm">
+                  <strong className="text-[var(--undp-black)]">
+                    {formatFootprintValue(data.footprint.energy_wh)}
+                  </strong>{" "}
+                  Wh energy
+                </span>
+                <span className="text-gray-300">·</span>
+                <span className="text-sm">
+                  <strong className="text-[var(--undp-black)]">
+                    {formatFootprintValue(data.footprint.water_ml)}
+                  </strong>{" "}
+                  mL water
+                </span>
+                <span className="text-gray-300">·</span>
+                <span className="text-sm">
+                  <strong className="text-[var(--undp-black)]">
+                    {formatFootprintValue(data.footprint.co2_geq)}
+                  </strong>{" "}
+                  gCO<sub>2</sub>eq
+                </span>
+                <span className="text-gray-300">·</span>
+                <span className="text-sm">
+                  <strong className="text-[var(--undp-black)]">
+                    {formatFootprintValue(data.footprint.minerals_ugsbeq)}
+                  </strong>{" "}
+                  µgSbeq minerals
+                </span>
+              </div>
+              <p className="text-[11px] text-[var(--undp-gray)] mt-2 leading-snug">
+                {data.footprint.source === "estimated"
+                  ? `Estimated via EcoLogits from ${data.footprint.cached_call_count.toLocaleString()} LLM calls (this analysis was served from cache, so values are extrapolated from typical per-call impact).`
+                  : `Measured via EcoLogits across ${data.footprint.tracked_call_count.toLocaleString()} LLM calls${
+                      data.footprint.cached_call_count > 0
+                        ? ` (${data.footprint.cached_call_count.toLocaleString()} additional calls served from cache)`
+                        : ""
+                    }.`}{" "}
+                Values are indicative and may differ from actual consumption.
+                AI-generated environmental estimate.
+              </p>
+            </div>
+          )}
+          <div>United Nations Development Programme · CPC Tracker</div>
         </div>
       </footer>
     </div>
