@@ -18,9 +18,6 @@ interface StepCountryDocumentsProps {
   onCountryChange: (value: string) => void;
   mode: "upload" | "manual";
   onModeChange: (mode: "upload" | "manual") => void;
-  // Upload — unified
-  uploadMode: "policy" | "list" | "btr";
-  onUploadModeChange: (mode: "policy" | "list" | "btr") => void;
   extractDocType: PolicyDocumentType;
   onExtractDocTypeChange: (type: PolicyDocumentType) => void;
   extractDocLabel: string;

@@ -533,8 +533,10 @@ export function PolicyCoherenceExplorer({
 
   // External focus: when Tensions section links to a specific target.
   // Track prop changes during render so we don't run setState inside an effect
-  // (see React docs: "Adjusting some state when a prop changes").
-  const [trackedFocusTargetId, setTrackedFocusTargetId] = useState(focusTargetId);
+  // (see React docs: "Adjusting some state when a prop changes"). Seed with
+  // null so a deep-link mount with focusTargetId already set still runs the
+  // setup body on first render.
+  const [trackedFocusTargetId, setTrackedFocusTargetId] = useState<string | null | undefined>(null);
   if (focusTargetId !== trackedFocusTargetId) {
     setTrackedFocusTargetId(focusTargetId);
     if (focusTargetId) {

@@ -51,11 +51,6 @@ interface DriverTarget {
   categories: string[]; // resolved category names
 }
 
-interface CategoryStat {
-  name: string;
-  tensionCount: number; // tensions involving at least one target in this category
-}
-
 /* ─── Expanded driver detail (own state for rationale collapse) ──────── */
 
 function DriverExpanded({
@@ -324,12 +319,10 @@ export function TensionClusters({
     return map;
   }, [classifications, categoryNameMap]);
 
-  // Category concentration: how many tensions involve each category
-  const { taxonomyLabel } = useMemo(() => {
-    if (!classifications || classifications.length === 0)
-      return { taxonomyLabel: "" };
+  // Label of the taxonomy with the best coverage among tension-involved targets.
+  const taxonomyLabel = useMemo(() => {
+    if (!classifications || classifications.length === 0) return "";
 
-    // Pick the taxonomy type with the best coverage among tension-involved targets
     const tensionTargetIds = new Set<string>();
     for (const t of tensions) {
       tensionTargetIds.add(t.targetAId);
@@ -354,36 +347,9 @@ export function TensionClusters({
       }
     }
 
-    if (!bestType)
-      return { categoryStats: [] as CategoryStat[], taxonomyLabel: "" };
-
-    // For each category in the best taxonomy, count tensions involving it
-    const catTargets = new Map<string, Set<string>>(); // categoryId -> target IDs
-    for (const c of classifications) {
-      if (!c.isRelevant || c.taxonomyType !== bestType) continue;
-      if (!tensionTargetIds.has(c.targetId)) continue;
-      if (!catTargets.has(c.categoryId))
-        catTargets.set(c.categoryId, new Set());
-      catTargets.get(c.categoryId)!.add(c.targetId);
-    }
-
-    const stats: CategoryStat[] = [];
-    for (const [catId, catTargetIds] of catTargets) {
-      let tensionCount = 0;
-      for (const t of tensions) {
-        if (catTargetIds.has(t.targetAId) || catTargetIds.has(t.targetBId))
-          tensionCount++;
-      }
-      const name = categoryNameMap.get(catId) ?? catId;
-      stats.push({ name, tensionCount });
-    }
-    stats.sort((a, b) => b.tensionCount - a.tensionCount);
-
-    return {
-      categoryStats: stats.slice(0, 5),
-      taxonomyLabel: TAXONOMY_LABELS[bestType] ?? bestType,
-    };
-  }, [classifications, tensions, categoryNameMap]);
+    if (!bestType) return "";
+    return TAXONOMY_LABELS[bestType] ?? bestType;
+  }, [classifications, tensions]);
 
   // All unique categories for browse filter
   const filterableCategories = useMemo(() => {
