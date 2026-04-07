@@ -14,6 +14,7 @@ import { TensionClusters } from "@/components/viz/tension-clusters";
 import { Nr7Progress } from "@/components/viz/nr7-progress";
 import { SectorScorecard } from "@/components/viz/sector-scorecard";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
+import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
 import type {
   Target,
   PolicyDocumentType,
@@ -31,19 +32,6 @@ interface TaxonomyCategory {
   description: string;
 }
 
-interface FootprintSnapshot {
-  energy_wh: number;
-  water_ml: number;
-  co2_geq: number;
-  minerals_ugsbeq: number;
-  call_count: number;
-  tracked_call_count: number;
-  cached_call_count: number;
-  model: string | null;
-  available: boolean;
-  source?: "measured" | "estimated" | "unavailable";
-}
-
 interface DashboardData {
   targets: Target[];
   nbsCategories: NbsCategory[];
@@ -54,14 +42,6 @@ interface DashboardData {
   btrData: BtrData | null;
   nr7Data: Nr7Data | null;
   footprint: FootprintSnapshot | null;
-}
-
-function formatFootprintValue(value: number): string {
-  if (!isFinite(value) || value < 0) return "0";
-  if (value === 0) return "0";
-  if (value < 0.01) return "<0.01";
-  if (value < 100) return value.toFixed(2);
-  return Math.round(value).toLocaleString();
 }
 
 /** Ensure targets have optional fields */

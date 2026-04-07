@@ -911,7 +911,7 @@ async def main_async(args: argparse.Namespace) -> None:
     # so the API route can return it and the total can be threaded into the
     # final analysis.
     footprint = get_footprint_tracker().snapshot()
-    footprint_path = out.with_suffix(out.suffix + ".footprint.json")
+    footprint_path = out.parent / (out.name + ".footprint.json")
     footprint_path.write_text(json.dumps(footprint, indent=2))
     if footprint.get("available"):
         logger.info(

@@ -4,21 +4,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Header } from "@/components/ui/header";
+import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-
-interface FootprintSnapshot {
-  energy_wh: number;
-  water_ml: number;
-  co2_geq: number;
-  minerals_ugsbeq: number;
-  call_count: number;
-  tracked_call_count: number;
-  cached_call_count: number;
-  model: string | null;
-  available: boolean;
-  source?: "measured" | "estimated" | "unavailable";
-}
 
 interface AnalysisStatus {
   status: "starting" | "running" | "completed" | "failed";
@@ -38,14 +26,6 @@ interface AnalysisStatus {
     elapsedSeconds: number;
   } | null;
   footprint?: FootprintSnapshot;
-}
-
-function formatFootprintValue(value: number): string {
-  if (!isFinite(value) || value < 0) return "0";
-  if (value === 0) return "0";
-  if (value < 0.01) return "<0.01";
-  if (value < 100) return value.toFixed(2);
-  return Math.round(value).toLocaleString();
 }
 
 function FootprintDisplay({ footprint }: { footprint: FootprintSnapshot }) {

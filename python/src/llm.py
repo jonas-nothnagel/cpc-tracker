@@ -166,7 +166,9 @@ def _impacts_are_empty(impacts: Any) -> bool:
     energy = _impact_value(getattr(impacts, "energy", None))
     gwp = _impact_value(getattr(impacts, "gwp", None))
     adpe = _impact_value(getattr(impacts, "adpe", None))
-    return energy == 0.0 and gwp == 0.0 and adpe == 0.0
+    usage = getattr(impacts, "usage", None)
+    water = _impact_value(getattr(usage, "wcf", None)) if usage is not None else 0.0
+    return energy == 0.0 and gwp == 0.0 and adpe == 0.0 and water == 0.0
 
 
 class FootprintTracker:

@@ -5,6 +5,7 @@ import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import type { TaxonomyGroup } from "@/hooks/useCategories";
 import { DOC_COLORS } from "@/lib/utils";
+import { formatFootprintValue } from "@/lib/footprint";
 import { AnalysisEstimate } from "./analysis-estimate";
 
 interface StepSummaryRunProps {
@@ -34,13 +35,6 @@ interface StepSummaryRunProps {
     minerals_ugsbeq: number;
     call_count: number;
   };
-}
-
-function formatFp(value: number): string {
-  if (!isFinite(value) || value <= 0) return "0";
-  if (value < 0.01) return "<0.01";
-  if (value < 100) return value.toFixed(2);
-  return Math.round(value).toLocaleString();
 }
 
 export function StepSummaryRun({
@@ -156,28 +150,28 @@ export function StepSummaryRun({
           <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
-                {formatFp(extractionFootprint.energy_wh)}
+                {formatFootprintValue(extractionFootprint.energy_wh)}
               </strong>{" "}
               Wh energy
             </span>
             <span className="text-gray-300">·</span>
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
-                {formatFp(extractionFootprint.water_ml)}
+                {formatFootprintValue(extractionFootprint.water_ml)}
               </strong>{" "}
               mL water
             </span>
             <span className="text-gray-300">·</span>
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
-                {formatFp(extractionFootprint.co2_geq)}
+                {formatFootprintValue(extractionFootprint.co2_geq)}
               </strong>{" "}
               gCO<sub>2</sub>eq
             </span>
             <span className="text-gray-300">·</span>
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
-                {formatFp(extractionFootprint.minerals_ugsbeq)}
+                {formatFootprintValue(extractionFootprint.minerals_ugsbeq)}
               </strong>{" "}
               µgSbeq minerals
             </span>
