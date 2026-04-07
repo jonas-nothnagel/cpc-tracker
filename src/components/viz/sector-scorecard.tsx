@@ -114,7 +114,6 @@ function buildGapInsightText(row: {
   }
 
   if (chg !== null && row.latestYear) {
-    const earliest = Number(row.latestYear) - (row.measures.length > 0 ? 32 : 32);
     parts.push(`Emissions ${chg > 0 ? "grew" : "fell"} ${Math.abs(chg)}% since ~1990`);
   }
 
@@ -226,14 +225,10 @@ function buildSectorRows(
 // Sub-components
 // ---------------------------------------------------------------------------
 
-function PipelineFlow({
-  targetCount, adopted, implemented, supportCount,
-}: {
-  targetCount: number; adopted: number; implemented: number; supportCount: number;
+function PipelineFlowChip({ count, label, color, bg, check }: {
+  count: number; label: string; color: string; bg: string; check?: boolean;
 }) {
-  const Chip = ({ count, label, color, bg, check }: {
-    count: number; label: string; color: string; bg: string; check?: boolean;
-  }) => (
+  return (
     <span
       className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium leading-none whitespace-nowrap"
       style={{ color, backgroundColor: bg }}
@@ -244,31 +239,40 @@ function PipelineFlow({
       <span className="font-normal opacity-75">{label}</span>
     </span>
   );
-  const Arrow = () => (
+}
+
+function PipelineFlowArrow() {
+  return (
     <span className="text-[#cbd5e1] text-[11px] leading-none select-none">→</span>
   );
+}
 
+function PipelineFlow({
+  targetCount, adopted, implemented, supportCount,
+}: {
+  targetCount: number; adopted: number; implemented: number; supportCount: number;
+}) {
   const hasAny = targetCount > 0 || adopted > 0 || implemented > 0;
 
   return (
     <div className="flex items-center gap-1 flex-wrap">
       {targetCount > 0 ? (
-        <Chip count={targetCount} label="targets" color="#0468b1" bg="#e8f1f8" />
+        <PipelineFlowChip count={targetCount} label="targets" color="#0468b1" bg="#e8f1f8" />
       ) : adopted > 0 ? (
-        <Chip count={0} label="targets" color="#b45309" bg="#fff7ed" />
+        <PipelineFlowChip count={0} label="targets" color="#b45309" bg="#fff7ed" />
       ) : null}
       {(targetCount > 0 || adopted > 0) && (
         <span className="text-[#cbd5e1] text-[10px] leading-none select-none mx-0.5">·</span>
       )}
       {adopted > 0 ? (
-        <Chip count={adopted} label="actions" color="#3d8c23" bg="#eaf5e4" />
+        <PipelineFlowChip count={adopted} label="actions" color="#3d8c23" bg="#eaf5e4" />
       ) : targetCount > 0 ? (
-        <Chip count={0} label="actions" color="#b45309" bg="#fff7ed" />
+        <PipelineFlowChip count={0} label="actions" color="#b45309" bg="#fff7ed" />
       ) : null}
       {implemented > 0 && (
         <>
-          <Arrow />
-          <Chip count={implemented} label="implemented" color="#2d6e17" bg="#d4edcc" check />
+          <PipelineFlowArrow />
+          <PipelineFlowChip count={implemented} label="implemented" color="#2d6e17" bg="#d4edcc" check />
         </>
       )}
       {supportCount > 0 && (
@@ -276,7 +280,7 @@ function PipelineFlow({
           {hasAny && (
             <span className="text-[#cbd5e1] text-[10px] leading-none select-none mx-0.5">|</span>
           )}
-          <Chip count={supportCount} label="support" color="#92620a" bg="#fef3c7" />
+          <PipelineFlowChip count={supportCount} label="support" color="#92620a" bg="#fef3c7" />
         </>
       )}
       {!hasAny && supportCount === 0 && (

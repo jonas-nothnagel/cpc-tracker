@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import type { CategoryItem } from "@/lib/upload-helpers";
 import type { TaxonomyGroup } from "@/hooks/useCategories";
 
 const COLOR_MAP = {

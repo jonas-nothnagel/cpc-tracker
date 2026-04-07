@@ -61,7 +61,6 @@ export default function UploadPage() {
   const [currentLabel, setCurrentLabel] = useState("");
   const [customDocName, setCustomDocName] = useState("");
   const [mode, setMode] = useState<"upload" | "manual">("upload");
-  const [uploadMode, setUploadMode] = useState<"policy" | "list" | "btr">("policy");
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedDocs, setUploadedDocs] = useState<UploadedDoc[]>([]);
@@ -371,8 +370,6 @@ export default function UploadPage() {
             onCountryChange={setCountry}
             mode={mode}
             onModeChange={setMode}
-            uploadMode={uploadMode}
-            onUploadModeChange={setUploadMode}
             extractDocType={extraction.extractDocType}
             onExtractDocTypeChange={extraction.setExtractDocType}
             extractDocLabel={extraction.extractDocLabel}

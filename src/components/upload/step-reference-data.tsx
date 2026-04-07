@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { PolicyDocumentType, Target } from "@/types";
-import type { BtrData, BtrSummary, UploadedDoc } from "@/lib/upload-helpers";
+import type { BtrData, UploadedDoc } from "@/lib/upload-helpers";
 import type { TargetRow } from "@/lib/csv-parser";
 import { MONGOLIA_TARGETS } from "@/data/mongolia-targets";
 import { DOC_COLORS } from "@/lib/utils";
