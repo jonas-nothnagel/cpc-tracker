@@ -30,6 +30,15 @@ interface AnalyzeRequest {
   nbsCategories?: { id: string; name: string; description: string }[];
   sectors?: { id: string; name: string; description: string }[];
   btrData?: Record<string, unknown>;
+  initialFootprint?: {
+    energy_wh: number;
+    water_ml: number;
+    co2_geq: number;
+    minerals_ugsbeq: number;
+    call_count: number;
+    tracked_call_count: number;
+    cached_call_count: number;
+  };
 }
 
 const PROJECT_ROOT = process.cwd();
@@ -126,6 +135,15 @@ export async function POST(request: NextRequest) {
       writeFileSync(
         join(outputDir, "btr_data.json"),
         JSON.stringify(body.btrData, null, 2)
+      );
+    }
+
+    // Seed the pipeline's footprint tracker with accumulated extraction cost
+    // from this session, so the final dashboard shows extraction + analysis.
+    if (body.initialFootprint) {
+      writeFileSync(
+        join(inputDir, "initial_footprint.json"),
+        JSON.stringify(body.initialFootprint, null, 2)
       );
     }
 

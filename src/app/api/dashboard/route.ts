@@ -152,6 +152,11 @@ export async function GET(request: NextRequest) {
     ? [...(alignment as unknown[]), ...measureAlignment]
     : alignment;
 
+  // Load environmental footprint snapshot if available
+  const footprint = readJson<Record<string, unknown>>(
+    join(outputDir, "footprint.json")
+  );
+
   return NextResponse.json({
     targets: allTargets,
     nbsCategories: categories.nbs_categories,
@@ -161,5 +166,6 @@ export async function GET(request: NextRequest) {
     alignment: allAlignment,
     btrData: btrData ?? null,
     nr7Data: nr7Data ?? null,
+    footprint: footprint ?? null,
   });
 }

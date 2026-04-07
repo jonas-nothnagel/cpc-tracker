@@ -123,7 +123,19 @@ export async function POST(request: NextRequest) {
     }
 
     const items = JSON.parse(readFileSync(outputPath, "utf-8"));
-    return NextResponse.json({ items, fileName: file.name });
+
+    // Read the footprint snapshot written by extract.py (next to the output)
+    const footprintPath = outputPath + ".footprint.json";
+    let footprint: Record<string, unknown> | null = null;
+    if (existsSync(footprintPath)) {
+      try {
+        footprint = JSON.parse(readFileSync(footprintPath, "utf-8"));
+      } catch {
+        footprint = null;
+      }
+    }
+
+    return NextResponse.json({ items, fileName: file.name, footprint });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Extraction failed";
     console.error("Extraction error:", message);
@@ -132,6 +144,8 @@ export async function POST(request: NextRequest) {
     try {
       if (existsSync(inputPath)) unlinkSync(inputPath);
       if (existsSync(outputPath)) unlinkSync(outputPath);
+      const footprintPath = outputPath + ".footprint.json";
+      if (existsSync(footprintPath)) unlinkSync(footprintPath);
       if (existsSync(tmpRunDir)) {
         rmdirSync(tmpRunDir);
       }

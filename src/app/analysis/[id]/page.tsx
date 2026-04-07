@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Header } from "@/components/ui/header";
+import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -24,6 +25,66 @@ interface AnalysisStatus {
     alignmentLevels: Record<string, number>;
     elapsedSeconds: number;
   } | null;
+  footprint?: FootprintSnapshot;
+}
+
+function FootprintDisplay({ footprint }: { footprint: FootprintSnapshot }) {
+  if (!footprint.available) {
+    return null;
+  }
+
+  const metrics = [
+    { label: "Energy", value: formatFootprintValue(footprint.energy_wh), unit: "Wh" },
+    { label: "Water", value: formatFootprintValue(footprint.water_ml), unit: "mL" },
+    { label: "CO\u2082eq", value: formatFootprintValue(footprint.co2_geq), unit: "g" },
+    {
+      label: "Minerals",
+      value: formatFootprintValue(footprint.minerals_ugsbeq),
+      unit: "\u00b5gSbeq",
+    },
+  ];
+
+  const callSummary =
+    footprint.source === "estimated"
+      ? `${footprint.cached_call_count.toLocaleString()} cached calls`
+      : `${footprint.tracked_call_count.toLocaleString()} calls tracked${
+          footprint.cached_call_count > 0
+            ? ` \u00b7 ${footprint.cached_call_count.toLocaleString()} cached`
+            : ""
+        }`;
+
+  return (
+    <div className="mt-6 max-w-md mx-auto">
+      <div className="rounded-md border border-gray-100 bg-gray-50/50 px-4 py-3">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-medium text-[var(--undp-black)]">
+            Environmental footprint
+          </span>
+          <span className="text-[10px] text-[var(--undp-gray)]">
+            {callSummary}
+          </span>
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          {metrics.map((m) => (
+            <div key={m.label} className="text-center">
+              <div className="text-sm font-semibold text-[var(--undp-black)]">
+                {m.value}
+              </div>
+              <div className="text-[10px] text-[var(--undp-gray)]">
+                {m.label} ({m.unit})
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[10px] text-[var(--undp-gray)] mt-2 leading-snug">
+          {footprint.source === "estimated"
+            ? "Estimated from call counts (cached run) via EcoLogits."
+            : "Measured via EcoLogits."}{" "}
+          Values are indicative and may differ from actual consumption.
+        </p>
+      </div>
+    </div>
+  );
 }
 
 type NodeState = "pending" | "active" | "done";
@@ -342,7 +403,7 @@ export default function AnalysisPage() {
               </div>
 
               {/* Progress summary bar */}
-              <div className="mb-10 max-w-md mx-auto">
+              <div className="mb-6 max-w-md mx-auto">
                 <div className="flex justify-between text-xs text-[var(--undp-gray)] mb-2">
                   <span>
                     Step {status.step} of {status.totalSteps}
@@ -356,6 +417,13 @@ export default function AnalysisPage() {
                   />
                 </div>
               </div>
+
+              {/* Running environmental footprint */}
+              {status.footprint && (
+                <div className="mb-10">
+                  <FootprintDisplay footprint={status.footprint} />
+                </div>
+              )}
 
               {/* Pipeline diagram */}
               <PipelineViz status={status} />
@@ -399,6 +467,9 @@ export default function AnalysisPage() {
               >
                 View Dashboard →
               </button>
+              {status.footprint && (
+                <FootprintDisplay footprint={status.footprint} />
+              )}
             </div>
 
             {/* Show completed pipeline */}
