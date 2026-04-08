@@ -12,7 +12,7 @@ import { OutcomeStats } from "@/components/viz/outcome-stats";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import { TensionClusters } from "@/components/viz/tension-clusters";
 import { Nr7Progress } from "@/components/viz/nr7-progress";
-import { SectorScorecard } from "@/components/viz/sector-scorecard";
+import { ImplementationCoverage } from "@/components/viz/implementation-coverage";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
 import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
 import type {
@@ -58,6 +58,12 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
+    // BTR pseudo-targets carry actionType to distinguish reported mitigation
+    // measures from adaptation actions; policy targets do not.
+    actionType:
+      t.actionType === "mitigation" || t.actionType === "adaptation"
+        ? t.actionType
+        : undefined,
   };
 }
 
@@ -424,15 +430,26 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
               <div className={data.nr7Data && data.nr7Data.progressItems.length > 0 ? "mt-8" : ""}>
                 <div className="mb-4">
                   <h3 className="text-base font-semibold text-[var(--undp-black)]">
-                    NDC Implementation
+                    Reporting &amp; Implementation Coverage
                     <InfoBox>
-                      This section brings together two data sources: <strong>policy targets</strong> from the NDC{" "}
-                      (Nationally Determined Contribution) and <strong>reported actions</strong> from the BTR{" "}
-                      (Biennial Transparency Report, where governments report what they are doing to meet their{" "}
-                      climate commitments). For each sector, it shows whether targets have corresponding actions{" "}
-                      and highlights gaps where targets exist but no actions have been reported.
+                      This view shows what countries have <strong>reported</strong> in their
+                      Biennial Transparency Report (BTR). It doesn&apos;t assess whether the reported
+                      actions are sufficient to meet the underlying policy targets — that&apos;s a
+                      deeper tracking question that isn&apos;t answered here.
                       <br /><br />
-                      <em>Reported actions are called &ldquo;mitigation measures&rdquo; in official BTR terminology.</em>
+                      <strong>Mitigation</strong> is grouped by <strong>IPCC sector</strong> because
+                      CTF Table 5 is sector-keyed and emissions accounting follows those categories.
+                      <strong> Adaptation</strong> is grouped by the country&apos;s own adaptation
+                      action plan (for Mongolia, the 8 APNDC goals from BTR1 Table III.9), because
+                      IPCC sector classifications don&apos;t fit adaptation outcomes like water,
+                      disaster, health and social safeguard.
+                      <br /><br />
+                      <em>
+                        Absence of a reported action is not the same as absence of activity on the
+                        ground. Government self-reports rarely contradict their own targets, so
+                        interpret &ldquo;no contradiction&rdquo; as a neutral signal, not as
+                        validation.
+                      </em>
                     </InfoBox>
                   </h3>
                   <p className="text-sm text-[var(--undp-gray)] mt-0.5">
@@ -443,12 +460,11 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
                   </p>
                 </div>
 
-                <SectorScorecard
+                <ImplementationCoverage
                   btrData={data.btrData}
                   targets={targets}
                   sectors={data.sectors}
                   classifications={data.classifications}
-                  alignmentData={data.alignment}
                 />
 
                 <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">

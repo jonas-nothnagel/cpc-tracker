@@ -43,6 +43,31 @@ export interface Target {
   activities?: string;
   /** Actions or measures to implement the target (from structured upload or manual entry) */
   actions?: string;
+  /**
+   * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
+   * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
+   */
+  actionType?: BTRActionType;
+}
+
+/** Kind of reported action from a Biennial Transparency Report. */
+export type BTRActionType = "mitigation" | "adaptation";
+
+/**
+ * Provenance for a data point — cited to a primary document so users can audit it.
+ * Any field added must be verifiable against the cited source; do not fabricate.
+ */
+export interface SourceRef {
+  /** Canonical document name, e.g. "Mongolia BTR1 (December 2025)" */
+  document: string;
+  /** Section or chapter reference, e.g. "Section 3.9.1.8" */
+  section?: string;
+  /** Table reference, e.g. "Table III.9" or "CTF Table 5" */
+  table?: string;
+  /** Page range in the PDF, e.g. "123-126" */
+  pages?: string;
+  /** Annex reference, e.g. "Annex II" */
+  annex?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -90,10 +115,17 @@ export interface Theme {
  */
 export interface ThematicClassification {
   targetId: string;
-  /** Either an NBS category id or a sector id */
+  /** NBS category id, IPCC sector id, theme id, or country-specific adaptation goal id */
   categoryId: string;
-  /** "nbs", "sector", or legacy "theme" — which taxonomy this classification belongs to */
-  taxonomyType: "nbs" | "sector" | "theme";
+  /**
+   * Which taxonomy this classification belongs to:
+   * - "nbs": Nature-Based Solutions categories
+   * - "sector": IPCC sectors
+   * - "theme": legacy cross-cutting themes
+   * - "adaptation_goal": country-specific adaptation action plan goals
+   *   (e.g. Mongolia APNDC's 8 goals from BTR1 Table III.9)
+   */
+  taxonomyType: "nbs" | "sector" | "theme" | "adaptation_goal";
   /** Whether the target pertains to this category */
   isRelevant: boolean;
 }
@@ -167,8 +199,16 @@ export interface ProgressIndicator {
   sourceSheet?: string;
 }
 
-/** A mitigation policy/measure from CTF Table 5. */
-export interface MitigationMeasure {
+/**
+ * A reported policy action from a BTR — either a mitigation measure (CTF Table 5)
+ * or an adaptation action (Table III.9 in Mongolia's BTR1).
+ *
+ * Adaptation-specific fields (`outcome`, `indicator`, `implementationStatus`,
+ * `adaptationGoal`, `responsibleOrgs`) are optional and populated only for rows
+ * where `actionType === "adaptation"`. Mitigation measures populate the CTF
+ * Table 5 fields (`instrumentType`, `gasesAffected`, `reductionEstimates`, ...).
+ */
+export interface BTRAction {
   name: string;
   description: string;
   objectives: string;
@@ -179,7 +219,28 @@ export interface MitigationMeasure {
   startYear: string;
   implementingEntity: string;
   reductionEstimates: Record<string, number>;
+
+  /** Mitigation or adaptation. Defaults to "mitigation" when absent (legacy data). */
+  actionType?: BTRActionType;
+
+  // --- Adaptation-specific fields (from Table III.9) ---
+  /** Intended outcome (Table III.9 "Outcome" column). */
+  outcome?: string;
+  /** Tracking indicator (Table III.9 "Indicator" column). */
+  indicator?: string;
+  /** Free-text implementation status narrative (Table III.9 rightmost column). */
+  implementationStatus?: string;
+  /** APNDC adaptation goal number (1-8). */
+  adaptationGoal?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  /** List of responsible organizations (Table III.9 "Responsible organization" column). */
+  responsibleOrgs?: string[];
+
+  /** Provenance — cited to the primary document. */
+  sourceRef?: SourceRef;
 }
+
+/** @deprecated Use BTRAction. Kept as an alias so existing imports don't break. */
+export type MitigationMeasure = BTRAction;
 
 /** A single sector's emission time series from CTF Table 6. */
 export interface SectorEmissionSeries {
@@ -221,13 +282,54 @@ export interface SupportProject {
 export interface BtrData {
   sourceFile?: string;
   progressIndicators: ProgressIndicator[];
-  mitigationMeasures: MitigationMeasure[];
+  /**
+   * BTR reported actions — mitigation measures (from CTF Table 5) plus any
+   * hand-curated adaptation actions (e.g. Mongolia Table III.9). Disambiguated
+   * by `actionType` on each entry. Name kept for backward compatibility with
+   * callers that assumed BTR only contained mitigation.
+   */
+  mitigationMeasures: BTRAction[];
   sectorEmissions: { bySector: SectorEmissionSeries[] };
   projections: ProjectionSeries[];
   technologySupport: SupportProject[];
   capacityBuilding: SupportProject[];
   /** Merged and deduplicated support projects from both tables. */
   supportProjects?: SupportProject[];
+  /**
+   * Country-specific adaptation goal taxonomy (e.g. Mongolia APNDC's 8 goals).
+   * Populated from each country's hand-curated adaptation data file
+   * (e.g. `mongolia-btr-adaptation.json`). The `id` field matches the
+   * `adaptationGoal` number on each adaptation BTRAction and the `categoryId`
+   * on adaptation_goal classifications. A second country just provides their
+   * own file; no code changes needed.
+   */
+  adaptationGoals?: AdaptationGoal[];
+  /**
+   * Human-readable label for the adaptation grouping (e.g. "APNDC adaptation
+   * goal"). Used in the adaptation section header. When absent, the view
+   * falls back to a generic "Adaptation actions" header.
+   */
+  adaptationGroupingLabel?: string;
+}
+
+/**
+ * One adaptation goal from a country-specific adaptation action plan.
+ *
+ * Carries only `id` and `description` (verbatim from the source document).
+ * There is no `name` field because BTR Table III.9 doesn't carry short labels
+ * for the goals and we don't have direct access to the underlying APNDC
+ * document — synthesising a paraphrased short label would be fabrication.
+ * The frontend truncates the description via CSS for row display and shows
+ * the full text on hover and in click-to-expand panels.
+ */
+export interface AdaptationGoal {
+  /** Stable identifier; string-keyed for symmetry with classification categoryId. */
+  id: string;
+  /**
+   * Verbatim goal text from the country's adaptation action plan
+   * (for Mongolia: BTR1 Table III.9, pp. 123-126).
+   */
+  description: string;
 }
 
 // ---------------------------------------------------------------------------

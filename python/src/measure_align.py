@@ -35,22 +35,32 @@ MEASURE_ADVISOR_SYSTEM = (
     "provide factual, graded assessments."
 )
 
-MEASURE_ADVISOR_USER_TEMPLATE = """    Role: Implementation Coherence Advisor
+# Prepended to the user template when the reported action is an adaptation action
+# rather than a mitigation measure. Keeps all prompt surface in one place.
+ADAPTATION_CONTEXT_NOTE = (
+    "    NOTE: The reported action below is an ADAPTATION action, not a mitigation measure. "
+    "When assessing coherence, consider whether it reduces vulnerability, builds adaptive "
+    "capacity, or could undermine the target's intent. Adaptation outcomes are not measured "
+    "in CO2e; do not penalize the action for lacking emissions reductions.\n\n"
+)
+
+MEASURE_ADVISOR_USER_TEMPLATE = """{adaptation_note}    Role: Implementation Coherence Advisor
     Goal: Compare a policy target with a reported implementation measure and assess how well the measure \
 implements or supports the target.
 
-    Backstory: You specialize in evaluating whether government-reported mitigation measures (from Biennial \
+    Backstory: You specialize in evaluating whether government-reported actions (from Biennial \
 Transparency Reports) genuinely implement or support stated policy targets (from NDCs, NAPs, NBSAPs). Your \
 assessments are grounded in real-world feasibility and operational overlap. You identify both strong \
-implementation links and genuine contradictions.
+implementation links and genuine contradictions, including cross-type tensions where a mitigation measure \
+and an adaptation action push the same sector in opposite directions.
 
     Task:
-    1. Analyze the following policy target and reported implementation measure:
+    1. Analyze the following policy target and reported implementation action:
        - {target_type} policy target: {target_decomp}
-       - BTR reported measure: {measure_decomp}
-    2. Assess whether the measure directly implements, partially supports, or has no relationship to the target.
-    3. Consider whether the measure's actions, sector, and intended outcomes genuinely advance the target's goals.
-    4. Also consider whether the measure could inadvertently undermine or contradict the target.
+       - BTR reported action: {measure_decomp}
+    2. Assess whether the action directly implements, partially supports, or has no relationship to the target.
+    3. Consider whether the action's actions, sector, and intended outcomes genuinely advance the target's goals.
+    4. Also consider whether the action could inadvertently undermine or contradict the target.
 
     Classify the relationship into one of the seven levels below. Always use the exact label and format:
 
@@ -101,10 +111,24 @@ may be possible.
 # ---------------------------------------------------------------------------
 
 
-def measures_to_pseudo_targets(measures: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Convert BTR mitigation measures into target-like dicts for the pipeline."""
+def measures_to_pseudo_targets(
+    measures: list[dict[str, Any]],
+    *,
+    action_type: str = "mitigation",
+) -> list[dict[str, Any]]:
+    """Convert BTR reported actions (mitigation or adaptation) into target-like dicts.
+
+    `action_type` defaults to "mitigation" so existing callers stay backward compatible.
+    For adaptation actions, pass `action_type="adaptation"`; this flows into each
+    pseudo-target so the alignment prompt and frontend can render cross-type pairs.
+
+    Adaptation actions are allowed to carry a pre-assigned `id` (e.g. "ADP_3_1_1"
+    from Table III.9 row numbering); if present it is preserved verbatim. Otherwise
+    an ID is auto-generated with a prefix that avoids collision with mitigation IDs.
+    """
     pseudo: list[dict[str, Any]] = []
     sector_idx: dict[str, int] = defaultdict(int)
+    id_prefix = "BTR" if action_type == "mitigation" else "BTRA"
 
     for m in measures:
         status = (m.get("status") or "").strip()
@@ -116,8 +140,13 @@ def measures_to_pseudo_targets(measures: list[dict[str, Any]]) -> list[dict[str,
         sector_idx[sector] += 1
         idx = sector_idx[sector]
 
-        short_sector = sector.replace("sector_", "")
-        pid = f"BTR_{short_sector}_{idx}"
+        # Honor a pre-assigned id (hand-curated data); otherwise auto-generate.
+        pre_id = (m.get("id") or "").strip()
+        if pre_id:
+            pid = pre_id
+        else:
+            short_sector = sector.replace("sector_", "")
+            pid = f"{id_prefix}_{short_sector}_{idx}"
 
         parts = [name]
         desc = (m.get("description") or "").strip()
@@ -126,11 +155,17 @@ def measures_to_pseudo_targets(measures: list[dict[str, Any]]) -> list[dict[str,
             parts.append(desc)
         if obj and obj not in (name, desc, "Implemented", "Adopted"):
             parts.append(obj)
+        # Adaptation rows carry a narrative implementationStatus that's usually the
+        # richest semantic field; include it when present so the decomposer sees
+        # quantitative content like "771,600 participants" or "325 springs in 2022".
+        impl = (m.get("implementationStatus") or "").strip()
+        if impl and impl not in parts:
+            parts.append(impl)
         text = ". ".join(parts)
 
         label = name if len(name) <= 60 else name[:57] + "..."
 
-        pseudo.append({
+        entry: dict[str, Any] = {
             "id": pid,
             "sourceDocument": "BTR",
             "sourceLabel": label,
@@ -140,7 +175,15 @@ def measures_to_pseudo_targets(measures: list[dict[str, Any]]) -> list[dict[str,
             "isTimeBound": False,
             "sector": sector,
             "measureStatus": status,
-        })
+            "actionType": action_type,
+        }
+        # Carry adaptation-specific fields through for the frontend renderer.
+        if action_type == "adaptation":
+            if m.get("adaptationGoal") is not None:
+                entry["adaptationGoal"] = m["adaptationGoal"]
+            if impl:
+                entry["implementationStatus"] = impl
+        pseudo.append(entry)
 
     return pseudo
 
@@ -154,7 +197,7 @@ def generate_measure_pairs(
     targets: list[dict[str, Any]],
     pseudo_targets: list[dict[str, Any]],
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
-    """Pair every BTR measure with every target.
+    """Pair every BTR action (mitigation or adaptation) with every policy target.
 
     Classification is no longer used as a pairing filter — the alignment LLM
     decides relevance directly.
@@ -171,6 +214,34 @@ def generate_measure_pairs(
     return pairs
 
 
+def generate_cross_type_pairs(
+    pseudo_targets: list[dict[str, Any]],
+) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    """Generate mitigation × adaptation pairs to surface reported cross-type tensions.
+
+    These are BTR-internal pairs: each reported mitigation measure crossed with each
+    reported adaptation action. Captures the case (flagged by Mongolia stakeholders
+    on 7 April 2026) where a mitigation measure ("reduce livestock") and an
+    adaptation action ("improve fodder production") point the same sector in
+    opposite directions. Existing target×action pairing misses this.
+    """
+    mit = [p for p in pseudo_targets if p.get("actionType") == "mitigation"]
+    adp = [p for p in pseudo_targets if p.get("actionType") == "adaptation"]
+    pairs: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    for m in mit:
+        for a in adp:
+            # Convention: put mitigation on the "target" side, adaptation on the
+            # "measure" side, so the existing assess_measure_alignment() loop sees
+            # the adaptation row on the side that receives the adaptation context
+            # note in the advisor prompt.
+            pairs.append((m, a))
+    logger.info(
+        f"Generated {len(pairs)} cross-type measure pairs "
+        f"from {len(mit)} mitigation × {len(adp)} adaptation actions"
+    )
+    return pairs
+
+
 # ---------------------------------------------------------------------------
 # Decompose + Assess
 # ---------------------------------------------------------------------------
@@ -179,14 +250,30 @@ def generate_measure_pairs(
 async def decompose_measures(
     pseudo_targets: list[dict[str, Any]],
 ) -> dict[str, str]:
-    """Run Agent 1 on measures (reuses the same analyst prompt)."""
+    """Run Agent 1 on reported BTR actions (reuses the same analyst prompt).
+
+    Adaptation actions get the same Goal/Action/Ecosystem/Audience/Outcome
+    decomposition structure as mitigation measures; the framing naturally
+    captures adaptation content because the fields are neutral. No separate
+    adaptation prompt class is introduced.
+    """
     logger.info(f"Decomposing {len(pseudo_targets)} measures (Agent 1)")
 
     calls = []
     ids = []
     for pt in pseudo_targets:
+        # Prefix the adaptation framing note only for adaptation rows. This
+        # nudges the decomposer to surface vulnerability-reduction content in
+        # the Outcome field rather than fabricating CO2e numbers.
+        text = pt["text"]
+        if pt.get("actionType") == "adaptation":
+            text = (
+                "[ADAPTATION ACTION — frame Outcome as vulnerability reduction "
+                "or adaptive-capacity gain, not CO2e.] "
+                + text
+            )
         user = ANALYST_USER_TEMPLATE.format(
-            target_text=pt["text"],
+            target_text=text,
             activities_block="",
             actions_block="",
             action_instruction="",
@@ -212,7 +299,7 @@ async def assess_measure_alignment(
     pairs: list[tuple[dict[str, Any], dict[str, Any]]],
     decompositions: dict[str, str],
 ) -> list[dict[str, Any]]:
-    """Run adapted Agent 2 on target-measure pairs."""
+    """Run adapted Agent 2 on target-measure pairs (mitigation or adaptation)."""
     logger.info(
         f"Assessing implementation alignment for {len(pairs)} pairs"
     )
@@ -224,7 +311,17 @@ async def assess_measure_alignment(
         decomp_t = decompositions.get(target["id"], "")
         decomp_m = decompositions.get(measure["id"], "")
 
+        # Inject the adaptation context note when the BTR-side row is an
+        # adaptation action so the advisor doesn't penalize it for missing
+        # CO2e reduction estimates.
+        adaptation_note = (
+            ADAPTATION_CONTEXT_NOTE
+            if measure.get("actionType") == "adaptation"
+            else ""
+        )
+
         user = MEASURE_ADVISOR_USER_TEMPLATE.format(
+            adaptation_note=adaptation_note,
             target_type=DOC_TYPE_LABELS.get(
                 target["sourceDocument"], target["sourceDocument"]
             ),

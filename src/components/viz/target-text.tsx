@@ -1,8 +1,41 @@
 "use client";
 
 import { useState } from "react";
-import type { Target } from "@/types";
+import type { Target, BTRActionType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
+
+/**
+ * Small badge labeling a BTR row as "Mitigation" or "Adaptation". Shown next to
+ * the BTR source label wherever BTR pseudo-targets appear in lists, so users can
+ * tell at a glance whether an action is a mitigation measure (CTF Table 5) or
+ * an adaptation action (Table III.9). Returns null for policy targets (no badge).
+ *
+ * Colors: mitigation uses purple (matches BTR document color `#7c3aed`);
+ * adaptation uses fuchsia to avoid clashing with NBSAP teal elsewhere in the
+ * palette. Text is the contract — color is decorative.
+ */
+export const BTR_MITIGATION_COLOR = "#7c3aed"; // violet / BTR doc color
+export const BTR_ADAPTATION_COLOR = "#c026d3"; // fuchsia-600
+
+export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) {
+  if (!actionType) return null;
+  const isAdaptation = actionType === "adaptation";
+  const label = isAdaptation ? "Adaptation" : "Mitigation";
+  const title = isAdaptation
+    ? "Reported adaptation action (Mongolia BTR1 Table III.9)"
+    : "Reported mitigation measure (Mongolia BTR1 CTF-NDC Table 5)";
+  const bg = isAdaptation ? "bg-fuchsia-50" : "bg-purple-50";
+  const fg = isAdaptation ? "text-fuchsia-700" : "text-purple-700";
+  const border = isAdaptation ? "border-fuchsia-200" : "border-purple-200";
+  return (
+    <span
+      className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide border ${bg} ${fg} ${border}`}
+      title={title}
+    >
+      {label}
+    </span>
+  );
+}
 
 /**
  * Renders target text with quantitative and time-bound phrases highlighted.

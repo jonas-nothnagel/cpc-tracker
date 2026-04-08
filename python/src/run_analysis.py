@@ -35,6 +35,7 @@ from .quantitative import assess_quantitative_flags
 from .measure_align import (
     measures_to_pseudo_targets,
     generate_measure_pairs,
+    generate_cross_type_pairs,
     decompose_measures,
     assess_measure_alignment,
 )
@@ -150,6 +151,43 @@ async def main() -> None:
 
         all_classifications = nbs_classifications + sector_classifications + theme_classifications
 
+        # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
+        # When a `<country>-btr-adaptation.json` file exists alongside the targets
+        # and contains an `adaptationGoals` array, classify policy targets against
+        # those goals so the Reporting & Implementation Coverage view can show
+        # per-goal policy commitment vs reported action imbalances.
+        adaptation_path = DATA_DIR / "mongolia-btr-adaptation.json"
+        if adaptation_path.exists():
+            adp_data = json.loads(adaptation_path.read_text())
+            adp_goals = adp_data.get("adaptationGoals", [])
+            if adp_goals:
+                # `run_classification` expects {id, name, description}. The data
+                # file only carries verbatim {id, description} (no authoritative
+                # short label exists in BTR1 or APNDC), so synthesise a `name`
+                # by deterministic-truncating the first ~80 chars of the
+                # description for the system prompt's all_themes list. Every
+                # character traces back to verbatim BTR text — not a paraphrase.
+                goals_for_classification = [
+                    {
+                        "id": str(g["id"]),
+                        "name": (
+                            g["description"][:80].rstrip(",.") + "…"
+                            if len(g["description"]) > 80
+                            else g["description"]
+                        ),
+                        "description": g["description"],
+                    }
+                    for g in adp_goals
+                ]
+                adp_goal_classifications = await run_classification(
+                    targets, goals_for_classification, "adaptation_goal"
+                )
+                all_classifications = all_classifications + adp_goal_classifications
+                logger.info(
+                    f"Classified {len(targets)} policy targets against "
+                    f"{len(adp_goals)} adaptation goals"
+                )
+
         # Save classifications
         out_path = OUTPUT_DIR / "classifications.json"
         out_path.write_text(json.dumps(all_classifications, indent=2))
@@ -207,11 +245,29 @@ async def main() -> None:
 
             btr = json.loads(btr_path.read_text())
             raw_measures = btr.get("mitigationMeasures", [])
-            measure_pseudo_targets = measures_to_pseudo_targets(raw_measures)
-            logger.info(f"  {len(raw_measures)} raw measures → {len(measure_pseudo_targets)} valid pseudo-targets")
+            mit_pseudo_targets = measures_to_pseudo_targets(raw_measures, action_type="mitigation")
+            logger.info(f"  {len(raw_measures)} raw mitigation measures → {len(mit_pseudo_targets)} valid pseudo-targets")
+
+            # Load hand-curated BTR adaptation actions (Mongolia Table III.9) if present.
+            # File is optional so existing non-Mongolia analyses stay unaffected.
+            adaptation_path = DATA_DIR / "mongolia-btr-adaptation.json"
+            adp_pseudo_targets: list[dict] = []
+            if adaptation_path.exists():
+                adp_file = json.loads(adaptation_path.read_text())
+                raw_adaptation = adp_file.get("actions", [])
+                adp_pseudo_targets = measures_to_pseudo_targets(
+                    raw_adaptation, action_type="adaptation"
+                )
+                logger.info(
+                    f"  {len(raw_adaptation)} raw adaptation actions → "
+                    f"{len(adp_pseudo_targets)} valid pseudo-targets "
+                    f"(source: {adp_file.get('sourceRef', {}).get('table', 'unknown')})"
+                )
+
+            measure_pseudo_targets = mit_pseudo_targets + adp_pseudo_targets
 
             if measure_pseudo_targets:
-                # Classify BTR measures against NBS and themes (not sectors — ground truth)
+                # Classify BTR actions against NBS and themes (not sectors — ground truth)
                 btr_nbs = await run_classification(measure_pseudo_targets, nbs_categories, "nbs")
                 btr_themes = await run_classification(measure_pseudo_targets, themes, "theme")
                 all_classifications.extend(btr_nbs + btr_themes)
@@ -230,7 +286,15 @@ async def main() -> None:
                 out_path.write_text(json.dumps(all_classifications, indent=2))
                 logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_themes)} themes + {len(measure_pseudo_targets)} ground-truth sectors)")
 
+                # Policy target × BTR action pairs (both mitigation and adaptation).
                 m_pairs = generate_measure_pairs(targets, measure_pseudo_targets)
+
+                # BTR mitigation × BTR adaptation cross-type pairs. These surface the
+                # "reported mitigation vs reported adaptation" tensions that no existing
+                # pairing catches (e.g. reduce livestock vs build fodder irrigation).
+                if mit_pseudo_targets and adp_pseudo_targets:
+                    cross_pairs = generate_cross_type_pairs(measure_pseudo_targets)
+                    m_pairs = m_pairs + cross_pairs
 
                 if m_pairs:
                     measure_decomps = await decompose_measures(measure_pseudo_targets)

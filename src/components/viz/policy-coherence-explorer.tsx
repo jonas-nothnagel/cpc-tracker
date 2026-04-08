@@ -12,7 +12,12 @@ import {
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
-import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
+import {
+  TargetTextWithHighlights,
+  ActivitiesActions,
+  ActionTypeBadge,
+  BTR_ADAPTATION_COLOR,
+} from "./target-text";
 import type {
   Target,
   PolicyDocumentType,
@@ -60,6 +65,7 @@ interface TaxCategory {
 
 type GroupMode = "document" | "sector" | "theme" | "nbs";
 type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
+type ActionTypeFilter = "all" | "mitigation" | "adaptation";
 
 
 // ─── SVG layout constants ───────────────────────────────────────────
@@ -335,6 +341,7 @@ function DetailPanel({
           <span className="text-sm font-semibold text-[var(--undp-black)] truncate">
             {DOC_LABELS[node.target.sourceDocument]} · {node.target.sourceLabel}
           </span>
+          <ActionTypeBadge actionType={node.target.actionType} />
         </div>
         <button type="button" onClick={onClose} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none ml-2 shrink-0">
           ×
@@ -430,6 +437,7 @@ function DetailPanel({
                     >
                       {DOC_LABELS[conn.otherTarget.sourceDocument]}
                     </span>
+                    <ActionTypeBadge actionType={conn.otherTarget.actionType} />
                     <span className="text-xs font-medium text-[var(--undp-black)] truncate flex-1">
                       {conn.otherTarget.sourceLabel}
                     </span>
@@ -521,6 +529,7 @@ export function PolicyCoherenceExplorer({
 }: PolicyCoherenceExplorerProps) {
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
   const [filter, setFilter] = useState<AlignFilter>("high_contra");
+  const [actionTypeFilter, setActionTypeFilter] = useState<ActionTypeFilter>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [comparedPair, setComparedPair] = useState<{
@@ -594,8 +603,24 @@ export function PolicyCoherenceExplorer({
   }, [nr7Data]);
 
   const visibleTargets = useMemo(
-    () => targets.filter((t) => !hiddenDocs.has(t.sourceDocument)),
-    [targets, hiddenDocs],
+    () =>
+      targets.filter((t) => {
+        if (hiddenDocs.has(t.sourceDocument)) return false;
+        // Type filter only affects BTR pseudo-targets (which carry actionType).
+        // Policy targets are always shown regardless of this filter.
+        if (actionTypeFilter === "all") return true;
+        if (t.actionType === undefined) return true;
+        return t.actionType === actionTypeFilter;
+      }),
+    [targets, hiddenDocs, actionTypeFilter],
+  );
+
+  // Whether any adaptation actions are present in the data at all. Used to
+  // hide the Mit/Adp filter toggle when adaptation wasn't loaded — keeps the
+  // control surface minimal for non-Mongolia analyses.
+  const hasAdaptationActions = useMemo(
+    () => targets.some((t) => t.actionType === "adaptation"),
+    [targets],
   );
   const visibleTargetIds = useMemo(
     () => new Set(visibleTargets.map((t) => t.id)),
@@ -724,6 +749,8 @@ export function PolicyCoherenceExplorer({
               This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate contradictions.
               <br /><br />
               The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.
+              <br /><br />
+              <strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.
             </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
@@ -767,6 +794,18 @@ export function PolicyCoherenceExplorer({
             <option value="high">High only</option>
             <option value="contradictions">Contradictions only</option>
           </select>
+          {hasAdaptationActions && (
+            <select
+              value={actionTypeFilter}
+              onChange={(e) => setActionTypeFilter(e.target.value as ActionTypeFilter)}
+              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+              title="Filter BTR reported actions by type. Policy targets always show."
+            >
+              <option value="all">All BTR actions</option>
+              <option value="mitigation">Mitigation only</option>
+              <option value="adaptation">Adaptation only</option>
+            </select>
+          )}
           {availableDocs.map((doc) => {
             const active = !hiddenDocs.has(doc);
             const color = DOC_COLORS[doc];
@@ -965,9 +1004,15 @@ export function PolicyCoherenceExplorer({
                 const isConnected = connectedIds.has(node.id);
                 const isDimmed = !!activeId && !isActive && !isConnected;
                 const useGroupColor = groupMode !== "document";
-                const nodeColor = useGroupColor
+                const baseNodeColor = useGroupColor
                   ? (groupColorMap.get(node.groupId) ?? DOC_COLORS[node.target.sourceDocument])
                   : DOC_COLORS[node.target.sourceDocument];
+                // Override for BTR adaptation actions so they're visually distinct
+                // from BTR mitigation (purple) regardless of grouping mode.
+                const nodeColor =
+                  node.target.actionType === "adaptation"
+                    ? BTR_ADAPTATION_COLOR
+                    : baseNodeColor;
                 return (
                   <g key={node.id}>
                     {isActive && (
