@@ -8,6 +8,8 @@ AI-powered web application that helps UNDP country offices and national policy m
 
 **Core principle**: Every feature, visualization, and component must deliver real, actionable value for policy making. We do not build things that are merely technically impressive or already available via a quick internet search. Insights must be actionable, easy to grasp for non-technical users and genuinely useful for decision-making. Raise a warning if you think we deviate from this.
 
+**Real value-added or nothing**: Real policymakers may use this tool for decisions that affect real people, real ecosystems, and real climate outcomes. Deadlines, demo polish, and technical interestingness are not acceptable reasons to ship a feature. When proposing anything, ask "would this improve the quality of decision-support a policymaker gets from this tool?" If the answer isn't a clear yes, cut it.
+
 **Positioning**: Decision-support system, not a decision-maker. Final interpretation remains with policymakers. Never generate extended AI-written narrative reports — prefer visuals + short factual insights. All AI outputs must be clearly labeled as AI-generated with confidence caveats.
 
 **Target users**: UNDP country office staff and national policy makers — avoid developer jargon in UI copy. Show what happened in human terms, not system terms.
@@ -38,6 +40,14 @@ uv pip install -e ".[dev]"
 python -m src.run_analysis    # Full pipeline
 python -m src.convert_to_ts   # Convert JSON outputs → TypeScript data files
 ```
+
+## Analytical Framework: Three Levels
+
+The tool is structured around three analytical levels. Any new feature should be identified against these levels before scoping, and cross-level features should be flagged explicitly:
+
+- **Level 1 — Policy coherence / alignment.** Current focus. Pairwise alignment between targets and measures to surface synergies, contradictions, and gaps. Chord chart, tension clusters, alignment heatmap, and pairwise scoring all live here.
+- **Level 2 — Financial / budget alignment.** Still pending. Where finance flows (BIOFIN, climate finance, harmful subsidies, BTR Chapter 4 finance tables) get mapped against policy objectives to show where money does and doesn't follow ambition.
+- **Level 3 — Implementation progress tracking.** The "are these policies actually being implemented?" layer. Current attempt lives in `src/components/viz/sector-scorecard.tsx` and is slated for a rework.
 
 ## Architecture (Current State)
 

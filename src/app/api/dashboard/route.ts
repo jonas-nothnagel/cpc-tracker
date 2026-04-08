@@ -122,7 +122,45 @@ export async function GET(request: NextRequest) {
     };
   });
 
-  const btrData = readJson<unknown>(join(outputDir, "btr_data.json"));
+  const btrData = readJson<{ mitigationMeasures?: Record<string, unknown>[] } & Record<string, unknown>>(
+    join(outputDir, "btr_data.json")
+  );
+
+  // Merge hand-curated BTR adaptation actions (Mongolia Table III.9) into
+  // btrData.mitigationMeasures so the frontend sees mitigation + adaptation
+  // as one list, disambiguated by each row's `actionType` field. The Python
+  // pipeline reads the same JSON file independently; this merge exists so the
+  // frontend doesn't need a separate API surface for adaptation actions.
+  //
+  // Country-specific grouping (e.g. Mongolia APNDC goals) is also pulled from
+  // the same file and surfaced via `adaptationGroups` and
+  // `adaptationGroupingLabel` — the frontend reads these instead of hardcoding
+  // country-specific goal names, so a second country only needs a data file.
+  if (btrData) {
+    const adaptationFile = readJson<{
+      sourceRef?: Record<string, unknown>;
+      groupingLabel?: string;
+      adaptationGoals?: Array<{ id: string; description: string }>;
+      actions?: Record<string, unknown>[];
+    }>(join(dataDir, "mongolia-btr-adaptation.json"));
+    if (adaptationFile?.actions?.length) {
+      const adaptationRows = adaptationFile.actions.map((a) => ({
+        ...a,
+        actionType: "adaptation" as const,
+        sourceRef: adaptationFile.sourceRef,
+      }));
+      btrData.mitigationMeasures = [
+        ...(btrData.mitigationMeasures ?? []),
+        ...adaptationRows,
+      ];
+      if (adaptationFile.adaptationGoals) {
+        btrData.adaptationGoals = adaptationFile.adaptationGoals;
+      }
+      if (adaptationFile.groupingLabel) {
+        btrData.adaptationGroupingLabel = adaptationFile.groupingLabel;
+      }
+    }
+  }
 
   // Load NR7 progress data if available
   const externalDir = join(PROJECT_ROOT, "python", "data", "external");

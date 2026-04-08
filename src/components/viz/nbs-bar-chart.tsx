@@ -12,7 +12,11 @@ import {
 } from "recharts";
 import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
-import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
+import {
+  TargetTextWithHighlights,
+  ActivitiesActions,
+  ActionTypeBadge,
+} from "./target-text";
 import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
 interface BarData {
@@ -207,7 +211,7 @@ export function NbsBarChart({
           <ul className="divide-y divide-gray-50 px-5 py-2">
             {modal.targets.map((t) => (
               <li key={t.id} className="py-3.5">
-                <div className="flex items-center gap-2 mb-1.5">
+                <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                   <span
                     className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
                     style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
@@ -215,6 +219,7 @@ export function NbsBarChart({
                   >
                     {DOC_LABELS[t.sourceDocument]}
                   </span>
+                  <ActionTypeBadge actionType={t.actionType} />
                   <span className="text-xs font-medium text-[var(--undp-black)]">
                     {t.sourceLabel}
                   </span>

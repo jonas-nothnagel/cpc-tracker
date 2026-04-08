@@ -9,7 +9,7 @@ import {
   DOC_LABELS,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
-import { TargetTextWithHighlights } from "./target-text";
+import { TargetTextWithHighlights, ActionTypeBadge } from "./target-text";
 import { isContradiction } from "@/types";
 import type {
   AlignmentResult,
@@ -100,6 +100,7 @@ function DriverExpanded({
           >
             {DOC_LABELS[other.sourceDocument]}
           </span>
+          <ActionTypeBadge actionType={other.actionType} />
           <span className="text-xs font-medium text-[var(--undp-black)]">
             {other.sourceLabel}
           </span>
@@ -479,6 +480,14 @@ export function TensionClusters({
             <br />
             <strong>Scale/scope mismatch:</strong> targets operate at
             incompatible scales.
+            <br />
+            <br />
+            <em>AI-assisted scoring. Adaptation actions are reported in
+            country-specific narrative formats and are scored here as policy
+            coherence, not as GHG implementation parity. Government
+            self-reports rarely contradict their own targets, so interpret
+            &ldquo;no contradiction&rdquo; as a neutral signal, not as
+            validation.</em>
           </InfoBox>
         </h2>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
@@ -621,6 +630,7 @@ export function TensionClusters({
                       >
                         {DOC_LABELS[d.target.sourceDocument]}
                       </span>
+                      <ActionTypeBadge actionType={d.target.actionType} />
                       <span className="text-xs font-medium text-[var(--undp-black)] truncate">
                         {d.target.sourceLabel}
                       </span>
@@ -797,9 +807,12 @@ export function TensionClusters({
                             {DOC_LABELS[t.sourceDocument]}
                           </span>
                           <div className="min-w-0">
-                            <p className="text-xs font-medium text-[var(--undp-black)]">
-                              {t.sourceLabel}
-                            </p>
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                              <p className="text-xs font-medium text-[var(--undp-black)]">
+                                {t.sourceLabel}
+                              </p>
+                              <ActionTypeBadge actionType={t.actionType} />
+                            </div>
                             <p className="text-xs text-[var(--undp-gray)] leading-relaxed mt-0.5">
                               <TargetTextWithHighlights target={t} />
                             </p>

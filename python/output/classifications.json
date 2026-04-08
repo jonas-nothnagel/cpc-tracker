@@ -81,7 +81,7 @@
     "targetId": "NBSAP_2",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NBSAP_2",
@@ -393,7 +393,7 @@
     "targetId": "NBSAP_7",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NBSAP_7",
@@ -453,7 +453,7 @@
     "targetId": "NBSAP_8",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NBSAP_8",
@@ -1353,7 +1353,7 @@
     "targetId": "NAP_3",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NAP_3",
@@ -1869,7 +1869,7 @@
     "targetId": "NAP_12",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NAP_12",
@@ -2163,7 +2163,7 @@
     "targetId": "NDC_2",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_2",
@@ -2949,7 +2949,7 @@
     "targetId": "NDC_15",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_15",
@@ -4209,7 +4209,7 @@
     "targetId": "SECTORAL_9",
     "categoryId": "nbs_1",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "SECTORAL_9",
@@ -4275,7 +4275,7 @@
     "targetId": "SECTORAL_10",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "SECTORAL_10",
@@ -4869,7 +4869,7 @@
     "targetId": "NBSAP_6",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBSAP_7",
@@ -6783,22 +6783,22 @@
     "targetId": "NDC_17",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_17",
-    "categoryId": "sector_lulucf",
-    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_17",
-    "categoryId": "sector_waste",
+    "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_17",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": false
@@ -7077,7 +7077,7 @@
     "targetId": "NDC_24",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_24",
@@ -7125,16 +7125,16 @@
     "targetId": "NDC_25",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_25",
-    "categoryId": "sector_waste",
-    "taxonomyType": "sector",
     "isRelevant": false
   },
   {
     "targetId": "NDC_25",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": false
@@ -7245,7 +7245,7 @@
     "targetId": "SECTORAL_1",
     "categoryId": "sector_agriculture",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "SECTORAL_1",
@@ -7305,7 +7305,7 @@
     "targetId": "SECTORAL_2",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "SECTORAL_3",
@@ -7851,7 +7851,7 @@
     "targetId": "SECTORAL_15",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NBSAP_1",
@@ -7899,7 +7899,7 @@
     "targetId": "NBSAP_1",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NBSAP_1",
@@ -7965,7 +7965,7 @@
     "targetId": "NBSAP_2",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NBSAP_2",
@@ -8229,7 +8229,7 @@
     "targetId": "NBSAP_6",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NBSAP_6",
@@ -8931,22 +8931,22 @@
     "targetId": "NBSAP_17",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBSAP_17",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NBSAP_17",
-    "categoryId": "theme_5",
+    "categoryId": "theme_4",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NBSAP_17",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -9087,22 +9087,22 @@
     "targetId": "NBSAP_19",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NBSAP_19",
-    "categoryId": "theme_8",
-    "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NBSAP_19",
-    "categoryId": "theme_9",
+    "categoryId": "theme_8",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NBSAP_19",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -9813,7 +9813,7 @@
     "targetId": "NAP_10",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "NAP_10",
@@ -10605,7 +10605,7 @@
     "targetId": "NDC_7",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "NDC_7",
@@ -11427,22 +11427,22 @@
     "targetId": "NDC_20",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_20",
-    "categoryId": "theme_2",
-    "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NDC_20",
-    "categoryId": "theme_3",
+    "categoryId": "theme_2",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NDC_20",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -11565,22 +11565,22 @@
     "targetId": "NDC_22",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "NDC_22",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NDC_22",
-    "categoryId": "theme_4",
+    "categoryId": "theme_3",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "NDC_22",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
     "categoryId": "theme_5",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -12225,22 +12225,22 @@
     "targetId": "SECTORAL_5",
     "categoryId": "theme_2",
     "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "SECTORAL_5",
-    "categoryId": "theme_3",
-    "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "SECTORAL_5",
-    "categoryId": "theme_4",
+    "categoryId": "theme_3",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "SECTORAL_5",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
     "categoryId": "theme_5",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -12936,6 +12936,3702 @@
     "isRelevant": false
   },
   {
+    "targetId": "NBSAP_1",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_17",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_18",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_19",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NBSAP_20",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_1",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_2",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_3",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_4",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_5",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_6",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_7",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_8",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_9",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_10",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_11",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_12",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_13",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NAP_14",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NAP_15",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": true
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "1",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "2",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "3",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "4",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "5",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "6",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "7",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "categoryId": "8",
+    "taxonomyType": "adaptation_goal",
+    "isRelevant": false
+  },
+  {
     "targetId": "BTR_energy_1",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
@@ -13461,7 +17157,7 @@
     "targetId": "BTR_agriculture_1",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "BTR_agriculture_1",
@@ -13836,6 +17532,1446 @@
     "isRelevant": false
   },
   {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false
+  },
+  {
     "targetId": "BTR_energy_1",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
@@ -14079,7 +19215,7 @@
     "targetId": "BTR_energy_4",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "BTR_energy_4",
@@ -14457,7 +19593,7 @@
     "targetId": "BTR_agriculture_2",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "BTR_agriculture_2",
@@ -14824,6 +19960,1590 @@
     "categoryId": "theme_10",
     "taxonomyType": "theme",
     "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_0",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_1",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_2",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_3",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_4",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_7",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "theme_10",
+    "taxonomyType": "theme",
+    "isRelevant": false
   },
   {
     "targetId": "BTR_energy_1",
@@ -14912,6 +21632,150 @@
   {
     "targetId": "BTR_waste_2",
     "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_1",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_2",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_1_3",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_1",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_2_2",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_1",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_2",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_3",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_3_4",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_1",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_2",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_4_3",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_1",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_2",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_3",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_5_4",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_6_1",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_6_2",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_1",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_2",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_3",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_7_4",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_8_1",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true
+  },
+  {
+    "targetId": "ADP_3_8_2",
+    "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": true
   }
