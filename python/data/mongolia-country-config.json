@@ -1,0 +1,14 @@
+{
+  "_comment": "Country-specific display configuration for Mongolia. Surfaces provenance strings and source refs to the dashboard so country-specific text does not need to live in TypeScript. A second country should drop a `{country}-country-config.json` alongside its targets file with the same shape.",
+  "docProvenance": {
+    "NDC": "Mongolia NDC v2 (2019), Government Decree No. 407 of 19 Nov 2019",
+    "NAP": "Mongolia NAP, completed 2024 (per BTR1 Section 3.9.1.8, Table III.8)",
+    "BTR": "Mongolia BTR1 (December 2025)",
+    "SECTORAL": "Vision 2050 Long-term Development Policy, Parliament Resolution 52, May 2020"
+  },
+  "btrMitigationSourceRef": {
+    "document": "Mongolia BTR1 (December 2025)",
+    "section": "CTF-NDC Table 5 / PDF Table II.6",
+    "pages": "93-94"
+  }
+}

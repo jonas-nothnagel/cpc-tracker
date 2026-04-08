@@ -24,6 +24,7 @@ import argparse
 import asyncio
 import json
 import logging
+import re
 import time
 from datetime import datetime, timezone
 
@@ -90,6 +91,17 @@ def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, 
     return targets, nbs, sectors, themes
 
 
+def derive_country_file(targets_file: str, suffix: str) -> str:
+    """Derive a country-specific data filename from the targets filename.
+
+    mongolia-targets.json → mongolia-btr-adaptation.json (suffix "btr-adaptation")
+    targets.json         → btr-adaptation.json (upload wizard path, no prefix)
+    """
+    stem = targets_file[:-5] if targets_file.endswith(".json") else targets_file
+    prefix = re.sub(r"-?targets$", "", stem)
+    return f"{prefix}-{suffix}.json" if prefix else f"{suffix}.json"
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run CPC analysis pipeline")
     parser.add_argument(
@@ -128,6 +140,20 @@ async def main() -> None:
         # 1. Load data
         targets, nbs_categories, sectors, themes = load_input_data(args.targets_file)
 
+        # Load the country's hand-curated BTR adaptation file once if present.
+        # Filename is derived from the targets file so a second country only
+        # needs to drop `{prefix}-btr-adaptation.json` alongside their targets.
+        adaptation_filename = derive_country_file(args.targets_file, "btr-adaptation")
+        adaptation_path = DATA_DIR / adaptation_filename
+        adp_data: dict | None = None
+        if adaptation_path.exists():
+            adp_data = json.loads(adaptation_path.read_text())
+            logger.info(
+                f"Loaded adaptation file {adaptation_filename}: "
+                f"{len(adp_data.get('actions', []))} actions, "
+                f"{len(adp_data.get('adaptationGoals', []))} goals"
+            )
+
         # 2. Quantitative and time-bound detection
         write_status(1, "Quantitative detection", f"Analysing {len(targets)} targets for quantitative and time-bound phrases", started_at=started_at)
         logger.info("STEP 1: Quantitative and time-bound detection")
@@ -152,13 +178,10 @@ async def main() -> None:
         all_classifications = nbs_classifications + sector_classifications + theme_classifications
 
         # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
-        # When a `<country>-btr-adaptation.json` file exists alongside the targets
-        # and contains an `adaptationGoals` array, classify policy targets against
-        # those goals so the Reporting & Implementation Coverage view can show
-        # per-goal policy commitment vs reported action imbalances.
-        adaptation_path = DATA_DIR / "mongolia-btr-adaptation.json"
-        if adaptation_path.exists():
-            adp_data = json.loads(adaptation_path.read_text())
+        # When a `{country}-btr-adaptation.json` file is loaded, classify policy
+        # targets against its goals so the Reporting & Implementation Coverage
+        # view can show per-goal policy commitment vs reported action imbalances.
+        if adp_data:
             adp_goals = adp_data.get("adaptationGoals", [])
             if adp_goals:
                 # `run_classification` expects {id, name, description}. The data
@@ -248,20 +271,19 @@ async def main() -> None:
             mit_pseudo_targets = measures_to_pseudo_targets(raw_measures, action_type="mitigation")
             logger.info(f"  {len(raw_measures)} raw mitigation measures → {len(mit_pseudo_targets)} valid pseudo-targets")
 
-            # Load hand-curated BTR adaptation actions (Mongolia Table III.9) if present.
-            # File is optional so existing non-Mongolia analyses stay unaffected.
-            adaptation_path = DATA_DIR / "mongolia-btr-adaptation.json"
+            # Reuse the hand-curated BTR adaptation file loaded at the top of
+            # main(). File is optional so runs without adaptation data stay
+            # unaffected.
             adp_pseudo_targets: list[dict] = []
-            if adaptation_path.exists():
-                adp_file = json.loads(adaptation_path.read_text())
-                raw_adaptation = adp_file.get("actions", [])
+            if adp_data:
+                raw_adaptation = adp_data.get("actions", [])
                 adp_pseudo_targets = measures_to_pseudo_targets(
                     raw_adaptation, action_type="adaptation"
                 )
                 logger.info(
                     f"  {len(raw_adaptation)} raw adaptation actions → "
                     f"{len(adp_pseudo_targets)} valid pseudo-targets "
-                    f"(source: {adp_file.get('sourceRef', {}).get('table', 'unknown')})"
+                    f"(source: {adp_data.get('sourceRef', {}).get('table', 'unknown')})"
                 )
 
             measure_pseudo_targets = mit_pseudo_targets + adp_pseudo_targets

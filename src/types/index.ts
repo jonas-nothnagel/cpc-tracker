@@ -310,6 +310,25 @@ export interface BtrData {
    * falls back to a generic "Adaptation actions" header.
    */
   adaptationGroupingLabel?: string;
+  /**
+   * Structured provenance for the adaptation actions (document, section, table,
+   * pages). Surfaced as a tooltip/citation on the adaptation source chip so a
+   * second country's citation comes from their data file, not hardcoded copy.
+   */
+  adaptationSourceRef?: SourceRef;
+}
+
+/**
+ * Country-specific display configuration loaded from
+ * `{country}-country-config.json`. Holds provenance strings and other
+ * country-specific presentation details so a second country does not need
+ * code changes in the frontend.
+ */
+export interface CountryConfig {
+  /** Provenance citation per policy document type, shown as tooltip on source chips. */
+  docProvenance?: Partial<Record<PolicyDocumentType, string>>;
+  /** Structured source ref for BTR mitigation actions (CTF Table 5 for Mongolia). */
+  btrMitigationSourceRef?: SourceRef;
 }
 
 /**

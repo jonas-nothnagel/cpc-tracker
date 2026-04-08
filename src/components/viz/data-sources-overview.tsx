@@ -11,7 +11,33 @@ import {
   BTR_ADAPTATION_COLOR,
   BTR_MITIGATION_COLOR,
 } from "./target-text";
-import type { Target, PolicyDocumentType, BtrData, Nr7Data } from "@/types";
+import type {
+  Target,
+  PolicyDocumentType,
+  BtrData,
+  Nr7Data,
+  CountryConfig,
+  SourceRef,
+} from "@/types";
+
+/**
+ * Format a structured SourceRef into a single-line citation string like
+ * "Mongolia BTR1 (December 2025), CTF-NDC Table 5 / PDF Table II.6, pp. 93-94".
+ * Returns undefined when the ref is missing or empty, so callers can fall back
+ * to no tooltip.
+ */
+function formatSourceRef(ref?: SourceRef): string | undefined {
+  if (!ref) return undefined;
+  const parts: string[] = [];
+  if (ref.document) parts.push(ref.document);
+  const detail: string[] = [];
+  if (ref.section) detail.push(ref.section);
+  if (ref.table) detail.push(ref.table);
+  if (detail.length) parts.push(detail.join(" / "));
+  if (ref.pages) parts.push(`pp. ${ref.pages}`);
+  if (ref.annex) parts.push(ref.annex);
+  return parts.length ? parts.join(", ") : undefined;
+}
 
 // ─── Acronym descriptions for InfoBox ─────────────────────────────────────────
 
@@ -80,9 +106,15 @@ interface DataSourcesOverviewProps {
   alignmentOpportunities: number;
   btrData: BtrData | null;
   nr7Data?: Nr7Data | null;
+  /**
+   * Country-specific presentation config loaded from
+   * `{country}-country-config.json`. Supplies provenance strings for the
+   * source chips. When null the chips show without a provenance tooltip.
+   */
+  countryConfig?: CountryConfig | null;
 }
 
-export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOverviewProps) {
+export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }: DataSourcesOverviewProps) {
   const [modal, setModal] = useState<{
     label: string;
     targets: Target[];
@@ -120,15 +152,12 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
     onClick?: () => void;
   };
 
-  // Provenance strings for the policy documents. Only include entries whose
-  // source is verifiable from a primary document; leave truncated otherwise.
-  const DOC_PROVENANCE: Partial<Record<PolicyDocumentType, string>> = {
-    NDC: "Mongolia NDC v2 (2019), Government Decree No. 407 of 19 Nov 2019",
-    NAP: "Mongolia NAP, completed 2024 (per BTR1 Section 3.9.1.8, Table III.8)",
-    BTR: "Mongolia BTR1 (December 2025)",
-    SECTORAL:
-      "Vision 2050 Long-term Development Policy, Parliament Resolution 52, May 2020",
-  };
+  // Provenance strings come from the country config file (e.g.
+  // `mongolia-country-config.json`), not hardcoded here. A second country
+  // drops its own config and the chip tooltips update automatically. When the
+  // config is missing, chips show without a provenance tooltip rather than
+  // showing fabricated citations.
+  const docProvenance = countryConfig?.docProvenance ?? {};
 
   const sources: SourceEntry[] = [];
   for (const docType of docTypes) {
@@ -141,7 +170,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
       detail: `${docTargets.length} target${docTargets.length === 1 ? "" : "s"}`,
       color: DOC_COLORS[docType],
       badge: DOC_MEDIUM_LABELS[docType],
-      provenance: DOC_PROVENANCE[docType],
+      provenance: docProvenance[docType],
       onClick: () => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color: DOC_COLORS[docType] }),
     });
   }
@@ -155,8 +184,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
   );
 
   if (btrData && btrMitigationCount > 0) {
-    const mitProvenance =
-      "BTR1 (Dec 2025), CTF-NDC Table 5 / PDF Table II.6, pp. 93-94";
+    const mitProvenance = formatSourceRef(countryConfig?.btrMitigationSourceRef);
     sources.push({
       key: "data:btr-mit",
       name: "BTR Reported Mitigation Actions",
@@ -174,8 +202,10 @@ export function DataSourcesOverview({ targets, btrData, nr7Data }: DataSourcesOv
     });
   }
   if (btrData && btrAdaptationCount > 0) {
-    const adpProvenance =
-      "BTR1 (Dec 2025), Table III.9 (APNDC adaptation goals 1–8), pp. 123-126";
+    // Adaptation source ref comes from the country's adaptation data file
+    // (already passed through by the dashboard API), so this chip updates
+    // automatically when a second country adds their file.
+    const adpProvenance = formatSourceRef(btrData.adaptationSourceRef);
     sources.push({
       key: "data:btr-adp",
       name: "BTR Reported Adaptation Actions",
