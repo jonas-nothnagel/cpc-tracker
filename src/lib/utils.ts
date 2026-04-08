@@ -144,21 +144,3 @@ export function countByCategory(
   });
 }
 
-/**
- * A pair is "cross-type" (Mitigation ↔ Adaptation) when BOTH sides are BTR
- * reported actions AND they have different `actionType`. This is the pure
- * reported-mitigation-vs-reported-adaptation intersection — the specific
- * signal the plan's cross-type marker was designed to surface.
- *
- * Policy target × BTR adaptation pairs are NOT cross-type: the policy side
- * is ambiguous (NDC covers both mitigation and adaptation, NAP is already
- * adaptation, NBSAP is biodiversity). We can only reliably classify pairs
- * where both sides have an unambiguous `actionType`, which is BTR×BTR.
- */
-export function isCrossTypePair(tA: Target, tB: Target): boolean {
-  if (tA.sourceDocument !== "BTR" || tB.sourceDocument !== "BTR") return false;
-  const aType = tA.actionType ?? "mitigation";
-  const bType = tB.actionType ?? "mitigation";
-  return aType !== bType;
-}
-
