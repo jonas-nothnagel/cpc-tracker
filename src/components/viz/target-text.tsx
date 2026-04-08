@@ -21,9 +21,12 @@ export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) 
   if (!actionType) return null;
   const isAdaptation = actionType === "adaptation";
   const label = isAdaptation ? "Adaptation" : "Mitigation";
+  // Generic tooltip — country-specific source citations live on the BTR
+  // data source chip in the Data Sources row, not here. Keeping this badge
+  // country-agnostic means a second country does not need to touch this file.
   const title = isAdaptation
-    ? "Reported adaptation action (Mongolia BTR1 Table III.9)"
-    : "Reported mitigation measure (Mongolia BTR1 CTF-NDC Table 5)";
+    ? "Reported adaptation action (BTR)"
+    : "Reported mitigation measure (BTR)";
   const bg = isAdaptation ? "bg-fuchsia-50" : "bg-purple-50";
   const fg = isAdaptation ? "text-fuchsia-700" : "text-purple-700";
   const border = isAdaptation ? "border-fuchsia-200" : "border-purple-200";

@@ -23,6 +23,16 @@ function readJson<T>(filePath: string): T | null {
   }
 }
 
+/**
+ * Derive a country-specific data filename from the targets filename.
+ * mongolia-targets.json → mongolia-btr-adaptation.json (suffix "btr-adaptation")
+ * targets.json         → btr-adaptation.json (upload wizard path, no prefix)
+ */
+function deriveCountryFile(targetsFile: string, suffix: string): string {
+  const prefix = targetsFile.replace(/-?targets\.json$/, "");
+  return prefix ? `${prefix}-${suffix}.json` : `${suffix}.json`;
+}
+
 export async function GET(request: NextRequest) {
   const analysisId = request.nextUrl.searchParams.get("analysisId");
 
@@ -126,23 +136,21 @@ export async function GET(request: NextRequest) {
     join(outputDir, "btr_data.json")
   );
 
-  // Merge hand-curated BTR adaptation actions (Mongolia Table III.9) into
+  // Merge hand-curated BTR adaptation actions (e.g. Mongolia Table III.9) into
   // btrData.mitigationMeasures so the frontend sees mitigation + adaptation
   // as one list, disambiguated by each row's `actionType` field. The Python
   // pipeline reads the same JSON file independently; this merge exists so the
   // frontend doesn't need a separate API surface for adaptation actions.
   //
-  // Country-specific grouping (e.g. Mongolia APNDC goals) is also pulled from
-  // the same file and surfaced via `adaptationGroups` and
-  // `adaptationGroupingLabel` — the frontend reads these instead of hardcoding
-  // country-specific goal names, so a second country only needs a data file.
+  // Filename is derived from the targets file so a second country only needs
+  // to drop a `{country}-btr-adaptation.json` alongside `{country}-targets.json`.
   if (btrData) {
     const adaptationFile = readJson<{
       sourceRef?: Record<string, unknown>;
       groupingLabel?: string;
       adaptationGoals?: Array<{ id: string; description: string }>;
       actions?: Record<string, unknown>[];
-    }>(join(dataDir, "mongolia-btr-adaptation.json"));
+    }>(join(dataDir, deriveCountryFile(targetsFile, "btr-adaptation")));
     if (adaptationFile?.actions?.length) {
       const adaptationRows = adaptationFile.actions.map((a) => ({
         ...a,
@@ -159,8 +167,18 @@ export async function GET(request: NextRequest) {
       if (adaptationFile.groupingLabel) {
         btrData.adaptationGroupingLabel = adaptationFile.groupingLabel;
       }
+      if (adaptationFile.sourceRef) {
+        btrData.adaptationSourceRef = adaptationFile.sourceRef;
+      }
     }
   }
+
+  // Country-specific provenance and display config (e.g. doc citation strings
+  // for the Data Sources chips). Optional; falls back to empty object when
+  // absent, so the frontend can show a chip without a provenance tooltip.
+  const countryConfig = readJson<Record<string, unknown>>(
+    join(dataDir, deriveCountryFile(targetsFile, "country-config"))
+  );
 
   // Load NR7 progress data if available
   const externalDir = join(PROJECT_ROOT, "python", "data", "external");
@@ -205,5 +223,6 @@ export async function GET(request: NextRequest) {
     btrData: btrData ?? null,
     nr7Data: nr7Data ?? null,
     footprint: footprint ?? null,
+    countryConfig: countryConfig ?? null,
   });
 }

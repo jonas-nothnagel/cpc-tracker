@@ -24,6 +24,7 @@ import type {
   IpccSector,
   BtrData,
   Nr7Data,
+  CountryConfig,
 } from "@/types";
 
 interface TaxonomyCategory {
@@ -42,6 +43,7 @@ interface DashboardData {
   btrData: BtrData | null;
   nr7Data: Nr7Data | null;
   footprint: FootprintSnapshot | null;
+  countryConfig: CountryConfig | null;
 }
 
 /** Ensure targets have optional fields */
@@ -225,6 +227,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           btrData: raw.btrData ?? null,
           nr7Data: raw.nr7Data ?? null,
           footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
+          countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
@@ -339,6 +342,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
           alignmentOpportunities={data.alignment.filter((a) => a.alignment === "high" || a.alignment === "medium").length}
           btrData={data.btrData}
           nr7Data={data.nr7Data}
+          countryConfig={data.countryConfig}
         />
 
         {/* --- Policy Coherence Explorer --- */}
