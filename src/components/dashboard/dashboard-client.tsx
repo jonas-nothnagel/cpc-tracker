@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { InfoBox } from "@/components/ui/info-box";
 import { countByCategory } from "@/lib/utils";
+import { getCountry } from "@/config/countries";
 import { NbsBarChart } from "@/components/viz/nbs-bar-chart";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
@@ -60,6 +61,10 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
+    // Translation originals pass through for countries whose source data is not
+    // in English (populated in PR2 for Panama). Undefined for Mongolia.
+    textOriginal: t.textOriginal ? String(t.textOriginal) : undefined,
+    sourceLabelOriginal: t.sourceLabelOriginal ? String(t.sourceLabelOriginal) : undefined,
     // BTR pseudo-targets carry actionType to distinguish reported mitigation
     // measures from adaptation actions; policy targets do not.
     actionType:
@@ -202,15 +207,31 @@ function ClassificationSection({
 // ─── NR7 Implementation Progress (collapsible) ──────────────────────────────
 
 
-export function DashboardClient({ analysisId }: { analysisId?: string }) {
+export function DashboardClient({
+  analysisId,
+  country,
+}: {
+  analysisId?: string;
+  country?: string;
+}) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [focusTargetId, setFocusTargetId] = useState<string | null>(null);
 
+  // Display name comes from the registry when a country is addressed, so the
+  // header doesn't have to wait for target data to render. Falls back to the
+  // first target's country field on the upload (analysisId) flow.
+  const countryDisplayName = country ? getCountry(country)?.name : undefined;
+
   useEffect(() => {
+    if (!analysisId && !country) {
+      // Page handler should have redirected before rendering us; bail.
+      return;
+    }
     const url = analysisId
       ? `/api/dashboard?analysisId=${encodeURIComponent(analysisId)}`
-      : "/api/dashboard";
+      : `/api/dashboard?country=${encodeURIComponent(country!)}`;
+
     fetch(url)
       .then((r) => {
         if (!r.ok) return r.json().then((e) => Promise.reject(e));
@@ -231,7 +252,7 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
         });
       })
       .catch((e) => setError(e?.error ?? String(e)));
-  }, [analysisId]);
+  }, [analysisId, country]);
 
   if (error) {
     return (
@@ -323,14 +344,17 @@ export function DashboardClient({ analysisId }: { analysisId?: string }) {
   const sectorSorted = [...sectorCounts].sort((a, b) => b.total - a.total);
   const themeSorted = [...themeCounts].sort((a, b) => b.total - a.total);
 
+  const displayCountry =
+    countryDisplayName ?? data?.targets[0]?.country ?? "Dashboard";
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header subtitle={data?.targets[0]?.country ?? "Dashboard"} />
+      <Header subtitle={displayCountry} />
 
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
         <section className="mb-10">
           <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-1">
-            {data.targets[0]?.country ?? "Country"} Nature-Climate Target Assessment
+            {countryDisplayName ?? data.targets[0]?.country ?? "Country"} Nature-Climate Target Assessment
           </h1>
           <p className="text-sm text-[var(--undp-gray)]">
             AI-assisted assessment for national review and consideration
