@@ -12,6 +12,7 @@
     "pages": "93-94"
   },
   "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity.",
+  "defaultHiddenDocTypes": ["LDN", "SECTORAL", "BTR", "OTHER"],
   "documentTypes": [
     {
       "id": "NDC",

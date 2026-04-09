@@ -7,6 +7,7 @@ import {
   getDocFullLabel,
   getDocLabel,
   getDocMediumLabel,
+  getDocTypeOrder,
   ALIGNMENT_COLORS,
   ALIGNMENT_LABELS,
 } from "@/lib/utils";
@@ -546,7 +547,13 @@ export function PolicyCoherenceExplorer({
     result: AlignmentResult;
     other: Target;
   } | null>(null);
-  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(() => new Set(["LDN", "SECTORAL", "BTR", "OTHER"]));
+  // Default-hidden document types come from the country config so each
+  // country controls which documents add visual noise to its first view.
+  // Mongolia's config ships the old hardcoded list ["LDN","SECTORAL","BTR","OTHER"];
+  // Panama ships an empty list. Users can still toggle these back on.
+  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(
+    () => new Set(countryConfig?.defaultHiddenDocTypes ?? []),
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -573,12 +580,18 @@ export function PolicyCoherenceExplorer({
     }
   }
 
-  /** All document types present in the data */
+  /**
+   * All document types present in the data, ordered by the country's
+   * declared order (falling back to reserved tokens then an unknown-id tail).
+   * Derived from the targets themselves so a country with unfamiliar doc ids
+   * (e.g. Panama's NP/ENR/IRMF/SPGCF/CNR) still gets a populated filter row.
+   */
   const availableDocs = useMemo(() => {
-    const order: PolicyDocumentType[] = ["NDC", "NBSAP", "NAP", "LDN", "SECTORAL", "BTR", "OTHER"];
-    const present = new Set(targets.map((t) => t.sourceDocument));
-    return order.filter((d) => present.has(d));
-  }, [targets]);
+    const present = Array.from(new Set(targets.map((t) => t.sourceDocument)));
+    return present.sort(
+      (a, b) => getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+    );
+  }, [targets, countryConfig]);
 
   const toggleDoc = (doc: string) =>
     setHiddenDocs((prev) => {

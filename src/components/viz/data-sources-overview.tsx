@@ -40,18 +40,6 @@ function formatSourceRef(ref?: SourceRef): string | undefined {
   return parts.length ? parts.join(", ") : undefined;
 }
 
-// ─── Acronym descriptions for InfoBox ─────────────────────────────────────────
-
-const ACRONYM_DESCRIPTIONS: Record<string, string> = {
-  NDC: "Nationally Determined Contribution",
-  NBSAP: "National Biodiversity Strategy and Action Plan",
-  NAP: "National Adaptation Plan",
-  LDN: "Land Degradation Neutrality",
-  BTR: "Biennial Transparency Report",
-  NR7: "7th National Report to the Convention on Biological Diversity",
-};
-const ACRONYM_ORDER = ["NDC", "NBSAP", "NAP", "LDN", "BTR", "NR7"];
-
 // ─── Target list modal ────────────────────────────────────────────────────────
 
 /**
@@ -240,14 +228,35 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
     });
   }
 
-  // Dynamic abbreviation list for InfoBox
-  const presentAbbreviations = new Set<string>();
+  // Dynamic abbreviation list for the InfoBox. Each entry pairs a document
+  // type id with its full label, pulled from the country's documentTypes via
+  // `getDocFullLabel`. This drops the old hardcoded Mongolia-only map, so
+  // Panama's NP/ENR/IRMF/SPGCF/CNR abbreviations are explained on hover the
+  // same way Mongolia's NDC/NBSAP/... always were. NR7 is appended manually
+  // because it's a data source, not a document type in the registry.
+  const abbrList: { abbr: string; description: string }[] = [];
+  const seenAbbrs = new Set<string>();
   for (const dt of docTypes) {
-    if (dt in ACRONYM_DESCRIPTIONS) presentAbbreviations.add(dt);
+    if (seenAbbrs.has(dt)) continue;
+    const full = getDocFullLabel(countryConfig, dt);
+    if (full !== dt) {
+      // Helper resolved a name richer than the raw id — worth expanding.
+      abbrList.push({ abbr: dt, description: full });
+      seenAbbrs.add(dt);
+    }
   }
-  if (btrData && btrMeasures > 0) presentAbbreviations.add("BTR");
-  if (nr7Data && nr7Count > 0) presentAbbreviations.add("NR7");
-  const abbrList = ACRONYM_ORDER.filter(a => presentAbbreviations.has(a));
+  if (btrData && btrMeasures > 0 && !seenAbbrs.has("BTR")) {
+    abbrList.push({
+      abbr: "BTR",
+      description: getDocFullLabel(countryConfig, "BTR"),
+    });
+  }
+  if (nr7Data && nr7Count > 0) {
+    abbrList.push({
+      abbr: "NR7",
+      description: "7th National Report to the Convention on Biological Diversity",
+    });
+  }
 
   // Summary counts (exclude BTR pseudo-targets — those are shown via BTR Actions entries)
   const policyTargetCount = targets.filter(t => t.sourceDocument !== "BTR").length;
@@ -272,9 +281,9 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
               {abbrList.length > 0 && (
                 <>
                   <br /><br />
-                  {abbrList.map((abbr, i) => (
-                    <span key={abbr}>
-                      <strong>{abbr}</strong> = {ACRONYM_DESCRIPTIONS[abbr]}
+                  {abbrList.map((entry, i) => (
+                    <span key={entry.abbr}>
+                      <strong>{entry.abbr}</strong> = {entry.description}
                       {i < abbrList.length - 1 ? <br /> : null}
                     </span>
                   ))}

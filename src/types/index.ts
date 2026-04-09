@@ -368,6 +368,13 @@ export interface CountryConfig {
    * or the raw id.
    */
   documentTypes?: DocumentTypeEntry[];
+  /**
+   * Document-type ids the dashboard should start with hidden in filter views
+   * like the Policy Coherence Explorer. Used for documents that add visual
+   * noise for a country without being hidden outright. Defaults to an empty
+   * list (show everything). Users can still toggle these back on.
+   */
+  defaultHiddenDocTypes?: string[];
 }
 
 /**

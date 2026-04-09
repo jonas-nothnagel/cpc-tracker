@@ -1,6 +1,7 @@
 {
   "_comment": "Country-specific display configuration for Panama. Same shape as mongolia-country-config.json. Document taxonomy and provenance strings drive the dashboard without any code changes.",
-  "_documentTypesComment": "Panama's five source documents from UNFCCC / Green Climate Fund. Short labels come verbatim from the Doc column in data_panama_8Apr26 1.xlsx. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 — political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. The five colors are mutually distinguishable under deuteranopia/protanopia simulation (verified manually via https://www.color-blindness.com/coblis-color-blindness-simulator/).",
+  "_documentTypesComment": "Panama's five source documents from UNFCCC / Green Climate Fund. Short labels come verbatim from the Doc column in data_panama_8Apr26 1.xlsx. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. The five colors are mutually distinguishable under deuteranopia/protanopia simulation (verified manually via https://www.color-blindness.com/coblis-color-blindness-simulator/).",
+  "defaultHiddenDocTypes": [],
   "documentTypes": [
     {
       "id": "NP",
@@ -13,7 +14,7 @@
       "id": "ENR",
       "shortLabel": "ENR",
       "mediumLabel": "ENR (National REDD+ Strategy)",
-      "fullLabel": "Estrategia Nacional REDD+ de Panamá",
+      "fullLabel": "Estrategia Nacional REDD+",
       "color": "#166534"
     },
     {
@@ -34,7 +35,7 @@
       "id": "CNR",
       "shortLabel": "CNR",
       "mediumLabel": "CNR (REDD+ Concept Note)",
-      "fullLabel": "Concept Note: REDD+ Results-Based Payments",
+      "fullLabel": "Concept Note REDD-plus results based payments",
       "color": "#7e22ce"
     }
   ],
