@@ -1,18 +1,26 @@
 /**
  * Serves pipeline output for the dashboard.
  *
- * - Default: reads from python/output/ and python/data/ (Mongolia pilot)
- * - With ?analysisId=xxx: reads from python/analyses/{id}/
+ * Two addressing modes:
+ *   - ?analysisId=xxx (upload flow) → reads python/analyses/{id}/
+ *   - ?country=<id>   (pilot flow)  → reads python/data/ + python/output/{id}/
+ *
+ * Precedence: analysisId wins when both are present. Unknown or malformed
+ * country params are rejected with 400 BEFORE any filesystem access — the
+ * registry is the security gate against path traversal.
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
+import { getCountry, isValidCountryId } from "@/config/countries";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
 const PYTHON_DATA = join(PROJECT_ROOT, "python", "data");
 const ANALYSES_DIR = join(PROJECT_ROOT, "python", "analyses");
+
+const NO_STORE_HEADERS = { "Cache-Control": "no-store" } as const;
 
 function readJson<T>(filePath: string): T | null {
   try {
@@ -33,31 +41,90 @@ function deriveCountryFile(targetsFile: string, suffix: string): string {
   return prefix ? `${prefix}-${suffix}.json` : `${suffix}.json`;
 }
 
+export type DerivedPaths = {
+  dataDir: string;
+  outputDir: string;
+  targetsFile: string;
+  /** ISO3 code (lowercase) for external NR7 data lookups. Null on the upload
+   *  flow because analysisId data doesn't have a registry entry. */
+  iso3: string | null;
+};
+
+export type DerivedPathsResult =
+  | { kind: "analysis"; analysisBase: string; paths: DerivedPaths }
+  | { kind: "country"; paths: DerivedPaths }
+  | { kind: "error"; status: 400 | 404; error: string };
+
+/**
+ * Pure path-derivation helper. Decides which addressing mode applies, runs the
+ * security gate for country ids, and returns the resolved paths OR an error
+ * shape the caller should return directly.
+ *
+ * Callers pass raw query-string values; this helper handles lowercase,
+ * empty-string-as-missing, format validation, and registry lookup.
+ */
+export function derivePaths(
+  rawAnalysisId: string | null,
+  rawCountry: string | null,
+): DerivedPathsResult {
+  // analysisId wins when both are present. Keep the existing analysisId
+  // validation shape (regex + existsSync fall-through handled by the caller).
+  if (rawAnalysisId) {
+    if (!/^[a-f0-9-]{4,36}$/.test(rawAnalysisId)) {
+      return { kind: "error", status: 400, error: "Invalid analysis ID" };
+    }
+    const analysisBase = join(ANALYSES_DIR, rawAnalysisId);
+    if (!existsSync(analysisBase)) {
+      return { kind: "error", status: 404, error: "Analysis not found" };
+    }
+    return {
+      kind: "analysis",
+      analysisBase,
+      paths: {
+        dataDir: join(analysisBase, "input"),
+        outputDir: join(analysisBase, "output"),
+        targetsFile: "targets.json",
+        iso3: null,
+      },
+    };
+  }
+
+  // Country-addressed path. Empty string is treated as missing.
+  const countryLower = rawCountry?.toLowerCase() ?? null;
+  if (!countryLower) {
+    return { kind: "error", status: 400, error: "Missing country param" };
+  }
+  if (!isValidCountryId(countryLower)) {
+    return { kind: "error", status: 400, error: "Invalid country format" };
+  }
+  const entry = getCountry(countryLower);
+  if (!entry) {
+    return { kind: "error", status: 400, error: "Country not in registry" };
+  }
+  return {
+    kind: "country",
+    paths: {
+      dataDir: PYTHON_DATA,
+      outputDir: join(PYTHON_OUTPUT, entry.id),
+      targetsFile: `${entry.id}-targets.json`,
+      iso3: entry.iso3,
+    },
+  };
+}
+
 export async function GET(request: NextRequest) {
   const analysisId = request.nextUrl.searchParams.get("analysisId");
+  const country = request.nextUrl.searchParams.get("country");
 
-  let dataDir: string;
-  let outputDir: string;
-  let targetsFile: string;
-
-  if (analysisId) {
-    // Per-analysis paths
-    if (!/^[a-f0-9-]{4,36}$/.test(analysisId)) {
-      return NextResponse.json({ error: "Invalid analysis ID" }, { status: 400 });
-    }
-    const analysisBase = join(ANALYSES_DIR, analysisId);
-    if (!existsSync(analysisBase)) {
-      return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
-    }
-    dataDir = join(analysisBase, "input");
-    outputDir = join(analysisBase, "output");
-    targetsFile = "targets.json";
-  } else {
-    // Default Mongolia pilot
-    dataDir = PYTHON_DATA;
-    outputDir = PYTHON_OUTPUT;
-    targetsFile = "mongolia-targets.json";
+  const result = derivePaths(analysisId, country);
+  if (result.kind === "error") {
+    return NextResponse.json(
+      { error: result.error },
+      { status: result.status, headers: NO_STORE_HEADERS },
+    );
   }
+
+  const { dataDir, outputDir, targetsFile, iso3 } = result.paths;
 
   const targets = readJson<unknown[]>(join(dataDir, targetsFile));
   const categories = readJson<{
@@ -77,9 +144,10 @@ export async function GET(request: NextRequest) {
   if (!targets || !categories || !classifications || !alignment) {
     return NextResponse.json(
       {
-        error: analysisId
-          ? "Analysis results not yet available. The pipeline may still be running."
-          : "Pipeline output not found. Run the pipeline first: cd python && uv run python -m src.run_analysis",
+        error:
+          result.kind === "analysis"
+            ? "Analysis results not yet available. The pipeline may still be running."
+            : "Pipeline output not found. Run the pipeline first: cd python && uv run python -m src.run_analysis",
         missing: [
           !targets && "targets",
           !categories && "categories",
@@ -87,7 +155,7 @@ export async function GET(request: NextRequest) {
           !alignment && "alignment",
         ].filter(Boolean),
       },
-      { status: 404 }
+      { status: 404, headers: NO_STORE_HEADERS }
     );
   }
 
@@ -180,15 +248,12 @@ export async function GET(request: NextRequest) {
     join(dataDir, deriveCountryFile(targetsFile, "country-config"))
   );
 
-  // Load NR7 progress data if available
+  // Load NR7 progress data if the country has an iso3 (pilot flow only — the
+  // upload flow has no registry entry and doesn't load NR7).
   const externalDir = join(PROJECT_ROOT, "python", "data", "external");
-  const country = (enrichedTargets[0] as Record<string, unknown>)?.country as string | undefined;
   let nr7Data = null;
-  if (country) {
-    const countryLower = country.toLowerCase();
-    const isoMap2: Record<string, string> = { mongolia: "mng", panama: "pan", morocco: "mar" };
-    const iso3Lower = isoMap2[countryLower] || country.slice(0, 3).toLowerCase();
-    const nr7Path = join(externalDir, `nr7_${iso3Lower}.json`);
+  if (iso3) {
+    const nr7Path = join(externalDir, `nr7_${iso3}.json`);
     nr7Data = readJson<unknown>(nr7Path);
   }
 
@@ -213,16 +278,19 @@ export async function GET(request: NextRequest) {
     join(outputDir, "footprint.json")
   );
 
-  return NextResponse.json({
-    targets: allTargets,
-    nbsCategories: categories.nbs_categories,
-    sectors: categories.ipcc_sectors ?? [],
-    themes: categories.themes ?? categories._themes_deprecated ?? [],
-    classifications,
-    alignment: allAlignment,
-    btrData: btrData ?? null,
-    nr7Data: nr7Data ?? null,
-    footprint: footprint ?? null,
-    countryConfig: countryConfig ?? null,
-  });
+  return NextResponse.json(
+    {
+      targets: allTargets,
+      nbsCategories: categories.nbs_categories,
+      sectors: categories.ipcc_sectors ?? [],
+      themes: categories.themes ?? categories._themes_deprecated ?? [],
+      classifications,
+      alignment: allAlignment,
+      btrData: btrData ?? null,
+      nr7Data: nr7Data ?? null,
+      footprint: footprint ?? null,
+      countryConfig: countryConfig ?? null,
+    },
+    { status: 200, headers: NO_STORE_HEADERS },
+  );
 }

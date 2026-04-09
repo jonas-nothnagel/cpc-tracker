@@ -24,9 +24,11 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import re
 import time
 from datetime import datetime, timezone
+from pathlib import Path
 
 from .config import DATA_DIR, LLM_MODEL, OUTPUT_DIR
 from .classify import run_classification
@@ -102,6 +104,28 @@ def derive_country_file(targets_file: str, suffix: str) -> str:
     return f"{prefix}-{suffix}.json" if prefix else f"{suffix}.json"
 
 
+def derive_output_dir(targets_file: str, base_output_dir: Path) -> Path:
+    """Derive the per-country output dir from the targets filename.
+
+    mongolia-targets.json → <base>/mongolia/
+    panama-targets.json   → <base>/panama/
+    targets.json          → <base>/                 (no prefix, flat fallback)
+
+    When CPC_OUTPUT_DIR env var is set (upload flow via /api/analyze), we skip
+    this derivation entirely and honor the env var path as-is, because uploads
+    write to python/analyses/{id}/output/ which is already a per-analysis dir.
+
+    .cache/ is managed separately by python/src/config.py and stays shared
+    across countries at python/output/.cache/. We never touch it from here.
+    """
+    if os.getenv("CPC_OUTPUT_DIR"):
+        # Upload flow: env var already points at the correct per-analysis path.
+        return base_output_dir
+    stem = targets_file[:-5] if targets_file.endswith(".json") else targets_file
+    country_stem = re.sub(r"-?targets$", "", stem)
+    return base_output_dir / country_stem if country_stem else base_output_dir
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run CPC analysis pipeline")
     parser.add_argument(
@@ -113,10 +137,17 @@ def parse_args() -> argparse.Namespace:
 
 
 async def main() -> None:
+    global OUTPUT_DIR
     args = parse_args()
+    # Derive the per-country output dir from the targets filename so multiple
+    # countries can coexist under python/output/{country}/. Upload flow is
+    # unaffected: when CPC_OUTPUT_DIR is set, derivation is skipped.
+    OUTPUT_DIR = derive_output_dir(args.targets_file, OUTPUT_DIR)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     start = time.time()
     started_at = datetime.now(timezone.utc).isoformat()
     logger.info(f"Starting analysis pipeline (model: {LLM_MODEL})")
+    logger.info(f"Output dir: {OUTPUT_DIR}")
     logger.info("=" * 60)
 
     # Seed tracker with any pre-analysis footprint (e.g. from document

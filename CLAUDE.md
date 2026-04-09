@@ -37,8 +37,8 @@ pnpm test             # Run tests (vitest)
 cd python
 uv venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
-python -m src.run_analysis    # Full pipeline
-python -m src.convert_to_ts   # Convert JSON outputs → TypeScript data files
+python -m src.run_analysis                                 # Full pipeline (default: Mongolia → python/output/mongolia/)
+python -m src.run_analysis --targets-file panama-targets.json  # Other country → python/output/panama/
 ```
 
 ## Analytical Framework: Three Levels

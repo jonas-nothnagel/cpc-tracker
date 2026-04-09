@@ -62,5 +62,8 @@ python/analyses/
 python/output/.cache/
 python/tmp/
 
+# Compound-engineering review run artifacts
+.context/
+
 # External docs
 external-docs/

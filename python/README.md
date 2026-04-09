@@ -37,23 +37,12 @@ This runs:
 2. Theme-filtered pair generation
 3. Target decomposition (Agent 1)
 4. Pairwise alignment assessment (Agent 2)
-5. Saves results to `output/`
-
-## Converting Results
-
-After running the pipeline, convert JSON outputs to TypeScript:
-
-```bash
-python -m src.convert_to_ts
-```
-
-Generates `mongolia-classifications.ts` and `mongolia-alignment.ts` in `src/data/`.
+5. Saves results to `output/{country}/`
 
 ## Files
 
 - `src/classify.py` - Thematic classification
 - `src/align.py` - Target decomposition + alignment
 - `src/run_analysis.py` - Main orchestrator
-- `src/convert_to_ts.py` - JSON to TypeScript converter
 - `src/llm.py` - Async LLM client with caching
 - `src/config.py` - Configuration

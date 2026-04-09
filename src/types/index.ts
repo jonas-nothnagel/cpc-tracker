@@ -43,6 +43,12 @@ export interface Target {
   activities?: string;
   /** Actions or measures to implement the target (from structured upload or manual entry) */
   actions?: string;
+  /** For translated targets: the original-language text (e.g. Spanish source for Panama).
+   *  Undefined when the target was provided in English. Populated in PR2. */
+  textOriginal?: string;
+  /** For translated targets: the original-language sourceLabel. Undefined when the
+   *  target was provided in English. Populated in PR2. */
+  sourceLabelOriginal?: string;
   /**
    * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
