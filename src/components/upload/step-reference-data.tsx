@@ -1,17 +1,24 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { PolicyDocumentType, Target } from "@/types";
 import type { BtrData, UploadedDoc } from "@/lib/upload-helpers";
 import type { TargetRow } from "@/lib/csv-parser";
-import { MONGOLIA_TARGETS } from "@/data/mongolia-targets";
+import { getCountry } from "@/config/countries";
 import { DOC_COLORS } from "@/lib/utils";
 
-const COUNTRY_REFERENCE_DATA: Record<
-  string,
-  { targets: Target[]; hasBtr: boolean; hasNr7: boolean }
-> = {
-  Mongolia: { targets: MONGOLIA_TARGETS, hasBtr: true, hasNr7: true },
+/**
+ * NFD-normalise and lowercase a display-name string so accented input like
+ * "Panamá" matches the registry's canonical "Panama" entry.
+ */
+function normaliseCountry(s: string): string {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+type RefData = {
+  targets: Target[];
+  hasBtr: boolean;
+  hasNr7: boolean;
 };
 
 interface StepReferenceDataProps {
@@ -68,9 +75,69 @@ export function StepReferenceData({
   includeNr7,
   onToggleNr7,
 }: StepReferenceDataProps) {
-  const refData = COUNTRY_REFERENCE_DATA[country] ?? null;
-  const refGroups = useMemo(() => (refData ? groupByDoc(refData.targets) : []), [refData]);
+  // Resolve the country to a registry entry at render time. This is pure —
+  // free-text country names that don't match a registry entry fall through to
+  // the no-data fallback. Hoisted out of the effect so we don't have to
+  // setState in the "no entry" branch.
+  const countryEntry = useMemo(
+    () => (country ? getCountry(normaliseCountry(country)) : undefined),
+    [country],
+  );
+  const countryEntryId =
+    countryEntry && countryEntry.has.coherence ? countryEntry.id : null;
+
+  // Cache fetched targets (or an "error" sentinel) keyed by registry id. This
+  // lets us derive refData / refLoading at render time without doing any
+  // synchronous setState inside the effect body — all writes happen inside
+  // the async fetch callbacks.
+  const [refCache, setRefCache] = useState<Record<string, RefData | "error">>(
+    {},
+  );
   const [expandedDoc, setExpandedDoc] = useState<PolicyDocumentType | null>(null);
+
+  const cached = countryEntryId ? refCache[countryEntryId] : undefined;
+  const refData: RefData | null = cached && cached !== "error" ? cached : null;
+  // "Country selected but nothing cached yet" reads as loading. The fetch
+  // resolves (or errors) before this can stay true forever.
+  const refLoading = !!countryEntryId && cached === undefined;
+  const refGroups = useMemo(
+    () => (refData ? groupByDoc(refData.targets) : []),
+    [refData],
+  );
+
+  // Fetch reference targets from the API whenever the resolved country changes
+  // and we haven't already cached a result for it. The API is the single
+  // source of truth for the targets; the registry tells us which feature
+  // flags (hasBtr, hasNr7) the row blocks below should react to.
+  useEffect(() => {
+    if (!countryEntryId || !countryEntry) return;
+    if (refCache[countryEntryId] !== undefined) return;
+
+    let cancelled = false;
+    fetch(`/api/reference-data?country=${encodeURIComponent(countryEntryId)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+      .then((targets: Target[]) => {
+        if (cancelled) return;
+        setRefCache((prev) => ({
+          ...prev,
+          [countryEntryId]: {
+            targets,
+            hasBtr:
+              countryEntry.has.btr.mitigation || countryEntry.has.btr.adaptation,
+            hasNr7: countryEntry.has.nr7,
+          },
+        }));
+      })
+      .catch(() => {
+        if (cancelled) return;
+        // 404 (no targets file) or network error: cache an "error" sentinel
+        // so we don't refetch and the render falls back to no-data state.
+        setRefCache((prev) => ({ ...prev, [countryEntryId]: "error" }));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [countryEntryId, countryEntry, refCache]);
 
   const btrDocs = uploadedDocs.filter(
     (d) => d.fileType === "btr" && d.status === "ready"
@@ -121,8 +188,29 @@ export function StepReferenceData({
         </div>
       )}
 
+      {/* Loading skeleton while fetching reference data */}
+      {refLoading && (
+        <div className="mb-8" aria-busy="true">
+          <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
+            Policy Targets for {country}
+          </h3>
+          <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="px-4 py-3 flex items-center gap-3 h-14">
+                <div className="w-9 h-9 rounded-lg bg-gray-100 animate-pulse flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="h-3 w-32 bg-gray-100 rounded animate-pulse mb-1" />
+                  <div className="h-2.5 w-20 bg-gray-100 rounded animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <span className="sr-only">Loading reference data</span>
+        </div>
+      )}
+
       {/* Reference targets */}
-      {refData && refGroups.length > 0 && (
+      {!refLoading && refData && refGroups.length > 0 && (
         <div className="mb-8">
           <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
             Policy Targets for {country}
@@ -293,7 +381,7 @@ export function StepReferenceData({
       )}
 
       {/* No reference data */}
-      {!refData && !btrParsedData && targetCount === 0 && (
+      {!refLoading && !refData && !btrParsedData && targetCount === 0 && (
         <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
           <p className="text-sm text-[var(--undp-gray)] mb-1">
             No pre-loaded reference data for this country.

@@ -5,13 +5,19 @@ import type { PolicyDocumentType } from "@/types";
 import type { UploadedDoc } from "@/lib/upload-helpers";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 import { DOCUMENT_TYPES } from "@/lib/upload-helpers";
+import { listVisibleCountries } from "@/config/countries";
 import { ExtractReviewPanel } from "./extract-review-panel";
 import { ManualEntryForm } from "./manual-entry-form";
 import { DocumentPipeline } from "./document-pipeline";
 
-const KNOWN_COUNTRIES = [
-  { value: "Mongolia", hasTargets: true, hasBtr: true, hasNr7: true },
-];
+/**
+ * Normalise a country string for comparison: NFD-decompose, strip combining
+ * marks, lowercase. Handles "Panamá" → "panama" so accented user input
+ * resolves to the registry entry.
+ */
+function normaliseCountry(s: string): string {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
 
 interface StepCountryDocumentsProps {
   country: string;
@@ -107,8 +113,10 @@ export function StepCountryDocuments({
 }: StepCountryDocumentsProps) {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const knownCountry = KNOWN_COUNTRIES.find(
-    (c) => c.value.toLowerCase() === country.toLowerCase()
+  const visibleCountries = listVisibleCountries();
+  const normalisedInput = normaliseCountry(country);
+  const knownCountry = visibleCountries.find(
+    (c) => normaliseCountry(c.name) === normalisedInput
   );
 
   // Modal state for extraction review
@@ -153,17 +161,34 @@ export function StepCountryDocuments({
             </button>
             {showDropdown && (
               <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                {KNOWN_COUNTRIES.filter((c) => !country || c.value.toLowerCase().includes(country.toLowerCase())).map((c) => (
-                  <button key={c.value} type="button" onClick={() => { onCountryChange(c.value); setShowDropdown(false); }}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-blue-50 flex items-center justify-between">
-                    <span className="font-medium">{c.value}</span>
-                    <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">Reference data</span>
-                  </button>
-                ))}
+                {visibleCountries
+                  .filter(
+                    (c) =>
+                      !country ||
+                      normaliseCountry(c.name).includes(normalisedInput)
+                  )
+                  .map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => {
+                        onCountryChange(c.name);
+                        setShowDropdown(false);
+                      }}
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-blue-50 flex items-center justify-between"
+                    >
+                      <span className="font-medium">{c.name}</span>
+                      {c.has.coherence && (
+                        <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">
+                          Reference data
+                        </span>
+                      )}
+                    </button>
+                  ))}
               </div>
             )}
           </div>
-          {knownCountry && (
+          {knownCountry && knownCountry.has.coherence && (
             <p className="mt-1 text-[10px] text-emerald-600 flex items-center gap-1">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               Reference data in next step

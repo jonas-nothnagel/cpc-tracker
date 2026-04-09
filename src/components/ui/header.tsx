@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// "Home" covers the country index — the landing page is the country picker.
+// A separate "Dashboard" link without a country id would redirect back to "/",
+// so we intentionally omit it.
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
-  { href: "/dashboard", label: "Dashboard" },
   { href: "/upload", label: "Upload Data" },
 ];
 

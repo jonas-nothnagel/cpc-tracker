@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { listVisibleCountries } from "@/config/countries";
 
 export default function Home() {
+  const visibleCountries = listVisibleCountries();
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
@@ -22,9 +25,6 @@ export default function Home() {
             </Link>
           </div>
           <nav className="flex gap-8 text-sm text-[var(--undp-gray)]">
-            <Link href="/dashboard" className="hover:text-[var(--undp-blue)] transition-colors">
-              Dashboard
-            </Link>
             <Link href="/upload" className="hover:text-[var(--undp-blue)] transition-colors">
               Upload Data
             </Link>
@@ -60,12 +60,15 @@ export default function Home() {
               align, overlap, or contradict each other.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/dashboard"
-                className="px-6 py-3 bg-[var(--undp-blue)] text-white text-base font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
-              >
-                Explore Demo Dashboard
-              </Link>
+              {visibleCountries.map((c) => (
+                <Link
+                  key={c.id}
+                  href={`/dashboard?country=${c.id}`}
+                  className="px-6 py-3 bg-[var(--undp-blue)] text-white text-base font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
+                >
+                  Explore {c.name}
+                </Link>
+              ))}
               <Link
                 href="/upload"
                 className="px-6 py-3 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-base font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
@@ -84,14 +87,14 @@ export default function Home() {
             What the dashboard reveals
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mb-10 max-w-lg">
-            Based on a pilot analysis of national policy targets from Mongolia.
+            Explore pilot analyses of national policy targets across participating countries.
           </p>
           <div className="grid md:grid-cols-2 gap-5">
-            <Link href="/dashboard" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
+            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src="/teaser-chord-overview.png"
-                  alt="Policy coherence chord diagram showing alignment connections between targets across NDC, NBSAP, NAP, and sectoral policies"
+                  alt="Chord diagram showing alignment connections between policy targets across climate, biodiversity, adaptation, and sectoral policies"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
@@ -102,11 +105,11 @@ export default function Home() {
                 <p className="text-xs text-[var(--undp-gray)] mt-0.5">Cross-policy alignment and contradictions at a glance</p>
               </div>
             </Link>
-            <Link href="/dashboard" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
+            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src="/teaser-classification.png"
-                  alt="Thematic classification showing targets mapped across Nature-Based Solution categories with stacked bar chart"
+                  alt="Stacked bar chart showing targets mapped across nature-based solution categories"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
@@ -117,7 +120,7 @@ export default function Home() {
                 <p className="text-xs text-[var(--undp-gray)] mt-0.5">Targets mapped to Nature-Based Solutions and IPCC sectors</p>
               </div>
             </Link>
-            <Link href="/dashboard" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
+            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src="/teaser-coherence-explorer.png"
@@ -132,11 +135,11 @@ export default function Home() {
                 <p className="text-xs text-[var(--undp-gray)] mt-0.5">Drill into individual targets to see connections and rationale</p>
               </div>
             </Link>
-            <Link href="/dashboard" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
+            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src="/teaser-implementation.png"
-                  alt="NDC implementation scorecard showing sector-level targets, reported actions, emissions trends, and implementation status"
+                  alt="Implementation scorecard showing sector-level targets, reported actions, emissions trends, and status"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
