@@ -1,0 +1,10 @@
+{
+  "model": "openai/gpt-4o-mini",
+  "commitSha": "5600005f3639b555515b2ca10bf583955b3fa7db",
+  "runDate": "2026-04-09T13:40:19Z",
+  "targetsFile": "panama-targets.json",
+  "translationNote": "Translated from Spanish by Claude Opus 4.6 via OpenRouter. See python/data/panama-translation-flags.json for 43 flagged rows (42 are source rows already in English — IRMF, SPGCF, CNR — which the prompt passes through unchanged; only NP is genuinely Spanish and zero NP rows flagged). Translation metadata in python/data/panama-translation-metadata.json.",
+  "panamaHasBtr": false,
+  "pairsAssessed": 18089,
+  "notes": "First full pipeline run against Panama test data as part of PR2 of the multi-country scaffold. The pipeline's existing retry logic was strained by long-tail OpenRouter response latencies; see fix(llm) commit adding a 60s per-request timeout to the OpenAI client."
+}

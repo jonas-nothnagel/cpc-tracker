@@ -1,0 +1,1990 @@
+[
+  {
+    "targetId": "panama_NP_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_7",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "11%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_8",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100,000 ha, 2,500 ha, 25,000 ha",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_9",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "40%, 60%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_10",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_11",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_12",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_13",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_14",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "20",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_15",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "Starting in 2028"
+  },
+  {
+    "targetId": "panama_NP_16",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_17",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_18",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_19",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_20",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%, 50%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_21",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_22",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%, 10%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_23",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "21",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_24",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "30%, 2025",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_25",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_26",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_27",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2027"
+  },
+  {
+    "targetId": "panama_NP_28",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "20",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_29",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_30",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "80%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_31",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_32",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_33",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_34",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "USD 300 million",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_35",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_36",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "By 2026"
+  },
+  {
+    "targetId": "panama_CNR_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_CNR_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_CNR_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_CNR_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_CNR_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_CNR_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_CNR_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_17",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_18",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_19",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_20",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_21",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_22",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_23",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_24",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_25",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_26",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_27",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_28",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_29",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_30",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_31",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_32",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_33",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_34",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_35",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_36",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_37",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_38",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_39",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_40",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_41",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_42",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_43",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_44",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_45",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_46",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_47",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_48",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_49",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_50",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_51",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_52",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_53",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_54",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_55",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_56",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_57",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_58",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_59",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_60",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_61",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_62",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_63",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_64",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_65",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_66",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_67",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_68",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_69",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_70",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_71",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_72",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_73",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_74",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_75",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_76",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_77",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_78",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_79",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_80",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_81",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_82",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_83",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_84",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_85",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_86",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_87",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_88",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_89",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_90",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_91",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_92",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_93",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_94",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_95",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_96",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_97",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_98",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_99",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_100",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_101",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_102",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_103",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_104",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_105",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_106",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_107",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_108",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_109",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "December 9, 2021"
+  },
+  {
+    "targetId": "panama_ENR_110",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_111",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_112",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_113",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_114",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_115",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_116",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_117",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_118",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_119",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_120",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_121",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_122",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_123",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_124",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_125",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_126",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_127",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_128",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_129",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_130",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_131",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_132",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_133",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_134",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_135",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_136",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_137",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_138",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_139",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_140",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_141",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_142",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_143",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_144",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_145",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_146",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_147",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_148",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_149",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_150",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_151",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_152",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_153",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_154",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_155",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_156",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_157",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_158",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_159",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_160",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_161",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_162",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_163",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_164",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_165",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_166",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_167",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_168",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_169",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_170",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_171",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_172",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_173",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_174",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_175",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_176",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_177",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_178",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_179",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_180",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_181",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_182",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_183",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_184",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_185",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_186",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_187",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_188",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_189",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_190",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_191",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_192",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_193",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_194",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_195",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_196",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_197",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_198",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_199",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_200",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_201",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_202",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_203",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_204",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "December 9, 2021"
+  },
+  {
+    "targetId": "panama_ENR_205",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_ENR_206",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_1",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "More than 100",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_3",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "50 to 60",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_4",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "190 to 280 million beneficiaries",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_5",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "120 to 190 million hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_6",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "45 to 60 developing countries",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_7",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "20 to 30 developing countries",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_8",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "18 to 25 developing countries",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_9",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "40-70 approved proposals",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_10",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "900 to 1500 local private sector ventures",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_SPGCF_11",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "90 to 180 national and regional financial institutions",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_17",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_18",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_19",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_20",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_21",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_22",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_23",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_IRMF_24",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  }
+]
