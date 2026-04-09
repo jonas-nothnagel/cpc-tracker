@@ -138,18 +138,24 @@ def extract_numbers(text: str) -> set[str]:
     """
     Pull normalised numeric tokens out of `text`.
 
-    Comma decimals become dot decimals ("11,5%" → "11.5%"). Thousand separators
-    (dots or commas) are stripped. A trailing "%" is preserved. The comparison
-    is order-free because numbers can legitimately reorder during translation.
+    Decimals are normalised to a dot separator: both "11,5%" (Spanish) and
+    "11.5%" (English) canonicalise to "11.5%". Thousand separators (longer
+    groups) are stripped so "1,000" and "1.000" both canonicalise to "1000".
+    A trailing "%" is preserved. Comparison is order-free because numbers
+    can legitimately reorder during translation.
+
+    Known limitation: a 3-digit decimal like "3.141" is ambiguous and will
+    be read as thousand-separated (→ "3141"). Acceptable for policy targets,
+    which typically round to 1-2 decimal places.
     """
     normalised: set[str] = set()
     for match in _NUMERIC_RE.finditer(text or ""):
         raw, pct = match.group(1), match.group(2) or ""
-        # Detect Spanish-style decimal: comma followed by 1-2 digits at the end.
-        if re.match(r"^\d+,\d{1,2}$", raw):
+        # Decimal with 1-2 fraction digits (either separator): normalise to dot.
+        if re.match(r"^\d+[.,]\d{1,2}$", raw):
             raw = raw.replace(",", ".")
         else:
-            # Otherwise strip thousand separators (dots and commas).
+            # Thousand separators or longer groups: strip to canonical integer.
             raw = raw.replace(".", "").replace(",", "")
         normalised.add(f"{raw}{pct}")
     return normalised
