@@ -56,6 +56,14 @@ def get_client() -> AsyncOpenAI:
         _client = AsyncOpenAI(
             base_url=LLM_BASE_URL,
             api_key=LLM_API_KEY,
+            # The SDK default is 600s (10 min) per request. A single OpenRouter
+            # request that hangs near that limit blocks one concurrency slot and
+            # starves the pool — we saw this during the Panama pipeline run where
+            # throughput collapsed from ~600 calls/min to ~80 calls/min once a
+            # handful of requests got stuck. 60s is well above the p99 for a
+            # healthy response; anything slower is almost certainly never coming
+            # back, and fast-failing lets the retry loop grab a fresh slot.
+            timeout=60.0,
         )
     return _client
 
