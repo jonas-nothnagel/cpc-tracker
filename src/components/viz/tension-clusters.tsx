@@ -9,7 +9,7 @@ import {
   getDocLabel,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
-import { TargetTextWithHighlights, ActionTypeBadge } from "./target-text";
+import { TargetTextWithHighlights, ActionTypeBadge, OriginalLanguageChip } from "./target-text";
 import { isContradiction } from "@/types";
 import type {
   AlignmentResult,
@@ -635,6 +635,7 @@ export function TensionClusters({
                         {getDocLabel(countryConfig, d.target.sourceDocument)}
                       </span>
                       <ActionTypeBadge actionType={d.target.actionType} />
+                      <OriginalLanguageChip target={d.target} />
                       <span className="text-xs font-medium text-[var(--undp-black)] truncate">
                         {d.target.sourceLabel}
                       </span>

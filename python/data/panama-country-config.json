@@ -1,0 +1,49 @@
+{
+  "_comment": "Country-specific display configuration for Panama. Same shape as mongolia-country-config.json. Document taxonomy and provenance strings drive the dashboard without any code changes.",
+  "_documentTypesComment": "Panama's five source documents from UNFCCC / Green Climate Fund. Short labels come verbatim from the Doc column in data_panama_8Apr26 1.xlsx. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 — political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. The five colors are mutually distinguishable under deuteranopia/protanopia simulation (verified manually via https://www.color-blindness.com/coblis-color-blindness-simulator/).",
+  "documentTypes": [
+    {
+      "id": "NP",
+      "shortLabel": "NP",
+      "mediumLabel": "NP (Nature Pledge)",
+      "fullLabel": "Pacto de Panamá con la Naturaleza — Nature Pledge",
+      "color": "#0468b1"
+    },
+    {
+      "id": "ENR",
+      "shortLabel": "ENR",
+      "mediumLabel": "ENR (National REDD+ Strategy)",
+      "fullLabel": "Estrategia Nacional REDD+ de Panamá",
+      "color": "#166534"
+    },
+    {
+      "id": "IRMF",
+      "shortLabel": "IRMF",
+      "mediumLabel": "IRMF (Results Management)",
+      "fullLabel": "Integrated Results Management Framework",
+      "color": "#ca8a04"
+    },
+    {
+      "id": "SPGCF",
+      "shortLabel": "SPGCF",
+      "mediumLabel": "SPGCF (GCF Strategic Plan)",
+      "fullLabel": "Strategic Plan for the Green Climate Fund",
+      "color": "#0891b2"
+    },
+    {
+      "id": "CNR",
+      "shortLabel": "CNR",
+      "mediumLabel": "CNR (REDD+ Concept Note)",
+      "fullLabel": "Concept Note — REDD+ Results-Based Payments",
+      "color": "#7e22ce"
+    }
+  ],
+  "_docProvenanceComment": "Primary source citations per document. NP, ENR, IRMF, CNR each trace to a single URL. SPGCF rows in the Panama xlsx cite eleven distinct Green Climate Fund Strategic Plan versions (2024-2027, 2024-2028, 2024-2029, 2024-2030, 2024-2031, 2024-2032, 2024-2033, 2024-2034, 2024-2035, 2024-2036, 2024-2037). The 2024-2035 version is the canonical reference because it is the most comprehensive temporal scope and aligns with Panama's own 2035 commitments in the Nature Pledge. The other ten URLs remain available in python/data/panama-targets.json per-row `sourceUrl` for anyone who needs version-specific provenance.",
+  "docProvenance": {
+    "NP": "Pacto de Panamá con la Naturaleza (Nature Pledge), UNFCCC, November 2025",
+    "ENR": "Estrategia Nacional REDD+ de Panamá",
+    "IRMF": "Integrated Results Management Framework, Green Climate Fund",
+    "SPGCF": "Strategic Plan for the Green Climate Fund 2024–2035 (canonical; eleven temporal variants cited per row in panama-targets.json)",
+    "CNR": "Concept Note: GCF REDD+ Results-Based Payments, Panama"
+  }
+}

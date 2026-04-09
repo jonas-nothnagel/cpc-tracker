@@ -17,6 +17,7 @@ import {
   ActivitiesActions,
   ActionTypeBadge,
   BTR_ADAPTATION_COLOR,
+  OriginalLanguageChip,
 } from "./target-text";
 import type {
   CountryConfig,
@@ -304,8 +305,9 @@ function DetailPanel({
         <div className="px-4 py-3 space-y-3 border-b border-gray-100">
           {[node.target, comparedPair.other].map((t) => (
             <div key={t.id}>
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                {getDocLabel(countryConfig, t.sourceDocument)}: {t.sourceLabel}
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
+                <span>{getDocLabel(countryConfig, t.sourceDocument)}: {t.sourceLabel}</span>
+                <OriginalLanguageChip target={t} />
               </p>
               <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
                 <TargetTextWithHighlights target={t} />
@@ -346,6 +348,7 @@ function DetailPanel({
             {getDocLabel(countryConfig, node.target.sourceDocument)} · {node.target.sourceLabel}
           </span>
           <ActionTypeBadge actionType={node.target.actionType} />
+          <OriginalLanguageChip target={node.target} />
         </div>
         <button type="button" onClick={onClose} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none ml-2 shrink-0">
           ×
@@ -441,6 +444,7 @@ function DetailPanel({
                     >
                       {getDocLabel(countryConfig, conn.otherTarget.sourceDocument)}
                     </span>
+                    <OriginalLanguageChip target={conn.otherTarget} />
                     <ActionTypeBadge actionType={conn.otherTarget.actionType} />
                     <span className="text-xs font-medium text-[var(--undp-black)] truncate flex-1">
                       {conn.otherTarget.sourceLabel}

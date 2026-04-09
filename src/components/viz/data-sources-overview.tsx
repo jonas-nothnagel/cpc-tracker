@@ -10,6 +10,7 @@ import {
   ActionTypeBadge,
   BTR_ADAPTATION_COLOR,
   BTR_MITIGATION_COLOR,
+  OriginalLanguageChip,
 } from "./target-text";
 import type {
   Target,
@@ -85,6 +86,7 @@ function TargetListModal({ label, targets, sourceRef, countryConfig, onClose }: 
                 {getDocLabel(countryConfig, t.sourceDocument)}
               </span>
               <ActionTypeBadge actionType={t.actionType} />
+              <OriginalLanguageChip target={t} />
               <span className="text-xs font-medium text-[var(--undp-black)]">
                 {t.sourceLabel}
               </span>
