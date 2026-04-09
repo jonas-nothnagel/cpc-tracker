@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS, DOC_MEDIUM_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel, getDocMediumLabel, getDocTypeOrder } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import {
@@ -59,10 +59,11 @@ const ACRONYM_ORDER = ["NDC", "NBSAP", "NAP", "LDN", "BTR", "NR7"];
  * policy-document and BTR-action data source chips so the inspection UX is
  * consistent across the two sources.
  */
-function TargetListModal({ label, targets, sourceRef, onClose }: {
+function TargetListModal({ label, targets, sourceRef, countryConfig, onClose }: {
   label: string;
   targets: Target[];
   sourceRef?: string;
+  countryConfig?: CountryConfig | null;
   onClose: () => void;
 }) {
   return (
@@ -78,10 +79,10 @@ function TargetListModal({ label, targets, sourceRef, onClose }: {
             <div className="flex items-center gap-2 mb-1.5 flex-wrap">
               <span
                 className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
-                style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                title={DOC_FULL_LABELS[t.sourceDocument]}
+                style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                title={getDocFullLabel(countryConfig, t.sourceDocument)}
               >
-                {DOC_LABELS[t.sourceDocument]}
+                {getDocLabel(countryConfig, t.sourceDocument)}
               </span>
               <ActionTypeBadge actionType={t.actionType} />
               <span className="text-xs font-medium text-[var(--undp-black)]">
@@ -128,10 +129,13 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
     list.push(t);
     targetsByDoc.set(t.sourceDocument, list);
   }
-  const docTypes = Array.from(targetsByDoc.keys()).sort((a, b) => {
-    const order: PolicyDocumentType[] = ["NDC", "NBSAP", "NAP", "LDN", "SECTORAL", "BTR", "OTHER"];
-    return order.indexOf(a) - order.indexOf(b);
-  });
+  // Sort order comes from the country config's documentTypes array so each
+  // country can order its chips naturally (NP first for Panama, NDC first for
+  // Mongolia, etc.). Unknown ids and reserved tokens sort to the end — see
+  // `getDocTypeOrder` in @/lib/utils.
+  const docTypes = Array.from(targetsByDoc.keys()).sort(
+    (a, b) => getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+  );
 
   // Split BTR reported actions into mitigation vs adaptation so the two types
   // are visible as distinct sources (stakeholder ask, 7 April 2026 Mongolia call).
@@ -164,14 +168,16 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
     // Skip BTR pseudo-targets — BTR is shown via the "BTR (Actions)" entry below
     if (docType === "BTR") continue;
     const docTargets = targetsByDoc.get(docType) ?? [];
+    const fullLabel = getDocFullLabel(countryConfig, docType);
+    const docColor = getDocColor(countryConfig, docType);
     sources.push({
       key: `doc:${docType}`,
-      name: DOC_FULL_LABELS[docType],
+      name: fullLabel,
       detail: `${docTargets.length} target${docTargets.length === 1 ? "" : "s"}`,
-      color: DOC_COLORS[docType],
-      badge: DOC_MEDIUM_LABELS[docType],
+      color: docColor,
+      badge: getDocMediumLabel(countryConfig, docType),
       provenance: docProvenance[docType],
-      onClick: () => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color: DOC_COLORS[docType] }),
+      onClick: () => setModal({ label: fullLabel, targets: docTargets, color: docColor }),
     });
   }
   // BTR pseudo-targets are already merged into the `targets` prop by the
@@ -324,6 +330,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
           label={modal.label}
           targets={modal.targets}
           sourceRef={modal.sourceRef}
+          countryConfig={countryConfig}
           onClose={() => setModal(null)}
         />
       )}

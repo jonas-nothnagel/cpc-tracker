@@ -88,7 +88,7 @@ function ClassificationSection({
   targets, documentTypes, nbsSorted, sectorSorted, themeSorted,
   nbsClassifications, sectorClassifications, themeClassifications,
   targetsWithNbs, targetsWithSectors, targetsWithThemes,
-  nbsCategories, sectors, themes,
+  nbsCategories, sectors, themes, countryConfig,
 }: {
   targets: Target[];
   documentTypes: PolicyDocumentType[];
@@ -104,6 +104,7 @@ function ClassificationSection({
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   themes: TaxonomyCategory[];
+  countryConfig: CountryConfig | null;
 }) {
   const viewOptions: { value: ClassificationView; label: string }[] = [
     ...(nbsCategories.length > 0
@@ -170,6 +171,7 @@ function ClassificationSection({
         timeBoundTargets={targets.filter((t) => t.isTimeBound)}
         totalTargets={targets.length}
         mappedTargets={mappedTargetsByView[view]}
+        countryConfig={countryConfig}
       />
 
       <div className="mt-4">
@@ -179,6 +181,7 @@ function ClassificationSection({
             documentTypes={[...documentTypes]}
             targets={targets}
             nbsClassifications={nbsClassifications}
+            countryConfig={countryConfig}
           />
         )}
         {view === "sector" && (
@@ -188,6 +191,7 @@ function ClassificationSection({
             targets={targets}
             themeClassifications={sectorClassifications}
             taxonomyType="sector"
+            countryConfig={countryConfig}
           />
         )}
         {view === "theme" && (
@@ -197,6 +201,7 @@ function ClassificationSection({
             targets={targets}
             themeClassifications={themeClassifications}
             taxonomyType="theme"
+            countryConfig={countryConfig}
           />
         )}
       </div>
@@ -393,6 +398,7 @@ export function DashboardClient({
           classifications={data.classifications}
           nr7Data={data.nr7Data}
           focusTargetId={focusTargetId}
+          countryConfig={data.countryConfig}
         />
         </div>
 
@@ -412,6 +418,7 @@ export function DashboardClient({
           nbsCategories={data.nbsCategories}
           sectors={data.sectors}
           themes={data.themes}
+          countryConfig={data.countryConfig}
         />
 
         {/* --- Structural Tension Analysis --- */}
@@ -423,6 +430,7 @@ export function DashboardClient({
           nbsCategories={data.nbsCategories}
           themes={data.themes}
           onFocusTarget={setFocusTargetId}
+          countryConfig={data.countryConfig}
         />
 
         {/* --- Financial Alignment (placeholder) --- */}
@@ -506,6 +514,7 @@ export function DashboardClient({
                   targets={targets}
                   sectors={data.sectors}
                   classifications={data.classifications}
+                  countryConfig={data.countryConfig}
                 />
 
                 <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">

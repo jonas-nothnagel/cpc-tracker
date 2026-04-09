@@ -4,7 +4,7 @@ import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 import { TARGETS_PREVIEW } from "@/lib/upload-helpers";
-import { DOC_COLORS } from "@/lib/utils";
+import { getDocColor } from "@/lib/utils";
 import { ActivitiesActions } from "@/components/viz/target-text";
 
 interface TargetsByDocumentProps {
@@ -57,7 +57,7 @@ export function TargetsByDocument({
               <div className="flex items-center gap-2">
                 <span
                   className="inline-block px-2 py-0.5 rounded text-xs font-semibold text-white"
-                  style={{ backgroundColor: DOC_COLORS[docType] ?? "#a9b1b7" }}
+                  style={{ backgroundColor: getDocColor(null, docType) }}
                 >
                   {docType}
                 </span>
@@ -90,7 +90,7 @@ export function TargetsByDocument({
                 >
                   <span
                     className="shrink-0 mt-0.5 px-2 py-0.5 rounded text-[10px] font-medium text-white max-w-[8rem] truncate"
-                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] ?? "#a9b1b7" }}
+                    style={{ backgroundColor: getDocColor(null, t.sourceDocument) }}
                     title={t.sourceLabel}
                   >
                     {t.sourceLabel}

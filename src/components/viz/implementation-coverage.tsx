@@ -26,7 +26,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { getDocColor, getDocLabel } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import {
   TargetTextWithHighlights,
@@ -36,6 +36,7 @@ import {
 } from "./target-text";
 import type {
   BtrData,
+  CountryConfig,
   IpccSector,
   MitigationMeasure,
   SupportProject,
@@ -504,7 +505,7 @@ function Sparkline({
   );
 }
 
-function MitigationDetail({ row }: { row: MitigationRow }) {
+function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryConfig?: CountryConfig | null }) {
   const color = SECTOR_COLORS[row.sector.id] ?? "#a9b1b7";
 
   const combinedChart = useMemo(() => {
@@ -551,9 +552,9 @@ function MitigationDetail({ row }: { row: MitigationRow }) {
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <span
                       className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold text-white leading-none"
-                      style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                      style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
                     >
-                      {DOC_LABELS[t.sourceDocument]}
+                      {getDocLabel(countryConfig, t.sourceDocument)}
                     </span>
                     <span className="text-xs font-medium text-[var(--undp-black)]">
                       {t.sourceLabel}
@@ -705,11 +706,13 @@ function MitigationByIpccSector({
   expandedSector,
   onToggle,
   highlightSector,
+  countryConfig,
 }: {
   rows: MitigationRow[];
   expandedSector: string | null;
   onToggle: (id: string) => void;
   highlightSector?: string | null;
+  countryConfig?: CountryConfig | null;
 }) {
   // Show all IPCC sectors. Empty rows still convey signal — "this sector has
   // policy targets but no reported mitigation action" is exactly the gap the
@@ -839,7 +842,7 @@ function MitigationByIpccSector({
                 </span>
               </div>
             </button>
-            {isExpanded && <MitigationDetail row={row} />}
+            {isExpanded && <MitigationDetail row={row} countryConfig={countryConfig} />}
           </div>
         );
       })}
@@ -876,7 +879,7 @@ function adaptationStatusBadgeClasses(status: string | undefined): string {
   return "bg-gray-100 text-gray-700";
 }
 
-function AdaptationDetail({ row }: { row: AdaptationRow }) {
+function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryConfig?: CountryConfig | null }) {
   // Sort actions: implemented first, then adopted, then ongoing.
   // Mirrors MitigationDetail's "Implemented (X)" promotion to the top.
   const sortedActions = useMemo(
@@ -914,9 +917,9 @@ function AdaptationDetail({ row }: { row: AdaptationRow }) {
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <span
                     className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold text-white leading-none"
-                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                    style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
                   >
-                    {DOC_LABELS[t.sourceDocument]}
+                    {getDocLabel(countryConfig, t.sourceDocument)}
                   </span>
                   <span className="text-xs font-medium text-[var(--undp-black)]">
                     {t.sourceLabel}
@@ -989,12 +992,14 @@ function AdaptationByApndcGoal({
   expandedGoal,
   onToggle,
   groupingLabel,
+  countryConfig,
 }: {
   rows: AdaptationRow[];
   expandedGoal: number | null;
   onToggle: (n: number) => void;
   /** Country-specific label for the grouping (e.g. "APNDC adaptation goal"). */
   groupingLabel?: string;
+  countryConfig?: CountryConfig | null;
 }) {
   if (rows.length === 0) return null;
   const sectionTitle = groupingLabel
@@ -1088,7 +1093,7 @@ function AdaptationByApndcGoal({
                 </span>
               </div>
             </button>
-            {isExpanded && <AdaptationDetail row={row} />}
+            {isExpanded && <AdaptationDetail row={row} countryConfig={countryConfig} />}
           </div>
         );
       })}
@@ -1116,6 +1121,7 @@ interface ImplementationCoverageProps {
    */
   classifications: ThematicClassification[];
   highlightSector?: string | null;
+  countryConfig?: CountryConfig | null;
 }
 
 export function ImplementationCoverage({
@@ -1124,6 +1130,7 @@ export function ImplementationCoverage({
   sectors,
   classifications,
   highlightSector,
+  countryConfig,
 }: ImplementationCoverageProps) {
   const [expandedSector, setExpandedSector] = useState<string | null>(null);
   const [expandedGoal, setExpandedGoal] = useState<number | null>(null);
@@ -1237,12 +1244,14 @@ export function ImplementationCoverage({
         expandedSector={expandedSector}
         onToggle={toggleSector}
         highlightSector={highlightSector}
+        countryConfig={countryConfig}
       />
       <AdaptationByApndcGoal
         rows={adaptationRows}
         expandedGoal={expandedGoal}
         onToggle={toggleGoal}
         groupingLabel={btrData.adaptationGroupingLabel}
+        countryConfig={countryConfig}
       />
     </div>
   );

@@ -9,15 +9,19 @@
 // Policy Documents & Targets
 // ---------------------------------------------------------------------------
 
-/** The type of policy document a target originates from. */
-export type PolicyDocumentType =
-  | "NDC"
-  | "NBSAP"
-  | "NAP"
-  | "LDN"
-  | "SECTORAL"
-  | "BTR"
-  | "OTHER";
+/**
+ * The type of policy document a target originates from. Open string so each
+ * country can define its own set in `{country}-country-config.json` under
+ * `documentTypes`. Only two tokens are reserved and have universal fallbacks
+ * in `src/lib/utils.ts`:
+ *   - `"BTR"`: Biennial Transparency Report (implementation / M&E data)
+ *   - `"OTHER"`: catch-all for anything a country config does not declare
+ * All other values (e.g. `"NDC"`, `"NP"`, `"ENR"`) must appear in the active
+ * country's `documentTypes` array for labels, colors, and sort order to
+ * resolve. Unknown ids fall back to the raw string. Country configs supply
+ * the mapping via `CountryConfig.documentTypes` + the `getDocLabel` helpers.
+ */
+export type PolicyDocumentType = string;
 
 /** A single policy target entered by a user. */
 export interface Target {
@@ -325,6 +329,27 @@ export interface BtrData {
 }
 
 /**
+ * One entry in a country's document-type registry. Supplies the labels, color,
+ * and ordering for a single `sourceDocument` id that appears in the country's
+ * targets. Countries declare the full set in `documentTypes` on their config
+ * file. Runtime lookups go through `getDocLabel` / `getDocColor` /
+ * `getDocTypeOrder` in `src/lib/utils.ts` with a universal fallback for the
+ * reserved `BTR` and `OTHER` tokens.
+ */
+export interface DocumentTypeEntry {
+  /** The `sourceDocument` value used in this country's targets (e.g. "NDC"). */
+  id: string;
+  /** Short axis-label (e.g. "NDC"). */
+  shortLabel: string;
+  /** Medium label with category hint (e.g. "NDC (Climate)"). */
+  mediumLabel: string;
+  /** Full human-readable name (e.g. "Nationally Determined Contribution"). */
+  fullLabel: string;
+  /** Hex color for charts and chips. Must follow UNDP Data Viz guidelines. */
+  color: string;
+}
+
+/**
  * Country-specific display configuration loaded from
  * `{country}-country-config.json`. Holds provenance strings and other
  * country-specific presentation details so a second country does not need
@@ -335,6 +360,14 @@ export interface CountryConfig {
   docProvenance?: Partial<Record<PolicyDocumentType, string>>;
   /** Structured source ref for BTR mitigation actions (CTF Table 5 for Mongolia). */
   btrMitigationSourceRef?: SourceRef;
+  /**
+   * Country's document-type registry. Defines the set of `sourceDocument`
+   * values that appear in the country's targets, with labels and colors.
+   * Consumed by `getDocLabel` / `getDocColor` / `getDocTypeOrder` helpers.
+   * When null or undefined, helpers fall back to reserved tokens (BTR, OTHER)
+   * or the raw id.
+   */
+  documentTypes?: DocumentTypeEntry[];
 }
 
 /**

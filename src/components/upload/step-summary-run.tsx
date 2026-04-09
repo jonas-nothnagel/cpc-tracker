@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import type { TaxonomyGroup } from "@/hooks/useCategories";
-import { DOC_COLORS } from "@/lib/utils";
+import { getDocColor } from "@/lib/utils";
 import { formatFootprintValue } from "@/lib/footprint";
 import { AnalysisEstimate } from "./analysis-estimate";
 
@@ -93,7 +93,7 @@ export function StepSummaryRun({
             <div key={docType}>
               <button type="button" onClick={() => setExpandedDoc(expandedDoc === docType ? null : docType)}
                 className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors">
-                <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: DOC_COLORS[docType] }} />
+                <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: getDocColor(null, docType) }} />
                 <span className="text-sm font-medium text-[var(--undp-black)] flex-1 text-left">{docType}</span>
                 <span className="text-sm text-[var(--undp-gray)] tabular-nums">{docTargets.length}</span>
                 <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedDoc === docType ? "rotate-180" : ""}`}

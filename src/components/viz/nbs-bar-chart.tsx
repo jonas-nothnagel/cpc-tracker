@@ -10,14 +10,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import {
   TargetTextWithHighlights,
   ActivitiesActions,
   ActionTypeBadge,
 } from "./target-text";
-import type { PolicyDocumentType, Target, ThematicClassification } from "@/types";
+import type { CountryConfig, PolicyDocumentType, Target, ThematicClassification } from "@/types";
 
 interface BarData {
   categoryId: string;
@@ -33,6 +33,7 @@ interface NbsBarChartProps {
   documentTypes: PolicyDocumentType[];
   targets: Target[];
   nbsClassifications: ThematicClassification[];
+  countryConfig?: CountryConfig | null;
 }
 
 function getTargetsForCategory(
@@ -86,6 +87,7 @@ export function NbsBarChart({
   documentTypes,
   targets,
   nbsClassifications,
+  countryConfig,
 }: NbsBarChartProps) {
   const [modal, setModal] = useState<{
     categoryName: string;
@@ -96,8 +98,10 @@ export function NbsBarChart({
   const chartData = data.map((d) => ({
     name: d.categoryName,
     categoryId: d.categoryId,
+    // `?? 0` guards against the open `PolicyDocumentType` contract where
+    // `byDocument[doc]` is undefined for doc types absent from this category.
     ...Object.fromEntries(
-      documentTypes.map((doc) => [doc, d.byDocument[doc]])
+      documentTypes.map((doc) => [doc, d.byDocument[doc] ?? 0])
     ),
     total: d.total,
   }));
@@ -152,10 +156,10 @@ export function NbsBarChart({
           <div key={doc} className="flex items-center gap-1.5">
             <span
               className="w-3 h-3 rounded-sm inline-block"
-              style={{ backgroundColor: DOC_COLORS[doc] }}
+              style={{ backgroundColor: getDocColor(countryConfig, doc) }}
             />
-            <span className="text-[var(--undp-gray)]">
-              {DOC_LABELS[doc] ?? doc}
+            <span className="text-[var(--undp-gray)]" title={getDocFullLabel(countryConfig, doc)}>
+              {getDocLabel(countryConfig, doc)}
             </span>
           </div>
         ))}
@@ -183,7 +187,7 @@ export function NbsBarChart({
             }}
             formatter={(value, name) => [
               value ?? 0,
-              DOC_LABELS[name as PolicyDocumentType] ?? name ?? "",
+              typeof name === "string" ? getDocLabel(countryConfig, name) : (name ?? ""),
             ]}
           />
           {documentTypes.map((doc) => (
@@ -191,7 +195,7 @@ export function NbsBarChart({
               key={doc}
               dataKey={doc}
               stackId="stack"
-              fill={DOC_COLORS[doc]}
+              fill={getDocColor(countryConfig, doc)}
               radius={[0, 0, 0, 0]}
               onClick={(data) => handleSegmentClick(data, doc)}
               style={{ cursor: "pointer" }}
@@ -204,7 +208,7 @@ export function NbsBarChart({
       <Modal
         open={!!modal}
         onClose={() => setModal(null)}
-        title={modal ? `${modal.categoryName}${modal.docType ? `, ${DOC_LABELS[modal.docType]}` : ""} (${modal.targets.length})` : ""}
+        title={modal ? `${modal.categoryName}${modal.docType ? `, ${getDocLabel(countryConfig, modal.docType)}` : ""} (${modal.targets.length})` : ""}
         maxWidth="max-w-xl"
       >
         {modal && (
@@ -214,10 +218,10 @@ export function NbsBarChart({
                 <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                   <span
                     className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
-                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                    title={DOC_FULL_LABELS[t.sourceDocument]}
+                    style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                    title={getDocFullLabel(countryConfig, t.sourceDocument)}
                   >
-                    {DOC_LABELS[t.sourceDocument]}
+                    {getDocLabel(countryConfig, t.sourceDocument)}
                   </span>
                   <ActionTypeBadge actionType={t.actionType} />
                   <span className="text-xs font-medium text-[var(--undp-black)]">

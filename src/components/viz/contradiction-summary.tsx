@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, CONTRADICTION_TYPE_LABELS, DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, CONTRADICTION_TYPE_LABELS, getDocColor, getDocLabel } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
-import type { AlignmentResult, AlignmentLevel, Target, ContradictionType, PolicyDocumentType } from "@/types";
+import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, ContradictionType, PolicyDocumentType } from "@/types";
 
 interface ContradictionSummaryProps {
   alignmentData: AlignmentResult[];
   targets: Target[];
+  countryConfig?: CountryConfig | null;
 }
 
 const SEVERITY_ORDER: AlignmentLevel[] = [
@@ -24,6 +25,7 @@ const SEVERITY_ORDER: AlignmentLevel[] = [
 export function ContradictionSummary({
   alignmentData,
   targets,
+  countryConfig,
 }: ContradictionSummaryProps) {
   const [expanded, setExpanded] = useState(false);
   const [filterType, setFilterType] = useState<ContradictionType | "all">("all");
@@ -152,7 +154,7 @@ export function ContradictionSummary({
           <option value="all">All document types</option>
           {documentTypes.map((dt) => (
             <option key={dt} value={dt}>
-              {DOC_LABELS[dt]}
+              {getDocLabel(countryConfig, dt)}
             </option>
           ))}
         </select>
@@ -203,9 +205,9 @@ export function ContradictionSummary({
                 <div className="flex gap-2 items-start">
                   <span
                     className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[11px] font-medium text-white mt-0.5"
-                    style={{ backgroundColor: DOC_COLORS[tA.sourceDocument] }}
+                    style={{ backgroundColor: getDocColor(countryConfig, tA.sourceDocument) }}
                   >
-                    {DOC_LABELS[tA.sourceDocument]}
+                    {getDocLabel(countryConfig, tA.sourceDocument)}
                   </span>
                   <div>
                     <p className="text-xs font-medium text-[var(--undp-black)]">
@@ -219,9 +221,9 @@ export function ContradictionSummary({
                 <div className="flex gap-2 items-start">
                   <span
                     className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[11px] font-medium text-white mt-0.5"
-                    style={{ backgroundColor: DOC_COLORS[tB.sourceDocument] }}
+                    style={{ backgroundColor: getDocColor(countryConfig, tB.sourceDocument) }}
                   >
-                    {DOC_LABELS[tB.sourceDocument]}
+                    {getDocLabel(countryConfig, tB.sourceDocument)}
                   </span>
                   <div>
                     <p className="text-xs font-medium text-[var(--undp-black)]">

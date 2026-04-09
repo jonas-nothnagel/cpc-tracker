@@ -3,15 +3,16 @@
 import { useState, useMemo } from "react";
 import { chord as d3Chord, ribbon as d3Ribbon } from "d3-chord";
 import { arc as d3Arc } from "d3-shape";
-import { DOC_COLORS, DOC_LABELS, ALIGNMENT_COLORS } from "@/lib/utils";
+import { ALIGNMENT_COLORS, getDocColor, getDocLabel } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
-import type { AlignmentResult, AlignmentLevel, Target, PolicyDocumentType } from "@/types";
+import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, PolicyDocumentType } from "@/types";
 
 interface CoherencyChordProps {
   alignmentData: AlignmentResult[];
   targets: Target[];
   onPairClick?: (docA: PolicyDocumentType, docB: PolicyDocumentType) => void;
+  countryConfig?: CountryConfig | null;
 }
 
 type DetailBreakdown = {
@@ -33,7 +34,7 @@ const EMPTY_DETAIL: DetailBreakdown = {
  * Aggregate alignment data into a document-type-level matrix and
  * render as an interactive chord diagram with contradiction support.
  */
-export function CoherencyChord({ alignmentData, targets, onPairClick }: CoherencyChordProps) {
+export function CoherencyChord({ alignmentData, targets, onPairClick, countryConfig }: CoherencyChordProps) {
   const [hoveredArc, setHoveredArc] = useState<number | null>(null);
   const [hoveredChord, setHoveredChord] = useState<{
     source: number;
@@ -212,10 +213,10 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
             <div key={dt} className="flex items-center gap-1.5">
               <span
                 className="w-3.5 h-3.5 rounded-sm inline-block"
-                style={{ backgroundColor: DOC_COLORS[dt] }}
+                style={{ backgroundColor: getDocColor(countryConfig, dt) }}
               />
               <span className="text-[var(--undp-gray)]">
-                {DOC_LABELS[dt]} ({targetCounts[docTypes.indexOf(dt)]})
+                {getDocLabel(countryConfig, dt)} ({targetCounts[docTypes.indexOf(dt)]})
               </span>
             </div>
           ))}
@@ -326,7 +327,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
                 <g key={`arc-${g.index}`}>
                   <path
                     d={d ?? ""}
-                    fill={DOC_COLORS[docType]}
+                    fill={getDocColor(countryConfig, docType)}
                     opacity={isActive ? 1 : 0.25}
                     className="transition-opacity duration-200 cursor-pointer"
                     onMouseEnter={() => setHoveredArc(g.index)}
@@ -340,7 +341,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
                     className="text-[11px] font-medium select-none pointer-events-none"
                     fill={isActive ? "#1e293b" : "#94a3b8"}
                   >
-                    {DOC_LABELS[docType]}
+                    {getDocLabel(countryConfig, docType)}
                   </text>
                 </g>
               );
@@ -372,11 +373,11 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
                   onClick={() => onPairClick?.(docTypes[ps.iA], docTypes[ps.iB])}
                 >
                   <td className="py-1.5 text-[var(--undp-black)]">
-                    <span className="inline-block w-2 h-2 rounded-sm mr-1.5" style={{ backgroundColor: DOC_COLORS[docTypes[ps.iA]] }} />
-                    {DOC_LABELS[docTypes[ps.iA]]}
+                    <span className="inline-block w-2 h-2 rounded-sm mr-1.5" style={{ backgroundColor: getDocColor(countryConfig, docTypes[ps.iA]) }} />
+                    {getDocLabel(countryConfig, docTypes[ps.iA])}
                     <span className="text-[var(--undp-gray)] mx-1">↔</span>
-                    <span className="inline-block w-2 h-2 rounded-sm mr-1.5" style={{ backgroundColor: DOC_COLORS[docTypes[ps.iB]] }} />
-                    {DOC_LABELS[docTypes[ps.iB]]}
+                    <span className="inline-block w-2 h-2 rounded-sm mr-1.5" style={{ backgroundColor: getDocColor(countryConfig, docTypes[ps.iB]) }} />
+                    {getDocLabel(countryConfig, docTypes[ps.iB])}
                   </td>
                   <td className="py-1.5 text-right font-medium tabular-nums" style={{
                     color: ps.score >= 20 ? ALIGNMENT_COLORS.high : ps.score >= 10 ? ALIGNMENT_COLORS.medium : ps.score > 0 ? "#7c8a3e" : "#94a3b8",
@@ -430,7 +431,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
             }}
           >
             <p className="text-xs font-semibold text-[var(--undp-black)] mb-1">
-              {DOC_LABELS[srcType]} ↔ {DOC_LABELS[tgtType]}
+              {getDocLabel(countryConfig, srcType)} ↔ {getDocLabel(countryConfig, tgtType)}
             </p>
             {ps && (
               <p className="text-sm font-semibold tabular-nums mb-1" style={{
@@ -496,7 +497,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick }: Coherenc
         const totalConnections = matrix[hoveredArc].reduce((s, v) => s + v, 0) / 2;
         return (
           <div className="mt-3 bg-[var(--undp-light)] rounded-lg px-4 py-3 text-sm text-[var(--undp-gray)]">
-            <strong className="text-[var(--undp-black)]">{DOC_LABELS[docType]}</strong>
+            <strong className="text-[var(--undp-black)]">{getDocLabel(countryConfig, docType)}</strong>
             {" · "}
             {count} target{count !== 1 ? "s" : ""}
             {" · "}

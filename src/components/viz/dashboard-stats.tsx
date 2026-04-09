@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
-import type { Target, PolicyDocumentType } from "@/types";
+import type { CountryConfig, Target, PolicyDocumentType } from "@/types";
 
 interface StatCardProps {
   value: number;
   label: string;
   color: string;
   targets?: Target[];
+  countryConfig?: CountryConfig | null;
 }
 
-function StatCard({ value, label, color, targets }: StatCardProps) {
+function StatCard({ value, label, color, targets, countryConfig }: StatCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isClickable = targets && targets.length > 0;
@@ -53,10 +54,10 @@ function StatCard({ value, label, color, targets }: StatCardProps) {
                 <div className="flex items-center gap-2 mb-1.5">
                   <span
                     className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
-                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                    title={DOC_FULL_LABELS[t.sourceDocument]}
+                    style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                    title={getDocFullLabel(countryConfig, t.sourceDocument)}
                   >
-                    {DOC_LABELS[t.sourceDocument]}
+                    {getDocLabel(countryConfig, t.sourceDocument)}
                   </span>
                   <span className="text-xs font-medium text-[var(--undp-black)]">
                     {t.sourceLabel}
@@ -80,12 +81,14 @@ interface DashboardStatsProps {
   targets: Target[];
   alignmentCount: number;
   contradictionCount: number;
+  countryConfig?: CountryConfig | null;
 }
 
 export function DashboardStats({
   targets,
   alignmentCount,
   contradictionCount,
+  countryConfig,
 }: DashboardStatsProps) {
   const targetsByDoc = new Map<PolicyDocumentType, Target[]>();
   for (const t of targets) {
@@ -109,6 +112,7 @@ export function DashboardStats({
         label={`targets from ${docTypes.length} source${docTypes.length !== 1 ? "s" : ""}`}
         color="var(--undp-blue, #0468b1)"
         targets={targets}
+        countryConfig={countryConfig}
       />
       {docTypes.map((docType) => {
         const docTargets = targetsByDoc.get(docType) ?? [];
@@ -116,9 +120,10 @@ export function DashboardStats({
           <StatCard
             key={docType}
             value={docTargets.length}
-            label={DOC_FULL_LABELS[docType]}
-            color={DOC_COLORS[docType]}
+            label={getDocFullLabel(countryConfig, docType)}
+            color={getDocColor(countryConfig, docType)}
             targets={docTargets}
+            countryConfig={countryConfig}
           />
         );
       })}

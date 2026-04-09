@@ -1,8 +1,7 @@
 "use client";
 
-import type { PolicyDocumentType } from "@/types";
 import type { UploadedDoc } from "@/lib/upload-helpers";
-import { DOC_COLORS } from "@/lib/utils";
+import { getDocColor } from "@/lib/utils";
 
 interface DocumentPipelineProps {
   uploadedDocs: UploadedDoc[];
@@ -79,7 +78,7 @@ export function DocumentPipeline({ uploadedDocs, onRemoveDoc }: DocumentPipeline
                           <span
                             key={docType}
                             className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium text-white"
-                            style={{ backgroundColor: DOC_COLORS[docType as PolicyDocumentType] ?? "#a9b1b7" }}
+                            style={{ backgroundColor: getDocColor(null, docType) }}
                           >
                             {docType}
                             <span className="opacity-80">{count}</span>
