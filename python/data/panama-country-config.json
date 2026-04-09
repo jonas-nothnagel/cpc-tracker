@@ -6,7 +6,7 @@
       "id": "NP",
       "shortLabel": "NP",
       "mediumLabel": "NP (Nature Pledge)",
-      "fullLabel": "Pacto de Panamá con la Naturaleza — Nature Pledge",
+      "fullLabel": "Pacto de Panamá con la Naturaleza (Nature Pledge)",
       "color": "#0468b1"
     },
     {
@@ -34,7 +34,7 @@
       "id": "CNR",
       "shortLabel": "CNR",
       "mediumLabel": "CNR (REDD+ Concept Note)",
-      "fullLabel": "Concept Note — REDD+ Results-Based Payments",
+      "fullLabel": "Concept Note: REDD+ Results-Based Payments",
       "color": "#7e22ce"
     }
   ],

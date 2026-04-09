@@ -12,18 +12,19 @@ import type {
 // Country-driven document type helpers
 // ---------------------------------------------------------------------------
 //
-// These helpers replace direct reads against DOC_LABELS / DOC_COLORS etc.
+// These helpers drive every document-type label and color in the UI. The old
+// hardcoded `DOC_LABELS` / `DOC_COLORS` / `DOC_MEDIUM_LABELS` / `DOC_FULL_LABELS`
+// maps that used to live at the top of this file were deleted once every
+// consumer migrated to these calls.
+//
 // Resolution order for every helper:
-//   1. Reserved token (BTR, OTHER) — universal fallback so every country
-//      renders these consistently without having to declare them.
-//   2. `countryConfig.documentTypes` — country-specific mapping loaded from
-//      `{country}-country-config.json`. Country entries OVERRIDE the reserved
+//   1. `countryConfig.documentTypes` — country-specific mapping loaded from
+//      `{country}-country-config.json`. Country entries override the reserved
 //      fallback when both are present (lets a country rename BTR if needed).
+//   2. Reserved token (BTR, OTHER) — universal fallback so every country
+//      renders these consistently without having to declare them.
 //   3. Raw id or neutral fallback — for unknown ids, return the id itself for
 //      labels and a neutral gray for colors.
-//
-// The DOC_LABELS / DOC_COLORS maps above are still read by 18 components and
-// will be deleted in Unit 15 once every call site moves to these helpers.
 
 /**
  * Universal fallback for the two reserved document-type tokens. Every country
