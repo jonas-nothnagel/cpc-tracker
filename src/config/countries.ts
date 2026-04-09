@@ -91,7 +91,7 @@ export const COUNTRIES: CountryEntry[] = [
     name: "Panama",
     iso3: "pan",
     status: "demo",
-    visible: false, // PR1: registry entry exists for code path coverage; flipped to true in PR2 once data lands.
+    visible: true, // Flipped in PR2 after translation, country config, and pipeline run landed.
     has: {
       coherence: true,
       btr: { mitigation: false, adaptation: false },

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { DOC_COLORS, DOC_LABELS } from "@/lib/utils";
+import { getDocColor, getDocLabel } from "@/lib/utils";
 import { TargetTextWithHighlights } from "./target-text";
 import type {
   AlignmentResult,
   AlignmentLevel,
+  CountryConfig,
   Target,
   PolicyDocumentType,
   ThematicClassification,
@@ -17,6 +18,7 @@ interface CoherencyClustersProps {
   targets: Target[];
   classifications: ThematicClassification[];
   sectors: IpccSector[];
+  countryConfig?: CountryConfig | null;
 }
 
 interface Cluster {
@@ -50,6 +52,7 @@ export function CoherencyClusters({
   targets,
   classifications,
   sectors,
+  countryConfig,
 }: CoherencyClustersProps) {
   const [expandedCluster, setExpandedCluster] = useState<number | null>(null);
 
@@ -239,9 +242,9 @@ export function CoherencyClusters({
                         <span
                           key={dt}
                           className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium text-white"
-                          style={{ backgroundColor: DOC_COLORS[dt] }}
+                          style={{ backgroundColor: getDocColor(countryConfig, dt) }}
                         >
-                          {DOC_LABELS[dt]} ({byDoc.get(dt)?.length ?? 0})
+                          {getDocLabel(countryConfig, dt)} ({byDoc.get(dt)?.length ?? 0})
                         </span>
                       ))}
                     </div>
@@ -283,7 +286,7 @@ export function CoherencyClusters({
                     return (
                       <div key={dt} className="mb-3 last:mb-0">
                         <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                          {DOC_LABELS[dt]} targets
+                          {getDocLabel(countryConfig, dt)} targets
                         </p>
                         <ul className="space-y-1.5">
                           {docTargets.map((t) => {
@@ -294,7 +297,7 @@ export function CoherencyClusters({
                               <li key={t.id} className="text-xs text-[var(--undp-black)] flex gap-2">
                                 <span
                                   className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-white"
-                                  style={{ backgroundColor: DOC_COLORS[dt] }}
+                                  style={{ backgroundColor: getDocColor(countryConfig, dt) }}
                                 >
                                   {t.sourceLabel}
                                 </span>

@@ -5,15 +5,16 @@ import {
   ALIGNMENT_COLORS,
   ALIGNMENT_LABELS,
   CONTRADICTION_TYPE_LABELS,
-  DOC_COLORS,
-  DOC_LABELS,
+  getDocColor,
+  getDocLabel,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
-import { TargetTextWithHighlights, ActionTypeBadge } from "./target-text";
+import { TargetTextWithHighlights, ActionTypeBadge, OriginalLanguageChip } from "./target-text";
 import { isContradiction } from "@/types";
 import type {
   AlignmentResult,
   AlignmentLevel,
+  CountryConfig,
   Target,
   ContradictionType,
   PolicyDocumentType,
@@ -30,6 +31,7 @@ interface TensionClustersProps {
   nbsCategories?: NbsCategory[];
   themes?: { id: string; name: string }[];
   onFocusTarget?: (targetId: string) => void;
+  countryConfig?: CountryConfig | null;
 }
 
 const SEVERITY_ORDER: AlignmentLevel[] = [
@@ -56,9 +58,11 @@ interface DriverTarget {
 function DriverExpanded({
   driver,
   targetMap,
+  countryConfig,
 }: {
   driver: DriverTarget;
   targetMap: Map<string, Target>;
+  countryConfig?: CountryConfig | null;
 }) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [showLow, setShowLow] = useState(false);
@@ -96,9 +100,9 @@ function DriverExpanded({
         <div className="flex items-center gap-2 flex-wrap">
           <span
             className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[10px] font-medium text-white"
-            style={{ backgroundColor: DOC_COLORS[other.sourceDocument] }}
+            style={{ backgroundColor: getDocColor(countryConfig, other.sourceDocument) }}
           >
-            {DOC_LABELS[other.sourceDocument]}
+            {getDocLabel(countryConfig, other.sourceDocument)}
           </span>
           <ActionTypeBadge actionType={other.actionType} />
           <span className="text-xs font-medium text-[var(--undp-black)]">
@@ -212,6 +216,7 @@ export function TensionClusters({
   nbsCategories,
   themes,
   onFocusTarget,
+  countryConfig,
 }: TensionClustersProps) {
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
   const [showBrowse, setShowBrowse] = useState(false);
@@ -566,15 +571,15 @@ export function TensionClusters({
                   <span className="w-32 sm:w-40 shrink-0 flex items-center gap-1.5 text-[var(--undp-gray)]">
                     <span
                       className="w-2 h-2 rounded-sm shrink-0"
-                      style={{ backgroundColor: DOC_COLORS[pair.docA] }}
+                      style={{ backgroundColor: getDocColor(countryConfig, pair.docA) }}
                     />
-                    <span>{DOC_LABELS[pair.docA]}</span>
+                    <span>{getDocLabel(countryConfig, pair.docA)}</span>
                     <span className="text-[10px] text-[var(--undp-gray)]/50">&ndash;</span>
                     <span
                       className="w-2 h-2 rounded-sm shrink-0"
-                      style={{ backgroundColor: DOC_COLORS[pair.docB] }}
+                      style={{ backgroundColor: getDocColor(countryConfig, pair.docB) }}
                     />
-                    <span>{DOC_LABELS[pair.docB]}</span>
+                    <span>{getDocLabel(countryConfig, pair.docB)}</span>
                   </span>
                   <div className="flex-1 h-1.5 rounded-full bg-gray-100 max-w-48">
                     <div
@@ -624,13 +629,13 @@ export function TensionClusters({
                       <span
                         className="shrink-0 inline-block w-16 text-center px-1.5 py-0.5 rounded text-[11px] font-medium text-white"
                         style={{
-                          backgroundColor:
-                            DOC_COLORS[d.target.sourceDocument],
+                          backgroundColor: getDocColor(countryConfig, d.target.sourceDocument),
                         }}
                       >
-                        {DOC_LABELS[d.target.sourceDocument]}
+                        {getDocLabel(countryConfig, d.target.sourceDocument)}
                       </span>
                       <ActionTypeBadge actionType={d.target.actionType} />
+                      <OriginalLanguageChip target={d.target} />
                       <span className="text-xs font-medium text-[var(--undp-black)] truncate">
                         {d.target.sourceLabel}
                       </span>
@@ -670,6 +675,7 @@ export function TensionClusters({
                       key={d.target.id}
                       driver={d}
                       targetMap={targetMap}
+                      countryConfig={countryConfig}
                     />
                   )}
                 </div>
@@ -725,7 +731,7 @@ export function TensionClusters({
                 <option value="all">All documents</option>
                 {documentTypes.map((dt) => (
                   <option key={dt} value={dt}>
-                    {DOC_LABELS[dt]}
+                    {getDocLabel(countryConfig, dt)}
                   </option>
                 ))}
               </select>
@@ -801,10 +807,10 @@ export function TensionClusters({
                           <span
                             className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[11px] font-medium text-white mt-0.5"
                             style={{
-                              backgroundColor: DOC_COLORS[t.sourceDocument],
+                              backgroundColor: getDocColor(countryConfig, t.sourceDocument),
                             }}
                           >
-                            {DOC_LABELS[t.sourceDocument]}
+                            {getDocLabel(countryConfig, t.sourceDocument)}
                           </span>
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5 mb-0.5">

@@ -10,5 +10,58 @@
     "document": "Mongolia BTR1 (December 2025)",
     "section": "CTF-NDC Table 5 / PDF Table II.6",
     "pages": "93-94"
-  }
+  },
+  "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity.",
+  "defaultHiddenDocTypes": ["LDN", "SECTORAL", "BTR", "OTHER"],
+  "documentTypes": [
+    {
+      "id": "NDC",
+      "shortLabel": "NDC",
+      "mediumLabel": "NDC (Climate)",
+      "fullLabel": "Nationally Determined Contribution",
+      "color": "#0468b1"
+    },
+    {
+      "id": "NBSAP",
+      "shortLabel": "NBSAP",
+      "mediumLabel": "NBSAP (Biodiversity)",
+      "fullLabel": "National Biodiversity Strategy & Action Plan",
+      "color": "#0d9488"
+    },
+    {
+      "id": "NAP",
+      "shortLabel": "NAP",
+      "mediumLabel": "NAP (Adaptation)",
+      "fullLabel": "National Adaptation Plan",
+      "color": "#b45309"
+    },
+    {
+      "id": "LDN",
+      "shortLabel": "LDN",
+      "mediumLabel": "LDN (Land)",
+      "fullLabel": "Land Degradation Neutrality",
+      "color": "#dc2626"
+    },
+    {
+      "id": "SECTORAL",
+      "shortLabel": "Sectoral",
+      "mediumLabel": "Vision 2050",
+      "fullLabel": "Vision 2050 (Long-term Development Policy)",
+      "color": "#4f7942"
+    },
+    {
+      "id": "BTR",
+      "shortLabel": "BTR Action",
+      "mediumLabel": "BTR (Transparency)",
+      "fullLabel": "Biennial Transparency Report",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "OTHER",
+      "shortLabel": "Other",
+      "mediumLabel": "Other",
+      "fullLabel": "Other Policy Document",
+      "color": "#78716c"
+    }
+  ]
 }

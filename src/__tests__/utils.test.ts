@@ -1,7 +1,14 @@
 import { describe, it, expect } from "vitest";
-import { countByCategory } from "@/lib/utils";
+import {
+  countByCategory,
+  getDocColor,
+  getDocFullLabel,
+  getDocLabel,
+  getDocMediumLabel,
+  getDocTypeOrder,
+} from "@/lib/utils";
 import { isContradiction } from "@/types";
-import type { Target, ThematicClassification } from "@/types";
+import type { CountryConfig, Target, ThematicClassification } from "@/types";
 
 // ---------------------------------------------------------------------------
 // isContradiction
@@ -69,6 +76,142 @@ describe("countByCategory", () => {
     const result = countByCategory(targets, classifications, categories);
     const catA = result.find((r) => r.categoryId === "cat_a")!;
     expect(catA.total).toBe(1);
-    expect(catA.byDocument.NAP).toBe(0);
+    // Under the open PolicyDocumentType contract, `byDoc` only holds keys
+    // for document types that actually appeared in the loop. NAP never does
+    // here because the sole NAP target is filtered out as non-relevant, so
+    // the key is absent rather than zero. Consumers must use `?? 0` when
+    // they want arithmetic behaviour.
+    expect(catA.byDocument.NAP ?? 0).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Country-driven document type helpers
+// ---------------------------------------------------------------------------
+
+const mongoliaConfig: CountryConfig = {
+  documentTypes: [
+    { id: "NDC", shortLabel: "NDC", mediumLabel: "NDC (Climate)",
+      fullLabel: "Nationally Determined Contribution", color: "#0468b1" },
+    { id: "NBSAP", shortLabel: "NBSAP", mediumLabel: "NBSAP (Biodiversity)",
+      fullLabel: "National Biodiversity Strategy & Action Plan", color: "#0d9488" },
+  ],
+};
+
+const panamaConfig: CountryConfig = {
+  documentTypes: [
+    { id: "NP", shortLabel: "NP", mediumLabel: "NP (Nature Pledge)",
+      fullLabel: "Nature Pledge", color: "#0468b1" },
+    { id: "ENR", shortLabel: "ENR", mediumLabel: "ENR (REDD+)",
+      fullLabel: "Estrategia Nacional REDD+", color: "#4f7942" },
+  ],
+};
+
+describe("getDocLabel", () => {
+  it("returns the country-specific short label", () => {
+    expect(getDocLabel(mongoliaConfig, "NDC")).toBe("NDC");
+    expect(getDocLabel(panamaConfig, "NP")).toBe("NP");
+  });
+
+  it("returns the reserved BTR short label even without a country config", () => {
+    expect(getDocLabel(null, "BTR")).toBe("BTR Action");
+    expect(getDocLabel(undefined, "BTR")).toBe("BTR Action");
+    expect(getDocLabel(mongoliaConfig, "BTR")).toBe("BTR Action");
+  });
+
+  it("returns the reserved OTHER short label even without a country config", () => {
+    expect(getDocLabel(null, "OTHER")).toBe("Other");
+    expect(getDocLabel(mongoliaConfig, "OTHER")).toBe("Other");
+  });
+
+  it("falls back to the raw id for unknown documents", () => {
+    expect(getDocLabel(mongoliaConfig, "UNKNOWN")).toBe("UNKNOWN");
+    expect(getDocLabel(null, "UNKNOWN")).toBe("UNKNOWN");
+  });
+
+  it("lets a country override the reserved BTR entry when present", () => {
+    const custom: CountryConfig = {
+      documentTypes: [
+        { id: "BTR", shortLabel: "BUR", mediumLabel: "BUR",
+          fullLabel: "Biennial Update Report", color: "#123456" },
+      ],
+    };
+    expect(getDocLabel(custom, "BTR")).toBe("BUR");
+  });
+});
+
+describe("getDocMediumLabel", () => {
+  it("returns the country-specific medium label", () => {
+    expect(getDocMediumLabel(mongoliaConfig, "NDC")).toBe("NDC (Climate)");
+  });
+
+  it("returns the reserved medium label for BTR", () => {
+    expect(getDocMediumLabel(null, "BTR")).toBe("BTR (Transparency)");
+  });
+
+  it("falls back to the raw id for unknown documents", () => {
+    expect(getDocMediumLabel(mongoliaConfig, "UNKNOWN")).toBe("UNKNOWN");
+  });
+});
+
+describe("getDocFullLabel", () => {
+  it("returns the country-specific full label", () => {
+    expect(getDocFullLabel(mongoliaConfig, "NDC")).toBe("Nationally Determined Contribution");
+  });
+
+  it("returns the reserved full label for OTHER", () => {
+    expect(getDocFullLabel(null, "OTHER")).toBe("Other Policy Document");
+  });
+
+  it("falls back to the raw id for unknown documents", () => {
+    expect(getDocFullLabel(null, "UNKNOWN")).toBe("UNKNOWN");
+  });
+});
+
+describe("getDocColor", () => {
+  it("returns the country-specific color", () => {
+    expect(getDocColor(mongoliaConfig, "NDC")).toBe("#0468b1");
+    expect(getDocColor(panamaConfig, "ENR")).toBe("#4f7942");
+  });
+
+  it("returns the reserved BTR color without a country config", () => {
+    expect(getDocColor(null, "BTR")).toBe("#7c3aed");
+  });
+
+  it("returns a neutral gray for unknown documents", () => {
+    expect(getDocColor(mongoliaConfig, "UNKNOWN")).toBe("#94a3b8");
+    expect(getDocColor(null, "UNKNOWN")).toBe("#94a3b8");
+  });
+});
+
+describe("getDocTypeOrder", () => {
+  it("returns the country's declared index", () => {
+    expect(getDocTypeOrder(mongoliaConfig, "NDC")).toBe(0);
+    expect(getDocTypeOrder(mongoliaConfig, "NBSAP")).toBe(1);
+    expect(getDocTypeOrder(panamaConfig, "ENR")).toBe(1);
+  });
+
+  it("sorts reserved tokens after country-declared entries", () => {
+    const btrOrder = getDocTypeOrder(mongoliaConfig, "BTR");
+    const otherOrder = getDocTypeOrder(mongoliaConfig, "OTHER");
+    expect(btrOrder).toBeGreaterThan(getDocTypeOrder(mongoliaConfig, "NBSAP"));
+    expect(otherOrder).toBeGreaterThan(btrOrder);
+  });
+
+  it("sorts unknown ids to the very end", () => {
+    expect(getDocTypeOrder(mongoliaConfig, "UNKNOWN")).toBe(Number.MAX_SAFE_INTEGER);
+    expect(getDocTypeOrder(null, "UNKNOWN")).toBe(Number.MAX_SAFE_INTEGER);
+  });
+
+  it("uses the country override for BTR when declared in the country config", () => {
+    const custom: CountryConfig = {
+      documentTypes: [
+        { id: "BTR", shortLabel: "BTR", mediumLabel: "BTR", fullLabel: "BTR", color: "#000" },
+        { id: "NDC", shortLabel: "NDC", mediumLabel: "NDC", fullLabel: "NDC", color: "#000" },
+      ],
+    };
+    // Country index wins: BTR is position 0 here, not the reserved offset.
+    expect(getDocTypeOrder(custom, "BTR")).toBe(0);
+    expect(getDocTypeOrder(custom, "NDC")).toBe(1);
   });
 });

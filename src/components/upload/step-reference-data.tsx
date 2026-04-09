@@ -5,7 +5,7 @@ import type { PolicyDocumentType, Target } from "@/types";
 import type { BtrData, UploadedDoc } from "@/lib/upload-helpers";
 import type { TargetRow } from "@/lib/csv-parser";
 import { getCountry, normaliseCountry } from "@/config/countries";
-import { DOC_COLORS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel } from "@/lib/utils";
 
 type RefData = {
   targets: Target[];
@@ -42,14 +42,6 @@ function groupByDoc(targets: Target[]) {
     targets: tgts,
   }));
 }
-
-const DOC_LABELS: Record<string, string> = {
-  NDC: "Nationally Determined Contributions",
-  NBSAP: "National Biodiversity Strategy & Action Plan",
-  NAP: "National Adaptation Plan",
-  LDN: "Land Degradation Neutrality",
-  SECTORAL: "Sectoral Policy / Vision",
-};
 
 export function StepReferenceData({
   country,
@@ -215,11 +207,11 @@ export function StepReferenceData({
                   <div className="px-4 py-3 flex items-center gap-3">
                     <div
                       className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: DOC_COLORS[docType] + "18" }}
+                      style={{ backgroundColor: `${getDocColor(null, docType)}18` }}
                     >
                       <span
                         className="text-[10px] font-bold"
-                        style={{ color: DOC_COLORS[docType] }}
+                        style={{ color: getDocColor(null, docType) }}
                       >
                         {docType.length > 4 ? docType.slice(0, 3) : docType}
                       </span>
@@ -227,9 +219,19 @@ export function StepReferenceData({
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-[var(--undp-black)]">
                         {docType}
-                        <span className="font-normal text-[var(--undp-gray)] ml-1">
-                          {DOC_LABELS[docType] ? `\u2014 ${DOC_LABELS[docType]}` : ""}
-                        </span>
+                        {(() => {
+                          // Only append a descriptive suffix when the helper
+                          // actually resolves to a different string (i.e. a
+                          // country config or reserved token has a full label).
+                          // When it just echoes the raw id, skip the em dash
+                          // so the row doesn't read "NDC — NDC".
+                          const full = getDocFullLabel(null, docType);
+                          return full !== docType ? (
+                            <span className="font-normal text-[var(--undp-gray)] ml-1">
+                              {"\u2014 "}{full}
+                            </span>
+                          ) : null;
+                        })()}
                       </p>
                       <p className="text-xs text-[var(--undp-gray)]">
                         {count} target{count !== 1 ? "s" : ""}

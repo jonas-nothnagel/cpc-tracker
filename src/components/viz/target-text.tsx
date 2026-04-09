@@ -1,8 +1,108 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Target, BTRActionType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
+
+/**
+ * Two-letter language code chip displayed next to target text for rows
+ * whose source was translated from another language (Panama targets were
+ * originally in Spanish). Click opens an inline panel showing the original
+ * text and the translated text side-by-side so reviewers can verify the
+ * translation. Returns `null` when `textOriginal` is missing, so existing
+ * English-sourced targets (Mongolia) render nothing new.
+ *
+ * `languageCode` defaults to "ES" because Panama is the only translated
+ * country in the current scope. Future countries whose source language is
+ * different should pass their own ISO-639-1 code.
+ */
+export function OriginalLanguageChip({
+  target,
+  languageCode = "ES",
+  languageName = "Spanish",
+}: {
+  target: Pick<Target, "text" | "textOriginal" | "sourceLabel" | "sourceLabelOriginal">;
+  languageCode?: string;
+  languageName?: string;
+}) {
+  const [open, setOpen] = useState(false);
+
+  // Close on Escape for keyboard users.
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open]);
+
+  if (!target.textOriginal) return null;
+
+  return (
+    <span className="relative inline-block">
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((v) => !v);
+        }}
+        aria-expanded={open}
+        aria-label={`Show original ${languageName} source text`}
+        title={`Click to see the original ${languageName} source`}
+        className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-[9px] font-semibold uppercase tracking-wide hover:bg-amber-100 transition-colors"
+      >
+        {languageCode}
+      </button>
+      {open && (
+        <span
+          role="dialog"
+          aria-label={`Original ${languageName} source and English translation`}
+          className="absolute left-0 top-full mt-1.5 z-50 w-[420px] max-w-[90vw] bg-white border border-gray-200 rounded-lg shadow-lg p-3.5 text-[11px] text-[var(--undp-black)] leading-relaxed cursor-default"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-start justify-between mb-2 gap-2">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+              Translated from {languageName}
+            </span>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close"
+              className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-base leading-none shrink-0"
+            >
+              ×
+            </button>
+          </div>
+          <div className="space-y-2.5">
+            <div>
+              <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
+                Original ({languageName})
+              </p>
+              {target.sourceLabelOriginal && (
+                <p className="font-medium text-[var(--undp-gray)] mb-1">
+                  {target.sourceLabelOriginal}
+                </p>
+              )}
+              <p className="italic text-[var(--undp-black)]">{target.textOriginal}</p>
+            </div>
+            <div className="border-t border-gray-100 pt-2">
+              <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
+                Translation (English)
+              </p>
+              {target.sourceLabel && (
+                <p className="font-medium text-[var(--undp-gray)] mb-1">
+                  {target.sourceLabel}
+                </p>
+              )}
+              <p className="text-[var(--undp-black)]">{target.text}</p>
+            </div>
+          </div>
+        </span>
+      )}
+    </span>
+  );
+}
 
 /**
  * Small badge labeling a BTR row as "Mitigation" or "Adaptation". Shown next to

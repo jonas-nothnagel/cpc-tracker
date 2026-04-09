@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS, DOC_MEDIUM_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel, getDocMediumLabel, getDocTypeOrder } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import {
@@ -10,6 +10,7 @@ import {
   ActionTypeBadge,
   BTR_ADAPTATION_COLOR,
   BTR_MITIGATION_COLOR,
+  OriginalLanguageChip,
 } from "./target-text";
 import type {
   Target,
@@ -39,18 +40,6 @@ function formatSourceRef(ref?: SourceRef): string | undefined {
   return parts.length ? parts.join(", ") : undefined;
 }
 
-// ─── Acronym descriptions for InfoBox ─────────────────────────────────────────
-
-const ACRONYM_DESCRIPTIONS: Record<string, string> = {
-  NDC: "Nationally Determined Contribution",
-  NBSAP: "National Biodiversity Strategy and Action Plan",
-  NAP: "National Adaptation Plan",
-  LDN: "Land Degradation Neutrality",
-  BTR: "Biennial Transparency Report",
-  NR7: "7th National Report to the Convention on Biological Diversity",
-};
-const ACRONYM_ORDER = ["NDC", "NBSAP", "NAP", "LDN", "BTR", "NR7"];
-
 // ─── Target list modal ────────────────────────────────────────────────────────
 
 /**
@@ -59,10 +48,11 @@ const ACRONYM_ORDER = ["NDC", "NBSAP", "NAP", "LDN", "BTR", "NR7"];
  * policy-document and BTR-action data source chips so the inspection UX is
  * consistent across the two sources.
  */
-function TargetListModal({ label, targets, sourceRef, onClose }: {
+function TargetListModal({ label, targets, sourceRef, countryConfig, onClose }: {
   label: string;
   targets: Target[];
   sourceRef?: string;
+  countryConfig?: CountryConfig | null;
   onClose: () => void;
 }) {
   return (
@@ -78,12 +68,13 @@ function TargetListModal({ label, targets, sourceRef, onClose }: {
             <div className="flex items-center gap-2 mb-1.5 flex-wrap">
               <span
                 className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
-                style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                title={DOC_FULL_LABELS[t.sourceDocument]}
+                style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                title={getDocFullLabel(countryConfig, t.sourceDocument)}
               >
-                {DOC_LABELS[t.sourceDocument]}
+                {getDocLabel(countryConfig, t.sourceDocument)}
               </span>
               <ActionTypeBadge actionType={t.actionType} />
+              <OriginalLanguageChip target={t} />
               <span className="text-xs font-medium text-[var(--undp-black)]">
                 {t.sourceLabel}
               </span>
@@ -128,10 +119,13 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
     list.push(t);
     targetsByDoc.set(t.sourceDocument, list);
   }
-  const docTypes = Array.from(targetsByDoc.keys()).sort((a, b) => {
-    const order: PolicyDocumentType[] = ["NDC", "NBSAP", "NAP", "LDN", "SECTORAL", "BTR", "OTHER"];
-    return order.indexOf(a) - order.indexOf(b);
-  });
+  // Sort order comes from the country config's documentTypes array so each
+  // country can order its chips naturally (NP first for Panama, NDC first for
+  // Mongolia, etc.). Unknown ids and reserved tokens sort to the end — see
+  // `getDocTypeOrder` in @/lib/utils.
+  const docTypes = Array.from(targetsByDoc.keys()).sort(
+    (a, b) => getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+  );
 
   // Split BTR reported actions into mitigation vs adaptation so the two types
   // are visible as distinct sources (stakeholder ask, 7 April 2026 Mongolia call).
@@ -164,14 +158,16 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
     // Skip BTR pseudo-targets — BTR is shown via the "BTR (Actions)" entry below
     if (docType === "BTR") continue;
     const docTargets = targetsByDoc.get(docType) ?? [];
+    const fullLabel = getDocFullLabel(countryConfig, docType);
+    const docColor = getDocColor(countryConfig, docType);
     sources.push({
       key: `doc:${docType}`,
-      name: DOC_FULL_LABELS[docType],
+      name: fullLabel,
       detail: `${docTargets.length} target${docTargets.length === 1 ? "" : "s"}`,
-      color: DOC_COLORS[docType],
-      badge: DOC_MEDIUM_LABELS[docType],
+      color: docColor,
+      badge: getDocMediumLabel(countryConfig, docType),
       provenance: docProvenance[docType],
-      onClick: () => setModal({ label: DOC_FULL_LABELS[docType], targets: docTargets, color: DOC_COLORS[docType] }),
+      onClick: () => setModal({ label: fullLabel, targets: docTargets, color: docColor }),
     });
   }
   // BTR pseudo-targets are already merged into the `targets` prop by the
@@ -232,14 +228,35 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
     });
   }
 
-  // Dynamic abbreviation list for InfoBox
-  const presentAbbreviations = new Set<string>();
+  // Dynamic abbreviation list for the InfoBox. Each entry pairs a document
+  // type id with its full label, pulled from the country's documentTypes via
+  // `getDocFullLabel`. This drops the old hardcoded Mongolia-only map, so
+  // Panama's NP/ENR/IRMF/SPGCF/CNR abbreviations are explained on hover the
+  // same way Mongolia's NDC/NBSAP/... always were. NR7 is appended manually
+  // because it's a data source, not a document type in the registry.
+  const abbrList: { abbr: string; description: string }[] = [];
+  const seenAbbrs = new Set<string>();
   for (const dt of docTypes) {
-    if (dt in ACRONYM_DESCRIPTIONS) presentAbbreviations.add(dt);
+    if (seenAbbrs.has(dt)) continue;
+    const full = getDocFullLabel(countryConfig, dt);
+    if (full !== dt) {
+      // Helper resolved a name richer than the raw id — worth expanding.
+      abbrList.push({ abbr: dt, description: full });
+      seenAbbrs.add(dt);
+    }
   }
-  if (btrData && btrMeasures > 0) presentAbbreviations.add("BTR");
-  if (nr7Data && nr7Count > 0) presentAbbreviations.add("NR7");
-  const abbrList = ACRONYM_ORDER.filter(a => presentAbbreviations.has(a));
+  if (btrData && btrMeasures > 0 && !seenAbbrs.has("BTR")) {
+    abbrList.push({
+      abbr: "BTR",
+      description: getDocFullLabel(countryConfig, "BTR"),
+    });
+  }
+  if (nr7Data && nr7Count > 0) {
+    abbrList.push({
+      abbr: "NR7",
+      description: "7th National Report to the Convention on Biological Diversity",
+    });
+  }
 
   // Summary counts (exclude BTR pseudo-targets — those are shown via BTR Actions entries)
   const policyTargetCount = targets.filter(t => t.sourceDocument !== "BTR").length;
@@ -264,9 +281,9 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
               {abbrList.length > 0 && (
                 <>
                   <br /><br />
-                  {abbrList.map((abbr, i) => (
-                    <span key={abbr}>
-                      <strong>{abbr}</strong> = {ACRONYM_DESCRIPTIONS[abbr]}
+                  {abbrList.map((entry, i) => (
+                    <span key={entry.abbr}>
+                      <strong>{entry.abbr}</strong> = {entry.description}
                       {i < abbrList.length - 1 ? <br /> : null}
                     </span>
                   ))}
@@ -324,6 +341,7 @@ export function DataSourcesOverview({ targets, btrData, nr7Data, countryConfig }
           label={modal.label}
           targets={modal.targets}
           sourceRef={modal.sourceRef}
+          countryConfig={countryConfig}
           onClose={() => setModal(null)}
         />
       )}

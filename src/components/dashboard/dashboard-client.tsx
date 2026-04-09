@@ -88,7 +88,7 @@ function ClassificationSection({
   targets, documentTypes, nbsSorted, sectorSorted, themeSorted,
   nbsClassifications, sectorClassifications, themeClassifications,
   targetsWithNbs, targetsWithSectors, targetsWithThemes,
-  nbsCategories, sectors, themes,
+  nbsCategories, sectors, themes, countryConfig,
 }: {
   targets: Target[];
   documentTypes: PolicyDocumentType[];
@@ -104,6 +104,7 @@ function ClassificationSection({
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   themes: TaxonomyCategory[];
+  countryConfig: CountryConfig | null;
 }) {
   const viewOptions: { value: ClassificationView; label: string }[] = [
     ...(nbsCategories.length > 0
@@ -170,6 +171,7 @@ function ClassificationSection({
         timeBoundTargets={targets.filter((t) => t.isTimeBound)}
         totalTargets={targets.length}
         mappedTargets={mappedTargetsByView[view]}
+        countryConfig={countryConfig}
       />
 
       <div className="mt-4">
@@ -179,6 +181,7 @@ function ClassificationSection({
             documentTypes={[...documentTypes]}
             targets={targets}
             nbsClassifications={nbsClassifications}
+            countryConfig={countryConfig}
           />
         )}
         {view === "sector" && (
@@ -188,6 +191,7 @@ function ClassificationSection({
             targets={targets}
             themeClassifications={sectorClassifications}
             taxonomyType="sector"
+            countryConfig={countryConfig}
           />
         )}
         {view === "theme" && (
@@ -197,6 +201,7 @@ function ClassificationSection({
             targets={targets}
             themeClassifications={themeClassifications}
             taxonomyType="theme"
+            countryConfig={countryConfig}
           />
         )}
       </div>
@@ -374,6 +379,30 @@ export function DashboardClient({
           </p>
         </section>
 
+        {/* Translation provenance banner: shown when any target carries an
+            original-language source. Users can click the ES tag on any target
+            to verify the translation against the original text. */}
+        {targets.some((t) => t.textOriginal) && (
+          <div className="mb-6 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-[var(--undp-black)]">
+            <span
+              aria-hidden="true"
+              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-200 text-[11px] font-bold text-amber-800"
+            >
+              i
+            </span>
+            <p className="leading-relaxed">
+              This country&apos;s policy targets were originally in Spanish and
+              have been translated to English by AI for this analysis. Click
+              the {" "}
+              <span className="inline-flex items-center px-1 py-0.5 rounded border border-amber-300 bg-white text-amber-800 text-[9px] font-semibold uppercase tracking-wide mx-0.5">
+                ES
+              </span>
+              {" "}tag on any target to see the original Spanish and verify the
+              translation.
+            </p>
+          </div>
+        )}
+
         <DataSourcesOverview
           targets={targets}
           alignmentOpportunities={data.alignment.filter((a) => a.alignment === "high" || a.alignment === "medium").length}
@@ -393,6 +422,7 @@ export function DashboardClient({
           classifications={data.classifications}
           nr7Data={data.nr7Data}
           focusTargetId={focusTargetId}
+          countryConfig={data.countryConfig}
         />
         </div>
 
@@ -412,6 +442,7 @@ export function DashboardClient({
           nbsCategories={data.nbsCategories}
           sectors={data.sectors}
           themes={data.themes}
+          countryConfig={data.countryConfig}
         />
 
         {/* --- Structural Tension Analysis --- */}
@@ -423,6 +454,7 @@ export function DashboardClient({
           nbsCategories={data.nbsCategories}
           themes={data.themes}
           onFocusTarget={setFocusTargetId}
+          countryConfig={data.countryConfig}
         />
 
         {/* --- Financial Alignment (placeholder) --- */}
@@ -506,6 +538,7 @@ export function DashboardClient({
                   targets={targets}
                   sectors={data.sectors}
                   classifications={data.classifications}
+                  countryConfig={data.countryConfig}
                 />
 
                 <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">

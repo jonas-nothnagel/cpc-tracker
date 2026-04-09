@@ -22,11 +22,11 @@ describe("getCountry", () => {
     expect(m?.has.nr7).toBe(true);
   });
 
-  it("returns the Panama entry and reflects PR1 visibility", () => {
+  it("returns the Panama entry as visible with coherence-only features", () => {
     const p = getCountry("panama");
     expect(p).toBeDefined();
     expect(p?.name).toBe("Panama");
-    expect(p?.visible).toBe(false);
+    expect(p?.visible).toBe(true);
     expect(p?.has.coherence).toBe(true);
     expect(p?.has.btr.mitigation).toBe(false);
     expect(p?.has.btr.adaptation).toBe(false);
@@ -90,12 +90,11 @@ describe("listCountries", () => {
 });
 
 describe("listVisibleCountries", () => {
-  it("returns only countries with visible: true", () => {
+  it("returns both Mongolia and Panama now that PR2 has landed", () => {
     const visible = listVisibleCountries();
     const ids = visible.map((c) => c.id);
     expect(ids).toContain("mongolia");
-    // Panama is hidden in PR1 until data lands in PR2.
-    expect(ids).not.toContain("panama");
+    expect(ids).toContain("panama");
   });
 
   it("every visible country has a non-empty name and valid id", () => {

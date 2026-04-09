@@ -5,7 +5,7 @@ import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 import type { TaxonomyGroup } from "@/hooks/useCategories";
-import { DOC_COLORS } from "@/lib/utils";
+import { getDocColor } from "@/lib/utils";
 import { ManualTargetEditor } from "./manual-target-editor";
 import { ManualEntryForm } from "./manual-entry-form";
 import { CategoryConfig } from "./category-config";
@@ -148,7 +148,7 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
                 <button type="button"
                   onClick={() => setExpandedDoc(expandedDoc === docType ? null : docType)}
                   className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors">
-                  <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: DOC_COLORS[docType] }} />
+                  <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: getDocColor(null, docType) }} />
                   <span className="text-sm font-medium text-[var(--undp-black)]">{docType}</span>
                   <span className="text-sm text-[var(--undp-gray)] ml-auto tabular-nums">
                     {docTargets.length} target{docTargets.length !== 1 ? "s" : ""}

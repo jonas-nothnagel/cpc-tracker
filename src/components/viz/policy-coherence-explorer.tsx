@@ -3,10 +3,11 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { arc as d3Arc } from "d3-shape";
 import {
-  DOC_COLORS,
-  DOC_LABELS,
-  DOC_MEDIUM_LABELS,
-  DOC_FULL_LABELS,
+  getDocColor,
+  getDocFullLabel,
+  getDocLabel,
+  getDocMediumLabel,
+  getDocTypeOrder,
   ALIGNMENT_COLORS,
   ALIGNMENT_LABELS,
 } from "@/lib/utils";
@@ -17,8 +18,10 @@ import {
   ActivitiesActions,
   ActionTypeBadge,
   BTR_ADAPTATION_COLOR,
+  OriginalLanguageChip,
 } from "./target-text";
 import type {
+  CountryConfig,
   Target,
   PolicyDocumentType,
   AlignmentResult,
@@ -128,6 +131,7 @@ function buildGroups(
   themes: TaxCategory[],
   nbsCategories: TaxCategory[],
   classifications: ThematicClassification[],
+  countryConfig?: CountryConfig | null,
 ): Group[] {
   if (mode === "document") {
     const m = new Map<PolicyDocumentType, Target[]>();
@@ -138,8 +142,8 @@ function buildGroups(
     }
     return Array.from(m.entries()).map(([d, ts]) => ({
       id: d,
-      label: DOC_FULL_LABELS[d],
-      color: DOC_COLORS[d],
+      label: getDocFullLabel(countryConfig, d),
+      color: getDocColor(countryConfig, d),
       targets: ts,
     }));
   }
@@ -242,6 +246,7 @@ function DetailPanel({
   onBackFromPair,
   nr7Item,
   nr7ProgressMap,
+  countryConfig,
 }: {
   node: NodePos;
   connections: (AlignmentResult & { otherTarget: Target })[];
@@ -251,6 +256,7 @@ function DetailPanel({
   onBackFromPair: () => void;
   nr7Item?: Nr7ProgressItem | null;
   nr7ProgressMap?: Map<string, string>;
+  countryConfig?: CountryConfig | null;
 }) {
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
@@ -300,8 +306,9 @@ function DetailPanel({
         <div className="px-4 py-3 space-y-3 border-b border-gray-100">
           {[node.target, comparedPair.other].map((t) => (
             <div key={t.id}>
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                {DOC_LABELS[t.sourceDocument]}: {t.sourceLabel}
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
+                <span>{getDocLabel(countryConfig, t.sourceDocument)}: {t.sourceLabel}</span>
+                <OriginalLanguageChip target={t} />
               </p>
               <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
                 <TargetTextWithHighlights target={t} />
@@ -337,11 +344,12 @@ function DetailPanel({
       {/* Target header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: DOC_COLORS[node.target.sourceDocument] }} />
+          <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: getDocColor(countryConfig, node.target.sourceDocument) }} />
           <span className="text-sm font-semibold text-[var(--undp-black)] truncate">
-            {DOC_LABELS[node.target.sourceDocument]} · {node.target.sourceLabel}
+            {getDocLabel(countryConfig, node.target.sourceDocument)} · {node.target.sourceLabel}
           </span>
           <ActionTypeBadge actionType={node.target.actionType} />
+          <OriginalLanguageChip target={node.target} />
         </div>
         <button type="button" onClick={onClose} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none ml-2 shrink-0">
           ×
@@ -433,10 +441,11 @@ function DetailPanel({
                   <div className="flex items-center gap-2">
                     <span
                       className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
-                      style={{ backgroundColor: DOC_COLORS[conn.otherTarget.sourceDocument] }}
+                      style={{ backgroundColor: getDocColor(countryConfig, conn.otherTarget.sourceDocument) }}
                     >
-                      {DOC_LABELS[conn.otherTarget.sourceDocument]}
+                      {getDocLabel(countryConfig, conn.otherTarget.sourceDocument)}
                     </span>
+                    <OriginalLanguageChip target={conn.otherTarget} />
                     <ActionTypeBadge actionType={conn.otherTarget.actionType} />
                     <span className="text-xs font-medium text-[var(--undp-black)] truncate flex-1">
                       {conn.otherTarget.sourceLabel}
@@ -515,6 +524,7 @@ interface PolicyCoherenceExplorerProps {
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
   focusTargetId?: string | null;
+  countryConfig?: CountryConfig | null;
 }
 
 export function PolicyCoherenceExplorer({
@@ -526,6 +536,7 @@ export function PolicyCoherenceExplorer({
   classifications,
   nr7Data,
   focusTargetId,
+  countryConfig,
 }: PolicyCoherenceExplorerProps) {
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
   const [filter, setFilter] = useState<AlignFilter>("high_contra");
@@ -536,7 +547,13 @@ export function PolicyCoherenceExplorer({
     result: AlignmentResult;
     other: Target;
   } | null>(null);
-  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(() => new Set(["LDN", "SECTORAL", "BTR", "OTHER"]));
+  // Default-hidden document types come from the country config so each
+  // country controls which documents add visual noise to its first view.
+  // Mongolia's config ships the old hardcoded list ["LDN","SECTORAL","BTR","OTHER"];
+  // Panama ships an empty list. Users can still toggle these back on.
+  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(
+    () => new Set(countryConfig?.defaultHiddenDocTypes ?? []),
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -563,12 +580,18 @@ export function PolicyCoherenceExplorer({
     }
   }
 
-  /** All document types present in the data */
+  /**
+   * All document types present in the data, ordered by the country's
+   * declared order (falling back to reserved tokens then an unknown-id tail).
+   * Derived from the targets themselves so a country with unfamiliar doc ids
+   * (e.g. Panama's NP/ENR/IRMF/SPGCF/CNR) still gets a populated filter row.
+   */
   const availableDocs = useMemo(() => {
-    const order: PolicyDocumentType[] = ["NDC", "NBSAP", "NAP", "LDN", "SECTORAL", "BTR", "OTHER"];
-    const present = new Set(targets.map((t) => t.sourceDocument));
-    return order.filter((d) => present.has(d));
-  }, [targets]);
+    const present = Array.from(new Set(targets.map((t) => t.sourceDocument)));
+    return present.sort(
+      (a, b) => getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+    );
+  }, [targets, countryConfig]);
 
   const toggleDoc = (doc: string) =>
     setHiddenDocs((prev) => {
@@ -637,8 +660,8 @@ export function PolicyCoherenceExplorer({
   const activeId = selectedId ?? hoveredId;
 
   const groups = useMemo(
-    () => buildGroups(visibleTargets, groupMode, sectors, themes, nbsCategories, classifications),
-    [visibleTargets, groupMode, sectors, themes, nbsCategories, classifications],
+    () => buildGroups(visibleTargets, groupMode, sectors, themes, nbsCategories, classifications, countryConfig),
+    [visibleTargets, groupMode, sectors, themes, nbsCategories, classifications, countryConfig],
   );
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
@@ -808,7 +831,7 @@ export function PolicyCoherenceExplorer({
           )}
           {availableDocs.map((doc) => {
             const active = !hiddenDocs.has(doc);
-            const color = DOC_COLORS[doc];
+            const color = getDocColor(countryConfig, doc);
             return (
               <button
                 key={doc}
@@ -820,12 +843,13 @@ export function PolicyCoherenceExplorer({
                     : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-gray-300"
                 }`}
                 style={active ? { color, borderColor: `${color}66`, backgroundColor: `${color}1a` } : undefined}
+                title={getDocFullLabel(countryConfig, doc)}
               >
                 <span
                   className="w-2 h-2 rounded-sm"
                   style={{ backgroundColor: active ? color : "#d1d5db" }}
                 />
-                {DOC_LABELS[doc]}
+                {getDocLabel(countryConfig, doc)}
               </button>
             );
           })}
@@ -849,7 +873,7 @@ export function PolicyCoherenceExplorer({
                 .filter((t) =>
                   t.sourceLabel.toLowerCase().includes(q) ||
                   t.text.toLowerCase().includes(q) ||
-                  DOC_FULL_LABELS[t.sourceDocument].toLowerCase().includes(q),
+                  getDocFullLabel(countryConfig, t.sourceDocument).toLowerCase().includes(q),
                 )
                 .slice(0, 8);
               if (matches.length === 0) return null;
@@ -868,11 +892,11 @@ export function PolicyCoherenceExplorer({
                     >
                       <span
                         className="w-2 h-2 rounded-full shrink-0"
-                        style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
+                        style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
                       />
                       <span className="text-xs text-[var(--undp-black)] truncate">
                         <span className="font-medium text-[var(--undp-gray)]">
-                          {DOC_LABELS[t.sourceDocument]}
+                          {getDocLabel(countryConfig, t.sourceDocument)}
                         </span>
                         {" "}{t.sourceLabel}
                       </span>
@@ -1005,8 +1029,8 @@ export function PolicyCoherenceExplorer({
                 const isDimmed = !!activeId && !isActive && !isConnected;
                 const useGroupColor = groupMode !== "document";
                 const baseNodeColor = useGroupColor
-                  ? (groupColorMap.get(node.groupId) ?? DOC_COLORS[node.target.sourceDocument])
-                  : DOC_COLORS[node.target.sourceDocument];
+                  ? (groupColorMap.get(node.groupId) ?? getDocColor(countryConfig, node.target.sourceDocument))
+                  : getDocColor(countryConfig, node.target.sourceDocument);
                 // Override for BTR adaptation actions so they're visually distinct
                 // from BTR mitigation (purple) regardless of grouping mode.
                 const nodeColor =
@@ -1053,7 +1077,7 @@ export function PolicyCoherenceExplorer({
                         handleNodeClick(node.id);
                       }}
                     >
-                      <title>{DOC_MEDIUM_LABELS[node.target.sourceDocument]}: {node.target.sourceLabel}</title>
+                      <title>{getDocMediumLabel(countryConfig, node.target.sourceDocument)}: {node.target.sourceLabel}</title>
                     </circle>
                     {/* Small doc-type indicator dot in non-document modes */}
                     {useGroupColor && r >= 4 && !isDimmed && (
@@ -1061,7 +1085,7 @@ export function PolicyCoherenceExplorer({
                         cx={node.x}
                         cy={node.y}
                         r={2.5}
-                        fill={DOC_COLORS[node.target.sourceDocument]}
+                        fill={getDocColor(countryConfig, node.target.sourceDocument)}
                         stroke="white"
                         strokeWidth={0.5}
                         className="pointer-events-none"
@@ -1102,7 +1126,7 @@ export function PolicyCoherenceExplorer({
                 return visible.map(({ node, isActive }) => {
                   const lx = LABEL_R * Math.sin(node.angle);
                   const ly = -LABEL_R * Math.cos(node.angle);
-                  const docColor = DOC_COLORS[node.target.sourceDocument];
+                  const docColor = getDocColor(countryConfig, node.target.sourceDocument);
                   return (
                     <text
                       key={`lbl-${node.id}`}
@@ -1122,7 +1146,7 @@ export function PolicyCoherenceExplorer({
                     >
                       {showDocCtx && (
                         <tspan fontWeight={700} fontSize={isActive ? 9 : 7}>
-                          {DOC_MEDIUM_LABELS[node.target.sourceDocument]}{" "}
+                          {getDocMediumLabel(countryConfig, node.target.sourceDocument)}{" "}
                         </tspan>
                       )}
                       {node.target.sourceLabel}
@@ -1296,6 +1320,7 @@ export function PolicyCoherenceExplorer({
               onBackFromPair={() => setComparedPair(null)}
               nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
               nr7ProgressMap={nr7ProgressMap}
+              countryConfig={countryConfig}
             />
           </div>
         )}

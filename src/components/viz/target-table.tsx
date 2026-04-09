@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { ActivitiesActions } from "./target-text";
-import type { Target, PolicyDocumentType } from "@/types";
+import type { CountryConfig, Target, PolicyDocumentType } from "@/types";
 
 interface TargetTableProps {
   targets: Target[];
+  countryConfig?: CountryConfig | null;
 }
 
 /** Filterable table of targets, color-coded by source document. */
-export function TargetTable({ targets }: TargetTableProps) {
+export function TargetTable({ targets, countryConfig }: TargetTableProps) {
   const [filter, setFilter] = useState<PolicyDocumentType | "ALL">("ALL");
 
   const documentTypes = [...new Set(targets.map((t) => t.sourceDocument))];
@@ -44,12 +45,12 @@ export function TargetTable({ targets }: TargetTableProps) {
               }`}
               style={
                 filter === doc
-                  ? { backgroundColor: DOC_COLORS[doc] }
+                  ? { backgroundColor: getDocColor(countryConfig, doc) }
                   : undefined
               }
-              title={DOC_FULL_LABELS[doc]}
+              title={getDocFullLabel(countryConfig, doc)}
             >
-              {DOC_LABELS[doc]} ({count})
+              {getDocLabel(countryConfig, doc)} ({count})
             </button>
           );
         })}
@@ -74,8 +75,8 @@ export function TargetTable({ targets }: TargetTableProps) {
                 <td className="px-4 py-2.5 align-top">
                   <span
                     className="inline-block px-2 py-0.5 rounded text-xs font-medium text-white"
-                    style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                    title={DOC_FULL_LABELS[t.sourceDocument]}
+                    style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                    title={getDocFullLabel(countryConfig, t.sourceDocument)}
                   >
                     {t.sourceLabel}
                   </span>

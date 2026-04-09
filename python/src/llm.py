@@ -19,6 +19,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+import httpx
 from openai import AsyncOpenAI
 
 from .config import CACHE_DIR, LLM_API_KEY, LLM_BASE_URL, LLM_CONCURRENCY, LLM_MODEL, LLM_TEMPERATURE
@@ -53,9 +54,24 @@ _client: AsyncOpenAI | None = None
 def get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
+        # Explicit httpx.Timeout so the connect timeout stays tight (5s). If we
+        # passed `timeout=60.0` as a bare float, it would propagate uniformly
+        # to every phase of the request (connect/read/write/pool) and DNS
+        # failures would take 60s to detect instead of 5s.
+        #
+        # The SDK default total timeout is 600s (10 min). A single OpenRouter
+        # request that hangs near that limit used to block its concurrency
+        # slot through the semaphore: during the Panama alignment run we saw
+        # throughput collapse from ~600 calls/min to ~80 calls/min once a
+        # handful of requests got stuck. 60s is well above the p99 for a
+        # healthy response; anything slower is almost certainly never coming
+        # back. Combined with the retry loop now releasing the slot during
+        # backoff (see `call_llm`), fast-failing lets other pairs make
+        # progress.
         _client = AsyncOpenAI(
             base_url=LLM_BASE_URL,
             api_key=LLM_API_KEY,
+            timeout=httpx.Timeout(60.0, connect=5.0),
         )
     return _client
 
@@ -456,8 +472,15 @@ async def call_llm(
 
     last_error: Exception | None = None
     for attempt in range(MAX_RETRIES):
-        async with sem:
-            try:
+        # The sem block wraps only the in-flight call. When a call fails, the
+        # `async with sem:` context exits on exception, the slot is released,
+        # and the backoff sleep below runs without holding the slot so other
+        # concurrent calls can use it. This is the fix for the slot-starvation
+        # stall observed during the Panama alignment run — the earlier fix
+        # only tightened the per-request timeout but kept the slot held
+        # through every retry's backoff.
+        try:
+            async with sem:
                 kwargs: dict[str, Any] = {
                     "model": model,
                     "temperature": temperature,
@@ -481,14 +504,14 @@ async def call_llm(
                 write_cache(cache_namespace, system, user, model, content)
                 return content
 
-            except Exception as e:
-                last_error = e
-                delay = BASE_DELAY * (2 ** attempt)
-                logger.warning(
-                    f"LLM call failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}. "
-                    f"Retrying in {delay:.1f}s..."
-                )
-                await asyncio.sleep(delay)
+        except Exception as e:
+            last_error = e
+            delay = BASE_DELAY * (2 ** attempt)
+            logger.warning(
+                f"LLM call failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}. "
+                f"Retrying in {delay:.1f}s..."
+            )
+            await asyncio.sleep(delay)
 
     raise RuntimeError(f"LLM call failed after {MAX_RETRIES} retries: {last_error}")
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS, DOC_LABELS } from "@/lib/utils";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
-import type { AlignmentResult, AlignmentLevel, Target } from "@/types";
+import type { AlignmentResult, AlignmentLevel, CountryConfig, Target } from "@/types";
 
 interface AlignmentHeatmapProps {
   alignmentData: AlignmentResult[];
@@ -13,6 +13,7 @@ interface AlignmentHeatmapProps {
   title: string;
   rowLabel: string;
   colLabel: string;
+  countryConfig?: CountryConfig | null;
 }
 
 /**
@@ -27,6 +28,7 @@ export function AlignmentHeatmap({
   title,
   rowLabel,
   colLabel,
+  countryConfig,
 }: AlignmentHeatmapProps) {
   const [hoveredCell, setHoveredCell] = useState<{
     row: string;
@@ -114,7 +116,7 @@ export function AlignmentHeatmap({
                     transform: "rotate(-60deg)",
                     transformOrigin: "bottom left",
                   }}
-                  title={`${DOC_LABELS[t.sourceDocument]}, ${t.sourceLabel}: ${t.text}`}
+                  title={`${getDocLabel(countryConfig, t.sourceDocument)}, ${t.sourceLabel}: ${t.text}`}
                 >
                   {t.sourceLabel}
                 </span>
@@ -134,7 +136,7 @@ export function AlignmentHeatmap({
               {/* Row label */}
               <div
                 className="w-[140px] pr-2 text-right text-[11px] text-[var(--undp-gray)] shrink-0 truncate"
-                title={`${DOC_LABELS[rowT.sourceDocument]}, ${rowT.sourceLabel}: ${rowT.text}`}
+                title={`${getDocLabel(countryConfig, rowT.sourceDocument)}, ${rowT.sourceLabel}: ${rowT.text}`}
               >
                 {rowT.sourceLabel}
               </div>

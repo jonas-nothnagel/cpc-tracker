@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { DOC_COLORS, DOC_LABELS, DOC_FULL_LABELS } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
-import type { Target } from "@/types";
+import type { CountryConfig, Target } from "@/types";
 
 interface OutcomeStatCardProps {
   percentage: number;
   label: string;
   targets: Target[];
+  countryConfig?: CountryConfig | null;
 }
 
-function OutcomeStatCard({ percentage, label, targets }: OutcomeStatCardProps) {
+function OutcomeStatCard({ percentage, label, targets, countryConfig }: OutcomeStatCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const isClickable = targets.length > 0;
 
@@ -48,10 +49,10 @@ function OutcomeStatCard({ percentage, label, targets }: OutcomeStatCardProps) {
               <div className="flex items-center gap-2 mb-1.5">
                 <span
                   className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
-                  style={{ backgroundColor: DOC_COLORS[t.sourceDocument] }}
-                  title={DOC_FULL_LABELS[t.sourceDocument]}
+                  style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                  title={getDocFullLabel(countryConfig, t.sourceDocument)}
                 >
-                  {DOC_LABELS[t.sourceDocument]}
+                  {getDocLabel(countryConfig, t.sourceDocument)}
                 </span>
                 <span className="text-xs font-medium text-[var(--undp-black)]">
                   {t.sourceLabel}
@@ -75,6 +76,7 @@ interface OutcomeStatsProps {
   totalTargets: number;
   /** Third tile: dynamic based on active view (NBS / IPCC / Themes) */
   mappedTargets?: { count: number; label: string };
+  countryConfig?: CountryConfig | null;
 }
 
 export function OutcomeStats({
@@ -82,6 +84,7 @@ export function OutcomeStats({
   timeBoundTargets,
   totalTargets,
   mappedTargets,
+  countryConfig,
 }: OutcomeStatsProps) {
   const quantitativePct = Math.round((quantitativeTargets.length / totalTargets) * 100);
   const timeBoundPct = Math.round((timeBoundTargets.length / totalTargets) * 100);
@@ -93,17 +96,20 @@ export function OutcomeStats({
         percentage={quantitativePct}
         label="Measurable outcomes"
         targets={quantitativeTargets}
+        countryConfig={countryConfig}
       />
       <OutcomeStatCard
         percentage={timeBoundPct}
         label="Time-bound commitments"
         targets={timeBoundTargets}
+        countryConfig={countryConfig}
       />
       {mappedPct !== null && mappedTargets && (
         <OutcomeStatCard
           percentage={mappedPct}
           label={mappedTargets.label}
           targets={[]}
+          countryConfig={countryConfig}
         />
       )}
     </div>
