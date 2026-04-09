@@ -4,12 +4,23 @@ import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
 
+// Next.js searchParams returns string | string[] | undefined when a key
+// appears multiple times in the URL (e.g. ?country=a&country=b). Without
+// this, the .toLowerCase() call below would throw on the array shape.
+type SearchParam = string | string[] | undefined;
 interface DashboardPageProps {
-  searchParams: Promise<{ analysisId?: string; country?: string }>;
+  searchParams: Promise<{ analysisId?: SearchParam; country?: SearchParam }>;
+}
+
+function firstValue(v: SearchParam): string | undefined {
+  if (Array.isArray(v)) return v[0];
+  return v;
 }
 
 export async function generateMetadata({ searchParams }: DashboardPageProps) {
-  const { analysisId, country } = await searchParams;
+  const params = await searchParams;
+  const analysisId = firstValue(params.analysisId);
+  const country = firstValue(params.country);
   if (analysisId) {
     return { title: `Analysis ${analysisId} | CPC Tracker` };
   }
@@ -43,12 +54,16 @@ function UnavailableState() {
 }
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
-  const { analysisId, country } = await searchParams;
+  const params = await searchParams;
+  const analysisId = firstValue(params.analysisId);
+  const country = firstValue(params.country);
 
   // analysisId wins when both are present — it's the upload flow and is
-  // orthogonal to the country registry.
+  // orthogonal to the country registry. The `key` makes React fully remount
+  // the client when the target changes, so stale error/data state from a
+  // previous country never leaks into the next one.
   if (analysisId) {
-    return <DashboardClient analysisId={analysisId} />;
+    return <DashboardClient key={`a:${analysisId}`} analysisId={analysisId} />;
   }
 
   // Country-addressed path. Empty string is treated as missing.
@@ -67,5 +82,5 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     return <UnavailableState />;
   }
 
-  return <DashboardClient country={entry.id} />;
+  return <DashboardClient key={`c:${entry.id}`} country={entry.id} />;
 }

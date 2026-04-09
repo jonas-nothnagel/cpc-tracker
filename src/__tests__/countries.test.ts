@@ -5,6 +5,9 @@ import {
   listCountries,
   listVisibleCountries,
   isValidCountryId,
+  normaliseCountry,
+  validateRegistry,
+  type CountryEntry,
 } from "@/config/countries";
 
 describe("getCountry", () => {
@@ -150,5 +153,90 @@ describe("isValidCountryId", () => {
     expect(isValidCountryId("mon golia")).toBe(false);
     expect(isValidCountryId("mongolia_test")).toBe(false);
     expect(isValidCountryId("mongolia.json")).toBe(false);
+  });
+});
+
+describe("normaliseCountry", () => {
+  it("strips diacritics", () => {
+    expect(normaliseCountry("Panamá")).toBe("panama");
+    expect(normaliseCountry("Côte d'Ivoire")).toBe("cote d'ivoire");
+  });
+
+  it("lowercases", () => {
+    expect(normaliseCountry("MONGOLIA")).toBe("mongolia");
+    expect(normaliseCountry("Mongolia")).toBe("mongolia");
+  });
+
+  it("returns the same string for already-normalised input", () => {
+    expect(normaliseCountry("mongolia")).toBe("mongolia");
+    expect(normaliseCountry("panama")).toBe("panama");
+  });
+
+  it("handles empty string", () => {
+    expect(normaliseCountry("")).toBe("");
+  });
+});
+
+describe("validateRegistry", () => {
+  // Helper to build a minimal valid CountryEntry for collision tests.
+  const make = (overrides: Partial<CountryEntry>): CountryEntry => ({
+    id: "testland",
+    name: "Testland",
+    iso3: "tst",
+    status: "demo",
+    visible: false,
+    has: { coherence: false, btr: { mitigation: false, adaptation: false }, nr7: false },
+    ...overrides,
+  });
+
+  it("accepts the production COUNTRIES array", () => {
+    expect(() => validateRegistry(COUNTRIES)).not.toThrow();
+  });
+
+  it("throws on invalid canonical id", () => {
+    expect(() => validateRegistry([make({ id: "1invalid" })])).toThrow(/Invalid canonical id/);
+    expect(() => validateRegistry([make({ id: "../etc" })])).toThrow(/Invalid canonical id/);
+  });
+
+  it("throws on duplicate canonical id", () => {
+    expect(() =>
+      validateRegistry([make({ id: "alpha" }), make({ id: "alpha" })]),
+    ).toThrow(/Duplicate canonical id/);
+  });
+
+  it("throws on malformed iso3", () => {
+    expect(() => validateRegistry([make({ iso3: "TST" })])).toThrow(/Invalid iso3/);
+    expect(() => validateRegistry([make({ iso3: "test" })])).toThrow(/Invalid iso3/);
+    expect(() => validateRegistry([make({ iso3: "../" })])).toThrow(/Invalid iso3/);
+  });
+
+  it("throws on invalid alias format", () => {
+    expect(() =>
+      validateRegistry([make({ aliases: ["1bad"] })]),
+    ).toThrow(/Invalid alias/);
+  });
+
+  it("throws on duplicate alias across entries", () => {
+    expect(() =>
+      validateRegistry([
+        make({ id: "alpha", aliases: ["shared"] }),
+        make({ id: "beta", iso3: "bet", aliases: ["shared"] }),
+      ]),
+    ).toThrow(/Duplicate alias/);
+  });
+
+  it("throws when an alias collides with another entry's canonical id", () => {
+    expect(() =>
+      validateRegistry([
+        make({ id: "alpha" }),
+        make({ id: "beta", iso3: "bet", aliases: ["alpha"] }),
+      ]),
+    ).toThrow(/collides with another entry's canonical id/);
+  });
+
+  it("allows an alias matching its own canonical id (canonical-wins is harmless)", () => {
+    expect(() =>
+      validateRegistry([make({ id: "alpha", aliases: ["alpha"] })]),
+    ).not.toThrow();
   });
 });

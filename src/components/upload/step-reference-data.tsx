@@ -4,16 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import type { PolicyDocumentType, Target } from "@/types";
 import type { BtrData, UploadedDoc } from "@/lib/upload-helpers";
 import type { TargetRow } from "@/lib/csv-parser";
-import { getCountry } from "@/config/countries";
+import { getCountry, normaliseCountry } from "@/config/countries";
 import { DOC_COLORS } from "@/lib/utils";
-
-/**
- * NFD-normalise and lowercase a display-name string so accented input like
- * "Panamá" matches the registry's canonical "Panama" entry.
- */
-function normaliseCountry(s: string): string {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-}
 
 type RefData = {
   targets: Target[];

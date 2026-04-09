@@ -57,9 +57,20 @@ export interface CountryEntry {
  * This is the security regex applied before any filesystem path construction.
  */
 const ID_REGEX = /^[a-z][a-z0-9-]{1,30}$/;
+const ISO3_REGEX = /^[a-z]{3}$/;
 
 export function isValidCountryId(id: string): boolean {
   return ID_REGEX.test(id);
+}
+
+/**
+ * NFD-decompose, strip combining marks, lowercase. Used at the API/UI boundary
+ * so accented user input (e.g. "Panamá") resolves to the registry's canonical
+ * id ("panama"). Pure helper, hoisted here so the upload wizard's two
+ * country-aware steps can share one definition.
+ */
+export function normaliseCountry(s: string): string {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
 export const COUNTRIES: CountryEntry[] = [
@@ -127,22 +138,36 @@ export function listVisibleCountries(): CountryEntry[] {
 // ─── Module-load validation ─────────────────────────────────────────────────
 //
 // Runs once when this file is first imported. Crashes the app at startup if
-// any alias is malformed or collides — preferable to a silent path-traversal
-// vector or an ambiguous lookup at runtime.
+// any field that flows into a filesystem path or registry lookup is malformed
+// or collides — preferable to a silent path-traversal vector or an ambiguous
+// lookup at runtime.
+//
+// Exported for tests; the IIFE below ensures it also runs at import time so a
+// misconfigured registry never gets past `pnpm dev` or `pnpm build`.
 
-(function validateRegistry() {
+export function validateRegistry(countries: readonly CountryEntry[]): void {
   const seenCanonicals = new Set<string>();
   const seenAliases = new Set<string>();
 
-  for (const c of COUNTRIES) {
+  // Pass 1: collect canonicals so the alias pass can detect alias-vs-canonical
+  // collisions across the whole registry, not just the entries seen so far.
+  for (const c of countries) {
     if (!isValidCountryId(c.id)) {
       throw new Error(`[countries] Invalid canonical id "${c.id}"`);
     }
     if (seenCanonicals.has(c.id)) {
       throw new Error(`[countries] Duplicate canonical id "${c.id}"`);
     }
+    if (!ISO3_REGEX.test(c.iso3)) {
+      // iso3 flows into nr7_<iso3>.json path construction, so it gets the same
+      // format gate as canonical ids.
+      throw new Error(`[countries] Invalid iso3 "${c.iso3}" in ${c.id} (must match /^[a-z]{3}$/)`);
+    }
     seenCanonicals.add(c.id);
+  }
 
+  // Pass 2: aliases.
+  for (const c of countries) {
     for (const alias of c.aliases ?? []) {
       if (!isValidCountryId(alias)) {
         throw new Error(`[countries] Invalid alias "${alias}" in ${c.id}`);
@@ -150,7 +175,18 @@ export function listVisibleCountries(): CountryEntry[] {
       if (seenAliases.has(alias)) {
         throw new Error(`[countries] Duplicate alias "${alias}" across countries`);
       }
+      if (seenCanonicals.has(alias) && alias !== c.id) {
+        // Aliases must not collide with another entry's canonical id. Same id
+        // as own canonical is harmless (canonical-wins precedence handles it),
+        // but a foreign collision would create an ambiguous lookup the
+        // canonical-wins rule silently masks.
+        throw new Error(
+          `[countries] Alias "${alias}" in ${c.id} collides with another entry's canonical id`,
+        );
+      }
       seenAliases.add(alias);
     }
   }
-})();
+}
+
+validateRegistry(COUNTRIES);

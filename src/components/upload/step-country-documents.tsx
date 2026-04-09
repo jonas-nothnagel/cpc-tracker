@@ -5,19 +5,10 @@ import type { PolicyDocumentType } from "@/types";
 import type { UploadedDoc } from "@/lib/upload-helpers";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 import { DOCUMENT_TYPES } from "@/lib/upload-helpers";
-import { listVisibleCountries } from "@/config/countries";
+import { listVisibleCountries, normaliseCountry } from "@/config/countries";
 import { ExtractReviewPanel } from "./extract-review-panel";
 import { ManualEntryForm } from "./manual-entry-form";
 import { DocumentPipeline } from "./document-pipeline";
-
-/**
- * Normalise a country string for comparison: NFD-decompose, strip combining
- * marks, lowercase. Handles "Panamá" → "panama" so accented user input
- * resolves to the registry entry.
- */
-function normaliseCountry(s: string): string {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-}
 
 interface StepCountryDocumentsProps {
   country: string;

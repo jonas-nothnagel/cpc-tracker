@@ -73,7 +73,9 @@ export async function GET(request: NextRequest) {
     text: String(t.text),
     sourceDocument: String(t.sourceDocument),
     sourceLabel: String(t.sourceLabel),
-    country: String(t.country ?? entry.name),
+    // `||` not `??` so empty string also falls through to the registry name —
+    // we never want to display the literal "" as a country.
+    country: String(t.country || entry.name),
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
     textOriginal: t.textOriginal ? String(t.textOriginal) : undefined,

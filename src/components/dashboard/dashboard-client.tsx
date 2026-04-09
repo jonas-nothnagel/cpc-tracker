@@ -228,16 +228,23 @@ export function DashboardClient({
       // Page handler should have redirected before rendering us; bail.
       return;
     }
+    // The page handler passes a `key` prop derived from analysisId/country,
+    // so React fully remounts this component on a target change. That means
+    // we never have to manually reset error/data here — a country switch
+    // gives us a fresh component instance. The cancelled flag still guards
+    // against React StrictMode's double-mount in dev.
     const url = analysisId
       ? `/api/dashboard?analysisId=${encodeURIComponent(analysisId)}`
       : `/api/dashboard?country=${encodeURIComponent(country!)}`;
 
+    let cancelled = false;
     fetch(url)
       .then((r) => {
         if (!r.ok) return r.json().then((e) => Promise.reject(e));
         return r.json();
       })
       .then((raw) => {
+        if (cancelled) return;
         setData({
           targets: (raw.targets ?? []).map(normalizeTarget),
           nbsCategories: raw.nbsCategories ?? [],
@@ -251,7 +258,13 @@ export function DashboardClient({
           countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
         });
       })
-      .catch((e) => setError(e?.error ?? String(e)));
+      .catch((e) => {
+        if (cancelled) return;
+        setError(e?.error ?? String(e));
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [analysisId, country]);
 
   if (error) {
