@@ -379,30 +379,6 @@ export function DashboardClient({
           </p>
         </section>
 
-        {/* Translation provenance banner: shown when any target carries an
-            original-language source. Users can click the ES tag on any target
-            to verify the translation against the original text. */}
-        {targets.some((t) => t.textOriginal) && (
-          <div className="mb-6 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-[var(--undp-black)]">
-            <span
-              aria-hidden="true"
-              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-200 text-[11px] font-bold text-amber-800"
-            >
-              i
-            </span>
-            <p className="leading-relaxed">
-              This country&apos;s policy targets were originally in Spanish and
-              have been translated to English by AI for this analysis. Click
-              the {" "}
-              <span className="inline-flex items-center px-1 py-0.5 rounded border border-amber-300 bg-white text-amber-800 text-[9px] font-semibold uppercase tracking-wide mx-0.5">
-                ES
-              </span>
-              {" "}tag on any target to see the original Spanish and verify the
-              translation.
-            </p>
-          </div>
-        )}
-
         <DataSourcesOverview
           targets={targets}
           alignmentOpportunities={data.alignment.filter((a) => a.alignment === "high" || a.alignment === "medium").length}

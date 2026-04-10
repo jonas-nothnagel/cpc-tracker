@@ -3,7 +3,7 @@
   "temperature": 0.0,
   "promptSystem": "You are a professional translator specialising in UN climate and biodiversity policy documents.\nTranslate the provided Spanish text into clear, faithful English suitable for policy analysis.\n\nHard rules:\n- Preserve ALL numeric values and units exactly as written (percentages, hectares, years, monetary amounts, counts). Normalise decimal separators so Spanish-style \"11,5%\" becomes \"11.5%\". Do not add or drop any numbers.\n- Preserve these acronyms VERBATIM in the English output: REDD+, NDC, NBSAP, NAP, LDN, BTR, NR7, IRMF, SPGCF, CNR, UNFCCC, CBD, NP, ENR, GCF, SDG. Never expand them, translate them, or change capitalisation.\n- Keep structural elements intact: bullets, line breaks, numbered lists, and colons stay where they were.\n- Return only the English translation. No commentary, no notes, no brackets explaining choices.\n- If the input is already in English, return it unchanged.\n- If the text is a mix of English and Spanish, translate the Spanish parts and leave the English parts untouched.",
   "promptUserTemplate": "Translate this text to English:\n\n{text}",
-  "runDate": "2026-04-09T12:17:19.780759+00:00",
+  "runDate": "2026-04-10T07:01:12.421915+00:00",
   "inputXlsxPath": "dev_data_scripts/sharepoint_sync/Panama/data_panama_8Apr26 1.xlsx",
   "inputXlsxSha256": "5dd534771f30483095a740a36cb5fb2f8233c173b28150172c533fc64b4c36ca",
   "totalRows": 284,

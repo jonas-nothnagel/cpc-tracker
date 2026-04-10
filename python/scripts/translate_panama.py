@@ -213,6 +213,37 @@ def check_acronyms(
     return issues
 
 
+# ─── NP (Nature Pledge) cleanup ────────────────────────────────────────────
+
+_PDF_SUFFIX_RE = re.compile(r"\s*[\w\-]+\.pdf\s*$", re.IGNORECASE)
+
+
+def _clean_np_target(text_es: str, label_es: str) -> tuple[str, str]:
+    """
+    Fix two xlsx-export artifacts specific to Nature Pledge rows:
+      1. Trailing PDF filename (e.g. 'Pacto-de-Panama-...-Nature-Pledge.pdf').
+      2. For the 6 Cross-cutting Principles, the first line is the topical
+         title (e.g. 'Integración institucional y territorial') glued to the
+         body by '\\n'. The generic numbered label ('Principio transversal 1')
+         loses the topic; we concatenate: '{numbered label}: {topic}'.
+    """
+    text_es = _PDF_SUFFIX_RE.sub("", text_es).strip()
+    if "\n" in text_es:
+        first_line, rest = text_es.split("\n", 1)
+        first_line = first_line.strip()
+        rest = rest.strip()
+        # Heuristic: short, non-sentence first line + substantial body = title.
+        is_title = (
+            5 <= len(first_line) <= 120
+            and not first_line.endswith((".", ":", ";"))
+            and len(rest) > len(first_line) * 2
+        )
+        if is_title and label_es:
+            label_es = f"{label_es}: {first_line}"
+            text_es = rest
+    return text_es, label_es
+
+
 # ─── Xlsx loading ───────────────────────────────────────────────────────────
 
 
@@ -246,12 +277,22 @@ def load_panama_rows() -> list[dict[str, Any]]:
             continue
         per_doc_counter[doc] = per_doc_counter.get(doc, 0) + 1
         target_id = f"panama_{doc}_{per_doc_counter[doc]}"
+
+        text_es_clean = str(text_es).strip()
+        label_es_clean = str(label_es or "").strip() or target_id
+
+        # NP (Nature Pledge) xlsx rows carry two export artifacts that no other
+        # doc has (verified against all 284 rows). Scope cleanup to NP to keep
+        # other docs byte-identical.
+        if str(doc).strip() == "NP":
+            text_es_clean, label_es_clean = _clean_np_target(text_es_clean, label_es_clean)
+
         rows.append(
             {
                 "id": target_id,
                 "country": country or "Panama",
-                "text_es": str(text_es).strip(),
-                "label_es": str(label_es or "").strip() or target_id,
+                "text_es": text_es_clean,
+                "label_es": label_es_clean,
                 "document": str(document or "").strip(),
                 "source_url": str(source or "").strip(),
                 "convention": str(convention or "").strip(),
