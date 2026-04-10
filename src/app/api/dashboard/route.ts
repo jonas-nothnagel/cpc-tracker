@@ -277,18 +277,72 @@ export async function GET(request: NextRequest) {
     join(outputDir, "footprint.json")
   );
 
+  // Strip excluded document types so they never reach the frontend.
+  const excluded = new Set<string>(
+    (countryConfig as { excludedDocTypes?: string[] } | null)?.excludedDocTypes ?? [],
+  );
+
+  const finalTargets = excluded.size
+    ? (allTargets as Record<string, unknown>[]).filter(
+        (t) => !excluded.has(String(t.sourceDocument ?? "")),
+      )
+    : allTargets;
+
+  const excludedTargetIds = excluded.size
+    ? new Set(
+        (allTargets as Record<string, unknown>[])
+          .filter((t) => excluded.has(String(t.sourceDocument ?? "")))
+          .map((t) => String(t.id)),
+      )
+    : new Set<string>();
+
+  const finalClassifications = excludedTargetIds.size
+    ? (classifications as Record<string, unknown>[]).filter(
+        (c) => !excludedTargetIds.has(String(c.targetId ?? "")),
+      )
+    : classifications;
+
+  const finalAlignment = excludedTargetIds.size
+    ? (allAlignment as Record<string, unknown>[]).filter(
+        (a) =>
+          !excludedTargetIds.has(String(a.targetAId ?? "")) &&
+          !excludedTargetIds.has(String(a.targetBId ?? "")),
+      )
+    : allAlignment;
+
+  // Scrub excluded entries from the config sent to the frontend.
+  let finalConfig = countryConfig;
+  if (excluded.size && countryConfig) {
+    const cfg = countryConfig as Record<string, unknown>;
+    const docTypes = cfg.documentTypes as { id: string }[] | undefined;
+    const provenance = cfg.docProvenance as Record<string, string> | undefined;
+    finalConfig = {
+      ...cfg,
+      ...(docTypes
+        ? { documentTypes: docTypes.filter((d) => !excluded.has(d.id)) }
+        : {}),
+      ...(provenance
+        ? {
+            docProvenance: Object.fromEntries(
+              Object.entries(provenance).filter(([k]) => !excluded.has(k)),
+            ),
+          }
+        : {}),
+    };
+  }
+
   return NextResponse.json(
     {
-      targets: allTargets,
+      targets: finalTargets,
       nbsCategories: categories.nbs_categories,
       sectors: categories.ipcc_sectors ?? [],
       globeCategories: categories.globe_categories ?? [],
-      classifications,
-      alignment: allAlignment,
+      classifications: finalClassifications,
+      alignment: finalAlignment,
       btrData: btrData ?? null,
       nr7Data: nr7Data ?? null,
       footprint: footprint ?? null,
-      countryConfig: countryConfig ?? null,
+      countryConfig: finalConfig ?? null,
     },
     { status: 200, headers: NO_STORE_HEADERS },
   );
