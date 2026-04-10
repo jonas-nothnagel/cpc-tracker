@@ -373,6 +373,13 @@ export interface CountryConfig {
    * list (show everything). Users can still toggle these back on.
    */
   defaultHiddenDocTypes?: string[];
+  /**
+   * Document-type ids to exclude entirely from the dashboard. Unlike
+   * `defaultHiddenDocTypes` (which only hides by default but lets users toggle),
+   * excluded doc types are stripped at the API level: their targets, alignment
+   * pairs, classifications, and config entries are never sent to the frontend.
+   */
+  excludedDocTypes?: string[];
 }
 
 /**
