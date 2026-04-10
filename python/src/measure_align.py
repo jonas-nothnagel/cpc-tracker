@@ -12,7 +12,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-from collections import defaultdict
 from typing import Any
 
 from .align import (
@@ -127,26 +126,23 @@ def measures_to_pseudo_targets(
     an ID is auto-generated with a prefix that avoids collision with mitigation IDs.
     """
     pseudo: list[dict[str, Any]] = []
-    sector_idx: dict[str, int] = defaultdict(int)
     id_prefix = "BTR" if action_type == "mitigation" else "BTRA"
 
+    seq = 0
     for m in measures:
         status = (m.get("status") or "").strip()
         name = (m.get("name") or "").strip()
         if not name or not status:
             continue
 
-        sector = m.get("sector", "sector_other")
-        sector_idx[sector] += 1
-        idx = sector_idx[sector]
+        seq += 1
 
         # Honor a pre-assigned id (hand-curated data); otherwise auto-generate.
         pre_id = (m.get("id") or "").strip()
         if pre_id:
             pid = pre_id
         else:
-            short_sector = sector.replace("sector_", "")
-            pid = f"{id_prefix}_{short_sector}_{idx}"
+            pid = f"{id_prefix}_{seq}"
 
         parts = [name]
         desc = (m.get("description") or "").strip()
@@ -173,7 +169,7 @@ def measures_to_pseudo_targets(
             "country": "",
             "isQuantitative": False,
             "isTimeBound": False,
-            "sector": sector,
+            "sector": m.get("sector", ""),
             "measureStatus": status,
             "actionType": action_type,
         }
