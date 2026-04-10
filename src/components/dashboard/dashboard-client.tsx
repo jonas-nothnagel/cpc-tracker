@@ -137,7 +137,7 @@ function ClassificationSection({
             <strong>Nature-Based Solutions (NBS)</strong> categories identify targets that use natural ecosystems.{" "}
             <strong>IPCC Sectors</strong> map targets to standard emissions categories.{" "}
             <strong>GLOBE Biodiversity</strong> uses BIOFIN&apos;s expenditure taxonomy to enable cross-level analysis.{" "}
-            Targets may appear in multiple categories if they span several themes.
+            Targets may appear in multiple categories if they span several domains.
           </InfoBox>
         </h2>
         <div className="flex gap-1.5 text-xs">
