@@ -117,7 +117,7 @@ export default function Home() {
               </div>
               <div className="px-4 py-3">
                 <p className="text-sm font-medium text-[var(--undp-black)]">Thematic Classification</p>
-                <p className="text-xs text-[var(--undp-gray)] mt-0.5">Targets mapped to Nature-Based Solutions and IPCC sectors</p>
+                <p className="text-xs text-[var(--undp-gray)] mt-0.5">Targets mapped to Biodiversity and Climate Mitigation categories</p>
               </div>
             </Link>
             <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
