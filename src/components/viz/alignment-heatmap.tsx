@@ -54,7 +54,7 @@ export function AlignmentHeatmap({
       if (
         c.isRelevant &&
         c.taxonomyType === taxonomyFilter.taxonomyType &&
-        c.categoryId === taxonomyFilter.categoryId
+        (taxonomyFilter.categoryId === "*" || c.categoryId === taxonomyFilter.categoryId)
       ) {
         ids.add(c.targetId);
       }
@@ -143,6 +143,7 @@ export function AlignmentHeatmap({
             <option value="all">All targets</option>
             {globeCategories && globeCategories.length > 0 && (
               <optgroup label="Biodiversity Taxonomy">
+                <option value="globe::*">All Biodiversity categories</option>
                 {globeCategories.map((g) => (
                   <option key={`globe::${g.id}`} value={`globe::${g.id}`}>{g.name}</option>
                 ))}
@@ -150,6 +151,7 @@ export function AlignmentHeatmap({
             )}
             {sectors && sectors.length > 0 && (
               <optgroup label="Climate Mitigation Taxonomy">
+                <option value="sector::*">All Climate Mitigation sectors</option>
                 {sectors.map((s) => (
                   <option key={`sector::${s.id}`} value={`sector::${s.id}`}>{s.name}</option>
                 ))}
