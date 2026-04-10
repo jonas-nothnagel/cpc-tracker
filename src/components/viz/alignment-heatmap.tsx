@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
-import type { AlignmentResult, AlignmentLevel, CountryConfig, Target } from "@/types";
+import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, ThematicClassification, IpccSector, GlobeCategory } from "@/types";
 
 interface AlignmentHeatmapProps {
   alignmentData: AlignmentResult[];
@@ -14,22 +14,63 @@ interface AlignmentHeatmapProps {
   rowLabel: string;
   colLabel: string;
   countryConfig?: CountryConfig | null;
+  classifications?: ThematicClassification[];
+  sectors?: IpccSector[];
+  globeCategories?: GlobeCategory[];
 }
 
 /**
  * Interactive heatmap for pairwise target relationships.
  * Rows = targets from document A, Columns = targets from document B.
  * Cell color encodes relationship level: green for alignment, red/amber for contradictions.
+ *
+ * Optional taxonomy filter: when classifications + sectors/globeCategories are
+ * passed, a dropdown allows filtering to targets classified under a specific category.
  */
 export function AlignmentHeatmap({
   alignmentData,
-  rowTargets,
-  colTargets,
+  rowTargets: rawRowTargets,
+  colTargets: rawColTargets,
   title,
   rowLabel,
   colLabel,
   countryConfig,
+  classifications,
+  sectors,
+  globeCategories,
 }: AlignmentHeatmapProps) {
+  const [taxonomyFilter, setTaxonomyFilter] = useState<{ taxonomyType: string; categoryId: string } | null>(null);
+
+  const hasTaxonomyData =
+    classifications != null &&
+    classifications.length > 0 &&
+    ((sectors != null && sectors.length > 0) || (globeCategories != null && globeCategories.length > 0));
+
+  // Filter targets by taxonomy category when a filter is active
+  const classifiedTargetIds = useMemo(() => {
+    if (!taxonomyFilter || !classifications) return null;
+    const ids = new Set<string>();
+    for (const c of classifications) {
+      if (
+        c.isRelevant &&
+        c.taxonomyType === taxonomyFilter.taxonomyType &&
+        c.categoryId === taxonomyFilter.categoryId
+      ) {
+        ids.add(c.targetId);
+      }
+    }
+    return ids;
+  }, [taxonomyFilter, classifications]);
+
+  const rowTargets = useMemo(
+    () => classifiedTargetIds ? rawRowTargets.filter((t) => classifiedTargetIds.has(t.id)) : rawRowTargets,
+    [rawRowTargets, classifiedTargetIds],
+  );
+  const colTargets = useMemo(
+    () => classifiedTargetIds ? rawColTargets.filter((t) => classifiedTargetIds.has(t.id)) : rawColTargets,
+    [rawColTargets, classifiedTargetIds],
+  );
+
   const [hoveredCell, setHoveredCell] = useState<{
     row: string;
     col: string;
@@ -84,6 +125,48 @@ export function AlignmentHeatmap({
           )}
         </p>
       </div>
+
+      {hasTaxonomyData && (
+        <div className="flex items-center gap-2 mb-3">
+          <select
+            value={taxonomyFilter ? `${taxonomyFilter.taxonomyType}::${taxonomyFilter.categoryId}` : "all"}
+            onChange={(e) => {
+              if (e.target.value === "all") {
+                setTaxonomyFilter(null);
+              } else {
+                const [taxonomyType, categoryId] = e.target.value.split("::");
+                setTaxonomyFilter({ taxonomyType, categoryId });
+              }
+            }}
+            className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+          >
+            <option value="all">All targets</option>
+            {globeCategories && globeCategories.length > 0 && (
+              <optgroup label="Biodiversity Taxonomy">
+                {globeCategories.map((g) => (
+                  <option key={`globe::${g.id}`} value={`globe::${g.id}`}>{g.name}</option>
+                ))}
+              </optgroup>
+            )}
+            {sectors && sectors.length > 0 && (
+              <optgroup label="Climate Mitigation Taxonomy">
+                {sectors.map((s) => (
+                  <option key={`sector::${s.id}`} value={`sector::${s.id}`}>{s.name}</option>
+                ))}
+              </optgroup>
+            )}
+          </select>
+          {taxonomyFilter && (
+            <button
+              type="button"
+              onClick={() => setTaxonomyFilter(null)}
+              className="text-xs text-[var(--undp-blue)] hover:underline"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-3 text-xs items-center mb-4">
         {ALIGNMENT_LEVEL_ORDER.map((level) => (

@@ -41,9 +41,8 @@ const SEVERITY_ORDER: AlignmentLevel[] = [
 ];
 
 const TAXONOMY_LABELS: Record<string, string> = {
-  sector: "sectors",
-  nbs: "NBS categories",
-  globe: "GLOBE categories",
+  sector: "Climate Mitigation sectors",
+  globe: "Biodiversity categories",
 };
 
 interface DriverTarget {
@@ -227,6 +226,7 @@ export function TensionClusters({
     "all"
   );
   const [filterCat, setFilterCat] = useState<string>("all");
+  const [taxonomyFilter, setTaxonomyFilter] = useState<{ taxonomyType: string; categoryId: string } | null>(null);
 
   const targetMap = useMemo(
     () => new Map(targets.map((t) => [t.id, t])),
@@ -242,6 +242,19 @@ export function TensionClusters({
     return map;
   }, [sectors, nbsCategories, globeCategories]);
 
+  // Structured per-target taxonomy lookup for the taxonomy filter
+  const targetTaxonomyMap = useMemo(() => {
+    if (!classifications || classifications.length === 0) return new Map<string, Set<string>>();
+    const map = new Map<string, Set<string>>();
+    for (const c of classifications) {
+      if (!c.isRelevant) continue;
+      const key = `${c.taxonomyType}::${c.categoryId}`;
+      if (!map.has(c.targetId)) map.set(c.targetId, new Set());
+      map.get(c.targetId)!.add(key);
+    }
+    return map;
+  }, [classifications]);
+
   // All tension edges
   const tensions = useMemo(
     () =>
@@ -255,24 +268,35 @@ export function TensionClusters({
     [alignmentData]
   );
 
+  // Apply taxonomy filter to all tensions (affects drivers + browse + summary)
+  const visibleTensions = useMemo(() => {
+    if (!taxonomyFilter) return tensions;
+    const filterKey = `${taxonomyFilter.taxonomyType}::${taxonomyFilter.categoryId}`;
+    return tensions.filter((t) => {
+      const catsA = targetTaxonomyMap.get(t.targetAId);
+      const catsB = targetTaxonomyMap.get(t.targetBId);
+      return (catsA?.has(filterKey) || false) || (catsB?.has(filterKey) || false);
+    });
+  }, [tensions, taxonomyFilter, targetTaxonomyMap]);
+
   // Severity counts
   const severityCounts = useMemo(() => {
-    const high = tensions.filter(
+    const high = visibleTensions.filter(
       (t) => t.alignment === "high_contradiction"
     ).length;
-    const moderate = tensions.filter(
+    const moderate = visibleTensions.filter(
       (t) => t.alignment === "moderate_contradiction"
     ).length;
-    const low = tensions.filter(
+    const low = visibleTensions.filter(
       (t) => t.alignment === "low_tension"
     ).length;
     return { high, moderate, low };
-  }, [tensions]);
+  }, [visibleTensions]);
 
   // Dominant contradiction type
   const dominantType = useMemo(() => {
     const counts = new Map<ContradictionType, number>();
-    for (const t of tensions) {
+    for (const t of visibleTensions) {
       if (t.contradictionType)
         counts.set(
           t.contradictionType,
@@ -284,12 +308,12 @@ export function TensionClusters({
       if (!best || count > best.count) best = { type, count };
     }
     return best;
-  }, [tensions]);
+  }, [visibleTensions]);
 
   // Document pair stats
   const docPairStats = useMemo(() => {
     const pairCounts = new Map<string, { docA: PolicyDocumentType; docB: PolicyDocumentType; count: number }>();
-    for (const t of tensions) {
+    for (const t of visibleTensions) {
       const tA = targetMap.get(t.targetAId);
       const tB = targetMap.get(t.targetBId);
       if (!tA || !tB) continue;
@@ -308,7 +332,7 @@ export function TensionClusters({
       }
     }
     return Array.from(pairCounts.values()).sort((a, b) => b.count - a.count);
-  }, [tensions, targetMap]);
+  }, [visibleTensions, targetMap]);
 
   // Per-target classification lookup
   const targetCategories = useMemo(() => {
@@ -373,7 +397,7 @@ export function TensionClusters({
       { total: number; crossDoc: number; pairs: AlignmentResult[] }
     >();
 
-    for (const t of tensions) {
+    for (const t of visibleTensions) {
       const tA = targetMap.get(t.targetAId);
       const tB = targetMap.get(t.targetBId);
       if (!tA || !tB) continue;
@@ -409,7 +433,7 @@ export function TensionClusters({
 
     result.sort((a, b) => b.tensionCount - a.tensionCount);
     return result.slice(0, 7);
-  }, [tensions, targetMap, targetCategories]);
+  }, [visibleTensions, targetMap, targetCategories]);
 
   // Document types for filters
   const documentTypes = useMemo(() => {
@@ -421,16 +445,16 @@ export function TensionClusters({
   // Contradiction types for filters
   const contradictionTypes = useMemo(() => {
     const types = new Set<ContradictionType>();
-    for (const t of tensions) {
+    for (const t of visibleTensions) {
       if (t.contradictionType) types.add(t.contradictionType);
     }
     return Array.from(types);
-  }, [tensions]);
+  }, [visibleTensions]);
 
   // Filtered tensions for browse view
   const filteredTensions = useMemo(() => {
     if (!showBrowse) return [];
-    return tensions.filter((c) => {
+    return visibleTensions.filter((c) => {
       if (filterType !== "all" && c.contradictionType !== filterType)
         return false;
       if (filterDoc !== "all") {
@@ -452,7 +476,7 @@ export function TensionClusters({
     });
   }, [
     showBrowse,
-    tensions,
+    visibleTensions,
     filterType,
     filterDoc,
     filterCat,
@@ -495,11 +519,55 @@ export function TensionClusters({
             validation.</em>
           </InfoBox>
         </h2>
+
+        {/* Taxonomy filter */}
+        {(sectors && sectors.length > 0) || (globeCategories && globeCategories.length > 0) ? (
+          <div className="flex items-center gap-2 mt-2 mb-2">
+            <select
+              value={taxonomyFilter ? `${taxonomyFilter.taxonomyType}::${taxonomyFilter.categoryId}` : "all"}
+              onChange={(e) => {
+                if (e.target.value === "all") {
+                  setTaxonomyFilter(null);
+                } else {
+                  const [taxonomyType, categoryId] = e.target.value.split("::");
+                  setTaxonomyFilter({ taxonomyType, categoryId });
+                }
+              }}
+              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+            >
+              <option value="all">All categories</option>
+              {globeCategories && globeCategories.length > 0 && (
+                <optgroup label="Biodiversity Taxonomy">
+                  {globeCategories.map((g) => (
+                    <option key={`globe::${g.id}`} value={`globe::${g.id}`}>{g.name}</option>
+                  ))}
+                </optgroup>
+              )}
+              {sectors && sectors.length > 0 && (
+                <optgroup label="Climate Mitigation Taxonomy">
+                  {sectors.map((s) => (
+                    <option key={`sector::${s.id}`} value={`sector::${s.id}`}>{s.name}</option>
+                  ))}
+                </optgroup>
+              )}
+            </select>
+            {taxonomyFilter && (
+              <button
+                type="button"
+                onClick={() => setTaxonomyFilter(null)}
+                className="text-xs text-[var(--undp-blue)] hover:underline"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        ) : null}
+
         <p className="text-sm text-[var(--undp-gray)] mt-1">
-          {tensions.length} potential tension
-          {tensions.length !== 1 ? "s" : ""} detected across policy targets.
+          {visibleTensions.length} potential tension
+          {visibleTensions.length !== 1 ? "s" : ""}{taxonomyFilter ? " matching this category" : " detected across policy targets"}.
           {dominantType &&
-            ` ${CONTRADICTION_TYPE_LABELS[dominantType.type]} is the most common type (${dominantType.count} of ${tensions.length}).`}
+            ` ${CONTRADICTION_TYPE_LABELS[dominantType.type]} is the most common type (${dominantType.count} of ${visibleTensions.length}).`}
         </p>
 
         {/* Severity proportion bar */}
@@ -509,7 +577,7 @@ export function TensionClusters({
               <div
                 className="h-full"
                 style={{
-                  width: `${Math.max((severityCounts.high / tensions.length) * 100, 4)}%`,
+                  width: `${Math.max((severityCounts.high / visibleTensions.length) * 100, 4)}%`,
                   backgroundColor: ALIGNMENT_COLORS.high_contradiction,
                 }}
               />
@@ -518,7 +586,7 @@ export function TensionClusters({
               <div
                 className="h-full"
                 style={{
-                  width: `${Math.max((severityCounts.moderate / tensions.length) * 100, 4)}%`,
+                  width: `${Math.max((severityCounts.moderate / visibleTensions.length) * 100, 4)}%`,
                   backgroundColor: ALIGNMENT_COLORS.moderate_contradiction,
                 }}
               />
@@ -527,7 +595,7 @@ export function TensionClusters({
               <div
                 className="h-full"
                 style={{
-                  width: `${Math.max((severityCounts.low / tensions.length) * 100, 3)}%`,
+                  width: `${Math.max((severityCounts.low / visibleTensions.length) * 100, 3)}%`,
                   backgroundColor: ALIGNMENT_COLORS.low_tension,
                 }}
               />
@@ -700,7 +768,7 @@ export function TensionClusters({
           >
             &#9654;
           </span>
-          Browse all {tensions.length} tensions
+          Browse all {visibleTensions.length} tensions
         </button>
 
         {showBrowse && (

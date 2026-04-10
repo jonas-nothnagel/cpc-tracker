@@ -6,7 +6,7 @@ Supports:
              6 (sector emissions), 7/9 (projections)
   - CTF-FTC-Support: Tables 9 (technology support), 11 (capacity building)
 
-Validated against Mongolia and Lebanon CTF files.
+Validated against Mongolia, Lebanon, and Panama CTF files.
 """
 
 from __future__ import annotations
@@ -56,6 +56,14 @@ def _str(val: Any) -> str:
     s = s.replace("_x000D_", " ").replace("\r\n", " ").replace("\r", " ")
     s = re.sub(r"\s+", " ", s)
     return s
+
+
+_FOOTNOTE_REF_RE = re.compile(r"\(\d+\)")
+
+
+def _strip_footnote_refs(s: str) -> str:
+    """Strip inline CTF footnote references like '(3)' or '(54)' from cell values."""
+    return _FOOTNOTE_REF_RE.sub("", s).strip()
 
 
 def _find_sheet(wb: Any, patterns: list[str]) -> Worksheet | None:
@@ -186,7 +194,7 @@ def _parse_table5(ws: Worksheet) -> list[dict[str, Any]]:
             continue
         if _footnote_re_t5.match(name):
             continue
-        status = _str(ws.cell(row=row_idx, column=col_map.get("status", 6)).value)
+        status = _strip_footnote_refs(_str(ws.cell(row=row_idx, column=col_map.get("status", 6)).value))
         if not status:
             continue
 
@@ -194,15 +202,17 @@ def _parse_table5(ws: Worksheet) -> list[dict[str, Any]]:
         for year_str, col in estimate_cols.items():
             estimates[year_str] = _num(ws.cell(row=row_idx, column=col).value)
 
+        raw_sector = _strip_footnote_refs(_str(ws.cell(row=row_idx, column=col_map.get("sector", 7)).value))
         measure = {
             "name": name,
             "description": _str(ws.cell(row=row_idx, column=col_map.get("description", 3)).value),
             "objectives": _str(ws.cell(row=row_idx, column=col_map.get("objectives", 4)).value),
-            "instrumentType": _str(ws.cell(row=row_idx, column=col_map.get("instrumentType", 5)).value),
-            "status": _str(ws.cell(row=row_idx, column=col_map.get("status", 6)).value),
-            "sector": _normalize_sector(_str(ws.cell(row=row_idx, column=col_map.get("sector", 7)).value)),
+            "instrumentType": _strip_footnote_refs(_str(ws.cell(row=row_idx, column=col_map.get("instrumentType", 5)).value)),
+            "status": status,
+            "sector": "",
+            "sectorRaw": raw_sector,
             "gasesAffected": _str(ws.cell(row=row_idx, column=col_map.get("gases", 8)).value),
-            "startYear": _str(ws.cell(row=row_idx, column=col_map.get("startYear", 9)).value),
+            "startYear": _strip_footnote_refs(_str(ws.cell(row=row_idx, column=col_map.get("startYear", 9)).value)),
             "implementingEntity": _str(ws.cell(row=row_idx, column=col_map.get("implementingEntity", 10)).value),
             "reductionEstimates": {k: v for k, v in estimates.items() if v is not None},
         }
@@ -417,6 +427,7 @@ def _parse_support_table(ws: Worksheet) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 SECTOR_MAP: dict[str, str] = {
+    # English (IPCC / UNFCCC standard)
     "energy": "sector_energy",
     "transport": "sector_transport",
     "industrial processes": "sector_ippu",
@@ -439,11 +450,29 @@ SECTOR_MAP: dict[str, str] = {
     "cross-cutting": "sector_other",
     "other": "sector_other",
     "other (specify)": "sector_other",
+    # Spanish — Panama NDC sectors (lossy IPCC mapping; sectorRaw preserves original)
+    "bosques": "sector_lulucf",
+    "agricultura ganaderia y acuicultura sostenible": "sector_agriculture",
+    "economia circular": "sector_waste",
+    "gestion integrada de cuencas hidrograficas": "sector_other",
+    "sistemas marino-costeros": "sector_other",
+    "sistema marino-costeros": "sector_other",
+    "biodiversidad": "sector_other",
+    "asentamientos humanos resilientes": "sector_other",
+    "salud publica": "sector_other",
+    "infraestructura sostenible": "sector_other",
+    "fortalecimiento de capacidades para la accion y transparencia climatica": "sector_other",
 }
 
 
+def _strip_accents(s: str) -> str:
+    """NFD-decompose and strip combining marks so accented text matches ASCII keys."""
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn")
+
+
 def _normalize_sector(raw: str) -> str:
-    lower = raw.lower().strip()
+    lower = _strip_accents(raw).lower().strip()
     lower = re.sub(r"^\d+\.\s*", "", lower)
     if not lower:
         return "sector_other"

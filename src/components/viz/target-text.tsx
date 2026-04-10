@@ -41,19 +41,27 @@ export function OriginalLanguageChip({
 
   return (
     <span className="relative inline-block">
-      <button
-        type="button"
+      <span
+        role="button"
+        tabIndex={0}
         onClick={(e) => {
           e.stopPropagation();
           setOpen((v) => !v);
         }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpen((v) => !v);
+          }
+        }}
         aria-expanded={open}
         aria-label={`Show original ${languageName} source text`}
         title={`Click to see the original ${languageName} source`}
-        className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-[9px] font-semibold uppercase tracking-wide hover:bg-amber-100 transition-colors"
+        className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-[9px] font-semibold uppercase tracking-wide hover:bg-amber-100 transition-colors cursor-pointer"
       >
         {languageCode}
-      </button>
+      </span>
       {open && (
         <span
           role="dialog"

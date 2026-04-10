@@ -46,5 +46,10 @@
     "IRMF": "Integrated Results Management Framework, Green Climate Fund",
     "SPGCF": "Strategic Plan for the Green Climate Fund 2024–2035 (canonical; eleven temporal variants cited per row in panama-targets.json)",
     "CNR": "Concept Note: GCF REDD+ Results-Based Payments, Panama"
+  },
+  "btrMitigationSourceRef": {
+    "document": "Primer Informe Bienal de Transparencia Climática de Panamá (June 2024)",
+    "table": "CTF-NDC Table 5",
+    "section": "Mitigation policies and measures"
   }
 }

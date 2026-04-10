@@ -94,7 +94,7 @@ export const COUNTRIES: CountryEntry[] = [
     visible: true, // Flipped in PR2 after translation, country config, and pipeline run landed.
     has: {
       coherence: true,
-      btr: { mitigation: false, adaptation: false },
+      btr: { mitigation: true, adaptation: false },
       nr7: false,
     },
   },

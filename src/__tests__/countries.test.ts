@@ -22,13 +22,13 @@ describe("getCountry", () => {
     expect(m?.has.nr7).toBe(true);
   });
 
-  it("returns the Panama entry as visible with coherence-only features", () => {
+  it("returns the Panama entry as visible with coherence and BTR mitigation", () => {
     const p = getCountry("panama");
     expect(p).toBeDefined();
     expect(p?.name).toBe("Panama");
     expect(p?.visible).toBe(true);
     expect(p?.has.coherence).toBe(true);
-    expect(p?.has.btr.mitigation).toBe(false);
+    expect(p?.has.btr.mitigation).toBe(true);
     expect(p?.has.btr.adaptation).toBe(false);
     expect(p?.has.nr7).toBe(false);
   });

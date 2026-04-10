@@ -37,6 +37,7 @@ import {
 import type {
   BtrData,
   CountryConfig,
+  GlobeCategory,
   IpccSector,
   MitigationMeasure,
   SupportProject,
@@ -348,6 +349,122 @@ function buildAdaptationRows(
   }
 
   return rows.sort((a, b) => a.goalNumber - b.goalNumber);
+}
+
+// ---------------------------------------------------------------------------
+// Biodiversity row builder (grouped by GLOBE category)
+// ---------------------------------------------------------------------------
+
+type CoverageGroupMode = "default" | "biodiversity";
+
+const BIODIVERSITY_PALETTE = [
+  "#0d9488", "#7c3aed", "#0284c7", "#16a34a",
+  "#f59e0b", "#dc2626", "#ea580c", "#6366f1",
+];
+
+interface BiodiversityRow {
+  category: GlobeCategory;
+  /** All BTR measures (mitigation + adaptation) classified under this category */
+  measures: MitigationMeasure[];
+  /** Policy targets (cross-document, excluding BTR) classified under this category */
+  policyTargets: Target[];
+  implementedCount: number;
+  ongoingCount: number;
+}
+
+function buildBiodiversityRows(
+  btrData: BtrData,
+  globeCategories: GlobeCategory[],
+  targets: Target[],
+  classifications: ThematicClassification[],
+): { rows: BiodiversityRow[]; unclassified: MitigationMeasure[] } {
+  const allMeasures = btrData.mitigationMeasures.filter((m) => m.status?.trim());
+
+  // BTR pseudo-targets in the targets array carry IDs like "BTR_energy_1"
+  // that match the targetId in classifications. Build a map from targetId →
+  // set of globe category ids.
+  const btrTargets = targets.filter((t) => t.sourceDocument === "BTR");
+  const globeClassForBtr = classifications.filter(
+    (c) =>
+      c.taxonomyType === "globe" &&
+      c.isRelevant &&
+      btrTargets.some((t) => t.id === c.targetId),
+  );
+  const targetToGlobe = new Map<string, Set<string>>();
+  for (const c of globeClassForBtr) {
+    if (!targetToGlobe.has(c.targetId)) targetToGlobe.set(c.targetId, new Set());
+    targetToGlobe.get(c.targetId)!.add(c.categoryId);
+  }
+
+  // Link measures to their BTR pseudo-target by matching the truncated name
+  // against sourceLabel (both are derived from the same raw measure name).
+  const btrTargetByName = new Map<string, Target>();
+  for (const t of btrTargets) {
+    // sourceLabel is truncated; use a prefix match
+    btrTargetByName.set(t.sourceLabel, t);
+  }
+  function findBtrTarget(m: MitigationMeasure): Target | undefined {
+    // First try exact sourceLabel match, then prefix
+    for (const t of btrTargets) {
+      if (m.name.startsWith(t.sourceLabel.replace(/\.{3}$/, "")) || t.sourceLabel.startsWith(m.name.slice(0, 40))) {
+        return t;
+      }
+    }
+    return undefined;
+  }
+
+  // Policy target classifications (non-BTR targets classified under globe)
+  const policyTargetById = new Map<string, Target>();
+  for (const t of targets) {
+    if (t.sourceDocument !== "BTR") policyTargetById.set(t.id, t);
+  }
+  const policyTargetsByCategory = new Map<string, Target[]>();
+  for (const c of classifications) {
+    if (c.taxonomyType !== "globe" || !c.isRelevant) continue;
+    const t = policyTargetById.get(c.targetId);
+    if (!t) continue;
+    if (!policyTargetsByCategory.has(c.categoryId)) policyTargetsByCategory.set(c.categoryId, []);
+    policyTargetsByCategory.get(c.categoryId)!.push(t);
+  }
+
+  // Group measures by GLOBE category via their linked pseudo-target
+  const measuresByCategory = new Map<string, MitigationMeasure[]>();
+  const classifiedMeasures = new Set<MitigationMeasure>();
+
+  for (const m of allMeasures) {
+    const pt = findBtrTarget(m);
+    if (!pt) continue;
+    const cats = targetToGlobe.get(pt.id);
+    if (!cats || cats.size === 0) continue;
+    for (const catId of cats) {
+      if (!measuresByCategory.has(catId)) measuresByCategory.set(catId, []);
+      measuresByCategory.get(catId)!.push(m);
+      classifiedMeasures.add(m);
+    }
+  }
+
+  const rows: BiodiversityRow[] = [];
+  for (const cat of globeCategories) {
+    const measures = measuresByCategory.get(cat.id) ?? [];
+    const policyTargets = policyTargetsByCategory.get(cat.id) ?? [];
+    if (measures.length === 0 && policyTargets.length === 0) continue;
+    rows.push({
+      category: cat,
+      measures,
+      policyTargets,
+      implementedCount: measures.filter((m) =>
+        m.status.toLowerCase().includes("implemented"),
+      ).length,
+      ongoingCount: measures.filter((m) =>
+        m.status.toLowerCase().includes("ongoing"),
+      ).length,
+    });
+  }
+
+  const unclassified = allMeasures.filter((m) => !classifiedMeasures.has(m));
+
+  rows.sort((a, b) => b.measures.length - a.measures.length);
+  return { rows, unclassified };
 }
 
 // ---------------------------------------------------------------------------
@@ -1102,6 +1219,251 @@ function AdaptationByApndcGoal({
 }
 
 // ---------------------------------------------------------------------------
+// Sub-component: Biodiversity table — by GLOBE category
+// ---------------------------------------------------------------------------
+
+function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; countryConfig?: CountryConfig | null }) {
+  const implemented = row.measures.filter((m) =>
+    m.status.toLowerCase().includes("implemented"),
+  );
+  const other = row.measures.filter(
+    (m) => !m.status.toLowerCase().includes("implemented"),
+  );
+
+  return (
+    <div className="border-t border-gray-100 px-5 py-5 bg-[var(--undp-light)]/40">
+      <div className="grid md:grid-cols-2 gap-6 mb-4">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
+            Policy targets in this category ({row.policyTargets.length})
+          </p>
+          {row.policyTargets.length === 0 ? (
+            <p className="text-xs text-[var(--undp-gray)] italic">
+              No policy targets classified to this biodiversity category.
+            </p>
+          ) : (
+            <ul className="divide-y divide-gray-100">
+              {row.policyTargets.map((t) => (
+                <li key={t.id} className="py-2 first:pt-0">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span
+                      className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold text-white leading-none"
+                      style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
+                    >
+                      {getDocLabel(countryConfig, t.sourceDocument)}
+                    </span>
+                    <span className="text-xs font-medium text-[var(--undp-black)]">
+                      {t.sourceLabel}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[var(--undp-gray)] leading-relaxed">
+                    <TargetTextWithHighlights target={t} />
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
+            Reported actions ({row.measures.length})
+          </p>
+          {row.measures.length === 0 ? (
+            <p className="text-xs text-[var(--undp-gray)] italic">
+              No reported actions for this category.
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {implemented.length > 0 && (
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-wide text-[#15803d] mb-1 flex items-center gap-1">
+                    <span>✓</span> Implemented ({implemented.length})
+                  </p>
+                  <ul className="divide-y divide-gray-100">
+                    {implemented.map((m, i) => (
+                      <li key={i} className="py-2 first:pt-0 border-l-2 border-[#15803d] pl-2">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <ActionTypeBadge actionType={m.actionType ?? "mitigation"} />
+                        </div>
+                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
+                        {m.implementingEntity && (
+                          <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {other.length > 0 && (
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+                    Adopted / Ongoing / Planned ({other.length})
+                  </p>
+                  <ul className="divide-y divide-gray-100">
+                    {other.map((m, i) => (
+                      <li key={i} className="py-2 first:pt-0">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <ActionTypeBadge actionType={m.actionType ?? "mitigation"} />
+                          <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-amber-100 text-amber-800">
+                            {m.status}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
+                        {m.implementingEntity && (
+                          <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BiodiversityByGlobe({
+  rows,
+  unclassified,
+  expandedCategory,
+  onToggle,
+  countryConfig,
+}: {
+  rows: BiodiversityRow[];
+  unclassified: MitigationMeasure[];
+  expandedCategory: string | null;
+  onToggle: (id: string) => void;
+  countryConfig?: CountryConfig | null;
+}) {
+  if (rows.length === 0 && unclassified.length === 0) return null;
+
+  return (
+    <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
+      <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
+        <h3 className="text-sm font-semibold text-[var(--undp-black)]">
+          All reported actions, by Biodiversity category
+          <InfoBox>
+            This view groups <strong>all</strong> BTR-reported actions (both mitigation and
+            adaptation) by BIOFIN&apos;s GLOBE Biodiversity Expenditure Taxonomy. This is an
+            alternative lens that shows which biodiversity categories have implementation
+            activity, regardless of whether the action is classified as mitigation or adaptation.
+            Actions that don&apos;t map to any biodiversity category appear under
+            &quot;Not classified&quot;.
+          </InfoBox>
+        </h3>
+        <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
+          Mitigation and adaptation actions unified under biodiversity categories.
+        </p>
+      </div>
+      {rows.map((row, idx) => {
+        const isExpanded = expandedCategory === row.category.id;
+        const color = BIODIVERSITY_PALETTE[idx % BIODIVERSITY_PALETTE.length];
+        return (
+          <div key={row.category.id} className="border-b border-gray-100 last:border-b-0">
+            <button
+              type="button"
+              onClick={() => onToggle(row.category.id)}
+              className="w-full text-left px-5 py-3 hover:bg-gray-50/60 transition-colors cursor-pointer"
+            >
+              <div
+                className="grid items-center gap-4"
+                style={{ gridTemplateColumns: "minmax(260px, 2fr) 130px 180px 16px" }}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span
+                    className="text-xs font-medium text-[var(--undp-black)] truncate"
+                    title={row.category.name}
+                  >
+                    {row.category.name}
+                  </span>
+                </div>
+                <span className="text-xs text-[var(--undp-gray)] tabular-nums">
+                  <span className="font-semibold text-[var(--undp-black)]">
+                    {row.policyTargets.length}
+                  </span>{" "}
+                  policy tgt{row.policyTargets.length === 1 ? "" : "s"}
+                </span>
+                <div className="text-xs text-[var(--undp-gray)] tabular-nums">
+                  <span className="font-semibold text-[var(--undp-black)]">
+                    {row.measures.length}
+                  </span>{" "}
+                  action{row.measures.length === 1 ? "" : "s"}
+                  <div className="text-[10px] text-[var(--undp-gray)] mt-0.5 flex flex-wrap gap-x-2">
+                    {row.ongoingCount > 0 && <span>{row.ongoingCount} ongoing</span>}
+                    {row.implementedCount > 0 && (
+                      <span className="text-[#15803d]">{row.implementedCount} ✓ implemented</span>
+                    )}
+                  </div>
+                </div>
+                <span className="text-[10px] text-[var(--undp-gray)]">
+                  {isExpanded ? "▾" : "▸"}
+                </span>
+              </div>
+            </button>
+            {isExpanded && <BiodiversityDetail row={row} countryConfig={countryConfig} />}
+          </div>
+        );
+      })}
+      {unclassified.length > 0 && (
+        <div className="border-b border-gray-100 last:border-b-0">
+          <button
+            type="button"
+            onClick={() => onToggle("__unclassified")}
+            className="w-full text-left px-5 py-3 hover:bg-gray-50/60 transition-colors cursor-pointer"
+          >
+            <div
+              className="grid items-center gap-4"
+              style={{ gridTemplateColumns: "minmax(260px, 2fr) 130px 180px 16px" }}
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="w-2 h-2 rounded-full shrink-0 bg-gray-300" />
+                <span className="text-xs font-medium text-[var(--undp-gray)] italic">
+                  Not classified under any biodiversity category
+                </span>
+              </div>
+              <span className="text-xs text-[var(--undp-gray)]" />
+              <span className="text-xs text-[var(--undp-gray)] tabular-nums">
+                <span className="font-semibold text-[var(--undp-black)]">
+                  {unclassified.length}
+                </span>{" "}
+                action{unclassified.length === 1 ? "" : "s"}
+              </span>
+              <span className="text-[10px] text-[var(--undp-gray)]">
+                {expandedCategory === "__unclassified" ? "▾" : "▸"}
+              </span>
+            </div>
+          </button>
+          {expandedCategory === "__unclassified" && (
+            <div className="border-t border-gray-100 px-5 py-4 bg-[var(--undp-light)]/40">
+              <ul className="divide-y divide-gray-100">
+                {unclassified.map((m, i) => (
+                  <li key={i} className="py-2 first:pt-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <ActionTypeBadge actionType={m.actionType ?? "mitigation"} />
+                      <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-gray-100 text-gray-700">
+                        {m.status}
+                      </span>
+                    </div>
+                    <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 
@@ -1114,10 +1476,12 @@ interface ImplementationCoverageProps {
    */
   targets: Target[];
   sectors: IpccSector[];
+  globeCategories?: GlobeCategory[];
   /**
    * Existing classifications from the pipeline. Filtered by `taxonomyType` —
    * `sector` for the mitigation table, `adaptation_goal` for the adaptation
-   * table. The view never re-classifies; it leverages the existing tagging.
+   * table, `globe` for the biodiversity view. The view never re-classifies;
+   * it leverages the existing tagging.
    */
   classifications: ThematicClassification[];
   highlightSector?: string | null;
@@ -1128,12 +1492,15 @@ export function ImplementationCoverage({
   btrData,
   targets,
   sectors,
+  globeCategories,
   classifications,
   highlightSector,
   countryConfig,
 }: ImplementationCoverageProps) {
+  const [groupMode, setGroupMode] = useState<CoverageGroupMode>("default");
   const [expandedSector, setExpandedSector] = useState<string | null>(null);
   const [expandedGoal, setExpandedGoal] = useState<number | null>(null);
+  const [expandedBioCategory, setExpandedBioCategory] = useState<string | null>(null);
 
   const mitigationRows = useMemo(
     () => buildMitigationRows(btrData, sectors, targets, classifications),
@@ -1143,6 +1510,14 @@ export function ImplementationCoverage({
   const adaptationRows = useMemo(
     () => buildAdaptationRows(btrData, targets, classifications),
     [btrData, targets, classifications],
+  );
+
+  const biodiversityData = useMemo(
+    () =>
+      globeCategories && globeCategories.length > 0
+        ? buildBiodiversityRows(btrData, globeCategories, targets, classifications)
+        : { rows: [], unclassified: [] },
+    [btrData, globeCategories, targets, classifications],
   );
 
   // Banner counts
@@ -1229,6 +1604,12 @@ export function ImplementationCoverage({
   const toggleGoal = useCallback((n: number) => {
     setExpandedGoal((prev) => (prev === n ? null : n));
   }, []);
+  const toggleBioCategory = useCallback((id: string) => {
+    setExpandedBioCategory((prev) => (prev === id ? null : id));
+  }, []);
+
+  const hasBiodiversityData =
+    globeCategories != null && globeCategories.length > 0;
 
   return (
     <div>
@@ -1238,21 +1619,50 @@ export function ImplementationCoverage({
         adaptationCount={adaptationCount}
         implementedCount={implementedCount}
       />
+
+      {hasBiodiversityData && (
+        <div className="flex items-center gap-2 mb-4">
+          <select
+            value={groupMode}
+            onChange={(e) => setGroupMode(e.target.value as CoverageGroupMode)}
+            className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+          >
+            <option value="default">
+              Default (Climate Mitigation + Adaptation Goals)
+            </option>
+            <option value="biodiversity">By Biodiversity Taxonomy</option>
+          </select>
+        </div>
+      )}
+
       <ReportingGapsCard gaps={gaps} />
-      <MitigationByIpccSector
-        rows={mitigationRows}
-        expandedSector={expandedSector}
-        onToggle={toggleSector}
-        highlightSector={highlightSector}
-        countryConfig={countryConfig}
-      />
-      <AdaptationByApndcGoal
-        rows={adaptationRows}
-        expandedGoal={expandedGoal}
-        onToggle={toggleGoal}
-        groupingLabel={btrData.adaptationGroupingLabel}
-        countryConfig={countryConfig}
-      />
+
+      {groupMode === "default" ? (
+        <>
+          <MitigationByIpccSector
+            rows={mitigationRows}
+            expandedSector={expandedSector}
+            onToggle={toggleSector}
+            highlightSector={highlightSector}
+            countryConfig={countryConfig}
+          />
+          <AdaptationByApndcGoal
+            rows={adaptationRows}
+            expandedGoal={expandedGoal}
+            onToggle={toggleGoal}
+            groupingLabel={btrData.adaptationGroupingLabel}
+            countryConfig={countryConfig}
+          />
+        </>
+      ) : (
+        <BiodiversityByGlobe
+          rows={biodiversityData.rows}
+          unclassified={biodiversityData.unclassified}
+          expandedCategory={expandedBioCategory}
+          onToggle={toggleBioCategory}
+          countryConfig={countryConfig}
+        />
+      )}
     </div>
   );
 }
