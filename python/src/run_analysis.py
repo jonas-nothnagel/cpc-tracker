@@ -337,24 +337,44 @@ async def main() -> None:
             measure_pseudo_targets = mit_pseudo_targets + adp_pseudo_targets
 
             if measure_pseudo_targets:
-                # Classify BTR actions against NBS and GLOBE (not sectors — ground truth)
+                # Classify BTR actions against NBS, GLOBE, and IPCC sectors via LLM
                 btr_nbs = await run_classification(measure_pseudo_targets, nbs_categories, "nbs")
                 btr_globe = await run_classification(measure_pseudo_targets, globe_categories, "globe")
-                all_classifications.extend(btr_nbs + btr_globe)
+                btr_sectors = await run_classification(measure_pseudo_targets, sectors, "sector")
+                all_classifications.extend(btr_nbs + btr_globe + btr_sectors)
 
-                # Inject ground-truth IPCC sector classifications from BTR data
+                # Write back the best-matching sector onto pseudo-targets and btr_data.json
+                # so the frontend's implementation-coverage view can group by IPCC sector.
+                sector_by_id: dict[str, str] = {}
+                for c in btr_sectors:
+                    if c["isRelevant"]:
+                        tid = c["targetId"]
+                        # Keep the first relevant sector per measure (highest-confidence)
+                        if tid not in sector_by_id:
+                            sector_by_id[tid] = c["categoryId"]
+
                 for pt in measure_pseudo_targets:
-                    all_classifications.append({
-                        "targetId": pt["id"],
-                        "categoryId": pt["sector"],
-                        "taxonomyType": "sector",
-                        "isRelevant": True,
-                    })
+                    pt["sector"] = sector_by_id.get(pt["id"], "")
+
+                # Write back to btr_data.json mitigation measures by matching sourceLabel
+                label_to_sector: dict[str, str] = {}
+                for pt in measure_pseudo_targets:
+                    if pt.get("actionType") == "mitigation" and pt["sector"]:
+                        label_to_sector[pt["sourceLabel"]] = pt["sector"]
+
+                for m in raw_measures:
+                    name = (m.get("name") or "").strip()
+                    label = name if len(name) <= 60 else name[:57] + "..."
+                    if label in label_to_sector:
+                        m["sector"] = label_to_sector[label]
+
+                btr_path.write_text(json.dumps(btr, indent=2))
+                logger.info(f"Wrote back LLM sectors to {len(label_to_sector)} measures in btr_data.json")
 
                 # Re-save classifications with BTR entries included
                 out_path = OUTPUT_DIR / "classifications.json"
                 out_path.write_text(json.dumps(all_classifications, indent=2))
-                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + {len(measure_pseudo_targets)} ground-truth sectors)")
+                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + {len(btr_sectors)} LLM sectors)")
 
                 # Policy target × BTR action pairs (both mitigation and adaptation).
                 m_pairs = generate_measure_pairs(targets, measure_pseudo_targets)
