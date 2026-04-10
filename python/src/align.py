@@ -70,14 +70,14 @@ ADVISOR_USER_TEMPLATE = """    Role: Alignment Advisor
     Backstory: You specialize in evaluating alignment potential between policy targets. Your assessments are based on \
 real-world feasibility, operational synergy, and strategic overlap. You never assume alignment based on superficial wording alone. \
 You also identify genuine contradictions when targets truly work against each other, but you recognize that most targets within \
-national climate-nature policy frameworks (NAP, NDC, NBSAP, LDN) share some degree of alignment since they are all working \
+national climate-nature policy frameworks share some degree of alignment since they are all working \
 toward environmental and climate goals.
 
     IMPORTANT: High and moderate contradictions should be reserved for cases where implementing one target genuinely \
 undermines, opposes, or competes with the other. Two targets operating in different sectors or at different scales are NOT \
 contradictory — they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Low tension" \
-when targets create real-world trade-offs even if both are positively framed. For example, a target to expand livestock \
-production inherently creates tension with a target to reduce grazing pressure on rangelands, even if both targets mention \
+when targets create real-world trade-offs even if both are positively framed. For example, a target to expand agricultural operations \
+inherently creates tension with a target to restore ecosystems in the same area, even if both targets mention \
 "sustainability." Look for implicit resource competition, not just explicit opposition.
 
     Task:
@@ -87,6 +87,9 @@ production inherently creates tension with a target to reduce grazing pressure o
     2. Compare the goal, action, ecosystem, target audience, and expected impact of both targets to assess their relationship.
     2a. Pay particular attention to overlaps or conflicts in specific implementation activities and actions/measures, \
 not only high-level goals.
+    2b. Check whether the targets reference the same geographic area, watershed, or ecosystem. \
+Targets that compete for the same physical space or resources within a shared geography \
+are more likely to create implementation tensions, even when both use positive framing.
     3. Consider hierarchical relationships between ecosystems. Recognize that specific ecosystems (e.g., mangroves, coral reefs) \
 may fall under broader categories such as coastal-marine ecosystems.
     4. Determine whether aligning these targets would optimize resources, avoid duplication, or create synergies that enhance \
@@ -173,11 +176,11 @@ partial coexistence may be possible with significant trade-offs.
        Return: Moderate contradiction (Type) - [Concise 2-sentence explanation.]
 
     Example:
-      Target 1: Maximize livestock production by increasing the national herd to 80 million head by 2035.
-      Target 2: Restore 30% of degraded rangelands by reducing grazing pressure in steppe ecosystems.
+      Target 1: Strengthen sustainable agricultural productivity through expansion of farming operations in rural watersheds.
+      Target 2: Restore degraded riparian ecosystems and reduce nutrient runoff by 40% in agricultural watersheds by 2030.
       Output:
-      Moderate contradiction (Resource competition) - Both targets place competing demands on the same rangeland resources. \
-Increasing herd size would intensify grazing pressure on the very ecosystems the second target aims to restore.
+      Moderate contradiction (Resource competition) - Both targets place competing demands on the same watershed resources. \
+Expanding farming operations would increase nutrient loads in the very waterways the second target aims to restore.
 
     **7.** "High contradiction" – The targets directly oppose each other in goals, actions, or expected outcomes. \
 Implementing both would be counterproductive.
@@ -424,6 +427,7 @@ async def decompose_targets(
 async def assess_alignment(
     pairs: list[tuple[dict[str, Any], dict[str, Any]]],
     decompositions: dict[str, str],
+    doc_type_labels: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
     """
     Run Agent 2 (Alignment Advisor) on each pair.
@@ -434,6 +438,7 @@ async def assess_alignment(
     """
     logger.info(f"Assessing alignment for {len(pairs)} pairs (Agent 2: Alignment Advisor)")
 
+    labels = doc_type_labels or DOC_TYPE_LABELS
     calls = []
     pair_keys: list[tuple[str, str]] = []
 
@@ -443,9 +448,9 @@ async def assess_alignment(
         decomp_b = decompositions.get(tb["id"], "")
 
         user = ADVISOR_USER_TEMPLATE.format(
-            target_1_type=DOC_TYPE_LABELS.get(ta["sourceDocument"], ta["sourceDocument"]),
+            target_1_type=labels.get(ta["sourceDocument"], ta["sourceDocument"]),
             target_1_decomp=decomp_a,
-            target_2_type=DOC_TYPE_LABELS.get(tb["sourceDocument"], tb["sourceDocument"]),
+            target_2_type=labels.get(tb["sourceDocument"], tb["sourceDocument"]),
             target_2_decomp=decomp_b,
         )
         calls.append({"system": ADVISOR_SYSTEM, "user": user})

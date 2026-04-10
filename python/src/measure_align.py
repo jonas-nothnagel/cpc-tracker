@@ -49,7 +49,7 @@ MEASURE_ADVISOR_USER_TEMPLATE = """{adaptation_note}    Role: Implementation Coh
 implements or supports the target.
 
     Backstory: You specialize in evaluating whether government-reported actions (from Biennial \
-Transparency Reports) genuinely implement or support stated policy targets (from NDCs, NAPs, NBSAPs). Your \
+Transparency Reports) genuinely implement or support stated policy targets (from national climate-nature policy documents). Your \
 assessments are grounded in real-world feasibility and operational overlap. You identify both strong \
 implementation links and genuine contradictions, including cross-type tensions where a mitigation measure \
 and an adaptation action push the same sector in opposite directions.
@@ -298,12 +298,14 @@ async def decompose_measures(
 async def assess_measure_alignment(
     pairs: list[tuple[dict[str, Any], dict[str, Any]]],
     decompositions: dict[str, str],
+    doc_type_labels: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
     """Run adapted Agent 2 on target-measure pairs (mitigation or adaptation)."""
     logger.info(
         f"Assessing implementation alignment for {len(pairs)} pairs"
     )
 
+    labels = doc_type_labels or DOC_TYPE_LABELS
     calls = []
     pair_keys: list[tuple[str, str]] = []
 
@@ -322,7 +324,7 @@ async def assess_measure_alignment(
 
         user = MEASURE_ADVISOR_USER_TEMPLATE.format(
             adaptation_note=adaptation_note,
-            target_type=DOC_TYPE_LABELS.get(
+            target_type=labels.get(
                 target["sourceDocument"], target["sourceDocument"]
             ),
             target_decomp=decomp_t,
