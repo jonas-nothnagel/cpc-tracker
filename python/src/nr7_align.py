@@ -208,10 +208,12 @@ async def decompose_nr7_actions(
 async def assess_nr7_alignment(
     pairs: list[tuple[dict[str, Any], dict[str, Any]]],
     decompositions: dict[str, str],
+    doc_type_labels: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
     """Run adapted Agent 2 on target-action pairs."""
     logger.info(f"Assessing NR7 progress alignment for {len(pairs)} pairs")
 
+    labels = doc_type_labels or DOC_TYPE_LABELS
     calls = []
     pair_keys: list[tuple[str, str]] = []
 
@@ -220,7 +222,7 @@ async def assess_nr7_alignment(
         decomp_a = decompositions.get(action["id"], "")
 
         user = NR7_ADVISOR_USER_TEMPLATE.format(
-            target_type=DOC_TYPE_LABELS.get(
+            target_type=labels.get(
                 target["sourceDocument"], target["sourceDocument"]
             ),
             target_decomp=decomp_t,

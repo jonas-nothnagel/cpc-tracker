@@ -75,7 +75,7 @@
     "targetId": "panama_NP_2",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_2",
@@ -435,22 +435,22 @@
     "targetId": "panama_NP_8",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_8",
     "categoryId": "nbs_3",
-    "taxonomyType": "nbs",
-    "isRelevant": true
-  },
-  {
-    "targetId": "panama_NP_8",
-    "categoryId": "nbs_4",
     "taxonomyType": "nbs",
     "isRelevant": true
   },
   {
     "targetId": "panama_NP_8",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "panama_NP_8",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
     "isRelevant": true
@@ -465,16 +465,16 @@
     "targetId": "panama_NP_8",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_8",
-    "categoryId": "nbs_8",
-    "taxonomyType": "nbs",
     "isRelevant": true
   },
   {
     "targetId": "panama_NP_8",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": true
+  },
+  {
+    "targetId": "panama_NP_8",
     "categoryId": "nbs_9",
     "taxonomyType": "nbs",
     "isRelevant": false
@@ -765,7 +765,7 @@
     "targetId": "panama_NP_13",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_13",
@@ -1173,7 +1173,7 @@
     "targetId": "panama_NP_20",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_20",
@@ -1233,7 +1233,7 @@
     "targetId": "panama_NP_21",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_21",
@@ -1305,7 +1305,7 @@
     "targetId": "panama_NP_22",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_22",
@@ -1335,7 +1335,7 @@
     "targetId": "panama_NP_23",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_23",
@@ -1413,7 +1413,7 @@
     "targetId": "panama_NP_24",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_24",
@@ -1623,7 +1623,7 @@
     "targetId": "panama_NP_28",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_28",
@@ -1665,7 +1665,7 @@
     "targetId": "panama_NP_28",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_28",
@@ -1785,7 +1785,7 @@
     "targetId": "panama_NP_30",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_30",
@@ -1995,7 +1995,7 @@
     "targetId": "panama_NP_34",
     "categoryId": "nbs_2",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_34",
@@ -2025,7 +2025,7 @@
     "targetId": "panama_NP_34",
     "categoryId": "nbs_7",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_34",
@@ -2121,7 +2121,7 @@
     "targetId": "panama_NP_36",
     "categoryId": "nbs_3",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_36",
@@ -2133,7 +2133,7 @@
     "targetId": "panama_NP_36",
     "categoryId": "nbs_5",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_36",
@@ -2151,7 +2151,7 @@
     "targetId": "panama_NP_36",
     "categoryId": "nbs_8",
     "taxonomyType": "nbs",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_36",
@@ -17241,13 +17241,13 @@
     "targetId": "panama_NP_5",
     "categoryId": "sector_waste",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_5",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_6",
@@ -17415,7 +17415,7 @@
     "targetId": "panama_NP_9",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_10",
@@ -17667,7 +17667,7 @@
     "targetId": "panama_NP_15",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_16",
@@ -17787,7 +17787,7 @@
     "targetId": "panama_NP_18",
     "categoryId": "sector_waste",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_18",
@@ -18213,7 +18213,7 @@
     "targetId": "panama_NP_28",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_29",
@@ -18253,53 +18253,53 @@
   },
   {
     "targetId": "panama_NP_29",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_30",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": true
   },
   {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_energy",
-    "taxonomyType": "sector",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_transport",
-    "taxonomyType": "sector",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_ippu",
-    "taxonomyType": "sector",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_agriculture",
-    "taxonomyType": "sector",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_lulucf",
-    "taxonomyType": "sector",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_waste",
-    "taxonomyType": "sector",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_30",
-    "categoryId": "sector_other",
-    "taxonomyType": "sector",
-    "isRelevant": true
-  },
-  {
     "targetId": "panama_NP_31",
     "categoryId": "sector_energy",
     "taxonomyType": "sector",
@@ -18423,7 +18423,7 @@
     "targetId": "panama_NP_33",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_34",
@@ -29007,22 +29007,22 @@
     "targetId": "panama_NP_1",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_1",
-    "categoryId": "theme_7",
-    "taxonomyType": "theme",
     "isRelevant": true
   },
   {
     "targetId": "panama_NP_1",
-    "categoryId": "theme_8",
+    "categoryId": "theme_7",
     "taxonomyType": "theme",
     "isRelevant": true
   },
   {
     "targetId": "panama_NP_1",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "panama_NP_1",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -29121,28 +29121,28 @@
     "targetId": "panama_NP_3",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_3",
-    "categoryId": "theme_4",
-    "taxonomyType": "theme",
-    "isRelevant": false
-  },
-  {
-    "targetId": "panama_NP_3",
-    "categoryId": "theme_5",
-    "taxonomyType": "theme",
     "isRelevant": true
   },
   {
     "targetId": "panama_NP_3",
-    "categoryId": "theme_6",
+    "categoryId": "theme_4",
     "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "panama_NP_3",
+    "categoryId": "theme_5",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "panama_NP_3",
+    "categoryId": "theme_6",
+    "taxonomyType": "theme",
+    "isRelevant": true
+  },
+  {
+    "targetId": "panama_NP_3",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
     "isRelevant": true
@@ -29193,7 +29193,7 @@
     "targetId": "panama_NP_4",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_4",
@@ -29204,20 +29204,20 @@
   {
     "targetId": "panama_NP_4",
     "categoryId": "theme_6",
-    "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "panama_NP_4",
-    "categoryId": "theme_7",
     "taxonomyType": "theme",
     "isRelevant": true
   },
   {
     "targetId": "panama_NP_4",
-    "categoryId": "theme_8",
+    "categoryId": "theme_7",
     "taxonomyType": "theme",
     "isRelevant": true
+  },
+  {
+    "targetId": "panama_NP_4",
+    "categoryId": "theme_8",
+    "taxonomyType": "theme",
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_4",
@@ -29229,7 +29229,7 @@
     "targetId": "panama_NP_4",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_5",
@@ -29253,7 +29253,7 @@
     "targetId": "panama_NP_5",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_5",
@@ -29289,7 +29289,7 @@
     "targetId": "panama_NP_5",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_5",
@@ -29349,16 +29349,16 @@
     "targetId": "panama_NP_6",
     "categoryId": "theme_8",
     "taxonomyType": "theme",
-    "isRelevant": true
-  },
-  {
-    "targetId": "panama_NP_6",
-    "categoryId": "theme_9",
-    "taxonomyType": "theme",
     "isRelevant": false
   },
   {
     "targetId": "panama_NP_6",
+    "categoryId": "theme_9",
+    "taxonomyType": "theme",
+    "isRelevant": false
+  },
+  {
+    "targetId": "panama_NP_6",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
     "isRelevant": false
@@ -29409,7 +29409,7 @@
     "targetId": "panama_NP_7",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_7",
@@ -29499,7 +29499,7 @@
     "targetId": "panama_NP_9",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_9",
@@ -29535,7 +29535,7 @@
     "targetId": "panama_NP_9",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_9",
@@ -29553,7 +29553,7 @@
     "targetId": "panama_NP_9",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_9",
@@ -29607,7 +29607,7 @@
     "targetId": "panama_NP_10",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": false
+    "isRelevant": true
   },
   {
     "targetId": "panama_NP_10",
@@ -30297,7 +30297,7 @@
     "targetId": "panama_NP_21",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_21",
@@ -30309,7 +30309,7 @@
     "targetId": "panama_NP_21",
     "categoryId": "theme_3",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_21",
@@ -30333,7 +30333,7 @@
     "targetId": "panama_NP_21",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_21",
@@ -30345,7 +30345,7 @@
     "targetId": "panama_NP_21",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_21",
@@ -30411,7 +30411,7 @@
     "targetId": "panama_NP_22",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_22",
@@ -30483,7 +30483,7 @@
     "targetId": "panama_NP_23",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_24",
@@ -30495,7 +30495,7 @@
     "targetId": "panama_NP_24",
     "categoryId": "theme_1",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_24",
@@ -30513,7 +30513,7 @@
     "targetId": "panama_NP_24",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_24",
@@ -30549,7 +30549,7 @@
     "targetId": "panama_NP_24",
     "categoryId": "theme_10",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_25",
@@ -30807,7 +30807,7 @@
     "targetId": "panama_NP_28",
     "categoryId": "theme_9",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_28",
@@ -30855,7 +30855,7 @@
     "targetId": "panama_NP_29",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_29",
@@ -30987,13 +30987,13 @@
     "targetId": "panama_NP_31",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_31",
     "categoryId": "theme_7",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_31",
@@ -31017,7 +31017,7 @@
     "targetId": "panama_NP_32",
     "categoryId": "theme_0",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_32",
@@ -31041,7 +31041,7 @@
     "targetId": "panama_NP_32",
     "categoryId": "theme_4",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_32",
@@ -31053,7 +31053,7 @@
     "targetId": "panama_NP_32",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_32",
@@ -31119,7 +31119,7 @@
     "targetId": "panama_NP_33",
     "categoryId": "theme_6",
     "taxonomyType": "theme",
-    "isRelevant": true
+    "isRelevant": false
   },
   {
     "targetId": "panama_NP_33",

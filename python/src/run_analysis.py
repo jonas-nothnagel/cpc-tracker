@@ -171,6 +171,23 @@ async def main() -> None:
         # 1. Load data
         targets, nbs_categories, sectors, themes = load_input_data(args.targets_file)
 
+        # Load country config for data-driven doc-type labels (e.g. NP →
+        # "NP (Nature Pledge)") so the alignment LLM sees human-readable
+        # document names instead of raw codes.
+        config_filename = derive_country_file(args.targets_file, "country-config")
+        config_path = DATA_DIR / config_filename
+        doc_type_labels: dict[str, str] | None = None
+        if config_path.exists():
+            country_config = json.loads(config_path.read_text())
+            doc_type_labels = {
+                dt["id"]: dt["mediumLabel"]
+                for dt in country_config.get("documentTypes", [])
+            }
+            logger.info(
+                f"Loaded doc-type labels from {config_filename}: "
+                f"{list(doc_type_labels.values())}"
+            )
+
         # Load the country's hand-curated BTR adaptation file once if present.
         # Filename is derived from the targets file so a second country only
         # needs to drop `{prefix}-btr-adaptation.json` alongside their targets.
@@ -280,7 +297,7 @@ async def main() -> None:
         logger.info("STEP 5: Assess alignment (Agent 2)")
         logger.info("-" * 40)
 
-        alignment_results = await assess_alignment(pairs, decompositions)
+        alignment_results = await assess_alignment(pairs, decompositions, doc_type_labels)
 
         # Save alignment results
         out_path = OUTPUT_DIR / "alignment.json"
@@ -352,7 +369,7 @@ async def main() -> None:
                 if m_pairs:
                     measure_decomps = await decompose_measures(measure_pseudo_targets)
                     all_decomps = {**decompositions, **measure_decomps}
-                    measure_alignment_results = await assess_measure_alignment(m_pairs, all_decomps)
+                    measure_alignment_results = await assess_measure_alignment(m_pairs, all_decomps, doc_type_labels)
 
                     out_path = OUTPUT_DIR / "measure_alignment.json"
                     out_path.write_text(json.dumps(measure_alignment_results, indent=2))
