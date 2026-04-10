@@ -398,13 +398,7 @@ function buildBiodiversityRows(
 
   // Link measures to their BTR pseudo-target by matching the truncated name
   // against sourceLabel (both are derived from the same raw measure name).
-  const btrTargetByName = new Map<string, Target>();
-  for (const t of btrTargets) {
-    // sourceLabel is truncated; use a prefix match
-    btrTargetByName.set(t.sourceLabel, t);
-  }
   function findBtrTarget(m: MitigationMeasure): Target | undefined {
-    // First try exact sourceLabel match, then prefix
     for (const t of btrTargets) {
       if (m.name.startsWith(t.sourceLabel.replace(/\.{3}$/, "")) || t.sourceLabel.startsWith(m.name.slice(0, 40))) {
         return t;

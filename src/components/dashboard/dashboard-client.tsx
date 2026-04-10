@@ -112,9 +112,10 @@ function ClassificationSection({
     globe: { count: targetsWithGlobe, label: `Mapped to Biodiversity categories (${globeCategories.length})` },
   };
 
+  const pct = (n: number) => targets.length > 0 ? Math.round((n / targets.length) * 100) : 0;
   const viewSubtitles: Record<ClassificationView, string> = {
-    sector: `${targetsWithSectors} targets (${Math.round((targetsWithSectors / targets.length) * 100)}%) classified across ${sectors.length} Climate Mitigation categories`,
-    globe: `${targetsWithGlobe} targets (${Math.round((targetsWithGlobe / targets.length) * 100)}%) classified across ${globeCategories.length} Biodiversity categories`,
+    sector: `${targetsWithSectors} targets (${pct(targetsWithSectors)}%) classified across ${sectors.length} Climate Mitigation categories`,
+    globe: `${targetsWithGlobe} targets (${pct(targetsWithGlobe)}%) classified across ${globeCategories.length} Biodiversity categories`,
   };
 
   return (
