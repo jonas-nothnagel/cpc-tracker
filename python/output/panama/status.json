@@ -3,9 +3,9 @@
   "step": 6,
   "totalSteps": 6,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 7.5s",
-  "startedAt": "2026-04-10T12:34:07.914149+00:00",
-  "completedAt": "2026-04-10T12:34:15.373539+00:00",
+  "message": "Pipeline finished in 7.4s",
+  "startedAt": "2026-04-10T12:43:37.656793+00:00",
+  "completedAt": "2026-04-10T12:43:45.088676+00:00",
   "error": null,
   "summary": {
     "totalTargets": 284,
@@ -22,7 +22,7 @@
     "totalContradictions": 7,
     "measureAlignmentPairs": 7668,
     "measurePseudoTargets": 27,
-    "elapsedSeconds": 7.5
+    "elapsedSeconds": 7.4
   },
   "footprint": {
     "energy_wh": 0.0,

@@ -368,7 +368,7 @@ async def main() -> None:
                     if label in label_to_sector:
                         m["sector"] = label_to_sector[label]
 
-                btr_path.write_text(json.dumps(btr, indent=2))
+                btr_path.write_text(json.dumps(btr, indent=2, ensure_ascii=False))
                 logger.info(f"Wrote back LLM sectors to {len(label_to_sector)} measures in btr_data.json")
 
                 # Re-save classifications with BTR entries included
