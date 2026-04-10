@@ -23,22 +23,17 @@ import type {
   AlignmentResult,
   NbsCategory,
   IpccSector,
+  GlobeCategory,
   BtrData,
   Nr7Data,
   CountryConfig,
 } from "@/types";
 
-interface TaxonomyCategory {
-  id: string;
-  name: string;
-  description: string;
-}
-
 interface DashboardData {
   targets: Target[];
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
-  themes: TaxonomyCategory[];
+  globeCategories: GlobeCategory[];
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
   btrData: BtrData | null;
@@ -82,28 +77,28 @@ function normalizeSector(t: Record<string, unknown>): IpccSector {
   };
 }
 
-type ClassificationView = "nbs" | "sector" | "theme";
+type ClassificationView = "nbs" | "sector" | "globe";
 
 function ClassificationSection({
-  targets, documentTypes, nbsSorted, sectorSorted, themeSorted,
-  nbsClassifications, sectorClassifications, themeClassifications,
-  targetsWithNbs, targetsWithSectors, targetsWithThemes,
-  nbsCategories, sectors, themes, countryConfig,
+  targets, documentTypes, nbsSorted, sectorSorted, globeSorted,
+  nbsClassifications, sectorClassifications, globeClassifications,
+  targetsWithNbs, targetsWithSectors, targetsWithGlobe,
+  nbsCategories, sectors, globeCategories, countryConfig,
 }: {
   targets: Target[];
   documentTypes: PolicyDocumentType[];
   nbsSorted: ReturnType<typeof countByCategory>;
   sectorSorted: ReturnType<typeof countByCategory>;
-  themeSorted: ReturnType<typeof countByCategory>;
+  globeSorted: ReturnType<typeof countByCategory>;
   nbsClassifications: ThematicClassification[];
   sectorClassifications: ThematicClassification[];
-  themeClassifications: ThematicClassification[];
+  globeClassifications: ThematicClassification[];
   targetsWithNbs: number;
   targetsWithSectors: number;
-  targetsWithThemes: number;
+  targetsWithGlobe: number;
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
-  themes: TaxonomyCategory[];
+  globeCategories: GlobeCategory[];
   countryConfig: CountryConfig | null;
 }) {
   const viewOptions: { value: ClassificationView; label: string }[] = [
@@ -113,8 +108,8 @@ function ClassificationSection({
     ...(sectors.length > 0
       ? [{ value: "sector" as const, label: `IPCC Sectors (${sectors.length})` }]
       : []),
-    ...(themes.length > 0
-      ? [{ value: "theme" as const, label: `Cross-Cutting Themes (${themes.length})` }]
+    ...(globeCategories.length > 0
+      ? [{ value: "globe" as const, label: `GLOBE Biodiversity (${globeCategories.length})` }]
       : []),
   ];
 
@@ -123,13 +118,13 @@ function ClassificationSection({
   const mappedTargetsByView: Record<ClassificationView, { count: number; label: string }> = {
     nbs: { count: targetsWithNbs, label: `Mapped to NBS (${nbsCategories.length} categories)` },
     sector: { count: targetsWithSectors, label: `Mapped to IPCC sectors (${sectors.length})` },
-    theme: { count: targetsWithThemes, label: `Mapped to themes (${themes.length})` },
+    globe: { count: targetsWithGlobe, label: `Mapped to GLOBE categories (${globeCategories.length})` },
   };
 
   const viewSubtitles: Record<ClassificationView, string> = {
     nbs: `${targetsWithNbs} targets (${Math.round((targetsWithNbs / targets.length) * 100)}%) classified across ${nbsCategories.length} NBS categories`,
     sector: `${targetsWithSectors} targets (${Math.round((targetsWithSectors / targets.length) * 100)}%) classified across ${sectors.length} IPCC sectors`,
-    theme: `${targetsWithThemes} targets (${Math.round((targetsWithThemes / targets.length) * 100)}%) classified across ${themes.length} cross-cutting themes`,
+    globe: `${targetsWithGlobe} targets (${Math.round((targetsWithGlobe / targets.length) * 100)}%) classified across ${globeCategories.length} GLOBE biodiversity categories`,
   };
 
   return (
@@ -141,7 +136,8 @@ function ClassificationSection({
             Each policy target is classified against established taxonomies using AI.{" "}
             <strong>Nature-Based Solutions (NBS)</strong> categories identify targets that use natural ecosystems.{" "}
             <strong>IPCC Sectors</strong> map targets to standard emissions categories.{" "}
-            Targets may appear in multiple categories if they span several themes.
+            <strong>GLOBE Biodiversity</strong> uses BIOFIN&apos;s expenditure taxonomy to enable cross-level analysis.{" "}
+            Targets may appear in multiple categories if they span several domains.
           </InfoBox>
         </h2>
         <div className="flex gap-1.5 text-xs">
@@ -194,13 +190,13 @@ function ClassificationSection({
             countryConfig={countryConfig}
           />
         )}
-        {view === "theme" && (
+        {view === "globe" && (
           <ThemeBarChart
-            data={themeSorted}
+            data={globeSorted}
             documentTypes={[...documentTypes]}
             targets={targets}
-            themeClassifications={themeClassifications}
-            taxonomyType="theme"
+            themeClassifications={globeClassifications}
+            taxonomyType="globe"
             countryConfig={countryConfig}
           />
         )}
@@ -254,7 +250,7 @@ export function DashboardClient({
           targets: (raw.targets ?? []).map(normalizeTarget),
           nbsCategories: raw.nbsCategories ?? [],
           sectors: (raw.sectors ?? []).map(normalizeSector),
-          themes: (raw.themes ?? []).map(normalizeSector),
+          globeCategories: (raw.globeCategories ?? []).map(normalizeSector),
           classifications: raw.classifications ?? [],
           alignment: raw.alignment ?? [],
           btrData: raw.btrData ?? null,
@@ -339,13 +335,13 @@ export function DashboardClient({
   const sectorClassifications = data.classifications.filter(
     (c) => c.taxonomyType === "sector"
   );
-  const themeClassifications = data.classifications.filter(
-    (c) => c.taxonomyType === "theme"
+  const globeClassifications = data.classifications.filter(
+    (c) => c.taxonomyType === "globe"
   );
 
   const nbsCounts = countByCategory(targets, nbsClassifications, data.nbsCategories);
   const sectorCounts = countByCategory(targets, sectorClassifications, data.sectors);
-  const themeCounts = countByCategory(targets, themeClassifications, data.themes);
+  const globeCounts = countByCategory(targets, globeClassifications, data.globeCategories);
 
   const targetsWithNbs = new Set(
     nbsClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
@@ -353,14 +349,14 @@ export function DashboardClient({
   const targetsWithSectors = new Set(
     sectorClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
   ).size;
-  const targetsWithThemes = new Set(
-    themeClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
+  const targetsWithGlobe = new Set(
+    globeClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
   ).size;
 
   const documentTypes = Array.from(targetsByDoc.keys()) as Target["sourceDocument"][];
   const nbsSorted = [...nbsCounts].sort((a, b) => b.total - a.total);
   const sectorSorted = [...sectorCounts].sort((a, b) => b.total - a.total);
-  const themeSorted = [...themeCounts].sort((a, b) => b.total - a.total);
+  const globeSorted = [...globeCounts].sort((a, b) => b.total - a.total);
 
   const displayCountry =
     countryDisplayName ?? data?.targets[0]?.country ?? "Dashboard";
@@ -393,7 +389,7 @@ export function DashboardClient({
           targets={targets}
           alignment={data.alignment}
           sectors={data.sectors}
-          themes={data.themes}
+          globeCategories={data.globeCategories}
           nbsCategories={data.nbsCategories}
           classifications={data.classifications}
           nr7Data={data.nr7Data}
@@ -408,16 +404,16 @@ export function DashboardClient({
           documentTypes={documentTypes}
           nbsSorted={nbsSorted}
           sectorSorted={sectorSorted}
-          themeSorted={themeSorted}
+          globeSorted={globeSorted}
           nbsClassifications={nbsClassifications}
           sectorClassifications={sectorClassifications}
-          themeClassifications={themeClassifications}
+          globeClassifications={globeClassifications}
           targetsWithNbs={targetsWithNbs}
           targetsWithSectors={targetsWithSectors}
-          targetsWithThemes={targetsWithThemes}
+          targetsWithGlobe={targetsWithGlobe}
           nbsCategories={data.nbsCategories}
           sectors={data.sectors}
-          themes={data.themes}
+          globeCategories={data.globeCategories}
           countryConfig={data.countryConfig}
         />
 
@@ -428,7 +424,7 @@ export function DashboardClient({
           classifications={data.classifications}
           sectors={data.sectors}
           nbsCategories={data.nbsCategories}
-          themes={data.themes}
+          globeCategories={data.globeCategories}
           onFocusTarget={setFocusTargetId}
           countryConfig={data.countryConfig}
         />

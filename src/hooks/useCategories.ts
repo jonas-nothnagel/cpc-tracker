@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from "react";
 import type { CategoryItem } from "@/lib/upload-helpers";
 import { NBS_CATEGORIES } from "@/data/nbs-categories";
 import { IPCC_SECTORS } from "@/data/sectors";
-import { THEMES } from "@/data/themes";
+import { GLOBE_CATEGORIES } from "@/data/globe-categories";
 
 export interface TaxonomyGroup {
   id: string;
@@ -32,11 +32,11 @@ export function useCategories() {
       isCustomGroup: false,
     },
     {
-      id: "theme",
-      name: "Cross-cutting Themes",
-      description: "Check for cross-cutting dimensions (gender, SDGs, indigenous peoples, etc.)",
-      color: "gray",
-      items: THEMES.map((t) => ({ ...t, enabled: true, isCustom: false })),
+      id: "globe",
+      name: "GLOBE Biodiversity",
+      description: "BIOFIN's Global Biodiversity Expenditure Taxonomy for cross-level analysis",
+      color: "emerald",
+      items: GLOBE_CATEGORIES.map((c) => ({ ...c, enabled: true, isCustom: false })),
       isCustomGroup: false,
     },
   ]);

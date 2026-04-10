@@ -103,16 +103,14 @@ export interface IpccSector {
 }
 
 // ---------------------------------------------------------------------------
-// Cross-Cutting Themes (deprecated — kept for backward compatibility)
+// GLOBE Biodiversity Categories (BIOFIN)
 // ---------------------------------------------------------------------------
 
-/** @deprecated Use IpccSector instead. Kept for backward compatibility with older analyses. */
-export interface Theme {
+/** A GLOBE taxonomy category used for cross-level biodiversity classification. */
+export interface GlobeCategory {
   id: string;
   name: string;
   description: string;
-  /** Whether this theme was added by the user (vs predefined) */
-  isCustom: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -120,22 +118,22 @@ export interface Theme {
 // ---------------------------------------------------------------------------
 
 /**
- * Binary classification: does a target pertain to a given NBS category
- * or IPCC sector?
+ * Binary classification: does a target pertain to a given NBS category,
+ * IPCC sector, or GLOBE biodiversity category?
  */
 export interface ThematicClassification {
   targetId: string;
-  /** NBS category id, IPCC sector id, theme id, or country-specific adaptation goal id */
+  /** NBS category id, IPCC sector id, GLOBE category id, or country-specific adaptation goal id */
   categoryId: string;
   /**
    * Which taxonomy this classification belongs to:
    * - "nbs": Nature-Based Solutions categories
    * - "sector": IPCC sectors
-   * - "theme": legacy cross-cutting themes
+   * - "globe": GLOBE biodiversity expenditure categories (BIOFIN)
    * - "adaptation_goal": country-specific adaptation action plan goals
    *   (e.g. Mongolia APNDC's 8 goals from BTR1 Table III.9)
    */
-  taxonomyType: "nbs" | "sector" | "theme" | "adaptation_goal";
+  taxonomyType: "nbs" | "sector" | "globe" | "adaptation_goal";
   /** Whether the target pertains to this category */
   isRelevant: boolean;
 }
@@ -430,8 +428,7 @@ export interface AnalysisResult {
   targets: Target[];
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
-  /** @deprecated Legacy analyses may still have themes */
-  themes?: Theme[];
+  globeCategories: GlobeCategory[];
   thematicClassifications: ThematicClassification[];
   alignmentResults: AlignmentResult[];
   decompositions?: TargetDecomposition[];

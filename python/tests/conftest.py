@@ -52,14 +52,14 @@ SAMPLE_NBS_CATEGORIES = [
 ]
 
 SAMPLE_CLASSIFICATIONS = [
-    {"targetId": "NAP_1", "categoryId": "theme_0", "taxonomyType": "theme", "isRelevant": True},
+    {"targetId": "NAP_1", "categoryId": "globe_1", "taxonomyType": "globe", "isRelevant": True},
     {"targetId": "NAP_10", "categoryId": "nbs_1", "taxonomyType": "nbs", "isRelevant": True},
-    {"targetId": "NAP_10", "categoryId": "theme_0", "taxonomyType": "theme", "isRelevant": True},
+    {"targetId": "NAP_10", "categoryId": "globe_1", "taxonomyType": "globe", "isRelevant": True},
     {"targetId": "NDC_Forests_1", "categoryId": "nbs_3", "taxonomyType": "nbs", "isRelevant": True},
-    {"targetId": "NDC_Forests_1", "categoryId": "theme_0", "taxonomyType": "theme", "isRelevant": True},
+    {"targetId": "NDC_Forests_1", "categoryId": "globe_1", "taxonomyType": "globe", "isRelevant": True},
     {"targetId": "NDC_LivestockMitigation", "categoryId": "nbs_1", "taxonomyType": "nbs", "isRelevant": True},
-    {"targetId": "NDC_LivestockMitigation", "categoryId": "theme_1", "taxonomyType": "theme", "isRelevant": True},
-    {"targetId": "NBT_1", "categoryId": "theme_0", "taxonomyType": "theme", "isRelevant": True},
+    {"targetId": "NDC_LivestockMitigation", "categoryId": "globe_2", "taxonomyType": "globe", "isRelevant": True},
+    {"targetId": "NBT_1", "categoryId": "globe_1", "taxonomyType": "globe", "isRelevant": True},
     {"targetId": "NBT_1", "categoryId": "nbs_3", "taxonomyType": "nbs", "isRelevant": False},
 ]
 

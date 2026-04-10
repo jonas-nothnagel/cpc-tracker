@@ -33,7 +33,7 @@ interface ThemeBarChartProps {
   documentTypes: PolicyDocumentType[];
   targets: Target[];
   themeClassifications: ThematicClassification[];
-  taxonomyType?: "theme" | "sector";
+  taxonomyType?: "globe" | "sector";
   countryConfig?: CountryConfig | null;
 }
 
@@ -41,7 +41,7 @@ function getTargetsForTheme(
   themeId: string,
   targets: Target[],
   classifications: ThematicClassification[],
-  taxonomyType: "theme" | "sector" = "sector",
+  taxonomyType: "globe" | "sector" = "sector",
   docType?: PolicyDocumentType,
 ): Target[] {
   const targetIds = new Set(

@@ -47,7 +47,7 @@ export type BtrData = Record<string, unknown>;
 export const MAX_TARGETS = 150;
 export const TARGETS_PREVIEW = 5;
 export const COST_PER_CALL = 0.00015;
-export const CROSS_CUTTING_THEMES_COUNT = 11;
+export const GLOBE_CATEGORIES_COUNT = 9;
 
 export const DOCUMENT_TYPES: { value: PolicyDocumentType; label: string; hint?: string }[] = [
   { value: "NDC", label: "NDC (Nationally Determined Contributions)" },
