@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { InfoBox } from "@/components/ui/info-box";
 import { countByCategory } from "@/lib/utils";
-import { getCountry } from "@/config/countries";
+import { getCountry, listVisibleCountries } from "@/config/countries";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
@@ -336,7 +336,11 @@ export function DashboardClient({
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header subtitle={displayCountry} />
+      <Header
+        subtitle={displayCountry}
+        currentCountryId={country}
+        countries={listVisibleCountries().map(c => ({ id: c.id, name: c.name }))}
+      />
 
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
         <section className="mb-10">

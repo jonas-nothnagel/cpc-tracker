@@ -797,8 +797,8 @@ export function PolicyCoherenceExplorer({
             onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
             className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
           >
-            <option value="globe">By Biodiversity Category</option>
             <option value="document">By Document Type</option>
+            <option value="globe">By Biodiversity Category</option>
             <option value="sector">By Climate Mitigation Sector</option>
           </select>
           <select

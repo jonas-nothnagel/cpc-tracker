@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // "Home" covers the country index — the landing page is the country picker.
 // A separate "Dashboard" link without a country id would redirect back to "/",
@@ -14,10 +14,15 @@ const NAV_ITEMS = [
 
 interface HeaderProps {
   subtitle?: string;
+  /** When provided with countries, renders the subtitle as a country switcher */
+  currentCountryId?: string;
+  countries?: { id: string; name: string }[];
 }
 
-export function Header({ subtitle }: HeaderProps) {
+export function Header({ subtitle, currentCountryId, countries }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const showSwitcher = currentCountryId && countries && countries.length > 1;
 
   return (
     <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
@@ -34,9 +39,19 @@ export function Header({ subtitle }: HeaderProps) {
             <p className="text-sm font-medium text-[var(--undp-black)]">
               Policy Coherence Tracker
             </p>
-            {subtitle && (
+            {showSwitcher ? (
+              <select
+                value={currentCountryId}
+                onChange={(e) => router.push(`/dashboard?country=${e.target.value}`)}
+                className="text-xs text-[var(--undp-gray)] bg-transparent border-none cursor-pointer focus:outline-none hover:text-[var(--undp-blue)]"
+              >
+                {countries.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            ) : subtitle ? (
               <p className="text-xs text-[var(--undp-gray)]">{subtitle}</p>
-            )}
+            ) : null}
           </div>
         </Link>
         <nav className="flex items-center gap-6 text-sm">

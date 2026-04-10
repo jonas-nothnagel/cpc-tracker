@@ -271,6 +271,16 @@ export function TensionClusters({
   // Apply taxonomy filter to all tensions (affects drivers + browse + summary)
   const visibleTensions = useMemo(() => {
     if (!taxonomyFilter) return tensions;
+    if (taxonomyFilter.categoryId === "*") {
+      const prefix = `${taxonomyFilter.taxonomyType}::`;
+      return tensions.filter((t) => {
+        const catsA = targetTaxonomyMap.get(t.targetAId);
+        const catsB = targetTaxonomyMap.get(t.targetBId);
+        const matchA = catsA ? [...catsA].some(k => k.startsWith(prefix)) : false;
+        const matchB = catsB ? [...catsB].some(k => k.startsWith(prefix)) : false;
+        return matchA || matchB;
+      });
+    }
     const filterKey = `${taxonomyFilter.taxonomyType}::${taxonomyFilter.categoryId}`;
     return tensions.filter((t) => {
       const catsA = targetTaxonomyMap.get(t.targetAId);
@@ -538,6 +548,7 @@ export function TensionClusters({
               <option value="all">All categories</option>
               {globeCategories && globeCategories.length > 0 && (
                 <optgroup label="Biodiversity Taxonomy">
+                  <option value="globe::*">All Biodiversity categories</option>
                   {globeCategories.map((g) => (
                     <option key={`globe::${g.id}`} value={`globe::${g.id}`}>{g.name}</option>
                   ))}
@@ -545,6 +556,7 @@ export function TensionClusters({
               )}
               {sectors && sectors.length > 0 && (
                 <optgroup label="Climate Mitigation Taxonomy">
+                  <option value="sector::*">All Climate Mitigation sectors</option>
                   {sectors.map((s) => (
                     <option key={`sector::${s.id}`} value={`sector::${s.id}`}>{s.name}</option>
                   ))}
