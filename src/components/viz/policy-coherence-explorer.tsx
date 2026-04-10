@@ -66,7 +66,7 @@ interface TaxCategory {
   description: string;
 }
 
-type GroupMode = "document" | "sector" | "theme" | "nbs";
+type GroupMode = "document" | "sector" | "globe" | "nbs";
 type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
 type ActionTypeFilter = "all" | "mitigation" | "adaptation";
 
@@ -128,7 +128,7 @@ function buildGroups(
   targets: Target[],
   mode: GroupMode,
   sectors: TaxCategory[],
-  themes: TaxCategory[],
+  globeCategories: TaxCategory[],
   nbsCategories: TaxCategory[],
   classifications: ThematicClassification[],
   countryConfig?: CountryConfig | null,
@@ -148,7 +148,7 @@ function buildGroups(
     }));
   }
   if (mode === "sector") return buildGroupsByTaxonomy(targets, sectors, "sector", classifications);
-  if (mode === "theme") return buildGroupsByTaxonomy(targets, themes, "theme", classifications);
+  if (mode === "globe") return buildGroupsByTaxonomy(targets, globeCategories, "globe", classifications);
   return buildGroupsByTaxonomy(targets, nbsCategories, "nbs", classifications);
 }
 
@@ -519,7 +519,7 @@ interface PolicyCoherenceExplorerProps {
   targets: Target[];
   alignment: AlignmentResult[];
   sectors: TaxCategory[];
-  themes: TaxCategory[];
+  globeCategories: TaxCategory[];
   nbsCategories: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
@@ -531,7 +531,7 @@ export function PolicyCoherenceExplorer({
   targets,
   alignment,
   sectors,
-  themes,
+  globeCategories,
   nbsCategories,
   classifications,
   nr7Data,
@@ -660,8 +660,8 @@ export function PolicyCoherenceExplorer({
   const activeId = selectedId ?? hoveredId;
 
   const groups = useMemo(
-    () => buildGroups(visibleTargets, groupMode, sectors, themes, nbsCategories, classifications, countryConfig),
-    [visibleTargets, groupMode, sectors, themes, nbsCategories, classifications, countryConfig],
+    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, nbsCategories, classifications, countryConfig),
+    [visibleTargets, groupMode, sectors, globeCategories, nbsCategories, classifications, countryConfig],
   );
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
@@ -778,7 +778,7 @@ export function PolicyCoherenceExplorer({
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {totalAligned} alignment opportunit{totalAligned !== 1 ? "ies" : "y"} across {groups.length} {
-              ({ document: ["document type", "document types"], theme: ["cross-cutting theme", "cross-cutting themes"], sector: ["sector", "sectors"], nbs: ["NBS category", "NBS categories"] } as Record<GroupMode, [string, string]>)[groupMode][groups.length !== 1 ? 1 : 0]
+              ({ document: ["document type", "document types"], globe: ["GLOBE category", "GLOBE categories"], sector: ["sector", "sectors"], nbs: ["NBS category", "NBS categories"] } as Record<GroupMode, [string, string]>)[groupMode][groups.length !== 1 ? 1 : 0]
             }
             {totalContra > 0 && (
               <>
@@ -801,7 +801,7 @@ export function PolicyCoherenceExplorer({
             onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
             className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
           >
-            <option value="theme">By Cross-Cutting Theme</option>
+            <option value="globe">By GLOBE Category</option>
             <option value="document">By Document Type</option>
             <option value="sector">By IPCC Sector</option>
             {nbsCategories.length > 0 && <option value="nbs">By NBS Category</option>}
@@ -1260,7 +1260,7 @@ export function PolicyCoherenceExplorer({
               {/* Document column */}
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? "Document" : groupMode === "theme" ? "Theme" : groupMode === "sector" ? "Sector" : "NBS Category"}
+                  {groupMode === "document" ? "Document" : groupMode === "globe" ? "GLOBE Category" : groupMode === "sector" ? "Sector" : "NBS Category"}
                 </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (

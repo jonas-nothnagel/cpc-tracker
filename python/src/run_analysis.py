@@ -11,7 +11,7 @@ Or with plain Python:
 
 Steps:
     1. Quantitative flag detection
-    2. Run thematic classification (NBS + sectors + themes)
+    2. Run thematic classification (NBS + sectors + GLOBE)
     3. Generate all cross-document pairs
     4. Decompose targets (Agent 1)
     5. Assess alignment (Agent 2)
@@ -85,12 +85,12 @@ def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, 
     cats = json.loads((DATA_DIR / "categories.json").read_text())
     nbs = cats["nbs_categories"]
     sectors = cats["ipcc_sectors"]
-    themes = cats.get("_themes_deprecated", [])
+    globe = cats.get("globe_categories", [])
     logger.info(
         f"Loaded {len(targets)} targets, "
-        f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + {len(themes)} themes"
+        f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + {len(globe)} GLOBE categories"
     )
-    return targets, nbs, sectors, themes
+    return targets, nbs, sectors, globe
 
 
 def derive_country_file(targets_file: str, suffix: str) -> str:
@@ -169,7 +169,7 @@ async def main() -> None:
 
     try:
         # 1. Load data
-        targets, nbs_categories, sectors, themes = load_input_data(args.targets_file)
+        targets, nbs_categories, sectors, globe_categories = load_input_data(args.targets_file)
 
         # Load country config for data-driven doc-type labels (e.g. NP →
         # "NP (Nature Pledge)") so the alignment LLM sees human-readable
@@ -214,16 +214,16 @@ async def main() -> None:
         logger.info(f"Saved quantitative flags: {q_count} quantitative, {t_count} time-bound")
 
         # 3. Thematic classification (NBS + IPCC sectors)
-        write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against NBS categories, IPCC sectors, and cross-cutting themes", started_at=started_at)
+        write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against NBS categories, IPCC sectors, and GLOBE biodiversity categories", started_at=started_at)
         logger.info("")
         logger.info("STEP 2: Thematic classification")
         logger.info("-" * 40)
 
         nbs_classifications = await run_classification(targets, nbs_categories, "nbs")
         sector_classifications = await run_classification(targets, sectors, "sector")
-        theme_classifications = await run_classification(targets, themes, "theme")
+        globe_classifications = await run_classification(targets, globe_categories, "globe")
 
-        all_classifications = nbs_classifications + sector_classifications + theme_classifications
+        all_classifications = nbs_classifications + sector_classifications + globe_classifications
 
         # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
         # When a `{country}-btr-adaptation.json` file is loaded, classify policy
@@ -337,10 +337,10 @@ async def main() -> None:
             measure_pseudo_targets = mit_pseudo_targets + adp_pseudo_targets
 
             if measure_pseudo_targets:
-                # Classify BTR actions against NBS and themes (not sectors — ground truth)
+                # Classify BTR actions against NBS and GLOBE (not sectors — ground truth)
                 btr_nbs = await run_classification(measure_pseudo_targets, nbs_categories, "nbs")
-                btr_themes = await run_classification(measure_pseudo_targets, themes, "theme")
-                all_classifications.extend(btr_nbs + btr_themes)
+                btr_globe = await run_classification(measure_pseudo_targets, globe_categories, "globe")
+                all_classifications.extend(btr_nbs + btr_globe)
 
                 # Inject ground-truth IPCC sector classifications from BTR data
                 for pt in measure_pseudo_targets:
@@ -354,7 +354,7 @@ async def main() -> None:
                 # Re-save classifications with BTR entries included
                 out_path = OUTPUT_DIR / "classifications.json"
                 out_path.write_text(json.dumps(all_classifications, indent=2))
-                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_themes)} themes + {len(measure_pseudo_targets)} ground-truth sectors)")
+                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + {len(measure_pseudo_targets)} ground-truth sectors)")
 
                 # Policy target × BTR action pairs (both mitigation and adaptation).
                 m_pairs = generate_measure_pairs(targets, measure_pseudo_targets)

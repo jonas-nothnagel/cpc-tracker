@@ -1,6 +1,6 @@
 "use client";
 
-import { CROSS_CUTTING_THEMES_COUNT } from "@/lib/upload-helpers";
+import { GLOBE_CATEGORIES_COUNT } from "@/lib/upload-helpers";
 
 interface AnalysisEstimateProps {
   targetCount: number;
@@ -26,7 +26,7 @@ export function AnalysisEstimate({
   submitting,
   onRunAnalysis,
 }: AnalysisEstimateProps) {
-  const classCalls = targetCount * (activeNbsCount + activeSectorsCount + CROSS_CUTTING_THEMES_COUNT);
+  const classCalls = targetCount * (activeNbsCount + activeSectorsCount + GLOBE_CATEGORIES_COUNT);
 
   return (
     <div className="bg-[var(--undp-light)] rounded-lg p-5 mb-8">
@@ -34,7 +34,7 @@ export function AnalysisEstimate({
         <div className="flex-1 min-w-0">
           <ul className="space-y-1 text-sm text-[var(--undp-gray)] mb-3">
             <li>&middot; Quantitative phrase detection: {targetCount} calls</li>
-            <li>&middot; Classification against NBS, IPCC, themes: {classCalls} calls</li>
+            <li>&middot; Classification against NBS, IPCC, GLOBE: {classCalls} calls</li>
             <li>&middot; Target decomposition: {targetCount} calls</li>
             <li>
               &middot; Pairwise alignment:{" "}

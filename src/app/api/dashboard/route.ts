@@ -130,8 +130,7 @@ export async function GET(request: NextRequest) {
   const categories = readJson<{
     nbs_categories: unknown[];
     ipcc_sectors?: unknown[];
-    themes?: unknown[];
-    _themes_deprecated?: unknown[];
+    globe_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
   const alignment = readJson<unknown[]>(join(outputDir, "alignment.json"));
@@ -283,7 +282,7 @@ export async function GET(request: NextRequest) {
       targets: allTargets,
       nbsCategories: categories.nbs_categories,
       sectors: categories.ipcc_sectors ?? [],
-      themes: categories.themes ?? categories._themes_deprecated ?? [],
+      globeCategories: categories.globe_categories ?? [],
       classifications,
       alignment: allAlignment,
       btrData: btrData ?? null,

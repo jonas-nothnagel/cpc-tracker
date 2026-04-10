@@ -29,7 +29,7 @@ interface TensionClustersProps {
   classifications?: ThematicClassification[];
   sectors?: IpccSector[];
   nbsCategories?: NbsCategory[];
-  themes?: { id: string; name: string }[];
+  globeCategories?: { id: string; name: string }[];
   onFocusTarget?: (targetId: string) => void;
   countryConfig?: CountryConfig | null;
 }
@@ -43,7 +43,7 @@ const SEVERITY_ORDER: AlignmentLevel[] = [
 const TAXONOMY_LABELS: Record<string, string> = {
   sector: "sectors",
   nbs: "NBS categories",
-  theme: "themes",
+  globe: "GLOBE categories",
 };
 
 interface DriverTarget {
@@ -214,7 +214,7 @@ export function TensionClusters({
   classifications,
   sectors,
   nbsCategories,
-  themes,
+  globeCategories,
   onFocusTarget,
   countryConfig,
 }: TensionClustersProps) {
@@ -238,9 +238,9 @@ export function TensionClusters({
     const map = new Map<string, string>();
     for (const s of sectors ?? []) map.set(s.id, s.name);
     for (const n of nbsCategories ?? []) map.set(n.id, n.name);
-    for (const t of themes ?? []) map.set(t.id, t.name);
+    for (const g of globeCategories ?? []) map.set(g.id, g.name);
     return map;
-  }, [sectors, nbsCategories, themes]);
+  }, [sectors, nbsCategories, globeCategories]);
 
   // All tension edges
   const tensions = useMemo(

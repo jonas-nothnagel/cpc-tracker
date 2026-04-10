@@ -116,11 +116,10 @@ export async function POST(request: NextRequest) {
     // Write categories (custom if provided, otherwise copy defaults)
     if (body.nbsCategories || body.sectors) {
       const defaultCats = JSON.parse(readFileSync(DEFAULT_CATEGORIES, "utf-8"));
-      const themes = defaultCats.themes ?? defaultCats._themes_deprecated ?? [];
       const categories = {
         nbs_categories: body.nbsCategories ?? defaultCats.nbs_categories ?? [],
         ipcc_sectors: body.sectors ?? defaultCats.ipcc_sectors ?? [],
-        _themes_deprecated: themes,
+        globe_categories: defaultCats.globe_categories ?? [],
       };
       writeFileSync(
         join(inputDir, "categories.json"),
