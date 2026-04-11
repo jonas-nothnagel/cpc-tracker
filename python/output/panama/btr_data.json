@@ -15,9 +15,11 @@
   ],
   "mitigationMeasures": [
     {
-      "name": "Plan Nacional de Cambio Climático para el Sector Energía",
+      "name": "National Climate Change Plan for the Energy Sector",
+      "nameOriginal": "Plan Nacional de Cambio Climático para el Sector Energía",
       "description": "",
-      "objectives": "Insumo para la planificación y mejora de la operación del sistema energético nacional, incluyendo a todas las fuentes energéticas, su transformación y transporte para contribuir a la resiliencia climática del sector y la ruta de la transición hacia el carbono neutralidad.",
+      "objectives": "Input for the planning and improvement of the national energy system's operation, including all energy sources, their transformation and transport, to contribute to the sector's climate resilience and the pathway toward carbon neutrality.",
+      "objectivesOriginal": "Insumo para la planificación y mejora de la operación del sistema energético nacional, incluyendo a todas las fuentes energéticas, su transformación y transporte para contribuir a la resiliencia climática del sector y la ruta de la transición hacia el carbono neutralidad.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_energy",
@@ -28,9 +30,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Estrategia Nacional REDD+",
+      "name": "National REDD+ Strategy",
+      "nameOriginal": "Estrategia Nacional REDD+",
       "description": "",
-      "objectives": "Contribuir a la mitigación del cambio climático global a través de la reducción de deforestación y degradación forestal, conservación de ecosistemas forestales, aumento de las reservas de carbono forestal y el manejo sostenible de los bosques.",
+      "objectives": "Contribute to the mitigation of global climate change through the reduction of deforestation and forest degradation, conservation of forest ecosystems, enhancement of forest carbon stocks, and sustainable forest management.",
+      "objectivesOriginal": "Contribuir a la mitigación del cambio climático global a través de la reducción de deforestación y degradación forestal, conservación de ecosistemas forestales, aumento de las reservas de carbono forestal y el manejo sostenible de los bosques.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_lulucf",
@@ -41,9 +45,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Guía Técnica Nacional de Cambio Climático para el Sector UTCUTS (Bosques)",
+      "name": "National Technical Guide on Climate Change for the LULUCF (Forests) Sector",
+      "nameOriginal": "Guía Técnica Nacional de Cambio Climático para el Sector UTCUTS (Bosques)",
       "description": "",
-      "objectives": "Aumentar la cobertura boscosa y el incremento de la capacidad de absorción de dióxido de carbono, la restauración de las áreas degradadas, la disminución de la vulnerabilidad y una mayor capacidad de adaptación ante el cambio climático con una mejor provisión de servicios ecosistémicos.",
+      "objectives": "Increase forest cover and enhance carbon dioxide absorption capacity, restore degraded areas, reduce vulnerability, and strengthen adaptive capacity to climate change with improved provision of ecosystem services.",
+      "objectivesOriginal": "Aumentar la cobertura boscosa y el incremento de la capacidad de absorción de dióxido de carbono, la restauración de las áreas degradadas, la disminución de la vulnerabilidad y una mayor capacidad de adaptación ante el cambio climático con una mejor provisión de servicios ecosistémicos.",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "sector_lulucf",
@@ -54,9 +60,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plan de Cambio Climático para la Gestión Integrada de Cuencas Hidrográficas",
+      "name": "Climate Change Plan for Integrated Watershed Management",
+      "nameOriginal": "Plan de Cambio Climático para la Gestión Integrada de Cuencas Hidrográficas",
       "description": "",
-      "objectives": "Busca la adaptación de las cuencas hidrográficas, con énfasis en soluciones basadas en la naturaleza. Así mismo se busca la mitigación de emisiones, a través de la reforestación, forestación, restauración de suelos; la conservación de las reservas forestales de carbono; el manejo sostenible de los bosques y aumento del almacenamiento de carbono.",
+      "objectives": "Seeks the adaptation of watersheds, with emphasis on nature-based solutions. It also aims for emissions mitigation through reforestation, afforestation and soil restoration; conservation of forest carbon stocks; sustainable forest management; and increased carbon storage.",
+      "objectivesOriginal": "Busca la adaptación de las cuencas hidrográficas, con énfasis en soluciones basadas en la naturaleza. Así mismo se busca la mitigación de emisiones, a través de la reforestación, forestación, restauración de suelos; la conservación de las reservas forestales de carbono; el manejo sostenible de los bosques y aumento del almacenamiento de carbono.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_lulucf",
@@ -67,9 +75,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plan Indicativo de Ordenamiento Territorial Ambiental (PIOTA) para la Cuenca Hidrográfica del Canal de Panamá (CHCP)",
+      "name": "Indicative Environmental Land-Use Plan (PIOTA) for the Panama Canal Watershed (CHCP)",
+      "nameOriginal": "Plan Indicativo de Ordenamiento Territorial Ambiental (PIOTA) para la Cuenca Hidrográfica del Canal de Panamá (CHCP)",
       "description": "",
-      "objectives": "Busca orientar las actividades económicas, de protección y conservación ambiental en la Cuenca Hidrográfica del Canal de Panamá (CHCP), y lograr la armonización entre instrumentos de gestión ambiental aplicables.",
+      "objectives": "Seeks to guide economic, environmental protection and conservation activities in the Panama Canal Watershed (CHCP), and to achieve harmonization among applicable environmental management instruments.",
+      "objectivesOriginal": "Busca orientar las actividades económicas, de protección y conservación ambiental en la Cuenca Hidrográfica del Canal de Panamá (CHCP), y lograr la armonización entre instrumentos de gestión ambiental aplicables.",
       "instrumentType": "Planificación",
       "status": "Implemented",
       "sector": "sector_other",
@@ -80,9 +90,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Guía Técnica de Cambio Climático para el Sector Sistemas Marinos-Costeros",
+      "name": "Technical Guide on Climate Change for the Marine-Coastal Systems Sector",
+      "nameOriginal": "Guía Técnica de Cambio Climático para el Sector Sistemas Marinos-Costeros",
       "description": "",
-      "objectives": "Por medio de esta guía técnica se proyecta integrar la planificación de la adaptación en el marco regulatorio e instrumentos de planificación existentes, implementando principalmente en soluciones basadas en la naturaleza (SbN).",
+      "objectives": "Through this technical guide, adaptation planning is to be integrated into the existing regulatory framework and planning instruments, implemented primarily through nature-based solutions (NbS).",
+      "objectivesOriginal": "Por medio de esta guía técnica se proyecta integrar la planificación de la adaptación en el marco regulatorio e instrumentos de planificación existentes, implementando principalmente en soluciones basadas en la naturaleza (SbN).",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "",
@@ -93,9 +105,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Balance neto de emisiones anuales en los humedales costeros (manglares) aplicando el capítulo 4 del Suplemento 2013 del IPCC.",
+      "name": "Net annual emissions balance in coastal wetlands (mangroves) applying Chapter 4 of the 2013 IPCC Wetlands Supplement.",
+      "nameOriginal": "Balance neto de emisiones anuales en los humedales costeros (manglares) aplicando el capítulo 4 del Suplemento 2013 del IPCC.",
       "description": "",
-      "objectives": "Reconocer el papel crucial que representan los ecosistemas de carbono azul para el país y mejorar la transparencia en los inventarios y reporte de las emisiones/absorciones.",
+      "objectives": "Recognize the crucial role that blue carbon ecosystems play for the country and improve transparency in the inventories and reporting of emissions and removals.",
+      "objectivesOriginal": "Reconocer el papel crucial que representan los ecosistemas de carbono azul para el país y mejorar la transparencia en los inventarios y reporte de las emisiones/absorciones.",
       "instrumentType": "Otro",
       "status": "Implemented",
       "sector": "sector_lulucf",
@@ -106,9 +120,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Manual de Técnicas de Restauración para Áreas Degradadas de Manglar",
+      "name": "Manual of Restoration Techniques for Degraded Mangrove Areas",
+      "nameOriginal": "Manual de Técnicas de Restauración para Áreas Degradadas de Manglar",
       "description": "",
-      "objectives": "Busca fortalecer el conocimiento sobre el proceso de restauración de áreas impactadas de manglares y humedales marino costeros asociados, los cuales contribuyen enormemente en el secuestro y almacenamiento de dióxido de carbono, como pilar fundamental para reducir los impactos del aumento del nivel del mar, así como la calidad de los océanos.",
+      "objectives": "Seeks to strengthen knowledge on the restoration process for impacted mangrove areas and associated coastal-marine wetlands, which contribute enormously to the sequestration and storage of carbon dioxide as a fundamental pillar for reducing the impacts of sea-level rise and for safeguarding ocean quality.",
+      "objectivesOriginal": "Busca fortalecer el conocimiento sobre el proceso de restauración de áreas impactadas de manglares y humedales marino costeros asociados, los cuales contribuyen enormemente en el secuestro y almacenamiento de dióxido de carbono, como pilar fundamental para reducir los impactos del aumento del nivel del mar, así como la calidad de los océanos.",
       "instrumentType": "Facilitador",
       "status": "Implemented",
       "sector": "sector_lulucf",
@@ -119,9 +135,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Guía de Cambio Climático para el Sector Biodiversidad",
+      "name": "Climate Change Guide for the Biodiversity Sector",
+      "nameOriginal": "Guía de Cambio Climático para el Sector Biodiversidad",
       "description": "",
-      "objectives": "Este compromiso representará un instrumento de planificación para la adaptación mediante la implementación de medidas que reduzcan los impactos en la biodiversidad, con estrategias que disminuyan la vulnerabilidad y fragmentación del hábitat aumentando la resiliencia ante eventos extremos de cambio climático, a la vez que se protegen los depósitos de carbono.",
+      "objectives": "This commitment will represent a planning instrument for adaptation through the implementation of measures that reduce impacts on biodiversity, with strategies that decrease habitat vulnerability and fragmentation, increasing resilience to extreme climate events while protecting carbon stocks.",
+      "objectivesOriginal": "Este compromiso representará un instrumento de planificación para la adaptación mediante la implementación de medidas que reduzcan los impactos en la biodiversidad, con estrategias que disminuyan la vulnerabilidad y fragmentación del hábitat aumentando la resiliencia ante eventos extremos de cambio climático, a la vez que se protegen los depósitos de carbono.",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "sector_lulucf",
@@ -132,9 +150,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plan Nacional de Cambio Climático para el Sector Agropecuario (PNCCSA).",
+      "name": "National Climate Change Plan for the Agricultural Sector (PNCCSA).",
+      "nameOriginal": "Plan Nacional de Cambio Climático para el Sector Agropecuario (PNCCSA).",
       "description": "",
-      "objectives": "Reducir vulnerabilidad, incrementar resiliencia (adaptación) y reducir emisiones de gases de efecto invernadero del Sector Agropecuario.",
+      "objectives": "Reduce vulnerability, increase resilience (adaptation), and reduce greenhouse gas emissions from the Agricultural Sector.",
+      "objectivesOriginal": "Reducir vulnerabilidad, incrementar resiliencia (adaptación) y reducir emisiones de gases de efecto invernadero del Sector Agropecuario.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_agriculture",
@@ -145,9 +165,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "NAMA de Arroz",
+      "name": "Rice NAMA",
+      "nameOriginal": "NAMA de Arroz",
       "description": "",
-      "objectives": "Transformación de la economía hacia un crecimiento bajo en carbono.",
+      "objectives": "Transformation of the economy toward low-carbon growth.",
+      "objectivesOriginal": "Transformación de la economía hacia un crecimiento bajo en carbono.",
       "instrumentType": "Planificación",
       "status": "Adopted",
       "sector": "sector_energy",
@@ -158,9 +180,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "NAMA Ganadero",
+      "name": "Livestock NAMA",
+      "nameOriginal": "NAMA Ganadero",
       "description": "",
-      "objectives": "Transformación de la economía hacia un crecimiento bajo en carbono.",
+      "objectives": "Transformation of the economy toward low-carbon growth.",
+      "objectivesOriginal": "Transformación de la economía hacia un crecimiento bajo en carbono.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_energy",
@@ -171,9 +195,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Sistema de Información Agroclimática para el Sector Agropecuario",
+      "name": "Agro-climatic Information System for the Agricultural Sector",
+      "nameOriginal": "Sistema de Información Agroclimática para el Sector Agropecuario",
       "description": "",
-      "objectives": "El sistema facilita la gestión de información y datos para maximizar el rendimiento del sistema agroclimático para asegura la eficacia de cada uno de los distintos procesos llevados a cabo.",
+      "objectives": "The system facilitates information and data management to maximize the performance of the agro-climatic system and ensure the effectiveness of each of the various processes carried out.",
+      "objectivesOriginal": "El sistema facilita la gestión de información y datos para maximizar el rendimiento del sistema agroclimático para asegura la eficacia de cada uno de los distintos procesos llevados a cabo.",
       "instrumentType": "Facilitador",
       "status": "Adopted",
       "sector": "",
@@ -184,9 +210,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Guía Técnica de Cambio Climático para Asentamientos Humanos",
+      "name": "Technical Guide on Climate Change for Human Settlements",
+      "nameOriginal": "Guía Técnica de Cambio Climático para Asentamientos Humanos",
       "description": "",
-      "objectives": "Busca aumentar la resiliencia de los asentamientos humanos en el país y fortalecer la participación de los actores clave para planificar, financiar, implementar, monitorear e informar los procesos de adaptación estratégica y comunicar el conocimiento sobre la adaptación al cambio climático, tomando en consideración los beneficios que esto significaría para la mitigación.",
+      "objectives": "Seeks to increase the resilience of human settlements in the country and strengthen the participation of key stakeholders to plan, finance, implement, monitor and report on strategic adaptation processes, and to communicate knowledge on climate change adaptation, taking into consideration the benefits this would bring for mitigation.",
+      "objectivesOriginal": "Busca aumentar la resiliencia de los asentamientos humanos en el país y fortalecer la participación de los actores clave para planificar, financiar, implementar, monitorear e informar los procesos de adaptación estratégica y comunicar el conocimiento sobre la adaptación al cambio climático, tomando en consideración los beneficios que esto significaría para la mitigación.",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "sector_other",
@@ -197,9 +225,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Programa Reduce Tu Huella Municipal",
+      "name": "Reduce Your Municipal Footprint Program",
+      "nameOriginal": "Programa Reduce Tu Huella Municipal",
       "description": "",
-      "objectives": "Generar herramientas de gestión de huella de carbono para gobiernos locales y apoyarlos en el proceso de medir, reducir y compensar su huella de carbono.",
+      "objectives": "Develop carbon footprint management tools for local governments and support them in the process of measuring, reducing and offsetting their carbon footprint.",
+      "objectivesOriginal": "Generar herramientas de gestión de huella de carbono para gobiernos locales y apoyarlos en el proceso de medir, reducir y compensar su huella de carbono.",
       "instrumentType": "Facilitador",
       "status": "Adopted",
       "sector": "",
@@ -210,9 +240,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plan de Cambio Climático para el Sector Salud",
+      "name": "Climate Change Plan for the Health Sector",
+      "nameOriginal": "Plan de Cambio Climático para el Sector Salud",
       "description": "",
-      "objectives": "Permitirá ampliar los instrumentos de planificación para reducir la vulnerabilidad de la población enfocándose en el fortalecimiento de los sistemas de vigilancia epidemiológica con riesgos ambientales y riesgos climáticos que permitan monitorear enfermedades emergentes y reemergentes relacionados con el cambio climático, y a su vez contribuiría a la reducción de emisiones de manera indirecta, mediante la implementación de diversas medidas de adaptación.",
+      "objectives": "Will expand planning instruments to reduce population vulnerability, focusing on strengthening epidemiological surveillance systems for environmental and climate risks that allow monitoring of emerging and re-emerging diseases linked to climate change, and will also indirectly contribute to emissions reduction through the implementation of various adaptation measures.",
+      "objectivesOriginal": "Permitirá ampliar los instrumentos de planificación para reducir la vulnerabilidad de la población enfocándose en el fortalecimiento de los sistemas de vigilancia epidemiológica con riesgos ambientales y riesgos climáticos que permitan monitorear enfermedades emergentes y reemergentes relacionados con el cambio climático, y a su vez contribuiría a la reducción de emisiones de manera indirecta, mediante la implementación de diversas medidas de adaptación.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_other",
@@ -223,9 +255,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plan de Cambio Climático para el Sector Infraestructura",
+      "name": "Climate Change Plan for the Infrastructure Sector",
+      "nameOriginal": "Plan de Cambio Climático para el Sector Infraestructura",
       "description": "",
-      "objectives": "Propone una visión para desarrollar Infraestructuras resistentes ante impactos de cambio climático en múltiples ámbitos: Riego por goteo, hidráulica para control de crecidas, agua potable, alcantarillado, de logística (portuaria, carreteras, puentes, aeropuertos) y edificaciones verdes.",
+      "objectives": "Proposes a vision for developing infrastructure resilient to climate change impacts across multiple areas: drip irrigation, hydraulics for flood control, drinking water, sewerage, logistics (ports, roads, bridges, airports), and green buildings.",
+      "objectivesOriginal": "Propone una visión para desarrollar Infraestructuras resistentes ante impactos de cambio climático en múltiples ámbitos: Riego por goteo, hidráulica para control de crecidas, agua potable, alcantarillado, de logística (portuaria, carreteras, puentes, aeropuertos) y edificaciones verdes.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_transport",
@@ -236,9 +270,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Proyectos de Inversión Pública con Aspectos de Cambio Climático Integrados",
+      "name": "Public Investment Projects with Integrated Climate Change Considerations",
+      "nameOriginal": "Proyectos de Inversión Pública con Aspectos de Cambio Climático Integrados",
       "description": "",
-      "objectives": "Tiene por objeto promover una lista completa de medidas para identificar las soluciones adaptativas y de mitigación más relevantes, implementarlas y supervisarlas. Se busca lograr la implementación de esta Guía Técnica dentro de los proyectos de inversión pública, de esta manera de podrá identificar, entender los riesgos climáticos y los procesos de adaptación y mitigación a considerar antes del financiamiento y ejecución de una obra.",
+      "objectives": "Aims to promote a comprehensive list of measures to identify the most relevant adaptation and mitigation solutions, implement them, and supervise them. Seeks to achieve the implementation of this Technical Guide within public investment projects, so that climate risks and the adaptation and mitigation processes to be considered can be identified and understood before the financing and execution of a project.",
+      "objectivesOriginal": "Tiene por objeto promover una lista completa de medidas para identificar las soluciones adaptativas y de mitigación más relevantes, implementarlas y supervisarlas. Se busca lograr la implementación de esta Guía Técnica dentro de los proyectos de inversión pública, de esta manera de podrá identificar, entender los riesgos climáticos y los procesos de adaptación y mitigación a considerar antes del financiamiento y ejecución de una obra.",
       "instrumentType": "Facilitador",
       "status": "Implemented",
       "sector": "sector_other",
@@ -249,9 +285,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Normativa actualizada con GRC, m. de Adaptación y reducción de Huella de Carbono de proyectos, integrados",
+      "name": "Updated Regulation with Integrated Climate Risk Management, Adaptation Measures and Project Carbon Footprint Reduction",
+      "nameOriginal": "Normativa actualizada con GRC, m. de Adaptación y reducción de Huella de Carbono de proyectos, integrados",
       "description": "",
-      "objectives": "Actualización del Decreto Ejecutivo 123 del 14 de agosto de 2009, la metodología de análisis de gestión ambiental, los elementos, aspectos y variables que pueden ser causados por el calentamiento global considerando el cambio climático como un vector que introduce cambios al ambiente, así como la medición de la huella de carbono del proyecto.",
+      "objectives": "Update of Executive Decree 123 of 14 August 2009, the environmental management analysis methodology, and the elements, aspects and variables that may be caused by global warming, considering climate change as a vector that introduces changes to the environment, as well as the measurement of the project's carbon footprint.",
+      "objectivesOriginal": "Actualización del Decreto Ejecutivo 123 del 14 de agosto de 2009, la metodología de análisis de gestión ambiental, los elementos, aspectos y variables que pueden ser causados por el calentamiento global considerando el cambio climático como un vector que introduce cambios al ambiente, así como la medición de la huella de carbono del proyecto.",
       "instrumentType": "Regulatory",
       "status": "Implemented",
       "sector": "sector_energy",
@@ -262,9 +300,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Decreto Ejecutivo de Eco-Etiquetado",
+      "name": "Executive Decree on Eco-Labeling",
+      "nameOriginal": "Decreto Ejecutivo de Eco-Etiquetado",
       "description": "",
-      "objectives": "Modernización, restructuración y validación del Decreto Ejecutivo No. 100 de 7 de octubre de 2008, que reglamenta la certificación de productos y servicios ambientalmente limpios.",
+      "objectives": "Modernization, restructuring and validation of Executive Decree No. 100 of 7 October 2008, which regulates the certification of environmentally clean products and services.",
+      "objectivesOriginal": "Modernización, restructuración y validación del Decreto Ejecutivo No. 100 de 7 de octubre de 2008, que reglamenta la certificación de productos y servicios ambientalmente limpios.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
       "sector": "",
@@ -275,9 +315,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Centro de Economía Circular",
+      "name": "Circular Economy Center",
+      "nameOriginal": "Centro de Economía Circular",
       "description": "",
-      "objectives": "Generar cambios en materia económica para que el país sea eficiente con prácticas de conservación de recursos y sostenibilidad, por medio de la implementación de un modelo basado en la Economía Circular, involucrando al sector privado en el desarrollo de la economía circular en Panamá.",
+      "objectives": "Generate economic changes so that the country becomes efficient in resource conservation and sustainability practices, through the implementation of a model based on the Circular Economy, engaging the private sector in the development of the circular economy in Panama.",
+      "objectivesOriginal": "Generar cambios en materia económica para que el país sea eficiente con prácticas de conservación de recursos y sostenibilidad, por medio de la implementación de un modelo basado en la Economía Circular, involucrando al sector privado en el desarrollo de la economía circular en Panamá.",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "sector_other",
@@ -288,9 +330,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Métricas e Indicadores de Economía Circular",
+      "name": "Circular Economy Metrics and Indicators",
+      "nameOriginal": "Métricas e Indicadores de Economía Circular",
       "description": "",
-      "objectives": "Generar las métricas e indicadores que permitan un seguimiento y monitoreo del progreso en la implementación de una economía circular y que apoyen la toma de decisiones en esta materia.",
+      "objectives": "Develop the metrics and indicators that enable tracking and monitoring of progress in the implementation of a circular economy and that support decision-making in this area.",
+      "objectivesOriginal": "Generar las métricas e indicadores que permitan un seguimiento y monitoreo del progreso en la implementación de una economía circular y que apoyen la toma de decisiones en esta materia.",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "",
@@ -301,9 +345,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Reduce Tu Huella Corporativo",
+      "name": "Reduce Your Corporate Footprint",
+      "nameOriginal": "Reduce Tu Huella Corporativo",
       "description": "",
-      "objectives": "Generar herramientas de gestión de huella de carbono para organizaciones públicas, privadas, academia, sociedad civil, etc. Reconocer los esfuerzos de estas organizaciones en medir, reducir y compensar su huella de carbono.",
+      "objectives": "Develop carbon footprint management tools for public and private organizations, academia, civil society, etc. Recognize these organizations' efforts to measure, reduce and offset their carbon footprint.",
+      "objectivesOriginal": "Generar herramientas de gestión de huella de carbono para organizaciones públicas, privadas, academia, sociedad civil, etc. Reconocer los esfuerzos de estas organizaciones en medir, reducir y compensar su huella de carbono.",
       "instrumentType": "Facilitador",
       "status": "Implemented",
       "sector": "sector_other",
@@ -314,9 +360,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plan Nacional de Cambio Climático para la Economía Circular a Largo Plazo",
+      "name": "Long-Term National Climate Change Plan for the Circular Economy",
+      "nameOriginal": "Plan Nacional de Cambio Climático para la Economía Circular a Largo Plazo",
       "description": "",
-      "objectives": "Permitirá ampliar los instrumentos de planificación para reducir la vulnerabilidad del sector a los efectos del cambio climático, siendo su objetivo la integración de la planificación de adaptación en el marco regulatorio e instrumento de planificación existente.",
+      "objectives": "Will expand planning instruments to reduce the sector's vulnerability to the effects of climate change, with the objective of integrating adaptation planning into the existing regulatory framework and planning instruments.",
+      "objectivesOriginal": "Permitirá ampliar los instrumentos de planificación para reducir la vulnerabilidad del sector a los efectos del cambio climático, siendo su objetivo la integración de la planificación de adaptación en el marco regulatorio e instrumento de planificación existente.",
       "instrumentType": "Planificación",
       "status": "Planned",
       "sector": "sector_other",
@@ -327,9 +375,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Normativa de Auditorías Ambientales y PMA que incluirá GRD, m. de Adaptación y reducción de Huella de Carbono",
+      "name": "Regulation on Environmental Audits and Environmental Management Program including Disaster Risk Management, Adaptation Measures and Carbon Footprint Reduction",
+      "nameOriginal": "Normativa de Auditorías Ambientales y PMA que incluirá GRD, m. de Adaptación y reducción de Huella de Carbono",
       "description": "",
-      "objectives": "Actualización del Decreto Ejecutivo No. 57 de 10 de agosto del 2004, que reglamenta el proceso de Evaluación de las Auditorías Ambientales y Programa de Adecuación y Manejo Ambiental. Este incluirá gestión de riesgo de desastres, medidas de adaptación y reducción de huella de carbono.",
+      "objectives": "Update of Executive Decree No. 57 of 10 August 2004, which regulates the evaluation process for Environmental Audits and the Environmental Adjustment and Management Program. This will include disaster risk management, adaptation measures, and carbon footprint reduction.",
+      "objectivesOriginal": "Actualización del Decreto Ejecutivo No. 57 de 10 de agosto del 2004, que reglamenta el proceso de Evaluación de las Auditorías Ambientales y Programa de Adecuación y Manejo Ambiental. Este incluirá gestión de riesgo de desastres, medidas de adaptación y reducción de huella de carbono.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
       "sector": "sector_energy",
@@ -340,9 +390,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plataforma SIRED",
+      "name": "SIRED Platform",
+      "nameOriginal": "Plataforma SIRED",
       "description": "",
-      "objectives": "Expandir la plataforma SIRED, para incluir aquellos eventos de lento proceso como lo son la desertificación y degradación de tierras y bosques, la pérdida de biodiversidad, la salinización, el aumento del nivel del mar y la acidificación oceánica.",
+      "objectives": "Expand the SIRED platform to include slow-onset events such as desertification and land and forest degradation, biodiversity loss, salinization, sea-level rise, and ocean acidification.",
+      "objectivesOriginal": "Expandir la plataforma SIRED, para incluir aquellos eventos de lento proceso como lo son la desertificación y degradación de tierras y bosques, la pérdida de biodiversidad, la salinización, el aumento del nivel del mar y la acidificación oceánica.",
       "instrumentType": "Facilitador",
       "status": "Planned",
       "sector": "sector_lulucf",
@@ -353,9 +405,11 @@
       "reductionEstimates": {}
     },
     {
-      "name": "Plataforma Nacional de Transparencia Climática",
+      "name": "National Climate Transparency Platform",
+      "nameOriginal": "Plataforma Nacional de Transparencia Climática",
       "description": "",
-      "objectives": "Gestión y monitoreo de las acciones que nos encaminan hacia la neutralidad del carbono y el desarrollo sostenible, inclusivo, bajo en emisiones y resiliente, mediante sus componentes: Sistema Nacional de Gases de Efecto Invernadero, Registro Nacional para Acciones de Mitigación, Sistema Nacional para el Monitoreo y Evaluación de la Adaptación, Registro Nacional para Medios de Implementación para la Acción Climática",
+      "objectives": "Management and monitoring of actions that lead toward carbon neutrality and sustainable, inclusive, low-emission and resilient development, through its components: National Greenhouse Gas System, National Registry for Mitigation Actions, National System for Adaptation Monitoring and Evaluation, and National Registry for Means of Implementation for Climate Action.",
+      "objectivesOriginal": "Gestión y monitoreo de las acciones que nos encaminan hacia la neutralidad del carbono y el desarrollo sostenible, inclusivo, bajo en emisiones y resiliente, mediante sus componentes: Sistema Nacional de Gases de Efecto Invernadero, Registro Nacional para Acciones de Mitigación, Sistema Nacional para el Monitoreo y Evaluación de la Adaptación, Registro Nacional para Medios de Implementación para la Acción Climática",
       "instrumentType": "Facilitador",
       "status": "Implemented",
       "sector": "sector_energy",

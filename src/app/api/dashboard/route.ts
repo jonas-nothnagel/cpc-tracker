@@ -240,6 +240,15 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  // Default actionType to "mitigation" on any BTR measure that lacks it.
+  // Adaptation rows (set above) already carry their tag; this catches the
+  // original mitigationMeasures which don't have the field in the JSON.
+  if (btrData?.mitigationMeasures) {
+    for (const m of btrData.mitigationMeasures) {
+      if (!m.actionType) m.actionType = "mitigation";
+    }
+  }
+
   // Country-specific provenance and display config (e.g. doc citation strings
   // for the Data Sources chips). Optional; falls back to empty object when
   // absent, so the frontend can show a chip without a provenance tooltip.
