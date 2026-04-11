@@ -6,35 +6,35 @@
   "documentTypes": [
     {
       "id": "NP",
-      "shortLabel": "NP",
+      "shortLabel": "NP (Nature Pledge)",
       "mediumLabel": "NP (Nature Pledge)",
       "fullLabel": "Pacto de Panamá con la Naturaleza (Nature Pledge)",
       "color": "#0468b1"
     },
     {
       "id": "ENR",
-      "shortLabel": "ENR",
+      "shortLabel": "ENR (National REDD+ Strategy)",
       "mediumLabel": "ENR (National REDD+ Strategy)",
       "fullLabel": "Estrategia Nacional REDD+",
       "color": "#166534"
     },
     {
       "id": "IRMF",
-      "shortLabel": "IRMF",
+      "shortLabel": "IRMF (Results Management)",
       "mediumLabel": "IRMF (Results Management)",
       "fullLabel": "Integrated Results Management Framework",
       "color": "#ca8a04"
     },
     {
       "id": "SPGCF",
-      "shortLabel": "SPGCF",
+      "shortLabel": "SPGCF (GCF Strategic Plan)",
       "mediumLabel": "SPGCF (GCF Strategic Plan)",
       "fullLabel": "Strategic Plan for the Green Climate Fund",
       "color": "#0891b2"
     },
     {
       "id": "CNR",
-      "shortLabel": "CNR",
+      "shortLabel": "CNR (REDD+ Concept Note)",
       "mediumLabel": "CNR (REDD+ Concept Note)",
       "fullLabel": "Concept Note REDD-plus results based payments",
       "color": "#7e22ce"

@@ -31,6 +31,7 @@ import { InfoBox } from "@/components/ui/info-box";
 import {
   TargetTextWithHighlights,
   ActionTypeBadge,
+  MeasureLanguageChip,
   BTR_ADAPTATION_COLOR,
   BTR_MITIGATION_COLOR,
 } from "./target-text";
@@ -703,7 +704,7 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
                       className="py-2 first:pt-0 border-l-2 border-[#15803d] pl-2"
                     >
                       <p className="text-xs text-[var(--undp-black)] leading-relaxed">
-                        {m.name}
+                        {m.name} <MeasureLanguageChip measure={m} />
                       </p>
                       {m.implementingEntity && (
                         <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">
@@ -729,7 +730,7 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
                         </span>
                       </div>
                       <p className="text-xs text-[var(--undp-black)] leading-relaxed">
-                        {m.name}
+                        {m.name} <MeasureLanguageChip measure={m} />
                       </p>
                       {m.implementingEntity && (
                         <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">
@@ -1279,7 +1280,7 @@ function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; coun
                         <div className="flex items-center gap-1.5 mb-0.5">
                           <ActionTypeBadge actionType={m.actionType ?? "mitigation"} />
                         </div>
-                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
+                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name} <MeasureLanguageChip measure={m} /></p>
                         {m.implementingEntity && (
                           <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
                         )}
@@ -1302,7 +1303,7 @@ function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; coun
                             {m.status}
                           </span>
                         </div>
-                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
+                        <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name} <MeasureLanguageChip measure={m} /></p>
                         {m.implementingEntity && (
                           <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
                         )}
@@ -1445,7 +1446,7 @@ function BiodiversityByGlobe({
                         {m.status}
                       </span>
                     </div>
-                    <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name}</p>
+                    <p className="text-xs text-[var(--undp-black)] leading-relaxed">{m.name} <MeasureLanguageChip measure={m} /></p>
                   </li>
                 ))}
               </ul>

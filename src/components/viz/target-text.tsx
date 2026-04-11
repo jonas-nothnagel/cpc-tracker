@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Target, BTRActionType } from "@/types";
+import type { Target, BTRActionType, MitigationMeasure } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 
 /**
@@ -109,6 +109,37 @@ export function OriginalLanguageChip({
         </span>
       )}
     </span>
+  );
+}
+
+/**
+ * Variant of `OriginalLanguageChip` for BTR mitigation measures (which carry
+ * `nameOriginal` / `objectivesOriginal` instead of the Target-shaped `textOriginal`).
+ * Adapts the measure fields onto the chip's expected shape so policy reviewers
+ * get the same click-to-inspect behaviour they have for translated targets.
+ * Returns `null` when no original-language text is present.
+ */
+export function MeasureLanguageChip({
+  measure,
+  languageCode = "ES",
+  languageName = "Spanish",
+}: {
+  measure: Pick<MitigationMeasure, "name" | "nameOriginal" | "objectives" | "objectivesOriginal">;
+  languageCode?: string;
+  languageName?: string;
+}) {
+  if (!measure.nameOriginal && !measure.objectivesOriginal) return null;
+  return (
+    <OriginalLanguageChip
+      target={{
+        text: measure.objectives || measure.name,
+        textOriginal: measure.objectivesOriginal || measure.nameOriginal,
+        sourceLabel: measure.name,
+        sourceLabelOriginal: measure.nameOriginal,
+      }}
+      languageCode={languageCode}
+      languageName={languageName}
+    />
   );
 }
 

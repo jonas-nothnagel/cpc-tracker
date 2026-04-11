@@ -228,6 +228,13 @@ export interface BTRAction {
   implementingEntity: string;
   reductionEstimates: Record<string, number>;
 
+  /** Original-language text preserved when `name` has been translated. */
+  nameOriginal?: string;
+  /** Original-language text preserved when `description` has been translated. */
+  descriptionOriginal?: string;
+  /** Original-language text preserved when `objectives` has been translated. */
+  objectivesOriginal?: string;
+
   /** Mitigation or adaptation. Defaults to "mitigation" when absent (legacy data). */
   actionType?: BTRActionType;
 
