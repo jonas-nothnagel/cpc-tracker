@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 // "Home" covers the country index — the landing page is the country picker.
 // A separate "Dashboard" link without a country id would redirect back to "/",
 // so we intentionally omit it.
-const NAV_ITEMS = [
+const DEFAULT_NAV_ITEMS = [
   { href: "/", label: "Home" },
   { href: "/upload", label: "Upload Data" },
 ];
@@ -17,18 +17,28 @@ interface HeaderProps {
   /** When provided with countries, renders the subtitle as a country switcher */
   currentCountryId?: string;
   countries?: { id: string; name: string }[];
+  /** When set, scopes nav links to this path (e.g. "/mongolia") so standalone
+   *  country routes never expose navigation to other countries. */
+  basePath?: string;
 }
 
-export function Header({ subtitle, currentCountryId, countries }: HeaderProps) {
+export function Header({ subtitle, currentCountryId, countries, basePath }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const showSwitcher = currentCountryId && countries && countries.length > 1;
+
+  const navItems = basePath
+    ? [
+        { href: basePath, label: "Home" },
+        { href: `${basePath}/upload`, label: "Upload Data" },
+      ]
+    : DEFAULT_NAV_ITEMS;
 
   return (
     <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/">
+          <Link href={basePath ?? "/"}>
             <Image
               src="/undp-logo.png"
               alt="UNDP"
@@ -38,7 +48,7 @@ export function Header({ subtitle, currentCountryId, countries }: HeaderProps) {
             />
           </Link>
           <div>
-            <Link href="/" className="text-sm font-medium text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors">
+            <Link href={basePath ?? "/"} className="text-sm font-medium text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors">
               Policy Coherence Tracker
             </Link>
             {showSwitcher ? (
@@ -57,7 +67,7 @@ export function Header({ subtitle, currentCountryId, countries }: HeaderProps) {
           </div>
         </div>
         <nav className="flex items-center gap-6 text-sm">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
