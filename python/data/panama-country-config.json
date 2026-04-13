@@ -6,35 +6,35 @@
   "documentTypes": [
     {
       "id": "NP",
-      "shortLabel": "NP (Nature Pledge)",
+      "shortLabel": "NP",
       "mediumLabel": "NP (Nature Pledge)",
       "fullLabel": "Pacto de Panamá con la Naturaleza (Nature Pledge)",
       "color": "#0468b1"
     },
     {
       "id": "ENR",
-      "shortLabel": "ENR (National REDD+ Strategy)",
-      "mediumLabel": "ENR (National REDD+ Strategy)",
+      "shortLabel": "ENR",
+      "mediumLabel": "ENR (REDD+ Strategy)",
       "fullLabel": "Estrategia Nacional REDD+",
       "color": "#166534"
     },
     {
       "id": "IRMF",
-      "shortLabel": "IRMF (Results Management)",
-      "mediumLabel": "IRMF (Results Management)",
+      "shortLabel": "IRMF",
+      "mediumLabel": "IRMF (Results Mgmt)",
       "fullLabel": "Integrated Results Management Framework",
       "color": "#ca8a04"
     },
     {
       "id": "SPGCF",
-      "shortLabel": "SPGCF (GCF Strategic Plan)",
-      "mediumLabel": "SPGCF (GCF Strategic Plan)",
+      "shortLabel": "SPGCF",
+      "mediumLabel": "SPGCF (GCF Plan)",
       "fullLabel": "Strategic Plan for the Green Climate Fund",
       "color": "#0891b2"
     },
     {
       "id": "CNR",
-      "shortLabel": "CNR (REDD+ Concept Note)",
+      "shortLabel": "CNR",
       "mediumLabel": "CNR (REDD+ Concept Note)",
       "fullLabel": "Concept Note REDD-plus results based payments",
       "color": "#7e22ce"
@@ -52,5 +52,19 @@
     "document": "Primer Informe Bienal de Transparencia Climática de Panamá (June 2024)",
     "table": "CTF-NDC Table 5",
     "section": "Mitigation policies and measures"
-  }
+  },
+  "mitigationTaxonomy": "country_sectors",
+  "countrySectors": [
+    { "id": "Agricultura Ganadería y Acuicultura Sostenible", "name": "Sustainable Agriculture, Livestock & Aquaculture", "nameOriginal": "Agricultura Ganadería y Acuicultura Sostenible" },
+    { "id": "Asentamientos Humanos Resilientes", "name": "Resilient Human Settlements", "nameOriginal": "Asentamientos Humanos Resilientes" },
+    { "id": "Biodiversidad", "name": "Biodiversity", "nameOriginal": "Biodiversidad" },
+    { "id": "Bosques", "name": "Forests", "nameOriginal": "Bosques" },
+    { "id": "Economía Circular", "name": "Circular Economy", "nameOriginal": "Economía Circular" },
+    { "id": "Energy", "name": "Energy" },
+    { "id": "Fortalecimiento de Capacidades para la Acción y Transparencia Climática", "name": "Climate Action Capacity & Transparency", "nameOriginal": "Fortalecimiento de Capacidades para la Acción y Transparencia Climática" },
+    { "id": "Gestión Integrada de Cuencas Hidrográficas", "name": "Integrated Watershed Management", "nameOriginal": "Gestión Integrada de Cuencas Hidrográficas" },
+    { "id": "Infraestructura Sostenible", "name": "Sustainable Infrastructure", "nameOriginal": "Infraestructura Sostenible" },
+    { "id": "Salud Pública", "name": "Public Health", "nameOriginal": "Salud Pública" },
+    { "id": "Sistemas Marino-Costeros", "name": "Marine-Coastal Systems", "nameOriginal": "Sistemas Marino-Costeros" }
+  ]
 }

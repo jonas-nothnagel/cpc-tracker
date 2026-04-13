@@ -707,7 +707,7 @@ export function TensionClusters({
                     />
                     <div className="flex items-center gap-2 relative">
                       <span
-                        className="shrink-0 inline-block w-16 text-center px-1.5 py-0.5 rounded text-[11px] font-medium text-white"
+                        className="shrink-0 inline-block min-w-[3rem] text-center px-1.5 py-0.5 rounded text-[11px] font-medium text-white"
                         style={{
                           backgroundColor: getDocColor(countryConfig, d.target.sourceDocument),
                         }}

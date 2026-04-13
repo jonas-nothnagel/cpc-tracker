@@ -223,6 +223,8 @@ export interface BTRAction {
   instrumentType: string;
   status: string;
   sector: string;
+  /** Raw sector string from the source spreadsheet, before IPCC normalisation. */
+  sectorRaw?: string;
   gasesAffected: string;
   startYear: string;
   implementingEntity: string;
@@ -387,6 +389,24 @@ export interface CountryConfig {
    * pairs, classifications, and config entries are never sent to the frontend.
    */
   excludedDocTypes?: string[];
+  /**
+   * Which mitigation grouping the Implementation Coverage view should default to.
+   * - `"ipcc"` (default): group by IPCC sector (Mongolia and most countries).
+   * - `"country_sectors"`: group by the country's own sector taxonomy from
+   *   `countrySectors`. Useful when the IPCC mapping is too lossy (e.g. Panama).
+   */
+  mitigationTaxonomy?: "ipcc" | "country_sectors";
+  /**
+   * Country-specific mitigation sector taxonomy. Each entry's `id` must match
+   * the `sectorRaw` value on BTRActions so measures group correctly. Only
+   * required when `mitigationTaxonomy === "country_sectors"`.
+   */
+  countrySectors?: Array<{
+    id: string;
+    name: string;
+    nameOriginal?: string;
+    color?: string;
+  }>;
 }
 
 /**
