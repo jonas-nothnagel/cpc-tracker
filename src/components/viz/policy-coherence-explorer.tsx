@@ -141,7 +141,7 @@ function buildGroups(
     }
     return Array.from(m.entries()).map(([d, ts]) => ({
       id: d,
-      label: getDocFullLabel(countryConfig, d),
+      label: getDocMediumLabel(countryConfig, d),
       color: getDocColor(countryConfig, d),
       targets: ts,
     }));
@@ -1154,32 +1154,38 @@ export function PolicyCoherenceExplorer({
               {(() => {
                 // Estimate label height in SVG units (~14px per label)
                 const LABEL_H = 14;
-                // Minimum angular gap to avoid overlap (based on label height / radius)
-                const MIN_GAP = LABEL_H / GRP_LABEL_R;
+                // Approximate character width at fontSize 11, fontWeight 600
+                const CHAR_W = 6.5;
 
                 const entries = arcs.map((arc) => ({
                   arc,
                   angle: arc.midAngle,
+                  // Angular span needed for this label's text width
+                  angularSpan: (arc.label.length * CHAR_W) / GRP_LABEL_R,
                 }));
 
                 // Sort by angle for overlap detection
                 const sorted = [...entries].sort((a, b) => a.angle - b.angle);
 
-                // Bi-directional spread: find clusters and spread from center
-                // First pass: push forward to enforce minimum gap
+                // Bi-directional spread: enforce minimum gap based on label widths
                 for (let i = 1; i < sorted.length; i++) {
+                  const needed = (sorted[i - 1].angularSpan + sorted[i].angularSpan) / 2 + LABEL_H / GRP_LABEL_R;
                   const gap = sorted[i].angle - sorted[i - 1].angle;
-                  if (gap < MIN_GAP) {
-                    sorted[i].angle = sorted[i - 1].angle + MIN_GAP;
+                  if (gap < needed) {
+                    sorted[i].angle = sorted[i - 1].angle + needed;
                   }
                 }
                 // Second pass: if labels were pushed too far, pull back from the end
-                const maxAngle = 2 * Math.PI - MIN_GAP;
-                if (sorted.length > 1 && sorted[sorted.length - 1].angle > maxAngle) {
-                  for (let i = sorted.length - 2; i >= 0; i--) {
-                    const gap = sorted[i + 1].angle - sorted[i].angle;
-                    if (gap < MIN_GAP) {
-                      sorted[i].angle = sorted[i + 1].angle - MIN_GAP;
+                if (sorted.length > 1) {
+                  const lastSpan = sorted[sorted.length - 1].angularSpan;
+                  const maxAngle = 2 * Math.PI - lastSpan / 2;
+                  if (sorted[sorted.length - 1].angle > maxAngle) {
+                    for (let i = sorted.length - 2; i >= 0; i--) {
+                      const needed = (sorted[i].angularSpan + sorted[i + 1].angularSpan) / 2 + LABEL_H / GRP_LABEL_R;
+                      const gap = sorted[i + 1].angle - sorted[i].angle;
+                      if (gap < needed) {
+                        sorted[i].angle = sorted[i + 1].angle - needed;
+                      }
                     }
                   }
                 }
@@ -1218,6 +1224,7 @@ export function PolicyCoherenceExplorer({
                         fill={activeId ? "#94a3b8" : arc.color}
                         style={{ letterSpacing: "0.04em", transition: "fill 200ms" }}
                       >
+                        <title>{getDocFullLabel(countryConfig, arc.id)}</title>
                         {arc.label}
                       </text>
                     </g>

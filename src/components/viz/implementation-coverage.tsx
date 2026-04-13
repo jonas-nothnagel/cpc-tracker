@@ -442,7 +442,6 @@ function buildBiodiversityRows(
   for (const cat of globeCategories) {
     const measures = measuresByCategory.get(cat.id) ?? [];
     const policyTargets = policyTargetsByCategory.get(cat.id) ?? [];
-    if (measures.length === 0 && policyTargets.length === 0) continue;
     rows.push({
       category: cat,
       measures,
@@ -458,7 +457,7 @@ function buildBiodiversityRows(
 
   const unclassified = allMeasures.filter((m) => !classifiedMeasures.has(m));
 
-  rows.sort((a, b) => b.measures.length - a.measures.length);
+  rows.sort((a, b) => b.measures.length - a.measures.length || b.policyTargets.length - a.policyTargets.length);
   return { rows, unclassified };
 }
 
@@ -826,10 +825,12 @@ function MitigationByIpccSector({
   highlightSector?: string | null;
   countryConfig?: CountryConfig | null;
 }) {
-  // Show all IPCC sectors. Empty rows still convey signal — "this sector has
+  // Show all IPCC sectors. Empty rows still convey signal -- "this sector has
   // policy targets but no reported mitigation action" is exactly the gap the
   // view exists to surface, and seeing the full sector list inline matters.
   if (rows.length === 0) return null;
+
+  const hasAnyEmissionsData = rows.some((r) => r.sparklineData.length > 1);
 
   return (
     <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
@@ -839,7 +840,7 @@ function MitigationByIpccSector({
         </h3>
         <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
           Reported mitigation actions by IPCC sector. Implementation status is as self-reported
-          by the country. Click any row for the full action list and emissions trajectory.
+          by the country. Click any row for the full action list{hasAnyEmissionsData ? " and emissions trajectory" : ""}.
         </p>
       </div>
       {rows.map((row) => {
@@ -864,8 +865,9 @@ function MitigationByIpccSector({
               <div
                 className="grid items-center gap-4"
                 style={{
-                  gridTemplateColumns:
-                    "minmax(180px, 1.6fr) 130px minmax(140px, 1fr) 130px 110px 16px",
+                  gridTemplateColumns: hasAnyEmissionsData
+                    ? "minmax(180px, 1.6fr) 130px minmax(140px, 1fr) 130px 110px 16px"
+                    : "minmax(180px, 1.6fr) 130px minmax(140px, 1fr) 130px 16px",
                 }}
               >
                 {/* Sector name */}
@@ -912,41 +914,43 @@ function MitigationByIpccSector({
                   <StatusBadge status={row.status} />
                 </div>
 
-                {/* Emissions */}
-                <div className="flex items-center gap-2">
-                  {row.sparklineData.length > 1 ? (
-                    <>
-                      <Sparkline data={row.sparklineData} color={color} />
-                      <div className="flex flex-col leading-tight">
-                        {row.latestEmission !== null && (
-                          <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
-                            {Math.abs(row.latestEmission) >= 1000
-                              ? `${(row.latestEmission / 1000).toFixed(0)}k kt`
-                              : `${Math.round(row.latestEmission)} kt`}
-                          </span>
-                        )}
-                        {row.emissionsChange !== null && (
-                          <span
-                            className="text-[10px] tabular-nums font-medium"
-                            style={{
-                              color:
-                                row.emissionsChange > 5
-                                  ? "#dc2626"
-                                  : row.emissionsChange < -5
-                                    ? "#16a34a"
-                                    : "#94a3b8",
-                            }}
-                          >
-                            {row.emissionsChange > 0 ? "+" : ""}
-                            {row.emissionsChange}%
-                          </span>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <span className="text-[10px] text-[var(--undp-gray)]">no data</span>
-                  )}
-                </div>
+                {/* Emissions — hidden entirely when no rows have data */}
+                {hasAnyEmissionsData && (
+                  <div className="flex items-center gap-2">
+                    {row.sparklineData.length > 1 ? (
+                      <>
+                        <Sparkline data={row.sparklineData} color={color} />
+                        <div className="flex flex-col leading-tight">
+                          {row.latestEmission !== null && (
+                            <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
+                              {Math.abs(row.latestEmission) >= 1000
+                                ? `${(row.latestEmission / 1000).toFixed(0)}k kt`
+                                : `${Math.round(row.latestEmission)} kt`}
+                            </span>
+                          )}
+                          {row.emissionsChange !== null && (
+                            <span
+                              className="text-[10px] tabular-nums font-medium"
+                              style={{
+                                color:
+                                  row.emissionsChange > 5
+                                    ? "#dc2626"
+                                    : row.emissionsChange < -5
+                                      ? "#16a34a"
+                                      : "#94a3b8",
+                              }}
+                            >
+                              {row.emissionsChange > 0 ? "+" : ""}
+                              {row.emissionsChange}%
+                            </span>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <span className="text-[10px] text-[var(--undp-gray)]">no data</span>
+                    )}
+                  </div>
+                )}
 
                 {/* Expand arrow */}
                 <span className="text-[10px] text-[var(--undp-gray)]">
@@ -1386,16 +1390,26 @@ function BiodiversityByGlobe({
                   policy tgt{row.policyTargets.length === 1 ? "" : "s"}
                 </span>
                 <div className="text-xs text-[var(--undp-gray)] tabular-nums">
-                  <span className="font-semibold text-[var(--undp-black)]">
-                    {row.measures.length}
-                  </span>{" "}
-                  action{row.measures.length === 1 ? "" : "s"}
-                  <div className="text-[10px] text-[var(--undp-gray)] mt-0.5 flex flex-wrap gap-x-2">
-                    {row.ongoingCount > 0 && <span>{row.ongoingCount} ongoing</span>}
-                    {row.implementedCount > 0 && (
-                      <span className="text-[#15803d]">{row.implementedCount} ✓ implemented</span>
-                    )}
-                  </div>
+                  {row.measures.length === 0 && row.policyTargets.length > 0 ? (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700" title="Policy targets exist but no reported actions are classified under this category">
+                      0 actions (gap)
+                    </span>
+                  ) : row.measures.length === 0 && row.policyTargets.length === 0 ? (
+                    <span className="text-[var(--undp-gray)] italic text-[10px]">no coverage yet</span>
+                  ) : (
+                    <>
+                      <span className="font-semibold text-[var(--undp-black)]">
+                        {row.measures.length}
+                      </span>{" "}
+                      action{row.measures.length === 1 ? "" : "s"}
+                      <div className="text-[10px] text-[var(--undp-gray)] mt-0.5 flex flex-wrap gap-x-2">
+                        {row.ongoingCount > 0 && <span>{row.ongoingCount} ongoing</span>}
+                        {row.implementedCount > 0 && (
+                          <span className="text-[#15803d]">{row.implementedCount} ✓ implemented</span>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <span className="text-[10px] text-[var(--undp-gray)]">
                   {isExpanded ? "▾" : "▸"}
@@ -1771,22 +1785,41 @@ export function ImplementationCoverage({
   const gaps = useMemo(() => {
     const out: string[] = [];
 
-    // Cross-cutting sector coverage (groundtruth from btrData.mitigationMeasures[].sector)
-    const sectorsWithMit = new Set(
-      btrData.mitigationMeasures
-        .filter((m) => m.status?.trim() && m.actionType !== "adaptation")
-        .map((m) => m.sector),
-    );
-    const coveredCount = sectorsWithMit.size;
-    const totalSectors = sectors.length;
-    if (totalSectors > 0 && coveredCount < totalSectors) {
-      const uncoveredNames = sectors
-        .filter((s) => !sectorsWithMit.has(s.id))
-        .map((s) => s.name);
-      const plural = uncoveredNames.length === 1 ? "is" : "are";
-      out.push(
-        `BTR mitigation reporting covers ${coveredCount} of ${totalSectors} IPCC sectors. ${uncoveredNames.join(", ")} ${plural} not covered by any reported mitigation action.`,
+    // Cross-cutting sector coverage (groundtruth from btrData.mitigationMeasures)
+    if (hasCountrySectors && countryConfig?.countrySectors) {
+      // Country-specific sector taxonomy
+      const csWithMit = new Set(
+        btrData.mitigationMeasures
+          .filter((m) => m.status?.trim() && m.actionType !== "adaptation")
+          .map((m) => m.sectorRaw),
       );
+      const csList = countryConfig.countrySectors;
+      const csCovered = csList.filter((s) => csWithMit.has(s.id)).length;
+      if (csList.length > 0 && csCovered < csList.length) {
+        const uncovered = csList.filter((s) => !csWithMit.has(s.id)).map((s) => s.name);
+        const plural = uncovered.length === 1 ? "is" : "are";
+        out.push(
+          `BTR mitigation reporting covers ${csCovered} of ${csList.length} national sector categories. ${uncovered.join(", ")} ${plural} not covered by any reported mitigation action.`,
+        );
+      }
+    } else {
+      // IPCC sector taxonomy
+      const sectorsWithMit = new Set(
+        btrData.mitigationMeasures
+          .filter((m) => m.status?.trim() && m.actionType !== "adaptation")
+          .map((m) => m.sector),
+      );
+      const coveredCount = sectorsWithMit.size;
+      const totalSectors = sectors.length;
+      if (totalSectors > 0 && coveredCount < totalSectors) {
+        const uncoveredNames = sectors
+          .filter((s) => !sectorsWithMit.has(s.id))
+          .map((s) => s.name);
+        const plural = uncoveredNames.length === 1 ? "is" : "are";
+        out.push(
+          `BTR mitigation reporting covers ${coveredCount} of ${totalSectors} IPCC sectors. ${uncoveredNames.join(", ")} ${plural} not covered by any reported mitigation action.`,
+        );
+      }
     }
 
     // Aggregate implementation status
@@ -1812,7 +1845,7 @@ export function ImplementationCoverage({
     }
 
     return out;
-  }, [btrData, sectors, mitigationCount, adaptationCount, implementedCount]);
+  }, [btrData, sectors, mitigationCount, adaptationCount, implementedCount, hasCountrySectors, countryConfig]);
 
   const toggleSector = useCallback((id: string) => {
     setExpandedSector((prev) => (prev === id ? null : id));
