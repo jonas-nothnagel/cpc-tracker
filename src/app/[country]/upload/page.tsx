@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { UploadWizard } from "@/components/upload/upload-wizard";
 
@@ -8,9 +8,9 @@ export default function StandaloneUploadPage() {
   const params = useParams<{ country: string }>();
   const lower = params.country?.toLowerCase() ?? "";
 
-  if (!isValidCountryId(lower)) return null;
+  if (!isValidCountryId(lower)) notFound();
   const entry = getCountry(lower);
-  if (!entry?.visible) return null;
+  if (!entry?.visible) notFound();
 
   return (
     <UploadWizard
