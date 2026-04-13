@@ -13,6 +13,8 @@ import { DocumentPipeline } from "./document-pipeline";
 interface StepCountryDocumentsProps {
   country: string;
   onCountryChange: (value: string) => void;
+  /** When true, the country field is read-only (standalone country routes). */
+  countryLocked?: boolean;
   mode: "upload" | "manual";
   onModeChange: (mode: "upload" | "manual") => void;
   extractDocType: PolicyDocumentType;
@@ -61,6 +63,7 @@ interface StepCountryDocumentsProps {
 export function StepCountryDocuments({
   country,
   onCountryChange,
+  countryLocked,
   mode,
   onModeChange,
   extractDocType,
@@ -138,6 +141,11 @@ export function StepCountryDocuments({
           <label className="block text-xs font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-1.5">
             Country
           </label>
+          {countryLocked ? (
+            <div className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-[var(--undp-black)]">
+              {country}
+            </div>
+          ) : (
           <div className="relative">
             <input
               type="text"
@@ -179,6 +187,7 @@ export function StepCountryDocuments({
               </div>
             )}
           </div>
+          )}
           {knownCountry && knownCountry.has.coherence && (
             <p className="mt-1 text-[10px] text-emerald-600 flex items-center gap-1">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>

@@ -192,9 +192,13 @@ function ClassificationSection({
 export function DashboardClient({
   analysisId,
   country,
+  basePath,
 }: {
   analysisId?: string;
   country?: string;
+  /** When set, the dashboard runs in standalone mode: the header hides the
+   *  country switcher and scopes all nav links to this path. */
+  basePath?: string;
 }) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -339,7 +343,8 @@ export function DashboardClient({
       <Header
         subtitle={displayCountry}
         currentCountryId={country}
-        countries={listVisibleCountries().map(c => ({ id: c.id, name: c.name }))}
+        countries={basePath ? undefined : listVisibleCountries().map(c => ({ id: c.id, name: c.name }))}
+        basePath={basePath}
       />
 
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
