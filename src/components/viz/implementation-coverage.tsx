@@ -356,7 +356,7 @@ function buildAdaptationRows(
 // Biodiversity row builder (grouped by GLOBE category)
 // ---------------------------------------------------------------------------
 
-type CoverageGroupMode = "default" | "biodiversity";
+type CoverageGroupMode = "default" | "biodiversity" | "country_sectors";
 
 const BIODIVERSITY_PALETTE = [
   "#0d9488", "#7c3aed", "#0284c7", "#16a34a",
@@ -1459,6 +1459,211 @@ function BiodiversityByGlobe({
 }
 
 // ---------------------------------------------------------------------------
+// Country-sector row builder (for countries with their own mitigation taxonomy)
+// ---------------------------------------------------------------------------
+
+const COUNTRY_SECTOR_PALETTE = [
+  "#0468b1", "#0d9488", "#7c3aed", "#16a34a", "#f59e0b",
+  "#0284c7", "#ea580c", "#6366f1", "#dc2626", "#ca8a04",
+  "#166534",
+];
+
+interface CountrySectorRow {
+  id: string;
+  name: string;
+  nameOriginal?: string;
+  measures: MitigationMeasure[];
+  implementedCount: number;
+  status: CoverageStatus;
+}
+
+function buildCountrySectorRows(
+  btrData: BtrData,
+  countrySectors: NonNullable<CountryConfig["countrySectors"]>,
+): CountrySectorRow[] {
+  const mitigation = btrData.mitigationMeasures.filter(
+    (m) => m.status?.trim() && m.actionType !== "adaptation",
+  );
+
+  return countrySectors.map((cs): CountrySectorRow => {
+    const measures = mitigation.filter((m) => m.sectorRaw === cs.id);
+    const implementedCount = measures.filter((m) =>
+      m.status.toLowerCase().includes("implemented"),
+    ).length;
+    return {
+      id: cs.id,
+      name: cs.name,
+      nameOriginal: cs.nameOriginal,
+      measures,
+      implementedCount,
+      status: deriveStatus(measures.length, implementedCount),
+    };
+  });
+}
+
+function CountrySectorDetail({ row }: { row: CountrySectorRow }) {
+  const implemented = row.measures.filter((m) =>
+    m.status.toLowerCase().includes("implemented"),
+  );
+  const other = row.measures.filter(
+    (m) => !m.status.toLowerCase().includes("implemented"),
+  );
+
+  return (
+    <div className="border-t border-gray-100 px-5 py-5 bg-[var(--undp-light)]/40">
+      {row.nameOriginal && (
+        <p className="text-[10px] text-[var(--undp-gray)] mb-3 italic">
+          Original: {row.nameOriginal}
+        </p>
+      )}
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
+        Reported mitigation actions ({row.measures.length})
+      </p>
+      {row.measures.length === 0 ? (
+        <p className="text-xs text-[var(--undp-gray)] italic">
+          No reported mitigation actions for this category.
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {implemented.length > 0 && (
+            <div>
+              <p className="text-[9px] font-semibold uppercase tracking-wide text-[#15803d] mb-1 flex items-center gap-1">
+                <span>✓</span> Implemented ({implemented.length})
+              </p>
+              <ul className="divide-y divide-gray-100">
+                {implemented.map((m, i) => (
+                  <li key={i} className="py-2 first:pt-0 border-l-2 border-[#15803d] pl-2">
+                    <p className="text-xs text-[var(--undp-black)] leading-relaxed">
+                      {m.name} <MeasureLanguageChip measure={m} />
+                    </p>
+                    {m.implementingEntity && (
+                      <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {other.length > 0 && (
+            <div>
+              <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+                Adopted / Planned ({other.length})
+              </p>
+              <ul className="divide-y divide-gray-100">
+                {other.map((m, i) => (
+                  <li key={i} className="py-2 first:pt-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-amber-100 text-amber-800">
+                        {m.status}
+                      </span>
+                    </div>
+                    <p className="text-xs text-[var(--undp-black)] leading-relaxed">
+                      {m.name} <MeasureLanguageChip measure={m} />
+                    </p>
+                    {m.implementingEntity && (
+                      <p className="text-[10px] text-[var(--undp-gray)] mt-0.5">{m.implementingEntity}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MitigationByCountrySector({
+  rows,
+  expandedSector,
+  onToggle,
+}: {
+  rows: CountrySectorRow[];
+  expandedSector: string | null;
+  onToggle: (id: string) => void;
+}) {
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
+      <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
+        <h3 className="text-sm font-semibold text-[var(--undp-black)]">
+          Mitigation, by national sector
+        </h3>
+        <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
+          Reported mitigation actions grouped by the country&apos;s own sector categories
+          from CTF Table 5. Click any row for the full action list.
+        </p>
+      </div>
+      {rows.map((row, idx) => {
+        const isExpanded = expandedSector === row.id;
+        const color = COUNTRY_SECTOR_PALETTE[idx % COUNTRY_SECTOR_PALETTE.length];
+
+        return (
+          <div key={row.id} className="border-b border-gray-100 last:border-b-0">
+            <button
+              type="button"
+              onClick={() => onToggle(row.id)}
+              className="w-full text-left px-5 py-3 hover:bg-gray-50/60 transition-colors cursor-pointer"
+            >
+              <div
+                className="grid items-center gap-4"
+                style={{
+                  gridTemplateColumns: "minmax(260px, 2fr) 180px 130px 16px",
+                }}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span
+                    className="text-xs font-medium text-[var(--undp-black)] truncate"
+                    title={row.nameOriginal ? `${row.name} (${row.nameOriginal})` : row.name}
+                  >
+                    {row.name}
+                  </span>
+                  {row.nameOriginal && (
+                    <span
+                      className="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium bg-gray-100 text-[var(--undp-gray)] cursor-help"
+                      title={row.nameOriginal}
+                    >
+                      ES
+                    </span>
+                  )}
+                </div>
+
+                <span className="text-xs text-[var(--undp-gray)] tabular-nums">
+                  <span className="font-semibold text-[var(--undp-black)]">
+                    {row.measures.length}
+                  </span>{" "}
+                  reported
+                  {row.implementedCount > 0 && (
+                    <span className="text-[#15803d]">
+                      {" "}({row.implementedCount} ✓ implemented)
+                    </span>
+                  )}
+                </span>
+
+                <div>
+                  <StatusBadge status={row.status} />
+                </div>
+
+                <span className="text-[10px] text-[var(--undp-gray)]">
+                  {isExpanded ? "▾" : "▸"}
+                </span>
+              </div>
+            </button>
+            {isExpanded && <CountrySectorDetail row={row} />}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 
@@ -1492,10 +1697,18 @@ export function ImplementationCoverage({
   highlightSector,
   countryConfig,
 }: ImplementationCoverageProps) {
-  const [groupMode, setGroupMode] = useState<CoverageGroupMode>("default");
+  const hasCountrySectors =
+    countryConfig?.mitigationTaxonomy === "country_sectors" &&
+    countryConfig.countrySectors != null &&
+    countryConfig.countrySectors.length > 0;
+
+  const [groupMode, setGroupMode] = useState<CoverageGroupMode>(
+    hasCountrySectors ? "country_sectors" : "default",
+  );
   const [expandedSector, setExpandedSector] = useState<string | null>(null);
   const [expandedGoal, setExpandedGoal] = useState<number | null>(null);
   const [expandedBioCategory, setExpandedBioCategory] = useState<string | null>(null);
+  const [expandedCountrySector, setExpandedCountrySector] = useState<string | null>(null);
 
   const mitigationRows = useMemo(
     () => buildMitigationRows(btrData, sectors, targets, classifications),
@@ -1513,6 +1726,14 @@ export function ImplementationCoverage({
         ? buildBiodiversityRows(btrData, globeCategories, targets, classifications)
         : { rows: [], unclassified: [] },
     [btrData, globeCategories, targets, classifications],
+  );
+
+  const countrySectorRows = useMemo(
+    () =>
+      hasCountrySectors
+        ? buildCountrySectorRows(btrData, countryConfig!.countrySectors!)
+        : [],
+    [btrData, hasCountrySectors, countryConfig],
   );
 
   // Banner counts
@@ -1602,6 +1823,9 @@ export function ImplementationCoverage({
   const toggleBioCategory = useCallback((id: string) => {
     setExpandedBioCategory((prev) => (prev === id ? null : id));
   }, []);
+  const toggleCountrySector = useCallback((id: string) => {
+    setExpandedCountrySector((prev) => (prev === id ? null : id));
+  }, []);
 
   const hasBiodiversityData =
     globeCategories != null && globeCategories.length > 0;
@@ -1615,24 +1839,60 @@ export function ImplementationCoverage({
         implementedCount={implementedCount}
       />
 
-      {hasBiodiversityData && (
+      {(hasBiodiversityData || hasCountrySectors) && (
         <div className="flex items-center gap-2 mb-4">
           <select
             value={groupMode}
             onChange={(e) => setGroupMode(e.target.value as CoverageGroupMode)}
             className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
           >
-            <option value="default">
-              Default (Climate Mitigation + Adaptation Goals)
-            </option>
-            <option value="biodiversity">By Biodiversity Taxonomy</option>
+            {hasCountrySectors ? (
+              <>
+                <option value="country_sectors">
+                  By National Sector Categories
+                </option>
+                <option value="default">
+                  By IPCC Sector (standardised)
+                </option>
+              </>
+            ) : (
+              <option value="default">
+                Default (Climate Mitigation + Adaptation Goals)
+              </option>
+            )}
+            {hasBiodiversityData && (
+              <option value="biodiversity">By Biodiversity Taxonomy</option>
+            )}
           </select>
         </div>
       )}
 
       <ReportingGapsCard gaps={gaps} />
 
-      {groupMode === "default" ? (
+      {groupMode === "country_sectors" ? (
+        <>
+          <MitigationByCountrySector
+            rows={countrySectorRows}
+            expandedSector={expandedCountrySector}
+            onToggle={toggleCountrySector}
+          />
+          <AdaptationByApndcGoal
+            rows={adaptationRows}
+            expandedGoal={expandedGoal}
+            onToggle={toggleGoal}
+            groupingLabel={btrData.adaptationGroupingLabel}
+            countryConfig={countryConfig}
+          />
+        </>
+      ) : groupMode === "biodiversity" ? (
+        <BiodiversityByGlobe
+          rows={biodiversityData.rows}
+          unclassified={biodiversityData.unclassified}
+          expandedCategory={expandedBioCategory}
+          onToggle={toggleBioCategory}
+          countryConfig={countryConfig}
+        />
+      ) : (
         <>
           <MitigationByIpccSector
             rows={mitigationRows}
@@ -1649,14 +1909,6 @@ export function ImplementationCoverage({
             countryConfig={countryConfig}
           />
         </>
-      ) : (
-        <BiodiversityByGlobe
-          rows={biodiversityData.rows}
-          unclassified={biodiversityData.unclassified}
-          expandedCategory={expandedBioCategory}
-          onToggle={toggleBioCategory}
-          countryConfig={countryConfig}
-        />
       )}
     </div>
   );

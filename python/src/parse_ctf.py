@@ -203,6 +203,9 @@ def _parse_table5(ws: Worksheet) -> list[dict[str, Any]]:
             estimates[year_str] = _num(ws.cell(row=row_idx, column=col).value)
 
         raw_sector = _strip_footnote_refs(_str(ws.cell(row=row_idx, column=col_map.get("sector", 7)).value))
+        # Normalize known typo: "Sistema Marino-Costeros" → "Sistemas Marino-Costeros"
+        if raw_sector == "Sistema Marino-Costeros":
+            raw_sector = "Sistemas Marino-Costeros"
         measure = {
             "name": name,
             "description": _str(ws.cell(row=row_idx, column=col_map.get("description", 3)).value),
