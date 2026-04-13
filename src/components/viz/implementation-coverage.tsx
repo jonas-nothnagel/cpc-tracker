@@ -1395,7 +1395,7 @@ function BiodiversityByGlobe({
                       0 actions (gap)
                     </span>
                   ) : row.measures.length === 0 && row.policyTargets.length === 0 ? (
-                    <span className="text-[var(--undp-gray)] italic text-[10px]">no coverage</span>
+                    <span className="text-[var(--undp-gray)] italic text-[10px]">no coverage yet</span>
                   ) : (
                     <>
                       <span className="font-semibold text-[var(--undp-black)]">
