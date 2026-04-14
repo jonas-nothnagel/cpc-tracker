@@ -54,7 +54,7 @@ export interface ParentRollup {
 }
 
 export interface ConcentrationCallout {
-  kind: "concentration" | "unfunded" | "unmandated";
+  kind: "concentration" | "unfunded" | "unmandated" | "unscoped";
   text: string;
 }
 
@@ -290,6 +290,22 @@ export function buildConcentrationCallouts(
     });
   }
 
+  // Unscoped: implementation actions reported but no target and no budget.
+  // Distinct from unfunded (targets > 0, exp = 0). Surfaces sectors where
+  // the BTR reports activity that the policy targets and the budget data
+  // didn't anticipate.
+  const unscoped = rollups.filter(
+    (r) => r.actionCount > 0 && r.targetCount === 0 && r.expenditure === 0,
+  );
+  if (unscoped.length > 0) {
+    const label =
+      unscoped.length === 1 ? parentLabelSingular : parentLabelPlural;
+    callouts.push({
+      kind: "unscoped",
+      text: `${unscoped.length} ${label} with implementation actions reported but no policy target or budget mapped: ${unscoped.map((r) => r.name).join(", ")}.`,
+    });
+  }
+
   return callouts;
 }
 
@@ -352,7 +368,9 @@ export function CoherenceTable({
                   ? "bg-blue-50/60 border-blue-100 text-[var(--undp-black)]"
                   : cc.kind === "unfunded"
                     ? "bg-amber-50/60 border-amber-100 text-[var(--undp-black)]"
-                    : "bg-gray-50 border-gray-200 text-[var(--undp-black)]"
+                    : cc.kind === "unscoped"
+                      ? "bg-indigo-50/60 border-indigo-100 text-[var(--undp-black)]"
+                      : "bg-gray-50 border-gray-200 text-[var(--undp-black)]"
               }`}
             >
               {cc.text}
@@ -436,7 +454,17 @@ function ParentRowView({
   anyHierarchical,
   dim,
 }: ParentRowViewProps) {
-  const isGap = rollup.targetCount > 0 && rollup.expenditure === 0;
+  // Two distinct gap flavours. `unfunded` is the policy-vs-budget gap
+  // (commitment exists but no money). `unscoped` is the implementation-
+  // without-policy-or-money case (BTR actions reported here but no NDC/
+  // NBSAP/NAP target was classified into this category and no budget
+  // either). Mutually exclusive so only one tag shows.
+  const isUnfunded = rollup.targetCount > 0 && rollup.expenditure === 0;
+  const isUnscoped =
+    !isUnfunded &&
+    rollup.actionCount > 0 &&
+    rollup.targetCount === 0 &&
+    rollup.expenditure === 0;
   const hasChildren = rollup.hasHierarchy;
 
   return (
@@ -445,7 +473,7 @@ function ParentRowView({
         onClick={hasChildren ? onToggle : undefined}
         className={`grid grid-cols-[1fr_90px_200px_80px_80px] gap-2 px-4 py-2.5 border-b border-gray-100 items-center text-sm ${
           hasChildren ? "cursor-pointer hover:bg-gray-50" : ""
-        } ${isGap ? "bg-amber-50/40" : ""} ${dim ? "opacity-40" : ""}`}
+        } ${isUnfunded ? "bg-amber-50/40" : isUnscoped ? "bg-blue-50/40" : ""} ${dim ? "opacity-40" : ""}`}
       >
         {/* Name column with expand chevron + uppercase parent name */}
         <div className="flex items-center gap-2 min-w-0">
@@ -462,9 +490,20 @@ function ParentRowView({
           >
             {rollup.name}
           </span>
-          {isGap && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0 whitespace-nowrap">
+          {isUnfunded && (
+            <span
+              className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0 whitespace-nowrap"
+              title="Policy targets exist for this category but no budget is classified to it."
+            >
               unfunded
+            </span>
+          )}
+          {isUnscoped && (
+            <span
+              className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 shrink-0 whitespace-nowrap"
+              title="Implementation actions are reported in this category but no policy target is classified to it and no budget is identified."
+            >
+              unscoped
             </span>
           )}
         </div>
@@ -545,10 +584,15 @@ function ChildRowView({
 }) {
   const hasData =
     row.expenditure > 0 || row.targetIds.size > 0 || row.actionIds.size > 0;
-  const isGap = row.targetIds.size > 0 && row.expenditure === 0;
+  const isUnfunded = row.targetIds.size > 0 && row.expenditure === 0;
+  const isUnscoped =
+    !isUnfunded &&
+    row.actionIds.size > 0 &&
+    row.targetIds.size === 0 &&
+    row.expenditure === 0;
   return (
     <div
-      className={`grid grid-cols-[1fr_90px_200px_80px_80px] gap-2 px-4 py-2 border-b border-gray-50 items-center text-sm bg-gray-50/30 ${isGap ? "bg-amber-50/30" : ""} ${!hasData ? "opacity-50" : ""} ${dim ? "opacity-30" : ""}`}
+      className={`grid grid-cols-[1fr_90px_200px_80px_80px] gap-2 px-4 py-2 border-b border-gray-50 items-center text-sm bg-gray-50/30 ${isUnfunded ? "bg-amber-50/30" : isUnscoped ? "bg-blue-50/30" : ""} ${!hasData ? "opacity-50" : ""} ${dim ? "opacity-30" : ""}`}
     >
       <div className="flex items-center gap-2 min-w-0 pl-7">
         <span
@@ -563,9 +607,20 @@ function ChildRowView({
         >
           {row.name}
         </span>
-        {isGap && (
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0 whitespace-nowrap">
+        {isUnfunded && (
+          <span
+            className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0 whitespace-nowrap"
+            title="Targets exist for this subcategory but no budget is identified."
+          >
             no budget
+          </span>
+        )}
+        {isUnscoped && (
+          <span
+            className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 shrink-0 whitespace-nowrap"
+            title="Implementation actions reported here but no policy target nor budget mapped."
+          >
+            unscoped
           </span>
         )}
       </div>
