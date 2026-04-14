@@ -60,10 +60,7 @@ const ALIGNMENT_ORDER: Record<string, number> = {
   high: 0,
   medium: 1,
   low: 2,
-  low_tension: 3,
-  moderate_contradiction: 4,
-  high_contradiction: 5,
-  none: 6,
+  none: 3,
 };
 
 function otherSide(pair: AlignmentResult, berId: string): string | null {
@@ -421,6 +418,7 @@ function FilterGroup<T extends string>({
           <button
             key={o.v}
             onClick={() => onChange(o.v)}
+            aria-pressed={value === o.v}
             className={`px-2 py-0.5 rounded-full border transition-colors ${
               value === o.v
                 ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
@@ -447,6 +445,7 @@ function SortButton({
   return (
     <button
       onClick={onClick}
+      aria-pressed={active}
       className={`uppercase tracking-wide ${
         active ? "text-[var(--undp-black)]" : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
       }`}
