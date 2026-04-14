@@ -131,6 +131,7 @@ export async function GET(request: NextRequest) {
     nbs_categories: unknown[];
     ipcc_sectors?: unknown[];
     globe_categories?: unknown[];
+    globe_subcategories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
   const alignment = readJson<unknown[]>(join(outputDir, "alignment.json"));
@@ -281,6 +282,17 @@ export async function GET(request: NextRequest) {
     ? [...(alignment as unknown[]), ...measureAlignment]
     : alignment;
 
+  // Budget alignment (BER data)
+  const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
+    join(outputDir, "budget_pseudo_targets.json")
+  );
+  const budgetAlignment = readJson<unknown[]>(
+    join(outputDir, "budget_alignment.json")
+  );
+  const berData = readJson<unknown>(
+    join(dataDir, deriveCountryFile(targetsFile, "ber"))
+  );
+
   // Load environmental footprint snapshot if available
   const footprint = readJson<Record<string, unknown>>(
     join(outputDir, "footprint.json")
@@ -346,10 +358,14 @@ export async function GET(request: NextRequest) {
       nbsCategories: categories.nbs_categories,
       sectors: categories.ipcc_sectors ?? [],
       globeCategories: categories.globe_categories ?? [],
+      globeSubcategories: categories.globe_subcategories ?? [],
       classifications: finalClassifications,
       alignment: finalAlignment,
       btrData: btrData ?? null,
       nr7Data: nr7Data ?? null,
+      berData: berData ?? null,
+      budgetAlignment: budgetAlignment ?? null,
+      budgetPseudoTargets: budgetPseudoTargets ?? null,
       footprint: footprint ?? null,
       countryConfig: finalConfig ?? null,
     },

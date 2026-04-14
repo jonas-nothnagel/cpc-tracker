@@ -1,0 +1,233 @@
+{
+  "_comment": "Section 1 of the BER Excel Sheet 2 (Зориулалт / Purpose-Allocation). These are the 15 biodiversity-specific expenditure sub-codes the researcher identified as the core of the public sector BER. Each has full 2016-2024 yearly expenditure and a detailed accounting rule. Mongolian translated to English by Claude.",
+  "country": "Mongolia",
+  "currency": "MNT",
+  "unit": "billion",
+  "period": {
+    "start": 2016,
+    "end": 2024
+  },
+  "source": "BER_1112.xlsx, Sheet 2 (Зориулалт), rows 2-16",
+  "items": [
+    {
+      "code": "81707",
+      "nameMn": "Агаарын бохирдлыг бууруулах",
+      "nameEn": "Reducing air pollution",
+      "descriptionMn": "Агаарын бохирдлыг бууруулах, урьдчилан сэргийлэхтэй холбогдсон зардлуудыг энэ ангилалд хамааруулна.",
+      "descriptionEn": "Expenditures related to reducing and preventing air pollution are recorded in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 4.26,
+        "2017": 4.41,
+        "2018": 11.76,
+        "2019": 32.37,
+        "2020": 76.68,
+        "2021": 100.07,
+        "2022": 28.84,
+        "2023": 14.05,
+        "2024": 38.35
+      },
+      "totalBillionMnt": 310.78
+    },
+    {
+      "code": "82212",
+      "nameMn": "Хур хог хаягдал, орчны бохирдлыг устгах, цэвэрлэх үйлчилгээ",
+      "nameEn": "Municipal waste and environmental pollution removal and cleaning services",
+      "descriptionMn": "Орчны бохрдлыг устгах цэвэрлэх, нийтийн эзэмшлийн зам, талбайг цэвэрлэгээ үйлчилгээ, хог хаягдлыг зайлуулах.",
+      "descriptionEn": "Environmental pollution cleanup, cleaning of public roads and areas, and waste disposal services.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0.00,
+        "2017": 0.78,
+        "2018": 23.08,
+        "2019": 37.05,
+        "2020": 45.78,
+        "2021": 43.56,
+        "2022": 56.50,
+        "2023": 0.00,
+        "2024": 107.35
+      },
+      "totalBillionMnt": 314.11
+    },
+    {
+      "code": "81708",
+      "nameMn": "Ойжуулалт",
+      "nameEn": "Afforestation",
+      "descriptionMn": "Ойжуулалтын тухай хуульд заасны дагуу таримал ой, ойн сан байгуулж өмчлүүлэх, ой нөхөн сэргээх, үрсэлгээ тарих.",
+      "descriptionEn": "Under the Law on Afforestation: establishing planted forests and forest funds for ownership, forest restoration, and seedling planting.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 2.83,
+        "2017": 8.95,
+        "2018": 10.40,
+        "2019": 5.92,
+        "2020": 3.36,
+        "2021": 2.06,
+        "2022": 0.31,
+        "2023": 12.82,
+        "2024": 0.71
+      },
+      "totalBillionMnt": 47.37
+    },
+    {
+      "code": "81709",
+      "nameMn": "Ойн хөнөөлт шавьж, хортонтой тэмцэх",
+      "nameEn": "Control of harmful forest insects and pests",
+      "descriptionMn": "Ойн хөнөөлт шавьж хортонтой тэмцэхтэй холбогдсон зардал энэ ангилалд бүртгэнэ.",
+      "descriptionEn": "Expenditures related to controlling harmful forest insects and pests are recorded in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81702",
+      "nameMn": "Ойн түймрээс урьдчилан сэргийлэх, түймрийн хохирлыг арилгах",
+      "nameEn": "Forest fire prevention and damage mitigation",
+      "descriptionMn": "Ойн түймрээс урьдчилан сэргийлэх, түймрийг унтраах, түймрийн хохирлыг арилгахтай холбогдсон зардлуудыг энэ ангилалд бүртгэнэ.",
+      "descriptionEn": "Expenditures related to forest fire prevention, suppression, and damage mitigation are recorded in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81705",
+      "nameMn": "Ойн тооллого",
+      "nameEn": "Forest inventory",
+      "descriptionMn": "Ойн хуульд заасны дагуу ойн тооллого хийхтэй холбогдсон зардлыг энэ ангилалд бүртгэнэ.",
+      "descriptionEn": "Expenditures related to conducting forest inventory as required by the Forest Law are recorded in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81703",
+      "nameMn": "Ургамлын хамгаалал нөхөн сэргээлт",
+      "nameEn": "Plant protection and restoration",
+      "descriptionMn": "Байгалын ургамлыг хамгаалах, нөхөн сэргээхтэй холбогдсон зардлыг энэ ангилалд бүртгэнэ.",
+      "descriptionEn": "Expenditures related to protecting and restoring wild plants are recorded in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0.10,
+        "2017": 0.27,
+        "2018": 0.23,
+        "2019": 0.22,
+        "2020": 0.36,
+        "2021": 0.36,
+        "2022": 0.00,
+        "2023": 0.33,
+        "2024": 0.00
+      },
+      "totalBillionMnt": 1.87
+    },
+    {
+      "code": "81710",
+      "nameMn": "Ус цаг уурын судалгаа, шинжилгээ",
+      "nameEn": "Hydrological and meteorological research and analysis",
+      "descriptionMn": "Ус, цаг, уурын судалгаа шинжилгээ хийхтэй холбоотой зардлуудыг энэ ангилалд бүртгэнэ.",
+      "descriptionEn": "Expenditures related to conducting hydrological and meteorological research and analysis are recorded in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0.75,
+        "2017": 0.91,
+        "2018": 0.90,
+        "2019": 0.81,
+        "2020": 1.81,
+        "2021": 1.62,
+        "2022": 0.03,
+        "2023": 1.61,
+        "2024": 0.03
+      },
+      "totalBillionMnt": 8.48
+    },
+    {
+      "code": "81713",
+      "nameMn": "Хог хаягдлыг боловсруулах",
+      "nameEn": "Waste processing and recycling",
+      "descriptionMn": "Хог хаягдлыг ангилан ялгах, боловсруулахтай холбогдсон зардлыг энэ ангилалд хамааруулна.",
+      "descriptionEn": "Expenditures related to sorting, separating, and processing waste are included in this category.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81714",
+      "nameMn": "Бохирдуулагч эх үүсвэрийг орлох болон, ногоон бүтээгдэхүүн үйлдвэрлэгчдэд олгох дэмжлэг",
+      "nameEn": "Support for replacing polluting sources and for green-product manufacturers",
+      "descriptionMn": "Агаар орчны бохирдлыг бууруулахад чиглэсэн бүтээгдэхүүн үйлдвэрлэгчдэд төсвөөс олгох дэмжлэг, улмаар орлох түлшний нийлүүлэгчдэд олгох дэмжлэг.",
+      "descriptionEn": "Budget support to manufacturers of goods aimed at reducing air and environmental pollution, and to suppliers of replacement fuels.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81715",
+      "nameMn": "Ус, рашааны нөөцийн хамгаалал, ашиглалт, нөхөн сэргээлт",
+      "nameEn": "Water and mineral water resource protection, use, and restoration",
+      "descriptionMn": "Ус, рашааны нөөцийг хамгаалах, нөхөн сэргээх, хөв цөөрөм байгуулах болон усны нөөцийг зүй зохистой ашиглах.",
+      "descriptionEn": "Protection and restoration of water and mineral water resources, construction of reservoirs and ponds, and rational use of water resources.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81716",
+      "nameMn": "Газрын доройтлыг бууруулах цөлжилтөөс сэргийлэх",
+      "nameEn": "Land degradation reduction and desertification prevention",
+      "descriptionMn": "Эвдэрсэн газрыг нөхөн сэргээх, цөлжилтийг сааруулах, элсний нүүдлээс хамгаалах, бэлчээрийн талбайг хамгаалах.",
+      "descriptionEn": "Restoration of degraded land, mitigation of desertification, protection from sand movement, and protection of pasture land.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81717",
+      "nameMn": "Амьтны нөөцийн хамгаалал, нөхөн сэргээлт",
+      "nameEn": "Animal resource protection and restoration",
+      "descriptionMn": "Амьтны хамгаалал, нэн ховор, ховор амьтныг өсгөн үржүүлэх, сэргээн нутагшуулах, био технологийн зардал.",
+      "descriptionEn": "Animal protection, breeding and reintroduction of critically endangered and rare species, and biotechnology-related expenditures.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81718",
+      "nameMn": "Байгалын ургамал амьтны генетик нөөц",
+      "nameEn": "Wild plant and animal genetic resources",
+      "descriptionMn": "Байгалын ургамал амьтны генетик нөөцийг судлах шинжлэх, ургамал амьтны генетик нөөцийг бүртгэх, хамгаалах.",
+      "descriptionEn": "Study, research, registration, and protection of wild plant and animal genetic resources.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    },
+    {
+      "code": "81719",
+      "nameMn": "Ойг нөхөн сэргээх",
+      "nameEn": "Forest restoration",
+      "descriptionMn": "Ойжуулалтын тухай хуульд заасны дагуу таримал ой, тарьц суулгац бэлтгэх, үржүүлэх, ой нөхөн сэргээх.",
+      "descriptionEn": "Under the Law on Afforestation: preparation and propagation of planted forest saplings and seedlings, and forest restoration.",
+      "barRate": 1.0,
+      "expenditureByYearBillionMnt": {
+        "2016": 0, "2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0
+      },
+      "totalBillionMnt": 0
+    }
+  ]
+}

@@ -148,7 +148,7 @@ function buildMitigationRows(
     policyTargetById.set(t.id, t);
   }
   for (const c of classifications) {
-    if (c.taxonomyType !== "sector" || !c.isRelevant) continue;
+    if (c.taxonomyType !== "sector" || c.isPrimary !== true) continue;
     const t = policyTargetById.get(c.targetId);
     if (!t) continue;
     if (!targetsBySector.has(c.categoryId)) targetsBySector.set(c.categoryId, []);
@@ -317,7 +317,7 @@ function buildAdaptationRows(
   }
   const targetsByGoal = new Map<string, Target[]>();
   for (const c of classifications) {
-    if (c.taxonomyType !== "adaptation_goal" || !c.isRelevant) continue;
+    if (c.taxonomyType !== "adaptation_goal" || c.isPrimary !== true) continue;
     const t = policyTargetById.get(c.targetId);
     if (!t) continue;
     if (!targetsByGoal.has(c.categoryId)) targetsByGoal.set(c.categoryId, []);
@@ -388,7 +388,7 @@ function buildBiodiversityRows(
   const globeClassForBtr = classifications.filter(
     (c) =>
       c.taxonomyType === "globe" &&
-      c.isRelevant &&
+      c.isPrimary === true &&
       btrTargets.some((t) => t.id === c.targetId),
   );
   const targetToGlobe = new Map<string, Set<string>>();
@@ -415,7 +415,7 @@ function buildBiodiversityRows(
   }
   const policyTargetsByCategory = new Map<string, Target[]>();
   for (const c of classifications) {
-    if (c.taxonomyType !== "globe" || !c.isRelevant) continue;
+    if (c.taxonomyType !== "globe" || c.isPrimary !== true) continue;
     const t = policyTargetById.get(c.targetId);
     if (!t) continue;
     if (!policyTargetsByCategory.has(c.categoryId)) policyTargetsByCategory.set(c.categoryId, []);

@@ -31,7 +31,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .config import DATA_DIR, LLM_MODEL, OUTPUT_DIR
-from .classify import run_classification
+from .classify import rank_classification
+from .classify_globe import (
+    classify_globe_subcategories,
+    derive_globe_top_level_classifications,
+    load_few_shot_examples,
+)
 from .align import decompose_targets, generate_pairs, assess_alignment
 from .llm import estimate_footprint_from_counts, get_footprint_tracker
 from .quantitative import assess_quantitative_flags
@@ -42,6 +47,12 @@ from .measure_align import (
     decompose_measures,
     assess_measure_alignment,
 )
+from .budget_align import (
+    programs_to_pseudo_targets,
+    generate_budget_pairs,
+    decompose_programs,
+    assess_budget_alignment,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -50,7 +61,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOTAL_STEPS = 6
+TOTAL_STEPS = 7
 
 
 def write_status(
@@ -79,18 +90,20 @@ def write_status(
     (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))
 
 
-def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list, list]:
+def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list, list, list]:
     """Load targets and categories from JSON files."""
     targets = json.loads((DATA_DIR / targets_file).read_text())
     cats = json.loads((DATA_DIR / "categories.json").read_text())
     nbs = cats["nbs_categories"]
     sectors = cats["ipcc_sectors"]
     globe = cats.get("globe_categories", [])
+    globe_sub = cats.get("globe_subcategories", [])
     logger.info(
         f"Loaded {len(targets)} targets, "
-        f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + {len(globe)} GLOBE categories"
+        f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + "
+        f"{len(globe)} GLOBE categories ({len(globe_sub)} subcategories)"
     )
-    return targets, nbs, sectors, globe
+    return targets, nbs, sectors, globe, globe_sub
 
 
 def derive_country_file(targets_file: str, suffix: str) -> str:
@@ -169,7 +182,21 @@ async def main() -> None:
 
     try:
         # 1. Load data
-        targets, nbs_categories, sectors, globe_categories = load_input_data(args.targets_file)
+        targets, nbs_categories, sectors, globe_categories, globe_subcategories = load_input_data(args.targets_file)
+
+        # Load country-specific GLOBE few-shot examples if available.
+        # Mongolia ships `mongolia-ber-globe-examples.json` with 138 expert-curated
+        # mappings from the BER Excel sheet 5. Other countries can drop their own
+        # equivalent file in the same pattern to enable subcategory classification.
+        globe_examples_filename = derive_country_file(args.targets_file, "ber-globe-examples")
+        globe_examples_path = DATA_DIR / globe_examples_filename
+        globe_few_shot_examples: list[dict] = []
+        if globe_examples_path.exists():
+            globe_few_shot_examples = load_few_shot_examples(str(globe_examples_path))
+            logger.info(
+                f"Loaded {len(globe_few_shot_examples)} GLOBE few-shot examples "
+                f"from {globe_examples_filename}"
+            )
 
         # Load country config for data-driven doc-type labels (e.g. NP →
         # "NP (Nature Pledge)") so the alignment LLM sees human-readable
@@ -219,11 +246,44 @@ async def main() -> None:
         logger.info("STEP 2: Thematic classification")
         logger.info("-" * 40)
 
-        nbs_classifications = await run_classification(targets, nbs_categories, "nbs")
-        sector_classifications = await run_classification(targets, sectors, "sector")
-        globe_classifications = await run_classification(targets, globe_categories, "globe")
+        # Ranked classification: one LLM call per target returns scored
+        # categories. The top-ranked entry per (target, taxonomy) becomes the
+        # primary (single-label); lower-scored entries above the relevance
+        # threshold are also kept as multi-label data.
+        nbs_classifications = await rank_classification(targets, nbs_categories, "nbs")
+        sector_classifications = await rank_classification(targets, sectors, "sector")
 
-        all_classifications = nbs_classifications + sector_classifications + globe_classifications
+        # GLOBE: prefer the fine-grained subcategory classifier (calibrated
+        # on BIOFIN expert examples) when available. Top-level `globe`
+        # records are derived from the subcategory output so the same
+        # primary assignment flows through every visualization. When no
+        # few-shot examples exist (e.g. Panama today), fall back to the
+        # generic ranked classifier on the 9 top-level categories.
+        globe_sub_classifications: list[dict] = []
+        if globe_subcategories and globe_few_shot_examples:
+            globe_sub_classifications = await classify_globe_subcategories(
+                targets,
+                globe_subcategories,
+                globe_categories,
+                globe_few_shot_examples,
+                cache_suffix="targets",
+            )
+            globe_classifications = derive_globe_top_level_classifications(
+                globe_sub_classifications,
+                globe_subcategories,
+                globe_categories,
+            )
+        else:
+            globe_classifications = await rank_classification(
+                targets, globe_categories, "globe"
+            )
+
+        all_classifications = (
+            nbs_classifications
+            + sector_classifications
+            + globe_classifications
+            + globe_sub_classifications
+        )
 
         # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
         # When a `{country}-btr-adaptation.json` file is loaded, classify policy
@@ -232,12 +292,12 @@ async def main() -> None:
         if adp_data:
             adp_goals = adp_data.get("adaptationGoals", [])
             if adp_goals:
-                # `run_classification` expects {id, name, description}. The data
-                # file only carries verbatim {id, description} (no authoritative
-                # short label exists in BTR1 or APNDC), so synthesise a `name`
-                # by deterministic-truncating the first ~80 chars of the
-                # description for the system prompt's all_themes list. Every
-                # character traces back to verbatim BTR text — not a paraphrase.
+                # `rank_classification` expects {id, name, description}. The
+                # data file only carries verbatim {id, description} (no
+                # authoritative short label exists in BTR1 or APNDC), so
+                # synthesise a `name` by deterministic-truncating the first
+                # ~80 chars of the description. Every character traces back
+                # to verbatim BTR text -- not a paraphrase.
                 goals_for_classification = [
                     {
                         "id": str(g["id"]),
@@ -250,7 +310,7 @@ async def main() -> None:
                     }
                     for g in adp_goals
                 ]
-                adp_goal_classifications = await run_classification(
+                adp_goal_classifications = await rank_classification(
                     targets, goals_for_classification, "adaptation_goal"
                 )
                 all_classifications = all_classifications + adp_goal_classifications
@@ -337,21 +397,43 @@ async def main() -> None:
             measure_pseudo_targets = mit_pseudo_targets + adp_pseudo_targets
 
             if measure_pseudo_targets:
-                # Classify BTR actions against NBS, GLOBE, and IPCC sectors via LLM
-                btr_nbs = await run_classification(measure_pseudo_targets, nbs_categories, "nbs")
-                btr_globe = await run_classification(measure_pseudo_targets, globe_categories, "globe")
-                btr_sectors = await run_classification(measure_pseudo_targets, sectors, "sector")
-                all_classifications.extend(btr_nbs + btr_globe + btr_sectors)
+                # Ranked classification of BTR actions against NBS and IPCC
+                # sectors. GLOBE follows the same primary-from-subcategory
+                # rule used for policy targets.
+                btr_nbs = await rank_classification(measure_pseudo_targets, nbs_categories, "nbs")
+                btr_sectors = await rank_classification(measure_pseudo_targets, sectors, "sector")
 
-                # Write back the best-matching sector onto pseudo-targets and btr_data.json
-                # so the frontend's implementation-coverage view can group by IPCC sector.
+                btr_globe_sub: list[dict] = []
+                if globe_subcategories and globe_few_shot_examples:
+                    btr_globe_sub = await classify_globe_subcategories(
+                        measure_pseudo_targets,
+                        globe_subcategories,
+                        globe_categories,
+                        globe_few_shot_examples,
+                        cache_suffix="btr",
+                    )
+                    btr_globe = derive_globe_top_level_classifications(
+                        btr_globe_sub,
+                        globe_subcategories,
+                        globe_categories,
+                    )
+                else:
+                    btr_globe = await rank_classification(
+                        measure_pseudo_targets, globe_categories, "globe"
+                    )
+
+                all_classifications.extend(
+                    btr_nbs + btr_globe + btr_sectors + btr_globe_sub
+                )
+
+                # Write back the primary sector onto pseudo-targets and
+                # btr_data.json so the implementation-coverage view can group
+                # by IPCC sector. Each measure now has exactly one primary
+                # sector (no first-match-wins arbitrariness).
                 sector_by_id: dict[str, str] = {}
                 for c in btr_sectors:
-                    if c["isRelevant"]:
-                        tid = c["targetId"]
-                        # Keep the first relevant sector per measure (highest-confidence)
-                        if tid not in sector_by_id:
-                            sector_by_id[tid] = c["categoryId"]
+                    if c.get("isPrimary"):
+                        sector_by_id[c["targetId"]] = c["categoryId"]
 
                 for pt in measure_pseudo_targets:
                     pt["sector"] = sector_by_id.get(pt["id"], "")
@@ -374,7 +456,11 @@ async def main() -> None:
                 # Re-save classifications with BTR entries included
                 out_path = OUTPUT_DIR / "classifications.json"
                 out_path.write_text(json.dumps(all_classifications, indent=2))
-                logger.info(f"Updated classifications with BTR entries ({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + {len(btr_sectors)} LLM sectors)")
+                logger.info(
+                    f"Updated classifications with BTR entries "
+                    f"({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + "
+                    f"{len(btr_sectors)} sectors + {len(btr_globe_sub)} GLOBE subcategories)"
+                )
 
                 # Policy target × BTR action pairs (both mitigation and adaptation).
                 m_pairs = generate_measure_pairs(targets, measure_pseudo_targets)
@@ -401,6 +487,87 @@ async def main() -> None:
         else:
             logger.info("")
             logger.info("STEP 6: Skipped (no btr_data.json)")
+
+        # 8. Budget-to-Target alignment (if BER data exists)
+        ber_filename = derive_country_file(args.targets_file, "ber")
+        ber_path = DATA_DIR / ber_filename
+        budget_alignment_results: list[dict] = []
+        budget_pseudo_targets: list[dict] = []
+        if ber_path.exists():
+            write_status(7, "Budget alignment", "Assessing alignment between targets and budget programs", started_at=started_at)
+            logger.info("")
+            logger.info("STEP 7: Budget-to-Target alignment")
+            logger.info("-" * 40)
+
+            ber = json.loads(ber_path.read_text())
+            raw_programs = ber.get("programs", [])
+            raw_expenditure = ber.get("expenditure", [])
+            budget_pseudo_targets = programs_to_pseudo_targets(
+                raw_programs, raw_expenditure,
+                currency=ber.get("currency", ""),
+                unit=ber.get("unit", ""),
+            )
+            logger.info(f"  {len(raw_programs)} raw programs -> {len(budget_pseudo_targets)} valid pseudo-targets")
+
+            if budget_pseudo_targets:
+                # Ranked classification of BER programs against NBS and IPCC
+                # sectors. GLOBE follows the same primary-from-subcategory
+                # rule used elsewhere.
+                ber_nbs = await rank_classification(budget_pseudo_targets, nbs_categories, "nbs")
+                ber_sectors = await rank_classification(budget_pseudo_targets, sectors, "sector")
+
+                ber_globe_sub: list[dict] = []
+                if globe_subcategories and globe_few_shot_examples:
+                    ber_globe_sub = await classify_globe_subcategories(
+                        budget_pseudo_targets,
+                        globe_subcategories,
+                        globe_categories,
+                        globe_few_shot_examples,
+                        cache_suffix="ber",
+                    )
+                    ber_globe = derive_globe_top_level_classifications(
+                        ber_globe_sub,
+                        globe_subcategories,
+                        globe_categories,
+                    )
+                else:
+                    ber_globe = await rank_classification(
+                        budget_pseudo_targets, globe_categories, "globe"
+                    )
+
+                all_classifications.extend(
+                    ber_nbs + ber_globe + ber_sectors + ber_globe_sub
+                )
+
+                # Re-save classifications with BER entries included
+                out_path = OUTPUT_DIR / "classifications.json"
+                out_path.write_text(json.dumps(all_classifications, indent=2))
+                logger.info(
+                    f"Updated classifications with BER entries "
+                    f"({len(ber_nbs)} NBS + {len(ber_globe)} GLOBE + "
+                    f"{len(ber_sectors)} sectors + "
+                    f"{len(ber_globe_sub)} GLOBE subcategories)"
+                )
+
+                b_pairs = generate_budget_pairs(targets, budget_pseudo_targets)
+
+                if b_pairs:
+                    budget_decomps = await decompose_programs(budget_pseudo_targets)
+                    all_decomps_budget = {**decompositions, **budget_decomps}
+                    budget_alignment_results = await assess_budget_alignment(
+                        b_pairs, all_decomps_budget, doc_type_labels
+                    )
+
+                    out_path = OUTPUT_DIR / "budget_alignment.json"
+                    out_path.write_text(json.dumps(budget_alignment_results, indent=2))
+                    logger.info(f"Saved {len(budget_alignment_results)} budget alignment results")
+
+                    out_path = OUTPUT_DIR / "budget_pseudo_targets.json"
+                    out_path.write_text(json.dumps(budget_pseudo_targets, indent=2))
+                    logger.info(f"Saved {len(budget_pseudo_targets)} budget pseudo-targets")
+        else:
+            logger.info("")
+            logger.info("STEP 7: Skipped (no BER data)")
 
         # Summary
         elapsed = time.time() - start
@@ -432,6 +599,13 @@ async def main() -> None:
                 m_levels[r["alignment"]] = m_levels.get(r["alignment"], 0) + 1
             logger.info(f"  Measure alignment pairs: {len(measure_alignment_results)}")
             logger.info(f"    Levels: {m_levels}")
+
+        if budget_alignment_results:
+            b_levels: dict[str, int] = {}
+            for r in budget_alignment_results:
+                b_levels[r["alignment"]] = b_levels.get(r["alignment"], 0) + 1
+            logger.info(f"  Budget alignment pairs: {len(budget_alignment_results)}")
+            logger.info(f"    Levels: {b_levels}")
 
         # Persist environmental footprint snapshot. Prefer live measurements;
         # fall back to an estimate from call counts when the whole run was
@@ -501,6 +675,8 @@ async def main() -> None:
             "totalContradictions": total_contradictions,
             "measureAlignmentPairs": len(measure_alignment_results),
             "measurePseudoTargets": len(measure_pseudo_targets),
+            "budgetAlignmentPairs": len(budget_alignment_results),
+            "budgetPseudoTargets": len(budget_pseudo_targets),
             "elapsedSeconds": round(elapsed, 1),
         }
         write_status(TOTAL_STEPS, "Complete", f"Pipeline finished in {elapsed:.1f}s", status="completed", started_at=started_at, summary=summary)

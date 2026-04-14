@@ -15,6 +15,7 @@ import { Nr7Progress } from "@/components/viz/nr7-progress";
 import { ImplementationCoverage } from "@/components/viz/implementation-coverage";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
 import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
+import { FinancingCoherence } from "@/components/viz/financing-coherence";
 import type {
   Target,
   PolicyDocumentType,
@@ -23,7 +24,9 @@ import type {
   NbsCategory,
   IpccSector,
   GlobeCategory,
+  GlobeSubcategory,
   BtrData,
+  BerData,
   Nr7Data,
   CountryConfig,
 } from "@/types";
@@ -33,10 +36,14 @@ interface DashboardData {
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  globeSubcategories: GlobeSubcategory[];
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
   btrData: BtrData | null;
   nr7Data: Nr7Data | null;
+  berData: BerData | null;
+  budgetAlignment: AlignmentResult[] | null;
+  budgetPseudoTargets: Target[] | null;
   footprint: FootprintSnapshot | null;
   countryConfig: CountryConfig | null;
 }
@@ -236,10 +243,14 @@ export function DashboardClient({
           nbsCategories: raw.nbsCategories ?? [],
           sectors: (raw.sectors ?? []).map(normalizeSector),
           globeCategories: (raw.globeCategories ?? []).map(normalizeSector),
+          globeSubcategories: raw.globeSubcategories ?? [],
           classifications: raw.classifications ?? [],
           alignment: raw.alignment ?? [],
           btrData: raw.btrData ?? null,
           nr7Data: raw.nr7Data ?? null,
+          berData: raw.berData ?? null,
+          budgetAlignment: raw.budgetAlignment ?? null,
+          budgetPseudoTargets: (raw.budgetPseudoTargets as Record<string, unknown>[] | null)?.map(normalizeTarget) ?? null,
           footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
           countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
         });
@@ -314,21 +325,34 @@ export function DashboardClient({
     targetsByDoc.set(t.sourceDocument, list);
   }
 
+  // Single-label classifications restricted to actual policy targets.
+  // Each policy target appears in exactly one category per taxonomy (the
+  // primary). The pipeline also writes primary records for BER/BTR/ADP
+  // pseudo-targets (consumed by Financing Coherence + Implementation
+  // Coverage), so filter those out here to avoid inflating policy-target
+  // coverage counts above 100%.
+  const policyTargetIds = new Set(targets.map((t) => t.id));
   const sectorClassifications = data.classifications.filter(
-    (c) => c.taxonomyType === "sector"
+    (c) =>
+      c.taxonomyType === "sector" &&
+      c.isPrimary === true &&
+      policyTargetIds.has(c.targetId)
   );
   const globeClassifications = data.classifications.filter(
-    (c) => c.taxonomyType === "globe"
+    (c) =>
+      c.taxonomyType === "globe" &&
+      c.isPrimary === true &&
+      policyTargetIds.has(c.targetId)
   );
 
   const sectorCounts = countByCategory(targets, sectorClassifications, data.sectors);
   const globeCounts = countByCategory(targets, globeClassifications, data.globeCategories);
 
   const targetsWithSectors = new Set(
-    sectorClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
+    sectorClassifications.map((c) => c.targetId)
   ).size;
   const targetsWithGlobe = new Set(
-    globeClassifications.filter((c) => c.isRelevant).map((c) => c.targetId)
+    globeClassifications.map((c) => c.targetId)
   ).size;
 
   const documentTypes = Array.from(targetsByDoc.keys()) as Target["sourceDocument"][];
@@ -406,22 +430,20 @@ export function DashboardClient({
           countryConfig={data.countryConfig}
         />
 
-        {/* --- Financial Alignment (placeholder) --- */}
-        <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-              Budget &amp; Finance Flows
-            </h2>
-            <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-              Financial flows and budget allocations analysis.
-            </p>
-          </div>
-          <div className="bg-gray-50 border border-gray-200 border-dashed rounded-lg px-5 py-6 text-center">
-            <p className="text-sm text-[var(--undp-gray)]">
-              Under Development
-            </p>
-          </div>
-        </section>
+        {/* --- Budget & Financing Coherence --- */}
+        {data.berData && (
+          <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
+            <FinancingCoherence
+              berData={data.berData}
+              targets={targets.filter((t) => !t.id.startsWith("BER_"))}
+              classifications={data.classifications}
+              globeCategories={data.globeCategories}
+              globeSubcategories={data.globeSubcategories}
+              sectors={data.sectors}
+              countryConfig={data.countryConfig}
+            />
+          </section>
+        )}
 
         {/* --- Progress Alignment (unified NR7 + BTR) --- */}
         {((data.nr7Data && data.nr7Data.progressItems.length > 0) ||

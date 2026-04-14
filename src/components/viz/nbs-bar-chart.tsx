@@ -47,7 +47,7 @@ function getTargetsForCategory(
       .filter(
         (c) =>
           c.categoryId === categoryId &&
-          c.isRelevant &&
+          c.isPrimary === true &&
           c.taxonomyType === "nbs"
       )
       .map((c) => c.targetId)

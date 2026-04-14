@@ -1,21 +1,35 @@
 """
 Step 1: Thematic Classification.
 
-For each target × category pair, asks the LLM: does this target pertain to
-this category? Binary 1/0.
+Two flavours of classifier:
 
-Prompts replicated exactly from the original pipeline
-(JP_Nature_Climate_themes_UNDP_GPT4o-min_v5_14Mar25.ipynb).
+- ``run_classification`` (legacy): one binary 0/1 LLM call per (target, category)
+  pair. Multi-label by construction. Kept for back-compat where callers explicitly
+  want the old behaviour, and as the schema baseline.
+- ``rank_classification`` (preferred): one LLM call per target returns a
+  probability-ranked list of categories with scores. Top-ranked entry is the
+  ``isPrimary`` classification (single-label per target per taxonomy);
+  ``isRelevant`` is derived from ``score >= RELEVANCE_THRESHOLD``. Multi-label
+  data is preserved as records with ``isRelevant=true, isPrimary=false``.
+
+The ranked classifier exists so visualizations can show consistent counts
+across views: each target contributes to exactly one category's primary
+count, and per-category target totals sum to the total target count.
 """
 
 from __future__ import annotations
 
+import json
 import logging
+import re
 from typing import Any
 
 from .llm import call_llm_batch
 
 logger = logging.getLogger(__name__)
+
+# Score >= this is considered "relevant" for backwards-compatible isRelevant flag.
+RELEVANCE_THRESHOLD = 0.5
 
 # ---------------------------------------------------------------------------
 # Prompts — exact replicas from old_scripts cell 41 + cell 40 + cell 47
@@ -166,6 +180,193 @@ async def run_classification(
     logger.info(
         f"  {taxonomy_type} classification done: "
         f"{relevant_count} relevant out of {len(classifications)} total"
+    )
+
+    return classifications
+
+
+# ---------------------------------------------------------------------------
+# Ranked classifier (preferred)
+# ---------------------------------------------------------------------------
+
+
+def build_rank_system_prompt(taxonomy_type: str) -> str:
+    """System prompt for the ranked classifier."""
+    return f"""You are a policy classifier. Your job is to assess how strongly a policy target relates to each category in a {taxonomy_type} taxonomy.
+
+# TASK
+Given a target and a list of N categories, score every category for its relevance to the target on a 0.0-1.0 scale, where:
+- 1.0 = the target is primarily and explicitly about this category
+- 0.7-0.9 = clearly relevant; this category is a major theme of the target
+- 0.4-0.6 = partially relevant; the target touches this category as one of several themes
+- 0.1-0.3 = tangentially relevant; weak or indirect connection
+- 0.0 = no relevance
+
+The ranking must reflect probability of relevance: higher score means higher confidence that the target genuinely belongs to that category. Return ALL categories you consider at all relevant (score > 0.0). Categories you assess as score 0.0 may be omitted.
+
+# RESPONSE FORMAT
+Return ONLY a JSON object, no markdown:
+{{
+  "ranked": [
+    {{"id": "<categoryId>", "score": <0.0-1.0>, "reasoning": "<one short sentence>"}},
+    {{"id": "<categoryId>", "score": <0.0-1.0>, "reasoning": "<one short sentence>"}}
+  ]
+}}
+
+Order the array from highest score to lowest. The top entry will be treated as the primary classification."""
+
+
+def build_rank_user_message(
+    target_text: str, categories: list[dict[str, Any]]
+) -> str:
+    """User message: target + full category catalog."""
+    catalog_lines = []
+    for cat in categories:
+        desc = cat.get("description", "")
+        if len(desc) > 300:
+            desc = desc[:297] + "..."
+        catalog_lines.append(f"- {cat['id']}: {cat['name']} -- {desc}")
+    catalog = "\n".join(catalog_lines)
+    return (
+        f"Target:\n{target_text}\n\n"
+        f"Categories:\n{catalog}\n\n"
+        f"Score every category that has any relevance and return JSON."
+    )
+
+
+def parse_rank_response(
+    raw: str, valid_ids: set[str]
+) -> list[dict[str, Any]]:
+    """Parse the ranked-output JSON. Returns list of {id, score, reasoning}."""
+    cleaned = raw.strip()
+    fence = re.search(r"```(?:json)?\s*(.+?)```", cleaned, re.DOTALL)
+    if fence:
+        cleaned = fence.group(1).strip()
+
+    obj_match = re.search(r"\{.*\}", cleaned, re.DOTALL)
+    if not obj_match:
+        logger.warning(f"No JSON object in rank response: {raw[:200]}")
+        return []
+
+    try:
+        parsed = json.loads(obj_match.group(0))
+    except json.JSONDecodeError as e:
+        logger.warning(f"Rank JSON parse failed: {e}. Raw: {raw[:200]}")
+        return []
+
+    raw_ranked = parsed.get("ranked", [])
+    if not isinstance(raw_ranked, list):
+        return []
+
+    ranked: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for entry in raw_ranked:
+        if not isinstance(entry, dict):
+            continue
+        cid = entry.get("id")
+        if not isinstance(cid, str) or cid not in valid_ids or cid in seen_ids:
+            continue
+        try:
+            score = float(entry.get("score", 0))
+        except (TypeError, ValueError):
+            continue
+        score = max(0.0, min(1.0, score))
+        # Drop zero-score entries so a target with no relevant categories
+        # produces no isPrimary record (the prompt asks the LLM to omit
+        # zero-score entries, but some models include them anyway).
+        if score <= 0:
+            continue
+        reasoning = entry.get("reasoning", "")
+        if not isinstance(reasoning, str):
+            reasoning = ""
+        ranked.append(
+            {"id": cid, "score": score, "reasoning": reasoning.strip()[:200]}
+        )
+        seen_ids.add(cid)
+
+    # Defensive sort: highest score first (LLM should already do this, but
+    # we don't trust output ordering for primary selection).
+    ranked.sort(key=lambda x: -x["score"])
+    return ranked
+
+
+async def rank_classification(
+    targets: list[dict[str, Any]],
+    categories: list[dict[str, Any]],
+    taxonomy_type: str,
+) -> list[dict[str, Any]]:
+    """
+    Score every (target, category) pair via a single ranked LLM call per target.
+
+    Returns one record per (target, category) for ALL categories (whether the
+    LLM scored them or not). Records have:
+      - score: float 0.0-1.0 (0.0 for categories the LLM omitted)
+      - isPrimary: True for the single highest-scoring category per target
+      - isRelevant: score >= RELEVANCE_THRESHOLD
+
+    If the LLM returns no rankings (parse failure or empty list), no record is
+    marked isPrimary and all are isRelevant=False.
+    """
+    logger.info(
+        f"Ranking {len(targets)} targets against {len(categories)} {taxonomy_type} categories "
+        f"({len(targets)} LLM calls, returning {len(targets) * len(categories)} records)"
+    )
+
+    system_prompt = build_rank_system_prompt(taxonomy_type)
+    valid_ids = {c["id"] for c in categories}
+
+    calls: list[dict[str, Any]] = []
+    target_ids: list[str] = []
+    for target in targets:
+        user = build_rank_user_message(target["text"], categories)
+        calls.append({
+            "system": system_prompt,
+            "user": user,
+            "temperature": 0.0,
+            "max_tokens": 800,
+        })
+        target_ids.append(target["id"])
+
+    raw_results = await call_llm_batch(
+        calls,
+        cache_namespace=f"rank_{taxonomy_type}",
+        desc=f"Ranked classification ({taxonomy_type})",
+    )
+
+    classifications: list[dict[str, Any]] = []
+    primary_count = 0
+    relevant_count = 0
+    for target_id, raw in zip(target_ids, raw_results):
+        ranked = parse_rank_response(raw, valid_ids)
+        score_by_id = {r["id"]: r for r in ranked}
+        primary_id = ranked[0]["id"] if ranked else None
+        if primary_id:
+            primary_count += 1
+
+        for cat in categories:
+            entry = score_by_id.get(cat["id"])
+            score = entry["score"] if entry else 0.0
+            reasoning = entry["reasoning"] if entry else ""
+            is_primary = cat["id"] == primary_id
+            is_relevant = score >= RELEVANCE_THRESHOLD
+            if is_relevant:
+                relevant_count += 1
+            record: dict[str, Any] = {
+                "targetId": target_id,
+                "categoryId": cat["id"],
+                "taxonomyType": taxonomy_type,
+                "isRelevant": is_relevant,
+                "isPrimary": is_primary,
+                "score": round(score, 3),
+            }
+            if reasoning and (is_primary or is_relevant):
+                record["reasoning"] = reasoning
+            classifications.append(record)
+
+    logger.info(
+        f"  {taxonomy_type} ranking done: "
+        f"{primary_count}/{len(targets)} got a primary, "
+        f"{relevant_count} relevant entries (score >= {RELEVANCE_THRESHOLD})"
     )
 
     return classifications

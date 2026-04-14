@@ -67,3 +67,7 @@ python/tmp/
 
 # External docs
 external-docs/
+
+# Tooling artifacts
+.playwright-mcp/
+.claude/

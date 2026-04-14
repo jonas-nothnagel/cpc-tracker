@@ -9,9 +9,7 @@
     "isTimeBound": false,
     "sector": "sector_energy",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plan Nacional de Cambio Climático para el Sector Energía. Insumo para la planificación y mejora de la operación del sistema energético nacional, incluyendo a todas las fuentes energéticas, su transformación y transporte para contribuir a la resiliencia climática del sector y la ruta de la transición hacia el carbono neutralidad.",
-    "sourceLabelOriginal": "Plan Nacional de Cambio Climático para el Sector Energía"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_2",
@@ -23,9 +21,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Estrategia Nacional REDD+. Contribuir a la mitigación del cambio climático global a través de la reducción de deforestación y degradación forestal, conservación de ecosistemas forestales, aumento de las reservas de carbono forestal y el manejo sostenible de los bosques.",
-    "sourceLabelOriginal": "Estrategia Nacional REDD+"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_3",
@@ -37,9 +33,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Guía Técnica Nacional de Cambio Climático para el Sector UTCUTS (Bosques). Aumentar la cobertura boscosa y el incremento de la capacidad de absorción de dióxido de carbono, la restauración de las áreas degradadas, la disminución de la vulnerabilidad y una mayor capacidad de adaptación ante el cambio climático con una mejor provisión de servicios ecosistémicos.",
-    "sourceLabelOriginal": "Guía Técnica Nacional de Cambio Climático para el Sector ..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_4",
@@ -51,9 +45,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plan de Cambio Climático para la Gestión Integrada de Cuencas Hidrográficas. Busca la adaptación de las cuencas hidrográficas, con énfasis en soluciones basadas en la naturaleza. Así mismo se busca la mitigación de emisiones, a través de la reforestación, forestación, restauración de suelos; la conservación de las reservas forestales de carbono; el manejo sostenible de los bosques y aumento del almacenamiento de carbono.",
-    "sourceLabelOriginal": "Plan de Cambio Climático para la Gestión Integrada de Cue..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_5",
@@ -63,11 +55,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_other",
+    "sector": "sector_lulucf",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Plan Indicativo de Ordenamiento Territorial Ambiental (PIOTA) para la Cuenca Hidrográfica del Canal de Panamá (CHCP). Busca orientar las actividades económicas, de protección y conservación ambiental en la Cuenca Hidrográfica del Canal de Panamá (CHCP), y lograr la armonización entre instrumentos de gestión ambiental aplicables.",
-    "sourceLabelOriginal": "Plan Indicativo de Ordenamiento Territorial Ambiental (PI..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_6",
@@ -77,11 +67,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "",
+    "sector": "sector_lulucf",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Guía Técnica de Cambio Climático para el Sector Sistemas Marinos-Costeros. Por medio de esta guía técnica se proyecta integrar la planificación de la adaptación en el marco regulatorio e instrumentos de planificación existentes, implementando principalmente en soluciones basadas en la naturaleza (SbN).",
-    "sourceLabelOriginal": "Guía Técnica de Cambio Climático para el Sector Sistemas ..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_7",
@@ -93,9 +81,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Balance neto de emisiones anuales en los humedales costeros (manglares) aplicando el capítulo 4 del Suplemento 2013 del IPCC.. Reconocer el papel crucial que representan los ecosistemas de carbono azul para el país y mejorar la transparencia en los inventarios y reporte de las emisiones/absorciones.",
-    "sourceLabelOriginal": "Balance neto de emisiones anuales en los humedales coster..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_8",
@@ -107,9 +93,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Manual de Técnicas de Restauración para Áreas Degradadas de Manglar. Busca fortalecer el conocimiento sobre el proceso de restauración de áreas impactadas de manglares y humedales marino costeros asociados, los cuales contribuyen enormemente en el secuestro y almacenamiento de dióxido de carbono, como pilar fundamental para reducir los impactos del aumento del nivel del mar, así como la calidad de los océanos.",
-    "sourceLabelOriginal": "Manual de Técnicas de Restauración para Áreas Degradadas ..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_9",
@@ -121,9 +105,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Guía de Cambio Climático para el Sector Biodiversidad. Este compromiso representará un instrumento de planificación para la adaptación mediante la implementación de medidas que reduzcan los impactos en la biodiversidad, con estrategias que disminuyan la vulnerabilidad y fragmentación del hábitat aumentando la resiliencia ante eventos extremos de cambio climático, a la vez que se protegen los depósitos de carbono.",
-    "sourceLabelOriginal": "Guía de Cambio Climático para el Sector Biodiversidad"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_10",
@@ -135,9 +117,7 @@
     "isTimeBound": false,
     "sector": "sector_agriculture",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plan Nacional de Cambio Climático para el Sector Agropecuario (PNCCSA).. Reducir vulnerabilidad, incrementar resiliencia (adaptación) y reducir emisiones de gases de efecto invernadero del Sector Agropecuario.",
-    "sourceLabelOriginal": "Plan Nacional de Cambio Climático para el Sector Agropecu..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_11",
@@ -147,11 +127,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_agriculture",
     "measureStatus": "Adopted",
-    "actionType": "mitigation",
-    "textOriginal": "NAMA de Arroz. Transformación de la economía hacia un crecimiento bajo en carbono.",
-    "sourceLabelOriginal": "NAMA de Arroz"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_12",
@@ -161,11 +139,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_agriculture",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "NAMA Ganadero. Transformación de la economía hacia un crecimiento bajo en carbono.",
-    "sourceLabelOriginal": "NAMA Ganadero"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_13",
@@ -175,11 +151,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "",
+    "sector": "sector_agriculture",
     "measureStatus": "Adopted",
-    "actionType": "mitigation",
-    "textOriginal": "Sistema de Información Agroclimática para el Sector Agropecuario. El sistema facilita la gestión de información y datos para maximizar el rendimiento del sistema agroclimático para asegura la eficacia de cada uno de los distintos procesos llevados a cabo.",
-    "sourceLabelOriginal": "Sistema de Información Agroclimática para el Sector Agrop..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_14",
@@ -191,9 +165,7 @@
     "isTimeBound": false,
     "sector": "sector_other",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Guía Técnica de Cambio Climático para Asentamientos Humanos. Busca aumentar la resiliencia de los asentamientos humanos en el país y fortalecer la participación de los actores clave para planificar, financiar, implementar, monitorear e informar los procesos de adaptación estratégica y comunicar el conocimiento sobre la adaptación al cambio climático, tomando en consideración los beneficios que esto significaría para la mitigación.",
-    "sourceLabelOriginal": "Guía Técnica de Cambio Climático para Asentamientos Humanos"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_15",
@@ -203,11 +175,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "",
+    "sector": "sector_other",
     "measureStatus": "Adopted",
-    "actionType": "mitigation",
-    "textOriginal": "Programa Reduce Tu Huella Municipal. Generar herramientas de gestión de huella de carbono para gobiernos locales y apoyarlos en el proceso de medir, reducir y compensar su huella de carbono.",
-    "sourceLabelOriginal": "Programa Reduce Tu Huella Municipal"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_16",
@@ -219,9 +189,7 @@
     "isTimeBound": false,
     "sector": "sector_other",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plan de Cambio Climático para el Sector Salud. Permitirá ampliar los instrumentos de planificación para reducir la vulnerabilidad de la población enfocándose en el fortalecimiento de los sistemas de vigilancia epidemiológica con riesgos ambientales y riesgos climáticos que permitan monitorear enfermedades emergentes y reemergentes relacionados con el cambio climático, y a su vez contribuiría a la reducción de emisiones de manera indirecta, mediante la implementación de diversas medidas de adaptación.",
-    "sourceLabelOriginal": "Plan de Cambio Climático para el Sector Salud"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_17",
@@ -231,11 +199,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_transport",
+    "sector": "sector_other",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plan de Cambio Climático para el Sector Infraestructura. Propone una visión para desarrollar Infraestructuras resistentes ante impactos de cambio climático en múltiples ámbitos: Riego por goteo, hidráulica para control de crecidas, agua potable, alcantarillado, de logística (portuaria, carreteras, puentes, aeropuertos) y edificaciones verdes.",
-    "sourceLabelOriginal": "Plan de Cambio Climático para el Sector Infraestructura"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_18",
@@ -247,9 +213,7 @@
     "isTimeBound": false,
     "sector": "sector_other",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Proyectos de Inversión Pública con Aspectos de Cambio Climático Integrados. Tiene por objeto promover una lista completa de medidas para identificar las soluciones adaptativas y de mitigación más relevantes, implementarlas y supervisarlas. Se busca lograr la implementación de esta Guía Técnica dentro de los proyectos de inversión pública, de esta manera de podrá identificar, entender los riesgos climáticos y los procesos de adaptación y mitigación a considerar antes del financiamiento y ejecución de una obra.",
-    "sourceLabelOriginal": "Proyectos de Inversión Pública con Aspectos de Cambio Cli..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_19",
@@ -259,11 +223,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_other",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Normativa actualizada con GRC, m. de Adaptación y reducción de Huella de Carbono de proyectos, integrados. Actualización del Decreto Ejecutivo 123 del 14 de agosto de 2009, la metodología de análisis de gestión ambiental, los elementos, aspectos y variables que pueden ser causados por el calentamiento global considerando el cambio climático como un vector que introduce cambios al ambiente, así como la medición de la huella de carbono del proyecto.",
-    "sourceLabelOriginal": "Normativa actualizada con GRC, m. de Adaptación y reducci..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_20",
@@ -273,11 +235,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "",
+    "sector": "sector_other",
     "measureStatus": "Adopted",
-    "actionType": "mitigation",
-    "textOriginal": "Decreto Ejecutivo de Eco-Etiquetado. Modernización, restructuración y validación del Decreto Ejecutivo No. 100 de 7 de octubre de 2008, que reglamenta la certificación de productos y servicios ambientalmente limpios.",
-    "sourceLabelOriginal": "Decreto Ejecutivo de Eco-Etiquetado"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_21",
@@ -289,9 +249,7 @@
     "isTimeBound": false,
     "sector": "sector_other",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Centro de Economía Circular. Generar cambios en materia económica para que el país sea eficiente con prácticas de conservación de recursos y sostenibilidad, por medio de la implementación de un modelo basado en la Economía Circular, involucrando al sector privado en el desarrollo de la economía circular en Panamá.",
-    "sourceLabelOriginal": "Centro de Economía Circular"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_22",
@@ -301,11 +259,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "",
+    "sector": "sector_other",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Métricas e Indicadores de Economía Circular. Generar las métricas e indicadores que permitan un seguimiento y monitoreo del progreso en la implementación de una economía circular y que apoyen la toma de decisiones en esta materia.",
-    "sourceLabelOriginal": "Métricas e Indicadores de Economía Circular"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_23",
@@ -317,9 +273,7 @@
     "isTimeBound": false,
     "sector": "sector_other",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Reduce Tu Huella Corporativo. Generar herramientas de gestión de huella de carbono para organizaciones públicas, privadas, academia, sociedad civil, etc. Reconocer los esfuerzos de estas organizaciones en medir, reducir y compensar su huella de carbono.",
-    "sourceLabelOriginal": "Reduce Tu Huella Corporativo"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_24",
@@ -331,9 +285,7 @@
     "isTimeBound": false,
     "sector": "sector_other",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plan Nacional de Cambio Climático para la Economía Circular a Largo Plazo. Permitirá ampliar los instrumentos de planificación para reducir la vulnerabilidad del sector a los efectos del cambio climático, siendo su objetivo la integración de la planificación de adaptación en el marco regulatorio e instrumento de planificación existente.",
-    "sourceLabelOriginal": "Plan Nacional de Cambio Climático para la Economía Circul..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_25",
@@ -343,11 +295,9 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_other",
     "measureStatus": "Adopted",
-    "actionType": "mitigation",
-    "textOriginal": "Normativa de Auditorías Ambientales y PMA que incluirá GRD, m. de Adaptación y reducción de Huella de Carbono. Actualización del Decreto Ejecutivo No. 57 de 10 de agosto del 2004, que reglamenta el proceso de Evaluación de las Auditorías Ambientales y Programa de Adecuación y Manejo Ambiental. Este incluirá gestión de riesgo de desastres, medidas de adaptación y reducción de huella de carbono.",
-    "sourceLabelOriginal": "Normativa de Auditorías Ambientales y PMA que incluirá GR..."
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_26",
@@ -359,9 +309,7 @@
     "isTimeBound": false,
     "sector": "sector_lulucf",
     "measureStatus": "Planned",
-    "actionType": "mitigation",
-    "textOriginal": "Plataforma SIRED. Expandir la plataforma SIRED, para incluir aquellos eventos de lento proceso como lo son la desertificación y degradación de tierras y bosques, la pérdida de biodiversidad, la salinización, el aumento del nivel del mar y la acidificación oceánica.",
-    "sourceLabelOriginal": "Plataforma SIRED"
+    "actionType": "mitigation"
   },
   {
     "id": "BTR_27",
@@ -371,10 +319,8 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_other",
     "measureStatus": "Implemented",
-    "actionType": "mitigation",
-    "textOriginal": "Plataforma Nacional de Transparencia Climática. Gestión y monitoreo de las acciones que nos encaminan hacia la neutralidad del carbono y el desarrollo sostenible, inclusivo, bajo en emisiones y resiliente, mediante sus componentes: Sistema Nacional de Gases de Efecto Invernadero, Registro Nacional para Acciones de Mitigación, Sistema Nacional para el Monitoreo y Evaluación de la Adaptación, Registro Nacional para Medios de Implementación para la Acción Climática",
-    "sourceLabelOriginal": "Plataforma Nacional de Transparencia Climática"
+    "actionType": "mitigation"
   }
 ]

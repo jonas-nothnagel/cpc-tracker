@@ -49,7 +49,7 @@ function getTargetsForTheme(
       .filter(
         (c) =>
           c.categoryId === themeId &&
-          c.isRelevant &&
+          c.isPrimary === true &&
           c.taxonomyType === taxonomyType
       )
       .map((c) => c.targetId)

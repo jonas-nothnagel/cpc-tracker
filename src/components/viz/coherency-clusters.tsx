@@ -148,7 +148,7 @@ export function CoherencyClusters({
         const t = targetMap.get(tid);
         if (!t) continue;
         const targetSectors = classifications.filter(
-          (c) => c.targetId === tid && c.taxonomyType === "sector" && c.isRelevant
+          (c) => c.targetId === tid && c.taxonomyType === "sector" && c.isPrimary === true
         );
         for (const tc of targetSectors) {
           if (!sectorToDocTypes.has(tc.categoryId))

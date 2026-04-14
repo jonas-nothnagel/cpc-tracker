@@ -242,12 +242,16 @@ export function TensionClusters({
     return map;
   }, [sectors, nbsCategories, globeCategories]);
 
-  // Structured per-target taxonomy lookup for the taxonomy filter
+  // Structured per-target taxonomy lookup for the taxonomy filter.
+  // Single-label: each target is associated with its primary category per
+  // taxonomy. This keeps the filter consistent with the bar chart and
+  // Coherence Explorer (a target picked under a category here is the same
+  // set of targets shown there).
   const targetTaxonomyMap = useMemo(() => {
     if (!classifications || classifications.length === 0) return new Map<string, Set<string>>();
     const map = new Map<string, Set<string>>();
     for (const c of classifications) {
-      if (!c.isRelevant) continue;
+      if (c.isPrimary !== true) continue;
       const key = `${c.taxonomyType}::${c.categoryId}`;
       if (!map.has(c.targetId)) map.set(c.targetId, new Set());
       map.get(c.targetId)!.add(key);
@@ -344,12 +348,13 @@ export function TensionClusters({
     return Array.from(pairCounts.values()).sort((a, b) => b.count - a.count);
   }, [visibleTensions, targetMap]);
 
-  // Per-target classification lookup
+  // Per-target classification lookup -- primary category per taxonomy
+  // (single-label, consistent with the bar chart and Coherence Explorer).
   const targetCategories = useMemo(() => {
     if (!classifications || classifications.length === 0) return new Map<string, string[]>();
     const map = new Map<string, string[]>();
     for (const c of classifications) {
-      if (!c.isRelevant) continue;
+      if (c.isPrimary !== true) continue;
       const name = categoryNameMap.get(c.categoryId);
       if (!name) continue;
       if (!map.has(c.targetId)) map.set(c.targetId, []);
@@ -371,7 +376,7 @@ export function TensionClusters({
 
     const coverageByType = new Map<string, number>();
     for (const c of classifications) {
-      if (!c.isRelevant || !tensionTargetIds.has(c.targetId)) continue;
+      if (c.isPrimary !== true || !tensionTargetIds.has(c.targetId)) continue;
       coverageByType.set(
         c.taxonomyType,
         (coverageByType.get(c.taxonomyType) ?? 0) + 1

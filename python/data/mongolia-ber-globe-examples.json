@@ -1,0 +1,2771 @@
+{
+  "_meta": {
+    "source": "BER_1112.xlsx, Sheet 5",
+    "description": "Expert-curated GLOBE taxonomy mappings for Mongolia private sector biodiversity expenditures (Top 100 companies). Prepared by Unet Consulting LLC for UNDP/BIOFIN, November 2025.",
+    "purpose": "Few-shot calibration examples for LLM classification of public sector programs to GLOBE subcategories.",
+    "totalRecords": 138,
+    "currency": "MNT",
+    "globeTaxonomyVersion": "2024"
+  },
+  "globeTaxonomy": {
+    "1.01": "Screening for biodiversity areas and permitting",
+    "1.02": "Contractual arrangements",
+    "1.03": "Benefit-sharing mechanism",
+    "1.05": "Nagoya Protocol",
+    "1.06": "Access to resources, information and decision-making",
+    "2.01": "Formal biodiversity education",
+    "2.02": "Non-formal biodiversity education",
+    "2.03": "Biodiversity awareness and communication",
+    "2.04": "Biodiversity scientific research",
+    "2.05": "Indigenous Peoples and local communities knowledge",
+    "2.06": "CBD clearing-house mechanism",
+    "3.01": "Genetically modified organisms (GMOs)",
+    "3.02": "Invasive Alien Species (IAS)",
+    "4.01": "Green supply chain",
+    "4.02": "Sustainable extractive industries",
+    "4.03": "Sustainable consumption",
+    "4.04": "Sustainable energy",
+    "4.05": "Sustainable tourism",
+    "4.06": "Sustainable transportation",
+    "4.07": "Sustainable urban and rural areas",
+    "5.01": "Biodiversity laws, policies, plans",
+    "5.02": "Other relevant laws, policies, plans",
+    "5.03": "Biodiversity coordination and management",
+    "5.04": "Biodiversity finance",
+    "5.05": "Strategic Environmental Assessment (SEA)",
+    "5.06": "Spatial planning",
+    "5.07": "Multilateral Environment Agreement (MEA)",
+    "6.01": "Soil and water",
+    "6.02": "Air and atmosphere",
+    "6.03": "Waste management",
+    "6.04": "Coastal and marine pollution debris management",
+    "6.05": "Other pollution management measures",
+    "7.01": "Management and expansion of protected areas",
+    "7.02": "Management of areas outside of PAs",
+    "7.03": "Other effective area-based conservation measures",
+    "7.04": "Conservation of species",
+    "8.01": "Reintroduction and translocation of species",
+    "8.02": "Site redevelopment and engineering",
+    "8.03": "Site management",
+    "9.01": "Agrobiodiversity",
+    "9.02": "Sustainable agriculture",
+    "9.03": "Sustainable aquaculture",
+    "9.04": "Sustainable fisheries",
+    "9.05": "Sustainable forestry",
+    "9.06": "Sustainable land management",
+    "9.07": "Sustainable marine and coastal management",
+    "9.08": "Sustainable rangelands",
+    "9.09": "Sustainable wildlife"
+  },
+  "records": [
+    {
+      "id": 21,
+      "description": "Биологийн нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        },
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 387510000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 290632500.0,
+      "descriptionEn": "Biological restoration"
+    },
+    {
+      "id": 99,
+      "description": "Биологийн нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 25000000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 18750000.0,
+      "descriptionEn": "Biological restoration"
+    },
+    {
+      "id": 14,
+      "description": "Техникийн нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 600000001.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 450000000.75,
+      "descriptionEn": "Technical restoration (rehabilitation of degraded sites)"
+    },
+    {
+      "id": 20,
+      "description": "Техникийн нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 409320000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 306990000.0,
+      "descriptionEn": "Technical restoration (rehabilitation of degraded sites)"
+    },
+    {
+      "id": 35,
+      "description": "Техникийн нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 205000000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 153750000.0,
+      "descriptionEn": "Technical restoration (rehabilitation of degraded sites)"
+    },
+    {
+      "id": 37,
+      "description": "Техникийн нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 190490000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 142867500.0,
+      "descriptionEn": "Technical restoration (rehabilitation of degraded sites)"
+    },
+    {
+      "id": 90,
+      "description": "Төсвийн зарцуулалт Техникийн нөхөн сэргээлтийн зардал",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 37052040.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 27789030.0,
+      "descriptionEn": "Budget expenditure: technical restoration costs"
+    },
+    {
+      "id": 124,
+      "description": "Сүхбаатар аймгийн Байгаль орчны газрын санал болгосноор Асгат сумын Борнуруу гэдэг газарт эвдэрсэн 3 га газрын нөхөн сэргээлтийг хийж дуусгасан. ",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 4919450.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 3689587.5,
+      "descriptionEn": "Upon the recommendation of Sukhbaatar Province Environmental Department, restoration of 3 hectares of degraded land in the Bornuruu area of Asgat soum was completed."
+    },
+    {
+      "id": 1,
+      "description": "51 зээлийн төсөл байгаль орчин, нийгэм, засаглалын эрсдэлийн үнэлгээнд хамрагдсан.",
+      "globeSubcategories": [
+        {
+          "code": "5.05",
+          "name": "Strategic Environmental Assessment (SEA)"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "Faint mention or generic environmental reference.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 248700000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 124350000000.0,
+      "descriptionEn": "51 loan projects were included in environmental, social and governance (ESG) risk assessment."
+    },
+    {
+      "id": 2,
+      "description": "APU JSC нь үйлдвэрлэлийн хүчин чадлаа гурав дахин нэмэгдүүлэх ногоон, эрчим хүч хэмнэлттэй шинэ үйлдвэр барьж, Архангайн ямааны малчдыг дэмжин экологид ээлтэй нийлүүлэлтийг хөгжүүлж байна",
+      "globeSubcategories": [
+        {
+          "code": "9.02",
+          "name": "Sustainable agriculture"
+        },
+        {
+          "code": "4.07",
+          "name": "Sustainable urban and rural areas"
+        }
+      ],
+      "intentLabel": "Indirect relevance  sustainable practices",
+      "barJustification": "Intended correlation with biodiversity exists.",
+      "confidence": "Medium",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 135242000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 67621000000.0,
+      "descriptionEn": "APU JSC is building a new green, energy-efficient factory that triples production capacity, and is supporting Arkhangai cashmere herders to develop eco-friendly supply chains."
+    },
+    {
+      "id": 3,
+      "description": "APU Dairy нь бүтээгдэхүүний хуванцар хог хаягдлыг бууруулах",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "undefined",
+      "expenditureBeforeBarMNT": 68653200000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 68653200000.0,
+      "descriptionEn": "APU Dairy is reducing plastic waste from its products."
+    },
+    {
+      "id": 4,
+      "description": "APU Dairy-ийн шинэ бяслагийн үйлдвэр нь жилд 453 МВт.цаг эрчим хүч хэмнэж, 177 тонн CO₂ ялгаруулалтыг бууруулах зорилготой.",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Environmental  indirect biodiversity relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 62682000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 62682000000.0,
+      "descriptionEn": "APU Dairy's new cheese factory aims to save 453 MWh of energy per year and reduce CO2 emissions by 177 tonnes."
+    },
+    {
+      "id": 5,
+      "description": "ҮЙЛДВЭРИЙН ХАЯГДАЛ УС БОЛОВСРУУЛАХ БАЙГУУЛАМЖ БАРИХ ТӨСӨЛ",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2023",
+      "endYear": "undefined",
+      "expenditureBeforeBarMNT": 4030000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 2015000000.0,
+      "descriptionEn": "Industrial wastewater treatment facility construction project."
+    },
+    {
+      "id": 6,
+      "description": "To help fight with pollution in Ulaanbaatar city,\nEnergy Resources LLC have supplied over 1.6 million tonnes of processed coal, worth 39.7 billion MNT, free-of-charge to “Tavan Tolgoi Tulsh” LLC",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Environmental  indirect biodiversity relevance",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2018",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 39700000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 39700000000.0,
+      "descriptionEn": "To help fight with pollution in Ulaanbaatar city, Energy Resources LLC have supplied over 1.6 million tonnes of processed coal, worth 39.7 billion MNT, free-of-charge to Tavan Tolgoi Tulsh LLC."
+    },
+    {
+      "id": 7,
+      "description": "Байгаль орчныг хамгаалах, дүйцүүлэн хамгаалах ажлын зардалд 12.8 тэрбум төгрөг зарцуулж, 61400 мод, суулгац тарьж, Ховд аймаг болон нөлөөллийн таван суманд хүлээлгэн өгсөн байна.",
+      "globeSubcategories": [
+        {
+          "code": "9.05",
+          "name": "Sustainable forestry"
+        },
+        {
+          "code": "7.02",
+          "name": "Management of areas outside of PAs"
+        },
+        {
+          "code": "5.04",
+          "name": "Biodiversity finance"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2014",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 1600000000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 1200000000.0,
+      "descriptionEn": "12.8 billion MNT was spent on environmental protection and biodiversity offset work; 61,400 trees and saplings were planted and handed over to Khovd province and five affected soums."
+    },
+    {
+      "id": 8,
+      "description": "APU Dairy нь малчдад тогтвортой бэлчээрийн менежментийн талаар сургалт өгдөг.",
+      "globeSubcategories": [
+        {
+          "code": "2.02",
+          "name": "Non-formal biodiversity education"
+        },
+        {
+          "code": "2.04",
+          "name": "Biodiversity scientific research"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 2535787500.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 633946875.0,
+      "descriptionEn": "APU Dairy provides training to herders on sustainable pasture management."
+    },
+    {
+      "id": 9,
+      "description": "Улаанбаатар Хотын Хөгжлийн Корпорацитай хамтран “Улаанбаатар нийтийн ахуйн үйлчилгээний төв” төслийг СХД-ийн 28-р хороонд хэрэгжүүлж, гэр хорооллын бүсэд амьдарч буй иргэдэд байгаль орчинд ээлтэй, тав тухтай, дэвшилтэт технологид суурилсан ахуйн үйлчилгээг үзүүлэх нөхцөлийг бүрдүүлсэн. Ашгийн бус нийгмийн хариуцлагын хүрээнд хэрэгжүүлж буй тус төсөлд нийт 1.6 тэрбум төгрөгийн хөрөнгө оруулалт хийгээд барилгын явцыг 90%-д хүргэж, ашиглалтад оруулахаар бэлтгэсэн.",
+      "globeSubcategories": [
+        {
+          "code": "4.07",
+          "name": "Sustainable urban and rural areas"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 1600000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 800000000.0,
+      "descriptionEn": "In partnership with Ulaanbaatar City Development Corporation, implemented the Ulaanbaatar Public Utility Services Center project in Khoroo 28 of Songinokhairkhan District, providing environmentally friendly, comfortable, technology-based utility services to residents in ger district areas. Non-profit CSR project; total investment 1.6 billion MNT; construction 90% complete and ready for commissioning."
+    },
+    {
+      "id": 10,
+      "description": "Эрчим хүчний хэрэглээг бууруулах, нарны эрчим хүч ашиглах, өндөр үр ашигтай тоног төхөөрөмж нэвтрүүлэх: ялгарлыг 20.2% бууруулсан, 10,512.9 тонн CO₂e бууруулсан",
+      "globeSubcategories": [
+        {
+          "code": "4.04",
+          "name": "Sustainable energy"
+        },
+        {
+          "code": "2.01",
+          "name": "Formal biodiversity education"
+        },
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Environmental  indirect biodiversity relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 1200000000.0,
+      "barRate": 0.05,
+      "expenditureAfterBarMNT": 60000000.0,
+      "descriptionEn": "Reducing energy consumption, using solar energy, and introducing high-efficiency equipment: emissions reduced by 20.2%, CO2e reduced by 10,512.9 tonnes."
+    },
+    {
+      "id": 11,
+      "description": "5 сая төгрөгийг байгаль орчны хандивт зориулсан.",
+      "globeSubcategories": [
+        {
+          "code": "5.04",
+          "name": "Biodiversity finance"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 5000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 1250000.0,
+      "descriptionEn": "Donated 5 million MNT to environmental causes."
+    },
+    {
+      "id": 12,
+      "description": "Тэрбум мод” санаачилгад нэгдэн 15,000 мод тарьсан, байгаль хамгаалах ТББ-уудтай хамтран хамгааллын төсөл хэрэгжүүлсэн",
+      "globeSubcategories": [
+        {
+          "code": "9.05",
+          "name": "Sustainable forestry"
+        },
+        {
+          "code": "8.01",
+          "name": "Reintroduction and translocation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 950000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 950000000.0,
+      "descriptionEn": "Joined the 'Billion Trees' initiative and planted 15,000 trees; implemented conservation projects in partnership with environmental NGOs."
+    },
+    {
+      "id": 13,
+      "description": "Нөлөөллөөс урьдчилан сэргийлэх, бууруулах арга хэмжээ (технологийн зөв шийдэлд суурилсан)",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        },
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 675260000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 337630000.0,
+      "descriptionEn": "Impact prevention and mitigation measures (based on appropriate technological solutions)."
+    },
+    {
+      "id": 15,
+      "description": "Үүссэн хогийн 57.4%‑ийг дахин боловсруулсан, 2.5 тонн аюултай хог устгасан.",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 600000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 600000000.0,
+      "descriptionEn": "57.4% of waste generated was recycled; 2.5 tonnes of hazardous waste was safely disposed."
+    },
+    {
+      "id": 16,
+      "description": "Олон улсын стандартыг хангасан\nХөл бөмбөгийн цэнгэлдэх хүрээлэнгийн төсөлд дэмжлэг үзүүлсэн. ",
+      "globeSubcategories": [
+        {
+          "code": "4.07",
+          "name": "Sustainable urban and rural areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 500000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 250000000.0,
+      "descriptionEn": "Supported an internationally standards-compliant football stadium project."
+    },
+    {
+      "id": 17,
+      "description": "Нөлөөллөөс урьдчилан сэргийлэх, бууруулах арга хэмжээ (технологийн зөв шийдэлд суурилсан)",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        },
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 491300000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 245650000.0,
+      "descriptionEn": "Impact prevention and mitigation measures (based on appropriate technological solutions)."
+    },
+    {
+      "id": 18,
+      "description": "Дүйцүүлэн хамгаалалтын арга хэмжээ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 460000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 115000000.0,
+      "descriptionEn": "Biodiversity offset (compensation) measures."
+    },
+    {
+      "id": 19,
+      "description": "2022 онд SDG үйл ажиллагаанд нийт 420 сая төгрөгийн хөрөнгө оруулалт хийсэн.",
+      "globeSubcategories": [
+        {
+          "code": "5.04",
+          "name": "Biodiversity finance"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 420000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 105000000.0,
+      "descriptionEn": "Invested a total of 420 million MNT in SDG activities in 2022."
+    },
+    {
+      "id": 22,
+      "description": "СЭЛЭНГЭ АЙМГИЙН БАЯНГОЛ, МАНДАЛ СУМДЫН НУТАГТ ОРШИХ БОРООГИЙН\nАЛТНЫ УУРХАЙН нөхөн сэргээлтийн хөтөлбөр ",
+      "globeSubcategories": [
+        {
+          "code": "8.02",
+          "name": "Site redevelopment and engineering"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 384508444.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 288381333.0,
+      "descriptionEn": "Boroo Gold Mine rehabilitation program in Bayangol and Mandal soums of Selenge Province."
+    },
+    {
+      "id": 23,
+      "description": "Орчны хяналт шинжилгээний хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 364500000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 182250000.0,
+      "descriptionEn": "Environmental monitoring program."
+    },
+    {
+      "id": 24,
+      "description": "Орчны хяналт шинжилгээний хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "5.05",
+          "name": "Strategic Environmental Assessment (SEA)"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 351210000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 175605000.0,
+      "descriptionEn": "Environmental monitoring program."
+    },
+    {
+      "id": 25,
+      "description": " Усны хэрэглээ 6.3%-иар буурсан.",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 350000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 175000000.0,
+      "descriptionEn": "Water consumption reduced by 6.3%."
+    },
+    {
+      "id": 26,
+      "description": "Нөлөөллөөс урьдчилан сэргийлэх арга хэмжээ (технологийн зөв шийдэлд суурилсан)",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        },
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 345500000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 172750000.0,
+      "descriptionEn": "Impact prevention measures (based on appropriate technological solutions)."
+    },
+    {
+      "id": 27,
+      "description": "Чанар, Байгаль орчин, Хөдөлмөрийн эрүүл мэнд, аюулгүй байдлын удирдлагын ISO9001:2015, ISO14001:2015, ISO45001:2018 стандартуудыг үйл ажиллагаандаа нэвтрүүлэн ажилласны үр дүнд орон нутагт байрлах шатахуун түгээх станцуудаа нүхэн жорлонгийн хэрэглээнээс татгалзан, байгаль орчинд ээлтэй 77 ширхэг эко нийтийн бие засах газрыг 332.69 сая төгрөгийн хөрөнгө оруулалтаар шинээр барьж байгуулсан.",
+      "globeSubcategories": [
+        {
+          "code": "4.03",
+          "name": "Sustainable consumption"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 332690000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 83172500.0,
+      "descriptionEn": "As a result of implementing the ISO 9001:2015 (quality), ISO 14001:2015 (environment) and ISO 45001:2018 (occupational health and safety) management standards, rural fuel stations replaced pit latrines with 77 new eco-friendly public toilets, built with an investment of 332.69 million MNT."
+    },
+    {
+      "id": 28,
+      "description": "Орчны хяналт шинжилгээний хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 325300000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 162650000.0,
+      "descriptionEn": "Environmental monitoring program."
+    },
+    {
+      "id": 29,
+      "description": "Тогтвортой хөгжлийн зорилгуудын хүрээнд нийт ажиллагсдын эрүүл мэндэд анхаарч урьдчилан сэргийлэх үзлэг, шинжилгээ, тогтмол хяналт, мэргэжлийн бариа засал үйлчилгээнд 267.4 сая төгрөг зарцуулсан.",
+      "globeSubcategories": [],
+      "intentLabel": "Non-biodiversity  unrelated",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 267400000.0,
+      "barRate": 0.0,
+      "expenditureAfterBarMNT": 0.0,
+      "descriptionEn": "Under the Sustainable Development Goals, 267.4 million MNT was spent on staff health: preventive check-ups, screenings, regular monitoring, and professional physiotherapy services."
+    },
+    {
+      "id": 30,
+      "description": "Орчны хяналт шинжилгээний хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "5.05",
+          "name": "Strategic Environmental Assessment (SEA)"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 251210000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 125605000.0,
+      "descriptionEn": "Environmental monitoring program."
+    },
+    {
+      "id": 31,
+      "description": "Дүйцүүлэн хамгаалалтын арга хэмжээ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 250000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 62500000.0,
+      "descriptionEn": "Biodiversity offset (compensation) measures."
+    },
+    {
+      "id": 32,
+      "description": "Байгаль орчны тогтвортой хөгжлийн арга хэмжээнд нийт 242.3 сая төгрөгийн хөрөнгө оруулалт хийсэн ",
+      "globeSubcategories": [
+        {
+          "code": "5.04",
+          "name": "Biodiversity finance"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 242300000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 60575000.0,
+      "descriptionEn": "Invested a total of 242.3 million MNT in environmental sustainability measures."
+    },
+    {
+      "id": 33,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 228000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 114000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 34,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 228000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 114000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 36,
+      "description": "Дэлхийд ховордсон хоёр бөхт тэмээний сүргийн тоо толгойг өсгөх, говийн бүсийн экологийн тэнцвэрт байдлыг хамгаалах зорилгоор 'Ботгон бонус' хөтөлбөрийг 2013 оноос хэрэгжүүлж, энэ хугацаанд Гурвантэс сумын тэмээний сүргийн тоо 2000 орчим, аймгийн тэмээний сүргийн тоо 3700 гаруйгаар тус тус өсжээ. Хөтөлбөрийн хүрээнд нийт 200 сая төгрөгийг орон нутгийн иргэдэд урамшуулал хэлбэрээр олгожээ.",
+      "globeSubcategories": [
+        {
+          "code": "8.01",
+          "name": "Reintroduction and translocation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "Biodiversity is an important issue among other objectives.",
+      "confidence": "Medium",
+      "startYear": "2013",
+      "endYear": "undefined",
+      "expenditureBeforeBarMNT": 200000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 200000000.0,
+      "descriptionEn": "To increase the population of the critically endangered Bactrian (two-humped) camel and protect the ecological balance of the Gobi region, the 'Botgon Bonus' program has run since 2013. During this period the camel herd in Gurvantes soum grew by around 2,000 and the provincial herd by over 3,700. A total of 200 million MNT was paid as incentives to local residents."
+    },
+    {
+      "id": 38,
+      "description": "Байгаль орчны нөхөн сэргээлтийн жилийн хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "8.02",
+          "name": "Site redevelopment and engineering"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 178714792.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 134036094.0,
+      "descriptionEn": "Annual environmental restoration program."
+    },
+    {
+      "id": 39,
+      "description": "СЭЛЭНГЭ АЙМГИЙН БАЯНГОЛ, МАНДАЛ СУМДЫН НУТАГТ ОРШИХ БОРООГИЙН\nАЛТНЫ УУРХАЙН нөхөн сэргээлтийн хөтөлбөр ",
+      "globeSubcategories": [
+        {
+          "code": "8.02",
+          "name": "Site redevelopment and engineering"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 174700000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 131025000.0,
+      "descriptionEn": "Boroo Gold Mine rehabilitation program in Bayangol and Mandal soums of Selenge Province."
+    },
+    {
+      "id": 40,
+      "description": "Баруун бүсийн дэд бүтцийг хөгжүүлэх төсөл /уст цэгийн хайгуул, судалгаа, хамгаалалт/",
+      "globeSubcategories": [
+        {
+          "code": "7.02",
+          "name": "Management of areas outside of PAs"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 154400000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 77200000.0,
+      "descriptionEn": "Western region infrastructure development project (exploration, study, and protection of water sources)."
+    },
+    {
+      "id": 41,
+      "description": "Нөлөөллөөс урьдчилан сэргийлэх арга хэмжээ (технологийн зөв шийдэлд суурилсан)",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        },
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 150500000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 75250000.0,
+      "descriptionEn": "Impact prevention measures (based on appropriate technological solutions)."
+    },
+    {
+      "id": 42,
+      "description": "Дүйцүүлэн хамгаалалтын арга хэмжээ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 150000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 37500000.0,
+      "descriptionEn": "Biodiversity offset (compensation) measures."
+    },
+    {
+      "id": 43,
+      "description": "Дүйцүүлэн хамгаалалтын арга хэмжээ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 150000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 37500000.0,
+      "descriptionEn": "Biodiversity offset (compensation) measures."
+    },
+    {
+      "id": 44,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 120000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 120000000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 45,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 120000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 120000000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 46,
+      "description": "Нарны панел худалдаж авсан",
+      "globeSubcategories": [
+        {
+          "code": "4.04",
+          "name": "Sustainable energy"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 114539656.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 28634914.0,
+      "descriptionEn": "Solar panels purchased."
+    },
+    {
+      "id": 47,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 101100000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 50550000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 48,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 101100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 101100000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 49,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 101100000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 50550000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 50,
+      "description": "Байгаль орчны менежментийн удирдлага, зохион байгуулалт",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 101000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 50500000.0,
+      "descriptionEn": "Environmental management leadership and organization."
+    },
+    {
+      "id": 51,
+      "description": "Байгаль орчны менежментийн удирдлага, зохион байгуулалт",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 101000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 50500000.0,
+      "descriptionEn": "Environmental management leadership and organization."
+    },
+    {
+      "id": 52,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 100000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 100000000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 53,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 100000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 100000000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 54,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 100000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 50000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 55,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 100000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 50000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 56,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 100000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 100000000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 57,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 97090000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 97090000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 58,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 91100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 91100000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 59,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 89500000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 89500000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 60,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 87090000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 87090000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 61,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 82000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 82000000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 62,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 76650000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 38325000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 63,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 35000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 64,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 35000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 65,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 70000000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 66,
+      "description": "Ус",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 35000000.0,
+      "descriptionEn": "Water."
+    },
+    {
+      "id": 67,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 70000000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 68,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 70000000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 69,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 70000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 70000000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 70,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 67100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 67100000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 71,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 67100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 67100000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 72,
+      "description": "Газар ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 66430000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 16607500.0,
+      "descriptionEn": "Land."
+    },
+    {
+      "id": 73,
+      "description": "Дунд голын бургасыг чөлөөлөх ажил ",
+      "globeSubcategories": [
+        {
+          "code": "7.02",
+          "name": "Management of areas outside of PAs"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 64000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 32000000.0,
+      "descriptionEn": "Clearing willows from the Dund river."
+    },
+    {
+      "id": 74,
+      "description": "Байгаль орчны менежментийн хэрэгжилтийг орон нутаг, оролцогч талуудад тайлагнах",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 61570000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 30785000.0,
+      "descriptionEn": "Reporting the implementation of environmental management to local communities and stakeholders."
+    },
+    {
+      "id": 75,
+      "description": "Байгаль орчны менежментийн удирдлага, зохион байгуулалт",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 59760000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 29880000.0,
+      "descriptionEn": "Environmental management leadership and organization."
+    },
+    {
+      "id": 76,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 57600000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 57600000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 77,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 57600000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 57600000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 78,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 51100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 51100000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 79,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 51100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 51100000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 80,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 51100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 51100000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 81,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 51100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 51100000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 82,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 50000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 50000000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 83,
+      "description": "Агаар ",
+      "globeSubcategories": [
+        {
+          "code": "6.02",
+          "name": "Air and atmosphere"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 50000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 50000000.0,
+      "descriptionEn": "Air."
+    },
+    {
+      "id": 84,
+      "description": "Цагаан толгойн талд нарны үүсгүүрээр автомат худаг гаргах",
+      "globeSubcategories": [
+        {
+          "code": "4.04",
+          "name": "Sustainable energy"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 50000000.0,
+      "barRate": 0.0,
+      "expenditureAfterBarMNT": 0.0,
+      "descriptionEn": "Installing automatic wells powered by solar generators in the Tsagaan Tolgoi area."
+    },
+    {
+      "id": 85,
+      "description": "Байгаль орчны менежментийн хэрэгжилтийг орон нутаг, оролцогч талуудад тайлагнах",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 42000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 21000000.0,
+      "descriptionEn": "Reporting the implementation of environmental management to local communities and stakeholders."
+    },
+    {
+      "id": 86,
+      "description": "Байгаль орчны менежментийн хэрэгжилтийг орон нутаг, оролцогч талуудад тайлагнах",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 42000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 21000000.0,
+      "descriptionEn": "Reporting the implementation of environmental management to local communities and stakeholders."
+    },
+    {
+      "id": 87,
+      "description": "Ургамал",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 41100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 41100000.0,
+      "descriptionEn": "Flora (plants)."
+    },
+    {
+      "id": 88,
+      "description": "Амьтан ",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 41100000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 41100000.0,
+      "descriptionEn": "Fauna (animals)."
+    },
+    {
+      "id": 89,
+      "description": "Төсвийн зарцуулалт Нөхөн сэргээлтийн зардал",
+      "globeSubcategories": [
+        {
+          "code": "8.03",
+          "name": "Site management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 38808000.0,
+      "barRate": 0.75,
+      "expenditureAfterBarMNT": 29106000.0,
+      "descriptionEn": "Budget expenditure: restoration costs."
+    },
+    {
+      "id": 91,
+      "description": "Хуванцар сав, лааз цуглуулан дахин боловсруулах үйлчилгээ үзүүлдэг \"Эс И Эс Эл Смарт Солюшн\" ХХК-тай хамтран ажиллаж эхэлсэн. ",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 32800000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 32800000.0,
+      "descriptionEn": "Started partnering with SESL Smart Solution LLC, which provides plastic container and can collection and recycling services."
+    },
+    {
+      "id": 92,
+      "description": "Байгаль орчны менежментийн хэрэгжилтийг орон нутаг, оролцогч талуудад тайлагнах",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 32570000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 16285000.0,
+      "descriptionEn": "Reporting the implementation of environmental management to local communities and stakeholders."
+    },
+    {
+      "id": 93,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 30660000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 15330000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 94,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 30660000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 15330000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 95,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 30660000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 15330000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 96,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 30600000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 15300000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 97,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 30600000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 15300000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 98,
+      "description": "БАЙГАЛЬ ОРЧНЫ МЕНЕЖМЕНТИЙН ТӨЛӨВЛӨГӨӨНИЙ Хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "5.01",
+          "name": "Biodiversity laws, policies, plans"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 28750000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 14375000.0,
+      "descriptionEn": "Environmental management plan program."
+    },
+    {
+      "id": 100,
+      "description": "Хог, хаягдлын менежментийн\nтөлөвлөгөөний зардал",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 25000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 25000000.0,
+      "descriptionEn": "Waste management plan costs."
+    },
+    {
+      "id": 101,
+      "description": "Хог хаягдлын менежментийн төлөвлөгөөг\nхэрэгжүүлэхэд гарсан зардал\n-Ахуйн болон Химийн бодисын хог хаягдал\n-Цэцүүх Трейд руу химийн хог хаягдал шилжшүүлсэн.",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Environmental  indirect biodiversity relevance",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 24101954.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 24101954.0,
+      "descriptionEn": "Costs incurred in implementing the waste management plan: domestic and chemical waste; chemical waste transferred to Tsetsuukh Trade."
+    },
+    {
+      "id": 102,
+      "description": "Түүх, соёлын дурсгал хамгаалах, нүүлгэн шилжүүлэх, нөхөн олговор",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        },
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 24000000.0,
+      "barRate": 0.0,
+      "expenditureAfterBarMNT": 0.0,
+      "descriptionEn": "Protection, relocation, and compensation for historical and cultural heritage."
+    },
+    {
+      "id": 103,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 23000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 11500000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 104,
+      "description": "Түүх, соёлын дурсгал хамгаалах, нүүлгэн шилжүүлэх, нөхөн олговор",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 22650000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 11325000.0,
+      "descriptionEn": "Protection, relocation, and compensation for historical and cultural heritage."
+    },
+    {
+      "id": 105,
+      "description": "Түүх, соёлын дурсгал хамгаалах, нүүлгэн шилжүүлэх, нөхөн олговор",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        },
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 22640000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 11320000.0,
+      "descriptionEn": "Protection, relocation, and compensation for historical and cultural heritage."
+    },
+    {
+      "id": 106,
+      "description": "Газар ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 20440000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 5110000.0,
+      "descriptionEn": "Land."
+    },
+    {
+      "id": 107,
+      "description": "Газар ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 20440000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 5110000.0,
+      "descriptionEn": "Land."
+    },
+    {
+      "id": 108,
+      "description": "Газар ",
+      "globeSubcategories": [
+        {
+          "code": "7.01",
+          "name": "Management and expansion of protected areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 20440000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 5110000.0,
+      "descriptionEn": "Land."
+    },
+    {
+      "id": 109,
+      "description": "Хог хаягдлын менежментийн төлөвлөгөө",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 18000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 18000000.0,
+      "descriptionEn": "Waste management plan."
+    },
+    {
+      "id": 110,
+      "description": "Байгаль орчны менежментийн удирдлага, зохион байгуулалт",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 17760000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 8880000.0,
+      "descriptionEn": "Environmental management leadership and organization."
+    },
+    {
+      "id": 111,
+      "description": "Хог хаягдлын менежмент",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 15785000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 15785000.0,
+      "descriptionEn": "Waste management."
+    },
+    {
+      "id": 112,
+      "description": "Хог хаягдлын менежмент",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 15785000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 15785000.0,
+      "descriptionEn": "Waste management."
+    },
+    {
+      "id": 113,
+      "description": "Хог хаягдлын менежмент",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 15785000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 15785000.0,
+      "descriptionEn": "Waste management."
+    },
+    {
+      "id": 114,
+      "description": "Их нартын байгалийн нөөц газарт хар сүүлт зээр зэрэг ховор, нэн ховор амьтдыг хамгаалах, тархац нутаг, тоо толгойг нэмэгдүүлэх, шилжилт хөдөлгөөн, хууль бус агнуулаас сэргийлэх, судлах, хамгаалах ажлыг 2023 оноос эхлүүлэн, энэхүү хүрээнд ирэх таван жилийн хугацаанд жил бүр 15 сая төгрөгийн мөнгөн дэмжлэг үзүүлэх гэрээ байгуулан ажиллаж байна.",
+      "globeSubcategories": [
+        {
+          "code": "8.01",
+          "name": "Reintroduction and translocation of species"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "Biodiversity is the main objective.",
+      "confidence": "High",
+      "startYear": "2023",
+      "endYear": "undefined",
+      "expenditureBeforeBarMNT": 15000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 15000000.0,
+      "descriptionEn": "Conservation of rare and critically endangered species such as the black-tailed gazelle in Ikh Nart Nature Reserve: expanding their range and population, supporting migration, preventing illegal hunting, and conducting research and protection. Starting in 2023, an agreement provides 15 million MNT annually for five years."
+    },
+    {
+      "id": 115,
+      "description": "Хөвсгөл нуурыг цэвэрлэх Зил-130 автомашин худалдан авахад 13 сая төгрөг хандивласан.",
+      "globeSubcategories": [
+        {
+          "code": "7.02",
+          "name": "Management of areas outside of PAs"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 13000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 6500000.0,
+      "descriptionEn": "Donated 13 million MNT to purchase a ZIL-130 vehicle for cleaning Lake Khovsgol."
+    },
+    {
+      "id": 116,
+      "description": "Түүх, соёлын дурсгал хамгаалах, нүүлгэн шилжүүлэх, нөхөн олговор",
+      "globeSubcategories": [
+        {
+          "code": "7.04",
+          "name": "Conservation of species"
+        },
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 12000000.0,
+      "barRate": 0.0,
+      "expenditureAfterBarMNT": 0.0,
+      "descriptionEn": "Protection, relocation, and compensation for historical and cultural heritage."
+    },
+    {
+      "id": 117,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2021",
+      "endYear": "2021",
+      "expenditureBeforeBarMNT": 11210000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 5605000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 118,
+      "description": "Хөрс",
+      "globeSubcategories": [
+        {
+          "code": "6.01",
+          "name": "Soil and water"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2020",
+      "endYear": "2020",
+      "expenditureBeforeBarMNT": 11210000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 5605000.0,
+      "descriptionEn": "Soil."
+    },
+    {
+      "id": 119,
+      "description": "Угсаатанзүйн судалгаа, Палеонтлогийн судалгааны гэрээт ажлуудын хөлс",
+      "globeSubcategories": [
+        {
+          "code": "2.04",
+          "name": "Biodiversity scientific research"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 11000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 2750000.0,
+      "descriptionEn": "Fees for contracted ethnographic and paleontological research."
+    },
+    {
+      "id": 120,
+      "description": "Сөрөг нөлөөллийг бууруулах арга хэмжээний\nтөлөвлөгөөг хэрэгжүүлэхэд шаардлагатай НБХХ\nгарсан зардал",
+      "globeSubcategories": [
+        {
+          "code": "5.01",
+          "name": "Biodiversity laws, policies, plans"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 7500000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 3750000.0,
+      "descriptionEn": "Costs for the adverse-impact mitigation measures plan (NBHH items required for implementation)."
+    },
+    {
+      "id": 121,
+      "description": "Төсвийн зарцуулалт Мод бут тарих",
+      "globeSubcategories": [
+        {
+          "code": "9.05",
+          "name": "Sustainable forestry"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 6250000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 6250000.0,
+      "descriptionEn": "Budget expenditure: tree and shrub planting."
+    },
+    {
+      "id": 122,
+      "description": "Мод бид 2” төсөл: Ногоон соёлыг түгээх ажилчдын хашаанд мод тарих төслийн хүрээнд 300 м.кв тайлбайд мод тарин\nзүлэгжүүлэх",
+      "globeSubcategories": [
+        {
+          "code": "9.05",
+          "name": "Sustainable forestry"
+        }
+      ],
+      "intentLabel": "Indirect relevance  sustainable practices",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 6000000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 6000000.0,
+      "descriptionEn": "'We Trees 2' project: under the 'Spreading Green Culture' initiative, trees were planted and 300 sq.m. of grounds greened at employee compounds."
+    },
+    {
+      "id": 123,
+      "description": "Орчны хяналт шинжилгээний хөтөлбөр",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 5000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 2500000.0,
+      "descriptionEn": "Environmental monitoring program."
+    },
+    {
+      "id": 125,
+      "description": "Орчны хяналт шинжилгээний\nхөтөлбөрийн зардал",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 4803000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 2401500.0,
+      "descriptionEn": "Environmental monitoring program costs."
+    },
+    {
+      "id": 126,
+      "description": "Орчны хяналт шинжилгээний хөтөлбөрийг\nхэрэгжүүлэхэд гарсан зардал",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Enabling environment  institutional support",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 3591500.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 1795750.0,
+      "descriptionEn": "Costs incurred in implementing the environmental monitoring program."
+    },
+    {
+      "id": 127,
+      "description": "Сөрөг нөлөөллийг бууруулах арга хэмжээний төлөвлөгөө",
+      "globeSubcategories": [
+        {
+          "code": "5.01",
+          "name": "Biodiversity laws, policies, plans"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 3500000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 1750000.0,
+      "descriptionEn": "Adverse-impact mitigation measures plan."
+    },
+    {
+      "id": 128,
+      "description": "Осол эрсдэлийн менежментийн төлөвлөгөө ",
+      "globeSubcategories": [
+        {
+          "code": "5.06",
+          "name": "Spatial planning"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 3500000.0,
+      "barRate": 0.0,
+      "expenditureAfterBarMNT": 0.0,
+      "descriptionEn": "Accident and risk management plan."
+    },
+    {
+      "id": 129,
+      "description": "Сүхбаатар сумын нутаг дэвсгэр дээр Зараагийн эвдэрсэн 1.3 га газартхуримтлагдсан олон жилийн хур хогийг ландфилийн аргаар булжцэвэрлэсэн.",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 3045750.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 3045750.0,
+      "descriptionEn": "Cleared multi-year accumulated waste on 1.3 hectares of degraded land in the Zaraa area of Sukhbaatar soum using landfill methods."
+    },
+    {
+      "id": 130,
+      "description": "Орчны тохижилт, цэцэрлэгжүүлэлтийн төлөвлөгөө ",
+      "globeSubcategories": [
+        {
+          "code": "4.07",
+          "name": "Sustainable urban and rural areas"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2024",
+      "endYear": "2024",
+      "expenditureBeforeBarMNT": 3000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 1500000.0,
+      "descriptionEn": "Environmental landscaping and greening plan."
+    },
+    {
+      "id": 131,
+      "description": "\"Хоггүй ч болоосой\" төслийн хүрээнд 5700 шилийг буцаан худалдан авч эргэлтэнд оруулсан",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 2850000.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 2850000.0,
+      "descriptionEn": "Under the 'A Trash-Free Place' project, 5,700 bottles were bought back and returned to circulation."
+    },
+    {
+      "id": 132,
+      "description": "Тухайн жилийн байгаль орчны\nменежментийн төлөвлөгөөг\nхэрэгжүүлэх хөтөлбөрийн зардал",
+      "globeSubcategories": [
+        {
+          "code": "5.01",
+          "name": "Biodiversity laws, policies, plans"
+        }
+      ],
+      "intentLabel": "Direct biodiversity conservation",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 2500000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 1250000.0,
+      "descriptionEn": "Costs of the program implementing the annual environmental management plan."
+    },
+    {
+      "id": 133,
+      "description": "Нөхөн сэргээлт, орчны тохижилтын төлөвлөгөөг\nхэрэгжүүлэхэд гарсан зардал\n-Тарьсан мод бутыг арчлах усалгаа\n- Мод тарьсан",
+      "globeSubcategories": [
+        {
+          "code": "4.07",
+          "name": "Sustainable urban and rural areas"
+        },
+        {
+          "code": "9.05",
+          "name": "Sustainable forestry"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 2000000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 1000000.0,
+      "descriptionEn": "Costs incurred in implementing the restoration and environmental-landscaping plan: irrigation to care for planted trees and shrubs; tree planting."
+    },
+    {
+      "id": 134,
+      "description": "Төсвийн зарцуулалт Гүн булаг нөхөн сэргээлт",
+      "globeSubcategories": [
+        {
+          "code": "7.02",
+          "name": "Management of areas outside of PAs"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 1942000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 971000.0,
+      "descriptionEn": "Budget expenditure: Gun Bulag spring restoration."
+    },
+    {
+      "id": 135,
+      "description": "Азтай савар ТББ-т хандив ",
+      "globeSubcategories": [
+        {
+          "code": "5.04",
+          "name": "Biodiversity finance"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 2000000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 500000.0,
+      "descriptionEn": "Donation to Aztai Savar NGO."
+    },
+    {
+      "id": 136,
+      "description": "Удирдлага зохион байгуулалтын төлөвлөгөөг\nхэрэгжүүлэхэд гарсан зардал\n-Химийн бодистой харьцах сургалт\n-Анхны тусламж үзүүлэгч ажилчдыг Интермед эмнэлэгт\nсургалтанд хамруулсан.\n- Агуулахын гал унтраах багаж хэрэгслүүдийг\nбүрдүүлж, шинээр худалдан авалт хийгдсэн.]",
+      "globeSubcategories": [
+        {
+          "code": "2.02",
+          "name": "Non-formal biodiversity education"
+        }
+      ],
+      "intentLabel": "Water protection  indirect relevance",
+      "barJustification": "Recognizes benefits for biodiversity indirectly.",
+      "confidence": "Medium",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 1500000.0,
+      "barRate": 0.25,
+      "expenditureAfterBarMNT": 375000.0,
+      "descriptionEn": "Costs incurred in implementing the management-organization plan: chemical-handling training; first-aid staff trained at Intermed hospital; warehouse fire-extinguishing equipment set up and newly purchased."
+    },
+    {
+      "id": 137,
+      "description": "Хог хаягдлын менежмент",
+      "globeSubcategories": [
+        {
+          "code": "6.03",
+          "name": "Waste management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2022",
+      "endYear": "2022",
+      "expenditureBeforeBarMNT": 464900.0,
+      "barRate": 1.0,
+      "expenditureAfterBarMNT": 464900.0,
+      "descriptionEn": "Waste management."
+    },
+    {
+      "id": 141,
+      "description": "Сөрөг нөлөөллөөс урьдчилан\nсэргийлэх, бууруулах арга хэмжээний\nзардал",
+      "globeSubcategories": [
+        {
+          "code": "5.03",
+          "name": "Biodiversity coordination and management"
+        }
+      ],
+      "intentLabel": "Unclassified",
+      "barJustification": "No identifiable biodiversity relevance.",
+      "confidence": "Low",
+      "startYear": "2023",
+      "endYear": "2023",
+      "expenditureBeforeBarMNT": 170000.0,
+      "barRate": 0.5,
+      "expenditureAfterBarMNT": 85000.0,
+      "descriptionEn": "Adverse-impact prevention and mitigation measures costs."
+    }
+  ]
+}

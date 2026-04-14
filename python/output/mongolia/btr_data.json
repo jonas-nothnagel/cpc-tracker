@@ -3,7 +3,7 @@
   "progressIndicators": [
     {
       "name": "National total GHG emission",
-      "unit": "kt CO\u2082 equivalent",
+      "unit": "kt CO₂ equivalent",
       "yearlyValues": {
         "2010": 23931.768787733938,
         "2020": 43604.773451512374,
@@ -19,7 +19,7 @@
   "mitigationMeasures": [
     {
       "name": "Use of renewable energy sources (Hydro PP, Wind PP, Solar PP, Heat pumps for heating utilities)",
-      "description": "Mongolia is accelerating the deployment of renewable energy sources, including hydropower (Hydro PP), wind power (Wind PP), solar power (Solar PP), and heat pumps for heating utilities, to reduce reliance on coal and support. With abundant solar and wind resources, the country is expanding utility-scale projects, integrating small and medium-scale hydro plants, and promoting heat pumps for residential and district heating. These efforts aim to lower greenhouse gas (GHG) emissions, enhance energy security, and contribute to Mongolia\u2019s 30% renewable energy target by 2030 while ensuring transparent monitoring and reporting under the UNFCCC framework.",
+      "description": "Mongolia is accelerating the deployment of renewable energy sources, including hydropower (Hydro PP), wind power (Wind PP), solar power (Solar PP), and heat pumps for heating utilities, to reduce reliance on coal and support. With abundant solar and wind resources, the country is expanding utility-scale projects, integrating small and medium-scale hydro plants, and promoting heat pumps for residential and district heating. These efforts aim to lower greenhouse gas (GHG) emissions, enhance energy security, and contribute to Mongolia’s 30% renewable energy target by 2030 while ensuring transparent monitoring and reporting under the UNFCCC framework.",
       "objectives": "Construction of Erdeneburen hydropower plant (HPP-90 MW), 50-100 MW hydropower plant in the central region, 2 wind farms with a total capacity of 15 MW, 5 solar power plants with a total capacity of 35.3 MW",
       "instrumentType": "Regulatory",
       "status": "Adopted",
@@ -32,7 +32,7 @@
     {
       "name": "Reduce electricity and heat transmission and distribution grid losses and improve the heat supply in cities and towns",
       "description": "Mongolia is implementing measures to reduce electricity and heat transmission and distribution grid losses while improving the heat supply in cities and towns. These efforts focus on modernizing power grids, upgrading heating infrastructure, and enhancing energy efficiency to minimize energy losses and improve service reliability. Key actions include grid reinforcement, digital monitoring systems, insulation improvements, and transitioning to more efficient district heating systems. By reducing energy waste and optimizing supply networks, Mongolia aims to lower greenhouse gas (GHG) emissions, enhance energy security, and support its climate commitments under the UNFCCC.",
-      "objectives": "To build 2810.3m pairs and 2620.5m single lines in 8 sections of heat supply in Ulaanbaatar, to expand and renovate 1400m old lines, Implement the \u201cEnergy Project-2\u201d project to reduce electricity distribution network losses",
+      "objectives": "To build 2810.3m pairs and 2620.5m single lines in 8 sections of heat supply in Ulaanbaatar, to expand and renovate 1400m old lines, Implement the “Energy Project-2” project to reduce electricity distribution network losses",
       "instrumentType": "Regulatory",
       "status": "Adopted",
       "sector": "sector_energy",
@@ -59,7 +59,7 @@
       "objectives": "Switch to fuel At Euro-5 standard",
       "instrumentType": "Regulatory",
       "status": "Adopted",
-      "sector": "sector_energy",
+      "sector": "sector_transport",
       "gasesAffected": "CO2,CH4,N2O",
       "startYear": "2020",
       "implementingEntity": "Ministry of Mining and Heavy Industry",
@@ -71,7 +71,7 @@
       "objectives": "Transfer of coal export for from road transportation to railway transportation",
       "instrumentType": "Regulatory",
       "status": "Adopted",
-      "sector": "sector_energy",
+      "sector": "sector_transport",
       "gasesAffected": "CO2,CH4,N2O",
       "startYear": "2020",
       "implementingEntity": "Ministry of Road and Transportation",
@@ -79,7 +79,7 @@
     },
     {
       "name": "Insulate old precast panel buildings in Ulaanbaatar city",
-      "description": "Mongolia is implementing a policy to insulate old precast panel buildings in Ulaanbaatar to improve energy efficiency, reduce heat loss, and lower greenhouse gas (GHG) emissions. This initiative focuses on retrofitting aging apartment buildings with modern insulation materials, upgrading windows and doors, and enhancing heating system efficiency. By reducing heat loss, the policy aims to decrease coal consumption for heating, improve indoor living conditions, and contribute to better air quality in Ulaanbaatar, supporting Mongolia\u2019s climate and energy efficiency commitments.",
+      "description": "Mongolia is implementing a policy to insulate old precast panel buildings in Ulaanbaatar to improve energy efficiency, reduce heat loss, and lower greenhouse gas (GHG) emissions. This initiative focuses on retrofitting aging apartment buildings with modern insulation materials, upgrading windows and doors, and enhancing heating system efficiency. By reducing heat loss, the policy aims to decrease coal consumption for heating, improve indoor living conditions, and contribute to better air quality in Ulaanbaatar, supporting Mongolia’s climate and energy efficiency commitments.",
       "objectives": "Under financial mechanism for thermal engineering-renovation, insulating prebuilt 258 block apartment buildings get, Insulate 2,000 _x000d_ private housing in ger areas.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
@@ -139,7 +139,7 @@
     },
     {
       "name": "Use waste heat from cement plants",
-      "description": "Mongolia is promoting the use of waste heat from cement plants to improve energy efficiency, reduce greenhouse gas (GHG) emissions, and support sustainable industrial practices. This policy focuses on capturing and utilizing waste heat from cement production processes for district heating, power generation, or other industrial uses. By harnessing this waste energy, Mongolia aims to decrease the consumption of primary energy sources, lower carbon emissions, and enhance overall energy efficiency within the cement industry, contributing to the country\u2019s climate goals and fostering sustainable industrial growth.",
+      "description": "Mongolia is promoting the use of waste heat from cement plants to improve energy efficiency, reduce greenhouse gas (GHG) emissions, and support sustainable industrial practices. This policy focuses on capturing and utilizing waste heat from cement production processes for district heating, power generation, or other industrial uses. By harnessing this waste energy, Mongolia aims to decrease the consumption of primary energy sources, lower carbon emissions, and enhance overall energy efficiency within the cement industry, contributing to the country’s climate goals and fostering sustainable industrial growth.",
       "objectives": "Create legal environment to exempt imported equipment of electricity generation from customs and VAT for using waste heat in cement plants, Develop and present recommendations to the cement plants for constructing heat plants from waste.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
@@ -151,7 +151,7 @@
     },
     {
       "name": "Use fly ash in cement production",
-      "description": "Mongolia is promoting the use of fly ash in cement production to reduce environmental impact, lower greenhouse gas (GHG) emissions, and enhance the sustainability of the construction industry. This policy encourages the incorporation of fly ash\u2014a byproduct of coal combustion\u2014into cement, reducing the need for raw materials like limestone and clay. By using fly ash, Mongolia aims to decrease CO\u2082 emissions from cement production, reduce waste disposal, and improve the overall energy efficiency of cement plants. This practice contributes to sustainable construction and climate action goals by utilizing industrial byproducts in a way that benefits both the economy and the environment.",
+      "description": "Mongolia is promoting the use of fly ash in cement production to reduce environmental impact, lower greenhouse gas (GHG) emissions, and enhance the sustainability of the construction industry. This policy encourages the incorporation of fly ash—a byproduct of coal combustion—into cement, reducing the need for raw materials like limestone and clay. By using fly ash, Mongolia aims to decrease CO₂ emissions from cement production, reduce waste disposal, and improve the overall energy efficiency of cement plants. This practice contributes to sustainable construction and climate action goals by utilizing industrial byproducts in a way that benefits both the economy and the environment.",
       "objectives": "Construction of powdered ash silo with a capacity of 10-15 thousand tons at Amgalan Thermal Power Plant, Building a facility with a _x000d_ capacity of 50-60 thousand tons per year for the purpose of collecting, storing and loading powdered ash for power plants.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
@@ -163,11 +163,11 @@
     },
     {
       "name": "Use coal bed methane",
-      "description": "Mongolia is exploring the use of coal bed methane (CBM) to reduce greenhouse gas (GHG) emissions, enhance energy security, and promote sustainable energy production. This policy focuses on capturing and utilizing methane that is released during coal mining operations, converting it into a valuable energy source for electricity generation or industrial use. By using coal bed methane, Mongolia aims to reduce methane emissions, limit reliance on coal for power generation, and optimize energy resources while improving environmental sustainability. This approach supports Mongolia\u2019s climate goals and energy diversification initiatives.",
+      "description": "Mongolia is exploring the use of coal bed methane (CBM) to reduce greenhouse gas (GHG) emissions, enhance energy security, and promote sustainable energy production. This policy focuses on capturing and utilizing methane that is released during coal mining operations, converting it into a valuable energy source for electricity generation or industrial use. By using coal bed methane, Mongolia aims to reduce methane emissions, limit reliance on coal for power generation, and optimize energy resources while improving environmental sustainability. This approach supports Mongolia’s climate goals and energy diversification initiatives.",
       "objectives": "Developing master plan to promote methane supply from coal deposits, Construction of power plant based on methane near underground coal mines.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
-      "sector": "sector_ippu",
+      "sector": "sector_energy",
       "gasesAffected": "CO2,HFCs",
       "startYear": "2020",
       "implementingEntity": "Ministry of Mining and Heavy Industry",
@@ -175,8 +175,8 @@
     },
     {
       "name": "Reduce the waste volume for landfill through the improved waste treatment and recycling process",
-      "description": "Mongolia is focusing on reducing waste volume for landfills through improved waste treatment and recycling processes to reduce greenhouse gas (GHG) emissions, minimize environmental impact, and promote sustainable waste management. This policy includes enhancing waste segregation, expanding recycling infrastructure, and promoting the use of composting and waste-to-energy technologies. By improving waste treatment and increasing recycling rates, Mongolia aims to decrease landfill usage, reduce methane emissions, and conserve valuable resources, supporting the country\u2019s climate commitments and moving towards a circular economy.",
-      "objectives": "Reduce the size and quantity of landfills and open dumpsites at centralized landfills through promotion of waste recycling industries, Establishing a plant with the capacity of 700 tons of food waste to recycle per year at the location of 'Narangiin Enger\u2019 landfill site, Construction of new landfill facility with crushing plant for construction waste at the Moringiin Davaa waste dumping site, Establish a _x000d_ plant to collect and transport household waste in Ulaanbaatar, Establish waste sorting plant at the Tsagaandavaa landfill site.",
+      "description": "Mongolia is focusing on reducing waste volume for landfills through improved waste treatment and recycling processes to reduce greenhouse gas (GHG) emissions, minimize environmental impact, and promote sustainable waste management. This policy includes enhancing waste segregation, expanding recycling infrastructure, and promoting the use of composting and waste-to-energy technologies. By improving waste treatment and increasing recycling rates, Mongolia aims to decrease landfill usage, reduce methane emissions, and conserve valuable resources, supporting the country’s climate commitments and moving towards a circular economy.",
+      "objectives": "Reduce the size and quantity of landfills and open dumpsites at centralized landfills through promotion of waste recycling industries, Establishing a plant with the capacity of 700 tons of food waste to recycle per year at the location of 'Narangiin Enger’ landfill site, Construction of new landfill facility with crushing plant for construction waste at the Moringiin Davaa waste dumping site, Establish a _x000d_ plant to collect and transport household waste in Ulaanbaatar, Establish waste sorting plant at the Tsagaandavaa landfill site.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
       "sector": "sector_waste",
@@ -187,7 +187,7 @@
     },
     {
       "name": "Increase the share of the population with access to improved sanitation and hygiene facilities",
-      "description": "Mongolia is working to increase the share of the population with access to improved sanitation and hygiene facilities to improve public health, reduce environmental pollution, and support sustainable development. This policy focuses on expanding access to modern sanitation infrastructure, promoting hygiene education, and ensuring the safe management of wastewater. By improving sanitation, Mongolia aims to reduce waterborne diseases, minimize contamination of water sources, and enhance overall well-being, while also contributing to the country\u2019s climate goals and sustainable urbanization efforts.",
+      "description": "Mongolia is working to increase the share of the population with access to improved sanitation and hygiene facilities to improve public health, reduce environmental pollution, and support sustainable development. This policy focuses on expanding access to modern sanitation infrastructure, promoting hygiene education, and ensuring the safe management of wastewater. By improving sanitation, Mongolia aims to reduce waterborne diseases, minimize contamination of water sources, and enhance overall well-being, while also contributing to the country’s climate goals and sustainable urbanization efforts.",
       "objectives": "Renovation and construction of treatment facilities in 10 provincial centers (such as Arkhangai, Uvurkhangai, Bulgan, Umnugovi, _x000d_ Dornogovi, Khuvsgul, Khentii, Sukhbaatar, Dundgovi, Darkhan-Uul) and Khujirt soum center of Uvurkhangai Province, Renovation and _x000d_ construction of new treatment facilities in 5 aimag centers (Bayan-Ulgii, Dornod, Govisumber, Zavkhan, Uvs), Construction of new treatment plant in Ulaanbaatar, To build and renovate water and sanitation facilities of soum kindergartens, schools, hospitals, in a _x000d_ way that is resistant to natural disasters caused caused by climate change, and to introduce technological solutions using water and _x000d_ energy efficient and sources of renewable energy.",
       "instrumentType": "Regulatory",
       "status": "Adopted",
@@ -1162,7 +1162,7 @@
       "subsector": "Natural resources",
       "status": "Completed",
       "impact": "Adaptation and resilience to climate risks in Mongolia increased",
-      "additionalInfo": "The TA will have the following outcome: government\u2019s strategic planning capacity for climate change adaptation in the environment and natural resources sector improved and resilience of communities to climate change strengthened. The outcome of the TA will be achieved by delivering the following interlinked outputs."
+      "additionalInfo": "The TA will have the following outcome: government’s strategic planning capacity for climate change adaptation in the environment and natural resources sector improved and resilience of communities to climate change strengthened. The outcome of the TA will be achieved by delivering the following interlinked outputs."
     },
     {
       "title": "ADB-Preparing the infrastructure development for green and resilient new satellite city in the Khushig valley area",
@@ -1237,7 +1237,7 @@
       "subsector": "Natural resources",
       "status": "UA",
       "impact": "The project is aligned with the following impact: sustainable tourism development in Mongolia improved and diversified",
-      "additionalInfo": "On 13 March 2024, the MOF requested ADB to cancel the loan and grant due to (i) the lack of parliamentary ratification and domestic progress to advance the project; and (ii) MOF\u2019s request to first focus on timely completion of another ADB-financed tourism project.8"
+      "additionalInfo": "On 13 March 2024, the MOF requested ADB to cancel the loan and grant due to (i) the lack of parliamentary ratification and domestic progress to advance the project; and (ii) MOF’s request to first focus on timely completion of another ADB-financed tourism project.8"
     },
     {
       "title": "Czechia-Increasing efficiency of heating systems, introducing new modern technologies.",
@@ -1406,7 +1406,7 @@
     },
     {
       "title": "France-P209-Aide-projet-Mongolie",
-      "description": "P209 - Mongolie - Cr\u00e9dit d'intervention des postes - formation au tri des d\u00e9chets",
+      "description": "P209 - Mongolie - Crédit d'intervention des postes - formation au tri des déchets",
       "technologyType": "",
       "timeFrame": "2022-2022",
       "recipientEntity": "NA",
@@ -1466,7 +1466,7 @@
     },
     {
       "title": "GEF-Promoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia",
-      "description": "The project \u201cPromoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia\u201d (\u201cEastern Steppe project\u201d) is part of a global program led by FAO, the GEF-7 Sustainable Forest Management Impact Program on Dryland Sustainable Landscapes (SFM/Drylands IP). In Mongolia, the project is led by FAO in partnership with WWF, and will be executed by the Ministry of Environment and Tourism (MET) in collaboration with other partners.",
+      "description": "The project “Promoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia” (“Eastern Steppe project”) is part of a global program led by FAO, the GEF-7 Sustainable Forest Management Impact Program on Dryland Sustainable Landscapes (SFM/Drylands IP). In Mongolia, the project is led by FAO in partnership with WWF, and will be executed by the Ministry of Environment and Tourism (MET) in collaboration with other partners.",
       "technologyType": "NA",
       "timeFrame": "2021-2021",
       "recipientEntity": "MECC",
@@ -1526,7 +1526,7 @@
     },
     {
       "title": "GGGI-MN22 strengthening institutional and technical capacity to support NDC implementation and mainstreaming climate change",
-      "description": "In its updated NDC approved in November 2019, Mongolia increased its mitigation ambition from 14% to 22.7% reduction of greenhouse gas (GHG) emissions compared to business-as-usual (BAU) by 2030 \u2013 16,881 thousand tons CO2 eq. Share of the energy sector in total emission reduction is the highest \u2013 66.7% followed by the agriculture sector (31.3%).",
+      "description": "In its updated NDC approved in November 2019, Mongolia increased its mitigation ambition from 14% to 22.7% reduction of greenhouse gas (GHG) emissions compared to business-as-usual (BAU) by 2030 – 16,881 thousand tons CO2 eq. Share of the energy sector in total emission reduction is the highest – 66.7% followed by the agriculture sector (31.3%).",
       "technologyType": "",
       "timeFrame": "2022-2024",
       "recipientEntity": "MECC",
@@ -1582,7 +1582,7 @@
       "subsector": "Natural resources",
       "status": "UA",
       "impact": "The project will promote pasture rehabilitation and carbon sequestration while increasing the incomes of herder households through the formation and institutionalization of pasture user groups (PUGs) and the implementation of rangeland user agreements (RUAs).",
-      "additionalInfo": "The proposed cancellation has been discussed with the MOF and the Ministry of Food, Agriculture, and Light Industry. On 18 June 2024, the Director General of the East Asia Department and Country Director of Mongolia Resident Mission supported the project team\u2019s recommendation to cancel the loans before effectiveness and the TA. 5."
+      "additionalInfo": "The proposed cancellation has been discussed with the MOF and the Ministry of Food, Agriculture, and Light Industry. On 18 June 2024, the Director General of the East Asia Department and Country Director of Mongolia Resident Mission supported the project team’s recommendation to cancel the loans before effectiveness and the TA. 5."
     },
     {
       "title": "ADB-Improvement of urban mobility in Ulaanbaatar",
@@ -1610,7 +1610,7 @@
       "subsector": "Natural resources",
       "status": "Completed",
       "impact": "Adaptation and resilience to climate risks in Mongolia increased",
-      "additionalInfo": "The TA will have the following outcome: government\u2019s strategic planning capacity for climate change adaptation in the environment and natural resources sector improved and resilience of communities to climate change strengthened. The outcome of the TA will be achieved by delivering the following interlinked outputs."
+      "additionalInfo": "The TA will have the following outcome: government’s strategic planning capacity for climate change adaptation in the environment and natural resources sector improved and resilience of communities to climate change strengthened. The outcome of the TA will be achieved by delivering the following interlinked outputs."
     },
     {
       "title": "ADB-Preparing the infrastructure development for green and resilient new satellite city in the Khushig valley area",
@@ -1908,7 +1908,7 @@
     },
     {
       "title": "France-P209-Aide-projet-Mongolie",
-      "description": "P209 - Mongolie - Cr\u00e9dit d'intervention des postes - formation au tri des d\u00e9chets",
+      "description": "P209 - Mongolie - Crédit d'intervention des postes - formation au tri des déchets",
       "timeFrame": "2022-2022",
       "recipientEntity": "NA",
       "implementingEntity": "France",
@@ -1950,7 +1950,7 @@
     },
     {
       "title": "GEF-Promoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia",
-      "description": "The project \u201cPromoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia\u201d (\u201cEastern Steppe project\u201d) is part of a global program led by FAO, the GEF-7 Sustainable Forest Management Impact Program on Dryland Sustainable Landscapes (SFM/Drylands IP). In Mongolia, the project is led by FAO in partnership with WWF, and will be executed by the Ministry of Environment and Tourism (MET) in collaboration with other partners.",
+      "description": "The project “Promoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia” (“Eastern Steppe project”) is part of a global program led by FAO, the GEF-7 Sustainable Forest Management Impact Program on Dryland Sustainable Landscapes (SFM/Drylands IP). In Mongolia, the project is led by FAO in partnership with WWF, and will be executed by the Ministry of Environment and Tourism (MET) in collaboration with other partners.",
       "timeFrame": "2021-2021",
       "recipientEntity": "MECC",
       "implementingEntity": "GEF",
@@ -2121,7 +2121,7 @@
       "subsector": "Natural resources",
       "status": "Completed",
       "impact": "Adaptation and resilience to climate risks in Mongolia increased",
-      "additionalInfo": "The TA will have the following outcome: government\u2019s strategic planning capacity for climate change adaptation in the environment and natural resources sector improved and resilience of communities to climate change strengthened. The outcome of the TA will be achieved by delivering the following interlinked outputs.",
+      "additionalInfo": "The TA will have the following outcome: government’s strategic planning capacity for climate change adaptation in the environment and natural resources sector improved and resilience of communities to climate change strengthened. The outcome of the TA will be achieved by delivering the following interlinked outputs.",
       "supportSource": "both"
     },
     {
@@ -2201,7 +2201,7 @@
       "subsector": "Natural resources",
       "status": "UA",
       "impact": "The project is aligned with the following impact: sustainable tourism development in Mongolia improved and diversified",
-      "additionalInfo": "On 13 March 2024, the MOF requested ADB to cancel the loan and grant due to (i) the lack of parliamentary ratification and domestic progress to advance the project; and (ii) MOF\u2019s request to first focus on timely completion of another ADB-financed tourism project.8",
+      "additionalInfo": "On 13 March 2024, the MOF requested ADB to cancel the loan and grant due to (i) the lack of parliamentary ratification and domestic progress to advance the project; and (ii) MOF’s request to first focus on timely completion of another ADB-financed tourism project.8",
       "supportSource": "both"
     },
     {
@@ -2382,7 +2382,7 @@
     },
     {
       "title": "France-P209-Aide-projet-Mongolie",
-      "description": "P209 - Mongolie - Cr\u00e9dit d'intervention des postes - formation au tri des d\u00e9chets",
+      "description": "P209 - Mongolie - Crédit d'intervention des postes - formation au tri des déchets",
       "technologyType": "",
       "timeFrame": "2022-2022",
       "recipientEntity": "NA",
@@ -2446,7 +2446,7 @@
     },
     {
       "title": "GEF-Promoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia",
-      "description": "The project \u201cPromoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia\u201d (\u201cEastern Steppe project\u201d) is part of a global program led by FAO, the GEF-7 Sustainable Forest Management Impact Program on Dryland Sustainable Landscapes (SFM/Drylands IP). In Mongolia, the project is led by FAO in partnership with WWF, and will be executed by the Ministry of Environment and Tourism (MET) in collaboration with other partners.",
+      "description": "The project “Promoting Dryland Sustainable Landscapes and Biodiversity Conservation in the Eastern Steppe of Mongolia” (“Eastern Steppe project”) is part of a global program led by FAO, the GEF-7 Sustainable Forest Management Impact Program on Dryland Sustainable Landscapes (SFM/Drylands IP). In Mongolia, the project is led by FAO in partnership with WWF, and will be executed by the Ministry of Environment and Tourism (MET) in collaboration with other partners.",
       "technologyType": "NA",
       "timeFrame": "2021-2021",
       "recipientEntity": "MECC",
@@ -2510,7 +2510,7 @@
     },
     {
       "title": "GGGI-MN22 strengthening institutional and technical capacity to support NDC implementation and mainstreaming climate change",
-      "description": "In its updated NDC approved in November 2019, Mongolia increased its mitigation ambition from 14% to 22.7% reduction of greenhouse gas (GHG) emissions compared to business-as-usual (BAU) by 2030 \u2013 16,881 thousand tons CO2 eq. Share of the energy sector in total emission reduction is the highest \u2013 66.7% followed by the agriculture sector (31.3%).",
+      "description": "In its updated NDC approved in November 2019, Mongolia increased its mitigation ambition from 14% to 22.7% reduction of greenhouse gas (GHG) emissions compared to business-as-usual (BAU) by 2030 – 16,881 thousand tons CO2 eq. Share of the energy sector in total emission reduction is the highest – 66.7% followed by the agriculture sector (31.3%).",
       "technologyType": "",
       "timeFrame": "2022-2024",
       "recipientEntity": "MECC",
@@ -2552,7 +2552,7 @@
       "subsector": "Natural resources",
       "status": "UA",
       "impact": "The project will promote pasture rehabilitation and carbon sequestration while increasing the incomes of herder households through the formation and institutionalization of pasture user groups (PUGs) and the implementation of rangeland user agreements (RUAs).",
-      "additionalInfo": "The proposed cancellation has been discussed with the MOF and the Ministry of Food, Agriculture, and Light Industry. On 18 June 2024, the Director General of the East Asia Department and Country Director of Mongolia Resident Mission supported the project team\u2019s recommendation to cancel the loans before effectiveness and the TA. 5.",
+      "additionalInfo": "The proposed cancellation has been discussed with the MOF and the Ministry of Food, Agriculture, and Light Industry. On 18 June 2024, the Director General of the East Asia Department and Country Director of Mongolia Resident Mission supported the project team’s recommendation to cancel the loans before effectiveness and the TA. 5.",
       "supportSource": "capacity_building"
     },
     {

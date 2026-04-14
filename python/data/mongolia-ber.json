@@ -1,0 +1,494 @@
+{
+  "programs": [
+    {
+      "code": "71401",
+      "name": "Waste management",
+      "description": "Implementation of the Law on Waste and national and local waste management programs.",
+      "type": "environmental"
+    },
+    {
+      "code": "71402",
+      "name": "Biodiversity conservation",
+      "description": "Implementation of the National Biodiversity Program — ecosystem, species, and genetic level conservation.",
+      "type": "environmental"
+    },
+    {
+      "code": "71403",
+      "name": "Afforestation",
+      "description": "State institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units.",
+      "type": "environmental"
+    },
+    {
+      "code": "71404",
+      "name": "Water resource, lake and river management",
+      "description": "Water Authority, Freshwater Resources and Nature Conservation Center, River Basin Administrations.",
+      "type": "environmental"
+    },
+    {
+      "code": "71405",
+      "name": "Security of protected areas",
+      "description": "Protection regimes for protected areas, management plans, monitoring, and information databases.",
+      "type": "environmental"
+    },
+    {
+      "code": "71406",
+      "name": "Environmental pollution and degradation",
+      "description": "Air pollution quality control, alternative products, waste collection/transport/disposal/recycling.",
+      "type": "environmental"
+    },
+    {
+      "code": "71407",
+      "name": "Air pollution abatement, climate change",
+      "description": "National Program on Air and Environmental Pollution Reduction and climate change policies.",
+      "type": "environmental"
+    },
+    {
+      "code": "71408",
+      "name": "Meteorology",
+      "description": "Hydrological and meteorological research, weather forecasts, early warnings, and climate resource use.",
+      "type": "environmental"
+    },
+    {
+      "code": "71409",
+      "name": "Protection of endangered animals, plants and species",
+      "description": "National Program for the Protection of Endangered and Rare Species.",
+      "type": "environmental"
+    },
+    {
+      "code": "71410",
+      "name": "Reduce land degradation and prevent from desertification",
+      "description": "National Action Program to Combat Desertification.",
+      "type": "environmental"
+    },
+    {
+      "code": "71411",
+      "name": "Environment policy and administration",
+      "description": "Government institutions responsible for environmental governance — legal framework, policy implementation.",
+      "type": "environmental"
+    },
+    {
+      "code": "71412",
+      "name": "R&D Environment",
+      "description": "Research on preventing environmental pollution and degradation.",
+      "type": "environmental"
+    },
+    {
+      "code": "71413",
+      "name": "Environment protection, recovery",
+      "description": "Environmental protection and restoration — water, forest, plant, wildlife, genetic resources.",
+      "type": "environmental"
+    },
+    {
+      "code": "81702",
+      "name": "Forest fire prevention and damage mitigation",
+      "description": "Forest fire prevention, suppression, and damage mitigation.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81703",
+      "name": "Plant protection and restoration",
+      "description": "Protection and restoration of natural vegetation.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81705",
+      "name": "Forest inventory",
+      "description": "Forest inventories per forest legislation.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81707",
+      "name": "Air pollution reduction",
+      "description": "Reducing and preventing air pollution.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81708",
+      "name": "Afforestation",
+      "description": "Plantation forests, forest restoration, seedling preparation.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81709",
+      "name": "Control of forest pests and harmful insects",
+      "description": "Controlling forest pests and harmful insects.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81710",
+      "name": "Hydrological and meteorological research",
+      "description": "Hydrological and meteorological research and analysis.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81713",
+      "name": "Waste processing",
+      "description": "Waste separation and processing.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81714",
+      "name": "Support for substitute pollution sources and green product producers",
+      "description": "Budgetary support and incentives for green product producers.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81715",
+      "name": "Protection, use, and restoration of water and mineral water resources",
+      "description": "Water resource protection, reservoir construction, wastewater treatment.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81716",
+      "name": "Reduction of land degradation and desertification prevention",
+      "description": "Degraded land restoration, desertification mitigation, pastureland protection.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81717",
+      "name": "Protection and restoration of wildlife resources",
+      "description": "Wildlife protection, captive breeding, reintroduction of endangered species.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81718",
+      "name": "Genetic resources of wild plants and animals",
+      "description": "Research, assessment, and conservation of genetic resources.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "81719",
+      "name": "Forest restoration",
+      "description": "Forest restoration, seedling propagation, plantation establishment.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "82212",
+      "name": "Solid waste and environmental pollution removal and cleaning services",
+      "description": "Environmental cleaning, public road cleaning, waste removal.",
+      "type": "non_environmental"
+    }
+  ],
+  "expenditure": [
+    {
+      "code": "71408",
+      "name": "Meteorology",
+      "values": {
+        "2020": 30.4,
+        "2021": 30.1,
+        "2022": null,
+        "2023": 47,
+        "2024": null
+      }
+    },
+    {
+      "code": "71405",
+      "name": "Security of protected areas",
+      "values": {
+        "2020": 10.2,
+        "2021": 10.5,
+        "2022": null,
+        "2023": 19,
+        "2024": 0.9
+      }
+    },
+    {
+      "code": "71404",
+      "name": "Water resource, lake and river management",
+      "values": {
+        "2020": 4.4,
+        "2021": 4.9,
+        "2022": null,
+        "2023": 9,
+        "2024": null
+      }
+    },
+    {
+      "code": "71403",
+      "name": "Afforestation",
+      "values": {
+        "2020": 6.1,
+        "2021": 5.2,
+        "2022": 3.4,
+        "2023": 15,
+        "2024": 9.2
+      }
+    },
+    {
+      "code": "71411",
+      "name": "Environment policy and administration",
+      "values": {
+        "2020": 23.1,
+        "2021": 21.7,
+        "2022": 17.4,
+        "2023": 7,
+        "2024": 27
+      }
+    },
+    {
+      "code": "71407",
+      "name": "Air pollution abatement, climate change",
+      "values": {
+        "2020": 75.8,
+        "2021": 101.6,
+        "2022": 30.1,
+        "2023": 15,
+        "2024": 39.4
+      }
+    },
+    {
+      "code": "71412",
+      "name": "R&D Environment",
+      "values": {
+        "2020": 0.1,
+        "2021": 0,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "71406",
+      "name": "Environmental pollution and degradation",
+      "values": {
+        "2020": 0.4,
+        "2021": 0.5,
+        "2022": 0.3,
+        "2023": null,
+        "2024": 1.5
+      }
+    },
+    {
+      "code": "71401",
+      "name": "Waste management",
+      "values": {
+        "2020": 0.5,
+        "2021": 0.7,
+        "2022": 1.9,
+        "2023": null,
+        "2024": 5.9
+      }
+    },
+    {
+      "code": "71402",
+      "name": "Biodiversity conservation",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "71409",
+      "name": "Protection of endangered animals, plants and species",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "71413",
+      "name": "Environment protection, recovery",
+      "values": {
+        "2020": 11.1,
+        "2021": 10.9,
+        "2022": 13.3,
+        "2023": null,
+        "2024": 30.2
+      }
+    },
+    {
+      "code": "71410",
+      "name": "Reduce land degradation and prevent from desertification",
+      "values": {
+        "2020": 0.5,
+        "2021": 0.9,
+        "2022": null,
+        "2023": 1,
+        "2024": null
+      }
+    },
+    {
+      "code": "81707",
+      "name": "Reducing air pollution",
+      "values": {
+        "2020": 2.4,
+        "2021": null,
+        "2022": null,
+        "2023": 0.1,
+        "2024": null
+      }
+    },
+    {
+      "code": "82212",
+      "name": "Solid waste and environmental pollution removal and cleaning services",
+      "values": {
+        "2020": 44.7,
+        "2021": 42.4,
+        "2022": 54.8,
+        "2023": null,
+        "2024": 101.9
+      }
+    },
+    {
+      "code": "81708",
+      "name": "Afforestation",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": 0.1,
+        "2023": null,
+        "2024": 0.1
+      }
+    },
+    {
+      "code": "81709",
+      "name": "Control of forest pests and harmful insects",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81702",
+      "name": "Forest fire prevention and damage mitigation",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81705",
+      "name": "Forest inventory",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81703",
+      "name": "Plant protection and restoration",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81710",
+      "name": "Hydrological and meteorological research",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81713",
+      "name": "Waste processing",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81714",
+      "name": "Support for substitute pollution sources and green product producers",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81715",
+      "name": "Protection, use, and restoration of water and mineral water resources",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81716",
+      "name": "Reduction of land degradation and desertification prevention",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81717",
+      "name": "Protection and restoration of wildlife resources",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81718",
+      "name": "Genetic resources of wild plants and animals",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "code": "81719",
+      "name": "Forest restoration",
+      "values": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    }
+  ],
+  "currency": "MNT",
+  "unit": "billion",
+  "period": {
+    "start": 2020,
+    "end": 2024
+  },
+  "keyFindings": {
+    "plannedBudget": 1900,
+    "actualExpenditure": 1200,
+    "gap": 700,
+    "programPeriod": "2015-2025"
+  }
+}

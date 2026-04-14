@@ -45,6 +45,8 @@ export interface CountryEntry {
       adaptation: boolean;
     };
     nr7: boolean;
+    /** Biodiversity Expenditure Review data available for financial alignment. */
+    ber: boolean;
   };
 }
 
@@ -84,6 +86,7 @@ export const COUNTRIES: CountryEntry[] = [
       coherence: true,
       btr: { mitigation: true, adaptation: true },
       nr7: true,
+      ber: true,
     },
   },
   {
@@ -96,6 +99,7 @@ export const COUNTRIES: CountryEntry[] = [
       coherence: true,
       btr: { mitigation: true, adaptation: false },
       nr7: false,
+      ber: false,
     },
   },
 ];
