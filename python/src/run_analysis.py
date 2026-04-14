@@ -506,6 +506,7 @@ async def main() -> None:
                 raw_programs, raw_expenditure,
                 currency=ber.get("currency", ""),
                 unit=ber.get("unit", ""),
+                period=ber.get("period"),
             )
             logger.info(f"  {len(raw_programs)} raw programs -> {len(budget_pseudo_targets)} valid pseudo-targets")
 

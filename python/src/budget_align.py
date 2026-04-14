@@ -108,19 +108,30 @@ def programs_to_pseudo_targets(
     expenditure: list[dict[str, Any]],
     currency: str = "",
     unit: str = "",
+    period: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Convert BER budget programs into target-like dicts for the pipeline.
 
-    Filters out programs where all yearly expenditure values are null.
+    Every program becomes a pseudo-target, including programs with no
+    recorded expenditure. Zero-spend programs are explicitly labelled so
+    the alignment agent can reason about policy intent without budget.
     """
     exp_by_code: dict[str, dict[str, Any]] = {}
     for e in expenditure:
         exp_by_code[e["code"]] = e.get("values", {})
 
-    # Build a currency/unit suffix for expenditure summaries
     money_label = f"{unit} {currency}".strip() if (unit or currency) else ""
 
+    period_label = ""
+    if period and period.get("start") is not None and period.get("end") is not None:
+        period_label = f"{period['start']}-{period['end']}"
+
+    all_years: list[str] = []
+    if period and period.get("start") is not None and period.get("end") is not None:
+        all_years = [str(y) for y in range(int(period["start"]), int(period["end"]) + 1)]
+
     pseudo: list[dict[str, Any]] = []
+    zero_spend_count = 0
     for prog in programs:
         code = prog["code"]
         name = prog.get("name", "")
@@ -128,22 +139,32 @@ def programs_to_pseudo_targets(
         prog_type = prog.get("type", "environmental")
 
         values = exp_by_code.get(code, {})
-
         has_any = any(v is not None for v in values.values())
-        if not has_any:
-            continue
 
-        year_parts = []
-        total = 0.0
-        for year in sorted(values.keys()):
-            v = values[year]
-            if v is not None:
-                year_parts.append(f"{year}: {v}{' ' + money_label if money_label else ''}")
-                total += v
+        if has_any:
+            year_parts = []
+            total = 0.0
+            for year in sorted(values.keys()):
+                v = values[year]
+                if v is not None:
+                    year_parts.append(f"{year}: {v}{' ' + money_label if money_label else ''}")
+                    total += v
+                else:
+                    year_parts.append(f"{year}: no data")
+
+            exp_summary = (
+                f"Expenditure: {', '.join(year_parts)}. "
+                f"Total: {total:.1f}{' ' + money_label if money_label else ''}."
+            )
+        else:
+            zero_spend_count += 1
+            if period_label:
+                exp_summary = f"No expenditure recorded {period_label}."
             else:
-                year_parts.append(f"{year}: no data")
+                exp_summary = "No expenditure recorded in the available reporting years."
 
-        exp_summary = f"Expenditure: {', '.join(year_parts)}. Total: {total:.1f}{' ' + money_label if money_label else ''}."
+        if not values and all_years:
+            values = {year: None for year in all_years}
 
         parts = [name]
         if description and description != name:
@@ -167,7 +188,7 @@ def programs_to_pseudo_targets(
 
     logger.info(
         f"Converted {len(programs)} budget programs -> "
-        f"{len(pseudo)} pseudo-targets (filtered out {len(programs) - len(pseudo)} with no expenditure)"
+        f"{len(pseudo)} pseudo-targets ({zero_spend_count} with no recorded expenditure)"
     )
     return pseudo
 

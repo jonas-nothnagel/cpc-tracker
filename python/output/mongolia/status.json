@@ -3,14 +3,14 @@
   "step": 7,
   "totalSteps": 7,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 1.8s",
-  "startedAt": "2026-04-14T11:40:57.481093+00:00",
-  "completedAt": "2026-04-14T11:40:59.240677+00:00",
+  "message": "Pipeline finished in 104.9s",
+  "startedAt": "2026-04-14T13:01:03.632845+00:00",
+  "completedAt": "2026-04-14T13:02:48.500554+00:00",
   "error": null,
   "summary": {
     "totalTargets": 77,
-    "totalClassifications": 10236,
-    "relevantClassifications": 1047,
+    "totalClassifications": 11272,
+    "relevantClassifications": 1139,
     "totalPairs": 2175,
     "alignmentLevels": {
       "high": 214,
@@ -21,20 +21,20 @@
     "totalContradictions": 154,
     "measureAlignmentPairs": 3363,
     "measurePseudoTargets": 39,
-    "budgetAlignmentPairs": 1078,
-    "budgetPseudoTargets": 14,
-    "elapsedSeconds": 1.8
+    "budgetAlignmentPairs": 2156,
+    "budgetPseudoTargets": 28,
+    "elapsedSeconds": 104.9
   },
   "footprint": {
-    "energy_wh": 0.0,
-    "water_ml": 0.0,
-    "co2_geq": 0.0,
-    "minerals_ugsbeq": 0.0,
-    "call_count": 7220,
-    "tracked_call_count": 0,
+    "energy_wh": 5.3008012069694574,
+    "water_ml": 22.93932323918446,
+    "co2_geq": 2.322165270486372,
+    "minerals_ugsbeq": 16.712319691000342,
+    "call_count": 8354,
+    "tracked_call_count": 1134,
     "cached_call_count": 7220,
     "model": "openai/gpt-4o-mini",
-    "available": false,
-    "source": "unavailable"
+    "available": true,
+    "source": "measured"
   }
 }

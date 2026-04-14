@@ -17,6 +17,23 @@
     }
   },
   {
+    "id": "BER_71402",
+    "sourceDocument": "BER",
+    "sourceLabel": "71402 Biodiversity conservation",
+    "text": "Biodiversity conservation. Implementation of the National Biodiversity Program \u2014 ecosystem, species, and genetic level conservation.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
     "id": "BER_71403",
     "sourceDocument": "BER",
     "sourceLabel": "71403 Afforestation",
@@ -119,6 +136,23 @@
     }
   },
   {
+    "id": "BER_71409",
+    "sourceDocument": "BER",
+    "sourceLabel": "71409 Protection of endangered animals, plants and sp...",
+    "text": "Protection of endangered animals, plants and species. National Program for the Protection of Endangered and Rare Species.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
     "id": "BER_71410",
     "sourceDocument": "BER",
     "sourceLabel": "71410 Reduce land degradation and prevent from desert...",
@@ -187,6 +221,57 @@
     }
   },
   {
+    "id": "BER_81702",
+    "sourceDocument": "BER",
+    "sourceLabel": "81702 Forest fire prevention and damage mitigation",
+    "text": "Forest fire prevention and damage mitigation. Forest fire prevention, suppression, and damage mitigation.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81703",
+    "sourceDocument": "BER",
+    "sourceLabel": "81703 Plant protection and restoration",
+    "text": "Plant protection and restoration. Protection and restoration of natural vegetation.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81705",
+    "sourceDocument": "BER",
+    "sourceLabel": "81705 Forest inventory",
+    "text": "Forest inventory. Forest inventories per forest legislation.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
     "id": "BER_81707",
     "sourceDocument": "BER",
     "sourceLabel": "81707 Air pollution reduction",
@@ -218,6 +303,159 @@
       "2022": 0.1,
       "2023": null,
       "2024": 0.1
+    }
+  },
+  {
+    "id": "BER_81709",
+    "sourceDocument": "BER",
+    "sourceLabel": "81709 Control of forest pests and harmful insects",
+    "text": "Control of forest pests and harmful insects. Controlling forest pests and harmful insects.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81710",
+    "sourceDocument": "BER",
+    "sourceLabel": "81710 Hydrological and meteorological research",
+    "text": "Hydrological and meteorological research. Hydrological and meteorological research and analysis.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81713",
+    "sourceDocument": "BER",
+    "sourceLabel": "81713 Waste processing",
+    "text": "Waste processing. Waste separation and processing.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81714",
+    "sourceDocument": "BER",
+    "sourceLabel": "81714 Support for substitute pollution sources and gr...",
+    "text": "Support for substitute pollution sources and green product producers. Budgetary support and incentives for green product producers.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81715",
+    "sourceDocument": "BER",
+    "sourceLabel": "81715 Protection, use, and restoration of water and m...",
+    "text": "Protection, use, and restoration of water and mineral water resources. Water resource protection, reservoir construction, wastewater treatment.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81716",
+    "sourceDocument": "BER",
+    "sourceLabel": "81716 Reduction of land degradation and desertificati...",
+    "text": "Reduction of land degradation and desertification prevention. Degraded land restoration, desertification mitigation, pastureland protection.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81717",
+    "sourceDocument": "BER",
+    "sourceLabel": "81717 Protection and restoration of wildlife resources",
+    "text": "Protection and restoration of wildlife resources. Wildlife protection, captive breeding, reintroduction of endangered species.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81718",
+    "sourceDocument": "BER",
+    "sourceLabel": "81718 Genetic resources of wild plants and animals",
+    "text": "Genetic resources of wild plants and animals. Research, assessment, and conservation of genetic resources.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
+    }
+  },
+  {
+    "id": "BER_81719",
+    "sourceDocument": "BER",
+    "sourceLabel": "81719 Forest restoration",
+    "text": "Forest restoration. Forest restoration, seedling propagation, plantation establishment.. No expenditure recorded 2020-2024.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": null,
+      "2021": null,
+      "2022": null,
+      "2023": null,
+      "2024": null
     }
   },
   {
