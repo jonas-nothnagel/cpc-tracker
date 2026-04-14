@@ -1,6 +1,6 @@
 [
   {
-    "id": "BTR_energy_1",
+    "id": "BTR_1",
     "sourceDocument": "BTR",
     "sourceLabel": "Use of renewable energy sources (Hydro PP, Wind PP, Solar...",
     "text": "Use of renewable energy sources (Hydro PP, Wind PP, Solar PP, Heat pumps for heating utilities). Mongolia is accelerating the deployment of renewable energy sources, including hydropower (Hydro PP), wind power (Wind PP), solar power (Solar PP), and heat pumps for heating utilities, to reduce reliance on coal and support. With abundant solar and wind resources, the country is expanding utility-scale projects, integrating small and medium-scale hydro plants, and promoting heat pumps for residential and district heating. These efforts aim to lower greenhouse gas (GHG) emissions, enhance energy security, and contribute to Mongolia\u2019s 30% renewable energy target by 2030 while ensuring transparent monitoring and reporting under the UNFCCC framework.. Construction of Erdeneburen hydropower plant (HPP-90 MW), 50-100 MW hydropower plant in the central region, 2 wind farms with a total capacity of 15 MW, 5 solar power plants with a total capacity of 35.3 MW",
@@ -12,7 +12,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_2",
+    "id": "BTR_2",
     "sourceDocument": "BTR",
     "sourceLabel": "Reduce electricity and heat transmission and distribution...",
     "text": "Reduce electricity and heat transmission and distribution grid losses and improve the heat supply in cities and towns. Mongolia is implementing measures to reduce electricity and heat transmission and distribution grid losses while improving the heat supply in cities and towns. These efforts focus on modernizing power grids, upgrading heating infrastructure, and enhancing energy efficiency to minimize energy losses and improve service reliability. Key actions include grid reinforcement, digital monitoring systems, insulation improvements, and transitioning to more efficient district heating systems. By reducing energy waste and optimizing supply networks, Mongolia aims to lower greenhouse gas (GHG) emissions, enhance energy security, and support its climate commitments under the UNFCCC.. To build 2810.3m pairs and 2620.5m single lines in 8 sections of heat supply in Ulaanbaatar, to expand and renovate 1400m old lines, Implement the \u201cEnergy Project-2\u201d project to reduce electricity distribution network losses",
@@ -24,7 +24,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_3",
+    "id": "BTR_3",
     "sourceDocument": "BTR",
     "sourceLabel": "Reduce internal use of combined heat and power plants (CH...",
     "text": "Reduce internal use of combined heat and power plants (CHPP) and improve the efficiency of power plants. Mongolia is working to reduce internal energy consumption in Combined Heat and Power Plants (CHPPs) and enhance overall power plant efficiency. This policy focuses on modernizing CHPP infrastructure, upgrading turbines and boilers, optimizing fuel use, and implementing advanced energy management systems to minimize energy losses. By improving efficiency, Mongolia aims to reduce coal consumption, lower greenhouse gas (GHG) emissions, and enhance the reliability of electricity and heat supply. These efforts contribute to the country's climate commitments, energy security, and sustainable development goals.. Establish heating stations, heating networks and heat distribution centers in 10 aimag centers, improve the heat supply of Ulaanbaatar, from TPP-3 to the city center,",
@@ -36,31 +36,31 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_4",
+    "id": "BTR_4",
     "sourceDocument": "BTR",
     "sourceLabel": "Switch to Euro - 5 standart fuel",
     "text": "Switch to Euro - 5 standart fuel. Mongolia is transitioning to Euro 5 standard fuel to reduce air pollution, improve fuel quality, and lower greenhouse gas (GHG) emissions. This policy focuses on phasing out high-sulfur fuels, promoting cleaner fuel alternatives, and enforcing stricter emission regulations for vehicles and industrial sectors. By adopting Euro 5 standards, Mongolia aims to enhance air quality, support sustainable transportation, and align with international environmental commitments, contributing to its climate and public health goals.. Switch to fuel At Euro-5 standard",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_transport",
     "measureStatus": "Adopted",
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_5",
+    "id": "BTR_5",
     "sourceDocument": "BTR",
     "sourceLabel": "Switch to coal export transportation to rail transport fr...",
     "text": "Switch to coal export transportation to rail transport from auto transportation. Mongolia is shifting coal export transportation from road (auto transport) to rail transport to reduce greenhouse gas (GHG) emissions, improve efficiency, and minimize environmental impacts. This policy focuses on expanding rail infrastructure, modernizing logistics, and reducing heavy truck reliance, which will lower fuel consumption, decrease air pollution, and enhance coal export efficiency. By prioritizing rail transport, Mongolia aims to cut transportation-related emissions, reduce road degradation, and strengthen its sustainable economic and environmental goals.. Transfer of coal export for from road transportation to railway transportation",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_energy",
+    "sector": "sector_transport",
     "measureStatus": "Adopted",
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_6",
+    "id": "BTR_6",
     "sourceDocument": "BTR",
     "sourceLabel": "Insulate old precast panel buildings in Ulaanbaatar city",
     "text": "Insulate old precast panel buildings in Ulaanbaatar city. Mongolia is implementing a policy to insulate old precast panel buildings in Ulaanbaatar to improve energy efficiency, reduce heat loss, and lower greenhouse gas (GHG) emissions. This initiative focuses on retrofitting aging apartment buildings with modern insulation materials, upgrading windows and doors, and enhancing heating system efficiency. By reducing heat loss, the policy aims to decrease coal consumption for heating, improve indoor living conditions, and contribute to better air quality in Ulaanbaatar, supporting Mongolia\u2019s climate and energy efficiency commitments.. Under financial mechanism for thermal engineering-renovation, insulating prebuilt 258 block apartment buildings get, Insulate 2,000 _x000d_ private housing in ger areas.",
@@ -72,7 +72,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_7",
+    "id": "BTR_7",
     "sourceDocument": "BTR",
     "sourceLabel": "Limit the use of raw coal in Ulaanbaatar city and switch ...",
     "text": "Limit the use of raw coal in Ulaanbaatar city and switch to the use of improved fuel. Mongolia is enforcing restrictions on raw coal use in Ulaanbaatar and promoting the switch to improved fuel to reduce air pollution, lower greenhouse gas (GHG) emissions, and improve public health. This policy focuses on phasing out raw coal, expanding the supply of cleaner, processed fuel, and supporting households with access to alternative heating solutions. By limiting raw coal use, Mongolia aims to decrease winter air pollution, enhance energy efficiency, and contribute to its national climate and environmental goals.",
@@ -84,7 +84,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_energy_8",
+    "id": "BTR_8",
     "sourceDocument": "BTR",
     "sourceLabel": "Energy saving measures",
     "text": "Energy saving measures. Mongolia is implementing a range of energy-saving measures to reduce energy consumption, lower greenhouse gas (GHG) emissions, and enhance energy efficiency. The country is focusing on public awareness campaigns, implementing energy-saving policies in residential and commercial sectors, and incentivizing the adoption of energy-efficient technologies. By reducing energy waste, Mongolia aims to contribute to its climate commitments, improve energy security, and support sustainable development.. Improve the efficiency of industrial electric engines and install energy-efficient lighting, Implement MNS ISO-50001: 2019 standard for energy management system, Improving energy consumption norms for unit production and services in the industrial sector.",
@@ -96,7 +96,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_agriculture_1",
+    "id": "BTR_9",
     "sourceDocument": "BTR",
     "sourceLabel": "Regulate and reduce the livestock number",
     "text": "Regulate and reduce the livestock number. Mongolia is adopting policies to regulate and reduce livestock numbers in order to mitigate environmental degradation, reduce greenhouse gas (GHG) emissions, and promote sustainable land management. This initiative focuses on incentivizing sustainable grazing practices, improving livestock management, and supporting livelihood diversification for herders. By regulating livestock numbers, the policy aims to reduce overgrazing, land degradation, and methane emissions, contributing to improved ecosystem health, climate resilience, and sustainable agricultural practices across Mongolia.. Based on genetic resources and insemination methods increasing the number of quality livestock through the implementation _x000d_ of livestock and pasture management, Establish a technological service unit to improve the number, quality and efficiency of livestock, and establish control over breeding and selection policies, technological works and services. Optimizing meat and meat products in order to limit the livestock number by creating meat stocks and support export of meat and meat products",
@@ -108,7 +108,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_agriculture_2",
+    "id": "BTR_10",
     "sourceDocument": "BTR",
     "sourceLabel": "Improve the livestock manure management",
     "text": "Improve the livestock manure management. Mongolia is focusing on improving livestock manure management to reduce greenhouse gas (GHG) emissions and enhance land sustainability. This policy involves implementing proper manure storage, composting methods, and promoting the use of manure for energy production through biogas systems. By improving manure management, Mongolia aims to reduce methane emissions, prevent land degradation, and promote sustainable practices within the pastoral farming sector, contributing to better environmental health and climate resilience.. Conduct research, develop method and techniques for estimating emissions of GHG in the pastoral livestock sector and optimizing livestock manure management.",
@@ -120,7 +120,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_ippu_1",
+    "id": "BTR_11",
     "sourceDocument": "BTR",
     "sourceLabel": "Use waste heat from cement plants",
     "text": "Use waste heat from cement plants. Mongolia is promoting the use of waste heat from cement plants to improve energy efficiency, reduce greenhouse gas (GHG) emissions, and support sustainable industrial practices. This policy focuses on capturing and utilizing waste heat from cement production processes for district heating, power generation, or other industrial uses. By harnessing this waste energy, Mongolia aims to decrease the consumption of primary energy sources, lower carbon emissions, and enhance overall energy efficiency within the cement industry, contributing to the country\u2019s climate goals and fostering sustainable industrial growth.. Create legal environment to exempt imported equipment of electricity generation from customs and VAT for using waste heat in cement plants, Develop and present recommendations to the cement plants for constructing heat plants from waste.",
@@ -132,7 +132,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_ippu_2",
+    "id": "BTR_12",
     "sourceDocument": "BTR",
     "sourceLabel": "Use fly ash in cement production",
     "text": "Use fly ash in cement production. Mongolia is promoting the use of fly ash in cement production to reduce environmental impact, lower greenhouse gas (GHG) emissions, and enhance the sustainability of the construction industry. This policy encourages the incorporation of fly ash\u2014a byproduct of coal combustion\u2014into cement, reducing the need for raw materials like limestone and clay. By using fly ash, Mongolia aims to decrease CO\u2082 emissions from cement production, reduce waste disposal, and improve the overall energy efficiency of cement plants. This practice contributes to sustainable construction and climate action goals by utilizing industrial byproducts in a way that benefits both the economy and the environment.. Construction of powdered ash silo with a capacity of 10-15 thousand tons at Amgalan Thermal Power Plant, Building a facility with a _x000d_ capacity of 50-60 thousand tons per year for the purpose of collecting, storing and loading powdered ash for power plants.",
@@ -144,19 +144,19 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_ippu_3",
+    "id": "BTR_13",
     "sourceDocument": "BTR",
     "sourceLabel": "Use coal bed methane",
     "text": "Use coal bed methane. Mongolia is exploring the use of coal bed methane (CBM) to reduce greenhouse gas (GHG) emissions, enhance energy security, and promote sustainable energy production. This policy focuses on capturing and utilizing methane that is released during coal mining operations, converting it into a valuable energy source for electricity generation or industrial use. By using coal bed methane, Mongolia aims to reduce methane emissions, limit reliance on coal for power generation, and optimize energy resources while improving environmental sustainability. This approach supports Mongolia\u2019s climate goals and energy diversification initiatives.. Developing master plan to promote methane supply from coal deposits, Construction of power plant based on methane near underground coal mines.",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_ippu",
+    "sector": "sector_energy",
     "measureStatus": "Adopted",
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_waste_1",
+    "id": "BTR_14",
     "sourceDocument": "BTR",
     "sourceLabel": "Reduce the waste volume for landfill through the improved...",
     "text": "Reduce the waste volume for landfill through the improved waste treatment and recycling process. Mongolia is focusing on reducing waste volume for landfills through improved waste treatment and recycling processes to reduce greenhouse gas (GHG) emissions, minimize environmental impact, and promote sustainable waste management. This policy includes enhancing waste segregation, expanding recycling infrastructure, and promoting the use of composting and waste-to-energy technologies. By improving waste treatment and increasing recycling rates, Mongolia aims to decrease landfill usage, reduce methane emissions, and conserve valuable resources, supporting the country\u2019s climate commitments and moving towards a circular economy.. Reduce the size and quantity of landfills and open dumpsites at centralized landfills through promotion of waste recycling industries, Establishing a plant with the capacity of 700 tons of food waste to recycle per year at the location of 'Narangiin Enger\u2019 landfill site, Construction of new landfill facility with crushing plant for construction waste at the Moringiin Davaa waste dumping site, Establish a _x000d_ plant to collect and transport household waste in Ulaanbaatar, Establish waste sorting plant at the Tsagaandavaa landfill site.",
@@ -168,7 +168,7 @@
     "actionType": "mitigation"
   },
   {
-    "id": "BTR_waste_2",
+    "id": "BTR_15",
     "sourceDocument": "BTR",
     "sourceLabel": "Increase the share of the population with access to impro...",
     "text": "Increase the share of the population with access to improved sanitation and hygiene facilities. Mongolia is working to increase the share of the population with access to improved sanitation and hygiene facilities to improve public health, reduce environmental pollution, and support sustainable development. This policy focuses on expanding access to modern sanitation infrastructure, promoting hygiene education, and ensuring the safe management of wastewater. By improving sanitation, Mongolia aims to reduce waterborne diseases, minimize contamination of water sources, and enhance overall well-being, while also contributing to the country\u2019s climate goals and sustainable urbanization efforts.. Renovation and construction of treatment facilities in 10 provincial centers (such as Arkhangai, Uvurkhangai, Bulgan, Umnugovi, _x000d_ Dornogovi, Khuvsgul, Khentii, Sukhbaatar, Dundgovi, Darkhan-Uul) and Khujirt soum center of Uvurkhangai Province, Renovation and _x000d_ construction of new treatment facilities in 5 aimag centers (Bayan-Ulgii, Dornod, Govisumber, Zavkhan, Uvs), Construction of new treatment plant in Ulaanbaatar, To build and renovate water and sanitation facilities of soum kindergartens, schools, hospitals, in a _x000d_ way that is resistant to natural disasters caused caused by climate change, and to introduce technological solutions using water and _x000d_ energy efficient and sources of renewable energy.",
@@ -257,7 +257,7 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_other",
+    "sector": "sector_lulucf",
     "measureStatus": "Ongoing",
     "actionType": "adaptation",
     "adaptationGoal": 3,
@@ -299,7 +299,7 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_other",
+    "sector": "sector_lulucf",
     "measureStatus": "Ongoing",
     "actionType": "adaptation",
     "adaptationGoal": 3,
@@ -383,7 +383,7 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_lulucf",
+    "sector": "sector_other",
     "measureStatus": "Ongoing",
     "actionType": "adaptation",
     "adaptationGoal": 5,
@@ -481,7 +481,7 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_other",
+    "sector": "sector_agriculture",
     "measureStatus": "Adopted",
     "actionType": "adaptation",
     "adaptationGoal": 7,

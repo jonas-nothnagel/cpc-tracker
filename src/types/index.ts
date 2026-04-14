@@ -113,29 +113,57 @@ export interface GlobeCategory {
   description: string;
 }
 
+/**
+ * A GLOBE subcategory (level 2) within a Primary Biodiversity Category.
+ * These 48 subcategories come directly from the BIOFIN GLOBE 2024 taxonomy
+ * and are used for fine-grained BER classification.
+ */
+export interface GlobeSubcategory {
+  /** Subcategory id (e.g. "6.01", "7.04") */
+  id: string;
+  /** Parent GLOBE category id (e.g. "globe_6") */
+  parentId: string;
+  /** Short name (e.g. "Soil and water") */
+  name: string;
+  /** Full description of what falls under this subcategory */
+  description: string;
+}
+
 // ---------------------------------------------------------------------------
 // Classification Results
 // ---------------------------------------------------------------------------
 
 /**
- * Binary classification: does a target pertain to a given NBS category,
- * IPCC sector, or GLOBE biodiversity category?
+ * Probability-ranked classification: how strongly does a target pertain to
+ * a given category? Each (target, taxonomy) pair has exactly one record
+ * with `isPrimary: true` (the highest-scoring category, used by single-label
+ * views) and any number of records with `isRelevant: true` (score above the
+ * relevance threshold, used by multi-label views).
  */
 export interface ThematicClassification {
   targetId: string;
-  /** NBS category id, IPCC sector id, GLOBE category id, or country-specific adaptation goal id */
+  /** NBS category id, IPCC sector id, GLOBE category id, GLOBE subcategory id, or country-specific adaptation goal id */
   categoryId: string;
   /**
    * Which taxonomy this classification belongs to:
    * - "nbs": Nature-Based Solutions categories
    * - "sector": IPCC sectors
-   * - "globe": GLOBE biodiversity expenditure categories (BIOFIN)
+   * - "globe": GLOBE biodiversity expenditure categories (BIOFIN, 9 top-level)
+   * - "globe_sub": GLOBE subcategories (BIOFIN, 48 fine-grained)
    * - "adaptation_goal": country-specific adaptation action plan goals
    *   (e.g. Mongolia APNDC's 8 goals from BTR1 Table III.9)
    */
-  taxonomyType: "nbs" | "sector" | "globe" | "adaptation_goal";
-  /** Whether the target pertains to this category */
+  taxonomyType: "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal";
+  /** Whether the target pertains to this category (score >= relevance threshold) */
   isRelevant: boolean;
+  /** True for the single highest-scoring category per (target, taxonomyType). Use this for single-label views. */
+  isPrimary?: boolean;
+  /** Probability-style score 0.0-1.0 assigned by the ranked classifier. */
+  score?: number;
+  /** Short reasoning (present for primary and relevant entries from ranked classifiers) */
+  reasoning?: string;
+  /** Legacy expert confidence level, still emitted by the GLOBE subcategory classifier when available */
+  confidence?: "High" | "Medium" | "Low";
 }
 
 // ---------------------------------------------------------------------------
@@ -430,6 +458,41 @@ export interface AdaptationGoal {
 }
 
 // ---------------------------------------------------------------------------
+// BER / Biodiversity Expenditure Review Data
+// ---------------------------------------------------------------------------
+
+/** A government budget program from the BER. */
+export interface BerBudgetProgram {
+  code: string;
+  name: string;
+  description: string;
+  type: "environmental" | "non_environmental";
+}
+
+/** Yearly expenditure series for a budget program. */
+export interface BerExpenditureSeries {
+  code: string;
+  name: string;
+  /** Values by year in the report's unit (e.g. billion MNT). null = no data. */
+  values: Record<string, number | null>;
+}
+
+/** Structured BER data for a country. */
+export interface BerData {
+  programs: BerBudgetProgram[];
+  expenditure: BerExpenditureSeries[];
+  currency: string;
+  unit: string;
+  period: { start: number; end: number };
+  keyFindings?: {
+    plannedBudget: number;
+    actualExpenditure: number;
+    gap: number;
+    programPeriod: string;
+  };
+}
+
+// ---------------------------------------------------------------------------
 // NR7 Progress Data (CBD National Report 7)
 // ---------------------------------------------------------------------------
 
@@ -463,10 +526,13 @@ export interface AnalysisResult {
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  globeSubcategories?: GlobeSubcategory[];
   thematicClassifications: ThematicClassification[];
   alignmentResults: AlignmentResult[];
   decompositions?: TargetDecomposition[];
   btrData?: BtrData;
+  berData?: BerData;
+  budgetAlignment?: AlignmentResult[];
   nr7Data?: Nr7Data;
 }
 

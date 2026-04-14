@@ -57,6 +57,13 @@
       "color": "#7c3aed"
     },
     {
+      "id": "BER",
+      "shortLabel": "BER",
+      "mediumLabel": "BER (Finance)",
+      "fullLabel": "Biodiversity Expenditure Review",
+      "color": "#2563eb"
+    },
+    {
       "id": "OTHER",
       "shortLabel": "Other",
       "mediumLabel": "Other",

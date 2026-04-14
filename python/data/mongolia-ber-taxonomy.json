@@ -1,0 +1,846 @@
+{
+  "_comment": "Mongolia BER budget programs as a taxonomy for cross-level financial alignment. Programs from the Biodiversity Expenditure Review (BER [ENG] v1.2.docx). Sub-categories from the BER Excel (BER_1112.xlsx BAR sheet) with BIOFIN relevance weighting. Translations by Claude Opus 4.6.",
+  "country": "mongolia",
+  "currency": "MNT",
+  "unit": "billion",
+  "period": {
+    "start": 2020,
+    "end": 2024
+  },
+  "keyFindings": {
+    "plannedBudget": 1900,
+    "actualExpenditure": 1200,
+    "gap": 700,
+    "programPeriod": "2015-2025"
+  },
+  "programs": [
+    {
+      "id": "71401",
+      "name": "Waste management",
+      "description": "Implementation of the Law on Waste and national and local waste management programs.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 9.0,
+      "expenditureByYear": {
+        "2020": 0.5,
+        "2021": 0.7,
+        "2022": 1.9,
+        "2023": null,
+        "2024": 5.9
+      }
+    },
+    {
+      "id": "71402",
+      "name": "Biodiversity conservation",
+      "description": "Implementation of the National Biodiversity Program — ecosystem, species, and genetic level conservation.",
+      "type": "environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "71403",
+      "name": "Afforestation",
+      "description": "State institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 38.9,
+      "expenditureByYear": {
+        "2020": 6.1,
+        "2021": 5.2,
+        "2022": 3.4,
+        "2023": 15,
+        "2024": 9.2
+      }
+    },
+    {
+      "id": "71404",
+      "name": "Water resource, lake and river management",
+      "description": "Water Authority, Freshwater Resources and Nature Conservation Center, River Basin Administrations.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 18.3,
+      "expenditureByYear": {
+        "2020": 4.4,
+        "2021": 4.9,
+        "2022": null,
+        "2023": 9,
+        "2024": null
+      }
+    },
+    {
+      "id": "71405",
+      "name": "Security of protected areas",
+      "description": "Protection regimes for protected areas, management plans, monitoring, and information databases.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 40.6,
+      "expenditureByYear": {
+        "2020": 10.2,
+        "2021": 10.5,
+        "2022": null,
+        "2023": 19,
+        "2024": 0.9
+      }
+    },
+    {
+      "id": "71406",
+      "name": "Environmental pollution and degradation",
+      "description": "Air pollution quality control, alternative products, waste collection/transport/disposal/recycling.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 2.7,
+      "expenditureByYear": {
+        "2020": 0.4,
+        "2021": 0.5,
+        "2022": 0.3,
+        "2023": null,
+        "2024": 1.5
+      }
+    },
+    {
+      "id": "71407",
+      "name": "Air pollution abatement, climate change",
+      "description": "National Program on Air and Environmental Pollution Reduction and climate change policies.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 261.9,
+      "expenditureByYear": {
+        "2020": 75.8,
+        "2021": 101.6,
+        "2022": 30.1,
+        "2023": 15,
+        "2024": 39.4
+      }
+    },
+    {
+      "id": "71408",
+      "name": "Meteorology",
+      "description": "Hydrological and meteorological research, weather forecasts, early warnings, and climate resource use.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 107.5,
+      "expenditureByYear": {
+        "2020": 30.4,
+        "2021": 30.1,
+        "2022": null,
+        "2023": 47,
+        "2024": null
+      }
+    },
+    {
+      "id": "71409",
+      "name": "Protection of endangered animals, plants and species",
+      "description": "National Program for the Protection of Endangered and Rare Species.",
+      "type": "environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "71410",
+      "name": "Reduce land degradation and prevent from desertification",
+      "description": "National Action Program to Combat Desertification.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 2.4,
+      "expenditureByYear": {
+        "2020": 0.5,
+        "2021": 0.9,
+        "2022": null,
+        "2023": 1,
+        "2024": null
+      }
+    },
+    {
+      "id": "71411",
+      "name": "Environment policy and administration",
+      "description": "Government institutions responsible for environmental governance — legal framework, policy implementation.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 96.2,
+      "expenditureByYear": {
+        "2020": 23.1,
+        "2021": 21.7,
+        "2022": 17.4,
+        "2023": 7,
+        "2024": 27
+      }
+    },
+    {
+      "id": "71412",
+      "name": "R&D Environment",
+      "description": "Research on preventing environmental pollution and degradation.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 0.1,
+      "expenditureByYear": {
+        "2020": 0.1,
+        "2021": 0,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "71413",
+      "name": "Environment protection, recovery",
+      "description": "Environmental protection and restoration — water, forest, plant, wildlife, genetic resources.",
+      "type": "environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 65.5,
+      "expenditureByYear": {
+        "2020": 11.1,
+        "2021": 10.9,
+        "2022": 13.3,
+        "2023": null,
+        "2024": 30.2
+      }
+    },
+    {
+      "id": "81702",
+      "name": "Forest fire prevention and damage mitigation",
+      "description": "Forest fire prevention, suppression, and damage mitigation.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81703",
+      "name": "Plant protection and restoration",
+      "description": "Protection and restoration of natural vegetation.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81705",
+      "name": "Forest inventory",
+      "description": "Forest inventories per forest legislation.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81707",
+      "name": "Air pollution reduction",
+      "description": "Reducing and preventing air pollution.",
+      "type": "non_environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 2.5,
+      "expenditureByYear": {
+        "2020": 2.4,
+        "2021": null,
+        "2022": null,
+        "2023": 0.1,
+        "2024": null
+      }
+    },
+    {
+      "id": "81708",
+      "name": "Afforestation",
+      "description": "Plantation forests, forest restoration, seedling preparation.",
+      "type": "non_environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 0.2,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": 0.1,
+        "2023": null,
+        "2024": 0.1
+      }
+    },
+    {
+      "id": "81709",
+      "name": "Control of forest pests and harmful insects",
+      "description": "Controlling forest pests and harmful insects.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81710",
+      "name": "Hydrological and meteorological research",
+      "description": "Hydrological and meteorological research and analysis.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81713",
+      "name": "Waste processing",
+      "description": "Waste separation and processing.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81714",
+      "name": "Support for substitute pollution sources and green product producers",
+      "description": "Budgetary support and incentives for green product producers.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81715",
+      "name": "Protection, use, and restoration of water and mineral water resources",
+      "description": "Water resource protection, reservoir construction, wastewater treatment.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81716",
+      "name": "Reduction of land degradation and desertification prevention",
+      "description": "Degraded land restoration, desertification mitigation, pastureland protection.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81717",
+      "name": "Protection and restoration of wildlife resources",
+      "description": "Wildlife protection, captive breeding, reintroduction of endangered species.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81718",
+      "name": "Genetic resources of wild plants and animals",
+      "description": "Research, assessment, and conservation of genetic resources.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "81719",
+      "name": "Forest restoration",
+      "description": "Forest restoration, seedling propagation, plantation establishment.",
+      "type": "non_environmental",
+      "hasExpenditure": false,
+      "totalExpenditureBillionMnt": 0,
+      "expenditureByYear": {
+        "2020": null,
+        "2021": null,
+        "2022": null,
+        "2023": null,
+        "2024": null
+      }
+    },
+    {
+      "id": "82212",
+      "name": "Solid waste and environmental pollution removal and cleaning services",
+      "description": "Environmental cleaning, public road cleaning, waste removal.",
+      "type": "non_environmental",
+      "hasExpenditure": true,
+      "totalExpenditureBillionMnt": 243.8,
+      "expenditureByYear": {
+        "2020": 44.7,
+        "2021": 42.4,
+        "2022": 54.8,
+        "2023": null,
+        "2024": 101.9
+      }
+    }
+  ],
+  "subCategories": [
+    {
+      "code": "80100",
+      "descriptionMn": "Үйл ажиллагааны урсгал зардлын ерөнхий зориулалт",
+      "descriptionEn": "General operating current expenditure",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80101",
+      "descriptionMn": "Үндсэн үйл ажиллагааны зардал",
+      "descriptionEn": "Core operating expenditure",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 258.56
+    },
+    {
+      "code": "80102",
+      "descriptionMn": "Туслах үйл ажиллагааны зардал",
+      "descriptionEn": "Auxiliary operating expenditure",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80103",
+      "descriptionMn": "Гэрээгээр гүйцэтгүүлэх ажил, үйлчилгээ",
+      "descriptionEn": "Contracted works and services",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0.27
+    },
+    {
+      "code": "80105",
+      "descriptionMn": "Гадаад тусламжаар гүйцэтгэх ажил, үйлчилгээ",
+      "descriptionEn": "Foreign aid-funded works and services",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80215",
+      "descriptionMn": "Эрдэм шинжилгээ, судалгааны ажил",
+      "descriptionEn": "Scientific research activities",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 1.56
+    },
+    {
+      "code": "80221",
+      "descriptionMn": "Гэрээт ажиллагсдын зардал",
+      "descriptionEn": "Contract workers' expenditure",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 3.58
+    },
+    {
+      "code": "80224",
+      "descriptionMn": "Зөвлөл, хороо, комиссын гишүүдийн ажлын хөлс",
+      "descriptionEn": "Council, committee, and commission members' compensation",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80312",
+      "descriptionMn": "Сургалт семинар",
+      "descriptionEn": "Training and seminars",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0.01
+    },
+    {
+      "code": "80313",
+      "descriptionMn": "Дээж худалдан авах",
+      "descriptionEn": "Purchasing of samples",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80410",
+      "descriptionMn": "Агаарын чанарыг сайжруулахад олгох татаас",
+      "descriptionEn": "Subsidies for air quality improvement",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0.07
+    },
+    {
+      "code": "81700",
+      "descriptionMn": "Байгаль орчныг хамгаалах арга хэмжээ",
+      "descriptionEn": "Environmental protection measures",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81701",
+      "descriptionMn": "Байгаль орчныг хамгаалах, нөхөн сэргээх",
+      "descriptionEn": "Environmental protection and restoration",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 62.89
+    },
+    {
+      "code": "81702",
+      "descriptionMn": "Ойн түймрээс урьдчилан сэргийлэх, түймрийн хохирлыг арилгах",
+      "descriptionEn": "Forest fire prevention and damage mitigation",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81703",
+      "descriptionMn": "Ургамлын хамгаалал нөхөн сэргээлт",
+      "descriptionEn": "Plant protection and restoration",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 1.05
+    },
+    {
+      "code": "81705",
+      "descriptionMn": "Ойн тооллого",
+      "descriptionEn": "Forest inventory",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81707",
+      "descriptionMn": "Агаарын бохирдлыг бууруулах",
+      "descriptionEn": "Air pollution reduction",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 257.99
+    },
+    {
+      "code": "81708",
+      "descriptionMn": "Ойжуулалт",
+      "descriptionEn": "Afforestation",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 19.27
+    },
+    {
+      "code": "81709",
+      "descriptionMn": "Ойн хөнөөлт шавьж, хортонтой тэмцэх",
+      "descriptionEn": "Forest pest and harmful insect control",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81710",
+      "descriptionMn": "Ус цаг уурын судалгаа, шинжилгээ",
+      "descriptionEn": "Hydrological and meteorological research and analysis",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 5.11
+    },
+    {
+      "code": "81713",
+      "descriptionMn": "Хог хаягдлыг боловсруулах",
+      "descriptionEn": "Waste processing",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81714",
+      "descriptionMn": "Бохирдуулагч эх үүсвэрийг орлох болон, ногоон бүтээгдэхүүн үйлдвэрлэгчдэд олгох дэмжлэг",
+      "descriptionEn": "Substitute pollution sources and green product producer support",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81715",
+      "descriptionMn": "Ус, рашааны  нөөцийн хамгаалал, ашиглалт, нөхөн сэргээлт",
+      "descriptionEn": "Water and mineral water resource protection, use, and restoration",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81716",
+      "descriptionMn": "Газрын доройтлыг бууруулах цөлжилтөөс сэргийлэх",
+      "descriptionEn": "Land degradation reduction and desertification prevention",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81717",
+      "descriptionMn": "Амьтны нөөцийн хамгаалал, нөхөн сэргээлт",
+      "descriptionEn": "Wildlife resource protection and restoration",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81718",
+      "descriptionMn": "Байгалын ургамал амьтны генетик нөөц",
+      "descriptionEn": "Genetic resources of wild plants and animals",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81719",
+      "descriptionMn": "Ойг  нөхөн сэргээх",
+      "descriptionEn": "Forest restoration",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81834",
+      "descriptionMn": "Боловсролын стандарт, сургалтын төлөвлөгөө, хөтөлбөрийг хэрэгжүүлэх",
+      "descriptionEn": "Implementation of educational standards and training programs",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "82207",
+      "descriptionMn": "Хотын доторх ногоон байгууламжийн үйлчилгээ",
+      "descriptionEn": "Urban green infrastructure services",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 1.01
+    },
+    {
+      "code": "82212",
+      "descriptionMn": "Хур хог хаягдал, орчны бохирдлыг устгах, цэвэрлэх үйлчилгээ",
+      "descriptionEn": "Solid waste and environmental pollution removal and cleaning services",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 253.2
+    },
+    {
+      "code": "82310",
+      "descriptionMn": "Гамшигаас сэргийлэх сургалт, сурталчилгаа",
+      "descriptionEn": "Disaster prevention training and awareness",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0.0
+    },
+    {
+      "code": "82501",
+      "descriptionMn": "Ургамал хамгаалал",
+      "descriptionEn": "Plant protection",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "82706",
+      "descriptionMn": "Гоц халдварт өвчний голомтыг арилгах, тархалтыг хязгаарлах",
+      "descriptionEn": "Eradication and containment of highly infectious disease outbreaks",
+      "biofinRelevance": 1.0,
+      "totalExpenditureBillionMnt": 0.0
+    },
+    {
+      "code": "80106",
+      "descriptionMn": "Баг, хорооны үйл ажиллагааны зардал",
+      "descriptionEn": "Sub-district operating expenditure",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80200",
+      "descriptionMn": "Бусдаар гүйцэтгүүлсэн нийтлэг ажил үйлчилгээний зардлын зориулалт",
+      "descriptionEn": "General contracted services expenditure",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80205",
+      "descriptionMn": "Мэдээлэл, сурталчилгааны зардал",
+      "descriptionEn": "Information and publicity expenditure",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0.09
+    },
+    {
+      "code": "80219",
+      "descriptionMn": "Харуул, хамгаалалтын зардал",
+      "descriptionEn": "Security and guarding expenditure",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0.54
+    },
+    {
+      "code": "80509",
+      "descriptionMn": "Гадаадын болон олон улсын байгууллагын гишүүнчлэлийн хураамж",
+      "descriptionEn": "Foreign and international organization membership fees",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0.38
+    },
+    {
+      "code": "80811",
+      "descriptionMn": "Нүүлгэн шилжүүлэх зардал",
+      "descriptionEn": "Relocation expenditure",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81102",
+      "descriptionMn": "Орон нутгийн нөөц хөрөнгө",
+      "descriptionEn": "Local reserve funds",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81518",
+      "descriptionMn": "Мөрийн хөтөлбөрт тусгагдсан зарим арга хэмжээг хэрэгжүүлэх",
+      "descriptionEn": "Implementation of government action plan measures",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81832",
+      "descriptionMn": "Нүүдлийн бүлэгт хамруулах",
+      "descriptionEn": "Mobile group inclusion",
+      "biofinRelevance": 0.75,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "82502",
+      "descriptionMn": "Мал эмнэлгийн үйлчилгээ",
+      "descriptionEn": "Veterinary services",
+      "biofinRelevance": 0.5,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "82542",
+      "descriptionMn": "Монгол мал хөтөлбөр",
+      "descriptionEn": "Mongolian Livestock Program",
+      "biofinRelevance": 0.5,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "83105",
+      "descriptionMn": "Төсөл, арга хэмжээний бэлтгэл хангах",
+      "descriptionEn": "Project and program preparation",
+      "biofinRelevance": 0.5,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80220",
+      "descriptionMn": "Холбооны суваг ашигласны хөлс",
+      "descriptionEn": "Telecommunications channel usage fees",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.06
+    },
+    {
+      "code": "80226",
+      "descriptionMn": "Байр ашиглалтын үйлчилгээ",
+      "descriptionEn": "Building maintenance services",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.02
+    },
+    {
+      "code": "80703",
+      "descriptionMn": "Өндөр настан, ахмад дайчдад олгох хөнгөлөлт",
+      "descriptionEn": "Elderly and veteran benefits and concessions",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.0
+    },
+    {
+      "code": "80704",
+      "descriptionMn": "Ахмад дайчин, алдар цолтой ахмад настанд үзүүлэх хөнгөлөлт тусламж",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.01
+    },
+    {
+      "code": "80714",
+      "descriptionMn": "Ахмад настнуудад үзүүлэх хөнгөлөлт",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.0
+    },
+    {
+      "code": "80801",
+      "descriptionMn": "Нөхөн олговор",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.0
+    },
+    {
+      "code": "80802",
+      "descriptionMn": "Ажил олгогчоос олгох тэтгэмж, урамшуулал, дэмжлэг",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0.43
+    },
+    {
+      "code": "80825",
+      "descriptionMn": "Багийн ИНХ-ын даргын урамшуулал",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80836",
+      "descriptionMn": "Сахилга, хариуцлага, ажлын үр дүнгийн урамшуулал",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "80918",
+      "descriptionMn": "Бусад",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 2.47
+    },
+    {
+      "code": "81519",
+      "descriptionMn": "Төрийн албан хаагчдыг мэргэшүүлэх",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81806",
+      "descriptionMn": "Дотуур байрны үйлчилгээ",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0
+    },
+    {
+      "code": "81835",
+      "descriptionMn": "Сургалтын хэвийн үйл ажиллагааг хангах",
+      "descriptionEn": "",
+      "biofinRelevance": 0.05,
+      "totalExpenditureBillionMnt": 0
+    }
+  ]
+}

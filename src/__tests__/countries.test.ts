@@ -184,7 +184,7 @@ describe("validateRegistry", () => {
     iso3: "tst",
     status: "demo",
     visible: false,
-    has: { coherence: false, btr: { mitigation: false, adaptation: false }, nr7: false },
+    has: { coherence: false, btr: { mitigation: false, adaptation: false }, nr7: false, ber: false },
     ...overrides,
   });
 

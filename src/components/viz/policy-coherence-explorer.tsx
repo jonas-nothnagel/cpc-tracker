@@ -97,8 +97,18 @@ function buildGroupsByTaxonomy(
   for (const c of categories) sm.set(c.id, []);
   const used = new Set<string>();
   for (const t of targets) {
+    // Single-label assignment: each target sits in its primary category
+    // (highest-scoring per the ranked classifier). This replaces the
+    // previous "first relevant in classifications array" lookup, which
+    // was deterministic but arbitrary -- ordering depended on category
+    // iteration order in the pipeline rather than on the LLM's actual
+    // confidence. Using isPrimary makes the assignment principled and
+    // consistent with the bar chart and the Financing Coherence table.
     const c = classifications.find(
-      (x) => x.targetId === t.id && x.taxonomyType === taxonomyType && x.isRelevant,
+      (x) =>
+        x.targetId === t.id &&
+        x.taxonomyType === taxonomyType &&
+        x.isPrimary === true,
     );
     if (c && sm.has(c.categoryId)) {
       sm.get(c.categoryId)!.push(t);

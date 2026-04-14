@@ -52,7 +52,7 @@ export function AlignmentHeatmap({
     const ids = new Set<string>();
     for (const c of classifications) {
       if (
-        c.isRelevant &&
+        c.isPrimary === true &&
         c.taxonomyType === taxonomyFilter.taxonomyType &&
         (taxonomyFilter.categoryId === "*" || c.categoryId === taxonomyFilter.categoryId)
       ) {
