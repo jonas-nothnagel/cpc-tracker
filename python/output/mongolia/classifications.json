@@ -74636,6 +74636,88 @@
     "reasoning": "The target is primarily focused on waste management within urban settings."
   },
   {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "The target involves conservation at the ecosystem level, which includes wetlands and freshwater ecosystems."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is primarily focused on biodiversity conservation, which directly relates to ecosystem protection and connectivity."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_71403",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
@@ -75128,6 +75210,88 @@
     "score": 0.0
   },
   {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Forest management and protection are relevant as they contribute to the conservation of endangered species."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is primarily focused on the protection of endangered species, which aligns directly with ecosystem protection and connectivity."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_71410",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
@@ -75458,6 +75622,251 @@
     "score": 0.0
   },
   {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about forest fire prevention and damage mitigation, which falls directly under forest management."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.9,
+    "reasoning": "The target relates closely to nature-based risk management and disaster prevention, particularly in the context of wildfire management."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target explicitly focuses on the protection and restoration of natural vegetation, which aligns closely with forest management."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "The target's emphasis on restoration relates to the protection and restoration of wetlands and freshwater ecosystems."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about forest inventory and legislation related to forest management."
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_81707",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
@@ -75622,6 +76031,744 @@
     "score": 0.0
   },
   {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target is primarily focused on controlling pests in forest ecosystems."
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Controlling harmful insects relates to ecosystem protection and preventing species extinction."
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target is primarily focused on hydrological research, which directly relates to water management."
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "The target touches on freshwater ecosystems, which are relevant to hydrological research."
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.7,
+    "reasoning": "Waste processing is relevant to urban settlements management, particularly in the context of urban waste management systems."
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.5,
+    "reasoning": "The target may relate to sustainable agricultural practices through green product production."
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "The target focuses on supporting green product producers, which aligns with urban sustainability initiatives."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about the protection, use, and restoration of water resources."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "The target relates to the protection and restoration of freshwater ecosystems."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "The target involves pastureland protection, linking it to agriculture and livestock management."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Desertification prevention and land restoration can involve wetland and freshwater ecosystem protection."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target focuses on land degradation and restoration, which directly relates to soil fertility management."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Wildlife protection can involve forest management and restoration, making it partially relevant."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about the protection and restoration of wildlife resources, which aligns directly with ecosystem protection and connectivity."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Genetic resources of wild plants and animals are relevant to agriculture and livestock management."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "The target focuses on the conservation of genetic resources, which aligns with ecosystem protection and connectivity."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_0",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_1",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_2",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_3",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about forest restoration, which is the primary focus of this category."
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_4",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_5",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_6",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_7",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_8",
+    "taxonomyType": "nbs",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Forest restoration contributes to carbon sequestration, making this category clearly relevant."
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "nbs_9",
+    "taxonomyType": "nbs",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_82212",
     "categoryId": "nbs_0",
     "taxonomyType": "nbs",
@@ -75769,6 +76916,80 @@
   },
   {
     "targetId": "BER_71401",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Directly addresses biodiversity conservation through a national program."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves species conservation efforts."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
     "categoryId": "globe_9",
     "taxonomyType": "globe",
     "isRelevant": false,
@@ -76216,6 +77437,80 @@
     "score": 0.0
   },
   {
+    "targetId": "BER_71409",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves legal frameworks and policies for biodiversity protection."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Directly focuses on the protection of endangered species."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_71410",
     "categoryId": "globe_1",
     "taxonomyType": "globe",
@@ -76510,6 +77805,227 @@
     "reasoning": "Includes aspects related to the management of genetic resources."
   },
   {
+    "targetId": "BER_81702",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves measures to protect soil and water from fire damage."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Directly relates to the management and protection of forest areas to prevent biodiversity loss."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves protection of natural vegetation which contributes to biodiversity."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "Focuses on preventing ecosystem degradation and initiating restoration efforts."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.7,
+    "reasoning": "Forest inventories are essential for sustainable forestry management."
+  },
+  {
     "targetId": "BER_81707",
     "categoryId": "globe_1",
     "taxonomyType": "globe",
@@ -76657,6 +78173,668 @@
     "reasoning": "Directly related to sustainable forestry practices and forest restoration."
   },
   {
+    "targetId": "BER_81709",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves measures to prevent the spread of invasive species."
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Directly relates to the management of forest ecosystems and biodiversity."
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.6,
+    "reasoning": "Research contributes to understanding biodiversity impacts related to hydrology and meteorology."
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Recognizes benefits for biodiversity indirectly through waste management efforts."
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "Directly supports environmentally responsible practices in production."
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves sustainable practices in water resource management."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Directly relates to the protection and remediation of water resources."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Focuses on restoration efforts to prevent ecosystem degradation."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Addresses sustainable land management practices."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Directly focuses on the protection and restoration of wildlife resources."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Involves reintroduction of endangered species as part of restoration efforts."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Focuses on the conservation and assessment of genetic resources."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves research to increase knowledge about biodiversity."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_1",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_2",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_3",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_4",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_5",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_6",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_7",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_8",
+    "taxonomyType": "globe",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Focuses on preventing ecosystem degradation and initiating restoration efforts."
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "globe_9",
+    "taxonomyType": "globe",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_82212",
     "categoryId": "globe_1",
     "taxonomyType": "globe",
@@ -76785,6 +78963,63 @@
     "isRelevant": false,
     "isPrimary": false,
     "score": 0.4
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Biodiversity conservation is closely related to land use and forestry practices."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
   },
   {
     "targetId": "BER_71403",
@@ -77133,6 +79368,63 @@
     "reasoning": "The target involves meteorological research and climate resource use, which spans multiple sectors."
   },
   {
+    "targetId": "BER_71409",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target is primarily focused on the protection of endangered species, which is closely related to land use and forestry."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
     "targetId": "BER_71410",
     "categoryId": "sector_energy",
     "taxonomyType": "sector",
@@ -77363,6 +79655,177 @@
     "reasoning": "The target involves cross-cutting themes related to environmental policies and expenditure."
   },
   {
+    "targetId": "BER_81702",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target is primarily focused on forest fire prevention, which directly relates to land use and forestry."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about the protection and restoration of natural vegetation, which directly relates to land use and forestry."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about forest inventory, which directly relates to land use and forestry."
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
     "targetId": "BER_81707",
     "categoryId": "sector_energy",
     "taxonomyType": "sector",
@@ -77472,6 +79935,522 @@
   },
   {
     "targetId": "BER_81708",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target is primarily about controlling pests in forests, which directly relates to land use and forestry."
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "The target involves research that spans multiple sectors and contributes to cross-cutting knowledge."
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about waste processing and separation."
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "The target relates to green product producers, which can include industrial processes."
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target focuses on support for green products and pollution substitutes, which spans multiple sectors."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target explicitly addresses wastewater treatment, a key aspect of waste management."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Agricultural practices can contribute to land degradation and are relevant to the target's themes."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly focused on land degradation and desertification, which falls directly under land use and forestry."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target is primarily about wildlife protection and restoration, which directly relates to land use and forestry."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.6,
+    "reasoning": "The target relates to the conservation of genetic resources, which is relevant to agricultural biodiversity."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.5,
+    "reasoning": "Genetic resources of wild plants and animals can be linked to land use and forestry conservation efforts."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target is explicitly about forest restoration, which falls directly under land use and forestry."
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
     "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": false,
@@ -77914,6 +80893,392 @@
   },
   {
     "targetId": "BER_71401",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Directly addresses biodiversity conservation through a national program."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves species conservation efforts."
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71402",
     "categoryId": "9.09",
     "taxonomyType": "globe_sub",
     "isRelevant": false,
@@ -80236,6 +83601,392 @@
     "score": 0.0
   },
   {
+    "targetId": "BER_71409",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves legal frameworks and policies for biodiversity protection."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Directly focuses on the protection of endangered species."
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_71409",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_71410",
     "categoryId": "1.01",
     "taxonomyType": "globe_sub",
@@ -81779,6 +85530,1163 @@
     "score": 0.0
   },
   {
+    "targetId": "BER_81702",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves measures to protect soil and water from fire damage."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Directly relates to the management and protection of forest areas to prevent biodiversity loss."
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81702",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves protection of natural vegetation which contributes to biodiversity."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "Focuses on preventing ecosystem degradation and initiating restoration efforts."
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81703",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.7,
+    "reasoning": "Forest inventories are essential for sustainable forestry management."
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81705",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "BER_81707",
     "categoryId": "1.01",
     "taxonomyType": "globe_sub",
@@ -82543,6 +87451,3478 @@
   },
   {
     "targetId": "BER_81708",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves measures to prevent the spread of invasive species."
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Directly relates to the management of forest ecosystems and biodiversity."
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81709",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.6,
+    "reasoning": "Research contributes to understanding biodiversity impacts related to hydrology and meteorology."
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81710",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Recognizes benefits for biodiversity indirectly through waste management efforts."
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81713",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.8,
+    "reasoning": "Directly supports environmentally responsible practices in production."
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Encourages sustainable consumption through green products."
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81714",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves sustainable practices in water resource management."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Directly relates to the protection and remediation of water resources."
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81715",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Focuses on restoration efforts to prevent ecosystem degradation."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Addresses sustainable land management practices."
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81716",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Directly focuses on the protection and restoration of wildlife resources."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Involves reintroduction of endangered species as part of restoration efforts."
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81717",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.85,
+    "reasoning": "Focuses on the conservation and assessment of genetic resources."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.6,
+    "reasoning": "Involves research to increase knowledge about biodiversity."
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81718",
+    "categoryId": "9.09",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "1.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "1.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "1.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "1.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "1.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "2.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "2.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "2.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "2.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "2.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "2.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "3.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "3.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "4.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "5.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "6.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "6.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "6.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "6.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "6.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "7.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "7.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "7.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "7.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "8.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "8.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Focuses on preventing ecosystem degradation and initiating restoration efforts."
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "8.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Ongoing management or maintenance of restoration sites is implied."
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.01",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.02",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.03",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.04",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.05",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.06",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.07",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
+    "categoryId": "9.08",
+    "taxonomyType": "globe_sub",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "BER_81719",
     "categoryId": "9.09",
     "taxonomyType": "globe_sub",
     "isRelevant": false,

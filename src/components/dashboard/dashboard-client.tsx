@@ -437,6 +437,7 @@ export function DashboardClient({
               berData={data.berData}
               targets={targets.filter((t) => !t.id.startsWith("BER_"))}
               classifications={data.classifications}
+              budgetAlignment={data.budgetAlignment ?? []}
               globeCategories={data.globeCategories}
               globeSubcategories={data.globeSubcategories}
               sectors={data.sectors}

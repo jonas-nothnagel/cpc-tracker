@@ -17,7 +17,9 @@ import {
   makeHierarchicalLeaves,
   buildRollups,
 } from "@/components/viz/coherence-table";
+import { ProgramDetailTable } from "@/components/viz/program-detail-table";
 import type {
+  AlignmentResult,
   BerData,
   BerExpenditureSeries,
   CountryConfig,
@@ -38,6 +40,7 @@ interface FinancingCoherenceProps {
   berData: BerData;
   targets: Target[];
   classifications: ThematicClassification[];
+  budgetAlignment: AlignmentResult[];
   globeCategories: GlobeCategory[];
   globeSubcategories: GlobeSubcategory[];
   sectors: IpccSector[];
@@ -85,6 +88,7 @@ export function FinancingCoherence({
   berData,
   targets,
   classifications,
+  budgetAlignment,
   globeCategories,
   globeSubcategories,
   sectors,
@@ -92,6 +96,7 @@ export function FinancingCoherence({
   const [view, setView] = useState<TaxonomyView>(
     globeSubcategories.length > 0 ? "globe_sub" : "sector",
   );
+  const [groupBy, setGroupBy] = useState<"category" | "program">("category");
 
   const periodLabel = `${berData.period.start}\u2013${berData.period.end}`;
   const moneyCurrency = berData.currency ?? "";
@@ -221,29 +226,53 @@ export function FinancingCoherence({
         </h2>
         <p className="text-sm text-[var(--undp-gray)] mt-0.5">
           Cross-level view: {berData.programs.length} budget programs,{" "}
-          {targets.length} policy targets, and BTR actions linked through
-          the shared {VIEW_LABELS[view]}.
+          {targets.length} policy targets, and BTR actions.{" "}
+          {groupBy === "category"
+            ? `Rollup by ${VIEW_LABELS[view]}.`
+            : "Drill into each of the 28 original BER reporting lines."}
         </p>
       </div>
 
-      {/* Taxonomy switcher */}
-      <div className="flex gap-2 mb-5">
-        {(globeSubcategories.length > 0
-          ? (["globe_sub", "sector"] as const)
-          : (["sector"] as const)
-        ).map((v) => (
-          <button
-            key={v}
-            onClick={() => setView(v)}
-            className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-              view === v
-                ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
-                : "bg-white text-[var(--undp-gray)] border-gray-200 hover:border-gray-300"
-            }`}
-          >
-            {VIEW_LABELS[v]}
-          </button>
-        ))}
+      {/* Group-by + taxonomy controls */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[var(--undp-gray)]">Group by:</span>
+          {(["category", "program"] as const).map((g) => (
+            <button
+              key={g}
+              onClick={() => setGroupBy(g)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                groupBy === g
+                  ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+                  : "bg-white text-[var(--undp-gray)] border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              {g === "category" ? "Taxonomy rollup" : "Program (28 BER lines)"}
+            </button>
+          ))}
+        </div>
+
+        {groupBy === "category" && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-[var(--undp-gray)]">Taxonomy:</span>
+            {(globeSubcategories.length > 0
+              ? (["globe_sub", "sector"] as const)
+              : (["sector"] as const)
+            ).map((v) => (
+              <button
+                key={v}
+                onClick={() => setView(v)}
+                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                  view === v
+                    ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+                    : "bg-white text-[var(--undp-gray)] border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                {VIEW_LABELS[v]}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Summary cards */}
@@ -294,70 +323,100 @@ export function FinancingCoherence({
         </div>
       </div>
 
-      {/* The collapsible table with concentration callouts */}
-      <CoherenceTable
-        leaves={leaves}
-        taxonomyType={taxonomyType}
-        classifications={classifications}
-        expenditureByItemId={expByBerId}
-        formatMoney={moneyFormatter}
-        taxonomyLabel={taxonomyLabel}
-        expenditureLabel={`Expenditure (${periodLabel})`}
-        parentLabel={parentLabel}
-        parentLabelPlural={parentLabelPlural}
-      />
+      {groupBy === "category" && (
+        <>
+          <CoherenceTable
+            leaves={leaves}
+            taxonomyType={taxonomyType}
+            classifications={classifications}
+            expenditureByItemId={expByBerId}
+            formatMoney={moneyFormatter}
+            taxonomyLabel={taxonomyLabel}
+            expenditureLabel={`Expenditure (${periodLabel})`}
+            parentLabel={parentLabel}
+            parentLabelPlural={parentLabelPlural}
+          />
 
-      {/* Expenditure chart (flat view over parent categories) */}
-      {chartData.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-            Expenditure by {parentLabel} ({periodLabel})
-          </h3>
-          <ResponsiveContainer
-            width="100%"
-            height={Math.max(160, chartData.length * 30 + 40)}
-          >
-            <BarChart
-              data={chartData}
-              layout="vertical"
-              margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis type="number" tick={{ fontSize: 11, fill: "#64748b" }} />
-              <YAxis
-                type="category"
-                dataKey="name"
-                width={220}
-                tick={{ fontSize: 11, fill: "#64748b" }}
-              />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: 6,
-                  border: "1px solid #e2e8f0",
-                  fontSize: 12,
-                }}
-                formatter={(value) => [
-                  moneyFormatter(Number(value)),
-                  "Expenditure",
-                ]}
-                labelFormatter={(_label, payload) =>
-                  payload?.[0]?.payload?.fullName ?? String(_label)
-                }
-              />
-              <Bar dataKey="value" fill="#059669" radius={[0, 4, 4, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+          {chartData.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
+                Expenditure by {parentLabel} ({periodLabel})
+              </h3>
+              <ResponsiveContainer
+                width="100%"
+                height={Math.max(160, chartData.length * 30 + 40)}
+              >
+                <BarChart
+                  data={chartData}
+                  layout="vertical"
+                  margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: "#64748b" }} />
+                  <YAxis
+                    type="category"
+                    dataKey="name"
+                    width={220}
+                    tick={{ fontSize: 11, fill: "#64748b" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: 6,
+                      border: "1px solid #e2e8f0",
+                      fontSize: 12,
+                    }}
+                    formatter={(value) => [
+                      moneyFormatter(Number(value)),
+                      "Expenditure",
+                    ]}
+                    labelFormatter={(_label, payload) =>
+                      payload?.[0]?.payload?.fullName ?? String(_label)
+                    }
+                  />
+                  <Bar dataKey="value" fill="#059669" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </>
+      )}
+
+      {groupBy === "program" && (
+        <ProgramDetailTable
+          berData={berData}
+          targets={targets}
+          classifications={classifications}
+          budgetAlignment={budgetAlignment}
+          globeCategories={globeCategories}
+          globeSubcategories={globeSubcategories}
+          sectors={sectors}
+          formatMoney={moneyFormatter}
+          periodLabel={periodLabel}
+        />
       )}
 
       {/* Methodology footer */}
       <div className="text-xs mt-4 text-[var(--undp-gray)]">
-        Targets = policy commitments classified under each {parentLabel}.
-        BTR Actions = reported mitigation and adaptation measures. Each
-        item is assigned to its single primary {parentLabel} (the
-        highest-scoring one from the LLM classifier), so per-{parentLabel}
-        sums equal the unique classified totals. Click a row to expand and
-        see subcategory detail (where available).
+        {groupBy === "category" ? (
+          <>
+            Targets = policy commitments classified under each {parentLabel}.
+            BTR Actions = reported mitigation and adaptation measures. Each
+            item is assigned to its single primary {parentLabel} (the
+            highest-scoring one from the LLM classifier), so per-{parentLabel}
+            sums equal the unique classified totals. Click a row to expand
+            and see subcategory detail (where available).
+          </>
+        ) : (
+          <>
+            Environmental and non-environmental tags are the BER&apos;s own
+            classification of each budget line. GLOBE and IPCC primaries are
+            assigned by an LLM classifier from each program&apos;s description.
+            Zero-spend rows are budget lines that exist in the reporting
+            framework but recorded no expenditure in the period. Click a row
+            for full description, subcategories, reasoning, and top aligned
+            policy targets.
+          </>
+        )}
       </div>
     </>
   );
