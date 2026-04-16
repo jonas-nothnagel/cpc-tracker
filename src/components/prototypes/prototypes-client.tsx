@@ -14,6 +14,7 @@ import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
 import { TargetAtlas } from "@/components/viz/target-atlas";
 import { FinancingGaps } from "@/components/viz/financing-gaps";
+import { FundingNetwork } from "@/components/viz/funding-network";
 import type {
   Target,
   PolicyDocumentType,
@@ -227,6 +228,20 @@ export function PrototypesClient({
           globeCategories={data.globeCategories}
           berData={data.berData}
         />
+
+        {/* ── Prototype 3: Funding Cluster Network ────────────────────── */}
+        {data.berData && data.budgetAlignment && data.budgetPseudoTargets && (
+          <FundingNetwork
+            berData={data.berData}
+            budgetAlignment={data.budgetAlignment}
+            budgetPseudoTargets={data.budgetPseudoTargets}
+            targets={targets.filter(
+              (t) => t.sourceDocument !== "BER" && t.sourceDocument !== "BTR",
+            )}
+            targetAlignment={data.alignment}
+            countryConfig={data.countryConfig}
+          />
+        )}
 
         {/* ── Add new prototypes below. Each gets its own section. ────── */}
         <section className="mb-10 pt-8 border-t border-dashed border-gray-300">
