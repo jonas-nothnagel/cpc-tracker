@@ -213,6 +213,28 @@ export function TargetAtlas({
     return m;
   }, [berData, classifications, lens]);
 
+  // When a selected category has zero policy-target primary matches, the
+  // highlight silently dims every dot. Surface that as an explicit note
+  // so the empty state reads as a data truth, not a broken chart.
+  const emptyCategoryNote = useMemo(() => {
+    if (!selectedCategoryId) return null;
+    const matches = signals.filter((s) =>
+      selectedCategoryId === "_unclassified"
+        ? !s.lensPrimary
+        : s.lensPrimary === selectedCategoryId,
+    );
+    if (matches.length > 0) return null;
+    const name =
+      selectedCategoryId === "_unclassified"
+        ? "Unclassified"
+        : colorLookup.get(selectedCategoryId)?.name ?? selectedCategoryId;
+    return {
+      name,
+      ber: budgetByCat.get(selectedCategoryId) ?? 0,
+      btr: implByCat.get(selectedCategoryId) ?? 0,
+    };
+  }, [selectedCategoryId, signals, colorLookup, budgetByCat, implByCat]);
+
   const xMax = Math.max(1, ...signals.map((s) => s.coherenceCount));
   const yMax = Math.max(1, ...signals.map((s) => s.backingCount));
   const xThreshold = useMemo(
@@ -494,6 +516,31 @@ export function TargetAtlas({
           </div>
         </div>
       </details>
+
+      {emptyCategoryNote && (
+        <div className="mb-3 text-xs bg-amber-50 border border-amber-200 rounded px-3 py-2 text-[var(--undp-black)] leading-snug">
+          <span className="font-semibold">0 policy targets</span> are primarily
+          classified under{" "}
+          <strong>{emptyCategoryNote.name}</strong>. The category appears in
+          the ranking because{" "}
+          {emptyCategoryNote.ber > 0 && (
+            <>
+              <strong>{emptyCategoryNote.ber}</strong> BER programme
+              {emptyCategoryNote.ber === 1 ? "" : "s"}
+            </>
+          )}
+          {emptyCategoryNote.ber > 0 && emptyCategoryNote.btr > 0 && " and "}
+          {emptyCategoryNote.btr > 0 && (
+            <>
+              <strong>{emptyCategoryNote.btr}</strong> BTR action
+              {emptyCategoryNote.btr === 1 ? "" : "s"}
+            </>
+          )}
+          {emptyCategoryNote.ber + emptyCategoryNote.btr > 0
+            ? " are classified there, but no policy target anchors it directly. The chart has nothing to highlight — that gap is the signal."
+            : " has backing here."}
+        </div>
+      )}
 
       <div className="flex gap-4 flex-col lg:flex-row">
         <div

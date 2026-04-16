@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
 import { TargetAtlas } from "@/components/viz/target-atlas";
+import { FinancingGaps } from "@/components/viz/financing-gaps";
 import type {
   Target,
   PolicyDocumentType,
@@ -214,6 +215,16 @@ export function PrototypesClient({
           sectors={data.sectors}
           globeCategories={data.globeCategories}
           countryConfig={data.countryConfig}
+          berData={data.berData}
+        />
+
+        {/* ── Prototype 2: Policy vs Spend disparity ──────────────────── */}
+        <FinancingGaps
+          classifications={data.classifications}
+          budgetAlignments={data.budgetAlignment}
+          nbsCategories={data.nbsCategories}
+          sectors={data.sectors}
+          globeCategories={data.globeCategories}
           berData={data.berData}
         />
 
