@@ -29,7 +29,6 @@ export function NetworkCanvas({
   onNodeClick,
 }: NetworkCanvasProps) {
   const [hoveredNode, setHoveredNode] = useState<NetworkNode | null>(null);
-  const [hoveredCluster] = useState<string | null>(null);
 
   const nodeById = useMemo(
     () => new Map(nodes.map((n) => [n.id, n])),
@@ -133,7 +132,7 @@ export function NetworkCanvas({
             fill={cl.meta.color}
             fontSize={9}
             fontWeight={600}
-            opacity={hoveredCluster !== null && hoveredCluster !== cl.id ? 0.2 : 0.75}
+            opacity={0.75}
           >
             {cl.meta.label.length > 28 ? cl.meta.label.slice(0, 25) + "…" : cl.meta.label}
           </text>
@@ -168,11 +167,8 @@ export function NetworkCanvas({
       <g>
         {nodes.map((n) => {
           const isHovered = hoveredNode?.id === n.id;
-          const isClusterHovered = hoveredCluster === n.clusterId;
           const isConnected = hoveredNode != null && hoverNeighborIds.has(n.id);
-          const dimmed =
-            (hoveredCluster !== null && !isClusterHovered) ||
-            (hoveredNode !== null && !isHovered && !isConnected);
+          const dimmed = hoveredNode !== null && !isHovered && !isConnected;
           const docColor = getDocColor(countryConfig, n.target.sourceDocument);
 
           return (
@@ -225,9 +221,14 @@ export function NetworkCanvas({
             {hoveredNode.target.text.length > 55 ? "…" : ""}
           </text>
           <text x={6} y={28} fontSize={9} fill={hoveredNode.color} fontWeight={600}>
-            {hoveredNode.isFunded
-              ? `${hoveredNode.programScores.length} budget programme${hoveredNode.programScores.length !== 1 ? "s" : ""}`
-              : "No budget backing"}
+            {(() => {
+              const n = hoveredNode.programScores.length;
+              if (n === 0) return "No budget backing";
+              const plural = n !== 1 ? "s" : "";
+              return hoveredNode.isFunded
+                ? `${n} budget programme${plural}`
+                : `${n} weakly aligned programme${plural}`;
+            })()}
           </text>
           <text x={6} y={42} fontSize={9} fill="#64748b">
             {hoverEdges.length > 0

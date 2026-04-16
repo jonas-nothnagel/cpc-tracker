@@ -119,10 +119,10 @@ export function FundingNetwork({
             <InfoBox>
               Each circle is a policy target, color-coded by its primary government
               budget programme (Biodiversity Expenditure Review). Nearby targets
-              share strong policy alignment — distance encodes how closely aligned
-              targets are. Targets without budget backing appear in amber. Node
-              border color indicates the source policy document. Click any target
-              for details. Hover to see strong alignment connections.
+              share strong policy alignment, so distance encodes how closely
+              aligned targets are. Targets without budget backing appear in amber.
+              Node border color indicates the source policy document. Click any
+              target for details. Hover to see strong alignment connections.
             </InfoBox>
           </h3>
           <p className="text-xs text-[var(--undp-gray)] mt-1">
