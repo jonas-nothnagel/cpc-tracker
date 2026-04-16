@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // "Home" covers the country index — the landing page is the country picker.
 // A separate "Dashboard" link without a country id would redirect back to "/",
@@ -35,7 +35,6 @@ export function Header({
 }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const showSwitcher = currentCountryId && countries && countries.length > 1;
 
   const navItems = basePath
@@ -45,13 +44,14 @@ export function Header({
       ]
     : DEFAULT_NAV_ITEMS;
 
-  // Prototypes link preserves the current country so switching doesn't drop
-  // you back on the home picker. Falls back to the bare /prototypes route
-  // when there's no country in the URL.
-  const urlCountry =
-    currentCountryId ?? searchParams?.get("country") ?? undefined;
-  const prototypesHref = urlCountry
-    ? `/prototypes?country=${urlCountry}`
+  // Prototypes link preserves the active country when the caller gives us
+  // one (dashboard and prototypes pages do). On pages without a country
+  // context (home picker, upload wizard), it falls back to the bare
+  // /prototypes route which redirects to the picker. Deliberately avoids
+  // useSearchParams because that forces any page rendering Header to opt
+  // out of Next.js static generation.
+  const prototypesHref = currentCountryId
+    ? `/prototypes?country=${currentCountryId}`
     : "/prototypes";
 
   return (
