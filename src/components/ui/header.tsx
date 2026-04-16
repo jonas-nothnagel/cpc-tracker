@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 // "Home" covers the country index — the landing page is the country picker.
 // A separate "Dashboard" link without a country id would redirect back to "/",
@@ -20,11 +20,22 @@ interface HeaderProps {
   /** When set, scopes nav links to this path (e.g. "/mongolia") so standalone
    *  country routes never expose navigation to other countries. */
   basePath?: string;
+  /** Path the country switcher navigates to. Defaults to "/dashboard".
+   *  Side pages (e.g. "/prototypes") pass their own so switching country
+   *  keeps the user on the same view. */
+  switcherPath?: string;
 }
 
-export function Header({ subtitle, currentCountryId, countries, basePath }: HeaderProps) {
+export function Header({
+  subtitle,
+  currentCountryId,
+  countries,
+  basePath,
+  switcherPath = "/dashboard",
+}: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const showSwitcher = currentCountryId && countries && countries.length > 1;
 
   const navItems = basePath
@@ -33,6 +44,15 @@ export function Header({ subtitle, currentCountryId, countries, basePath }: Head
         { href: `${basePath}/upload`, label: "Upload Data" },
       ]
     : DEFAULT_NAV_ITEMS;
+
+  // Prototypes link preserves the current country so switching doesn't drop
+  // you back on the home picker. Falls back to the bare /prototypes route
+  // when there's no country in the URL.
+  const urlCountry =
+    currentCountryId ?? searchParams?.get("country") ?? undefined;
+  const prototypesHref = urlCountry
+    ? `/prototypes?country=${urlCountry}`
+    : "/prototypes";
 
   return (
     <header className="border-b border-gray-100 sticky top-0 bg-white z-10">
@@ -54,7 +74,7 @@ export function Header({ subtitle, currentCountryId, countries, basePath }: Head
             {showSwitcher ? (
               <select
                 value={currentCountryId}
-                onChange={(e) => router.push(`/dashboard?country=${e.target.value}`)}
+                onChange={(e) => router.push(`${switcherPath}?country=${e.target.value}`)}
                 className="block text-xs text-[var(--undp-gray)] bg-transparent border-none cursor-pointer focus:outline-none hover:text-[var(--undp-blue)]"
               >
                 {countries.map((c) => (
@@ -81,6 +101,21 @@ export function Header({ subtitle, currentCountryId, countries, basePath }: Head
               {item.label}
             </Link>
           ))}
+          {/* Quiet entry point for the prototypes scratchpad — intentionally
+              subdued so it reads as "extra, internal" next to primary nav. */}
+          {!basePath && (
+            <Link
+              href={prototypesHref}
+              aria-current={pathname === "/prototypes" ? "page" : undefined}
+              className={`text-[11px] italic tracking-wide transition-colors ${
+                pathname === "/prototypes"
+                  ? "text-[var(--undp-blue)]"
+                  : "text-gray-400 hover:text-[var(--undp-gray)]"
+              }`}
+            >
+              prototypes
+            </Link>
+          )}
         </nav>
       </div>
     </header>
