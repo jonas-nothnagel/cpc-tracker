@@ -25,7 +25,7 @@
  * BER programmes, so the action polygon is not drawn on that lens.
  */
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { InfoBox } from "@/components/ui/info-box";
 import type { AtlasTaxonomy } from "@/lib/target-atlas-signals";
 import type {
@@ -414,7 +414,6 @@ function Radar({
   onHoverAxis: (i: number | null) => void;
   isBerLens: boolean;
 }) {
-  const svgRef = useRef<SVGSVGElement>(null);
   const n = data.axes.length;
   if (n === 0) {
     return (
@@ -452,7 +451,6 @@ function Radar({
 
   return (
     <svg
-      ref={svgRef}
       viewBox={`0 0 ${VB} ${VB}`}
       className="w-full h-auto select-none"
       onMouseLeave={() => onHoverAxis(null)}
