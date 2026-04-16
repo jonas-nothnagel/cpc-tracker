@@ -214,6 +214,7 @@ export function PrototypesClient({
           sectors={data.sectors}
           globeCategories={data.globeCategories}
           countryConfig={data.countryConfig}
+          berData={data.berData}
         />
 
         {/* ── Add new prototypes below. Each gets its own section. ────── */}

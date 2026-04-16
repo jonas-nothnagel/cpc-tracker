@@ -47,6 +47,7 @@ import type {
   GlobeCategory,
   NbsCategory,
   CountryConfig,
+  BerData,
 } from "@/types";
 
 // 12-colour qualitative palette chosen for distinguishability at small dot
@@ -80,6 +81,8 @@ interface Props {
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
   countryConfig: CountryConfig | null;
+  /** BER expenditure data — used to weight the "Budget" ranking by spend share. Optional. */
+  berData?: BerData | null;
 }
 
 type TaxonomyChoice = {
@@ -98,6 +101,7 @@ export function TargetAtlas({
   sectors,
   globeCategories,
   countryConfig,
+  berData,
 }: Props) {
   const taxonomyChoices: TaxonomyChoice[] = useMemo(() => {
     const out: TaxonomyChoice[] = [];
@@ -160,6 +164,54 @@ export function TargetAtlas({
     });
     return out;
   }, [lens, taxonomyChoices]);
+
+  // Primary-category count for BER programmes and BTR actions — drives the
+  // "Budget" and "Implementation" rank-by modes. Uses primary classification
+  // only so each programme/action is counted once per lens.
+  const budgetByCat = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const c of classifications) {
+      if (!c.isPrimary || c.taxonomyType !== lens) continue;
+      const t = targetsById.get(c.targetId);
+      if (!t || t.sourceDocument !== "BER") continue;
+      m.set(c.categoryId, (m.get(c.categoryId) ?? 0) + 1);
+    }
+    return m;
+  }, [classifications, lens, targetsById]);
+
+  const implByCat = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const c of classifications) {
+      if (!c.isPrimary || c.taxonomyType !== lens) continue;
+      const t = targetsById.get(c.targetId);
+      if (!t || t.sourceDocument !== "BTR") continue;
+      m.set(c.categoryId, (m.get(c.categoryId) ?? 0) + 1);
+    }
+    return m;
+  }, [classifications, lens, targetsById]);
+
+  // Aggregate BER spend per primary lens category. Sums values across all
+  // years on each programme's expenditure row. Null when berData missing.
+  const spendByCat = useMemo(() => {
+    if (!berData?.expenditure) return null;
+    const totalByCode = new Map<string, number>();
+    for (const row of berData.expenditure) {
+      let sum = 0;
+      for (const v of Object.values(row.values ?? {})) {
+        if (typeof v === "number") sum += v;
+      }
+      totalByCode.set(row.code, sum);
+    }
+    const m = new Map<string, number>();
+    for (const c of classifications) {
+      if (!c.isPrimary || c.taxonomyType !== lens) continue;
+      if (!c.targetId.startsWith("BER_")) continue;
+      const code = c.targetId.slice(4);
+      const amt = totalByCode.get(code) ?? 0;
+      m.set(c.categoryId, (m.get(c.categoryId) ?? 0) + amt);
+    }
+    return m;
+  }, [berData, classifications, lens]);
 
   const xMax = Math.max(1, ...signals.map((s) => s.coherenceCount));
   const yMax = Math.max(1, ...signals.map((s) => s.backingCount));
@@ -661,8 +713,8 @@ export function TargetAtlas({
           <Legend taxonomyChoices={taxonomyChoices} lens={lens} />
         </div>
 
-        {selectedSignal && selectedTarget && (
-          <div className="lg:w-[400px] shrink-0 self-start lg:sticky lg:top-20">
+        <div className="lg:w-[380px] shrink-0 self-start lg:sticky lg:top-20">
+          {selectedSignal && selectedTarget ? (
             <SidePanel
               signal={selectedSignal}
               target={selectedTarget}
@@ -676,8 +728,25 @@ export function TargetAtlas({
               lensCategoryLookup={colorLookup}
               onClose={() => setSelectedId(null)}
             />
-          </div>
-        )}
+          ) : (
+            <CategoryRanking
+              signals={signals}
+              xThreshold={xThreshold}
+              yThreshold={yThreshold}
+              lensLabel={taxonomyChoices.find((t) => t.id === lens)?.label ?? lens}
+              categoryLookup={colorLookup}
+              budgetByCat={budgetByCat}
+              implByCat={implByCat}
+              spendByCat={spendByCat}
+              budgetUnit={berData?.unit ?? null}
+              budgetCurrency={berData?.currency ?? null}
+              selectedCategoryId={selectedCategoryId}
+              onSelectCategory={(id) =>
+                setSelectedCategoryId((cur) => (cur === id ? null : id))
+              }
+            />
+          )}
+        </div>
       </div>
 
       {hoverSignal && hoverTarget && !selectedId && (
@@ -694,27 +763,21 @@ export function TargetAtlas({
             : ""}
         </div>
       )}
-
-      <CategoryRanking
-        signals={signals}
-        xThreshold={xThreshold}
-        yThreshold={yThreshold}
-        lensLabel={taxonomyChoices.find((t) => t.id === lens)?.label ?? lens}
-        categoryLookup={colorLookup}
-        selectedCategoryId={selectedCategoryId}
-        onSelectCategory={(id) =>
-          setSelectedCategoryId((cur) => (cur === id ? null : id))
-        }
-      />
     </section>
   );
 }
 
 // ── Category breakdown ─────────────────────────────────────────────────
-// A compact stacked-bar ranking: for each primary lens category, the share
-// of targets in each quadrant. Sorted by count of "Well-supported" targets,
-// so the categories most reinforced across policy, action, and budget sit
-// at the top.
+// Three ranking modes, selected by the user via a tab strip:
+//   - "policy"         rank by # policy targets landing in "Well-supported".
+//                      Bar shows the quadrant distribution.
+//   - "budget"         rank by BER-programme count in each category, with a
+//                      bar width proportional to % of BER spend (when BER
+//                      expenditure data is available — otherwise by count).
+//                      This is the view a finance reader wants: it surfaces
+//                      categories where money concentrates, not categories
+//                      where policy targets concentrate.
+//   - "implementation" rank by # BTR actions classified to each category.
 const QUADRANT_TINTS: Record<Quadrant, string> = {
   well_supported: "#86efac",
   backed_isolated: "#7dd3fc",
@@ -722,12 +785,25 @@ const QUADRANT_TINTS: Record<Quadrant, string> = {
   limited_uptake: "#cbd5e1",
 };
 
+type RankBy = "policy" | "budget" | "implementation";
+
+const RANK_TABS: { id: RankBy; label: string }[] = [
+  { id: "policy", label: "Policy" },
+  { id: "budget", label: "Budget" },
+  { id: "implementation", label: "Implementation" },
+];
+
 function CategoryRanking({
   signals,
   xThreshold,
   yThreshold,
   lensLabel,
   categoryLookup,
+  budgetByCat,
+  implByCat,
+  spendByCat,
+  budgetUnit,
+  budgetCurrency,
   selectedCategoryId,
   onSelectCategory,
 }: {
@@ -736,87 +812,167 @@ function CategoryRanking({
   yThreshold: number;
   lensLabel: string;
   categoryLookup: Map<string, { color: string; name: string }>;
+  budgetByCat: Map<string, number>;
+  implByCat: Map<string, number>;
+  spendByCat: Map<string, number> | null;
+  budgetUnit: string | null;
+  budgetCurrency: string | null;
   selectedCategoryId: string | null;
   onSelectCategory: (id: string) => void;
 }) {
-  const buckets = new Map<
-    string,
-    Record<Quadrant, number> & { total: number }
-  >();
-  for (const s of signals) {
-    const cat = s.lensPrimary ?? "_unclassified";
-    const q = classifyQuadrant(
-      s.coherenceCount,
-      s.backingCount,
-      xThreshold,
-      yThreshold,
-    );
-    const row =
-      buckets.get(cat) ??
-      {
-        well_supported: 0,
-        backed_isolated: 0,
-        ambition_gap: 0,
-        limited_uptake: 0,
-        total: 0,
-      };
-    row[q] += 1;
-    row.total += 1;
-    buckets.set(cat, row);
-  }
+  const [rankBy, setRankBy] = useState<RankBy>("policy");
 
-  const rows = Array.from(buckets.entries())
-    .filter(([, v]) => v.total > 0)
-    .map(([id, v]) => ({
-      id,
-      name:
-        id === "_unclassified"
-          ? "Unclassified"
-          : categoryLookup.get(id)?.name ?? id,
-      color:
-        id === "_unclassified"
-          ? "#94a3b8"
-          : categoryLookup.get(id)?.color ?? "#94a3b8",
-      ...v,
-    }))
-    .sort(
-      (a, b) =>
-        b.well_supported - a.well_supported ||
-        b.total - a.total,
-    );
+  const catMeta = (id: string) => ({
+    id,
+    name:
+      id === "_unclassified"
+        ? "Unclassified"
+        : categoryLookup.get(id)?.name ?? id,
+    color:
+      id === "_unclassified"
+        ? UNCLASSIFIED_COLOR
+        : categoryLookup.get(id)?.color ?? UNCLASSIFIED_COLOR,
+  });
 
+  // Disable tabs that have no data under this lens.
+  const tabDisabled: Record<RankBy, boolean> = {
+    policy: false,
+    budget: budgetByCat.size === 0,
+    implementation: implByCat.size === 0,
+  };
+
+  // ── Policy mode ──────────────────────────────────────────────────
+  const policyRows = (() => {
+    const buckets = new Map<
+      string,
+      Record<Quadrant, number> & { total: number }
+    >();
+    for (const s of signals) {
+      const cat = s.lensPrimary ?? "_unclassified";
+      const q = classifyQuadrant(
+        s.coherenceCount,
+        s.backingCount,
+        xThreshold,
+        yThreshold,
+      );
+      const row =
+        buckets.get(cat) ??
+        {
+          well_supported: 0,
+          backed_isolated: 0,
+          ambition_gap: 0,
+          limited_uptake: 0,
+          total: 0,
+        };
+      row[q] += 1;
+      row.total += 1;
+      buckets.set(cat, row);
+    }
+    return Array.from(buckets.entries())
+      .filter(([, v]) => v.total > 0)
+      .map(([id, v]) => ({ ...catMeta(id), ...v }))
+      .sort(
+        (a, b) =>
+          b.well_supported - a.well_supported || b.total - a.total,
+      );
+  })();
+  const policyWidest = Math.max(...policyRows.map((r) => r.total), 1);
+
+  // ── Budget mode ──────────────────────────────────────────────────
+  const totalSpend = spendByCat
+    ? Array.from(spendByCat.values()).reduce((s, v) => s + v, 0)
+    : 0;
+  const budgetRows = Array.from(budgetByCat.entries())
+    .map(([id, count]) => {
+      const spend = spendByCat?.get(id) ?? 0;
+      const share = totalSpend > 0 ? spend / totalSpend : 0;
+      return { ...catMeta(id), count, spend, share };
+    })
+    .sort((a, b) => b.share - a.share || b.count - a.count);
+  const budgetWidest = spendByCat
+    ? Math.max(...budgetRows.map((r) => r.share), 0.0001)
+    : Math.max(...budgetRows.map((r) => r.count), 1);
+
+  // ── Implementation mode ──────────────────────────────────────────
+  const implRows = Array.from(implByCat.entries())
+    .map(([id, count]) => ({ ...catMeta(id), count }))
+    .sort((a, b) => b.count - a.count);
+  const implWidest = Math.max(...implRows.map((r) => r.count), 1);
+
+  const rows =
+    rankBy === "policy"
+      ? policyRows
+      : rankBy === "budget"
+        ? budgetRows
+        : implRows;
   if (rows.length === 0) return null;
-  const widest = Math.max(...rows.map((r) => r.total), 1);
+
+  const title =
+    rankBy === "policy"
+      ? `Most supported ${lensLabel} categories`
+      : rankBy === "budget"
+        ? `Where the budget flows (${lensLabel})`
+        : `Where reported action concentrates (${lensLabel})`;
+
+  const subtitle =
+    rankBy === "policy"
+      ? "Taxonomy areas ranked by policy targets that land in \u201CWell-supported\u201D (policy, action and budget combined). Click a row to highlight on the chart."
+      : rankBy === "budget"
+        ? spendByCat
+          ? `BER programmes grouped by their primary ${lensLabel} category. Bar width is share of total biodiversity expenditure. Click a row to highlight related policy targets on the chart.`
+          : `BER programmes grouped by their primary ${lensLabel} category. Bar width is # programmes. Click a row to highlight related policy targets on the chart.`
+        : `BTR reported actions grouped by their primary ${lensLabel} category. Click a row to highlight related policy targets on the chart.`;
 
   return (
-    <div className="mt-4 border border-gray-100 rounded-lg p-3 bg-white">
-      <div className="flex items-baseline justify-between gap-3 mb-2">
-        <div>
+    <div className="border border-gray-100 rounded-lg p-3 bg-white">
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="min-w-0">
           <p className="text-sm font-semibold text-[var(--undp-black)]">
-            Most supported {lensLabel} categories
+            {title}
           </p>
-          <p className="text-xs text-[var(--undp-gray)] mt-0.5">
-            Which areas of the taxonomy are most backed across policy
-            coherence, reported action and budget combined. Each target
-            counts once, under its primary category. Rows sort by the
-            number of targets that land in &ldquo;Well-supported&rdquo;.
-            Click a row to highlight that category&apos;s targets on the
-            chart.
+          <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 leading-snug">
+            {subtitle}
           </p>
         </div>
         {selectedCategoryId && (
           <button
             type="button"
             onClick={() => onSelectCategory(selectedCategoryId)}
-            className="text-[11px] text-[var(--undp-blue)] hover:underline whitespace-nowrap"
+            className="text-[11px] text-[var(--undp-blue)] hover:underline whitespace-nowrap shrink-0"
           >
-            Clear highlight
+            Clear
           </button>
         )}
       </div>
+
+      {/* Rank-by tab strip */}
+      <div className="flex items-center gap-1 mb-2 border-b border-gray-100">
+        {RANK_TABS.map((t) => {
+          const disabled = tabDisabled[t.id];
+          const active = rankBy === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              disabled={disabled}
+              onClick={() => setRankBy(t.id)}
+              className={`px-2.5 py-1 text-[11px] rounded-t transition-colors -mb-px border-b-2 ${
+                active
+                  ? "border-[var(--undp-blue)] text-[var(--undp-blue)] font-semibold"
+                  : disabled
+                    ? "border-transparent text-gray-300 cursor-not-allowed"
+                    : "border-transparent text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+              }`}
+              title={disabled ? `No ${t.label.toLowerCase()} data for this lens` : undefined}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
       <div className="space-y-0.5">
         {rows.map((r) => {
-          const segW = (n: number) => `${(n / widest) * 100}%`;
           const isSelected = selectedCategoryId === r.id;
           const isDimmed = selectedCategoryId !== null && !isSelected;
           return (
@@ -825,13 +981,11 @@ function CategoryRanking({
               type="button"
               onClick={() => onSelectCategory(r.id)}
               aria-pressed={isSelected}
-              className={`w-full flex items-center gap-3 py-1 px-1.5 rounded text-left transition-colors ${
-                isSelected
-                  ? "bg-[var(--undp-light)]"
-                  : "hover:bg-gray-50"
+              className={`w-full flex items-center gap-2 py-1 px-1.5 rounded text-left transition-colors ${
+                isSelected ? "bg-[var(--undp-light)]" : "hover:bg-gray-50"
               } ${isDimmed ? "opacity-55" : ""}`}
             >
-              <span className="flex items-center gap-1.5 min-w-0 w-[160px] text-[11px]">
+              <span className="flex items-center gap-1.5 min-w-0 flex-1 text-[11px]">
                 <span
                   className="inline-block w-2.5 h-2.5 rounded-full shrink-0"
                   style={{ backgroundColor: r.color }}
@@ -840,62 +994,146 @@ function CategoryRanking({
                   className={`truncate text-[var(--undp-black)] ${
                     isSelected ? "font-semibold" : ""
                   }`}
+                  title={r.name}
                 >
                   {r.name}
                 </span>
               </span>
-              <span
-                className={`tabular-nums whitespace-nowrap w-14 text-[11px] ${
-                  isSelected ? "font-semibold text-[var(--undp-black)]" : "text-[var(--undp-gray)]"
-                }`}
-              >
-                {r.well_supported}/{r.total}
-              </span>
-              <span
-                className="flex-1 h-3 flex rounded-sm overflow-hidden bg-gray-100"
-                title={`Well-supported ${r.well_supported} · Backed but isolated ${r.backed_isolated} · Ambition gap ${r.ambition_gap} · Limited uptake ${r.limited_uptake}`}
-              >
-                {(
-                  [
-                    "well_supported",
-                    "backed_isolated",
-                    "ambition_gap",
-                    "limited_uptake",
-                  ] as const
-                ).map((q) =>
-                  r[q] > 0 ? (
+
+              {rankBy === "policy" && (
+                <>
+                  <span
+                    className={`tabular-nums whitespace-nowrap w-10 text-right text-[11px] ${
+                      isSelected
+                        ? "font-semibold text-[var(--undp-black)]"
+                        : "text-[var(--undp-gray)]"
+                    }`}
+                  >
+                    {(r as typeof policyRows[number]).well_supported}/
+                    {(r as typeof policyRows[number]).total}
+                  </span>
+                  <span
+                    className="w-[110px] h-3 flex rounded-sm overflow-hidden bg-gray-100 shrink-0"
+                    title={`Well-supported ${(r as typeof policyRows[number]).well_supported} · Backed but isolated ${(r as typeof policyRows[number]).backed_isolated} · Ambition gap ${(r as typeof policyRows[number]).ambition_gap} · Limited uptake ${(r as typeof policyRows[number]).limited_uptake}`}
+                  >
+                    {(
+                      [
+                        "well_supported",
+                        "backed_isolated",
+                        "ambition_gap",
+                        "limited_uptake",
+                      ] as const
+                    ).map((q) => {
+                      const v = (r as typeof policyRows[number])[q];
+                      if (v <= 0) return null;
+                      return (
+                        <span
+                          key={q}
+                          style={{
+                            width: `${(v / policyWidest) * 100}%`,
+                            backgroundColor: QUADRANT_TINTS[q],
+                          }}
+                        />
+                      );
+                    })}
+                  </span>
+                </>
+              )}
+
+              {rankBy === "budget" && (
+                <>
+                  <span
+                    className={`tabular-nums whitespace-nowrap w-12 text-right text-[11px] ${
+                      isSelected
+                        ? "font-semibold text-[var(--undp-black)]"
+                        : "text-[var(--undp-gray)]"
+                    }`}
+                    title={
+                      spendByCat
+                        ? `${(r as typeof budgetRows[number]).count} programmes · ${((r as typeof budgetRows[number]).share * 100).toFixed(1)}% of BER${
+                            budgetCurrency || budgetUnit
+                              ? ` spend (${[budgetUnit, budgetCurrency].filter(Boolean).join(" ")})`
+                              : ""
+                          }`
+                        : `${(r as typeof budgetRows[number]).count} programmes`
+                    }
+                  >
+                    {spendByCat
+                      ? `${((r as typeof budgetRows[number]).share * 100).toFixed(0)}%`
+                      : (r as typeof budgetRows[number]).count}
+                  </span>
+                  <span
+                    className="w-[110px] h-3 rounded-sm overflow-hidden bg-gray-100 shrink-0 relative"
+                    title={
+                      spendByCat
+                        ? `${(r as typeof budgetRows[number]).count} BER programme${(r as typeof budgetRows[number]).count === 1 ? "" : "s"} · ${((r as typeof budgetRows[number]).share * 100).toFixed(1)}% of biodiversity expenditure`
+                        : `${(r as typeof budgetRows[number]).count} BER programme${(r as typeof budgetRows[number]).count === 1 ? "" : "s"}`
+                    }
+                  >
                     <span
-                      key={q}
+                      className="absolute inset-y-0 left-0"
                       style={{
-                        width: segW(r[q]),
-                        backgroundColor: QUADRANT_TINTS[q],
+                        width: spendByCat
+                          ? `${((r as typeof budgetRows[number]).share / budgetWidest) * 100}%`
+                          : `${((r as typeof budgetRows[number]).count / budgetWidest) * 100}%`,
+                        backgroundColor: r.color,
                       }}
                     />
-                  ) : null,
-                )}
-              </span>
+                  </span>
+                </>
+              )}
+
+              {rankBy === "implementation" && (
+                <>
+                  <span
+                    className={`tabular-nums whitespace-nowrap w-10 text-right text-[11px] ${
+                      isSelected
+                        ? "font-semibold text-[var(--undp-black)]"
+                        : "text-[var(--undp-gray)]"
+                    }`}
+                    title={`${(r as typeof implRows[number]).count} BTR action${(r as typeof implRows[number]).count === 1 ? "" : "s"}`}
+                  >
+                    {(r as typeof implRows[number]).count}
+                  </span>
+                  <span
+                    className="w-[110px] h-3 rounded-sm overflow-hidden bg-gray-100 shrink-0 relative"
+                  >
+                    <span
+                      className="absolute inset-y-0 left-0"
+                      style={{
+                        width: `${((r as typeof implRows[number]).count / implWidest) * 100}%`,
+                        backgroundColor: r.color,
+                      }}
+                    />
+                  </span>
+                </>
+              )}
             </button>
           );
         })}
       </div>
-      <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]">
-        {(
-          [
-            ["well_supported", "Well-supported"],
-            ["backed_isolated", "Backed but isolated"],
-            ["ambition_gap", "Ambition gap"],
-            ["limited_uptake", "Limited uptake"],
-          ] as [Quadrant, string][]
-        ).map(([q, label]) => (
-          <span key={q} className="flex items-center gap-1.5">
-            <span
-              className="inline-block w-3 h-3 rounded-sm"
-              style={{ backgroundColor: QUADRANT_TINTS[q] }}
-            />
-            {label}
-          </span>
-        ))}
-      </div>
+
+      {/* Quadrant legend only applies to the Policy mode. */}
+      {rankBy === "policy" && (
+        <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]">
+          {(
+            [
+              ["well_supported", "Well-supported"],
+              ["backed_isolated", "Backed but isolated"],
+              ["ambition_gap", "Ambition gap"],
+              ["limited_uptake", "Limited uptake"],
+            ] as [Quadrant, string][]
+          ).map(([q, label]) => (
+            <span key={q} className="flex items-center gap-1.5">
+              <span
+                className="inline-block w-3 h-3 rounded-sm"
+                style={{ backgroundColor: QUADRANT_TINTS[q] }}
+              />
+              {label}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
