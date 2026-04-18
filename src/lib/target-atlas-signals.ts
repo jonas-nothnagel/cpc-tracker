@@ -413,16 +413,6 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
     });
   }
 
-  // Diagnostic — confirms the quality-weighted backing logic is actually
-  // running in the browser. Safe to leave in; negligible cost. Remove
-  // once the reader is satisfied.
-  if (typeof window !== "undefined" && signals.length > 0) {
-    const max = signals.reduce((m, s) => (s.backingCount > m ? s.backingCount : m), 0);
-    console.log(
-      `[atlas-signals] ${signals.length} signals · backingCount max ${max.toFixed(2)} (quality-weighted)`,
-    );
-  }
-
   return signals;
 }
 
