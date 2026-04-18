@@ -49,6 +49,15 @@ interface DashboardData {
 }
 
 function normalizeTarget(t: Record<string, unknown>): Target {
+  // Pseudo-target extras (`measureStatus` on BTR rows, `expenditure` on
+  // BER rows) are not declared on the Target type, but the Atlas
+  // signals layer reads them via a narrow cast to compute
+  // quality-weighted backing. Passing them through here keeps the
+  // data intact between the API and that consumer; anything that sees
+  // them through the plain `Target` contract simply ignores them.
+  const extras: Record<string, unknown> = {};
+  if (t.measureStatus !== undefined) extras.measureStatus = t.measureStatus;
+  if (t.expenditure !== undefined) extras.expenditure = t.expenditure;
   return {
     id: String(t.id),
     text: String(t.text),
@@ -67,7 +76,8 @@ function normalizeTarget(t: Record<string, unknown>): Target {
       t.actionType === "mitigation" || t.actionType === "adaptation"
         ? t.actionType
         : undefined,
-  };
+    ...extras,
+  } as Target;
 }
 
 function normalizeCategory(t: Record<string, unknown>): IpccSector {

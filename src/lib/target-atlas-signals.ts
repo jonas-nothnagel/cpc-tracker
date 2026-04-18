@@ -119,6 +119,50 @@ export interface BuildAtlasInput {
 
 const COLOR_TAXONOMIES: readonly string[] = ["nbs", "sector", "globe"];
 
+/**
+ * Pseudo-target fields that exist on BER / BTR entries in the JSON served
+ * by /api/dashboard, but that the Target type does not yet declare. Read
+ * them via a narrow local assertion rather than widening Target so the
+ * change stays contained to this file.
+ */
+type PseudoTargetExtras = {
+  expenditure?: Record<string, number | null>;
+  measureStatus?: string;
+};
+
+/** Sum of yearly expenditure values; null/non-numeric entries skipped. */
+function totalExpenditure(e: Record<string, number | null> | undefined): number {
+  if (!e) return 0;
+  let sum = 0;
+  for (const v of Object.values(e)) {
+    if (typeof v === "number" && Number.isFinite(v)) sum += v;
+  }
+  return sum;
+}
+
+/**
+ * BTR action status weights — uniform ordinal increments tied to stages
+ * of policy execution. Every reported stage carries positive weight;
+ * only CTF notation keys (NA/UA/…) and empty strings map to zero.
+ */
+const STATUS_WEIGHTS: Record<string, number> = {
+  implemented: 1.0,
+  completed: 1.0,
+  ongoing: 0.75,
+  adopted: 0.5,
+  planned: 0.25,
+};
+
+function statusWeight(raw: string | undefined | null): number {
+  if (!raw) return 0;
+  const s = raw.toLowerCase().trim();
+  if (!s) return 0;
+  for (const [key, w] of Object.entries(STATUS_WEIGHTS)) {
+    if (s.includes(key)) return w;
+  }
+  return 0;
+}
+
 export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
   const {
     policyTargets,
@@ -168,6 +212,28 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
     if (t.sourceDocument === "BER") berIds.push(t.id);
     else if (t.sourceDocument === "BTR") btrIds.push(t.id);
   }
+
+  // Mean spend across funded BER programmes — the reference used to scale
+  // each budget bridge. A programme at 5× the mean spend contributes 5×
+  // the backing of a mean-sized one; a 10% programme contributes 0.1×.
+  // Using the mean (rather than an arbitrary constant) keeps the scoring
+  // data-driven: the reference shifts automatically per country.
+  let fundedSpendSum = 0;
+  let fundedProgrammeCount = 0;
+  const spendById = new Map<string, number>();
+  for (const bid of berIds) {
+    const ber = targetsById.get(bid) as
+      | (Target & PseudoTargetExtras)
+      | undefined;
+    const s = totalExpenditure(ber?.expenditure);
+    spendById.set(bid, s);
+    if (s > 0) {
+      fundedSpendSum += s;
+      fundedProgrammeCount += 1;
+    }
+  }
+  const meanFundedSpend =
+    fundedProgrammeCount > 0 ? fundedSpendSum / fundedProgrammeCount : 0;
 
   // Index LLM alignment neighbors per target for side-panel lookup.
   const llmNeighbors = new Map<
@@ -248,7 +314,13 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
     }
 
     // Bridge-based budget — BER programmes sharing ≥1 category.
+    // Each bridge contributes `programme_spend / meanFundedSpend`, so
+    // larger programmes lift the score proportionally more. Unfunded
+    // programmes still appear in `budgetBridgeLinks` for drill-down but
+    // contribute zero, matching the user's intent that paper
+    // commitments without money shouldn't raise the score.
     const budgetBridgeLinks: BridgeLink[] = [];
+    let weightedBudget = 0;
     for (const bid of berIds) {
       const bSet = relevantFor(bid);
       const shared: string[] = [];
@@ -260,11 +332,19 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
           label: ber?.sourceLabel ?? bid,
           sharedCategories: shared,
         });
+        const spend = spendById.get(bid) ?? 0;
+        if (spend > 0 && meanFundedSpend > 0) {
+          weightedBudget += spend / meanFundedSpend;
+        }
       }
     }
 
     // Bridge-based implementation — BTR actions sharing ≥1 category.
+    // Each bridge contributes its status weight (Implemented=1.0,
+    // Ongoing=0.75, Adopted=0.5, Planned=0.25, NA/null=0) so that
+    // advanced stages lift the backing score more than early ones.
     const actionBridgeLinks: BridgeLink[] = [];
+    let weightedImplementation = 0;
     for (const aid of btrIds) {
       const aSet = relevantFor(aid);
       const shared: string[] = [];
@@ -276,6 +356,9 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
           label: act?.sourceLabel ?? aid,
           sharedCategories: shared,
         });
+        weightedImplementation += statusWeight(
+          (act as (Target & PseudoTargetExtras) | undefined)?.measureStatus,
+        );
       }
     }
 
@@ -301,7 +384,12 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
     const coherenceCount = coherenceBridgeLinks.length;
     const budgetCount = budgetBridgeLinks.length;
     const implementationCount = actionBridgeLinks.length;
-    const backingCount = budgetCount + implementationCount;
+    // Backing is quality-weighted: each BER bridge contributes
+    // `programme_spend / meanFundedSpend`, each BTR bridge contributes
+    // its status weight. `budgetCount` and `implementationCount` stay as
+    // raw bridge counts so the side panel still reads
+    // "N BER programmes" / "N BTR actions".
+    const backingCount = weightedBudget + weightedImplementation;
     const lensCategoryCount = tSet.size;
     const lensPrimary = primaryByTaxonomyMap?.get(bridgeTaxonomy) ?? null;
 
@@ -323,6 +411,16 @@ export function buildAtlasSignals(input: BuildAtlasInput): AtlasSignal[] {
       actionBridgeLinks,
       coherenceBridgeLinks,
     });
+  }
+
+  // Diagnostic — confirms the quality-weighted backing logic is actually
+  // running in the browser. Safe to leave in; negligible cost. Remove
+  // once the reader is satisfied.
+  if (typeof window !== "undefined" && signals.length > 0) {
+    const max = signals.reduce((m, s) => (s.backingCount > m ? s.backingCount : m), 0);
+    console.log(
+      `[atlas-signals] ${signals.length} signals · backingCount max ${max.toFixed(2)} (quality-weighted)`,
+    );
   }
 
   return signals;
