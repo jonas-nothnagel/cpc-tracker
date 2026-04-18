@@ -22,7 +22,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { InfoBox } from "@/components/ui/info-box";
 import {
   ALIGNMENT_WEIGHTS,
-  budgetBackingLabel,
   buildAtlasSignals,
   classifyQuadrant,
   quadrantThreshold,
@@ -1407,62 +1406,117 @@ function SidePanel({
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 text-sm">
+      {/* Header: source + close */}
       <div className="flex items-start justify-between gap-2 mb-2">
-        <div>
-          <div className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)]">
-            {getDocMediumLabel(countryConfig, target.sourceDocument)} ·{" "}
-            {target.sourceLabel}
+        <div className="min-w-0">
+          <div className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)]">
+            {getDocMediumLabel(countryConfig, target.sourceDocument)}
           </div>
-          <div className="text-xs text-[var(--undp-gray)] mt-0.5">
-            {QUADRANT_LABELS[quadrant]} · {budgetBackingLabel(signal.budgetCount)}
+          <div className="text-[13px] font-semibold text-[var(--undp-black)] truncate">
+            {target.sourceLabel}
           </div>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none"
+          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none shrink-0"
           aria-label="Close"
         >
           ×
         </button>
       </div>
 
-      <p className="text-[13px] text-[var(--undp-black)] leading-snug mb-3">
+      {/* Quadrant pill */}
+      <div className="mb-3">
+        <span
+          className="inline-block text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border"
+          style={{
+            backgroundColor: QUADRANT_TINTS[quadrant] + "55",
+            borderColor: QUADRANT_TINTS[quadrant],
+            color: "#1e293b",
+          }}
+        >
+          {QUADRANT_LABELS[quadrant]}
+        </span>
+      </div>
+
+      {/* Target text */}
+      <p className="text-[12.5px] text-[var(--undp-black)] leading-snug mb-3">
         {target.text}
       </p>
 
-      {/* Narrative one-liner — what you are actually seeing, for this dot. */}
-      <div className="mb-3 text-[13px] leading-snug bg-[var(--undp-light)] border border-gray-100 rounded px-3 py-2">
-        {signal.lensCategoryCount === 0 ? (
-          <span className="text-[var(--undp-gray)]">
-            Through the <strong className="text-[var(--undp-black)]">{lensLabel}</strong> lens,
-            this target has <strong className="text-[var(--undp-black)]">no relevant categories</strong>.
-            It sits at the origin by construction — the lens doesn&apos;t apply.
-            Switch lens (or enable &ldquo;Hide lens-orphans&rdquo;) to refocus.
-          </span>
-        ) : (
-          <span className="text-[var(--undp-gray)]">
-            Through the <strong className="text-[var(--undp-black)]">{lensLabel}</strong> lens,
-            this target is primarily about{" "}
-            <strong className="text-[var(--undp-black)]">
-              {signal.lensPrimary ? catName(signal.lensPrimary) : "—"}
-            </strong>
-            . It shares a lens category with{" "}
-            <strong className="text-[var(--undp-black)]">{signal.coherenceCount}</strong> cross-doc
-            policy {signal.coherenceCount === 1 ? "target" : "targets"},{" "}
-            <strong className="text-[var(--undp-black)]">{signal.implementationCount}</strong> BTR{" "}
-            {signal.implementationCount === 1 ? "action" : "actions"}, and{" "}
-            <strong className="text-[var(--undp-black)]">{signal.budgetCount}</strong> BER{" "}
-            {signal.budgetCount === 1 ? "programme" : "programmes"} — placing it in{" "}
-            <strong className="text-[var(--undp-black)]">{QUADRANT_LABELS[quadrant]}</strong>.
-          </span>
-        )}
+      {/* 4-cell stat grid — primary numbers at a glance */}
+      <div className="mb-3 grid grid-cols-2 gap-px bg-gray-100 border border-gray-100 rounded overflow-hidden">
+        <StatCell
+          label="Backing"
+          value={signal.backingCount.toFixed(1)}
+          hint="quality-weighted"
+          emphasis
+        />
+        <StatCell
+          label="Coherence"
+          value={signal.coherenceCount}
+          hint={
+            signal.coherenceCount === 0
+              ? "no cross-doc matches"
+              : signal.coherenceCount === 1
+                ? "cross-doc target"
+                : "cross-doc targets"
+          }
+        />
+        <StatCell
+          label="Budget"
+          value={signal.budgetCount}
+          hint={
+            signal.budgetCount === 0
+              ? "no BER bridges"
+              : signal.budgetCount === 1
+                ? "BER programme"
+                : "BER programmes"
+          }
+        />
+        <StatCell
+          label="Implementation"
+          value={signal.implementationCount}
+          hint={
+            signal.implementationCount === 0
+              ? "no BTR bridges"
+              : signal.implementationCount === 1
+                ? "BTR action"
+                : "BTR actions"
+          }
+        />
       </div>
+
+      {/* Tension badge — only when there are contradictions */}
+      {signal.tensionCount > 0 && (
+        <div className="mb-3 flex items-center gap-1.5 text-[11px] bg-red-50 border border-red-100 text-red-700 rounded px-2 py-1">
+          <span
+            className="inline-block w-2 h-2 rounded-full shrink-0"
+            style={{ backgroundColor: "#dc2626" }}
+          />
+          <span>
+            {signal.tensionCount}{" "}
+            {signal.tensionCount === 1 ? "contradiction" : "contradictions"}{" "}
+            with other targets (LLM-flagged)
+          </span>
+        </div>
+      )}
+
+      {/* Lens-orphan fallback — when target has no relevant categories */}
+      {signal.lensCategoryCount === 0 && (
+        <div className="mb-3 text-[12px] bg-[var(--undp-light)] border border-gray-100 rounded px-3 py-2 text-[var(--undp-gray)]">
+          No relevant categories in the{" "}
+          <strong className="text-[var(--undp-black)]">{lensLabel}</strong>{" "}
+          lens. Switch lens or enable &ldquo;Hide lens-orphans&rdquo; to
+          refocus.
+        </div>
+      )}
 
       {/* Target's lens footprint as chips */}
       {lensCategoriesForTarget.size > 0 && (
-        <div className="mb-3 text-xs">
-          <div className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+        <div className="mb-3">
+          <div className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] mb-1">
             Lens categories ({lensCategoriesForTarget.size})
           </div>
           <div className="flex flex-wrap gap-1">
@@ -1473,205 +1527,110 @@ function SidePanel({
         </div>
       )}
 
-      <BridgeMetric
-        label="Coherence"
-        count={signal.coherenceCount}
-        unit={signal.coherenceCount === 1 ? "target" : "targets"}
-        suffix="in other docs"
-        empty="No cross-doc targets share a lens category with this one."
-      >
-        {coherenceBridgeByDoc.size > 0 && (
-          <p className="text-[11px] text-[var(--undp-gray)] mt-0.5">
-            {Array.from(coherenceBridgeByDoc.entries())
-              .map(
-                ([doc, items]) =>
-                  `${getDocMediumLabel(countryConfig, doc)} × ${items.length}`,
-              )
-              .join(" · ")}
-          </p>
-        )}
-      </BridgeMetric>
-
-      <BridgeMetric
-        label="Implementation"
-        count={signal.implementationCount}
-        unit={signal.implementationCount === 1 ? "BTR action" : "BTR actions"}
-        empty="No BTR action shares a lens category with this target."
-      >
-        {signal.actionBridgeLinks.slice(0, 2).map((lk) => (
-          <LinkRow
-            key={lk.pseudoTargetId}
-            label={lk.label}
-            categories={lk.sharedCategories.map(catName)}
-            llm={llmActionByPseudoId.get(lk.pseudoTargetId)}
-          />
-        ))}
-        {signal.actionBridgeLinks.length > 2 && (
-          <p className="text-[11px] text-[var(--undp-gray)] mt-0.5">
-            and {signal.actionBridgeLinks.length - 2} more
-          </p>
-        )}
-      </BridgeMetric>
-
-      <BridgeMetric
-        label="Budget"
-        count={signal.budgetCount}
-        unit={signal.budgetCount === 1 ? "BER programme" : "BER programmes"}
-        empty="No BER programme shares a lens category with this target."
-      >
-        {signal.budgetBridgeLinks.slice(0, 2).map((lk) => (
-          <LinkRow
-            key={lk.pseudoTargetId}
-            label={lk.label}
-            categories={lk.sharedCategories.map(catName)}
-            llm={llmBudgetByPseudoId.get(lk.pseudoTargetId)}
-          />
-        ))}
-        {signal.budgetBridgeLinks.length > 2 && (
-          <p className="text-[11px] text-[var(--undp-gray)] mt-0.5">
-            and {signal.budgetBridgeLinks.length - 2} more
-          </p>
-        )}
-      </BridgeMetric>
-
-      <BridgeMetric
-        label="Tensions"
-        count={signal.tensionCount}
-        unit={signal.tensionCount === 1 ? "contradiction" : "contradictions"}
-        suffix="(from LLM alignment)"
-        tone={signal.tensionCount > 0 ? "warn" : "muted"}
-        empty="No contradictions detected."
-      >
-        {tensions.slice(0, 2).map((n) => {
-          const other = targetsById.get(n.targetId);
-          return (
-            <p
-              key={n.targetId}
-              className="text-[11px] text-[var(--undp-gray)] mt-0.5"
-            >
-              {ALIGNMENT_LABELS[n.alignment]} with{" "}
-              <span className="text-[var(--undp-black)]">
-                {other?.sourceLabel ?? n.targetId}
-              </span>
+      {/* Bridged items — collapsible per dimension. Open by default so
+          the primary detail is visible without a click, but the reader
+          can collapse noisy sections. */}
+      {signal.coherenceBridgeLinks.length > 0 && (
+        <BridgeSection
+          title="Bridged policy targets"
+          count={signal.coherenceBridgeLinks.length}
+          defaultOpen
+        >
+          {signal.coherenceBridgeLinks.slice(0, 3).map((lk) => {
+            const other = targetsById.get(lk.pseudoTargetId);
+            return (
+              <LinkRow
+                key={lk.pseudoTargetId}
+                label={other?.sourceLabel ?? lk.pseudoTargetId}
+                sublabel={getDocMediumLabel(
+                  countryConfig,
+                  other?.sourceDocument ?? "",
+                )}
+                categories={lk.sharedCategories.map(catName)}
+                llm={llmPolicyByTargetId.get(lk.pseudoTargetId)}
+              />
+            );
+          })}
+          {signal.coherenceBridgeLinks.length > 3 && (
+            <p className="text-[11px] text-[var(--undp-gray)] pl-2">
+              + {signal.coherenceBridgeLinks.length - 3} more
             </p>
-          );
-        })}
-        {tensions.length > 2 && (
-          <p className="text-[11px] text-[var(--undp-gray)] mt-0.5">
-            and {tensions.length - 2} more
-          </p>
-        )}
-      </BridgeMetric>
-
-      {(signal.coherenceBridgeLinks.length > 2 ||
-        signal.budgetBridgeLinks.length > 2 ||
-        signal.actionBridgeLinks.length > 2 ||
-        tensions.length > 2) && (
-        <details className="mt-3 pt-3 border-t border-gray-100">
-          <summary className="cursor-pointer text-xs text-[var(--undp-gray)] hover:text-[var(--undp-black)]">
-            Show all items
-          </summary>
-          <div className="mt-2 space-y-3 text-xs">
-            {signal.coherenceBridgeLinks.length > 0 && (
-              <BridgeList
-                title={`Cross-doc policy targets (${signal.coherenceBridgeLinks.length})`}
-                items={signal.coherenceBridgeLinks.map((lk) => ({
-                  key: lk.pseudoTargetId,
-                  primary: lk.label,
-                  secondary: getDocMediumLabel(
-                    countryConfig,
-                    targetsById.get(lk.pseudoTargetId)?.sourceDocument ?? "",
-                  ),
-                  categories: lk.sharedCategories.map(catName),
-                  llm: llmPolicyByTargetId.get(lk.pseudoTargetId),
-                }))}
-              />
-            )}
-            {signal.actionBridgeLinks.length > 0 && (
-              <BridgeList
-                title={`BTR actions (${signal.actionBridgeLinks.length})`}
-                items={signal.actionBridgeLinks.map((lk) => ({
-                  key: lk.pseudoTargetId,
-                  primary: lk.label,
-                  secondary: "BTR",
-                  categories: lk.sharedCategories.map(catName),
-                  llm: llmActionByPseudoId.get(lk.pseudoTargetId),
-                }))}
-              />
-            )}
-            {signal.budgetBridgeLinks.length > 0 && (
-              <BridgeList
-                title={`BER programmes (${signal.budgetBridgeLinks.length})`}
-                items={signal.budgetBridgeLinks.map((lk) => ({
-                  key: lk.pseudoTargetId,
-                  primary: lk.label,
-                  secondary: "BER",
-                  categories: lk.sharedCategories.map(catName),
-                  llm: llmBudgetByPseudoId.get(lk.pseudoTargetId),
-                }))}
-              />
-            )}
-            {tensions.length > 0 && (
-              <ItemList
-                title={`Tensions (${tensions.length})`}
-                items={tensions.map((n) => {
-                  const other = targetsById.get(n.targetId);
-                  return {
-                    key: n.targetId,
-                    color: ALIGNMENT_COLORS[n.alignment],
-                    primary: other?.sourceLabel ?? n.targetId,
-                    secondary: `${getDocMediumLabel(countryConfig, other?.sourceDocument ?? "")} · ${ALIGNMENT_LABELS[n.alignment]}`,
-                  };
-                })}
-              />
-            )}
-          </div>
-        </details>
+          )}
+        </BridgeSection>
       )}
-    </div>
-  );
-}
 
-function BridgeMetric({
-  label,
-  count,
-  unit,
-  suffix,
-  empty,
-  tone = "default",
-  children,
-}: {
-  label: string;
-  count: number;
-  unit: string;
-  suffix?: string;
-  empty: string;
-  tone?: "default" | "warn" | "muted";
-  children?: React.ReactNode;
-}) {
-  const countColor =
-    tone === "warn"
-      ? "text-[#b91c1c]"
-      : count === 0
-        ? "text-[var(--undp-gray)]"
-        : "text-[var(--undp-black)]";
-  return (
-    <div className="mt-2 pt-2 border-t border-gray-100">
-      <div className="flex items-baseline justify-between gap-2">
-        <span className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)]">
-          {label}
-        </span>
-        <span className={`text-base font-semibold ${countColor}`}>
-          {count}
-          <span className="text-[11px] font-normal text-[var(--undp-gray)] ml-1">
-            {unit} {suffix ?? ""}
-          </span>
-        </span>
-      </div>
-      {count === 0 ? (
-        <p className="text-xs text-[var(--undp-gray)] mt-0.5">{empty}</p>
-      ) : (
-        <div className="mt-1 space-y-1">{children}</div>
+      {signal.actionBridgeLinks.length > 0 && (
+        <BridgeSection
+          title="Bridged BTR actions"
+          count={signal.actionBridgeLinks.length}
+          defaultOpen={signal.actionBridgeLinks.length <= 5}
+        >
+          {signal.actionBridgeLinks.slice(0, 3).map((lk) => (
+            <LinkRow
+              key={lk.pseudoTargetId}
+              label={lk.label}
+              categories={lk.sharedCategories.map(catName)}
+              llm={llmActionByPseudoId.get(lk.pseudoTargetId)}
+            />
+          ))}
+          {signal.actionBridgeLinks.length > 3 && (
+            <p className="text-[11px] text-[var(--undp-gray)] pl-2">
+              + {signal.actionBridgeLinks.length - 3} more
+            </p>
+          )}
+        </BridgeSection>
+      )}
+
+      {signal.budgetBridgeLinks.length > 0 && (
+        <BridgeSection
+          title="Bridged BER programmes"
+          count={signal.budgetBridgeLinks.length}
+          defaultOpen={signal.budgetBridgeLinks.length <= 5}
+        >
+          {signal.budgetBridgeLinks.slice(0, 3).map((lk) => (
+            <LinkRow
+              key={lk.pseudoTargetId}
+              label={lk.label}
+              categories={lk.sharedCategories.map(catName)}
+              llm={llmBudgetByPseudoId.get(lk.pseudoTargetId)}
+            />
+          ))}
+          {signal.budgetBridgeLinks.length > 3 && (
+            <p className="text-[11px] text-[var(--undp-gray)] pl-2">
+              + {signal.budgetBridgeLinks.length - 3} more
+            </p>
+          )}
+        </BridgeSection>
+      )}
+
+      {tensions.length > 0 && (
+        <BridgeSection
+          title="Contradictions"
+          count={tensions.length}
+          tone="warn"
+          defaultOpen
+        >
+          {tensions.slice(0, 3).map((n) => {
+            const other = targetsById.get(n.targetId);
+            return (
+              <LinkRow
+                key={n.targetId}
+                label={other?.sourceLabel ?? n.targetId}
+                sublabel={getDocMediumLabel(
+                  countryConfig,
+                  other?.sourceDocument ?? "",
+                )}
+                categories={[]}
+                llm={n.alignment}
+              />
+            );
+          })}
+          {tensions.length > 3 && (
+            <p className="text-[11px] text-[var(--undp-gray)] pl-2">
+              + {tensions.length - 3} more
+            </p>
+          )}
+        </BridgeSection>
       )}
     </div>
   );
@@ -1679,32 +1638,110 @@ function BridgeMetric({
 
 function LinkRow({
   label,
+  sublabel,
   categories,
   llm,
 }: {
   label: string;
+  sublabel?: string;
   categories: string[];
   llm?: AlignmentLevel;
 }) {
   return (
-    <div className="text-[11px]">
-      <div className="text-[var(--undp-black)]">{label}</div>
-      <div className="text-[var(--undp-gray)] flex flex-wrap items-center gap-x-2">
-        <span>via {categories.slice(0, 3).join(" · ")}</span>
+    <div className="text-[11px] leading-snug py-1 px-2 border-l-2 border-gray-100">
+      <div className="text-[var(--undp-black)] font-medium truncate">
+        {label}
+      </div>
+      <div className="text-[var(--undp-gray)] flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
+        {sublabel && <span className="shrink-0">{sublabel}</span>}
+        {categories.length > 0 && (
+          <span>via {categories.slice(0, 3).join(" · ")}</span>
+        )}
         {llm && (
           <span
-            className="inline-flex items-center gap-1"
+            className="inline-flex items-center gap-1 shrink-0"
             title="LLM-assessed pairwise alignment score"
           >
             <span
               className="inline-block w-1.5 h-1.5 rounded-full"
               style={{ backgroundColor: ALIGNMENT_COLORS[llm] }}
             />
-            {ALIGNMENT_LABELS[llm]} (LLM)
+            {ALIGNMENT_LABELS[llm]}
           </span>
         )}
       </div>
     </div>
+  );
+}
+
+function StatCell({
+  label,
+  value,
+  hint,
+  emphasis = false,
+}: {
+  label: string;
+  value: string | number;
+  hint?: string;
+  emphasis?: boolean;
+}) {
+  return (
+    <div className="bg-white px-2.5 py-2">
+      <div className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)]">
+        {label}
+      </div>
+      <div
+        className={
+          emphasis
+            ? "text-[20px] font-semibold text-[var(--undp-blue)] leading-tight mt-0.5"
+            : "text-[16px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5"
+        }
+      >
+        {value}
+      </div>
+      {hint && (
+        <div className="text-[10px] text-[var(--undp-gray)] mt-0.5 leading-tight">
+          {hint}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BridgeSection({
+  title,
+  count,
+  tone = "default",
+  defaultOpen = true,
+  children,
+}: {
+  title: string;
+  count: number;
+  tone?: "default" | "warn";
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  const countColor = tone === "warn" ? "#b91c1c" : "var(--undp-gray)";
+  return (
+    <details className="mt-2 group" open={defaultOpen}>
+      <summary className="cursor-pointer flex items-center justify-between gap-2 py-1.5 border-t border-gray-100 list-none">
+        <span className="flex items-center gap-1.5">
+          <span className="text-[10px] text-[var(--undp-gray)] transition-transform group-open:rotate-90">
+            ▸
+          </span>
+          <span className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)]">
+            {title}
+          </span>
+        </span>
+        <span
+          className="text-[12px] font-semibold"
+          style={{ color: countColor }}
+        >
+          {count}
+        </span>
+      </summary>
+      <div className="mt-1 space-y-0.5">{children}</div>
+    </details>
   );
 }
 
@@ -1729,90 +1766,6 @@ function CategoryChip({
       />
       {name}
     </span>
-  );
-}
-
-function BridgeList({
-  title,
-  items,
-}: {
-  title: string;
-  items: {
-    key: string;
-    primary: string;
-    secondary: string;
-    categories: string[];
-    llm?: AlignmentLevel;
-  }[];
-}) {
-  return (
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-        {title}
-      </div>
-      <ul className="space-y-1.5">
-        {items.map((item) => (
-          <li key={item.key} className="text-[11px]">
-            <div className="text-[var(--undp-black)]">
-              <span className="font-medium">{item.primary}</span>
-              <span className="text-[var(--undp-gray)]"> · {item.secondary}</span>
-            </div>
-            <div className="text-[var(--undp-gray)]">
-              via {item.categories.slice(0, 4).join(" · ")}
-              {item.llm && (
-                <>
-                  {" · "}
-                  <span
-                    className="inline-flex items-center gap-1"
-                    title="LLM-assessed pairwise alignment"
-                  >
-                    <span
-                      className="inline-block w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: ALIGNMENT_COLORS[item.llm] }}
-                    />
-                    {ALIGNMENT_LABELS[item.llm]} (LLM)
-                  </span>
-                </>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-// ── Small building blocks ─────────────────────────────────────────────
-function ItemList({
-  title,
-  items,
-}: {
-  title: string;
-  items: { key: string; color: string; primary: string; secondary: string }[];
-}) {
-  return (
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-        {title}
-      </div>
-      <ul className="space-y-1">
-        {items.map((item) => (
-          <li key={item.key} className="flex items-start gap-2 text-xs text-[var(--undp-black)]">
-            <span
-              className="inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
-              style={{ backgroundColor: item.color }}
-            />
-            <span className="flex-1">
-              <span className="font-medium">{item.primary}</span>
-              <span className="text-[var(--undp-gray)]">
-                {" · "}
-                {item.secondary}
-              </span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
 
