@@ -23,11 +23,49 @@
  */
 export type PolicyDocumentType = string;
 
+/**
+ * Describes how the display `text` field relates to the underlying source spans.
+ *
+ * - `verbatim`   : `text` equals one `sources[].sourceText` after whitespace normalisation.
+ * - `cleaned`    : `text` is a deterministic light cleanup of one source (drop numeric prefix
+ *                  like "Target 1.", join broken lines, normalise whitespace). No words added,
+ *                  no semantic changes.
+ * - `synthesis`  : `text` is composed from multiple `sources[]` entries. Every concrete claim
+ *                  in `text` (numbers, deadlines, named frameworks, specific verbs) MUST be
+ *                  grounded in at least one source span. The post-extraction validator enforces
+ *                  this. Surfaces in the UI as an "AI-summarised" badge.
+ */
+export type TextCleanup = "verbatim" | "cleaned" | "synthesis";
+
+/**
+ * A verbatim source span backing a display `text` field. Every Target / Activity / Measure
+ * carries an array of these so the dashboard can always show the original wording on demand
+ * and stakeholders can audit what the LLM produced.
+ */
+export interface TargetSource {
+  /** Verbatim quote from the source document. */
+  sourceText: string;
+  /** Page numbers in the source document where this quote appears. May be multiple if the
+   *  same target is mentioned on several pages and was consolidated. */
+  pages?: number[];
+  /** Section or numeric identifier when the source has one (e.g. "6.2.12", "Goal 2", "1A3").
+   *  Surfaced in tooltips / citations to make the audit trail concrete. */
+  section?: string;
+  /** Document name when distinct from the parent Target's `sourceDocument` — useful when
+   *  consolidating across multiple files. */
+  document?: string;
+  /** Optional URL pointing at the canonical online source (e.g. CBD national targets portal). */
+  url?: string;
+}
+
 /** A single policy target entered by a user. */
 export interface Target {
   /** Unique identifier (e.g. "NDC_Biodiversity_1") */
   id: string;
-  /** Full target text as provided by the user */
+  /**
+   * Display text for this target. Used as the LLM input for classification and pairwise
+   * alignment passes. Must be derivable from `sources[]` per `textCleanup` rules.
+   */
   text: string;
   /** Source policy document type */
   sourceDocument: PolicyDocumentType;
@@ -58,6 +96,15 @@ export interface Target {
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
    */
   actionType?: BTRActionType;
+  /**
+   * Verbatim source span(s) this target was extracted from. At least one entry expected for
+   * targets that went through the extraction pipeline; legacy entries pre-dating the schema
+   * may have this empty (treated as unverified provenance — surfaced as a warning in dev).
+   */
+  sources?: TargetSource[];
+  /** How `text` relates to `sources[]`. Defaults to `"verbatim"` if a single source whose
+   *  `sourceText` matches `text`; otherwise must be set explicitly. */
+  textCleanup?: TextCleanup;
 }
 
 /** Kind of reported action from a Biennial Transparency Report. */
@@ -100,6 +147,8 @@ export interface IpccSector {
   id: string;
   name: string;
   description: string;
+  /** Primary source citation for the description (e.g. IPCC 2006 Guidelines volume/chapter/section). */
+  source?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -111,12 +160,14 @@ export interface GlobeCategory {
   id: string;
   name: string;
   description: string;
+  /** Primary source citation for the description. */
+  source?: string;
 }
 
 /**
  * A GLOBE subcategory (level 2) within a Primary Biodiversity Category.
- * These 48 subcategories come directly from the BIOFIN GLOBE 2024 taxonomy
- * and are used for fine-grained BER classification.
+ * These come directly from the BIOFIN GLOBE 2024 taxonomy and are used for
+ * fine-grained BER classification.
  */
 export interface GlobeSubcategory {
   /** Subcategory id (e.g. "6.01", "7.04") */
@@ -127,6 +178,8 @@ export interface GlobeSubcategory {
   name: string;
   /** Full description of what falls under this subcategory */
   description: string;
+  /** Primary source citation for the description. */
+  source?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -282,6 +335,13 @@ export interface BTRAction {
 
   /** Provenance — cited to the primary document. */
   sourceRef?: SourceRef;
+
+  /**
+   * Per-action verbatim source span (Table III.9 row text for adaptation; CTF Table 5
+   * row text for mitigation). Reviewers should be able to compare `name`/`description`
+   * against `source.sourceText` to verify the displayed wording is faithful.
+   */
+  source?: TargetSource;
 }
 
 /** @deprecated Use BTRAction. Kept as an alias so existing imports don't break. */

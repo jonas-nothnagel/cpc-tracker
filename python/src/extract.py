@@ -115,8 +115,17 @@ RULES:
 2. When a document lists a "Goal" with sub-"Targets" or sub-"Measures", \
    extract at the TARGET level, not at the measure/activity level. Combine \
    closely related sub-points into one coherent target.
-3. Preserve the original wording. Lightly clean if needed, but do not \
-   paraphrase or embellish.
+3. VERBATIM CONTRACT — the "sourceText" field MUST be copied character-for-character \
+   from the document, with no paraphrase, no reorder, no addition, no omission. \
+   The "text" field MAY be a deterministic light cleanup of "sourceText", but only \
+   the following changes are permitted:
+     - drop a leading numeric/letter label ("Target 1.", "2.3", "a)") that is part \
+       of the document's numbering, NOT semantic content;
+     - join lines broken by PDF layout (replace internal "\\n" with a space);
+     - collapse runs of whitespace into a single space;
+     - drop trailing footnote markers like "[1]" or "¹";
+   Anything beyond this — rewording, action-verb prefacing, summarising, expanding \
+   abbreviations, adding context — is FORBIDDEN at this stage.
 4. Do NOT extract background descriptions, context, definitions, procedural \
    text, or stakeholder lists.
 5. If a section has no policy targets, return an empty array: []
@@ -124,19 +133,31 @@ RULES:
    This section may contain 0-5. Be selective.
 7. If the document explicitly labels targets (e.g. "Target 1", "Goal 2.3"), \
    use those exact names as the label — do not rephrase or replace them.
-8. When possible, begin the target text with an action verb to phrase it as \
-   an actionable goal.
-9. Include all measurable details in the target text: percentages, quantities, \
-   deadlines, years, baselines, or geographic scope.
-10. Do not extract each itemized line as its own target unless it is \
-    independently tracked or measured. Group related items under a single target.
-11. If a table contains policy targets, extract from the full table context — \
+8. Include all measurable details in the target text: percentages, quantities, \
+   deadlines, years, baselines, or geographic scope. These details MUST already \
+   be present in the source text — never add a number that is not in the document.
+9. Do not extract each itemized line as its own target unless it is \
+   independently tracked or measured. Group related items under a single target. \
+   When you DO group, set "textCleanup" to "synthesis" and include each sub-item's \
+   verbatim quote as a separate entry in "sources" (see schema below).
+10. If a table contains policy targets, extract from the full table context — \
     do not ignore targets just because they appear in tabular format.
 
 Return a JSON array. Each object must have:
-- "text": the policy target (verbatim or lightly cleaned)
+- "text": the policy target as it should be displayed and fed to downstream \
+  classification (verbatim, cleaned, or synthesis per Rule 3 / Rule 9)
 - "label": a short descriptive label (max 8 words; use document-provided \
   names verbatim when available)
+- "sources": an array of one or more verbatim source spans. Each entry has:
+    - "sourceText": the exact quote from the document, with no edits
+    - "section": optional document-provided identifier (e.g. "Goal 2", "6.2.12")
+- "textCleanup": one of "verbatim", "cleaned", or "synthesis":
+    - "verbatim"  — text equals sources[0].sourceText with at most whitespace \
+      normalisation
+    - "cleaned"   — text is a deterministic light cleanup of a single source per \
+      Rule 3 (label drop, line-join, whitespace collapse, footnote-marker drop)
+    - "synthesis" — text combines multiple source entries; every concrete claim \
+      in text must appear in at least one sources[].sourceText
 
 Output valid JSON only — no markdown fences, no explanation."""
 
@@ -196,7 +217,10 @@ from different sections of a {doc_type} document.
 
 Your task is to produce the FINAL, CLEAN list of distinct policy targets by:
 1. Removing duplicates or near-duplicates (keep the most complete version).
-2. Merging overlapping targets that clearly refer to the same objective.
+2. Merging overlapping targets that clearly refer to the same objective. When \
+   you merge, you MUST preserve every "sources" entry from the merged \
+   candidates — sources are the verbatim provenance trail and may not be \
+   dropped, summarised, or rewritten.
 3. Removing items that are NOT real policy targets (background text, \
    indicators in isolation, procedural statements, generic filler).
 4. Keeping the list at the right level of abstraction — each item should be \
@@ -209,10 +233,28 @@ Each candidate includes a "pageNumbers" array showing which pages it was \
 found on. When merging candidates, combine their page numbers (union of all \
 pages from merged items).
 
+CLAIM-GROUNDING RULE for the merged "text" field:
+- Every concrete claim in the merged text — numbers, percentages, deadlines, \
+  named frameworks, geographic scope, specific verbs — MUST appear in at least \
+  one of the merged "sources[].sourceText" entries.
+- Do NOT add new claims, scope, or qualifiers that were not in any source.
+- If two candidates contradict each other on a number, keep both candidates as \
+  separate targets rather than inventing a synthesis.
+
+When merging:
+- "textCleanup" = "synthesis" if you combined wording from multiple sources, \
+  "verbatim"/"cleaned" if you kept a single candidate's text.
+- "sources" = the union of all merged candidates' source entries (no \
+  deduplication of sourceText required — repeated quotes are evidence of \
+  recurrence across sections).
+
 Return a JSON array. Each object must have:
-- "text": the policy target
+- "text": the policy target (display + pipeline input)
 - "label": a short descriptive label (max 8 words)
 - "pageNumbers": array of page numbers where this target appears
+- "sources": array of {{ "sourceText": "...", "section": "..." }} entries — \
+  preserved verbatim from input candidates, never invented
+- "textCleanup": "verbatim" | "cleaned" | "synthesis"
 
 Output valid JSON only — no markdown fences, no explanation."""
 
@@ -240,12 +282,25 @@ under this target.
 RULES:
 1. Extract ONLY sub-items that are explicitly listed in the source text \
    (numbered lists, bullet points, or clearly delineated measures).
-2. Do NOT invent, infer, or paraphrase activities that are not in the text.
+2. VERBATIM CONTRACT — each activity's text MUST be copied directly from the \
+   source. The only edits permitted are:
+     - drop a leading numeric/letter label ("2.1", "a)") that is part of the \
+       document's numbering, NOT semantic content;
+     - join lines broken by PDF layout (replace internal "\\n" with a space);
+     - collapse runs of whitespace into a single space.
+   Do NOT paraphrase, summarise, embellish, or add scope. Do NOT invent or \
+   infer activities that are not explicitly in the text.
 3. If there are no explicit sub-activities, return an empty array: []
-4. Each activity should be a concise one-line summary preserving key details.
-5. Include numbering from the source document when present (e.g. "2.1", "a)").
+4. Preserve numbering from the source document when present (e.g. "2.1", "a)") \
+   in the "section" field of each activity.
 
-Return a JSON object: {{"activities": ["activity 1", "activity 2", ...]}}
+Return a JSON object whose "activities" array contains entries shaped like:
+  {{
+    "text":       "the activity as it should be displayed",
+    "sourceText": "verbatim quote from the document — no edits",
+    "section":    "optional source-document numbering (2.1, a, etc.)"
+  }}
+
 Output valid JSON only — no markdown fences, no explanation."""
 
 ACTIVITIES_USER = """\
@@ -513,6 +568,36 @@ def detect_language(text: str) -> tuple[str, str]:
 # ---------------------------------------------------------------------------
 
 
+_VALID_CLEANUPS = {"verbatim", "cleaned", "synthesis"}
+
+
+def _parse_sources(item: dict[str, Any]) -> list[dict[str, Any]]:
+    """Extract a normalised sources[] list from an LLM extraction item.
+
+    Accepts either the new schema ("sources": [{sourceText, section?}, ...]) or
+    the legacy single-source schema ("sourceText": "...") and returns a list of
+    {sourceText, section?} dicts. Empty-string sources are dropped.
+    """
+    raw = item.get("sources")
+    out: list[dict[str, Any]] = []
+    if isinstance(raw, list):
+        for src in raw:
+            if isinstance(src, dict):
+                txt = str(src.get("sourceText", "")).strip()
+                if not txt:
+                    continue
+                entry: dict[str, Any] = {"sourceText": txt}
+                section = src.get("section")
+                if section:
+                    entry["section"] = str(section).strip()[:120]
+                out.append(entry)
+            elif isinstance(src, str) and src.strip():
+                out.append({"sourceText": src.strip()})
+    elif isinstance(item.get("sourceText"), str) and item["sourceText"].strip():
+        out.append({"sourceText": item["sourceText"].strip()})
+    return out
+
+
 def _parse_json_array(
     raw: str,
     min_length: int = MIN_TARGET_LENGTH,
@@ -566,8 +651,92 @@ def _parse_json_array(
                 if tfield in item and item[tfield]:
                     entry[tfield] = str(item[tfield]).strip()
 
+            # Provenance: sources[] (verbatim quotes) + textCleanup
+            sources = _parse_sources(item)
+            if sources:
+                entry["sources"] = sources
+            cleanup = str(item.get("textCleanup", "")).strip().lower()
+            if cleanup in _VALID_CLEANUPS:
+                entry["textCleanup"] = cleanup
+            elif sources:
+                # Default: assume verbatim if a single source matches text after
+                # whitespace normalisation; otherwise default to "cleaned" so
+                # downstream consumers can still surface a provenance badge.
+                norm_text = re.sub(r"\s+", " ", text).strip()
+                norm_src = re.sub(r"\s+", " ", sources[0]["sourceText"]).strip()
+                entry["textCleanup"] = "verbatim" if norm_text == norm_src else "cleaned"
+
             valid.append(entry)
     return valid
+
+
+# ---------------------------------------------------------------------------
+# Claim-grounding validator
+# ---------------------------------------------------------------------------
+
+# Regexes for "concrete claims" that, if present in display `text`, must also
+# appear in at least one source span. Kept conservative — false positives are
+# acceptable (the entry gets flagged for review), but we never want to miss a
+# fabricated number / year / unit.
+#
+# Each pattern returns the raw match; we normalise (strip thousands separators,
+# lowercase units) before set-membership.
+_CLAIM_PATTERNS: list[tuple[str, "re.Pattern[str]"]] = [
+    ("percent", re.compile(r"\b\d{1,3}(?:[.,]\d+)?\s?%")),
+    ("year", re.compile(r"\b(?:19|20)\d{2}\b")),
+    # Quantities with units we care about in policy targets
+    (
+        "quantity",
+        re.compile(
+            r"\b\d[\d.,]*\s?(?:tCO2e|tCO2eq|tCO₂e|tCO₂eq|MtCO2|"
+            r"million tons?|thousand tons?|tons?|tonnes?|ha|km2|km²|"
+            r"hectares?|GW|MW|kWh)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    # Plain large numbers (>= 4 digits when no separator, or any with separator).
+    # Skips bare years; the year pattern above already covers those.
+    ("number", re.compile(r"\b\d{1,3}(?:[.,]\d{3})+(?:[.,]\d+)?\b")),
+]
+
+
+def _normalise_claim(token: str) -> str:
+    """Normalise a claim token for set comparison."""
+    return re.sub(r"\s+", "", token).lower().replace(",", "")
+
+
+def _extract_claims(text: str) -> set[str]:
+    """Return the set of normalised concrete claims found in text."""
+    claims: set[str] = set()
+    for _kind, pattern in _CLAIM_PATTERNS:
+        for match in pattern.findall(text):
+            claims.add(_normalise_claim(match))
+    return claims
+
+
+def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
+    """Return a list of unsourced claims found in target['text'].
+
+    Empty list means the target is well-grounded. Run on every extracted
+    target after consolidation; surface non-empty results as warnings so the
+    pipeline does not silently emit fabricated numbers.
+    """
+    text = str(target.get("text", ""))
+    if not text:
+        return []
+    sources = target.get("sources") or []
+    src_blob = " ".join(
+        str(s.get("sourceText", "")) for s in sources if isinstance(s, dict)
+    )
+    if not src_blob:
+        # No sources at all — caller decides how strict to be; the validator
+        # only flags claims, not missing-sources policy.
+        return []
+
+    text_claims = _extract_claims(text)
+    src_claims = _extract_claims(src_blob)
+    missing = sorted(c for c in text_claims if c not in src_claims)
+    return missing
 
 
 def _parse_relevance(raw: str) -> bool:
@@ -651,15 +820,44 @@ async def _extract_activities(
         try:
             data = json.loads(raw)
             activities = data.get("activities", [])
-            if isinstance(activities, list) and activities:
-                target["activities"] = "\n".join(
-                    str(a).strip() for a in activities if str(a).strip()
-                )
-                logger.info(
-                    f"  '{target['label']}': {len(activities)} activities extracted"
-                )
         except (json.JSONDecodeError, AttributeError):
-            pass  # No activities — that's fine
+            continue  # No activities — that's fine
+
+        if not isinstance(activities, list) or not activities:
+            continue
+
+        # Normalise: accept either ["str", ...] (legacy) or [{text, sourceText, section?}].
+        # Stored as a newline-joined display string in `activities` (existing
+        # consumer contract) plus a structured `activitySources` array carrying
+        # the verbatim quotes, so downstream UI can show provenance per activity.
+        display_lines: list[str] = []
+        structured: list[dict[str, Any]] = []
+        for a in activities:
+            if isinstance(a, dict):
+                txt = str(a.get("text", "")).strip()
+                src_txt = str(a.get("sourceText", "")).strip()
+                section = str(a.get("section", "")).strip()
+                if not txt and src_txt:
+                    txt = src_txt
+                if not txt:
+                    continue
+                display_lines.append(txt)
+                entry: dict[str, Any] = {"text": txt}
+                if src_txt:
+                    entry["sourceText"] = src_txt
+                if section:
+                    entry["section"] = section[:60]
+                structured.append(entry)
+            elif isinstance(a, str) and a.strip():
+                display_lines.append(a.strip())
+                structured.append({"text": a.strip()})
+
+        if display_lines:
+            target["activities"] = "\n".join(display_lines)
+            target["activitySources"] = structured
+            logger.info(
+                f"  '{target['label']}': {len(display_lines)} activities extracted"
+            )
 
     return targets
 
@@ -799,6 +997,7 @@ async def extract_from_text(
     # Phase 2: Consolidation (skip if very few candidates)
     if len(all_candidates) <= 5:
         logger.info("Skipping consolidation (<=5 candidates)")
+        _log_unsourced_claims(all_candidates)
         return all_candidates
 
     candidates_json = json.dumps(
@@ -807,6 +1006,8 @@ async def extract_from_text(
                 "text": c["text"],
                 "label": c["label"],
                 "pageNumbers": c.get("pageNumbers", []),
+                "sources": c.get("sources", []),
+                "textCleanup": c.get("textCleanup", "verbatim"),
             }
             for c in all_candidates
         ],
@@ -846,11 +1047,48 @@ async def extract_from_text(
                 set(p for c in all_candidates for p in c.get("pageNumbers", []))
             )
 
+    # Validate that synthesised text is grounded in its sources before we move
+    # on to activities extraction. Logs warnings and stamps `_provenanceFlag`
+    # on any target whose display text contains a number / year / unit not
+    # present in any source span.
+    _log_unsourced_claims(final)
+
     # Phase 3: Extract activities/sub-measures for each target
     if final:
         final = await _extract_activities(final, doc, chunks, is_english, lang_name)
 
     return final
+
+
+def _log_unsourced_claims(targets: list[dict[str, Any]]) -> None:
+    """Run the claim-grounding validator and warn / flag any unsourced claims.
+
+    Mutates the targets in place: any target with unsourced claims gets a
+    `_provenanceFlag` describing what was missing, so downstream consumers
+    can surface a review badge.
+    """
+    flagged = 0
+    for t in targets:
+        missing = validate_claim_grounding(t)
+        if not missing:
+            continue
+        flagged += 1
+        label = t.get("label") or t.get("text", "")[:40]
+        logger.warning(
+            "Unsourced claim(s) in target '%s': %s — flagged for review",
+            label,
+            ", ".join(missing),
+        )
+        t["_provenanceFlag"] = (
+            "UNSOURCED CLAIMS — the following appear in `text` but not in any "
+            "`sources[].sourceText`: " + ", ".join(missing)
+        )
+    if flagged:
+        logger.warning(
+            "Validator flagged %d/%d targets with unsourced claims",
+            flagged,
+            len(targets),
+        )
 
 
 async def extract_from_file(

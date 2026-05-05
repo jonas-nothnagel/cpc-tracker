@@ -1,93 +1,505 @@
 {
-  "_source": "Methodology development process for Git Hub.pdf — Tables 2 and 3. All names and descriptions are verbatim from the PDF.",
+  "_sources": {
+    "ipcc_sectors": "IPCC 2006 Guidelines for National GHG Inventories (https://www.ipcc-nggip.iges.or.jp/public/2006gl/). Descriptions are verbatim quotes from the cited section of each volume. Per-entry citations are in the `source` field. NOTE: `sector_transport` is reported as 1A3 (sub of Energy) but tracked separately for policy purposes; `sector_agriculture` and `sector_lulucf` are presented separately to match legacy 1996 / CRT reporting (the 2006 Guidelines combine them as AFOLU, so descriptions for these two are extracted from AFOLU's enumerated components); `sector_other` is project-defined and is NOT an IPCC sector.",
+    "nbs_categories": "Methodology development process for Git Hub.pdf, Table 2. Names and descriptions verbatim from the PDF. The PDF in turn cites IPCC Special Report on Climate Change and Land and Natural Climate Solutions (Griscom et al. 2017).",
+    "globe_categories": "BIOFIN GLOBE 2024 taxonomy as curated by the team in dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx (sheet \"Globe Taxonomy\"). All descriptions are verbatim from column B. See per-entry `source` field.",
+    "globe_subcategories": "BIOFIN GLOBE 2024 taxonomy authoritative XLSX at dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx. Descriptions are verbatim from column D (\"Definitions / Examples\") of each subcategory row. For codes where BIOFIN has no description (currently only 4.07), text is verbatim from the corresponding bullet in the SharePoint Globe Taxonomy categories.xlsx — see per-entry `source` field. IDs match BIOFIN canonical numbering (no project renumbering)."
+  },
   "ipcc_sectors": [
-    {"id": "sector_energy", "name": "Energy", "description": "Fuel combustion activities including electricity and heat production, petroleum refining, manufacturing and construction industries. Fugitive emissions from solid fuels, oil, and natural gas systems. This sector covers all greenhouse gas emissions from the combustion of fossil fuels and fugitive emissions from fuel production, processing, storage, transmission, and distribution. Includes power generation, district heating, industrial energy use, commercial and residential energy consumption, and energy transformation."},
-    {"id": "sector_transport", "name": "Transport", "description": "All greenhouse gas emissions from the combustion of fuel for transportation activities including road transportation (cars, trucks, buses, motorcycles), railways, domestic aviation, domestic navigation and shipping, pipeline transport, and off-road transport. Covers both passenger and freight transport. This is reported as a sub-category of Energy in GHG inventories but tracked separately for policy measures due to its distinct policy interventions (vehicle standards, modal shift, electrification, sustainable fuels)."},
-    {"id": "sector_ippu", "name": "Industrial processes and product use", "description": "Greenhouse gas emissions from industrial processes that chemically or physically transform materials, and from the use of products. Includes mineral industry emissions (cement, lime, glass), chemical industry emissions (ammonia, nitric acid, carbide), metal industry emissions (iron, steel, aluminium), emissions from non-energy use of fuels and solvent use, electronics industry emissions, use of fluorinated substitutes for ozone depleting substances (HFCs, PFCs, SF6), and other product manufacture and use."},
-    {"id": "sector_agriculture", "name": "Agriculture", "description": "Non-CO2 greenhouse gas emissions from agricultural activities including enteric fermentation from livestock, livestock manure management, rice cultivation, agricultural soils (direct and indirect N2O emissions from managed soils, including synthetic fertilizers, animal manure applied to soils, crop residues, and cultivation of organic soils), prescribed burning of savannas, field burning of agricultural residues, and other agricultural activities. Covers crop production, animal husbandry, and associated land management practices."},
-    {"id": "sector_lulucf", "name": "Land use, land-use change and forestry (LULUCF)", "description": "Greenhouse gas emissions and removals from land use, land-use change and forestry activities. Covers six land-use categories: forest land, cropland, grassland, wetlands, settlements, and other land. Includes carbon stock changes in living biomass, dead organic matter, and soils. Covers afforestation, reforestation, deforestation, forest management, cropland management, grazing land management, and revegetation. Also includes harvested wood products and natural disturbances on managed land."},
-    {"id": "sector_waste", "name": "Waste", "description": "Greenhouse gas emissions from waste management and disposal activities including solid waste disposal on land (managed and unmanaged landfills, open dumps), biological treatment of solid waste (composting, anaerobic digestion), incineration and open burning of waste, and wastewater treatment and discharge (domestic, commercial, and industrial wastewater). Covers both municipal and industrial waste streams, sanitation infrastructure, and sewage systems."},
-    {"id": "sector_other", "name": "Other / Cross-cutting", "description": "Activities, policies and measures that span multiple IPCC sectors or do not fit neatly into a single sector category. This includes cross-cutting policy frameworks, institutional capacity building, education and awareness, gender mainstreaming, finance mechanisms, monitoring and reporting systems, and multi-sectoral strategies. Also used for water and sanitation infrastructure, health-related climate measures, and other activities not captured by the six main IPCC sectors."}
+    {
+      "id": "sector_energy",
+      "name": "Energy",
+      "description": "The energy sector mainly comprises: exploration and exploitation of primary energy sources, conversion of primary energy sources into more useable energy forms in refineries and power plants, transmission and distribution of fuels, use of fuels in stationary and mobile applications. Emissions arise from these activities by combustion and as fugitive emissions, or escape without combustion.",
+      "source": "IPCC 2006 Guidelines, Vol. 2 Ch. 1 §1.2 (Source Categories) — verbatim"
+    },
+    {
+      "id": "sector_transport",
+      "name": "Transport",
+      "description": "Mobile sources produce direct greenhouse gas emissions of carbon dioxide (CO2), methane (CH4) and nitrous oxide (N2O) from the combustion of various fuel types. Greenhouse gas emissions from mobile combustion are most easily estimated by major transport activity, i.e., road, off-road, air, railways, and water-borne navigation. (1A3 TRANSPORT: Emissions from the combustion and evaporation of fuel for all transport activity, excluding military transport, regardless of the sector, specified by sub-categories below.) Reported as IPCC code 1A3, a sub-category of Energy, but tracked separately here for policy purposes.",
+      "source": "IPCC 2006 Guidelines, Vol. 2 Ch. 3 §3.1 (Overview) + Table 3.1.1 (1A3 Transport) — verbatim quotes; framing sentence about policy-purpose split is project-added"
+    },
+    {
+      "id": "sector_ippu",
+      "name": "Industrial processes and product use",
+      "description": "This volume, Industrial Processes and Product Use (IPPU), covers greenhouse gas emissions occurring from industrial processes, from the use of greenhouse gases in products, and from non-energy uses of fossil fuel carbon. The main emission sources are releases from industrial processes that chemically or physically transform materials (for example, the blast furnace in the iron and steel industry, ammonia and other chemical products manufactured from fossil fuels used as chemical feedstock and the cement industry are notable examples of industrial processes that release a significant amount of CO2). During these processes, many different greenhouse gases, including carbon dioxide (CO2), methane (CH4), nitrous oxide (N2O), hydrofluorocarbons (HFCs) and perfluorocarbons (PFCs), can be produced.",
+      "source": "IPCC 2006 Guidelines, Vol. 3 Ch. 1 §1.1 (Introduction) — verbatim, paragraphs 1-2"
+    },
+    {
+      "id": "sector_agriculture",
+      "name": "Agriculture",
+      "description": "Sub-sector of AFOLU (Agriculture, Forestry and Other Land Use) covering, per the AFOLU Sector Guidance and methods enumeration: CH4 emission from livestock (enteric fermentation); CH4 and N2O emissions from manure management systems; CH4 emissions from rice cultivation; N2O emissions from all managed soils; CO2 emissions associated with liming and urea application to managed soils.",
+      "source": "IPCC 2006 Guidelines, Vol. 4 Ch. 1 §1.1 — verbatim items from the AFOLU 'Guidance and methods' enumeration; framing as a separate Agriculture sub-sector matches legacy 1996 / CRT reporting (2006 Guidelines treat AFOLU as one sector)"
+    },
+    {
+      "id": "sector_lulucf",
+      "name": "Land use, land-use change and forestry (LULUCF)",
+      "description": "Sub-sector of AFOLU covering, per the 2006 Guidelines: CO2 emissions and removals resulting from C stock changes in biomass, dead organic matter and mineral soils, for all managed lands; CO2 and non-CO2 emissions from fire on all managed land; CO2 and N2O emissions from cultivated organic soils; CO2 and N2O emissions from managed wetlands; C stock change associated with harvested wood products. Six land-use categories used in GPG-LULUCF (i.e., Forest Land, Cropland, Grassland, Wetlands, Settlements, and Other Land), further sub-divided into land remaining in the same category and land converted from one category to another.",
+      "source": "IPCC 2006 Guidelines, Vol. 4 Ch. 1 §1.1 — verbatim items from the AFOLU 'Guidance and methods' enumeration plus the six-land-use-categories paragraph; framing as a separate LULUCF sub-sector matches legacy 1996 / CRT reporting"
+    },
+    {
+      "id": "sector_waste",
+      "name": "Waste",
+      "description": "The Waste volume gives methodological guidance for estimation of carbon dioxide (CO2), methane (CH4) and nitrous oxide (N2O) emissions from following categories: Solid waste disposal (Chapter 3); Biological treatment of solid waste (Chapter 4); Incineration and open burning of waste (Chapter 5); Wastewater treatment and discharge (Chapter 6).",
+      "source": "IPCC 2006 Guidelines, Vol. 5 Ch. 1 §1.1 (Introduction) — verbatim"
+    },
+    {
+      "id": "sector_other",
+      "name": "Other / Cross-cutting",
+      "description": "Project-defined catch-all (NOT an IPCC sector) for policy measures that span multiple IPCC sectors or do not fit any single sector. Used for cross-cutting frameworks, institutional capacity, education, gender mainstreaming, finance mechanisms, and health- or water-related climate measures.",
+      "source": "Project-defined; not present in IPCC 2006 Guidelines"
+    }
   ],
   "nbs_categories": [
-    {"id": "nbs_0", "name": "Protection, management, and restoration of marine and coastal habitats", "description": "This includes coastal zone risk retention, living shorelines, tidal basins, oyster beds, artificial reefs, tidal salt marshes, sustainable coastal management, marine production promotion, coastal environment monitoring and risk assessment, disease management of marine resources, mangrove protection, coral reef protection, seagrass protection, marine protected areas, restoring marine ecosystems, coastal wetland, seagrass, coral reef and mangrove restoration, sustainable fishery, marine ecosystem service management, tidal salt marshes, restoration of seagrass beds, mangroves, terrestrial."},
-    {"id": "nbs_1", "name": "Agriculture and livestock management", "description": "This includes terrestrial ecosystems, climate-resilient crops, climate-resilient livestock management, climate-smart agriculture, parametric insurance, regenerative agriculture, agroecology, crop diversification, community-seeds banks, integrated water management, grazing land management, manure management, agricultural land and soil management, agriculture and livestock disease management, sustainable agricultural education and consulting, agroforestry, agricultural diversification, improved grazing land management, reduced grassland conversion to cropland, sustainable rangeland management, sustainable land management, sustainable grazing, optimal grazing intensity, conservation agriculture, landscape restoration, nature-positive dietary changes, reducing food waste, reducing post-harvest losses, sustainable sourcing and use of resources, supply-chain diversification, improved food processing and retailing, improved energy use in food systems, reducing food loss, and improved supply chain resilience."},
-    {"id": "nbs_2", "name": "Water management", "description": "This includes catchment protection, sustainable irrigation, watershed restoration, freshwater ecosystem restoration, integrated water resource management, water management systems, securing water quality, water education and consulting, monitoring of water resources, service management of water ecosystems, and pluvial flood risk reduction."},
-    {"id": "nbs_3", "name": "Forest management, restoration, and protection", "description": "This includes natural forest management, improved plantations, sustainable forestry practices, preventing illegal logging, reducing deforestation and forest degradation, fire management, REDD+, reforestation, afforestation, tree planting on degraded land, temperate and tropical forest restoration, forest carbon sink management, and monitoring forest changes."},
-    {"id": "nbs_4", "name": "Protection and restoration of wetlands and freshwater ecosystems", "description": "This includes river, inland water and wetland protection, peatland rewetting, avoiding peat impacts, freshwater ecosystem protection, wetland management, service management of freshwater ecosystems, peatland restoration, dune restoration, freshwater ecosystem restoration, catchment restoration, watershed protection, restoration and reduced conversion of coastal wetlands, restoration and reduced conversion of peatlands, sustainable fishery, and restoring peatlands."},
-    {"id": "nbs_5", "name": "Ecosystem protection and connectivity", "description": "This includes establishing protected areas, community reserves, wildlife corridors, restore pollinator habitats, prevent species extinction, habitat rewilding, restricting invasive species and pests, ecosystem change detection, other effective conservation measures (OECM), and increased connectivity between protected areas."},
-    {"id": "nbs_6", "name": "Soil fertility management and restoration", "description": "This includes increased soil organic carbon, reduced soil erosion, reduced soil salinization, reduced soil compaction, conservation tillage, biochar application, improved cropland soil management, soil restoration, soil improvement, and sustainable intensification."},
-    {"id": "nbs_7", "name": "Nature-based risk management and disaster prevention", "description": "This includes agricultural disaster management and invasive alien species and pest control, disease surveillance, wildfire management, fire management, flood control, infrastructure and critical systems resilience, reduced landslides and hazards, making human settlement safer, environmental risk monitoring, forecasting and warning systems, resource-based early warnings, reduced pollution, acidification prevention, disaster risk reduction and management in agriculture, security and diversification in critical sectors such as energy, food and water, risk sharing instruments and insurance, livelihood diversification, and management of urban sprawl (blue and green spaces)."},
-    {"id": "nbs_8", "name": "Nature-based carbon sequestration", "description": "This includes Bioenergy with Carbon Capture and Storage (BECCS), enhanced weathering of minerals, tree planting for carbon sequestration, afforestation, reforestation, proforestation, tree intercropping, silvopasture, restore forests for carbon sequestration, and improved plantations for carbon storage."},
-    {"id": "nbs_9", "name": "Urban settlements management", "description": "This includes urban green spaces, sponge city, urban forests, green roofs, green walls, urban wetlands, rain gardens, vegetated stormwater systems, green infrastructure, urban farms."}
+    {
+      "id": "nbs_0",
+      "name": "Protection, management, and restoration of marine and coastal habitats",
+      "description": "This includes coastal zone risk retention, living shorelines, tidal basins, oyster beds, artificial reefs, tidal salt marshes, sustainable coastal management, marine production promotion, coastal environment monitoring and risk assessment, disease management of marine resources, mangrove protection, coral reef protection, seagrass protection, marine protected areas, restoring marine ecosystems, coastal wetland, seagrass, coral reef and mangrove restoration, sustainable fishery, marine ecosystem service management, tidal salt marshes, restoration of seagrass beds, mangroves, terrestrial."
+    },
+    {
+      "id": "nbs_1",
+      "name": "Agriculture and livestock management",
+      "description": "This includes terrestrial ecosystems, climate-resilient crops, climate-resilient livestock management, climate-smart agriculture, parametric insurance, regenerative agriculture, agroecology, crop diversification, community-seeds banks, integrated water management, grazing land management, manure management, agricultural land and soil management, agriculture and livestock disease management, sustainable agricultural education and consulting, agroforestry, agricultural diversification, improved grazing land management, reduced grassland conversion to cropland, sustainable rangeland management, sustainable land management, sustainable grazing, optimal grazing intensity, conservation agriculture, landscape restoration, nature-positive dietary changes, reducing food waste, reducing post-harvest losses, sustainable sourcing and use of resources, supply-chain diversification, improved food processing and retailing, improved energy use in food systems, reducing food loss, and improved supply chain resilience."
+    },
+    {
+      "id": "nbs_2",
+      "name": "Water management",
+      "description": "This includes catchment protection, sustainable irrigation, watershed restoration, freshwater ecosystem restoration, integrated water resource management, water management systems, securing water quality, water education and consulting, monitoring of water resources, service management of water ecosystems, and pluvial flood risk reduction."
+    },
+    {
+      "id": "nbs_3",
+      "name": "Forest management, restoration, and protection",
+      "description": "This includes natural forest management, improved plantations, sustainable forestry practices, preventing illegal logging, reducing deforestation and forest degradation, fire management, REDD+, reforestation, afforestation, tree planting on degraded land, temperate and tropical forest restoration, forest carbon sink management, and monitoring forest changes."
+    },
+    {
+      "id": "nbs_4",
+      "name": "Protection and restoration of wetlands and freshwater ecosystems",
+      "description": "This includes river, inland water and wetland protection, peatland rewetting, avoiding peat impacts, freshwater ecosystem protection, wetland management, service management of freshwater ecosystems, peatland restoration, dune restoration, freshwater ecosystem restoration, catchment restoration, watershed protection, restoration and reduced conversion of coastal wetlands, restoration and reduced conversion of peatlands, sustainable fishery, and restoring peatlands."
+    },
+    {
+      "id": "nbs_5",
+      "name": "Ecosystem protection and connectivity",
+      "description": "This includes establishing protected areas, community reserves, wildlife corridors, restore pollinator habitats, prevent species extinction, habitat rewilding, restricting invasive species and pests, ecosystem change detection, other effective conservation measures (OECM), and increased connectivity between protected areas."
+    },
+    {
+      "id": "nbs_6",
+      "name": "Soil fertility management and restoration",
+      "description": "This includes increased soil organic carbon, reduced soil erosion, reduced soil salinization, reduced soil compaction, conservation tillage, biochar application, improved cropland soil management, soil restoration, soil improvement, and sustainable intensification."
+    },
+    {
+      "id": "nbs_7",
+      "name": "Nature-based risk management and disaster prevention",
+      "description": "This includes agricultural disaster management and invasive alien species and pest control, disease surveillance, wildfire management, fire management, flood control, infrastructure and critical systems resilience, reduced landslides and hazards, making human settlement safer, environmental risk monitoring, forecasting and warning systems, resource-based early warnings, reduced pollution, acidification prevention, disaster risk reduction and management in agriculture, security and diversification in critical sectors such as energy, food and water, risk sharing instruments and insurance, livelihood diversification, and management of urban sprawl (blue and green spaces)."
+    },
+    {
+      "id": "nbs_8",
+      "name": "Nature-based carbon sequestration",
+      "description": "This includes Bioenergy with Carbon Capture and Storage (BECCS), enhanced weathering of minerals, tree planting for carbon sequestration, afforestation, reforestation, proforestation, tree intercropping, silvopasture, restore forests for carbon sequestration, and improved plantations for carbon storage."
+    },
+    {
+      "id": "nbs_9",
+      "name": "Urban settlements management",
+      "description": "This includes urban green spaces, sponge city, urban forests, green roofs, green walls, urban wetlands, rain gardens, vegetated stormwater systems, green infrastructure, urban farms."
+    }
   ],
   "globe_categories": [
-    {"id": "globe_1", "name": "Access and benefit sharing", "description": "Access to genetic resources, with a focus on prior informed consent, and the fair and equitable sharing of the benefits of genetic diversity with those whose knowledge is used, on Mutually Agreed Terms (MAT) and taking into account all rights over those resources, and by appropriate funding. Actions can include: Bioprospecting/screening for biodiversity areas and establishing permitting processes: regulating the screening for biodiversity areas and resources for commercial use and all processes that allow this research. Contractual arrangements: arrangements between genetic resource (knowledge) provider and user, the provider and the state as well as the user and the state that ensure legal certainty and transparency about access to genetic resources, the involvement of the local population, allow for research, as well as how the financial and non-financial benefit of the use is shared. Benefit-sharing mechanism: the commitment to channel a fair share of the benefits for the use of genetic resources, whether monetary or non-monetary, back to the range of designated participants. Nagoya Protocol: institutional structures of the protocol, and expenditures related explicitly to the ratification and Nagoya-specific processes (e.g. designation of a national focal point, ABS clearing house mechanism), in addition to capacity-building and awareness raising."},
-    {"id": "globe_2", "name": "Biodiversity awareness and knowledge", "description": "Biodiversity awareness and knowledge includes a wide range of different topics. Biodiversity knowledge aims to produce, generate and provide an easy and timely access to quality data and information, to support all efforts in halting biodiversity loss or maintaining and increasing current biodiversity levels. Knowledge generation and distribution includes formal and non-formal contexts, technical training, biodiversity communication and scientific research, the indigenous and local communities' knowledge. Actions can include: Formal education: integration of biodiversity into hierarchically structured, chronologically graded educational system running from primary through the tertiary institutions. Non-formal and informal biodiversity education: planned, structured programmes and processes outside the formal educational curriculum, designed to improve a range of skills and competencies related to biodiversity and the KMGBF and shift individual acquires attitudes and values. Biodiversity awareness and communication: efforts to bring public awareness to issues relating to biodiversity to the attention of key groups who have the power to influence outcomes, including campaigns, surveys, events, and establishment of physical spaces. Biodiversity scientific research: includes assessments and studies undertaken on a systematic basis in order to increase the stock of knowledge on biodiversity, methods to collect, process, and exchange biodiversity data, citizen science and community and indigenous-lead knowledge creation. Indigenous and local communities knowledge: promotion, protection, and utilization of knowledge, innovations and practices of indigenous and local communities for biodiversity decision-making, with FPIC."},
-    {"id": "globe_3", "name": "Biosafety", "description": "Includes two sub-categories: (1) Prevention, containment, and eradication of invasive alien species (IAS) and (2) safe handling, transport and use of living modified organisms (LMOs/GMOs) resulting from modern biotechnology that may have adverse effects on biological diversity. Actions include: Identification and prioritization of IAS species, their introduction pathways and most effective measures to avoid direct or indirect introduction and their impacts. Genetically Modified Organisms (GMOs), including Living modified organisms (LMO): standards and regulation to ensure the precautionary principle before introducing modified species, research, biosafety evaluation, and capacity building on impacts of GMOs, and compliance to international and regional and sub-regional agreements on Biosafety, in particular the Cartagena Protocol."},
-    {"id": "globe_4", "name": "Green economy", "description": "A green economy results in improved human well-being and social equity, while significantly reducing environmental risks and ecological scarcities and can be considered as one that is low in carbon, resource efficient, and socially inclusive. Actions include: Green supply chain: establishing a green supply chain that integrates environmentally responsible practices related to sourcing, product design, manufacturing, packaging, logistics and end-of-life product management. Reduction of harm to biodiversity in extractive industries: disclosure of environmental impact by extractive activities and mitigation measures taken. Sustainable consumption: reduction of negative impact on biodiversity by improving the ecological footprint, reducing per-capita consumption, avoiding waste and overexploitation. Sustainable energy: reduction of negative impacts of energy production, transmission and distribution, innovative energy systems not harming (or even supporting) biodiversity conservation. Sustainable tourism: tourism that takes full account of its current and future economic, social and environmental impacts, addressing the needs of visitors, the industry, the environment and host communities. Sustainable transportation: reducing the negative impacts by reducing the reliance on natural resources, providing environmentally friendly alternatives and increasing public transport. Sustainable urban and rural areas: environmental impact assessments of infrastructure projects, improving water quality, and disaster risk reduction."},
-    {"id": "globe_5", "name": "Biodiversity planning and finance", "description": "National, state or local planning, policy, finance, legal, coordination and enforcement actions crosscutting in nature that cover multiple biodiversity categories or general issues, such as biodiversity planning and policy. Activities include: Biodiversity laws, policies, and plans: change, creation and implementation of biodiversity laws, policies, and plans, harmonization of standards and disclosure by companies and public projects, measures to safeguard biodiversity and ecosystem services by financial institutions, business, public institutions and other relevant actors. Policy coherence: policy coherence and mainstreaming to include biodiversity relevant aspects in all other sector's plans, policies, regulations and decision-making processes. Biodiversity coordination and management: includes the update of NBSAPs including all stakeholders, indigenous peoples, local communities, and women, science-based monitoring and evaluation for adaptive management. Biodiversity finance planning and coordination: measures to increase domestic and international finance flows to biodiversity, by introducing new instruments and mechanisms, improving the spending of currently available funds. Strategic Environmental Assessment (SEA) Framework: formal, systematic process to analyse and address the environmental effects of policies, plans and programmes. Spatial planning: developing spatial data and spatial arrangements of all kinds of territories. Multi-lateral environmental agreements: ratification, implementation and monitoring of relevant conventions including CBD and its protocols, CITES, CMS, ITPGRFA, Ramsar Convention, WHC, High Seas Treaty, IPPC, and regional conventions."},
-    {"id": "globe_6", "name": "Pollution management", "description": "Pollution is the introduction of harmful materials (i.e. pollutants) into the environment at a faster rate than can be dispersed, diluted, decomposed, recycled, or stored in some harmless form. Biodiversity benefits from its management, consisting of pollution prevention at the source, reduction, reusing, recycling, treatment or disposal. Activities can include: Protection and remediation of soil, groundwater and surface water: measures aimed at the prevention of pollutant infiltration, cleaning up of soils and water bodies and the protection of soil from erosion and other physical degradation as well as from salinisation. Protection of ambient air and climate: activities aimed at the reduction of emissions into the ambient air or ambient concentrations of air pollutants as well as measures aimed at the control of emissions of greenhouse gases. Waste management: reduced/avoided pollution by managing all kinds of waste, including wastewater. Coastal and marine pollution debris management: reduced/avoided coastal and marine pollution debris with activities tackling land- and sea-based sources, focusing especially on plastic. Other pollution management measures: noise, vibration, light, temperature, radiation, pharmaceutical, heavy metals, Persistent Organic Pollutants (POPs), Polychlorinated biphenyls (PCB)."},
-    {"id": "globe_7", "name": "Protected areas and other conservation measures", "description": "In situ and ex situ measures to protect and safeguard biodiversity at genetic, species and ecosystem levels. The effort can be area-based through protected areas, their expansion, connection or buffer zones; but also includes other conservation measures, e.g. focusing on specific species or establishing other effective conservation measures. Activities can include: Management and expansion of Protected Areas, including Indigenous and Communities Conserved Areas (ICCA): maintaining or establishing protected areas designated or regulated and managed to achieve specific conservation objectives, including all IUCN Categories (Ia-VI). Management of areas outside of Protected Areas: activities to manage, protect and develop transboundary areas, biodiversity corridors, Key Biodiversity Areas (KBAs), landscapes and seascapes. Other effective area-based conservation measures (OECM): governance and management of areas outside of Protected Areas in ways that achieve positive and sustained long-term outcomes for the in situ conservation of biodiversity. Conservation of species: targeted protection of species, in particular wildlife and migratory species, within or outside of protected and conserved areas, including reducing threats such as overconsumption, trade and poaching, climate change, displacement, reduced habitats, and Invasive Alien Species."},
-    {"id": "globe_8", "name": "Restoration", "description": "Ecosystem restoration means assisting in the recovery of ecosystems that have been degraded or destroyed, as well as conserving the ecosystems that are still intact. It should result in a rehabilitation of the ecosystem functions and services. Restoration efforts are recognized to support the achievement of all Rio Conventions (CBD, UNCCD, UNFCCC) as well as the SDGs. Activities can include: Reintroduction and translocation of species: capture, transport and release or introduction of species, habitats or other ecological material from one location to another to support habitat or species restoration. Site redevelopment and engineering: efforts to prevent ecosystem degradation and repair damage already caused, for example by removing drivers of degradation, clean up after chemical or physical damage, and restoration of river channels. Site management: ongoing management or maintenance of restoration sites after the restoration activity has been realized to ensure the continuity of the initiated trajectory or status quo, including management planning, awareness raising on restoration, and landscape care and maintenance."},
-    {"id": "globe_9", "name": "Sustainable use", "description": "Sustainable Use is the use of components of biological diversity in a way and at a rate that does not lead to the long-term decline of biological diversity, thereby maintaining its potential to meet the needs and aspirations of present and future generations. This category is distinguished from the green economy by its focus on ecosystem services, primarily production and the underlying support services. Activities include: Agrobiodiversity: agricultural biodiversity including inventory, surveys and statistics of genetic variety, on-farm conservation, seed banks, incentives for sustainable plantation of local and traditional varieties, and the ITPGRFA. Sustainable Agriculture: combining environmental protection, production and social equity in food production. Sustainable aquaculture: controlled cultivation of fish, shellfish, and aquatic plants reducing environmental harm. Sustainable fisheries: combating overfishing, ensuring habitat protection, and use of non-aggressive fishing devices. Sustainable forestry: combining environmental protection, production and social equity while safeguarding biodiversity. Sustainable freshwater: reducing overuse of freshwater resources and other threats to the freshwater ecosystem. Sustainable marine and coastal management: combining environmental protection, production and social equity. Sustainable rangelands: combining environmental protection for wildlife, habitats and watersheds with production and social equity. Sustainable wildlife: ensuring all uses of wildlife (fishing, gathering, logging, terrestrial animal harvesting) are done within ecological limits."}
+    {
+      "id": "globe_1",
+      "name": "Access and benefit sharing",
+      "description": "Access to genetic resources, with a focus on prior informed consent, and the fair and equitable sharing of the benefits of genetic diversity with those whose knowledge is used, on Mutually Agreed Terms (MAT) and taking into account all rights over those resources, and by appropriate funding.\n\nActions can include: \n- Bioprospecting/ Screening for biodiversity areas and establishing permitting processes: Regulating the screening for biodiversity areas and resources for commercial use and all processes that allow this research. \n- Contractual arrangements: Arrangements between genetic resource (knowledge) provider and user, the provider and the state as well as the user and the state that ensure legal certainty and transparency about access to genetic resources, the involvement of the local population, allow for research, as well as how the financial and non-financial benefit of the use is shared. The compliance of the arrangements needs to be supported.\n- Benefit-sharing mechanism: The commitment to channel a fair share of the benefits for the use of genetic resources, whether monetary or non-monetary, back to the range of designated participants. Benefit-sharing mechanisms can be monetary or non-monetary \n- Nagoya Protocol: It focuses on the institutional structures of the protocol, and expenditures related explicitly to the ratification and Nagoya-specific processes (e.g. designation of a national focal point, ABS clearing house mechanism), in addition to capacity-building and awareness raising.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 2 column B"
+    },
+    {
+      "id": "globe_2",
+      "name": "Biodiversity awareness and knowledge",
+      "description": "Biodiversity awareness and knowledge includes a wide range of different topics. Biodiversity knowledge aims to produce, generate and provide an easy and timely access to quality data and information, to support all efforts in halting biodiversity loss or maintaining and increasing current biodiversity levels. Knowledge generation and distribution  includes formal and non-formal contexts, technical training, biodiversity communication and scientific research, the indigenous and local communities' knowledge.\n\nActions can include: \n- Formal education: Integration of biodiversity into hierarchically structured, chronologically graded educational system running from primary through the tertiary institutions.\n- Non-formal and informal biodiversity education: planned, structured programmes and processes outside the formal educational curriculum, designed to improve a range of skills and competencies related to biodiversity and the KMGBF and shift individual acquires attitudes and values. \n- Biodiversity awareness and communication: Efforts to bring public awareness to issues relating to biodiversity to the attention of key groups who have the power to influence outcomes. Can include campaigns, surveys, events, and establishment of physical spaces, such as parks or zoos, to enable people to encounter biodiversity in their daily lives. \n- Biodiversity scientific research: Includes assessments and studies undertaken on a systematic basis in order to increase the stock of knowledge on biodiversity,  methods to collect, process, and exchange biodiversity data. Can be citizen science and community and indigenous-lead knowledge creation. \nIndigenous and local communities knowledge - Promotion, protection, and utilization of knowledge, innovations and practices of indigenous and local communities for biodiversity decision-making, with FPIC. Traditional knowledge tends to be collectively owned and takes the form of stories, songs, folklore, proverbs, cultural values, beliefs, rituals, local language, and agricultural practices, including the development of plant species and animal breeds.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 3 column B"
+    },
+    {
+      "id": "globe_3",
+      "name": "Biosafety",
+      "description": "Includes two sub-categories: \n(1) Prevention, containment, and eradication of invasive alien species (IAS) Invasive alien species (IAS) and (2) safe handling, transport and use of living modified organisms (LMOs/GMOs) resulting from modern biotechnology that may have adverse effects on biological diversity. \n\nActions include: \n- Identification and prioritization of IAS species, their introduction pathways and most effective measures to avoid direct or indirect introduction and their impacts: Defintiion. \n-Genetically Modified Organisms (GMOs), including Living modified organisms (LMO): DEFINITTION. Includes standards and regulation to ensure the precautionary principle before introducing modified species, research,  biosafety evaluation, and capacity building on impacts of GMOs, and Compliance to international and regional and sub-regional agreements on Biosafety, in particular the Cartagena Protocol.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 4 column B"
+    },
+    {
+      "id": "globe_4",
+      "name": "Green economy",
+      "description": "A green economy results in improved human well-being and social equity, while significantly reducing environmental risks and ecological scarcities and can be considered as one that is low in carbon, resource efficient, and socially inclusive. \n\nActions include: \n\n- Green supply chain: Establishing a green supply chain that integrates environmentally responsible practices related to sourcing, product design, manufacturing, packaging, logistics and end-of-life product management, improving efficiency, reducing emissions, used resources and waste. \n- Reduction of harm to biodiversity in extractive industries: Can include disclosure of environmental impact by extractive activities and mitigation measures taken\n- Sustainable consumption: Reduction of negative impact on biodiversity by improving the ecological footprint, reducing per-capita consumption, avoiding waste and overexploitation.\n- Sustainable energy: Reduction of negative impacts of energy production, transmission and distribution, Innovative energy systems  not harming (or even supporting) biodiversity conservation, disclosure of environmental impacts in energy production. \n- Sustainable tourism: Tourism that takes full account of its current and future economic, social and environmental impacts, addressing the needs of visitors, the industry, the environment and host communities. \n- Sustainable transportation: Aiming for reducing the negative impacts by reducing the reliance on natural resources, providing environmentally friendly alternatives (e.g. bike, pedestrian) and increasing public transport\n- Sustainable urban and rural areas: Can include environmental impact assessments of infrastructure projects, improving water quality, and disaster risk reduction.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 5 column B"
+    },
+    {
+      "id": "globe_5",
+      "name": "Biodiversity planning and finance",
+      "description": "National, state or local planning, policy, finance, legal, coordination and enforcement actions crosscutting in nature that cover multiple biodiversity categories or general issues, such as biodiversity planning and policy. \n\nActivities include: \n- Biodiversity laws, policies, and plans: Change, creation and implementation of biodiversity laws, policies, and plans, harmonization of standards and disclosure by companies and public projects, measures to safeguard biodiversity and ecosystem services by financial institutions, business, public institutions and other relevant actors, including the civil society, and prosecution and judgement of any infringement of biodiversity-relevant law, as well as national and international biodiversity-relevant crimes. \nPolicy coherence: policy coherence and mainstreaming to include biodiversity relevant aspects in all other sector's plans, policies, regulations and decision-making processes. \n- Biodiversity coordination and management: Includes the update of NBSAPs including all stakeholders, including indigenous peoples, local communities, and women, science-based monitoring and evaluation for adaptive management, support for community-based approaches and conservation, ensuring free, prior, and informed consent, and protection for environmental defenders. \n- Biodiversity finance planning and coordination: Measures to increase domestic and international finance flows to biodiversity, by introducing new instruments and mechanisms, improving the spending of currently available funds and by providing legal frameworks for non-public actors.\n- Strategic Environmental Assessment (SEA) Framework: Undertaking formal, systematic process to analyse and address the environmental effects of policies, plans and programmes and other strategic initiatives. \n- Spatial planning: Developing spatial data and spatial arrangements of all kinds of territories to use it in a rational way, coordinating the different interests (production, livelihood, biodiversity conservation, historical/cultural value, recreation…) and sectorial policies.  \nMulti-lateral environmental agreements: Ratification, implementation and monitoring of relevant conventions focusing directly on biodiversity: Convention on Biological Diversity and its protocols, Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES), Convention on the Conservation of Migratory Species of Wild Animals, The International Treaty on Plant Genetic Resources for Food and Agriculture (ITPGRFA), Convention on Wetlands (Ramsar Convention), World Heritage Convention (WHC), High Seas Treaty, International Plant Protection Convention (IPPC), including regional conventions and those related to environmental rights (e.g. Aarhus Convention, Escazu Agreement). This also can include all other conventions, initiatives and alliances  that either tackle biodiversity loss drivers or broader environmental objectives, e.g. UNCLOS, any Pollution-related Convention, UNFCCC, etc\n- Access to resources, information and decision-making, including FPIC consultations: Directed financial and non-financial resources to all kind of rights holders and stakeholders, in particular to Indigenous Peoples and local communities, women and youth, as well as having access to complete and accurate information and being involved as key-partners or main actor in decision-making processes, including the right to free, prior, informed consent (FPIC).",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 6 column B"
+    },
+    {
+      "id": "globe_6",
+      "name": "Pollution management",
+      "description": "Pollution is the introduction of harmful materials (i.e. pollutants) into the environment at a faster rate than can be dispersed, diluted, decomposed, recycled, or stored in some harmless form. It can be natural (e.g. Vulcan ashes) or human-made and in any form (solid, liquid, or gas, but also energy). Biodiversity benefits from its  management, consisting of pollution prevention at the source, reduction, reusing, recycling, treatment or disposal. \n\nActivities can include: \n-Protection and remediation of soil, groundwater and surface water: Measures and activities aimed at the prevention of pollutant infiltration, cleaning up of soils and water bodies and the protection of soil from erosion and other physical degradation as well as from salinisation. Monitoring, control of soil and groundwater pollution is included.\n-Protection of ambient air and climate: Activities aimed at the reduction of emissions into the ambient air or ambient concentrations of air pollutants as well as to measures and activities aimed at the control of emissions of greenhouse gases and gases that adversely affect the stratospheric ozone layer. Note: Ensure that the biodiversity intention is clearly stated - only CO2 reduction is not sufficient as biodiversity purpose\n-Waste management: Reduced/Avoided pollution by managing all kinds of waste, including wastewater. \n-Coastal and marine pollution debris management: Reduced/Avoided coastal and marine pollution debris with activities tackling land- and sea-based sources, focusing especially on plastic\n-Other pollution management measures: Other pollutant includes: noise, vibration, light, temperature, radiation, and, partially pharmaceutical, heavy metals, Persistent Organic Pollutants (POPs), Polychlorinated biphenyls (PCB)",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 7 column B"
+    },
+    {
+      "id": "globe_7",
+      "name": "Protected areas and other conservation measures",
+      "description": "In situ and ex situ measures to protect and safeguard biodiversity at genetic, species and ecosystem levels. The effort can be area-based through protected areas, their expansion, connection or buffer zones; but also includes other conservation measures, e.g. focusing on specific species (in particular migratory species) or establishing other effective conservation measures.\n\nActivities can include: \n- Management and expansion of Protected Areas, including Indigenous and Communities Conserved Areas (ICCA):  Maintaining or establishing protected areas which are designated or regulated and managed to achieve specific conservation objectives. It includes all IUCN Categories (Ia-VI), as well as defined Indigenous and Community Conserved Areas (ICCA). The expansion of Protected Areas includes the analysis of potential areas, identifying the best management policy considering the local circumstances (ecological and social), securing land titles and legal designation of the area.\n- Management of areas outside of Protected Areas: All activities undertaken to manage, protect and develop areas outside of the Protected Area regime such as transboundary areas, biodiversity corridors, Key Biodiversity Areas (KBAs), landscapes and seascapes to achieve the long-term conservation of nature with associated ecosystem services and cultural values. It includes all action of public institution and ministries, as well as providing the framework and support for individuals, communities, non-public institutions and businesses, to maintain, enhance, and restore ecological flows, species movement, and dynamic processes across intact and fragmented environments outside of PA.\n- Other effective area-based conservation measures (OECM): Governance and management of areas outside of Protected Areas in ways that achieve positive and sustained long-term outcomes for the in situ conservation of biodiversity, with associated ecosystem functions and services and where applicable, cultural, spiritual, socio–economic, and other locally relevant values. The main difference between a protected area and an OECM is that PAs have a primary conservation objective, however it even remained declared as such when becoming ineffective, whereas an OECM delivers the effective in-situ conservation of biodiversity, regardless of its objectives.\n- Conservation of species - Related to the targeted protection of species, in particular wildlife and migratory species, within or outside of protected and conserved areas. That includes reducing threats such as overconsumption, trade and poaching; climate change; displacement; reduced habitats; Invasive Alien Species, but also conservation measures in- and ex-situ.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 8 column B"
+    },
+    {
+      "id": "globe_8",
+      "name": "Restoration",
+      "description": "Ecosystem restoration means assisting in the recovery of ecosystems that have been degraded or destroyed, as well as conserving the ecosystems that are still intact. It should result in a rehabilitation of the ecosystem functions and services. Restoration efforts are recognized to support the achievement of all Rio Conventions – Convention on Biological Diversity (CBD), United Nations Convention to Combat Desertification (UNCCD) and United Nations Framework Convention on Climate Change (UNFCCC), as well as the Sustainable Development Goals (SDGs).\n\nActivities can include: \n- Reintroduction and translocation of species: Capture, transport and release or introduction of species, habitats or other ecological material (such as soil) from one location to another to support habitat or species restoration. \n- Site redevelopment and engineering: Efforts to prevent ecosysten degradation and repair damage already caused, for example by removing drivers of degradation, clean up after chemical or physical damage, and resotration of river channels. \n- Site management - Ongoing management or maintenance of restoration sites after the restoration activity has been realized to ensure the continuity of the initiated trajectory or status quo. This could include setting managment planning, awareness raising on restoration,  and lanscape care and maintenance.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 9 column B"
+    },
+    {
+      "id": "globe_9",
+      "name": "Sustainable use",
+      "description": "Sustainable Use is the use of components of biological diversity in a way and at a rate that does not lead to the long-term decline of biological diversity, thereby maintaining its potential to meet the needs and aspirations of present and future generations. This category is distinguished from the green economy by its focus on ecosystem services, primarily production and the underlying support services. Activities are targeted towards improving biodiversity outcomes in coordination with other co-benefits related to natural resource use.\n\nActivities include: \n- Agrobiodiversity: Agricultural biodiversity, is also known as agrobiodiversity or the genetic resources for food and agriculture.  Inventory, surveys and statistics of genetic variety for food and other consumption can support agrobiodiversity, as well as on-farm consesrvation of species, development and maintence of seed banks, incentives and regulation to encourage the sustainable plantation/farming of local, traditional or conservation varieties of species, guidelines and policies that protect wild relatives of domestically used species, and implementation of the International Treaty on Plant Genetic Resources for Food and Agriculture (ITPGRFA).\n- Sustainable Agriculture (crops and livestock): Sustainable agriculture seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood) in the food production system. It can comprise a wide range of practices based on traditional and local knowledge or use innovative approaches including robots or Artificial Intelligence; from urban to rural farming as well as production other than food (e.g., fibre, biofuel).\n- Sustainable aquaculture:  The controlled cultivation or farming of fish, shellfish, and aquatic plants. The purpose is to create a source of aquatic-sourced food and commercial products in a way that will increase availability while reducing environmental harm and protecting various aquatic species. includes mariculture, but excludes open-pens. \n- Sustainable fisheries: The shift to sustainable fisheries (both lethal and non-lethal) includes measures to combat overfishing, ensuring habitat protection, and use of non-aggressive fishing devices. \n- Sustainable forestry: Sustainable forestry seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood). That means considering the needs of wildlife and its forest ecosystem with its abiotic components such as soil and water. Sustainable forestry therefore includes all kind of human intervention in forests that safeguard biodiversity.\n- Sustainable freshwater: Measures that reduces the overuse of freshwater resources (e.g. for drink water supply or agriculture), or other threats to the freshwater ecosystem as pollution (e.g. by industry or agriculture sector and habitated areas), climate change, invasive alien species and obstacles (especially dams), as well as tools that allow for better reporting and monitoring*. Indigenous people and local communities living close by the freshwater or traditionally using it should be included and considered when measurements are planned and implemented.\n- Sustainable marine and coastal management: Sustainable marine and coastal management seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood).\n- Sustainable rangelands: Sustainable rangeland management seeks to combine environmental protection (for wildlife, different habitats and watersheds), production and related income (especially by livestock, freshwater) as well as social equity (i.e. increased livelihood). That means considering the needs of wildlife and its related ecosystem (e.g. grassland, shrubland, wetland) with its abiotic components such as soil and water. Sustainable rangelands therefore include all kind of human intervention in rangelands that safeguard biodiversity, such as avoiding erosion and reduced risk of fire, while benefitting from the rangeland products and services within the ecological limits, while including Indigenous Peoples and local communities equitably.\n- Sustainable wildlife: Wildlife refers to captive or living in the wild organisms that have not been subject to breeding. All uses of wildlife, such as fishing, gathering, logging and terrestrial animal harvesting should be done within the ecological limits.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 10 column B"
+    }
   ],
   "globe_subcategories": [
-    {"id": "1.01", "parentId": "globe_1", "name": "Screening for biodiversity areas and establishing permitting processes", "description": "Regulating the screening (bioprospecting) for biodiversity areas and resources for commercial use, and all processes that allow this research. Includes issuing permits, oversight of screening activities, and supporting legal frameworks."},
-    {"id": "1.02", "parentId": "globe_1", "name": "Contractual arrangements", "description": "Contractual arrangements between the genetic resource (or knowledge) provider and user, the provider and the state, and the user and the state. These ensure legal certainty and transparency on access to genetic resources, involvement of local populations, provisions for research, and how financial and non-financial benefits are shared. Includes compliance support."},
-    {"id": "1.03", "parentId": "globe_1", "name": "Benefit-sharing mechanism", "description": "Mechanisms committed to channel a fair share of the benefits for the use of genetic resources, monetary or non-monetary, back to providers. Includes up-front or milestone payments, royalties, contributions to biodiversity funds, collaborative research funding, joint ventures, IP rights sharing, venture capital, capacity-building, technology transfer, and financial support to provider institutions."},
-    {"id": "1.05", "parentId": "globe_1", "name": "Nagoya Protocol (ratified/enforced)", "description": "Institutional structures of the Nagoya Protocol, including expenditures for ratification, designation of a national focal point, the ABS clearing house mechanism, and Nagoya-specific processes. Also includes capacity-building and awareness raising about the Protocol. Implementation of ABS-related legislation falls under other subcategories."},
-    {"id": "1.06", "parentId": "globe_1", "name": "Access to resources, information and decision-making", "description": "Financial and non-financial resources directed to rights- and stakeholders (especially Indigenous Peoples and Local Communities, women, and youth), including access to complete and accurate information, and their involvement as key partners in decision-making, including Free, Prior and Informed Consent (FPIC)."},
-
-    {"id": "2.01", "parentId": "globe_2", "name": "Formal biodiversity education", "description": "Learning in organized, structured environments within the educational system, from primary school through higher education, and including specialized programmes and institutions for full-time technical and professional training. Covers general biodiversity topics and specific ones like biodiversity finance. Excludes non-school offers (see 2.02)."},
-    {"id": "2.02", "parentId": "globe_2", "name": "Non-formal biodiversity education and technical training", "description": "Planned, structured programmes and processes of personal and social education outside the formal educational system, designed to improve skills and competencies. Includes vocational training outside universities, informal education through daily experience, on-the-job learning, community-based learning, conferences, South-South knowledge transfer."},
-    {"id": "2.03", "parentId": "globe_2", "name": "Biodiversity awareness and communication", "description": "Efforts to bring biodiversity issues to the attention of key groups (public awareness campaigns, surveys, events, establishment of physical spaces). Governments use communication as an instrument to support biodiversity conservation, address economic constraints, motivate action, and inform audiences about policies and legislation."},
-    {"id": "2.04", "parentId": "globe_2", "name": "Biodiversity scientific research", "description": "All types of research to increase the stock of knowledge and statistical data about biodiversity, from very basic to concrete application, including digital approaches and valuation of biodiversity, by civil, private, public, or scholar actors. Includes methods to collect, process, and exchange biodiversity data; citizen science; and community and indigenous-led knowledge creation."},
-    {"id": "2.05", "parentId": "globe_2", "name": "Indigenous Peoples' and local communities' knowledge", "description": "Promotion, protection and utilization of knowledge, innovations and practices of Indigenous Peoples and local communities developed from experience gained over centuries and adapted to local culture and environment. Includes documentation and analysis of traditional knowledge (stories, songs, folklore, proverbs, cultural values, beliefs, rituals, community laws, agricultural practices) to enhance education, research, and raise awareness."},
-    {"id": "2.06", "parentId": "globe_2", "name": "CBD clearing-house mechanism", "description": "The mission of the CBD clearing house mechanism: information services and other means to promote and facilitate scientific and technical cooperation, knowledge sharing and information exchange, and to establish a fully operational network of Parties and partners."},
-
-    {"id": "3.01", "parentId": "globe_3", "name": "Invasive Alien Species (IAS)", "description": "Identification and prioritization of (potential) IAS and their entry points; regular assessment of current status; measures to prevent their entry, spread and establishment; their removal, eradication, or at least containment; and cross-cutting activities such as awareness raising, training, regional cooperation, and adoption of relevant legislation. Note: domestic animals (cats, dogs) causing similar negative impact on wildlife can be classified here if the purpose is documented."},
-    {"id": "3.02", "parentId": "globe_3", "name": "Genetically modified organisms (GMOs) and Living modified organisms (LMOs)", "description": "Standards and regulation ensuring the precautionary principle before introducing modified species. Research, biosafety evaluation, capacity building on GMO/LMO impacts, monitoring of GMO procedures, and compliance with the Cartagena Protocol and other biosafety agreements."},
-
-    {"id": "4.01", "parentId": "globe_4", "name": "Green supply chain", "description": "Establishing a green supply chain that integrates environmentally responsible practices related to sourcing, product design, manufacturing, packaging, logistics, and end-of-life product management. Improving efficiency; reducing emissions, resource use, and waste."},
-    {"id": "4.02", "parentId": "globe_4", "name": "Sustainable extractive industries", "description": "Recovery and processing of raw materials (fossil fuels, minerals, aggregates like sand, gravel, clay). Disclosure of environmental impact by extractive activities and mitigation measures. Ensuring biodiversity impact is avoided or minimized. In resource-dependent countries, profits can be channeled to biodiversity-friendly investments."},
-    {"id": "4.03", "parentId": "globe_4", "name": "Sustainable consumption", "description": "Reducing negative impact on biodiversity by improving the ecological footprint, reducing per-capita consumption, and avoiding waste and overexploitation. Divided into: Food & Nutrition; Construction & Housing; Mobility; Working and Office; Leisure & Tourism; Textile & Clothing."},
-    {"id": "4.04", "parentId": "globe_4", "name": "Sustainable energy", "description": "Energy production using sources that can be used repeatedly without depletion; decreasing overall energy need by changing to alternatives; increasing energy efficiency. Reducing negative impacts of energy production, transmission and distribution, and innovative energy systems not harming (or even supporting) biodiversity."},
-    {"id": "4.05", "parentId": "globe_4", "name": "Sustainable tourism", "description": "Tourism that fully accounts for current and future economic, social and environmental impacts, addressing needs of visitors, the industry, the environment, and host communities. Includes government roles: marketing and promotion; border security; aviation regulation; planning regulations; control or management of tourism attractions (e.g. national parks); skills development; road infrastructure."},
-    {"id": "4.06", "parentId": "globe_4", "name": "Sustainable transportation", "description": "Reducing negative impacts of transportation by reducing reliance on natural resources, providing environmentally friendly alternatives, and increasing public transport."},
-    {"id": "4.07", "parentId": "globe_4", "name": "Sustainable urban and rural areas", "description": "Environmental impact assessments of infrastructure projects, improving water quality, disaster risk reduction, and integrated planning for urban and rural areas that considers biodiversity. Green infrastructure, urban biodiversity, rural livelihoods."},
-
-    {"id": "5.01", "parentId": "globe_5", "name": "Biodiversity laws, policies, plans", "description": "Legal action at every level of government (national, state or local) whose main objective is to address biodiversity directly, such as to conserve/restore biodiversity (e.g. establishment of new Protected Areas), or to address the causes for biodiversity loss (e.g. incentives for public, private, civil actors). Includes criminal persecution for breaching these laws. Implementation or execution of the law is classified under the relevant subcategories."},
-    {"id": "5.02", "parentId": "globe_5", "name": "Other relevant laws, policies, plans", "description": "Legal action at every level of government that addresses biodiversity indirectly by focusing on non-biodiversity sectors. Legislation can be relevant by including biodiversity safeguards in laws focused on other topics (e.g. green economy) or by increasing policy coherence. Particularly relevant for mainstreaming and a whole-of-government approach."},
-    {"id": "5.03", "parentId": "globe_5", "name": "Biodiversity coordination and management", "description": "Coordination with different stakeholders and rightsholders at local, national or international level, where the state participates or provides a framework/platform. Includes update of NBSAPs, stakeholder engagement (Indigenous peoples, local communities, women), science-based monitoring and evaluation for adaptive management."},
-    {"id": "5.04", "parentId": "globe_5", "name": "Biodiversity finance", "description": "All types of measures to increase domestic and international finance flows to biodiversity, by introducing new instruments and mechanisms, improving the spending of currently available funds, and providing legal frameworks for non-public actors."},
-    {"id": "5.05", "parentId": "globe_5", "name": "Strategic Environmental Assessment (SEA) Framework", "description": "A formal, systematic process to analyse and address the environmental effects of policies, plans and programmes and other strategic initiatives. Usually applied at an early stage of decision-making; other aspects (e.g. social considerations) can be included. Note: project-level Environmental Impact Assessments (EIA) are classified under the relevant project subcategory, typically under Category 4 Green Economy."},
-    {"id": "5.06", "parentId": "globe_5", "name": "Spatial planning", "description": "Spatial planning of any territory in a rational way, by coordinating the different interests (production, livelihood, biodiversity conservation, historical/cultural value, recreation, etc.) and sectoral policies. Excludes delineation and zoning in Protected Areas or ICCAs (see 7.01)."},
-    {"id": "5.07", "parentId": "globe_5", "name": "Multilateral Environment Agreement (MEA)", "description": "Actions and steps a government must take to fulfil its obligation as party to environmental agreements. Agreement-specific implementation is assessed in the relevant Primary Biodiversity Categories. The Nagoya Protocol has its own subcategory (1.05)."},
-
-    {"id": "6.01", "parentId": "globe_6", "name": "Soil and water (protection and remediation)", "description": "Measures aimed at prevention of pollutant infiltration into soil, groundwater and surface water; cleaning up of soils and water bodies; protection of soil from erosion, other physical degradation and salinization."},
-    {"id": "6.02", "parentId": "globe_6", "name": "Air and atmosphere", "description": "Reduced or avoided pollution to protect ambient air and climate (excluding waste management). Where there are clear stated biodiversity objectives: activities aimed at reduction of emissions into ambient air or ambient concentrations of air pollutants; measures to control emissions of greenhouse gases and gases that adversely affect the stratospheric ozone layer."},
-    {"id": "6.03", "parentId": "globe_6", "name": "Waste management", "description": "Reduced or avoided pollution by managing all types of waste, including wastewater. Prevention of waste generation; reduction of its harmful effects; collection and treatment of waste (especially recycling and composting); monitoring and regulation; collection and treatment of low-level radioactive waste; street cleaning and collection of public litter."},
-    {"id": "6.04", "parentId": "globe_6", "name": "Coastal and marine pollution debris management", "description": "Reduced or avoided coastal and marine pollution debris through activities tackling land- and sea-based sources, focusing in particular on plastics."},
-    {"id": "6.05", "parentId": "globe_6", "name": "Other pollution management measures", "description": "Reduced/avoided pollution in the form of light, noise, vibration, temperature, radiation, Persistent Organic Pollutants (POPs), pharmaceutical pollution, PCB oils, heavy metals. Includes supportive actions: research, monitoring, awareness raising, capacity building."},
-
-    {"id": "7.01", "parentId": "globe_7", "name": "Management and expansion of protected areas", "description": "Protected Areas (PAs) including Indigenous and Communities Conserved Areas (ICCA). A PA is a geographically defined area designated or regulated and managed to achieve specific conservation objectives, across all IUCN Categories (Ia-VI). Expansion includes analysis of potential areas, identifying management policy considering local ecological and social circumstances, securing land titles, and legal designation."},
-    {"id": "7.02", "parentId": "globe_7", "name": "Management of areas outside of Protected Areas", "description": "Activities to manage, protect and develop areas outside the PA regime: transboundary areas, biodiversity corridors, Key Biodiversity Areas (KBAs), landscapes and seascapes. Includes public and private actor actions and frameworks to maintain, enhance and restore ecological flows, species movement and dynamic processes across intact and fragmented environments outside PAs."},
-    {"id": "7.03", "parentId": "globe_7", "name": "Other effective area-based conservation measures (OECMs)", "description": "Geographically defined areas other than Protected Areas, governed and managed in ways that achieve positive and sustained long-term outcomes for in situ conservation of biodiversity, associated ecosystem functions and services, and where applicable, cultural, spiritual, socio-economic values. Unlike PAs, conservation may not be the primary objective of an OECM yet it delivers effective in-situ biodiversity conservation."},
-    {"id": "7.04", "parentId": "globe_7", "name": "Conservation of species", "description": "Targeted protection of species, in particular wildlife and migratory species, within or outside of protected and conserved areas. Includes reducing threats such as overconsumption, trade and poaching, climate change, displacement, reduced habitats, and Invasive Alien Species. Includes conservation measures in situ and ex situ."},
-
-    {"id": "8.01", "parentId": "globe_8", "name": "Reintroduction and translocation of species", "description": "Reintroduction: introduction into the wild of species from captive stock. Translocation: capture, transport and release or introduction of species, habitats or other ecological material (e.g. soil) from one location to another. Supports habitat or species restoration."},
-    {"id": "8.02", "parentId": "globe_8", "name": "Site redevelopment and engineering", "description": "Efforts to prevent ecosystem degradation and repair damage already caused, for example by removing drivers of degradation, clean up after chemical or physical damage, and restoration of river channels. Focuses on first steps to initiate restoration (assessing, planning and starting intervention) to remediate damage."},
-    {"id": "8.03", "parentId": "globe_8", "name": "Site management", "description": "Ongoing management or maintenance of restoration sites after the restoration activity has been realized, to ensure continuity of the initiated trajectory or status quo. Includes management planning, awareness raising on restoration, and landscape care and maintenance."},
-
-    {"id": "9.01", "parentId": "globe_9", "name": "Agrobiodiversity", "description": "Management of biological resources important for food and agriculture (genetic resources for food). Covers: harvested crop varieties, livestock breeds, fish species and non-domesticated (wild) resources; non-harvested species supporting food provision (soil micro-biota, pollinators, bees, butterflies, earthworms); non-harvested species in wider environment supporting food production ecosystems. Includes inventory, surveys, on-farm conservation, seed banks, incentives for local and traditional varieties, and ITPGRFA."},
-    {"id": "9.02", "parentId": "globe_9", "name": "Sustainable agriculture", "description": "Combining environmental protection, production and related income, and social equity in food production. Practices include organic production, measures to improve soil health and resource efficiency (water saving, changed irrigation, reduced emissions), reduced erosion and reduced commercial pesticide use. May include robots/AI in urban and rural farming. Excludes GMOs (see 3.02). Agroforestry is included here, not in 9.05."},
-    {"id": "9.03", "parentId": "globe_9", "name": "Sustainable aquaculture", "description": "Controlled cultivation or farming of fish, shellfish, and aquatic plants aimed at creating a source of aquatic food and products in a way that increases availability while reducing environmental harm and protecting aquatic species. Open-pen aquaculture is currently not considered within GLOBE (due to unavoidable environmental issues)."},
-    {"id": "9.04", "parentId": "globe_9", "name": "Sustainable fisheries", "description": "Fishing (removal of aquatic animals from their habitats) that combats overfishing, ensures habitat protection, and uses non-aggressive fishing devices. Covers both lethal fisheries (e.g. traditional commercial) and non-lethal fisheries (e.g. aquarium trade, catch-and-release). Excludes species spending part of their life cycle in terrestrial environments (see 9.09)."},
-    {"id": "9.05", "parentId": "globe_9", "name": "Sustainable forestry", "description": "Combining environmental protection, production and related income, and social equity, while safeguarding biodiversity. Considers needs of wildlife and forest ecosystems including abiotic components (soil, water). All human interventions in forests safeguarding biodiversity: avoiding erosion, reducing fire risk, ensuring species survival. Logging within ecological limits, selectively or by clear-cutting small areas, including IPLCs and fair benefit sharing."},
-    {"id": "9.06", "parentId": "globe_9", "name": "Sustainable land management", "description": "Sustainable land management aligned with the UNCCD and covering multiple uses. Integrated approaches to land management that prevent degradation and restore ecosystem function, with a focus on preventing desertification."},
-    {"id": "9.07", "parentId": "globe_9", "name": "Sustainable marine and coastal management", "description": "Combining environmental protection, production and related income, and social equity for marine and coastal ecosystems. Covers all activities except aquaculture (9.03) and fishery (9.04), including energy generation, shipping, mining, and tourism in marine/coastal areas. Key tools: environmental impact assessments, integrated marine spatial planning, coastal zone management, IPLC inclusion and ownership."},
-    {"id": "9.08", "parentId": "globe_9", "name": "Sustainable rangelands", "description": "Sustainable rangeland management combining environmental protection (wildlife, habitats, watersheds), production and related income (livestock, freshwater), and social equity. Considers needs of wildlife and related ecosystems (grassland, shrubland, wetland) and abiotic components (soil, water). All human interventions safeguarding biodiversity: avoiding erosion, reducing fire risk, benefiting from rangeland products and services within ecological limits."},
-    {"id": "9.09", "parentId": "globe_9", "name": "Sustainable wildlife", "description": "Sustainable management of wildlife: organisms captive or living in the wild that have not been subjected to multigenerational breeding/selection, as well as non-domesticated animals. Covers extractive uses (fishing, gathering, logging, terrestrial animal harvesting) and non-extractive uses (ceremonies, rituals, decorative, energy, food-feed, learning, materials, medicine, recreation). Note: species conservation itself is in 7.04."}
+    {
+      "id": "1.01",
+      "parentId": "globe_1",
+      "name": "Bioprospecting* / Screening for biodiversity areas and establishing permitting processes",
+      "description": "Regulating the screening for biodiversity areas and resources for commercial use and all processes that allow this research.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"1 ABS\" row 4 column D"
+    },
+    {
+      "id": "1.02",
+      "parentId": "globe_1",
+      "name": "Contractual arrangements",
+      "description": "Arrangements between genetic resource (knowledge) provider and user, the provider and the state as well as the user and the state that ensure legal certainty and transparency about access to genetic resources, the involvement of the local population, allow for research, as well as how the financial and non-financial benefit of the use is shared. The compliance of the arrangements needs to be supported.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"1 ABS\" row 10 column D"
+    },
+    {
+      "id": "1.03",
+      "parentId": "globe_1",
+      "name": "Benefit-sharing mechanism",
+      "description": "The commitment to channel a fair share of the benefits for the use of genetic resources, whether monetary or non-monetary, back to the range of designated participants. Benefit-sharing mechanisms can be monetary or non-monetary",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"1 ABS\" row 15 column D"
+    },
+    {
+      "id": "1.04",
+      "parentId": "globe_1",
+      "name": "Nagoya Protocol",
+      "description": "It focuses on the institutional structures of the protocol, and expenditures related explicitly to the ratification and Nagoya-specific processes (e.g. designation of a national focal point*, ABS clearing house mechanism), in addition to capacity-building* and awareness raising.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"1 ABS\" row 20 column D"
+    },
+    {
+      "id": "2.01",
+      "parentId": "globe_2",
+      "name": "Formal biodiversity education",
+      "description": "Formal education is the hierarchically structured, chronologically graded educational system running from primary through the tertiary institutions.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"2 Awareness - Knowledge\" row 4 column E"
+    },
+    {
+      "id": "2.02",
+      "parentId": "globe_2",
+      "name": "Non-formal and informal biodiversity education",
+      "description": "Non-formal education — planned, structured programmes and processes of personal and social education outside the formal educational curriculum, designed to improve a range of skills and competencies. \nInformal education is the process whereby every individual acquires attitudes, values, skills and knowledge from daily experience, such as family, friends, peers and media.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"2 Awareness - Knowledge\" row 16 column D"
+    },
+    {
+      "id": "2.03",
+      "parentId": "globe_2",
+      "name": "Biodiversity awareness and communication",
+      "description": "Awareness - Public awareness brings the issues relating to biodiversity to the attention of key groups who have the power to influence outcomes. Awareness is an agenda setting and marketing exercise helping people to know what and why this is an important issue, the aspirations for the targets, and what is and can be done to achieve these. \nCommunication - Trying to bring the meaning of biodiversity (causes of loss, solutions, conservation needs, biodiversity finance, governance, etc) to different audiences and target groups, by providing information by all kinds of means. In an instrumental approach government use communication with other instruments to support biodiversity conservation to address economic constraints and to motivate action. Governments also use one-way communication to inform audiences about policies and legislation.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"2 Awareness - Knowledge\" row 30 column D"
+    },
+    {
+      "id": "2.04",
+      "parentId": "globe_2",
+      "name": "Biodiversity Scientific research",
+      "description": "Research comprises creative work undertaken on a systematic basis in order to increase the stock of knowledge and the use of this knowledge.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"2 Awareness - Knowledge\" row 42 column D"
+    },
+    {
+      "id": "2.05",
+      "parentId": "globe_2",
+      "name": "Indigenous and local communities* knowledge*",
+      "description": "Knowledge, innovations and practices of indigenous and local communities around the world. Developed from experience gained over the centuries and adapted to the local culture and environment, traditional knowledge is transmitted orally from generation to generation. It tends to be collectively owned and takes the form of stories, songs, folklore, proverbs, cultural values, beliefs, rituals, community laws, local language, and agricultural practices, including the development of plant species and animal breeds. Traditional knowledge is mainly of a practical nature, particularly in such fields as agriculture, fisheries, health, horticulture, and forestry.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"2 Awareness - Knowledge\" row 64 column D"
+    },
+    {
+      "id": "2.06",
+      "parentId": "globe_2",
+      "name": "CBD clearing-house mechanism",
+      "description": "Its mission is to contribute significantly to the implementation of the Convention on Biological Diversity and its Strategic Plan for Biodiversity 2011-2020, through effective information services and other appropriate means in order to promote and facilitate scientific and technical cooperation, knowledge sharing and information exchange, and to establish a fully operational network of Parties and partners.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"2 Awareness - Knowledge\" row 74 column D"
+    },
+    {
+      "id": "3.01",
+      "parentId": "globe_3",
+      "name": "Invasive Alien Species",
+      "description": "for collection of data; 2 BD Awareness and Knowledge might be relevant; including citizen-sciences\nfor long-term measures: most measures are part of 8 Restoration",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"3 Biosafety\" row 4 column D"
+    },
+    {
+      "id": "3.02",
+      "parentId": "globe_3",
+      "name": "Genetically Modified Organisms (GMOs), including Living modified organisms (LMO)",
+      "description": "GMO/LMO have many potential benefits, however, also might cause harm. Thus, one of the main points is research, collaboration and establishing relevant policies and regulation that allow advancing the research, without putting biodiversity into danger. It also requires trainings, capacity-building*, awareness raising, and the monitoring of the procedures put in place to handle GMO/LMO",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"3 Biosafety\" row 16 column D"
+    },
+    {
+      "id": "4.01",
+      "parentId": "globe_4",
+      "name": "Green supply chain",
+      "description": "A green supply chain integrates environmentally responsible practices related to sourcing, product design, manufacturing, packaging, logistics and end-of-life product management, improving efficiency, reducing emissions, used resources and waste*.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"4 Green Economy\" row 4 column D"
+    },
+    {
+      "id": "4.02",
+      "parentId": "globe_4",
+      "name": "Extractive industries",
+      "description": "Note: Ensure that the biodiversity intention is clearly stated\nFor some countries, the recovery of raw materials (extractive sector) is critical for domestic resource mobilization and prof-its could be channelled to biodiversity-friendly investments. Countries should ensure that impact on biodiversity is avoided or minimized as much as possible.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"4 Green Economy\" row 12 column D"
+    },
+    {
+      "id": "4.03",
+      "parentId": "globe_4",
+      "name": "Sustainable consumption",
+      "description": "The aim is to reduce the negative impact on biodiversity by improving the ecological footprint, reducing per-capita consumption, avoiding waste and overexploitation.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"4 Green Economy\" row 21 column D"
+    },
+    {
+      "id": "4.04",
+      "parentId": "globe_4",
+      "name": "Sustainable energy",
+      "description": "Note: Ensure that the biodiversity intention is clearly stated",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"4 Green Economy\" row 31 column D"
+    },
+    {
+      "id": "4.05",
+      "parentId": "globe_4",
+      "name": "Sustainable tourism",
+      "description": "Tourism that takes full account of its current and future economic, social and environmental impacts, addressing the needs of visitors, the industry, the environment and host communities",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"4 Green Economy\" row 37 column D"
+    },
+    {
+      "id": "4.06",
+      "parentId": "globe_4",
+      "name": "Sustainable transportation",
+      "description": "aiming for reducing the negative impacts by reducing the reliance on natural resources, providing environmentally friendly alternatives (e.g. bike, pedestrian) and increasing public transport",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"4 Green Economy\" row 47 column D"
+    },
+    {
+      "id": "4.07",
+      "parentId": "globe_4",
+      "name": "Sustainable urban and rural areas",
+      "description": "Can include environmental impact assessments of infrastructure projects, improving water quality, and disaster risk reduction.",
+      "source": "dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx, sheet \"Globe Taxonomy\" row 5 column B (bullet for \"Sustainable urban and rural areas\"). BIOFIN authoritative XLSX has no definition cell for this code."
+    },
+    {
+      "id": "5.01",
+      "parentId": "globe_5",
+      "name": "Biodiversity laws, policies, plans",
+      "description": "All legal work on every level of government (national, state or local) that has the main objective to address Biodiversity directly",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 4 column D"
+    },
+    {
+      "id": "5.02",
+      "parentId": "globe_5",
+      "name": "Other relevant laws, policies, plans",
+      "description": "Again all kinds of legal work on every level of government, however only addressing biodiversity indirectly (e.g. legislation related to non-biodiversity sectors)",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 9 column D"
+    },
+    {
+      "id": "5.03",
+      "parentId": "globe_5",
+      "name": "Biodiversity coordination and management",
+      "description": "The coordination with different stake-* and rightsholders*, on a local, national or international level, either with the state participating or providing a framework/ platform for other actors to coordinate among themselves.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 14 column D"
+    },
+    {
+      "id": "5.04",
+      "parentId": "globe_5",
+      "name": "Biodiversity finance planning and coordination",
+      "description": "All kind of measures that can increase domestic and international finance flows, by introducing new instruments and mechanisms, improving the spending of currently available funds and by providing legal frameworks for non-public actors.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 24 column D"
+    },
+    {
+      "id": "5.05",
+      "parentId": "globe_5",
+      "name": "Strategic Environmental Assessment (SEA)* Framework",
+      "description": "formal, systematic process to analyse and address the environmental effects of policies, plans and programmes and other strategic initiatives, usually done in their early stages",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 39 column D"
+    },
+    {
+      "id": "5.06",
+      "parentId": "globe_5",
+      "name": "Spatial planning",
+      "description": "Relates to the spatial arrangement of all kinds of territories to use it in a rational way, coordinating the different interests (production, livelihood, biodiversity conservation, historical/cultural value, recreation…) and sectorial policies.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 43 column D"
+    },
+    {
+      "id": "5.07",
+      "parentId": "globe_5",
+      "name": "Multilateral environmental agreements",
+      "description": "Note: Implementation of concrete actions to comply with those agreements are in the specific subcategories",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 51 column D"
+    },
+    {
+      "id": "5.08",
+      "parentId": "globe_5",
+      "name": "Access to resources, information and decision-making, including FPIC* consultations",
+      "description": "Directed financial and non-financial resources to all kind of rights holders* and stakeholders*, in particular to Indigenous Peoples and local communities*, women and youth, as well as having access to complete and accurate information and being involved as key-partners or main actor in decision-making processes, including the right to free, prior, informed consent (FPIC).",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"5 Planning and Finance\" row 56 column D"
+    },
+    {
+      "id": "6.01",
+      "parentId": "globe_6",
+      "name": "Protection and remediation of soil, groundwater and surface water",
+      "description": "Measures and activities aimed at the prevention of pollutant infiltration, cleaning up of soils and water bodies and the protection of soil from erosion and other physical degradation as well as from salinisation. Monitoring*, control of soil and groundwater pollution is included.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"6 Pollution Management\" row 4 column D"
+    },
+    {
+      "id": "6.02",
+      "parentId": "globe_6",
+      "name": "Protection of ambient air and climate",
+      "description": "Activities aimed at the reduction of emissions into the ambient air or ambient concentrations of air pollutants as well as to measures and activities aimed at the control of emissions of greenhouse gases and gases that adversely affect the stratospheric ozone layer.\nNote: Ensure that the biodiversity intention is clearly stated - only CO2 reduction is not sufficient as biodiversity purpose",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"6 Pollution Management\" row 14 column D"
+    },
+    {
+      "id": "6.03",
+      "parentId": "globe_6",
+      "name": "Waste* management",
+      "description": "Reduced/Avoided pollution by managing all kinds of waste, including wastewater*\nNote: Ensure that the biodiversity intention is clearly stated",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"6 Pollution Management\" row 28 column D"
+    },
+    {
+      "id": "6.04",
+      "parentId": "globe_6",
+      "name": "Coastal and marine pollution debris* management",
+      "description": "Reduced/Avoided coastal and marine pollution debris with activities tackling land- and sea-based sources, focusing especially on plastic\nNote: If there are direct links to a production system of Sustainable Use, expenditure should be counted there.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"6 Pollution Management\" row 41 column D"
+    },
+    {
+      "id": "6.05",
+      "parentId": "globe_6",
+      "name": "Other pollution management measures",
+      "description": "other pollutant includes: noise, vibration, light, temperature, radiation, and, partially pharmaceutical, heavy metals, Persistent Organic Pollutants (POPs)*, Polychlorinated biphenyls (PCB)",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"6 Pollution Management\" row 52 column D"
+    },
+    {
+      "id": "6.06",
+      "parentId": "globe_6",
+      "name": "Enabling activities related to all types of pollution",
+      "description": "general activities related to awareness raising, capacity building and data generation for all type of pollution, in case those activities have clear biodiversity objectives",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"6 Pollution Management\" row 62 column D"
+    },
+    {
+      "id": "7.01",
+      "parentId": "globe_7",
+      "name": "Management and expansion of PAs, including Indigenous and Communities Conserved Areas (ICCA)*",
+      "description": "A protected area is a geographically defined area which is designated or regulated and managed to achieve specific conservation objectives. It includes all IUCN Categories (Ia-VI), as well as defined Indigenous and Community Conserved Areas (ICCA). The expansion of Protected Areas includes the analysis of potential areas, identifying the best management policy considering the local circumstances (ecological and social), securing land titles and legal designation of the area.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"7 PA & other measures\" row 4 column D"
+    },
+    {
+      "id": "7.02",
+      "parentId": "globe_7",
+      "name": "Management of areas outside of PAs",
+      "description": "All activities undertaken to manage, protect and develop areas outside of the Protected Area regime such as transboundary areas, biodiversity corridors, Key Biodiversity Areas (KBAs), landscapes and seascapes to achieve the long-term conservation of nature with associated ecosystem services and cultural values. It includes all action of public institution and ministries, as well as providing the framework and support for individuals, communities, non-public institutions and businesses, to maintain, enhance, and restore ecological flows, species movement, and dynamic processes across intact and fragmented environments outside of PA.\nNote: In case an area is an designated OECM area, refer to subcategory 7.03 OECM",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"7 PA & other measures\" row 29 column D"
+    },
+    {
+      "id": "7.03",
+      "parentId": "globe_7",
+      "name": "Other effective area-based conservation measures (OECM)",
+      "description": "A geographically defined area other than a Protected Area, which is governed and managed in ways that achieve positive and sustained long-term outcomes for the in situ conservation of biodiversity, with associated ecosystem functions and services and where applicable, cultural, spiritual, socio–economic, and other locally relevant values (CBD, 2018). The main difference between a protected area and an OECM is that PAs have a primary conservation objective, however it even remained declared as such when becoming ineffective, whereas an OECM delivers the effective in-situ conservation of biodiversity, regardless of its objectives.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"7 PA & other measures\" row 41 column D"
+    },
+    {
+      "id": "7.04",
+      "parentId": "globe_7",
+      "name": "Conservation of species",
+      "description": "Related to the targeted protection of species, in particular wildlife and migratory species, within or outside of protected and conserved areas. That includes reducing threats such as overconsumption, trade and poaching; climate change; displacement; reduced habitats; Invasive Alien Species, but also conservation measures in- and ex-situ.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"7 PA & other measures\" row 48 column D"
+    },
+    {
+      "id": "8.01",
+      "parentId": "globe_8",
+      "name": "Reintroduction and translocation of species",
+      "description": "Reintroduction generally refers to the introduction into the wild of species from captive stock, whereas translocation is the capture, transport and release or introduction of species, habitats or other ecological material (such as soil) from one location to another.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"8 Restoration\" row 4 column D"
+    },
+    {
+      "id": "8.02",
+      "parentId": "globe_8",
+      "name": "Site redevelopment and engineering",
+      "description": "Efforts should be both directed at preventing degradation in the first place, but also to repair damage already caused.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"8 Restoration\" row 15 column D"
+    },
+    {
+      "id": "8.03",
+      "parentId": "globe_8",
+      "name": "Site management",
+      "description": "Ongoing management or maintenance of restoration sites after the restoration activity has been realized to ensure the continuity of the initiated trajectory or status quo.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"8 Restoration\" row 29 column D"
+    },
+    {
+      "id": "9.01",
+      "parentId": "globe_9",
+      "name": "Agrobiodiversity",
+      "description": "Agricultural biodiversity, also known as agrobiodiversity or the genetic resources for food and agriculture. Agrobiodiversity is the result of natural selection processes and the careful selection and inventive developments of farmers, herders and fishers over millennia. Many people’s food and livelihood security depend on the sustained management of various biological resources that are important for food and agriculture.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 4 column D"
+    },
+    {
+      "id": "9.02",
+      "parentId": "globe_9",
+      "name": "Sustainable Agriculture (crops and livestock)",
+      "description": "Sustainable agriculture seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood) in the food production system. It can comprise a wide range of practices based on traditional and local knowledge* or use innovative approaches including robots or Artificial Intelligence; from urban to rural farming as well as production other than food (e.g., fibre, biofuel).",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 15 column D"
+    },
+    {
+      "id": "9.03",
+      "parentId": "globe_9",
+      "name": "Sustainable Aquaculture",
+      "description": "The controlled cultivation or farming of fish, shellfish, and aquatic plants. The purpose is to create a source of aquatic-sourced food and commercial products in a way that will increase availability while reducing environmental harm and protecting various aquatic species.\nincludes mariculture, but excludes open-pens",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 35 column D"
+    },
+    {
+      "id": "9.04",
+      "parentId": "globe_9",
+      "name": "Sustainable Fisheries",
+      "description": "The shift to sustainable fisheries (both lethal and non-lethal) includes measures to combat overfishing, ensuring habitat protection, and use of non-aggressive fishing devices, to name a few.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 47 column D"
+    },
+    {
+      "id": "9.05",
+      "parentId": "globe_9",
+      "name": "Sustainable Forestry",
+      "description": "Sustainable forestry seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood). That means considering the needs of wildlife and its forest ecosystem with its abiotic components such as soil and water. Sustainable forestry therefore includes all kind of human intervention in forests that safeguard biodiversity.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 64 column D"
+    },
+    {
+      "id": "9.06",
+      "parentId": "globe_9",
+      "name": "Sustainable Freshwater",
+      "description": "Measures that reduces the overuse of freshwater resources (e.g. for drink water supply or agriculture), or other threats to the freshwater ecosystem as pollution (e.g. by industry or agriculture sector and habitated areas), climate change, invasive alien species and obstacles (especially dams), as well as tools that allow for better reporting and monitoring*. Indigenous people and local communities living close by the freshwater or traditionally using it should be included and considered when measurements are planned and implemented.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 75 column D"
+    },
+    {
+      "id": "9.07",
+      "parentId": "globe_9",
+      "name": "Sustainable marine and coastal management",
+      "description": "Sustainable marine and coastal management seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood).",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 85 column D"
+    },
+    {
+      "id": "9.08",
+      "parentId": "globe_9",
+      "name": "Sustainable rangelands",
+      "description": "Sustainable rangeland management seeks to combine environmental protection (for wildlife, different habitats and watersheds), production and related income (especially by livestock, freshwater) as well as social equity (i.e. increased livelihood). That means considering the needs of wildlife and its related ecosystem (e.g. grassland, shrubland, wetland) with its abiotic components such as soil and water. Sustainable rangelands therefore include all kind of human intervention in rangelands that safeguard biodiversity, such as avoiding erosion and reduced risk of fire, while benefitting from the rangeland products and services within the ecological limits, while including Indigenous Peoples and local communities* equitably.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 95 column D"
+    },
+    {
+      "id": "9.09",
+      "parentId": "globe_9",
+      "name": "Sustainable wildlife",
+      "description": "Sustainable management of wildlife.\nWildlife refers to captive or living in the wild organisms that have not been subject to breeding. All uses - extractive* (fishing, gathering, logging and terrestrial animal harvesting) and non-extractive* - should be done within the ecological limits.",
+      "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 104 column D"
+    }
   ]
 }
