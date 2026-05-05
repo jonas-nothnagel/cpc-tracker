@@ -200,7 +200,7 @@ export function PrototypesClient({
               </h1>
               <p className="text-sm text-[var(--undp-gray)] max-w-2xl">
                 Experimental views scoped with the team. Methodology and
-                visual treatment can change without warning — treat these as
+                visual treatment can change without warning. Treat these as
                 drafts for discussion, not final outputs.
               </p>
             </div>

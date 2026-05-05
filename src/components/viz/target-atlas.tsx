@@ -381,20 +381,21 @@ export function TargetAtlas({
               </li>
               <li>
                 <strong className="text-[var(--undp-black)]">Vertical (backing)</strong>{" "}
-                adds linked BTR actions + linked BER programmes. Further up
-                = reported action and/or budget already exist in the same
-                area.
+                combines linked BTR actions and BER programmes, weighted:
+                BTR by reported execution stage, BER by spend relative to
+                the country average. Further up = stronger evidence of
+                action and budget in the same area.
               </li>
               <li>
                 <strong className="text-[var(--undp-black)]">
                   <span style={{ color: "#dc2626" }}>Red ring</span>
                 </strong>{" "}
-                marks <em>high-tension</em> targets only &mdash; those
+                marks <em>high-tension</em> targets only: those
                 flagged as contradicting <strong>5 or more</strong> other
                 policy targets. Low-tension targets aren&apos;t ringed, to
                 keep the chart readable; every tension is still listed in
                 the side panel when you click a dot. Tensions sit alongside
-                the axes, not subtracted from them &mdash; a target can be
+                the axes, not subtracted from them. A target can be
                 strongly aligned <em>and</em> contested.
               </li>
             </ul>
@@ -586,7 +587,7 @@ export function TargetAtlas({
                 fontSize={12}
                 fill="#64748b"
               >
-                Coherence — cross-doc policy targets sharing a lens category
+                Coherence: cross-doc policy targets sharing a lens category
               </text>
               <text
                 x={-(MARGIN.top + PLOT_H / 2)}
@@ -596,7 +597,7 @@ export function TargetAtlas({
                 fontSize={12}
                 fill="#64748b"
               >
-                Backing — BTR actions + BER programmes sharing a lens category
+                Backing: weighted by BTR execution stage and BER spend share
               </text>
             </g>
 
@@ -1449,8 +1450,8 @@ function SidePanel({
       <div className="mb-3 grid grid-cols-2 gap-px bg-gray-100 border border-gray-100 rounded overflow-hidden">
         <StatCell
           label="Backing"
-          value={signal.backingCount.toFixed(1)}
-          hint="quality-weighted"
+          value={signal.backingCount.toFixed(0)}
+          hint="weighted: stage + spend"
           emphasis
         />
         <StatCell
