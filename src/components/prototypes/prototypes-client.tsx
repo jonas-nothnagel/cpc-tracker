@@ -266,7 +266,7 @@ export function PrototypesClient({
 
       <footer className="border-t border-gray-100 mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-[var(--undp-gray)]">
-          Prototypes page — CPC Tracker scratchpad.
+          Prototypes page. CPC Tracker scratchpad.
         </div>
       </footer>
     </div>

@@ -1450,7 +1450,13 @@ function SidePanel({
       <div className="mb-3 grid grid-cols-2 gap-px bg-gray-100 border border-gray-100 rounded overflow-hidden">
         <StatCell
           label="Backing"
-          value={signal.backingCount.toFixed(0)}
+          value={
+            signal.backingCount === 0
+              ? "0"
+              : signal.backingCount < 1
+                ? signal.backingCount.toFixed(1)
+                : signal.backingCount.toFixed(0)
+          }
           hint="weighted: stage + spend"
           emphasis
         />
