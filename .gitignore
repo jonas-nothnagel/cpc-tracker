@@ -71,3 +71,4 @@ external-docs/
 # Tooling artifacts
 .playwright-mcp/
 .claude/
+.mcp.json

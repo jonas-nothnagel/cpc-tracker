@@ -19,8 +19,10 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+import os
+
 import httpx
-from openai import AsyncOpenAI
+from openai import AsyncAzureOpenAI, AsyncOpenAI
 
 from .config import CACHE_DIR, LLM_API_KEY, LLM_BASE_URL, LLM_CONCURRENCY, LLM_MODEL, LLM_TEMPERATURE
 
@@ -48,10 +50,10 @@ except Exception as e:  # pragma: no cover - best-effort
 # Client singleton
 # ---------------------------------------------------------------------------
 
-_client: AsyncOpenAI | None = None
+_client: AsyncOpenAI | AsyncAzureOpenAI | None = None
 
 
-def get_client() -> AsyncOpenAI:
+def get_client() -> AsyncOpenAI | AsyncAzureOpenAI:
     global _client
     if _client is None:
         # Explicit httpx.Timeout so the connect timeout stays tight (5s). If we
@@ -68,11 +70,44 @@ def get_client() -> AsyncOpenAI:
         # back. Combined with the retry loop now releasing the slot during
         # backoff (see `call_llm`), fast-failing lets other pairs make
         # progress.
-        _client = AsyncOpenAI(
-            base_url=LLM_BASE_URL,
-            api_key=LLM_API_KEY,
-            timeout=httpx.Timeout(60.0, connect=5.0),
-        )
+        timeout = httpx.Timeout(60.0, connect=5.0)
+        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        if azure_endpoint:
+            # Azure OpenAI / AI Foundry path. Uses Managed Identity by default
+            # (DefaultAzureCredential walks env → MSI → CLI) and falls back to
+            # AZURE_OPENAI_API_KEY if set. The model arg passed to call_llm
+            # becomes the Azure deployment name.
+            from azure.identity.aio import (
+                DefaultAzureCredential,
+                get_bearer_token_provider,
+            )
+
+            api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21")
+            api_key = os.getenv("AZURE_OPENAI_API_KEY")
+            if api_key:
+                _client = AsyncAzureOpenAI(
+                    azure_endpoint=azure_endpoint,
+                    api_key=api_key,
+                    api_version=api_version,
+                    timeout=timeout,
+                )
+            else:
+                token_provider = get_bearer_token_provider(
+                    DefaultAzureCredential(),
+                    "https://cognitiveservices.azure.com/.default",
+                )
+                _client = AsyncAzureOpenAI(
+                    azure_endpoint=azure_endpoint,
+                    azure_ad_token_provider=token_provider,
+                    api_version=api_version,
+                    timeout=timeout,
+                )
+        else:
+            _client = AsyncOpenAI(
+                base_url=LLM_BASE_URL,
+                api_key=LLM_API_KEY,
+                timeout=timeout,
+            )
     return _client
 
 

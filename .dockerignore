@@ -1,0 +1,36 @@
+# Dev artifacts
+node_modules
+.next
+.turbo
+.vercel
+
+# Python local state
+python/.venv
+python/__pycache__
+python/**/__pycache__
+python/**/*.pyc
+python/output
+python/analyses
+python/tmp
+
+# Country / pilot scratch space we don't want shipped
+dev_data_scripts/sharepoint_sync
+
+# VCS + secrets
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.vscode
+.idea
+.DS_Store
+
+# Docs we don't need at runtime (kept in repo for devs)
+docs
+external-docs
+*.md
+!CLAUDE.md
+!README.md

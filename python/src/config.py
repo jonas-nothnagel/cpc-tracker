@@ -36,8 +36,9 @@ _DEFAULT_OUTPUT = Path(__file__).resolve().parent.parent / "output"
 DATA_DIR = Path(os.getenv("CPC_DATA_DIR") or str(_DEFAULT_DATA))
 OUTPUT_DIR = Path(os.getenv("CPC_OUTPUT_DIR") or str(_DEFAULT_OUTPUT))
 
-# Cache is always shared across analyses for efficiency
-CACHE_DIR = _DEFAULT_OUTPUT / ".cache"
+# Cache is shared across analyses for efficiency. Lives under OUTPUT_DIR so it
+# follows CPC_OUTPUT_DIR onto persistent storage (Azure App Service /home mount).
+CACHE_DIR = OUTPUT_DIR / ".cache"
 
 # Ensure directories exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
