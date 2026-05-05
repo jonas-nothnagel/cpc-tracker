@@ -701,8 +701,18 @@ _CLAIM_PATTERNS: list[tuple[str, "re.Pattern[str]"]] = [
 
 
 def _normalise_claim(token: str) -> str:
-    """Normalise a claim token for set comparison."""
-    return re.sub(r"\s+", "", token).lower().replace(",", "")
+    """Normalise a claim token for set comparison.
+
+    Strips whitespace, lowercases, and collapses both `,` and `.` thousands
+    separators so that "5,277", "5.277" and "5277" compare as equal — the
+    LLM occasionally re-renders the same value with a different separator
+    than the source, and we don't want that to false-flag a grounded claim.
+    Both text and source go through the same normalisation, so decimals
+    like "1.5%" still match each other (they normalise to "15%" on both
+    sides — equivalent for set membership).
+    """
+    s = re.sub(r"\s+", "", token).lower()
+    return s.replace(",", "").replace(".", "")
 
 
 def _extract_claims(text: str) -> set[str]:
@@ -859,7 +869,55 @@ async def _extract_activities(
                 f"  '{target['label']}': {len(display_lines)} activities extracted"
             )
 
+    # Same claim-grounding check we run on targets, applied per-activity. An
+    # activity whose `text` contains a number/year/unit not present in its own
+    # `sourceText` gets a `_provenanceFlag` so reviewers can tell the difference
+    # between a verbatim activity and one the LLM rewrote on the fly.
+    _log_unsourced_activities(targets)
+
     return targets
+
+
+def _log_unsourced_activities(targets: list[dict[str, Any]]) -> None:
+    """Run the claim-grounding validator on each Phase 3 activity entry.
+
+    Activities are stored on each target as a parallel array
+    `activitySources: [{text, sourceText?, section?}, ...]`. Mutates each
+    flagged entry in place by setting `_provenanceFlag`.
+    """
+    flagged = 0
+    total = 0
+    for target in targets:
+        for entry in target.get("activitySources") or []:
+            if not isinstance(entry, dict):
+                continue
+            total += 1
+            # Reuse the same shape validate_claim_grounding expects.
+            shim = {
+                "text": entry.get("text", ""),
+                "sources": [{"sourceText": entry.get("sourceText", "")}]
+                if entry.get("sourceText")
+                else [],
+            }
+            missing = validate_claim_grounding(shim)
+            if not missing:
+                continue
+            flagged += 1
+            entry["_provenanceFlag"] = (
+                "UNSOURCED CLAIMS — the following appear in activity `text` "
+                "but not in its `sourceText`: " + ", ".join(missing)
+            )
+            logger.warning(
+                "Unsourced claim(s) in activity '%s': %s — flagged for review",
+                entry.get("text", "")[:60],
+                ", ".join(missing),
+            )
+    if flagged:
+        logger.warning(
+            "Validator flagged %d/%d activities with unsourced claims",
+            flagged,
+            total,
+        )
 
 
 # ---------------------------------------------------------------------------

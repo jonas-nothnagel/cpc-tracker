@@ -219,12 +219,17 @@ Order the array from highest score to lowest. The top entry will be treated as t
 def build_rank_user_message(
     target_text: str, categories: list[dict[str, Any]]
 ) -> str:
-    """User message: target + full category catalog."""
+    """User message: target + full category catalog.
+
+    Descriptions are sent in full so the verbatim sourcing established in
+    `categories.json` actually reaches the rank LLM. The previous 300-char
+    cap silently chopped most of the new IPCC / GLOBE descriptions (some
+    over 4,000 chars), which defeated the audit. Total catalog stays well
+    under typical context windows (largest taxonomy ≈ 17 k chars).
+    """
     catalog_lines = []
     for cat in categories:
         desc = cat.get("description", "")
-        if len(desc) > 300:
-            desc = desc[:297] + "..."
         catalog_lines.append(f"- {cat['id']}: {cat['name']} -- {desc}")
     catalog = "\n".join(catalog_lines)
     return (
