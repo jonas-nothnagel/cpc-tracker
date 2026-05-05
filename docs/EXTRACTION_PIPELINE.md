@@ -188,7 +188,10 @@ the activity list is empty — the LLM is told not to invent.
 
 The display string is stored in `target["activities"]` (newline-joined, the
 existing UI contract); the structured per-activity provenance lives in
-`target["activitySources"]`.
+`target["activitySources"]`. After Phase 3 the same claim-grounding validator
+runs over each activity entry — any number / year / unit in the activity's
+`text` that is missing from its own `sourceText` gets a `_provenanceFlag`,
+just like target-level claims.
 
 Cached by `(target_text, context)` (`cache_namespace="extract_activities"`).
 
@@ -215,7 +218,7 @@ upload.
 | LLM rewords a target into something the document never said. | Verbatim contract on `sourceText`; `textCleanup` enum forces an explicit declaration of how `text` was derived. |
 | LLM injects a number / year that is not in the document. | Claim-grounding validator runs after consolidation and stamps `_provenanceFlag`. |
 | Consolidation drops sources when merging duplicates. | Consolidation prompt explicitly forbids dropping sources; sources are required in the output schema. |
-| Activities are invented. | Activities prompt has the same verbatim contract; per-activity `sourceText` carried on `activitySources`. |
+| Activities are invented. | Activities prompt has the same verbatim contract; per-activity `sourceText` carried on `activitySources`; same claim-grounding validator runs after Phase 3. |
 | Document upload re-paraphrases on every re-run. | Cache is content-keyed; same input ⇒ same output. |
 
 ---
