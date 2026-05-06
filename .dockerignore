@@ -9,7 +9,11 @@ python/.venv
 python/__pycache__
 python/**/__pycache__
 python/**/*.pyc
-python/output
+# Ship the pre-computed Mongolia + Panama outputs (~20 MB) so the demo
+# dashboards render on first boot. .cache (LLM cache, ~885 MB) and
+# per-analysis runs stay excluded.
+python/output/.cache
+python/output/.DS_Store
 python/analyses
 python/tmp
 
