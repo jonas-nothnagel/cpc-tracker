@@ -367,7 +367,7 @@ export function TargetAtlas({
             <p>
               Every target, every reported action (BTR), and every budget
               programme (BER) is tagged with categories from a shared
-              taxonomy &mdash; the <strong>Lens</strong>. Two items are
+              taxonomy: the <strong>Lens</strong>. Two items are
               &ldquo;linked&rdquo; when they share at least one tag. No
               human hand-picks these links, and no single opaque score
               drives position.
@@ -414,8 +414,8 @@ export function TargetAtlas({
             </p>
             <ul className="space-y-2">
               <li>
-                <strong className="text-[var(--undp-black)]">Well-supported (top right)</strong>{" "}
-                &mdash; linked to many other policy targets <em>and</em> to
+                <strong className="text-[var(--undp-black)]">Well-supported (top right):</strong>{" "}
+                linked to many other policy targets <em>and</em> to
                 reported action or budget. The country&apos;s policy stack
                 and its implementation/financing machinery both back this
                 target.{" "}
@@ -426,8 +426,8 @@ export function TargetAtlas({
                 </em>
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Ambition gap (bottom right)</strong>{" "}
-                &mdash; echoed across many policies, but no reported action
+                <strong className="text-[var(--undp-black)]">Ambition gap (bottom right):</strong>{" "}
+                echoed across many policies, but no reported action
                 and no budget programme touches the same area. The classic
                 &ldquo;say-do&rdquo; gap.{" "}
                 <em className="text-[var(--undp-gray)]">
@@ -437,8 +437,8 @@ export function TargetAtlas({
                 </em>
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Backed but isolated (top left)</strong>{" "}
-                &mdash; reported action or budget is there, but few other
+                <strong className="text-[var(--undp-black)]">Backed but isolated (top left):</strong>{" "}
+                reported action or budget is there, but few other
                 policy targets reinforce it. The country is doing or paying
                 for something that stands on its own.{" "}
                 <em className="text-[var(--undp-gray)]">
@@ -447,8 +447,8 @@ export function TargetAtlas({
                 </em>
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Limited uptake (bottom left)</strong>{" "}
-                &mdash; few cross-policy links, few reported actions, few
+                <strong className="text-[var(--undp-black)]">Limited uptake (bottom left):</strong>{" "}
+                few cross-policy links, few reported actions, few
                 budget programmes in this area. Could be a strategic
                 orphan, a very narrow target, or a poor fit for this lens.
                 Worth a direct read before judging.
@@ -478,8 +478,8 @@ export function TargetAtlas({
                 &rarr; a named budget line in the Biodiversity Expenditure
                 Review funds activity in the same thematic area. The
                 country is <em>already paying for</em> something related.
-                It&apos;s a count of programmes, not a currency amount
-                &mdash; dollar totals per category live in the{" "}
+                It&apos;s a count of programmes, not a currency amount;
+                dollar totals per category live in the{" "}
                 <em>Financing Coherence</em> section below.
               </li>
             </ul>
@@ -510,7 +510,7 @@ export function TargetAtlas({
               it to every linked programme and action, alongside a second,
               independent LLM-generated alignment score. Where the two
               agree, confidence is high. Where they disagree, surface for
-              discussion &mdash; the tags are the authoritative link; the
+              discussion. The tags are the authoritative link; the
               LLM read is a cross-check.
             </p>
           </div>
@@ -537,7 +537,7 @@ export function TargetAtlas({
             </>
           )}
           {emptyCategoryNote.ber + emptyCategoryNote.btr > 0
-            ? " are classified there, but no policy target anchors it directly. The chart has nothing to highlight — that gap is the signal."
+            ? " are classified there, but no policy target anchors it directly. The chart has nothing to highlight: that gap is the signal."
             : " has backing here."}
         </div>
       )}
@@ -802,7 +802,7 @@ export function TargetAtlas({
             {getDocMediumLabel(countryConfig, hoverTarget.sourceDocument)}{" "}
             {hoverTarget.sourceLabel}
           </span>
-          {" — "}
+          {" · "}
           Coherence {hoverSignal.coherenceCount} · Implementation{" "}
           {hoverSignal.implementationCount} · Budget {hoverSignal.budgetCount}
           {hoverSignal.tensionCount > 0
