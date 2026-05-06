@@ -1,11 +1,11 @@
 {
-  "energy_wh": 5.3008012069694574,
-  "water_ml": 22.93932323918446,
-  "co2_geq": 2.322165270486372,
-  "minerals_ugsbeq": 16.712319691000342,
+  "energy_wh": 3.7480857667421232,
+  "water_ml": 16.21991611729187,
+  "co2_geq": 1.579709223887661,
+  "minerals_ugsbeq": 8.330436489111364,
   "call_count": 8354,
-  "tracked_call_count": 1134,
-  "cached_call_count": 7220,
+  "tracked_call_count": 432,
+  "cached_call_count": 7922,
   "model": "openai/gpt-4o-mini",
   "available": true,
   "source": "measured"

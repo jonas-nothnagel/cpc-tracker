@@ -1,15 +1,6 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 import { InfoBox } from "@/components/ui/info-box";
 import {
   CoherenceTable,
@@ -178,26 +169,6 @@ export function FinancingCoherence({
       ? (stats.totalExpenditure / actualTotalExpenditure) * 100
       : 0;
 
-  // Data for the expenditure bar chart (flat list, no hierarchy)
-  const chartData = useMemo(() => {
-    const rollups = buildRollups(
-      leaves,
-      taxonomyType,
-      classifications,
-      expByBerId,
-    );
-    return rollups
-      .filter((r) => r.expenditure > 0)
-      .sort((a, b) => b.expenditure - a.expenditure)
-      .map((r) => ({
-        name: r.name.length > 30 ? r.name.slice(0, 27) + "..." : r.name,
-        fullName: r.name,
-        value: +r.expenditure.toFixed(1),
-        targets: r.targetCount,
-        actions: r.actionCount,
-      }));
-  }, [leaves, taxonomyType, classifications, expByBerId]);
-
   const moneyFormatter = React.useCallback(
     (v: number) => formatMoney(v, moneyCurrency),
     [moneyCurrency],
@@ -231,6 +202,52 @@ export function FinancingCoherence({
             ? `Rollup by ${VIEW_LABELS[view]}.`
             : "Drill into each of the 28 original BER reporting lines."}
         </p>
+      </div>
+
+      {berData.keyFindings && (
+        <div className="mb-3 px-3 py-2 rounded-md bg-[#fef3c7] border-l-4 border-[#b45309]">
+          <p className="text-xs text-[var(--undp-black)]">
+            <span className="font-semibold">
+              BER analysis horizon ({berData.keyFindings.programPeriod}):
+            </span>{" "}
+            {moneyFormatter(berData.keyFindings.plannedBudget)} planned,{" "}
+            {moneyFormatter(berData.keyFindings.actualExpenditure)} actual.
+            Execution gap: {moneyFormatter(berData.keyFindings.gap)}.
+          </p>
+          <p className="text-[11px] text-[var(--undp-gray)] mt-0.5">
+            Detailed annual data below covers {periodLabel}; the BER document
+            analyses the longer {berData.keyFindings.programPeriod} period.
+          </p>
+        </div>
+      )}
+
+      <div className="mb-5 px-3 py-2 rounded-md bg-gray-50 border border-gray-200">
+        <p className="text-[11px] font-semibold text-[var(--undp-gray)] mb-1 uppercase tracking-wide">
+          What this section is and is not showing
+        </p>
+        <ul className="text-[11px] text-[var(--undp-gray)] space-y-0.5 list-disc pl-4">
+          <li>
+            <strong className="text-[var(--undp-black)]">Biodiversity expenditure (BER) only.</strong>{" "}
+            Broader green budget tagging (climate mitigation and adaptation
+            flags across ~1,400 projects) is a separate Mongolia data source
+            not yet integrated.
+          </li>
+          <li>
+            Program-to-policy classification is{" "}
+            <strong className="text-[var(--undp-black)]">LLM-generated</strong>.
+            Each program gets a primary single-label and any tags scoring{" "}
+            ≥ 0.5 as multi-label.
+          </li>
+          <li>
+            Period: BER analysis horizon{" "}
+            {berData.keyFindings?.programPeriod ?? `${berData.period.start}-${berData.period.end}`};
+            detailed annual data {periodLabel}.
+          </li>
+          <li>
+            Sub-program (line-item) reconciliation is in flight; the current
+            view is program-level only (28 BER reporting lines).
+          </li>
+        </ul>
       </div>
 
       {/* Group-by + taxonomy controls */}
@@ -337,47 +354,11 @@ export function FinancingCoherence({
             parentLabelPlural={parentLabelPlural}
           />
 
-          {chartData.length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-                Expenditure by {parentLabel} ({periodLabel})
-              </h3>
-              <ResponsiveContainer
-                width="100%"
-                height={Math.max(160, chartData.length * 30 + 40)}
-              >
-                <BarChart
-                  data={chartData}
-                  layout="vertical"
-                  margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: "#64748b" }} />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    width={220}
-                    tick={{ fontSize: 11, fill: "#64748b" }}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      borderRadius: 6,
-                      border: "1px solid #e2e8f0",
-                      fontSize: 12,
-                    }}
-                    formatter={(value) => [
-                      moneyFormatter(Number(value)),
-                      "Expenditure",
-                    ]}
-                    labelFormatter={(_label, payload) =>
-                      payload?.[0]?.payload?.fullName ?? String(_label)
-                    }
-                  />
-                  <Bar dataKey="value" fill="#059669" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
+          <p className="mt-3 text-[11px] italic text-[var(--undp-gray)]">
+            A bar-chart view disaggregated by ministry will follow once the
+            Mongolia BER program-to-ministry mapping is wired (separate
+            workstream).
+          </p>
         </>
       )}
 

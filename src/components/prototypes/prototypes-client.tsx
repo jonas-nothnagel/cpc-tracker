@@ -200,7 +200,7 @@ export function PrototypesClient({
               </h1>
               <p className="text-sm text-[var(--undp-gray)] max-w-2xl">
                 Experimental views scoped with the team. Methodology and
-                visual treatment can change without warning — treat these as
+                visual treatment can change without warning. Treat these as
                 drafts for discussion, not final outputs.
               </p>
             </div>
@@ -266,7 +266,7 @@ export function PrototypesClient({
 
       <footer className="border-t border-gray-100 mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-[var(--undp-gray)]">
-          Prototypes page — CPC Tracker scratchpad.
+          Prototypes page. CPC Tracker scratchpad.
         </div>
       </footer>
     </div>
