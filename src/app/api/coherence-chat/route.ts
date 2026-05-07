@@ -86,29 +86,30 @@ Tools:
 - READ: get_pair_rationale, get_target_neighbors. Use these to look up rationales and neighbours before answering "why", "how", or "what does X connect to". Results return to you mid-conversation.
 - NAVIGATE: set_filter, focus_category, select_target, set_mode. These move the wheel.
 
-Always include a "content" message in your final assistant turn — that's what the user reads. Two examples:
+Your final assistant message must contain a short plain-text reply (the user reads only the assistant content field — never write "Content:" or "content =" prefixes; just write the sentence directly).
 
-Example A — "Why does NBSAP 1 conflict with NDC livestock?"
-Turn 1: call get_pair_rationale(nbsap_1, ndc_lvst). No content.
-Turn 2: content = "They compete for steppe land — NBSAP 1 designates protected biodiversity zones while the livestock target relies on existing pastures." tool calls = [select_target(nbsap_1)].
+Worked examples (each shows the action sequence and a sample reply):
 
-Example B — "What does NBSAP 1 align with most?"
-Turn 1: call get_target_neighbors(nbsap_1). No content.
-Turn 2: content = "NBSAP 1 aligns most with NDC Biodiversity 1 (shared protected-area designation) and NDC Forests 1 (forest reserves)." tool calls = [select_target(nbsap_1)].
+A. User asks "Why does NBSAP 1 conflict with NDC livestock?"
+   First call get_pair_rationale(nbsap_1, ndc_lvst). When the rationale returns, write a 1-3 sentence answer drawn from it AND call select_target(nbsap_1).
+   Sample reply: They compete for steppe land — NBSAP 1 designates protected biodiversity zones while the livestock target relies on existing pastures.
 
-Example C — "Switch to biodiversity view"
-Turn 1: content = "Grouped by biodiversity category." tool calls = [set_mode(globe)]. Done.
+B. User asks "What does NBSAP 1 align with most?"
+   First call get_target_neighbors(nbsap_1). When neighbours return, summarise the top two or three AND call select_target(nbsap_1).
+   Sample reply: NBSAP 1 aligns most with NDC Biodiversity 1 on protected-area designation and NDC Forests 1 on forest reserves.
 
-Example D — "Where do plans contradict most?"
-Turn 1: content = "Green economy has the most potential conflicts." tool calls = [set_filter(contradictions), focus_category(green_economy)]. Use the precomputed rankings in the context. No reads needed.
+C. User asks "Switch to biodiversity view"
+   Just call set_mode(globe). One-line reply.
+   Sample reply: Grouped by biodiversity category.
 
-Example E — "What are the top conflicts for biodiversity?" (aggregate WITH scope)
-Step 1: Glance at "Top contradiction pairs (with rationale)" in the context. If those pairs already cover the user's scope (their labels or descriptions mention biodiversity / NBSAP / etc.), summarize from there directly.
-Step 2: If the precomputed pairs do NOT cover the scope, call get_pairs_filtered({ scope: "biodiversity", type: "contradictions", limit: 5 }) to fetch the matching rationales. Then summarize.
-Final turn: content = a 1-3 sentence summary drawn from the rationale text. tool calls = [set_filter(contradictions), focus_category(NBSAP)] (or whatever group fits the scope).
+D. User asks "Where do plans contradict most?"
+   Use the precomputed rankings — pick the top tension group, call set_filter(contradictions) and focus_category(<that group id>). No read tool needed.
+   Sample reply: Green economy has the most potential conflicts.
 
-Example F — "Top livestock alignments / forest contradictions / energy tensions" (any scoped aggregate)
-Same pattern as Example E with type set accordingly: get_pairs_filtered({ scope: "<keyword>", type: "high" | "contradictions" }). Always summarize from the returned descriptions.
+E. User asks "What are the top conflicts for biodiversity?" (aggregate WITH scope)
+   First check the "Top contradiction pairs (with rationale)" section already in the context. If those pairs cover the user's scope, summarise from there. Otherwise call get_pairs_filtered({ scope: "biodiversity", type: "contradictions", limit: 5 }). Then write a 1-3 sentence summary drawn from the rationale text AND call set_filter(contradictions) plus focus_category(<best matching group>).
+
+F. Any other scoped aggregate ("top livestock alignments", "forest contradictions", "energy tensions"): same pattern as E with a different scope keyword and type.
 
 Hard rules:
 - Only use ids that appear in the context. Never invent.
@@ -619,7 +620,15 @@ export async function POST(req: Request) {
     const message = response.choices?.[0]?.message;
     if (!message) break;
 
-    const content = (message.content ?? "").trim();
+    let content = (message.content ?? "").trim();
+    // Strip prompt-format leaks: occasionally the model echoes the example
+    // syntax ("Content: ...", 'content = "..."', 'Reply: ...') verbatim.
+    content = content
+      .replace(/^\s*content\s*=\s*"?/i, "")
+      .replace(/^\s*content\s*:\s*"?/i, "")
+      .replace(/^\s*reply\s*:\s*"?/i, "")
+      .replace(/"\s*$/, "")
+      .trim();
     if (content) lastContent = content;
 
     const toolCalls = message.tool_calls ?? [];
