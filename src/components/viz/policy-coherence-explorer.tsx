@@ -615,19 +615,45 @@ function BarRow({
   );
 }
 
+interface ChatStatus {
+  loading: boolean;
+  reply: string | null;
+  error: string | null;
+}
+
 interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
   onSelectTarget: (id: string) => void;
+  onAsk: (query: string) => void;
+  chat: ChatStatus;
   countryConfig?: CountryConfig | null;
 }
+
+const EXAMPLE_QUERIES: string[] = [
+  "Where do plans contradict each other most?",
+  "Which target connects across the most documents?",
+  "Find targets about livestock",
+  "Show a target that's both aligned and contested",
+  "Where do NDC and NBSAP disagree?",
+  "Switch to biodiversity view",
+];
 
 function EmptyPanel({
   targets,
   alignment,
   onSelectTarget,
+  onAsk,
+  chat,
   countryConfig,
 }: EmptyPanelProps) {
+  const [query, setQuery] = useState("");
+  const submit = (q: string) => {
+    const trimmed = q.trim();
+    if (!trimmed || chat.loading) return;
+    onAsk(trimmed);
+    setQuery("");
+  };
   // Compute totals from the alignment set we're already iterating below — this
   // keeps the headline numbers aligned with the wheel's current filter rather
   // than diverging from the rankings underneath.
@@ -729,6 +755,60 @@ function EmptyPanel({
             </Section>
           )}
         </div>
+
+        <Section title="Ask the wheel">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit(query);
+            }}
+            className="mb-2"
+          >
+            <div className="flex items-center gap-2 border border-gray-200 rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ask a question, e.g. where do plans contradict?"
+                disabled={chat.loading}
+                className="flex-1 min-w-0 text-[12px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={chat.loading || query.trim().length === 0}
+                className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
+              >
+                {chat.loading ? "Asking…" : "Ask"}
+              </button>
+            </div>
+          </form>
+          {chat.reply && !chat.loading && (
+            <p className="text-[11px] text-[var(--undp-black)] leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2 mb-2">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mr-1.5">
+                AI
+              </span>
+              {chat.reply}
+            </p>
+          )}
+          {chat.error && !chat.loading && (
+            <p className="text-[11px] text-red-700 leading-snug bg-red-50 border border-red-100 rounded-md px-3 py-2 mb-2">
+              {chat.error}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-1.5">
+            {EXAMPLE_QUERIES.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => submit(q)}
+                disabled={chat.loading}
+                className="text-left text-[10.5px] leading-snug text-[var(--undp-gray)] border border-gray-200 rounded-full px-2.5 py-1 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -1226,6 +1306,172 @@ export function PolicyCoherenceExplorer({
     setComparedPair(null);
     setFocalGroupId((prev) => (prev === id ? null : id));
   }, []);
+
+  // Chat state. Single-turn for v1: every Ask replaces the previous reply.
+  // History could come later if it earns its keep — keep this lean now.
+  const [chat, setChat] = useState<ChatStatus>({
+    loading: false,
+    reply: null,
+    error: null,
+  });
+
+  const handleAsk = useCallback(
+    async (query: string) => {
+      setChat({ loading: true, reply: null, error: null });
+      try {
+        // Group + target rankings precomputed here so the LLM has real answers
+        // for aggregate questions. Without these the model would guess; with
+        // them it can pick the actually-top group/target. Cheap to compute and
+        // adds ~600 chars to the prompt.
+        const groupTension = new Map<string, number>();
+        const groupHigh = new Map<string, number>();
+        const targetTension = new Map<string, number>();
+        const targetHigh = new Map<string, number>();
+        const targetGroup = new Map<string, string>();
+        for (const n of nodes) targetGroup.set(n.id, n.groupId);
+        for (const a of visibleAlignment) {
+          const gA = targetGroup.get(a.targetAId);
+          const gB = targetGroup.get(a.targetBId);
+          if (isContradiction(a.alignment)) {
+            targetTension.set(
+              a.targetAId,
+              (targetTension.get(a.targetAId) ?? 0) + 1,
+            );
+            targetTension.set(
+              a.targetBId,
+              (targetTension.get(a.targetBId) ?? 0) + 1,
+            );
+            if (gA)
+              groupTension.set(gA, (groupTension.get(gA) ?? 0) + 1);
+            if (gB && gB !== gA)
+              groupTension.set(gB, (groupTension.get(gB) ?? 0) + 1);
+          } else if (a.alignment === "high") {
+            targetHigh.set(a.targetAId, (targetHigh.get(a.targetAId) ?? 0) + 1);
+            targetHigh.set(a.targetBId, (targetHigh.get(a.targetBId) ?? 0) + 1);
+            if (gA) groupHigh.set(gA, (groupHigh.get(gA) ?? 0) + 1);
+            if (gB && gB !== gA)
+              groupHigh.set(gB, (groupHigh.get(gB) ?? 0) + 1);
+          }
+        }
+        const arcLabel = new Map(arcs.map((a) => [a.id, a.label]));
+        const targetMap = new Map(targets.map((t) => [t.id, t]));
+        const rankBy = <K,>(
+          m: Map<K, number>,
+          format: (id: K, count: number) => { id: K; label: string; count: number } | null,
+        ) =>
+          Array.from(m.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([id, count]) => format(id, count))
+            .filter(
+              (x): x is { id: K; label: string; count: number } => x !== null,
+            );
+        const topGroupsByTension = rankBy(groupTension, (id, count) => ({
+          id,
+          label: arcLabel.get(id) ?? id,
+          count,
+        }));
+        const topGroupsByAlignment = rankBy(groupHigh, (id, count) => ({
+          id,
+          label: arcLabel.get(id) ?? id,
+          count,
+        }));
+        const topTargetsByTension = rankBy(targetTension, (id, count) => {
+          const t = targetMap.get(id);
+          return t
+            ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
+            : null;
+        });
+        const topTargetsByAlignment = rankBy(targetHigh, (id, count) => {
+          const t = targetMap.get(id);
+          return t
+            ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
+            : null;
+        });
+
+        const groups = arcs.map((a) => ({ id: a.id, label: a.label }));
+        const targetIndex = visibleTargets.map((t) => ({
+          id: t.id,
+          sourceLabel: t.sourceLabel,
+          sourceDocument: t.sourceDocument,
+          snippet: (t.text || "").slice(0, 140),
+        }));
+        const res = await fetch("/api/coherence-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query,
+            context: {
+              mode: groupMode,
+              filter,
+              groups,
+              targetIndex,
+              rankings: {
+                topGroupsByTension,
+                topGroupsByAlignment,
+                topTargetsByTension,
+                topTargetsByAlignment,
+              },
+              country: targets[0]?.country ?? null,
+            },
+          }),
+        });
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `Request failed (${res.status})`);
+        }
+        const json = (await res.json()) as {
+          reply: string;
+          action:
+            | {
+                type: "set_filter";
+                filter: AlignFilter;
+              }
+            | {
+                type: "focus_category";
+                categoryId: string;
+              }
+            | {
+                type: "select_target";
+                targetId: string;
+              }
+            | {
+                type: "set_mode";
+                mode: GroupMode;
+              }
+            | { type: "noop" };
+        };
+
+        // Apply the action. comparedPair is always cleared because chat
+        // navigates away from any active pair compare.
+        setComparedPair(null);
+        const action = json.action;
+        if (action.type === "set_filter") {
+          setFilter(action.filter);
+        } else if (action.type === "focus_category") {
+          setFocalGroupId(action.categoryId);
+          setSelectedId(null);
+        } else if (action.type === "select_target") {
+          setSelectedId(action.targetId);
+          const node = nodes.find((n) => n.id === action.targetId);
+          if (node) setFocalGroupId(node.groupId);
+        } else if (action.type === "set_mode") {
+          setGroupMode(action.mode);
+          setSelectedId(null);
+          setFocalGroupId(null);
+        }
+        setChat({ loading: false, reply: json.reply, error: null });
+      } catch (err) {
+        setChat({
+          loading: false,
+          reply: null,
+          error:
+            err instanceof Error ? err.message : "Sorry, that didn't work.",
+        });
+      }
+    },
+    [arcs, visibleTargets, groupMode, filter, targets, nodes, visibleAlignment],
+  );
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
 
@@ -1922,6 +2168,8 @@ export function PolicyCoherenceExplorer({
                 targets={visibleTargets}
                 alignment={filtered}
                 onSelectTarget={handleNodeClick}
+                onAsk={handleAsk}
+                chat={chat}
                 countryConfig={countryConfig}
               />
             )}
