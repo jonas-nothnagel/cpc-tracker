@@ -283,8 +283,8 @@ function DetailPanel({
 
   if (comparedPair) {
     return (
-      <div className="border border-gray-100 rounded-lg bg-white overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+      <div className="border border-gray-100 rounded-lg bg-white overflow-hidden h-full max-h-[760px] flex flex-col">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50 shrink-0">
           <button
             type="button"
             onClick={onBackFromPair}
@@ -348,7 +348,7 @@ function DetailPanel({
   const hasNr7InConns = nr7ProgressMap && connections.some((c) => nr7ProgressMap.has(c.otherTarget.id));
 
   return (
-    <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col max-h-[620px]">
+    <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col h-full max-h-[760px]">
       {/* Target header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
@@ -551,44 +551,65 @@ function Section({
   );
 }
 
-function PairRow({
-  a,
-  b,
-  level,
+/**
+ * Compact ranking row used by both the idle and category panels. Renders the
+ * count proportionally as a horizontal bar fill behind the label so the eye
+ * picks up the ordering before reading any numbers.
+ */
+function BarRow({
+  target,
+  count,
+  max,
   onClick,
   countryConfig,
+  tone,
 }: {
-  a: Target;
-  b: Target;
-  level: AlignmentLevel;
+  target: Target;
+  count: number;
+  max: number;
   onClick: () => void;
   countryConfig?: CountryConfig | null;
+  tone: "neutral" | "red";
 }) {
+  // 4% min so the smallest non-zero count still has a visible pill.
+  const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
+  const fillBg =
+    tone === "red"
+      ? "bg-red-50 group-hover:bg-red-100"
+      : "bg-gray-100 group-hover:bg-gray-200";
+  const countColor =
+    tone === "red" ? "text-red-700" : "text-[var(--undp-black)]";
   return (
     <li>
       <button
         type="button"
         onClick={onClick}
-        className="w-full text-left flex items-start gap-2 px-1.5 py-2 hover:bg-gray-50 rounded transition-colors"
+        className="relative w-full text-left flex items-center gap-2 py-1.5 px-2 rounded transition-colors group overflow-hidden"
       >
-        <span
-          className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
-          style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
+        <div
+          className={`absolute inset-y-0.5 left-0 rounded ${fillBg} transition-colors`}
+          style={{ width: `${pct}%` }}
         />
-        <div className="min-w-0 flex-1 text-[11px] leading-snug">
-          <div className="text-[var(--undp-black)] truncate">
-            <span className="text-[var(--undp-gray)] font-medium">
-              {getDocLabel(countryConfig, a.sourceDocument)}
-            </span>{" "}
-            {a.sourceLabel}
-          </div>
-          <div className="text-[var(--undp-black)] truncate">
-            <span className="text-[var(--undp-gray)] font-medium">
-              {getDocLabel(countryConfig, b.sourceDocument)}
-            </span>{" "}
-            {b.sourceLabel}
-          </div>
-        </div>
+        <span
+          className="relative w-1.5 h-1.5 rounded-full shrink-0"
+          style={{
+            backgroundColor: getDocColor(
+              countryConfig,
+              target.sourceDocument,
+            ),
+          }}
+        />
+        <span className="relative text-[10px] font-semibold tracking-wide text-[var(--undp-gray)] shrink-0">
+          {getDocLabel(countryConfig, target.sourceDocument)}
+        </span>
+        <span className="relative text-[11px] text-[var(--undp-black)] truncate flex-1">
+          {target.sourceLabel}
+        </span>
+        <span
+          className={`relative text-[11px] tabular-nums shrink-0 font-semibold ${countColor}`}
+        >
+          {count}
+        </span>
       </button>
     </li>
   );
@@ -597,8 +618,6 @@ function PairRow({
 interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
-  totalAligned: number;
-  totalContra: number;
   onSelectTarget: (id: string) => void;
   countryConfig?: CountryConfig | null;
 }
@@ -606,159 +625,110 @@ interface EmptyPanelProps {
 function EmptyPanel({
   targets,
   alignment,
-  totalAligned,
-  totalContra,
   onSelectTarget,
   countryConfig,
 }: EmptyPanelProps) {
+  // Compute totals from the alignment set we're already iterating below — this
+  // keeps the headline numbers aligned with the wheel's current filter rather
+  // than diverging from the rankings underneath.
+  const { totalAligned, totalContra } = useMemo(() => {
+    let a = 0;
+    let c = 0;
+    for (const x of alignment) {
+      if (x.alignment === "none") continue;
+      a += 1;
+      if (isContradiction(x.alignment)) c += 1;
+    }
+    return { totalAligned: a, totalContra: c };
+  }, [alignment]);
   const targetMap = useMemo(
     () => new Map(targets.map((t) => [t.id, t])),
     [targets],
   );
 
-  const topSynergies = useMemo(() => {
-    return alignment
-      .filter((a) => a.alignment === "high")
-      .slice(0, 5)
-      .map((a) => ({
-        result: a,
-        targetA: targetMap.get(a.targetAId),
-        targetB: targetMap.get(a.targetBId),
-      }))
-      .filter(
-        (
-          p,
-        ): p is { result: AlignmentResult; targetA: Target; targetB: Target } =>
-          !!p.targetA && !!p.targetB,
-      );
-  }, [alignment, targetMap]);
-
-  const topTensions = useMemo(() => {
-    const order: Record<AlignmentLevel, number> = {
-      high_contradiction: 0,
-      moderate_contradiction: 1,
-      low_tension: 2,
-      high: 3,
-      medium: 4,
-      low: 5,
-      none: 6,
-    };
-    return alignment
-      .filter((a) => isContradiction(a.alignment))
-      .sort((a, b) => order[a.alignment] - order[b.alignment])
-      .slice(0, 5)
-      .map((a) => ({
-        result: a,
-        targetA: targetMap.get(a.targetAId),
-        targetB: targetMap.get(a.targetBId),
-      }))
-      .filter(
-        (
-          p,
-        ): p is { result: AlignmentResult; targetA: Target; targetB: Target } =>
-          !!p.targetA && !!p.targetB,
-      );
-  }, [alignment, targetMap]);
-
-  const mostConnected = useMemo(() => {
-    const counts = new Map<string, number>();
+  // Top targets by total connections and by potential-tension count, both
+  // computed off the same alignment set the wheel currently shows so numbers
+  // match. Pair-level lists are intentionally omitted: at the level scale this
+  // wheel uses, the meaningful signal is which targets sit at hubs and which
+  // are most contested, not which individual pairs happen to be marked "high".
+  const { connRanks, tensRanks } = useMemo(() => {
+    const connCounts = new Map<string, number>();
+    const tensCounts = new Map<string, number>();
     for (const a of alignment) {
       if (a.alignment === "none") continue;
-      counts.set(a.targetAId, (counts.get(a.targetAId) ?? 0) + 1);
-      counts.set(a.targetBId, (counts.get(a.targetBId) ?? 0) + 1);
+      connCounts.set(a.targetAId, (connCounts.get(a.targetAId) ?? 0) + 1);
+      connCounts.set(a.targetBId, (connCounts.get(a.targetBId) ?? 0) + 1);
+      if (isContradiction(a.alignment)) {
+        tensCounts.set(a.targetAId, (tensCounts.get(a.targetAId) ?? 0) + 1);
+        tensCounts.set(a.targetBId, (tensCounts.get(a.targetBId) ?? 0) + 1);
+      }
     }
-    return Array.from(counts.entries())
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([id, count]) => ({ target: targetMap.get(id), count }))
-      .filter((x): x is { target: Target; count: number } => !!x.target);
+    const toRanked = (m: Map<string, number>) =>
+      Array.from(m.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([id, count]) => ({ target: targetMap.get(id), count }))
+        .filter((x): x is { target: Target; count: number } => !!x.target);
+    return {
+      connRanks: toRanked(connCounts),
+      tensRanks: toRanked(tensCounts),
+    };
   }, [alignment, targetMap]);
 
+  const connMax = connRanks[0]?.count ?? 1;
+  const tensMax = tensRanks[0]?.count ?? 1;
+
   return (
-    <div className="bg-white border border-gray-100 rounded-lg p-5 space-y-7">
-      <div>
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
-          At a glance
-        </p>
-        <div className="grid grid-cols-3 gap-4">
-          <Stat label="Targets" value={targets.length} />
-          <Stat label="Alignments" value={totalAligned} />
-          <Stat label="Tensions" value={totalContra} accent="red" />
+    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
+      <div className="p-5 overflow-y-auto flex-1 space-y-6">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+            At a glance
+          </p>
+          <div className="grid grid-cols-3 gap-4">
+            <Stat label="Targets" value={targets.length} />
+            <Stat label="Alignments" value={totalAligned} />
+            <Stat label="Potential tensions" value={totalContra} accent="red" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {connRanks.length > 0 && (
+            <Section title="Most connected">
+              <ul className="space-y-0.5">
+                {connRanks.map(({ target, count }) => (
+                  <BarRow
+                    key={target.id}
+                    target={target}
+                    count={count}
+                    max={connMax}
+                    onClick={() => onSelectTarget(target.id)}
+                    countryConfig={countryConfig}
+                    tone="neutral"
+                  />
+                ))}
+              </ul>
+            </Section>
+          )}
+          {tensRanks.length > 0 && (
+            <Section title="Most contested">
+              <ul className="space-y-0.5">
+                {tensRanks.map(({ target, count }) => (
+                  <BarRow
+                    key={target.id}
+                    target={target}
+                    count={count}
+                    max={tensMax}
+                    onClick={() => onSelectTarget(target.id)}
+                    countryConfig={countryConfig}
+                    tone="red"
+                  />
+                ))}
+              </ul>
+            </Section>
+          )}
         </div>
       </div>
-
-      {topSynergies.length > 0 && (
-        <Section title="Strongest synergies">
-          <ul className="space-y-0.5">
-            {topSynergies.map(({ result, targetA, targetB }) => (
-              <PairRow
-                key={`syn-${result.targetAId}-${result.targetBId}`}
-                a={targetA}
-                b={targetB}
-                level={result.alignment}
-                onClick={() => onSelectTarget(targetA.id)}
-                countryConfig={countryConfig}
-              />
-            ))}
-          </ul>
-        </Section>
-      )}
-
-      {topTensions.length > 0 && (
-        <Section title="Top tensions">
-          <ul className="space-y-0.5">
-            {topTensions.map(({ result, targetA, targetB }) => (
-              <PairRow
-                key={`tns-${result.targetAId}-${result.targetBId}`}
-                a={targetA}
-                b={targetB}
-                level={result.alignment}
-                onClick={() => onSelectTarget(targetA.id)}
-                countryConfig={countryConfig}
-              />
-            ))}
-          </ul>
-        </Section>
-      )}
-
-      {mostConnected.length > 0 && (
-        <Section title="Most connected">
-          <ul className="space-y-0.5">
-            {mostConnected.map(({ target, count }) => (
-              <li key={target.id}>
-                <button
-                  type="button"
-                  onClick={() => onSelectTarget(target.id)}
-                  className="w-full text-left flex items-center gap-2 px-1.5 py-1.5 hover:bg-gray-50 rounded transition-colors"
-                >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{
-                      backgroundColor: getDocColor(
-                        countryConfig,
-                        target.sourceDocument,
-                      ),
-                    }}
-                  />
-                  <span className="text-[11px] text-[var(--undp-gray)] shrink-0 font-medium">
-                    {getDocLabel(countryConfig, target.sourceDocument)}
-                  </span>
-                  <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
-                    {target.sourceLabel}
-                  </span>
-                  <span className="text-[10px] text-[var(--undp-gray)] tabular-nums shrink-0">
-                    {count}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
-
-      <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed pt-2">
-        Click a category arc on the wheel to drill in.
-      </p>
     </div>
   );
 }
@@ -855,9 +825,12 @@ function CategoryPanel({
     [targetsInGroup],
   );
 
+  const targetMax = sortedTargets[0]?.connections ?? 1;
+
   return (
-    <div className="bg-white border border-gray-100 rounded-lg p-5 space-y-7">
-      <div>
+    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
+      {/* Pinned header with stats so the target list owns the scroll. */}
+      <div className="p-5 pb-4 shrink-0 border-b border-gray-100">
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-2 min-w-0">
             <span
@@ -880,95 +853,84 @@ function CategoryPanel({
         <div className="grid grid-cols-3 gap-4">
           <Stat label="Targets" value={group.count} />
           <Stat label="Alignments" value={totalAligned} />
-          <Stat label="Tensions" value={totalContra} accent="red" />
+          <Stat label="Potential tensions" value={totalContra} accent="red" />
         </div>
       </div>
 
-      {(topSynergyPartners.length > 0 || topTensionPartners.length > 0) && (
-        <div className="grid grid-cols-2 gap-5">
-          <Section title="Aligns with">
-            {topSynergyPartners.length > 0 ? (
-              <ul className="space-y-1">
-                {topSynergyPartners.map(({ arc, count }) => (
-                  <li
-                    key={arc.id}
-                    className="flex items-center gap-2 text-[11px] py-0.5"
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: arc.color }}
-                    />
-                    <span className="text-[var(--undp-black)] truncate flex-1">
-                      {arc.label}
-                    </span>
-                    <span className="text-[var(--undp-gray)] tabular-nums">
-                      {count}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-[11px] text-[var(--undp-gray)] italic">None</p>
-            )}
-          </Section>
-          <Section title="Tensions with">
-            {topTensionPartners.length > 0 ? (
-              <ul className="space-y-1">
-                {topTensionPartners.map(({ arc, count }) => (
-                  <li
-                    key={arc.id}
-                    className="flex items-center gap-2 text-[11px] py-0.5"
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: arc.color }}
-                    />
-                    <span className="text-[var(--undp-black)] truncate flex-1">
-                      {arc.label}
-                    </span>
-                    <span className="text-red-700 tabular-nums">{count}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-[11px] text-[var(--undp-gray)] italic">None</p>
-            )}
-          </Section>
-        </div>
-      )}
+      <div className="p-5 overflow-y-auto flex-1 space-y-6">
+        {(topSynergyPartners.length > 0 || topTensionPartners.length > 0) && (
+          <div className="grid grid-cols-2 gap-5">
+            <Section title="Aligns with">
+              {topSynergyPartners.length > 0 ? (
+                <ul className="space-y-1">
+                  {topSynergyPartners.map(({ arc, count }) => (
+                    <li
+                      key={arc.id}
+                      className="flex items-center gap-2 text-[11px] py-0.5"
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={{ backgroundColor: arc.color }}
+                      />
+                      <span className="text-[var(--undp-black)] truncate flex-1">
+                        {arc.label}
+                      </span>
+                      <span className="text-[var(--undp-gray)] tabular-nums">
+                        {count}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] italic">
+                  None
+                </p>
+              )}
+            </Section>
+            <Section title="Tensions with">
+              {topTensionPartners.length > 0 ? (
+                <ul className="space-y-1">
+                  {topTensionPartners.map(({ arc, count }) => (
+                    <li
+                      key={arc.id}
+                      className="flex items-center gap-2 text-[11px] py-0.5"
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={{ backgroundColor: arc.color }}
+                      />
+                      <span className="text-[var(--undp-black)] truncate flex-1">
+                        {arc.label}
+                      </span>
+                      <span className="text-red-700 tabular-nums">{count}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] italic">
+                  None
+                </p>
+              )}
+            </Section>
+          </div>
+        )}
 
-      <Section title={`Targets · ${sortedTargets.length}`}>
-        <ul className="divide-y divide-gray-50">
-          {sortedTargets.map((node) => (
-            <li key={node.id}>
-              <button
-                type="button"
+        <Section title={`Targets · ${sortedTargets.length}`}>
+          <ul className="space-y-0.5">
+            {sortedTargets.map((node) => (
+              <BarRow
+                key={node.id}
+                target={node.target}
+                count={node.connections}
+                max={targetMax}
                 onClick={() => onSelectTarget(node.id)}
-                className="w-full text-left flex items-center gap-2 py-2 px-1 hover:bg-gray-50 rounded transition-colors"
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full shrink-0"
-                  style={{
-                    backgroundColor: getDocColor(
-                      countryConfig,
-                      node.target.sourceDocument,
-                    ),
-                  }}
-                />
-                <span className="text-[11px] font-medium text-[var(--undp-gray)] shrink-0">
-                  {getDocLabel(countryConfig, node.target.sourceDocument)}
-                </span>
-                <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
-                  {node.target.sourceLabel}
-                </span>
-                <span className="text-[10px] text-[var(--undp-gray)] tabular-nums shrink-0">
-                  {node.connections}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </Section>
+                countryConfig={countryConfig}
+                tone="neutral"
+              />
+            ))}
+          </ul>
+        </Section>
+      </div>
     </div>
   );
 }
@@ -1422,11 +1384,13 @@ export function PolicyCoherenceExplorer({
         />
       )}
 
-      {/* Main content: persistent split — wheel left, context panel right */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* Main content: persistent split — wheel left, context panel right.
+          items-stretch (grid default) lets the panel match the wheel's height
+          so the layout reads as one card-pair, not two stacked panes. */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Wheel container */}
         <div className="min-w-0 lg:col-span-7">
-          <div className="bg-white border border-gray-100 rounded-lg p-4">
+          <div className="bg-white border border-gray-100 rounded-lg p-4 h-full">
             <svg
               viewBox={`${-VB / 2} ${-VB / 2} ${VB} ${VB}`}
               className="w-full"
@@ -1878,7 +1842,7 @@ export function PolicyCoherenceExplorer({
 
         {/* Context panel — always visible, content morphs by selection state.
             Order of precedence: target detail > category drill-in > idle insights. */}
-        <div className="min-w-0 lg:col-span-5 lg:sticky lg:top-20 self-start">
+        <div className="min-w-0 lg:col-span-5">
           {selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
@@ -1906,7 +1870,7 @@ export function PolicyCoherenceExplorer({
                 group={focalGroup}
                 nodes={nodes}
                 arcs={arcs}
-                alignment={visibleAlignment}
+                alignment={filtered}
                 onClose={() => setFocalGroupId(null)}
                 onSelectTarget={handleNodeClick}
                 countryConfig={countryConfig}
@@ -1914,9 +1878,7 @@ export function PolicyCoherenceExplorer({
             ) : (
               <EmptyPanel
                 targets={visibleTargets}
-                alignment={visibleAlignment}
-                totalAligned={totalAligned}
-                totalContra={totalContra}
+                alignment={filtered}
                 onSelectTarget={handleNodeClick}
                 countryConfig={countryConfig}
               />
