@@ -32,8 +32,6 @@ import {
   TargetTextWithHighlights,
   ActionTypeBadge,
   MeasureLanguageChip,
-  BTR_ADAPTATION_COLOR,
-  BTR_MITIGATION_COLOR,
 } from "./target-text";
 import type {
   BtrData,
@@ -459,70 +457,6 @@ function buildBiodiversityRows(
 
   rows.sort((a, b) => b.measures.length - a.measures.length || b.policyTargets.length - a.policyTargets.length);
   return { rows, unclassified };
-}
-
-// ---------------------------------------------------------------------------
-// Sub-component: Coverage banner (the headline)
-// ---------------------------------------------------------------------------
-
-function CoverageBanner({
-  policyTargetCount,
-  mitigationCount,
-  adaptationCount,
-  implementedCount,
-}: {
-  policyTargetCount: number;
-  mitigationCount: number;
-  adaptationCount: number;
-  implementedCount: number;
-}) {
-  const totalActions = mitigationCount + adaptationCount;
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-      <div className="border border-gray-100 rounded-lg p-3 bg-white">
-        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-          Policy targets
-        </p>
-        <p className="text-2xl font-semibold text-[var(--undp-black)] tabular-nums leading-tight mt-0.5">
-          {policyTargetCount}
-        </p>
-        <p className="text-[11px] text-[var(--undp-gray)] mt-1">
-          across NDC, NBSAP, NAP, Vision 2050
-        </p>
-      </div>
-      <div className="border border-gray-100 rounded-lg p-3 bg-white">
-        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-          BTR reported actions
-        </p>
-        <p className="text-2xl font-semibold text-[var(--undp-black)] tabular-nums leading-tight mt-0.5">
-          {totalActions}
-        </p>
-        <p className="text-[11px] text-[var(--undp-gray)] mt-1">
-          <span style={{ color: BTR_MITIGATION_COLOR }}>
-            {mitigationCount} mitigation
-          </span>
-          {" · "}
-          <span style={{ color: BTR_ADAPTATION_COLOR }}>
-            {adaptationCount} adaptation
-          </span>
-        </p>
-      </div>
-      <div className="border border-gray-100 rounded-lg p-3 bg-white">
-        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-          Marked fully implemented
-        </p>
-        <p className="text-2xl font-semibold text-[var(--undp-black)] tabular-nums leading-tight mt-0.5">
-          {implementedCount}
-          <span className="text-sm text-[var(--undp-gray)] font-normal ml-1">
-            / {totalActions}
-          </span>
-        </p>
-        <p className="text-[11px] text-[var(--undp-gray)] mt-1">
-          {totalActions - implementedCount} reported as ongoing or planned
-        </p>
-      </div>
-    </div>
-  );
 }
 
 // ---------------------------------------------------------------------------
@@ -1752,11 +1686,10 @@ export function ImplementationCoverage({
     [btrData, hasCountrySectors, countryConfig],
   );
 
-  // Banner counts
-  const policyTargetCount = useMemo(
-    () => targets.filter((t) => t.sourceDocument !== "BTR").length,
-    [targets],
-  );
+  // Counts feeding the gaps callout. `policyTargetCount` was previously also
+  // used by an inline CoverageBanner in this section; that banner is now
+  // surfaced in the top-of-dashboard Data Sources panel, so we no longer
+  // recompute it here.
   const mitigationCount = useMemo(
     () =>
       btrData.mitigationMeasures.filter(
@@ -1871,13 +1804,6 @@ export function ImplementationCoverage({
 
   return (
     <div>
-      <CoverageBanner
-        policyTargetCount={policyTargetCount}
-        mitigationCount={mitigationCount}
-        adaptationCount={adaptationCount}
-        implementedCount={implementedCount}
-      />
-
       {(hasBiodiversityData || hasCountrySectors) && (
         <div className="flex items-center gap-2 mb-4">
           <select
