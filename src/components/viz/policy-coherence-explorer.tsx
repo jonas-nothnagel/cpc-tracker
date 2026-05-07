@@ -646,19 +646,20 @@ function EmptyPanel({
     [targets],
   );
 
-  // Top targets by total connections and by potential-tension count, both
-  // computed off the same alignment set the wheel currently shows so numbers
-  // match. Pair-level lists are intentionally omitted: at the level scale this
-  // wheel uses, the meaningful signal is which targets sit at hubs and which
-  // are most contested, not which individual pairs happen to be marked "high".
+  // Two complementary rankings: targets with the most strong (high) alignments
+  // and targets with the most potential conflicts. Counting medium/low edges
+  // would let "broadly mentioned" targets dominate the alignment column for
+  // reasons that aren't really about coherence — strong-only keeps the signal
+  // tight. Both metrics use the wheel's current alignment subset so numbers
+  // match what's drawn.
   const { connRanks, tensRanks } = useMemo(() => {
     const connCounts = new Map<string, number>();
     const tensCounts = new Map<string, number>();
     for (const a of alignment) {
-      if (a.alignment === "none") continue;
-      connCounts.set(a.targetAId, (connCounts.get(a.targetAId) ?? 0) + 1);
-      connCounts.set(a.targetBId, (connCounts.get(a.targetBId) ?? 0) + 1);
-      if (isContradiction(a.alignment)) {
+      if (a.alignment === "high") {
+        connCounts.set(a.targetAId, (connCounts.get(a.targetAId) ?? 0) + 1);
+        connCounts.set(a.targetBId, (connCounts.get(a.targetBId) ?? 0) + 1);
+      } else if (isContradiction(a.alignment)) {
         tensCounts.set(a.targetAId, (tensCounts.get(a.targetAId) ?? 0) + 1);
         tensCounts.set(a.targetBId, (tensCounts.get(a.targetBId) ?? 0) + 1);
       }
@@ -694,7 +695,7 @@ function EmptyPanel({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {connRanks.length > 0 && (
-            <Section title="Most connected">
+            <Section title="Strongest alignments">
               <ul className="space-y-0.5">
                 {connRanks.map(({ target, count }) => (
                   <BarRow
@@ -711,7 +712,7 @@ function EmptyPanel({
             </Section>
           )}
           {tensRanks.length > 0 && (
-            <Section title="Most contested">
+            <Section title="Most potential conflicts">
               <ul className="space-y-0.5">
                 {tensRanks.map(({ target, count }) => (
                   <BarRow
@@ -820,12 +821,30 @@ function CategoryPanel({
     [partnerCounts, arcMap],
   );
 
-  const sortedTargets = useMemo(
-    () => [...targetsInGroup].sort((a, b) => b.connections - a.connections),
-    [targetsInGroup],
-  );
-
-  const targetMax = sortedTargets[0]?.connections ?? 1;
+  // Group targets by their source document. Within a single category,
+  // ranking targets by connection count is misleading — broadly-mentioned
+  // targets dominate without being meaningfully more central. Grouping by
+  // document gives a structural view (whose plan contains what) and the
+  // colour stripe per group ties each block back to the wheel's doc colours.
+  const targetsByDoc = useMemo(() => {
+    const map = new Map<string, NodePos[]>();
+    for (const node of targetsInGroup) {
+      const list = map.get(node.target.sourceDocument) ?? [];
+      list.push(node);
+      map.set(node.target.sourceDocument, list);
+    }
+    for (const list of map.values()) {
+      list.sort((a, b) =>
+        a.target.sourceLabel.localeCompare(b.target.sourceLabel, undefined, {
+          numeric: true,
+        }),
+      );
+    }
+    return Array.from(map.entries()).sort(
+      ([a], [b]) =>
+        getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+    );
+  }, [targetsInGroup, countryConfig]);
 
   return (
     <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
@@ -915,20 +934,43 @@ function CategoryPanel({
           </div>
         )}
 
-        <Section title={`Targets · ${sortedTargets.length}`}>
-          <ul className="space-y-0.5">
-            {sortedTargets.map((node) => (
-              <BarRow
-                key={node.id}
-                target={node.target}
-                count={node.connections}
-                max={targetMax}
-                onClick={() => onSelectTarget(node.id)}
-                countryConfig={countryConfig}
-                tone="neutral"
-              />
-            ))}
-          </ul>
+        <Section title={`Targets · ${targetsInGroup.length}`}>
+          <div className="space-y-3">
+            {targetsByDoc.map(([docId, list]) => {
+              const color = getDocColor(countryConfig, docId);
+              return (
+                <div
+                  key={docId}
+                  className="border-l-2 pl-3"
+                  style={{ borderColor: color }}
+                >
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
+                    <span style={{ color }}>
+                      {getDocLabel(countryConfig, docId)}
+                    </span>
+                    <span className="text-[var(--undp-gray)]">·</span>
+                    <span className="tabular-nums text-[var(--undp-gray)]">
+                      {list.length}
+                    </span>
+                  </p>
+                  <ul>
+                    {list.map((node) => (
+                      <li key={node.id}>
+                        <button
+                          type="button"
+                          onClick={() => onSelectTarget(node.id)}
+                          className="w-full text-left text-[11px] text-[var(--undp-black)] py-1 -ml-1 px-1 rounded hover:bg-gray-50 transition-colors block truncate"
+                          title={node.target.text}
+                        >
+                          {node.target.sourceLabel}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </Section>
       </div>
     </div>
