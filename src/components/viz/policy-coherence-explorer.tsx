@@ -1440,46 +1440,6 @@ export function PolicyCoherenceExplorer({
             : null;
         });
 
-        // Top pair rationales — gives the LLM concrete text for aggregate
-        // questions like "top conflicts" or "biggest disagreements" without
-        // requiring it to call read tools first.
-        const SEVERITY: Record<string, number> = {
-          high_contradiction: 0,
-          moderate_contradiction: 1,
-          low_tension: 2,
-          high: 3,
-        };
-        const buildTopPairs = (
-          predicate: (lvl: AlignmentLevel) => boolean,
-        ) =>
-          visibleAlignment
-            .filter((a) => predicate(a.alignment) && !!a.description)
-            .sort(
-              (a, b) =>
-                (SEVERITY[a.alignment] ?? 9) - (SEVERITY[b.alignment] ?? 9),
-            )
-            .slice(0, 5)
-            .map((p) => {
-              const tA = targetMap.get(p.targetAId);
-              const tB = targetMap.get(p.targetBId);
-              return {
-                aId: p.targetAId,
-                bId: p.targetBId,
-                aLabel: tA
-                  ? `${tA.sourceDocument}: ${tA.sourceLabel}`
-                  : p.targetAId,
-                bLabel: tB
-                  ? `${tB.sourceDocument}: ${tB.sourceLabel}`
-                  : p.targetBId,
-                level: p.alignment,
-                description: (p.description ?? "").slice(0, 220),
-              };
-            });
-        const topPairsByTension = buildTopPairs((lvl) =>
-          isContradiction(lvl),
-        );
-        const topPairsByAlignment = buildTopPairs((lvl) => lvl === "high");
-
         const groups = arcs.map((a) => ({ id: a.id, label: a.label }));
         const targetIndex = visibleTargets.map((t) => ({
           id: t.id,
@@ -1487,21 +1447,6 @@ export function PolicyCoherenceExplorer({
           sourceDocument: t.sourceDocument,
           snippet: (t.text || "").slice(0, 140),
         }));
-        // Read-tool support: send full target texts and the pairs that have
-        // a rationale recorded. The route never inlines these in the prompt
-        // — it only queries them when the model calls a read tool.
-        const targetTexts: Record<string, string> = {};
-        for (const t of visibleTargets) {
-          if (t.text) targetTexts[t.id] = t.text;
-        }
-        const pairs = visibleAlignment
-          .filter((p) => p.alignment !== "none" && !!p.description)
-          .map((p) => ({
-            aId: p.targetAId,
-            bId: p.targetBId,
-            level: p.alignment,
-            description: p.description ?? "",
-          }));
         const res = await fetch("/api/coherence-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1517,11 +1462,7 @@ export function PolicyCoherenceExplorer({
                 topGroupsByAlignment,
                 topTargetsByTension,
                 topTargetsByAlignment,
-                topPairsByTension,
-                topPairsByAlignment,
               },
-              pairs,
-              targetTexts,
               country: targets[0]?.country ?? null,
             },
           }),
@@ -1534,6 +1475,7 @@ export function PolicyCoherenceExplorer({
           | { type: "set_filter"; filter: AlignFilter }
           | { type: "focus_category"; categoryId: string }
           | { type: "select_target"; targetId: string }
+          | { type: "select_pair"; targetAId: string; targetBId: string }
           | { type: "set_mode"; mode: GroupMode };
         const json = (await res.json()) as {
           reply: string;
@@ -1542,27 +1484,54 @@ export function PolicyCoherenceExplorer({
 
         // Apply the actions in order. The server already sorts them so set_mode
         // runs first (resets selection), then set_filter, then focus/select.
-        setComparedPair(null);
         let nextSelectedId: string | null | undefined;
         let nextFocalGroupId: string | null | undefined;
+        let nextComparedPair:
+          | { result: AlignmentResult; other: Target }
+          | null
+          | undefined;
         for (const action of json.actions) {
           if (action.type === "set_filter") {
             setFilter(action.filter);
           } else if (action.type === "focus_category") {
             nextFocalGroupId = action.categoryId;
             nextSelectedId = null;
+            nextComparedPair = null;
           } else if (action.type === "select_target") {
             nextSelectedId = action.targetId;
             const node = nodes.find((n) => n.id === action.targetId);
             if (node) nextFocalGroupId = node.groupId;
+            nextComparedPair = null;
+          } else if (action.type === "select_pair") {
+            // Open pair compare directly so the rationale is visible without
+            // a manual click. If no alignment exists between the ids, fall
+            // back to selecting the first target.
+            const result = visibleAlignment.find(
+              (a) =>
+                (a.targetAId === action.targetAId &&
+                  a.targetBId === action.targetBId) ||
+                (a.targetAId === action.targetBId &&
+                  a.targetBId === action.targetAId),
+            );
+            const otherTarget = targetMap.get(action.targetBId);
+            nextSelectedId = action.targetAId;
+            const node = nodes.find((n) => n.id === action.targetAId);
+            if (node) nextFocalGroupId = node.groupId;
+            if (result && otherTarget) {
+              nextComparedPair = { result, other: otherTarget };
+            } else {
+              nextComparedPair = null;
+            }
           } else if (action.type === "set_mode") {
             setGroupMode(action.mode);
             nextSelectedId = null;
             nextFocalGroupId = null;
+            nextComparedPair = null;
           }
         }
         if (nextSelectedId !== undefined) setSelectedId(nextSelectedId);
         if (nextFocalGroupId !== undefined) setFocalGroupId(nextFocalGroupId);
+        if (nextComparedPair !== undefined) setComparedPair(nextComparedPair);
         setChat({ loading: false, reply: json.reply, error: null });
       } catch (err) {
         setChat({

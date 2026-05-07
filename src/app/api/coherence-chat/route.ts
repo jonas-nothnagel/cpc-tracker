@@ -1,17 +1,16 @@
 /**
- * Coherence Explorer chat route.
+ * Coherence Explorer chat route — navigation-only.
  *
- * Multi-step tool-loop. The model can both navigate the wheel (set_filter,
- * focus_category, select_target, set_mode) and *read* the underlying data
- * (get_pair_rationale, get_target_neighbors) before answering. Read tools
- * execute server-side; navigate tools are accumulated and returned to the
- * client as actions. Final reply is allowed to be a short grounded answer
- * (1-3 sentences) — strictly synthesized from tool results, never from the
- * model's prior knowledge.
+ * The chat picks one or more navigation actions (set_filter, focus_category,
+ * select_target, select_pair, set_mode) and writes a single short
+ * confirmatory sentence. It does NOT generate analytical text from
+ * underlying data — analysis lives in the DetailPanel's pair-rationale
+ * display, where it's anchored to the actual pair the user clicked on.
  *
- * This is a deliberate loosening of the project's "no AI narrative reports"
- * rule for an experimental branch. Outputs are clearly labeled AI-generated
- * in the UI, kept short, and required to be data-grounded.
+ * Earlier experiments with read tools (get_pair_rationale,
+ * get_target_neighbors, get_pairs_filtered) were removed: they competed
+ * for attention with the wheel and panel without adding reliable value.
+ * The wheel + panel ARE the answer; the chat is the navigation shortcut.
  *
  * Backend selection: Azure OpenAI when the deployment env vars are set
  * (matches production), OpenRouter otherwise (dev fallback).
@@ -21,22 +20,10 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const MAX_ITERATIONS = 3;
-const NEIGHBORS_LIMIT_DEFAULT = 8;
-
 interface RankedItem {
   id: string;
   label: string;
   count: number;
-}
-
-interface RankedPair {
-  aId: string;
-  bId: string;
-  aLabel: string;
-  bLabel: string;
-  level: string;
-  description: string;
 }
 
 interface ChatContext {
@@ -54,22 +41,7 @@ interface ChatContext {
     topGroupsByAlignment: RankedItem[];
     topTargetsByTension: RankedItem[];
     topTargetsByAlignment: RankedItem[];
-    topPairsByTension?: RankedPair[];
-    topPairsByAlignment?: RankedPair[];
   };
-  /**
-   * Pair records that have a rationale (typically high alignments + all
-   * contradictions). Read tools query this in-memory; the model never sees
-   * the full list verbatim, only the entries it requests.
-   */
-  pairs: {
-    aId: string;
-    bId: string;
-    level: string;
-    description: string;
-  }[];
-  /** Full text per visible target id — used by read tools when answering. */
-  targetTexts: Record<string, string>;
   country: string | null;
 }
 
@@ -77,48 +49,35 @@ type ChatAction =
   | { type: "set_filter"; filter: string }
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
+  | { type: "select_pair"; targetAId: string; targetBId: string }
   | { type: "set_mode"; mode: "document" | "globe" | "sector" }
   | { type: "noop" };
 
 const SYSTEM_PROMPT = `You navigate a policy coherence visualization. Targets come from documents (NDC, NBSAP, BTR, NAP, etc.) and the wheel shows how they align or contradict.
 
+Your job: pick the right combination of NAVIGATE tools to bring the user to the view that answers their question, then write ONE short confirmatory sentence (max ~15 words). The wheel and the side panel show the actual data — your sentence just confirms what's now in view. You do not summarise rationales, generate analysis, or write paragraphs.
+
 Tools:
-- READ: get_pair_rationale, get_target_neighbors. Use these to look up rationales and neighbours before answering "why", "how", or "what does X connect to". Results return to you mid-conversation.
-- NAVIGATE: set_filter, focus_category, select_target, set_mode. These move the wheel.
+- set_filter(filter): all | high_medium | high_contra | high | contradictions
+- focus_category(categoryId): focus a group on the wheel
+- select_target(targetId): select a single target (opens its detail panel with all its connections and rationales)
+- select_pair(targetAId, targetBId): open the pair compare view directly (best for "why X conflicts with Y" — the rationale is shown automatically there)
+- set_mode(mode): document | globe | sector
 
-Your final assistant message must contain a short plain-text reply (the user reads only the assistant content field — never write "Content:" or "content =" prefixes; just write the sentence directly).
-
-Worked examples (each shows the action sequence and a sample reply):
-
-A. User asks "Why does NBSAP 1 conflict with NDC livestock?"
-   First call get_pair_rationale(nbsap_1, ndc_lvst). When the rationale returns, write a 1-3 sentence answer drawn from it AND call select_target(nbsap_1).
-   Sample reply: They compete for steppe land — NBSAP 1 designates protected biodiversity zones while the livestock target relies on existing pastures.
-
-B. User asks "What does NBSAP 1 align with most?"
-   First call get_target_neighbors(nbsap_1). When neighbours return, summarise the top two or three AND call select_target(nbsap_1).
-   Sample reply: NBSAP 1 aligns most with NDC Biodiversity 1 on protected-area designation and NDC Forests 1 on forest reserves.
-
-C. User asks "Switch to biodiversity view"
-   Just call set_mode(globe). One-line reply.
-   Sample reply: Grouped by biodiversity category.
-
-D. User asks "Where do plans contradict most?"
-   Use the precomputed rankings — pick the top tension group, call set_filter(contradictions) and focus_category(<that group id>). No read tool needed.
-   Sample reply: Green economy has the most potential conflicts.
-
-E. User asks "What are the top conflicts for biodiversity?" (aggregate WITH scope)
-   First check the "Top contradiction pairs (with rationale)" section already in the context. If those pairs cover the user's scope, summarise from there. Otherwise call get_pairs_filtered({ scope: "biodiversity", type: "contradictions", limit: 5 }). Then write a 1-3 sentence summary drawn from the rationale text AND call set_filter(contradictions) plus focus_category(<best matching group>).
-
-F. Any other scoped aggregate ("top livestock alignments", "forest contradictions", "energy tensions"): same pattern as E with a different scope keyword and type.
+Patterns:
+- "Where do plans contradict most?" → set_filter(contradictions) + focus_category(top tension group from rankings). Reply: "Showing top contradictions in <group>."
+- "Why does NBSAP 1 conflict with NDC livestock?" → select_pair(nbsap_1, ndc_lvst). Reply: "Opened the NBSAP 1 ↔ NDC Livestock pair — rationale shown."
+- "What does NBSAP 1 align with?" → select_target(nbsap_1). Reply: "Selected NBSAP 1 — its connections are listed."
+- "Switch to biodiversity view" → set_mode(globe). Reply: "Grouped by biodiversity category."
+- "Find livestock targets" → select_target(<best snippet match>). Reply: "Showing NDC: Livestock mitigation."
+- "Top conflicts for biodiversity" → set_filter(contradictions) + focus_category(<biodiversity-related group, e.g. NBSAP>). Reply: "Showing biodiversity contradictions in <group>."
 
 Hard rules:
-- Only use ids that appear in the context. Never invent.
-- Every factual claim in content must come from a tool result you actually called this turn (or from the precomputed rankings). Never paraphrase from prior training.
-- If get_pair_rationale returns found:false, say "No rationale on file for that pair." and stop — don't guess.
-- Never recommend, advise, or judge. Only describe the data.
-- Plain text only. No markdown, no bullets, no headings.
-- No follow-up questions to the user.
-- Replies stay under 60 words.`;
+- Only use ids that appear in the context. Never invent ids.
+- Plain text only. No markdown, no asterisks, no bullets, no quotes around the reply.
+- One sentence. ~15 words. No follow-up questions to the user.
+- No analysis, recommendations, or value judgements. Describe only the resulting view ("Showing X.", "Opened X.", "Selected X.").
+- Use the precomputed rankings to pick the right group/target for aggregate questions — don't guess.`;
 
 const TOOLS = [
   {
@@ -138,8 +97,6 @@ const TOOLS = [
               "high",
               "contradictions",
             ],
-            description:
-              "all = every alignment. high_medium = high and medium. high_contra = high and contradictions. high = high only. contradictions = contradictions only.",
           },
         },
         required: ["filter"],
@@ -166,11 +123,28 @@ const TOOLS = [
     function: {
       name: "select_target",
       description:
-        "Select a single target from the target index. The id must be one from the available targets list.",
+        "Select a single target from the target index. Opens the target's detail panel which lists all its alignments and contradictions and lets the user click any pair to read its rationale.",
       parameters: {
         type: "object",
         properties: { targetId: { type: "string" } },
         required: ["targetId"],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "select_pair",
+      description:
+        "Open the pair-compare view for two specific targets. This is the best action for 'why does X conflict with Y' or 'how does X relate to Y' questions — the rationale text for the pair is shown automatically in the compare panel. If no alignment exists between the two ids the client falls back to selecting the first target.",
+      parameters: {
+        type: "object",
+        properties: {
+          targetAId: { type: "string" },
+          targetBId: { type: "string" },
+        },
+        required: ["targetAId", "targetBId"],
         additionalProperties: false,
       },
     },
@@ -191,88 +165,12 @@ const TOOLS = [
       },
     },
   },
-  {
-    type: "function",
-    function: {
-      name: "get_pair_rationale",
-      description:
-        "Look up the AI-generated rationale for why two specific targets align or contradict. Use this before answering questions like 'why do X and Y conflict?'. Returns level, description, and both targets' full text. Returns found:false if no rationale was recorded for the pair.",
-      parameters: {
-        type: "object",
-        properties: {
-          targetAId: { type: "string" },
-          targetBId: { type: "string" },
-        },
-        required: ["targetAId", "targetBId"],
-        additionalProperties: false,
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
-      name: "get_target_neighbors",
-      description:
-        "Look up the strongest alignments and contradictions touching a specific target, sorted with contradictions first then high alignments. Returns up to `limit` neighbours (default 8) including the rationale text where available.",
-      parameters: {
-        type: "object",
-        properties: {
-          targetId: { type: "string" },
-          limit: { type: "integer", minimum: 1, maximum: 20 },
-        },
-        required: ["targetId"],
-        additionalProperties: false,
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
-      name: "get_pairs_filtered",
-      description:
-        "Find alignment pairs matching a topic keyword and type. Use this for 'top X for Y' questions when the precomputed top-pair lists don't cover the user's scope (e.g., 'top conflicts for biodiversity', 'livestock-related contradictions', 'forest alignments'). Returns up to `limit` matching pairs with both target labels and rationale text, sorted by severity. Scope is matched case-insensitively against target labels, document names, snippets, and rationale text.",
-      parameters: {
-        type: "object",
-        properties: {
-          scope: {
-            type: "string",
-            description:
-              "Topic or keyword to match (e.g. 'biodiversity', 'livestock', 'forest'). Optional — omit to get the top pairs of the requested type without scoping.",
-          },
-          type: {
-            type: "string",
-            enum: ["contradictions", "high", "all"],
-            description: "Which pair type to return.",
-          },
-          limit: {
-            type: "integer",
-            minimum: 1,
-            maximum: 15,
-            description: "Max results to return. Default 6.",
-          },
-        },
-        required: ["type"],
-        additionalProperties: false,
-      },
-    },
-  },
 ];
 
 function fmtRanking(title: string, items: RankedItem[] | undefined): string {
   if (!items || items.length === 0) return "";
   const lines = items
     .map((it, i) => `${i + 1}. ${it.id} (${it.label}) — ${it.count}`)
-    .join("\n");
-  return `${title}:\n${lines}\n`;
-}
-
-function fmtPairs(title: string, pairs: RankedPair[] | undefined): string {
-  if (!pairs || pairs.length === 0) return "";
-  const lines = pairs
-    .map(
-      (p, i) =>
-        `${i + 1}. [${p.level}] ${p.aId} (${p.aLabel}) ↔ ${p.bId} (${p.bLabel}): ${p.description}`,
-    )
     .join("\n");
   return `${title}:\n${lines}\n`;
 }
@@ -292,12 +190,11 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
         fmtRanking("Top groups by high alignments", r.topGroupsByAlignment),
         fmtRanking("Top targets by potential tensions", r.topTargetsByTension),
         fmtRanking("Top targets by high alignments", r.topTargetsByAlignment),
-        fmtPairs("Top contradiction pairs (with rationale)", r.topPairsByTension),
-        fmtPairs("Top high-alignment pairs (with rationale)", r.topPairsByAlignment),
       ]
         .filter(Boolean)
         .join("\n")
     : "";
+
   const sections: string[] = [
     `Country: ${ctx.country ?? "Unknown"}`,
     `Current mode: ${ctx.mode}`,
@@ -338,13 +235,9 @@ interface LlmResponse {
   choices?: { message?: AssistantMessage }[];
 }
 
-// Loose message type for the rolling history. role can be system / user /
-// assistant / tool; tool messages carry tool_call_id.
 type ChatMessage =
   | { role: "system"; content: string }
-  | { role: "user"; content: string }
-  | { role: "assistant"; content: string | null; tool_calls?: ToolCall[] }
-  | { role: "tool"; tool_call_id: string; content: string };
+  | { role: "user"; content: string };
 
 async function callAzure(messages: ChatMessage[]): Promise<LlmResponse> {
   const endpoint = (process.env.AZURE_OPENAI_ENDPOINT ?? "").replace(/\/$/, "");
@@ -371,8 +264,6 @@ async function callAzure(messages: ChatMessage[]): Promise<LlmResponse> {
 
 async function callOpenRouter(messages: ChatMessage[]): Promise<LlmResponse> {
   const apiKey = process.env.OPENROUTER_API_KEY ?? "";
-  // OpenRouter expects fully qualified model ids ("openai/gpt-4o-mini").
-  // Allow LLM_MODEL to be either bare ("gpt-4o-mini") or qualified.
   const raw = process.env.LLM_MODEL ?? "openai/gpt-4o-mini";
   const model = raw.includes("/") ? raw : `openai/${raw}`;
   const baseUrl = (
@@ -401,150 +292,14 @@ async function callOpenRouter(messages: ChatMessage[]): Promise<LlmResponse> {
   return res.json() as Promise<LlmResponse>;
 }
 
-// ─── Read tool helpers ──────────────────────────────────────────────
-
-/** Severity ordering: contradictions first (most severe), then high, etc. */
-const LEVEL_ORDER: Record<string, number> = {
-  high_contradiction: 0,
-  moderate_contradiction: 1,
-  low_tension: 2,
-  high: 3,
-  medium: 4,
-  low: 5,
-  none: 6,
-};
-
-function targetLabel(ctx: ChatContext, id: string): string {
-  const t = ctx.targetIndex.find((x) => x.id === id);
-  return t ? `${t.sourceDocument}: ${t.sourceLabel}` : id;
-}
-
-function readPairRationale(
-  args: Record<string, unknown>,
-  ctx: ChatContext,
-): unknown {
-  const aId = String(args.targetAId ?? "");
-  const bId = String(args.targetBId ?? "");
-  const found = ctx.pairs.find(
-    (p) =>
-      (p.aId === aId && p.bId === bId) || (p.aId === bId && p.bId === aId),
-  );
-  if (!found) {
-    return {
-      found: false,
-      message: "No alignment rationale recorded for this pair.",
-    };
+async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
+  if (process.env.AZURE_OPENAI_ENDPOINT && process.env.AZURE_OPENAI_API_KEY) {
+    return callAzure(messages);
   }
-  return {
-    found: true,
-    level: found.level,
-    description: found.description,
-    targetA: { id: aId, label: targetLabel(ctx, aId), text: ctx.targetTexts[aId] ?? "" },
-    targetB: { id: bId, label: targetLabel(ctx, bId), text: ctx.targetTexts[bId] ?? "" },
-  };
-}
-
-function readPairsFiltered(
-  args: Record<string, unknown>,
-  ctx: ChatContext,
-): unknown {
-  const scope = String(args.scope ?? "")
-    .toLowerCase()
-    .trim();
-  const type = String(args.type ?? "all");
-  const limit = Math.max(1, Math.min(15, Number(args.limit ?? 6)));
-
-  let predicate: (level: string) => boolean;
-  if (type === "contradictions") {
-    predicate = (l) =>
-      l === "high_contradiction" ||
-      l === "moderate_contradiction" ||
-      l === "low_tension";
-  } else if (type === "high") {
-    predicate = (l) => l === "high";
-  } else {
-    predicate = () => true;
+  if (process.env.OPENROUTER_API_KEY) {
+    return callOpenRouter(messages);
   }
-
-  const targetById = new Map(ctx.targetIndex.map((t) => [t.id, t]));
-
-  const matches = ctx.pairs
-    .filter((p) => predicate(p.level))
-    .filter((p) => {
-      if (!scope) return true;
-      const tA = targetById.get(p.aId);
-      const tB = targetById.get(p.bId);
-      const haystacks = [
-        tA?.sourceLabel,
-        tA?.sourceDocument,
-        tA?.snippet,
-        tB?.sourceLabel,
-        tB?.sourceDocument,
-        tB?.snippet,
-        p.description,
-      ]
-        .filter((s): s is string => !!s)
-        .map((s) => s.toLowerCase());
-      return haystacks.some((h) => h.includes(scope));
-    })
-    .sort(
-      (a, b) =>
-        (LEVEL_ORDER[a.level] ?? 9) - (LEVEL_ORDER[b.level] ?? 9),
-    )
-    .slice(0, limit)
-    .map((p) => ({
-      aId: p.aId,
-      aLabel: targetLabel(ctx, p.aId),
-      bId: p.bId,
-      bLabel: targetLabel(ctx, p.bId),
-      level: p.level,
-      description: p.description.slice(0, 280),
-    }));
-
-  return {
-    found: matches.length > 0,
-    scope: scope || null,
-    type,
-    matches,
-    truncated: matches.length === limit,
-  };
-}
-
-function readTargetNeighbors(
-  args: Record<string, unknown>,
-  ctx: ChatContext,
-): unknown {
-  const targetId = String(args.targetId ?? "");
-  const limit = Math.max(
-    1,
-    Math.min(20, Number(args.limit ?? NEIGHBORS_LIMIT_DEFAULT)),
-  );
-  const t = ctx.targetIndex.find((x) => x.id === targetId);
-  if (!t) {
-    return { found: false, message: "Unknown targetId." };
-  }
-  const matches = ctx.pairs
-    .filter((p) => p.aId === targetId || p.bId === targetId)
-    .map((p) => {
-      const otherId = p.aId === targetId ? p.bId : p.aId;
-      return {
-        otherTargetId: otherId,
-        otherTargetLabel: targetLabel(ctx, otherId),
-        level: p.level,
-        description: p.description,
-      };
-    })
-    .sort(
-      (a, b) =>
-        (LEVEL_ORDER[a.level] ?? 9) - (LEVEL_ORDER[b.level] ?? 9),
-    )
-    .slice(0, limit);
-  return {
-    found: true,
-    target: { id: targetId, label: targetLabel(ctx, targetId), text: ctx.targetTexts[targetId] ?? "" },
-    neighbors: matches,
-    truncated: matches.length === limit,
-  };
+  throw new Error("No LLM backend configured.");
 }
 
 // ─── Action ordering for the client ─────────────────────────────────
@@ -557,18 +312,9 @@ const ACTION_ORDER: Record<ChatAction["type"], number> = {
   set_filter: 1,
   focus_category: 2,
   select_target: 3,
-  noop: 4,
+  select_pair: 4,
+  noop: 5,
 };
-
-async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
-  if (process.env.AZURE_OPENAI_ENDPOINT && process.env.AZURE_OPENAI_API_KEY) {
-    return callAzure(messages);
-  }
-  if (process.env.OPENROUTER_API_KEY) {
-    return callOpenRouter(messages);
-  }
-  throw new Error("No LLM backend configured.");
-}
 
 export async function POST(req: Request) {
   let body: { query?: string; context?: ChatContext };
@@ -586,197 +332,111 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });
   }
 
-  // Defensive fallbacks: older clients may not include the new fields.
-  if (!Array.isArray(context.pairs)) context.pairs = [];
-  if (!context.targetTexts) context.targetTexts = {};
-
   const messages: ChatMessage[] = [
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: buildUserMessage(query, context) },
   ];
 
+  let response: LlmResponse;
+  try {
+    response = await callLlm(messages);
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "LLM call failed" },
+      { status: 502 },
+    );
+  }
+
+  const message = response.choices?.[0]?.message;
+  const toolCalls = message?.tool_calls ?? [];
+  // Strip prompt-format leaks: occasionally the model echoes the example
+  // syntax ("Content: ...", 'reply: "..."') verbatim.
+  let content = (message?.content ?? "").trim();
+  content = content
+    .replace(/^\s*content\s*=\s*"?/i, "")
+    .replace(/^\s*content\s*:\s*"?/i, "")
+    .replace(/^\s*reply\s*:\s*"?/i, "")
+    .replace(/"\s*$/, "")
+    .trim();
+
   const groupIds = new Set(context.groups.map((g) => g.id));
   const targetIds = new Set(context.targetIndex.map((t) => t.id));
-
   const actionByType = new Map<ChatAction["type"], ChatAction>();
-  let lastContent = "";
-  // Capture rationale text the model actually read this turn so we can fall
-  // back to a grounded reply if the model declines to write content.
-  // gpt-4o-mini sometimes emits select_target without an accompanying summary
-  // even with strong instructions; this lets the user still see the data.
-  const readDescriptions: string[] = [];
 
-  for (let iter = 0; iter < MAX_ITERATIONS; iter++) {
-    let response: LlmResponse;
+  for (const toolCall of toolCalls) {
+    const fnName = toolCall.function?.name;
+    let args: Record<string, unknown> = {};
     try {
-      response = await callLlm(messages);
-    } catch (err) {
-      return NextResponse.json(
-        { error: err instanceof Error ? err.message : "LLM call failed" },
-        { status: 502 },
-      );
+      args = JSON.parse(toolCall.function?.arguments ?? "{}");
+    } catch {
+      args = {};
     }
 
-    const message = response.choices?.[0]?.message;
-    if (!message) break;
-
-    let content = (message.content ?? "").trim();
-    // Strip prompt-format leaks: occasionally the model echoes the example
-    // syntax ("Content: ...", 'content = "..."', 'Reply: ...') verbatim.
-    content = content
-      .replace(/^\s*content\s*=\s*"?/i, "")
-      .replace(/^\s*content\s*:\s*"?/i, "")
-      .replace(/^\s*reply\s*:\s*"?/i, "")
-      .replace(/"\s*$/, "")
-      .trim();
-    if (content) lastContent = content;
-
-    const toolCalls = message.tool_calls ?? [];
-
-    // Push the assistant turn verbatim so subsequent calls have the full
-    // tool-call history. OpenAI requires every tool_call to have a matching
-    // tool message before the next assistant turn.
-    messages.push({
-      role: "assistant",
-      content: message.content ?? null,
-      tool_calls: toolCalls.length > 0 ? toolCalls : undefined,
-    });
-
-    if (toolCalls.length === 0) break;
-
-    let didReadTool = false;
-
-    for (const toolCall of toolCalls) {
-      const fnName = toolCall.function?.name;
-      let args: Record<string, unknown> = {};
-      try {
-        args = JSON.parse(toolCall.function?.arguments ?? "{}");
-      } catch {
-        args = {};
+    if (fnName === "set_filter") {
+      const filter = String(args.filter ?? "");
+      const allowed = [
+        "all",
+        "high_medium",
+        "high_contra",
+        "high",
+        "contradictions",
+      ];
+      if (allowed.includes(filter)) {
+        actionByType.set("set_filter", { type: "set_filter", filter });
       }
-
-      let toolResult: unknown = { ok: true };
-
-      if (fnName === "get_pair_rationale") {
-        const r = readPairRationale(args, context) as {
-          found: boolean;
-          description?: string;
-          targetA?: { label: string };
-          targetB?: { label: string };
-        };
-        toolResult = r;
-        didReadTool = true;
-        if (r.found && r.description) {
-          readDescriptions.push(
-            `${r.targetA?.label} ↔ ${r.targetB?.label}: ${r.description}`,
-          );
-        }
-      } else if (fnName === "get_target_neighbors") {
-        const r = readTargetNeighbors(args, context) as {
-          found: boolean;
-          target?: { label: string };
-          neighbors?: { otherTargetLabel: string; description: string }[];
-        };
-        toolResult = r;
-        didReadTool = true;
-        if (r.found && r.neighbors && r.neighbors.length > 0) {
-          const top = r.neighbors
-            .slice(0, 3)
-            .map((n) => `${n.otherTargetLabel} (${n.description.slice(0, 100)})`)
-            .join("; ");
-          readDescriptions.push(`${r.target?.label} → ${top}`);
-        }
-      } else if (fnName === "get_pairs_filtered") {
-        const r = readPairsFiltered(args, context) as {
-          found: boolean;
-          scope: string | null;
-          type: string;
-          matches: { aLabel: string; bLabel: string; description: string }[];
-        };
-        toolResult = r;
-        didReadTool = true;
-        if (r.found && r.matches.length > 0) {
-          // Compact fallback: pick the top match's rationale verbatim and
-          // append a "+ N more" hint. Reads cleaner than concatenating
-          // multiple rationale strings together.
-          const top = r.matches[0];
-          const more = r.matches.length > 1 ? ` (+${r.matches.length - 1} more)` : "";
-          readDescriptions.push(
-            `${top.aLabel} ↔ ${top.bLabel}: ${top.description}${more}`,
-          );
-        }
-      } else if (fnName === "set_filter") {
-        const filter = String(args.filter ?? "");
-        const allowed = [
-          "all",
-          "high_medium",
-          "high_contra",
-          "high",
-          "contradictions",
-        ];
-        if (allowed.includes(filter)) {
-          actionByType.set("set_filter", { type: "set_filter", filter });
-        } else {
-          toolResult = { ok: false, error: "invalid filter" };
-        }
-      } else if (fnName === "focus_category") {
-        const id = String(args.categoryId ?? "");
-        if (groupIds.has(id)) {
-          actionByType.set("focus_category", {
-            type: "focus_category",
-            categoryId: id,
-          });
-        } else {
-          toolResult = { ok: false, error: "unknown categoryId" };
-        }
-      } else if (fnName === "select_target") {
-        const id = String(args.targetId ?? "");
-        if (targetIds.has(id)) {
-          actionByType.set("select_target", {
-            type: "select_target",
-            targetId: id,
-          });
-        } else {
-          toolResult = { ok: false, error: "unknown targetId" };
-        }
-      } else if (fnName === "set_mode") {
-        const mode = String(args.mode ?? "");
-        if (mode === "document" || mode === "globe" || mode === "sector") {
-          actionByType.set("set_mode", { type: "set_mode", mode });
-        } else {
-          toolResult = { ok: false, error: "invalid mode" };
-        }
-      } else {
-        toolResult = { ok: false, error: `unknown tool: ${fnName}` };
+    } else if (fnName === "focus_category") {
+      const id = String(args.categoryId ?? "");
+      if (groupIds.has(id)) {
+        actionByType.set("focus_category", {
+          type: "focus_category",
+          categoryId: id,
+        });
       }
-
-      messages.push({
-        role: "tool",
-        tool_call_id: toolCall.id ?? "",
-        content: JSON.stringify(toolResult),
-      });
+    } else if (fnName === "select_target") {
+      const id = String(args.targetId ?? "");
+      if (targetIds.has(id)) {
+        actionByType.set("select_target", {
+          type: "select_target",
+          targetId: id,
+        });
+      }
+    } else if (fnName === "select_pair") {
+      const aId = String(args.targetAId ?? "");
+      const bId = String(args.targetBId ?? "");
+      if (targetIds.has(aId) && targetIds.has(bId) && aId !== bId) {
+        actionByType.set("select_pair", {
+          type: "select_pair",
+          targetAId: aId,
+          targetBId: bId,
+        });
+      }
+    } else if (fnName === "set_mode") {
+      const mode = String(args.mode ?? "");
+      if (mode === "document" || mode === "globe" || mode === "sector") {
+        actionByType.set("set_mode", { type: "set_mode", mode });
+      }
     }
-
-    // If only navigation tools fired this turn, the model has nothing to
-    // synthesize and we'd just be paying for another round-trip. Done.
-    if (!didReadTool) break;
   }
 
   const actions = Array.from(actionByType.values()).sort(
     (a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type],
   );
 
-  // Synthesize a fallback reply only if the model never spoke up.
-  let reply = lastContent;
-  // If the model declined to summarize despite reading rationale data, surface
-  // the raw rationale as a graceful fallback so the user still sees evidence.
-  if (!reply && readDescriptions.length > 0) {
-    reply = readDescriptions.join(" — ");
-    if (reply.length > 350) reply = reply.slice(0, 347) + "…";
-  }
-  if (!reply && actions.length > 0) {
+  // select_target and select_pair are mutually exclusive; pair wins when both
+  // are present (more specific intent).
+  const finalActions = actions.filter(
+    (a) =>
+      !(
+        a.type === "select_target" &&
+        actionByType.has("select_pair")
+      ),
+  );
+
+  // Synthesise a fallback reply only if the model didn't speak.
+  let reply = content;
+  if (!reply && finalActions.length > 0) {
     const parts: string[] = [];
-    for (const a of actions) {
+    for (const a of finalActions) {
       if (a.type === "set_filter") {
         parts.push(`Filter: ${a.filter.replace("_", " + ")}.`);
       } else if (a.type === "focus_category") {
@@ -789,6 +449,12 @@ export async function POST(req: Request) {
         parts.push(
           `Showing ${t ? `${t.sourceDocument}: ${t.sourceLabel}` : a.targetId}.`,
         );
+      } else if (a.type === "select_pair") {
+        const tA = context.targetIndex.find((tt) => tt.id === a.targetAId);
+        const tB = context.targetIndex.find((tt) => tt.id === a.targetBId);
+        const aL = tA ? `${tA.sourceDocument}: ${tA.sourceLabel}` : a.targetAId;
+        const bL = tB ? `${tB.sourceDocument}: ${tB.sourceLabel}` : a.targetBId;
+        parts.push(`Opened ${aL} ↔ ${bL}.`);
       } else if (a.type === "set_mode") {
         const labels: Record<string, string> = {
           document: "by document type",
@@ -804,5 +470,5 @@ export async function POST(req: Request) {
     reply = "I couldn't map that to an action — try one of the examples?";
   }
 
-  return NextResponse.json({ reply, actions });
+  return NextResponse.json({ reply, actions: finalActions });
 }
