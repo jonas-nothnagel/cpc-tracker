@@ -283,7 +283,7 @@ function DetailPanel({
 
   if (comparedPair) {
     return (
-      <div className="border border-gray-200 rounded-lg bg-white shadow-lg overflow-hidden">
+      <div className="border border-gray-100 rounded-lg bg-white overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50">
           <button
             type="button"
@@ -348,7 +348,7 @@ function DetailPanel({
   const hasNr7InConns = nr7ProgressMap && connections.some((c) => nr7ProgressMap.has(c.otherTarget.id));
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white shadow-lg overflow-hidden flex flex-col max-h-[620px]">
+    <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col max-h-[620px]">
       {/* Target header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
@@ -507,6 +507,472 @@ function DetailPanel({
   );
 }
 
+// ─── Idle / category panels ─────────────────────────────────────────
+
+function Stat({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: number;
+  accent?: "red";
+}) {
+  return (
+    <div>
+      <p
+        className={`text-2xl font-semibold tabular-nums leading-none ${
+          accent === "red" ? "text-red-700" : "text-[var(--undp-black)]"
+        }`}
+      >
+        {value}
+      </p>
+      <p className="text-[10px] text-[var(--undp-gray)] uppercase tracking-wider mt-1.5">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+        {title}
+      </p>
+      {children}
+    </section>
+  );
+}
+
+function PairRow({
+  a,
+  b,
+  level,
+  onClick,
+  countryConfig,
+}: {
+  a: Target;
+  b: Target;
+  level: AlignmentLevel;
+  onClick: () => void;
+  countryConfig?: CountryConfig | null;
+}) {
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onClick}
+        className="w-full text-left flex items-start gap-2 px-1.5 py-2 hover:bg-gray-50 rounded transition-colors"
+      >
+        <span
+          className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
+          style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
+        />
+        <div className="min-w-0 flex-1 text-[11px] leading-snug">
+          <div className="text-[var(--undp-black)] truncate">
+            <span className="text-[var(--undp-gray)] font-medium">
+              {getDocLabel(countryConfig, a.sourceDocument)}
+            </span>{" "}
+            {a.sourceLabel}
+          </div>
+          <div className="text-[var(--undp-black)] truncate">
+            <span className="text-[var(--undp-gray)] font-medium">
+              {getDocLabel(countryConfig, b.sourceDocument)}
+            </span>{" "}
+            {b.sourceLabel}
+          </div>
+        </div>
+      </button>
+    </li>
+  );
+}
+
+interface EmptyPanelProps {
+  targets: Target[];
+  alignment: AlignmentResult[];
+  totalAligned: number;
+  totalContra: number;
+  onSelectTarget: (id: string) => void;
+  countryConfig?: CountryConfig | null;
+}
+
+function EmptyPanel({
+  targets,
+  alignment,
+  totalAligned,
+  totalContra,
+  onSelectTarget,
+  countryConfig,
+}: EmptyPanelProps) {
+  const targetMap = useMemo(
+    () => new Map(targets.map((t) => [t.id, t])),
+    [targets],
+  );
+
+  const topSynergies = useMemo(() => {
+    return alignment
+      .filter((a) => a.alignment === "high")
+      .slice(0, 5)
+      .map((a) => ({
+        result: a,
+        targetA: targetMap.get(a.targetAId),
+        targetB: targetMap.get(a.targetBId),
+      }))
+      .filter(
+        (
+          p,
+        ): p is { result: AlignmentResult; targetA: Target; targetB: Target } =>
+          !!p.targetA && !!p.targetB,
+      );
+  }, [alignment, targetMap]);
+
+  const topTensions = useMemo(() => {
+    const order: Record<AlignmentLevel, number> = {
+      high_contradiction: 0,
+      moderate_contradiction: 1,
+      low_tension: 2,
+      high: 3,
+      medium: 4,
+      low: 5,
+      none: 6,
+    };
+    return alignment
+      .filter((a) => isContradiction(a.alignment))
+      .sort((a, b) => order[a.alignment] - order[b.alignment])
+      .slice(0, 5)
+      .map((a) => ({
+        result: a,
+        targetA: targetMap.get(a.targetAId),
+        targetB: targetMap.get(a.targetBId),
+      }))
+      .filter(
+        (
+          p,
+        ): p is { result: AlignmentResult; targetA: Target; targetB: Target } =>
+          !!p.targetA && !!p.targetB,
+      );
+  }, [alignment, targetMap]);
+
+  const mostConnected = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const a of alignment) {
+      if (a.alignment === "none") continue;
+      counts.set(a.targetAId, (counts.get(a.targetAId) ?? 0) + 1);
+      counts.set(a.targetBId, (counts.get(a.targetBId) ?? 0) + 1);
+    }
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([id, count]) => ({ target: targetMap.get(id), count }))
+      .filter((x): x is { target: Target; count: number } => !!x.target);
+  }, [alignment, targetMap]);
+
+  return (
+    <div className="bg-white border border-gray-100 rounded-lg p-5 space-y-7">
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+          At a glance
+        </p>
+        <div className="grid grid-cols-3 gap-4">
+          <Stat label="Targets" value={targets.length} />
+          <Stat label="Alignments" value={totalAligned} />
+          <Stat label="Tensions" value={totalContra} accent="red" />
+        </div>
+      </div>
+
+      {topSynergies.length > 0 && (
+        <Section title="Strongest synergies">
+          <ul className="space-y-0.5">
+            {topSynergies.map(({ result, targetA, targetB }) => (
+              <PairRow
+                key={`syn-${result.targetAId}-${result.targetBId}`}
+                a={targetA}
+                b={targetB}
+                level={result.alignment}
+                onClick={() => onSelectTarget(targetA.id)}
+                countryConfig={countryConfig}
+              />
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {topTensions.length > 0 && (
+        <Section title="Top tensions">
+          <ul className="space-y-0.5">
+            {topTensions.map(({ result, targetA, targetB }) => (
+              <PairRow
+                key={`tns-${result.targetAId}-${result.targetBId}`}
+                a={targetA}
+                b={targetB}
+                level={result.alignment}
+                onClick={() => onSelectTarget(targetA.id)}
+                countryConfig={countryConfig}
+              />
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {mostConnected.length > 0 && (
+        <Section title="Most connected">
+          <ul className="space-y-0.5">
+            {mostConnected.map(({ target, count }) => (
+              <li key={target.id}>
+                <button
+                  type="button"
+                  onClick={() => onSelectTarget(target.id)}
+                  className="w-full text-left flex items-center gap-2 px-1.5 py-1.5 hover:bg-gray-50 rounded transition-colors"
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: getDocColor(
+                        countryConfig,
+                        target.sourceDocument,
+                      ),
+                    }}
+                  />
+                  <span className="text-[11px] text-[var(--undp-gray)] shrink-0 font-medium">
+                    {getDocLabel(countryConfig, target.sourceDocument)}
+                  </span>
+                  <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
+                    {target.sourceLabel}
+                  </span>
+                  <span className="text-[10px] text-[var(--undp-gray)] tabular-nums shrink-0">
+                    {count}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed pt-2">
+        Click a category arc on the wheel to drill in.
+      </p>
+    </div>
+  );
+}
+
+interface CategoryPanelProps {
+  group: GroupArc;
+  nodes: NodePos[];
+  arcs: GroupArc[];
+  alignment: AlignmentResult[];
+  onClose: () => void;
+  onSelectTarget: (id: string) => void;
+  countryConfig?: CountryConfig | null;
+}
+
+function CategoryPanel({
+  group,
+  nodes,
+  arcs,
+  alignment,
+  onClose,
+  onSelectTarget,
+  countryConfig,
+}: CategoryPanelProps) {
+  const targetIdsInGroup = useMemo(
+    () => new Set(nodes.filter((n) => n.groupId === group.id).map((n) => n.id)),
+    [nodes, group.id],
+  );
+  const targetsInGroup = useMemo(
+    () => nodes.filter((n) => n.groupId === group.id),
+    [nodes, group.id],
+  );
+  const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
+
+  const involvedAlignments = useMemo(
+    () =>
+      alignment.filter(
+        (a) =>
+          a.alignment !== "none" &&
+          (targetIdsInGroup.has(a.targetAId) ||
+            targetIdsInGroup.has(a.targetBId)),
+      ),
+    [alignment, targetIdsInGroup],
+  );
+
+  const totalAligned = involvedAlignments.length;
+  const totalContra = involvedAlignments.filter((a) =>
+    isContradiction(a.alignment),
+  ).length;
+
+  const partnerCounts = useMemo(() => {
+    const counts = new Map<string, { synergy: number; tension: number }>();
+    for (const a of involvedAlignments) {
+      const aIn = targetIdsInGroup.has(a.targetAId);
+      const bIn = targetIdsInGroup.has(a.targetBId);
+      if (aIn && bIn) continue;
+      const partnerNodeId = aIn ? a.targetBId : a.targetAId;
+      const partnerNode = nodeMap.get(partnerNodeId);
+      if (!partnerNode) continue;
+      const partnerGroupId = partnerNode.groupId;
+      const cur = counts.get(partnerGroupId) ?? { synergy: 0, tension: 0 };
+      if (isContradiction(a.alignment)) cur.tension += 1;
+      else cur.synergy += 1;
+      counts.set(partnerGroupId, cur);
+    }
+    return counts;
+  }, [involvedAlignments, targetIdsInGroup, nodeMap]);
+
+  const arcMap = useMemo(() => new Map(arcs.map((a) => [a.id, a])), [arcs]);
+
+  const topSynergyPartners = useMemo(
+    () =>
+      Array.from(partnerCounts.entries())
+        .filter(([, v]) => v.synergy > 0)
+        .sort((a, b) => b[1].synergy - a[1].synergy)
+        .slice(0, 4)
+        .map(([id, v]) => ({ arc: arcMap.get(id), count: v.synergy }))
+        .filter((x): x is { arc: GroupArc; count: number } => !!x.arc),
+    [partnerCounts, arcMap],
+  );
+
+  const topTensionPartners = useMemo(
+    () =>
+      Array.from(partnerCounts.entries())
+        .filter(([, v]) => v.tension > 0)
+        .sort((a, b) => b[1].tension - a[1].tension)
+        .slice(0, 4)
+        .map(([id, v]) => ({ arc: arcMap.get(id), count: v.tension }))
+        .filter((x): x is { arc: GroupArc; count: number } => !!x.arc),
+    [partnerCounts, arcMap],
+  );
+
+  const sortedTargets = useMemo(
+    () => [...targetsInGroup].sort((a, b) => b.connections - a.connections),
+    [targetsInGroup],
+  );
+
+  return (
+    <div className="bg-white border border-gray-100 rounded-lg p-5 space-y-7">
+      <div>
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-center gap-2 min-w-0">
+            <span
+              className="w-2.5 h-2.5 rounded-sm shrink-0"
+              style={{ backgroundColor: group.color }}
+            />
+            <h3 className="text-base font-semibold text-[var(--undp-black)] truncate">
+              {group.label}
+            </h3>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none shrink-0"
+            aria-label="Close category"
+          >
+            ×
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <Stat label="Targets" value={group.count} />
+          <Stat label="Alignments" value={totalAligned} />
+          <Stat label="Tensions" value={totalContra} accent="red" />
+        </div>
+      </div>
+
+      {(topSynergyPartners.length > 0 || topTensionPartners.length > 0) && (
+        <div className="grid grid-cols-2 gap-5">
+          <Section title="Aligns with">
+            {topSynergyPartners.length > 0 ? (
+              <ul className="space-y-1">
+                {topSynergyPartners.map(({ arc, count }) => (
+                  <li
+                    key={arc.id}
+                    className="flex items-center gap-2 text-[11px] py-0.5"
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{ backgroundColor: arc.color }}
+                    />
+                    <span className="text-[var(--undp-black)] truncate flex-1">
+                      {arc.label}
+                    </span>
+                    <span className="text-[var(--undp-gray)] tabular-nums">
+                      {count}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-[11px] text-[var(--undp-gray)] italic">None</p>
+            )}
+          </Section>
+          <Section title="Tensions with">
+            {topTensionPartners.length > 0 ? (
+              <ul className="space-y-1">
+                {topTensionPartners.map(({ arc, count }) => (
+                  <li
+                    key={arc.id}
+                    className="flex items-center gap-2 text-[11px] py-0.5"
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{ backgroundColor: arc.color }}
+                    />
+                    <span className="text-[var(--undp-black)] truncate flex-1">
+                      {arc.label}
+                    </span>
+                    <span className="text-red-700 tabular-nums">{count}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-[11px] text-[var(--undp-gray)] italic">None</p>
+            )}
+          </Section>
+        </div>
+      )}
+
+      <Section title={`Targets · ${sortedTargets.length}`}>
+        <ul className="divide-y divide-gray-50">
+          {sortedTargets.map((node) => (
+            <li key={node.id}>
+              <button
+                type="button"
+                onClick={() => onSelectTarget(node.id)}
+                className="w-full text-left flex items-center gap-2 py-2 px-1 hover:bg-gray-50 rounded transition-colors"
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{
+                    backgroundColor: getDocColor(
+                      countryConfig,
+                      node.target.sourceDocument,
+                    ),
+                  }}
+                />
+                <span className="text-[11px] font-medium text-[var(--undp-gray)] shrink-0">
+                  {getDocLabel(countryConfig, node.target.sourceDocument)}
+                </span>
+                <span className="text-[11px] text-[var(--undp-black)] truncate flex-1">
+                  {node.target.sourceLabel}
+                </span>
+                <span className="text-[10px] text-[var(--undp-gray)] tabular-nums shrink-0">
+                  {node.connections}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </div>
+  );
+}
+
 // ─── Main component ─────────────────────────────────────────────────
 
 const NR7_BADGE_COLORS: Record<string, string> = {
@@ -562,6 +1028,11 @@ export function PolicyCoherenceExplorer({
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  // Focal group: a category arc the user has clicked to drill into. Independent
+  // of the target selection — when both are set, target focus dominates the
+  // wheel and the panel shows target detail; closing the target falls back to
+  // the category panel because the group remains focal.
+  const [focalGroupId, setFocalGroupId] = useState<string | null>(null);
 
   // External focus: when Tensions section links to a specific target.
   // Track prop changes during render so we don't run setState inside an effect
@@ -733,15 +1204,44 @@ export function PolicyCoherenceExplorer({
   const handleBgClick = useCallback(() => {
     setSelectedId(null);
     setComparedPair(null);
+    setFocalGroupId(null);
   }, []);
 
   const handleGroupChange = useCallback((m: GroupMode) => {
     setGroupMode(m);
     setSelectedId(null);
     setComparedPair(null);
+    setFocalGroupId(null);
+  }, []);
+
+  // Clicking a category arc toggles the focal group. Clearing the target so
+  // the panel reflects the new context immediately; users can still click a
+  // target inside the focal group to drill deeper.
+  const handleArcClick = useCallback((id: string) => {
+    setSelectedId(null);
+    setComparedPair(null);
+    setFocalGroupId((prev) => (prev === id ? null : id));
   }, []);
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
+
+  const focalGroup = useMemo(
+    () =>
+      focalGroupId ? arcs.find((a) => a.id === focalGroupId) ?? null : null,
+    [arcs, focalGroupId],
+  );
+
+  const focalGroupTargetIds = useMemo(() => {
+    if (!focalGroupId) return null;
+    const ids = new Set<string>();
+    for (const n of nodes) if (n.groupId === focalGroupId) ids.add(n.id);
+    return ids;
+  }, [nodes, focalGroupId]);
+
+  // Group focus drives the dim treatment on the wheel only when no target is
+  // active. Active target takes visual priority and reuses the existing
+  // hover/click highlight path.
+  const isGroupFocus = !!focalGroupId && !activeId;
 
   const arcGen = useMemo(
     () =>
@@ -922,10 +1422,10 @@ export function PolicyCoherenceExplorer({
         />
       )}
 
-      {/* Main content: wheel + detail panel */}
-      <div className="flex gap-4 items-start">
+      {/* Main content: persistent split — wheel left, context panel right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Wheel container */}
-        <div className={`min-w-0 transition-all duration-300 ${selectedNode ? "flex-[3]" : "flex-1"}`}>
+        <div className="min-w-0 lg:col-span-7">
           <div className="bg-white border border-gray-100 rounded-lg p-4">
             <svg
               viewBox={`${-VB / 2} ${-VB / 2} ${VB} ${VB}`}
@@ -946,20 +1446,37 @@ export function PolicyCoherenceExplorer({
                       n.groupId === arc.id &&
                       (n.id === activeId || connectedIds.has(n.id)),
                   );
+                const isFocal = arc.id === focalGroupId;
                 const arcMidR = (INNER_R + OUTER_R) / 2;
                 const badgeX = arcMidR * Math.sin(arc.midAngle);
                 const badgeY = -arcMidR * Math.cos(arc.midAngle);
+                const arcOpacity = activeId
+                  ? hasActiveNode
+                    ? 0.8
+                    : 0.12
+                  : isGroupFocus
+                    ? isFocal
+                      ? 1
+                      : 0.18
+                    : 0.65;
                 return (
                   <g key={arc.id}>
                     <path
                       d={d ?? ""}
                       fill={arc.color}
-                      opacity={activeId ? (hasActiveNode ? 0.8 : 0.12) : 0.65}
-                      className="transition-opacity duration-200"
-                      style={{ pointerEvents: "none" }}
-                    />
+                      opacity={arcOpacity}
+                      stroke={isFocal && !activeId ? arc.color : "none"}
+                      strokeWidth={isFocal && !activeId ? 1.5 : 0}
+                      className="transition-opacity duration-200 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleArcClick(arc.id);
+                      }}
+                    >
+                      <title>{arc.label}</title>
+                    </path>
                     {/* Count badge on arc in overview mode */}
-                    {!activeId && arc.count > 0 && (
+                    {!activeId && !isGroupFocus && arc.count > 0 && (
                       <text
                         x={badgeX}
                         y={badgeY}
@@ -983,18 +1500,44 @@ export function PolicyCoherenceExplorer({
                   const nA = nodeMap.get(conn.targetAId);
                   const nB = nodeMap.get(conn.targetBId);
                   if (!nA || !nB) return null;
+                  // When a category is focal, drop edges that don't touch any
+                  // of its targets so the wheel reads as "this slice's web".
+                  if (
+                    isGroupFocus &&
+                    focalGroupTargetIds &&
+                    !focalGroupTargetIds.has(conn.targetAId) &&
+                    !focalGroupTargetIds.has(conn.targetBId)
+                  ) {
+                    return null;
+                  }
                   const key = `amb-${[conn.targetAId, conn.targetBId].sort().join("__")}`;
                   const contra = isContradiction(conn.alignment);
                   const isContraMode = filter === "contradictions";
+                  // In group focus mode, give the surviving edges a bit more
+                  // presence — the noise is gone so they can carry weight.
+                  const opacity = isGroupFocus
+                    ? contra
+                      ? 0.7
+                      : 0.55
+                    : isContraMode
+                      ? 0.55
+                      : ambientOpacity;
+                  const strokeWidth = isGroupFocus
+                    ? contra || conn.alignment === "high"
+                      ? 1.8
+                      : 1.2
+                    : isContraMode
+                      ? 2
+                      : 1;
                   return (
                     <path
                       key={key}
                       d={curvePath(nA.x, nA.y, nB.x, nB.y)}
                       fill="none"
                       stroke={ALIGNMENT_COLORS[conn.alignment]}
-                      strokeWidth={isContraMode ? 2 : 1}
+                      strokeWidth={strokeWidth}
                       strokeDasharray={contra ? "6 3" : "none"}
-                      opacity={isContraMode ? 0.55 : ambientOpacity}
+                      opacity={opacity}
                       strokeLinecap="round"
                       style={{ pointerEvents: "none" }}
                     />
@@ -1031,7 +1574,11 @@ export function PolicyCoherenceExplorer({
                 const r = nodeSize(node);
                 const isActive = node.id === activeId;
                 const isConnected = connectedIds.has(node.id);
-                const isDimmed = !!activeId && !isActive && !isConnected;
+                const isFocalGroupMember =
+                  !!focalGroupTargetIds && focalGroupTargetIds.has(node.id);
+                const isDimmed = activeId
+                  ? !isActive && !isConnected
+                  : isGroupFocus && !isFocalGroupMember;
                 const useGroupColor = groupMode !== "document";
                 const baseNodeColor = useGroupColor
                   ? (groupColorMap.get(node.groupId) ?? getDocColor(countryConfig, node.target.sourceDocument))
@@ -1212,6 +1759,17 @@ export function PolicyCoherenceExplorer({
                   const anchor = anchorFor(angle);
                   // Nudge label slightly away from leader endpoint
                   const nudge = anchor === "start" ? 3 : anchor === "end" ? -3 : 0;
+                  const isFocal = arc.id === focalGroupId;
+                  const labelDimmed =
+                    !!activeId || (isGroupFocus && !isFocal);
+                  const leaderOpacity = activeId
+                    ? 0.2
+                    : isGroupFocus
+                      ? isFocal
+                        ? 0.6
+                        : 0.12
+                      : 0.35;
+                  const labelFill = labelDimmed ? "#94a3b8" : arc.color;
                   return (
                     <g key={`grp-${arc.id}`}>
                       <path
@@ -1219,7 +1777,7 @@ export function PolicyCoherenceExplorer({
                         fill="none"
                         stroke={arc.color}
                         strokeWidth={1}
-                        opacity={activeId ? 0.2 : 0.35}
+                        opacity={leaderOpacity}
                         className="pointer-events-none"
                       />
                       <text
@@ -1227,11 +1785,15 @@ export function PolicyCoherenceExplorer({
                         y={ly}
                         textAnchor={anchor}
                         dominantBaseline="middle"
-                        className="select-none"
-                        fontSize={11}
-                        fontWeight={600}
-                        fill={activeId ? "#94a3b8" : arc.color}
-                        style={{ letterSpacing: "0.04em", transition: "fill 200ms" }}
+                        className="select-none cursor-pointer"
+                        fontSize={isFocal && !activeId ? 12 : 11}
+                        fontWeight={isFocal && !activeId ? 700 : 600}
+                        fill={labelFill}
+                        style={{ letterSpacing: "0.04em", transition: "fill 200ms, font-size 200ms" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleArcClick(arc.id);
+                        }}
                       >
                         <title>{getDocFullLabel(countryConfig, arc.id)}</title>
                         {arc.label}
@@ -1251,7 +1813,9 @@ export function PolicyCoherenceExplorer({
               >
                 {activeId
                   ? targetMap.get(activeId)?.sourceLabel ?? ""
-                  : targets[0]?.country ?? "Country"}
+                  : focalGroup
+                    ? focalGroup.label
+                    : targets[0]?.country ?? "Country"}
               </text>
               <text
                 x={0} y={14}
@@ -1262,7 +1826,9 @@ export function PolicyCoherenceExplorer({
               >
                 {activeId
                   ? `${activeConns.length} connection${activeConns.length !== 1 ? "s" : ""}`
-                  : `${targets.length} targets · ${totalAligned} aligned`}
+                  : focalGroup
+                    ? `${focalGroup.count} target${focalGroup.count !== 1 ? "s" : ""}`
+                    : `${targets.length} targets · ${totalAligned} aligned`}
               </text>
             </svg>
 
@@ -1310,31 +1876,52 @@ export function PolicyCoherenceExplorer({
           </div>
         </div>
 
-        {/* Detail panel */}
-        {selectedNode && (
-          <div className="w-[360px] shrink-0 self-start sticky top-20">
-            <DetailPanel
-              key={selectedNode.id}
-              node={selectedNode}
-              connections={selectedConns}
-              onClose={() => {
-                setSelectedId(null);
-                setComparedPair(null);
-              }}
-              onSelectPair={(r) => {
-                const otherId =
-                  r.targetAId === selectedId ? r.targetBId : r.targetAId;
-                const other = targetMap.get(otherId);
-                if (other) setComparedPair({ result: r, other });
-              }}
-              comparedPair={comparedPair}
-              onBackFromPair={() => setComparedPair(null)}
-              nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
-              nr7ProgressMap={nr7ProgressMap}
-              countryConfig={countryConfig}
-            />
-          </div>
-        )}
+        {/* Context panel — always visible, content morphs by selection state.
+            Order of precedence: target detail > category drill-in > idle insights. */}
+        <div className="min-w-0 lg:col-span-5 lg:sticky lg:top-20 self-start">
+          {selectedNode ? (
+              <DetailPanel
+                key={selectedNode.id}
+                node={selectedNode}
+                connections={selectedConns}
+                onClose={() => {
+                  setSelectedId(null);
+                  setComparedPair(null);
+                }}
+                onSelectPair={(r) => {
+                  const otherId =
+                    r.targetAId === selectedId ? r.targetBId : r.targetAId;
+                  const other = targetMap.get(otherId);
+                  if (other) setComparedPair({ result: r, other });
+                }}
+                comparedPair={comparedPair}
+                onBackFromPair={() => setComparedPair(null)}
+                nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
+                nr7ProgressMap={nr7ProgressMap}
+                countryConfig={countryConfig}
+              />
+            ) : focalGroup ? (
+              <CategoryPanel
+                key={focalGroup.id}
+                group={focalGroup}
+                nodes={nodes}
+                arcs={arcs}
+                alignment={visibleAlignment}
+                onClose={() => setFocalGroupId(null)}
+                onSelectTarget={handleNodeClick}
+                countryConfig={countryConfig}
+              />
+            ) : (
+              <EmptyPanel
+                targets={visibleTargets}
+                alignment={visibleAlignment}
+                totalAligned={totalAligned}
+                totalContra={totalContra}
+                onSelectTarget={handleNodeClick}
+                countryConfig={countryConfig}
+              />
+            )}
+        </div>
       </div>
     </section>
   );
