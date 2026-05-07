@@ -56,6 +56,7 @@ docs/
 old_scripts/
 to-dos.txt
 dev_data_scripts/
+worklog/
 
 # Analysis runs (ephemeral)
 python/analyses/
