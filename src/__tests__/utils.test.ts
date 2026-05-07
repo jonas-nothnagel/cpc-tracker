@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  chartDocKey,
   countByCategory,
   getDocColor,
   getDocFullLabel,
@@ -83,6 +84,44 @@ describe("countByCategory", () => {
     // they want arithmetic behaviour.
     expect(catA.byDocument.NAP ?? 0).toBe(0);
   });
+
+  it("buckets targets under a synthetic key when resolveDocKey is provided", () => {
+    // Mirror the dashboard's BTR-split: mitigation under "BTR", adaptation
+    // under "BTR_ADP". The chart relies on this to render two separate stacks.
+    const btrTargets: Target[] = [
+      { id: "BTR_1", text: "BTR mit", sourceDocument: "BTR", sourceLabel: "x", country: "Test", isQuantitative: false, isTimeBound: false, actionType: "mitigation" },
+      { id: "ADP_1", text: "BTR adp", sourceDocument: "BTR", sourceLabel: "y", country: "Test", isQuantitative: false, isTimeBound: false, actionType: "adaptation" },
+    ];
+    const cls: ThematicClassification[] = [
+      { targetId: "BTR_1", categoryId: "cat_a", taxonomyType: "sector", isRelevant: true, isPrimary: true },
+      { targetId: "ADP_1", categoryId: "cat_a", taxonomyType: "sector", isRelevant: true, isPrimary: true },
+    ];
+    const result = countByCategory(btrTargets, cls, categories, chartDocKey);
+    const catA = result.find((r) => r.categoryId === "cat_a")!;
+    expect(catA.total).toBe(2);
+    expect(catA.byDocument.BTR).toBe(1);
+    expect(catA.byDocument.BTR_ADP).toBe(1);
+  });
+});
+
+describe("chartDocKey", () => {
+  it("routes BTR adaptation actions to the synthetic BTR_ADP bucket", () => {
+    expect(
+      chartDocKey({ id: "ADP_1", text: "x", sourceDocument: "BTR", sourceLabel: "x", country: "T", isQuantitative: false, isTimeBound: false, actionType: "adaptation" }),
+    ).toBe("BTR_ADP");
+  });
+
+  it("keeps BTR mitigation actions on the regular BTR key", () => {
+    expect(
+      chartDocKey({ id: "BTR_1", text: "x", sourceDocument: "BTR", sourceLabel: "x", country: "T", isQuantitative: false, isTimeBound: false, actionType: "mitigation" }),
+    ).toBe("BTR");
+  });
+
+  it("returns sourceDocument unchanged for non-BTR targets", () => {
+    expect(
+      chartDocKey({ id: "T1", text: "x", sourceDocument: "NDC", sourceLabel: "x", country: "T", isQuantitative: false, isTimeBound: false }),
+    ).toBe("NDC");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -117,6 +156,11 @@ describe("getDocLabel", () => {
     expect(getDocLabel(null, "BTR")).toBe("BTR Action");
     expect(getDocLabel(undefined, "BTR")).toBe("BTR Action");
     expect(getDocLabel(mongoliaConfig, "BTR")).toBe("BTR Action");
+  });
+
+  it("returns the reserved BTR_ADP short label for the adaptation split", () => {
+    expect(getDocLabel(null, "BTR_ADP")).toBe("BTR Adaptation");
+    expect(getDocLabel(mongoliaConfig, "BTR_ADP")).toBe("BTR Adaptation");
   });
 
   it("returns the reserved OTHER short label even without a country config", () => {
@@ -178,6 +222,10 @@ describe("getDocColor", () => {
     expect(getDocColor(null, "BTR")).toBe("#7c3aed");
   });
 
+  it("returns the reserved BTR_ADP color (fuchsia) for the adaptation split", () => {
+    expect(getDocColor(null, "BTR_ADP")).toBe("#c026d3");
+  });
+
   it("returns a neutral gray for unknown documents", () => {
     expect(getDocColor(mongoliaConfig, "UNKNOWN")).toBe("#94a3b8");
     expect(getDocColor(null, "UNKNOWN")).toBe("#94a3b8");
@@ -196,6 +244,14 @@ describe("getDocTypeOrder", () => {
     const otherOrder = getDocTypeOrder(mongoliaConfig, "OTHER");
     expect(btrOrder).toBeGreaterThan(getDocTypeOrder(mongoliaConfig, "NBSAP"));
     expect(otherOrder).toBeGreaterThan(btrOrder);
+  });
+
+  it("places BTR_ADP immediately after BTR so the two render adjacent", () => {
+    const btrOrder = getDocTypeOrder(mongoliaConfig, "BTR");
+    const btrAdpOrder = getDocTypeOrder(mongoliaConfig, "BTR_ADP");
+    const otherOrder = getDocTypeOrder(mongoliaConfig, "OTHER");
+    expect(btrAdpOrder).toBe(btrOrder + 1);
+    expect(otherOrder).toBeGreaterThan(btrAdpOrder);
   });
 
   it("sorts unknown ids to the very end", () => {

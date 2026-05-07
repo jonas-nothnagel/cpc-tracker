@@ -436,22 +436,38 @@ async def main() -> None:
                         sector_by_id[c["targetId"]] = c["categoryId"]
 
                 for pt in measure_pseudo_targets:
+                    # Pseudo-target sector is internal pipeline metadata, kept
+                    # as the LLM primary so downstream measure-alignment uses
+                    # the canonical id.
                     pt["sector"] = sector_by_id.get(pt["id"], "")
 
-                # Write back to btr_data.json mitigation measures by matching sourceLabel
+                # Fill `m.sector` on btr_data.json mitigation measures from the
+                # LLM only when the measure has no existing sector. Existing
+                # values come either from a hand-curated initial commit
+                # (Mongolia) or from the BTR document's own sector column
+                # canonicalised at ingestion (Panama). Preserving them keeps
+                # the "Reporting Gaps" callout stable across pipeline re-runs.
                 label_to_sector: dict[str, str] = {}
                 for pt in measure_pseudo_targets:
                     if pt.get("actionType") == "mitigation" and pt["sector"]:
                         label_to_sector[pt["sourceLabel"]] = pt["sector"]
 
+                filled = 0
+                preserved = 0
                 for m in raw_measures:
+                    if (m.get("sector") or "").strip():
+                        preserved += 1
+                        continue
                     name = (m.get("name") or "").strip()
                     label = name if len(name) <= 60 else name[:57] + "..."
                     if label in label_to_sector:
                         m["sector"] = label_to_sector[label]
+                        filled += 1
 
                 btr_path.write_text(json.dumps(btr, indent=2, ensure_ascii=False))
-                logger.info(f"Wrote back LLM sectors to {len(label_to_sector)} measures in btr_data.json")
+                logger.info(
+                    f"BTR sector write-back: filled {filled} missing, preserved {preserved} existing"
+                )
 
                 # Re-save classifications with BTR entries included
                 out_path = OUTPUT_DIR / "classifications.json"

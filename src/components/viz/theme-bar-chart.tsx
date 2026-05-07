@@ -10,7 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
+import { chartDocKey, getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import {
   TargetTextWithHighlights,
@@ -54,8 +54,11 @@ function getTargetsForTheme(
       )
       .map((c) => c.targetId)
   );
+  // `docType` may be the synthetic "BTR_ADP" key when the chart splits BTR by
+  // actionType — match against `chartDocKey(t)` so segment clicks resolve to
+  // the same targets that were counted into that stack.
   return targets.filter(
-    (t) => targetIds.has(t.id) && (!docType || t.sourceDocument === docType)
+    (t) => targetIds.has(t.id) && (!docType || chartDocKey(t) === docType)
   );
 }
 
@@ -144,6 +147,17 @@ export function ThemeBarChart({
     }
   };
 
+  // When the chart splits BTR into mitigation + adaptation stacks (BTR_ADP
+  // present in documentTypes), relabel the "BTR" stack as "BTR Mitigation" so
+  // the legend reads parallel ("BTR Mitigation" / "BTR Adaptation") instead of
+  // the asymmetric default ("BTR Action" / "BTR Adaptation"). The global "BTR"
+  // → "BTR Action" label is preserved for badges and other contexts.
+  const hasBtrSplit =
+    documentTypes.includes("BTR" as PolicyDocumentType) &&
+    documentTypes.includes("BTR_ADP" as PolicyDocumentType);
+  const legendLabel = (doc: PolicyDocumentType): string =>
+    hasBtrSplit && doc === "BTR" ? "BTR Mitigation" : getDocLabel(countryConfig, doc);
+
   return (
     <div>
       {title && (
@@ -164,7 +178,7 @@ export function ThemeBarChart({
               style={{ backgroundColor: getDocColor(countryConfig, doc) }}
             />
             <span className="text-[var(--undp-gray)]" title={getDocFullLabel(countryConfig, doc)}>
-              {getDocLabel(countryConfig, doc)}
+              {legendLabel(doc)}
             </span>
           </div>
         ))}
@@ -192,7 +206,7 @@ export function ThemeBarChart({
             }}
             formatter={(value, name) => [
               value ?? 0,
-              typeof name === "string" ? getDocLabel(countryConfig, name) : (name ?? ""),
+              typeof name === "string" ? legendLabel(name as PolicyDocumentType) : (name ?? ""),
             ]}
           />
           {documentTypes.map((doc) => (
@@ -212,7 +226,7 @@ export function ThemeBarChart({
       <Modal
         open={!!modal}
         onClose={() => setModal(null)}
-        title={modal ? `${modal.themeName}${modal.docType ? `, ${getDocLabel(countryConfig, modal.docType)}` : ""} (${modal.targets.length})` : ""}
+        title={modal ? `${modal.themeName}${modal.docType ? `, ${legendLabel(modal.docType)}` : ""} (${modal.targets.length})` : ""}
         maxWidth="max-w-xl"
       >
         {modal && (
