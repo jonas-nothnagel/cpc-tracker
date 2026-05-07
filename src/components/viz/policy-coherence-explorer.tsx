@@ -1174,28 +1174,27 @@ export function PolicyCoherenceExplorer({
                   angularSpan: (arc.label.length * CHAR_W) / GRP_LABEL_R,
                 }));
 
-                // Sort by angle for overlap detection
-                const sorted = [...entries].sort((a, b) => a.angle - b.angle);
+                // Sort by home angle so neighbours-in-the-circle are neighbours-in-the-array
+                const sorted = [...entries].sort((a, b) => a.arc.midAngle - b.arc.midAngle);
 
-                // Bi-directional spread: enforce minimum gap based on label widths
-                for (let i = 1; i < sorted.length; i++) {
-                  const needed = (sorted[i - 1].angularSpan + sorted[i].angularSpan) / 2 + LABEL_H / GRP_LABEL_R;
-                  const gap = sorted[i].angle - sorted[i - 1].angle;
-                  if (gap < needed) {
-                    sorted[i].angle = sorted[i - 1].angle + needed;
+                // Spring relaxation: each pass pulls every label toward its
+                // arc midpoint (home) and pushes overlapping neighbours apart
+                // symmetrically. Converges to the layout with minimum total
+                // displacement, so labels sit as close to their arcs as the
+                // overlap constraint allows.
+                const PADDING = LABEL_H / GRP_LABEL_R;
+                const HOME_PULL = 0.18;
+                for (let iter = 0; iter < 60; iter++) {
+                  for (const e of sorted) {
+                    e.angle += HOME_PULL * (e.arc.midAngle - e.angle);
                   }
-                }
-                // Second pass: if labels were pushed too far, pull back from the end
-                if (sorted.length > 1) {
-                  const lastSpan = sorted[sorted.length - 1].angularSpan;
-                  const maxAngle = 2 * Math.PI - lastSpan / 2;
-                  if (sorted[sorted.length - 1].angle > maxAngle) {
-                    for (let i = sorted.length - 2; i >= 0; i--) {
-                      const needed = (sorted[i].angularSpan + sorted[i + 1].angularSpan) / 2 + LABEL_H / GRP_LABEL_R;
-                      const gap = sorted[i + 1].angle - sorted[i].angle;
-                      if (gap < needed) {
-                        sorted[i].angle = sorted[i + 1].angle - needed;
-                      }
+                  for (let i = 0; i < sorted.length - 1; i++) {
+                    const needed = (sorted[i].angularSpan + sorted[i + 1].angularSpan) / 2 + PADDING;
+                    const gap = sorted[i + 1].angle - sorted[i].angle;
+                    if (gap < needed) {
+                      const half = (needed - gap) / 2;
+                      sorted[i].angle -= half;
+                      sorted[i + 1].angle += half;
                     }
                   }
                 }
