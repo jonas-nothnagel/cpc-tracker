@@ -1280,33 +1280,6 @@ export function PolicyCoherenceExplorer({
   const totalAligned = visibleAlignment.filter((a) => a.alignment !== "none").length;
   const totalContra = visibleAlignment.filter((a) => isContradiction(a.alignment)).length;
 
-  const handleNodeClick = useCallback((id: string) => {
-    setComparedPair(null);
-    setSelectedId((prev) => (prev === id ? null : id));
-  }, []);
-
-  const handleBgClick = useCallback(() => {
-    setSelectedId(null);
-    setComparedPair(null);
-    setFocalGroupId(null);
-  }, []);
-
-  const handleGroupChange = useCallback((m: GroupMode) => {
-    setGroupMode(m);
-    setSelectedId(null);
-    setComparedPair(null);
-    setFocalGroupId(null);
-  }, []);
-
-  // Clicking a category arc toggles the focal group. Clearing the target so
-  // the panel reflects the new context immediately; users can still click a
-  // target inside the focal group to drill deeper.
-  const handleArcClick = useCallback((id: string) => {
-    setSelectedId(null);
-    setComparedPair(null);
-    setFocalGroupId((prev) => (prev === id ? null : id));
-  }, []);
-
   // Chat state. Single-turn for v1: every Ask replaces the previous reply.
   // History could come later if it earns its keep — keep this lean now.
   const [chat, setChat] = useState<ChatStatus>({
@@ -1314,6 +1287,68 @@ export function PolicyCoherenceExplorer({
     reply: null,
     error: null,
   });
+
+  // Clear the chat reply when the user manually navigates away from it (clicks
+  // a target / arc / empty area, closes a panel). Stays put when the chat
+  // itself sets state — the reply stays visible alongside its result.
+  const clearChat = useCallback(() => {
+    setChat((prev) =>
+      prev.reply !== null || prev.error !== null
+        ? { loading: false, reply: null, error: null }
+        : prev,
+    );
+  }, []);
+
+  const handleNodeClick = useCallback(
+    (id: string) => {
+      setComparedPair(null);
+      setSelectedId((prev) => (prev === id ? null : id));
+      clearChat();
+    },
+    [clearChat],
+  );
+
+  const handleBgClick = useCallback(() => {
+    setSelectedId(null);
+    setComparedPair(null);
+    setFocalGroupId(null);
+    clearChat();
+  }, [clearChat]);
+
+  const handleGroupChange = useCallback(
+    (m: GroupMode) => {
+      setGroupMode(m);
+      setSelectedId(null);
+      setComparedPair(null);
+      setFocalGroupId(null);
+      clearChat();
+    },
+    [clearChat],
+  );
+
+  // Clicking a category arc toggles the focal group. Clearing the target so
+  // the panel reflects the new context immediately; users can still click a
+  // target inside the focal group to drill deeper.
+  const handleArcClick = useCallback(
+    (id: string) => {
+      setSelectedId(null);
+      setComparedPair(null);
+      setFocalGroupId((prev) => (prev === id ? null : id));
+      clearChat();
+    },
+    [clearChat],
+  );
+
+  const closeDetail = useCallback(() => {
+    setSelectedId(null);
+    setComparedPair(null);
+    clearChat();
+  }, [clearChat]);
+
+  const closeCategory = useCallback(() => {
+    setFocalGroupId(null);
+    clearChat();
+  }, [clearChat]);
 
   const handleAsk = useCallback(
     async (query: string) => {
@@ -1420,46 +1455,39 @@ export function PolicyCoherenceExplorer({
           const text = await res.text();
           throw new Error(text || `Request failed (${res.status})`);
         }
+        type ServerAction =
+          | { type: "set_filter"; filter: AlignFilter }
+          | { type: "focus_category"; categoryId: string }
+          | { type: "select_target"; targetId: string }
+          | { type: "set_mode"; mode: GroupMode };
         const json = (await res.json()) as {
           reply: string;
-          action:
-            | {
-                type: "set_filter";
-                filter: AlignFilter;
-              }
-            | {
-                type: "focus_category";
-                categoryId: string;
-              }
-            | {
-                type: "select_target";
-                targetId: string;
-              }
-            | {
-                type: "set_mode";
-                mode: GroupMode;
-              }
-            | { type: "noop" };
+          actions: ServerAction[];
         };
 
-        // Apply the action. comparedPair is always cleared because chat
-        // navigates away from any active pair compare.
+        // Apply the actions in order. The server already sorts them so set_mode
+        // runs first (resets selection), then set_filter, then focus/select.
         setComparedPair(null);
-        const action = json.action;
-        if (action.type === "set_filter") {
-          setFilter(action.filter);
-        } else if (action.type === "focus_category") {
-          setFocalGroupId(action.categoryId);
-          setSelectedId(null);
-        } else if (action.type === "select_target") {
-          setSelectedId(action.targetId);
-          const node = nodes.find((n) => n.id === action.targetId);
-          if (node) setFocalGroupId(node.groupId);
-        } else if (action.type === "set_mode") {
-          setGroupMode(action.mode);
-          setSelectedId(null);
-          setFocalGroupId(null);
+        let nextSelectedId: string | null | undefined;
+        let nextFocalGroupId: string | null | undefined;
+        for (const action of json.actions) {
+          if (action.type === "set_filter") {
+            setFilter(action.filter);
+          } else if (action.type === "focus_category") {
+            nextFocalGroupId = action.categoryId;
+            nextSelectedId = null;
+          } else if (action.type === "select_target") {
+            nextSelectedId = action.targetId;
+            const node = nodes.find((n) => n.id === action.targetId);
+            if (node) nextFocalGroupId = node.groupId;
+          } else if (action.type === "set_mode") {
+            setGroupMode(action.mode);
+            nextSelectedId = null;
+            nextFocalGroupId = null;
+          }
         }
+        if (nextSelectedId !== undefined) setSelectedId(nextSelectedId);
+        if (nextFocalGroupId !== undefined) setFocalGroupId(nextFocalGroupId);
         setChat({ loading: false, reply: json.reply, error: null });
       } catch (err) {
         setChat({
@@ -2136,10 +2164,7 @@ export function PolicyCoherenceExplorer({
                 key={selectedNode.id}
                 node={selectedNode}
                 connections={selectedConns}
-                onClose={() => {
-                  setSelectedId(null);
-                  setComparedPair(null);
-                }}
+                onClose={closeDetail}
                 onSelectPair={(r) => {
                   const otherId =
                     r.targetAId === selectedId ? r.targetBId : r.targetAId;
@@ -2159,7 +2184,7 @@ export function PolicyCoherenceExplorer({
                 nodes={nodes}
                 arcs={arcs}
                 alignment={filtered}
-                onClose={() => setFocalGroupId(null)}
+                onClose={closeCategory}
                 onSelectTarget={handleNodeClick}
                 countryConfig={countryConfig}
               />

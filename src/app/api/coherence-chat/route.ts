@@ -49,14 +49,15 @@ type ChatAction =
 
 const SYSTEM_PROMPT = `You are a navigation assistant for a policy coherence visualization. The user looks at a chord chart of policy targets across documents (NDC, NBSAP, BTR, NAP, etc.) and explores how the targets align or contradict.
 
-Take ONE action per turn by calling exactly one of the provided tools. Do NOT write narrative paragraphs about the data. Your reply text is a single short sentence (max ~20 words) saying what you're showing.
+You may emit ONE OR MORE tool calls per turn — combine them when the request needs both a filter and a focus. Do NOT write narrative paragraphs about the data. Always include a single short content message (max ~20 words) saying what you're showing.
 
 Rules:
 - Only use ids that appear in the context. Never invent ids.
-- For aggregate questions ("where do plans contradict most?") pick a sensible group from the available groups and call focus_category.
+- For aggregate questions about contradictions, prefer set_filter('contradictions') AND focus_category(top tension group). For "highest alignment" prefer set_filter('high') AND focus_category(top alignment group).
 - For target lookups ("find targets about X") match snippets to the topic and call select_target with the best match.
-- For mode switches ("biodiversity view", "by document", "climate sector") call set_mode.
-- For filter switches ("show only contradictions", "high alignments only") call set_filter.
+- For "show a target that's both aligned and contested", pick a target that appears in BOTH topTargetsByTension and topTargetsByAlignment, set_filter('high_contra'), and select_target.
+- For mode switches ("biodiversity view", "by document", "climate sector") call set_mode only.
+- For filter switches ("show only contradictions", "high alignments only") call set_filter only.
 - If you can't pick a useful action, return a short reply explaining why and call no tool.`;
 
 const TOOLS = [
@@ -297,75 +298,98 @@ export async function POST(req: Request) {
   }
 
   const message = response.choices?.[0]?.message;
-  const toolCall = message?.tool_calls?.[0];
+  const toolCalls = message?.tool_calls ?? [];
   const content = (message?.content ?? "").trim();
-
-  if (!toolCall) {
-    return NextResponse.json({
-      reply: content || "I'm not sure what to show for that.",
-      action: { type: "noop" } as ChatAction,
-    });
-  }
-
-  const fnName = toolCall.function?.name;
-  let args: Record<string, unknown> = {};
-  try {
-    args = JSON.parse(toolCall.function?.arguments ?? "{}");
-  } catch {
-    args = {};
-  }
 
   // Validate against context — never trust LLM-emitted ids blindly.
   const groupIds = new Set(context.groups.map((g) => g.id));
   const targetIds = new Set(context.targetIndex.map((t) => t.id));
 
-  let action: ChatAction = { type: "noop" };
-  let reply = content;
+  const actions: ChatAction[] = [];
+  // Action ordering matters in the client: set_mode resets selection, so it
+  // must run before focus/select. set_filter is independent. Sort here so the
+  // client can apply blindly.
+  const ACTION_ORDER: Record<ChatAction["type"], number> = {
+    set_mode: 0,
+    set_filter: 1,
+    focus_category: 2,
+    select_target: 3,
+    noop: 4,
+  };
 
-  if (fnName === "set_filter") {
-    const filter = String(args.filter ?? "");
-    const allowed = [
-      "all",
-      "high_medium",
-      "high_contra",
-      "high",
-      "contradictions",
-    ];
-    if (allowed.includes(filter)) {
-      action = { type: "set_filter", filter };
-      if (!reply) reply = `Showing ${filter.replace("_", " + ")}.`;
+  for (const toolCall of toolCalls) {
+    const fnName = toolCall.function?.name;
+    let args: Record<string, unknown> = {};
+    try {
+      args = JSON.parse(toolCall.function?.arguments ?? "{}");
+    } catch {
+      args = {};
     }
-  } else if (fnName === "focus_category") {
-    const id = String(args.categoryId ?? "");
-    if (groupIds.has(id)) {
-      action = { type: "focus_category", categoryId: id };
-      const label = context.groups.find((g) => g.id === id)?.label ?? id;
-      if (!reply) reply = `Focusing ${label}.`;
-    }
-  } else if (fnName === "select_target") {
-    const id = String(args.targetId ?? "");
-    if (targetIds.has(id)) {
-      action = { type: "select_target", targetId: id };
-      const t = context.targetIndex.find((tt) => tt.id === id);
-      const label = t ? `${t.sourceDocument}: ${t.sourceLabel}` : id;
-      if (!reply) reply = `Showing ${label}.`;
-    }
-  } else if (fnName === "set_mode") {
-    const mode = String(args.mode ?? "");
-    if (mode === "document" || mode === "globe" || mode === "sector") {
-      action = { type: "set_mode", mode };
-      const labels: Record<string, string> = {
-        document: "by document type",
-        globe: "by biodiversity category",
-        sector: "by climate mitigation sector",
-      };
-      if (!reply) reply = `Switched to grouping ${labels[mode]}.`;
+
+    if (fnName === "set_filter") {
+      const filter = String(args.filter ?? "");
+      const allowed = [
+        "all",
+        "high_medium",
+        "high_contra",
+        "high",
+        "contradictions",
+      ];
+      if (allowed.includes(filter)) {
+        actions.push({ type: "set_filter", filter });
+      }
+    } else if (fnName === "focus_category") {
+      const id = String(args.categoryId ?? "");
+      if (groupIds.has(id)) {
+        actions.push({ type: "focus_category", categoryId: id });
+      }
+    } else if (fnName === "select_target") {
+      const id = String(args.targetId ?? "");
+      if (targetIds.has(id)) {
+        actions.push({ type: "select_target", targetId: id });
+      }
+    } else if (fnName === "set_mode") {
+      const mode = String(args.mode ?? "");
+      if (mode === "document" || mode === "globe" || mode === "sector") {
+        actions.push({ type: "set_mode", mode });
+      }
     }
   }
 
-  if (action.type === "noop" && !reply) {
+  actions.sort((a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type]);
+
+  // Reply: prefer the model's own one-liner; fall back to a synthesised
+  // sentence from the actions if the model didn't include content.
+  let reply = content;
+  if (!reply && actions.length > 0) {
+    const parts: string[] = [];
+    for (const a of actions) {
+      if (a.type === "set_filter") {
+        parts.push(`Filter: ${a.filter.replace("_", " + ")}.`);
+      } else if (a.type === "focus_category") {
+        const label =
+          context.groups.find((g) => g.id === a.categoryId)?.label ??
+          a.categoryId;
+        parts.push(`Focusing ${label}.`);
+      } else if (a.type === "select_target") {
+        const t = context.targetIndex.find((tt) => tt.id === a.targetId);
+        parts.push(
+          `Showing ${t ? `${t.sourceDocument}: ${t.sourceLabel}` : a.targetId}.`,
+        );
+      } else if (a.type === "set_mode") {
+        const labels: Record<string, string> = {
+          document: "by document type",
+          globe: "by biodiversity category",
+          sector: "by climate mitigation sector",
+        };
+        parts.push(`Grouped ${labels[a.mode]}.`);
+      }
+    }
+    reply = parts.join(" ");
+  }
+  if (!reply) {
     reply = "I couldn't map that to an action — try one of the examples?";
   }
 
-  return NextResponse.json({ reply, action });
+  return NextResponse.json({ reply, actions });
 }
