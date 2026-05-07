@@ -43,24 +43,54 @@ function formatSourceRef(ref?: SourceRef): string | undefined {
 // ─── Target list modal ────────────────────────────────────────────────────────
 
 /**
- * Modal that lists a set of targets (policy targets or BTR pseudo-targets) with
- * optional primary-document provenance shown above the list. Shared by both
- * policy-document and BTR-action data source chips so the inspection UX is
- * consistent across the two sources.
+ * Implementation status snapshot rendered inside the BTR mitigation /
+ * adaptation modals. Policy-document modals leave this undefined.
  */
-function TargetListModal({ label, targets, sourceRef, countryConfig, onClose }: {
+type ImplementationStat = {
+  implemented: number;
+  total: number;
+};
+
+/**
+ * Modal that lists a set of targets (policy targets or BTR pseudo-targets) with
+ * optional primary-document provenance and an optional implementation-status
+ * snapshot above the list. Shared by both policy-document and BTR-action data
+ * source chips so the inspection UX is consistent across the two sources.
+ */
+function TargetListModal({ label, targets, sourceRef, implementationStat, countryConfig, onClose }: {
   label: string;
   targets: Target[];
   sourceRef?: string;
+  implementationStat?: ImplementationStat;
   countryConfig?: CountryConfig | null;
   onClose: () => void;
 }) {
+  const nonImplemented =
+    implementationStat ? implementationStat.total - implementationStat.implemented : 0;
   return (
     <Modal open={true} onClose={onClose} title={label} maxWidth="max-w-xl">
-      {sourceRef && (
-        <p className="px-5 pt-3 text-[11px] text-[var(--undp-gray)] italic border-b border-gray-50 pb-2">
-          Source: {sourceRef}
-        </p>
+      {(sourceRef || implementationStat) && (
+        <div className="px-5 pt-3 pb-2 border-b border-gray-50 space-y-1">
+          {sourceRef && (
+            <p className="text-[11px] text-[var(--undp-gray)] italic">
+              Source: {sourceRef}
+            </p>
+          )}
+          {implementationStat && implementationStat.total > 0 && (
+            <p className="text-[11px] text-[var(--undp-gray)]">
+              <span className="font-semibold text-[var(--undp-black)]">
+                {implementationStat.implemented}
+              </span>{" "}
+              of {implementationStat.total} marked fully implemented
+              {nonImplemented > 0 && (
+                <>
+                  {" · "}
+                  {nonImplemented} reported as ongoing or planned
+                </>
+              )}
+            </p>
+          )}
+        </div>
       )}
       <ul className="divide-y divide-gray-50 px-5 py-2">
         {targets.map((t) => (
@@ -180,6 +210,7 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
     label: string;
     targets: Target[];
     sourceRef?: string;
+    implementationStat?: ImplementationStat;
   } | null>(null);
 
   // Group policy targets by source document (BTR pseudo-targets are surfaced
@@ -210,23 +241,23 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
   const totalBtrActions = btrMitigationCount + btrAdaptationCount;
   const hasBtr = totalBtrActions > 0;
 
-  // Implementation status — match BTR pseudo-targets to their underlying
-  // measure by sourceLabel (which is the measure name truncated to 60 chars
-  // in `measures_to_pseudo_targets`). This lets the "Marked Fully
-  // Implemented" card list the actual pseudo-targets users can click into.
+  // Per-action implementation status — match BTR pseudo-targets to their
+  // underlying measure by sourceLabel (which is the measure name truncated
+  // to 60 chars in `measures_to_pseudo_targets`). The implemented count is
+  // surfaced inside the mitigation / adaptation modals rather than as a
+  // separate card so the snapshot lives next to the actions it describes.
   const measureByLabel = new Map<string, BtrData["mitigationMeasures"][number]>();
   for (const m of btrData?.mitigationMeasures ?? []) {
     if (!m.status?.trim()) continue;
     const label = m.name.length <= 60 ? m.name : m.name.slice(0, 57) + "...";
     measureByLabel.set(label, m);
   }
-  const allBtrTargets = [...btrMitigationTargets, ...btrAdaptationTargets];
-  const implementedTargets = allBtrTargets.filter((t) => {
+  const isImplemented = (t: Target): boolean => {
     const m = measureByLabel.get(t.sourceLabel);
-    return m?.status?.toLowerCase().includes("implemented");
-  });
-  const implementedCount = implementedTargets.length;
-  const nonImplementedTargets = allBtrTargets.filter((t) => !implementedTargets.includes(t));
+    return Boolean(m?.status?.toLowerCase().includes("implemented"));
+  };
+  const mitigationImplementedCount = btrMitigationTargets.filter(isImplemented).length;
+  const adaptationImplementedCount = btrAdaptationTargets.filter(isImplemented).length;
 
   // Provenance strings (auditable citation tooltips on each drill-down).
   const btrMitigationProvenance = formatSourceRef(countryConfig?.btrMitigationSourceRef);
@@ -252,11 +283,13 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
     });
   }
 
-  // Number of cards governs the grid layout — uploads with no BTR show a
-  // single card spanning full width rather than a 1/3 card with empty space.
-  const cardCount = 1 + (hasBtr ? 2 : 0);
-  const gridCols =
-    cardCount === 3 ? "sm:grid-cols-3" : cardCount === 2 ? "sm:grid-cols-2" : "";
+  // Two-card layout when BTR data is present (Policy Targets, BTR Reported
+  // Actions); single full-width card otherwise. A third slot is reserved
+  // mentally for a future Finance / Budget summary (BIOFIN, BTR finance
+  // tables) — it was deliberately left out rather than filled with the
+  // "Marked Fully Implemented" subset, which is now shown inside the BTR
+  // modals next to the actions it describes.
+  const gridCols = hasBtr ? "sm:grid-cols-2" : "";
 
   return (
     <>
@@ -350,6 +383,10 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
                         label: "BTR Reported Mitigation Actions",
                         targets: btrMitigationTargets,
                         sourceRef: btrMitigationProvenance,
+                        implementationStat: {
+                          implemented: mitigationImplementedCount,
+                          total: btrMitigationCount,
+                        },
                       })
                     }
                   />
@@ -371,54 +408,13 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
                         label: "BTR Reported Adaptation Actions",
                         targets: btrAdaptationTargets,
                         sourceRef: btrAdaptationProvenance,
+                        implementationStat: {
+                          implemented: adaptationImplementedCount,
+                          total: btrAdaptationCount,
+                        },
                       })
                     }
                   />
-                )}
-              </p>
-            </div>
-          )}
-
-          {/* Card 3 — Marked Fully Implemented (only when BTR data is present) */}
-          {hasBtr && (
-            <div className="border border-gray-100 rounded-lg p-4 bg-white">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                Marked Fully Implemented
-              </p>
-              <p className="text-2xl font-semibold text-[var(--undp-black)] tabular-nums leading-tight mt-0.5">
-                {implementedCount > 0 ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setModal({
-                        label: "BTR Actions Marked Fully Implemented",
-                        targets: implementedTargets,
-                      })
-                    }
-                    className="underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] hover:text-[var(--undp-blue)] transition-colors"
-                  >
-                    {implementedCount}
-                  </button>
-                ) : (
-                  implementedCount
-                )}
-                <span className="text-sm text-[var(--undp-gray)] font-normal ml-1">
-                  / {totalBtrActions}
-                </span>
-              </p>
-              <p className="text-[11px] text-[var(--undp-gray)] mt-1.5 leading-relaxed">
-                {nonImplementedTargets.length > 0 ? (
-                  <InspectChip
-                    label={`${nonImplementedTargets.length} reported as ongoing or planned`}
-                    onClick={() =>
-                      setModal({
-                        label: "BTR Actions Reported as Ongoing or Planned",
-                        targets: nonImplementedTargets,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="italic">All reported actions marked fully implemented.</span>
                 )}
               </p>
             </div>
@@ -431,6 +427,7 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
           label={modal.label}
           targets={modal.targets}
           sourceRef={modal.sourceRef}
+          implementationStat={modal.implementationStat}
           countryConfig={countryConfig}
           onClose={() => setModal(null)}
         />
