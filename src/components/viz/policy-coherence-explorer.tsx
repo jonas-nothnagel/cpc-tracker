@@ -1431,6 +1431,21 @@ export function PolicyCoherenceExplorer({
           sourceDocument: t.sourceDocument,
           snippet: (t.text || "").slice(0, 140),
         }));
+        // Read-tool support: send full target texts and the pairs that have
+        // a rationale recorded. The route never inlines these in the prompt
+        // — it only queries them when the model calls a read tool.
+        const targetTexts: Record<string, string> = {};
+        for (const t of visibleTargets) {
+          if (t.text) targetTexts[t.id] = t.text;
+        }
+        const pairs = visibleAlignment
+          .filter((p) => p.alignment !== "none" && !!p.description)
+          .map((p) => ({
+            aId: p.targetAId,
+            bId: p.targetBId,
+            level: p.alignment,
+            description: p.description ?? "",
+          }));
         const res = await fetch("/api/coherence-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1447,6 +1462,8 @@ export function PolicyCoherenceExplorer({
                 topTargetsByTension,
                 topTargetsByAlignment,
               },
+              pairs,
+              targetTexts,
               country: targets[0]?.country ?? null,
             },
           }),

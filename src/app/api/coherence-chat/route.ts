@@ -1,11 +1,17 @@
 /**
  * Coherence Explorer chat route.
  *
- * Accepts a free-text question + a compact view-state context (current mode,
- * filter, available groups, and a small target index) and returns a single
- * navigation action plus a one-sentence reply. The model is locked to a
- * fixed tool set — no narrative-paragraph mode — so the chat can drive the
- * wheel without violating the project rule against AI-written policy text.
+ * Multi-step tool-loop. The model can both navigate the wheel (set_filter,
+ * focus_category, select_target, set_mode) and *read* the underlying data
+ * (get_pair_rationale, get_target_neighbors) before answering. Read tools
+ * execute server-side; navigate tools are accumulated and returned to the
+ * client as actions. Final reply is allowed to be a short grounded answer
+ * (1-3 sentences) — strictly synthesized from tool results, never from the
+ * model's prior knowledge.
+ *
+ * This is a deliberate loosening of the project's "no AI narrative reports"
+ * rule for an experimental branch. Outputs are clearly labeled AI-generated
+ * in the UI, kept short, and required to be data-grounded.
  *
  * Backend selection: Azure OpenAI when the deployment env vars are set
  * (matches production), OpenRouter otherwise (dev fallback).
@@ -14,6 +20,9 @@
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+
+const MAX_ITERATIONS = 3;
+const NEIGHBORS_LIMIT_DEFAULT = 8;
 
 interface RankedItem {
   id: string;
@@ -37,6 +46,19 @@ interface ChatContext {
     topTargetsByTension: RankedItem[];
     topTargetsByAlignment: RankedItem[];
   };
+  /**
+   * Pair records that have a rationale (typically high alignments + all
+   * contradictions). Read tools query this in-memory; the model never sees
+   * the full list verbatim, only the entries it requests.
+   */
+  pairs: {
+    aId: string;
+    bId: string;
+    level: string;
+    description: string;
+  }[];
+  /** Full text per visible target id — used by read tools when answering. */
+  targetTexts: Record<string, string>;
   country: string | null;
 }
 
@@ -47,18 +69,36 @@ type ChatAction =
   | { type: "set_mode"; mode: "document" | "globe" | "sector" }
   | { type: "noop" };
 
-const SYSTEM_PROMPT = `You are a navigation assistant for a policy coherence visualization. The user looks at a chord chart of policy targets across documents (NDC, NBSAP, BTR, NAP, etc.) and explores how the targets align or contradict.
+const SYSTEM_PROMPT = `You navigate a policy coherence visualization. Targets come from documents (NDC, NBSAP, BTR, NAP, etc.) and the wheel shows how they align or contradict.
 
-You may emit ONE OR MORE tool calls per turn — combine them when the request needs both a filter and a focus. Do NOT write narrative paragraphs about the data. Always include a single short content message (max ~20 words) saying what you're showing.
+Tools:
+- READ: get_pair_rationale, get_target_neighbors. Use these to look up rationales and neighbours before answering "why", "how", or "what does X connect to". Results return to you mid-conversation.
+- NAVIGATE: set_filter, focus_category, select_target, set_mode. These move the wheel.
 
-Rules:
-- Only use ids that appear in the context. Never invent ids.
-- For aggregate questions about contradictions, prefer set_filter('contradictions') AND focus_category(top tension group). For "highest alignment" prefer set_filter('high') AND focus_category(top alignment group).
-- For target lookups ("find targets about X") match snippets to the topic and call select_target with the best match.
-- For "show a target that's both aligned and contested", pick a target that appears in BOTH topTargetsByTension and topTargetsByAlignment, set_filter('high_contra'), and select_target.
-- For mode switches ("biodiversity view", "by document", "climate sector") call set_mode only.
-- For filter switches ("show only contradictions", "high alignments only") call set_filter only.
-- If you can't pick a useful action, return a short reply explaining why and call no tool.`;
+Always include a "content" message in your final assistant turn — that's what the user reads. Two examples:
+
+Example A — "Why does NBSAP 1 conflict with NDC livestock?"
+Turn 1: call get_pair_rationale(nbsap_1, ndc_lvst). No content.
+Turn 2: content = "They compete for steppe land — NBSAP 1 designates protected biodiversity zones while the livestock target relies on existing pastures." tool calls = [select_target(nbsap_1)].
+
+Example B — "What does NBSAP 1 align with most?"
+Turn 1: call get_target_neighbors(nbsap_1). No content.
+Turn 2: content = "NBSAP 1 aligns most with NDC Biodiversity 1 (shared protected-area designation) and NDC Forests 1 (forest reserves)." tool calls = [select_target(nbsap_1)].
+
+Example C — "Switch to biodiversity view"
+Turn 1: content = "Grouped by biodiversity category." tool calls = [set_mode(globe)]. Done.
+
+Example D — "Where do plans contradict most?"
+Turn 1: content = "Green economy has the most potential conflicts." tool calls = [set_filter(contradictions), focus_category(green_economy)]. Use the precomputed rankings in the context. No reads needed.
+
+Hard rules:
+- Only use ids that appear in the context. Never invent.
+- Every factual claim in content must come from a tool result you actually called this turn (or from the precomputed rankings). Never paraphrase from prior training.
+- If get_pair_rationale returns found:false, say "No rationale on file for that pair." and stop — don't guess.
+- Never recommend, advise, or judge. Only describe the data.
+- Plain text only. No markdown, no bullets, no headings.
+- No follow-up questions to the user.
+- Replies stay under 60 words.`;
 
 const TOOLS = [
   {
@@ -131,6 +171,40 @@ const TOOLS = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "get_pair_rationale",
+      description:
+        "Look up the AI-generated rationale for why two specific targets align or contradict. Use this before answering questions like 'why do X and Y conflict?'. Returns level, description, and both targets' full text. Returns found:false if no rationale was recorded for the pair.",
+      parameters: {
+        type: "object",
+        properties: {
+          targetAId: { type: "string" },
+          targetBId: { type: "string" },
+        },
+        required: ["targetAId", "targetBId"],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_target_neighbors",
+      description:
+        "Look up the strongest alignments and contradictions touching a specific target, sorted with contradictions first then high alignments. Returns up to `limit` neighbours (default 8) including the rationale text where available.",
+      parameters: {
+        type: "object",
+        properties: {
+          targetId: { type: "string" },
+          limit: { type: "integer", minimum: 1, maximum: 20 },
+        },
+        required: ["targetId"],
+        additionalProperties: false,
+      },
+    },
+  },
 ];
 
 function fmtRanking(title: string, items: RankedItem[] | undefined): string {
@@ -184,20 +258,31 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
   return sections.join("\n");
 }
 
-interface LlmResponse {
-  choices?: {
-    message?: {
-      content?: string | null;
-      tool_calls?: {
-        function?: { name?: string; arguments?: string };
-      }[];
-    };
-  }[];
+interface ToolCall {
+  id?: string;
+  type?: string;
+  function?: { name?: string; arguments?: string };
 }
 
-async function callAzure(
-  messages: { role: string; content: string }[],
-): Promise<LlmResponse> {
+interface AssistantMessage {
+  role?: "assistant";
+  content?: string | null;
+  tool_calls?: ToolCall[];
+}
+
+interface LlmResponse {
+  choices?: { message?: AssistantMessage }[];
+}
+
+// Loose message type for the rolling history. role can be system / user /
+// assistant / tool; tool messages carry tool_call_id.
+type ChatMessage =
+  | { role: "system"; content: string }
+  | { role: "user"; content: string }
+  | { role: "assistant"; content: string | null; tool_calls?: ToolCall[] }
+  | { role: "tool"; tool_call_id: string; content: string };
+
+async function callAzure(messages: ChatMessage[]): Promise<LlmResponse> {
   const endpoint = (process.env.AZURE_OPENAI_ENDPOINT ?? "").replace(/\/$/, "");
   const apiKey = process.env.AZURE_OPENAI_API_KEY ?? "";
   const apiVersion = process.env.AZURE_OPENAI_API_VERSION ?? "2024-10-21";
@@ -220,9 +305,7 @@ async function callAzure(
   return res.json() as Promise<LlmResponse>;
 }
 
-async function callOpenRouter(
-  messages: { role: string; content: string }[],
-): Promise<LlmResponse> {
+async function callOpenRouter(messages: ChatMessage[]): Promise<LlmResponse> {
   const apiKey = process.env.OPENROUTER_API_KEY ?? "";
   // OpenRouter expects fully qualified model ids ("openai/gpt-4o-mini").
   // Allow LLM_MODEL to be either bare ("gpt-4o-mini") or qualified.
@@ -254,6 +337,109 @@ async function callOpenRouter(
   return res.json() as Promise<LlmResponse>;
 }
 
+// ─── Read tool helpers ──────────────────────────────────────────────
+
+/** Severity ordering: contradictions first (most severe), then high, etc. */
+const LEVEL_ORDER: Record<string, number> = {
+  high_contradiction: 0,
+  moderate_contradiction: 1,
+  low_tension: 2,
+  high: 3,
+  medium: 4,
+  low: 5,
+  none: 6,
+};
+
+function targetLabel(ctx: ChatContext, id: string): string {
+  const t = ctx.targetIndex.find((x) => x.id === id);
+  return t ? `${t.sourceDocument}: ${t.sourceLabel}` : id;
+}
+
+function readPairRationale(
+  args: Record<string, unknown>,
+  ctx: ChatContext,
+): unknown {
+  const aId = String(args.targetAId ?? "");
+  const bId = String(args.targetBId ?? "");
+  const found = ctx.pairs.find(
+    (p) =>
+      (p.aId === aId && p.bId === bId) || (p.aId === bId && p.bId === aId),
+  );
+  if (!found) {
+    return {
+      found: false,
+      message: "No alignment rationale recorded for this pair.",
+    };
+  }
+  return {
+    found: true,
+    level: found.level,
+    description: found.description,
+    targetA: { id: aId, label: targetLabel(ctx, aId), text: ctx.targetTexts[aId] ?? "" },
+    targetB: { id: bId, label: targetLabel(ctx, bId), text: ctx.targetTexts[bId] ?? "" },
+  };
+}
+
+function readTargetNeighbors(
+  args: Record<string, unknown>,
+  ctx: ChatContext,
+): unknown {
+  const targetId = String(args.targetId ?? "");
+  const limit = Math.max(
+    1,
+    Math.min(20, Number(args.limit ?? NEIGHBORS_LIMIT_DEFAULT)),
+  );
+  const t = ctx.targetIndex.find((x) => x.id === targetId);
+  if (!t) {
+    return { found: false, message: "Unknown targetId." };
+  }
+  const matches = ctx.pairs
+    .filter((p) => p.aId === targetId || p.bId === targetId)
+    .map((p) => {
+      const otherId = p.aId === targetId ? p.bId : p.aId;
+      return {
+        otherTargetId: otherId,
+        otherTargetLabel: targetLabel(ctx, otherId),
+        level: p.level,
+        description: p.description,
+      };
+    })
+    .sort(
+      (a, b) =>
+        (LEVEL_ORDER[a.level] ?? 9) - (LEVEL_ORDER[b.level] ?? 9),
+    )
+    .slice(0, limit);
+  return {
+    found: true,
+    target: { id: targetId, label: targetLabel(ctx, targetId), text: ctx.targetTexts[targetId] ?? "" },
+    neighbors: matches,
+    truncated: matches.length === limit,
+  };
+}
+
+// ─── Action ordering for the client ─────────────────────────────────
+//
+// set_mode resets the selection state on the client, so it must run before
+// focus/select. set_filter is independent. The server pre-sorts so the
+// client can apply blindly.
+const ACTION_ORDER: Record<ChatAction["type"], number> = {
+  set_mode: 0,
+  set_filter: 1,
+  focus_category: 2,
+  select_target: 3,
+  noop: 4,
+};
+
+async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
+  if (process.env.AZURE_OPENAI_ENDPOINT && process.env.AZURE_OPENAI_API_KEY) {
+    return callAzure(messages);
+  }
+  if (process.env.OPENROUTER_API_KEY) {
+    return callOpenRouter(messages);
+  }
+  throw new Error("No LLM backend configured.");
+}
+
 export async function POST(req: Request) {
   let body: { query?: string; context?: ChatContext };
   try {
@@ -270,97 +456,167 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });
   }
 
-  const messages = [
+  // Defensive fallbacks: older clients may not include the new fields.
+  if (!Array.isArray(context.pairs)) context.pairs = [];
+  if (!context.targetTexts) context.targetTexts = {};
+
+  const messages: ChatMessage[] = [
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: buildUserMessage(query, context) },
   ];
 
-  let response: LlmResponse;
-  try {
-    if (
-      process.env.AZURE_OPENAI_ENDPOINT &&
-      process.env.AZURE_OPENAI_API_KEY
-    ) {
-      response = await callAzure(messages);
-    } else if (process.env.OPENROUTER_API_KEY) {
-      response = await callOpenRouter(messages);
-    } else {
-      return NextResponse.json(
-        { error: "No LLM backend configured." },
-        { status: 500 },
-      );
-    }
-  } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "LLM call failed" },
-      { status: 502 },
-    );
-  }
-
-  const message = response.choices?.[0]?.message;
-  const toolCalls = message?.tool_calls ?? [];
-  const content = (message?.content ?? "").trim();
-
-  // Validate against context — never trust LLM-emitted ids blindly.
   const groupIds = new Set(context.groups.map((g) => g.id));
   const targetIds = new Set(context.targetIndex.map((t) => t.id));
 
-  const actions: ChatAction[] = [];
-  // Action ordering matters in the client: set_mode resets selection, so it
-  // must run before focus/select. set_filter is independent. Sort here so the
-  // client can apply blindly.
-  const ACTION_ORDER: Record<ChatAction["type"], number> = {
-    set_mode: 0,
-    set_filter: 1,
-    focus_category: 2,
-    select_target: 3,
-    noop: 4,
-  };
+  const actionByType = new Map<ChatAction["type"], ChatAction>();
+  let lastContent = "";
+  // Capture rationale text the model actually read this turn so we can fall
+  // back to a grounded reply if the model declines to write content.
+  // gpt-4o-mini sometimes emits select_target without an accompanying summary
+  // even with strong instructions; this lets the user still see the data.
+  const readDescriptions: string[] = [];
 
-  for (const toolCall of toolCalls) {
-    const fnName = toolCall.function?.name;
-    let args: Record<string, unknown> = {};
+  for (let iter = 0; iter < MAX_ITERATIONS; iter++) {
+    let response: LlmResponse;
     try {
-      args = JSON.parse(toolCall.function?.arguments ?? "{}");
-    } catch {
-      args = {};
+      response = await callLlm(messages);
+    } catch (err) {
+      return NextResponse.json(
+        { error: err instanceof Error ? err.message : "LLM call failed" },
+        { status: 502 },
+      );
     }
 
-    if (fnName === "set_filter") {
-      const filter = String(args.filter ?? "");
-      const allowed = [
-        "all",
-        "high_medium",
-        "high_contra",
-        "high",
-        "contradictions",
-      ];
-      if (allowed.includes(filter)) {
-        actions.push({ type: "set_filter", filter });
+    const message = response.choices?.[0]?.message;
+    if (!message) break;
+
+    const content = (message.content ?? "").trim();
+    if (content) lastContent = content;
+
+    const toolCalls = message.tool_calls ?? [];
+
+    // Push the assistant turn verbatim so subsequent calls have the full
+    // tool-call history. OpenAI requires every tool_call to have a matching
+    // tool message before the next assistant turn.
+    messages.push({
+      role: "assistant",
+      content: message.content ?? null,
+      tool_calls: toolCalls.length > 0 ? toolCalls : undefined,
+    });
+
+    if (toolCalls.length === 0) break;
+
+    let didReadTool = false;
+
+    for (const toolCall of toolCalls) {
+      const fnName = toolCall.function?.name;
+      let args: Record<string, unknown> = {};
+      try {
+        args = JSON.parse(toolCall.function?.arguments ?? "{}");
+      } catch {
+        args = {};
       }
-    } else if (fnName === "focus_category") {
-      const id = String(args.categoryId ?? "");
-      if (groupIds.has(id)) {
-        actions.push({ type: "focus_category", categoryId: id });
+
+      let toolResult: unknown = { ok: true };
+
+      if (fnName === "get_pair_rationale") {
+        const r = readPairRationale(args, context) as {
+          found: boolean;
+          description?: string;
+          targetA?: { label: string };
+          targetB?: { label: string };
+        };
+        toolResult = r;
+        didReadTool = true;
+        if (r.found && r.description) {
+          readDescriptions.push(
+            `${r.targetA?.label} ↔ ${r.targetB?.label}: ${r.description}`,
+          );
+        }
+      } else if (fnName === "get_target_neighbors") {
+        const r = readTargetNeighbors(args, context) as {
+          found: boolean;
+          target?: { label: string };
+          neighbors?: { otherTargetLabel: string; description: string }[];
+        };
+        toolResult = r;
+        didReadTool = true;
+        if (r.found && r.neighbors && r.neighbors.length > 0) {
+          const top = r.neighbors
+            .slice(0, 3)
+            .map((n) => `${n.otherTargetLabel} (${n.description.slice(0, 100)})`)
+            .join("; ");
+          readDescriptions.push(`${r.target?.label} → ${top}`);
+        }
+      } else if (fnName === "set_filter") {
+        const filter = String(args.filter ?? "");
+        const allowed = [
+          "all",
+          "high_medium",
+          "high_contra",
+          "high",
+          "contradictions",
+        ];
+        if (allowed.includes(filter)) {
+          actionByType.set("set_filter", { type: "set_filter", filter });
+        } else {
+          toolResult = { ok: false, error: "invalid filter" };
+        }
+      } else if (fnName === "focus_category") {
+        const id = String(args.categoryId ?? "");
+        if (groupIds.has(id)) {
+          actionByType.set("focus_category", {
+            type: "focus_category",
+            categoryId: id,
+          });
+        } else {
+          toolResult = { ok: false, error: "unknown categoryId" };
+        }
+      } else if (fnName === "select_target") {
+        const id = String(args.targetId ?? "");
+        if (targetIds.has(id)) {
+          actionByType.set("select_target", {
+            type: "select_target",
+            targetId: id,
+          });
+        } else {
+          toolResult = { ok: false, error: "unknown targetId" };
+        }
+      } else if (fnName === "set_mode") {
+        const mode = String(args.mode ?? "");
+        if (mode === "document" || mode === "globe" || mode === "sector") {
+          actionByType.set("set_mode", { type: "set_mode", mode });
+        } else {
+          toolResult = { ok: false, error: "invalid mode" };
+        }
+      } else {
+        toolResult = { ok: false, error: `unknown tool: ${fnName}` };
       }
-    } else if (fnName === "select_target") {
-      const id = String(args.targetId ?? "");
-      if (targetIds.has(id)) {
-        actions.push({ type: "select_target", targetId: id });
-      }
-    } else if (fnName === "set_mode") {
-      const mode = String(args.mode ?? "");
-      if (mode === "document" || mode === "globe" || mode === "sector") {
-        actions.push({ type: "set_mode", mode });
-      }
+
+      messages.push({
+        role: "tool",
+        tool_call_id: toolCall.id ?? "",
+        content: JSON.stringify(toolResult),
+      });
     }
+
+    // If only navigation tools fired this turn, the model has nothing to
+    // synthesize and we'd just be paying for another round-trip. Done.
+    if (!didReadTool) break;
   }
 
-  actions.sort((a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type]);
+  const actions = Array.from(actionByType.values()).sort(
+    (a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type],
+  );
 
-  // Reply: prefer the model's own one-liner; fall back to a synthesised
-  // sentence from the actions if the model didn't include content.
-  let reply = content;
+  // Synthesize a fallback reply only if the model never spoke up.
+  let reply = lastContent;
+  // If the model declined to summarize despite reading rationale data, surface
+  // the raw rationale as a graceful fallback so the user still sees evidence.
+  if (!reply && readDescriptions.length > 0) {
+    reply = readDescriptions.join(" — ");
+    if (reply.length > 350) reply = reply.slice(0, 347) + "…";
+  }
   if (!reply && actions.length > 0) {
     const parts: string[] = [];
     for (const a of actions) {
