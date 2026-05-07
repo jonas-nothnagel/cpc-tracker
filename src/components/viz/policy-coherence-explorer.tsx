@@ -621,6 +621,54 @@ interface ChatStatus {
   error: string | null;
 }
 
+/**
+ * Compact pair row — two targets stacked, alignment-coloured dot. Click opens
+ * the pair compare view (which shows the rationale text). Used by the
+ * CategoryPanel's "top conflicts" / "top alignments" sections.
+ */
+function PairRow({
+  a,
+  b,
+  level,
+  onClick,
+  countryConfig,
+}: {
+  a: Target;
+  b: Target;
+  level: AlignmentLevel;
+  onClick: () => void;
+  countryConfig?: CountryConfig | null;
+}) {
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onClick}
+        className="w-full text-left flex items-start gap-2 py-1.5 px-1.5 hover:bg-gray-50 rounded transition-colors"
+      >
+        <span
+          className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
+          style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
+        />
+        <div className="min-w-0 flex-1 text-[11px] leading-snug">
+          <div className="text-[var(--undp-black)] truncate">
+            <span className="text-[var(--undp-gray)] font-medium">
+              {getDocLabel(countryConfig, a.sourceDocument)}
+            </span>{" "}
+            {a.sourceLabel}
+          </div>
+          <div className="text-[var(--undp-black)] truncate">
+            <span className="text-[var(--undp-gray)] font-medium">
+              {getDocLabel(countryConfig, b.sourceDocument)}
+            </span>{" "}
+            {b.sourceLabel}
+          </div>
+        </div>
+      </button>
+    </li>
+  );
+}
+
 interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -837,6 +885,7 @@ interface CategoryPanelProps {
   alignment: AlignmentResult[];
   onClose: () => void;
   onSelectTarget: (id: string) => void;
+  onSelectPair: (targetAId: string, targetBId: string) => void;
   countryConfig?: CountryConfig | null;
 }
 
@@ -847,6 +896,7 @@ function CategoryPanel({
   alignment,
   onClose,
   onSelectTarget,
+  onSelectPair,
   countryConfig,
 }: CategoryPanelProps) {
   const targetIdsInGroup = useMemo(
@@ -942,6 +992,31 @@ function CategoryPanel({
     );
   }, [targetsInGroup, countryConfig]);
 
+  // Pair listings — what the user usually came here for. Keep contradictions
+  // and high alignments separate so each can be hidden when its filter is
+  // off (the involvedAlignments arg is already filter-aware).
+  const SEVERITY: Record<string, number> = {
+    high_contradiction: 0,
+    moderate_contradiction: 1,
+    low_tension: 2,
+    high: 3,
+  };
+  const contradictionPairs = useMemo(
+    () =>
+      involvedAlignments
+        .filter((a) => isContradiction(a.alignment))
+        .sort(
+          (a, b) =>
+            (SEVERITY[a.alignment] ?? 9) - (SEVERITY[b.alignment] ?? 9),
+        ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [involvedAlignments],
+  );
+  const alignmentPairs = useMemo(
+    () => involvedAlignments.filter((a) => a.alignment === "high"),
+    [involvedAlignments],
+  );
+
   return (
     <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
       {/* Pinned header with stats so the target list owns the scroll. */}
@@ -1030,8 +1105,77 @@ function CategoryPanel({
           </div>
         )}
 
-        <Section title={`Targets · ${targetsInGroup.length}`}>
-          <div className="space-y-3">
+        {contradictionPairs.length > 0 && (
+          <Section
+            title={`Top conflicts · ${contradictionPairs.length}`}
+          >
+            <ul className="space-y-0.5">
+              {contradictionPairs.slice(0, 6).map((p) => {
+                const tA = nodeMap.get(p.targetAId)?.target;
+                const tB = nodeMap.get(p.targetBId)?.target;
+                if (!tA || !tB) return null;
+                return (
+                  <PairRow
+                    key={`c-${p.targetAId}-${p.targetBId}`}
+                    a={tA}
+                    b={tB}
+                    level={p.alignment}
+                    onClick={() => onSelectPair(p.targetAId, p.targetBId)}
+                    countryConfig={countryConfig}
+                  />
+                );
+              })}
+            </ul>
+            {contradictionPairs.length > 6 && (
+              <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
+                + {contradictionPairs.length - 6} more
+              </p>
+            )}
+          </Section>
+        )}
+
+        {alignmentPairs.length > 0 && (
+          <Section title={`Strongest alignments · ${alignmentPairs.length}`}>
+            <ul className="space-y-0.5">
+              {alignmentPairs.slice(0, 6).map((p) => {
+                const tA = nodeMap.get(p.targetAId)?.target;
+                const tB = nodeMap.get(p.targetBId)?.target;
+                if (!tA || !tB) return null;
+                return (
+                  <PairRow
+                    key={`a-${p.targetAId}-${p.targetBId}`}
+                    a={tA}
+                    b={tB}
+                    level={p.alignment}
+                    onClick={() => onSelectPair(p.targetAId, p.targetBId)}
+                    countryConfig={countryConfig}
+                  />
+                );
+              })}
+            </ul>
+            {alignmentPairs.length > 6 && (
+              <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
+                + {alignmentPairs.length - 6} more
+              </p>
+            )}
+          </Section>
+        )}
+
+        {/* Targets folded behind a disclosure — useful when a category has
+            many targets (e.g. 20 in NBSAP) where a flat list adds noise. */}
+        <details className="group">
+          <summary className="list-none cursor-pointer flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors select-none">
+            <svg
+              width="8"
+              height="8"
+              viewBox="0 0 8 8"
+              className="transition-transform group-open:rotate-90"
+            >
+              <path d="M2 1l4 3-4 3" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            All targets · {targetsInGroup.length}
+          </summary>
+          <div className="space-y-3 mt-2">
             {targetsByDoc.map(([docId, list]) => {
               const color = getDocColor(countryConfig, docId);
               return (
@@ -1067,7 +1211,7 @@ function CategoryPanel({
               );
             })}
           </div>
-        </Section>
+        </details>
       </div>
     </div>
   );
@@ -1365,6 +1509,32 @@ export function PolicyCoherenceExplorer({
     setFocalGroupId(null);
     clearChat();
   }, [clearChat]);
+
+  /**
+   * Open the pair-compare view directly. Mirrors the chat's select_pair
+   * action so a click in the CategoryPanel's pair list jumps straight to
+   * the rationale view, no manual click on the connection list needed.
+   */
+  const handleSelectPair = useCallback(
+    (targetAId: string, targetBId: string) => {
+      const result = visibleAlignment.find(
+        (a) =>
+          (a.targetAId === targetAId && a.targetBId === targetBId) ||
+          (a.targetAId === targetBId && a.targetBId === targetAId),
+      );
+      const otherTarget = targetMap.get(targetBId);
+      setSelectedId(targetAId);
+      const node = nodes.find((n) => n.id === targetAId);
+      if (node) setFocalGroupId(node.groupId);
+      if (result && otherTarget) {
+        setComparedPair({ result, other: otherTarget });
+      } else {
+        setComparedPair(null);
+      }
+      clearChat();
+    },
+    [visibleAlignment, targetMap, nodes, clearChat],
+  );
 
   const handleAsk = useCallback(
     async (query: string) => {
@@ -2233,6 +2403,7 @@ export function PolicyCoherenceExplorer({
                 alignment={filtered}
                 onClose={closeCategory}
                 onSelectTarget={handleNodeClick}
+                onSelectPair={handleSelectPair}
                 countryConfig={countryConfig}
               />
             ) : (
