@@ -103,7 +103,12 @@ Example D — "Where do plans contradict most?"
 Turn 1: content = "Green economy has the most potential conflicts." tool calls = [set_filter(contradictions), focus_category(green_economy)]. Use the precomputed rankings in the context. No reads needed.
 
 Example E — "What are the top conflicts for biodiversity?" (aggregate WITH scope)
-Turn 1: Look at "Top contradiction pairs (with rationale)" in the context. Pick the pairs whose labels mention biodiversity-related documents (e.g., NBSAP) or terms. Summarize 1-3 sentences using the rationale text already shown there. content = "Biodiversity (NBSAP) targets clash most with NDC mitigation: spatial-planning conflicts with livestock methane on land allocation, and protected-area expansion competes with energy-sector investments." tool calls = [set_filter(contradictions), focus_category(NBSAP)]. No read tools needed — rationales are already in the rankings.
+Step 1: Glance at "Top contradiction pairs (with rationale)" in the context. If those pairs already cover the user's scope (their labels or descriptions mention biodiversity / NBSAP / etc.), summarize from there directly.
+Step 2: If the precomputed pairs do NOT cover the scope, call get_pairs_filtered({ scope: "biodiversity", type: "contradictions", limit: 5 }) to fetch the matching rationales. Then summarize.
+Final turn: content = a 1-3 sentence summary drawn from the rationale text. tool calls = [set_filter(contradictions), focus_category(NBSAP)] (or whatever group fits the scope).
+
+Example F — "Top livestock alignments / forest contradictions / energy tensions" (any scoped aggregate)
+Same pattern as Example E with type set accordingly: get_pairs_filtered({ scope: "<keyword>", type: "high" | "contradictions" }). Always summarize from the returned descriptions.
 
 Hard rules:
 - Only use ids that appear in the context. Never invent.
@@ -215,6 +220,37 @@ const TOOLS = [
           limit: { type: "integer", minimum: 1, maximum: 20 },
         },
         required: ["targetId"],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_pairs_filtered",
+      description:
+        "Find alignment pairs matching a topic keyword and type. Use this for 'top X for Y' questions when the precomputed top-pair lists don't cover the user's scope (e.g., 'top conflicts for biodiversity', 'livestock-related contradictions', 'forest alignments'). Returns up to `limit` matching pairs with both target labels and rationale text, sorted by severity. Scope is matched case-insensitively against target labels, document names, snippets, and rationale text.",
+      parameters: {
+        type: "object",
+        properties: {
+          scope: {
+            type: "string",
+            description:
+              "Topic or keyword to match (e.g. 'biodiversity', 'livestock', 'forest'). Optional — omit to get the top pairs of the requested type without scoping.",
+          },
+          type: {
+            type: "string",
+            enum: ["contradictions", "high", "all"],
+            description: "Which pair type to return.",
+          },
+          limit: {
+            type: "integer",
+            minimum: 1,
+            maximum: 15,
+            description: "Max results to return. Default 6.",
+          },
+        },
+        required: ["type"],
         additionalProperties: false,
       },
     },
@@ -407,6 +443,72 @@ function readPairRationale(
   };
 }
 
+function readPairsFiltered(
+  args: Record<string, unknown>,
+  ctx: ChatContext,
+): unknown {
+  const scope = String(args.scope ?? "")
+    .toLowerCase()
+    .trim();
+  const type = String(args.type ?? "all");
+  const limit = Math.max(1, Math.min(15, Number(args.limit ?? 6)));
+
+  let predicate: (level: string) => boolean;
+  if (type === "contradictions") {
+    predicate = (l) =>
+      l === "high_contradiction" ||
+      l === "moderate_contradiction" ||
+      l === "low_tension";
+  } else if (type === "high") {
+    predicate = (l) => l === "high";
+  } else {
+    predicate = () => true;
+  }
+
+  const targetById = new Map(ctx.targetIndex.map((t) => [t.id, t]));
+
+  const matches = ctx.pairs
+    .filter((p) => predicate(p.level))
+    .filter((p) => {
+      if (!scope) return true;
+      const tA = targetById.get(p.aId);
+      const tB = targetById.get(p.bId);
+      const haystacks = [
+        tA?.sourceLabel,
+        tA?.sourceDocument,
+        tA?.snippet,
+        tB?.sourceLabel,
+        tB?.sourceDocument,
+        tB?.snippet,
+        p.description,
+      ]
+        .filter((s): s is string => !!s)
+        .map((s) => s.toLowerCase());
+      return haystacks.some((h) => h.includes(scope));
+    })
+    .sort(
+      (a, b) =>
+        (LEVEL_ORDER[a.level] ?? 9) - (LEVEL_ORDER[b.level] ?? 9),
+    )
+    .slice(0, limit)
+    .map((p) => ({
+      aId: p.aId,
+      aLabel: targetLabel(ctx, p.aId),
+      bId: p.bId,
+      bLabel: targetLabel(ctx, p.bId),
+      level: p.level,
+      description: p.description.slice(0, 280),
+    }));
+
+  return {
+    found: matches.length > 0,
+    scope: scope || null,
+    type,
+    matches,
+    truncated: matches.length === limit,
+  };
+}
+
 function readTargetNeighbors(
   args: Record<string, unknown>,
   ctx: ChatContext,
@@ -574,6 +676,25 @@ export async function POST(req: Request) {
             .map((n) => `${n.otherTargetLabel} (${n.description.slice(0, 100)})`)
             .join("; ");
           readDescriptions.push(`${r.target?.label} → ${top}`);
+        }
+      } else if (fnName === "get_pairs_filtered") {
+        const r = readPairsFiltered(args, context) as {
+          found: boolean;
+          scope: string | null;
+          type: string;
+          matches: { aLabel: string; bLabel: string; description: string }[];
+        };
+        toolResult = r;
+        didReadTool = true;
+        if (r.found && r.matches.length > 0) {
+          // Compact fallback: pick the top match's rationale verbatim and
+          // append a "+ N more" hint. Reads cleaner than concatenating
+          // multiple rationale strings together.
+          const top = r.matches[0];
+          const more = r.matches.length > 1 ? ` (+${r.matches.length - 1} more)` : "";
+          readDescriptions.push(
+            `${top.aLabel} ↔ ${top.bLabel}: ${top.description}${more}`,
+          );
         }
       } else if (fnName === "set_filter") {
         const filter = String(args.filter ?? "");
