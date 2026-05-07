@@ -625,8 +625,6 @@ interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
   onSelectTarget: (id: string) => void;
-  onAsk: (query: string) => void;
-  chat: ChatStatus;
   countryConfig?: CountryConfig | null;
 }
 
@@ -639,14 +637,20 @@ const EXAMPLE_QUERIES: string[] = [
   "Switch to biodiversity view",
 ];
 
-function EmptyPanel({
-  targets,
-  alignment,
-  onSelectTarget,
+/**
+ * Persistent chat bar — sits at the top of the right column independent of
+ * the panel state below it, so the AI reply stays visible whether the user
+ * is in idle, category, or target view. Lifting this out of EmptyPanel was
+ * the fix for "I asked a question and the answer disappeared as soon as the
+ * wheel reshaped".
+ */
+function ChatBar({
   onAsk,
   chat,
-  countryConfig,
-}: EmptyPanelProps) {
+}: {
+  onAsk: (query: string) => void;
+  chat: ChatStatus;
+}) {
   const [query, setQuery] = useState("");
   const submit = (q: string) => {
     const trimmed = q.trim();
@@ -654,6 +658,71 @@ function EmptyPanel({
     onAsk(trimmed);
     setQuery("");
   };
+  return (
+    <div className="bg-white border border-gray-100 rounded-lg p-4 space-y-2">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+        Ask the wheel
+      </p>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          submit(query);
+        }}
+      >
+        <div className="flex items-center gap-2 border border-gray-200 rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Ask a question, e.g. why X conflicts with Y"
+            disabled={chat.loading}
+            className="flex-1 min-w-0 text-[12px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
+          />
+          <button
+            type="submit"
+            disabled={chat.loading || query.trim().length === 0}
+            className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
+          >
+            {chat.loading ? "Asking…" : "Ask"}
+          </button>
+        </div>
+      </form>
+      {chat.reply && !chat.loading && (
+        <p className="text-[11px] text-[var(--undp-black)] leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mr-1.5">
+            AI
+          </span>
+          {chat.reply}
+        </p>
+      )}
+      {chat.error && !chat.loading && (
+        <p className="text-[11px] text-red-700 leading-snug bg-red-50 border border-red-100 rounded-md px-3 py-2">
+          {chat.error}
+        </p>
+      )}
+      <div className="flex flex-wrap gap-1.5">
+        {EXAMPLE_QUERIES.map((q) => (
+          <button
+            key={q}
+            type="button"
+            onClick={() => submit(q)}
+            disabled={chat.loading}
+            className="text-left text-[10.5px] leading-snug text-[var(--undp-gray)] border border-gray-200 rounded-full px-2.5 py-1 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {q}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EmptyPanel({
+  targets,
+  alignment,
+  onSelectTarget,
+  countryConfig,
+}: EmptyPanelProps) {
   // Compute totals from the alignment set we're already iterating below — this
   // keeps the headline numbers aligned with the wheel's current filter rather
   // than diverging from the rankings underneath.
@@ -756,59 +825,6 @@ function EmptyPanel({
           )}
         </div>
 
-        <Section title="Ask the wheel">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              submit(query);
-            }}
-            className="mb-2"
-          >
-            <div className="flex items-center gap-2 border border-gray-200 rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ask a question, e.g. where do plans contradict?"
-                disabled={chat.loading}
-                className="flex-1 min-w-0 text-[12px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
-              />
-              <button
-                type="submit"
-                disabled={chat.loading || query.trim().length === 0}
-                className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
-              >
-                {chat.loading ? "Asking…" : "Ask"}
-              </button>
-            </div>
-          </form>
-          {chat.reply && !chat.loading && (
-            <p className="text-[11px] text-[var(--undp-black)] leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2 mb-2">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mr-1.5">
-                AI
-              </span>
-              {chat.reply}
-            </p>
-          )}
-          {chat.error && !chat.loading && (
-            <p className="text-[11px] text-red-700 leading-snug bg-red-50 border border-red-100 rounded-md px-3 py-2 mb-2">
-              {chat.error}
-            </p>
-          )}
-          <div className="flex flex-wrap gap-1.5">
-            {EXAMPLE_QUERIES.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => submit(q)}
-                disabled={chat.loading}
-                className="text-left text-[10.5px] leading-snug text-[var(--undp-gray)] border border-gray-200 rounded-full px-2.5 py-1 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        </Section>
       </div>
     </div>
   );
@@ -2173,9 +2189,12 @@ export function PolicyCoherenceExplorer({
           </div>
         </div>
 
-        {/* Context panel — always visible, content morphs by selection state.
-            Order of precedence: target detail > category drill-in > idle insights. */}
-        <div className="min-w-0 lg:col-span-5">
+        {/* Right column: persistent chat bar on top, then context panel that
+            morphs by selection state. Lifting chat above the panel keeps the
+            AI reply visible whether the wheel is in idle, category, or
+            target view (the panel below would otherwise hide it). */}
+        <div className="min-w-0 lg:col-span-5 flex flex-col gap-4">
+          <ChatBar onAsk={handleAsk} chat={chat} />
           {selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
@@ -2210,8 +2229,6 @@ export function PolicyCoherenceExplorer({
                 targets={visibleTargets}
                 alignment={filtered}
                 onSelectTarget={handleNodeClick}
-                onAsk={handleAsk}
-                chat={chat}
                 countryConfig={countryConfig}
               />
             )}
