@@ -30,6 +30,15 @@ interface RankedItem {
   count: number;
 }
 
+interface RankedPair {
+  aId: string;
+  bId: string;
+  aLabel: string;
+  bLabel: string;
+  level: string;
+  description: string;
+}
+
 interface ChatContext {
   mode: "document" | "globe" | "sector";
   filter: string;
@@ -45,6 +54,8 @@ interface ChatContext {
     topGroupsByAlignment: RankedItem[];
     topTargetsByTension: RankedItem[];
     topTargetsByAlignment: RankedItem[];
+    topPairsByTension?: RankedPair[];
+    topPairsByAlignment?: RankedPair[];
   };
   /**
    * Pair records that have a rationale (typically high alignments + all
@@ -90,6 +101,9 @@ Turn 1: content = "Grouped by biodiversity category." tool calls = [set_mode(glo
 
 Example D — "Where do plans contradict most?"
 Turn 1: content = "Green economy has the most potential conflicts." tool calls = [set_filter(contradictions), focus_category(green_economy)]. Use the precomputed rankings in the context. No reads needed.
+
+Example E — "What are the top conflicts for biodiversity?" (aggregate WITH scope)
+Turn 1: Look at "Top contradiction pairs (with rationale)" in the context. Pick the pairs whose labels mention biodiversity-related documents (e.g., NBSAP) or terms. Summarize 1-3 sentences using the rationale text already shown there. content = "Biodiversity (NBSAP) targets clash most with NDC mitigation: spatial-planning conflicts with livestock methane on land allocation, and protected-area expansion competes with energy-sector investments." tool calls = [set_filter(contradictions), focus_category(NBSAP)]. No read tools needed — rationales are already in the rankings.
 
 Hard rules:
 - Only use ids that appear in the context. Never invent.
@@ -215,6 +229,17 @@ function fmtRanking(title: string, items: RankedItem[] | undefined): string {
   return `${title}:\n${lines}\n`;
 }
 
+function fmtPairs(title: string, pairs: RankedPair[] | undefined): string {
+  if (!pairs || pairs.length === 0) return "";
+  const lines = pairs
+    .map(
+      (p, i) =>
+        `${i + 1}. [${p.level}] ${p.aId} (${p.aLabel}) ↔ ${p.bId} (${p.bLabel}): ${p.description}`,
+    )
+    .join("\n");
+  return `${title}:\n${lines}\n`;
+}
+
 function buildUserMessage(query: string, ctx: ChatContext): string {
   const groups = ctx.groups.map((g) => `${g.id} | ${g.label}`).join("\n");
   const targets = ctx.targetIndex
@@ -230,6 +255,8 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
         fmtRanking("Top groups by high alignments", r.topGroupsByAlignment),
         fmtRanking("Top targets by potential tensions", r.topTargetsByTension),
         fmtRanking("Top targets by high alignments", r.topTargetsByAlignment),
+        fmtPairs("Top contradiction pairs (with rationale)", r.topPairsByTension),
+        fmtPairs("Top high-alignment pairs (with rationale)", r.topPairsByAlignment),
       ]
         .filter(Boolean)
         .join("\n")

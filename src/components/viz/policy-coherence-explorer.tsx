@@ -1440,6 +1440,46 @@ export function PolicyCoherenceExplorer({
             : null;
         });
 
+        // Top pair rationales — gives the LLM concrete text for aggregate
+        // questions like "top conflicts" or "biggest disagreements" without
+        // requiring it to call read tools first.
+        const SEVERITY: Record<string, number> = {
+          high_contradiction: 0,
+          moderate_contradiction: 1,
+          low_tension: 2,
+          high: 3,
+        };
+        const buildTopPairs = (
+          predicate: (lvl: AlignmentLevel) => boolean,
+        ) =>
+          visibleAlignment
+            .filter((a) => predicate(a.alignment) && !!a.description)
+            .sort(
+              (a, b) =>
+                (SEVERITY[a.alignment] ?? 9) - (SEVERITY[b.alignment] ?? 9),
+            )
+            .slice(0, 5)
+            .map((p) => {
+              const tA = targetMap.get(p.targetAId);
+              const tB = targetMap.get(p.targetBId);
+              return {
+                aId: p.targetAId,
+                bId: p.targetBId,
+                aLabel: tA
+                  ? `${tA.sourceDocument}: ${tA.sourceLabel}`
+                  : p.targetAId,
+                bLabel: tB
+                  ? `${tB.sourceDocument}: ${tB.sourceLabel}`
+                  : p.targetBId,
+                level: p.alignment,
+                description: (p.description ?? "").slice(0, 220),
+              };
+            });
+        const topPairsByTension = buildTopPairs((lvl) =>
+          isContradiction(lvl),
+        );
+        const topPairsByAlignment = buildTopPairs((lvl) => lvl === "high");
+
         const groups = arcs.map((a) => ({ id: a.id, label: a.label }));
         const targetIndex = visibleTargets.map((t) => ({
           id: t.id,
@@ -1477,6 +1517,8 @@ export function PolicyCoherenceExplorer({
                 topGroupsByAlignment,
                 topTargetsByTension,
                 topTargetsByAlignment,
+                topPairsByTension,
+                topPairsByAlignment,
               },
               pairs,
               targetTexts,
