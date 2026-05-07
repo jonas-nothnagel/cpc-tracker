@@ -465,13 +465,13 @@ export function DashboardClient({
               <h2 className="text-lg font-semibold text-[var(--undp-black)]">
                 Implementation Progress
                 <InfoBox>
-                  Reported progress on national biodiversity and climate commitments from official reporting mechanisms.{" "}
-                  NBSAP progress is drawn from the 7th National Report to the CBD; NDC implementation from the Biennial Transparency Report.
+                  Reported actions and progress from official reporting mechanisms.
+                  NBSAP progress comes from the 7th National Report to the CBD;
+                  NDC implementation from the Biennial Transparency Report. This
+                  view shows what was reported, not whether it is sufficient to
+                  meet the underlying targets.
                 </InfoBox>
               </h2>
-              <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-                Tracking reported progress across national biodiversity and climate commitments.
-              </p>
             </div>
 
             {data.nr7Data && data.nr7Data.progressItems.length > 0 && (
@@ -487,26 +487,6 @@ export function DashboardClient({
                 <div className="mb-4">
                   <h3 className="text-base font-semibold text-[var(--undp-black)]">
                     Reporting &amp; Implementation Coverage
-                    <InfoBox>
-                      This view shows what countries have <strong>reported</strong> in their
-                      Biennial Transparency Report (BTR). It doesn&apos;t assess whether the reported
-                      actions are sufficient to meet the underlying policy targets — that&apos;s a
-                      deeper tracking question that isn&apos;t answered here.
-                      <br /><br />
-                      <strong>Mitigation</strong> is grouped by <strong>IPCC sector</strong> because
-                      CTF Table 5 is sector-keyed and emissions accounting follows those categories.
-                      <strong> Adaptation</strong> is grouped by the country&apos;s own adaptation
-                      action plan (for Mongolia, the 8 APNDC goals from BTR1 Table III.9), because
-                      IPCC sector classifications don&apos;t fit adaptation outcomes like water,
-                      disaster, health and social safeguard.
-                      <br /><br />
-                      <em>
-                        Absence of a reported action is not the same as absence of activity on the
-                        ground. Government self-reports rarely contradict their own targets, so
-                        interpret &ldquo;no contradiction&rdquo; as a neutral signal, not as
-                        validation.
-                      </em>
-                    </InfoBox>
                   </h3>
                   <p className="text-sm text-[var(--undp-gray)] mt-0.5">
                     {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
@@ -537,14 +517,29 @@ export function DashboardClient({
           <summary className="text-sm font-semibold text-[var(--undp-black)] cursor-pointer">
             About this analysis
           </summary>
-          <p className="text-sm text-[var(--undp-gray)] leading-relaxed mt-2 mb-2">
-            This dashboard displays results from the Nature-Climate Target
-            Alignment Assessment pipeline. {targets.length} targets
-            from {documentTypes.length} document source{documentTypes.length !== 1 ? "s" : ""} were
-            classified against {data.sectors.length} Climate Mitigation
-            and {data.globeCategories.length} Biodiversity categories. Alignment and
-            contradictions are assessed pairwise across documents.
-          </p>
+          {(() => {
+            const policyTargets = targets.filter((t) => t.sourceDocument !== "BTR");
+            const btrActions = targets.length - policyTargets.length;
+            const policySources = new Set(policyTargets.map((t) => t.sourceDocument)).size;
+            return (
+              <p className="text-sm text-[var(--undp-gray)] leading-relaxed mt-2 mb-2">
+                This dashboard displays results from the Nature-Climate Target
+                Alignment Assessment pipeline. {policyTargets.length} policy
+                target{policyTargets.length !== 1 ? "s" : ""} from {policySources}{" "}
+                document source{policySources !== 1 ? "s" : ""} were classified
+                against {data.sectors.length} Climate Mitigation and{" "}
+                {data.globeCategories.length} Biodiversity categories. Alignment
+                and contradictions are assessed pairwise across documents.
+                {btrActions > 0 && (
+                  <>
+                    {" "}
+                    {btrActions} BTR-reported action{btrActions !== 1 ? "s" : ""}{" "}
+                    are included alongside for implementation tracking.
+                  </>
+                )}
+              </p>
+            );
+          })()}
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
             <strong>Note:</strong> All results should be validated with national experts.
           </p>
