@@ -27,9 +27,14 @@ import type {
 //      labels and a neutral gray for colors.
 
 /**
- * Universal fallback for the two reserved document-type tokens. Every country
+ * Universal fallback for the reserved document-type tokens. Every country
  * gets these without having to declare them in their config.
- * - `BTR`: Biennial Transparency Report (implementation / M&E data)
+ * - `BTR`: Biennial Transparency Report — mitigation measures (CTF Table 5)
+ * - `BTR_ADP`: Biennial Transparency Report — adaptation actions (Table III.9).
+ *   Synthetic key used by visualisations that split BTR by `actionType` so that
+ *   mitigation and adaptation render as distinct stacks. Targets keep
+ *   `sourceDocument === "BTR"`; the split is computed by `chartDocKey` at
+ *   chart-construction time.
  * - `OTHER`: catch-all when a target's `sourceDocument` is not declared
  */
 const RESERVED_DOC_TYPES: Record<string, DocumentTypeEntry> = {
@@ -39,6 +44,13 @@ const RESERVED_DOC_TYPES: Record<string, DocumentTypeEntry> = {
     mediumLabel: "BTR (Transparency)",
     fullLabel: "Biennial Transparency Report",
     color: "#7c3aed",
+  },
+  BTR_ADP: {
+    id: "BTR_ADP",
+    shortLabel: "BTR Adaptation",
+    mediumLabel: "BTR (Adaptation)",
+    fullLabel: "Biennial Transparency Report — adaptation actions",
+    color: "#c026d3",
   },
   OTHER: {
     id: "OTHER",
@@ -125,10 +137,32 @@ export function getDocTypeOrder(
   if (configIndex >= 0) return configIndex;
   // Reserved tokens appear after country-declared entries but before unknowns.
   // Offset by a large number so any sensible country list fits below.
+  // BTR_ADP follows BTR so the two render adjacent in legends/tooltips.
   const reservedOffset = 1_000_000;
   if (docId === "BTR") return reservedOffset;
-  if (docId === "OTHER") return reservedOffset + 1;
+  if (docId === "BTR_ADP") return reservedOffset + 1;
+  if (docId === "OTHER") return reservedOffset + 2;
   return Number.MAX_SAFE_INTEGER;
+}
+
+/**
+ * Synthetic doc key used by visualisations that group BTR pseudo-targets by
+ * `actionType`. Returns `"BTR_ADP"` for BTR adaptation actions and
+ * `target.sourceDocument` otherwise.
+ *
+ * Mongolia's BTR mitigation actions self-report into IPCC sectors, but
+ * adaptation actions are framed by APNDC goals — when both are forced into the
+ * same IPCC chart under a single "BTR Action" stack, the chart contradicts the
+ * "Reporting Gaps" callout (which counts mitigation only by the self-reported
+ * sector field). Splitting at chart-construction time keeps the two visible as
+ * distinct stacks without changing target shape, the BTR badge label on
+ * individual rows, or any pipeline output.
+ */
+export function chartDocKey(target: Target): string {
+  if (target.sourceDocument === "BTR" && target.actionType === "adaptation") {
+    return "BTR_ADP";
+  }
+  return target.sourceDocument;
 }
 
 /** Bidirectional color scale: red for contradictions, green for alignment */
@@ -184,13 +218,19 @@ export const ALIGNMENT_WEIGHTS: Record<AlignmentLevel, number> = {
 };
 
 /**
- * Count how many targets are classified under each category,
- * broken down by source document type.
+ * Count how many targets are classified under each category, broken down by
+ * source document type.
+ *
+ * Pass `resolveDocKey` to bucket some targets under a synthetic key — used by
+ * the Thematic Classification chart to split BTR pseudo-targets into separate
+ * "BTR" (mitigation) and "BTR_ADP" (adaptation) stacks. Defaults to
+ * `target.sourceDocument`.
  */
 export function countByCategory(
   targets: Target[],
   classifications: ThematicClassification[],
-  categories: { id: string; name: string }[]
+  categories: { id: string; name: string }[],
+  resolveDocKey?: (target: Target) => string
 ): {
   categoryId: string;
   categoryName: string;
@@ -198,6 +238,7 @@ export function countByCategory(
   byDocument: Record<PolicyDocumentType, number>;
 }[] {
   const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const docKey = resolveDocKey ?? ((t: Target) => t.sourceDocument);
 
   return categories.map((cat) => {
     const relevant = classifications.filter(
@@ -212,7 +253,10 @@ export function countByCategory(
     const byDoc: Record<string, number> = {};
     for (const c of relevant) {
       const target = targetMap.get(c.targetId);
-      if (target) byDoc[target.sourceDocument] = (byDoc[target.sourceDocument] ?? 0) + 1;
+      if (target) {
+        const key = docKey(target);
+        byDoc[key] = (byDoc[key] ?? 0) + 1;
+      }
     }
     return {
       categoryId: cat.id,

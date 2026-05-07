@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { InfoBox } from "@/components/ui/info-box";
-import { countByCategory } from "@/lib/utils";
+import { chartDocKey, countByCategory, getDocTypeOrder } from "@/lib/utils";
 import { getCountry, listVisibleCountries } from "@/config/countries";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
@@ -317,12 +317,15 @@ export function DashboardClient({
 
   const targets = data.targets;
 
-  // Group targets by document type (dynamic)
+  // Group targets by document type (dynamic). The chart splits BTR pseudo-
+  // targets into BTR mitigation and BTR adaptation stacks via `chartDocKey`,
+  // so we bucket by that synthetic key rather than `sourceDocument` directly.
   const targetsByDoc = new Map<string, Target[]>();
   for (const t of targets) {
-    const list = targetsByDoc.get(t.sourceDocument) || [];
+    const key = chartDocKey(t);
+    const list = targetsByDoc.get(key) || [];
     list.push(t);
-    targetsByDoc.set(t.sourceDocument, list);
+    targetsByDoc.set(key, list);
   }
 
   // Single-label classifications restricted to actual policy targets.
@@ -345,8 +348,8 @@ export function DashboardClient({
       policyTargetIds.has(c.targetId)
   );
 
-  const sectorCounts = countByCategory(targets, sectorClassifications, data.sectors);
-  const globeCounts = countByCategory(targets, globeClassifications, data.globeCategories);
+  const sectorCounts = countByCategory(targets, sectorClassifications, data.sectors, chartDocKey);
+  const globeCounts = countByCategory(targets, globeClassifications, data.globeCategories, chartDocKey);
 
   const targetsWithSectors = new Set(
     sectorClassifications.map((c) => c.targetId)
@@ -355,7 +358,15 @@ export function DashboardClient({
     globeClassifications.map((c) => c.targetId)
   ).size;
 
-  const documentTypes = Array.from(targetsByDoc.keys()) as Target["sourceDocument"][];
+  // Country-declared docs first, then reserved tokens (BTR, BTR_ADP) adjacent
+  // in the legend. Without sorting the chart legend would render in insertion
+  // order which depends on target ordering and would put BTR_ADP wherever its
+  // first adaptation pseudo-target lands.
+  const documentTypes = (
+    Array.from(targetsByDoc.keys()) as Target["sourceDocument"][]
+  ).sort(
+    (a, b) => getDocTypeOrder(data.countryConfig, a) - getDocTypeOrder(data.countryConfig, b),
+  );
   const sectorSorted = [...sectorCounts].sort((a, b) => b.total - a.total);
   const globeSorted = [...globeCounts].sort((a, b) => b.total - a.total);
 

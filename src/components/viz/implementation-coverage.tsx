@@ -548,9 +548,11 @@ function ReportingGapsCard({ gaps }: { gaps: string[] }) {
         ))}
       </ul>
       <p className="text-[10px] text-[var(--undp-gray)] italic mt-2.5">
-        These are factual reporting observations, not judgements. Government self-reports
-        rarely surface contradictions; absence of a reported action is not the same as
-        absence of activity on the ground.
+        Counts use the IPCC sector recorded for each BTR action in the
+        underlying data file (hand-curated for Mongolia, parser-extracted for
+        Panama). Government self-reports rarely surface contradictions, so
+        absence of a reported action is not the same as absence of activity
+        on the ground.
       </p>
     </div>
   );
@@ -1779,9 +1781,13 @@ export function ImplementationCoverage({
     [btrData],
   );
 
-  // Reporting gaps — groundtruth-only factual statements (no LLM classifications).
-  // Every bullet is derived directly from BTR-reported data fields, not from
-  // LLM-inferred target-to-sector classifications, so the signal is honest.
+  // Reporting gaps — derived from the BTR action records themselves, not from
+  // policy-target classifications. The `m.sector` field on each measure is
+  // hand-curated for Mongolia mitigation (initial commit values, preserved by
+  // run_analysis.py instead of LLM-overwritten on every pipeline run) and
+  // parser-extracted from the BTR document for Panama. The numbers below are
+  // therefore stable across pipeline executions, even though they are not
+  // strict raw-document groundtruth in every case.
   const gaps = useMemo(() => {
     const out: string[] = [];
 
