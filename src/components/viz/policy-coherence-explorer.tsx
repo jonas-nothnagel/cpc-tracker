@@ -676,13 +676,20 @@ interface EmptyPanelProps {
   countryConfig?: CountryConfig | null;
 }
 
+// Chips picked to surface real fault lines in Mongolia's data:
+// - "Most tensions" exposes the irrigated-agriculture hub (50 tensions, ~⅓ of all)
+// - "Compete for land or water" surfaces resource_competition (150/154 tensions)
+// - "Strongest cross-document agreement" finds the 30%-protected-areas convergence
+// - "Broadly aligned and contested" is the paradox lens (e.g. Protected areas 30%)
+// - "Tensions involving livestock" hits the NDC livestock cluster
+// - "Vision 2050 clash with biodiversity" surfaces the dev-vs-bio fault line
 const EXAMPLE_QUERIES: string[] = [
-  "Where do plans contradict each other most?",
-  "Which target connects across the most documents?",
-  "Find targets about livestock",
-  "Show a target that's both aligned and contested",
-  "Where do NDC and NBSAP disagree?",
-  "Switch to biodiversity view",
+  "Which target sits in the most tensions?",
+  "Where do plans compete for land or water?",
+  "What's the strongest cross-document agreement?",
+  "Show a target that's broadly aligned and contested",
+  "Find tensions involving livestock",
+  "Where does Vision 2050 clash with biodiversity?",
 ];
 
 /**
