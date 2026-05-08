@@ -1712,6 +1712,39 @@ export function PolicyCoherenceExplorer({
             nextComparedPair = null;
           }
         }
+        // Auto-unhide any doc the chat's actions reference. If the model
+        // picks focus_category(SECTORAL) or select_target on a target whose
+        // doc is currently toggled off, we unhide that doc so the chat
+        // result is actually visible. The user's other manual hides stay
+        // put. This keeps the rule "respect user toggles" while making
+        // explicit asks ("Where does Vision 2050 clash...") just work.
+        const docsReferenced = new Set<string>();
+        for (const action of json.actions) {
+          if (action.type === "focus_category" && groupMode === "document") {
+            docsReferenced.add(action.categoryId);
+          } else if (action.type === "select_target") {
+            const t = targetMap.get(action.targetId);
+            if (t) docsReferenced.add(t.sourceDocument);
+          } else if (action.type === "select_pair") {
+            const tA = targetMap.get(action.targetAId);
+            const tB = targetMap.get(action.targetBId);
+            if (tA) docsReferenced.add(tA.sourceDocument);
+            if (tB) docsReferenced.add(tB.sourceDocument);
+          }
+        }
+        if (docsReferenced.size > 0) {
+          setHiddenDocs((prev) => {
+            let changed = false;
+            const next = new Set(prev);
+            for (const d of docsReferenced) {
+              if (next.has(d)) {
+                next.delete(d);
+                changed = true;
+              }
+            }
+            return changed ? next : prev;
+          });
+        }
         setSelectedId(nextSelectedId);
         setFocalGroupId(nextFocalGroupId);
         setComparedPair(nextComparedPair);
