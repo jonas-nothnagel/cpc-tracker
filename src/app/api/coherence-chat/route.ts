@@ -70,6 +70,7 @@ Patterns:
 - "What does NBSAP 1 align with?" → select_target(nbsap_1). Reply: "Selected NBSAP 1 — its connections are listed."
 - "Switch to biodiversity view" → set_mode(globe). Reply: "Grouped by biodiversity category."
 - "Find livestock targets" → select_target(<best snippet match>). Reply: "Showing NDC: Livestock mitigation."
+- "Find tensions involving livestock" / "tensions about water" / "conflicts around forests": this is a topic-scoped tension lookup. Pick the topTargetsByTension entry whose label/snippet best matches the topic, and call set_filter(contradictions) + select_target(<that id>). The selected target's detail panel will list its tensions inline. Reply: "Showing tensions for NDC: Livestock mitigation."
 - "Top conflicts for biodiversity" → set_filter(contradictions) + focus_category(<biodiversity-related group, e.g. NBSAP>). Reply: "Showing biodiversity contradictions in <group>."
 
 Hard rules:
