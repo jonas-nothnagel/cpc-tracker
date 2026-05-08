@@ -1652,14 +1652,17 @@ export function PolicyCoherenceExplorer({
           actions: ServerAction[];
         };
 
-        // Apply the actions in order. The server already sorts them so set_mode
-        // runs first (resets selection), then set_filter, then focus/select.
-        let nextSelectedId: string | null | undefined;
-        let nextFocalGroupId: string | null | undefined;
-        let nextComparedPair:
-          | { result: AlignmentResult; other: Target }
-          | null
-          | undefined;
+        // Each chat turn is treated as a fresh exploration: reset filter to
+        // its default and clear any prior focus / selection / pair compare
+        // before layering the new actions. Without this, a "contradictions
+        // only" lens from the previous turn would silently persist into the
+        // next question even when the new question implies a different scope.
+        // groupMode and hiddenDocs are user preferences and stay put.
+        setFilter("high_contra");
+        let nextSelectedId: string | null = null;
+        let nextFocalGroupId: string | null = null;
+        let nextComparedPair: { result: AlignmentResult; other: Target } | null =
+          null;
         for (const action of json.actions) {
           if (action.type === "set_filter") {
             setFilter(action.filter);
@@ -1699,9 +1702,9 @@ export function PolicyCoherenceExplorer({
             nextComparedPair = null;
           }
         }
-        if (nextSelectedId !== undefined) setSelectedId(nextSelectedId);
-        if (nextFocalGroupId !== undefined) setFocalGroupId(nextFocalGroupId);
-        if (nextComparedPair !== undefined) setComparedPair(nextComparedPair);
+        setSelectedId(nextSelectedId);
+        setFocalGroupId(nextFocalGroupId);
+        setComparedPair(nextComparedPair);
         setChat({ loading: false, reply: json.reply, error: null });
       } catch (err) {
         setChat({
@@ -1793,7 +1796,7 @@ export function PolicyCoherenceExplorer({
             . Hover or click a target to explore connections.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-3">
           <select
             value={groupMode}
             onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
@@ -1814,40 +1817,107 @@ export function PolicyCoherenceExplorer({
             <option value="high">High only</option>
             <option value="contradictions">Contradictions only</option>
           </select>
-          {hasAdaptationActions && (
-            <select
-              value={actionTypeFilter}
-              onChange={(e) => setActionTypeFilter(e.target.value as ActionTypeFilter)}
-              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
-              title="Filter BTR reported actions by type. Policy targets always show."
-            >
-              <option value="all">All BTR actions</option>
-              <option value="mitigation">Mitigation only</option>
-              <option value="adaptation">Adaptation only</option>
-            </select>
-          )}
           {availableDocs.map((doc) => {
             const active = !hiddenDocs.has(doc);
             const color = getDocColor(countryConfig, doc);
+            // Sub-pills for BTR's Mit/Adp split — only render when the BTR
+            // pill is active and the country actually has adaptation actions
+            // loaded. Replaces the older "All BTR actions" select.
+            const showSubPills =
+              doc === "BTR" && hasAdaptationActions && active;
+            const mitActive =
+              actionTypeFilter === "all" || actionTypeFilter === "mitigation";
+            const adpActive =
+              actionTypeFilter === "all" || actionTypeFilter === "adaptation";
+            const togglePill = (which: "mitigation" | "adaptation") => {
+              // Cycle: when both visible (filter=all), clicking deselects
+              // the clicked one (filter = the other). Clicking the lone
+              // active type re-enables both.
+              const other = which === "mitigation" ? "adaptation" : "mitigation";
+              if (actionTypeFilter === "all") setActionTypeFilter(other);
+              else if (actionTypeFilter === which) setActionTypeFilter("all");
+              else setActionTypeFilter("all");
+            };
+            const mitColor = getDocColor(countryConfig, "BTR");
+            const adpColor = getDocColor(countryConfig, "BTR_ADP");
             return (
-              <button
-                key={doc}
-                type="button"
-                onClick={() => toggleDoc(doc)}
-                className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                  active
-                    ? ""
-                    : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-gray-300"
-                }`}
-                style={active ? { color, borderColor: `${color}66`, backgroundColor: `${color}1a` } : undefined}
-                title={getDocFullLabel(countryConfig, doc)}
-              >
-                <span
-                  className="w-2 h-2 rounded-sm"
-                  style={{ backgroundColor: active ? color : "#d1d5db" }}
-                />
-                {getDocLabel(countryConfig, doc)}
-              </button>
+              <div key={doc} className="flex flex-col items-start gap-1">
+                <button
+                  type="button"
+                  onClick={() => toggleDoc(doc)}
+                  className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                    active
+                      ? ""
+                      : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-gray-300"
+                  }`}
+                  style={active ? { color, borderColor: `${color}66`, backgroundColor: `${color}1a` } : undefined}
+                  title={getDocFullLabel(countryConfig, doc)}
+                >
+                  <span
+                    className="w-2 h-2 rounded-sm"
+                    style={{ backgroundColor: active ? color : "#d1d5db" }}
+                  />
+                  {getDocLabel(countryConfig, doc)}
+                </button>
+                {showSubPills && (
+                  <div className="flex gap-1 pl-3">
+                    <button
+                      type="button"
+                      onClick={() => togglePill("mitigation")}
+                      className={`flex items-center gap-1 border rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors ${
+                        mitActive
+                          ? ""
+                          : "border-gray-200 bg-white text-gray-400 hover:border-gray-300"
+                      }`}
+                      style={
+                        mitActive
+                          ? {
+                              color: mitColor,
+                              borderColor: `${mitColor}66`,
+                              backgroundColor: `${mitColor}1a`,
+                            }
+                          : undefined
+                      }
+                      title="Toggle BTR mitigation measures"
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-sm"
+                        style={{
+                          backgroundColor: mitActive ? mitColor : "#d1d5db",
+                        }}
+                      />
+                      Mitigation
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => togglePill("adaptation")}
+                      className={`flex items-center gap-1 border rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors ${
+                        adpActive
+                          ? ""
+                          : "border-gray-200 bg-white text-gray-400 hover:border-gray-300"
+                      }`}
+                      style={
+                        adpActive
+                          ? {
+                              color: adpColor,
+                              borderColor: `${adpColor}66`,
+                              backgroundColor: `${adpColor}1a`,
+                            }
+                          : undefined
+                      }
+                      title="Toggle BTR adaptation actions"
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-sm"
+                        style={{
+                          backgroundColor: adpActive ? adpColor : "#d1d5db",
+                        }}
+                      />
+                      Adaptation
+                    </button>
+                  </div>
+                )}
+              </div>
             );
           })}
 
