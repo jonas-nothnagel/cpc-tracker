@@ -673,31 +673,29 @@ interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
   onSelectTarget: (id: string) => void;
+  onAsk: (query: string) => void;
+  chat: ChatStatus;
   countryConfig?: CountryConfig | null;
 }
 
-// Chips picked to surface real fault lines in Mongolia's data:
-// - "Most tensions" exposes the irrigated-agriculture hub (50 tensions, ~⅓ of all)
-// - "Compete for land or water" surfaces resource_competition (150/154 tensions)
-// - "Strongest cross-document agreement" finds the 30%-protected-areas convergence
-// - "Broadly aligned and contested" is the paradox lens (e.g. Protected areas 30%)
+// Four chips, each one mapping cleanly to a real fault line in the data:
+// - "Most tensions" exposes the irrigated-agriculture hub (50 tensions)
+// - "Broadly aligned and contested" is the paradox lens (Protected areas 30%)
 // - "Tensions involving livestock" hits the NDC livestock cluster
 // - "Vision 2050 clash with biodiversity" surfaces the dev-vs-bio fault line
 const EXAMPLE_QUERIES: string[] = [
   "Which target sits in the most tensions?",
-  "Where do plans compete for land or water?",
-  "What's the strongest cross-document agreement?",
   "Show a target that's broadly aligned and contested",
   "Find tensions involving livestock",
   "Where does Vision 2050 clash with biodiversity?",
 ];
 
 /**
- * Persistent chat bar — sits at the top of the right column independent of
- * the panel state below it, so the AI reply stays visible whether the user
- * is in idle, category, or target view. Lifting this out of EmptyPanel was
- * the fix for "I asked a question and the answer disappeared as soon as the
- * wheel reshaped".
+ * Chat input + reply + example chips. Lives inside EmptyPanel below the
+ * "At a glance" stats — borderless so it inherits the EmptyPanel card
+ * chrome rather than stacking a card-in-a-card. Reply is only visible
+ * while the user is in idle state; once the wheel reshapes into a
+ * category or target view, the wheel + panel state IS the answer.
  */
 function ChatBar({
   onAsk,
@@ -714,7 +712,7 @@ function ChatBar({
     setQuery("");
   };
   return (
-    <div className="bg-white border border-gray-100 rounded-lg p-4 space-y-2">
+    <div className="space-y-2">
       <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
         Ask the wheel
       </p>
@@ -776,6 +774,8 @@ function EmptyPanel({
   targets,
   alignment,
   onSelectTarget,
+  onAsk,
+  chat,
   countryConfig,
 }: EmptyPanelProps) {
   // Compute totals from the alignment set we're already iterating below — this
@@ -842,6 +842,8 @@ function EmptyPanel({
             <Stat label="Potential tensions" value={totalContra} accent="red" />
           </div>
         </div>
+
+        <ChatBar onAsk={onAsk} chat={chat} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {connRanks.length > 0 && (
@@ -1660,12 +1662,14 @@ export function PolicyCoherenceExplorer({
         };
 
         // Each chat turn is treated as a fresh exploration: reset filter to
-        // its default and clear any prior focus / selection / pair compare
-        // before layering the new actions. Without this, a "contradictions
-        // only" lens from the previous turn would silently persist into the
-        // next question even when the new question implies a different scope.
-        // groupMode and hiddenDocs are user preferences and stay put.
+        // its default, show all documents, and clear any prior focus /
+        // selection / pair compare before layering the new actions. Without
+        // the doc reset, questions like "where does Vision 2050 clash with
+        // biodiversity?" silently fail when Vision 2050 is toggled off (the
+        // wheel can't render clashes for hidden docs). groupMode is the only
+        // user preference preserved across chat calls.
         setFilter("high_contra");
+        setHiddenDocs(new Set());
         let nextSelectedId: string | null = null;
         let nextFocalGroupId: string | null = null;
         let nextComparedPair: { result: AlignmentResult; other: Target } | null =
@@ -2447,12 +2451,11 @@ export function PolicyCoherenceExplorer({
           </div>
         </div>
 
-        {/* Right column: persistent chat bar on top, then context panel that
-            morphs by selection state. Lifting chat above the panel keeps the
-            AI reply visible whether the wheel is in idle, category, or
-            target view (the panel below would otherwise hide it). */}
-        <div className="min-w-0 lg:col-span-5 flex flex-col gap-4">
-          <ChatBar onAsk={handleAsk} chat={chat} />
+        {/* Right column: context panel only. Chat now lives inside
+            EmptyPanel below the stats — preferred for the cleaner idle
+            layout, with the trade-off that the AI reply is only visible
+            while the user is in idle state. */}
+        <div className="min-w-0 lg:col-span-5">
           {selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
@@ -2488,6 +2491,8 @@ export function PolicyCoherenceExplorer({
                 targets={visibleTargets}
                 alignment={filtered}
                 onSelectTarget={handleNodeClick}
+                onAsk={handleAsk}
+                chat={chat}
                 countryConfig={countryConfig}
               />
             )}
