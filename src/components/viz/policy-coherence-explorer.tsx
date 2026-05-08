@@ -1662,14 +1662,13 @@ export function PolicyCoherenceExplorer({
         };
 
         // Each chat turn is treated as a fresh exploration: reset filter to
-        // its default, show all documents, and clear any prior focus /
-        // selection / pair compare before layering the new actions. Without
-        // the doc reset, questions like "where does Vision 2050 clash with
-        // biodiversity?" silently fail when Vision 2050 is toggled off (the
-        // wheel can't render clashes for hidden docs). groupMode is the only
-        // user preference preserved across chat calls.
+        // its default and clear any prior focus / selection / pair compare
+        // before layering the new actions. groupMode and hiddenDocs are user
+        // preferences kept across chat calls — if the user has explicitly
+        // hidden a document, the chat respects that scope and answers within
+        // the visible subset (the rankings sent to the model are already
+        // computed from visibleAlignment, so this happens automatically).
         setFilter("high_contra");
-        setHiddenDocs(new Set());
         let nextSelectedId: string | null = null;
         let nextFocalGroupId: string | null = null;
         let nextComparedPair: { result: AlignmentResult; other: Target } | null =
