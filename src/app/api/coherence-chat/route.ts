@@ -30,13 +30,24 @@ interface ChatContext {
   mode: "document" | "globe" | "sector";
   filter: string;
   groups: { id: string; label: string }[];
+  /** Subset of group ids the user currently has toggled on. */
+  visibleDocs?: string[];
   targetIndex: {
     id: string;
     sourceLabel: string;
     sourceDocument: string;
     snippet: string;
   }[];
+  /** Rankings restricted to the user's currently-visible docs. */
   rankings?: {
+    topGroupsByTension: RankedItem[];
+    topGroupsByAlignment: RankedItem[];
+    topTargetsByTension: RankedItem[];
+    topTargetsByAlignment: RankedItem[];
+  };
+  /** Rankings across ALL docs (including hidden). Used only when the user's
+   * question explicitly names a doc that's currently toggled off. */
+  rankingsFull?: {
     topGroupsByTension: RankedItem[];
     topGroupsByAlignment: RankedItem[];
     topTargetsByTension: RankedItem[];
@@ -78,6 +89,13 @@ Patterns:
 - "Find tensions involving livestock" / "tensions about water" / "conflicts around forests": topic-scoped tension lookup. Pick the topTargetsByTension entry whose label/snippet best matches the topic, set_filter(contradictions) + select_target(<that id>). Reply: "Showing tensions for NDC: Livestock mitigation."
 
 Rule of thumb: if the question contains the singular word "target" (singular), default to select_target. If it contains "plans", "documents", "categories", or names a doc explicitly without a singular target, focus_category is appropriate. Always prefer the more specific action when in doubt.
+
+Visible-vs-hidden documents: the rankings you see have already been scoped server-side. The header says either "VISIBLE scope" (default — only the docs the user has toggled on) or "FULL scope" (the user's question explicitly named a hidden doc, so the rankings now include it). Trust the scope you see; you don't need to re-filter.
+
+Empty-scope handling: if the user asks about a specific doc/topic and the rankings contain NO entries matching it, do not fall back to a different doc.
+- Worked example: User asks "What is the most contested BTR action?". Scan topTargetsByTension for any id starting with BTR_ — if none, the answer is that there are no BTR tensions. Reply (in the assistant content field): "No BTR action tensions on file." AND call focus_category(BTR) so the user sees the BTR arc on the wheel with no red lines.
+- DO NOT pick a different doc as a substitute. DO write the empty-scope reply explicitly. Prefer an honest "no data" answer over a misleading one.
+- Same pattern for any doc/topic: if scope yields nothing, say so plainly and focus the doc.
 
 Hard rules:
 - Only use ids that appear in the context. Never invent ids.
@@ -182,6 +200,33 @@ function fmtRanking(title: string, items: RankedItem[] | undefined): string {
   return `${title}:\n${lines}\n`;
 }
 
+/**
+ * Detect whether the user's question explicitly names a doc that's currently
+ * hidden. If so, the chat should use full-scope rankings so it can find the
+ * answer in that doc. Otherwise it uses visible-scope so the chat respects
+ * the user's current toggles.
+ */
+function queryNamesHiddenDoc(query: string, ctx: ChatContext): boolean {
+  if (!ctx.visibleDocs) return false;
+  const visible = new Set(ctx.visibleDocs);
+  const hidden = ctx.groups.filter((g) => !visible.has(g.id));
+  if (hidden.length === 0) return false;
+  const q = query.toLowerCase();
+  for (const doc of hidden) {
+    const id = doc.id.toLowerCase();
+    const label = doc.label.toLowerCase();
+    // Match the id verbatim or any meaningful word from the label.
+    if (q.includes(id)) return true;
+    const labelWords = label
+      .split(/[^a-z0-9]+/)
+      .filter((w) => w.length >= 3);
+    for (const w of labelWords) {
+      if (q.includes(w)) return true;
+    }
+  }
+  return false;
+}
+
 function buildUserMessage(query: string, ctx: ChatContext): string {
   const groups = ctx.groups.map((g) => `${g.id} | ${g.label}`).join("\n");
   const targets = ctx.targetIndex
@@ -190,13 +235,20 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
       return `${t.id} | ${t.sourceDocument}: ${t.sourceLabel} | ${snippet}`;
     })
     .join("\n");
-  const r = ctx.rankings;
+  // Decide scope server-side so the prompt sees one ranking set, not two.
+  const useFullScope = queryNamesHiddenDoc(query, ctx);
+  const r = useFullScope
+    ? (ctx.rankingsFull ?? ctx.rankings)
+    : (ctx.rankings ?? ctx.rankingsFull);
+  const scopeLabel = useFullScope
+    ? "FULL scope (the user explicitly named a hidden doc)"
+    : "VISIBLE scope (matches the user's current doc toggles)";
   const rankings = r
     ? [
-        fmtRanking("Top groups by potential tensions", r.topGroupsByTension),
-        fmtRanking("Top groups by high alignments", r.topGroupsByAlignment),
-        fmtRanking("Top targets by potential tensions", r.topTargetsByTension),
-        fmtRanking("Top targets by high alignments", r.topTargetsByAlignment),
+        fmtRanking(`Top groups by potential tensions (${scopeLabel})`, r.topGroupsByTension),
+        fmtRanking(`Top groups by high alignments (${scopeLabel})`, r.topGroupsByAlignment),
+        fmtRanking(`Top targets by potential tensions (${scopeLabel})`, r.topTargetsByTension),
+        fmtRanking(`Top targets by high alignments (${scopeLabel})`, r.topTargetsByAlignment),
       ]
         .filter(Boolean)
         .join("\n")
@@ -207,15 +259,14 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
     `Current mode: ${ctx.mode}`,
     `Current filter: ${ctx.filter}`,
     "",
-    "Available groups (id | label):",
+    "Available groups (id | label) — these are ALL document types in the data, including ones the user has toggled off:",
     groups || "(none)",
+    "",
+    `Visible groups right now: ${(ctx.visibleDocs ?? []).join(", ") || "(none — all hidden)"}`,
     "",
   ];
   if (rankings) {
-    sections.push(
-      "Pre-computed rankings (use these for aggregate questions):",
-      rankings,
-    );
+    sections.push("Pre-computed rankings — use these to pick groups/targets for aggregate questions:", rankings);
   }
   sections.push(
     `Available targets — ${ctx.targetIndex.length} total (id | doc: label | snippet):`,

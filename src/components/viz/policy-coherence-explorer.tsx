@@ -1549,78 +1549,87 @@ export function PolicyCoherenceExplorer({
     async (query: string) => {
       setChat({ loading: true, reply: null, error: null });
       try {
-        // Group + target rankings precomputed here so the LLM has real answers
-        // for aggregate questions. Without these the model would guess; with
-        // them it can pick the actually-top group/target. Cheap to compute and
-        // adds ~600 chars to the prompt.
-        const groupTension = new Map<string, number>();
-        const groupHigh = new Map<string, number>();
-        const targetTension = new Map<string, number>();
-        const targetHigh = new Map<string, number>();
-        const targetGroup = new Map<string, string>();
-        for (const n of nodes) targetGroup.set(n.id, n.groupId);
-        for (const a of visibleAlignment) {
-          const gA = targetGroup.get(a.targetAId);
-          const gB = targetGroup.get(a.targetBId);
-          if (isContradiction(a.alignment)) {
-            targetTension.set(
-              a.targetAId,
-              (targetTension.get(a.targetAId) ?? 0) + 1,
-            );
-            targetTension.set(
-              a.targetBId,
-              (targetTension.get(a.targetBId) ?? 0) + 1,
-            );
-            if (gA)
-              groupTension.set(gA, (groupTension.get(gA) ?? 0) + 1);
-            if (gB && gB !== gA)
-              groupTension.set(gB, (groupTension.get(gB) ?? 0) + 1);
-          } else if (a.alignment === "high") {
-            targetHigh.set(a.targetAId, (targetHigh.get(a.targetAId) ?? 0) + 1);
-            targetHigh.set(a.targetBId, (targetHigh.get(a.targetBId) ?? 0) + 1);
-            if (gA) groupHigh.set(gA, (groupHigh.get(gA) ?? 0) + 1);
-            if (gB && gB !== gA)
-              groupHigh.set(gB, (groupHigh.get(gB) ?? 0) + 1);
-          }
-        }
-        const arcLabel = new Map(arcs.map((a) => [a.id, a.label]));
+        // The chat receives two parallel rankings:
+        // - "visible-scope" computed from visibleAlignment, used for unscoped
+        //   questions ("most contested target") so the chat respects whatever
+        //   the user has currently toggled on.
+        // - "full-scope" computed from full alignment, used only when the
+        //   user explicitly names a hidden doc (e.g. "BTR action" while BTR
+        //   is hidden). The auto-unhide logic later makes the answer actually
+        //   render.
         const targetMap = new Map(targets.map((t) => [t.id, t]));
-        const rankBy = <K,>(
-          m: Map<K, number>,
-          format: (id: K, count: number) => { id: K; label: string; count: number } | null,
-        ) =>
-          Array.from(m.entries())
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 5)
-            .map(([id, count]) => format(id, count))
-            .filter(
-              (x): x is { id: K; label: string; count: number } => x !== null,
-            );
-        const topGroupsByTension = rankBy(groupTension, (id, count) => ({
-          id,
-          label: arcLabel.get(id) ?? id,
-          count,
-        }));
-        const topGroupsByAlignment = rankBy(groupHigh, (id, count) => ({
-          id,
-          label: arcLabel.get(id) ?? id,
-          count,
-        }));
-        const topTargetsByTension = rankBy(targetTension, (id, count) => {
-          const t = targetMap.get(id);
-          return t
-            ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
-            : null;
-        });
-        const topTargetsByAlignment = rankBy(targetHigh, (id, count) => {
-          const t = targetMap.get(id);
-          return t
-            ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
-            : null;
-        });
 
-        const groups = arcs.map((a) => ({ id: a.id, label: a.label }));
-        const targetIndex = visibleTargets.map((t) => ({
+        const computeRankings = (alignSet: AlignmentResult[]) => {
+          const groupT = new Map<string, number>();
+          const groupH = new Map<string, number>();
+          const targetT = new Map<string, number>();
+          const targetH = new Map<string, number>();
+          for (const a of alignSet) {
+            const tA = targetMap.get(a.targetAId);
+            const tB = targetMap.get(a.targetBId);
+            const gA = tA?.sourceDocument;
+            const gB = tB?.sourceDocument;
+            if (isContradiction(a.alignment)) {
+              targetT.set(a.targetAId, (targetT.get(a.targetAId) ?? 0) + 1);
+              targetT.set(a.targetBId, (targetT.get(a.targetBId) ?? 0) + 1);
+              if (gA) groupT.set(gA, (groupT.get(gA) ?? 0) + 1);
+              if (gB && gB !== gA) groupT.set(gB, (groupT.get(gB) ?? 0) + 1);
+            } else if (a.alignment === "high") {
+              targetH.set(a.targetAId, (targetH.get(a.targetAId) ?? 0) + 1);
+              targetH.set(a.targetBId, (targetH.get(a.targetBId) ?? 0) + 1);
+              if (gA) groupH.set(gA, (groupH.get(gA) ?? 0) + 1);
+              if (gB && gB !== gA) groupH.set(gB, (groupH.get(gB) ?? 0) + 1);
+            }
+          }
+          const rankBy = <K,>(
+            m: Map<K, number>,
+            format: (id: K, count: number) => { id: K; label: string; count: number } | null,
+          ) =>
+            Array.from(m.entries())
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 5)
+              .map(([id, count]) => format(id, count))
+              .filter(
+                (x): x is { id: K; label: string; count: number } => x !== null,
+              );
+          return {
+            topGroupsByTension: rankBy(groupT, (id, count) => ({
+              id,
+              label: getDocLabel(countryConfig, id),
+              count,
+            })),
+            topGroupsByAlignment: rankBy(groupH, (id, count) => ({
+              id,
+              label: getDocLabel(countryConfig, id),
+              count,
+            })),
+            topTargetsByTension: rankBy(targetT, (id, count) => {
+              const t = targetMap.get(id);
+              return t
+                ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
+                : null;
+            }),
+            topTargetsByAlignment: rankBy(targetH, (id, count) => {
+              const t = targetMap.get(id);
+              return t
+                ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
+                : null;
+            }),
+          };
+        };
+        const rankingsVisible = computeRankings(visibleAlignment);
+        const rankingsFull = computeRankings(alignment);
+
+        // Groups = all available docs (so model can navigate to hidden ones).
+        // Visible docs hint included separately.
+        const groups = availableDocs.map((d) => ({
+          id: d,
+          label: getDocLabel(countryConfig, d),
+        }));
+        const visibleDocs = availableDocs.filter((d) => !hiddenDocs.has(d));
+        // All targets, not just visible — chat can navigate to hidden-doc
+        // targets when the user explicitly asks (auto-unhide kicks in).
+        const targetIndex = targets.map((t) => ({
           id: t.id,
           sourceLabel: t.sourceLabel,
           sourceDocument: t.sourceDocument,
@@ -1635,13 +1644,10 @@ export function PolicyCoherenceExplorer({
               mode: groupMode,
               filter,
               groups,
+              visibleDocs,
               targetIndex,
-              rankings: {
-                topGroupsByTension,
-                topGroupsByAlignment,
-                topTargetsByTension,
-                topTargetsByAlignment,
-              },
+              rankings: rankingsVisible,
+              rankingsFull,
               country: targets[0]?.country ?? null,
             },
           }),
@@ -1758,7 +1764,17 @@ export function PolicyCoherenceExplorer({
         });
       }
     },
-    [arcs, visibleTargets, groupMode, filter, targets, nodes, visibleAlignment],
+    [
+      alignment,
+      availableDocs,
+      countryConfig,
+      hiddenDocs,
+      groupMode,
+      filter,
+      targets,
+      nodes,
+      visibleAlignment,
+    ],
   );
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
