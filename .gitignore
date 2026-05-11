@@ -73,3 +73,6 @@ external-docs/
 .playwright-mcp/
 .claude/
 .mcp.json
+
+# Deployment artifacts
+.vercel
