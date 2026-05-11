@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, CONTRADICTION_TYPE_LABELS, getDocColor, getDocLabel } from "@/lib/utils";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, CONTRADICTION_TYPE_LABELS, getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, ContradictionType, PolicyDocumentType } from "@/types";
 
@@ -60,6 +61,24 @@ export function ContradictionSummary({
     return Array.from(types);
   }, [contradictions]);
 
+  // Document types involved in any of the surfaced contradictions, used to
+  // populate the Sources list in the provenance popover. Pulls from
+  // `countryConfig.docProvenance` so a second country's citations come from
+  // their config file, not hardcoded copy here.
+  const provenanceSources = useMemo<ProvenanceSource[]>(() => {
+    const docTypes = new Set<PolicyDocumentType>();
+    for (const c of contradictions) {
+      const tA = targetMap.get(c.targetAId);
+      const tB = targetMap.get(c.targetBId);
+      if (tA) docTypes.add(tA.sourceDocument);
+      if (tB) docTypes.add(tB.sourceDocument);
+    }
+    return Array.from(docTypes).map((dt) => ({
+      label: getDocFullLabel(countryConfig, dt),
+      citation: countryConfig?.docProvenance?.[dt],
+    }));
+  }, [contradictions, targetMap, countryConfig]);
+
   const filtered = useMemo(() => {
     return contradictions.filter((c) => {
       if (filterType !== "all" && c.contradictionType !== filterType) return false;
@@ -88,7 +107,7 @@ export function ContradictionSummary({
     <section id="contradictions" className="mb-10">
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+          <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
             Policy Contradictions
             <InfoBox>
               Contradictions are cases where policy targets may work against each other.
@@ -98,6 +117,19 @@ export function ContradictionSummary({
               <strong>Implementation tension:</strong> implementing one target makes the other harder.<br />
               <strong>Scale/scope mismatch:</strong> targets operate at incompatible scales.
             </InfoBox>
+            <DataProvenance
+              origin="mixed"
+              sources={provenanceSources}
+              method={
+                <>
+                  Each pair of policy targets was compared by an LLM. A pair is
+                  flagged as a contradiction when the model judges the targets
+                  to work against each other; the contradiction type and the
+                  rationale shown for each entry come from the same model output.
+                </>
+              }
+              caveat="AI judgements can contain errors. Verify high-impact contradictions against the source policy text before acting on them."
+            />
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-1">
             {contradictions.length} potential contradiction{contradictions.length !== 1 ? "s" : ""} detected across policy targets.

@@ -6,9 +6,11 @@ import {
   ALIGNMENT_LABELS,
   CONTRADICTION_TYPE_LABELS,
   getDocColor,
+  getDocFullLabel,
   getDocLabel,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { TargetTextWithHighlights, ActionTypeBadge, OriginalLanguageChip } from "./target-text";
 import { isContradiction } from "@/types";
 import type {
@@ -272,6 +274,20 @@ export function TensionClusters({
     [alignmentData]
   );
 
+  const provenanceSources = useMemo<ProvenanceSource[]>(() => {
+    const docTypes = new Set<PolicyDocumentType>();
+    for (const t of tensions) {
+      const tA = targetMap.get(t.targetAId);
+      const tB = targetMap.get(t.targetBId);
+      if (tA) docTypes.add(tA.sourceDocument);
+      if (tB) docTypes.add(tB.sourceDocument);
+    }
+    return Array.from(docTypes).map((dt) => ({
+      label: getDocFullLabel(countryConfig, dt),
+      citation: countryConfig?.docProvenance?.[dt],
+    }));
+  }, [tensions, targetMap, countryConfig]);
+
   // Apply taxonomy filter to all tensions (affects drivers + browse + summary)
   const visibleTensions = useMemo(() => {
     if (!taxonomyFilter) return tensions;
@@ -507,7 +523,7 @@ export function TensionClusters({
     <section id="tensions" className="mb-10">
       {/* ── Layer 1: Summary ─────────────────────────────────────────── */}
       <div className="mb-5">
-        <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+        <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
           Policy Tensions
           <InfoBox>
             Tensions are cases where policy targets may work against each other.
@@ -524,15 +540,29 @@ export function TensionClusters({
             <br />
             <strong>Scale/scope mismatch:</strong> targets operate at
             incompatible scales.
-            <br />
-            <br />
-            <em>AI-assisted scoring. Adaptation actions are reported in
-            country-specific narrative formats and are scored here as policy
-            coherence, not as GHG implementation parity. Government
-            self-reports rarely contradict their own targets, so interpret
-            &ldquo;no contradiction&rdquo; as a neutral signal, not as
-            validation.</em>
           </InfoBox>
+          <DataProvenance
+            origin="mixed"
+            sources={provenanceSources}
+            method={
+              <>
+                Pairs of policy targets are scored by an LLM on a seven-level
+                scale (high contradiction → high alignment). Tensions are the
+                pairs the model flagged on the negative side; the contradiction
+                type and rationale shown for each entry come from the same
+                model output.
+              </>
+            }
+            caveat={
+              <>
+                Adaptation actions are reported in country-specific narrative
+                formats and are scored here as policy coherence, not as GHG
+                implementation parity. Government self-reports rarely
+                contradict their own targets — interpret &ldquo;no
+                contradiction&rdquo; as a neutral signal, not validation.
+              </>
+            }
+          />
         </h2>
 
         {/* Taxonomy filter */}
