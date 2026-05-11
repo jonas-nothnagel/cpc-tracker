@@ -311,9 +311,10 @@ function DetailPanel({
     return order[a.alignment] - order[b.alignment];
   });
 
-  // All rationales start collapsed; the user opens them on demand.
+  // Show the first rationale by default so the interaction pattern is obvious.
+  // Parent passes `key={node.id}`, so this initialiser re-runs when node changes.
   const [expandedRationaleId, setExpandedRationaleId] = useState<string | null>(
-    null,
+    () => sorted.find((conn) => conn.description)?.otherTarget.id ?? null,
   );
 
   if (comparedPair) {
