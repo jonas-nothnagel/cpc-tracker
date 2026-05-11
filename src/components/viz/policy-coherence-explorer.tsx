@@ -348,7 +348,7 @@ function DetailPanel({
           </span>
         </div>
 
-        {/* Body scrolls — target texts can be hundreds of lines (e.g.
+        {/* Body scrolls: target texts can be hundreds of lines (e.g.
             BTR Action narratives), and without an internal scroll the
             outer card's overflow-hidden hides the rationale entirely. */}
         <div className="flex-1 overflow-y-auto min-h-0">
@@ -996,39 +996,36 @@ function useStatBrowsing({
 
   const toggleStatView = useCallback(
     (view: StatView, viewFilter: AlignFilter) => {
-      setStatView((prev) => {
-        if (prev === view) {
-          // Toggling the active view off — restore the prior filter.
-          if (previousFilterRef.current !== null) {
-            onSetFilter(previousFilterRef.current);
-            previousFilterRef.current = null;
-          }
-          return "overview";
+      if (statView === view) {
+        // Toggling the active view off: restore the prior filter.
+        if (previousFilterRef.current !== null) {
+          onSetFilter(previousFilterRef.current);
+          previousFilterRef.current = null;
         }
-        if (prev === "overview") {
-          // Entering a stat view from overview — capture the current
-          // filter so we can put it back on close.
-          previousFilterRef.current = filter;
-        }
-        // Either entering or switching between stat views: apply the
-        // new view's filter intent.
-        onSetFilter(viewFilter);
-        return view;
-      });
+        setStatView("overview");
+        return;
+      }
+      if (statView === "overview") {
+        // Entering a stat view from overview: capture the current
+        // filter so we can put it back on close.
+        previousFilterRef.current = filter;
+      }
+      // Either entering or switching between stat views: apply the
+      // new view's filter intent.
+      onSetFilter(viewFilter);
+      setStatView(view);
     },
-    [filter, onSetFilter],
+    [statView, filter, onSetFilter],
   );
 
   const closeStatView = useCallback(() => {
-    setStatView((prev) => {
-      if (prev === "overview") return prev;
-      if (previousFilterRef.current !== null) {
-        onSetFilter(previousFilterRef.current);
-        previousFilterRef.current = null;
-      }
-      return "overview";
-    });
-  }, [onSetFilter]);
+    if (statView === "overview") return;
+    if (previousFilterRef.current !== null) {
+      onSetFilter(previousFilterRef.current);
+      previousFilterRef.current = null;
+    }
+    setStatView("overview");
+  }, [statView, onSetFilter]);
 
   // Totals are mutually exclusive (contradictions excluded from
   // alignments) so the headline numbers match the document-level
@@ -1194,7 +1191,7 @@ type StatBrowsingHook = ReturnType<typeof useStatBrowsing>;
  * Returns `null` when the panel is in "overview" mode; callers render
  * their own overview content in that case. `getTarget` lets the
  * CategoryPanel resolve partner targets that sit outside the focal
- * category — the hook's internal `targetMap` only knows about in-scope
+ * category. The hook's internal `targetMap` only knows about in-scope
  * targets, so cross-category partners would otherwise fail to render.
  */
 function StatBrowseView({
@@ -1567,7 +1564,7 @@ function CategoryPanel({
   );
 
   // Browseable stats engine, scoped to this category. Same UX as the
-  // idle panel — clicking a stat tile sets the wheel filter to match
+  // idle panel: clicking a stat tile sets the wheel filter to match
   // the view intent and replaces the overview with a full list. The
   // `getTarget` callback below resolves cross-category partner targets
   // that don't sit in `scopedTargets`.
