@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance } from "@/components/ui/data-provenance";
 import type { Nr7Data, Nr7ProgressItem, AlignmentResult, Target, AlignmentLevel } from "@/types";
 
 const NR7_COLORS: Record<string, string> = {
@@ -205,7 +206,7 @@ export function Nr7Progress({
     <div>
       {/* Header */}
       <div className="mb-3">
-        <h3 className="text-base font-semibold text-[var(--undp-black)]">
+        <h3 className="text-base font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
           NBSAP Progress
           <InfoBox>
             Progress data from the 7th National Report to the Convention on Biological Diversity (CBD).{" "}
@@ -213,6 +214,18 @@ export function Nr7Progress({
             limited progress, or no progress based on reported
             implementation status.
           </InfoBox>
+          <DataProvenance
+            origin="user-uploaded"
+            sources={[
+              {
+                label: "7th National Report to the CBD",
+                citation: nr7Data.reportingPeriod
+                  ? `NR7 (${nr7Data.reportingPeriod})`
+                  : undefined,
+              },
+            ]}
+            caveat="Progress status (on track / limited / no progress) is reported by the country in the NR7 narrative. The tool does not independently verify implementation."
+          />
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-0.5">
           {nr7Data.progressItems.length} national biodiversity targets from the 7th National Report to the CBD

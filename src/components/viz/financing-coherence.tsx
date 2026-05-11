@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance } from "@/components/ui/data-provenance";
 import {
   CoherenceTable,
   makeFlatLeaves,
@@ -83,6 +84,7 @@ export function FinancingCoherence({
   globeCategories,
   globeSubcategories,
   sectors,
+  countryConfig,
 }: FinancingCoherenceProps) {
   const [view, setView] = useState<TaxonomyView>(
     globeSubcategories.length > 0 ? "globe_sub" : "sector",
@@ -194,12 +196,41 @@ export function FinancingCoherence({
             classifier calibrated on expert examples. All monetary values in{" "}
             {moneyCurrency} ({periodLabel}).
           </InfoBox>
+          <DataProvenance
+            origin="mixed"
+            sources={[
+              {
+                label: "Biodiversity Expenditure Review (BER)",
+                citation: countryConfig?.docProvenance?.BER,
+              },
+            ]}
+            method={
+              <>
+                Expenditure values come directly from the uploaded BER. Each
+                program is then assigned to one BIOFIN GLOBE category (or
+                IPCC mitigation sector) by an LLM classifier from the
+                program&apos;s description.
+              </>
+            }
+            caveat={
+              <>
+                The BER is a <strong>subset</strong> of national expenditure
+                — only programs flagged in the uploaded review are shown.
+                Totals here do <strong>not</strong> represent the
+                country&apos;s full budget. Coverage depends entirely on
+                what was uploaded; programs not in the BER are invisible to
+                this section.
+              </>
+            }
+          />
         </h2>
         <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-          Cross-level view: {berData.programs.length} budget programs,{" "}
-          {targets.length} policy targets, and BTR actions.{" "}
+          Based on {berData.programs.length} budget programs in the uploaded
+          BER — a subset of national expenditure, not the full government
+          budget. Compared against {targets.length} policy targets and
+          BTR-reported actions.{" "}
           {groupBy === "category"
-            ? `Rollup by ${VIEW_LABELS[view]}.`
+            ? `Rollup by ${VIEW_LABELS[view]} (AI-classified).`
             : "Drill into each of the 28 original BER reporting lines."}
         </p>
       </div>
@@ -303,8 +334,9 @@ export function FinancingCoherence({
           </p>
           <p className="text-xs text-[var(--undp-gray)]">
             {coveragePercent >= 0.1 ? `${coveragePercent.toFixed(0)}%` : "<1%"}{" "}
-            of {moneyFormatter(actualTotalExpenditure)} total public BER
-            ({periodLabel})
+            of the uploaded BER (
+            {moneyFormatter(actualTotalExpenditure)}, {periodLabel}). National
+            budget coverage not assessed.
           </p>
           <p className="text-xs text-[var(--undp-gray)] mt-0.5">
             across {stats.withExp} of {stats.parentCount}{" "}
@@ -334,8 +366,8 @@ export function FinancingCoherence({
           </p>
           <p className="text-xs text-[var(--undp-gray)]">
             {stats.unfunded > 0
-              ? `${stats.unfunded === 1 ? parentLabel : parentLabelPlural} with targets but no classified budget`
-              : "all commitment areas have budget"}
+              ? `${stats.unfunded === 1 ? parentLabel : parentLabelPlural} with targets but no classified budget in the uploaded BER`
+              : "all commitment areas have budget in the uploaded BER"}
           </p>
         </div>
       </div>
@@ -386,6 +418,10 @@ export function FinancingCoherence({
             highest-scoring one from the LLM classifier), so per-{parentLabel}
             sums equal the unique classified totals. Click a row to expand
             and see subcategory detail (where available).
+            <br />
+            <strong>Scope:</strong> only programs in the uploaded BER are
+            shown. This section does not represent the country&apos;s full
+            budget; programs outside the BER are invisible here.
           </>
         ) : (
           <>
@@ -396,6 +432,9 @@ export function FinancingCoherence({
             framework but recorded no expenditure in the period. Click a row
             for full description, subcategories, reasoning, and top aligned
             policy targets.
+            <br />
+            <strong>Scope:</strong> only programs in the uploaded BER are
+            shown here — a subset of national expenditure.
           </>
         )}
       </div>

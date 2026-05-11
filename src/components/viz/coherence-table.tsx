@@ -384,7 +384,9 @@ export function CoherenceTable({
         {/* Header row */}
         <div className="grid grid-cols-[1fr_90px_200px_80px_80px] gap-2 px-4 py-2 bg-gray-50 border-b border-gray-200 text-xs text-[var(--undp-gray)] font-medium">
           <span>{taxonomyLabel}</span>
-          <span className="text-right">Share</span>
+          <span className="text-right" title="Share of classified BER expenditure (not the country's full budget)">
+            Share of BER
+          </span>
           <span className="text-right">{expenditureLabel}</span>
           <span className="text-center">Targets</span>
           <span className="text-center">Actions</span>

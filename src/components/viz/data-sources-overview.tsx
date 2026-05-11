@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { getDocColor, getDocFullLabel, getDocLabel, getDocTypeOrder } from "@/lib/utils";
+import { formatSourceRef } from "@/lib/source-ref";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance } from "@/components/ui/data-provenance";
 import { Modal } from "@/components/ui/modal";
 import {
   TargetTextWithHighlights,
@@ -18,27 +20,7 @@ import type {
   BtrData,
   Nr7Data,
   CountryConfig,
-  SourceRef,
 } from "@/types";
-
-/**
- * Format a structured SourceRef into a single-line citation string like
- * "Mongolia BTR1 (December 2025), CTF-NDC Table 5 / PDF Table II.6, pp. 93-94".
- * Returns undefined when the ref is missing or empty, so callers can fall back
- * to no tooltip.
- */
-function formatSourceRef(ref?: SourceRef): string | undefined {
-  if (!ref) return undefined;
-  const parts: string[] = [];
-  if (ref.document) parts.push(ref.document);
-  const detail: string[] = [];
-  if (ref.section) detail.push(ref.section);
-  if (ref.table) detail.push(ref.table);
-  if (detail.length) parts.push(detail.join(" / "));
-  if (ref.pages) parts.push(`pp. ${ref.pages}`);
-  if (ref.annex) parts.push(ref.annex);
-  return parts.length ? parts.join(", ") : undefined;
-}
 
 // ─── Target list modal ────────────────────────────────────────────────────────
 
@@ -295,8 +277,12 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
     <>
       <section className="mb-8">
         <div className="flex items-baseline gap-2 mb-3">
-          <h2 className="text-sm font-semibold text-[var(--undp-black)]">
+          <h2 className="text-sm font-semibold text-[var(--undp-black)] inline-flex items-center flex-wrap gap-y-1">
             Data Sources
+            <DataProvenance
+              origin="user-uploaded"
+              caveat="Everything listed below comes directly from documents the user uploaded. The AI views elsewhere on this dashboard (alignment, contradictions, atlas) are computed from these inputs."
+            />
             <InfoBox>
               Policy commitments and reported implementation analysed in this dashboard. Click any label or count to inspect the underlying targets or actions.
               {abbrList.length > 0 && (

@@ -3,8 +3,9 @@
 import { useState, useMemo } from "react";
 import { chord as d3Chord, ribbon as d3Ribbon } from "d3-chord";
 import { arc as d3Arc } from "d3-shape";
-import { ALIGNMENT_COLORS, getDocColor, getDocLabel } from "@/lib/utils";
+import { ALIGNMENT_COLORS, getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { isContradiction } from "@/types";
 import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, PolicyDocumentType } from "@/types";
 
@@ -122,6 +123,15 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
     return layout(matrix);
   }, [matrix]);
 
+  const provenanceSources = useMemo<ProvenanceSource[]>(
+    () =>
+      docTypes.map((dt) => ({
+        label: getDocFullLabel(countryConfig, dt),
+        citation: countryConfig?.docProvenance?.[dt],
+      })),
+    [docTypes, countryConfig],
+  );
+
   // No data guard
   if (docTypes.length < 2) {
     return (
@@ -180,7 +190,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
   return (
     <div>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-[var(--undp-black)]">
+        <h3 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
           Document Coherency Overview
           <InfoBox>
             This shows the overall alignment between document types.
@@ -189,6 +199,19 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
             <strong>Coverage %:</strong> share of possible cross-document target pairs that show any alignment.<br />
             <strong>Conflicts:</strong> pairs where targets work against each other.
           </InfoBox>
+          <DataProvenance
+            origin="mixed"
+            sources={provenanceSources}
+            method={
+              <>
+                Each cross-document target pair was scored by an LLM on a
+                seven-level alignment scale (high contradiction → high
+                alignment). Coherency, coverage, and conflict counts are
+                aggregations of those per-pair scores by source-document.
+              </>
+            }
+            caveat="Aggregated percentages are sensitive to LLM judgement on the underlying pairs. A single mis-scored pair can shift small denominators noticeably."
+          />
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-1">
           Across {docTypes.length} document types, {totalAligned} target

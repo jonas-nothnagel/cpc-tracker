@@ -12,6 +12,7 @@ import {
   ALIGNMENT_LABELS,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { isContradiction } from "@/types";
 import { buildChatRequest } from "@/lib/coherence-chat";
 import {
@@ -1822,6 +1823,16 @@ export function PolicyCoherenceExplorer({
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const provenanceSources = useMemo<ProvenanceSource[]>(() => {
+    const docTypes = new Set<PolicyDocumentType>();
+    for (const t of targets) docTypes.add(t.sourceDocument);
+    return Array.from(docTypes).map((dt) => ({
+      label: getDocFullLabel(countryConfig, dt),
+      citation: countryConfig?.docProvenance?.[dt],
+    }));
+  }, [targets, countryConfig]);
+
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
   // wheel and the panel shows target detail; closing the target falls back to
@@ -2327,7 +2338,7 @@ export function PolicyCoherenceExplorer({
       {/* Header + controls */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
         <div>
-          <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+          <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
             Policy Coherence Explorer
             <InfoBox>
               This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate contradictions.
@@ -2336,6 +2347,20 @@ export function PolicyCoherenceExplorer({
               <br /><br />
               <strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.
             </InfoBox>
+            <DataProvenance
+              origin="mixed"
+              sources={provenanceSources}
+              method={
+                <>
+                  Each line is a single LLM judgement on a pair of policy
+                  targets, scored on a seven-level scale (high contradiction →
+                  high alignment). The coherency score aggregates those
+                  per-pair scores; the dashed red lines come from the same
+                  pass.
+                </>
+              }
+              caveat="Each line represents one model judgement. Click into a target to read the rationale per pair before drawing conclusions, especially for high-stakes contradictions."
+            />
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {(() => {

@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS, getDocLabel } from "@/lib/utils";
+import { ALIGNMENT_COLORS, ALIGNMENT_LABELS, ALIGNMENT_LEVEL_ORDER, CONTRADICTION_TYPE_LABELS, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { isContradiction } from "@/types";
-import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, ThematicClassification, IpccSector, GlobeCategory } from "@/types";
+import type { AlignmentResult, AlignmentLevel, CountryConfig, Target, ThematicClassification, IpccSector, GlobeCategory, PolicyDocumentType } from "@/types";
 
 interface AlignmentHeatmapProps {
   alignmentData: AlignmentResult[];
@@ -105,6 +106,16 @@ export function AlignmentHeatmap({
   const lowCount = alignmentData.filter((a) => a.alignment === "low").length;
   const contradictionCount = alignmentData.filter((a) => isContradiction(a.alignment)).length;
 
+  const provenanceSources = useMemo<ProvenanceSource[]>(() => {
+    const docTypes = new Set<PolicyDocumentType>();
+    for (const t of rowTargets) docTypes.add(t.sourceDocument);
+    for (const t of colTargets) docTypes.add(t.sourceDocument);
+    return Array.from(docTypes).map((dt) => ({
+      label: getDocFullLabel(countryConfig, dt),
+      citation: countryConfig?.docProvenance?.[dt],
+    }));
+  }, [rowTargets, colTargets, countryConfig]);
+
   const cellSize = Math.min(
     40,
     Math.max(24, Math.floor(700 / Math.max(colTargets.length, 1)))
@@ -113,8 +124,14 @@ export function AlignmentHeatmap({
   return (
     <div>
       <div className="mb-2">
-        <h3 className="text-lg font-semibold text-[var(--undp-black)]">
+        <h3 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
           {title}
+          <DataProvenance
+            origin="mixed"
+            sources={provenanceSources}
+            method="Each cell shows a single LLM judgement of the relationship between the row target and the column target, scored on a seven-level scale (high contradiction → high alignment)."
+            caveat="Each cell is one model judgement. Click into individual cells to read the rationale and verify against the source target text before drawing conclusions."
+          />
         </h3>
         <p className="text-sm text-[var(--undp-gray)]">
           {highCount} high · {mediumCount} medium · {lowCount} low alignment
