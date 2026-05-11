@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { arc as d3Arc } from "d3-shape";
 import {
   getDocColor,
@@ -337,7 +337,7 @@ function DetailPanel({
           </button>
         </div>
 
-        <div className="px-4 py-3 flex items-center gap-2 border-b border-gray-100">
+        <div className="px-4 py-3 flex items-center gap-2 border-b border-gray-100 shrink-0">
           <span className="text-xs text-[var(--undp-gray)] mr-1">Alignment</span>
           <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[comparedPair.result.alignment] }} />
           <span className="text-sm font-semibold text-[var(--undp-black)]">
@@ -348,31 +348,36 @@ function DetailPanel({
           </span>
         </div>
 
-        <div className="px-4 py-3 space-y-3 border-b border-gray-100">
-          {[node.target, comparedPair.other].map((t) => (
-            <div key={t.id}>
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
-                <span>{getDocLabel(countryConfig, t.sourceDocument)}: {t.sourceLabel}</span>
-                <OriginalLanguageChip target={t} />
-              </p>
-              <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
-                <TargetTextWithHighlights target={t} />
-              </p>
-              <ActivitiesActions target={t} />
-            </div>
-          ))}
-        </div>
-
-        {comparedPair.result.description && (
-          <div className="px-4 py-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-              AI Rationale
-            </p>
-            <p className="text-xs text-[var(--undp-black)] leading-relaxed">
-              {comparedPair.result.description}
-            </p>
+        {/* Body scrolls: target texts can be hundreds of lines (e.g.
+            BTR Action narratives), and without an internal scroll the
+            outer card's overflow-hidden hides the rationale entirely. */}
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="px-4 py-3 space-y-3 border-b border-gray-100">
+            {[node.target, comparedPair.other].map((t) => (
+              <div key={t.id}>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
+                  <span>{getDocLabel(countryConfig, t.sourceDocument)}: {t.sourceLabel}</span>
+                  <OriginalLanguageChip target={t} />
+                </p>
+                <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
+                  <TargetTextWithHighlights target={t} />
+                </p>
+                <ActivitiesActions target={t} />
+              </div>
+            ))}
           </div>
-        )}
+
+          {comparedPair.result.description && (
+            <div className="px-4 py-3">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
+                AI Rationale
+              </p>
+              <p className="text-xs text-[var(--undp-black)] leading-relaxed">
+                {comparedPair.result.description}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -798,6 +803,7 @@ function PairRow({
 interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
+  filter: AlignFilter;
   onSelectTarget: (id: string) => void;
   onSelectPair: (targetAId: string, targetBId: string) => void;
   onAsk: (query: string) => void;
@@ -956,34 +962,74 @@ function ChatBar({
   );
 }
 
-function EmptyPanel({
+// ─── Browseable stats: shared hook + list view ──────────────────────
+//
+// Shared between EmptyPanel (idle, scoped to all visible items) and
+// CategoryPanel (focal-category-scoped). Clicking a stat tile opens a
+// full list of items in that category and tells the parent to align
+// the wheel filter with the view intent so the visualisation reflects
+// what the user is browsing.
+
+/**
+ * Stat-browsing engine: state + sorted lists for the three list views.
+ * The big sorted lists are gated on the active `statView` so the
+ * default overview render stays cheap.
+ */
+function useStatBrowsing({
   targets,
   alignment,
-  onSelectTarget,
-  onSelectPair,
-  onAsk,
-  chat,
-  searchAllDocs,
-  onToggleSearchAll,
+  filter,
   onSetFilter,
-  countryConfig,
-}: EmptyPanelProps) {
-  // Stats are interactive: clicking a stat sets the wheel filter AND swaps
-  // the middle section to a full list of that kind of item (targets, strong
-  // alignment pairs, or contradiction pairs). Clicking the same stat again
-  // closes the list and returns to the overview ranking layout.
+}: {
+  targets: Target[];
+  alignment: AlignmentResult[];
+  filter: AlignFilter;
+  onSetFilter: (filter: AlignFilter) => void;
+}) {
   const [statView, setStatView] = useState<StatView>("overview");
-  const toggleStatView = (view: StatView, filter: AlignFilter) => {
-    onSetFilter(filter);
-    setStatView((prev) => (prev === view ? "overview" : view));
-  };
-  // Compute totals from the alignment set we're already iterating below —
-  // this keeps the headline numbers aligned with the wheel's current filter
-  // rather than diverging from the rankings underneath. Alignments and
-  // contradictions are mutually exclusive in this count so the AT A GLANCE
-  // numbers match the header summary ("X strong alignments and Y
-  // contradictions") rather than double-counting contradictions as
-  // alignments.
+  // Remember the wheel filter that was active before the user opened a
+  // stat view, so closing the view restores their prior selection
+  // instead of leaving the wheel locked to the stat's filter intent.
+  // Held in a ref because we only need its value when transitioning,
+  // not on every render.
+  const previousFilterRef = useRef<AlignFilter | null>(null);
+
+  const toggleStatView = useCallback(
+    (view: StatView, viewFilter: AlignFilter) => {
+      if (statView === view) {
+        // Toggling the active view off: restore the prior filter.
+        if (previousFilterRef.current !== null) {
+          onSetFilter(previousFilterRef.current);
+          previousFilterRef.current = null;
+        }
+        setStatView("overview");
+        return;
+      }
+      if (statView === "overview") {
+        // Entering a stat view from overview: capture the current
+        // filter so we can put it back on close.
+        previousFilterRef.current = filter;
+      }
+      // Either entering or switching between stat views: apply the
+      // new view's filter intent.
+      onSetFilter(viewFilter);
+      setStatView(view);
+    },
+    [statView, filter, onSetFilter],
+  );
+
+  const closeStatView = useCallback(() => {
+    if (statView === "overview") return;
+    if (previousFilterRef.current !== null) {
+      onSetFilter(previousFilterRef.current);
+      previousFilterRef.current = null;
+    }
+    setStatView("overview");
+  }, [statView, onSetFilter]);
+
+  // Totals are mutually exclusive (contradictions excluded from
+  // alignments) so the headline numbers match the document-level
+  // summary instead of double-counting.
   const { totalAligned, totalContra } = useMemo(() => {
     let a = 0;
     let c = 0;
@@ -994,47 +1040,29 @@ function EmptyPanel({
     }
     return { totalAligned: a, totalContra: c };
   }, [alignment]);
+
   const targetMap = useMemo(
     () => new Map(targets.map((t) => [t.id, t])),
     [targets],
   );
 
-  // Two complementary rankings: targets with the most strong (high) alignments
-  // and targets with the most potential conflicts. Counting medium/low edges
-  // would let "broadly mentioned" targets dominate the alignment column for
-  // reasons that aren't really about coherence — strong-only keeps the signal
-  // tight. Both metrics use the wheel's current alignment subset so numbers
-  // match what's drawn.
-  const { connRanks, tensRanks } = useMemo(() => {
-    const connCounts = new Map<string, number>();
-    const tensCounts = new Map<string, number>();
+  // Per-target degree counts inside the current scope, used by the
+  // pair-list sort to put hub pairs first.
+  const { highDegree, tensionDegree } = useMemo(() => {
+    const hi = new Map<string, number>();
+    const te = new Map<string, number>();
     for (const a of alignment) {
       if (a.alignment === "high") {
-        connCounts.set(a.targetAId, (connCounts.get(a.targetAId) ?? 0) + 1);
-        connCounts.set(a.targetBId, (connCounts.get(a.targetBId) ?? 0) + 1);
+        hi.set(a.targetAId, (hi.get(a.targetAId) ?? 0) + 1);
+        hi.set(a.targetBId, (hi.get(a.targetBId) ?? 0) + 1);
       } else if (isContradiction(a.alignment)) {
-        tensCounts.set(a.targetAId, (tensCounts.get(a.targetAId) ?? 0) + 1);
-        tensCounts.set(a.targetBId, (tensCounts.get(a.targetBId) ?? 0) + 1);
+        te.set(a.targetAId, (te.get(a.targetAId) ?? 0) + 1);
+        te.set(a.targetBId, (te.get(a.targetBId) ?? 0) + 1);
       }
     }
-    const toRanked = (m: Map<string, number>) =>
-      Array.from(m.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 6)
-        .map(([id, count]) => ({ target: targetMap.get(id), count }))
-        .filter((x): x is { target: Target; count: number } => !!x.target);
-    return {
-      connRanks: toRanked(connCounts),
-      tensRanks: toRanked(tensCounts),
-    };
-  }, [alignment, targetMap]);
+    return { highDegree: hi, tensionDegree: te };
+  }, [alignment]);
 
-  const connMax = connRanks[0]?.count ?? 1;
-  const tensMax = tensRanks[0]?.count ?? 1;
-
-  // Stat-view lists: only computed when the user has opened a stat view, so
-  // the default idle render stays cheap. Each list is sorted to put the most
-  // diagnostic items first.
   const allTargetsRanked = useMemo(() => {
     if (statView !== "targets") return [];
     const counts = new Map<string, number>();
@@ -1055,28 +1083,10 @@ function EmptyPanel({
       });
   }, [statView, alignment, targets]);
 
-  // Per-target degree counts: how many strong alignments / contradictions
-  // each target is involved in within the current view. Used to weight pairs
-  // in the list views so pairs touching "hub" targets surface first.
-  const { highDegree, tensionDegree } = useMemo(() => {
-    const hi = new Map<string, number>();
-    const te = new Map<string, number>();
-    for (const a of alignment) {
-      if (a.alignment === "high") {
-        hi.set(a.targetAId, (hi.get(a.targetAId) ?? 0) + 1);
-        hi.set(a.targetBId, (hi.get(a.targetBId) ?? 0) + 1);
-      } else if (isContradiction(a.alignment)) {
-        te.set(a.targetAId, (te.get(a.targetAId) ?? 0) + 1);
-        te.set(a.targetBId, (te.get(a.targetBId) ?? 0) + 1);
-      }
-    }
-    return { highDegree: hi, tensionDegree: te };
-  }, [alignment]);
-
-  // Sort by max-endpoint degree first (groups all of a hub's pairs together,
-  // so the most-aligned/most-conflicted target's full set of pairs reads as
-  // a block) then by the partner's degree (within a hub, pairs touching
-  // another well-connected target rank above pairs touching a leaf).
+  // Sort pairs by max-endpoint degree first (groups all of a hub's
+  // pairs together) then by partner degree (within a hub, pairs
+  // touching another well-connected target rank above pairs touching
+  // a leaf).
   const allAlignmentPairs = useMemo(() => {
     if (statView !== "alignments") return [];
     return alignment
@@ -1136,9 +1146,8 @@ function EmptyPanel({
 
   const allTargetsMax = allTargetsRanked[0]?.count ?? 1;
 
-  // Group targets by source document for the targets list view. Each doc
-  // group renders as a collapsible section so 60+ targets don't all flood
-  // the panel at once — users expand the docs they care about.
+  // Group ranked targets by source document so 60+ items don't flood
+  // the panel; each doc group renders as a collapsible section.
   const targetsByDoc = useMemo(() => {
     if (statView !== "targets") return [];
     const groups = new Map<string, { target: Target; count: number }[]>();
@@ -1154,10 +1163,252 @@ function EmptyPanel({
         items,
         totalCount: items.reduce((s, i) => s + i.count, 0),
       }))
-      // Order by total alignment count across the doc desc so the most
-      // active documents sit at the top.
       .sort((a, b) => b.totalCount - a.totalCount);
   }, [statView, allTargetsRanked]);
+
+  return {
+    statView,
+    setStatView,
+    toggleStatView,
+    closeStatView,
+    totalAligned,
+    totalContra,
+    targetMap,
+    highDegree,
+    tensionDegree,
+    allTargetsRanked,
+    allAlignmentPairs,
+    allTensionPairs,
+    targetsByDoc,
+    allTargetsMax,
+  };
+}
+
+type StatBrowsingHook = ReturnType<typeof useStatBrowsing>;
+
+/**
+ * Renders the active stat-view list (targets / alignments / tensions).
+ * Returns `null` when the panel is in "overview" mode; callers render
+ * their own overview content in that case. `getTarget` lets the
+ * CategoryPanel resolve partner targets that sit outside the focal
+ * category. The hook's internal `targetMap` only knows about in-scope
+ * targets, so cross-category partners would otherwise fail to render.
+ */
+function StatBrowseView({
+  stat,
+  onSelectTarget,
+  onSelectPair,
+  getTarget,
+  countryConfig,
+}: {
+  stat: StatBrowsingHook;
+  onSelectTarget: (id: string) => void;
+  onSelectPair: (targetAId: string, targetBId: string) => void;
+  getTarget: (id: string) => Target | undefined;
+  countryConfig?: CountryConfig | null;
+}) {
+  const {
+    statView,
+    closeStatView,
+    allTargetsRanked,
+    allAlignmentPairs,
+    allTensionPairs,
+    targetsByDoc,
+    allTargetsMax,
+    highDegree,
+    tensionDegree,
+  } = stat;
+
+  if (statView === "targets") {
+    return (
+      <StatListSection
+        title={`All targets · ${allTargetsRanked.length}`}
+        onClose={closeStatView}
+        empty="No targets in this view."
+        isEmpty={allTargetsRanked.length === 0}
+      >
+        <div className="space-y-1">
+          {targetsByDoc.map(({ doc, items }) => {
+            const color = getDocColor(countryConfig, doc);
+            const label = getDocLabel(countryConfig, doc);
+            return (
+              <details key={doc} className="group">
+                <summary className="list-none cursor-pointer flex items-center gap-2 py-1.5 px-1 rounded hover:bg-gray-50 transition-colors select-none">
+                  <svg
+                    width="8"
+                    height="8"
+                    viewBox="0 0 8 8"
+                    className="transition-transform group-open:rotate-90 text-[var(--undp-gray)] shrink-0"
+                  >
+                    <path
+                      d="M2 1l4 3-4 3"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="text-[11px] font-semibold text-[var(--undp-black)]">
+                    {label}
+                  </span>
+                  <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
+                    · {items.length} target{items.length !== 1 ? "s" : ""}
+                  </span>
+                </summary>
+                <ul className="space-y-0.5 pl-4 mt-1 mb-2">
+                  {items.map(({ target, count }) => (
+                    <BarRow
+                      key={target.id}
+                      target={target}
+                      count={count}
+                      max={allTargetsMax}
+                      onClick={() => onSelectTarget(target.id)}
+                      countryConfig={countryConfig}
+                      tone="neutral"
+                    />
+                  ))}
+                </ul>
+              </details>
+            );
+          })}
+        </div>
+      </StatListSection>
+    );
+  }
+
+  if (statView === "alignments") {
+    return (
+      <StatListSection
+        title={`All alignments · ${allAlignmentPairs.length}`}
+        onClose={closeStatView}
+        empty="No strong alignments in this view."
+        isEmpty={allAlignmentPairs.length === 0}
+      >
+        <ul className="space-y-0.5">
+          {allAlignmentPairs.map((p) => {
+            // Higher-degree endpoint on top so the hub target is what
+            // the eye lands on first.
+            const degA = highDegree.get(p.targetAId) ?? 0;
+            const degB = highDegree.get(p.targetBId) ?? 0;
+            const [firstId, secondId] =
+              degA >= degB
+                ? [p.targetAId, p.targetBId]
+                : [p.targetBId, p.targetAId];
+            const tFirst = getTarget(firstId);
+            const tSecond = getTarget(secondId);
+            if (!tFirst || !tSecond) return null;
+            return (
+              <PairRow
+                key={`a-${p.targetAId}-${p.targetBId}`}
+                a={tFirst}
+                b={tSecond}
+                level={p.alignment}
+                onClick={() => onSelectPair(firstId, secondId)}
+                countryConfig={countryConfig}
+              />
+            );
+          })}
+        </ul>
+      </StatListSection>
+    );
+  }
+
+  if (statView === "tensions") {
+    return (
+      <StatListSection
+        title={`All tensions · ${allTensionPairs.length}`}
+        onClose={closeStatView}
+        empty="No tensions in this view."
+        isEmpty={allTensionPairs.length === 0}
+      >
+        <ul className="space-y-0.5">
+          {allTensionPairs.map((p) => {
+            const degA = tensionDegree.get(p.targetAId) ?? 0;
+            const degB = tensionDegree.get(p.targetBId) ?? 0;
+            const [firstId, secondId] =
+              degA >= degB
+                ? [p.targetAId, p.targetBId]
+                : [p.targetBId, p.targetAId];
+            const tFirst = getTarget(firstId);
+            const tSecond = getTarget(secondId);
+            if (!tFirst || !tSecond) return null;
+            return (
+              <PairRow
+                key={`t-${p.targetAId}-${p.targetBId}`}
+                a={tFirst}
+                b={tSecond}
+                level={p.alignment}
+                onClick={() => onSelectPair(firstId, secondId)}
+                countryConfig={countryConfig}
+              />
+            );
+          })}
+        </ul>
+      </StatListSection>
+    );
+  }
+
+  return null;
+}
+
+function EmptyPanel({
+  targets,
+  alignment,
+  filter,
+  onSelectTarget,
+  onSelectPair,
+  onAsk,
+  chat,
+  searchAllDocs,
+  onToggleSearchAll,
+  onSetFilter,
+  countryConfig,
+}: EmptyPanelProps) {
+  // Stats are interactive: clicking a stat sets the wheel filter AND swaps
+  // the middle section to a full list of that kind of item (targets, strong
+  // alignment pairs, or contradiction pairs). Clicking the same stat again
+  // closes the list and restores the user's prior filter selection.
+  const stat = useStatBrowsing({ targets, alignment, filter, onSetFilter });
+  const { statView, toggleStatView, totalAligned, totalContra, targetMap } =
+    stat;
+
+  // Overview-only rankings (not surfaced by the stat-view lists): the six
+  // most-aligned and six most-conflicted targets. Counting medium/low
+  // edges would let "broadly mentioned" targets dominate the alignment
+  // column for reasons that aren't really about coherence — strong-only
+  // keeps the signal tight. Both metrics use the wheel's current
+  // alignment subset so numbers match what's drawn.
+  const { connRanks, tensRanks } = useMemo(() => {
+    const connCounts = new Map<string, number>();
+    const tensCounts = new Map<string, number>();
+    for (const a of alignment) {
+      if (a.alignment === "high") {
+        connCounts.set(a.targetAId, (connCounts.get(a.targetAId) ?? 0) + 1);
+        connCounts.set(a.targetBId, (connCounts.get(a.targetBId) ?? 0) + 1);
+      } else if (isContradiction(a.alignment)) {
+        tensCounts.set(a.targetAId, (tensCounts.get(a.targetAId) ?? 0) + 1);
+        tensCounts.set(a.targetBId, (tensCounts.get(a.targetBId) ?? 0) + 1);
+      }
+    }
+    const toRanked = (m: Map<string, number>) =>
+      Array.from(m.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([id, count]) => ({ target: targetMap.get(id), count }))
+        .filter((x): x is { target: Target; count: number } => !!x.target);
+    return {
+      connRanks: toRanked(connCounts),
+      tensRanks: toRanked(tensCounts),
+    };
+  }, [alignment, targetMap]);
+
+  const connMax = connRanks[0]?.count ?? 1;
+  const tensMax = tensRanks[0]?.count ?? 1;
 
   return (
     <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
@@ -1193,7 +1444,7 @@ function EmptyPanel({
           </div>
         </div>
 
-        {statView === "overview" && (
+        {statView === "overview" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <Section title="Strongest alignments">
               {connRanks.length > 0 ? (
@@ -1238,134 +1489,14 @@ function EmptyPanel({
               )}
             </Section>
           </div>
-        )}
-
-        {statView === "targets" && (
-          <StatListSection
-            title={`All targets · ${allTargetsRanked.length}`}
-            onClose={() => setStatView("overview")}
-            empty="No targets in the current view."
-            isEmpty={allTargetsRanked.length === 0}
-          >
-            <div className="space-y-1">
-              {targetsByDoc.map(({ doc, items }) => {
-                const color = getDocColor(countryConfig, doc);
-                const label = getDocLabel(countryConfig, doc);
-                return (
-                  <details key={doc} className="group">
-                    <summary className="list-none cursor-pointer flex items-center gap-2 py-1.5 px-1 rounded hover:bg-gray-50 transition-colors select-none">
-                      <svg
-                        width="8"
-                        height="8"
-                        viewBox="0 0 8 8"
-                        className="transition-transform group-open:rotate-90 text-[var(--undp-gray)] shrink-0"
-                      >
-                        <path
-                          d="M2 1l4 3-4 3"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <span
-                        className="w-2 h-2 rounded-full shrink-0"
-                        style={{ backgroundColor: color }}
-                      />
-                      <span className="text-[11px] font-semibold text-[var(--undp-black)]">
-                        {label}
-                      </span>
-                      <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
-                        · {items.length} target{items.length !== 1 ? "s" : ""}
-                      </span>
-                    </summary>
-                    <ul className="space-y-0.5 pl-4 mt-1 mb-2">
-                      {items.map(({ target, count }) => (
-                        <BarRow
-                          key={target.id}
-                          target={target}
-                          count={count}
-                          max={allTargetsMax}
-                          onClick={() => onSelectTarget(target.id)}
-                          countryConfig={countryConfig}
-                          tone="neutral"
-                        />
-                      ))}
-                    </ul>
-                  </details>
-                );
-              })}
-            </div>
-          </StatListSection>
-        )}
-
-        {statView === "alignments" && (
-          <StatListSection
-            title={`All alignments · ${allAlignmentPairs.length}`}
-            onClose={() => setStatView("overview")}
-            empty="No strong alignments in the current view."
-            isEmpty={allAlignmentPairs.length === 0}
-          >
-            <ul className="space-y-0.5">
-              {allAlignmentPairs.map((p) => {
-                // Display the higher-degree endpoint on top of the pair so
-                // the hub target is what the eye lands on first.
-                const degA = highDegree.get(p.targetAId) ?? 0;
-                const degB = highDegree.get(p.targetBId) ?? 0;
-                const [firstId, secondId] =
-                  degA >= degB
-                    ? [p.targetAId, p.targetBId]
-                    : [p.targetBId, p.targetAId];
-                const tFirst = targetMap.get(firstId);
-                const tSecond = targetMap.get(secondId);
-                if (!tFirst || !tSecond) return null;
-                return (
-                  <PairRow
-                    key={`a-${p.targetAId}-${p.targetBId}`}
-                    a={tFirst}
-                    b={tSecond}
-                    level={p.alignment}
-                    onClick={() => onSelectPair(firstId, secondId)}
-                    countryConfig={countryConfig}
-                  />
-                );
-              })}
-            </ul>
-          </StatListSection>
-        )}
-
-        {statView === "tensions" && (
-          <StatListSection
-            title={`All tensions · ${allTensionPairs.length}`}
-            onClose={() => setStatView("overview")}
-            empty="No tensions in the current view."
-            isEmpty={allTensionPairs.length === 0}
-          >
-            <ul className="space-y-0.5">
-              {allTensionPairs.map((p) => {
-                const degA = tensionDegree.get(p.targetAId) ?? 0;
-                const degB = tensionDegree.get(p.targetBId) ?? 0;
-                const [firstId, secondId] =
-                  degA >= degB
-                    ? [p.targetAId, p.targetBId]
-                    : [p.targetBId, p.targetAId];
-                const tFirst = targetMap.get(firstId);
-                const tSecond = targetMap.get(secondId);
-                if (!tFirst || !tSecond) return null;
-                return (
-                  <PairRow
-                    key={`t-${p.targetAId}-${p.targetBId}`}
-                    a={tFirst}
-                    b={tSecond}
-                    level={p.alignment}
-                    onClick={() => onSelectPair(firstId, secondId)}
-                    countryConfig={countryConfig}
-                  />
-                );
-              })}
-            </ul>
-          </StatListSection>
+        ) : (
+          <StatBrowseView
+            stat={stat}
+            onSelectTarget={onSelectTarget}
+            onSelectPair={onSelectPair}
+            getTarget={(id) => targetMap.get(id)}
+            countryConfig={countryConfig}
+          />
         )}
 
         <ChatBar
@@ -1385,10 +1516,12 @@ interface CategoryPanelProps {
   nodes: NodePos[];
   arcs: GroupArc[];
   alignment: AlignmentResult[];
+  filter: AlignFilter;
   onClose: () => void;
   onSelectTarget: (id: string) => void;
   onSelectPair: (targetAId: string, targetBId: string) => void;
   onSelectCategory: (id: string) => void;
+  onSetFilter: (filter: AlignFilter) => void;
   countryConfig?: CountryConfig | null;
 }
 
@@ -1397,10 +1530,12 @@ function CategoryPanel({
   nodes,
   arcs,
   alignment,
+  filter,
   onClose,
   onSelectTarget,
   onSelectPair,
   onSelectCategory,
+  onSetFilter,
   countryConfig,
 }: CategoryPanelProps) {
   const targetIdsInGroup = useMemo(
@@ -1410,6 +1545,10 @@ function CategoryPanel({
   const targetsInGroup = useMemo(
     () => nodes.filter((n) => n.groupId === group.id),
     [nodes, group.id],
+  );
+  const scopedTargets = useMemo(
+    () => targetsInGroup.map((n) => n.target),
+    [targetsInGroup],
   );
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
 
@@ -1424,12 +1563,18 @@ function CategoryPanel({
     [alignment, targetIdsInGroup],
   );
 
-  // Alignments and contradictions are mutually exclusive in the panel
-  // headers so the totals don't double-count contradictions as alignments.
-  const totalContra = involvedAlignments.filter((a) =>
-    isContradiction(a.alignment),
-  ).length;
-  const totalAligned = involvedAlignments.length - totalContra;
+  // Browseable stats engine, scoped to this category. Same UX as the
+  // idle panel: clicking a stat tile sets the wheel filter to match
+  // the view intent and replaces the overview with a full list. The
+  // `getTarget` callback below resolves cross-category partner targets
+  // that don't sit in `scopedTargets`.
+  const stat = useStatBrowsing({
+    targets: scopedTargets,
+    alignment: involvedAlignments,
+    filter,
+    onSetFilter,
+  });
+  const { statView, toggleStatView, totalAligned, totalContra } = stat;
 
   const partnerCounts = useMemo(() => {
     const counts = new Map<string, { synergy: number; tension: number }>();
@@ -1473,31 +1618,6 @@ function CategoryPanel({
     [partnerCounts, arcMap],
   );
 
-  // Group targets by their source document. Within a single category,
-  // ranking targets by connection count is misleading — broadly-mentioned
-  // targets dominate without being meaningfully more central. Grouping by
-  // document gives a structural view (whose plan contains what) and the
-  // colour stripe per group ties each block back to the wheel's doc colours.
-  const targetsByDoc = useMemo(() => {
-    const map = new Map<string, NodePos[]>();
-    for (const node of targetsInGroup) {
-      const list = map.get(node.target.sourceDocument) ?? [];
-      list.push(node);
-      map.set(node.target.sourceDocument, list);
-    }
-    for (const list of map.values()) {
-      list.sort((a, b) =>
-        a.target.sourceLabel.localeCompare(b.target.sourceLabel, undefined, {
-          numeric: true,
-        }),
-      );
-    }
-    return Array.from(map.entries()).sort(
-      ([a], [b]) =>
-        getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
-    );
-  }, [targetsInGroup, countryConfig]);
-
   // Pair listings — what the user usually came here for. Keep contradictions
   // and high alignments separate so each can be hidden when its filter is
   // off (the involvedAlignments arg is already filter-aware).
@@ -1525,7 +1645,7 @@ function CategoryPanel({
 
   return (
     <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
-      {/* Pinned header with stats so the target list owns the scroll. */}
+      {/* Pinned header with stats so the body owns the scroll. */}
       <div className="p-5 pb-4 shrink-0 border-b border-gray-100">
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-2 min-w-0">
@@ -1547,220 +1667,212 @@ function CategoryPanel({
           </button>
         </div>
         <div className="grid grid-cols-3 gap-4">
-          <Stat label="Targets" value={group.count} />
-          <Stat label="Alignments" value={totalAligned} />
-          <Stat label="Potential tensions" value={totalContra} accent="red" />
+          <Stat
+            label="Targets"
+            value={group.count}
+            onClick={() => toggleStatView("targets", "all")}
+            title="Browse all targets in this category"
+            active={statView === "targets"}
+          />
+          <Stat
+            label="Alignments"
+            value={totalAligned}
+            accent="green"
+            onClick={() => toggleStatView("alignments", "high")}
+            title="Browse all strong alignment pairs in this category"
+            active={statView === "alignments"}
+          />
+          <Stat
+            label="Potential tensions"
+            value={totalContra}
+            accent="red"
+            onClick={() => toggleStatView("tensions", "contradictions")}
+            title="Browse all contradiction pairs in this category"
+            active={statView === "tensions"}
+          />
         </div>
       </div>
 
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
-        {/* Flat 2×2 grid so both rows align across columns: row 1 = partner
-            overviews, row 2 = per-target pair lists. The grid auto-sizes each
-            row to the taller cell, which keeps the pair-list headers level
-            even when one column has more partner entries than the other.
-            Tone is consistent within a column (red on the left, green on the
-            right). Falls back to a single column on narrow viewports. */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-6">
-          <div>
-            <Section title="Tensions with other categories">
-              {topTensionPartners.length > 0 ? (
-                <ul className="space-y-0.5">
-                  {topTensionPartners.map(({ arc, count }) => (
-                    <li key={arc.id}>
-                      <button
-                        type="button"
-                        onClick={() => onSelectCategory(arc.id)}
-                        title={arc.label}
-                        className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ backgroundColor: arc.color }}
-                        />
-                        <span className="text-[var(--undp-black)] truncate flex-1">
-                          {arc.label}
-                        </span>
-                        <span className="text-red-700 tabular-nums">
-                          {count}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                  No tensions with other categories.
-                </p>
-              )}
-            </Section>
-          </div>
-          <div>
-            <Section title="Aligns with other categories">
-              {topSynergyPartners.length > 0 ? (
-                <ul className="space-y-0.5">
-                  {topSynergyPartners.map(({ arc, count }) => (
-                    <li key={arc.id}>
-                      <button
-                        type="button"
-                        onClick={() => onSelectCategory(arc.id)}
-                        title={arc.label}
-                        className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ backgroundColor: arc.color }}
-                        />
-                        <span className="text-[var(--undp-black)] truncate flex-1">
-                          {arc.label}
-                        </span>
-                        <span className="text-[var(--undp-gray)] tabular-nums">
-                          {count}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                  No alignments with other categories.
-                </p>
-              )}
-            </Section>
-          </div>
-          <div>
-            <Section
-              title={
-                contradictionPairs.length > 0
-                  ? `Top conflicts · ${contradictionPairs.length}`
-                  : "Top conflicts"
-              }
-            >
-              {contradictionPairs.length > 0 ? (
-                <>
+        {statView === "overview" ? (
+          /* Flat 2×2 grid so both rows align across columns: row 1 =
+             partner overviews, row 2 = per-target pair lists. The grid
+             auto-sizes each row to the taller cell, which keeps the
+             pair-list headers level even when one column has more
+             partner entries than the other. Tone is consistent within a
+             column (red on the left, green on the right). Falls back to
+             a single column on narrow viewports. */
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-6">
+            <div>
+              <Section title="Tensions with other categories">
+                {topTensionPartners.length > 0 ? (
                   <ul className="space-y-0.5">
-                    {contradictionPairs.slice(0, 6).map((p) => {
-                      const tA = nodeMap.get(p.targetAId)?.target;
-                      const tB = nodeMap.get(p.targetBId)?.target;
-                      if (!tA || !tB) return null;
-                      return (
-                        <PairRow
-                          key={`c-${p.targetAId}-${p.targetBId}`}
-                          a={tA}
-                          b={tB}
-                          level={p.alignment}
-                          onClick={() => onSelectPair(p.targetAId, p.targetBId)}
-                          countryConfig={countryConfig}
-                        />
-                      );
-                    })}
-                  </ul>
-                  {contradictionPairs.length > 6 && (
-                    <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
-                      + {contradictionPairs.length - 6} more
-                    </p>
-                  )}
-                </>
-              ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                  No conflicts in this category.
-                </p>
-              )}
-            </Section>
-          </div>
-          <div>
-            <Section
-              title={
-                alignmentPairs.length > 0
-                  ? `Strongest alignments · ${alignmentPairs.length}`
-                  : "Strongest alignments"
-              }
-            >
-              {alignmentPairs.length > 0 ? (
-                <>
-                  <ul className="space-y-0.5">
-                    {alignmentPairs.slice(0, 6).map((p) => {
-                      const tA = nodeMap.get(p.targetAId)?.target;
-                      const tB = nodeMap.get(p.targetBId)?.target;
-                      if (!tA || !tB) return null;
-                      return (
-                        <PairRow
-                          key={`a-${p.targetAId}-${p.targetBId}`}
-                          a={tA}
-                          b={tB}
-                          level={p.alignment}
-                          onClick={() => onSelectPair(p.targetAId, p.targetBId)}
-                          countryConfig={countryConfig}
-                        />
-                      );
-                    })}
-                  </ul>
-                  {alignmentPairs.length > 6 && (
-                    <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
-                      + {alignmentPairs.length - 6} more
-                    </p>
-                  )}
-                </>
-              ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                  No strong alignments in this category.
-                </p>
-              )}
-            </Section>
-          </div>
-        </div>
-
-
-        {/* Targets folded behind a disclosure — useful when a category has
-            many targets (e.g. 20 in NBSAP) where a flat list adds noise. */}
-        <details className="group">
-          <summary className="list-none cursor-pointer flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors select-none">
-            <svg
-              width="8"
-              height="8"
-              viewBox="0 0 8 8"
-              className="transition-transform group-open:rotate-90"
-            >
-              <path d="M2 1l4 3-4 3" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            All targets · {targetsInGroup.length}
-          </summary>
-          <div className="space-y-3 mt-2">
-            {targetsByDoc.map(([docId, list]) => {
-              const color = getDocColor(countryConfig, docId);
-              return (
-                <div
-                  key={docId}
-                  className="border-l-2 pl-3"
-                  style={{ borderColor: color }}
-                >
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
-                    <span style={{ color }}>
-                      {getDocLabel(countryConfig, docId)}
-                    </span>
-                    <span className="text-[var(--undp-gray)]">·</span>
-                    <span className="tabular-nums text-[var(--undp-gray)]">
-                      {list.length}
-                    </span>
-                  </p>
-                  <ul>
-                    {list.map((node) => (
-                      <li key={node.id}>
+                    {topTensionPartners.map(({ arc, count }) => (
+                      <li key={arc.id}>
                         <button
                           type="button"
-                          onClick={() => onSelectTarget(node.id)}
-                          className="w-full text-left text-[11px] text-[var(--undp-black)] py-1 -ml-1 px-1 rounded hover:bg-gray-50 transition-colors block truncate"
-                          title={node.target.text}
+                          onClick={() => onSelectCategory(arc.id)}
+                          title={arc.label}
+                          className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
                         >
-                          {node.target.sourceLabel}
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: arc.color }}
+                          />
+                          <span className="text-[var(--undp-black)] truncate flex-1">
+                            {arc.label}
+                          </span>
+                          <span className="text-red-700 tabular-nums">
+                            {count}
+                          </span>
                         </button>
                       </li>
                     ))}
                   </ul>
-                </div>
-              );
-            })}
+                ) : (
+                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                    No tensions with other categories.
+                  </p>
+                )}
+              </Section>
+            </div>
+            <div>
+              <Section title="Aligns with other categories">
+                {topSynergyPartners.length > 0 ? (
+                  <ul className="space-y-0.5">
+                    {topSynergyPartners.map(({ arc, count }) => (
+                      <li key={arc.id}>
+                        <button
+                          type="button"
+                          onClick={() => onSelectCategory(arc.id)}
+                          title={arc.label}
+                          className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: arc.color }}
+                          />
+                          <span className="text-[var(--undp-black)] truncate flex-1">
+                            {arc.label}
+                          </span>
+                          <span className="text-[var(--undp-gray)] tabular-nums">
+                            {count}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                    No alignments with other categories.
+                  </p>
+                )}
+              </Section>
+            </div>
+            <div>
+              <Section
+                title={
+                  contradictionPairs.length > 0
+                    ? `Top conflicts · ${contradictionPairs.length}`
+                    : "Top conflicts"
+                }
+              >
+                {contradictionPairs.length > 0 ? (
+                  <>
+                    <ul className="space-y-0.5">
+                      {contradictionPairs.slice(0, 6).map((p) => {
+                        const tA = nodeMap.get(p.targetAId)?.target;
+                        const tB = nodeMap.get(p.targetBId)?.target;
+                        if (!tA || !tB) return null;
+                        return (
+                          <PairRow
+                            key={`c-${p.targetAId}-${p.targetBId}`}
+                            a={tA}
+                            b={tB}
+                            level={p.alignment}
+                            onClick={() =>
+                              onSelectPair(p.targetAId, p.targetBId)
+                            }
+                            countryConfig={countryConfig}
+                          />
+                        );
+                      })}
+                    </ul>
+                    {contradictionPairs.length > 6 && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          toggleStatView("tensions", "contradictions")
+                        }
+                        className="text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
+                      >
+                        + {contradictionPairs.length - 6} more
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                    No conflicts in this category.
+                  </p>
+                )}
+              </Section>
+            </div>
+            <div>
+              <Section
+                title={
+                  alignmentPairs.length > 0
+                    ? `Strongest alignments · ${alignmentPairs.length}`
+                    : "Strongest alignments"
+                }
+              >
+                {alignmentPairs.length > 0 ? (
+                  <>
+                    <ul className="space-y-0.5">
+                      {alignmentPairs.slice(0, 6).map((p) => {
+                        const tA = nodeMap.get(p.targetAId)?.target;
+                        const tB = nodeMap.get(p.targetBId)?.target;
+                        if (!tA || !tB) return null;
+                        return (
+                          <PairRow
+                            key={`a-${p.targetAId}-${p.targetBId}`}
+                            a={tA}
+                            b={tB}
+                            level={p.alignment}
+                            onClick={() =>
+                              onSelectPair(p.targetAId, p.targetBId)
+                            }
+                            countryConfig={countryConfig}
+                          />
+                        );
+                      })}
+                    </ul>
+                    {alignmentPairs.length > 6 && (
+                      <button
+                        type="button"
+                        onClick={() => toggleStatView("alignments", "high")}
+                        className="text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
+                      >
+                        + {alignmentPairs.length - 6} more
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                    No strong alignments in this category.
+                  </p>
+                )}
+              </Section>
+            </div>
           </div>
-        </details>
+        ) : (
+          <StatBrowseView
+            stat={stat}
+            onSelectTarget={onSelectTarget}
+            onSelectPair={onSelectPair}
+            getTarget={(id) => nodeMap.get(id)?.target}
+            countryConfig={countryConfig}
+          />
+        )}
       </div>
     </div>
   );
@@ -3146,16 +3258,19 @@ export function PolicyCoherenceExplorer({
                 nodes={nodes}
                 arcs={arcs}
                 alignment={filtered}
+                filter={filter}
                 onClose={closeCategory}
                 onSelectTarget={handleNodeClick}
                 onSelectPair={handleSelectPair}
                 onSelectCategory={handleArcClick}
+                onSetFilter={setFilter}
                 countryConfig={countryConfig}
               />
             ) : (
               <EmptyPanel
                 targets={visibleTargets}
                 alignment={filtered}
+                filter={filter}
                 onSelectTarget={handleNodeClick}
                 onSelectPair={handleSelectPair}
                 onAsk={handleAsk}
