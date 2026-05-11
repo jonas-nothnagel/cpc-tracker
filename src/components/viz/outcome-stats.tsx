@@ -74,21 +74,42 @@ interface OutcomeStatsProps {
   quantitativeTargets: Target[];
   timeBoundTargets: Target[];
   totalTargets: number;
-  /** Third tile: dynamic based on active view (NBS / IPCC / Themes) */
-  mappedTargets?: { count: number; label: string };
+  /**
+   * Third tile: category coverage for the active taxonomy view. `primary` is
+   * the headline value (e.g. "4 of 7"); `secondary` replaces the "of targets"
+   * footer to carry the classification-completeness sub-stat.
+   */
+  coverageStat?: { primary: string; secondary: string; label: string };
   countryConfig?: CountryConfig | null;
+}
+
+function CoverageStatCard({
+  primary, secondary, label,
+}: { primary: string; secondary: string; label: string }) {
+  return (
+    <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-5 w-full">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+        {label}
+      </p>
+      <p className="text-3xl font-medium text-[var(--undp-blue)] tabular-nums mt-1">
+        {primary}
+      </p>
+      <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+        {secondary}
+      </p>
+    </div>
+  );
 }
 
 export function OutcomeStats({
   quantitativeTargets,
   timeBoundTargets,
   totalTargets,
-  mappedTargets,
+  coverageStat,
   countryConfig,
 }: OutcomeStatsProps) {
   const quantitativePct = Math.round((quantitativeTargets.length / totalTargets) * 100);
   const timeBoundPct = Math.round((timeBoundTargets.length / totalTargets) * 100);
-  const mappedPct = mappedTargets ? Math.round((mappedTargets.count / totalTargets) * 100) : null;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -104,12 +125,11 @@ export function OutcomeStats({
         targets={timeBoundTargets}
         countryConfig={countryConfig}
       />
-      {mappedPct !== null && mappedTargets && (
-        <OutcomeStatCard
-          percentage={mappedPct}
-          label={mappedTargets.label}
-          targets={[]}
-          countryConfig={countryConfig}
+      {coverageStat && (
+        <CoverageStatCard
+          primary={coverageStat.primary}
+          secondary={coverageStat.secondary}
+          label={coverageStat.label}
         />
       )}
     </div>
