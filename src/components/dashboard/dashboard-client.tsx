@@ -86,12 +86,15 @@ function normalizeSector(t: Record<string, unknown>): IpccSector {
 type ClassificationView = "sector" | "globe";
 
 function ClassificationSection({
-  targets, documentTypes, sectorSorted, globeSorted,
+  targets, policyTargets,
+  documentTypes, sectorSorted, globeSorted,
   sectorClassifications, globeClassifications,
   targetsWithSectors, targetsWithGlobe,
+  sectorCategoriesUsed, globeCategoriesUsed,
   sectors, globeCategories, countryConfig,
 }: {
   targets: Target[];
+  policyTargets: Target[];
   documentTypes: PolicyDocumentType[];
   sectorSorted: ReturnType<typeof countByCategory>;
   globeSorted: ReturnType<typeof countByCategory>;
@@ -99,6 +102,8 @@ function ClassificationSection({
   globeClassifications: ThematicClassification[];
   targetsWithSectors: number;
   targetsWithGlobe: number;
+  sectorCategoriesUsed: number;
+  globeCategoriesUsed: number;
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
   countryConfig: CountryConfig | null;
@@ -114,15 +119,29 @@ function ClassificationSection({
 
   const [view, setView] = useState<ClassificationView>(viewOptions[0]?.value ?? "sector");
 
-  const mappedTargetsByView: Record<ClassificationView, { count: number; label: string }> = {
-    sector: { count: targetsWithSectors, label: `Mapped to Climate Mitigation categories (${sectors.length})` },
-    globe: { count: targetsWithGlobe, label: `Mapped to Biodiversity categories (${globeCategories.length})` },
+  const policyCount = policyTargets.length;
+  const pct = (n: number) => policyCount > 0 ? Math.round((n / policyCount) * 100) : 0;
+
+  // Third stat card: how many taxonomy categories actually received a policy
+  // target (the chart's empty rows make the gap visible — the stat names it).
+  // Sub-line shows classification completeness (% of targets that got a
+  // primary classification, normally 100% for sector, can be lower for globe).
+  const coverageByView: Record<ClassificationView, { primary: string; secondary: string; label: string }> = {
+    sector: {
+      primary: `${sectorCategoriesUsed} of ${sectors.length}`,
+      secondary: `categories with policy targets · ${pct(targetsWithSectors)}% of policy targets classified`,
+      label: `Climate Mitigation category coverage`,
+    },
+    globe: {
+      primary: `${globeCategoriesUsed} of ${globeCategories.length}`,
+      secondary: `categories with policy targets · ${pct(targetsWithGlobe)}% of policy targets classified`,
+      label: `Biodiversity category coverage`,
+    },
   };
 
-  const pct = (n: number) => targets.length > 0 ? Math.round((n / targets.length) * 100) : 0;
   const viewSubtitles: Record<ClassificationView, string> = {
-    sector: `${targetsWithSectors} targets (${pct(targetsWithSectors)}%) classified across ${sectors.length} Climate Mitigation categories`,
-    globe: `${targetsWithGlobe} targets (${pct(targetsWithGlobe)}%) classified across ${globeCategories.length} Biodiversity categories`,
+    sector: `${targetsWithSectors} of ${policyCount} policy targets (${pct(targetsWithSectors)}%) classified into ${sectorCategoriesUsed} of ${sectors.length} Climate Mitigation categories.`,
+    globe: `${targetsWithGlobe} of ${policyCount} policy targets (${pct(targetsWithGlobe)}%) classified into ${globeCategoriesUsed} of ${globeCategories.length} Biodiversity categories.`,
   };
 
   return (
@@ -156,14 +175,14 @@ function ClassificationSection({
       </div>
 
       <p className="text-sm text-[var(--undp-gray)] mb-4">
-        {viewSubtitles[view]}. Click a segment to see which targets.
+        {viewSubtitles[view]} Click a segment to see which targets.
       </p>
 
       <OutcomeStats
-        quantitativeTargets={targets.filter((t) => t.isQuantitative)}
-        timeBoundTargets={targets.filter((t) => t.isTimeBound)}
-        totalTargets={targets.length}
-        mappedTargets={mappedTargetsByView[view]}
+        quantitativeTargets={policyTargets.filter((t) => t.isQuantitative)}
+        timeBoundTargets={policyTargets.filter((t) => t.isTimeBound)}
+        totalTargets={policyCount}
+        coverageStat={coverageByView[view]}
         countryConfig={countryConfig}
       />
 
@@ -317,9 +336,15 @@ export function DashboardClient({
 
   const targets = data.targets;
 
-  // Group targets by document type (dynamic). The chart splits BTR pseudo-
-  // targets into BTR mitigation and BTR adaptation stacks via `chartDocKey`,
-  // so we bucket by that synthetic key rather than `sourceDocument` directly.
+  // BTR pseudo-targets are reported implementation actions, not commitments.
+  // The chart shows them as separate stacks (purple = BTR Mitigation, magenta
+  // = BTR Adaptation) so policymakers can see where reported actions cluster
+  // relative to targets. The stats and "of targets" copy describe policy
+  // targets only.
+  const policyTargets = targets.filter((t) => t.sourceDocument !== "BTR");
+  const policyTargetIds = new Set(policyTargets.map((t) => t.id));
+
+  // Group all targets (including BTR) by document type for the chart legend.
   const targetsByDoc = new Map<string, Target[]>();
   for (const t of targets) {
     const key = chartDocKey(t);
@@ -328,34 +353,48 @@ export function DashboardClient({
     targetsByDoc.set(key, list);
   }
 
-  // Single-label classifications restricted to actual policy targets.
-  // Each policy target appears in exactly one category per taxonomy (the
-  // primary). The pipeline also writes primary records for BER/BTR/ADP
-  // pseudo-targets (consumed by Financing Coherence + Implementation
-  // Coverage), so filter those out here to avoid inflating policy-target
-  // coverage counts above 100%.
-  const policyTargetIds = new Set(targets.map((t) => t.id));
+  // Chart-feeding classifications include BTR pseudo-target classifications so
+  // BTR stacks render. The pipeline also writes primary records for BER pseudo-
+  // targets (consumed by Financing Coherence); filter those out by membership
+  // in the dashboard's `targets` list.
+  const allDashboardTargetIds = new Set(targets.map((t) => t.id));
   const sectorClassifications = data.classifications.filter(
     (c) =>
       c.taxonomyType === "sector" &&
       c.isPrimary === true &&
-      policyTargetIds.has(c.targetId)
+      allDashboardTargetIds.has(c.targetId)
   );
   const globeClassifications = data.classifications.filter(
     (c) =>
       c.taxonomyType === "globe" &&
       c.isPrimary === true &&
-      policyTargetIds.has(c.targetId)
+      allDashboardTargetIds.has(c.targetId)
   );
 
   const sectorCounts = countByCategory(targets, sectorClassifications, data.sectors, chartDocKey);
   const globeCounts = countByCategory(targets, globeClassifications, data.globeCategories, chartDocKey);
 
+  // Stats describe policy-target coverage — restrict to policy IDs.
+  const policySectorClassifications = sectorClassifications.filter((c) =>
+    policyTargetIds.has(c.targetId),
+  );
+  const policyGlobeClassifications = globeClassifications.filter((c) =>
+    policyTargetIds.has(c.targetId),
+  );
   const targetsWithSectors = new Set(
-    sectorClassifications.map((c) => c.targetId)
+    policySectorClassifications.map((c) => c.targetId),
   ).size;
   const targetsWithGlobe = new Set(
-    globeClassifications.map((c) => c.targetId)
+    policyGlobeClassifications.map((c) => c.targetId),
+  ).size;
+  // # of categories that received at least one policy-target classification.
+  // Surfaces "where do targets actually land?" — empty taxonomy categories
+  // (e.g. Energy, Transport for Mongolia) make the gap visible.
+  const sectorCategoriesUsed = new Set(
+    policySectorClassifications.map((c) => c.categoryId),
+  ).size;
+  const globeCategoriesUsed = new Set(
+    policyGlobeClassifications.map((c) => c.categoryId),
   ).size;
 
   // Country-declared docs first, then reserved tokens (BTR, BTR_ADP) adjacent
@@ -409,6 +448,7 @@ export function DashboardClient({
           globeCategories={data.globeCategories}
           classifications={data.classifications}
           nr7Data={data.nr7Data}
+          btrData={data.btrData}
           focusTargetId={focusTargetId}
           countryConfig={data.countryConfig}
         />
@@ -417,6 +457,7 @@ export function DashboardClient({
         {/* --- Thematic Classification (switchable) --- */}
         <ClassificationSection
           targets={targets}
+          policyTargets={policyTargets}
           documentTypes={documentTypes}
           sectorSorted={sectorSorted}
           globeSorted={globeSorted}
@@ -424,6 +465,8 @@ export function DashboardClient({
           globeClassifications={globeClassifications}
           targetsWithSectors={targetsWithSectors}
           targetsWithGlobe={targetsWithGlobe}
+          sectorCategoriesUsed={sectorCategoriesUsed}
+          globeCategoriesUsed={globeCategoriesUsed}
           sectors={data.sectors}
           globeCategories={data.globeCategories}
           countryConfig={data.countryConfig}
