@@ -598,7 +598,7 @@ async function callAzure(messages: ChatMessage[]): Promise<LlmResponse> {
   const endpoint = (process.env.AZURE_OPENAI_ENDPOINT ?? "").replace(/\/$/, "");
   const apiKey = process.env.AZURE_OPENAI_API_KEY ?? "";
   const apiVersion = process.env.AZURE_OPENAI_API_VERSION ?? "2024-10-21";
-  const deployment = process.env.LLM_MODEL ?? "gpt-4o-mini";
+  const deployment = process.env.LLM_CHAT_MODEL ?? process.env.LLM_MODEL ?? "gpt-4o-mini";
   const url = `${endpoint}/openai/deployments/${deployment}/chat/completions?api-version=${apiVersion}`;
   // Azure deployments enforce per-minute token quotas (TPM). With a ~50K-token
   // context, a back-to-back chat call can exceed quota and return 429. The
