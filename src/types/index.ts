@@ -495,6 +495,15 @@ export interface CountryConfig {
     nameOriginal?: string;
     color?: string;
   }>;
+  /**
+   * `sourceDocument` id of the country's North-Star / long-term vision document.
+   * When set, the dashboard renders the Vision Anchor Coverage view that centers
+   * this document's targets and shows how every other policy document
+   * operationalises (or diverges from) them. For Mongolia this is `"SECTORAL"`
+   * (Vision 2050). Other countries opt in by pointing this at their own anchor
+   * document id (e.g. a national development plan).
+   */
+  anchorDocType?: string;
 }
 
 /**
