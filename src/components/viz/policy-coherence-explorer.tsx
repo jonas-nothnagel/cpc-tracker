@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { arc as d3Arc } from "d3-shape";
 import {
   getDocColor,
@@ -13,6 +13,7 @@ import {
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { isContradiction } from "@/types";
+import { buildChatRequest } from "@/lib/coherence-chat";
 import {
   TargetTextWithHighlights,
   ActivitiesActions,
@@ -21,6 +22,7 @@ import {
   OriginalLanguageChip,
 } from "./target-text";
 import type {
+  BtrData,
   CountryConfig,
   Target,
   PolicyDocumentType,
@@ -80,6 +82,11 @@ const NODE_R = 210;
 const LABEL_R = 238;
 const GRP_LABEL_R = 292;
 const VB = 720;
+// Horizontal viewBox is wider than vertical to leave room for long category
+// labels (e.g. "Protected areas and other conservation measures") that would
+// otherwise clip on the left or right edge. Wheel geometry stays unchanged;
+// only the horizontal padding around it grows.
+const VB_W = 940;
 const SECTOR_PAL = [
   "#0468b1", "#0d9488", "#b45309", "#7c3aed",
   "#dc2626", "#059669", "#d97706", "#6366f1",
@@ -242,6 +249,35 @@ function anchorFor(rad: number): "start" | "middle" | "end" {
   return "middle";
 }
 
+/**
+ * Word-wrap a category label so long names like "Protected areas and other
+ * conservation measures" render on two lines and stay inside the wheel's
+ * horizontal viewBox. Returns one line for short labels, otherwise the
+ * smallest 2-line split that keeps each line under maxCharsPerLine.
+ */
+function wrapLabel(label: string, maxCharsPerLine: number): string[] {
+  if (label.length <= maxCharsPerLine) return [label];
+  const words = label.split(/\s+/);
+  if (words.length === 1) return [label];
+  // Pick the split point that minimises the longer line's length so the
+  // two lines feel balanced.
+  let bestSplit = 1;
+  let bestLonger = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const left = words.slice(0, i).join(" ");
+    const right = words.slice(i).join(" ");
+    const longer = Math.max(left.length, right.length);
+    if (longer < bestLonger) {
+      bestLonger = longer;
+      bestSplit = i;
+    }
+  }
+  return [
+    words.slice(0, bestSplit).join(" "),
+    words.slice(bestSplit).join(" "),
+  ];
+}
+
 
 // ─── Detail panel ───────────────────────────────────────────────────
 
@@ -275,10 +311,9 @@ function DetailPanel({
     return order[a.alignment] - order[b.alignment];
   });
 
-  // Show the first rationale by default so the interaction pattern is obvious.
-  // Parent passes `key={node.id}`, so this initialiser re-runs when node changes.
+  // All rationales start collapsed; the user opens them on demand.
   const [expandedRationaleId, setExpandedRationaleId] = useState<string | null>(
-    () => sorted.find((conn) => conn.description)?.otherTarget.id ?? null,
+    null,
   );
 
   if (comparedPair) {
@@ -513,24 +548,61 @@ function Stat({
   label,
   value,
   accent,
+  onClick,
+  title,
+  active,
 }: {
   label: string;
   value: number;
-  accent?: "red";
+  accent?: "red" | "green";
+  onClick?: () => void;
+  title?: string;
+  active?: boolean;
 }) {
+  const accentColor =
+    accent === "red"
+      ? "text-red-700"
+      : accent === "green"
+        ? "text-emerald-700"
+        : "text-[var(--undp-black)]";
+  const valueClass = `text-2xl font-semibold tabular-nums leading-none ${accentColor}`;
+  const labelClass =
+    "text-[10px] text-[var(--undp-gray)] uppercase tracking-wider mt-1.5";
+  if (!onClick) {
+    return (
+      <div>
+        <p className={valueClass}>{value}</p>
+        <p className={labelClass}>{label}</p>
+      </div>
+    );
+  }
   return (
-    <div>
+    <button
+      type="button"
+      onClick={onClick}
+      title={title}
+      aria-pressed={active}
+      className={`text-left -mx-1 px-1.5 py-1 rounded-md transition-colors group ${
+        active
+          ? "bg-gray-100 ring-1 ring-gray-200"
+          : "ring-1 ring-transparent hover:bg-gray-50 hover:ring-gray-200"
+      }`}
+    >
       <p
-        className={`text-2xl font-semibold tabular-nums leading-none ${
-          accent === "red" ? "text-red-700" : "text-[var(--undp-black)]"
+        className={`${valueClass} underline decoration-dotted underline-offset-4 ${
+          active
+            ? "decoration-gray-500"
+            : "decoration-gray-300 group-hover:decoration-gray-500"
         }`}
       >
         {value}
       </p>
-      <p className="text-[10px] text-[var(--undp-gray)] uppercase tracking-wider mt-1.5">
+      <p
+        className={`${labelClass} group-hover:text-[var(--undp-black)] transition-colors`}
+      >
         {label}
       </p>
-    </div>
+    </button>
   );
 }
 
@@ -552,6 +624,50 @@ function Section({
 }
 
 /**
+ * Section with a built-in close button and empty-state fallback. Used when a
+ * stat tile in EmptyPanel is toggled into its expanded list view (all
+ * targets, all alignments, all tensions). Close returns to the overview.
+ */
+function StatListSection({
+  title,
+  onClose,
+  empty,
+  isEmpty,
+  children,
+}: {
+  title: string;
+  onClose: () => void;
+  empty: string;
+  isEmpty: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+          {title}
+        </p>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close list"
+          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-base leading-none px-1"
+        >
+          ×
+        </button>
+      </div>
+      {isEmpty ? (
+        <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+          {empty}
+        </p>
+      ) : (
+        children
+      )}
+    </section>
+  );
+}
+
+/**
  * Compact ranking row used by both the idle and category panels. Renders the
  * count proportionally as a horizontal bar fill behind the label so the eye
  * picks up the ordering before reading any numbers.
@@ -563,6 +679,7 @@ function BarRow({
   onClick,
   countryConfig,
   tone,
+  unit,
 }: {
   target: Target;
   count: number;
@@ -570,6 +687,8 @@ function BarRow({
   onClick: () => void;
   countryConfig?: CountryConfig | null;
   tone: "neutral" | "red";
+  /** Optional inline label after the count (e.g., "alignments"). */
+  unit?: string;
 }) {
   // 4% min so the smallest non-zero count still has a visible pill.
   const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
@@ -609,6 +728,11 @@ function BarRow({
           className={`relative text-[11px] tabular-nums shrink-0 font-semibold ${countColor}`}
         >
           {count}
+          {unit && (
+            <span className="text-[9px] uppercase tracking-wider font-medium text-[var(--undp-gray)] ml-1">
+              {unit}
+            </span>
+          )}
         </span>
       </button>
     </li>
@@ -673,38 +797,75 @@ interface EmptyPanelProps {
   targets: Target[];
   alignment: AlignmentResult[];
   onSelectTarget: (id: string) => void;
+  onSelectPair: (targetAId: string, targetBId: string) => void;
   onAsk: (query: string) => void;
   chat: ChatStatus;
+  searchAllDocs: boolean;
+  onToggleSearchAll: (v: boolean) => void;
+  onSetFilter: (filter: AlignFilter) => void;
   countryConfig?: CountryConfig | null;
 }
 
-// Four chips, each one mapping cleanly to a real fault line in the data:
-// - "Most tensions" exposes the irrigated-agriculture hub (50 tensions)
-// - "Broadly aligned and contested" is the paradox lens (Protected areas 30%)
-// - "Tensions involving livestock" hits the NDC livestock cluster
-// - "Vision 2050 clash with biodiversity" surfaces the dev-vs-bio fault line
+type StatView = "overview" | "targets" | "alignments" | "tensions";
+
+// Ordering used when listing contradictions in the tensions stat-view so
+// high-severity pairs surface first. Module-level so the useMemo dep array
+// can reference a stable identity.
+const TENSION_SEVERITY: Record<string, number> = {
+  high_contradiction: 0,
+  moderate_contradiction: 1,
+  low_tension: 2,
+};
+
+// Three view-scoped example prompts shown as chips. Each maps to a real
+// fault line in the visible-scope rankings, so the chat returns a concrete
+// answer instead of a generic one.
 const EXAMPLE_QUERIES: string[] = [
   "Which target sits in the most tensions?",
   "Show a target that's broadly aligned and contested",
-  "Find tensions involving livestock",
-  "Where does Vision 2050 clash with biodiversity?",
+  "Where in this view do plans contradict most?",
 ];
 
+// Placeholder typed-out on mount so the chat feels alive rather than static.
+// Animation runs once per mount; the resulting string is used as the input's
+// HTML placeholder so it disappears the moment the user focuses and types.
+function useTypedPlaceholder(text: string, charDelayMs = 35): string {
+  // Initial state empty; the interval below appends one character per tick.
+  // Text is treated as constant per mount (deps below assume it never
+  // changes), so no reset path is needed.
+  const [typed, setTyped] = useState("");
+  useEffect(() => {
+    let i = 0;
+    const id = window.setInterval(() => {
+      i += 1;
+      setTyped(text.slice(0, i));
+      if (i >= text.length) window.clearInterval(id);
+    }, charDelayMs);
+    return () => window.clearInterval(id);
+  }, [text, charDelayMs]);
+  return typed;
+}
+
 /**
- * Chat input + reply + example chips. Lives inside EmptyPanel below the
- * "At a glance" stats — borderless so it inherits the EmptyPanel card
- * chrome rather than stacking a card-in-a-card. Reply is only visible
- * while the user is in idle state; once the wheel reshapes into a
- * category or target view, the wheel + panel state IS the answer.
+ * Chat input + reply. Lives inside EmptyPanel below the "At a glance"
+ * stats — borderless so it inherits the EmptyPanel card chrome rather
+ * than stacking a card-in-a-card. Reply is only visible while the user
+ * is in idle state; once the wheel reshapes into a category or target
+ * view, the wheel + panel state IS the answer.
  */
 function ChatBar({
   onAsk,
   chat,
+  searchAllDocs,
+  onToggleSearchAll,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
+  searchAllDocs: boolean;
+  onToggleSearchAll: (v: boolean) => void;
 }) {
   const [query, setQuery] = useState("");
+  const placeholder = useTypedPlaceholder("Ask about what’s currently in view…");
   const submit = (q: string) => {
     const trimmed = q.trim();
     if (!trimmed || chat.loading) return;
@@ -713,8 +874,13 @@ function ChatBar({
   };
   return (
     <div className="space-y-2">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
-        Ask the wheel
+      <p className="text-[10px] leading-snug">
+        <span className="font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+          Ask and explore this view
+        </span>
+        <span className="text-[var(--undp-gray)] normal-case font-normal tracking-normal">
+          {" · Beta."}
+        </span>
       </p>
       <form
         onSubmit={(e) => {
@@ -727,7 +893,7 @@ function ChatBar({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask a question, e.g. why X conflicts with Y"
+            placeholder={placeholder}
             disabled={chat.loading}
             className="flex-1 min-w-0 text-[12px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
           />
@@ -740,6 +906,24 @@ function ChatBar({
           </button>
         </div>
       </form>
+      <div className="flex items-center justify-between gap-2 mt-1">
+        <span className="text-[10px] text-[var(--undp-gray)] leading-snug">
+          {searchAllDocs
+            ? "Next ask will include all documents."
+            : "Searches only what's currently selected."}
+        </span>
+        <button
+          type="button"
+          onClick={() => onToggleSearchAll(!searchAllDocs)}
+          disabled={chat.loading}
+          className="flex items-center gap-1 text-[10px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-40 disabled:no-underline shrink-0"
+        >
+          {searchAllDocs && (
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--undp-blue)]" />
+          )}
+          {searchAllDocs ? "All documents · cancel" : "Search all documents"}
+        </button>
+      </div>
       {chat.reply && !chat.loading && (
         <p className="text-[11px] text-[var(--undp-black)] leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mr-1.5">
@@ -774,20 +958,37 @@ function EmptyPanel({
   targets,
   alignment,
   onSelectTarget,
+  onSelectPair,
   onAsk,
   chat,
+  searchAllDocs,
+  onToggleSearchAll,
+  onSetFilter,
   countryConfig,
 }: EmptyPanelProps) {
-  // Compute totals from the alignment set we're already iterating below — this
-  // keeps the headline numbers aligned with the wheel's current filter rather
-  // than diverging from the rankings underneath.
+  // Stats are interactive: clicking a stat sets the wheel filter AND swaps
+  // the middle section to a full list of that kind of item (targets, strong
+  // alignment pairs, or contradiction pairs). Clicking the same stat again
+  // closes the list and returns to the overview ranking layout.
+  const [statView, setStatView] = useState<StatView>("overview");
+  const toggleStatView = (view: StatView, filter: AlignFilter) => {
+    onSetFilter(filter);
+    setStatView((prev) => (prev === view ? "overview" : view));
+  };
+  // Compute totals from the alignment set we're already iterating below —
+  // this keeps the headline numbers aligned with the wheel's current filter
+  // rather than diverging from the rankings underneath. Alignments and
+  // contradictions are mutually exclusive in this count so the AT A GLANCE
+  // numbers match the header summary ("X strong alignments and Y
+  // contradictions") rather than double-counting contradictions as
+  // alignments.
   const { totalAligned, totalContra } = useMemo(() => {
     let a = 0;
     let c = 0;
     for (const x of alignment) {
       if (x.alignment === "none") continue;
-      a += 1;
       if (isContradiction(x.alignment)) c += 1;
+      else a += 1;
     }
     return { totalAligned: a, totalContra: c };
   }, [alignment]);
@@ -829,6 +1030,133 @@ function EmptyPanel({
   const connMax = connRanks[0]?.count ?? 1;
   const tensMax = tensRanks[0]?.count ?? 1;
 
+  // Stat-view lists: only computed when the user has opened a stat view, so
+  // the default idle render stays cheap. Each list is sorted to put the most
+  // diagnostic items first.
+  const allTargetsRanked = useMemo(() => {
+    if (statView !== "targets") return [];
+    const counts = new Map<string, number>();
+    for (const a of alignment) {
+      if (a.alignment === "none") continue;
+      counts.set(a.targetAId, (counts.get(a.targetAId) ?? 0) + 1);
+      counts.set(a.targetBId, (counts.get(a.targetBId) ?? 0) + 1);
+    }
+    return targets
+      .map((t) => ({ target: t, count: counts.get(t.id) ?? 0 }))
+      .sort((a, b) => {
+        if (b.count !== a.count) return b.count - a.count;
+        return a.target.sourceLabel.localeCompare(
+          b.target.sourceLabel,
+          undefined,
+          { numeric: true },
+        );
+      });
+  }, [statView, alignment, targets]);
+
+  // Per-target degree counts: how many strong alignments / contradictions
+  // each target is involved in within the current view. Used to weight pairs
+  // in the list views so pairs touching "hub" targets surface first.
+  const { highDegree, tensionDegree } = useMemo(() => {
+    const hi = new Map<string, number>();
+    const te = new Map<string, number>();
+    for (const a of alignment) {
+      if (a.alignment === "high") {
+        hi.set(a.targetAId, (hi.get(a.targetAId) ?? 0) + 1);
+        hi.set(a.targetBId, (hi.get(a.targetBId) ?? 0) + 1);
+      } else if (isContradiction(a.alignment)) {
+        te.set(a.targetAId, (te.get(a.targetAId) ?? 0) + 1);
+        te.set(a.targetBId, (te.get(a.targetBId) ?? 0) + 1);
+      }
+    }
+    return { highDegree: hi, tensionDegree: te };
+  }, [alignment]);
+
+  // Sort by max-endpoint degree first (groups all of a hub's pairs together,
+  // so the most-aligned/most-conflicted target's full set of pairs reads as
+  // a block) then by the partner's degree (within a hub, pairs touching
+  // another well-connected target rank above pairs touching a leaf).
+  const allAlignmentPairs = useMemo(() => {
+    if (statView !== "alignments") return [];
+    return alignment
+      .filter((a) => a.alignment === "high")
+      .slice()
+      .sort((a, b) => {
+        const aDegs = [
+          highDegree.get(a.targetAId) ?? 0,
+          highDegree.get(a.targetBId) ?? 0,
+        ];
+        const bDegs = [
+          highDegree.get(b.targetAId) ?? 0,
+          highDegree.get(b.targetBId) ?? 0,
+        ];
+        const aMax = Math.max(...aDegs);
+        const bMax = Math.max(...bDegs);
+        if (aMax !== bMax) return bMax - aMax;
+        const aMin = Math.min(...aDegs);
+        const bMin = Math.min(...bDegs);
+        if (aMin !== bMin) return bMin - aMin;
+        const ta = targetMap.get(a.targetAId);
+        const tb = targetMap.get(b.targetAId);
+        return (ta?.sourceLabel ?? "").localeCompare(
+          tb?.sourceLabel ?? "",
+          undefined,
+          { numeric: true },
+        );
+      });
+  }, [statView, alignment, highDegree, targetMap]);
+
+  const allTensionPairs = useMemo(() => {
+    if (statView !== "tensions") return [];
+    return alignment
+      .filter((a) => isContradiction(a.alignment))
+      .slice()
+      .sort((a, b) => {
+        const aDegs = [
+          tensionDegree.get(a.targetAId) ?? 0,
+          tensionDegree.get(a.targetBId) ?? 0,
+        ];
+        const bDegs = [
+          tensionDegree.get(b.targetAId) ?? 0,
+          tensionDegree.get(b.targetBId) ?? 0,
+        ];
+        const aMax = Math.max(...aDegs);
+        const bMax = Math.max(...bDegs);
+        if (aMax !== bMax) return bMax - aMax;
+        const aMin = Math.min(...aDegs);
+        const bMin = Math.min(...bDegs);
+        if (aMin !== bMin) return bMin - aMin;
+        return (
+          (TENSION_SEVERITY[a.alignment] ?? 9) -
+          (TENSION_SEVERITY[b.alignment] ?? 9)
+        );
+      });
+  }, [statView, alignment, tensionDegree]);
+
+  const allTargetsMax = allTargetsRanked[0]?.count ?? 1;
+
+  // Group targets by source document for the targets list view. Each doc
+  // group renders as a collapsible section so 60+ targets don't all flood
+  // the panel at once — users expand the docs they care about.
+  const targetsByDoc = useMemo(() => {
+    if (statView !== "targets") return [];
+    const groups = new Map<string, { target: Target; count: number }[]>();
+    for (const item of allTargetsRanked) {
+      const doc = item.target.sourceDocument;
+      const list = groups.get(doc) ?? [];
+      list.push(item);
+      groups.set(doc, list);
+    }
+    return Array.from(groups.entries())
+      .map(([doc, items]) => ({
+        doc,
+        items,
+        totalCount: items.reduce((s, i) => s + i.count, 0),
+      }))
+      // Order by total alignment count across the doc desc so the most
+      // active documents sit at the top.
+      .sort((a, b) => b.totalCount - a.totalCount);
+  }, [statView, allTargetsRanked]);
+
   return (
     <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
@@ -837,50 +1165,213 @@ function EmptyPanel({
             At a glance
           </p>
           <div className="grid grid-cols-3 gap-4">
-            <Stat label="Targets" value={targets.length} />
-            <Stat label="Alignments" value={totalAligned} />
-            <Stat label="Potential tensions" value={totalContra} accent="red" />
+            <Stat
+              label="Targets"
+              value={targets.length}
+              onClick={() => toggleStatView("targets", "all")}
+              title="Browse all visible targets"
+              active={statView === "targets"}
+            />
+            <Stat
+              label="Alignments"
+              value={totalAligned}
+              accent="green"
+              onClick={() => toggleStatView("alignments", "high")}
+              title="Browse all strong alignment pairs"
+              active={statView === "alignments"}
+            />
+            <Stat
+              label="Potential tensions"
+              value={totalContra}
+              accent="red"
+              onClick={() => toggleStatView("tensions", "contradictions")}
+              title="Browse all contradiction pairs"
+              active={statView === "tensions"}
+            />
           </div>
         </div>
 
-        <ChatBar onAsk={onAsk} chat={chat} />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {connRanks.length > 0 && (
+        {statView === "overview" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <Section title="Strongest alignments">
-              <ul className="space-y-0.5">
-                {connRanks.map(({ target, count }) => (
-                  <BarRow
-                    key={target.id}
-                    target={target}
-                    count={count}
-                    max={connMax}
-                    onClick={() => onSelectTarget(target.id)}
-                    countryConfig={countryConfig}
-                    tone="neutral"
-                  />
-                ))}
-              </ul>
+              {connRanks.length > 0 ? (
+                <ul className="space-y-0.5">
+                  {connRanks.map(({ target, count }) => (
+                    <BarRow
+                      key={target.id}
+                      target={target}
+                      count={count}
+                      max={connMax}
+                      onClick={() => onSelectTarget(target.id)}
+                      countryConfig={countryConfig}
+                      tone="neutral"
+                    />
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  No strong alignments for the current selection.
+                </p>
+              )}
             </Section>
-          )}
-          {tensRanks.length > 0 && (
-            <Section title="Most potential conflicts">
-              <ul className="space-y-0.5">
-                {tensRanks.map(({ target, count }) => (
-                  <BarRow
-                    key={target.id}
-                    target={target}
-                    count={count}
-                    max={tensMax}
-                    onClick={() => onSelectTarget(target.id)}
-                    countryConfig={countryConfig}
-                    tone="red"
-                  />
-                ))}
-              </ul>
+            <Section title="Most conflicted targets">
+              {tensRanks.length > 0 ? (
+                <ul className="space-y-0.5">
+                  {tensRanks.map(({ target, count }) => (
+                    <BarRow
+                      key={target.id}
+                      target={target}
+                      count={count}
+                      max={tensMax}
+                      onClick={() => onSelectTarget(target.id)}
+                      countryConfig={countryConfig}
+                      tone="red"
+                    />
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  No potential tensions for the current selection.
+                </p>
+              )}
             </Section>
-          )}
-        </div>
+          </div>
+        )}
+
+        {statView === "targets" && (
+          <StatListSection
+            title={`All targets · ${allTargetsRanked.length}`}
+            onClose={() => setStatView("overview")}
+            empty="No targets in the current view."
+            isEmpty={allTargetsRanked.length === 0}
+          >
+            <div className="space-y-1">
+              {targetsByDoc.map(({ doc, items }) => {
+                const color = getDocColor(countryConfig, doc);
+                const label = getDocLabel(countryConfig, doc);
+                return (
+                  <details key={doc} className="group">
+                    <summary className="list-none cursor-pointer flex items-center gap-2 py-1.5 px-1 rounded hover:bg-gray-50 transition-colors select-none">
+                      <svg
+                        width="8"
+                        height="8"
+                        viewBox="0 0 8 8"
+                        className="transition-transform group-open:rotate-90 text-[var(--undp-gray)] shrink-0"
+                      >
+                        <path
+                          d="M2 1l4 3-4 3"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: color }}
+                      />
+                      <span className="text-[11px] font-semibold text-[var(--undp-black)]">
+                        {label}
+                      </span>
+                      <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
+                        · {items.length} target{items.length !== 1 ? "s" : ""}
+                      </span>
+                    </summary>
+                    <ul className="space-y-0.5 pl-4 mt-1 mb-2">
+                      {items.map(({ target, count }) => (
+                        <BarRow
+                          key={target.id}
+                          target={target}
+                          count={count}
+                          max={allTargetsMax}
+                          onClick={() => onSelectTarget(target.id)}
+                          countryConfig={countryConfig}
+                          tone="neutral"
+                        />
+                      ))}
+                    </ul>
+                  </details>
+                );
+              })}
+            </div>
+          </StatListSection>
+        )}
+
+        {statView === "alignments" && (
+          <StatListSection
+            title={`All alignments · ${allAlignmentPairs.length}`}
+            onClose={() => setStatView("overview")}
+            empty="No strong alignments in the current view."
+            isEmpty={allAlignmentPairs.length === 0}
+          >
+            <ul className="space-y-0.5">
+              {allAlignmentPairs.map((p) => {
+                // Display the higher-degree endpoint on top of the pair so
+                // the hub target is what the eye lands on first.
+                const degA = highDegree.get(p.targetAId) ?? 0;
+                const degB = highDegree.get(p.targetBId) ?? 0;
+                const [firstId, secondId] =
+                  degA >= degB
+                    ? [p.targetAId, p.targetBId]
+                    : [p.targetBId, p.targetAId];
+                const tFirst = targetMap.get(firstId);
+                const tSecond = targetMap.get(secondId);
+                if (!tFirst || !tSecond) return null;
+                return (
+                  <PairRow
+                    key={`a-${p.targetAId}-${p.targetBId}`}
+                    a={tFirst}
+                    b={tSecond}
+                    level={p.alignment}
+                    onClick={() => onSelectPair(firstId, secondId)}
+                    countryConfig={countryConfig}
+                  />
+                );
+              })}
+            </ul>
+          </StatListSection>
+        )}
+
+        {statView === "tensions" && (
+          <StatListSection
+            title={`All tensions · ${allTensionPairs.length}`}
+            onClose={() => setStatView("overview")}
+            empty="No tensions in the current view."
+            isEmpty={allTensionPairs.length === 0}
+          >
+            <ul className="space-y-0.5">
+              {allTensionPairs.map((p) => {
+                const degA = tensionDegree.get(p.targetAId) ?? 0;
+                const degB = tensionDegree.get(p.targetBId) ?? 0;
+                const [firstId, secondId] =
+                  degA >= degB
+                    ? [p.targetAId, p.targetBId]
+                    : [p.targetBId, p.targetAId];
+                const tFirst = targetMap.get(firstId);
+                const tSecond = targetMap.get(secondId);
+                if (!tFirst || !tSecond) return null;
+                return (
+                  <PairRow
+                    key={`t-${p.targetAId}-${p.targetBId}`}
+                    a={tFirst}
+                    b={tSecond}
+                    level={p.alignment}
+                    onClick={() => onSelectPair(firstId, secondId)}
+                    countryConfig={countryConfig}
+                  />
+                );
+              })}
+            </ul>
+          </StatListSection>
+        )}
+
+        <ChatBar
+          onAsk={onAsk}
+          chat={chat}
+          searchAllDocs={searchAllDocs}
+          onToggleSearchAll={onToggleSearchAll}
+        />
 
       </div>
     </div>
@@ -895,6 +1386,7 @@ interface CategoryPanelProps {
   onClose: () => void;
   onSelectTarget: (id: string) => void;
   onSelectPair: (targetAId: string, targetBId: string) => void;
+  onSelectCategory: (id: string) => void;
   countryConfig?: CountryConfig | null;
 }
 
@@ -906,6 +1398,7 @@ function CategoryPanel({
   onClose,
   onSelectTarget,
   onSelectPair,
+  onSelectCategory,
   countryConfig,
 }: CategoryPanelProps) {
   const targetIdsInGroup = useMemo(
@@ -929,10 +1422,12 @@ function CategoryPanel({
     [alignment, targetIdsInGroup],
   );
 
-  const totalAligned = involvedAlignments.length;
+  // Alignments and contradictions are mutually exclusive in the panel
+  // headers so the totals don't double-count contradictions as alignments.
   const totalContra = involvedAlignments.filter((a) =>
     isContradiction(a.alignment),
   ).length;
+  const totalAligned = involvedAlignments.length - totalContra;
 
   const partnerCounts = useMemo(() => {
     const counts = new Map<string, { synergy: number; tension: number }>();
@@ -1057,118 +1552,161 @@ function CategoryPanel({
       </div>
 
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
-        {(topSynergyPartners.length > 0 || topTensionPartners.length > 0) && (
-          <div className="grid grid-cols-2 gap-5">
-            <Section title="Aligns with">
-              {topSynergyPartners.length > 0 ? (
-                <ul className="space-y-1">
-                  {topSynergyPartners.map(({ arc, count }) => (
-                    <li
-                      key={arc.id}
-                      className="flex items-center gap-2 text-[11px] py-0.5"
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0"
-                        style={{ backgroundColor: arc.color }}
-                      />
-                      <span className="text-[var(--undp-black)] truncate flex-1">
-                        {arc.label}
-                      </span>
-                      <span className="text-[var(--undp-gray)] tabular-nums">
-                        {count}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] italic">
-                  None
-                </p>
-              )}
-            </Section>
-            <Section title="Tensions with">
+        {/* Flat 2×2 grid so both rows align across columns: row 1 = partner
+            overviews, row 2 = per-target pair lists. The grid auto-sizes each
+            row to the taller cell, which keeps the pair-list headers level
+            even when one column has more partner entries than the other.
+            Tone is consistent within a column (red on the left, green on the
+            right). Falls back to a single column on narrow viewports. */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-6">
+          <div>
+            <Section title="Tensions with other categories">
               {topTensionPartners.length > 0 ? (
-                <ul className="space-y-1">
+                <ul className="space-y-0.5">
                   {topTensionPartners.map(({ arc, count }) => (
-                    <li
-                      key={arc.id}
-                      className="flex items-center gap-2 text-[11px] py-0.5"
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0"
-                        style={{ backgroundColor: arc.color }}
-                      />
-                      <span className="text-[var(--undp-black)] truncate flex-1">
-                        {arc.label}
-                      </span>
-                      <span className="text-red-700 tabular-nums">{count}</span>
+                    <li key={arc.id}>
+                      <button
+                        type="button"
+                        onClick={() => onSelectCategory(arc.id)}
+                        title={arc.label}
+                        className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
+                      >
+                        <span
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ backgroundColor: arc.color }}
+                        />
+                        <span className="text-[var(--undp-black)] truncate flex-1">
+                          {arc.label}
+                        </span>
+                        <span className="text-red-700 tabular-nums">
+                          {count}
+                        </span>
+                      </button>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] italic">
-                  None
+                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  No tensions with other categories.
                 </p>
               )}
             </Section>
           </div>
-        )}
+          <div>
+            <Section title="Aligns with other categories">
+              {topSynergyPartners.length > 0 ? (
+                <ul className="space-y-0.5">
+                  {topSynergyPartners.map(({ arc, count }) => (
+                    <li key={arc.id}>
+                      <button
+                        type="button"
+                        onClick={() => onSelectCategory(arc.id)}
+                        title={arc.label}
+                        className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
+                      >
+                        <span
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ backgroundColor: arc.color }}
+                        />
+                        <span className="text-[var(--undp-black)] truncate flex-1">
+                          {arc.label}
+                        </span>
+                        <span className="text-[var(--undp-gray)] tabular-nums">
+                          {count}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  No alignments with other categories.
+                </p>
+              )}
+            </Section>
+          </div>
+          <div>
+            <Section
+              title={
+                contradictionPairs.length > 0
+                  ? `Top conflicts · ${contradictionPairs.length}`
+                  : "Top conflicts"
+              }
+            >
+              {contradictionPairs.length > 0 ? (
+                <>
+                  <ul className="space-y-0.5">
+                    {contradictionPairs.slice(0, 6).map((p) => {
+                      const tA = nodeMap.get(p.targetAId)?.target;
+                      const tB = nodeMap.get(p.targetBId)?.target;
+                      if (!tA || !tB) return null;
+                      return (
+                        <PairRow
+                          key={`c-${p.targetAId}-${p.targetBId}`}
+                          a={tA}
+                          b={tB}
+                          level={p.alignment}
+                          onClick={() => onSelectPair(p.targetAId, p.targetBId)}
+                          countryConfig={countryConfig}
+                        />
+                      );
+                    })}
+                  </ul>
+                  {contradictionPairs.length > 6 && (
+                    <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
+                      + {contradictionPairs.length - 6} more
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  No conflicts in this category.
+                </p>
+              )}
+            </Section>
+          </div>
+          <div>
+            <Section
+              title={
+                alignmentPairs.length > 0
+                  ? `Strongest alignments · ${alignmentPairs.length}`
+                  : "Strongest alignments"
+              }
+            >
+              {alignmentPairs.length > 0 ? (
+                <>
+                  <ul className="space-y-0.5">
+                    {alignmentPairs.slice(0, 6).map((p) => {
+                      const tA = nodeMap.get(p.targetAId)?.target;
+                      const tB = nodeMap.get(p.targetBId)?.target;
+                      if (!tA || !tB) return null;
+                      return (
+                        <PairRow
+                          key={`a-${p.targetAId}-${p.targetBId}`}
+                          a={tA}
+                          b={tB}
+                          level={p.alignment}
+                          onClick={() => onSelectPair(p.targetAId, p.targetBId)}
+                          countryConfig={countryConfig}
+                        />
+                      );
+                    })}
+                  </ul>
+                  {alignmentPairs.length > 6 && (
+                    <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
+                      + {alignmentPairs.length - 6} more
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  No strong alignments in this category.
+                </p>
+              )}
+            </Section>
+          </div>
+        </div>
 
-        {contradictionPairs.length > 0 && (
-          <Section
-            title={`Top conflicts · ${contradictionPairs.length}`}
-          >
-            <ul className="space-y-0.5">
-              {contradictionPairs.slice(0, 6).map((p) => {
-                const tA = nodeMap.get(p.targetAId)?.target;
-                const tB = nodeMap.get(p.targetBId)?.target;
-                if (!tA || !tB) return null;
-                return (
-                  <PairRow
-                    key={`c-${p.targetAId}-${p.targetBId}`}
-                    a={tA}
-                    b={tB}
-                    level={p.alignment}
-                    onClick={() => onSelectPair(p.targetAId, p.targetBId)}
-                    countryConfig={countryConfig}
-                  />
-                );
-              })}
-            </ul>
-            {contradictionPairs.length > 6 && (
-              <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
-                + {contradictionPairs.length - 6} more
-              </p>
-            )}
-          </Section>
-        )}
-
-        {alignmentPairs.length > 0 && (
-          <Section title={`Strongest alignments · ${alignmentPairs.length}`}>
-            <ul className="space-y-0.5">
-              {alignmentPairs.slice(0, 6).map((p) => {
-                const tA = nodeMap.get(p.targetAId)?.target;
-                const tB = nodeMap.get(p.targetBId)?.target;
-                if (!tA || !tB) return null;
-                return (
-                  <PairRow
-                    key={`a-${p.targetAId}-${p.targetBId}`}
-                    a={tA}
-                    b={tB}
-                    level={p.alignment}
-                    onClick={() => onSelectPair(p.targetAId, p.targetBId)}
-                    countryConfig={countryConfig}
-                  />
-                );
-              })}
-            </ul>
-            {alignmentPairs.length > 6 && (
-              <p className="text-[10px] text-[var(--undp-gray)] mt-1.5 px-1.5">
-                + {alignmentPairs.length - 6} more
-              </p>
-            )}
-          </Section>
-        )}
 
         {/* Targets folded behind a disclosure — useful when a category has
             many targets (e.g. 20 in NBSAP) where a flat list adds noise. */}
@@ -1249,6 +1787,7 @@ interface PolicyCoherenceExplorerProps {
   globeCategories: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
+  btrData?: BtrData | null;
   focusTargetId?: string | null;
   countryConfig?: CountryConfig | null;
 }
@@ -1260,6 +1799,7 @@ export function PolicyCoherenceExplorer({
   globeCategories,
   classifications,
   nr7Data,
+  btrData,
   focusTargetId,
   countryConfig,
 }: PolicyCoherenceExplorerProps) {
@@ -1286,6 +1826,10 @@ export function PolicyCoherenceExplorer({
   // wheel and the panel shows target detail; closing the target falls back to
   // the category panel because the group remains focal.
   const [focalGroupId, setFocalGroupId] = useState<string | null>(null);
+  // One-shot override: when true, the next chat ask runs against the full
+  // corpus instead of the current visible/focal scope. Reset to false after
+  // each response so the default scope stays strict.
+  const [searchAllDocs, setSearchAllDocs] = useState(false);
 
   // External focus: when Tensions section links to a specific target.
   // Track prop changes during render so we don't run setState inside an effect
@@ -1448,6 +1992,20 @@ export function PolicyCoherenceExplorer({
 
   const totalAligned = visibleAlignment.filter((a) => a.alignment !== "none").length;
   const totalContra = visibleAlignment.filter((a) => isContradiction(a.alignment)).length;
+  // Filter-aware counts so the header summary reports exactly what's drawn
+  // on the wheel for the current filter rather than the full visible set.
+  const filteredCounts = useMemo(() => {
+    let a = 0;
+    let h = 0;
+    let c = 0;
+    for (const x of filtered) {
+      if (x.alignment === "none") continue;
+      a += 1;
+      if (x.alignment === "high") h += 1;
+      else if (isContradiction(x.alignment)) c += 1;
+    }
+    return { aligned: a, high: h, contra: c };
+  }, [filtered]);
 
   // Chat state. Single-turn for v1: every Ask replaces the previous reply.
   // History could come later if it earns its keep — keep this lean now.
@@ -1545,112 +2103,51 @@ export function PolicyCoherenceExplorer({
     [visibleAlignment, targetMap, nodes, clearChat],
   );
 
+  // Declared before handleAsk so the chat's strict-mode scope filter can
+  // restrict its target index to the focal category's targets.
+  const focalGroupTargetIds = useMemo(() => {
+    if (!focalGroupId) return null;
+    const ids = new Set<string>();
+    for (const n of nodes) if (n.groupId === focalGroupId) ids.add(n.id);
+    return ids;
+  }, [nodes, focalGroupId]);
+
   const handleAsk = useCallback(
     async (query: string) => {
       setChat({ loading: true, reply: null, error: null });
+      // Scope contract:
+      // - Strict (default, `searchAllDocs === false`): only what's currently
+      //   visible is sent — visible docs, plus the focal category's targets
+      //   when one is set. Hidden docs are off-limits and the server
+      //   replies with an "out of scope" sentence when asked about them.
+      // - Override (`searchAllDocs === true`): the user opted into the full
+      //   corpus for one query; auto-unhide reveals any doc the chat
+      //   references. Toggle resets after the response.
+      const strictMode = !searchAllDocs;
       try {
-        // The chat receives two parallel rankings:
-        // - "visible-scope" computed from visibleAlignment, used for unscoped
-        //   questions ("most contested target") so the chat respects whatever
-        //   the user has currently toggled on.
-        // - "full-scope" computed from full alignment, used only when the
-        //   user explicitly names a hidden doc (e.g. "BTR action" while BTR
-        //   is hidden). The auto-unhide logic later makes the answer actually
-        //   render.
         const targetMap = new Map(targets.map((t) => [t.id, t]));
+        const body = buildChatRequest({
+          query,
+          searchAllDocs,
+          groupMode,
+          filter,
+          targets,
+          alignment,
+          visibleAlignment,
+          classifications,
+          sectors,
+          globeCategories,
+          btrData,
+          availableDocs,
+          hiddenDocs,
+          focalGroupTargetIds,
+          countryConfig,
+        });
 
-        const computeRankings = (alignSet: AlignmentResult[]) => {
-          const groupT = new Map<string, number>();
-          const groupH = new Map<string, number>();
-          const targetT = new Map<string, number>();
-          const targetH = new Map<string, number>();
-          for (const a of alignSet) {
-            const tA = targetMap.get(a.targetAId);
-            const tB = targetMap.get(a.targetBId);
-            const gA = tA?.sourceDocument;
-            const gB = tB?.sourceDocument;
-            if (isContradiction(a.alignment)) {
-              targetT.set(a.targetAId, (targetT.get(a.targetAId) ?? 0) + 1);
-              targetT.set(a.targetBId, (targetT.get(a.targetBId) ?? 0) + 1);
-              if (gA) groupT.set(gA, (groupT.get(gA) ?? 0) + 1);
-              if (gB && gB !== gA) groupT.set(gB, (groupT.get(gB) ?? 0) + 1);
-            } else if (a.alignment === "high") {
-              targetH.set(a.targetAId, (targetH.get(a.targetAId) ?? 0) + 1);
-              targetH.set(a.targetBId, (targetH.get(a.targetBId) ?? 0) + 1);
-              if (gA) groupH.set(gA, (groupH.get(gA) ?? 0) + 1);
-              if (gB && gB !== gA) groupH.set(gB, (groupH.get(gB) ?? 0) + 1);
-            }
-          }
-          const rankBy = <K,>(
-            m: Map<K, number>,
-            format: (id: K, count: number) => { id: K; label: string; count: number } | null,
-          ) =>
-            Array.from(m.entries())
-              .sort((a, b) => b[1] - a[1])
-              .slice(0, 5)
-              .map(([id, count]) => format(id, count))
-              .filter(
-                (x): x is { id: K; label: string; count: number } => x !== null,
-              );
-          return {
-            topGroupsByTension: rankBy(groupT, (id, count) => ({
-              id,
-              label: getDocLabel(countryConfig, id),
-              count,
-            })),
-            topGroupsByAlignment: rankBy(groupH, (id, count) => ({
-              id,
-              label: getDocLabel(countryConfig, id),
-              count,
-            })),
-            topTargetsByTension: rankBy(targetT, (id, count) => {
-              const t = targetMap.get(id);
-              return t
-                ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
-                : null;
-            }),
-            topTargetsByAlignment: rankBy(targetH, (id, count) => {
-              const t = targetMap.get(id);
-              return t
-                ? { id, label: `${t.sourceDocument}: ${t.sourceLabel}`, count }
-                : null;
-            }),
-          };
-        };
-        const rankingsVisible = computeRankings(visibleAlignment);
-        const rankingsFull = computeRankings(alignment);
-
-        // Groups = all available docs (so model can navigate to hidden ones).
-        // Visible docs hint included separately.
-        const groups = availableDocs.map((d) => ({
-          id: d,
-          label: getDocLabel(countryConfig, d),
-        }));
-        const visibleDocs = availableDocs.filter((d) => !hiddenDocs.has(d));
-        // All targets, not just visible — chat can navigate to hidden-doc
-        // targets when the user explicitly asks (auto-unhide kicks in).
-        const targetIndex = targets.map((t) => ({
-          id: t.id,
-          sourceLabel: t.sourceLabel,
-          sourceDocument: t.sourceDocument,
-          snippet: (t.text || "").slice(0, 140),
-        }));
         const res = await fetch("/api/coherence-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query,
-            context: {
-              mode: groupMode,
-              filter,
-              groups,
-              visibleDocs,
-              targetIndex,
-              rankings: rankingsVisible,
-              rankingsFull,
-              country: targets[0]?.country ?? null,
-            },
-          }),
+          body: JSON.stringify(body),
         });
         if (!res.ok) {
           const text = await res.text();
@@ -1718,38 +2215,39 @@ export function PolicyCoherenceExplorer({
             nextComparedPair = null;
           }
         }
-        // Auto-unhide any doc the chat's actions reference. If the model
-        // picks focus_category(SECTORAL) or select_target on a target whose
-        // doc is currently toggled off, we unhide that doc so the chat
-        // result is actually visible. The user's other manual hides stay
-        // put. This keeps the rule "respect user toggles" while making
-        // explicit asks ("Where does Vision 2050 clash...") just work.
-        const docsReferenced = new Set<string>();
-        for (const action of json.actions) {
-          if (action.type === "focus_category" && groupMode === "document") {
-            docsReferenced.add(action.categoryId);
-          } else if (action.type === "select_target") {
-            const t = targetMap.get(action.targetId);
-            if (t) docsReferenced.add(t.sourceDocument);
-          } else if (action.type === "select_pair") {
-            const tA = targetMap.get(action.targetAId);
-            const tB = targetMap.get(action.targetBId);
-            if (tA) docsReferenced.add(tA.sourceDocument);
-            if (tB) docsReferenced.add(tB.sourceDocument);
-          }
-        }
-        if (docsReferenced.size > 0) {
-          setHiddenDocs((prev) => {
-            let changed = false;
-            const next = new Set(prev);
-            for (const d of docsReferenced) {
-              if (next.has(d)) {
-                next.delete(d);
-                changed = true;
-              }
+        // Auto-unhide only fires under the override. In strict mode the chat
+        // is contractually unable to reference hidden docs, so there's
+        // nothing to unhide. Under override the user explicitly asked to
+        // search the full corpus, so if the answer touches a hidden doc we
+        // make it visible so the result is meaningful.
+        if (!strictMode) {
+          const docsReferenced = new Set<string>();
+          for (const action of json.actions) {
+            if (action.type === "focus_category" && groupMode === "document") {
+              docsReferenced.add(action.categoryId);
+            } else if (action.type === "select_target") {
+              const t = targetMap.get(action.targetId);
+              if (t) docsReferenced.add(t.sourceDocument);
+            } else if (action.type === "select_pair") {
+              const tA = targetMap.get(action.targetAId);
+              const tB = targetMap.get(action.targetBId);
+              if (tA) docsReferenced.add(tA.sourceDocument);
+              if (tB) docsReferenced.add(tB.sourceDocument);
             }
-            return changed ? next : prev;
-          });
+          }
+          if (docsReferenced.size > 0) {
+            setHiddenDocs((prev) => {
+              let changed = false;
+              const next = new Set(prev);
+              for (const d of docsReferenced) {
+                if (next.has(d)) {
+                  next.delete(d);
+                  changed = true;
+                }
+              }
+              return changed ? next : prev;
+            });
+          }
         }
         setSelectedId(nextSelectedId);
         setFocalGroupId(nextFocalGroupId);
@@ -1762,15 +2260,24 @@ export function PolicyCoherenceExplorer({
           error:
             err instanceof Error ? err.message : "Sorry, that didn't work.",
         });
+      } finally {
+        // The override is one-shot: reset so the next ask defaults to strict.
+        setSearchAllDocs(false);
       }
     },
     [
       alignment,
       availableDocs,
+      btrData,
+      classifications,
       countryConfig,
+      focalGroupTargetIds,
+      globeCategories,
       hiddenDocs,
       groupMode,
       filter,
+      searchAllDocs,
+      sectors,
       targets,
       nodes,
       visibleAlignment,
@@ -1784,13 +2291,6 @@ export function PolicyCoherenceExplorer({
       focalGroupId ? arcs.find((a) => a.id === focalGroupId) ?? null : null,
     [arcs, focalGroupId],
   );
-
-  const focalGroupTargetIds = useMemo(() => {
-    if (!focalGroupId) return null;
-    const ids = new Set<string>();
-    for (const n of nodes) if (n.groupId === focalGroupId) ids.add(n.id);
-    return ids;
-  }, [nodes, focalGroupId]);
 
   // Group focus drives the dim treatment on the wheel only when no target is
   // active. Active target takes visual priority and reuses the existing
@@ -1837,22 +2337,88 @@ export function PolicyCoherenceExplorer({
             </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {totalAligned} alignment opportunit{totalAligned !== 1 ? "ies" : "y"} across {groups.length} {
-              ({ document: ["document type", "document types"], globe: ["biodiversity category", "biodiversity categories"], sector: ["climate mitigation sector", "climate mitigation sectors"] } as Record<GroupMode, [string, string]>)[groupMode][groups.length !== 1 ? 1 : 0]
-            }
-            {totalContra > 0 && (
-              <>
-                {", "}
+            {(() => {
+              const groupLabel = ({
+                document: ["document type", "document types"],
+                globe: ["biodiversity category", "biodiversity categories"],
+                sector: ["climate mitigation sector", "climate mitigation sectors"],
+              } as Record<GroupMode, [string, string]>)[groupMode][
+                groups.length !== 1 ? 1 : 0
+              ];
+              const across = (
+                <>
+                  {" "}across {groups.length} {groupLabel}
+                </>
+              );
+              const contraButton = filteredCounts.contra > 0 && (
                 <button
                   type="button"
-                  onClick={() => setFilter(filter === "contradictions" ? "all" : "contradictions")}
+                  onClick={() =>
+                    setFilter(filter === "contradictions" ? "all" : "contradictions")
+                  }
                   className="text-red-600 hover:underline font-medium"
                 >
-                  {totalContra} contradiction{totalContra !== 1 ? "s" : ""}
+                  {filteredCounts.contra} contradiction
+                  {filteredCounts.contra !== 1 ? "s" : ""}
                 </button>
-              </>
-            )}
-            . Hover or click a target to explore connections.
+              );
+              switch (filter) {
+                case "high":
+                  return (
+                    <>
+                      {filteredCounts.high} strong alignment
+                      {filteredCounts.high !== 1 ? "s" : ""}
+                      {across}.
+                    </>
+                  );
+                case "contradictions":
+                  return (
+                    <>
+                      {contraButton}
+                      {across}.
+                    </>
+                  );
+                case "high_contra":
+                  return (
+                    <>
+                      {filteredCounts.high} strong alignment
+                      {filteredCounts.high !== 1 ? "s" : ""}
+                      {contraButton && (
+                        <>
+                          {" and "}
+                          {contraButton}
+                        </>
+                      )}
+                      {across}.
+                    </>
+                  );
+                case "high_medium":
+                  return (
+                    <>
+                      {filteredCounts.aligned} strong or medium alignment
+                      {filteredCounts.aligned !== 1 ? "s" : ""}
+                      {across}.
+                    </>
+                  );
+                case "all":
+                default:
+                  return (
+                    <>
+                      {filteredCounts.aligned} alignment opportunit
+                      {filteredCounts.aligned !== 1 ? "ies" : "y"}
+                      {across}
+                      {contraButton && (
+                        <>
+                          {", "}
+                          {contraButton}
+                        </>
+                      )}
+                      .
+                    </>
+                  );
+              }
+            })()}
+            {" "}Hover or click a target to explore connections.
           </p>
         </div>
         <div className="flex items-start gap-3">
@@ -2048,10 +2614,10 @@ export function PolicyCoherenceExplorer({
           so the layout reads as one card-pair, not two stacked panes. */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Wheel container */}
-        <div className="min-w-0 lg:col-span-7">
+        <div className="min-w-0 lg:col-span-8">
           <div className="bg-white border border-gray-100 rounded-lg p-4 h-full">
             <svg
-              viewBox={`${-VB / 2} ${-VB / 2} ${VB} ${VB}`}
+              viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
               className="w-full"
               style={{ maxHeight: 620 }}
               onClick={handleBgClick}
@@ -2336,13 +2902,25 @@ export function PolicyCoherenceExplorer({
                 const LABEL_H = 14;
                 // Approximate character width at fontSize 11, fontWeight 600
                 const CHAR_W = 6.5;
+                // Labels wider than this in chars wrap to two lines so they
+                // don't extend past the viewBox edge.
+                const MAX_CHARS_PER_LINE = 24;
 
-                const entries = arcs.map((arc) => ({
-                  arc,
-                  angle: arc.midAngle,
-                  // Angular span needed for this label's text width
-                  angularSpan: (arc.label.length * CHAR_W) / GRP_LABEL_R,
-                }));
+                const entries = arcs.map((arc) => {
+                  const lines = wrapLabel(arc.label, MAX_CHARS_PER_LINE);
+                  const longest = lines.reduce(
+                    (m, l) => Math.max(m, l.length),
+                    0,
+                  );
+                  return {
+                    arc,
+                    lines,
+                    angle: arc.midAngle,
+                    // Angular span uses the longest wrapped line so collision
+                    // avoidance stays correct for multi-line labels.
+                    angularSpan: (longest * CHAR_W) / GRP_LABEL_R,
+                  };
+                });
 
                 // Sort by home angle so neighbours-in-the-circle are neighbours-in-the-array
                 const sorted = [...entries].sort((a, b) => a.arc.midAngle - b.arc.midAngle);
@@ -2369,7 +2947,7 @@ export function PolicyCoherenceExplorer({
                   }
                 }
 
-                return sorted.map(({ arc, angle }) => {
+                return sorted.map(({ arc, angle, lines }) => {
                   // Leader line: from arc outer edge (at original midAngle) to label position
                   const arcX = (OUTER_R + 3) * Math.sin(arc.midAngle);
                   const arcY = -(OUTER_R + 3) * Math.cos(arc.midAngle);
@@ -2393,6 +2971,11 @@ export function PolicyCoherenceExplorer({
                         : 0.12
                       : 0.35;
                   const labelFill = labelDimmed ? "#94a3b8" : arc.color;
+                  // Center the multi-line block vertically around ly. For a
+                  // single line, dy=0 means baseline sits at ly (with
+                  // dominantBaseline="middle"). For N lines, offset the first
+                  // line up so the block straddles ly.
+                  const firstDy = -((lines.length - 1) * 0.55);
                   return (
                     <g key={`grp-${arc.id}`}>
                       <path
@@ -2419,7 +3002,15 @@ export function PolicyCoherenceExplorer({
                         }}
                       >
                         <title>{getDocFullLabel(countryConfig, arc.id)}</title>
-                        {arc.label}
+                        {lines.map((line, i) => (
+                          <tspan
+                            key={i}
+                            x={lx + nudge}
+                            dy={i === 0 ? `${firstDy}em` : "1.1em"}
+                          >
+                            {line}
+                          </tspan>
+                        ))}
                       </text>
                     </g>
                   );
@@ -2503,7 +3094,7 @@ export function PolicyCoherenceExplorer({
             EmptyPanel below the stats — preferred for the cleaner idle
             layout, with the trade-off that the AI reply is only visible
             while the user is in idle state. */}
-        <div className="min-w-0 lg:col-span-5">
+        <div className="min-w-0 lg:col-span-4">
           {selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
@@ -2532,6 +3123,7 @@ export function PolicyCoherenceExplorer({
                 onClose={closeCategory}
                 onSelectTarget={handleNodeClick}
                 onSelectPair={handleSelectPair}
+                onSelectCategory={handleArcClick}
                 countryConfig={countryConfig}
               />
             ) : (
@@ -2539,8 +3131,12 @@ export function PolicyCoherenceExplorer({
                 targets={visibleTargets}
                 alignment={filtered}
                 onSelectTarget={handleNodeClick}
+                onSelectPair={handleSelectPair}
                 onAsk={handleAsk}
                 chat={chat}
+                searchAllDocs={searchAllDocs}
+                onToggleSearchAll={setSearchAllDocs}
+                onSetFilter={setFilter}
                 countryConfig={countryConfig}
               />
             )}
