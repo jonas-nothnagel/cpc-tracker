@@ -14,6 +14,7 @@ import { TensionClusters } from "@/components/viz/tension-clusters";
 import { Nr7Progress } from "@/components/viz/nr7-progress";
 import { ImplementationCoverage } from "@/components/viz/implementation-coverage";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
+import { VisionAnchorCoverage } from "@/components/viz/vision-anchor-coverage";
 import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
 import { FinancingCoherence } from "@/components/viz/financing-coherence";
 import type {
@@ -453,6 +454,17 @@ export function DashboardClient({
           countryConfig={data.countryConfig}
         />
         </div>
+
+        {/* --- Vision Anchor Coverage (countries that declare an anchor doc) --- */}
+        {data.countryConfig?.anchorDocType && (
+          <VisionAnchorCoverage
+            targets={targets}
+            alignment={data.alignment}
+            countryConfig={data.countryConfig}
+            anchorDocType={data.countryConfig.anchorDocType}
+            onFocusTarget={setFocusTargetId}
+          />
+        )}
 
         {/* --- Thematic Classification (switchable) --- */}
         <ClassificationSection
