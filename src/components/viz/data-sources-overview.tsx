@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getDocColor, getDocFullLabel, getDocLabel, getDocTypeOrder } from "@/lib/utils";
+import { formatSourceRef } from "@/lib/source-ref";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import {
@@ -18,27 +19,7 @@ import type {
   BtrData,
   Nr7Data,
   CountryConfig,
-  SourceRef,
 } from "@/types";
-
-/**
- * Format a structured SourceRef into a single-line citation string like
- * "Mongolia BTR1 (December 2025), CTF-NDC Table 5 / PDF Table II.6, pp. 93-94".
- * Returns undefined when the ref is missing or empty, so callers can fall back
- * to no tooltip.
- */
-function formatSourceRef(ref?: SourceRef): string | undefined {
-  if (!ref) return undefined;
-  const parts: string[] = [];
-  if (ref.document) parts.push(ref.document);
-  const detail: string[] = [];
-  if (ref.section) detail.push(ref.section);
-  if (ref.table) detail.push(ref.table);
-  if (detail.length) parts.push(detail.join(" / "));
-  if (ref.pages) parts.push(`pp. ${ref.pages}`);
-  if (ref.annex) parts.push(ref.annex);
-  return parts.length ? parts.join(", ") : undefined;
-}
 
 // ─── Target list modal ────────────────────────────────────────────────────────
 
