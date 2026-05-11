@@ -20,6 +20,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { InfoBox } from "@/components/ui/info-box";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import {
   ALIGNMENT_WEIGHTS,
   buildAtlasSignals,
@@ -154,6 +155,18 @@ export function TargetAtlas({
   const hasBer = (budgetAlignments?.length ?? 0) > 0;
   const hasBtr = allTargets.some((t) => t.sourceDocument === "BTR");
 
+  // Atlas pulls from three buckets — list them so users can see what fed the
+  // dot positions before reading the chart. The Data Sources panel above the
+  // dashboard carries the document-level citations.
+  const provenanceSources = useMemo<ProvenanceSource[]>(() => {
+    const out: ProvenanceSource[] = [
+      { label: `Policy targets (${policyTargets.length})` },
+    ];
+    if (hasBtr) out.push({ label: "BTR reported actions" });
+    if (hasBer) out.push({ label: "BER budget programmes" });
+    return out;
+  }, [policyTargets.length, hasBtr, hasBer]);
+
   const colorLookup = useMemo(() => {
     const choice = taxonomyChoices.find((t) => t.id === lens);
     if (!choice) return new Map<string, { color: string; name: string }>();
@@ -287,7 +300,7 @@ export function TargetAtlas({
   return (
     <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
       <div className="mb-3 flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+        <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
           Target Atlas
           <InfoBox>
             Items are connected when they share a relevant category in the
@@ -298,6 +311,21 @@ export function TargetAtlas({
             contradictions with other targets. See &ldquo;How to read
             this&rdquo; below the header for the full story.
           </InfoBox>
+          <DataProvenance
+            origin="mixed"
+            sources={provenanceSources}
+            method={
+              <>
+                Each dot is a policy target. Connections are inferred from LLM
+                taxonomy classifications under the selected lens; the red ring
+                comes from the same LLM pairwise alignment pass used by the
+                coherency views. BTR actions and BER programmes contribute to
+                the vertical &ldquo;backing&rdquo; axis only when they share a
+                lens category with a target.
+              </>
+            }
+            caveat="Both axes depend on the chosen lens — switching lenses recomputes positions. The Atlas shows semantic coherence (shared categories), not material flows of money or implementation effort."
+          />
         </h2>
         <div className="flex items-center gap-3 text-xs">
           <label htmlFor="atlas-tax" className="text-[var(--undp-gray)]">

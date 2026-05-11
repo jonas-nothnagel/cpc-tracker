@@ -12,6 +12,7 @@ import {
   ReferenceLine,
 } from "recharts";
 import type { BtrData } from "@/types";
+import { DataProvenance } from "@/components/ui/data-provenance";
 
 const SECTOR_COLORS: Record<string, string> = {
   sector_energy: "#0468b1",
@@ -133,8 +134,22 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
     <div>
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-1">
+          <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-1 flex items-center flex-wrap gap-y-1">
             GHG Emissions by Sector
+            <DataProvenance
+              origin="user-uploaded"
+              sources={[
+                {
+                  label: "Biennial Transparency Report — historical emissions",
+                  citation: "CTF Table 6 (sector emissions)",
+                },
+                {
+                  label: "Biennial Transparency Report — projections",
+                  citation: "CTF Table 7 / 9 (WEM/WAM/WOM scenarios)",
+                },
+              ]}
+              caveat="Historical values are reported by the country in their BTR; projection scenarios (WEM/WAM/WOM) are the country's own modelling and are not recomputed here."
+            />
           </h3>
           <p className="text-sm text-[var(--undp-gray)]">
             Historical emissions (solid) and WEM projections (dashed) in kt CO&#x2082; equivalent.
