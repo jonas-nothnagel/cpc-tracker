@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { InfoBox } from "@/components/ui/info-box";
-import { chartDocKey, countByCategory, getDocTypeOrder } from "@/lib/utils";
+import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
+import { chartDocKey, countByCategory, getDocFullLabel, getDocTypeOrder } from "@/lib/utils";
+import { formatSourceRef } from "@/lib/source-ref";
 import { getCountry, listVisibleCountries } from "@/config/countries";
 import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
@@ -145,10 +147,22 @@ function ClassificationSection({
     globe: `${targetsWithGlobe} of ${policyCount} policy targets (${pct(targetsWithGlobe)}%) classified into ${globeCategoriesUsed} of ${globeCategories.length} Biodiversity categories.`,
   };
 
+  const provenanceSources: ProvenanceSource[] = Array.from(
+    new Set(policyTargets.map((t) => t.sourceDocument)),
+  ).map((dt) => ({
+    label: getDocFullLabel(countryConfig, dt),
+    citation: countryConfig?.docProvenance?.[dt],
+  }));
+
+  const taxonomyLabel: Record<ClassificationView, string> = {
+    sector: "IPCC Climate Mitigation taxonomy",
+    globe: "BIOFIN GLOBE biodiversity expenditure taxonomy",
+  };
+
   return (
     <section className="mb-10">
       <div className="mb-3 flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-lg font-semibold text-[var(--undp-black)]">
+        <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
           Thematic Classification
           <InfoBox>
             Each policy target is classified against established taxonomies using AI.{" "}
@@ -156,6 +170,19 @@ function ClassificationSection({
             <strong>Biodiversity Taxonomy</strong> uses BIOFIN&apos;s GLOBE expenditure taxonomy to enable cross-level analysis.{" "}
             Targets may appear in multiple categories if they span several domains.
           </InfoBox>
+          <DataProvenance
+            origin="mixed"
+            sources={provenanceSources}
+            method={
+              <>
+                Each target is scored by an LLM against every category in the
+                active taxonomy ({taxonomyLabel[view]}). The chart shows
+                primary-category counts; targets above the relevance threshold
+                in additional categories are surfaced in click-through views.
+              </>
+            }
+            caveat="Counts depend on which categories the model judged primary. Click a segment and inspect a few targets before treating shares as exhaustive — the model may split similar targets across adjacent categories."
+          />
         </h2>
         <div className="flex gap-1.5 text-xs">
           {viewOptions.map((opt) => (
@@ -540,8 +567,27 @@ export function DashboardClient({
             {data.btrData && data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length > 0 && (
               <div className={data.nr7Data && data.nr7Data.progressItems.length > 0 ? "mt-8" : ""}>
                 <div className="mb-4">
-                  <h3 className="text-base font-semibold text-[var(--undp-black)]">
+                  <h3 className="text-base font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
                     Reporting &amp; Implementation Coverage
+                    <DataProvenance
+                      origin="user-uploaded"
+                      sources={[
+                        {
+                          label: getDocFullLabel(data.countryConfig, "BTR"),
+                          citation:
+                            formatSourceRef(data.countryConfig?.btrMitigationSourceRef)
+                            ?? data.countryConfig?.docProvenance?.BTR,
+                        },
+                        ...(data.btrData.adaptationSourceRef
+                          ? [{
+                              label: "BTR adaptation actions",
+                              citation: formatSourceRef(data.btrData.adaptationSourceRef),
+                            }]
+                          : []),
+                      ]}
+                      method="Reported actions are read from the BTR's CTF tables as filed by the country. The dashboard groups them by IPCC sector (mitigation) or the country's adaptation framework, and maps each action to taxonomy categories via the LLM classifier for the coverage tables below."
+                      caveat="Implementation status, action descriptions, and support-project counts are reproduced from the BTR as filed. The dashboard does not independently verify whether reported actions are sufficient to meet the underlying targets."
+                    />
                   </h3>
                   <p className="text-sm text-[var(--undp-gray)] mt-0.5">
                     {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
