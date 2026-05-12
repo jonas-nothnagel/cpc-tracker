@@ -19,28 +19,28 @@
     {
       "id": "NDC",
       "shortLabel": "NDC",
-      "mediumLabel": "NDC (Climate)",
+      "mediumLabel": "NDC",
       "fullLabel": "Nationally Determined Contribution",
       "color": "#0468b1"
     },
     {
       "id": "NBSAP",
       "shortLabel": "NBSAP",
-      "mediumLabel": "NBSAP (Biodiversity)",
+      "mediumLabel": "NBSAP",
       "fullLabel": "National Biodiversity Strategy & Action Plan",
       "color": "#0d9488"
     },
     {
       "id": "NAP",
       "shortLabel": "NAP",
-      "mediumLabel": "NAP (Adaptation)",
+      "mediumLabel": "NAP",
       "fullLabel": "National Adaptation Plan",
       "color": "#b45309"
     },
     {
       "id": "LDN",
       "shortLabel": "LDN",
-      "mediumLabel": "LDN (Land)",
+      "mediumLabel": "LDN",
       "fullLabel": "Land Degradation Neutrality",
       "color": "#dc2626"
     },
@@ -54,21 +54,21 @@
     {
       "id": "BTR",
       "shortLabel": "BTR Action",
-      "mediumLabel": "BTR (Transparency)",
+      "mediumLabel": "BTR",
       "fullLabel": "Biennial Transparency Report",
       "color": "#7c3aed"
     },
     {
       "id": "BER",
       "shortLabel": "BER",
-      "mediumLabel": "BER (Finance)",
+      "mediumLabel": "BER",
       "fullLabel": "Biodiversity Expenditure Review",
       "color": "#2563eb"
     },
     {
       "id": "FSS",
       "shortLabel": "FSS",
-      "mediumLabel": "FSS (Food Supply)",
+      "mediumLabel": "FSS",
       "fullLabel": "Food Supply and Security Measures (Parliament Resolution 36, June 2022)",
       "color": "#d97706"
     },

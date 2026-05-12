@@ -4,7 +4,6 @@ import { useState } from "react";
 import { getDocColor, getDocFriendlyName, getDocFullLabel, getDocLabel, getDocTypeOrder } from "@/lib/utils";
 import { formatSourceRef } from "@/lib/source-ref";
 import { InfoBox } from "@/components/ui/info-box";
-import { DataProvenance } from "@/components/ui/data-provenance";
 import { Modal } from "@/components/ui/modal";
 import {
   TargetTextWithHighlights,
@@ -279,10 +278,6 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
         <div className="flex items-baseline gap-2 mb-3">
           <h2 className="text-sm font-semibold text-[var(--undp-black)] inline-flex items-center flex-wrap gap-y-1">
             Data Sources
-            <DataProvenance
-              origin="user-uploaded"
-              caveat="Everything listed below comes directly from documents the user uploaded. The AI views elsewhere on this dashboard (alignment, contradictions, atlas) are computed from these inputs."
-            />
             <InfoBox>
               Policy commitments and reported implementation analysed in this dashboard. Click any label or count to inspect the underlying targets or actions.
               {abbrList.length > 0 && (
@@ -302,7 +297,7 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
 
         <div className={`grid grid-cols-1 gap-3 ${gridCols}`}>
           {/* Card 1 — Policy Targets */}
-          <div className="border border-gray-100 rounded-lg p-4 bg-white">
+          <div>
             <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
               Policy Targets
             </p>
@@ -345,20 +340,6 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
                       </span>
                     );
                   })}
-                  <InfoBox>
-                    <strong>Document abbreviations</strong>
-                    <br /><br />
-                    {policyDocTypes.map((doc, i) => {
-                      const full = getDocFullLabel(countryConfig, doc);
-                      return (
-                        <span key={doc}>
-                          <strong>{getDocLabel(countryConfig, doc)}</strong>
-                          {full !== doc ? ` — ${full}` : ""}
-                          {i < policyDocTypes.length - 1 ? <br /> : null}
-                        </span>
-                      );
-                    })}
-                  </InfoBox>
                 </>
               )}
             </p>
@@ -366,7 +347,7 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
 
           {/* Card 2 — BTR Reported Actions (only when BTR data is present) */}
           {hasBtr && (
-            <div className="border border-gray-100 rounded-lg p-4 bg-white">
+            <div>
               <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
                 BTR Reported Actions
               </p>
