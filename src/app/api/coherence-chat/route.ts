@@ -183,6 +183,7 @@ Conversation memory: if a "Conversation context" line is present, the user is fo
 
 Hard rules:
 - The answer text is REQUIRED. Always write at least one sentence answering the question, even if you call no tools.
+- If your answer names a specific target, pair, doc, or category as the focal evidence, you MUST call at least one of select_target, select_pair, or focus_category so Show me has something to apply. A bare show_docs is NOT enough; if you call show_docs you MUST also call one of those three navigation tools.
 - Only use ids that appear in the context. Never invent ids.
 - Plain text only. No markdown, no asterisks, no bullets, no quotes around the reply.
 - No em dashes (—) in the reply. Use a period, comma, or colon instead.
@@ -1039,6 +1040,35 @@ export async function POST(req: Request) {
         actionByType.has("select_pair")
       ),
   );
+
+  // Show me reliability fallback: when the model emitted show_docs but no
+  // focus/select to land on, Show me would just unhide a doc and stop —
+  // which reads as nothing happened. Promote the first revealed doc to a
+  // focus action so the wheel actually reshapes. Mirrors the system-prompt
+  // hard rule; this block is the safety net when the model still skips it.
+  const hasNavAction = finalActions.some(
+    (a) =>
+      a.type === "select_target" ||
+      a.type === "select_pair" ||
+      a.type === "focus_category",
+  );
+  if (!hasNavAction) {
+    const showDocs = finalActions.find(
+      (a): a is { type: "show_docs"; ids: string[] } =>
+        a.type === "show_docs",
+    );
+    if (showDocs && showDocs.ids.length > 0) {
+      const hasSetMode = finalActions.some((a) => a.type === "set_mode");
+      if (!hasSetMode) {
+        finalActions.push({ type: "set_mode", mode: "document" });
+      }
+      finalActions.push({
+        type: "focus_category",
+        categoryId: showDocs.ids[0],
+      });
+      finalActions.sort((a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type]);
+    }
+  }
 
   // Prefer the model's content when it wrote one; otherwise synthesise a
   // substantive factual answer from the tool calls + context. Most gpt-5
