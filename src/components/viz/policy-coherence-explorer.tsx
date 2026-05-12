@@ -15,7 +15,16 @@ import {
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { isContradiction } from "@/types";
-import { buildChatRequest } from "@/lib/coherence-chat";
+import {
+  buildChatRequest,
+  pickExampleQueries,
+  type ChatHistoryTurn,
+  type ChatSuggestion,
+} from "@/lib/coherence-chat";
+import {
+  detectInsights,
+  type Insight,
+} from "@/lib/coherence-insights";
 import {
   TargetTextWithHighlights,
   ActivitiesActions,
@@ -754,6 +763,8 @@ interface ChatStatus {
   loading: boolean;
   reply: string | null;
   error: string | null;
+  /** Follow-up chips returned by the last successful reply. */
+  suggestions: ChatSuggestion[];
 }
 
 /**
@@ -812,10 +823,16 @@ interface EmptyPanelProps {
   onSelectPair: (targetAId: string, targetBId: string) => void;
   onAsk: (query: string) => void;
   chat: ChatStatus;
-  searchAllDocs: boolean;
-  onToggleSearchAll: (v: boolean) => void;
   onSetFilter: (filter: AlignFilter) => void;
   countryConfig?: CountryConfig | null;
+  /** Data-aware chip strings for the example pool. Generated upstream. */
+  exampleQueries: string[];
+  /** Run the local insight detector and apply the next surprise. */
+  onRotateInsight: () => void;
+  /** First-load AI hook insight (null when dismissed / unavailable). */
+  currentInsight: Insight | null;
+  /** Apply the hook's preset actions immediately. */
+  onApplyHook: () => void;
 }
 
 type StatView = "overview" | "targets" | "alignments" | "tensions";
@@ -829,14 +846,10 @@ const TENSION_SEVERITY: Record<string, number> = {
   low_tension: 2,
 };
 
-// Three view-scoped example prompts shown as chips. Each maps to a real
-// fault line in the visible-scope rankings, so the chat returns a concrete
-// answer instead of a generic one.
-const EXAMPLE_QUERIES: string[] = [
-  "Which target sits in the most tensions?",
-  "Show a target that's broadly aligned and contested",
-  "Where in this view do plans contradict most?",
-];
+// Example chip queries are now generated upstream by `pickExampleQueries`
+// (see `@/lib/coherence-chat`). The generator filters a candidate pool
+// against what's actually loaded so a user never sees a chip the dataset
+// can't honestly answer.
 
 // Placeholder typed-out on mount so the chat feels alive rather than static.
 // Animation runs once per mount; the resulting string is used as the input's
@@ -865,35 +878,58 @@ function useTypedPlaceholder(text: string, charDelayMs = 35): string {
  * is in idle state; once the wheel reshapes into a category or target
  * view, the wheel + panel state IS the answer.
  */
+/**
+ * Tailwind class lists for the chat's chip vocabulary.
+ *
+ * - DEFAULT: example chips and follow-up suggestion chips (the typical
+ *   "ask this question" affordance).
+ * - PRIMARY: the dark filled "Show me" call-to-action on the insight hook.
+ * - SURPRISE: amber-tinted chip used for Surprise-me, signalling that it's
+ *   a different kind of action (random insight) than the prompt chips. Mirrors
+ *   the amber accent on the insight bubble so the two visually link.
+ */
+const CHIP_BASE =
+  "text-[11px] leading-snug rounded-full px-2.5 py-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+const CHIP_DEFAULT = `${CHIP_BASE} text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)]`;
+const CHIP_PRIMARY = `${CHIP_BASE} text-white bg-[var(--undp-black)] border border-[var(--undp-black)] hover:bg-gray-800`;
+const CHIP_SURPRISE = `${CHIP_BASE} text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100 hover:border-amber-300`;
+
 function ChatBar({
   onAsk,
   chat,
-  searchAllDocs,
-  onToggleSearchAll,
+  exampleQueries,
+  onRotateInsight,
+  currentInsight,
+  onApplyHook,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
-  searchAllDocs: boolean;
-  onToggleSearchAll: (v: boolean) => void;
+  exampleQueries: string[];
+  onRotateInsight: () => void;
+  currentInsight: Insight | null;
+  onApplyHook: () => void;
 }) {
   const [query, setQuery] = useState("");
-  const placeholder = useTypedPlaceholder("Ask about what’s currently in view…");
+  const placeholder = useTypedPlaceholder("Ask anything about this view…");
   const submit = (q: string) => {
     const trimmed = q.trim();
     if (!trimmed || chat.loading) return;
     onAsk(trimmed);
     setQuery("");
   };
+
+  // The visible message slot shows one of: the current insight bubble, the
+  // assistant's reply, or an error. They share the same bubble chrome so
+  // the UI doesn't shift between states.
+  const showInsight =
+    !!currentInsight && !chat.reply && !chat.loading && !chat.error;
+  const showReply = !!chat.reply && !chat.loading;
+  const showError = !!chat.error && !chat.loading;
+  const showSuggestions =
+    showReply && chat.suggestions.length > 0;
+
   return (
-    <div className="space-y-2">
-      <p className="text-[10px] leading-snug">
-        <span className="font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
-          Ask and explore this view
-        </span>
-        <span className="text-[var(--undp-gray)] normal-case font-normal tracking-normal">
-          {" · Beta."}
-        </span>
-      </p>
+    <div className="space-y-2.5">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -907,60 +943,101 @@ function ChatBar({
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
             disabled={chat.loading}
-            className="flex-1 min-w-0 text-[12px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
+            className="flex-1 min-w-0 text-[12.5px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
+            aria-label="Ask the assistant about this view"
           />
           <button
             type="submit"
             disabled={chat.loading || query.trim().length === 0}
             className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
           >
-            {chat.loading ? "Asking…" : "Ask"}
+            {chat.loading ? "…" : "Ask"}
           </button>
         </div>
       </form>
-      <div className="flex items-center justify-between gap-2 mt-1">
-        <span className="text-[10px] text-[var(--undp-gray)] leading-snug">
-          {searchAllDocs
-            ? "Next ask will include all documents."
-            : "Searches only what's currently selected."}
-        </span>
-        <button
-          type="button"
-          onClick={() => onToggleSearchAll(!searchAllDocs)}
-          disabled={chat.loading}
-          className="flex items-center gap-1 text-[10px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-40 disabled:no-underline shrink-0"
-        >
-          {searchAllDocs && (
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--undp-blue)]" />
-          )}
-          {searchAllDocs ? "All documents · cancel" : "Search all documents"}
-        </button>
-      </div>
-      {chat.reply && !chat.loading && (
-        <p className="text-[11px] text-[var(--undp-black)] leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mr-1.5">
-            AI
-          </span>
+
+      {chat.loading && (
+        <div className="text-[11px] text-[var(--undp-gray)] italic px-1">
+          Thinking…
+        </div>
+      )}
+
+      {showInsight && currentInsight && (
+        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
+          <p className="flex items-baseline gap-2">
+            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
+              Insight
+            </span>
+            <span className="flex-1">{currentInsight.callout}</span>
+          </p>
+        </div>
+      )}
+      {showReply && (
+        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
           {chat.reply}
-        </p>
+        </div>
       )}
-      {chat.error && !chat.loading && (
-        <p className="text-[11px] text-red-700 leading-snug bg-red-50 border border-red-100 rounded-md px-3 py-2">
+      {showError && (
+        <div className="text-[12px] text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
           {chat.error}
-        </p>
+        </div>
       )}
+
       <div className="flex flex-wrap gap-1.5">
-        {EXAMPLE_QUERIES.map((q) => (
-          <button
-            key={q}
-            type="button"
-            onClick={() => submit(q)}
-            disabled={chat.loading}
-            className="text-left text-[10.5px] leading-snug text-[var(--undp-gray)] border border-gray-200 rounded-full px-2.5 py-1 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {q}
-          </button>
-        ))}
+        {showInsight ? (
+          <>
+            <button type="button" onClick={onApplyHook} className={CHIP_PRIMARY}>
+              Show me
+            </button>
+            <button
+              type="button"
+              onClick={onRotateInsight}
+              className={CHIP_SURPRISE}
+            >
+              Another insight
+            </button>
+          </>
+        ) : showSuggestions ? (
+          chat.suggestions.map((s) => (
+            <button
+              key={s.query}
+              type="button"
+              onClick={() => {
+                if (s.kind === "surprise") {
+                  onRotateInsight();
+                  return;
+                }
+                submit(s.query);
+              }}
+              disabled={chat.loading}
+              className={s.kind === "surprise" ? CHIP_SURPRISE : CHIP_DEFAULT}
+            >
+              {s.label}
+            </button>
+          ))
+        ) : (
+          <>
+            {exampleQueries.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => submit(q)}
+                disabled={chat.loading}
+                className={CHIP_DEFAULT}
+              >
+                {q}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={onRotateInsight}
+              disabled={chat.loading}
+              className={CHIP_SURPRISE}
+            >
+              Surprise me
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -1368,10 +1445,12 @@ function EmptyPanel({
   onSelectPair,
   onAsk,
   chat,
-  searchAllDocs,
-  onToggleSearchAll,
   onSetFilter,
   countryConfig,
+  exampleQueries,
+  onRotateInsight,
+  currentInsight,
+  onApplyHook,
 }: EmptyPanelProps) {
   // Stats are interactive: clicking a stat sets the wheel filter AND swaps
   // the middle section to a full list of that kind of item (targets, strong
@@ -1506,8 +1585,10 @@ function EmptyPanel({
         <ChatBar
           onAsk={onAsk}
           chat={chat}
-          searchAllDocs={searchAllDocs}
-          onToggleSearchAll={onToggleSearchAll}
+          exampleQueries={exampleQueries}
+          onRotateInsight={onRotateInsight}
+          currentInsight={currentInsight}
+          onApplyHook={onApplyHook}
         />
 
       </div>
@@ -1954,11 +2035,6 @@ export function PolicyCoherenceExplorer({
   // wheel and the panel shows target detail; closing the target falls back to
   // the category panel because the group remains focal.
   const [focalGroupId, setFocalGroupId] = useState<string | null>(null);
-  // One-shot override: when true, the next chat ask runs against the full
-  // corpus instead of the current visible/focal scope. Reset to false after
-  // each response so the default scope stays strict.
-  const [searchAllDocs, setSearchAllDocs] = useState(false);
-
   // External focus: when Tensions section links to a specific target.
   // Track prop changes during render so we don't run setState inside an effect
   // (see React docs: "Adjusting some state when a prop changes"). Seed with
@@ -2135,23 +2211,37 @@ export function PolicyCoherenceExplorer({
     return { aligned: a, high: h, contra: c };
   }, [filtered]);
 
-  // Chat state. Single-turn for v1: every Ask replaces the previous reply.
-  // History could come later if it earns its keep — keep this lean now.
+  // Chat state. Carries the reply plus follow-up suggestion chips.
   const [chat, setChat] = useState<ChatStatus>({
     loading: false,
     reply: null,
     error: null,
+    suggestions: [],
   });
 
+  // Rolling buffer of the last 3 user+assistant turns, sent on each ask so
+  // the model can resolve "what about its alignments?" against the previous
+  // selection. Reset when the user navigates away (clearChat).
+  const [history, setHistory] = useState<ChatHistoryTurn[]>([]);
+
+  // Insight rotation index. Increments when the user clicks "Another
+  // insight" or the Surprise-me chip — the displayed insight is just
+  // `insights[insightIdx % insights.length]`. Plain integer is enough: with
+  // ~10 detectors the user has to rotate that many times before seeing a
+  // repeat, which is fine. Session-scoped, resets on page reload.
+  const [insightIdx, setInsightIdx] = useState(0);
+
   // Clear the chat reply when the user manually navigates away from it (clicks
-  // a target / arc / empty area, closes a panel). Stays put when the chat
-  // itself sets state — the reply stays visible alongside its result.
+  // a target / arc / empty area, closes a panel). Also resets history so the
+  // next ask starts a fresh thread — referring expressions from before the
+  // click would be confusing.
   const clearChat = useCallback(() => {
     setChat((prev) =>
       prev.reply !== null || prev.error !== null
-        ? { loading: false, reply: null, error: null }
+        ? { loading: false, reply: null, error: null, suggestions: [] }
         : prev,
     );
+    setHistory((prev) => (prev.length > 0 ? [] : prev));
   }, []);
 
   const handleNodeClick = useCallback(
@@ -2242,34 +2332,33 @@ export function PolicyCoherenceExplorer({
 
   const handleAsk = useCallback(
     async (query: string) => {
-      setChat({ loading: true, reply: null, error: null });
-      // Scope contract:
-      // - Strict (default, `searchAllDocs === false`): only what's currently
-      //   visible is sent — visible docs, plus the focal category's targets
-      //   when one is set. Hidden docs are off-limits and the server
-      //   replies with an "out of scope" sentence when asked about them.
-      // - Override (`searchAllDocs === true`): the user opted into the full
-      //   corpus for one query; auto-unhide reveals any doc the chat
-      //   references. Toggle resets after the response.
-      const strictMode = !searchAllDocs;
+      setChat({
+        loading: true,
+        reply: null,
+        error: null,
+        suggestions: [],
+      });
+      // Chat always sees the full corpus. Scoping the chat to the visible
+      // view forced users to set the view correctly BEFORE asking, which
+      // defeats the point of a navigation helper. The chat is now a Q&A over
+      // the entire dataset; show_docs reveals hidden docs when needed and
+      // the reply narrates the unhide.
       try {
         const targetMap = new Map(targets.map((t) => [t.id, t]));
         const body = buildChatRequest({
           query,
-          searchAllDocs,
           groupMode,
           filter,
           targets,
           alignment,
-          visibleAlignment,
           classifications,
           sectors,
           globeCategories,
           btrData,
           availableDocs,
           hiddenDocs,
-          focalGroupTargetIds,
           countryConfig,
+          history,
         });
 
         const res = await fetch("/api/coherence-chat", {
@@ -2278,28 +2367,46 @@ export function PolicyCoherenceExplorer({
           body: JSON.stringify(body),
         });
         if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `Request failed (${res.status})`);
+          // The route returns { error: "..." } as JSON. Extract just the
+          // message so the user sees a sentence, not the raw payload.
+          // Fall back to the status code if the body isn't parseable.
+          let message: string;
+          try {
+            const errBody = (await res.json()) as { error?: string };
+            message =
+              typeof errBody.error === "string" && errBody.error.length > 0
+                ? errBody.error
+                : `Request failed (${res.status})`;
+          } catch {
+            message = `Request failed (${res.status})`;
+          }
+          throw new Error(message);
         }
         type ServerAction =
           | { type: "set_filter"; filter: AlignFilter }
           | { type: "focus_category"; categoryId: string }
           | { type: "select_target"; targetId: string }
           | { type: "select_pair"; targetAId: string; targetBId: string }
-          | { type: "set_mode"; mode: GroupMode };
+          | { type: "set_mode"; mode: GroupMode }
+          | { type: "show_docs"; ids: string[] };
         const json = (await res.json()) as {
           reply: string;
           actions: ServerAction[];
+          suggestions?: ChatSuggestion[];
         };
 
         // Each chat turn is treated as a fresh exploration: reset filter to
         // its default and clear any prior focus / selection / pair compare
-        // before layering the new actions. groupMode and hiddenDocs are user
-        // preferences kept across chat calls — if the user has explicitly
-        // hidden a document, the chat respects that scope and answers within
-        // the visible subset (the rankings sent to the model are already
-        // computed from visibleAlignment, so this happens automatically).
+        // before layering the new actions.
         setFilter("high_contra");
+        // show_docs runs first — unhide before any focus/select lands on a
+        // target whose doc was hidden a moment ago.
+        const docsToShow = new Set<string>();
+        for (const action of json.actions) {
+          if (action.type === "show_docs") {
+            for (const id of action.ids) docsToShow.add(id);
+          }
+        }
         let nextSelectedId: string | null = null;
         let nextFocalGroupId: string | null = null;
         let nextComparedPair: { result: AlignmentResult; other: Target } | null =
@@ -2320,7 +2427,7 @@ export function PolicyCoherenceExplorer({
             // Open pair compare directly so the rationale is visible without
             // a manual click. If no alignment exists between the ids, fall
             // back to selecting the first target.
-            const result = visibleAlignment.find(
+            const result = alignment.find(
               (a) =>
                 (a.targetAId === action.targetAId &&
                   a.targetBId === action.targetBId) ||
@@ -2343,54 +2450,63 @@ export function PolicyCoherenceExplorer({
             nextComparedPair = null;
           }
         }
-        // Auto-unhide only fires under the override. In strict mode the chat
-        // is contractually unable to reference hidden docs, so there's
-        // nothing to unhide. Under override the user explicitly asked to
-        // search the full corpus, so if the answer touches a hidden doc we
-        // make it visible so the result is meaningful.
-        if (!strictMode) {
-          const docsReferenced = new Set<string>();
-          for (const action of json.actions) {
-            if (action.type === "focus_category" && groupMode === "document") {
-              docsReferenced.add(action.categoryId);
-            } else if (action.type === "select_target") {
-              const t = targetMap.get(action.targetId);
-              if (t) docsReferenced.add(t.sourceDocument);
-            } else if (action.type === "select_pair") {
-              const tA = targetMap.get(action.targetAId);
-              const tB = targetMap.get(action.targetBId);
-              if (tA) docsReferenced.add(tA.sourceDocument);
-              if (tB) docsReferenced.add(tB.sourceDocument);
-            }
+        // Auto-unhide combines two sources: explicit show_docs from the
+        // server, plus a fallback heuristic that unhides any doc referenced
+        // by a focus/select action. Belt and braces — the model usually
+        // emits show_docs, but if it forgets we still don't navigate to an
+        // invisible target.
+        for (const action of json.actions) {
+          if (action.type === "focus_category" && groupMode === "document") {
+            docsToShow.add(action.categoryId);
+          } else if (action.type === "select_target") {
+            const t = targetMap.get(action.targetId);
+            if (t) docsToShow.add(t.sourceDocument);
+          } else if (action.type === "select_pair") {
+            const tA = targetMap.get(action.targetAId);
+            const tB = targetMap.get(action.targetBId);
+            if (tA) docsToShow.add(tA.sourceDocument);
+            if (tB) docsToShow.add(tB.sourceDocument);
           }
-          if (docsReferenced.size > 0) {
-            setHiddenDocs((prev) => {
-              let changed = false;
-              const next = new Set(prev);
-              for (const d of docsReferenced) {
-                if (next.has(d)) {
-                  next.delete(d);
-                  changed = true;
-                }
+        }
+        if (docsToShow.size > 0) {
+          setHiddenDocs((prev) => {
+            let changed = false;
+            const next = new Set(prev);
+            for (const d of docsToShow) {
+              if (next.has(d)) {
+                next.delete(d);
+                changed = true;
               }
-              return changed ? next : prev;
-            });
-          }
+            }
+            return changed ? next : prev;
+          });
         }
         setSelectedId(nextSelectedId);
         setFocalGroupId(nextFocalGroupId);
         setComparedPair(nextComparedPair);
-        setChat({ loading: false, reply: json.reply, error: null });
+        const suggestions = (json.suggestions ?? []).slice(0, 3);
+        setChat({
+          loading: false,
+          reply: json.reply,
+          error: null,
+          suggestions,
+        });
+        // Append this turn to history, capped at 3 turns (~6 messages).
+        setHistory((prev) =>
+          [
+            ...prev,
+            { role: "user" as const, content: query },
+            { role: "assistant" as const, content: json.reply },
+          ].slice(-6),
+        );
       } catch (err) {
         setChat({
           loading: false,
           reply: null,
           error:
             err instanceof Error ? err.message : "Sorry, that didn't work.",
+          suggestions: [],
         });
-      } finally {
-        // The override is one-shot: reset so the next ask defaults to strict.
-        setSearchAllDocs(false);
       }
     },
     [
@@ -2399,18 +2515,185 @@ export function PolicyCoherenceExplorer({
       btrData,
       classifications,
       countryConfig,
-      focalGroupTargetIds,
       globeCategories,
       hiddenDocs,
       groupMode,
       filter,
-      searchAllDocs,
+      history,
       sectors,
       targets,
       nodes,
-      visibleAlignment,
     ],
   );
+
+  // ─── Example chips + Surprise-me + first-load hook ─────────────────
+
+  // Data-aware example chips: regenerate when the visible dataset shape
+  // shifts (eg the user toggles a doc on/off). Each candidate in the pool
+  // has a precondition; chips that can't be answered honestly are dropped.
+  const visibleDocsForExamples = useMemo(
+    () => availableDocs.filter((d) => !hiddenDocs.has(d)),
+    [availableDocs, hiddenDocs],
+  );
+  const exampleQueries = useMemo(
+    () =>
+      pickExampleQueries({
+        visibleDocs: visibleDocsForExamples,
+        globeCategoriesAvailable: globeCategories.length > 0,
+        sectorsAvailable: sectors.length > 0,
+        hasFood: visibleDocsForExamples.includes("FSS"),
+        hasBiodiversity: visibleDocsForExamples.includes("NBSAP"),
+        hasClimate: visibleDocsForExamples.includes("NDC"),
+        hasAdaptation:
+          visibleDocsForExamples.includes("NAP") ||
+          (btrData?.adaptationGoals?.length ?? 0) > 0,
+        hasTensions: visibleAlignment.some((a) => isContradiction(a.alignment)),
+        hasBtr: targets.some((t) => t.sourceDocument === "BTR"),
+        country: targets[0]?.country ?? null,
+      }),
+    [
+      visibleDocsForExamples,
+      globeCategories,
+      sectors,
+      visibleAlignment,
+      btrData,
+      targets,
+    ],
+  );
+
+  // Compute all available insights once per data shift. The list is ordered
+  // by interestingness; `insightIdx` rotates through it.
+  const insights = useMemo(
+    () =>
+      detectInsights({
+        targets,
+        alignment,
+        classifications,
+        sectors,
+        globeCategories,
+        btrData,
+        availableDocs,
+        countryConfig,
+      }),
+    [
+      targets,
+      alignment,
+      classifications,
+      sectors,
+      globeCategories,
+      btrData,
+      availableDocs,
+      countryConfig,
+    ],
+  );
+
+  // Currently-displayed insight: the rotation pointer modulo list length,
+  // hidden while a reply / loading / error owns the bubble slot.
+  const currentInsight = useMemo<Insight | null>(() => {
+    if (chat.reply || chat.loading || chat.error) return null;
+    if (insights.length === 0) return null;
+    return insights[insightIdx % insights.length];
+  }, [insights, insightIdx, chat.reply, chat.loading, chat.error]);
+
+  // Rotate to the next insight — text only. Doesn't touch the wheel state;
+  // the user can compare the new fact against whatever they're currently
+  // looking at. Clears any active reply so the new insight is visible.
+  const rotateInsight = useCallback(() => {
+    if (insights.length === 0) return;
+    setInsightIdx((i) => i + 1);
+    setChat((prev) =>
+      prev.reply !== null || prev.error !== null || prev.suggestions.length > 0
+        ? { loading: false, reply: null, error: null, suggestions: [] }
+        : prev,
+    );
+    setHistory([]);
+  }, [insights.length]);
+
+  // Apply an insight's action set to the wheel. Surfaces the callout as the
+  // chat reply so the user keeps the fact in view alongside the new wheel
+  // state. Unhides any doc the insight references (BTR pairs in particular).
+  const applyInsight = useCallback(
+    (insight: Insight) => {
+      const targetMapLocal = new Map(targets.map((t) => [t.id, t]));
+      setFilter((insight.filter as AlignFilter | undefined) ?? "high_contra");
+      let nextSelectedId: string | null = null;
+      let nextFocalGroupId: string | null = null;
+      let nextComparedPair: {
+        result: AlignmentResult;
+        other: Target;
+      } | null = null;
+      const docsToShow = new Set<string>();
+      for (const action of insight.actions) {
+        if (action.type === "show_docs") {
+          for (const id of action.ids) docsToShow.add(id);
+        } else if (action.type === "set_mode") {
+          setGroupMode(action.mode);
+        } else if (action.type === "focus_category") {
+          nextFocalGroupId = action.categoryId;
+          docsToShow.add(action.categoryId);
+        } else if (action.type === "select_target") {
+          nextSelectedId = action.targetId;
+          const node = nodes.find((n) => n.id === action.targetId);
+          if (node) nextFocalGroupId = node.groupId;
+          const t = targetMapLocal.get(action.targetId);
+          if (t) docsToShow.add(t.sourceDocument);
+        } else if (action.type === "select_pair") {
+          const tA = targetMapLocal.get(action.targetAId);
+          const tB = targetMapLocal.get(action.targetBId);
+          if (tA) docsToShow.add(tA.sourceDocument);
+          if (tB) docsToShow.add(tB.sourceDocument);
+          const result = alignment.find(
+            (a) =>
+              (a.targetAId === action.targetAId &&
+                a.targetBId === action.targetBId) ||
+              (a.targetAId === action.targetBId &&
+                a.targetBId === action.targetAId),
+          );
+          nextSelectedId = action.targetAId;
+          const node = nodes.find((n) => n.id === action.targetAId);
+          if (node) nextFocalGroupId = node.groupId;
+          if (result && tB) {
+            nextComparedPair = { result, other: tB };
+          }
+        }
+      }
+      if (docsToShow.size > 0) {
+        setHiddenDocs((prev) => {
+          let changed = false;
+          const next = new Set(prev);
+          for (const d of docsToShow) {
+            if (next.has(d)) {
+              next.delete(d);
+              changed = true;
+            }
+          }
+          return changed ? next : prev;
+        });
+      }
+      setSelectedId(nextSelectedId);
+      setFocalGroupId(nextFocalGroupId);
+      setComparedPair(nextComparedPair);
+      setChat({
+        loading: false,
+        reply: insight.callout,
+        error: null,
+        suggestions: [
+          {
+            label: "Another insight",
+            query: "Surprise me with something else",
+            kind: "surprise",
+          },
+        ],
+      });
+      setHistory([]);
+    },
+    [nodes, alignment, targets],
+  );
+
+  const onApplyHook = useCallback(() => {
+    if (!currentInsight) return;
+    applyInsight(currentInsight);
+  }, [currentInsight, applyInsight]);
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
 
@@ -3323,10 +3606,12 @@ export function PolicyCoherenceExplorer({
                 onSelectPair={handleSelectPair}
                 onAsk={handleAsk}
                 chat={chat}
-                searchAllDocs={searchAllDocs}
-                onToggleSearchAll={setSearchAllDocs}
                 onSetFilter={setFilter}
                 countryConfig={countryConfig}
+                exampleQueries={exampleQueries}
+                onRotateInsight={rotateInsight}
+                currentInsight={currentInsight}
+                onApplyHook={onApplyHook}
               />
             )}
         </div>
