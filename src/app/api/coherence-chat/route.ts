@@ -724,13 +724,6 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 // like "Opened X ↔ Y." The numbers it quotes come from the context, so
 // it can't hallucinate.
 
-const SEVERITY_RANK: Record<string, number> = {
-  high_contradiction: 0,
-  moderate_contradiction: 1,
-  low_tension: 2,
-  high: 3,
-};
-
 const SEVERITY_LABEL: Record<string, string> = {
   high_contradiction: "high contradiction",
   moderate_contradiction: "moderate contradiction",
@@ -877,9 +870,10 @@ function synthesizeAnswer(
     }
     return parts.join(" ");
   }
-  // Use SEVERITY_RANK to keep TypeScript from flagging the constant as
-  // unused; future synthesis logic can use it to rank multi-pair answers.
-  void SEVERITY_RANK;
+  // NOTE: only the first select_pair / select_target / focus_category of each
+  // kind is consumed. The server pre-sorts and validates actions, so multiples
+  // are rare in practice; if the model ever emits two pair calls, only the
+  // first one shapes the synthesised reply.
   return sentences.join(" ");
 }
 
