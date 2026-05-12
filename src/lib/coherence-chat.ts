@@ -27,8 +27,9 @@ export type ChatAction =
   | { type: "select_pair"; targetAId: string; targetBId: string }
   | { type: "set_mode"; mode: "document" | "sector" | "globe" }
   /** Unhide one or more documents so the next action's target is visible.
-   *  Emitted by the server when the user names a hidden doc under the
-   *  strict default scope (auto-broaden). */
+   *  Emitted by the server when the answer touches a doc that isn't in the
+   *  current visible-groups set. Applied client-side before any focus or
+   *  selection action so the reveal happens first. */
   | { type: "show_docs"; ids: string[] };
 
 /** A chip rendered after the reply that, on click, asks a follow-up. */
@@ -38,10 +39,10 @@ export interface ChatSuggestion {
   query: string;
   /**
    * Optional client-side handler hint. When set to "surprise" the chip
-   * triggers the local insight detector instead of POSTing — keeps the
+   * rotates to the next local insight instead of POSTing — keeps the
    * Surprise-me chip instant and free of LLM cost.
    */
-  kind?: "surprise" | "broaden";
+  kind?: "surprise";
 }
 
 /** One previous turn kept for short-term memory (~last 3 turns). */

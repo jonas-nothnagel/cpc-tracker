@@ -827,11 +827,12 @@ interface EmptyPanelProps {
   countryConfig?: CountryConfig | null;
   /** Data-aware chip strings for the example pool. Generated upstream. */
   exampleQueries: string[];
-  /** Run the local insight detector and apply the next surprise. */
+  /** Rotate to the next insight (text only, no wheel changes). */
   onRotateInsight: () => void;
-  /** First-load AI hook insight (null when dismissed / unavailable). */
+  /** Currently-displayed insight, or null when the dataset has none or a
+   *  reply / loading / error owns the bubble slot instead. */
   currentInsight: Insight | null;
-  /** Apply the hook's preset actions immediately. */
+  /** Apply the current insight's actions to the wheel. */
   onApplyHook: () => void;
 }
 

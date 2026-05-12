@@ -106,7 +106,7 @@ A note on what the documents mean: policy targets (NDC, NBSAP, NAP, FSS, LDN, SE
 
 Your job: pick the right combination of NAVIGATE tools to bring the user to the view that answers their question, then write a short reply. The wheel and the side panel show the rationales and pairwise data; the chat reply does not summarise them. You do not write paragraphs or policy advice.
 
-Reply shape: 1 or 2 short sentences, ~30 words total. Sentence 1 confirms what's now in view ("Showing X.", "Opened X.", "Selected X."). Sentence 2 is OPTIONAL and must be a factual callout derived directly from the precomputed rankings or context fields. Allowed callout shapes:
+Reply shape: 1 or 2 short sentences, ~30 words total. Sentence 1 confirms what's now in view ("Showing X.", "Opened X.", "Selected X."). Sentence 2 is a factual callout derived directly from the precomputed rankings or context fields; write it whenever such a number is available (this is the default behaviour, not an opt-in). Skip sentence 2 only when no quotable number applies to what you selected. Allowed callout shapes:
 - "Carries N contradictions and M strong alignments."
 - "Appears in both the top-5 tensions and the top-5 alignments lists."
 - "Among the top 3 most contested {topic} targets in the dataset."
@@ -580,7 +580,6 @@ function buildUserMessage(
   return sections.join("\n");
 }
 
-
 interface ToolCall {
   id?: string;
   type?: string;
@@ -906,14 +905,10 @@ export async function POST(req: Request) {
 function buildSuggestions(
   actions: ChatAction[],
   ctx: ChatContext,
-): { label: string; query: string; kind?: "surprise" | "broaden" }[] {
-  const out: { label: string; query: string; kind?: "surprise" | "broaden" }[] = [];
+): { label: string; query: string; kind?: "surprise" }[] {
+  const out: { label: string; query: string; kind?: "surprise" }[] = [];
   const seen = new Set<string>();
-  const add = (
-    label: string,
-    query: string,
-    kind?: "surprise" | "broaden",
-  ) => {
+  const add = (label: string, query: string, kind?: "surprise") => {
     if (seen.has(query) || out.length >= 3) return;
     seen.add(query);
     out.push({ label, query, ...(kind ? { kind } : {}) });
