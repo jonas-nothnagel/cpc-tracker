@@ -374,7 +374,7 @@ function DetailPanel({
   const [targetTextExpanded, setTargetTextExpanded] = useState(!isTargetLong);
 
   return (
-    <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col h-full max-h-[760px]">
+    <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col h-full">
       {/* Header: citation-style minimal typography. Small-caps doc line on
           top, bold wrapping title below, target text as a paragraph. No
           chip/dot chrome; keeps the focus on the language itself. */}
@@ -1871,7 +1871,7 @@ function EmptyPanel({
   const tensMax = tensRanks[0]?.count ?? 1;
 
   return (
-    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
+    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full overflow-hidden">
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
@@ -1894,7 +1894,7 @@ function EmptyPanel({
               active={statView === "alignments"}
             />
             <Stat
-              label="Potential tensions"
+              label="Tensions"
               value={totalContra}
               accent="red"
               onClick={() => toggleStatView("tensions", "contradictions")}
@@ -2108,7 +2108,7 @@ function CategoryPanel({
   );
 
   return (
-    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full max-h-[760px] overflow-hidden">
+    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full overflow-hidden">
       {/* Pinned header with stats so the body owns the scroll. */}
       <div className="p-5 pb-4 shrink-0 border-b border-gray-100">
         <div className="flex items-start justify-between gap-3 mb-4">
