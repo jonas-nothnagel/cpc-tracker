@@ -2969,13 +2969,20 @@ export function PolicyCoherenceExplorer({
           }
         }
       }
-      // When focus lands on a sector/globe category, the categoryId is a
-      // taxonomy id, not a doc id, so the docsToShow.add above is a no-op
-      // against hiddenDocs. Walk the primary classifications for that
-      // category to surface its targets' source docs, and reset the BTR
-      // mit/adp pill if those targets are BTR-bound — otherwise a 2-target
-      // BTR category like "Waste" renders as an empty arc on Show me.
+      // When focus lands on a sector/globe category via focus_category, the
+      // categoryId is a taxonomy id, not a doc id, so the docsToShow.add
+      // above is a no-op against hiddenDocs. Walk the primary
+      // classifications for that category to surface its targets' source
+      // docs, and reset the BTR mit/adp pill if those targets are BTR-bound
+      // — otherwise a 2-target BTR category like "Waste" renders as an
+      // empty arc on Show me. Gated on focus_category specifically so
+      // select_target / select_pair on a target that happens to sit in a
+      // sector/globe arc doesn't sweep in every other doc's targets.
+      const hasFocusCategoryAction = insight.actions.some(
+        (a) => a.type === "focus_category",
+      );
       if (
+        hasFocusCategoryAction &&
         nextFocalGroupId &&
         (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
       ) {
@@ -3097,8 +3104,14 @@ export function PolicyCoherenceExplorer({
       // Same gap as applyInsight: focus_category in sector/globe mode means
       // categoryId is a taxonomy id, not a doc id. Surface the source docs
       // of the matching primary-classified targets so the focal arc renders
-      // with actual nodes, and reset BTR mit/adp pill when needed.
+      // with actual nodes, and reset BTR mit/adp pill when needed. Gated on
+      // focus_category so select_target / select_pair landing in a sector
+      // arc doesn't sweep in every other doc.
+      const hasFocusCategoryAction = actions.some(
+        (a) => a.type === "focus_category",
+      );
       if (
+        hasFocusCategoryAction &&
         nextFocalGroupId &&
         (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
       ) {
