@@ -14,6 +14,7 @@ import asyncio
 import hashlib
 import json
 import logging
+import random
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -556,7 +557,6 @@ async def call_llm(
             # Exponential backoff capped at 60s. Jitter (±25%) avoids thundering-herd
             # retries against bursty rate-limit windows on Azure (where many parallel
             # slots otherwise re-fire at the same instant).
-            import random
             base = min(BASE_DELAY * (2 ** attempt), 60.0)
             delay = base * (0.75 + random.random() * 0.5)
             logger.warning(

@@ -116,6 +116,10 @@ export function getDocFullLabel(
  * e.g. "NP (Nature Pledge)" → "Nature Pledge". When `mediumLabel` has no
  * parenthetical (e.g. Mongolia's "Vision 2050"), returns `mediumLabel` itself.
  * Used in compact chips where the code is shown separately or via tooltip.
+ *
+ * Assumes at most one trailing parenthetical per `mediumLabel`. If anyone
+ * starts writing e.g. `"BER (Finance) (Mongolia)"`, the regex would pick
+ * `"Mongolia"`; revisit the format if that ever becomes a real case.
  */
 export function getDocFriendlyName(
   countryConfig: CountryConfig | null | undefined,
