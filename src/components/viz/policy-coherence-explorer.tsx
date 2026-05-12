@@ -11,9 +11,11 @@ import {
   getDocTypeOrder,
   ALIGNMENT_COLORS,
   ALIGNMENT_LABELS,
+  CONTRADICTION_TYPE_LABELS,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
+import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
 import {
   buildChatRequest,
@@ -290,6 +292,23 @@ function wrapLabel(label: string, maxCharsPerLine: number): string[] {
 }
 
 
+/**
+ * Split a target's sourceLabel into a leading numeric/section code and the
+ * rest as a title. Pure presentation — keeps the original string when no
+ * digit-prefixed code is detectable.
+ *
+ *   "4.4 Pig, poultry, fattening farm support" → { code: "4.4", title: "Pig, ..." }
+ *   "Animal husbandry and pastureland 1"        → { code: null, title: "Animal ... 1" }
+ */
+function splitSourceLabel(label: string): { code: string | null; title: string } {
+  const firstSpace = label.indexOf(" ");
+  if (firstSpace === -1) return { code: null, title: label };
+  const head = label.slice(0, firstSpace);
+  const tail = label.slice(firstSpace + 1);
+  if (/^\d/.test(head)) return { code: head, title: tail };
+  return { code: null, title: label };
+}
+
 // ─── Detail panel ───────────────────────────────────────────────────
 
 function DetailPanel({
@@ -297,8 +316,6 @@ function DetailPanel({
   connections,
   onClose,
   onSelectPair,
-  comparedPair,
-  onBackFromPair,
   nr7Item,
   nr7ProgressMap,
   countryConfig,
@@ -307,8 +324,6 @@ function DetailPanel({
   connections: (AlignmentResult & { otherTarget: Target })[];
   onClose: () => void;
   onSelectPair: (r: AlignmentResult) => void;
-  comparedPair: { result: AlignmentResult; other: Target } | null;
-  onBackFromPair: () => void;
   nr7Item?: Nr7ProgressItem | null;
   nr7ProgressMap?: Map<string, string>;
   countryConfig?: CountryConfig | null;
@@ -322,116 +337,123 @@ function DetailPanel({
     return order[a.alignment] - order[b.alignment];
   });
 
-  // Show the first rationale by default so the interaction pattern is obvious.
-  // Parent passes `key={node.id}`, so this initialiser re-runs when node changes.
-  const [expandedRationaleId, setExpandedRationaleId] = useState<string | null>(
-    () => sorted.find((conn) => conn.description)?.otherTarget.id ?? null,
-  );
-
-  if (comparedPair) {
-    return (
-      <div className="border border-gray-100 rounded-lg bg-white overflow-hidden h-full max-h-[760px] flex flex-col">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50 shrink-0">
-          <button
-            type="button"
-            onClick={onBackFromPair}
-            className="flex items-center gap-1 text-xs text-[var(--undp-blue)] hover:underline"
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M9 3L5 7l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Back
-          </button>
-          <button type="button" onClick={onClose} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none">
-            ×
-          </button>
-        </div>
-
-        <div className="px-4 py-3 flex items-center gap-2 border-b border-gray-100 shrink-0">
-          <span className="text-xs text-[var(--undp-gray)] mr-1">Alignment</span>
-          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[comparedPair.result.alignment] }} />
-          <span className="text-sm font-semibold text-[var(--undp-black)]">
-            {ALIGNMENT_LABELS[comparedPair.result.alignment]}
-          </span>
-          <span className="text-xs text-[var(--undp-gray)] ml-auto">
-            {connections.length} connections
-          </span>
-        </div>
-
-        {/* Body scrolls: target texts can be hundreds of lines (e.g.
-            BTR Action narratives), and without an internal scroll the
-            outer card's overflow-hidden hides the rationale entirely. */}
-        <div className="flex-1 overflow-y-auto min-h-0">
-          <div className="px-4 py-3 space-y-3 border-b border-gray-100">
-            {[node.target, comparedPair.other].map((t) => (
-              <div key={t.id}>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1 flex items-center gap-1.5">
-                  <span>{getDocLabel(countryConfig, t.sourceDocument)}: {t.sourceLabel}</span>
-                  <OriginalLanguageChip target={t} />
-                </p>
-                <p className="text-xs text-[var(--undp-black)] leading-relaxed bg-gray-50 rounded p-2.5 border border-gray-100">
-                  <TargetTextWithHighlights target={t} />
-                </p>
-                <ActivitiesActions target={t} />
-              </div>
-            ))}
-          </div>
-
-          {comparedPair.result.description && (
-            <div className="px-4 py-3">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                AI Rationale
-              </p>
-              <p className="text-xs text-[var(--undp-black)] leading-relaxed">
-                {comparedPair.result.description}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  const hi = connections.filter((c) => c.alignment === "high").length;
-  const md = connections.filter((c) => c.alignment === "medium").length;
-  const lo = connections.filter((c) => c.alignment === "low").length;
-  const ct = connections.filter((c) => isContradiction(c.alignment)).length;
-
   const hasNr7InConns = nr7ProgressMap && connections.some((c) => nr7ProgressMap.has(c.otherTarget.id));
+
+  // Distribution across the full alignment spectrum. Skips "none" (= no
+  // relationship assessed) so the bar only reflects real signal.
+  const DIST_ORDER: AlignmentLevel[] = [
+    "high_contradiction",
+    "moderate_contradiction",
+    "low_tension",
+    "low",
+    "medium",
+    "high",
+  ];
+  const distSegments = DIST_ORDER
+    .map((lvl) => ({ lvl, n: connections.filter((c) => c.alignment === lvl).length }))
+    .filter((s) => s.n > 0);
+  const distTotal = distSegments.reduce((sum, s) => sum + s.n, 0);
+
+  // Split a sourceLabel like "4.4 Pig, poultry, fattening farm support" into
+  // a leading code token + title. Falls back to title-only when no numeric
+  // prefix is present (e.g. BTR narratives).
+  const { code: targetCode, title: targetTitle } = splitSourceLabel(node.target.sourceLabel);
+  const docShort = getDocLabel(countryConfig, node.target.sourceDocument);
+  const docFriendly = getDocFriendlyName(countryConfig, node.target.sourceDocument);
+  const showDocFriendly = docFriendly && docFriendly !== docShort;
+
+  // Long BTR Action narratives can run 1000+ characters; an internal
+  // scrollbar on the target text plus the panel's outer scroll produces a
+  // dual-scrollbar mess. Use a line-clamp + "Read full" toggle instead.
+  // Parent passes `key={node.id}`, so this initialiser re-runs per target.
+  const isTargetLong = (node.target.text?.length ?? 0) > 280;
+  const [targetTextExpanded, setTargetTextExpanded] = useState(!isTargetLong);
 
   return (
     <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col h-full max-h-[760px]">
-      {/* Target header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 shrink-0">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: getDocColor(countryConfig, node.target.sourceDocument) }} />
-          <span className="text-sm font-semibold text-[var(--undp-black)] truncate">
-            {getDocLabel(countryConfig, node.target.sourceDocument)} · {node.target.sourceLabel}
-          </span>
-          <ActionTypeBadge actionType={node.target.actionType} />
-          <OriginalLanguageChip target={node.target} />
+      {/* Header: citation-style minimal typography. Small-caps doc line on
+          top, bold wrapping title below, target text as a paragraph. No
+          chip/dot chrome — keeps the focus on the language itself. */}
+      <div className="px-4 pt-4 pb-3 shrink-0 border-b border-gray-100">
+        <div className="flex items-start justify-between gap-3">
+          <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] leading-snug">
+            <span style={{ color: getDocColor(countryConfig, node.target.sourceDocument) }}>●</span>{" "}
+            {docShort}
+            {targetCode ? ` · ${targetCode}` : ""}
+            {showDocFriendly ? ` · ${docFriendly}` : ""}
+          </p>
+          <div className="flex items-center gap-2 shrink-0">
+            <OriginalLanguageChip target={node.target} />
+            <ActionTypeBadge actionType={node.target.actionType} />
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none"
+              aria-label="Close target detail"
+            >
+              ×
+            </button>
+          </div>
         </div>
-        <button type="button" onClick={onClose} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none ml-2 shrink-0">
-          ×
-        </button>
+        <h3 className="mt-1 text-base font-semibold text-[var(--undp-black)] leading-snug">
+          {targetTitle}
+        </h3>
       </div>
 
-      {/* Target text scrolls internally so long PEG / BTR narratives
-          don't push the badges, NR7 block, and connections list off
-          the card (which would clip them under max-h-[760px]). */}
-      <div className="px-4 py-3 shrink-0 max-h-64 overflow-y-auto">
-        <p className="text-xs text-[var(--undp-black)] leading-relaxed">
+      {/* Target text: line-clamped with a "Read full" toggle when long, so
+          the panel keeps a single scroll context (the connections list
+          below) instead of two competing scrollbars. */}
+      <div className="px-4 py-3 shrink-0">
+        <p
+          className={`text-xs text-[var(--undp-black)] leading-relaxed ${
+            isTargetLong && !targetTextExpanded ? "line-clamp-5" : ""
+          }`}
+        >
           <TargetTextWithHighlights target={node.target} />
         </p>
+        {isTargetLong && (
+          <button
+            type="button"
+            onClick={() => setTargetTextExpanded((p) => !p)}
+            className="mt-1 text-[11px] text-[var(--undp-blue)] hover:underline"
+          >
+            {targetTextExpanded ? "Show less ▴" : "Read full ▾"}
+          </button>
+        )}
         <ActivitiesActions target={node.target} />
       </div>
 
-      <div className="px-4 py-2 shrink-0 flex flex-wrap gap-3 text-[11px]">
-        {hi > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.high }} />{hi} high</span>}
-        {md > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.medium }} />{md} medium</span>}
-        {lo > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.low }} />{lo} low</span>}
-        {ct > 0 && <span className="flex items-center gap-1 text-red-600"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />{ct} conflict</span>}
-      </div>
+      {/* Distribution bar: shows the full alignment spectrum across this
+          target's connections so the analyst sees the shape of the
+          problem, not just a "high/conflict" binary. */}
+      {distTotal > 0 && (
+        <div className="px-4 pt-1 pb-3 shrink-0">
+          <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+            {distSegments.map((s) => (
+              <div
+                key={s.lvl}
+                style={{
+                  width: `${(s.n / distTotal) * 100}%`,
+                  backgroundColor: ALIGNMENT_COLORS[s.lvl],
+                }}
+                title={`${s.n} ${ALIGNMENT_LABELS[s.lvl].toLowerCase()}`}
+              />
+            ))}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
+            {distSegments.map((s) => (
+              <span key={s.lvl}>
+                <span className="font-semibold" style={{ color: ALIGNMENT_COLORS[s.lvl] }}>
+                  {s.n}
+                </span>
+                <span className="text-[var(--undp-gray)] ml-1">
+                  {ALIGNMENT_LABELS[s.lvl].toLowerCase()}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {nr7Item && (
         <div className="px-4 py-3 border-t border-gray-100 shrink-0">
@@ -466,51 +488,53 @@ function DetailPanel({
         </div>
       )}
 
-      {/* Connections section — visually separated */}
-      <div className="flex-1 overflow-y-auto min-h-0 border-t-2 border-gray-100">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2 shrink-0">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-            Connections ({connections.length})
+      {/* Connections list: minimal rows, rationale shown inline as a
+          preview (line-clamped). Clicking anywhere on a row opens the
+          pair-comparison modal — that's the drill-in for full rationale
+          + side-by-side targets. No per-row expand/collapse. */}
+      <div className="flex-1 overflow-y-auto min-h-0 border-t border-gray-100">
+        <div className="flex items-baseline justify-between px-4 pt-3 pb-2 shrink-0">
+          <p className="text-[11px] text-[var(--undp-gray)]">
+            {connections.length} connection{connections.length === 1 ? "" : "s"}
           </p>
-          {hasNr7InConns && (
-            <div className="flex items-center gap-2 text-[11px] text-[var(--undp-gray)]">
-              <span>NR7:</span>
-              <span className="flex items-center gap-0.5">
-                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.on_track }} />
-                on track
-              </span>
-              <span className="flex items-center gap-0.5">
-                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.limited }} />
-                limited
-              </span>
-              <span className="flex items-center gap-0.5">
-                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.no_progress }} />
-                none
-              </span>
-            </div>
-          )}
+          <p className="text-[11px] text-[var(--undp-gray)]">Sorted by severity</p>
         </div>
-        <ul className="divide-y divide-gray-50">
+        {hasNr7InConns && (
+          <div className="flex items-center gap-3 px-4 pb-2 text-[11px] text-[var(--undp-gray)]">
+            <span>NR7:</span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.on_track }} />
+              on track
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.limited }} />
+              limited
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.no_progress }} />
+              none
+            </span>
+          </div>
+        )}
+        <ul className="divide-y divide-gray-100">
           {sorted.map((conn) => {
-            const isExpanded = expandedRationaleId === conn.otherTarget.id;
             const nr7Status = nr7ProgressMap?.get(conn.otherTarget.id);
             return (
               <li key={conn.otherTarget.id}>
                 <button
                   type="button"
                   onClick={() => onSelectPair(conn)}
-                  className="w-full text-left px-4 py-2.5 hover:bg-gray-50 transition-colors"
+                  className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-baseline gap-2">
                     <span
-                      className="shrink-0 inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold text-white leading-none"
+                      className="w-1.5 h-1.5 rounded-full shrink-0 translate-y-[-1px]"
                       style={{ backgroundColor: getDocColor(countryConfig, conn.otherTarget.sourceDocument) }}
-                    >
+                    />
+                    <span className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] shrink-0">
                       {getDocLabel(countryConfig, conn.otherTarget.sourceDocument)}
                     </span>
-                    <OriginalLanguageChip target={conn.otherTarget} />
-                    <ActionTypeBadge actionType={conn.otherTarget.actionType} />
-                    <span className="text-xs font-medium text-[var(--undp-black)] truncate flex-1">
+                    <span className="text-xs font-semibold text-[var(--undp-black)] flex-1 min-w-0">
                       {conn.otherTarget.sourceLabel}
                     </span>
                     {nr7Status && (
@@ -527,38 +551,159 @@ function DetailPanel({
                       {ALIGNMENT_LABELS[conn.alignment]}
                     </span>
                   </div>
+                  {conn.description && (
+                    <p className="mt-1.5 ml-3.5 text-[11px] leading-relaxed text-[var(--undp-gray)] line-clamp-3">
+                      {conn.description}
+                    </p>
+                  )}
                 </button>
-                {conn.description && (
-                  <div className="px-4 pb-1">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setExpandedRationaleId(isExpanded ? null : conn.otherTarget.id);
-                      }}
-                      className="flex items-center gap-1 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors mb-1"
-                    >
-                      <svg
-                        width="10" height="10" viewBox="0 0 10 10" fill="none"
-                        className={`transition-transform ${isExpanded ? "rotate-90" : ""}`}
-                      >
-                        <path d="M3 2l4 3-4 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      Rationale
-                    </button>
-                    {isExpanded && (
-                      <p className="text-[11px] text-[var(--undp-gray)] leading-snug pl-3 pb-1.5 border-l-2 border-gray-100">
-                        {conn.description}
-                      </p>
-                    )}
-                  </div>
-                )}
               </li>
             );
           })}
         </ul>
       </div>
     </div>
+  );
+}
+
+// ─── Pair comparison modal ──────────────────────────────────────────
+
+function TargetCard({
+  target,
+  countryConfig,
+}: {
+  target: Target;
+  countryConfig?: CountryConfig | null;
+}) {
+  const isLong = (target.text?.length ?? 0) > 280;
+  const [expanded, setExpanded] = useState(!isLong);
+  const docColor = getDocColor(countryConfig, target.sourceDocument);
+
+  return (
+    <div
+      className="rounded-lg border border-gray-100 bg-white p-3 flex flex-col min-w-0"
+      style={{ borderLeftWidth: 3, borderLeftColor: docColor }}
+    >
+      <div className="flex items-center gap-1.5 mb-1.5 min-w-0">
+        <span
+          className="w-2 h-2 rounded-full shrink-0"
+          style={{ backgroundColor: docColor }}
+        />
+        <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] truncate min-w-0">
+          {getDocLabel(countryConfig, target.sourceDocument)} · {target.sourceLabel}
+        </span>
+        <ActionTypeBadge actionType={target.actionType} />
+        <OriginalLanguageChip target={target} />
+      </div>
+      <p
+        className={`text-xs leading-relaxed text-[var(--undp-black)] ${
+          isLong && !expanded ? "line-clamp-3" : ""
+        }`}
+      >
+        <TargetTextWithHighlights target={target} />
+      </p>
+      {isLong && (
+        <button
+          type="button"
+          onClick={() => setExpanded((p) => !p)}
+          className="mt-1.5 self-start text-[11px] text-[var(--undp-blue)] hover:underline"
+        >
+          {expanded ? "Show less ▴" : "Read full ▾"}
+        </button>
+      )}
+      <ActivitiesActions target={target} />
+    </div>
+  );
+}
+
+function PairDetailModal({
+  open,
+  pair,
+  selectedTarget,
+  countryConfig,
+  onClose,
+}: {
+  open: boolean;
+  pair: { result: AlignmentResult; other: Target } | null;
+  selectedTarget: Target | null;
+  countryConfig?: CountryConfig | null;
+  onClose: () => void;
+}) {
+  if (!pair || !selectedTarget) return null;
+
+  const { result, other } = pair;
+  const negative = isContradiction(result.alignment);
+  const tint = ALIGNMENT_COLORS[result.alignment];
+  // Glyphs read as relationship-by-direction: contradiction = arrows pulling
+  // apart, synergy = arrows pulling together, neutral = a quiet middle dot.
+  const relationGlyph = negative
+    ? "⇄"
+    : result.alignment === "none"
+      ? "·"
+      : "⇋";
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`${ALIGNMENT_LABELS[result.alignment]} · target pair`}
+      maxWidth="max-w-2xl"
+    >
+      {/* Hero callout: inset rounded card so the AI verdict reads as a
+          focused box, not a full-bleed stripe across the modal. */}
+      <div className="px-5 pt-5 pb-2">
+        <div
+          className="rounded-lg px-4 py-3.5"
+          style={{ backgroundColor: `${tint}1a` }}
+        >
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span
+              className="w-2.5 h-2.5 rounded-full shrink-0"
+              style={{ backgroundColor: tint }}
+            />
+            <span className="text-xs font-semibold uppercase tracking-wide text-[var(--undp-black)]">
+              {ALIGNMENT_LABELS[result.alignment]}
+            </span>
+            {result.contradictionType && (
+              <span className="ml-auto text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/80 text-[var(--undp-black)] border border-gray-200">
+                {CONTRADICTION_TYPE_LABELS[result.contradictionType]}
+              </span>
+            )}
+          </div>
+          {result.description ? (
+            <p className="text-sm leading-relaxed text-[var(--undp-black)]">
+              {result.description}
+            </p>
+          ) : (
+            <p className="text-sm leading-relaxed text-[var(--undp-gray)] italic">
+              No AI rationale available for this pair.
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Side-by-side target cards on >= md, stacked with a vertical
+          separator below. Both targets carry their document color so the
+          reader can map back to the chord visualization at a glance. */}
+      <div className="px-5 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-3 md:gap-3 items-stretch">
+          <TargetCard target={selectedTarget} countryConfig={countryConfig} />
+          <div
+            className="hidden md:flex items-center justify-center text-2xl text-[var(--undp-gray)] select-none"
+            aria-hidden="true"
+          >
+            {relationGlyph}
+          </div>
+          <div
+            className="md:hidden flex items-center justify-center text-xl text-[var(--undp-gray)] select-none -my-1"
+            aria-hidden="true"
+          >
+            {"⇅"}
+          </div>
+          <TargetCard target={other} countryConfig={countryConfig} />
+        </div>
+      </div>
+    </Modal>
   );
 }
 
@@ -3626,8 +3771,6 @@ export function PolicyCoherenceExplorer({
                   const other = targetMap.get(otherId);
                   if (other) setComparedPair({ result: r, other });
                 }}
-                comparedPair={comparedPair}
-                onBackFromPair={() => setComparedPair(null)}
                 nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
                 nr7ProgressMap={nr7ProgressMap}
                 countryConfig={countryConfig}
@@ -3666,6 +3809,14 @@ export function PolicyCoherenceExplorer({
             )}
         </div>
       </div>
+
+      <PairDetailModal
+        open={comparedPair != null}
+        pair={comparedPair}
+        selectedTarget={selectedNode?.target ?? null}
+        countryConfig={countryConfig}
+        onClose={() => setComparedPair(null)}
+      />
     </section>
   );
 }
