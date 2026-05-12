@@ -293,8 +293,21 @@ function wrapLabel(label: string, maxCharsPerLine: number): string[] {
 
 
 /**
+ * Order of alignment levels rendered in the distribution bar. Skips "none"
+ * (= no relationship assessed) so the bar only reflects real signal.
+ */
+const DIST_ORDER: AlignmentLevel[] = [
+  "high_contradiction",
+  "moderate_contradiction",
+  "low_tension",
+  "low",
+  "medium",
+  "high",
+];
+
+/**
  * Split a target's sourceLabel into a leading numeric/section code and the
- * rest as a title. Pure presentation — keeps the original string when no
+ * rest as a title. Pure presentation; keeps the original string when no
  * digit-prefixed code is detectable.
  *
  *   "4.4 Pig, poultry, fattening farm support" → { code: "4.4", title: "Pig, ..." }
@@ -339,16 +352,8 @@ function DetailPanel({
 
   const hasNr7InConns = nr7ProgressMap && connections.some((c) => nr7ProgressMap.has(c.otherTarget.id));
 
-  // Distribution across the full alignment spectrum. Skips "none" (= no
-  // relationship assessed) so the bar only reflects real signal.
-  const DIST_ORDER: AlignmentLevel[] = [
-    "high_contradiction",
-    "moderate_contradiction",
-    "low_tension",
-    "low",
-    "medium",
-    "high",
-  ];
+  // Distribution across the full alignment spectrum (DIST_ORDER, module
+  // scope) so the bar only reflects real signal.
   const distSegments = DIST_ORDER
     .map((lvl) => ({ lvl, n: connections.filter((c) => c.alignment === lvl).length }))
     .filter((s) => s.n > 0);
@@ -373,7 +378,7 @@ function DetailPanel({
     <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col h-full max-h-[760px]">
       {/* Header: citation-style minimal typography. Small-caps doc line on
           top, bold wrapping title below, target text as a paragraph. No
-          chip/dot chrome — keeps the focus on the language itself. */}
+          chip/dot chrome; keeps the focus on the language itself. */}
       <div className="px-4 pt-4 pb-3 shrink-0 border-b border-gray-100">
         <div className="flex items-start justify-between gap-3">
           <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] leading-snug">
@@ -490,7 +495,7 @@ function DetailPanel({
 
       {/* Connections list: minimal rows, rationale shown inline as a
           preview (line-clamped). Clicking anywhere on a row opens the
-          pair-comparison modal — that's the drill-in for full rationale
+          pair-comparison modal; that's the drill-in for full rationale
           + side-by-side targets. No per-row expand/collapse. */}
       <div className="flex-1 overflow-y-auto min-h-0 border-t border-gray-100">
         <div className="flex items-baseline justify-between px-4 pt-3 pb-2 shrink-0">
