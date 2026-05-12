@@ -2147,7 +2147,7 @@ function CategoryPanel({
             active={statView === "alignments"}
           />
           <Stat
-            label="Potential tensions"
+            label="Tensions"
             value={totalContra}
             accent="red"
             onClick={() => toggleStatView("tensions", "contradictions")}
