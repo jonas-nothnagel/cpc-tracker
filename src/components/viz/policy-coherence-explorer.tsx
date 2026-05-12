@@ -14,7 +14,6 @@ import {
   CONTRADICTION_TYPE_LABELS,
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
-import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
 import {
@@ -729,13 +728,10 @@ function Stat({
   title?: string;
   active?: boolean;
 }) {
-  const accentColor =
-    accent === "red"
-      ? "text-red-700"
-      : accent === "green"
-        ? "text-emerald-700"
-        : "text-[var(--undp-black)]";
-  const valueClass = `text-2xl font-semibold tabular-nums leading-none ${accentColor}`;
+  // `accent` is preserved on the props for callers but no longer drives
+  // color — keeping all three stats neutral reads quieter at first paint.
+  void accent;
+  const valueClass = `text-2xl font-semibold tabular-nums leading-none text-[var(--undp-black)]`;
   const labelClass =
     "text-[10px] text-[var(--undp-gray)] uppercase tracking-wider mt-1.5";
   if (!onClick) {
@@ -868,14 +864,14 @@ function BarRow({
 }) {
   // 4% min so the smallest non-zero count still has a visible pill.
   const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
-  // Severity-driven red intensity. Falls back to the original pale red
-  // when severity is undefined or only low_tension is present.
+  // Severity-driven red intensity. One step lighter than before so the
+  // row reads as a quiet wash; the border accent below still distinguishes
+  // high_contradiction from moderate_contradiction (which now share the
+  // floor wash with low_tension).
   const redFill =
     severity === "high_contradiction"
-      ? "bg-red-200 group-hover:bg-red-300"
-      : severity === "moderate_contradiction"
-        ? "bg-red-100 group-hover:bg-red-200"
-        : "bg-red-50 group-hover:bg-red-100";
+      ? "bg-red-100 group-hover:bg-red-200"
+      : "bg-red-50 group-hover:bg-red-100";
   const fillBg = tone === "red" ? redFill : "bg-gray-100 group-hover:bg-gray-200";
   // Left-edge accent on the hardest-severity rows reinforces the color
   // step without relying on viewers to distinguish red-50 from red-100.
@@ -885,8 +881,7 @@ function BarRow({
       : tone === "red" && severity === "moderate_contradiction"
         ? "border-l-2 border-red-400"
         : "";
-  const countColor =
-    tone === "red" ? "text-red-700" : "text-[var(--undp-black)]";
+  const countColor = "text-[var(--undp-black)]";
   return (
     <li>
       <button
@@ -2124,7 +2119,7 @@ function CategoryPanel({
                           <span className="text-[var(--undp-black)] truncate flex-1">
                             {arc.label}
                           </span>
-                          <span className="text-red-700 tabular-nums">
+                          <span className="text-[var(--undp-black)] tabular-nums">
                             {count}
                           </span>
                         </button>
@@ -2337,15 +2332,6 @@ export function PolicyCoherenceExplorer({
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const provenanceSources = useMemo<ProvenanceSource[]>(() => {
-    const docTypes = new Set<PolicyDocumentType>();
-    for (const t of targets) docTypes.add(t.sourceDocument);
-    return Array.from(docTypes).map((dt) => ({
-      label: getDocFullLabel(countryConfig, dt),
-      citation: countryConfig?.docProvenance?.[dt],
-    }));
-  }, [targets, countryConfig]);
 
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
@@ -3110,20 +3096,6 @@ export function PolicyCoherenceExplorer({
               <br /><br />
               <strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.
             </InfoBox>
-            <DataProvenance
-              origin="mixed"
-              sources={provenanceSources}
-              method={
-                <>
-                  Each line is a single LLM judgement on a pair of policy
-                  targets, scored on a seven-level scale (high contradiction →
-                  high alignment). The coherency score aggregates those
-                  per-pair scores; the dashed red lines come from the same
-                  pass.
-                </>
-              }
-              caveat="Each line represents one model judgement. Click into a target to read the rationale per pair before drawing conclusions, especially for high-stakes contradictions."
-            />
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {(() => {
@@ -3145,7 +3117,7 @@ export function PolicyCoherenceExplorer({
                   onClick={() =>
                     setFilter(filter === "contradictions" ? "all" : "contradictions")
                   }
-                  className="text-red-600 hover:underline font-medium"
+                  className="text-[var(--undp-black)] font-medium underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] transition-colors"
                 >
                   {filteredCounts.contra} contradiction
                   {filteredCounts.contra !== 1 ? "s" : ""}
@@ -3268,86 +3240,62 @@ export function PolicyCoherenceExplorer({
                 <button
                   type="button"
                   onClick={() => toggleDoc(doc)}
-                  className={`flex items-stretch border rounded-md text-xs font-medium transition-colors overflow-hidden ${
-                    active ? "" : "border-gray-200 hover:border-gray-300"
+                  className={`inline-flex items-center gap-1.5 px-1 py-1 text-xs font-medium transition-colors ${
+                    active
+                      ? "text-[var(--undp-black)]"
+                      : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                   }`}
-                  style={active ? { borderColor: `${color}66` } : undefined}
                   title={getDocFullLabel(countryConfig, doc)}
                 >
                   <span
-                    className="px-2 flex items-center text-[10px] font-semibold uppercase tracking-wider"
+                    className="w-2 h-2 rounded-full shrink-0"
                     style={
                       active
-                        ? { backgroundColor: color, color: "white" }
-                        : { backgroundColor: "#f3f4f6", color: "#9ca3af" }
+                        ? { backgroundColor: color }
+                        : { backgroundColor: "transparent", border: `1.5px solid ${color}66` }
                     }
-                  >
-                    {getDocLabel(countryConfig, doc)}
-                  </span>
-                  <span
-                    className="px-2.5 py-1.5 flex items-center"
-                    style={
-                      active
-                        ? { color, backgroundColor: `${color}14` }
-                        : { color: "var(--undp-gray)", backgroundColor: "white" }
-                    }
-                  >
-                    {getDocFriendlyName(countryConfig, doc)}
-                  </span>
+                  />
+                  {getDocFriendlyName(countryConfig, doc)}
                 </button>
                 {showSubPills && (
-                  <div className="flex gap-1 pl-3">
+                  <div className="flex gap-2 pl-4">
                     <button
                       type="button"
                       onClick={() => togglePill("mitigation")}
-                      className={`flex items-center gap-1 border rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
                         mitActive
-                          ? ""
-                          : "border-gray-200 bg-white text-gray-400 hover:border-gray-300"
+                          ? "text-[var(--undp-black)]"
+                          : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                       }`}
-                      style={
-                        mitActive
-                          ? {
-                              color: mitColor,
-                              borderColor: `${mitColor}66`,
-                              backgroundColor: `${mitColor}1a`,
-                            }
-                          : undefined
-                      }
                       title="Toggle BTR mitigation measures"
                     >
                       <span
-                        className="w-1.5 h-1.5 rounded-sm"
-                        style={{
-                          backgroundColor: mitActive ? mitColor : "#d1d5db",
-                        }}
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={
+                          mitActive
+                            ? { backgroundColor: mitColor }
+                            : { backgroundColor: "transparent", border: `1.5px solid ${mitColor}66` }
+                        }
                       />
                       Mitigation
                     </button>
                     <button
                       type="button"
                       onClick={() => togglePill("adaptation")}
-                      className={`flex items-center gap-1 border rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
                         adpActive
-                          ? ""
-                          : "border-gray-200 bg-white text-gray-400 hover:border-gray-300"
+                          ? "text-[var(--undp-black)]"
+                          : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                       }`}
-                      style={
-                        adpActive
-                          ? {
-                              color: adpColor,
-                              borderColor: `${adpColor}66`,
-                              backgroundColor: `${adpColor}1a`,
-                            }
-                          : undefined
-                      }
                       title="Toggle BTR adaptation actions"
                     >
                       <span
-                        className="w-1.5 h-1.5 rounded-sm"
-                        style={{
-                          backgroundColor: adpActive ? adpColor : "#d1d5db",
-                        }}
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={
+                          adpActive
+                            ? { backgroundColor: adpColor }
+                            : { backgroundColor: "transparent", border: `1.5px solid ${adpColor}66` }
+                        }
                       />
                       Adaptation
                     </button>
