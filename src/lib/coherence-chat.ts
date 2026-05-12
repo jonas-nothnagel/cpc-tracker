@@ -331,7 +331,7 @@ interface PickExampleQueriesArgs {
 }
 
 /**
- * Pick 4-5 example chip questions tailored to the visible dataset. Chips
+ * Pick 3-4 example chip questions tailored to the visible dataset. Chips
  * read like questions a policymaker would ask, not routing test cases. All
  * use commas / periods, never em dashes (a project guardrail: em dashes
  * read as machine-generated).
@@ -341,6 +341,10 @@ interface PickExampleQueriesArgs {
  * the chip is dropped silently rather than swapped for a less specific
  * variant. Order is priority: BTR / implementation framing first when
  * available, since that's the sharpest signal in a coherence dataset.
+ *
+ * The 4-chip cap pairs with the always-visible chip row in ChatBar: more
+ * than four chips plus a Surprise me button risks pushing the insight
+ * bubble below the fold on smaller viewports.
  */
 export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
   const {
@@ -411,5 +415,5 @@ export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
   return candidates
     .filter((c) => c.when)
     .map((c) => c.q)
-    .slice(0, 5);
+    .slice(0, 4);
 }
