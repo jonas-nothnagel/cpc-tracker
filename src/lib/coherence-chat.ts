@@ -373,10 +373,6 @@ export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
       when: hasBtr && hasFood && isMongolia,
       q: "Does Mongolia's food security plan clash with reported actions?",
     },
-    {
-      when: hasBtr,
-      q: "Find the sharpest conflict between an action and a plan",
-    },
     // Country-flavoured chips when the dataset shape supports them.
     {
       when: hasFood && hasBiodiversity,

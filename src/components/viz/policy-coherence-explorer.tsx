@@ -1071,7 +1071,7 @@ function useTypedPlaceholder(text: string, charDelayMs = 35): string {
 // Respects prefers-reduced-motion by skipping the animation outright. All
 // state updates are deferred through timers so React's cascading-render
 // lint rule stays clean.
-function useTypedBody(text: string, charDelayMs = 25): string {
+function useTypedBody(text: string, charDelayMs = 10): string {
   const [typed, setTyped] = useState(text);
   const firstRun = useRef(true);
   useEffect(() => {
@@ -1117,6 +1117,61 @@ function useTypedBody(text: string, charDelayMs = 25): string {
 }
 
 /**
+ * When Show me focuses a sector/globe category, the categoryId is a
+ * taxonomy id (eg "Waste"), not a doc id, so the dispatchers can't tell
+ * which docs the focal arc actually contains. This helper walks the
+ * primary classifications for the focal category, accumulates the
+ * matched targets' source docs into `docsToShow`, and resets the BTR
+ * mit/adp pill when the matched targets are BTR-bound and the current
+ * pill would hide them.
+ *
+ * Both `applyInsight` and `applyServerActions` call this after the main
+ * action loop so the unhide step at the end picks up the new doc ids.
+ */
+function revealDocsForFocalTaxonomyCategory(args: {
+  focalCategoryId: string;
+  taxonomyType: "sector" | "globe";
+  classifications: ThematicClassification[];
+  targetMap: Map<string, Target>;
+  docsToShow: Set<string>;
+  actionTypeFilter: ActionTypeFilter;
+  setActionTypeFilter: (f: ActionTypeFilter) => void;
+}) {
+  const {
+    focalCategoryId,
+    taxonomyType,
+    classifications,
+    targetMap,
+    docsToShow,
+    actionTypeFilter,
+    setActionTypeFilter,
+  } = args;
+  let hasBtrMit = false;
+  let hasBtrAdp = false;
+  for (const c of classifications) {
+    if (!c.isPrimary) continue;
+    if (c.taxonomyType !== taxonomyType) continue;
+    if (c.categoryId !== focalCategoryId) continue;
+    const t = targetMap.get(c.targetId);
+    if (!t) continue;
+    docsToShow.add(t.sourceDocument);
+    if (t.sourceDocument === "BTR") {
+      if (t.actionType === "mitigation") hasBtrMit = true;
+      else if (t.actionType === "adaptation") hasBtrAdp = true;
+    }
+  }
+  // Reset pill only when the current filter would hide the matched BTR
+  // targets. Leaves filter alone when no BTR targets are involved.
+  if (hasBtrMit && hasBtrAdp) {
+    if (actionTypeFilter !== "all") setActionTypeFilter("all");
+  } else if (hasBtrMit && actionTypeFilter === "adaptation") {
+    setActionTypeFilter("all");
+  } else if (hasBtrAdp && actionTypeFilter === "mitigation") {
+    setActionTypeFilter("all");
+  }
+}
+
+/**
  * Chat input + reply. Lives inside EmptyPanel below the "At a glance"
  * stats — borderless so it inherits the EmptyPanel card chrome rather
  * than stacking a card-in-a-card. Reply is only visible while the user
@@ -1126,16 +1181,27 @@ function useTypedBody(text: string, charDelayMs = 25): string {
 /**
  * Tailwind class lists for the chat's chip vocabulary.
  *
- * - DEFAULT: example chips and follow-up suggestion chips (the typical
- *   "ask this question" affordance).
- * - SURPRISE: amber-tinted chip used for Surprise-me, signalling that it's
- *   a different kind of action (random insight) than the prompt chips. Mirrors
- *   the amber accent on the insight bubble so the two visually link.
+ * - SURPRISE: amber-tinted pill for Surprise-me, mirroring the insight
+ *   bubble's accent so the two read as a related pair.
+ * - SUGGESTION: small gray pill for server-emitted follow-up chips after a
+ *   reply (these tend to be short labels like "Find similar tensions").
+ * - EXAMPLE_ROW: full-width left-aligned row for the persistent starter
+ *   questions. Stacking them vertically makes the row heights uniform when
+ *   labels run long, so the panel doesn't read as a ragged pill-wrap.
+ * - SHOW_ME_LINK: lightweight text-link + arrow used inside the insight /
+ *   reply bubbles. Replaces the heavier black-filled pill so the bubble's
+ *   own accent color carries the CTA emphasis.
  */
 const CHIP_BASE =
   "text-[11px] leading-snug rounded-full px-2.5 py-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
-const CHIP_DEFAULT = `${CHIP_BASE} text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)]`;
 const CHIP_SURPRISE = `${CHIP_BASE} text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100 hover:border-amber-300`;
+const CHIP_SUGGESTION = `${CHIP_BASE} text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)]`;
+const EXAMPLE_ROW =
+  "w-full text-left text-[11.5px] leading-snug rounded-md px-3 py-2 text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+const SHOW_ME_LINK_BASE =
+  "text-[11.5px] font-semibold inline-flex items-center gap-1 transition-colors disabled:opacity-30 disabled:cursor-not-allowed";
+const SHOW_ME_LINK_AMBER = `${SHOW_ME_LINK_BASE} text-amber-800 hover:text-amber-900 hover:underline`;
+const SHOW_ME_LINK_BLUE = `${SHOW_ME_LINK_BASE} text-[var(--undp-blue)] hover:underline`;
 
 function ChatBar({
   onAsk,
@@ -1226,18 +1292,18 @@ function ChatBar({
             </span>
             <span className="flex-1">{currentInsight.callout}</span>
           </p>
-          {/* Show me sits inside the bubble at bottom-right as the
-           *  black-filled CTA, visually tied to the content that produced
-           *  it. Clicking applies the insight's actions to the wheel. */}
+          {/* Show me lives inside the bubble at bottom-right as a text-link
+           *  with arrow. Picks up the bubble's amber accent so it reads as
+           *  the bubble's own action rather than a stacked extra chrome. */}
           {canShowMe && (
             <div className="flex justify-end mt-2">
               <button
                 type="button"
                 onClick={onApplyHook}
                 disabled={chat.loading}
-                className="text-[11px] font-medium text-white bg-[var(--undp-black)] hover:bg-gray-800 rounded-full px-2.5 py-1 transition-colors disabled:opacity-30"
+                className={SHOW_ME_LINK_AMBER}
               >
-                Show me
+                Show me <span aria-hidden="true">→</span>
               </button>
             </div>
           )}
@@ -1246,18 +1312,17 @@ function ChatBar({
       {showReply && (
         <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
           <div>{typedReply}</div>
-          {/* Reply-side Show me: appears only when the server returned
-           *  navigation actions for this answer. Clicking applies them so
-           *  the wheel surfaces the evidence behind the answer text. */}
+          {/* Reply-side Show me: matches the Ask button's blue text-link
+           *  styling so the two CTAs in the panel share a vocabulary. */}
           {canShowMe && (
             <div className="flex justify-end mt-2">
               <button
                 type="button"
                 onClick={onApplyHook}
                 disabled={chat.loading}
-                className="text-[11px] font-medium text-white bg-[var(--undp-black)] hover:bg-gray-800 rounded-full px-2.5 py-1 transition-colors disabled:opacity-30"
+                className={SHOW_ME_LINK_BLUE}
               >
-                Show me
+                Show me <span aria-hidden="true">→</span>
               </button>
             </div>
           )}
@@ -1286,7 +1351,8 @@ function ChatBar({
 
       {/* Server-emitted follow-up chips after a reply. Filtered to drop
        *  any kind:"surprise" suggestion so it doesn't double up with the
-       *  always-visible Surprise me chip above. */}
+       *  always-visible Surprise me chip above. Kept as pills because the
+       *  server labels are short ("Find similar tensions"). */}
       {showSuggestions && (
         <div className="flex flex-wrap gap-1.5">
           {visibleSuggestions.map((s) => (
@@ -1295,7 +1361,7 @@ function ChatBar({
               type="button"
               onClick={() => submit(s.query)}
               disabled={chat.loading}
-              className={CHIP_DEFAULT}
+              className={CHIP_SUGGESTION}
             >
               {s.label}
             </button>
@@ -1303,17 +1369,18 @@ function ChatBar({
         </div>
       )}
 
-      {/* Persistent example chips: 3-4 starter questions, always visible
-       *  so the user can see "what can I ask?" without first having to
-       *  empty the bubble slot. */}
-      <div className="flex flex-wrap gap-1.5">
+      {/* Persistent example questions: 3-4 starters, stacked as full-width
+       *  rows so the heights stay uniform even when a question runs long.
+       *  Previously these were flex-wrap pills, which read as ragged ovals
+       *  whenever any one chip wrapped to two lines. */}
+      <div className="flex flex-col gap-1.5">
         {exampleQueries.map((q) => (
           <button
             key={q}
             type="button"
             onClick={() => submit(q)}
             disabled={chat.loading}
-            className={CHIP_DEFAULT}
+            className={EXAMPLE_ROW}
           >
             {q}
           </button>
@@ -2866,11 +2933,13 @@ export function PolicyCoherenceExplorer({
         other: Target;
       } | null = null;
       const docsToShow = new Set<string>();
+      let effectiveGroupMode: GroupMode = groupMode;
       for (const action of insight.actions) {
         if (action.type === "show_docs") {
           for (const id of action.ids) docsToShow.add(id);
         } else if (action.type === "set_mode") {
           setGroupMode(action.mode);
+          effectiveGroupMode = action.mode;
         } else if (action.type === "focus_category") {
           nextFocalGroupId = action.categoryId;
           docsToShow.add(action.categoryId);
@@ -2900,6 +2969,33 @@ export function PolicyCoherenceExplorer({
           }
         }
       }
+      // When focus lands on a sector/globe category via focus_category, the
+      // categoryId is a taxonomy id, not a doc id, so the docsToShow.add
+      // above is a no-op against hiddenDocs. Walk the primary
+      // classifications for that category to surface its targets' source
+      // docs, and reset the BTR mit/adp pill if those targets are BTR-bound
+      // — otherwise a 2-target BTR category like "Waste" renders as an
+      // empty arc on Show me. Gated on focus_category specifically so
+      // select_target / select_pair on a target that happens to sit in a
+      // sector/globe arc doesn't sweep in every other doc's targets.
+      const hasFocusCategoryAction = insight.actions.some(
+        (a) => a.type === "focus_category",
+      );
+      if (
+        hasFocusCategoryAction &&
+        nextFocalGroupId &&
+        (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
+      ) {
+        revealDocsForFocalTaxonomyCategory({
+          focalCategoryId: nextFocalGroupId,
+          taxonomyType: effectiveGroupMode,
+          classifications,
+          targetMap: targetMapLocal,
+          docsToShow,
+          actionTypeFilter,
+          setActionTypeFilter,
+        });
+      }
       if (docsToShow.size > 0) {
         setHiddenDocs((prev) => {
           let changed = false;
@@ -2927,7 +3023,7 @@ export function PolicyCoherenceExplorer({
       );
       setHistory([]);
     },
-    [nodes, alignment, targets],
+    [nodes, alignment, targets, groupMode, classifications, actionTypeFilter],
   );
 
   // Apply server-emitted navigation actions held in chat.pendingActions.
@@ -3005,6 +3101,30 @@ export function PolicyCoherenceExplorer({
           if (tB) docsToShow.add(tB.sourceDocument);
         }
       }
+      // Same gap as applyInsight: focus_category in sector/globe mode means
+      // categoryId is a taxonomy id, not a doc id. Surface the source docs
+      // of the matching primary-classified targets so the focal arc renders
+      // with actual nodes, and reset BTR mit/adp pill when needed. Gated on
+      // focus_category so select_target / select_pair landing in a sector
+      // arc doesn't sweep in every other doc.
+      const hasFocusCategoryAction = actions.some(
+        (a) => a.type === "focus_category",
+      );
+      if (
+        hasFocusCategoryAction &&
+        nextFocalGroupId &&
+        (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
+      ) {
+        revealDocsForFocalTaxonomyCategory({
+          focalCategoryId: nextFocalGroupId,
+          taxonomyType: effectiveGroupMode,
+          classifications,
+          targetMap: targetMapLocal,
+          docsToShow,
+          actionTypeFilter,
+          setActionTypeFilter,
+        });
+      }
       if (docsToShow.size > 0) {
         setHiddenDocs((prev) => {
           let changed = false;
@@ -3025,7 +3145,7 @@ export function PolicyCoherenceExplorer({
       // visible alongside the new wheel state.
       setChat((prev) => ({ ...prev, pendingActions: null }));
     },
-    [nodes, alignment, targets, groupMode],
+    [nodes, alignment, targets, groupMode, classifications, actionTypeFilter],
   );
 
   // Show me dispatcher: applies the active insight if one is showing,
