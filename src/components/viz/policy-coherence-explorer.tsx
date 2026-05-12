@@ -866,13 +866,12 @@ function BarRow({
   const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
   // Severity-driven red intensity. One step lighter than before so the
   // row reads as a quiet wash; the border accent below still distinguishes
-  // high/moderate from the lowest tier.
+  // high_contradiction from moderate_contradiction (which now share the
+  // floor wash with low_tension).
   const redFill =
     severity === "high_contradiction"
       ? "bg-red-100 group-hover:bg-red-200"
-      : severity === "moderate_contradiction"
-        ? "bg-red-50 group-hover:bg-red-100"
-        : "bg-red-50 group-hover:bg-red-100";
+      : "bg-red-50 group-hover:bg-red-100";
   const fillBg = tone === "red" ? redFill : "bg-gray-100 group-hover:bg-gray-200";
   // Left-edge accent on the hardest-severity rows reinforces the color
   // step without relying on viewers to distinguish red-50 from red-100.
