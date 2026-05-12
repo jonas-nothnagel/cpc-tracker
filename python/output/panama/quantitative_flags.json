@@ -1,257 +1,5 @@
 [
   {
-    "targetId": "panama_NP_1",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_NP_2",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_NP_3",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_NP_4",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_NP_5",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_NP_6",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_NP_7",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "11%",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_8",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "100,000 ha, 2,500 ha, 25,000 ha",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_9",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "40%, 60%",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_10",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "10%",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_11",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "5",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_12",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "10%",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_13",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "50%",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_14",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "20",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_15",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "Starting in 2028"
-  },
-  {
-    "targetId": "panama_NP_16",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "50%",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_17",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_18",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "50%",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_19",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "5",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_20",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "100%, 50%",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_21",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_22",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "70%, 10%",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_23",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "21",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_24",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "30%",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_25",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "10",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_26",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_27",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2027"
-  },
-  {
-    "targetId": "panama_NP_28",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "20",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_29",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_30",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "80%",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_31",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_32",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_33",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "10",
-    "timeBoundDetails": "By 2035"
-  },
-  {
-    "targetId": "panama_NP_34",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "USD 300 million",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_35",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "70%",
-    "timeBoundDetails": "By 2030"
-  },
-  {
-    "targetId": "panama_NP_36",
-    "isQuantitative": false,
-    "isTimeBound": true,
-    "quantitativeDetails": "",
-    "timeBoundDetails": "By 2026"
-  },
-  {
     "targetId": "panama_CNR_1",
     "isQuantitative": false,
     "isTimeBound": false,
@@ -316,10 +64,10 @@
   },
   {
     "targetId": "panama_ENR_3",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "Law No. 37 of August 2, 2016",
+    "timeBoundDetails": "August 2, 2016"
   },
   {
     "targetId": "panama_ENR_4",
@@ -687,10 +435,10 @@
   },
   {
     "targetId": "panama_ENR_56",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "Law No. 37",
+    "timeBoundDetails": "August 2, 2016"
   },
   {
     "targetId": "panama_ENR_57",
@@ -905,9 +653,9 @@
   {
     "targetId": "panama_ENR_87",
     "isQuantitative": false,
-    "isTimeBound": false,
+    "isTimeBound": true,
     "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "timeBoundDetails": "February 3, 1994"
   },
   {
     "targetId": "panama_ENR_88",
@@ -954,9 +702,9 @@
   {
     "targetId": "panama_ENR_94",
     "isQuantitative": false,
-    "isTimeBound": false,
+    "isTimeBound": true,
     "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "timeBoundDetails": "May 25, 2015"
   },
   {
     "targetId": "panama_ENR_95",
@@ -1100,10 +848,10 @@
   },
   {
     "targetId": "panama_ENR_115",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "Law No. 1",
+    "timeBoundDetails": "February 3, 1994"
   },
   {
     "targetId": "panama_ENR_116",
@@ -1345,16 +1093,16 @@
   },
   {
     "targetId": "panama_ENR_150",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "Law No. 37",
+    "timeBoundDetails": "August 2, 2016"
   },
   {
     "targetId": "panama_ENR_151",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "311",
     "timeBoundDetails": ""
   },
   {
@@ -1619,9 +1367,9 @@
   {
     "targetId": "panama_ENR_189",
     "isQuantitative": false,
-    "isTimeBound": false,
+    "isTimeBound": true,
     "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "timeBoundDetails": "March 25, 2015"
   },
   {
     "targetId": "panama_ENR_190",
@@ -1723,9 +1471,9 @@
   },
   {
     "targetId": "panama_ENR_204",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "No. 142",
     "timeBoundDetails": "December 9, 2021"
   },
   {
@@ -1743,245 +1491,1085 @@
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_SPGCF_1",
+    "targetId": "panama_HR_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_7",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_HR_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_12",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_HR_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_17",
     "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "More than 100",
+    "quantitativeDetails": "21 priority districts",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_SPGCF_2",
+    "targetId": "panama_HR_18",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_SPGCF_3",
+    "targetId": "panama_HR_19",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_20",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_21",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_22",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_23",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_24",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_25",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_26",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_27",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_28",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_29",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_HR_30",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_NP_7",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "11%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_8",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100,000 ha; 2,500 ha; 25,000 ha; three biological corridors",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_9",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "40% of terrestrial territory; 60% of marine and inland water areas",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_10",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 10%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_11",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 5 priority regions",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_12",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10% reduction",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_13",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_14",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 20 priority wild species",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_15",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2028",
+    "timeBoundDetails": "Starting in 2028"
+  },
+  {
+    "targetId": "panama_NP_16",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_17",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "By 2030",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_18",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_19",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 5 specific measures",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_20",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%; at least 50%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_21",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "zero illegal deforestation rate",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_22",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%; at least 10%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_23",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "21 districts",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_24",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "30%; 2025 baseline",
+    "timeBoundDetails": "By 2030; 2025 baseline"
+  },
+  {
+    "targetId": "panama_NP_25",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 10 vulnerable regions",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_26",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2035",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_27",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2027",
+    "timeBoundDetails": "By 2027"
+  },
+  {
+    "targetId": "panama_NP_28",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "20 Local and Regional Adaptation Plans",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_29",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2030",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_30",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 80% of public health facilities",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_31",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2030",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_32",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2030",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_33",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 10 units",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "panama_NP_34",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "USD 300 million",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_35",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "panama_NP_36",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2026",
+    "timeBoundDetails": "By 2026"
+  },
+  {
+    "targetId": "panama_PEG_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_9",
     "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "50 to 60",
+    "quantitativeDetails": "between B/. 270 and B/. 450",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_SPGCF_4",
+    "targetId": "panama_PEG_10",
     "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "190 to 280 million beneficiaries",
+    "quantitativeDetails": "aged 17 to 24",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_SPGCF_5",
+    "targetId": "panama_PEG_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_17",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_18",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_19",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_20",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_21",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_22",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_23",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_24",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_25",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_26",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_27",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_28",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PEG_29",
     "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2050",
+    "timeBoundDetails": "by 2050"
+  },
+  {
+    "targetId": "panama_PEG_30",
+    "isQuantitative": false,
     "isTimeBound": false,
-    "quantitativeDetails": "120 to 190 million hectares",
+    "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_SPGCF_6",
+    "targetId": "panama_PENCYT_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PENCYT_2",
     "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "45 to 60 developing countries",
-    "timeBoundDetails": ""
+    "isTimeBound": true,
+    "quantitativeDetails": "2025-2029",
+    "timeBoundDetails": "during the 2025-2029 five-year period"
   },
   {
-    "targetId": "panama_SPGCF_7",
+    "targetId": "panama_PENCYT_3",
     "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "20 to 30 developing countries",
-    "timeBoundDetails": ""
+    "isTimeBound": true,
+    "quantitativeDetails": "1% of GDP",
+    "timeBoundDetails": "by 2029"
   },
   {
-    "targetId": "panama_SPGCF_8",
-    "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "18 to 25 developing countries",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_SPGCF_9",
-    "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "40-70 approved proposals",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_SPGCF_10",
-    "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "900 to 1500 local private sector ventures",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_SPGCF_11",
-    "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "90 to 180 national and regional financial institutions",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "panama_IRMF_1",
+    "targetId": "panama_PENCYT_4",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_2",
+    "targetId": "panama_PENCYT_5",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_3",
+    "targetId": "panama_PENCYT_6",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_4",
+    "targetId": "panama_PENCYT_7",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_5",
+    "targetId": "panama_PENCYT_8",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_6",
+    "targetId": "panama_PENCYT_9",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_7",
+    "targetId": "panama_PENCYT_10",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_8",
+    "targetId": "panama_PENCYT_11",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_9",
+    "targetId": "panama_PENCYT_12",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_10",
+    "targetId": "panama_PENCYT_13",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_11",
+    "targetId": "panama_PENCYT_14",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_12",
+    "targetId": "panama_PENCYT_15",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_13",
+    "targetId": "panama_PENCYT_16",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_14",
+    "targetId": "panama_PENCYT_17",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_15",
+    "targetId": "panama_PIOTA_1",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_16",
+    "targetId": "panama_PIOTA_2",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_17",
+    "targetId": "panama_PIOTA_3",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_18",
+    "targetId": "panama_PIOTA_4",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_19",
+    "targetId": "panama_PIOTA_5",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_20",
+    "targetId": "panama_PIOTA_6",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_21",
+    "targetId": "panama_PIOTA_7",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_22",
+    "targetId": "panama_PIOTA_8",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_23",
+    "targetId": "panama_PIOTA_9",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "panama_IRMF_24",
+    "targetId": "panama_PIOTA_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PIOTA_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PIOTA_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PIOTA_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PIOTA_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNRF_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_8",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "panama_PNSH_17",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",

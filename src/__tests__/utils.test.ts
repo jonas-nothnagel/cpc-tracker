@@ -3,6 +3,7 @@ import {
   chartDocKey,
   countByCategory,
   getDocColor,
+  getDocFriendlyName,
   getDocFullLabel,
   getDocLabel,
   getDocMediumLabel,
@@ -209,6 +210,24 @@ describe("getDocFullLabel", () => {
 
   it("falls back to the raw id for unknown documents", () => {
     expect(getDocFullLabel(null, "UNKNOWN")).toBe("UNKNOWN");
+  });
+});
+
+describe("getDocFriendlyName", () => {
+  it("extracts the parenthetical from mediumLabel", () => {
+    expect(getDocFriendlyName(mongoliaConfig, "NDC")).toBe("Climate");
+  });
+
+  it("returns the mediumLabel when there is no parenthetical", () => {
+    // Mongolia's Vision 2050 has mediumLabel = "Vision 2050" (no parens)
+    const cfg = {
+      documentTypes: [{ id: "Vision 2050", shortLabel: "Vision 2050", mediumLabel: "Vision 2050", fullLabel: "Vision 2050", color: "#000" }],
+    };
+    expect(getDocFriendlyName(cfg, "Vision 2050")).toBe("Vision 2050");
+  });
+
+  it("falls back to raw id for unknown documents", () => {
+    expect(getDocFriendlyName(null, "UNKNOWN")).toBe("UNKNOWN");
   });
 });
 

@@ -473,8 +473,8 @@ def estimate_footprint_from_counts(
 # Core call with retry
 # ---------------------------------------------------------------------------
 
-MAX_RETRIES = 5
-BASE_DELAY = 1.0  # seconds
+MAX_RETRIES = 8
+BASE_DELAY = 2.0  # seconds — exponential backoff: 2, 4, 8, 16, 32, 64, 128, 256s (cap)
 
 
 async def call_llm(
@@ -527,7 +527,19 @@ async def call_llm(
                 if top_p is not None:
                     kwargs["top_p"] = top_p
                 if max_tokens is not None:
-                    kwargs["max_tokens"] = max_tokens
+                    # gpt-5.x and o-series reasoning models reject `max_tokens` (Azure 400);
+                    # the supported field is `max_completion_tokens`. Older chat models still
+                    # use `max_tokens`. Switch by model name so both work.
+                    use_completion_tokens = bool(model) and (
+                        model.startswith("gpt-5")
+                        or model.startswith("o1")
+                        or model.startswith("o3")
+                        or model.startswith("o4")
+                    )
+                    if use_completion_tokens:
+                        kwargs["max_completion_tokens"] = max_tokens
+                    else:
+                        kwargs["max_tokens"] = max_tokens
 
                 call_start = time.perf_counter()
                 response = await client.chat.completions.create(**kwargs)
@@ -541,7 +553,12 @@ async def call_llm(
 
         except Exception as e:
             last_error = e
-            delay = BASE_DELAY * (2 ** attempt)
+            # Exponential backoff capped at 60s. Jitter (±25%) avoids thundering-herd
+            # retries against bursty rate-limit windows on Azure (where many parallel
+            # slots otherwise re-fire at the same instant).
+            import random
+            base = min(BASE_DELAY * (2 ** attempt), 60.0)
+            delay = base * (0.75 + random.random() * 0.5)
             logger.warning(
                 f"LLM call failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}. "
                 f"Retrying in {delay:.1f}s..."
