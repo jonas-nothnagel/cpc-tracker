@@ -2563,27 +2563,36 @@ export function PolicyCoherenceExplorer({
             {" "}Hover or click a target to explore connections.
           </p>
         </div>
-        <div className="flex items-start gap-3">
-          <select
-            value={groupMode}
-            onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
-            className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
-          >
-            <option value="document">By Document Type</option>
-            <option value="globe">By Biodiversity Category</option>
-            <option value="sector">By Climate Mitigation Sector</option>
-          </select>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as AlignFilter)}
-            className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
-          >
-            <option value="high_contra">High + Contradictions</option>
-            <option value="high_medium">High + Medium</option>
-            <option value="all">All connections</option>
-            <option value="high">High only</option>
-            <option value="contradictions">Contradictions only</option>
-          </select>
+        <div className="flex flex-col gap-3">
+          {/* Row 1: grouping + filter selects. Kept on their own row so the
+              doc-type toggles below have a full-width budget to wrap into,
+              regardless of how many data sources a country exposes. */}
+          <div className="flex flex-wrap items-center gap-3">
+            <select
+              value={groupMode}
+              onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
+              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+            >
+              <option value="document">By Document Type</option>
+              <option value="globe">By Biodiversity Category</option>
+              <option value="sector">By Climate Mitigation Sector</option>
+            </select>
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as AlignFilter)}
+              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+            >
+              <option value="high_contra">High + Contradictions</option>
+              <option value="high_medium">High + Medium</option>
+              <option value="all">All connections</option>
+              <option value="high">High only</option>
+              <option value="contradictions">Contradictions only</option>
+            </select>
+          </div>
+          {/* Row 2: per-document toggles + abbreviation key + target search.
+              Wraps to multiple lines so countries with many uploaded sources
+              (Panama 8+, future uploads more) stay inside the viewport. */}
+          <div className="flex flex-wrap items-start gap-x-2 gap-y-2">
           {availableDocs.map((doc) => {
             const active = !hiddenDocs.has(doc);
             const color = getDocColor(countryConfig, doc);
@@ -2619,7 +2628,7 @@ export function PolicyCoherenceExplorer({
                   title={getDocFullLabel(countryConfig, doc)}
                 >
                   <span
-                    className="px-1.5 flex items-center text-[10px] font-mono font-bold tracking-tight"
+                    className="px-2 flex items-center text-[10px] font-semibold uppercase tracking-wider"
                     style={
                       active
                         ? { backgroundColor: color, color: "white" }
@@ -2774,6 +2783,7 @@ export function PolicyCoherenceExplorer({
               );
             })()}
           </div>
+        </div>
         </div>
       </div>
 
