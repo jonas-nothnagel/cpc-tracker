@@ -1,6 +1,6 @@
 {
   "_comment": "Country-specific display configuration for Panama. Same shape as mongolia-country-config.json. Document taxonomy and provenance strings drive the dashboard without any code changes.",
-  "_documentTypesComment": "Panama's five source documents from UNFCCC / Green Climate Fund. Short labels come verbatim from the Doc column in data_panama_8Apr26 1.xlsx. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. The five colors are mutually distinguishable under deuteranopia/protanopia simulation (verified manually via https://www.color-blindness.com/coblis-color-blindness-simulator/).",
+  "_documentTypesComment": "Panama's source documents. NP + ENR were carried over from the original Apr 2026 xlsx; HR, PEG, PNSH, PENCYT, PIOTA, PNRF replaced IRMF + SPGCF on 11 May 2026 per Lea's 8 May feedback (data_panama_5May26.xlsx). Short labels come verbatim from the Doc column. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. Colors are mutually distinguishable under deuteranopia/protanopia simulation.",
   "defaultHiddenDocTypes": [],
   "excludedDocTypes": ["CNR"],
   "documentTypes": [
@@ -19,17 +19,45 @@
       "color": "#166534"
     },
     {
-      "id": "IRMF",
-      "shortLabel": "IRMF",
-      "mediumLabel": "IRMF (Results Mgmt)",
-      "fullLabel": "Integrated Results Management Framework",
-      "color": "#ca8a04"
+      "id": "HR",
+      "shortLabel": "HR",
+      "mediumLabel": "HR (Nature Pledge Roadmap)",
+      "fullLabel": "Hoja de Ruta del Nature Pledge",
+      "color": "#d97706"
     },
     {
-      "id": "SPGCF",
-      "shortLabel": "SPGCF",
-      "mediumLabel": "SPGCF (GCF Plan)",
-      "fullLabel": "Strategic Plan for the Green Climate Fund",
+      "id": "PEG",
+      "shortLabel": "PEG",
+      "mediumLabel": "PEG (Gov't Strategic Plan)",
+      "fullLabel": "Plan Estratégico de Gobierno 2025-2029",
+      "color": "#0d9488"
+    },
+    {
+      "id": "PENCYT",
+      "shortLabel": "PENCYT",
+      "mediumLabel": "PENCYT (Science & Innovation Plan)",
+      "fullLabel": "Plan Estratégico Nacional de Ciencia, Tecnología e Innovación 2025-2029",
+      "color": "#be185d"
+    },
+    {
+      "id": "PIOTA",
+      "shortLabel": "PIOTA",
+      "mediumLabel": "PIOTA (Canal Watershed Plan)",
+      "fullLabel": "Plan Indicativo de Ordenamiento Territorial Ambiental",
+      "color": "#6d28d9"
+    },
+    {
+      "id": "PNRF",
+      "shortLabel": "PNRF",
+      "mediumLabel": "PNRF (Forest Restoration)",
+      "fullLabel": "Programa Nacional de Restauración Forestal",
+      "color": "#15803d"
+    },
+    {
+      "id": "PNSH",
+      "shortLabel": "PNSH",
+      "mediumLabel": "PNSH (Water Security)",
+      "fullLabel": "Plan Nacional de Seguridad Hídrica",
       "color": "#0891b2"
     },
     {
@@ -40,12 +68,16 @@
       "color": "#7e22ce"
     }
   ],
-  "_docProvenanceComment": "Primary source citations per document. NP, ENR, IRMF, CNR each trace to a single URL. SPGCF rows in the Panama xlsx cite eleven distinct Green Climate Fund Strategic Plan versions (2024-2027, 2024-2028, 2024-2029, 2024-2030, 2024-2031, 2024-2032, 2024-2033, 2024-2034, 2024-2035, 2024-2036, 2024-2037). The 2024-2035 version is the canonical reference because it is the most comprehensive temporal scope and aligns with Panama's own 2035 commitments in the Nature Pledge. The other ten URLs remain available in python/data/panama-targets.json per-row `sourceUrl` for anyone who needs version-specific provenance.",
+  "_docProvenanceComment": "Primary source citations per document. NP, ENR, CNR each trace to a single URL. The 6 new doc-types (HR, PEG, PENCYT, PIOTA, PNRF, PNSH) were ingested from data_panama_5May26.xlsx; the xlsx Source column was empty for these — citations below name the document only, with the source PDFs in dev_data_scripts/sharepoint_sync/Panama/Panama Materials/Policy docs shared by CO April 2026/.",
   "docProvenance": {
     "NP": "Pacto de Panamá con la Naturaleza (Nature Pledge), UNFCCC, November 2025",
     "ENR": "Estrategia Nacional REDD+ de Panamá",
-    "IRMF": "Integrated Results Management Framework, Green Climate Fund",
-    "SPGCF": "Strategic Plan for the Green Climate Fund 2024–2035 (canonical; eleven temporal variants cited per row in panama-targets.json)",
+    "HR": "Hoja de Ruta del Nature Pledge, Government of Panama (per data_panama_5May26.xlsx)",
+    "PEG": "Plan Estratégico de Gobierno 2025-2029, Government of Panama",
+    "PENCYT": "Plan Estratégico Nacional de Ciencia, Tecnología e Innovación (PENCYT) 2025-2029, SENACYT",
+    "PIOTA": "Plan Indicativo de Ordenamiento Territorial Ambiental, Panama Canal Watershed (CHCP)",
+    "PNRF": "Programa Nacional de Restauración Forestal, MiAMBIENTE",
+    "PNSH": "Plan Nacional de Seguridad Hídrica, Government of Panama",
     "CNR": "Concept Note: GCF REDD+ Results-Based Payments, Panama"
   },
   "btrMitigationSourceRef": {

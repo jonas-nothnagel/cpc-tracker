@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getDocColor, getDocFullLabel, getDocLabel, getDocTypeOrder } from "@/lib/utils";
+import { getDocColor, getDocFriendlyName, getDocFullLabel, getDocLabel, getDocTypeOrder } from "@/lib/utils";
 import { formatSourceRef } from "@/lib/source-ref";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance } from "@/components/ui/data-provenance";
@@ -246,7 +246,7 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
   const btrAdaptationProvenance = formatSourceRef(btrData?.adaptationSourceRef);
 
   // Abbreviation list for the InfoBox — same dynamic logic as before so a
-  // second country's document types (NP, ENR, IRMF, ...) get expanded
+  // second country's document types (NP, ENR, HR, PEG, ...) get expanded
   // automatically when their config has full labels.
   const abbrList: { abbr: string; description: string }[] = [];
   const seenAbbrs = new Set<string>();
@@ -319,13 +319,18 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
                     const fullLabel = getDocFullLabel(countryConfig, doc);
                     const docTargets = targetsByDoc.get(doc) ?? [];
                     const provenance = docProvenance[doc];
+                    const abbr = getDocLabel(countryConfig, doc);
+                    const friendly = getDocFriendlyName(countryConfig, doc);
+                    // Tooltip carries abbreviation + full source so the
+                    // friendly chip stays readable while power users can still
+                    // see the doc code on hover.
                     const title = provenance
-                      ? `${fullLabel} · Source: ${provenance}`
-                      : fullLabel;
+                      ? `${abbr} — ${fullLabel} · Source: ${provenance}`
+                      : `${abbr} — ${fullLabel}`;
                     return (
                       <span key={doc}>
                         <InspectChip
-                          label={getDocLabel(countryConfig, doc)}
+                          label={friendly}
                           title={title}
                           color={getDocColor(countryConfig, doc)}
                           onClick={() =>
@@ -340,6 +345,20 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
                       </span>
                     );
                   })}
+                  <InfoBox>
+                    <strong>Document abbreviations</strong>
+                    <br /><br />
+                    {policyDocTypes.map((doc, i) => {
+                      const full = getDocFullLabel(countryConfig, doc);
+                      return (
+                        <span key={doc}>
+                          <strong>{getDocLabel(countryConfig, doc)}</strong>
+                          {full !== doc ? ` — ${full}` : ""}
+                          {i < policyDocTypes.length - 1 ? <br /> : null}
+                        </span>
+                      );
+                    })}
+                  </InfoBox>
                 </>
               )}
             </p>

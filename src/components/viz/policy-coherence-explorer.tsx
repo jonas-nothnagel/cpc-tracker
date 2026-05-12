@@ -4,6 +4,7 @@ import React, { useState, useMemo, useCallback, useEffect, useRef } from "react"
 import { arc as d3Arc } from "d3-shape";
 import {
   getDocColor,
+  getDocFriendlyName,
   getDocFullLabel,
   getDocLabel,
   getDocMediumLabel,
@@ -406,7 +407,10 @@ function DetailPanel({
         </button>
       </div>
 
-      <div className="px-4 py-3 shrink-0">
+      {/* Target text scrolls internally so long PEG / BTR narratives
+          don't push the badges, NR7 block, and connections list off
+          the card (which would clip them under max-h-[760px]). */}
+      <div className="px-4 py-3 shrink-0 max-h-64 overflow-y-auto">
         <p className="text-xs text-[var(--undp-black)] leading-relaxed">
           <TargetTextWithHighlights target={node.target} />
         </p>
@@ -1982,7 +1986,7 @@ export function PolicyCoherenceExplorer({
    * All document types present in the data, ordered by the country's
    * declared order (falling back to reserved tokens then an unknown-id tail).
    * Derived from the targets themselves so a country with unfamiliar doc ids
-   * (e.g. Panama's NP/ENR/IRMF/SPGCF/CNR) still gets a populated filter row.
+   * (e.g. Panama's NP/ENR/HR/PEG/PENCYT/PIOTA/PNRF/PNSH/CNR) still gets a populated filter row.
    */
   const availableDocs = useMemo(() => {
     const present = Array.from(new Set(targets.map((t) => t.sourceDocument)));
@@ -2608,19 +2612,32 @@ export function PolicyCoherenceExplorer({
                 <button
                   type="button"
                   onClick={() => toggleDoc(doc)}
-                  className={`flex items-center gap-1.5 border rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                    active
-                      ? ""
-                      : "border-gray-200 bg-white text-[var(--undp-gray)] hover:border-gray-300"
+                  className={`flex items-stretch border rounded-md text-xs font-medium transition-colors overflow-hidden ${
+                    active ? "" : "border-gray-200 hover:border-gray-300"
                   }`}
-                  style={active ? { color, borderColor: `${color}66`, backgroundColor: `${color}1a` } : undefined}
+                  style={active ? { borderColor: `${color}66` } : undefined}
                   title={getDocFullLabel(countryConfig, doc)}
                 >
                   <span
-                    className="w-2 h-2 rounded-sm"
-                    style={{ backgroundColor: active ? color : "#d1d5db" }}
-                  />
-                  {getDocLabel(countryConfig, doc)}
+                    className="px-1.5 flex items-center text-[10px] font-mono font-bold tracking-tight"
+                    style={
+                      active
+                        ? { backgroundColor: color, color: "white" }
+                        : { backgroundColor: "#f3f4f6", color: "#9ca3af" }
+                    }
+                  >
+                    {getDocLabel(countryConfig, doc)}
+                  </span>
+                  <span
+                    className="px-2.5 py-1.5 flex items-center"
+                    style={
+                      active
+                        ? { color, backgroundColor: `${color}14` }
+                        : { color: "var(--undp-gray)", backgroundColor: "white" }
+                    }
+                  >
+                    {getDocFriendlyName(countryConfig, doc)}
+                  </span>
                 </button>
                 {showSubPills && (
                   <div className="flex gap-1 pl-3">
@@ -2683,6 +2700,27 @@ export function PolicyCoherenceExplorer({
               </div>
             );
           })}
+
+          {/* Doc-type legend popover — surfaces full document names for the
+              abbreviations shown in the chip row above. */}
+          {availableDocs.length > 0 && (
+            <span className="self-start">
+              <InfoBox>
+                <strong>Document abbreviations</strong>
+                <br /><br />
+                {availableDocs.map((doc, i) => {
+                  const full = getDocFullLabel(countryConfig, doc);
+                  return (
+                    <span key={doc}>
+                      <strong>{getDocLabel(countryConfig, doc)}</strong>
+                      {full !== doc ? ` — ${full}` : ""}
+                      {i < availableDocs.length - 1 ? <br /> : null}
+                    </span>
+                  );
+                })}
+              </InfoBox>
+            </span>
+          )}
 
           {/* Target search */}
           <div className="relative">
