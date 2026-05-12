@@ -41,7 +41,7 @@ function deriveCountryFile(targetsFile: string, suffix: string): string {
   return prefix ? `${prefix}-${suffix}.json` : `${suffix}.json`;
 }
 
-export type DerivedPaths = {
+type DerivedPaths = {
   dataDir: string;
   outputDir: string;
   targetsFile: string;
@@ -50,7 +50,7 @@ export type DerivedPaths = {
   iso3: string | null;
 };
 
-export type DerivedPathsResult =
+type DerivedPathsResult =
   | { kind: "analysis"; analysisBase: string; paths: DerivedPaths }
   | { kind: "country"; paths: DerivedPaths }
   | { kind: "error"; status: 400 | 404; error: string };

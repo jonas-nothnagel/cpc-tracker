@@ -12,15 +12,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "clsx": "^2.1.0",
     "d3-chord": "^3.0.1",
     "d3-force": "^3.0.0",
     "d3-shape": "^3.2.0",
     "next": "16.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^3.7.0",
-    "tailwind-merge": "^2.2.0"
+    "recharts": "^3.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

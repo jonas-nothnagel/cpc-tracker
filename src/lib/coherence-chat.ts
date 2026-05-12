@@ -18,7 +18,7 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-export type ChatScope = "current_view" | "all_documents";
+type ChatScope = "current_view" | "all_documents";
 
 export type ChatAction =
   | { type: "set_filter"; filter: string }
@@ -63,7 +63,7 @@ export interface RankedItem {
   count: number;
 }
 
-export interface ChatRankings {
+interface ChatRankings {
   topGroupsByTension: RankedItem[];
   topGroupsByAlignment: RankedItem[];
   topTargetsByTension: RankedItem[];

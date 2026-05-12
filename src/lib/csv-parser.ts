@@ -11,7 +11,7 @@ export interface TargetRow {
   actions?: string;
 }
 
-export interface ColumnMapping {
+interface ColumnMapping {
   textCol: number;
   labelCol: number;
   docTypeCol: number;
@@ -19,7 +19,7 @@ export interface ColumnMapping {
   actionsCol: number;
 }
 
-export interface ParsedPreview {
+interface ParsedPreview {
   rows: TargetRow[];
   delimiter: string;
   hasHeader: boolean;
@@ -44,7 +44,7 @@ const KNOWN_DOC_TYPES: Record<string, PolicyDocumentType> = {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /** Detect the most likely delimiter from the first line of text. */
-export function detectDelimiter(text: string): string {
+function detectDelimiter(text: string): string {
   const firstLine = text.split("\n")[0];
   const tabs = (firstLine.match(/\t/g) || []).length;
   const semis = (firstLine.match(/;/g) || []).length;
@@ -55,7 +55,7 @@ export function detectDelimiter(text: string): string {
 }
 
 /** Parse CSV/TSV text respecting quoted fields (RFC 4180). */
-export function parseDelimited(text: string, delimiter: string): string[][] {
+function parseDelimited(text: string, delimiter: string): string[][] {
   const rows: string[][] = [];
   let field = "";
   let inQuotes = false;
@@ -95,7 +95,7 @@ export function parseDelimited(text: string, delimiter: string): string[][] {
 }
 
 /** Map a raw document type string to a known PolicyDocumentType. */
-export function matchDocType(raw: string): PolicyDocumentType {
+function matchDocType(raw: string): PolicyDocumentType {
   const lower = raw.toLowerCase().trim();
   for (const [keyword, type] of Object.entries(KNOWN_DOC_TYPES)) {
     if (lower === keyword || lower.startsWith(keyword)) return type;
@@ -104,7 +104,7 @@ export function matchDocType(raw: string): PolicyDocumentType {
 }
 
 /** Detect column roles from a header row. */
-export function detectColumns(headers: string[]): ColumnMapping {
+function detectColumns(headers: string[]): ColumnMapping {
   const lower = headers.map((h) => h.toLowerCase().trim());
   let textCol = -1;
   let labelCol = -1;
@@ -152,7 +152,7 @@ export function detectColumns(headers: string[]): ColumnMapping {
 }
 
 /** Check if a row looks like a header (contains common header keywords). */
-export function looksLikeHeader(row: string[]): boolean {
+function looksLikeHeader(row: string[]): boolean {
   const joined = row.join(" ").toLowerCase();
   return (
     (joined.includes("target") || joined.includes("text")) &&

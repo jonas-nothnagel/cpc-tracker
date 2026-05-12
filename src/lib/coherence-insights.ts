@@ -25,7 +25,7 @@ import type {
 
 import type { ChatAction, ChatTaxCategory } from "@/lib/coherence-chat";
 
-export type InsightPattern =
+type InsightPattern =
   | "implementation_contradiction"
   | "paradox"
   | "orphan"

@@ -27,20 +27,20 @@ import type { ThematicClassification } from "@/types";
  * parentId/parentName point at the primary category. For flat taxonomies
  * (IPCC sectors, NBS), parentId === id and parentName === name.
  */
-export interface TaxonomyLeaf {
+interface TaxonomyLeaf {
   id: string;
   name: string;
   parentId: string;
   parentName: string;
 }
 
-export interface CoherenceRow extends TaxonomyLeaf {
+interface CoherenceRow extends TaxonomyLeaf {
   expenditure: number;
   targetIds: Set<string>;
   actionIds: Set<string>;
 }
 
-export interface ParentRollup {
+interface ParentRollup {
   id: string;
   name: string;
   expenditure: number;
@@ -53,12 +53,12 @@ export interface ParentRollup {
   hasActions: boolean;
 }
 
-export interface ConcentrationCallout {
+interface ConcentrationCallout {
   kind: "concentration" | "unfunded" | "unmandated" | "unscoped";
   text: string;
 }
 
-export interface CoherenceTableProps {
+interface CoherenceTableProps {
   /** Parent + leaf taxonomy entries (see makeFlatLeaves / makeHierarchicalLeaves). */
   leaves: TaxonomyLeaf[];
   /** What taxonomyType matches against in classifications (e.g. "globe_sub", "sector"). */
@@ -232,7 +232,7 @@ export function buildRollups(
 // Concentration callouts
 // ---------------------------------------------------------------------------
 
-export function buildConcentrationCallouts(
+function buildConcentrationCallouts(
   rollups: ParentRollup[],
   parentLabelSingular: string,
   parentLabelPlural: string,
