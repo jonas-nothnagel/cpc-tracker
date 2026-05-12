@@ -1,0 +1,655 @@
+/**
+ * Pure detectors for "surprising" structural patterns in the coherence
+ * dataset. Runs on the same data the chat already has, no LLM call required.
+ *
+ * Powers the first-load AI hook and the Surprise-me follow-up chip. Each
+ * detector returns a 1-2 sentence factual callout plus the navigation action
+ * that surfaces the underlying view, so "Show me" is instant — no roundtrip.
+ *
+ * Discipline matches the chat's:
+ *   - no em dashes (commas, colons, periods only)
+ *   - no recommendations or value judgements
+ *   - every number quoted must be derived from the data passed in
+ */
+
+import { isContradiction } from "@/types";
+import { getDocLabel } from "@/lib/utils";
+import type {
+  AlignmentResult,
+  BtrData,
+  CountryConfig,
+  PolicyDocumentType,
+  Target,
+  ThematicClassification,
+} from "@/types";
+
+import type { ChatAction, ChatTaxCategory } from "@/lib/coherence-chat";
+
+export type InsightPattern =
+  | "implementation_contradiction"
+  | "paradox"
+  | "orphan"
+  | "zero_conflict_topic"
+  | "tension_cluster"
+  | "hub"
+  | "imbalance"
+  | "most_contested_topic"
+  | "quantitative_gap"
+  | "agreement_pair";
+
+export interface Insight {
+  pattern: InsightPattern;
+  /** 1-2 sentence factual callout. No em dashes. */
+  callout: string;
+  /** Action(s) to dispatch when the user clicks Show me. */
+  actions: ChatAction[];
+  /**
+   * Optional preset filter for the suggested view. Applied alongside actions.
+   * Kept here rather than inside actions so the dispatcher can ignore it
+   * cleanly if it doesn't apply.
+   */
+  filter?: string;
+}
+
+interface DetectArgs {
+  targets: Target[];
+  /** Full alignment list, regardless of visibility. Detectors are coarse-grained
+   *  and benefit from the full dataset; the UI handles visibility separately. */
+  alignment: AlignmentResult[];
+  classifications: ThematicClassification[];
+  sectors: ChatTaxCategory[];
+  globeCategories: ChatTaxCategory[];
+  btrData?: BtrData | null;
+  availableDocs: PolicyDocumentType[];
+  countryConfig?: CountryConfig | null;
+}
+
+/**
+ * Run every detector and return the resulting insights in interestingness
+ * order. Implementation contradictions come first because they're the
+ * sharpest signal in a policy-coherence dataset: a reported action that
+ * contradicts a plan is qualitatively different from two plans on paper
+ * disagreeing. Paradox, cluster, and topic-level insights follow.
+ */
+export function detectInsights(args: DetectArgs): Insight[] {
+  const out: Insight[] = [];
+  const implContradiction = detectImplementationContradiction(args);
+  if (implContradiction) out.push(implContradiction);
+  const paradox = detectParadox(args);
+  if (paradox) out.push(paradox);
+  const cluster = detectTensionCluster(args);
+  if (cluster) out.push(cluster);
+  const mostContested = detectMostContestedTopic(args);
+  if (mostContested) out.push(mostContested);
+  const zero = detectZeroConflictTopic(args);
+  if (zero) out.push(zero);
+  const hub = detectHub(args);
+  if (hub) out.push(hub);
+  const quantGap = detectQuantitativeGap(args);
+  if (quantGap) out.push(quantGap);
+  const orphan = detectOrphan(args);
+  if (orphan) out.push(orphan);
+  const imbalance = detectImbalance(args);
+  if (imbalance) out.push(imbalance);
+  const agreement = detectAgreementPair(args);
+  if (agreement) out.push(agreement);
+  return out;
+}
+
+/**
+ * BTR pseudo-targets carry an extra `measureStatus` field that's not in
+ * the strict Target type. Cast helper for safe access without widening the
+ * public type.
+ */
+interface PseudoExtras {
+  measureStatus?: string;
+}
+
+// ─── Detectors ──────────────────────────────────────────────────────
+
+/**
+ * Paradox: a single target that ranks both in the top-5 most-contested AND
+ * the top-5 most-aligned. Rare and counter-intuitive, a great hook.
+ */
+function detectParadox(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const tension = new Map<string, number>();
+  const align = new Map<string, number>();
+  for (const a of alignment) {
+    if (isContradiction(a.alignment)) {
+      tension.set(a.targetAId, (tension.get(a.targetAId) ?? 0) + 1);
+      tension.set(a.targetBId, (tension.get(a.targetBId) ?? 0) + 1);
+    } else if (a.alignment === "high") {
+      align.set(a.targetAId, (align.get(a.targetAId) ?? 0) + 1);
+      align.set(a.targetBId, (align.get(a.targetBId) ?? 0) + 1);
+    }
+  }
+  const topT = topN([...tension.entries()], 5).map(([id]) => id);
+  const topA = topN([...align.entries()], 5).map(([id]) => id);
+  const inBoth = topT.filter((id) => topA.includes(id));
+  if (inBoth.length === 0) return null;
+  // Prefer the target with the highest combined count.
+  inBoth.sort((a, b) => {
+    const ca = (tension.get(a) ?? 0) + (align.get(a) ?? 0);
+    const cb = (tension.get(b) ?? 0) + (align.get(b) ?? 0);
+    return cb - ca;
+  });
+  const id = inBoth[0];
+  const t = targetMap.get(id);
+  if (!t) return null;
+  const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
+  return {
+    pattern: "paradox",
+    callout: `${label} sits in both the top-5 most contested and top-5 most aligned targets. Two sides of the same coin, worth a closer look.`,
+    actions: [{ type: "select_target", targetId: id }],
+    filter: "high_contra",
+  };
+}
+
+/**
+ * Tension cluster: at least three contradictions converge on a single target.
+ * Suggests one driver behind a recurring tradeoff in the dataset.
+ */
+function detectTensionCluster(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const count = new Map<string, number>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    count.set(a.targetAId, (count.get(a.targetAId) ?? 0) + 1);
+    count.set(a.targetBId, (count.get(a.targetBId) ?? 0) + 1);
+  }
+  const top = topN([...count.entries()], 1);
+  if (top.length === 0 || top[0][1] < 3) return null;
+  const [id, n] = top[0];
+  const t = targetMap.get(id);
+  if (!t) return null;
+  const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
+  return {
+    pattern: "tension_cluster",
+    callout: `${n} contradictions converge on ${label}, the single biggest driver of tension in the dataset.`,
+    actions: [{ type: "select_target", targetId: id }],
+    filter: "contradictions",
+  };
+}
+
+/**
+ * Zero-conflict topic: a taxonomy category whose primary-tagged targets
+ * carry zero contradictions, while at least one peer category carries 3+.
+ * Notable absence: a topic that isn't generating tradeoffs.
+ */
+function detectZeroConflictTopic(args: DetectArgs): Insight | null {
+  const {
+    targets,
+    alignment,
+    classifications,
+    globeCategories,
+    sectors,
+    btrData,
+  } = args;
+  // Only taxonomies that have a wheel mode of their own. Adaptation goals are
+  // a tag but not a grouping mode, so they would have nowhere to focus.
+  void btrData;
+  const taxes: Array<{
+    type: "globe" | "sector";
+    cats: { id: string; name: string }[];
+    mode: ChatAction & { type: "set_mode" };
+  }> = [
+    {
+      type: "globe",
+      cats: globeCategories.map((c) => ({ id: c.id, name: c.name })),
+      mode: { type: "set_mode", mode: "globe" },
+    },
+    {
+      type: "sector",
+      cats: sectors.map((c) => ({ id: c.id, name: c.name })),
+      mode: { type: "set_mode", mode: "sector" },
+    },
+  ];
+  const targetIds = new Set(targets.map((t) => t.id));
+  const contradictionByTarget = new Map<string, number>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    contradictionByTarget.set(
+      a.targetAId,
+      (contradictionByTarget.get(a.targetAId) ?? 0) + 1,
+    );
+    contradictionByTarget.set(
+      a.targetBId,
+      (contradictionByTarget.get(a.targetBId) ?? 0) + 1,
+    );
+  }
+  for (const tax of taxes) {
+    const primaryByTarget = new Map<string, string>();
+    for (const c of classifications) {
+      if (!c.isPrimary) continue;
+      if (c.taxonomyType !== tax.type) continue;
+      if (!targetIds.has(c.targetId)) continue;
+      primaryByTarget.set(c.targetId, c.categoryId);
+    }
+    const conflictsByCat = new Map<string, number>();
+    const sizeByCat = new Map<string, number>();
+    for (const [tId, catId] of primaryByTarget) {
+      sizeByCat.set(catId, (sizeByCat.get(catId) ?? 0) + 1);
+      conflictsByCat.set(
+        catId,
+        (conflictsByCat.get(catId) ?? 0) +
+          (contradictionByTarget.get(tId) ?? 0),
+      );
+    }
+    let peakConflict = 0;
+    for (const v of conflictsByCat.values()) {
+      if (v > peakConflict) peakConflict = v;
+    }
+    if (peakConflict < 3) continue;
+    // Find a category that has 2+ targets (so the zero is meaningful) and zero
+    // contradictions, while at least one peer has 3+.
+    for (const cat of tax.cats) {
+      const size = sizeByCat.get(cat.id) ?? 0;
+      const conflicts = conflictsByCat.get(cat.id) ?? 0;
+      if (size >= 2 && conflicts === 0) {
+        return {
+          pattern: "zero_conflict_topic",
+          callout: `${cat.name} carries zero contradictions across ${size} targets, unusual when other topics carry ${peakConflict}+.`,
+          actions: [tax.mode, { type: "focus_category", categoryId: cat.id }],
+          filter: "all",
+        };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Hub: a target that participates in strong alignments with at least three
+ * different documents. Quietly bridges multiple plans.
+ */
+function detectHub(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  // For each target, set of partner documents in "high" alignments.
+  const docPartners = new Map<string, Set<string>>();
+  for (const a of alignment) {
+    if (a.alignment !== "high") continue;
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    if (tA.sourceDocument !== tB.sourceDocument) {
+      const sA = docPartners.get(a.targetAId) ?? new Set<string>();
+      sA.add(tB.sourceDocument);
+      docPartners.set(a.targetAId, sA);
+      const sB = docPartners.get(a.targetBId) ?? new Set<string>();
+      sB.add(tA.sourceDocument);
+      docPartners.set(a.targetBId, sB);
+    }
+  }
+  const entries = [...docPartners.entries()].sort(
+    (a, b) => b[1].size - a[1].size,
+  );
+  if (entries.length === 0 || entries[0][1].size < 3) return null;
+  const [id, docs] = entries[0];
+  const t = targetMap.get(id);
+  if (!t) return null;
+  const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
+  return {
+    pattern: "hub",
+    callout: `${label} aligns strongly with ${docs.size} different documents, quietly bridging plans others touch separately.`,
+    actions: [{ type: "select_target", targetId: id }],
+    filter: "high",
+  };
+}
+
+/**
+ * Orphan: a target with the fewest non-none connections, at most one. Stands
+ * apart from the rest of the network. Surfaces a coverage gap.
+ */
+function detectOrphan(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const connections = new Map<string, number>();
+  for (const t of targets) connections.set(t.id, 0);
+  for (const a of alignment) {
+    if (a.alignment === "none") continue;
+    connections.set(a.targetAId, (connections.get(a.targetAId) ?? 0) + 1);
+    connections.set(a.targetBId, (connections.get(a.targetBId) ?? 0) + 1);
+  }
+  const sorted = [...connections.entries()].sort((a, b) => a[1] - b[1]);
+  // Pick the lowest-count target. Require at least one peer with 4+ connections
+  // so the contrast is meaningful (the dataset isn't uniformly sparse).
+  if (sorted.length === 0) return null;
+  const peakConnections = sorted[sorted.length - 1][1];
+  if (peakConnections < 4) return null;
+  const [id, count] = sorted[0];
+  if (count > 1) return null;
+  const t = targetMap.get(id);
+  if (!t) return null;
+  const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
+  const phrase =
+    count === 0
+      ? "no alignments or tensions with any other target"
+      : "only one connection across the whole dataset";
+  return {
+    pattern: "orphan",
+    callout: `${label} has ${phrase}, isolated from the rest of the network.`,
+    actions: [{ type: "select_target", targetId: id }],
+    filter: "all",
+  };
+}
+
+/**
+ * Cross-doc imbalance: a document pair where contradictions outnumber strong
+ * alignments by at least 2-to-1, with enough overlap that the asymmetry is
+ * meaningful. Highlights where two plans most disagree.
+ */
+function detectImbalance(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  interface Pair {
+    contras: number;
+    aligns: number;
+  }
+  const pairs = new Map<string, Pair>();
+  const key = (a: string, b: string) => (a < b ? `${a}__${b}` : `${b}__${a}`);
+  for (const a of alignment) {
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    if (tA.sourceDocument === tB.sourceDocument) continue;
+    const k = key(tA.sourceDocument, tB.sourceDocument);
+    const slot = pairs.get(k) ?? { contras: 0, aligns: 0 };
+    if (isContradiction(a.alignment)) slot.contras += 1;
+    else if (a.alignment === "high") slot.aligns += 1;
+    pairs.set(k, slot);
+  }
+  let best: { docs: [string, string]; pair: Pair } | null = null;
+  for (const [k, slot] of pairs) {
+    if (slot.contras < 4) continue;
+    if (slot.contras < slot.aligns * 2) continue;
+    if (!best || slot.contras > best.pair.contras) {
+      const [a, b] = k.split("__");
+      best = { docs: [a, b], pair: slot };
+    }
+  }
+  if (!best) return null;
+  const [dA, dB] = best.docs;
+  const labelA = getDocLabel(countryConfig ?? null, dA as PolicyDocumentType);
+  const labelB = getDocLabel(countryConfig ?? null, dB as PolicyDocumentType);
+  return {
+    pattern: "imbalance",
+    callout: `${labelA} and ${labelB} carry ${best.pair.contras} tensions versus ${best.pair.aligns} strong alignments, the most lopsided pair in the dataset.`,
+    actions: [
+      { type: "set_mode", mode: "document" },
+      { type: "focus_category", categoryId: dA },
+    ],
+    filter: "contradictions",
+  };
+}
+
+/**
+ * Implementation contradiction: a tension between a BTR-sourced "reported
+ * action" and a policy target. Qualitatively different from a plan-vs-plan
+ * contradiction because one side is something the country is already doing
+ * (Implemented / Ongoing / Adopted), not something it intends to do.
+ *
+ * Severity-aware: prefers high_contradiction over moderate over low_tension.
+ * Among same-severity matches, weights status to push Implemented/Ongoing
+ * ahead of Adopted (closer to "happening now" carries more signal).
+ */
+function detectImplementationContradiction(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const SEVERITY: Record<string, number> = {
+    high_contradiction: 0,
+    moderate_contradiction: 1,
+    low_tension: 2,
+  };
+  const STATUS_WEIGHT: Record<string, number> = {
+    Implemented: 0,
+    Ongoing: 1,
+    Adopted: 2,
+    Planned: 3,
+    NA: 4,
+  };
+  // Each candidate carries the BTR-side target + the policy-side target so
+  // we don't redo the doc check at ranking time.
+  interface Candidate {
+    btr: Target;
+    policy: Target;
+    level: string;
+    statusWeight: number;
+    description: string;
+  }
+  const candidates: Candidate[] = [];
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    const aIsBtr = tA.sourceDocument === "BTR";
+    const bIsBtr = tB.sourceDocument === "BTR";
+    if (aIsBtr === bIsBtr) continue; // need exactly one BTR side
+    const btr = aIsBtr ? tA : tB;
+    const policy = aIsBtr ? tB : tA;
+    const status = (btr as Target & PseudoExtras).measureStatus ?? "Reported";
+    candidates.push({
+      btr,
+      policy,
+      level: a.alignment,
+      statusWeight: STATUS_WEIGHT[status] ?? 5,
+      description: a.description ?? "",
+    });
+  }
+  if (candidates.length === 0) return null;
+  candidates.sort((x, y) => {
+    const dS = (SEVERITY[x.level] ?? 99) - (SEVERITY[y.level] ?? 99);
+    if (dS !== 0) return dS;
+    return x.statusWeight - y.statusWeight;
+  });
+  const best = candidates[0];
+  const status =
+    (best.btr as Target & PseudoExtras).measureStatus ?? "Reported";
+  const btrLabel = `${getDocLabel(countryConfig ?? null, best.btr.sourceDocument)} ${best.btr.sourceLabel}`;
+  const policyLabel = `${getDocLabel(countryConfig ?? null, best.policy.sourceDocument)} ${best.policy.sourceLabel}`;
+  const severityWord =
+    best.level === "high_contradiction"
+      ? "directly contradicts"
+      : best.level === "moderate_contradiction"
+        ? "conflicts with"
+        : "is in tension with";
+  return {
+    pattern: "implementation_contradiction",
+    callout: `Reported action ${btrLabel} (${status.toLowerCase()}) ${severityWord} planned target ${policyLabel}. What's being done versus what's been planned.`,
+    actions: [
+      {
+        type: "select_pair",
+        targetAId: best.btr.id,
+        targetBId: best.policy.id,
+      },
+    ],
+    filter: "contradictions",
+  };
+}
+
+/**
+ * Most contested topic: the taxonomy category whose primary-tagged targets
+ * carry the highest total contradiction count. Surfaces the dataset's
+ * biggest fault line by theme rather than by individual target.
+ */
+function detectMostContestedTopic(args: DetectArgs): Insight | null {
+  const {
+    targets,
+    alignment,
+    classifications,
+    sectors,
+    globeCategories,
+  } = args;
+  const targetIds = new Set(targets.map((t) => t.id));
+  const contradictionsByTarget = new Map<string, number>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    contradictionsByTarget.set(
+      a.targetAId,
+      (contradictionsByTarget.get(a.targetAId) ?? 0) + 1,
+    );
+    contradictionsByTarget.set(
+      a.targetBId,
+      (contradictionsByTarget.get(a.targetBId) ?? 0) + 1,
+    );
+  }
+  // Score each taxonomy category by total contradictions on its primary
+  // members. GLOBE first (most visible on the wheel), sector second.
+  const taxes: Array<{
+    type: "globe" | "sector";
+    cats: { id: string; name: string }[];
+    mode: ChatAction & { type: "set_mode" };
+  }> = [
+    {
+      type: "globe",
+      cats: globeCategories.map((c) => ({ id: c.id, name: c.name })),
+      mode: { type: "set_mode", mode: "globe" },
+    },
+    {
+      type: "sector",
+      cats: sectors.map((c) => ({ id: c.id, name: c.name })),
+      mode: { type: "set_mode", mode: "sector" },
+    },
+  ];
+  let best: {
+    catId: string;
+    catName: string;
+    count: number;
+    size: number;
+    mode: ChatAction & { type: "set_mode" };
+  } | null = null;
+  for (const tax of taxes) {
+    const primaryByTarget = new Map<string, string>();
+    for (const c of classifications) {
+      if (!c.isPrimary || c.taxonomyType !== tax.type) continue;
+      if (!targetIds.has(c.targetId)) continue;
+      primaryByTarget.set(c.targetId, c.categoryId);
+    }
+    const conflicts = new Map<string, number>();
+    const size = new Map<string, number>();
+    for (const [tId, catId] of primaryByTarget) {
+      conflicts.set(
+        catId,
+        (conflicts.get(catId) ?? 0) + (contradictionsByTarget.get(tId) ?? 0),
+      );
+      size.set(catId, (size.get(catId) ?? 0) + 1);
+    }
+    for (const cat of tax.cats) {
+      const count = conflicts.get(cat.id) ?? 0;
+      const sz = size.get(cat.id) ?? 0;
+      if (count < 4 || sz < 2) continue;
+      if (!best || count > best.count) {
+        best = {
+          catId: cat.id,
+          catName: cat.name,
+          count,
+          size: sz,
+          mode: tax.mode,
+        };
+      }
+    }
+  }
+  if (!best) return null;
+  return {
+    pattern: "most_contested_topic",
+    callout: `${best.catName} carries ${best.count} contradictions across ${best.size} targets, the heaviest topic load in the dataset.`,
+    actions: [best.mode, { type: "focus_category", categoryId: best.catId }],
+    filter: "contradictions",
+  };
+}
+
+/**
+ * Quantitative gap: the most-contested target lacks a measurable indicator.
+ * Highlights where there's lots of disagreement but no number to anchor it.
+ */
+function detectQuantitativeGap(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const count = new Map<string, number>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    count.set(a.targetAId, (count.get(a.targetAId) ?? 0) + 1);
+    count.set(a.targetBId, (count.get(a.targetBId) ?? 0) + 1);
+  }
+  // Walk top contradiction targets, take the first one without quantitative.
+  const sorted = [...count.entries()].sort((a, b) => b[1] - a[1]);
+  for (const [id, n] of sorted) {
+    if (n < 3) break;
+    const t = targetMap.get(id);
+    if (!t) continue;
+    if (t.isQuantitative) continue;
+    const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)} ${t.sourceLabel}`;
+    return {
+      pattern: "quantitative_gap",
+      callout: `${label} sits in ${n} contradictions but carries no measurable indicator, hard to track without a number to anchor it.`,
+      actions: [{ type: "select_target", targetId: id }],
+      filter: "contradictions",
+    };
+  }
+  return null;
+}
+
+/**
+ * Agreement pair: a document pair where strong alignments outnumber any
+ * contradictions by a wide margin. The good-news counterpoint to imbalance.
+ */
+function detectAgreementPair(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  interface Pair {
+    contras: number;
+    aligns: number;
+  }
+  const pairs = new Map<string, Pair>();
+  const key = (a: string, b: string) => (a < b ? `${a}__${b}` : `${b}__${a}`);
+  for (const a of alignment) {
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    if (tA.sourceDocument === tB.sourceDocument) continue;
+    const k = key(tA.sourceDocument, tB.sourceDocument);
+    const slot = pairs.get(k) ?? { contras: 0, aligns: 0 };
+    if (isContradiction(a.alignment)) slot.contras += 1;
+    else if (a.alignment === "high") slot.aligns += 1;
+    pairs.set(k, slot);
+  }
+  let best: { docs: [string, string]; pair: Pair } | null = null;
+  for (const [k, slot] of pairs) {
+    if (slot.aligns < 6) continue;
+    if (slot.aligns < slot.contras * 3) continue;
+    if (!best || slot.aligns > best.pair.aligns) {
+      const [a, b] = k.split("__");
+      best = { docs: [a, b], pair: slot };
+    }
+  }
+  if (!best) return null;
+  const [dA, dB] = best.docs;
+  const labelA = getDocLabel(countryConfig ?? null, dA as PolicyDocumentType);
+  const labelB = getDocLabel(countryConfig ?? null, dB as PolicyDocumentType);
+  const contraPhrase =
+    best.pair.contras === 0
+      ? "zero contradictions"
+      : `only ${best.pair.contras} contradictions`;
+  return {
+    pattern: "agreement_pair",
+    callout: `${labelA} and ${labelB} share ${best.pair.aligns} strong alignments and ${contraPhrase}, the most cohesive pair in the dataset.`,
+    actions: [
+      { type: "set_mode", mode: "document" },
+      { type: "focus_category", categoryId: dA },
+    ],
+    filter: "high",
+  };
+}
+
+// ─── Helpers ────────────────────────────────────────────────────────
+
+function topN<K>(entries: [K, number][], n: number): [K, number][] {
+  return entries
+    .slice()
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n);
+}

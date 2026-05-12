@@ -25,7 +25,31 @@ export type ChatAction =
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
-  | { type: "set_mode"; mode: "document" | "sector" | "globe" };
+  | { type: "set_mode"; mode: "document" | "sector" | "globe" }
+  /** Unhide one or more documents so the next action's target is visible.
+   *  Emitted by the server when the answer touches a doc that isn't in the
+   *  current visible-groups set. Applied client-side before any focus or
+   *  selection action so the reveal happens first. */
+  | { type: "show_docs"; ids: string[] };
+
+/** A chip rendered after the reply that, on click, asks a follow-up. */
+export interface ChatSuggestion {
+  label: string;
+  /** Free-text query to submit to the chat. */
+  query: string;
+  /**
+   * Optional client-side handler hint. When set to "surprise" the chip
+   * rotates to the next local insight instead of POSTing — keeps the
+   * Surprise-me chip instant and free of LLM cost.
+   */
+  kind?: "surprise";
+}
+
+/** One previous turn kept for short-term memory (~last 3 turns). */
+export interface ChatHistoryTurn {
+  role: "user" | "assistant";
+  content: string;
+}
 
 export interface ChatTaxCategory {
   id: string;
@@ -48,66 +72,51 @@ export interface ChatRankings {
 
 interface BuildChatRequestArgs {
   query: string;
-  /** false = strict (current view), true = override (full corpus). */
-  searchAllDocs: boolean;
   groupMode: "document" | "sector" | "globe";
   filter: string;
   targets: Target[];
   alignment: AlignmentResult[];
-  visibleAlignment: AlignmentResult[];
   classifications: ThematicClassification[];
   sectors: ChatTaxCategory[];
   globeCategories: ChatTaxCategory[];
   btrData?: BtrData | null;
   availableDocs: PolicyDocumentType[];
+  /** Docs the user currently has toggled off. Surfaced to the model as
+   *  context so it can emit show_docs before navigating to a hidden one. */
   hiddenDocs: Set<string>;
-  /** Set of target ids inside the focal category, or null when none focused. */
-  focalGroupTargetIds: Set<string> | null;
   countryConfig?: CountryConfig | null;
+  /** Last few turns of conversation for short-term memory. Optional. */
+  history?: ChatHistoryTurn[];
 }
 
 /**
- * Build the request body sent to `/api/coherence-chat`. Scope contract:
- *
- * - strict (`searchAllDocs === false`): groups, targets, pairs, and rankings
- *   are restricted to currently-visible docs (and the focal category's
- *   targets, when one is set). `rankingsFull` is omitted entirely.
- * - override (`searchAllDocs === true`): full corpus is included so the chat
- *   can answer cross-doc questions; the server may auto-unhide referenced
- *   docs on the client side.
+ * Build the request body sent to `/api/coherence-chat`. The chat sees the
+ * full corpus on every turn; the visibleDocs list is sent as context so the
+ * model can emit show_docs(...) when it needs to navigate to a doc the user
+ * has toggled off. Scoping by current view forced users to manage their
+ * filter state before asking, which defeated the point of a chat helper.
  */
 export function buildChatRequest({
   query,
-  searchAllDocs,
   groupMode,
   filter,
   targets,
   alignment,
-  visibleAlignment,
   classifications,
   sectors,
   globeCategories,
   btrData,
   availableDocs,
   hiddenDocs,
-  focalGroupTargetIds,
   countryConfig,
+  history,
 }: BuildChatRequestArgs) {
-  const strictMode = !searchAllDocs;
   const targetMap = new Map(targets.map((t) => [t.id, t]));
 
-  const rankingsVisible = computeRankings(visibleAlignment, targetMap, countryConfig);
-  // Full-scope rankings are only useful under the override; computing them
-  // in strict mode would leak hidden-doc ids back to the model.
-  const rankingsFull = strictMode
-    ? null
-    : computeRankings(alignment, targetMap, countryConfig);
+  const rankings = computeRankings(alignment, targetMap, countryConfig);
 
-  // Groups: in strict mode only currently-visible docs are sent (the model
-  // is contractually unable to reference hidden ones). In override mode the
-  // full doc list is sent so the model can navigate cross-doc.
   const visibleDocs = availableDocs.filter((d) => !hiddenDocs.has(d));
-  const groups = (strictMode ? visibleDocs : availableDocs).map((d) => ({
+  const groups = availableDocs.map((d) => ({
     id: d,
     label: getDocLabel(countryConfig ?? null, d),
   }));
@@ -123,22 +132,11 @@ export function buildChatRequest({
     btrData,
   );
 
-  // Strict mode filters targets to current scope: visible docs only, and
-  // restricted to the focal category's targets when one is selected.
-  // Override mode sends the full target list so the chat can answer cross-
-  // doc questions (auto-unhide makes the result visible).
-  // Text capped at 350 chars: enough for the model to identify topic and
-  // quote a short phrase. Combined with the rationale cap, this keeps a
-  // single chat call comfortably under typical Azure TPM quotas.
-  const scopeTargets = strictMode
-    ? targets.filter((t) => {
-        if (hiddenDocs.has(t.sourceDocument)) return false;
-        if (focalGroupTargetIds && !focalGroupTargetIds.has(t.id)) return false;
-        return true;
-      })
-    : targets;
-  const scopeTargetIds = new Set(scopeTargets.map((t) => t.id));
-  const targetIndex = scopeTargets.map((t) => {
+  // Full target list. Text capped at 350 chars: enough for the model to
+  // identify topic and quote a short phrase. Combined with the rationale
+  // cap (200 chars), this keeps a single chat call comfortably under typical
+  // Azure TPM quotas even at a few hundred targets.
+  const targetIndex = targets.map((t) => {
     const primary = primaryByTarget.get(t.id);
     return {
       id: t.id,
@@ -175,14 +173,8 @@ export function buildChatRequest({
   // alignments). Medium/low alignments aren't what the chat is asked about
   // and would balloon the prompt — the user can still see every pair via
   // the wheel. Rationale text capped at 200 chars to keep payload bounded.
-  // Endpoint filter keeps the model from referencing out-of-scope targets.
   const pairs = alignment
-    .filter(
-      (a) =>
-        isDiagnostic(a.alignment) &&
-        scopeTargetIds.has(a.targetAId) &&
-        scopeTargetIds.has(a.targetBId),
-    )
+    .filter((a) => isDiagnostic(a.alignment))
     .map((a) => ({
       a: a.targetAId,
       b: a.targetBId,
@@ -196,16 +188,16 @@ export function buildChatRequest({
     context: {
       mode: groupMode,
       filter,
-      scope: (strictMode ? "current_view" : "all_documents") as ChatScope,
+      scope: "all_documents" as ChatScope,
       groups,
       visibleDocs,
       targetIndex,
       taxonomies,
       pairs,
-      rankings: rankingsVisible,
-      ...(rankingsFull ? { rankingsFull } : {}),
+      rankings,
       country: targets[0]?.country ?? null,
     },
+    ...(history && history.length ? { history } : {}),
   };
 }
 
@@ -316,4 +308,108 @@ function buildPrimaryByTarget(
     out.set(c.targetId, slot);
   }
   return out;
+}
+
+// ─── Example chips ──────────────────────────────────────────────────
+
+interface PickExampleQueriesArgs {
+  visibleDocs: PolicyDocumentType[];
+  globeCategoriesAvailable: boolean;
+  sectorsAvailable: boolean;
+  hasFood: boolean;
+  hasBiodiversity: boolean;
+  hasClimate: boolean;
+  hasAdaptation: boolean;
+  hasTensions: boolean;
+  /** Whether the dataset includes BTR reported actions. Unlocks "what's
+   *  happening vs what's planned" questions, the sharpest signal in a
+   *  coherence assessment. */
+  hasBtr: boolean;
+  /** Country name (eg "Mongolia", "Panama") used to surface country-specific
+   *  chips when the dataset shape supports them. */
+  country?: string | null;
+}
+
+/**
+ * Pick 4-5 example chip questions tailored to the visible dataset. Chips
+ * read like questions a policymaker would ask, not routing test cases. All
+ * use commas / periods, never em dashes (a project guardrail: em dashes
+ * read as machine-generated).
+ *
+ * Each chip in the candidate library is gated by a precondition. When a
+ * dataset can't answer a chip honestly (eg no food-security doc loaded),
+ * the chip is dropped silently rather than swapped for a less specific
+ * variant. Order is priority: BTR / implementation framing first when
+ * available, since that's the sharpest signal in a coherence dataset.
+ */
+export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
+  const {
+    hasFood,
+    hasBiodiversity,
+    hasClimate,
+    hasAdaptation,
+    hasTensions,
+    hasBtr,
+    country,
+    globeCategoriesAvailable,
+    sectorsAvailable,
+    visibleDocs,
+  } = args;
+  const isMongolia = (country ?? "").toLowerCase() === "mongolia";
+  const isPanama = (country ?? "").toLowerCase() === "panama";
+  const candidates: Array<{ when: boolean; q: string }> = [
+    // BTR-versus-policy framing comes first — it's the most actionable
+    // pattern in a coherence dataset because BTR pairs reflect what the
+    // country is ALREADY doing, not just what it plans.
+    {
+      when: hasBtr && hasTensions,
+      q: "Where do reported actions contradict policy targets?",
+    },
+    {
+      when: hasBtr && hasFood && isMongolia,
+      q: "Does Mongolia's food security plan clash with reported actions?",
+    },
+    {
+      when: hasBtr,
+      q: "Find the sharpest conflict between an action and a plan",
+    },
+    // Country-flavoured chips when the dataset shape supports them.
+    {
+      when: hasFood && hasBiodiversity,
+      q: "Where does food security pull against biodiversity?",
+    },
+    {
+      when: hasClimate && hasBiodiversity && hasTensions,
+      q: "Where do climate plans contradict biodiversity plans?",
+    },
+    {
+      when: isPanama && hasTensions,
+      q: "Which Panama target is contested across the most documents?",
+    },
+    // Generic always-applicable chips.
+    {
+      when: hasTensions,
+      q: "Show me the most contested target across all plans",
+    },
+    {
+      when: hasTensions,
+      q: "Find a paradox: a target that's highly aligned and highly contested",
+    },
+    {
+      when: visibleDocs.length >= 2,
+      q: "Which target barely connects to anything else?",
+    },
+    {
+      when: globeCategoriesAvailable || sectorsAvailable,
+      q: "Which topic has surprisingly few conflicts?",
+    },
+    {
+      when: hasAdaptation,
+      q: "How well do adaptation actions line up with national targets?",
+    },
+  ];
+  return candidates
+    .filter((c) => c.when)
+    .map((c) => c.q)
+    .slice(0, 5);
 }

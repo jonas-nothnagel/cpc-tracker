@@ -39,15 +39,13 @@ interface PrimaryAdaptation {
 interface ChatContext {
   mode: "document" | "globe" | "sector";
   filter: string;
-  /**
-   * "current_view" (default): targetIndex, pairs, groups, and rankings
-   * contain only what the user can currently see. No rankingsFull.
-   * "all_documents": user opted to search the full corpus for one query.
-   * The full target list, full doc list, and rankingsFull are included.
-   */
+  /** Legacy field; always "all_documents" in current callers. The chat now
+   *  sees the full corpus on every turn. Kept optional in case stale
+   *  clients still send "current_view". */
   scope?: "current_view" | "all_documents";
   groups: { id: string; label: string }[];
-  /** Subset of group ids the user currently has toggled on. */
+  /** Subset of group ids the user currently has toggled on. The model
+   *  compares this against `groups` to decide whether to emit show_docs. */
   visibleDocs?: string[];
   targetIndex: {
     id: string;
@@ -77,16 +75,8 @@ interface ChatContext {
     contradictionType?: string;
     rationale: string;
   }[];
-  /** Rankings restricted to the user's currently-visible docs. */
+  /** Top-5 rankings derived from the full corpus. */
   rankings?: {
-    topGroupsByTension: RankedItem[];
-    topGroupsByAlignment: RankedItem[];
-    topTargetsByTension: RankedItem[];
-    topTargetsByAlignment: RankedItem[];
-  };
-  /** Rankings across ALL docs (including hidden). Used only when the user's
-   * question explicitly names a doc that's currently toggled off. */
-  rankingsFull?: {
     topGroupsByTension: RankedItem[];
     topGroupsByAlignment: RankedItem[];
     topTargetsByTension: RankedItem[];
@@ -101,11 +91,28 @@ type ChatAction =
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
   | { type: "set_mode"; mode: "document" | "globe" | "sector" }
+  /** Unhide one or more docs so the next action's target is visible. */
+  | { type: "show_docs"; ids: string[] }
   | { type: "noop" };
 
-const SYSTEM_PROMPT = `You navigate a policy coherence visualization. Targets come from documents (NDC, NBSAP, BTR, NAP, etc.) and the wheel shows how they align or contradict.
+interface HistoryTurn {
+  role: "user" | "assistant";
+  content: string;
+}
 
-Your job: pick the right combination of NAVIGATE tools to bring the user to the view that answers their question, then write ONE short confirmatory sentence (max ~15 words). The wheel and the side panel show the actual data — your sentence just confirms what's now in view. You do not summarise rationales, generate analysis, or write paragraphs.
+const SYSTEM_PROMPT = `You navigate a policy coherence visualization. Targets come from documents (NDC, NBSAP, NAP, FSS, LDN, Vision 2050 / SECTORAL, BTR, etc.) and the wheel shows how they align or contradict.
+
+A note on what the documents mean: policy targets (NDC, NBSAP, NAP, FSS, LDN, SECTORAL) describe what a country PLANS to do. BTR entries describe what a country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A contradiction between a BTR action and a policy target is qualitatively sharper than two plans on paper disagreeing — it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears on either side of a contradiction the user is asking about.
+
+Your job: pick the right combination of NAVIGATE tools to bring the user to the view that answers their question, then write a short reply. The wheel and the side panel show the rationales and pairwise data; the chat reply does not summarise them. You do not write paragraphs or policy advice.
+
+Reply shape: 1 or 2 short sentences, ~30 words total. Sentence 1 confirms what's now in view ("Showing X.", "Opened X.", "Selected X."). Sentence 2 is a factual callout derived directly from the precomputed rankings or context fields; write it whenever such a number is available (this is the default behaviour, not an opt-in). Skip sentence 2 only when no quotable number applies to what you selected. Allowed callout shapes:
+- "Carries N contradictions and M strong alignments."
+- "Appears in both the top-5 tensions and the top-5 alignments lists."
+- "Among the top 3 most contested {topic} targets in the dataset."
+- "{topic} carries 0 contradictions across N targets, unusual among the loaded topics."
+- "Connected to N of the {total} visible documents."
+Forbidden in sentence 2: rationale paraphrases, recommendations, value judgements, any number that doesn't appear in the context, any topic name not present in the taxonomies block.
 
 Tools:
 - set_filter(filter): all | high_medium | high_contra | high | contradictions
@@ -113,6 +120,7 @@ Tools:
 - select_target(targetId): select a single target (opens its detail panel with all its connections and rationales)
 - select_pair(targetAId, targetBId): open the pair compare view directly (best for "why X conflicts with Y" — the rationale is shown automatically there)
 - set_mode(mode): document | globe | sector
+- show_docs(ids): unhide listed document group ids so the next action's target is visible. Use ONLY when the user names a doc that is currently hidden but appears in the available groups list.
 
 Patterns:
 - "Which target sits in the most tensions?" / "Most contested target?" / "Which single target has the most contradictions?" — this is a target-level question. Pick topTargetsByTension[0].id and call set_filter(contradictions) + select_target(<that id>). DO NOT use focus_category — the user is asking about a specific target, not a group. Reply: "Selected <doc>: <label> (top tension target)."
@@ -120,7 +128,7 @@ Patterns:
 - "Show a target that's broadly aligned and contested" — paradox question. Scan both topTargetsByTension and topTargetsByAlignment lists for an id that appears in BOTH (i.e. the same id string is present in either list); call set_filter(high_contra) + select_target(<that id>). YOU MUST call select_target — set_filter alone is not enough to answer this. Reply: "Selected <doc>: <label>: both highly aligned and contested."
 - "Where do plans contradict most?" / "Top conflicts overall" — group-level question. set_filter(contradictions) + focus_category(top tension group from rankings). Reply: "Showing top contradictions in <group>."
 - "Top conflicts for biodiversity" / "Top conflicts for X (a doc/topic)" — group-level scoped. set_filter(contradictions) + focus_category(<best matching group>). Reply: "Showing biodiversity contradictions in <group>."
-- "Where does X clash with Y?" / "How does X conflict with Y?" — pick the SUBJECT of the question (X) as the focal group, not the object (Y). For "Where does Vision 2050 clash with biodiversity?": set_filter(contradictions) + focus_category(<Vision-2050-group-id>) — focus on the doc the user named first. The wheel will render the clashes from that doc to all visible peers. Under scope=current_view, only act on this if BOTH X's group AND Y's group appear in the groups list; otherwise emit the out-of-scope reply (see Scope handling below).
+- "Where does X clash with Y?" / "How does X conflict with Y?" — pick the SUBJECT of the question (X) as the focal group, not the object (Y). For "Where does Vision 2050 clash with biodiversity?": set_filter(contradictions) + focus_category(<Vision-2050-group-id>) — focus on the doc the user named first. The wheel will render the clashes from that doc to all peers. If either X's or Y's group is hidden (not in "Visible groups right now"), emit show_docs([...hidden ids...]) before focus_category so the reveal happens first.
 - "Why does NBSAP 1 conflict with NDC livestock?" → select_pair(nbsap_1, ndc_lvst). Reply: "Opened the NBSAP 1 ↔ NDC Livestock pair. Rationale shown."
 - "What does NBSAP 1 align with?" → select_target(nbsap_1). Reply: "Selected NBSAP 1. Its connections are listed."
 - "Switch to biodiversity view" → set_mode(globe). Reply: "Grouped by biodiversity category."
@@ -128,22 +136,29 @@ Patterns:
 - "Find tensions involving livestock" / "tensions about water" / "conflicts around forests": topic-scoped tension lookup. Pick the topTargetsByTension entry whose label/text best matches the topic, set_filter(contradictions) + select_target(<that id>). Reply: "Showing tensions for NDC: Livestock mitigation."
 - "Most contested target on pollution / biosafety / restoration / forests / energy / livestock / etc." — thematic question. Look for a "Topic resolution" block in the user message: it contains the matched category id and a topic-scoped ranking. Steps: (1) Read the topic-scoped ranking (already filtered to targets whose primary classification matches the topic, already ordered by contradiction count). (2) Pick the FIRST entry in "top targets … by tensions" — that's the answer. (3) Call set_mode(<suggested mode>) + set_filter(contradictions) + select_target(<that id>). Reply: "Selected <doc>: <label>, the most contested <topic> target." If the top entry has count=0, reply honestly: "No tensions on file for <topic> targets." and use focus_category on the topic category id instead of select_target. If no Topic resolution block is present, fall back to the regular rankings (the topic didn't match any taxonomy).
 - "Why is there tension between X and Y?" / "What's the conflict in <topic>?" — pull the rationale from the pair list. Find the pair where {a,b} matches the named targets, or for topic queries scan pairs whose targets carry the matching primary taxonomy tag. Call select_pair(a,b). Reply: "Opened <A> ↔ <B>. See rationale." Do NOT paraphrase the rationale yourself; the panel renders it.
+- Hidden-doc question (eg user asks "what's the most contested BTR action" but BTR is not in "Visible groups right now"): emit show_docs(["BTR"]) FIRST, then set_filter(contradictions) + select_target(<top BTR tension id>). Reply: "Showing BTR. Selected BTR 12, the most contested mitigation action."
+- "Where do reported actions contradict policy targets?" / "Where is what's happening contradicting plans?" / "Find the sharpest action-versus-plan conflict": scan the pairs list for entries where one side has id starting with "BTR_" (or any id whose sourceDocument is BTR) and the other side is a policy target. Prefer high_contradiction over moderate_contradiction over low_tension. Emit show_docs(["BTR"]) if BTR isn't visible, then select_pair(<btr_id>, <policy_id>). Reply: "Opened reported action BTR <label> versus planned target <doc> <label>. Sharpest action-versus-plan conflict in the data."
+- "Does Mongolia's food security plan clash with reported actions?" / "Food security versus BTR" / similar country/topic-flavoured action-vs-plan questions: same as above but scope to BTR pairs where the policy side is FSS. Emit show_docs(["BTR","FSS"]) if either is hidden, then select_pair on the highest-severity match. If no match, reply "No BTR-versus-FSS tensions on file." with noop.
+- Factual callout examples (use sentence 2 ONLY when a precomputed number adds clarity, never more than one):
+  Good: "Selected NBSAP 3, the top tension target. Carries 6 contradictions and 4 strong alignments."
+  Good: "Showing biodiversity contradictions in NBSAP. NBSAP carries 12 tensions, more than any other group."
+  Bad (rationale paraphrase): "Selected NBSAP 3. It conflicts with NDC livestock because of land-use competition."
+  Bad (value judgement): "Selected NBSAP 3. The government should rethink this target."
+  Bad (invented number): "Selected NBSAP 3. About 30% of targets are like this."
 
 Rule of thumb: if the question contains the singular word "target" (singular), default to select_target. If it contains "plans", "documents", "categories", or names a doc explicitly without a singular target, focus_category is appropriate. Always prefer the more specific action when in doubt.
 
-Scope handling: every request carries a scope flag.
-- scope=current_view (default): targetIndex, pairs, groups, and rankings contain ONLY what is currently visible. There is no rankingsFull. If the user names a doc/topic that does not appear in groups/targetIndex (because it's hidden or off-scope), the ONLY legitimate reply is to acknowledge the scope. Do NOT substitute a different doc. Do NOT call focus_category on a doc id missing from groups. Do NOT invent ids.
-  - Worked example: user asks "What is the most contested BTR action?" but no BTR ids appear in groups/targetIndex. Reply (assistant content): "BTR is not in the current view. Toggle Search all documents to include it." Emit no actions (noop).
-  - Worked example: user asks about a topic with zero matches in the visible rankings (e.g. "tensions about pollution" but no pollution-classified targets are visible). Reply: "No pollution-related tensions in the current view." Emit no actions (noop).
-- scope=all_documents: the user explicitly opted to search the full corpus for one query. The context now includes every doc and rankingsFull. Use the full rankings to answer; the client will auto-unhide any doc your action references so the answer is visible.
+Scope: every request carries the full corpus. The "Available groups" list contains every doc group; the "Visible groups right now" line shows which subset is currently unhidden on the user's wheel. When the action you pick touches a doc that is NOT in the visible-groups list, emit show_docs(<doc_ids>) FIRST so the wheel reveals it before focus_category / select_target / select_pair lands. Reply describes what's now in view ("Showing BTR. Selected BTR-12, the top mitigation tension."); you may mention the unhide if it adds clarity. Never tell the user to "toggle a setting" or "search all documents" themselves.
+
+Conversation memory: if a "Conversation context" line is present, the user is following up on the prior turn. Resolve referring expressions (it, this, these, "what about X", "show me more") against the prior selection or focus from that line. Do not ask the user to clarify referring expressions; pick the most likely referent.
 
 Hard rules:
 - Only use ids that appear in the context. Never invent ids.
-- Under scope=current_view, every id you emit MUST appear in the provided targetIndex or groups list. Hidden docs are off-limits; emit the out-of-scope reply instead.
 - Plain text only. No markdown, no asterisks, no bullets, no quotes around the reply.
 - No em dashes (—) in the reply. Use a period, comma, or colon instead. Em dashes read as machine-generated.
-- One sentence. ~15 words. No follow-up questions to the user.
-- No analysis, recommendations, or value judgements. Describe only the resulting view ("Showing X.", "Opened X.", "Selected X.").
+- 1-2 short sentences, ~30 words total. ALWAYS write sentence 2 when a relevant precomputed number is available (eg the selected target's contradiction/alignment count, its rank in topTargetsByTension, the topic-scoped ranking count, the count for a focused group). Skip sentence 2 only when no quotable number applies; never fabricate one.
+- No follow-up questions to the user.
+- No paragraph-style analysis or recommendations. Only the resulting view plus one factual data callout when available.
 - Use the precomputed rankings to pick the right group/target for aggregate questions; don't guess.`;
 
 const TOOLS = [
@@ -232,6 +247,26 @@ const TOOLS = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "show_docs",
+      description:
+        "Unhide one or more documents (groups) so the next action's target is visible. Only use when the user named a doc that is currently hidden but appears in the available groups list. Run BEFORE focus_category / select_target / select_pair so the reveal happens first.",
+      parameters: {
+        type: "object",
+        properties: {
+          ids: {
+            type: "array",
+            items: { type: "string" },
+            minItems: 1,
+          },
+        },
+        required: ["ids"],
+        additionalProperties: false,
+      },
+    },
+  },
 ];
 
 function fmtRanking(title: string, items: RankedItem[] | undefined): string {
@@ -240,47 +275,6 @@ function fmtRanking(title: string, items: RankedItem[] | undefined): string {
     .map((it, i) => `${i + 1}. ${it.id} (${it.label}) — ${it.count}`)
     .join("\n");
   return `${title}:\n${lines}\n`;
-}
-
-/**
- * Detect whether the user's question implies cross-doc scope. Either:
- * (a) names a hidden doc directly ("BTR", "Vision 2050"), or
- * (b) explicitly says "all documents" / "across documents" / "everywhere".
- * Both mean the chat should use full-scope rankings so the answer isn't
- * silently truncated to the visible subset.
- */
-function queryNamesHiddenDoc(query: string, ctx: ChatContext): boolean {
-  const q = query.toLowerCase();
-  // (b) Cross-doc keywords — covers thematic queries that span everything.
-  const crossDocPatterns = [
-    "all documents",
-    "all policy",
-    "across documents",
-    "across all",
-    "every document",
-    "everywhere",
-    "throughout",
-  ];
-  for (const p of crossDocPatterns) {
-    if (q.includes(p)) return true;
-  }
-  // (a) Hidden-doc name match.
-  if (!ctx.visibleDocs) return false;
-  const visible = new Set(ctx.visibleDocs);
-  const hidden = ctx.groups.filter((g) => !visible.has(g.id));
-  if (hidden.length === 0) return false;
-  for (const doc of hidden) {
-    const id = doc.id.toLowerCase();
-    const label = doc.label.toLowerCase();
-    if (q.includes(id)) return true;
-    const labelWords = label
-      .split(/[^a-z0-9]+/)
-      .filter((w) => w.length >= 3);
-    for (const w of labelWords) {
-      if (q.includes(w)) return true;
-    }
-  }
-  return false;
 }
 
 /** Tokenise a string into lowercase words ≥3 chars, dropping common stop-ish
@@ -395,7 +389,11 @@ function buildTopicRankings(
   return { byTension, byAlignment };
 }
 
-function buildUserMessage(query: string, ctx: ChatContext): string {
+function buildUserMessage(
+  query: string,
+  ctx: ChatContext,
+  history?: HistoryTurn[],
+): string {
   const groups = ctx.groups.map((g) => `${g.id} | ${g.label}`).join("\n");
   const targets = ctx.targetIndex
     .map((t) => {
@@ -467,40 +465,26 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
         .join("\n")
     : "";
 
-  // Scope-aware ranking selection. Under strict (current_view) mode we send
-  // ONLY the visible rankings — no full-scope fallback, no hidden-doc
-  // detection. Under all_documents we use full-scope rankings when the
-  // query names a hidden doc, else visible.
-  const isStrict = (ctx.scope ?? "current_view") === "current_view";
-  const useFullScope = !isStrict && queryNamesHiddenDoc(query, ctx);
-  const r = isStrict
-    ? ctx.rankings
-    : useFullScope
-      ? (ctx.rankingsFull ?? ctx.rankings)
-      : (ctx.rankings ?? ctx.rankingsFull);
-  const scopeLabel = isStrict
-    ? "CURRENT VIEW (only what's visible)"
-    : useFullScope
-      ? "FULL scope (the user explicitly named a hidden doc)"
-      : "VISIBLE scope (matches the user's current doc toggles)";
+  // Always full-corpus rankings. Strict/current-view scoping was removed
+  // because it forced users to manage their visible-doc state before they
+  // could ask a useful question.
+  const r = ctx.rankings;
   const rankings = r
     ? [
-        fmtRanking(`Top groups by potential tensions (${scopeLabel})`, r.topGroupsByTension),
-        fmtRanking(`Top groups by high alignments (${scopeLabel})`, r.topGroupsByAlignment),
-        fmtRanking(`Top targets by potential tensions (${scopeLabel})`, r.topTargetsByTension),
-        fmtRanking(`Top targets by high alignments (${scopeLabel})`, r.topTargetsByAlignment),
+        fmtRanking("Top groups by potential tensions", r.topGroupsByTension),
+        fmtRanking("Top groups by high alignments", r.topGroupsByAlignment),
+        fmtRanking("Top targets by potential tensions", r.topTargetsByTension),
+        fmtRanking("Top targets by high alignments", r.topTargetsByAlignment),
       ]
         .filter(Boolean)
         .join("\n")
     : "";
 
-  const scopeHeader = isStrict
-    ? "Scope: current_view — only what is currently visible. No hidden docs. No rankingsFull."
-    : "Scope: all_documents — full corpus is available, including docs the user has toggled off.";
+  const scopeHeader =
+    "Scope: full corpus. Every doc the user could load is available; the 'Visible groups right now' line indicates which subset is currently unhidden on the wheel.";
 
-  const groupsHeader = isStrict
-    ? "Available groups (id | label) — only the currently-visible doc types. Hidden docs are NOT listed and must not be referenced:"
-    : "Available groups (id | label) — these are ALL document types in the data, including ones the user has toggled off:";
+  const groupsHeader =
+    "Available groups (id | label) — every document type in the data, including ones the user has toggled off:";
 
   const sections: string[] = [
     `Country: ${ctx.country ?? "Unknown"}`,
@@ -570,6 +554,28 @@ function buildUserMessage(query: string, ctx: ChatContext): string {
       "",
     );
   }
+  // Conversation context hint: tells the model how to resolve referring
+  // expressions ("it", "what about X") against the prior turn. The history
+  // turns themselves are also passed as messages, but the hint sharpens the
+  // resolution under temperature=0.2 where the model otherwise plays it safe.
+  if (history && history.length > 0) {
+    const lastUser = [...history].reverse().find((h) => h.role === "user");
+    const lastAssistant = [...history]
+      .reverse()
+      .find((h) => h.role === "assistant");
+    if (lastUser || lastAssistant) {
+      const parts: string[] = [];
+      if (lastUser) parts.push(`previous question: "${lastUser.content}"`);
+      if (lastAssistant)
+        parts.push(`previous reply: "${lastAssistant.content}"`);
+      sections.push(
+        `Conversation context: the user is following up on the prior turn. ${parts.join(
+          "; ",
+        )}. Resolve referring expressions like 'it', 'this', 'these', or 'what about X' from that context. Do not ask for clarification.`,
+        "",
+      );
+    }
+  }
   sections.push(`User question: ${query}`);
   return sections.join("\n");
 }
@@ -592,7 +598,8 @@ interface LlmResponse {
 
 type ChatMessage =
   | { role: "system"; content: string }
-  | { role: "user"; content: string };
+  | { role: "user"; content: string }
+  | { role: "assistant"; content: string };
 
 async function callAzure(messages: ChatMessage[]): Promise<LlmResponse> {
   const endpoint = (process.env.AZURE_OPENAI_ENDPOINT ?? "").replace(/\/$/, "");
@@ -684,23 +691,35 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 // focus/select. set_filter is independent. The server pre-sorts so the
 // client can apply blindly.
 const ACTION_ORDER: Record<ChatAction["type"], number> = {
-  set_mode: 0,
-  set_filter: 1,
-  focus_category: 2,
-  select_target: 3,
-  select_pair: 4,
-  noop: 5,
+  // show_docs must run first: unhiding has to happen before any focus or
+  // selection lands on a target whose doc was hidden.
+  show_docs: 0,
+  set_mode: 1,
+  set_filter: 2,
+  focus_category: 3,
+  select_target: 4,
+  select_pair: 5,
+  noop: 6,
 };
 
 export async function POST(req: Request) {
-  let body: { query?: string; context?: ChatContext };
+  let body: {
+    query?: string;
+    context?: ChatContext;
+    history?: HistoryTurn[];
+  };
   try {
-    body = (await req.json()) as { query?: string; context?: ChatContext };
+    body = (await req.json()) as {
+      query?: string;
+      context?: ChatContext;
+      history?: HistoryTurn[];
+    };
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
   const query = (body.query ?? "").trim();
   const context = body.context;
+  const history = (body.history ?? []).slice(-3); // cap at 3 turns
   if (!query) {
     return NextResponse.json({ error: "Empty query" }, { status: 400 });
   }
@@ -708,9 +727,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });
   }
 
+  // Auto-broaden is decided client-side: when the user's query mentions a
+  // doc id that's currently hidden, the client flips searchAllDocs to true
+  // for that turn (mirroring the explicit toggle path). The server therefore
+  // sees scope=all_documents and can emit show_docs to reveal the doc before
+  // the rest of the actions land. The user never sees "toggle a setting".
+
+  // Conversation memory: a single short hint line at the head of the user
+  // message tells the model how to resolve referring expressions against the
+  // prior turn. The history itself is also passed as messages so gpt can
+  // reference it directly.
+  const userMessage = buildUserMessage(query, context, history);
+
   const messages: ChatMessage[] = [
     { role: "system", content: SYSTEM_PROMPT },
-    { role: "user", content: buildUserMessage(query, context) },
+    ...history.map((h) => ({ role: h.role, content: h.content }) as ChatMessage),
+    { role: "user", content: userMessage },
   ];
 
   let response: LlmResponse;
@@ -791,6 +823,14 @@ export async function POST(req: Request) {
       if (mode === "document" || mode === "globe" || mode === "sector") {
         actionByType.set("set_mode", { type: "set_mode", mode });
       }
+    } else if (fnName === "show_docs") {
+      const raw = Array.isArray(args.ids) ? (args.ids as unknown[]) : [];
+      const ids = raw
+        .map((x) => String(x ?? ""))
+        .filter((id) => groupIds.has(id));
+      if (ids.length > 0) {
+        actionByType.set("show_docs", { type: "show_docs", ids });
+      }
     }
   }
 
@@ -843,8 +883,121 @@ export async function POST(req: Request) {
     reply = parts.join(" ");
   }
   if (!reply) {
-    reply = "I couldn't map that to an action — try one of the examples?";
+    reply = "I couldn't map that to an action. Try one of the example chips.";
+  }
+  // Em dash hygiene: the prompt forbids em dashes, but models occasionally
+  // slip one in. Normalise to a comma + space so the rest of the reply stays
+  // legible. Same goes for the fallback synthesised reply above when it
+  // joined parts with the unicode arrow.
+  reply = reply.replace(/—/g, ", ").replace(/\s+,/g, ",");
+
+  const suggestions = buildSuggestions(finalActions, context);
+
+  return NextResponse.json({ reply, actions: finalActions, suggestions });
+}
+
+/**
+ * Generate 2-3 follow-up chip questions derived deterministically from the
+ * resulting view state. Stays out of the LLM path so chips render instantly
+ * and don't add latency. Each chip is a free-text query the user can submit
+ * back into the chat; clicking it triggers the normal POST flow.
+ */
+function buildSuggestions(
+  actions: ChatAction[],
+  ctx: ChatContext,
+): { label: string; query: string; kind?: "surprise" }[] {
+  const out: { label: string; query: string; kind?: "surprise" }[] = [];
+  const seen = new Set<string>();
+  const add = (label: string, query: string, kind?: "surprise") => {
+    if (seen.has(query) || out.length >= 3) return;
+    seen.add(query);
+    out.push({ label, query, ...(kind ? { kind } : {}) });
+  };
+
+  const selectTarget = actions.find(
+    (a): a is { type: "select_target"; targetId: string } =>
+      a.type === "select_target",
+  );
+  const selectPair = actions.find(
+    (a): a is {
+      type: "select_pair";
+      targetAId: string;
+      targetBId: string;
+    } => a.type === "select_pair",
+  );
+  const focusCategory = actions.find(
+    (a): a is { type: "focus_category"; categoryId: string } =>
+      a.type === "focus_category",
+  );
+
+  if (selectPair) {
+    add("Find similar tensions", "Find similar tensions elsewhere");
+    const tA = ctx.targetIndex.find((t) => t.id === selectPair.targetAId);
+    if (tA) {
+      add(
+        `Show ${tA.sourceLabel}'s other conflicts`,
+        `What else does ${tA.sourceDocument} ${tA.sourceLabel} conflict with?`,
+      );
+    }
+  } else if (selectTarget) {
+    const t = ctx.targetIndex.find((tt) => tt.id === selectTarget.targetId);
+    const label = t ? `${t.sourceDocument} ${t.sourceLabel}` : "this target";
+    // Count tensions / alignments involving this target from the pair list.
+    let tensionCount = 0;
+    let alignCount = 0;
+    let topConflictPartner: string | null = null;
+    let topConflictLabel: string | null = null;
+    for (const p of ctx.pairs ?? []) {
+      if (p.a !== selectTarget.targetId && p.b !== selectTarget.targetId)
+        continue;
+      const partner = p.a === selectTarget.targetId ? p.b : p.a;
+      if (
+        p.level === "high_contradiction" ||
+        p.level === "moderate_contradiction" ||
+        p.level === "low_tension"
+      ) {
+        tensionCount += 1;
+        if (!topConflictPartner) {
+          topConflictPartner = partner;
+          const pt = ctx.targetIndex.find((x) => x.id === partner);
+          if (pt) topConflictLabel = `${pt.sourceDocument} ${pt.sourceLabel}`;
+        }
+      } else if (p.level === "high") {
+        alignCount += 1;
+      }
+    }
+    if (tensionCount > 0) {
+      add("Why is this contested?", `Why is ${label} contested?`);
+      if (topConflictPartner && topConflictLabel) {
+        add(
+          `Compare with ${topConflictLabel}`,
+          `Why does ${label} conflict with ${topConflictLabel}?`,
+        );
+      }
+    }
+    if (alignCount > 0) {
+      add(
+        "Show its strongest alignments",
+        `What does ${label} align strongly with?`,
+      );
+    }
+    add("Surprise me", "Surprise me with something else", "surprise");
+  } else if (focusCategory) {
+    const group = ctx.groups.find((g) => g.id === focusCategory.categoryId);
+    const groupLabel = group?.label ?? focusCategory.categoryId;
+    add(
+      `Drill into top tension in ${groupLabel}`,
+      `Which target in ${groupLabel} is the most contested?`,
+    );
+    add(
+      `Top alignment target in ${groupLabel}`,
+      `Which target in ${groupLabel} has the strongest alignments?`,
+    );
+    add("Surprise me", "Surprise me with something else", "surprise");
+  } else {
+    add("Try a different angle", "Show me the most contested target across all plans");
+    add("Surprise me", "Surprise me with something else", "surprise");
   }
 
-  return NextResponse.json({ reply, actions: finalActions });
+  return out;
 }
