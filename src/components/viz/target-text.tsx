@@ -5,27 +5,59 @@ import type { Target, BTRActionType, MitigationMeasure } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 
 /**
+ * Map of ISO-639-1 language codes to chip display (code + full name).
+ * Keep entries lowercase keyed; the chip uppercases the code.
+ */
+const LANGUAGE_REGISTRY: Record<string, { code: string; name: string }> = {
+  es: { code: "ES", name: "Spanish" },
+  mn: { code: "MN", name: "Mongolian" },
+};
+
+/**
+ * Detect the source language of `textOriginal` when no explicit `language`
+ * code is set on the record. Script-based heuristic: any Cyrillic character
+ * means Mongolian (the only Cyrillic country in scope); otherwise default
+ * to Spanish (Panama's source language).
+ */
+function detectLanguage(textOriginal: string): { code: string; name: string } {
+  if (/[Ѐ-ӿ]/.test(textOriginal)) {
+    return LANGUAGE_REGISTRY.mn;
+  }
+  return LANGUAGE_REGISTRY.es;
+}
+
+/**
  * Two-letter language code chip displayed next to target text for rows
- * whose source was translated from another language (Panama targets were
- * originally in Spanish). Click opens an inline panel showing the original
- * text and the translated text side-by-side so reviewers can verify the
- * translation. Returns `null` when `textOriginal` is missing, so existing
- * English-sourced targets (Mongolia) render nothing new.
+ * whose source was translated from another language (Panama → Spanish,
+ * Mongolia FSS → Mongolian). Click opens an inline panel showing the
+ * original text and the translated text side-by-side so reviewers can verify
+ * the translation. Returns `null` when `textOriginal` is missing.
  *
- * `languageCode` defaults to "ES" because Panama is the only translated
- * country in the current scope. Future countries whose source language is
- * different should pass their own ISO-639-1 code.
+ * Language resolution order:
+ *   1. explicit `languageCode`/`languageName` props (caller override)
+ *   2. `target.language` ISO code looked up in LANGUAGE_REGISTRY
+ *   3. script-based detection (Cyrillic → Mongolian, else Spanish)
  */
 export function OriginalLanguageChip({
   target,
-  languageCode = "ES",
-  languageName = "Spanish",
+  languageCode,
+  languageName,
 }: {
-  target: Pick<Target, "text" | "textOriginal" | "sourceLabel" | "sourceLabelOriginal">;
+  target: Pick<Target, "text" | "textOriginal" | "sourceLabel" | "sourceLabelOriginal" | "language">;
   languageCode?: string;
   languageName?: string;
 }) {
   const [open, setOpen] = useState(false);
+
+  const resolved = (() => {
+    if (languageCode && languageName) return { code: languageCode, name: languageName };
+    if (target.language) {
+      const entry = LANGUAGE_REGISTRY[target.language.toLowerCase()];
+      if (entry) return entry;
+    }
+    if (target.textOriginal) return detectLanguage(target.textOriginal);
+    return LANGUAGE_REGISTRY.es;
+  })();
 
   // Close on Escape for keyboard users.
   useEffect(() => {
@@ -56,22 +88,22 @@ export function OriginalLanguageChip({
           }
         }}
         aria-expanded={open}
-        aria-label={`Show original ${languageName} source text`}
-        title={`Click to see the original ${languageName} source`}
+        aria-label={`Show original ${resolved.name} source text`}
+        title={`Click to see the original ${resolved.name} source`}
         className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-[9px] font-semibold uppercase tracking-wide hover:bg-amber-100 transition-colors cursor-pointer"
       >
-        {languageCode}
+        {resolved.code}
       </span>
       {open && (
         <span
           role="dialog"
-          aria-label={`Original ${languageName} source and English translation`}
+          aria-label={`Original ${resolved.name} source and English translation`}
           className="absolute left-0 top-full mt-1.5 z-50 w-[420px] max-w-[90vw] bg-white border border-gray-200 rounded-lg shadow-lg p-3.5 text-[11px] text-[var(--undp-black)] leading-relaxed cursor-default"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start justify-between mb-2 gap-2">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">
-              Translated from {languageName}
+              Translated from {resolved.name}
             </span>
             <button
               type="button"
@@ -85,7 +117,7 @@ export function OriginalLanguageChip({
           <div className="space-y-2.5">
             <div>
               <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
-                Original ({languageName})
+                Original ({resolved.name})
               </p>
               {target.sourceLabelOriginal && (
                 <p className="font-medium text-[var(--undp-gray)] mb-1">
@@ -118,11 +150,14 @@ export function OriginalLanguageChip({
  * Adapts the measure fields onto the chip's expected shape so policy reviewers
  * get the same click-to-inspect behaviour they have for translated targets.
  * Returns `null` when no original-language text is present.
+ *
+ * Language is resolved by the underlying chip (explicit override → script-
+ * based detection on the original text → Spanish default).
  */
 export function MeasureLanguageChip({
   measure,
-  languageCode = "ES",
-  languageName = "Spanish",
+  languageCode,
+  languageName,
 }: {
   measure: Pick<MitigationMeasure, "name" | "nameOriginal" | "objectives" | "objectivesOriginal">;
   languageCode?: string;

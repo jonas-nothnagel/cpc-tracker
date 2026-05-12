@@ -85,6 +85,27 @@ responses to extreme events."
 - "Sustainably develop high-yield crops through climate-adapted technologies and soil \
 conservation."
 
+Resolution-style document with a 3-level hierarchy (Section → Measure → Action):
+Mongolia's Resolution 36 "Food Supply and Security Measures" has Section 2 broken \
+into five numbered sub-sections (2/1 Legal environment, 2/2 Management, 2/3 Crop \
+production, ...), each with multiple lettered items (а/, б/, в/, ...), and an annex \
+table listing concrete sub-actions per item. The TARGET level is the MIDDLE level \
+(the per-measure grouping, e.g. "1.1 Food/agri legislation drafts"), NOT every \
+lettered item from the body and NOT every annex row. The annex sub-actions go into \
+"activities" (when the schema supports it) or stay as multiple "sources" entries.
+- Target: "To draft legislation aimed at establishing a legal framework for ensuring \
+food supply and safety, to submit the draft law to the State Great Khural during \
+the 2022 autumn and 2023 spring ordinary sessions; to reduce the country's reliance \
+on imported food raw materials and products through tariff regulation, draft \
+legislation aimed at creating a legal environment to increase the variety and \
+volume of export-oriented food and agricultural products, and submit it to the \
+State Great Khural by 2022"
+  label: "1.1 Food/agri legislation drafts"
+  (the annex sub-actions like "Draft the Law on Agriculture and submit it to the \
+   State Great Khural", "Draft a bill to amend the Law on Food", "Draft a bill on \
+   Agricultural Insurance" belong as activities under this one target, NOT as \
+   separate targets — they implement 1.1, they are not independent objectives.)
+
 Notice that these are policy-level OBJECTIVES, not:
 - Individual implementation measures or activities (too granular)
 - Background context or situation descriptions
@@ -114,7 +135,12 @@ RULES:
    measures, activities, indicators, background, or context.
 2. When a document lists a "Goal" with sub-"Targets" or sub-"Measures", \
    extract at the TARGET level, not at the measure/activity level. Combine \
-   closely related sub-points into one coherent target.
+   closely related sub-points into one coherent target. For 3+ level \
+   documents (e.g. Section → Measure → Action, or Resolution → numbered \
+   sub-section → lettered item → annex action), the TARGET level is the \
+   MIDDLE level. Lower-level items (specific actions, deliverables, draft \
+   bills, individual procurement counts) belong under their parent measure \
+   and NOT as separate targets.
 3. VERBATIM CONTRACT — the "sourceText" field MUST be copied character-for-character \
    from the document, with no paraphrase, no reorder, no addition, no omission. \
    The "text" field MAY be a deterministic light cleanup of "sourceText", but only \
@@ -139,7 +165,10 @@ RULES:
 9. Do not extract each itemized line as its own target unless it is \
    independently tracked or measured. Group related items under a single target. \
    When you DO group, set "textCleanup" to "synthesis" and include each sub-item's \
-   verbatim quote as a separate entry in "sources" (see schema below).
+   verbatim quote as a separate entry in "sources" (see schema below). When the \
+   source document has an annex / action-plan table that enumerates concrete \
+   actions per measure, those actions belong under their parent measure (as \
+   `sources` entries or, downstream, as `activities`) — NOT as standalone targets.
 10. If a table contains policy targets, extract from the full table context — \
     do not ignore targets just because they appear in tabular format.
 

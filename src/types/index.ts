@@ -91,6 +91,9 @@ export interface Target {
   /** For translated targets: the original-language sourceLabel. Undefined when the
    *  target was provided in English. Populated in PR2. */
   sourceLabelOriginal?: string;
+  /** ISO-639-1 language code of `textOriginal` (e.g. "es", "mn"). Optional —
+   *  when missing, the renderer detects from `textOriginal` script. */
+  language?: string;
   /**
    * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
