@@ -14,7 +14,7 @@ import { ALIGNMENT_LEVEL_ORDER } from "@/lib/utils";
 
 export type SortMode = "weakest_support" | "tension_first" | "anchor_order";
 
-export interface AnchorCell {
+interface AnchorCell {
   /** Peripheral document type for this cell (e.g. "NDC"). */
   docType: string;
   /** Count of alignment records at each level for this (anchor, docType) pair. */
@@ -25,7 +25,7 @@ export interface AnchorCell {
   total: number;
 }
 
-export type AnchorStatusId =
+type AnchorStatusId =
   | "tension_heavy"
   | "single_doc_dependency"
   | "diversified_backing"
@@ -57,7 +57,7 @@ export interface AnchorRow {
   status: AnchorStatus | null;
 }
 
-export interface AggregationResult {
+interface AggregationResult {
   rows: AnchorRow[];
   /** Peripheral doc types present in the anchor alignments (caller sorts via getDocTypeOrder). */
   visibleDocTypes: string[];

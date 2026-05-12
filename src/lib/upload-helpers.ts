@@ -10,7 +10,7 @@ export interface CategoryItem {
   isCustom: boolean;
 }
 
-export interface BtrSummary {
+interface BtrSummary {
   mitigationMeasures: number;
   sectorEmissions: number;
   projections: number;

@@ -11,7 +11,7 @@ import {
 } from "@/lib/utils";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
-import { TargetTextWithHighlights, ActionTypeBadge, OriginalLanguageChip } from "./target-text";
+import { TargetTextWithHighlights, ActionTypeBadge, OriginalLanguageChip } from "@/components/viz/target-text";
 import { isContradiction } from "@/types";
 import type {
   AlignmentResult,

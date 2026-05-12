@@ -67,7 +67,7 @@ const PROGRAM_PALETTE: Record<string, string> = {
   unfunded: "#b45309", // Amber warning
 };
 
-export function getProgramColor(code: string): string {
+function getProgramColor(code: string): string {
   if (code === "unfunded") return PROGRAM_PALETTE.unfunded;
   const curated = PROGRAM_PALETTE[code];
   if (curated) return curated;

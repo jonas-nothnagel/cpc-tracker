@@ -35,14 +35,14 @@ export type PolicyDocumentType = string;
  *                  grounded in at least one source span. The post-extraction validator enforces
  *                  this. Surfaces in the UI as an "AI-summarised" badge.
  */
-export type TextCleanup = "verbatim" | "cleaned" | "synthesis";
+type TextCleanup = "verbatim" | "cleaned" | "synthesis";
 
 /**
  * A verbatim source span backing a display `text` field. Every Target / Activity / Measure
  * carries an array of these so the dashboard can always show the original wording on demand
  * and stakeholders can audit what the LLM produced.
  */
-export interface TargetSource {
+interface TargetSource {
   /** Verbatim quote from the source document. */
   sourceText: string;
   /** Page numbers in the source document where this quote appears. May be multiple if the
@@ -263,25 +263,11 @@ export function isContradiction(level: AlignmentLevel): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Structured Target Decomposition (Agent 1 output)
-// ---------------------------------------------------------------------------
-
-/** Structured breakdown of a target produced by Agent 1 (Target Analyst). */
-export interface TargetDecomposition {
-  targetId: string;
-  goalPurpose: string;
-  actionIntervention: string;
-  ecosystemArea: string;
-  targetAudience: string;
-  expectedImpact: string;
-}
-
-// ---------------------------------------------------------------------------
 // BTR / CTF Data (parsed from Biennial Transparency Report Excel files)
 // ---------------------------------------------------------------------------
 
 /** A progress indicator from CTF Table 4. */
-export interface ProgressIndicator {
+interface ProgressIndicator {
   name: string;
   unit: string;
   yearlyValues: Record<string, number>;
@@ -351,7 +337,7 @@ export interface BTRAction {
 export type MitigationMeasure = BTRAction;
 
 /** A single sector's emission time series from CTF Table 6. */
-export interface SectorEmissionSeries {
+interface SectorEmissionSeries {
   category: string;
   normalizedSector: string;
   isTotal: boolean;
@@ -360,7 +346,7 @@ export interface SectorEmissionSeries {
 }
 
 /** A projection row from CTF Table 7/9 (WEM/WAM/WOM). */
-export interface ProjectionSeries {
+interface ProjectionSeries {
   scenario: "wem" | "wam" | "wom";
   category: string;
   normalizedSector: string;
@@ -586,25 +572,4 @@ export interface Nr7Data {
   progressItems: Nr7ProgressItem[];
 }
 
-// ---------------------------------------------------------------------------
-// Full Analysis (assembled result for a country)
-// ---------------------------------------------------------------------------
-
-/** The complete analysis result for a set of targets. */
-export interface AnalysisResult {
-  country: string;
-  createdAt: string;
-  targets: Target[];
-  nbsCategories: NbsCategory[];
-  sectors: IpccSector[];
-  globeCategories: GlobeCategory[];
-  globeSubcategories?: GlobeSubcategory[];
-  thematicClassifications: ThematicClassification[];
-  alignmentResults: AlignmentResult[];
-  decompositions?: TargetDecomposition[];
-  btrData?: BtrData;
-  berData?: BerData;
-  budgetAlignment?: AlignmentResult[];
-  nr7Data?: Nr7Data;
-}
 

@@ -46,20 +46,20 @@ export const ALIGNMENT_WEIGHTS: Record<AlignmentLevel, number> = {
  */
 export type AtlasTaxonomy = "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal";
 
-export interface NeighborLink {
+interface NeighborLink {
   targetId: string;
   alignment: AlignmentLevel;
   description: string;
 }
 
-export interface BudgetLink {
+interface BudgetLink {
   pseudoTargetId: string;
   label: string;
   alignment: AlignmentLevel;
   description: string;
 }
 
-export interface ActionLink {
+interface ActionLink {
   pseudoTargetId: string;
   label: string;
   alignment: AlignmentLevel;
@@ -67,7 +67,7 @@ export interface ActionLink {
 }
 
 /** A bridge link rationale: which shared categories connect two items. */
-export interface BridgeLink {
+interface BridgeLink {
   pseudoTargetId: string;
   label: string;
   sharedCategories: string[];
@@ -470,7 +470,7 @@ export const QUADRANT_LABELS: Record<Quadrant, string> = {
  * so reviewers can scan straight to the hotspots without the chart
  * looking like measles. Null = no ring.
  */
-export const HIGH_TENSION_THRESHOLD = 5;
+const HIGH_TENSION_THRESHOLD = 5;
 
 export function tensionRingWidth(tensionCount: number): number | null {
   return tensionCount >= HIGH_TENSION_THRESHOLD ? 3 : null;

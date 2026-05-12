@@ -12,7 +12,6 @@ import { ThemeBarChart } from "@/components/viz/theme-bar-chart";
 import { DataSourcesOverview } from "@/components/viz/data-sources-overview";
 import { OutcomeStats } from "@/components/viz/outcome-stats";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
-import { TensionClusters } from "@/components/viz/tension-clusters";
 import { Nr7Progress } from "@/components/viz/nr7-progress";
 import { ImplementationCoverage } from "@/components/viz/implementation-coverage";
 import { EmissionsTrend } from "@/components/viz/emissions-trend";
@@ -508,18 +507,6 @@ export function DashboardClient({
           globeCategoriesUsed={globeCategoriesUsed}
           sectors={data.sectors}
           globeCategories={data.globeCategories}
-          countryConfig={data.countryConfig}
-        />
-
-        {/* --- Structural Tension Analysis --- */}
-        <TensionClusters
-          alignmentData={data.alignment}
-          targets={targets}
-          classifications={data.classifications}
-          sectors={data.sectors}
-          nbsCategories={data.nbsCategories}
-          globeCategories={data.globeCategories}
-          onFocusTarget={setFocusTargetId}
           countryConfig={data.countryConfig}
         />
 

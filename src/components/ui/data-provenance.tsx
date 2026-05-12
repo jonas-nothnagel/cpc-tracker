@@ -10,7 +10,7 @@ import type { SourceRef } from "@/types";
  * - "ai-inferred": values are produced by an LLM or model (e.g. pairwise alignment, classification)
  * - "mixed": AI inferences computed *over* user-uploaded inputs — the dominant case in this app
  */
-export type ProvenanceOrigin = "user-uploaded" | "ai-inferred" | "mixed";
+type ProvenanceOrigin = "user-uploaded" | "ai-inferred" | "mixed";
 
 export interface ProvenanceSource {
   /** Human-readable label for the source (e.g. "Mongolia NDC targets"). */
