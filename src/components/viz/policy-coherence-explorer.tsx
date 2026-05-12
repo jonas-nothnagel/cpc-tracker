@@ -690,6 +690,7 @@ function BarRow({
   onClick,
   countryConfig,
   tone,
+  severity,
   unit,
 }: {
   target: Target;
@@ -698,15 +699,33 @@ function BarRow({
   onClick: () => void;
   countryConfig?: CountryConfig | null;
   tone: "neutral" | "red";
+  /** Worst contradiction level this target is involved in. Drives the
+   *  red intensity so rows with a high_contradiction stand out from rows
+   *  whose only contradictions are low_tension. Only consulted when
+   *  tone="red"; ignored otherwise. */
+  severity?: AlignmentLevel;
   /** Optional inline label after the count (e.g., "alignments"). */
   unit?: string;
 }) {
   // 4% min so the smallest non-zero count still has a visible pill.
   const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
-  const fillBg =
-    tone === "red"
-      ? "bg-red-50 group-hover:bg-red-100"
-      : "bg-gray-100 group-hover:bg-gray-200";
+  // Severity-driven red intensity. Falls back to the original pale red
+  // when severity is undefined or only low_tension is present.
+  const redFill =
+    severity === "high_contradiction"
+      ? "bg-red-200 group-hover:bg-red-300"
+      : severity === "moderate_contradiction"
+        ? "bg-red-100 group-hover:bg-red-200"
+        : "bg-red-50 group-hover:bg-red-100";
+  const fillBg = tone === "red" ? redFill : "bg-gray-100 group-hover:bg-gray-200";
+  // Left-edge accent on the hardest-severity rows reinforces the color
+  // step without relying on viewers to distinguish red-50 from red-100.
+  const borderAccent =
+    tone === "red" && severity === "high_contradiction"
+      ? "border-l-2 border-red-500"
+      : tone === "red" && severity === "moderate_contradiction"
+        ? "border-l-2 border-red-400"
+        : "";
   const countColor =
     tone === "red" ? "text-red-700" : "text-[var(--undp-black)]";
   return (
@@ -714,7 +733,7 @@ function BarRow({
       <button
         type="button"
         onClick={onClick}
-        className="relative w-full text-left flex items-center gap-2 py-1.5 px-2 rounded transition-colors group overflow-hidden"
+        className={`relative w-full text-left flex items-center gap-2 py-1.5 px-2 rounded transition-colors group overflow-hidden ${borderAccent}`}
       >
         <div
           className={`absolute inset-y-0.5 left-0 rounded ${fillBg} transition-colors`}
@@ -1387,9 +1406,29 @@ function EmptyPanel({
   // column for reasons that aren't really about coherence — strong-only
   // keeps the signal tight. Both metrics use the wheel's current
   // alignment subset so numbers match what's drawn.
+  //
+  // For tensions we also track the MAX severity a target is involved in
+  // (high_contradiction > moderate_contradiction > low_tension) so the
+  // row can render in a darker red when at least one pair is a hard
+  // contradiction. Without this, a target with 50 low_tensions and one
+  // with a single high_contradiction looked identical.
   const { connRanks, tensRanks } = useMemo(() => {
     const connCounts = new Map<string, number>();
     const tensCounts = new Map<string, number>();
+    const tensSeverity = new Map<string, AlignmentLevel>();
+    // Lower rank value = more severe. Matches the ordering used elsewhere
+    // in this file (e.g. line 827, line 1629).
+    const severityRank: Record<string, number> = {
+      high_contradiction: 0,
+      moderate_contradiction: 1,
+      low_tension: 2,
+    };
+    const bumpSeverity = (id: string, level: AlignmentLevel) => {
+      const prev = tensSeverity.get(id);
+      if (!prev || severityRank[level] < severityRank[prev]) {
+        tensSeverity.set(id, level);
+      }
+    };
     for (const a of alignment) {
       if (a.alignment === "high") {
         connCounts.set(a.targetAId, (connCounts.get(a.targetAId) ?? 0) + 1);
@@ -1397,14 +1436,23 @@ function EmptyPanel({
       } else if (isContradiction(a.alignment)) {
         tensCounts.set(a.targetAId, (tensCounts.get(a.targetAId) ?? 0) + 1);
         tensCounts.set(a.targetBId, (tensCounts.get(a.targetBId) ?? 0) + 1);
+        bumpSeverity(a.targetAId, a.alignment);
+        bumpSeverity(a.targetBId, a.alignment);
       }
     }
     const toRanked = (m: Map<string, number>) =>
       Array.from(m.entries())
         .sort((a, b) => b[1] - a[1])
         .slice(0, 6)
-        .map(([id, count]) => ({ target: targetMap.get(id), count }))
-        .filter((x): x is { target: Target; count: number } => !!x.target);
+        .map(([id, count]) => ({
+          target: targetMap.get(id),
+          count,
+          severity: tensSeverity.get(id),
+        }))
+        .filter(
+          (x): x is { target: Target; count: number; severity: AlignmentLevel | undefined } =>
+            !!x.target,
+        );
     return {
       connRanks: toRanked(connCounts),
       tensRanks: toRanked(tensCounts),
@@ -1474,7 +1522,7 @@ function EmptyPanel({
             <Section title="Most conflicted targets">
               {tensRanks.length > 0 ? (
                 <ul className="space-y-0.5">
-                  {tensRanks.map(({ target, count }) => (
+                  {tensRanks.map(({ target, count, severity }) => (
                     <BarRow
                       key={target.id}
                       target={target}
@@ -1483,6 +1531,7 @@ function EmptyPanel({
                       onClick={() => onSelectTarget(target.id)}
                       countryConfig={countryConfig}
                       tone="red"
+                      severity={severity}
                     />
                   ))}
                 </ul>
