@@ -934,7 +934,24 @@ interface ChatStatus {
   error: string | null;
   /** Follow-up chips returned by the last successful reply. */
   suggestions: ChatSuggestion[];
+  /** Server-emitted navigation actions held until the user clicks Show me.
+   *  Replies are now read-first, apply-on-demand: the reply text shows the
+   *  factual answer, and the user opts in to view changes rather than
+   *  having the wheel reshape behind their reading. Null when no reply is
+   *  active or its actions have already been applied / cleared. */
+  pendingActions: ChatServerAction[] | null;
 }
+
+/** Server-emitted navigation actions. Mirrors the client `ChatAction` union
+ *  imported from `@/lib/coherence-chat` but lives at module scope so it
+ *  can be referenced inside ChatStatus. */
+type ChatServerAction =
+  | { type: "set_filter"; filter: AlignFilter }
+  | { type: "focus_category"; categoryId: string }
+  | { type: "select_target"; targetId: string }
+  | { type: "select_pair"; targetAId: string; targetBId: string }
+  | { type: "set_mode"; mode: GroupMode }
+  | { type: "show_docs"; ids: string[] };
 
 /**
  * Compact pair row — two targets stacked, alignment-coloured dot. Click opens
@@ -1001,8 +1018,11 @@ interface EmptyPanelProps {
   /** Currently-displayed insight, or null when the dataset has none or a
    *  reply / loading / error owns the bubble slot instead. */
   currentInsight: Insight | null;
-  /** Apply the current insight's actions to the wheel. */
+  /** Apply the current insight's actions OR the reply's pending actions
+   *  to the wheel. The dispatcher upstream chooses which based on state. */
   onApplyHook: () => void;
+  /** Whether the Show me affordance has something to apply right now. */
+  canShowMe: boolean;
 }
 
 type StatView = "overview" | "targets" | "alignments" | "tensions";
@@ -1041,6 +1061,66 @@ function useTypedPlaceholder(text: string, charDelayMs = 35): string {
   return typed;
 }
 
+// Typed-out body text for the insight callout and the chat reply, so a new
+// fact appears to "write itself" rather than snap in. Mirrors
+// useTypedPlaceholder above but resets when `text` changes (the placeholder
+// version assumes a constant string per mount).
+//
+// First-mount behaviour: the initial value of `text` is shown instantly,
+// without animation. Only subsequent text changes trigger the typing
+// reveal. This avoids the page-load insight bubble appearing to "write
+// itself" when the user hasn't asked for it yet — the typing should be a
+// response to user action (Surprise me click, question asked), not the
+// default opening gesture.
+//
+// Respects prefers-reduced-motion by skipping the animation outright. All
+// state updates are deferred through timers so React's cascading-render
+// lint rule stays clean.
+function useTypedBody(text: string, charDelayMs = 25): string {
+  const [typed, setTyped] = useState(text);
+  const firstRun = useRef(true);
+  useEffect(() => {
+    // First-mount short-circuit: useState above already initialised the
+    // returned value with the initial text, so we skip animation here and
+    // just record that subsequent runs should animate.
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    if (!text) {
+      const id = window.setTimeout(() => setTyped(""), 0);
+      return () => window.clearTimeout(id);
+    }
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      const id = window.setTimeout(() => setTyped(text), 0);
+      return () => window.clearTimeout(id);
+    }
+    // Reset on the next tick (deferred to avoid the synchronous
+    // setState-in-effect warning), then advance one character per tick.
+    let i = 0;
+    let intervalId: number | null = null;
+    const startId = window.setTimeout(() => {
+      setTyped("");
+      intervalId = window.setInterval(() => {
+        i += 1;
+        setTyped(text.slice(0, i));
+        if (i >= text.length && intervalId !== null) {
+          window.clearInterval(intervalId);
+          intervalId = null;
+        }
+      }, charDelayMs);
+    }, 0);
+    return () => {
+      window.clearTimeout(startId);
+      if (intervalId !== null) window.clearInterval(intervalId);
+    };
+  }, [text, charDelayMs]);
+  return typed;
+}
+
 /**
  * Chat input + reply. Lives inside EmptyPanel below the "At a glance"
  * stats — borderless so it inherits the EmptyPanel card chrome rather
@@ -1053,7 +1133,6 @@ function useTypedPlaceholder(text: string, charDelayMs = 35): string {
  *
  * - DEFAULT: example chips and follow-up suggestion chips (the typical
  *   "ask this question" affordance).
- * - PRIMARY: the dark filled "Show me" call-to-action on the insight hook.
  * - SURPRISE: amber-tinted chip used for Surprise-me, signalling that it's
  *   a different kind of action (random insight) than the prompt chips. Mirrors
  *   the amber accent on the insight bubble so the two visually link.
@@ -1061,7 +1140,6 @@ function useTypedPlaceholder(text: string, charDelayMs = 35): string {
 const CHIP_BASE =
   "text-[11px] leading-snug rounded-full px-2.5 py-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 const CHIP_DEFAULT = `${CHIP_BASE} text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)]`;
-const CHIP_PRIMARY = `${CHIP_BASE} text-white bg-[var(--undp-black)] border border-[var(--undp-black)] hover:bg-gray-800`;
 const CHIP_SURPRISE = `${CHIP_BASE} text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100 hover:border-amber-300`;
 
 function ChatBar({
@@ -1071,6 +1149,7 @@ function ChatBar({
   onRotateInsight,
   currentInsight,
   onApplyHook,
+  canShowMe,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
@@ -1078,6 +1157,9 @@ function ChatBar({
   onRotateInsight: () => void;
   currentInsight: Insight | null;
   onApplyHook: () => void;
+  /** Whether the Show me affordance has something to apply: either an
+   *  insight bubble is showing, or a reply has pending server actions. */
+  canShowMe: boolean;
 }) {
   const [query, setQuery] = useState("");
   const placeholder = useTypedPlaceholder("Ask anything about this view…");
@@ -1095,8 +1177,17 @@ function ChatBar({
     !!currentInsight && !chat.reply && !chat.loading && !chat.error;
   const showReply = !!chat.reply && !chat.loading;
   const showError = !!chat.error && !chat.loading;
-  const showSuggestions =
-    showReply && chat.suggestions.length > 0;
+  // Drop server-emitted "surprise" follow-ups because the always-visible
+  // Surprise me chip below already covers that affordance.
+  const visibleSuggestions = chat.suggestions.filter(
+    (s) => s.kind !== "surprise",
+  );
+  const showSuggestions = showReply && visibleSuggestions.length > 0;
+
+  // Only the reply types out. The insight bubble appears instantly because
+  // it's a pre-loaded hook the user didn't explicitly request; making it
+  // type would imply more thinking-in-progress than is actually happening.
+  const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
 
   return (
     <div className="space-y-2.5">
@@ -1140,11 +1231,41 @@ function ChatBar({
             </span>
             <span className="flex-1">{currentInsight.callout}</span>
           </p>
+          {/* Show me sits inside the bubble at bottom-right as the
+           *  black-filled CTA, visually tied to the content that produced
+           *  it. Clicking applies the insight's actions to the wheel. */}
+          {canShowMe && (
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                onClick={onApplyHook}
+                disabled={chat.loading}
+                className="text-[11px] font-medium text-white bg-[var(--undp-black)] hover:bg-gray-800 rounded-full px-2.5 py-1 transition-colors disabled:opacity-30"
+              >
+                Show me
+              </button>
+            </div>
+          )}
         </div>
       )}
       {showReply && (
         <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
-          {chat.reply}
+          <div>{typedReply}</div>
+          {/* Reply-side Show me: appears only when the server returned
+           *  navigation actions for this answer. Clicking applies them so
+           *  the wheel surfaces the evidence behind the answer text. */}
+          {canShowMe && (
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                onClick={onApplyHook}
+                disabled={chat.loading}
+                className="text-[11px] font-medium text-white bg-[var(--undp-black)] hover:bg-gray-800 rounded-full px-2.5 py-1 transition-colors disabled:opacity-30"
+              >
+                Show me
+              </button>
+            </div>
+          )}
         </div>
       )}
       {showError && (
@@ -1153,61 +1274,55 @@ function ChatBar({
         </div>
       )}
 
+      {/* Surprise me sits where Show me used to be, right under the
+       *  bubble. It's always available so the user has a one-click route
+       *  to "give me something else interesting" without needing to clear
+       *  the chat first. */}
       <div className="flex flex-wrap gap-1.5">
-        {showInsight ? (
-          <>
-            <button type="button" onClick={onApplyHook} className={CHIP_PRIMARY}>
-              Show me
-            </button>
-            <button
-              type="button"
-              onClick={onRotateInsight}
-              className={CHIP_SURPRISE}
-            >
-              Another insight
-            </button>
-          </>
-        ) : showSuggestions ? (
-          chat.suggestions.map((s) => (
+        <button
+          type="button"
+          onClick={onRotateInsight}
+          disabled={chat.loading}
+          className={CHIP_SURPRISE}
+        >
+          Surprise me
+        </button>
+      </div>
+
+      {/* Server-emitted follow-up chips after a reply. Filtered to drop
+       *  any kind:"surprise" suggestion so it doesn't double up with the
+       *  always-visible Surprise me chip above. */}
+      {showSuggestions && (
+        <div className="flex flex-wrap gap-1.5">
+          {visibleSuggestions.map((s) => (
             <button
               key={s.query}
               type="button"
-              onClick={() => {
-                if (s.kind === "surprise") {
-                  onRotateInsight();
-                  return;
-                }
-                submit(s.query);
-              }}
+              onClick={() => submit(s.query)}
               disabled={chat.loading}
-              className={s.kind === "surprise" ? CHIP_SURPRISE : CHIP_DEFAULT}
+              className={CHIP_DEFAULT}
             >
               {s.label}
             </button>
-          ))
-        ) : (
-          <>
-            {exampleQueries.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => submit(q)}
-                disabled={chat.loading}
-                className={CHIP_DEFAULT}
-              >
-                {q}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={onRotateInsight}
-              disabled={chat.loading}
-              className={CHIP_SURPRISE}
-            >
-              Surprise me
-            </button>
-          </>
-        )}
+          ))}
+        </div>
+      )}
+
+      {/* Persistent example chips: 3-4 starter questions, always visible
+       *  so the user can see "what can I ask?" without first having to
+       *  empty the bubble slot. */}
+      <div className="flex flex-wrap gap-1.5">
+        {exampleQueries.map((q) => (
+          <button
+            key={q}
+            type="button"
+            onClick={() => submit(q)}
+            disabled={chat.loading}
+            className={CHIP_DEFAULT}
+          >
+            {q}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -1621,6 +1736,7 @@ function EmptyPanel({
   onRotateInsight,
   currentInsight,
   onApplyHook,
+  canShowMe,
 }: EmptyPanelProps) {
   // Stats are interactive: clicking a stat sets the wheel filter AND swaps
   // the middle section to a full list of that kind of item (targets, strong
@@ -1789,6 +1905,7 @@ function EmptyPanel({
           onRotateInsight={onRotateInsight}
           currentInsight={currentInsight}
           onApplyHook={onApplyHook}
+          canShowMe={canShowMe}
         />
 
       </div>
@@ -2411,12 +2528,14 @@ export function PolicyCoherenceExplorer({
     return { aligned: a, high: h, contra: c };
   }, [filtered]);
 
-  // Chat state. Carries the reply plus follow-up suggestion chips.
+  // Chat state. Carries the reply plus follow-up suggestion chips, and the
+  // pending action set the user hasn't applied yet.
   const [chat, setChat] = useState<ChatStatus>({
     loading: false,
     reply: null,
     error: null,
     suggestions: [],
+    pendingActions: null,
   });
 
   // Rolling buffer of the last 3 user+assistant turns, sent on each ask so
@@ -2437,12 +2556,35 @@ export function PolicyCoherenceExplorer({
   // click would be confusing.
   const clearChat = useCallback(() => {
     setChat((prev) =>
-      prev.reply !== null || prev.error !== null
-        ? { loading: false, reply: null, error: null, suggestions: [] }
+      prev.reply !== null ||
+      prev.error !== null ||
+      prev.pendingActions !== null
+        ? {
+            loading: false,
+            reply: null,
+            error: null,
+            suggestions: [],
+            pendingActions: null,
+          }
         : prev,
     );
     setHistory((prev) => (prev.length > 0 ? [] : prev));
   }, []);
+
+  // Returns the panel to the country's load-time defaults: clears any
+  // selection / focus / comparison, restores the default filter and
+  // hidden-doc set, and wipes the chat. Used when the user closes a detail
+  // panel or clicks the empty background, so "returning to the chat" feels
+  // like a fresh start rather than continuing whatever filtered state the
+  // last insight or query had layered on.
+  const resetView = useCallback(() => {
+    setFilter("high_contra");
+    setSelectedId(null);
+    setComparedPair(null);
+    setFocalGroupId(null);
+    setHiddenDocs(new Set(countryConfig?.defaultHiddenDocTypes ?? []));
+    clearChat();
+  }, [countryConfig, clearChat]);
 
   const handleNodeClick = useCallback(
     (id: string) => {
@@ -2454,11 +2596,8 @@ export function PolicyCoherenceExplorer({
   );
 
   const handleBgClick = useCallback(() => {
-    setSelectedId(null);
-    setComparedPair(null);
-    setFocalGroupId(null);
-    clearChat();
-  }, [clearChat]);
+    resetView();
+  }, [resetView]);
 
   const handleGroupChange = useCallback(
     (m: GroupMode) => {
@@ -2485,15 +2624,12 @@ export function PolicyCoherenceExplorer({
   );
 
   const closeDetail = useCallback(() => {
-    setSelectedId(null);
-    setComparedPair(null);
-    clearChat();
-  }, [clearChat]);
+    resetView();
+  }, [resetView]);
 
   const closeCategory = useCallback(() => {
-    setFocalGroupId(null);
-    clearChat();
-  }, [clearChat]);
+    resetView();
+  }, [resetView]);
 
   /**
    * Open the pair-compare view directly. Mirrors the chat's select_pair
@@ -2537,14 +2673,19 @@ export function PolicyCoherenceExplorer({
         reply: null,
         error: null,
         suggestions: [],
+        pendingActions: null,
       });
       // Chat always sees the full corpus. Scoping the chat to the visible
       // view forced users to set the view correctly BEFORE asking, which
       // defeats the point of a navigation helper. The chat is now a Q&A over
       // the entire dataset; show_docs reveals hidden docs when needed and
       // the reply narrates the unhide.
+      //
+      // Actions are NOT applied to the wheel here. They are stored as
+      // pendingActions and applied when the user clicks Show me. This keeps
+      // the answer text the primary output and prevents the wheel from
+      // reshaping behind the user's reading.
       try {
-        const targetMap = new Map(targets.map((t) => [t.id, t]));
         const body = buildChatRequest({
           query,
           groupMode,
@@ -2582,114 +2723,20 @@ export function PolicyCoherenceExplorer({
           }
           throw new Error(message);
         }
-        type ServerAction =
-          | { type: "set_filter"; filter: AlignFilter }
-          | { type: "focus_category"; categoryId: string }
-          | { type: "select_target"; targetId: string }
-          | { type: "select_pair"; targetAId: string; targetBId: string }
-          | { type: "set_mode"; mode: GroupMode }
-          | { type: "show_docs"; ids: string[] };
         const json = (await res.json()) as {
           reply: string;
-          actions: ServerAction[];
+          actions: ChatServerAction[];
           suggestions?: ChatSuggestion[];
         };
 
-        // Each chat turn is treated as a fresh exploration: reset filter to
-        // its default and clear any prior focus / selection / pair compare
-        // before layering the new actions.
-        setFilter("high_contra");
-        // show_docs runs first — unhide before any focus/select lands on a
-        // target whose doc was hidden a moment ago.
-        const docsToShow = new Set<string>();
-        for (const action of json.actions) {
-          if (action.type === "show_docs") {
-            for (const id of action.ids) docsToShow.add(id);
-          }
-        }
-        let nextSelectedId: string | null = null;
-        let nextFocalGroupId: string | null = null;
-        let nextComparedPair: { result: AlignmentResult; other: Target } | null =
-          null;
-        for (const action of json.actions) {
-          if (action.type === "set_filter") {
-            setFilter(action.filter);
-          } else if (action.type === "focus_category") {
-            nextFocalGroupId = action.categoryId;
-            nextSelectedId = null;
-            nextComparedPair = null;
-          } else if (action.type === "select_target") {
-            nextSelectedId = action.targetId;
-            const node = nodes.find((n) => n.id === action.targetId);
-            if (node) nextFocalGroupId = node.groupId;
-            nextComparedPair = null;
-          } else if (action.type === "select_pair") {
-            // Open pair compare directly so the rationale is visible without
-            // a manual click. If no alignment exists between the ids, fall
-            // back to selecting the first target.
-            const result = alignment.find(
-              (a) =>
-                (a.targetAId === action.targetAId &&
-                  a.targetBId === action.targetBId) ||
-                (a.targetAId === action.targetBId &&
-                  a.targetBId === action.targetAId),
-            );
-            const otherTarget = targetMap.get(action.targetBId);
-            nextSelectedId = action.targetAId;
-            const node = nodes.find((n) => n.id === action.targetAId);
-            if (node) nextFocalGroupId = node.groupId;
-            if (result && otherTarget) {
-              nextComparedPair = { result, other: otherTarget };
-            } else {
-              nextComparedPair = null;
-            }
-          } else if (action.type === "set_mode") {
-            setGroupMode(action.mode);
-            nextSelectedId = null;
-            nextFocalGroupId = null;
-            nextComparedPair = null;
-          }
-        }
-        // Auto-unhide combines two sources: explicit show_docs from the
-        // server, plus a fallback heuristic that unhides any doc referenced
-        // by a focus/select action. Belt and braces — the model usually
-        // emits show_docs, but if it forgets we still don't navigate to an
-        // invisible target.
-        for (const action of json.actions) {
-          if (action.type === "focus_category" && groupMode === "document") {
-            docsToShow.add(action.categoryId);
-          } else if (action.type === "select_target") {
-            const t = targetMap.get(action.targetId);
-            if (t) docsToShow.add(t.sourceDocument);
-          } else if (action.type === "select_pair") {
-            const tA = targetMap.get(action.targetAId);
-            const tB = targetMap.get(action.targetBId);
-            if (tA) docsToShow.add(tA.sourceDocument);
-            if (tB) docsToShow.add(tB.sourceDocument);
-          }
-        }
-        if (docsToShow.size > 0) {
-          setHiddenDocs((prev) => {
-            let changed = false;
-            const next = new Set(prev);
-            for (const d of docsToShow) {
-              if (next.has(d)) {
-                next.delete(d);
-                changed = true;
-              }
-            }
-            return changed ? next : prev;
-          });
-        }
-        setSelectedId(nextSelectedId);
-        setFocalGroupId(nextFocalGroupId);
-        setComparedPair(nextComparedPair);
         const suggestions = (json.suggestions ?? []).slice(0, 3);
+        const actions = Array.isArray(json.actions) ? json.actions : [];
         setChat({
           loading: false,
           reply: json.reply,
           error: null,
           suggestions,
+          pendingActions: actions.length > 0 ? actions : null,
         });
         // Append this turn to history, capped at 3 turns (~6 messages).
         setHistory((prev) =>
@@ -2706,6 +2753,7 @@ export function PolicyCoherenceExplorer({
           error:
             err instanceof Error ? err.message : "Sorry, that didn't work.",
           suggestions: [],
+          pendingActions: null,
         });
       }
     },
@@ -2722,7 +2770,6 @@ export function PolicyCoherenceExplorer({
       history,
       sectors,
       targets,
-      nodes,
     ],
   );
 
@@ -2797,13 +2844,23 @@ export function PolicyCoherenceExplorer({
 
   // Rotate to the next insight — text only. Doesn't touch the wheel state;
   // the user can compare the new fact against whatever they're currently
-  // looking at. Clears any active reply so the new insight is visible.
+  // looking at. Clears any active reply / pending actions so the new
+  // insight is visible without a stale Show me from a prior reply.
   const rotateInsight = useCallback(() => {
     if (insights.length === 0) return;
     setInsightIdx((i) => i + 1);
     setChat((prev) =>
-      prev.reply !== null || prev.error !== null || prev.suggestions.length > 0
-        ? { loading: false, reply: null, error: null, suggestions: [] }
+      prev.reply !== null ||
+      prev.error !== null ||
+      prev.suggestions.length > 0 ||
+      prev.pendingActions !== null
+        ? {
+            loading: false,
+            reply: null,
+            error: null,
+            suggestions: [],
+            pendingActions: null,
+          }
         : prev,
     );
     setHistory([]);
@@ -2873,27 +2930,134 @@ export function PolicyCoherenceExplorer({
       setSelectedId(nextSelectedId);
       setFocalGroupId(nextFocalGroupId);
       setComparedPair(nextComparedPair);
-      setChat({
-        loading: false,
-        reply: insight.callout,
-        error: null,
-        suggestions: [
-          {
-            label: "Another insight",
-            query: "Surprise me with something else",
-            kind: "surprise",
-          },
-        ],
-      });
+      // Don't surface the callout as a chat reply: the user just read it
+      // in the amber insight bubble, and the resulting detail or category
+      // panel IS the answer. Typing the same text again in the reply slot
+      // would feel like the chat is restating what the user just clicked.
+      setChat((prev) =>
+        prev.pendingActions !== null
+          ? { ...prev, pendingActions: null }
+          : prev,
+      );
       setHistory([]);
     },
     [nodes, alignment, targets],
   );
 
+  // Apply server-emitted navigation actions held in chat.pendingActions.
+  // Same control-flow as the old in-line block inside handleAsk; lifted
+  // here so the user can opt in to view changes via Show me rather than
+  // having the wheel reshape automatically after every reply.
+  const applyServerActions = useCallback(
+    (actions: ChatServerAction[]) => {
+      const targetMapLocal = new Map(targets.map((t) => [t.id, t]));
+      // Reset filter to default so each Show me application starts clean,
+      // matching the previous auto-apply behaviour.
+      setFilter("high_contra");
+      const docsToShow = new Set<string>();
+      for (const action of actions) {
+        if (action.type === "show_docs") {
+          for (const id of action.ids) docsToShow.add(id);
+        }
+      }
+      let nextSelectedId: string | null = null;
+      let nextFocalGroupId: string | null = null;
+      let nextComparedPair: {
+        result: AlignmentResult;
+        other: Target;
+      } | null = null;
+      let effectiveGroupMode: GroupMode = groupMode;
+      for (const action of actions) {
+        if (action.type === "set_filter") {
+          setFilter(action.filter);
+        } else if (action.type === "focus_category") {
+          nextFocalGroupId = action.categoryId;
+          nextSelectedId = null;
+          nextComparedPair = null;
+        } else if (action.type === "select_target") {
+          nextSelectedId = action.targetId;
+          const node = nodes.find((n) => n.id === action.targetId);
+          if (node) nextFocalGroupId = node.groupId;
+          nextComparedPair = null;
+        } else if (action.type === "select_pair") {
+          const result = alignment.find(
+            (a) =>
+              (a.targetAId === action.targetAId &&
+                a.targetBId === action.targetBId) ||
+              (a.targetAId === action.targetBId &&
+                a.targetBId === action.targetAId),
+          );
+          const otherTarget = targetMapLocal.get(action.targetBId);
+          nextSelectedId = action.targetAId;
+          const node = nodes.find((n) => n.id === action.targetAId);
+          if (node) nextFocalGroupId = node.groupId;
+          if (result && otherTarget) {
+            nextComparedPair = { result, other: otherTarget };
+          } else {
+            nextComparedPair = null;
+          }
+        } else if (action.type === "set_mode") {
+          setGroupMode(action.mode);
+          effectiveGroupMode = action.mode;
+          nextSelectedId = null;
+          nextFocalGroupId = null;
+          nextComparedPair = null;
+        }
+      }
+      // Belt-and-braces auto-unhide: the server usually emits show_docs but
+      // if it forgets we still don't want to navigate to an invisible doc.
+      for (const action of actions) {
+        if (action.type === "focus_category" && effectiveGroupMode === "document") {
+          docsToShow.add(action.categoryId);
+        } else if (action.type === "select_target") {
+          const t = targetMapLocal.get(action.targetId);
+          if (t) docsToShow.add(t.sourceDocument);
+        } else if (action.type === "select_pair") {
+          const tA = targetMapLocal.get(action.targetAId);
+          const tB = targetMapLocal.get(action.targetBId);
+          if (tA) docsToShow.add(tA.sourceDocument);
+          if (tB) docsToShow.add(tB.sourceDocument);
+        }
+      }
+      if (docsToShow.size > 0) {
+        setHiddenDocs((prev) => {
+          let changed = false;
+          const next = new Set(prev);
+          for (const d of docsToShow) {
+            if (next.has(d)) {
+              next.delete(d);
+              changed = true;
+            }
+          }
+          return changed ? next : prev;
+        });
+      }
+      setSelectedId(nextSelectedId);
+      setFocalGroupId(nextFocalGroupId);
+      setComparedPair(nextComparedPair);
+      // Clear the pending actions so Show me hides; the reply text remains
+      // visible alongside the new wheel state.
+      setChat((prev) => ({ ...prev, pendingActions: null }));
+    },
+    [nodes, alignment, targets, groupMode],
+  );
+
+  // Show me dispatcher: applies the active insight if one is showing,
+  // otherwise applies the pending actions from the last chat reply. The
+  // bubble itself decides which path is live; this just routes the click.
   const onApplyHook = useCallback(() => {
-    if (!currentInsight) return;
-    applyInsight(currentInsight);
-  }, [currentInsight, applyInsight]);
+    if (currentInsight) {
+      applyInsight(currentInsight);
+      return;
+    }
+    if (chat.pendingActions && chat.pendingActions.length > 0) {
+      applyServerActions(chat.pendingActions);
+    }
+  }, [currentInsight, applyInsight, chat.pendingActions, applyServerActions]);
+
+  const canShowMe =
+    !!currentInsight ||
+    !!(chat.pendingActions && chat.pendingActions.length > 0);
 
   const selectedNode = selectedId ? nodeMap.get(selectedId) ?? null : null;
 
@@ -3810,6 +3974,7 @@ export function PolicyCoherenceExplorer({
                 onRotateInsight={rotateInsight}
                 currentInsight={currentInsight}
                 onApplyHook={onApplyHook}
+                canShowMe={canShowMe}
               />
             )}
         </div>

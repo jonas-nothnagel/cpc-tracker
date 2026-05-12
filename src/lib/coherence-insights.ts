@@ -35,7 +35,11 @@ type InsightPattern =
   | "imbalance"
   | "most_contested_topic"
   | "quantitative_gap"
-  | "agreement_pair";
+  | "agreement_pair"
+  | "most_aligned_target"
+  | "doc_most_tensions"
+  | "btr_status_mix"
+  | "quantitative_coverage";
 
 export interface Insight {
   pattern: InsightPattern;
@@ -81,10 +85,14 @@ export function detectInsights(args: DetectArgs): Insight[] {
   if (cluster) out.push(cluster);
   const mostContested = detectMostContestedTopic(args);
   if (mostContested) out.push(mostContested);
+  const docMostTensions = detectDocWithMostTensions(args);
+  if (docMostTensions) out.push(docMostTensions);
   const zero = detectZeroConflictTopic(args);
   if (zero) out.push(zero);
   const hub = detectHub(args);
   if (hub) out.push(hub);
+  const mostAligned = detectMostAlignedTarget(args);
+  if (mostAligned) out.push(mostAligned);
   const quantGap = detectQuantitativeGap(args);
   if (quantGap) out.push(quantGap);
   const orphan = detectOrphan(args);
@@ -93,6 +101,10 @@ export function detectInsights(args: DetectArgs): Insight[] {
   if (imbalance) out.push(imbalance);
   const agreement = detectAgreementPair(args);
   if (agreement) out.push(agreement);
+  const btrStatus = detectBtrStatusMix(args);
+  if (btrStatus) out.push(btrStatus);
+  const quantCoverage = detectQuantitativeCoverage(args);
+  if (quantCoverage) out.push(quantCoverage);
   return out;
 }
 
@@ -150,6 +162,11 @@ function detectParadox(args: DetectArgs): Insight | null {
 /**
  * Tension cluster: at least three contradictions converge on a single target.
  * Suggests one driver behind a recurring tradeoff in the dataset.
+ *
+ * The action focuses the target's source-document arc rather than selecting
+ * the target itself. The framing is aggregate ("N contradictions converge on
+ * X"), so users expect to see X in the context of its document, not a
+ * stripped-down single-target view that hides the surrounding wheel.
  */
 function detectTensionCluster(args: DetectArgs): Insight | null {
   const { targets, alignment, countryConfig } = args;
@@ -169,7 +186,10 @@ function detectTensionCluster(args: DetectArgs): Insight | null {
   return {
     pattern: "tension_cluster",
     callout: `${n} contradictions converge on ${label}, the single biggest driver of tension in the dataset.`,
-    actions: [{ type: "select_target", targetId: id }],
+    actions: [
+      { type: "set_mode", mode: "document" },
+      { type: "focus_category", categoryId: t.sourceDocument },
+    ],
     filter: "contradictions",
   };
 }
@@ -642,6 +662,131 @@ function detectAgreementPair(args: DetectArgs): Insight | null {
       { type: "focus_category", categoryId: dA },
     ],
     filter: "high",
+  };
+}
+
+/**
+ * Most-aligned target: the positive-side counterpart to tension_cluster.
+ * The single target that anchors the most high alignments (≥3), framed as
+ * "the connector". Target view because the story is the specific target,
+ * not its category.
+ */
+function detectMostAlignedTarget(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const count = new Map<string, number>();
+  for (const a of alignment) {
+    if (a.alignment !== "high") continue;
+    count.set(a.targetAId, (count.get(a.targetAId) ?? 0) + 1);
+    count.set(a.targetBId, (count.get(a.targetBId) ?? 0) + 1);
+  }
+  const top = topN([...count.entries()], 1);
+  if (top.length === 0 || top[0][1] < 3) return null;
+  const [id, n] = top[0];
+  const t = targetMap.get(id);
+  if (!t) return null;
+  const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
+  return {
+    pattern: "most_aligned_target",
+    callout: `${label} anchors ${n} strong alignments, the single biggest connector in the dataset.`,
+    actions: [{ type: "select_target", targetId: id }],
+    filter: "high",
+  };
+}
+
+/**
+ * Document with the most tensions: the source document whose targets carry
+ * the highest total contradiction count across the wheel. Each contradiction
+ * touches at most two documents; same-doc internal tensions count once.
+ */
+function detectDocWithMostTensions(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const count = new Map<string, number>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    count.set(tA.sourceDocument, (count.get(tA.sourceDocument) ?? 0) + 1);
+    if (tB.sourceDocument !== tA.sourceDocument) {
+      count.set(tB.sourceDocument, (count.get(tB.sourceDocument) ?? 0) + 1);
+    }
+  }
+  const top = topN([...count.entries()], 1);
+  // Require ≥5 tensions before flagging the doc, otherwise the "heaviest"
+  // framing reads as alarmist when the second-place doc is at 2 or 3.
+  if (top.length === 0 || top[0][1] < 5) return null;
+  const [doc, n] = top[0];
+  const docLabel = getDocLabel(
+    countryConfig ?? null,
+    doc as PolicyDocumentType,
+  );
+  return {
+    pattern: "doc_most_tensions",
+    callout: `${docLabel} carries ${n} tensions, the heaviest concentration of contradictions in any single document.`,
+    actions: [
+      { type: "set_mode", mode: "document" },
+      { type: "focus_category", categoryId: doc },
+    ],
+    filter: "contradictions",
+  };
+}
+
+/**
+ * BTR status mix: counts BTR pseudo-targets by `measureStatus` and surfaces
+ * the Implemented + Ongoing share, the "what's already happening" signal.
+ * Requires ≥2 distinct statuses with non-zero counts to be interesting
+ * (otherwise it reads as a trivial single-bucket tally).
+ */
+function detectBtrStatusMix(args: DetectArgs): Insight | null {
+  const { targets, btrData } = args;
+  if (!btrData) return null;
+  const btrTargets = targets.filter((t) => t.sourceDocument === "BTR");
+  if (btrTargets.length === 0) return null;
+  const byStatus = new Map<string, number>();
+  for (const t of btrTargets) {
+    const status =
+      (t as Target & PseudoExtras).measureStatus ?? "Reported";
+    byStatus.set(status, (byStatus.get(status) ?? 0) + 1);
+  }
+  // Need a mix of at least two statuses, otherwise the breakdown is uninteresting.
+  if (byStatus.size < 2) return null;
+  const total = btrTargets.length;
+  const impl = byStatus.get("Implemented") ?? 0;
+  const ong = byStatus.get("Ongoing") ?? 0;
+  const adopt = byStatus.get("Adopted") ?? 0;
+  const plan = byStatus.get("Planned") ?? 0;
+  const happening = impl + ong;
+  return {
+    pattern: "btr_status_mix",
+    callout: `${happening} of ${total} reported actions are already Implemented or Ongoing, ${adopt} Adopted and ${plan} Planned. The Implemented and Ongoing share is the strongest signal of what is already happening on the ground.`,
+    actions: [
+      { type: "set_mode", mode: "document" },
+      { type: "focus_category", categoryId: "BTR" },
+    ],
+    filter: "all",
+  };
+}
+
+/**
+ * Quantitative coverage: dataset-wide callout on how many targets carry a
+ * measurable indicator. Informational, no specific view to focus on, just
+ * shifts to default document mode so the user can scan the corpus with the
+ * number in mind. Only fires when < 50% of targets are quantitative and the
+ * sample is large enough (≥20 targets) to be representative.
+ */
+function detectQuantitativeCoverage(args: DetectArgs): Insight | null {
+  const { targets } = args;
+  if (targets.length < 20) return null;
+  const total = targets.length;
+  const quant = targets.filter((t) => t.isQuantitative === true).length;
+  if (quant / total >= 0.5) return null;
+  return {
+    pattern: "quantitative_coverage",
+    callout: `Only ${quant} of ${total} targets carry a measurable indicator. The rest read as direction-of-travel statements, hard to track without a number to anchor them.`,
+    actions: [{ type: "set_mode", mode: "document" }],
+    filter: "all",
   };
 }
 
