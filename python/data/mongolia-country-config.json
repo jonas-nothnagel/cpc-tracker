@@ -4,7 +4,8 @@
     "NDC": "Mongolia NDC v2 (2019), Government Decree No. 407 of 19 Nov 2019",
     "NAP": "Mongolia NAP, completed 2024 (per BTR1 Section 3.9.1.8, Table III.8)",
     "BTR": "Mongolia BTR1 (December 2025)",
-    "SECTORAL": "Vision 2050 Long-term Development Policy, Parliament Resolution 52, May 2020"
+    "SECTORAL": "Vision 2050 Long-term Development Policy, Parliament Resolution 52, May 2020",
+    "FSS": "Food Supply and Security Measures, Mongolia Parliament Resolution 36 (17 June 2022)"
   },
   "btrMitigationSourceRef": {
     "document": "Mongolia BTR1 (December 2025)",
@@ -63,6 +64,13 @@
       "mediumLabel": "BER (Finance)",
       "fullLabel": "Biodiversity Expenditure Review",
       "color": "#2563eb"
+    },
+    {
+      "id": "FSS",
+      "shortLabel": "FSS",
+      "mediumLabel": "FSS (Food Supply)",
+      "fullLabel": "Food Supply and Security Measures (Parliament Resolution 36, June 2022)",
+      "color": "#d97706"
     },
     {
       "id": "OTHER",

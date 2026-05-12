@@ -1164,5 +1164,838 @@
     ],
     "textCleanup": "synthesis",
     "_provenanceFlag": "PARAPHRASED — pending re-extraction with new pipeline rules. Stored text was LLM-extracted from Vision 2050 docs and silently dropped qualifiers / added scope. See dev_data_scripts/sharepoint_sync/Mongolia/Mongolia materials/Plans/."
+  },
+  {
+    "id": "FSS_1",
+    "text": "Identify feasible options for financing the MNT 1.7 trillion total funding required during 2022-2026 to ensure food supply and security and to further develop the production of export-oriented food and agricultural products (through state-budget loan-interest subsidies, guarantees, foreign loans and aid), and resolve them in line with the relevant legislation; if necessary, draft a bill and submit it to the State Great Khural.",
+    "textOriginal": "хүнсний хангамж, аюулгүй байдлыг хангах, цаашид экспортын чиг баримжаатай хүнс, хөдөө аж ахуйн бүтээгдэхүүний үйлдвэрлэлийг хөгжүүлэхэд шаардлагатай нийт 1.7 их наяд төгрөгийн санхүүжилтийн эх үүсвэрийг 2022-2026 онд улсын төсвөөс зээлийн хүүгийн татаас болон батлан даалт, гадаадын зээл, тусламжийн хөрөнгөөр санхүүжүүлэх боломжит хувилбарыг тодорхойлж, холбогдох хууль тогтоомжид нийцүүлэн шийдвэрлэх, шаардлагатай бол хууль тогтоомжийн төслийг боловсруулж, Улсын Их Хуралд өргөн мэдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.a Sector financing 2022-2026 (MNT 1.7 trillion)",
+    "sourceLabelOriginal": "2/1/а",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний хангамж, аюулгүй байдлыг хангах, цаашид экспортын чиг баримжаатай хүнс, хөдөө аж ахуйн бүтээгдэхүүний үйлдвэрлэлийг хөгжүүлэхэд шаардлагатай нийт 1.7 их наяд төгрөгийн санхүүжилтийн эх үүсвэрийг 2022-2026 онд улсын төсвөөс зээлийн хүүгийн татаас болон батлан даалт, гадаадын зээл, тусламжийн хөрөнгөөр санхүүжүүлэх боломжит хувилбарыг тодорхойлж, холбогдох хууль тогтоомжид нийцүүлэн шийдвэрлэх, шаардлагатай бол хууль тогтоомжийн төслийг боловсруулж, Улсын Их Хуралд өргөн мэдүүлэх",
+        "section": "Resolution 36 / Section 2 / 1.а"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_2",
+    "text": "Draft bills aimed at establishing the legal framework related to food supply and security as set out in the annex to this resolution, and submit them to the State Great Khural within its 2022 autumn session and 2023 spring session.",
+    "textOriginal": "энэ тогтоолын хавсралтад заасан хүнсний хангамж, аюулгүй байдлыг хангахтай холбоотой эрх зүйн орчныг бүрдүүлэхэд чиглэсэн хууль тогтоомжийн төслийг боловсруулж, Улсын Их Хурлын 2022 оны намрын ээлжит болон 2023 оны хаврын ээлжит чуулганы хугацаанд багтаан Улсын Их Хуралд өргөн мэдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.b Food-security legal framework bills",
+    "sourceLabelOriginal": "2/1/б",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "энэ тогтоолын хавсралтад заасан хүнсний хангамж, аюулгүй байдлыг хангахтай холбоотой эрх зүйн орчныг бүрдүүлэхэд чиглэсэн хууль тогтоомжийн төслийг боловсруулж, Улсын Их Хурлын 2022 оны намрын ээлжит болон 2023 оны хаврын ээлжит чуулганы хугацаанд багтаан Улсын Их Хуралд өргөн мэдүүлэх",
+        "section": "Resolution 36 / Section 2 / 1.б"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_3",
+    "text": "Draft a bill aimed at establishing the legal framework to reduce import dependence for food raw materials and products through tariff regulation and to expand the range and volume of export-oriented food and agricultural products, and submit it to the State Great Khural by 2022.",
+    "textOriginal": "тарифын зохицуулалт хийх замаар хүнсний түүхий эд, бүтээгдэхүүний импортын хамаарлыг бууруулах, экспортын чиг баримжаатай хүнс, хөдөө аж ахуйн бүтээгдэхүүний нэр төрөл, тоо хэмжээг нэмэгдүүлэх эрх зүйн орчныг бүрдүүлэхэд чиглэсэн хууль тогтоомжийн төслийг боловсруулж, 2022 онд багтаан Улсын Их Хуралд өргөн мэдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.c Tariff regulation to cut food import dependence",
+    "sourceLabelOriginal": "2/1/в",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "тарифын зохицуулалт хийх замаар хүнсний түүхий эд, бүтээгдэхүүний импортын хамаарлыг бууруулах, экспортын чиг баримжаатай хүнс, хөдөө аж ахуйн бүтээгдэхүүний нэр төрөл, тоо хэмжээг нэмэгдүүлэх эрх зүйн орчныг бүрдүүлэхэд чиглэсэн хууль тогтоомжийн төслийг боловсруулж, 2022 онд багтаан Улсын Их Хуралд өргөн мэдүүлэх",
+        "section": "Resolution 36 / Section 2 / 1.в"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_4",
+    "text": "Draft a bill to amend and supplement the relevant legislation to establish an optimal system for children's food and nutrition supply, and submit it to the State Great Khural.",
+    "textOriginal": "хүүхдийн хоол, хүнсний хангамжийн оновчтой тогтолцоог бий болгох асуудлаар холбогдох хууль тогтоомжид нэмэлт, өөрчлөлт оруулах тухай хуулийн төслийг боловсруулж, Улсын Их Хуралд өргөн мэдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.d Children's nutrition system legislation",
+    "sourceLabelOriginal": "2/1/г",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүүхдийн хоол, хүнсний хангамжийн оновчтой тогтолцоог бий болгох асуудлаар холбогдох хууль тогтоомжид нэмэлт, өөрчлөлт оруулах тухай хуулийн төслийг боловсруулж, Улсын Их Хуралд өргөн мэдүүлэх",
+        "section": "Resolution 36 / Section 2 / 1.г"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_5",
+    "text": "Renew and approve the methodology for calculating food-safety statistical indicators; analyse and evaluate all food-related standards; and update or newly approve the required standards, technical regulations, and good-practice recommendations and guidelines for every stage of the food chain.",
+    "textOriginal": "хүнсний аюулгүй байдлын статистик үзүүлэлтийг тооцох аргачлалыг шинэчлэн боловсруулж батлуулах, хүнсний чиглэлийн бүх стандартад дүн шинжилгээ, үнэлгээ хийж, шаардлагатай стандарт, техникийн зохицуулалт, хүнсний сүлжээний үе шат бүрд зохистой дадлын зөвлөмж, зааврыг шинэчилж, шинээр батлах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.e Food-safety statistics, standards and good-practice updates",
+    "sourceLabelOriginal": "2/1/д",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний аюулгүй байдлын статистик үзүүлэлтийг тооцох аргачлалыг шинэчлэн боловсруулж батлуулах, хүнсний чиглэлийн бүх стандартад дүн шинжилгээ, үнэлгээ хийж, шаардлагатай стандарт, техникийн зохицуулалт, хүнсний сүлжээний үе шат бүрд зохистой дадлын зөвлөмж, зааврыг шинэчилж, шинээр батлах",
+        "section": "Resolution 36 / Section 2 / 1.д"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_6",
+    "text": "Develop and approve a registration procedure for tracking animal-origin and plant-origin food raw materials and products through to the final product, and migrate it to a unified electronic registration system.",
+    "textOriginal": "мал, амьтны гаралтай болон ургамал, түүний гаралтай хүнсний түүхий эд, бүтээгдэхүүнийг эцсийн бүтээгдэхүүн хүртэл ул мөрийг мөрдөн тогтоох бүртгэлийн журмыг боловсруулан батлуулах, цахим бүртгэлийн нэгдсэн системд шилжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.f Traceability for animal- and plant-origin food",
+    "sourceLabelOriginal": "2/1/е",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "мал, амьтны гаралтай болон ургамал, түүний гаралтай хүнсний түүхий эд, бүтээгдэхүүнийг эцсийн бүтээгдэхүүн хүртэл ул мөрийг мөрдөн тогтоох бүртгэлийн журмыг боловсруулан батлуулах, цахим бүртгэлийн нэгдсэн системд шилжүүлэх",
+        "section": "Resolution 36 / Section 2 / 1.е"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_7",
+    "text": "Develop and approve regulations governing the build-up and use of seasonal food reserves.",
+    "textOriginal": "хүнсний улирлын нөөц бүрдүүлэх, зарцуулахтай холбогдсон журмыг боловсруулан батлах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.g Seasonal food reserves regulations",
+    "sourceLabelOriginal": "2/1/ж",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний улирлын нөөц бүрдүүлэх, зарцуулахтай холбогдсон журмыг боловсруулан батлах",
+        "section": "Resolution 36 / Section 2 / 1.ж"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_8",
+    "text": "Determine food-safety indicators; monitor residues of pesticides, veterinary medicines, highly toxic microorganisms, and heavy metals; and approve a control plan.",
+    "textOriginal": "хүнсний аюулгүйн үзүүлэлтийг тодорхойлох, пестицид, малын эм, хоруу чанар өндөртэй нян, хүнд металлын үлдэгдлийг хянах, хяналтын төлөвлөгөөг батлах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.h Food-safety monitoring of pesticides, veterinary drugs, metals",
+    "sourceLabelOriginal": "2/1/з",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний аюулгүйн үзүүлэлтийг тодорхойлох, пестицид, малын эм, хоруу чанар өндөртэй нян, хүнд металлын үлдэгдлийг хянах, хяналтын төлөвлөгөөг батлах",
+        "section": "Resolution 36 / Section 2 / 1.з"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_9",
+    "text": "Establish a unified system for the supply and reserves of staple food products together with its management system; build logistics supply centres in phases; develop the relevant legal framework; and take and implement the necessary measures.",
+    "textOriginal": "хүнсний гол нэрийн бүтээгдэхүүний нийлүүлэлт, нөөцийн нэгдсэн тогтолцоо, түүний удирдлагын системийг бий болгож, логистик нийлүүлэлтийн төвүүдийг үе шаттайгаар байгуулах, холбогдох эрх зүйн орчныг бүрдүүлж, шаардлагатай арга хэмжээг авч хэрэгжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.i Logistics hubs and unified food supply system",
+    "sourceLabelOriginal": "2/1/и",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний гол нэрийн бүтээгдэхүүний нийлүүлэлт, нөөцийн нэгдсэн тогтолцоо, түүний удирдлагын системийг бий болгож, логистик нийлүүлэлтийн төвүүдийг үе шаттайгаар байгуулах, холбогдох эрх зүйн орчныг бүрдүүлж, шаардлагатай арга хэмжээг авч хэрэгжүүлэх",
+        "section": "Resolution 36 / Section 2 / 1.и"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_10",
+    "text": "Improve the subsidy and incentive system for the food, agriculture and light-industry sectors; fully reflect the required incentive funding sources in the budget; and implement them.",
+    "textOriginal": "хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн салбарын татаас, урамшууллын тогтолцоог боловсронгуй болгож, шаардлагатай урамшууллын хөрөнгийн эх үүсвэрийг төсөвт бүрэн тусгаж, хэрэгжүүлж байх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "1.j Subsidy and incentive system for food/agri/light industry",
+    "sourceLabelOriginal": "2/1/к",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн салбарын татаас, урамшууллын тогтолцоог боловсронгуй болгож, шаардлагатай урамшууллын хөрөнгийн эх үүсвэрийг төсөвт бүрэн тусгаж, хэрэгжүүлж байх",
+        "section": "Resolution 36 / Section 2 / 1.к"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_11",
+    "text": "Organize the investment required to implement the \"Food Supply and Security\" national movement by financing it from long-term, low-interest sources aligned with the state and local budgets and other funding sources, and through active engagement of public-private partnerships and investors.",
+    "textOriginal": "“Хүнсний хангамж, аюулгүй байдал” үндэсний хөдөлгөөнийг хэрэгжүүлэхэд шаардагдах хөрөнгө оруулалтыг урт хугацаатай, хүү багатай эх үүсвэрээс санхүүжүүлэх, улсын болон орон нутгийн төсөв, бусад санхүүжилтийн эх үүсвэртэй уялдуулан төр, хувийн хэвшлийн түншлэл, хөрөнгө оруулагчдын идэвхтэй оролцоонд тулгуурлан зохион байгуулах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.a Financing 'Food Supply and Security' national movement",
+    "sourceLabelOriginal": "2/2/а",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "“Хүнсний хангамж, аюулгүй байдал” үндэсний хөдөлгөөнийг хэрэгжүүлэхэд шаардагдах хөрөнгө оруулалтыг урт хугацаатай, хүү багатай эх үүсвэрээс санхүүжүүлэх, улсын болон орон нутгийн төсөв, бусад санхүүжилтийн эх үүсвэртэй уялдуулан төр, хувийн хэвшлийн түншлэл, хөрөнгө оруулагчдын идэвхтэй оролцоонд тулгуурлан зохион байгуулах",
+        "section": "Resolution 36 / Section 2 / 2.а"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_12",
+    "text": "Implement the \"Food Supply and Security\" national movement, as approved by the Government and rolled out nationwide under the slogan \"Healthy Food of the Motherland,\" in coordination with the \"Atar-4 Sustainable Crop Development Campaign.\"",
+    "textOriginal": "“Хүнсний хангамж, аюулгүй байдал” үндэсний хөдөлгөөнийг Засгийн газраас батлан улс орон даяар “Эх орны эрүүл хүнс” уриан доор хэрэгжүүлж байгаа “Атар-4 тариалангийн тогтвортой хөгжлийн аян”-тай уялдуулан хэрэгжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.b Align national movement with 'Atar-4' campaign",
+    "sourceLabelOriginal": "2/2/б",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "“Хүнсний хангамж, аюулгүй байдал” үндэсний хөдөлгөөнийг Засгийн газраас батлан улс орон даяар “Эх орны эрүүл хүнс” уриан доор хэрэгжүүлж байгаа “Атар-4 тариалангийн тогтвортой хөгжлийн аян”-тай уялдуулан хэрэгжүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.б"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_13",
+    "text": "Study and resolve the establishment of a food science and research institute.",
+    "textOriginal": "хүнсний эрдэм шинжилгээ, судалгааны хүрээлэн байгуулах асуудлыг судалж шийдвэрлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.c Establish food research institute",
+    "sourceLabelOriginal": "2/2/в",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний эрдэм шинжилгээ, судалгааны хүрээлэн байгуулах асуудлыг судалж шийдвэрлэх",
+        "section": "Resolution 36 / Section 2 / 2.в"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_14",
+    "text": "Enforce the application of standards and technical-regulation requirements in livestock, crop, food manufacturing, storage, transport, trade, catering and services; introduce a good-practice, monitoring and management system for food activities at every stage of the food chain; and increase the number of accredited bodies authorised to certify it.",
+    "textOriginal": "мал аж ахуй, газар тариалан, хүнсний үйлдвэр, хадгалалт, тээвэрлэлт, худалдаа, хоол үйлдвэрлэл, үйлчилгээнд стандарт, техникийн зохицуулалтын шаардлагыг мөрдүүлэх, хүнсний сүлжээний үе шат бүрд хүнсний чиглэлийн үйл ажиллагаанд зохистой дадал, хяналт, удирдлагын тогтолцоог нэвтрүүлэх, түүнийг баталгаажуулах эрх бүхий итгэмжлэгдсэн байгууллагын тоог нэмэгдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.d Standards and good practices across the food chain",
+    "sourceLabelOriginal": "2/2/г",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "мал аж ахуй, газар тариалан, хүнсний үйлдвэр, хадгалалт, тээвэрлэлт, худалдаа, хоол үйлдвэрлэл, үйлчилгээнд стандарт, техникийн зохицуулалтын шаардлагыг мөрдүүлэх, хүнсний сүлжээний үе шат бүрд хүнсний чиглэлийн үйл ажиллагаанд зохистой дадал, хяналт, удирдлагын тогтолцоог нэвтрүүлэх, түүнийг баталгаажуулах эрх бүхий итгэмжлэгдсэн байгууллагын тоог нэмэгдүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.г"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_15",
+    "text": "Strengthen internal controls on whether food raw materials and products fully meet safety requirements throughout production and supply; improve the third-party inspection system; and intensify oversight activities.",
+    "textOriginal": "хүнсний түүхий эд, бүтээгдэхүүний үйлдвэрлэл, нийлүүлэлтийн явцад аюулгүйн үзүүлэлтийн шаардлагыг бүрэн хангасан эсэхэд тавигдах дотоодын хяналтыг нэмэгдүүлэх, хөндлөнгийн хяналтын тогтолцоог боловсронгуй болгох, хяналтын үйл ажиллагааг эрчимжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.e Strengthened domestic and third-party food-safety oversight",
+    "sourceLabelOriginal": "2/2/д",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний түүхий эд, бүтээгдэхүүний үйлдвэрлэл, нийлүүлэлтийн явцад аюулгүйн үзүүлэлтийн шаардлагыг бүрэн хангасан эсэхэд тавигдах дотоодын хяналтыг нэмэгдүүлэх, хөндлөнгийн хяналтын тогтолцоог боловсронгуй болгох, хяналтын үйл ажиллагааг эрчимжүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.д"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_16",
+    "text": "Modernize the structure and organization of state-owned universities and vocational training-production centres in food, agriculture and light-industry fields; improve training quality; provide tuition support to students in priority specialisations; upgrade the skills of qualified workers; create conditions for professionals to work in a stable, settled manner; and include the necessary capital and financial resources in the state and local budgets.",
+    "textOriginal": "хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрлэлийн чиглэлийн төрийн өмчит их, дээд сургууль, мэргэжлийн сургалт-үйлдвэрлэлийн төвийн бүтэц, зохион байгуулалтыг шинэчлэх, сургалтын чанарыг сайжруулах, эдгээр салбарт тэргүүлэх чиглэлээр суралцагчид сургалтын төлбөрийн дэмжлэг үзүүлэх, мэргэшсэн ажилтны ур чадварыг дээшлүүлэх, мэргэжлийн боловсон хүчнийг тогтвор суурьшилтай ажиллах нөхцөлийг бүрдүүлэх, шаардлагатай хөрөнгө, санхүүгийн эх үүсвэрийг улсын болон орон нутгийн төсөвт тусгах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.f Reform of sector universities and vocational training",
+    "sourceLabelOriginal": "2/2/е",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрлэлийн чиглэлийн төрийн өмчит их, дээд сургууль, мэргэжлийн сургалт-үйлдвэрлэлийн төвийн бүтэц, зохион байгуулалтыг шинэчлэх, сургалтын чанарыг сайжруулах, эдгээр салбарт тэргүүлэх чиглэлээр суралцагчид сургалтын төлбөрийн дэмжлэг үзүүлэх, мэргэшсэн ажилтны ур чадварыг дээшлүүлэх, мэргэжлийн боловсон хүчнийг тогтвор суурьшилтай ажиллах нөхцөлийг бүрдүүлэх, шаардлагатай хөрөнгө, санхүүгийн эх үүсвэрийг улсын болон орон нутгийн төсөвт тусгах",
+        "section": "Resolution 36 / Section 2 / 2.е"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_17",
+    "text": "Ensure the stable provision of the infrastructure, electricity, steam, heat sources, and fuel needed to guarantee food supply and security and to expand the domestic production of import-substituting food products.",
+    "textOriginal": "хүнсний хангамж, аюулгүй байдлыг хангах, импортыг орлох хүнсний бүтээгдэхүүний дотоодын үйлдвэрлэлийг нэмэгдүүлэхэд шаардлагатай дэд бүтэц, эрчим хүч, уур, дулааны эх үүсвэр, шатахуунаар тогтвортой хангах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.g Infrastructure and energy supply for food production",
+    "sourceLabelOriginal": "2/2/ж",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний хангамж, аюулгүй байдлыг хангах, импортыг орлох хүнсний бүтээгдэхүүний дотоодын үйлдвэрлэлийг нэмэгдүүлэхэд шаардлагатай дэд бүтэц, эрчим хүч, уур, дулааны эх үүсвэр, шатахуунаар тогтвортой хангах",
+        "section": "Resolution 36 / Section 2 / 2.ж"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_18",
+    "text": "Revive and re-introduce traditional food-preparation methods and technologies adapted to Mongolia's natural, geographic and climatic conditions; bring them into use; and establish a system, with supporting incentives, that creates innovation-infused products grounded in traditional food-preparation knowledge.",
+    "textOriginal": "монгол орны байгаль, газар зүй, цаг уурын онцлогтой уялдсан уламжлалт хүнс бэлтгэх арга технологийг сэргээн таниулах, хэрэглээнд нэвтрүүлэх, хүнс бэлтгэх уламжлалт мэдлэгт суурилсан, инновац шингэсэн бүтээгдэхүүн бий болгох тогтолцоог бүрдүүлэх, дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.h Traditional Mongolian food technologies and innovation",
+    "sourceLabelOriginal": "2/2/з",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "монгол орны байгаль, газар зүй, цаг уурын онцлогтой уялдсан уламжлалт хүнс бэлтгэх арга технологийг сэргээн таниулах, хэрэглээнд нэвтрүүлэх, хүнс бэлтгэх уламжлалт мэдлэгт суурилсан, инновац шингэсэн бүтээгдэхүүн бий болгох тогтолцоог бүрдүүлэх, дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.з"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_19",
+    "text": "Provide tax and other support to citizens and businesses relocating from the capital to rural areas to engage in livestock and crop farming, within efforts to balance urban and rural development and ease centralisation.",
+    "textOriginal": "хот, хөдөөгийн хөгжлийн тэнцвэрийг хангах, төвлөрлийг сааруулах хүрээнд мал аж ахуй, газар тариалангийн салбарт аж ахуй эрхлэхээр нийслэлээс орон нутагт шилжин суурьшсан иргэн, аж ахуйн нэгжид татварын болон бусад дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.i Tax incentives for rural relocation in agri/livestock",
+    "sourceLabelOriginal": "2/2/и",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хот, хөдөөгийн хөгжлийн тэнцвэрийг хангах, төвлөрлийг сааруулах хүрээнд мал аж ахуй, газар тариалангийн салбарт аж ахуй эрхлэхээр нийслэлээс орон нутагт шилжин суурьшсан иргэн, аж ахуйн нэгжид татварын болон бусад дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.и"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_20",
+    "text": "Create opportunities to showcase and promote Mongolian-manufactured brand products at international and regional trade fairs and exhibitions; establish the legal framework for exports; and provide support.",
+    "textOriginal": "Монгол Улсад үйлдвэрлэсэн брэнд бүтээгдэхүүнийг олон улсын болон бүс нутгийн хэмжээний үзэсгэлэн худалдаанд танилцуулах, сурталчлах боломжийг бүрдүүлж, экспортлох эрх зүйн орчныг бүрдүүлэх, дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.j Promotion and export of Mongolian brand products",
+    "sourceLabelOriginal": "2/2/к",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Монгол Улсад үйлдвэрлэсэн брэнд бүтээгдэхүүнийг олон улсын болон бүс нутгийн хэмжээний үзэсгэлэн худалдаанд танилцуулах, сурталчлах боломжийг бүрдүүлж, экспортлох эрх зүйн орчныг бүрдүүлэх, дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.к"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_21",
+    "text": "Increase funding for commissioned research and experimental work by research institutes in order to introduce scientific advances and expand production volumes in the food and agriculture sectors.",
+    "textOriginal": "хүнс, хөдөө аж ахуйн салбарт шинжлэх ухааны ололтыг нэвтрүүлж, үйлдвэрлэлийн хэмжээг нэмэгдүүлэх зорилгоор эрдэм шинжилгээний хүрээлэнгээр захиалгат судалгаа, туршилтын ажил хийлгэх хөрөнгийг нэмэгдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "2.k Research and commissioned studies for food/agri sectors",
+    "sourceLabelOriginal": "2/2/л",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнс, хөдөө аж ахуйн салбарт шинжлэх ухааны ололтыг нэвтрүүлж, үйлдвэрлэлийн хэмжээг нэмэгдүүлэх зорилгоор эрдэм шинжилгээний хүрээлэнгээр захиалгат судалгаа, туршилтын ажил хийлгэх хөрөнгийг нэмэгдүүлэх",
+        "section": "Resolution 36 / Section 2 / 2.л"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_22",
+    "text": "Improve the use of crop-purpose land and expand its area: convert up to 200,000 hectares of new virgin land to cropland; bring rotational cropping areas up to 1.1 million hectares; expand irrigated cropland by 5,000 hectares; and align crop land with the State Land Management Plan.",
+    "textOriginal": "тариалангийн зориулалттай газар ашиглалтыг сайжруулах, талбайн хэмжээг нэмэгдүүлэх зорилгоор шинээр 200.0 мянган гектар хүртэл атар газрыг тариалангийн газарт шилжүүлэх, эргэлтийн талбайг 1.1 сая гектарт хүргэх, усалгаатай тариалангийн талбайг 5000 гектараар нэмэгдүүлэх, тариалангийн газрыг улсын газар зохион байгуулалтын төлөвлөгөөтэй уялдуулах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.a Convert 200,000 ha to cropland; 1.1M ha rotation",
+    "sourceLabelOriginal": "2/3/а",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "тариалангийн зориулалттай газар ашиглалтыг сайжруулах, талбайн хэмжээг нэмэгдүүлэх зорилгоор шинээр 200.0 мянган гектар хүртэл атар газрыг тариалангийн газарт шилжүүлэх, эргэлтийн талбайг 1.1 сая гектарт хүргэх, усалгаатай тариалангийн талбайг 5000 гектараар нэмэгдүүлэх, тариалангийн газрыг улсын газар зохион байгуулалтын төлөвлөгөөтэй уялдуулах",
+        "section": "Resolution 36 / Section 2 / 3.а"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_23",
+    "text": "Use and protect plant genetic resources; build up reserves of seeds of acclimatised varieties; establish a production system for the seeds of cereals, potato, vegetables, fruits and berries, and other useful cultivated crops; based on the Plant and Crop Research Institute, establish nationwide 15 seed farms (4 wheat, 2 fodder, 5 vegetable and 4 potato), and develop variety-testing activities on a scientific basis.",
+    "textOriginal": "ургамлын генетик нөөцийн ашиглалт, хамгаалалт, нутагшсан сортын үрийн нөөц бүрдүүлэх, үр тариа, төмс, хүнсний ногоо, жимс, жимсгэнэ болон ашигт таримлын үр үйлдвэрлэлийн тогтолцоог бүрдүүлэх, Ургамал, газар тариалангийн хүрээлэнгийн үйл ажиллагаанд тулгуурлан улсын хэмжээнд улаан буудайн 4, тэжээлийн 2, хүнсний ногооны 5, төмсний 4, нийт 15 үрийн аж ахуйг байгуулах, сорт сорилтын үйл ажиллагааг шинжлэх ухааны үндэслэлтэйгээр хөгжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.b 15 seed farms (4 wheat / 2 fodder / 5 vegetable / 4 potato)",
+    "sourceLabelOriginal": "2/3/б",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "ургамлын генетик нөөцийн ашиглалт, хамгаалалт, нутагшсан сортын үрийн нөөц бүрдүүлэх, үр тариа, төмс, хүнсний ногоо, жимс, жимсгэнэ болон ашигт таримлын үр үйлдвэрлэлийн тогтолцоог бүрдүүлэх, Ургамал, газар тариалангийн хүрээлэнгийн үйл ажиллагаанд тулгуурлан улсын хэмжээнд улаан буудайн 4, тэжээлийн 2, хүнсний ногооны 5, төмсний 4, нийт 15 үрийн аж ахуйг байгуулах, сорт сорилтын үйл ажиллагааг шинжлэх ухааны үндэслэлтэйгээр хөгжүүлэх",
+        "section": "Resolution 36 / Section 2 / 3.б"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_24",
+    "text": "Apply the \"Mongolia Crop-Farming System\" technological documentation as the standard; reduce soil degradation; protect and improve soil fertility; introduce advanced technology with proper crop rotation; and renew technology and equipment accordingly.",
+    "textOriginal": "“Монгол Улсад газар тариалан эрхлэх систем” технологийн баримт бичгийг мөрдлөг болгож, хөрсний доройтлыг бууруулах, үржил шимийг хамгаалах, сайжруулах, зохистой ээлжлэн тариалалт бүхий дэвшилтэт технологи нэвтрүүлэх, түүнд нийцсэн техник, технологийн шинэчлэл хийх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.c Implement Mongolia Crop System technical documentation",
+    "sourceLabelOriginal": "2/3/в",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "“Монгол Улсад газар тариалан эрхлэх систем” технологийн баримт бичгийг мөрдлөг болгож, хөрсний доройтлыг бууруулах, үржил шимийг хамгаалах, сайжруулах, зохистой ээлжлэн тариалалт бүхий дэвшилтэт технологи нэвтрүүлэх, түүнд нийцсэн техник, технологийн шинэчлэл хийх",
+        "section": "Resolution 36 / Section 2 / 3.в"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_25",
+    "text": "Increase fodder cultivation and production, and provide organisational and financial support to bring the domestic supply of fodder required by intensive livestock and auxiliary farms up to 1.9 million tons.",
+    "textOriginal": "тэжээлийн тариалалт, үйлдвэрлэлийг нэмэгдүүлэх, эрчимжсэн мал аж ахуй, туслах аж ахуйд шаардагдах дотоодын хэрэгцээт тэжээлийн хангамжийг 1.9 сая тоннд хүргэхэд зохион байгуулалт болон санхүүгийн дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.d Fodder production to 1.9 million tons",
+    "sourceLabelOriginal": "2/3/г",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "тэжээлийн тариалалт, үйлдвэрлэлийг нэмэгдүүлэх, эрчимжсэн мал аж ахуй, туслах аж ахуйд шаардагдах дотоодын хэрэгцээт тэжээлийн хангамжийг 1.9 сая тоннд хүргэхэд зохион байгуулалт болон санхүүгийн дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 3.г"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_26",
+    "text": "Expand greenhouse production up to 270 hectares; plan and implement policies and activities to supply the population sustainably with fresh-harvest vegetables year-round; and build a 50-hectare winter-greenhouse complex farm in regions with sufficient heat supply and infrastructure.",
+    "textOriginal": "хүлэмжийн аж ахуйн үйлдвэрлэлийг 270 гектар хүртэл нэмэгдүүлэн хөгжүүлж, хүн амыг жилийн туршид шинэ ургацын ногоогоор тогтвортой хангахад чиглэсэн бодлого, үйл ажиллагааг төлөвлөн хэрэгжүүлэх, дулааны хангамж, дэд бүтэц бүхий бүс нутгуудад 50 гектар өвлийн хүлэмжийн цогцолбор аж ахуй байгуулах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.e Expand greenhouses to 270 ha; 50 ha winter complex",
+    "sourceLabelOriginal": "2/3/д",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүлэмжийн аж ахуйн үйлдвэрлэлийг 270 гектар хүртэл нэмэгдүүлэн хөгжүүлж, хүн амыг жилийн туршид шинэ ургацын ногоогоор тогтвортой хангахад чиглэсэн бодлого, үйл ажиллагааг төлөвлөн хэрэгжүүлэх, дулааны хангамж, дэд бүтэц бүхий бүс нутгуудад 50 гектар өвлийн хүлэмжийн цогцолбор аж ахуй байгуулах",
+        "section": "Resolution 36 / Section 2 / 3.д"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_27",
+    "text": "To replenish soil nutrient losses and increase crop yield and quality, develop domestic fertilizer production; further prepare the techno-economic feasibility for building nitrogen and phosphorus fertilizer plants linked to mining industries (to substitute imports and support exports), and ensure their implementation.",
+    "textOriginal": "хөрсний шим тэжээлийн бодисын алдагдлыг нөхөх, ургацын чанар, хэмжээг нэмэгдүүлэх зорилгоор дотооддоо бордооны үйлдвэрлэлийг хөгжүүлэх, улмаар импортыг орлох, экспортыг дэмжих чиглэлээр уул уурхайн үйлдвэрийг түшиглэн азот, фосфорын бордооны үйлдвэр байгуулах техник, эдийн засгийн үндэслэлийг боловсруулах, хэрэгжилтийг хангах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.f Domestic nitrogen and phosphorus fertilizer production",
+    "sourceLabelOriginal": "2/3/е",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хөрсний шим тэжээлийн бодисын алдагдлыг нөхөх, ургацын чанар, хэмжээг нэмэгдүүлэх зорилгоор дотооддоо бордооны үйлдвэрлэлийг хөгжүүлэх, улмаар импортыг орлох, экспортыг дэмжих чиглэлээр уул уурхайн үйлдвэрийг түшиглэн азот, фосфорын бордооны үйлдвэр байгуулах техник, эдийн засгийн үндэслэлийг боловсруулах, хэрэгжилтийг хангах",
+        "section": "Resolution 36 / Section 2 / 3.е"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_28",
+    "text": "Focus on expanding the cultivation of all types of grains, sugar beet, and other useful crops; establish an optimal financing and credit-disbursement system; and provide policy support.",
+    "textOriginal": "бүх төрлийн будаа, чихрийн манжин, бусад ашигт таримлын тариалалтыг нэмэгдүүлэхэд анхаарч, шаардлагатай санхүүжилт, зээл олголтын оновчтой тогтолцоог бий болгох, бодлогын дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.g Expand grains, sugar beet, other useful crops",
+    "sourceLabelOriginal": "2/3/ж",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "бүх төрлийн будаа, чихрийн манжин, бусад ашигт таримлын тариалалтыг нэмэгдүүлэхэд анхаарч, шаардлагатай санхүүжилт, зээл олголтын оновчтой тогтолцоог бий болгох, бодлогын дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 3.ж"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_29",
+    "text": "Increase, on a zoned basis, standards-compliant grain-elevator capacity by 20,000 tons and the capacity of mechanised warehouses and cellars for storing potato and vegetables by 50,000 tons.",
+    "textOriginal": "стандартын шаардлага хангасан үр тарианы элеваторын багтаамжийг 20.0 мянган тонноор, төмс, хүнсний ногоог хадгалах механикжсан агуулах, зоорины багтаамжийг 50.0 мянган тонноор тус тус бүсчилсэн байдлаар нэмэгдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.h Grain elevator +20,000 t; potato/vegetable storage +50,000 t",
+    "sourceLabelOriginal": "2/3/з",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "стандартын шаардлага хангасан үр тарианы элеваторын багтаамжийг 20.0 мянган тонноор, төмс, хүнсний ногоог хадгалах механикжсан агуулах, зоорины багтаамжийг 50.0 мянган тонноор тус тус бүсчилсэн байдлаар нэмэгдүүлэх",
+        "section": "Resolution 36 / Section 2 / 3.з"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_30",
+    "text": "To overcome natural and climatic risks, introduce eco-friendly, advanced water-efficient irrigation technologies; build new irrigation systems and rehabilitate and modernise existing ones; create the financing required to build water-storage ponds and reservoirs; and provide support.",
+    "textOriginal": "байгаль цаг уурын эрсдэлийг даван туулах зорилгоор экологид ээлтэй, усыг зөв зохистой ашиглах усалгааны дэвшилтэт технологи нэвтрүүлэх, услалтын системийг шинээр барих, сэргээн засварлах, шинэчлэх, усан сан бүхий ус хуримтлуулах хөв, цөөрөм байгуулахад шаардлагатай санхүүгийн эх үүсвэрийг бий болгох, дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.i Modern irrigation, reservoirs and water-harvesting ponds",
+    "sourceLabelOriginal": "2/3/и",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "байгаль цаг уурын эрсдэлийг даван туулах зорилгоор экологид ээлтэй, усыг зөв зохистой ашиглах усалгааны дэвшилтэт технологи нэвтрүүлэх, услалтын системийг шинээр барих, сэргээн засварлах, шинэчлэх, усан сан бүхий ус хуримтлуулах хөв, цөөрөм байгуулахад шаардлагатай санхүүгийн эх үүсвэрийг бий болгох, дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 3.и"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_31",
+    "text": "Establish agricultural agro-parks aimed at creating clusters that support the activities of factories, farmers, partnerships, cooperatives, and other business operations.",
+    "textOriginal": "үйлдвэр, фермер, нөхөрлөл, хоршоо, аж ахуйн үйл ажиллагааг дэмжсэн кластерыг бий болгоход чиглэсэн хөдөө аж ахуйн агро парк байгуулах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.j Agricultural agro-parks supporting cluster activity",
+    "sourceLabelOriginal": "2/3/к",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "үйлдвэр, фермер, нөхөрлөл, хоршоо, аж ахуйн үйл ажиллагааг дэмжсэн кластерыг бий болгоход чиглэсэн хөдөө аж ахуйн агро парк байгуулах",
+        "section": "Resolution 36 / Section 2 / 3.к"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_32",
+    "text": "Within the policy and activities to implement the \"Billion Trees\" national movement, establish a 30-hectare agroforestry farm in each aimag centre and a 10-hectare agroforestry farm in each soum centre; develop fruit and berry seedling-propagation centres and horticultural farms; and fence cropland and establish forest belts.",
+    "textOriginal": "“Тэрбум мод” үндэсний хөдөлгөөнийг хэрэгжүүлэх бодлого, үйл ажиллагааны хүрээнд аймгийн төвд 30 гектар, сумын төвд 10 гектар агро ойн аж ахуйг тус тус байгуулах, жимс, жимсгэнийн суулгац үржүүлгийн төв, цэцэрлэгийн аж ахуйг хөгжүүлэх, тариалангийн талбайг хашаажуулж ойн зурвас байгуулах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.k 30 ha aimag / 10 ha soum agroforestry under Billion Trees",
+    "sourceLabelOriginal": "2/3/л",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "“Тэрбум мод” үндэсний хөдөлгөөнийг хэрэгжүүлэх бодлого, үйл ажиллагааны хүрээнд аймгийн төвд 30 гектар, сумын төвд 10 гектар агро ойн аж ахуйг тус тус байгуулах, жимс, жимсгэнийн суулгац үржүүлгийн төв, цэцэрлэгийн аж ахуйг хөгжүүлэх, тариалангийн талбайг хашаажуулж ойн зурвас байгуулах",
+        "section": "Resolution 36 / Section 2 / 3.л"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_33",
+    "text": "Build a strategic reserve by procuring no less than 100,000 tons of food-grade wheat from each year's autumn harvest.",
+    "textOriginal": "жил бүрийн намрын ургацаас стратегийн нөөц бүрдүүлэх зорилгоор 100.0 мянгаас доошгүй тонн хүнсний улаан буудайг худалдан авах нөөц бүрдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "3.l Strategic wheat reserve of at least 100,000 tons",
+    "sourceLabelOriginal": "2/3/м",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "жил бүрийн намрын ургацаас стратегийн нөөц бүрдүүлэх зорилгоор 100.0 мянгаас доошгүй тонн хүнсний улаан буудайг худалдан авах нөөц бүрдүүлэх",
+        "section": "Resolution 36 / Section 2 / 3.м"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_34",
+    "text": "Establish a livestock-headcount balance appropriate to pasture-carrying capacity; protect animal health; increase yield per animal; improve livestock quality; and work jointly with local administrative-territorial units to expand herders' responsibilities and participation.",
+    "textOriginal": "бэлчээрийн даацад тохирсон малын тоо толгойн зохистой харьцааг бий болгох, малын эрүүл мэндийг хамгаалах, нэг малаас авах ашиг шимийг нэмэгдүүлэх, малыг чанаржуулах, малчдын үүрэг, оролцоог нэмэгдүүлэхэд засаг захиргаа, нутаг дэвсгэрийн нэгжтэй хамтран ажиллах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "4.a Pasture-carrying-capacity-aligned herd structure",
+    "sourceLabelOriginal": "2/4/а",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "бэлчээрийн даацад тохирсон малын тоо толгойн зохистой харьцааг бий болгох, малын эрүүл мэндийг хамгаалах, нэг малаас авах ашиг шимийг нэмэгдүүлэх, малыг чанаржуулах, малчдын үүрэг, оролцоог нэмэгдүүлэхэд засаг захиргаа, нутаг дэвсгэрийн нэгжтэй хамтран ажиллах",
+        "section": "Resolution 36 / Section 2 / 4.а"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_35",
+    "text": "Develop target markets for livestock and animal-origin raw materials and products; build optimal networks for procurement, primary processing and sales; establish and modernise model cooperatives; and broadly support the cooperative movement.",
+    "textOriginal": "мал, малын гаралтай түүхий эд, бүтээгдэхүүний зорилтот зах зээлийг хөгжүүлж, бэлтгэн нийлүүлэлт, анхан шатны боловсруулалт, борлуулалтын оновчтой сүлжээг бий болгох, загвар хоршоог байгуулах, шинэчлэх, хоршоолох хөдөлгөөнийг бүх талаар дэмжих",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "4.b Livestock supply chains, model cooperatives, sales networks",
+    "sourceLabelOriginal": "2/4/б",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "мал, малын гаралтай түүхий эд, бүтээгдэхүүний зорилтот зах зээлийг хөгжүүлж, бэлтгэн нийлүүлэлт, анхан шатны боловсруулалт, борлуулалтын оновчтой сүлжээг бий болгох, загвар хоршоог байгуулах, шинэчлэх, хоршоолох хөдөлгөөнийг бүх талаар дэмжих",
+        "section": "Resolution 36 / Section 2 / 4.б"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_36",
+    "text": "Develop intensive livestock husbandry near cities, settlements and crop-farming zones: establish 50,000 head of beef-breed cattle and 50,000 head of dairy-breed cattle herds, plus breeding-nucleus herds of meat and fine-wool sheep; procure embryos of high-productivity animals from abroad under a unified policy; introduce biotechnology advances into breeding and selection; protect the livestock gene pool; intensify breeding and breeding-technology work; support the operations of units in this field; and include the relevant financing in the budget.",
+    "textOriginal": "хот, суурин газрын ойролцоо, газар тариалангийн бүс нутагт эрчимжсэн мал аж ахуйг хөгжүүлэх, махны чиглэлийн үүлдрийн 50.0 мянган толгой, сүүний чиглэлийн үүлдрийн 50.0 мянган толгой үхрийн аж ахуй, махны болон нарийн ноост хонины үржлийн цөм сүргийн аж ахуйг бий болгох, өндөр ашиг шимт малын үр хөврөлийг гадаад улсаас нэгдсэн бодлогоор авах, үржил селекцийн ажилд биотехнологийн ололтыг нэвтрүүлэх, малын удмын санг хамгаалах, мал үржүүлэг, технологийн ажлыг эрчимжүүлэх, энэ чиглэлийн нэгжийн үйл ажиллагааг дэмжих, холбогдох санхүүжилтийг төсөвт тусгах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "4.c Intensive beef/dairy (50,000 head each); fine-wool breeding",
+    "sourceLabelOriginal": "2/4/в",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хот, суурин газрын ойролцоо, газар тариалангийн бүс нутагт эрчимжсэн мал аж ахуйг хөгжүүлэх, махны чиглэлийн үүлдрийн 50.0 мянган толгой, сүүний чиглэлийн үүлдрийн 50.0 мянган толгой үхрийн аж ахуй, махны болон нарийн ноост хонины үржлийн цөм сүргийн аж ахуйг бий болгох, өндөр ашиг шимт малын үр хөврөлийг гадаад улсаас нэгдсэн бодлогоор авах, үржил селекцийн ажилд биотехнологийн ололтыг нэвтрүүлэх, малын удмын санг хамгаалах, мал үржүүлэг, технологийн ажлыг эрчимжүүлэх, энэ чиглэлийн нэгжийн үйл ажиллагааг дэмжих, холбогдох санхүүжилтийг төсөвт тусгах",
+        "section": "Resolution 36 / Section 2 / 4.в"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_37",
+    "text": "Expand and newly establish pig, poultry, and young-sheep and cattle fattening operations; raise enterprise participation; and provide long-term investment and financial support.",
+    "textOriginal": "гахай, тахианы болон өсвөр хонь, үхэр бордох аж ахуйг өргөтгөх, шинээр байгуулахад аж ахуйн нэгжийн оролцоог нэмэгдүүлэх, урт хугацаатай хөрөнгө оруулалт, санхүүгийн дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "4.d Expand pig, poultry, fattening operations",
+    "sourceLabelOriginal": "2/4/г",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "гахай, тахианы болон өсвөр хонь, үхэр бордох аж ахуйг өргөтгөх, шинээр байгуулахад аж ахуйн нэгжийн оролцоог нэмэгдүүлэх, урт хугацаатай хөрөнгө оруулалт, санхүүгийн дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 4.г"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_38",
+    "text": "Develop beekeeping on a cooperative basis; increase production of its products; and create export opportunities.",
+    "textOriginal": "зөгийн аж ахуйг хоршоолсон хэлбэрээр хөгжүүлэх, түүний бүтээгдэхүүний үйлдвэрлэлийг нэмэгдүүлэх, экспортлох боломжийг бүрдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "4.e Cooperative beekeeping and exports",
+    "sourceLabelOriginal": "2/4/д",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "зөгийн аж ахуйг хоршоолсон хэлбэрээр хөгжүүлэх, түүний бүтээгдэхүүний үйлдвэрлэлийг нэмэгдүүлэх, экспортлох боломжийг бүрдүүлэх",
+        "section": "Resolution 36 / Section 2 / 4.д"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_39",
+    "text": "Rapidly take and implement comprehensive measures against highly contagious animal diseases; introduce advanced biopreparation production; build a vaccine cold-chain network; strengthen the capacity of diagnostic laboratories; reinforce the operations of veterinary-service units; and include the required financing in the state and local budgets.",
+    "textOriginal": "мал, амьтны гоц халдварт өвчинтэй тэмцэх цогц арга хэмжээг шуурхай авч хэрэгжүүлэх, био бэлдмэлийн дэвшилтэт үйлдвэрлэлийг нэвтрүүлэх, вакцины хүйтэн хэлхээний сүлжээг бий болгох, оношилгооны лабораторийг чадавхжуулах, мал эмнэлгийн үйлчилгээний нэгжийн үйл ажиллагааг бэхжүүлэх, шаардагдах санхүүжилтийг улсын болон орон нутгийн төсөвт тусгах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "4.f Veterinary epidemic control, vaccine cold chain, laboratories",
+    "sourceLabelOriginal": "2/4/е",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "мал, амьтны гоц халдварт өвчинтэй тэмцэх цогц арга хэмжээг шуурхай авч хэрэгжүүлэх, био бэлдмэлийн дэвшилтэт үйлдвэрлэлийг нэвтрүүлэх, вакцины хүйтэн хэлхээний сүлжээг бий болгох, оношилгооны лабораторийг чадавхжуулах, мал эмнэлгийн үйлчилгээний нэгжийн үйл ажиллагааг бэхжүүлэх, шаардагдах санхүүжилтийг улсын болон орон нутгийн төсөвт тусгах",
+        "section": "Resolution 36 / Section 2 / 4.е"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_40",
+    "text": "Improve the incentive system granted to products that domestically process food raw materials supplied from livestock and crop farming, manufacture finished products, and meet the quality, hygiene and safety requirements set for products sold on the domestic market.",
+    "textOriginal": "мал аж ахуй, газар тариалангаас нийлүүлсэн хүнсний түүхий эдийг дотооддоо боловсруулах, бэлэн бүтээгдэхүүнийг үйлдвэрлэх, дотоодын зах зээлд борлуулсан чанар, эрүүл ахуй, аюулгүйн үзүүлэлтийн шаардлага хангасан бүтээгдэхүүнд олгож байгаа урамшууллын тогтолцоог боловсронгуй болгох",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.a Incentives for domestically processed safe food products",
+    "sourceLabelOriginal": "2/5/а",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "мал аж ахуй, газар тариалангаас нийлүүлсэн хүнсний түүхий эдийг дотооддоо боловсруулах, бэлэн бүтээгдэхүүнийг үйлдвэрлэх, дотоодын зах зээлд борлуулсан чанар, эрүүл ахуй, аюулгүйн үзүүлэлтийн шаардлага хангасан бүтээгдэхүүнд олгож байгаа урамшууллын тогтолцоог боловсронгуй болгох",
+        "section": "Resolution 36 / Section 2 / 5.а"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_41",
+    "text": "Newly establish and expand plants for children's food, dairy, vegetables, fruits and berries; and provide financial support for sourcing core raw materials domestically.",
+    "textOriginal": "хүүхдийн хоол, сүү, ногоо, жимс, жимсгэнийн тэжээлийн үйлдвэрийг шинээр байгуулах, өргөтгөх, үндсэн түүхий эдийг дотоодоос бэлтгэн нийлүүлэхэд санхүүгийн дэмжлэг үзүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.b Children's food, dairy, vegetable and fruit plants",
+    "sourceLabelOriginal": "2/5/б",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүүхдийн хоол, сүү, ногоо, жимс, жимсгэнийн тэжээлийн үйлдвэрийг шинээр байгуулах, өргөтгөх, үндсэн түүхий эдийг дотоодоос бэлтгэн нийлүүлэхэд санхүүгийн дэмжлэг үзүүлэх",
+        "section": "Resolution 36 / Section 2 / 5.б"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_42",
+    "text": "Increase meal-cost allowances for students in kindergartens, general-education schools, vocational education-and-training institutions, and dormitories in line with nutritional needs and inflation, and ensure parental and guardian oversight and involvement.",
+    "textOriginal": "цэцэрлэг, ерөнхий боловсролын сургууль болон мэргэжлийн боловсрол, сургалтын байгууллага, дотуур байрны суралцагчийн хоолны зардлыг шим тэжээл, инфляцын түвшинтэй уялдуулан нэмэгдүүлэх, эцэг, эх, асран хамгаалагчийн хяналт, оролцоог хангах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.c Indexed meal allowances in schools and dormitories",
+    "sourceLabelOriginal": "2/5/в",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "цэцэрлэг, ерөнхий боловсролын сургууль болон мэргэжлийн боловсрол, сургалтын байгууллага, дотуур байрны суралцагчийн хоолны зардлыг шим тэжээл, инфляцын түвшинтэй уялдуулан нэмэгдүүлэх, эцэг, эх, асран хамгаалагчийн хяналт, оролцоог хангах",
+        "section": "Resolution 36 / Section 2 / 5.в"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_43",
+    "text": "Establish a system for financial support to set up new processing plants for powdered milk, food salt, edible oils, potato, various grains, and granulated sugar.",
+    "textOriginal": "хуурай сүү, хүнсний давс, хүнсний тос, төмс, төрөл бүрийн будаа, элсэн чихрийн боловсруулах үйлдвэрийг шинээр байгуулахад санхүүгийн дэмжлэг үзүүлэх тогтолцоог бүрдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.d Support new powdered-milk, salt, oil, potato, grain, sugar plants",
+    "sourceLabelOriginal": "2/5/г",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хуурай сүү, хүнсний давс, хүнсний тос, төмс, төрөл бүрийн будаа, элсэн чихрийн боловсруулах үйлдвэрийг шинээр байгуулахад санхүүгийн дэмжлэг үзүүлэх тогтолцоог бүрдүүлэх",
+        "section": "Resolution 36 / Section 2 / 5.г"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_44",
+    "text": "Establish a new transport fleet equipped with specialised food-purpose vehicles (trucks, wagons, aircraft); and build a system for transporting domestic and export/import food raw materials and products.",
+    "textOriginal": "хүнсний зориулалтын тусгай тээврийн хэрэгслээр /автомашин, вагон, онгоц/  тоноглогдсон тээврийн паркийг шинээр бий болгох, дотоодын болон экспорт, импортын хүнсний түүхий эд, бүтээгдэхүүнийг тээвэрлэх тогтолцоог бүрдүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.e Specialised food-transport fleet (trucks, wagons, aircraft)",
+    "sourceLabelOriginal": "2/5/д",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний зориулалтын тусгай тээврийн хэрэгслээр /автомашин, вагон, онгоц/  тоноглогдсон тээврийн паркийг шинээр бий болгох, дотоодын болон экспорт, импортын хүнсний түүхий эд, бүтээгдэхүүнийг тээвэрлэх тогтолцоог бүрдүүлэх",
+        "section": "Resolution 36 / Section 2 / 5.д"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_45",
+    "text": "Establish standards-compliant warehouses and cellars for storing food raw materials and products; build a unified registration system; support the supply of small- and medium-sized drying, freezing and preserving equipment; and develop domestic production of food packaging and containers.",
+    "textOriginal": "хүнсний түүхий эд, бүтээгдэхүүнийг стандартын шаардлага хангасан зориулалтын агуулах, зооринд хадгалах, бүртгэлийн нэгдсэн тогтолцоог бий болгох, хатаах, хөлдөөх, нөөшлөх бага, дунд оврын тоног төхөөрөмжийн нийлүүлэлтийг дэмжих, хүнсний сав, баглаа боодлын дотоодын үйлдвэрлэлийг хөгжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.f Standards-compliant food storage, drying/freezing/preserving equipment",
+    "sourceLabelOriginal": "2/5/е",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний түүхий эд, бүтээгдэхүүнийг стандартын шаардлага хангасан зориулалтын агуулах, зооринд хадгалах, бүртгэлийн нэгдсэн тогтолцоог бий болгох, хатаах, хөлдөөх, нөөшлөх бага, дунд оврын тоног төхөөрөмжийн нийлүүлэлтийг дэмжих, хүнсний сав, баглаа боодлын дотоодын үйлдвэрлэлийг хөгжүүлэх",
+        "section": "Resolution 36 / Section 2 / 5.е"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_46",
+    "text": "Make full use of the existing capacity of food-processing plants; renew equipment to improve product taste, quality and packaging; broaden product ranges and develop export-oriented brands; and support plants' stable operation with working capital.",
+    "textOriginal": "хүнсний боловсруулах үйлдвэрийн хүчин чадлыг бүрэн ашиглах, тоног төхөөрөмжийн шинэчлэл хийх замаар бүтээгдэхүүний амт чанар, сав, баглаа боодлыг сайжруулах, нэр төрлийг нэмэгдүүлэн экспортын зориулалтын брэндийг хөгжүүлэх, үйлдвэрийн үйл ажиллагааг нь тогтвортой явуулахад эргэлтийн хөрөнгөөр дэмжих",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.g Equipment upgrade, packaging quality, export-brand development",
+    "sourceLabelOriginal": "2/5/ж",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний боловсруулах үйлдвэрийн хүчин чадлыг бүрэн ашиглах, тоног төхөөрөмжийн шинэчлэл хийх замаар бүтээгдэхүүний амт чанар, сав, баглаа боодлыг сайжруулах, нэр төрлийг нэмэгдүүлэн экспортын зориулалтын брэндийг хөгжүүлэх, үйлдвэрийн үйл ажиллагааг нь тогтвортой явуулахад эргэлтийн хөрөнгөөр дэмжих",
+        "section": "Resolution 36 / Section 2 / 5.ж"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_47",
+    "text": "Support production with the aim of increasing food additives, biologically active food products, and functional food products.",
+    "textOriginal": "хүнсний нэмэлт, биологийн идэвхт хүнсний бүтээгдэхүүн, зохицуулах үйлчлэлтэй хүнсний бүтээгдэхүүнийг нэмэгдүүлэх зорилгоор үйлдвэрлэлийг дэмжих",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.h Functional foods, food additives, biologically active products",
+    "sourceLabelOriginal": "2/5/з",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хүнсний нэмэлт, биологийн идэвхт хүнсний бүтээгдэхүүн, зохицуулах үйлчлэлтэй хүнсний бүтээгдэхүүнийг нэмэгдүүлэх зорилгоор үйлдвэрлэлийг дэмжих",
+        "section": "Resolution 36 / Section 2 / 5.з"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_48",
+    "text": "Renew nationwide laboratory analysis methodologies to fully determine food-safety indicators; establish a system for pre-shipment laboratory analysis and inspection of export and import food raw materials and products; and take measures to strengthen the capacity of border and nationally accredited laboratories.",
+    "textOriginal": "улсын хэмжээнд лабораторийн шинжилгээний аргачлалыг шинэчлэх замаар хүнсний аюулгүйн үзүүлэлтийг бүрэн тодорхойлох, экспорт, импортын хүнсний түүхий эд, бүтээгдэхүүнд ачилтын өмнөх лабораторийн шинжилгээ, хяналт шалгалтыг хийх тогтолцоог бүрдүүлэх, хилийн болон улсын итгэмжлэгдсэн лабораторийг чадавхжуулах арга хэмжээг авч хэрэгжүүлэх",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.i Lab methodology renewal and accredited border laboratories",
+    "sourceLabelOriginal": "2/5/и",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "улсын хэмжээнд лабораторийн шинжилгээний аргачлалыг шинэчлэх замаар хүнсний аюулгүйн үзүүлэлтийг бүрэн тодорхойлох, экспорт, импортын хүнсний түүхий эд, бүтээгдэхүүнд ачилтын өмнөх лабораторийн шинжилгээ, хяналт шалгалтыг хийх тогтолцоог бүрдүүлэх, хилийн болон улсын итгэмжлэгдсэн лабораторийг чадавхжуулах арга хэмжээг авч хэрэгжүүлэх",
+        "section": "Resolution 36 / Section 2 / 5.и"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "FSS_49",
+    "text": "Organize training, advocacy, and public-education activities on correct, healthy, and culturally appropriate food consumption.",
+    "textOriginal": "хоол, хүнсний зөв, зохистой, соёлтой хэрэглээний талаарх сургалт, сурталчилгаа, соён гэгээрүүлэх ажлыг зохион байгуулах",
+    "language": "mn",
+    "sourceDocument": "FSS",
+    "sourceLabel": "5.j Food-literacy and healthy-consumption awareness campaigns",
+    "sourceLabelOriginal": "2/5/к",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "хоол, хүнсний зөв, зохистой, соёлтой хэрэглээний талаарх сургалт, сурталчилгаа, соён гэгээрүүлэх ажлыг зохион байгуулах",
+        "section": "Resolution 36 / Section 2 / 5.к"
+      }
+    ],
+    "textCleanup": "verbatim"
   }
 ]
