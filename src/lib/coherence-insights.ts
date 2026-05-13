@@ -891,6 +891,11 @@ function detectSectorCoverageGap(args: DetectArgs): Insight | null {
     if (c.taxonomyType !== "sector" || !c.isPrimary) continue;
     const t = targetById.get(c.targetId);
     if (!t) continue;
+    // The "BTR" literal is the repo-wide identifier for reported-action
+    // pseudo-targets (matches `target-atlas.tsx`, `data-sources-overview.tsx`,
+    // and `policy-coherence-explorer.tsx`). Adaptation actions also carry
+    // sourceDocument "BTR" but classify to adaptation_goal, not sector, so
+    // they are filtered out by the taxonomyType check above.
     if (t.sourceDocument === "BTR") {
       btrCount.set(c.categoryId, (btrCount.get(c.categoryId) ?? 0) + 1);
     } else {
