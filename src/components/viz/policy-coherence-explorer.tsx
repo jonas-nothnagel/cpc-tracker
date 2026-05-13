@@ -25,9 +25,11 @@ import {
 import {
   alphaForBudgetShare,
   computeBudgetByGlobeCategory,
+  computeProgrammesByCategory,
   formatBudgetValue,
   type CategoryBudgetEntry,
   type CategoryBudgetSummary,
+  type CategoryProgramme,
 } from "@/lib/coherence-budget";
 import {
   detectInsights,
@@ -2113,6 +2115,10 @@ interface CategoryPanelProps {
   budgetCurrency?: string;
   /** Reporting period from berData (e.g. {start: 2020, end: 2024}). */
   budgetPeriod?: { start: number; end: number };
+  /** Programmes contributing positive spend to this primary GLOBE category,
+   *  sorted desc. Empty when the category has no contributors or when the
+   *  parent panel is rendering for a non-GLOBE lens. */
+  programmes?: CategoryProgramme[];
 }
 
 function CategoryPanel({
@@ -2125,12 +2131,18 @@ function CategoryPanel({
   budget,
   budgetCurrency,
   budgetPeriod,
+  programmes,
   onSelectTarget,
   onSelectPair,
   onSelectCategory,
   onSetFilter,
   countryConfig,
 }: CategoryPanelProps) {
+  /** Contributing-programmes disclosure starts collapsed on every panel open.
+   *  Component-local state is enough because the panel re-mounts on each
+   *  category click via `key={focalGroup.id}` upstream — opening Pollution
+   *  then Sustainable use gives the latter a fresh closed disclosure. */
+  const [programmesOpen, setProgrammesOpen] = useState(false);
   const targetIdsInGroup = useMemo(
     () => new Set(nodes.filter((n) => n.groupId === group.id).map((n) => n.id)),
     [nodes, group.id],
@@ -2297,6 +2309,76 @@ function CategoryPanel({
                 </span>
               </span>
             </div>
+            {programmes && programmes.length > 0 && (
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={() => setProgrammesOpen((v) => !v)}
+                  className="inline-flex items-center gap-1 text-[11px] text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors"
+                  aria-expanded={programmesOpen}
+                >
+                  <span aria-hidden="true" className="text-[var(--undp-gray)]">
+                    {programmesOpen ? "▾" : "▸"}
+                  </span>
+                  <span>
+                    Contributing programmes
+                    <span className="text-[var(--undp-gray)]">
+                      {" · "}
+                      {programmes.length}
+                    </span>
+                  </span>
+                </button>
+                {programmesOpen && (() => {
+                  // List is pre-sorted desc by the helper, so the first
+                  // entry's spend is the max. Each row's bar width scales
+                  // against this so the biggest contributor fills the
+                  // available width and smaller programmes shrink
+                  // proportionally — quick visual sense of "this one
+                  // dominates" without the user having to read the digits.
+                  const maxBudget = programmes[0]?.totalBudget ?? 0;
+                  return (
+                    <ul className="mt-1.5 space-y-1">
+                      {programmes.map((p) => {
+                        const widthPct =
+                          maxBudget > 0
+                            ? (p.totalBudget / maxBudget) * 100
+                            : 0;
+                        return (
+                          <li
+                            key={p.code}
+                            title={`${p.subcategoryId} ${p.subcategoryName}`}
+                          >
+                            <div className="flex items-baseline gap-2 text-[11px]">
+                              <span className="text-[var(--undp-gray)] tabular-nums shrink-0">
+                                {p.code}
+                              </span>
+                              <span className="text-[var(--undp-black)] truncate flex-1">
+                                {p.name}
+                              </span>
+                              <span className="text-[var(--undp-black)] font-medium tabular-nums shrink-0">
+                                {formatBudgetValue(
+                                  p.totalBudget,
+                                  budgetCurrency ?? "",
+                                )}
+                              </span>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              className="h-[3px] mt-0.5 rounded-sm"
+                              style={{
+                                width: `${widthPct}%`,
+                                backgroundColor: BUDGET_WEDGE_COLOR,
+                                opacity: 0.6,
+                              }}
+                            />
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  );
+                })()}
+              </div>
+            )}
           </div>
         )}
         <div className="grid grid-cols-3 gap-4">
@@ -2725,6 +2807,25 @@ export function PolicyCoherenceExplorer({
     for (const e of budgetSummary.entries) m.set(e.categoryId, e);
     return m;
   }, [budgetSummary]);
+
+  /**
+   * For each primary GLOBE category, the BER programmes contributing positive
+   * spend (sorted desc). The category detail panel uses this to render the
+   * "Contributing programmes" disclosure so a user clicking the Pollution
+   * wedge can immediately see which programmes drive that 58% share — without
+   * navigating away to the Financing Coherence beta tab. Independent of
+   * `budgetSummary` since this is a structural map and never depends on
+   * visible-target scoping (programmes live in BER, not policy targets).
+   */
+  const programmesByCategoryId = useMemo(
+    () =>
+      computeProgrammesByCategory({
+        berData: berData ?? null,
+        globeSubcategories: globeSubcategories ?? [],
+        classifications,
+      }),
+    [berData, globeSubcategories, classifications],
+  );
 
   /** True iff the shading should actually paint right now: data present,
    *  toggle on, and the user is on the GLOBE lens. Used by the arc renderer
@@ -4596,6 +4697,11 @@ export function PolicyCoherenceExplorer({
                 }
                 budgetCurrency={budgetSummary?.currency}
                 budgetPeriod={budgetSummary?.period}
+                programmes={
+                  groupMode === "globe"
+                    ? programmesByCategoryId.get(focalGroup.id) ?? []
+                    : []
+                }
               />
             ) : (
               <EmptyPanel
