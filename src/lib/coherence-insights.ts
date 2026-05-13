@@ -17,6 +17,7 @@
 
 import { isContradiction } from "@/types";
 import { getDocLabel } from "@/lib/utils";
+import { aggregateAnchorCoverage } from "@/lib/vision-anchor";
 import type {
   AlignmentResult,
   BtrData,
@@ -30,6 +31,8 @@ import type { ChatAction, ChatTaxCategory } from "@/lib/coherence-chat";
 
 type InsightPattern =
   | "implementation_contradiction"
+  | "anchor_support_gap"
+  | "sector_coverage_gap"
   | "paradox"
   | "orphan"
   | "zero_conflict_topic"
@@ -90,6 +93,10 @@ export function detectInsights(args: DetectArgs): Insight[] {
   const out: Insight[] = [];
   const implContradiction = detectImplementationContradiction(args);
   if (implContradiction) out.push(implContradiction);
+  const anchorGap = detectAnchorSupportGap(args);
+  if (anchorGap) out.push(anchorGap);
+  const sectorGap = detectSectorCoverageGap(args);
+  if (sectorGap) out.push(sectorGap);
   const paradox = detectParadox(args);
   if (paradox) out.push(paradox);
   const cluster = detectTensionCluster(args);
@@ -807,6 +814,112 @@ function detectQuantitativeCoverage(args: DetectArgs): Insight | null {
     pathway:
       "Many of the alignment and contradiction counts here may carry more interpretive weight than substantive policy conflict, given how many targets are direction-of-travel statements.",
     actions: [{ type: "set_mode", mode: "document" }],
+    filter: "all",
+  };
+}
+
+/**
+ * Anchor support gap: of all anchor targets (the long-term-vision document's
+ * targets, e.g. Mongolia's Vision 2050 pillars), surface the one with the
+ * fewest strong supporting alignments from other plans. Picks up the TAG/Lea
+ * ask to frame coherence around the national plan.
+ *
+ * TODO(anchor-config): the "anchor doc" is currently set per-country via
+ * `countryConfig.anchorDocType`. A future iteration may let users pick an
+ * anchor at runtime, or anchor against multiple docs at once, in which
+ * case this detector will need to broaden its input. Keep the logic close
+ * to `aggregateAnchorCoverage` so a config change here propagates cleanly.
+ */
+function detectAnchorSupportGap(args: DetectArgs): Insight | null {
+  const { targets, alignment, countryConfig } = args;
+  const anchorDocType = countryConfig?.anchorDocType;
+  if (!anchorDocType) return null;
+
+  const { rows } = aggregateAnchorCoverage(targets, alignment, anchorDocType);
+  // Need at least three anchor targets to call something the "least
+  // supported pillar" meaningfully; one or two pillars can't be ranked.
+  if (rows.length < 3) return null;
+
+  const sorted = [...rows].sort(
+    (a, b) =>
+      a.mediumOrHighCount - b.mediumOrHighCount ||
+      a.distinctDocsWithMediumPlus - b.distinctDocsWithMediumPlus,
+  );
+  const worst = sorted[0];
+  // Only flag when the worst case is genuinely sparse (0-2 strong
+  // alignments). If every pillar is well-covered, no "gap" to surface.
+  if (worst.mediumOrHighCount > 2) return null;
+
+  const docLabel = getDocLabel(
+    countryConfig ?? null,
+    anchorDocType as PolicyDocumentType,
+  );
+  const pillarLabel = `${docLabel}: ${worst.anchor.sourceLabel}`;
+  const n = worst.mediumOrHighCount;
+  const supporters =
+    n === 0
+      ? "no strong supporting alignments from other plans"
+      : n === 1
+        ? "only 1 strong alignment from other plans"
+        : `only ${n} strong alignments from other plans`;
+  return {
+    pattern: "anchor_support_gap",
+    callout: `${pillarLabel} has ${supporters}, the least-supported pillar in this dataset.`,
+    pathway:
+      "Reviewing whether existing targets in other plans could be mapped to this pillar may surface under-claimed alignment with the national plan.",
+    actions: [{ type: "select_target", targetId: worst.anchor.id }],
+    filter: "all",
+  };
+}
+
+/**
+ * Sector coverage gap: a policy/IPCC sector that carries policy targets but
+ * has no reported actions in BTR. Surfaces the largest plan-vs-practice
+ * divergence at sector scale. Adaptation actions classify to a separate
+ * taxonomy (adaptation_goal) and won't appear here, so the signal is
+ * mitigation-shaped by design.
+ */
+function detectSectorCoverageGap(args: DetectArgs): Insight | null {
+  const { targets, classifications, sectors, btrData } = args;
+  if (!btrData) return null;
+  if (sectors.length === 0) return null;
+
+  const targetById = new Map(targets.map((t) => [t.id, t]));
+  const policyCount = new Map<string, number>();
+  const btrCount = new Map<string, number>();
+  for (const c of classifications) {
+    if (c.taxonomyType !== "sector" || !c.isPrimary) continue;
+    const t = targetById.get(c.targetId);
+    if (!t) continue;
+    // The "BTR" literal is the repo-wide identifier for reported-action
+    // pseudo-targets (matches `target-atlas.tsx`, `data-sources-overview.tsx`,
+    // and `policy-coherence-explorer.tsx`). Adaptation actions also carry
+    // sourceDocument "BTR" but classify to adaptation_goal, not sector, so
+    // they are filtered out by the taxonomyType check above.
+    if (t.sourceDocument === "BTR") {
+      btrCount.set(c.categoryId, (btrCount.get(c.categoryId) ?? 0) + 1);
+    } else {
+      policyCount.set(c.categoryId, (policyCount.get(c.categoryId) ?? 0) + 1);
+    }
+  }
+  let best: { id: string; name: string; policy: number } | null = null;
+  for (const s of sectors) {
+    const p = policyCount.get(s.id) ?? 0;
+    const b = btrCount.get(s.id) ?? 0;
+    if (p < 2) continue;
+    if (b !== 0) continue;
+    if (!best || p > best.policy) best = { id: s.id, name: s.name, policy: p };
+  }
+  if (!best) return null;
+  return {
+    pattern: "sector_coverage_gap",
+    callout: `Sector "${best.name}" carries ${best.policy} policy targets but no reported actions in BTR, the largest plan-vs-practice gap by sector in this dataset.`,
+    pathway:
+      "Cross-checking whether the gap reflects missing implementation or missing transparency reporting may help close the loop.",
+    actions: [
+      { type: "set_mode", mode: "sector" },
+      { type: "focus_category", categoryId: best.id },
+    ],
     filter: "all",
   };
 }
