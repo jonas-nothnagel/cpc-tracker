@@ -111,11 +111,37 @@ export function buildChatRequest({
   countryConfig,
   history,
 }: BuildChatRequestArgs) {
-  const targetMap = new Map(targets.map((t) => [t.id, t]));
-
-  const rankings = computeRankings(alignment, targetMap, countryConfig);
-
   const visibleDocs = availableDocs.filter((d) => !hiddenDocs.has(d));
+  const visibleDocSet = new Set(visibleDocs);
+
+  // Adaptive payload scoping: when the user toggles documents OFF on the
+  // wheel, drop their targets and pairs from the chat context. The chat
+  // answers over what the user can see, not the full corpus. Reduces
+  // payload proportionally on large datasets (Panama can drop several
+  // thousand high-alignment pairs when half the docs are hidden) and
+  // honours the user's intent to focus.
+  const visibleTargets = targets.filter((t) =>
+    visibleDocSet.has(t.sourceDocument),
+  );
+  const visibleTargetIds = new Set(visibleTargets.map((t) => t.id));
+  const visibleAlignment = alignment.filter(
+    (a) =>
+      visibleTargetIds.has(a.targetAId) && visibleTargetIds.has(a.targetBId),
+  );
+
+  const targetMap = new Map(visibleTargets.map((t) => [t.id, t]));
+  const rankings = computeRankings(visibleAlignment, targetMap, countryConfig);
+
+  // Document-type registry from the country config so the chat can render
+  // full names alongside short ids. Falls back to the short id where the
+  // config doesn't carry a fullLabel.
+  const documentTypes = availableDocs.map((d) => {
+    const cfg = countryConfig?.documentTypes?.find((dt) => dt.id === d);
+    return {
+      id: d,
+      fullLabel: cfg?.fullLabel ?? cfg?.mediumLabel ?? d,
+    };
+  });
   const groups = availableDocs.map((d) => ({
     id: d,
     label: getDocLabel(countryConfig ?? null, d),
@@ -132,13 +158,11 @@ export function buildChatRequest({
     btrData,
   );
 
-  // Full target list, full text. Earlier we capped text at 350 chars but
-  // empirically Mongolia's targets fit in full at negligible token cost
-  // (p90 = 307 chars). Sending the full text lets the model quote and reason
-  // accurately rather than from a snipped headline. For high-volume corpora
-  // (Panama-scale, 368 targets up to 4760 chars) this can grow to ~50K
-  // tokens; the size-adaptive payload assembler (planned) trims elsewhere.
-  const targetIndex = targets.map((t) => {
+  // Full target list, full text, scoped to visible docs. Earlier we capped
+  // text at 350 chars but empirically Mongolia's targets fit in full at
+  // negligible token cost (p90 = 307 chars). Sending the full text lets the
+  // model quote and reason accurately rather than from a snipped headline.
+  const targetIndex = visibleTargets.map((t) => {
     const primary = primaryByTarget.get(t.id);
     return {
       id: t.id,
@@ -172,12 +196,11 @@ export function buildChatRequest({
   };
 
   // Pair rationales: only diagnostic pairs (contradictions + strong
-  // alignments). Medium/low alignments aren't what the chat is asked about
-  // and would balloon the prompt, the user can still see every pair via
-  // the wheel. Rationale text capped at 600 chars (median rationale is ~492
-  // and p90 is 565, so this preserves almost all rationale content without
-  // unbounded growth on long edge cases).
-  const pairs = alignment
+  // alignments), and only within visible docs. Medium/low alignments
+  // aren't what the chat is asked about and would balloon the prompt; the
+  // user can still see every pair via the wheel. Rationale text capped at
+  // 600 chars (median rationale is ~492 and p90 is 565).
+  const pairs = visibleAlignment
     .filter((a) => isDiagnostic(a.alignment))
     .map((a) => ({
       a: a.targetAId,
@@ -195,6 +218,7 @@ export function buildChatRequest({
       scope: "all_documents" as ChatScope,
       groups,
       visibleDocs,
+      documentTypes,
       targetIndex,
       taxonomies,
       pairs,
