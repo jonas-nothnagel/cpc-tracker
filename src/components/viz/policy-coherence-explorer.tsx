@@ -23,6 +23,13 @@ import {
   type ChatSuggestion,
 } from "@/lib/coherence-chat";
 import {
+  alphaForBudgetShare,
+  computeBudgetByGlobeCategory,
+  formatBudgetValue,
+  type CategoryBudgetEntry,
+  type CategoryBudgetSummary,
+} from "@/lib/coherence-budget";
+import {
   detectInsights,
   type Insight,
 } from "@/lib/coherence-insights";
@@ -34,8 +41,10 @@ import {
   OriginalLanguageChip,
 } from "./target-text";
 import type {
+  BerData,
   BtrData,
   CountryConfig,
+  GlobeSubcategory,
   Target,
   PolicyDocumentType,
   AlignmentResult,
@@ -103,6 +112,15 @@ const SECTOR_PAL = [
   "#0468b1", "#0d9488", "#b45309", "#7c3aed",
   "#dc2626", "#059669", "#d97706", "#6366f1",
 ];
+
+// Single hue for the Biodiversity Budget wedges. Cyan-700 (#0e7490) is a
+// saturated teal-blue that sits between UNDP blue (#0468b1) and the teal
+// already in SECTOR_PAL (#0d9488), so it does not collide with any category
+// rim colour at the wheel's outer band. At full alpha it reads as a clear
+// hue (the user explicitly did not want black or grey here); at lower alpha
+// it fades through a recognizable colour ramp, so opacity alone carries the
+// budget-share signal across all funded categories.
+const BUDGET_WEDGE_COLOR = "#0e7490";
 
 // ─── Layout helpers ─────────────────────────────────────────────────
 
@@ -1368,6 +1386,22 @@ function ChatBar({
             </span>
             <span className="flex-1">{currentInsight.callout}</span>
           </p>
+          {/* Optional hedged pathway hint. Rendered as a quiet italic line
+           *  beneath the callout with a small ↪ marker, no chip / border,
+           *  so it reads as a secondary thought rather than a separate UI
+           *  block. Only some detectors emit a pathway; absence renders
+           *  exactly as before. */}
+          {currentInsight.pathway && (
+            <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
+              <span
+                aria-hidden="true"
+                className="mr-1.5 not-italic text-amber-700/70"
+              >
+                ↪
+              </span>
+              {currentInsight.pathway}
+            </p>
+          )}
           {/* Show me lives inside the bubble at bottom-right as a text-link
            *  with arrow. Picks up the bubble's amber accent so it reads as
            *  the bubble's own action rather than a stacked extra chrome. */}
@@ -2072,6 +2106,13 @@ interface CategoryPanelProps {
   onSelectCategory: (id: string) => void;
   onSetFilter: (filter: AlignFilter) => void;
   countryConfig?: CountryConfig | null;
+  /** Tagged BER spend for this category (primary GLOBE only). Parent passes
+   *  null on non-GLOBE lenses so the rows render only where the data maps. */
+  budget?: CategoryBudgetEntry | null;
+  /** Currency string from berData, used to format the absolute amount. */
+  budgetCurrency?: string;
+  /** Reporting period from berData (e.g. {start: 2020, end: 2024}). */
+  budgetPeriod?: { start: number; end: number };
 }
 
 function CategoryPanel({
@@ -2081,6 +2122,9 @@ function CategoryPanel({
   alignment,
   filter,
   onClose,
+  budget,
+  budgetCurrency,
+  budgetPeriod,
   onSelectTarget,
   onSelectPair,
   onSelectCategory,
@@ -2215,6 +2259,46 @@ function CategoryPanel({
             ×
           </button>
         </div>
+        {budget && (
+          <div className="text-[11px] text-[var(--undp-black)] leading-snug mb-3 space-y-0.5">
+            <div className="flex items-baseline gap-2">
+              <span className="text-[var(--undp-gray)] w-32 shrink-0">
+                Tagged BER spend
+              </span>
+              <span className="tabular-nums">
+                <span className="font-medium">
+                  {formatBudgetValue(
+                    budget.totalBudget,
+                    budgetCurrency ?? "",
+                  )}
+                </span>
+                <span className="text-[var(--undp-gray)]">
+                  {" · "}
+                  {(budget.shareOfTotalBudget * 100).toFixed(1)}% share
+                </span>
+                {budgetPeriod && (
+                  <span className="text-[var(--undp-gray)]">
+                    {" "}({budgetPeriod.start}
+                    {"–"}
+                    {budgetPeriod.end})
+                  </span>
+                )}
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-[var(--undp-gray)] w-32 shrink-0">
+                Policy targets
+              </span>
+              <span className="tabular-nums">
+                <span className="font-medium">{budget.targetCount}</span>
+                <span className="text-[var(--undp-gray)]">
+                  {" · "}
+                  {(budget.shareOfTargets * 100).toFixed(0)}% share
+                </span>
+              </span>
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-3 gap-4">
           <Stat
             label="Targets"
@@ -2448,9 +2532,14 @@ interface PolicyCoherenceExplorerProps {
   alignment: AlignmentResult[];
   sectors: TaxCategory[];
   globeCategories: TaxCategory[];
+  globeSubcategories?: GlobeSubcategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
   btrData?: BtrData | null;
+  /** Country BER (Biodiversity Expenditure Review) data. When present and
+   *  classifications cover GLOBE subcategories, the wheel exposes the
+   *  Biodiversity Budget overlay and the chat receives budget context. */
+  berData?: BerData | null;
   focusTargetId?: string | null;
   countryConfig?: CountryConfig | null;
 }
@@ -2460,15 +2549,26 @@ export function PolicyCoherenceExplorer({
   alignment,
   sectors,
   globeCategories,
+  globeSubcategories,
   classifications,
   nr7Data,
   btrData,
+  berData,
   focusTargetId,
   countryConfig,
 }: PolicyCoherenceExplorerProps) {
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
   const [filter, setFilter] = useState<AlignFilter>("high_contra");
   const [actionTypeFilter, setActionTypeFilter] = useState<ActionTypeFilter>("all");
+  /**
+   * Budget overlay state: orthogonal to groupMode. When ON, GLOBE-grouped
+   * arcs are shaded by their share of total tagged BER spend; the toggle
+   * shortcut also snaps groupMode to "globe" so the visual lands somewhere
+   * the data maps. Lens changes while ON are honoured — the shading simply
+   * stops applying on non-GLOBE lenses (no per-document budget mapping
+   * exists in v1) but the state survives so a return to GLOBE re-paints.
+   */
+  const [budgetOverlay, setBudgetOverlay] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [comparedPair, setComparedPair] = useState<{
@@ -2588,6 +2688,49 @@ export function PolicyCoherenceExplorer({
       ),
     [alignment, visibleTargetIds],
   );
+
+  /**
+   * Per-primary-GLOBE budget summary, scoped to currently-visible targets.
+   * Null when the country has no BER data, no GLOBE subcategory taxonomy, or
+   * no positive expenditure — the toggle and chat block both key off this
+   * single signal. Recomputes on doc-visibility changes so target counts and
+   * pair counts reflect the current scope (budget totals themselves don't
+   * depend on visible targets, but co-locating the rollup keeps one source
+   * of truth per render).
+   */
+  const budgetSummary = useMemo<CategoryBudgetSummary | null>(
+    () =>
+      computeBudgetByGlobeCategory({
+        berData: berData ?? null,
+        globeCategories,
+        globeSubcategories: globeSubcategories ?? [],
+        classifications,
+        targets: visibleTargets,
+        alignment: visibleAlignment,
+      }),
+    [
+      berData,
+      globeCategories,
+      globeSubcategories,
+      classifications,
+      visibleTargets,
+      visibleAlignment,
+    ],
+  );
+
+  /** O(1) lookup table for the arc-shading and detail-panel paths. */
+  const budgetByCategoryId = useMemo(() => {
+    const m = new Map<string, CategoryBudgetEntry>();
+    if (!budgetSummary) return m;
+    for (const e of budgetSummary.entries) m.set(e.categoryId, e);
+    return m;
+  }, [budgetSummary]);
+
+  /** True iff the shading should actually paint right now: data present,
+   *  toggle on, and the user is on the GLOBE lens. Used by the arc renderer
+   *  and by the toggle's visual "active" state. */
+  const budgetShadingActive =
+    budgetOverlay && groupMode === "globe" && !!budgetSummary;
 
   const activeId = selectedId ?? hoveredId;
 
@@ -2857,6 +3000,7 @@ export function PolicyCoherenceExplorer({
           classifications,
           sectors,
           globeCategories,
+          budgetSummary,
           btrData,
           availableDocs,
           hiddenDocs,
@@ -2946,6 +3090,7 @@ export function PolicyCoherenceExplorer({
       history,
       sectors,
       targets,
+      budgetSummary,
     ],
   );
 
@@ -2961,18 +3106,14 @@ export function PolicyCoherenceExplorer({
   const exampleQueries = useMemo(
     () =>
       pickExampleQueries({
-        visibleDocs: visibleDocsForExamples,
         globeCategoriesAvailable: globeCategories.length > 0,
         sectorsAvailable: sectors.length > 0,
-        hasFood: visibleDocsForExamples.includes("FSS"),
-        hasBiodiversity: visibleDocsForExamples.includes("NBSAP"),
-        hasClimate: visibleDocsForExamples.includes("NDC"),
         hasAdaptation:
           visibleDocsForExamples.includes("NAP") ||
           (btrData?.adaptationGoals?.length ?? 0) > 0,
         hasTensions: visibleAlignment.some((a) => isContradiction(a.alignment)),
         hasBtr: targets.some((t) => t.sourceDocument === "BTR"),
-        country: targets[0]?.country ?? null,
+        hasBudget: !!budgetSummary,
       }),
     [
       visibleDocsForExamples,
@@ -2981,6 +3122,7 @@ export function PolicyCoherenceExplorer({
       visibleAlignment,
       btrData,
       targets,
+      budgetSummary,
     ],
   );
 
@@ -3308,6 +3450,22 @@ export function PolicyCoherenceExplorer({
         .innerRadius(INNER_R)
         .outerRadius(OUTER_R)
         .cornerRadius(3),
+    [],
+  );
+
+  // Wedge generator for the Biodiversity Budget overlay. Annular sectors fill
+  // the interior from outside the centre text block (r=58 — the centre stack
+  // is now narrow because "157 targets" and "7998 aligned" sit on two short
+  // rows instead of one wide one) to just inside the rim arc band (r=215).
+  // Same angular spans as the rim arcs (driven by target counts), so the
+  // wheel's spatial grouping is preserved while the wedge fill turns budget
+  // share into a visual the user can actually read.
+  const wedgeGen = useMemo(
+    () =>
+      d3Arc<{ startAngle: number; endAngle: number }>()
+        .innerRadius(58)
+        .outerRadius(215)
+        .padAngle(0.012),
     [],
   );
 
@@ -3641,6 +3799,52 @@ export function PolicyCoherenceExplorer({
         {/* Wheel container */}
         <div className="min-w-0 lg:col-span-8">
           <div className="bg-white border border-gray-100 rounded-lg p-4 h-full">
+            {/* Top-left budget overlay control. Only rendered when the country
+                has BER data classified to GLOBE subcategories. Clicking ON
+                snaps groupMode to "globe" so the shading actually paints;
+                clicking OFF stops painting but leaves the lens where it is. */}
+            {budgetSummary && (
+              <div className="flex flex-col gap-1.5 mb-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !budgetOverlay;
+                    setBudgetOverlay(next);
+                    if (next && groupMode !== "globe") setGroupMode("globe");
+                  }}
+                  className={`self-start inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors ${
+                    budgetShadingActive
+                      ? "bg-[var(--undp-blue)]/10 border-[var(--undp-blue)]/40 text-[var(--undp-black)]"
+                      : "bg-white border-gray-200 text-[var(--undp-black)] hover:border-gray-300"
+                  }`}
+                  title={
+                    budgetShadingActive
+                      ? "Turn off the Biodiversity Budget shading. The wheel keeps the GLOBE grouping."
+                      : "Switch to the Biodiversity Budget view: groups arcs by GLOBE and shades each by its share of tagged BER spend."
+                  }
+                  aria-pressed={budgetShadingActive}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`w-2.5 h-2.5 rounded-sm shrink-0 ${
+                      budgetShadingActive
+                        ? "bg-[var(--undp-blue)]"
+                        : "border border-gray-300 bg-white"
+                    }`}
+                  />
+                  Biodiversity Budget
+                </button>
+                {budgetShadingActive && (
+                  <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
+                    Mongolia BER (Biodiversity Expenditure Review),{" "}
+                    {budgetSummary.period.start}
+                    {"–"}
+                    {budgetSummary.period.end} totals. Subset of national
+                    expenditure.
+                  </p>
+                )}
+              </div>
+            )}
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
               className="w-full"
@@ -3649,6 +3853,119 @@ export function PolicyCoherenceExplorer({
             >
               {/* Guide circle */}
               <circle cx={0} cy={0} r={NODE_R} fill="none" stroke="#f1f5f9" strokeWidth={1} strokeDasharray="4 4" />
+
+              {/* Biodiversity Budget wedges. Rendered before the rim arcs so
+                  the arcs (and everything that follows: ribbons, nodes,
+                  labels) layer on top. Each wedge fills the interior of one
+                  GLOBE category at a saturation proportional to its share of
+                  tagged BER spend. Hidden when the overlay is off so the
+                  regular wheel looks unchanged. */}
+              {budgetShadingActive && budgetSummary &&
+                arcs.map((arc) => {
+                  const d = wedgeGen({
+                    startAngle: arc.startAngle,
+                    endAngle: arc.endAngle,
+                  });
+                  if (!d) return null;
+                  const entry = budgetByCategoryId.get(arc.id);
+                  const share = entry?.shareOfTotalBudget ?? 0;
+                  // Single hue for funded wedges (BUDGET_WEDGE_COLOR), single
+                  // grey for unfunded ones. The angular span already encodes
+                  // the target-count grouping (Sustainable use takes nearly
+                  // half the wheel because it has 70 targets), so layering
+                  // the category hue on the wedge fill made budget hard to
+                  // read in isolation: a wide pale-blue wedge looked like
+                  // "lots of something" even though it's only 6.5% of tagged
+                  // spend. With one hue across all funded wedges, opacity is
+                  // the only varying dimension, and the rim arc continues
+                  // to carry category identity.
+                  const isUnfunded = !entry || entry.totalBudget <= 0;
+                  const wedgeColor = isUnfunded
+                    ? "#94a3b8"
+                    : BUDGET_WEDGE_COLOR;
+                  const fillAlpha = isUnfunded
+                    ? 0.08
+                    : alphaForBudgetShare(share, budgetSummary.maxShare);
+                  const angularSpan = arc.endAngle - arc.startAngle;
+                  // Only label wedges wider than ~14 degrees. Below that the
+                  // text overlaps the wedge boundary and reads as junk; the
+                  // rim label + hover tooltip still carry the info.
+                  // Also hide the inside % when a target is active or a
+                  // category is focal — the central callout and connection
+                  // lines draw across the wedge interior in those states, so
+                  // the inside label is unreadable. The category-name label
+                  // outside picks up the % in that case (see the leader-label
+                  // block below).
+                  // Inside-wedge % is suppressed when:
+                  //   - the wedge is too narrow to comfortably hold the
+                  //     glyphs (angular span <= ~14 deg),
+                  //   - a target or category is focal (the central callout
+                  //     overlays the wedge interior — the % moves outside
+                  //     into the leader label in that state),
+                  //   - or the category has zero tagged BER spend (showing
+                  //     "0%" is redundant once the wedge itself is greyed).
+                  const showLabel =
+                    angularSpan > 0.244 &&
+                    !activeId &&
+                    !isGroupFocus &&
+                    !isUnfunded;
+                  const labelR = 145;
+                  const sharePct = (share * 100).toFixed(
+                    share >= 0.1 ? 0 : 1,
+                  );
+                  const amountStr = entry
+                    ? formatBudgetValue(
+                        entry.totalBudget,
+                        budgetSummary.currency ?? "",
+                      )
+                    : "0 MNT";
+                  const labelFill =
+                    fillAlpha > 0.55 ? "white" : "var(--undp-black)";
+                  return (
+                    <g key={`wedge-${arc.id}`}>
+                      <path
+                        d={d}
+                        fill={wedgeColor}
+                        fillOpacity={fillAlpha}
+                        stroke={wedgeColor}
+                        strokeOpacity={isUnfunded ? 0.2 : 0.35}
+                        strokeWidth={0.75}
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleArcClick(arc.id);
+                        }}
+                      >
+                        <title>
+                          {`${arc.label} · ${amountStr} (${sharePct}% of tagged BER)`}
+                        </title>
+                      </path>
+                      {showLabel && (
+                        <text
+                          x={labelR * Math.sin(arc.midAngle)}
+                          y={-labelR * Math.cos(arc.midAngle)}
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          fontSize={14}
+                          fontWeight={600}
+                          fill={labelFill}
+                          className="pointer-events-none select-none tabular-nums"
+                          style={{ letterSpacing: "0.01em" }}
+                        >
+                          <tspan>{sharePct}</tspan>
+                          <tspan
+                            fontSize={9}
+                            fontWeight={500}
+                            dx="0.15em"
+                            fillOpacity={0.75}
+                          >
+                            %
+                          </tspan>
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
 
               {/* Group arcs */}
               {arcs.map((arc) => {
@@ -3664,6 +3981,10 @@ export function PolicyCoherenceExplorer({
                 const arcMidR = (INNER_R + OUTER_R) / 2;
                 const badgeX = arcMidR * Math.sin(arc.midAngle);
                 const badgeY = -arcMidR * Math.cos(arc.midAngle);
+                // Rim arc opacity. In budget mode we keep overview at 1.0 so
+                // the colored boundary at the rim stays crisp; the magnitude
+                // encoding is carried by the wedge fill layer below, not by
+                // modulating the 7-pixel rim band (v1 attempt, indiscernible).
                 const arcOpacity = activeId
                   ? hasActiveNode
                     ? 0.8
@@ -3672,14 +3993,27 @@ export function PolicyCoherenceExplorer({
                     ? isFocal
                       ? 1
                       : 0.18
-                    : 0.65;
+                    : budgetShadingActive
+                      ? 1
+                      : 0.65;
+                const budgetEntry = budgetShadingActive
+                  ? budgetByCategoryId.get(arc.id)
+                  : undefined;
+                // In budget mode, zero-budget categories also grey their rim
+                // arc so the entire category (wedge + rim + leader + label)
+                // reads as a single "no tagged spend" visual class. Outside
+                // budget mode, the category hue is preserved.
+                const arcIsUnfunded =
+                  budgetShadingActive &&
+                  (!budgetEntry || budgetEntry.totalBudget <= 0);
+                const rimColor = arcIsUnfunded ? "#94a3b8" : arc.color;
                 return (
                   <g key={arc.id}>
                     <path
                       d={d ?? ""}
-                      fill={arc.color}
+                      fill={rimColor}
                       opacity={arcOpacity}
-                      stroke={isFocal && !activeId ? arc.color : "none"}
+                      stroke={isFocal && !activeId ? rimColor : "none"}
                       strokeWidth={isFocal && !activeId ? 1.5 : 0}
                       className="transition-opacity duration-200 cursor-pointer"
                       onClick={(e) => {
@@ -3687,7 +4021,11 @@ export function PolicyCoherenceExplorer({
                         handleArcClick(arc.id);
                       }}
                     >
-                      <title>{arc.label}</title>
+                      <title>
+                        {budgetShadingActive && budgetEntry
+                          ? `${arc.label} · ${formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? "")} (${(budgetEntry.shareOfTotalBudget * 100).toFixed(1)}% of tagged BER)`
+                          : arc.label}
+                      </title>
                     </path>
                     {/* Count badge on arc in overview mode */}
                     {!activeId && !isGroupFocus && arc.count > 0 && (
@@ -3708,8 +4046,13 @@ export function PolicyCoherenceExplorer({
                 );
               })}
 
-              {/* Ambient connections — faint background web */}
-              {!activeId &&
+              {/* Ambient connections — faint background web. Suppressed
+                  while the Biodiversity Budget overlay is shading: in budget
+                  mode the question is "where is the money", and the ambient
+                  ribbon noise competes with the wedge fill instead of adding
+                  signal. Selected-target connections (rendered separately
+                  below) still appear so click-through navigation works. */}
+              {!activeId && !budgetShadingActive &&
                 ambientConns.map((conn) => {
                   const nA = nodeMap.get(conn.targetAId);
                   const nB = nodeMap.get(conn.targetBId);
@@ -3783,7 +4126,12 @@ export function PolicyCoherenceExplorer({
                   );
                 })}
 
-              {/* Target nodes */}
+              {/* Target nodes. Wrapped in a group with reduced opacity while
+                  the budget overlay is shading so the colourful node ring
+                  doesn't overpower the wedge fill underneath. Click and hover
+                  still work because the underlying nodes keep their full
+                  pointer surface. */}
+              <g opacity={budgetShadingActive && !activeId && !isGroupFocus ? 0.2 : 1}>
               {nodes.map((node) => {
                 const r = nodeSize(node);
                 const isActive = node.id === activeId;
@@ -3860,6 +4208,7 @@ export function PolicyCoherenceExplorer({
                   </g>
                 );
               })}
+              </g>
 
               {/* Node labels — only when a node is active/hovered, with collision avoidance */}
               {activeId && (() => {
@@ -3995,18 +4344,61 @@ export function PolicyCoherenceExplorer({
                         ? 0.6
                         : 0.12
                       : 0.35;
-                  const labelFill = labelDimmed ? "#94a3b8" : arc.color;
+                  // labelFill: dim grey when another target/category has
+                  // focus; full category colour otherwise. In budget mode,
+                  // zero-budget categories also drop to grey so the rim arc
+                  // greying carries through to the leader line and label
+                  // and the whole category reads as a single "unfunded"
+                  // visual class.
+                  const arcIsUnfundedHere =
+                    budgetShadingActive &&
+                    (!budgetByCategoryId.get(arc.id) ||
+                      (budgetByCategoryId.get(arc.id)?.totalBudget ?? 0) <= 0);
+                  const labelFill = labelDimmed || arcIsUnfundedHere ? "#94a3b8" : arc.color;
+                  const leaderColor = arcIsUnfundedHere ? "#94a3b8" : arc.color;
+                  // In budget mode, surface the absolute amount as a second
+                  // sub-line under the category name. The wedge interior
+                  // carries the % in idle state; when a target is active or
+                  // a category is focal the inside % is hidden because the
+                  // central callout overlays the wedge interior, so we fold
+                  // the % into this outside label too ("58% · 520B MNT").
+                  const budgetEntry = budgetShadingActive
+                    ? budgetByCategoryId.get(arc.id)
+                    : undefined;
+                  const insideLabelHidden = !!activeId || isGroupFocus;
+                  // amountLine renders beneath the category name when the
+                  // budget overlay is active. The "Other" bucket has no
+                  // entry in the budget summary because it is not a real
+                  // GLOBE primary, so we fall through to a zero figure for
+                  // it — semantically correct (no BER spend is tagged to
+                  // unclassified targets) and visually consistent with the
+                  // other zero-budget categories that already say "0 MNT".
+                  const amountLine = (() => {
+                    if (!budgetShadingActive) return null;
+                    const totalBudget = budgetEntry?.totalBudget ?? 0;
+                    const shareOfTotal = budgetEntry?.shareOfTotalBudget ?? 0;
+                    const amount = formatBudgetValue(
+                      totalBudget,
+                      budgetSummary?.currency ?? "",
+                    );
+                    if (!insideLabelHidden) return amount;
+                    const sharePct = (shareOfTotal * 100).toFixed(
+                      shareOfTotal >= 0.1 ? 0 : 1,
+                    );
+                    return `${sharePct}% · ${amount}`;
+                  })();
+                  const totalLineCount = lines.length + (amountLine ? 1 : 0);
                   // Center the multi-line block vertically around ly. For a
                   // single line, dy=0 means baseline sits at ly (with
                   // dominantBaseline="middle"). For N lines, offset the first
                   // line up so the block straddles ly.
-                  const firstDy = -((lines.length - 1) * 0.55);
+                  const firstDy = -((totalLineCount - 1) * 0.55);
                   return (
                     <g key={`grp-${arc.id}`}>
                       <path
                         d={`M${arcX},${arcY} L${elbowX},${elbowY} L${lx},${ly}`}
                         fill="none"
-                        stroke={arc.color}
+                        stroke={leaderColor}
                         strokeWidth={1}
                         opacity={leaderOpacity}
                         className="pointer-events-none"
@@ -4036,17 +4428,35 @@ export function PolicyCoherenceExplorer({
                             {line}
                           </tspan>
                         ))}
+                        {amountLine && (
+                          <tspan
+                            x={lx + nudge}
+                            dy="1.25em"
+                            fontSize={10}
+                            fontWeight={500}
+                            fill="var(--undp-gray)"
+                            style={{ letterSpacing: "0.02em" }}
+                          >
+                            {amountLine}
+                          </tspan>
+                        )}
                       </text>
                     </g>
                   );
                 });
               })()}
 
-              {/* Center content */}
+              {/* Center content. The country / target / focal-category name
+                  sits on top; the supporting counts stack below it on two
+                  short rows in idle state ("157 targets" / "7998 aligned")
+                  so the centre footprint stays narrow and the wedges can
+                  come closer in without crowding the text. Active and focal
+                  states only need a single count line, so they stay on one
+                  row beneath the title. */}
               <text
-                x={0} y={-10}
+                x={0} y={-14}
                 textAnchor="middle" dominantBaseline="middle"
-                fontSize={16} fontWeight={600}
+                fontSize={15} fontWeight={600}
                 fill="#1e293b"
                 className="select-none pointer-events-none"
               >
@@ -4056,19 +4466,48 @@ export function PolicyCoherenceExplorer({
                     ? focalGroup.label
                     : targets[0]?.country ?? "Country"}
               </text>
-              <text
-                x={0} y={14}
-                textAnchor="middle" dominantBaseline="middle"
-                fontSize={11}
-                fill="#94a3b8"
-                className="select-none pointer-events-none"
-              >
-                {activeId
-                  ? `${activeConns.length} connection${activeConns.length !== 1 ? "s" : ""}`
-                  : focalGroup
-                    ? `${focalGroup.count} target${focalGroup.count !== 1 ? "s" : ""}`
-                    : `${targets.length} targets · ${totalAligned} aligned`}
-              </text>
+              {activeId ? (
+                <text
+                  x={0} y={8}
+                  textAnchor="middle" dominantBaseline="middle"
+                  fontSize={10}
+                  fill="#94a3b8"
+                  className="select-none pointer-events-none"
+                >
+                  {`${activeConns.length} connection${activeConns.length !== 1 ? "s" : ""}`}
+                </text>
+              ) : focalGroup ? (
+                <text
+                  x={0} y={8}
+                  textAnchor="middle" dominantBaseline="middle"
+                  fontSize={10}
+                  fill="#94a3b8"
+                  className="select-none pointer-events-none"
+                >
+                  {`${focalGroup.count} target${focalGroup.count !== 1 ? "s" : ""}`}
+                </text>
+              ) : (
+                <>
+                  <text
+                    x={0} y={6}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fontSize={10}
+                    fill="#94a3b8"
+                    className="select-none pointer-events-none"
+                  >
+                    {`${targets.length} targets`}
+                  </text>
+                  <text
+                    x={0} y={22}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fontSize={10}
+                    fill="#94a3b8"
+                    className="select-none pointer-events-none"
+                  >
+                    {`${totalAligned} aligned`}
+                  </text>
+                </>
+              )}
             </svg>
 
             {/* Legend — structured grid */}
@@ -4150,6 +4589,13 @@ export function PolicyCoherenceExplorer({
                 onSelectCategory={handleArcClick}
                 onSetFilter={setFilter}
                 countryConfig={countryConfig}
+                budget={
+                  groupMode === "globe"
+                    ? budgetByCategoryId.get(focalGroup.id) ?? null
+                    : null
+                }
+                budgetCurrency={budgetSummary?.currency}
+                budgetPeriod={budgetSummary?.period}
               />
             ) : (
               <EmptyPanel

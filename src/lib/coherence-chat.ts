@@ -8,6 +8,7 @@
 
 import { isContradiction } from "@/types";
 import { getDocLabel } from "@/lib/utils";
+import type { CategoryBudgetSummary } from "@/lib/coherence-budget";
 import type {
   AlignmentLevel,
   AlignmentResult,
@@ -87,6 +88,10 @@ interface BuildChatRequestArgs {
   countryConfig?: CountryConfig | null;
   /** Last few turns of conversation for short-term memory. Optional. */
   history?: ChatHistoryTurn[];
+  /** Per-primary-GLOBE budget summary, when the country has BER data. Always
+   *  forwarded to the chat context (not gated by the overlay toggle) so a user
+   *  can ask budget questions from any lens. Null when no budget data. */
+  budgetSummary?: CategoryBudgetSummary | null;
 }
 
 /**
@@ -110,6 +115,7 @@ export function buildChatRequest({
   hiddenDocs,
   countryConfig,
   history,
+  budgetSummary,
 }: BuildChatRequestArgs) {
   const visibleDocs = availableDocs.filter((d) => !hiddenDocs.has(d));
   const visibleDocSet = new Set(visibleDocs);
@@ -210,6 +216,31 @@ export function buildChatRequest({
       rationale: (a.description ?? "").slice(0, 600),
     }));
 
+  // Budget-by-category block: serialized as a compact array of (categoryId,
+  // name, total in unit, share, target count, target share, contradiction
+  // pair count). Always sent when budget data exists, regardless of which
+  // lens the user is on — the chat is a corpus-wide Q&A, the overlay toggle
+  // only controls the wheel's paint.
+  const budgetByCategory = budgetSummary
+    ? budgetSummary.entries.map((e) => ({
+        categoryId: e.categoryId,
+        categoryName: e.categoryName,
+        totalBudget: e.totalBudget,
+        shareOfTotalBudget: e.shareOfTotalBudget,
+        targetCount: e.targetCount,
+        shareOfTargets: e.shareOfTargets,
+        contradictionPairCount: e.contradictionPairCount,
+      }))
+    : undefined;
+  const budgetMeta = budgetSummary
+    ? {
+        currency: budgetSummary.currency,
+        unit: budgetSummary.unit,
+        period: budgetSummary.period,
+        totalBudget: budgetSummary.totalBudget,
+      }
+    : undefined;
+
   return {
     query,
     context: {
@@ -224,6 +255,7 @@ export function buildChatRequest({
       pairs,
       rankings,
       country: targets[0]?.country ?? null,
+      ...(budgetByCategory ? { budgetByCategory, budgetMeta } : {}),
     },
     ...(history && history.length ? { history } : {}),
   };
@@ -341,99 +373,81 @@ function buildPrimaryByTarget(
 // ─── Example chips ──────────────────────────────────────────────────
 
 interface PickExampleQueriesArgs {
-  visibleDocs: PolicyDocumentType[];
   globeCategoriesAvailable: boolean;
   sectorsAvailable: boolean;
-  hasFood: boolean;
-  hasBiodiversity: boolean;
-  hasClimate: boolean;
   hasAdaptation: boolean;
   hasTensions: boolean;
-  /** Whether the dataset includes BTR reported actions. Unlocks "what's
-   *  happening vs what's planned" questions, the sharpest signal in a
-   *  coherence assessment. */
+  /** Whether the dataset includes BTR reported actions. Unlocks the
+   *  "what's happening vs what's planned" framing, the sharpest signal
+   *  in a coherence dataset. */
   hasBtr: boolean;
-  /** Country name (eg "Mongolia", "Panama") used to surface country-specific
-   *  chips when the dataset shape supports them. */
-  country?: string | null;
+  /** Whether the dataset includes biodiversity expenditure data
+   *  classified to GLOBE. Unlocks the "money vs tensions" framing. */
+  hasBudget: boolean;
 }
 
 /**
- * Pick 3-4 example chip questions tailored to the visible dataset. Chips
- * read like questions a policymaker would ask, not routing test cases. All
- * use commas / periods, never em dashes (a project guardrail: em dashes
- * read as machine-generated).
+ * Pick up to 4 example chip questions tailored to the visible dataset.
+ * Chips read like questions a policymaker would actually ask: clear, no
+ * jargon (avoid acronyms like BER / BTR in the chip surface, expand them
+ * in the chat answer instead), and each one untaps a different slice of
+ * what the tool can surface (implementation reality, coordination
+ * pathways, money flow, target quality, theme concentration).
  *
- * Each chip in the candidate library is gated by a precondition. When a
- * dataset can't answer a chip honestly (eg no food-security doc loaded),
- * the chip is dropped silently rather than swapped for a less specific
- * variant. Order is priority: BTR / implementation framing first when
- * available, since that's the sharpest signal in a coherence dataset.
+ * Each chip is gated by a precondition. When a dataset can't answer a
+ * chip honestly, the chip is dropped silently. Order is priority: the
+ * top-priority chips that match the dataset are the four that surface.
  *
- * The 4-chip cap pairs with the always-visible chip row in ChatBar: more
- * than four chips plus a Surprise me button risks pushing the insight
- * bubble below the fold on smaller viewports.
+ * The 4-chip cap pairs with the always-visible chip row in ChatBar:
+ * more than four chips plus a Surprise me button risks pushing the
+ * insight bubble below the fold on smaller viewports.
  */
 export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
   const {
-    hasFood,
-    hasBiodiversity,
-    hasClimate,
     hasAdaptation,
     hasTensions,
     hasBtr,
-    country,
+    hasBudget,
     globeCategoriesAvailable,
     sectorsAvailable,
-    visibleDocs,
   } = args;
-  const isMongolia = (country ?? "").toLowerCase() === "mongolia";
-  const isPanama = (country ?? "").toLowerCase() === "panama";
   const candidates: Array<{ when: boolean; q: string }> = [
-    // BTR-versus-policy framing comes first — it's the most actionable
-    // pattern in a coherence dataset because BTR pairs reflect what the
-    // country is ALREADY doing, not just what it plans.
+    // Implementation reality is the sharpest signal a coherence dataset
+    // can carry: BTR records what is ALREADY happening on the ground, so
+    // a flagged conflict against a planned target reads as fact-versus-
+    // intent. Leads the list whenever BTR data is present.
     {
       when: hasBtr && hasTensions,
-      q: "Where do reported actions contradict policy targets?",
+      q: "Where do reported actions on the ground appear to contradict planned policy targets?",
     },
-    {
-      when: hasBtr && hasFood && isMongolia,
-      q: "Does Mongolia's food security plan clash with reported actions?",
-    },
-    // Country-flavoured chips when the dataset shape supports them.
-    {
-      when: hasFood && hasBiodiversity,
-      q: "Where does food security pull against biodiversity?",
-    },
-    {
-      when: hasClimate && hasBiodiversity && hasTensions,
-      q: "Where do climate plans contradict biodiversity plans?",
-    },
-    {
-      when: isPanama && hasTensions,
-      q: "Which Panama target is contested across the most documents?",
-    },
-    // Generic always-applicable chips.
+    // Pathway-shaped: invites the second-order question ("what could be
+    // done about it") rather than just locating the tension. Hedged
+    // language keeps the tool inside its decision-support frame.
     {
       when: hasTensions,
-      q: "Show me the most contested target across all plans",
+      q: "Which contested target could potentially benefit from coordination across ministries?",
+    },
+    // Budget framing avoids the BER acronym; the chat answer qualifies
+    // the scope ("tagged biodiversity expenditure") once the user asks.
+    {
+      when: hasBudget && hasTensions,
+      q: "Where does biodiversity spending appear to flow, compared to where the tensions are?",
     },
     {
       when: hasTensions,
-      q: "Find a paradox: a target that's highly aligned and highly contested",
+      q: "Where might tightening a target's boundary help unlock alignment with other plans?",
     },
     {
-      when: visibleDocs.length >= 2,
-      q: "Which target barely connects to anything else?",
+      when: hasTensions,
+      q: "Which contested targets lack a measurable indicator to anchor them?",
     },
     {
       when: globeCategoriesAvailable || sectorsAvailable,
-      q: "Which topic has surprisingly few conflicts?",
+      q: "Which policy themes appear to carry the heaviest concentration of tensions?",
     },
     {
       when: hasAdaptation,
-      q: "How well do adaptation actions line up with national targets?",
+      q: "How well do adaptation actions appear to align with national targets?",
     },
   ];
   return candidates
