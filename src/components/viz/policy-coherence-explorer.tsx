@@ -2392,8 +2392,7 @@ export function PolicyCoherenceExplorer({
   } | null>(null);
   // Default-hidden document types come from the country config so each
   // country controls which documents add visual noise to its first view.
-  // Mongolia's config ships the old hardcoded list ["LDN","SECTORAL","BTR","OTHER"];
-  // Panama ships an empty list. Users can still toggle these back on.
+  // Users can still toggle these back on.
   const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(
     () => new Set(countryConfig?.defaultHiddenDocTypes ?? []),
   );

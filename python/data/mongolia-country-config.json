@@ -14,7 +14,7 @@
   },
   "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity.",
   "anchorDocType": "SECTORAL",
-  "defaultHiddenDocTypes": ["LDN", "OTHER"],
+  "defaultHiddenDocTypes": [],
   "documentTypes": [
     {
       "id": "NDC",
@@ -36,13 +36,6 @@
       "mediumLabel": "NAP",
       "fullLabel": "National Adaptation Plan",
       "color": "#b45309"
-    },
-    {
-      "id": "LDN",
-      "shortLabel": "LDN",
-      "mediumLabel": "LDN",
-      "fullLabel": "Land Degradation Neutrality",
-      "color": "#dc2626"
     },
     {
       "id": "SECTORAL",

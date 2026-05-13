@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:configs": "python3 python/scripts/check_country_config.py"
   },
   "dependencies": {
     "d3-chord": "^3.0.1",
