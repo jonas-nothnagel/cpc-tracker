@@ -870,10 +870,11 @@ function synthesizeAnswer(
 // synthesizeAnswer covers the common gpt-5 failure mode (tool calls but no
 // content). The inverse failure also happens: the model writes a substantive
 // answer naming "BTR X versus FSS Y" but skips select_pair, leaving the Show
-// me button hidden. Parse named targets out of the answer text using the same
-// "<doc> <label>" / "<doc>: <label>" phrasing the system prompt encourages,
-// and return them in order of appearance so the first two can drive a
-// select_pair injection.
+// me button hidden. Parse named targets out of the answer text and return
+// them in order of appearance so the first two can drive a select_pair
+// injection. Matches the same three phrasings the entity extractor uses
+// ("<doc> <label>", "<doc>: <label>", and the raw id) so the rescue stays
+// in lockstep with what the inline chips can detect.
 function extractTargetMentionsFromContent(
   content: string,
   ctx: ChatContext,
@@ -881,23 +882,24 @@ function extractTargetMentionsFromContent(
   const norm = content.replace(/\s+/g, " ");
   const found: { id: string; pos: number }[] = [];
   for (const t of ctx.targetIndex) {
-    if (!t.sourceLabel || !t.sourceDocument) continue;
-    const phrases = [
-      `${t.sourceDocument} ${t.sourceLabel}`,
-      `${t.sourceDocument}: ${t.sourceLabel}`,
-    ];
+    if (!t.id) continue;
+    const phrases = [t.id];
+    if (t.sourceDocument && t.sourceLabel) {
+      phrases.push(`${t.sourceDocument} ${t.sourceLabel}`);
+      phrases.push(`${t.sourceDocument}: ${t.sourceLabel}`);
+    }
     let bestPos = -1;
     for (const phrase of phrases) {
       // Word-bounded substring match: the char immediately after the phrase
-      // must be end-of-string or non-label-continuation. ".", "0-9" and
-      // "A-Za-z" count as continuation so "NDC 1" does not falsely match
-      // "NDC 1.2".
+      // must be end-of-string or non-label-continuation. ".", "0-9",
+      // "A-Za-z" and "_" count as continuation so "NDC 1" does not falsely
+      // match "NDC 1.2" and "FSS_29" does not match "FSS_290".
       let from = 0;
       while (from <= norm.length) {
         const pos = norm.indexOf(phrase, from);
         if (pos === -1) break;
         const next = norm[pos + phrase.length];
-        if (next === undefined || !/[A-Za-z0-9.]/.test(next)) {
+        if (next === undefined || !/[A-Za-z0-9_.]/.test(next)) {
           if (bestPos === -1 || pos < bestPos) bestPos = pos;
           break;
         }
