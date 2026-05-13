@@ -7,14 +7,16 @@ excluded doc types. The dashboard and pipeline trust these declarations,
 so when the underlying data changes (a doc type is dropped, a sector is
 added, etc.) the config can quietly drift out of sync.
 
-This script reports drift for the checks listed in
-`/Users/jonas/.claude/plans/it-seems-like-some-mutable-hedgehog.md`:
+Checks per country:
 
   1. documentTypes vs target data (targets + pseudo-target files)
   2. defaultHiddenDocTypes ⊆ documentTypes (and not a no-op)
   3. anchorDocType is declared and present in data
   4. countrySectors vs btr_data.json sectorRaw/sector
   5. excludedDocTypes ⊆ documentTypes
+
+Reserved tokens (BTR, BER, BTR_ADP, OTHER) are exempt: they are
+pipeline-generated or fallback labels in src/lib/utils.ts.
 
 Exit 0 if all configs are clean, 1 if any drift is detected.
 
@@ -45,7 +47,7 @@ RESERVED_DOC_TOKENS = {"BTR", "BER", "BTR_ADP", "OTHER"}
 def load_json(path: Path) -> object | None:
     if not path.exists():
         return None
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def collect_source_documents(country: str) -> tuple[set[str], list[str]]:
