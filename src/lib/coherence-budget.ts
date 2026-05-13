@@ -168,6 +168,11 @@ export function computeBudgetByGlobeCategory(args: {
   // 7. Assemble one entry per primary GLOBE category. Categories with zero
   //    budget AND zero targets are included so the legend reads consistently;
   //    they just render at the floor alpha when the overlay is on.
+  //    Note: the wheel's "Other" bucket (unclassified targets, arc.id ===
+  //    "_other") is not a real GLOBE primary and is intentionally absent
+  //    from this list. The wheel falls back to a "0 MNT" label for it; the
+  //    chat does not receive an entry for "Other" because no BER programme
+  //    is tagged to it by construction.
   const entries: CategoryBudgetEntry[] = globeCategories.map((g) => {
     const budget = budgetByPrimary.get(g.id) ?? 0;
     const tCount = targetsByPrimary.get(g.id)?.size ?? 0;
