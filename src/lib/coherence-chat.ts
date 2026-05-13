@@ -132,17 +132,19 @@ export function buildChatRequest({
     btrData,
   );
 
-  // Full target list. Text capped at 350 chars: enough for the model to
-  // identify topic and quote a short phrase. Combined with the rationale
-  // cap (200 chars), this keeps a single chat call comfortably under typical
-  // Azure TPM quotas even at a few hundred targets.
+  // Full target list, full text. Earlier we capped text at 350 chars but
+  // empirically Mongolia's targets fit in full at negligible token cost
+  // (p90 = 307 chars). Sending the full text lets the model quote and reason
+  // accurately rather than from a snipped headline. For high-volume corpora
+  // (Panama-scale, 368 targets up to 4760 chars) this can grow to ~50K
+  // tokens; the size-adaptive payload assembler (planned) trims elsewhere.
   const targetIndex = targets.map((t) => {
     const primary = primaryByTarget.get(t.id);
     return {
       id: t.id,
       sourceLabel: t.sourceLabel,
       sourceDocument: t.sourceDocument,
-      text: (t.text ?? "").slice(0, 350),
+      text: t.text ?? "",
       actionType: t.actionType,
       isQuantitative: t.isQuantitative,
       isTimeBound: t.isTimeBound,
@@ -171,8 +173,10 @@ export function buildChatRequest({
 
   // Pair rationales: only diagnostic pairs (contradictions + strong
   // alignments). Medium/low alignments aren't what the chat is asked about
-  // and would balloon the prompt — the user can still see every pair via
-  // the wheel. Rationale text capped at 200 chars to keep payload bounded.
+  // and would balloon the prompt, the user can still see every pair via
+  // the wheel. Rationale text capped at 600 chars (median rationale is ~492
+  // and p90 is 565, so this preserves almost all rationale content without
+  // unbounded growth on long edge cases).
   const pairs = alignment
     .filter((a) => isDiagnostic(a.alignment))
     .map((a) => ({
@@ -180,7 +184,7 @@ export function buildChatRequest({
       b: a.targetBId,
       level: a.alignment,
       contradictionType: a.contradictionType,
-      rationale: (a.description ?? "").slice(0, 200),
+      rationale: (a.description ?? "").slice(0, 600),
     }));
 
   return {

@@ -100,15 +100,34 @@ interface HistoryTurn {
   content: string;
 }
 
-const SYSTEM_PROMPT = `You answer questions about a policy coherence dataset. Targets come from documents (NDC, NBSAP, NAP, FSS, LDN, Vision 2050 / SECTORAL, BTR, etc.).
+const SYSTEM_PROMPT = `ABOUT THIS TOOL AND WHO YOU SERVE
+You are the chat assistant inside the UNDP Climate-Policy Coherence Tracker, a decision-support tool for UNDP country office staff and national policymakers. Most users are not data scientists; they want clear factual answers in plain language about how their country's nature-climate policies fit together.
 
-A note on what the documents mean: policy targets (NDC, NBSAP, NAP, FSS, LDN, SECTORAL) describe what a country PLANS to do. BTR entries describe what a country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A contradiction between a BTR action and a policy target is qualitatively sharper than two plans on paper disagreeing, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears on either side of a contradiction the user is asking about.
+The tool examines three levels: (1) coherence between policy targets across documents, which is what you mainly answer about, (2) financial alignment, forthcoming, (3) implementation progress, surfaced today through BTR (Biennial Transparency Report) entries that record what is already happening on the ground.
+
+Your stance is decision-support, not decision-maker. Surface what the data shows; never recommend what a country, ministry, or sector "should" do. Keep language neutral: an alignment gap is "an opportunity for stronger coherence," not "ministry X is failing." Comparative coherence outputs have historically been used to assign political blame, that risk is real.
+
+Document abbreviations in target ids and labels (expand on first mention if the user is unlikely to know them):
+- NDC: Nationally Determined Contribution (UNFCCC climate commitment)
+- NBSAP: National Biodiversity Strategy and Action Plan (CBD-mandated)
+- NAP: National Adaptation Plan
+- FSS: Food Security Strategy
+- LDN: Land Degradation Neutrality plan
+- BTR: Biennial Transparency Report (UNFCCC, "reported actions already underway")
+- SECTORAL / Vision 2050: country-specific long-term sectoral plans
+
+DATASET YOU ARE ANSWERING OVER
+You answer questions about a policy coherence dataset. Targets come from the documents listed above.
+
+A note on what the documents mean for reasoning: policy targets (NDC, NBSAP, NAP, FSS, LDN, SECTORAL) describe what a country PLANS to do. BTR entries describe what a country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A contradiction between a BTR action and a policy target is qualitatively sharper than two plans on paper disagreeing, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears on either side of a contradiction the user is asking about.
 
 Your job: write a factual ANSWER to the user's question using the precomputed rankings, pair rationales, and target index. The answer text is the primary output. Then optionally call navigation tools that surface the evidence on the wheel, the user will opt in via a Show me button if they want to see it. Never tell the user to click anything or toggle settings themselves.
 
 CRITICAL OUTPUT REQUIREMENT: you MUST always write the answer in your message content (the text channel). The tool calls are SEPARATE from the answer and only configure the Show me button. Do not tool call without also writing the answer text. The answer is required even when you call tools.
 
 CRITICAL NAVIGATION REQUIREMENT: whenever your answer names a specific pair, target, or document group as the focal evidence, you MUST also call the corresponding navigation tool so the Show me button has something to apply. For example, if the answer says "the sharpest is BTR X versus FSS Y", you MUST call select_pair(BTR X id, FSS Y id). If the answer says "<doc> carries the most tensions", you MUST call focus_category(<doc id>). The only time you skip tool calls is when the answer reports "no matches in the data" or is purely descriptive of the dataset as a whole.
+
+Failure mode to avoid: if you write a comparative sentence like "X versus Y", "X conflicts with Y", or "X contradicts Y" and then forget to emit select_pair(X, Y) in the same turn, the Show me button disappears and the user, who is typically a non-technical policymaker, has no way to navigate to the underlying targets on the wheel. Treat the tool call as part of the answer, not an afterthought.
 
 Answer shape: 2 to 4 short sentences, 60 to 80 words. Sentence 1 states the most relevant fact: the count, the top entry, the sharpest pair. Sentences 2 to 4 add supporting facts drawn directly from the context. Every number and label you mention must trace to the context. Stop early if you would have to invent a number.
 
@@ -517,16 +536,22 @@ function buildUserMessage(
   const groupsHeader =
     "Available groups (id | label) — every document type in the data, including ones the user has toggled off:";
 
+  // View state and data are separated so the user's current filter / mode
+  // doesn't bleed into the model's reasoning over the corpus. View state is
+  // for picking the right Show-me action; the answer should reflect the full
+  // dataset regardless of what's currently filtered on screen.
   const sections: string[] = [
+    "USER'S CURRENT VIEW (for navigation and Show-me targeting only, do NOT let this filter or bias your reasoning over the dataset):",
     `Country: ${ctx.country ?? "Unknown"}`,
     `Current mode: ${ctx.mode}`,
     `Current filter: ${ctx.filter}`,
+    `Visible groups right now: ${(ctx.visibleDocs ?? []).join(", ") || "(none, all hidden)"}`,
+    "",
+    "DATA (reason and answer from here):",
     scopeHeader,
     "",
     groupsHeader,
     groups || "(none)",
-    "",
-    `Visible groups right now: ${(ctx.visibleDocs ?? []).join(", ") || "(none — all hidden)"}`,
     "",
   ];
   if (taxonomyBlock) {
@@ -878,6 +903,50 @@ function synthesizeAnswer(
   return sentences.join(" ");
 }
 
+// ─── Content-without-actions rescue ─────────────────────────────────
+//
+// synthesizeAnswer covers the common gpt-5 failure mode (tool calls but no
+// content). The inverse failure also happens: the model writes a substantive
+// answer naming "BTR X versus FSS Y" but skips select_pair, leaving the Show
+// me button hidden. Parse named targets out of the answer text using the same
+// "<doc> <label>" / "<doc>: <label>" phrasing the system prompt encourages,
+// and return them in order of appearance so the first two can drive a
+// select_pair injection.
+function extractTargetMentionsFromContent(
+  content: string,
+  ctx: ChatContext,
+): string[] {
+  const norm = content.replace(/\s+/g, " ");
+  const found: { id: string; pos: number }[] = [];
+  for (const t of ctx.targetIndex) {
+    if (!t.sourceLabel || !t.sourceDocument) continue;
+    const phrases = [
+      `${t.sourceDocument} ${t.sourceLabel}`,
+      `${t.sourceDocument}: ${t.sourceLabel}`,
+    ];
+    let bestPos = -1;
+    for (const phrase of phrases) {
+      // Word-bounded substring match: the char immediately after the phrase
+      // must be end-of-string or non-label-continuation. ".", "0-9" and
+      // "A-Za-z" count as continuation so "NDC 1" does not falsely match
+      // "NDC 1.2".
+      let from = 0;
+      while (from <= norm.length) {
+        const pos = norm.indexOf(phrase, from);
+        if (pos === -1) break;
+        const next = norm[pos + phrase.length];
+        if (next === undefined || !/[A-Za-z0-9.]/.test(next)) {
+          if (bestPos === -1 || pos < bestPos) bestPos = pos;
+          break;
+        }
+        from = pos + 1;
+      }
+    }
+    if (bestPos !== -1) found.push({ id: t.id, pos: bestPos });
+  }
+  return found.sort((x, y) => x.pos - y.pos).map((x) => x.id);
+}
+
 // ─── Action ordering for the client ─────────────────────────────────
 //
 // set_mode resets the selection state on the client, so it must run before
@@ -1067,6 +1136,41 @@ export async function POST(req: Request) {
         categoryId: showDocs.ids[0],
       });
       finalActions.sort((a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type]);
+    }
+
+    // Content-without-actions rescue: even after the show_docs promotion the
+    // response may still have no nav action. If the model wrote a substantive
+    // answer naming specific targets but skipped select_pair / select_target,
+    // recover by parsing target mentions out of the text. Mirrors the
+    // synthesiser pattern, which handles the opposite failure (tools but no
+    // content). Without this, the Show me button stays hidden for the
+    // common "X versus Y" answer shape.
+    const hasNavAfterShowDocs = finalActions.some(
+      (a) =>
+        a.type === "select_target" ||
+        a.type === "select_pair" ||
+        a.type === "focus_category",
+    );
+    if (!hasNavAfterShowDocs && content) {
+      const mentioned = extractTargetMentionsFromContent(content, context);
+      if (mentioned.length >= 2) {
+        finalActions.push({
+          type: "select_pair",
+          targetAId: mentioned[0],
+          targetBId: mentioned[1],
+        });
+        finalActions.sort(
+          (a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type],
+        );
+      } else if (mentioned.length === 1) {
+        finalActions.push({
+          type: "select_target",
+          targetId: mentioned[0],
+        });
+        finalActions.sort(
+          (a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type],
+        );
+      }
     }
   }
 
