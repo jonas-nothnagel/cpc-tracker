@@ -21,6 +21,15 @@ import type {
 } from "@/types";
 import { isContradiction } from "@/types";
 
+/**
+ * Pseudo-target id prefix used to mark BER programme classifications in the
+ * `classifications` array (e.g. `BER_71407`). Used as a literal in three
+ * places in this file; pulling it out keeps a future rename in lock-step
+ * and saves readers from having to grep for "BER_" to confirm the
+ * convention.
+ */
+const BER_ID_PREFIX = "BER_";
+
 export interface CategoryBudgetEntry {
   /** Primary GLOBE category id, e.g. "globe_5". */
   categoryId: string;
@@ -94,7 +103,7 @@ export function computeBudgetByGlobeCategory(args: {
   const expByBerId = new Map<string, number>();
   for (const e of berData.expenditure) {
     const t = totalExpenditure(e);
-    if (t > 0) expByBerId.set(`BER_${e.code}`, t);
+    if (t > 0) expByBerId.set(`${BER_ID_PREFIX}${e.code}`, t);
   }
   if (expByBerId.size === 0) return null;
 
@@ -112,7 +121,7 @@ export function computeBudgetByGlobeCategory(args: {
   for (const c of classifications) {
     if (c.taxonomyType !== "globe_sub") continue;
     if (c.isPrimary !== true) continue;
-    if (!c.targetId.startsWith("BER_")) continue;
+    if (!c.targetId.startsWith(BER_ID_PREFIX)) continue;
     const parentId = subToParent.get(c.categoryId);
     if (!parentId) continue;
     const exp = expByBerId.get(c.targetId) ?? 0;
@@ -241,4 +250,100 @@ export function formatBudgetValue(
   if (valueInUnit >= 0.001) return `${(valueInUnit * 1000).toFixed(0)}M${suffix}`;
   if (valueInUnit > 0) return `< 1M${suffix}`;
   return `0${suffix}`;
+}
+
+/**
+ * One BER programme contributing positive spend to a primary GLOBE category.
+ * Sums of these across a category match the category's `totalBudget` in
+ * `CategoryBudgetSummary` exactly — same single-label rollup convention.
+ */
+export interface CategoryProgramme {
+  /** BER programme code, e.g. "71407". */
+  code: string;
+  /** Programme short name verbatim from BerBudgetProgram. */
+  name: string;
+  /** Cumulative spend across the BER period in `berData.unit`. */
+  totalBudget: number;
+  /** GLOBE subcategory id the classifier landed on (e.g. "7.05"). */
+  subcategoryId: string;
+  /** Human-readable subcategory name for tooltip use. */
+  subcategoryName: string;
+}
+
+/**
+ * Build a map from primary GLOBE category id to the list of BER programmes
+ * contributing positive spend, sorted by spend descending. Each programme is
+ * tagged with the subcategory the LLM classifier picked, so the panel can
+ * show "why does this programme land here" without re-deriving the chain.
+ *
+ * Empty map is returned for countries with no BER data, no subcategory
+ * taxonomy, or no `globe_sub` classifications — callers can treat the absent
+ * primary the same way they treat the zero-budget case.
+ */
+export function computeProgrammesByCategory(args: {
+  berData: BerData | null;
+  globeSubcategories: GlobeSubcategory[];
+  classifications: ThematicClassification[];
+}): Map<string, CategoryProgramme[]> {
+  const { berData, globeSubcategories, classifications } = args;
+  const result = new Map<string, CategoryProgramme[]>();
+  if (!berData || globeSubcategories.length === 0) return result;
+
+  // Programme code -> { name, totalBudget } for fast lookup. We sum the
+  // yearly expenditure here once and never again.
+  const programmeIndex = new Map<
+    string,
+    { name: string; totalBudget: number }
+  >();
+  for (const p of berData.programs) {
+    programmeIndex.set(p.code, { name: p.name, totalBudget: 0 });
+  }
+  for (const e of berData.expenditure) {
+    const total = totalExpenditure(e);
+    const existing = programmeIndex.get(e.code);
+    if (existing) {
+      existing.totalBudget = total;
+    } else {
+      // Expenditure entry without a matching programme record. Keep its name
+      // so the row still makes sense in the panel.
+      programmeIndex.set(e.code, { name: e.name, totalBudget: total });
+    }
+  }
+
+  // Subcategory id -> { parentId, name } for the join below.
+  const subIndex = new Map<string, { parentId: string; name: string }>();
+  for (const s of globeSubcategories) {
+    subIndex.set(s.id, { parentId: s.parentId, name: s.name });
+  }
+
+  // Walk every primary globe_sub classification on a BER programme, look up
+  // its parent primary, and append a CategoryProgramme entry. Programmes
+  // with zero or missing spend drop out so the panel only ever shows lines
+  // that actually contribute money.
+  for (const c of classifications) {
+    if (c.taxonomyType !== "globe_sub") continue;
+    if (c.isPrimary !== true) continue;
+    if (!c.targetId.startsWith(BER_ID_PREFIX)) continue;
+    const programmeCode = c.targetId.slice(BER_ID_PREFIX.length);
+    const programme = programmeIndex.get(programmeCode);
+    if (!programme || programme.totalBudget <= 0) continue;
+    const sub = subIndex.get(c.categoryId);
+    if (!sub) continue;
+    const list = result.get(sub.parentId) ?? [];
+    list.push({
+      code: programmeCode,
+      name: programme.name,
+      totalBudget: programme.totalBudget,
+      subcategoryId: c.categoryId,
+      subcategoryName: sub.name,
+    });
+    result.set(sub.parentId, list);
+  }
+
+  // Sort each category's programme list by spend desc so the panel reads
+  // top-down from the biggest contributor.
+  for (const list of result.values()) {
+    list.sort((a, b) => b.totalBudget - a.totalBudget);
+  }
+  return result;
 }
