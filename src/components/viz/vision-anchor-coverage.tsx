@@ -152,7 +152,7 @@ export function VisionAnchorCoverage({
     if (view === "sunburst") {
       return `${anchorDocLabel} sits at the center; the inner ring shows each ambition tinted by its status, the outer ring shows each ambition's alignment-level distribution. Hover any wedge to focus, click to drill in, click an outer slice to read the underlying targets.`;
     }
-    return `Peripheral targets whose strongest link to any ${anchorDocLabel} ambition is "low" or "possible misalignment" only. They may operationalise priorities outside ${anchorDocLabel}'s long-term framing — or signal where ${anchorDocLabel} itself does not yet capture an emerging priority.`;
+    return `Peripheral targets whose strongest link to any ${anchorDocLabel} ambition is "low" or "possible misalignment" only. They may operationalise priorities outside ${anchorDocLabel}'s long-term framing, or signal where ${anchorDocLabel} itself does not yet capture an emerging priority.`;
   })();
 
   return (

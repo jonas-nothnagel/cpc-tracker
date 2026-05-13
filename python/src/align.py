@@ -75,7 +75,7 @@ working toward environmental and climate goals.
 
     IMPORTANT: Likely and possible conflicts should be reserved for cases where implementing one target genuinely \
 undermines, opposes, or competes with the other. Two targets operating in different sectors or at different scales are NOT \
-in conflict — they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Possible misalignment" \
+in conflict; they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Possible misalignment" \
 when targets create real-world trade-offs even if both are positively framed. For example, a target to expand agricultural operations \
 inherently creates friction with a target to restore ecosystems in the same area, even if both targets mention \
 "sustainability." Look for implicit resource competition, not just explicit opposition.
@@ -154,7 +154,7 @@ Coordinated implementation would clearly enhance efficiency and maximize both cl
     === FLAGGED MISALIGNMENT LEVELS (use only when targets genuinely pull against each other) ===
 
     These three levels flag pairs for human review. The vocabulary is intentionally cautious ("possible" / \
-"likely") because you cannot establish certain contradictions from policy text alone — you flag pairs that warrant \
+"likely") because you cannot establish certain contradictions from policy text alone; you flag pairs that warrant \
 a closer look. You MUST also specify the contradiction type in parentheses after the label. The four types are:
     - Goal conflict: Targets have directly opposing objectives (e.g., expand agriculture vs protect forests).
     - Resource competition: Targets compete for the same specific limited resources in ways that are mutually exclusive.

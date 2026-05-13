@@ -571,7 +571,7 @@ function buildUserMessage(
   );
   if (pairBlock) {
     sections.push(
-      `Pair rationales — ${pairs.length} non-"none" pairs, severity-sorted. Format: targetA ↔ targetB | level (contradictionType?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
+      `Pair rationales (${pairs.length} non-"none" pairs, severity-sorted). Format: targetA ↔ targetB | level (contradictionType?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
       pairBlock,
       "",
     );

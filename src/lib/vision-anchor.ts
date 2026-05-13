@@ -198,7 +198,7 @@ export function computeAnchorStatus(
       label: "Misalignment-heavy",
       tone: "amber",
       description:
-        "Possible-misalignment links dominate the relationships with this ambition — worth examining where the friction comes from.",
+        "Possible-misalignment links dominate the relationships with this ambition. Worth examining where the friction comes from.",
     };
   }
   if (row.mediumOrHighCount < sparseStrongSupportThreshold) {

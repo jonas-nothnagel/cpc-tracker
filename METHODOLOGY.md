@@ -188,7 +188,7 @@ The vocabulary is intentionally cautious ("possible" / "likely") because the pip
 
 Each flagged pair is also classified by **type**: goal conflict, resource competition, implementation tension, or scale/scope mismatch.
 
-The agent evaluates alignment based on strategic intent, feasibility, synergies, and ecosystem interactions — not simple textual similarity. The negative levels are reserved for genuine friction, not differences in sector or scale. Coherency-score weights remain `-1 / -2 / -3` for the three negative levels; the gradient now reads as a confidence axis (possible → likely) rather than a strict severity axis.
+The agent evaluates alignment based on strategic intent, feasibility, synergies, and ecosystem interactions, not simple textual similarity. The negative levels are reserved for genuine friction, not differences in sector or scale. Coherency-score weights remain `-1 / -2 / -3` for the three negative levels; the gradient now reads as a confidence axis (possible → likely) rather than a strict severity axis.
 
 **Multi-agent design rationale:** By separating decomposition (Agent 1) from alignment assessment (Agent 2), the methodology ensures that alignment classifications are based on structured policy content. This separation supports consistency across countries and policy frameworks.
 
