@@ -74,9 +74,9 @@ async def test_decompose_with_mock_llm(sample_targets):
 
 
 @pytest.mark.asyncio
-async def test_alignment_with_mock_llm(sample_targets, sample_classifications):
+async def test_alignment_with_mock_llm(sample_targets):
     """assess_alignment should parse alignment AND contradiction levels."""
-    pairs = generate_pairs(sample_targets, sample_classifications)
+    pairs = generate_pairs(sample_targets)
     assert len(pairs) > 0
 
     decompositions = {t["id"]: '{"Goal/Purpose": "test"}' for t in sample_targets}

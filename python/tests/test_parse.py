@@ -201,34 +201,35 @@ class TestParseClassification:
 
 
 class TestGeneratePairs:
-    def test_cross_document_only(self, sample_targets, sample_classifications):
-        pairs = generate_pairs(sample_targets, sample_classifications)
+    def test_cross_document_only(self, sample_targets):
+        pairs = generate_pairs(sample_targets)
         for ta, tb in pairs:
             assert ta["sourceDocument"] != tb["sourceDocument"], \
                 f"Same-document pair found: {ta['id']} and {tb['id']}"
 
-    def test_shared_category_required(self, sample_targets, sample_classifications):
-        pairs = generate_pairs(sample_targets, sample_classifications)
+    def test_cross_document_pair_present(self, sample_targets):
+        pairs = generate_pairs(sample_targets)
         assert len(pairs) > 0
 
-        # NAP_1 and NDC_Forests_1 both have globe_1 => should be paired
+        # NAP_1 and NDC_Forests_1 are in different documents, so they should pair
+        # regardless of taxonomy overlap (classification pre-filter was removed
+        # in ae00da0).
         pair_ids = {tuple(sorted([ta["id"], tb["id"]])) for ta, tb in pairs}
         assert ("NAP_1", "NDC_Forests_1") in pair_ids or ("NDC_Forests_1", "NAP_1") in pair_ids
 
-    def test_no_pair_without_shared_category(self):
+    def test_pairs_cross_doc_regardless_of_categories(self):
+        # Two targets in different documents with non-overlapping categories
+        # are still paired; relevance is judged by the alignment LLM itself,
+        # not by classification overlap.
         targets = [
             {"id": "A", "sourceDocument": "NAP", "text": "target a"},
             {"id": "B", "sourceDocument": "NDC", "text": "target b"},
         ]
-        classifications = [
-            {"targetId": "A", "categoryId": "globe_1", "taxonomyType": "globe", "isRelevant": True},
-            {"targetId": "B", "categoryId": "globe_2", "taxonomyType": "globe", "isRelevant": True},
-        ]
-        pairs = generate_pairs(targets, classifications)
-        assert len(pairs) == 0
+        pairs = generate_pairs(targets)
+        assert len(pairs) == 1
 
     def test_empty_targets(self):
-        pairs = generate_pairs([], [])
+        pairs = generate_pairs([])
         assert len(pairs) == 0
 
     def test_single_document_type(self):
@@ -236,11 +237,7 @@ class TestGeneratePairs:
             {"id": "A", "sourceDocument": "NAP", "text": "a"},
             {"id": "B", "sourceDocument": "NAP", "text": "b"},
         ]
-        classifications = [
-            {"targetId": "A", "categoryId": "t0", "taxonomyType": "globe", "isRelevant": True},
-            {"targetId": "B", "categoryId": "t0", "taxonomyType": "globe", "isRelevant": True},
-        ]
-        pairs = generate_pairs(targets, classifications)
+        pairs = generate_pairs(targets)
         assert len(pairs) == 0
 
 
