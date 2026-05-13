@@ -597,13 +597,13 @@ async def main() -> None:
         levels = {}
         for r in alignment_results:
             levels[r["alignment"]] = levels.get(r["alignment"], 0) + 1
-        contradiction_levels = ["high_contradiction", "moderate_contradiction", "low_tension"]
+        contradiction_levels = ["likely_conflict", "possible_conflict", "possible_misalignment"]
         alignment_levels = ["high", "medium", "low", "none"]
         total_contradictions = sum(levels.get(l, 0) for l in contradiction_levels)
         logger.info("  Alignment:")
         for level in alignment_levels:
             logger.info(f"    - {level}: {levels.get(level, 0)}")
-        logger.info(f"  Contradictions: {total_contradictions}")
+        logger.info(f"  Flagged misalignments: {total_contradictions}")
         for level in contradiction_levels:
             count = levels.get(level, 0)
             if count > 0:

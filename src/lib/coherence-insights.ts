@@ -412,7 +412,7 @@ function detectImbalance(args: DetectArgs): Insight | null {
  * contradiction because one side is something the country is already doing
  * (Implemented / Ongoing / Adopted), not something it intends to do.
  *
- * Severity-aware: prefers high_contradiction over moderate over low_tension.
+ * Severity-aware: prefers likely_conflict over moderate over possible_misalignment.
  * Among same-severity matches, weights status to push Implemented/Ongoing
  * ahead of Adopted (closer to "happening now" carries more signal).
  */
@@ -420,9 +420,9 @@ function detectImplementationContradiction(args: DetectArgs): Insight | null {
   const { targets, alignment, countryConfig } = args;
   const targetMap = new Map(targets.map((t) => [t.id, t]));
   const SEVERITY: Record<string, number> = {
-    high_contradiction: 0,
-    moderate_contradiction: 1,
-    low_tension: 2,
+    likely_conflict: 0,
+    possible_conflict: 1,
+    possible_misalignment: 2,
   };
   const STATUS_WEIGHT: Record<string, number> = {
     Implemented: 0,
@@ -472,9 +472,9 @@ function detectImplementationContradiction(args: DetectArgs): Insight | null {
   const btrLabel = `${getDocLabel(countryConfig ?? null, best.btr.sourceDocument)} ${best.btr.sourceLabel}`;
   const policyLabel = `${getDocLabel(countryConfig ?? null, best.policy.sourceDocument)} ${best.policy.sourceLabel}`;
   const severityWord =
-    best.level === "high_contradiction"
+    best.level === "likely_conflict"
       ? "directly contradicts"
-      : best.level === "moderate_contradiction"
+      : best.level === "possible_conflict"
         ? "conflicts with"
         : "is in tension with";
   return {

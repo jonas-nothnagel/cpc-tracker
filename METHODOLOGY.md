@@ -176,17 +176,19 @@ All targets are decomposed since all appear in cross-document pairs.
 | **Medium alignment** | Clear overlap in themes, geography, or priorities; meaningful synergies possible with some effort |
 | **High alignment** | Robust overlap across goals, actions, ecosystems, and actors; strong potential for coordinated implementation |
 
-**Contradiction levels (negative):**
+**Flagged-misalignment levels (negative):**
+
+The vocabulary is intentionally cautious ("possible" / "likely") because the pipeline flags pairs for human review rather than establishing certain contradictions. The legacy strings (`low_tension`, `moderate_contradiction`, `high_contradiction`) remain in the Python parser as backward-compatible aliases so older LLM completions still parse cleanly.
 
 | Level | Meaning |
 |-------|---------|
-| **Low tension** | Minor friction or implicit trade-off; manageable with coordination |
-| **Moderate contradiction** | Clear conflict in approach or resources; partial coexistence possible with significant trade-offs |
-| **High contradiction** | Targets directly oppose each other in goals, actions, or expected outcomes |
+| **Possible misalignment** | Minor friction or implicit trade-off; manageable with coordination |
+| **Possible conflict** | Clear conflict in approach or resources; partial coexistence possible with significant trade-offs |
+| **Likely conflict** | Targets directly oppose each other in goals, actions, or expected outcomes |
 
-Each contradiction is also classified by **type**: goal conflict, resource competition, implementation tension, or scale/scope mismatch.
+Each flagged pair is also classified by **type**: goal conflict, resource competition, implementation tension, or scale/scope mismatch.
 
-The agent evaluates alignment based on strategic intent, feasibility, synergies, and ecosystem interactions — not simple textual similarity. Contradictions are reserved for genuine conflicts, not differences in sector or scale.
+The agent evaluates alignment based on strategic intent, feasibility, synergies, and ecosystem interactions, not simple textual similarity. The negative levels are reserved for genuine friction, not differences in sector or scale. Coherency-score weights remain `-1 / -2 / -3` for the three negative levels; the gradient now reads as a confidence axis (possible → likely) rather than a strict severity axis.
 
 **Multi-agent design rationale:** By separating decomposition (Agent 1) from alignment assessment (Agent 2), the methodology ensures that alignment classifications are based on structured policy content. This separation supports consistency across countries and policy frameworks.
 

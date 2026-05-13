@@ -185,11 +185,11 @@ export function chartDocKey(target: Target): string {
   return target.sourceDocument;
 }
 
-/** Bidirectional color scale: red for contradictions, green for alignment */
+/** Bidirectional color scale: red for possible/likely conflicts, green for alignment */
 export const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
-  high_contradiction: "#b91c1c",
-  moderate_contradiction: "#dc2626",
-  low_tension: "#f87171",
+  likely_conflict: "#b91c1c",
+  possible_conflict: "#dc2626",
+  possible_misalignment: "#f87171",
   none: "#f7f7f7",
   low: "#c6e48b",
   medium: "#7bc96f",
@@ -198,9 +198,9 @@ export const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
 
 /** Human-readable labels for each relationship level */
 export const ALIGNMENT_LABELS: Record<AlignmentLevel, string> = {
-  high_contradiction: "High contradiction",
-  moderate_contradiction: "Moderate contradiction",
-  low_tension: "Low tension",
+  likely_conflict: "Likely conflict",
+  possible_conflict: "Possible conflict",
+  possible_misalignment: "Possible misalignment",
   none: "No relationship",
   low: "Low",
   medium: "Medium",
@@ -217,20 +217,20 @@ export const CONTRADICTION_TYPE_LABELS: Record<ContradictionType, string> = {
 
 /** Ordered list of all levels from most negative to most positive */
 export const ALIGNMENT_LEVEL_ORDER: AlignmentLevel[] = [
-  "high_contradiction",
-  "moderate_contradiction",
-  "low_tension",
+  "likely_conflict",
+  "possible_conflict",
+  "possible_misalignment",
   "none",
   "low",
   "medium",
   "high",
 ];
 
-/** Numeric weight for coherency score calculation (negative for contradictions) */
+/** Numeric weight for coherency score calculation (negative for possible/likely conflicts) */
 export const ALIGNMENT_WEIGHTS: Record<AlignmentLevel, number> = {
-  high_contradiction: -3,
-  moderate_contradiction: -2,
-  low_tension: -1,
+  likely_conflict: -3,
+  possible_conflict: -2,
+  possible_misalignment: -1,
   none: 0,
   low: 1,
   medium: 2,

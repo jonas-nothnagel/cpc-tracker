@@ -76,23 +76,24 @@ financing mechanism for achieving the target.
 
     === CONTRADICTION LEVELS (use only when the program genuinely conflicts with the target) ===
 
-    For contradiction levels, you MUST also specify the contradiction type in parentheses after the label. \
-The four types are:
+    For the flagged-misalignment levels, you MUST also specify the contradiction type in parentheses after the label. \
+The vocabulary is intentionally cautious ("possible" / "likely") because you flag pairs for human review rather \
+than establish certain contradictions. The four types are:
     - Goal conflict: The program works against the target's objective.
     - Resource competition: The program diverts resources that the target needs.
     - Implementation tension: Implementing the program undermines feasibility of the target.
     - Scale/scope mismatch: The program operates at an incompatible scale or timeline.
 
-    **5.** "Low tension" - Minor friction: the program creates a trade-off with the target but is not \
+    **5.** "Possible misalignment" - Minor friction: the program creates a trade-off with the target but is not \
 fundamentally incompatible.
-       Return: Low tension (Type) - [Concise 2-sentence explanation.]
+       Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
 
-    **6.** "Moderate contradiction" - Clear conflict in approach or resources, though partial coexistence \
+    **6.** "Possible conflict" - Clear conflict in approach or resources, though partial coexistence \
 may be possible.
-       Return: Moderate contradiction (Type) - [Concise 2-sentence explanation.]
+       Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
 
-    **7.** "High contradiction" - The program directly opposes the target's goals or outcomes.
-       Return: High contradiction (Type) - [Concise 2-sentence explanation.]
+    **7.** "Likely conflict" - The program directly opposes the target's goals or outcomes.
+       Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
 
     Your output should be in English.
     """

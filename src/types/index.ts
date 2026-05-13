@@ -226,11 +226,19 @@ export interface ThematicClassification {
 // Pairwise Alignment
 // ---------------------------------------------------------------------------
 
-/** Bidirectional relationship scale from contradiction to alignment. */
+/**
+ * Bidirectional relationship scale from possible misalignment to alignment.
+ *
+ * The negative side intentionally uses cautious vocabulary ("possible" /
+ * "likely") because the pipeline flags relationships for human review; it
+ * does not establish certain contradictions. The legacy keys
+ * `low_tension` / `moderate_contradiction` / `high_contradiction` map to
+ * `possible_misalignment` / `possible_conflict` / `likely_conflict`.
+ */
 export type AlignmentLevel =
-  | "high_contradiction"
-  | "moderate_contradiction"
-  | "low_tension"
+  | "likely_conflict"
+  | "possible_conflict"
+  | "possible_misalignment"
   | "none"
   | "low"
   | "medium"
@@ -257,9 +265,9 @@ export interface AlignmentResult {
   description: string;
 }
 
-/** Whether an alignment level represents a contradiction. */
+/** Whether an alignment level represents a possible/likely conflict (negative side of the scale). */
 export function isContradiction(level: AlignmentLevel): boolean {
-  return level === "high_contradiction" || level === "moderate_contradiction" || level === "low_tension";
+  return level === "likely_conflict" || level === "possible_conflict" || level === "possible_misalignment";
 }
 
 // ---------------------------------------------------------------------------

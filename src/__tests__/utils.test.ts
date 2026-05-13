@@ -18,9 +18,9 @@ import type { CountryConfig, Target, ThematicClassification } from "@/types";
 
 describe("isContradiction", () => {
   it("returns true for contradiction levels", () => {
-    expect(isContradiction("high_contradiction")).toBe(true);
-    expect(isContradiction("moderate_contradiction")).toBe(true);
-    expect(isContradiction("low_tension")).toBe(true);
+    expect(isContradiction("likely_conflict")).toBe(true);
+    expect(isContradiction("possible_conflict")).toBe(true);
+    expect(isContradiction("possible_misalignment")).toBe(true);
   });
 
   it("returns false for alignment and none levels", () => {

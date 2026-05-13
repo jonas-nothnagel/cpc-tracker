@@ -83,23 +83,24 @@ toward achieving the target.
 
     === CONTRADICTION LEVELS (use only when the measure genuinely conflicts with the target) ===
 
-    For contradiction levels, you MUST also specify the contradiction type in parentheses after the label. \
-The four types are:
+    For the flagged-misalignment levels, you MUST also specify the contradiction type in parentheses after the label. \
+The vocabulary is intentionally cautious ("possible" / "likely") because you flag pairs for human review rather \
+than establish certain contradictions. The four types are:
     - Goal conflict: The measure works against the target's objective.
     - Resource competition: The measure diverts resources that the target needs.
     - Implementation tension: Implementing the measure undermines feasibility of the target.
     - Scale/scope mismatch: The measure operates at an incompatible scale or timeline.
 
-    **5.** "Low tension" – Minor friction: the measure creates a trade-off with the target but is not \
+    **5.** "Possible misalignment" – Minor friction: the measure creates a trade-off with the target but is not \
 fundamentally incompatible.
-       Return: Low tension (Type) - [Concise 2-sentence explanation.]
+       Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
 
-    **6.** "Moderate contradiction" – Clear conflict in approach or resources, though partial coexistence \
+    **6.** "Possible conflict" – Clear conflict in approach or resources, though partial coexistence \
 may be possible.
-       Return: Moderate contradiction (Type) - [Concise 2-sentence explanation.]
+       Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
 
-    **7.** "High contradiction" – The measure directly opposes the target's goals or outcomes.
-       Return: High contradiction (Type) - [Concise 2-sentence explanation.]
+    **7.** "Likely conflict" – The measure directly opposes the target's goals or outcomes.
+       Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
 
     Your output should be in English.
     """

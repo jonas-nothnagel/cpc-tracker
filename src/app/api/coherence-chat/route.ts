@@ -115,7 +115,7 @@ Your stance is decision-support, not decision-maker. Surface what the data shows
 THE DATASET
 Targets come from policy documents the country has published. The user message lists the documents currently in this corpus under DATA, including their short ids and full names. Expand abbreviations on first mention if the user is unlikely to know them.
 
-Policy targets describe what the country PLANS to do. BTR entries describe what the country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A contradiction between a BTR entry and a policy target is qualitatively sharper than two plans disagreeing on paper, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears in a pair the user is asking about.
+Policy targets describe what the country PLANS to do. BTR entries describe what the country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A flagged misalignment between a BTR entry and a policy target is qualitatively sharper than two plans disagreeing on paper, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears in a pair the user is asking about.
 
 YOUR JOB
 Write a factual ANSWER (3 to 5 short sentences, 60 to 95 words) using the precomputed rankings, pair rationales, target index, and topic resolution. Lead with the most relevant fact (the count, the top entry, or the sharpest pair). Every number and label must trace to the context. Stop early if you would have to invent a number.
@@ -200,7 +200,7 @@ const TOOLS = [
     function: {
       name: "select_target",
       description:
-        "Select a single target from the target index. Opens the target's detail panel which lists all its alignments and contradictions and lets the user click any pair to read its rationale.",
+        "Select a single target from the target index. Opens the target's detail panel which lists all its alignments and flagged misalignments and lets the user click any pair to read its rationale.",
       parameters: {
         type: "object",
         properties: { targetId: { type: "string" } },
@@ -282,8 +282,12 @@ function tokenizeForTopic(text: string): string[] {
     "all", "most", "more", "less", "than", "then", "but", "not", "their", "they",
     "its", "out", "over", "under", "between", "across", "through", "throughout",
     "target", "targets", "policy", "policies", "document", "documents",
+    // Keyword intent list. Keep legacy "tension"/"contradiction" words so
+    // users who learned the old vocabulary still trigger intent matches; the
+    // newer "misalignment" synonyms cover the renamed vocabulary.
     "contested", "tension", "tensions", "conflict", "conflicts", "contradiction",
-    "contradictions", "aligned", "alignment", "alignments", "relate", "related",
+    "contradictions", "misalignment", "misalignments", "misaligned",
+    "aligned", "alignment", "alignments", "relate", "related",
     "relates", "relating",
   ]);
   return text
@@ -353,7 +357,7 @@ function buildTopicRankings(
   const matchingIds = new Set(matchingTargets.map((t) => t.id));
   const tension = new Map<string, number>();
   const alignment = new Map<string, number>();
-  const CONTRA = new Set(["high_contradiction", "moderate_contradiction", "low_tension"]);
+  const CONTRA = new Set(["likely_conflict", "possible_conflict", "possible_misalignment"]);
   const STRONG_ALIGN = new Set(["high"]);
   for (const p of ctx.pairs ?? []) {
     if (CONTRA.has(p.level)) {
@@ -440,9 +444,9 @@ function buildUserMessage(
   // Pair rationales: contradictions first (most diagnostic), then alignments.
   // Severity-ordered so model can scan top-down for concrete tensions.
   const SEVERITY: Record<string, number> = {
-    high_contradiction: 0,
-    moderate_contradiction: 1,
-    low_tension: 2,
+    likely_conflict: 0,
+    possible_conflict: 1,
+    possible_misalignment: 2,
     high: 3,
     medium: 4,
     low: 5,
@@ -567,7 +571,7 @@ function buildUserMessage(
   );
   if (pairBlock) {
     sections.push(
-      `Pair rationales — ${pairs.length} non-"none" pairs, severity-sorted. Format: targetA ↔ targetB | level (contradictionType?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific tensions:`,
+      `Pair rationales (${pairs.length} non-"none" pairs, severity-sorted). Format: targetA ↔ targetB | level (contradictionType?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
       pairBlock,
       "",
     );
@@ -713,9 +717,9 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 // it can't hallucinate.
 
 const SEVERITY_LABEL: Record<string, string> = {
-  high_contradiction: "high contradiction",
-  moderate_contradiction: "moderate contradiction",
-  low_tension: "low tension",
+  likely_conflict: "likely conflict",
+  possible_conflict: "possible conflict",
+  possible_misalignment: "possible misalignment",
   high: "high alignment",
   medium: "medium alignment",
   low: "partial alignment",
@@ -781,9 +785,9 @@ function synthesizeAnswer(
           const bothBtr = pA.doc === "BTR" && pB.doc === "BTR";
           if (!oneIsBtr || bothBtr) return false;
           return (
-            p.level === "high_contradiction" ||
-            p.level === "moderate_contradiction" ||
-            p.level === "low_tension"
+            p.level === "likely_conflict" ||
+            p.level === "possible_conflict" ||
+            p.level === "possible_misalignment"
           );
         });
         if (btrPolicyPairs.length > 1) {
@@ -809,7 +813,7 @@ function synthesizeAnswer(
       sentences.push(`${t.full} is the focal target.`);
       if (tensionRank || alignRank) {
         const parts: string[] = [];
-        if (tensionRank) parts.push(`${tensionRank.count} contradictions`);
+        if (tensionRank) parts.push(`${tensionRank.count} flagged misalignments`);
         if (alignRank) parts.push(`${alignRank.count} strong alignments`);
         sentences.push(`Carries ${parts.join(" and ")} in the dataset.`);
       }
@@ -1319,9 +1323,9 @@ function buildSuggestions(
         continue;
       const partner = p.a === selectTarget.targetId ? p.b : p.a;
       if (
-        p.level === "high_contradiction" ||
-        p.level === "moderate_contradiction" ||
-        p.level === "low_tension"
+        p.level === "likely_conflict" ||
+        p.level === "possible_conflict" ||
+        p.level === "possible_misalignment"
       ) {
         tensionCount += 1;
         if (!topConflictPartner) {

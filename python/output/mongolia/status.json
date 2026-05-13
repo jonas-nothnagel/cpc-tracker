@@ -16,9 +16,9 @@
       "medium": 3449,
       "low": 682,
       "high": 652,
-      "low_tension": 516,
+      "possible_misalignment": 516,
       "none": 30,
-      "moderate_contradiction": 3
+      "possible_conflict": 3
     },
     "totalContradictions": 519,
     "measureAlignmentPairs": 4962,

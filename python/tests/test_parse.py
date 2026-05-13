@@ -51,44 +51,58 @@ class TestParseAlignmentPositive:
 
 
 class TestParseAlignmentContradiction:
-    def test_high_contradiction_with_type(self):
-        raw = "High contradiction (Goal conflict) - These targets have directly opposing objectives for the same land resource."
+    def test_likely_conflict_with_type(self):
+        raw = "Likely conflict (Goal conflict) - These targets have directly opposing objectives for the same land resource."
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "high_contradiction"
+        assert level == "likely_conflict"
         assert "opposing objectives" in explanation
         assert ctype == "goal_conflict"
 
-    def test_moderate_contradiction_with_type(self):
-        raw = "Moderate contradiction (Resource competition) - Both targets place competing demands on the same rangeland."
+    def test_possible_conflict_with_type(self):
+        raw = "Possible conflict (Resource competition) - Both targets place competing demands on the same rangeland."
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "moderate_contradiction"
+        assert level == "possible_conflict"
         assert "competing demands" in explanation
         assert ctype == "resource_competition"
 
-    def test_low_tension_with_type(self):
-        raw = "Low tension (Implementation tension) - Rapid irrigation expansion could strain water resources."
+    def test_possible_misalignment_with_type(self):
+        raw = "Possible misalignment (Implementation tension) - Rapid irrigation expansion could strain water resources."
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "low_tension"
+        assert level == "possible_misalignment"
         assert "irrigation" in explanation
         assert ctype == "implementation_tension"
 
     def test_scale_scope_mismatch_type(self):
-        raw = "High contradiction (Scale/scope mismatch) - National vs local scale conflict."
+        raw = "Likely conflict (Scale/scope mismatch) - National vs local scale conflict."
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "high_contradiction"
+        assert level == "likely_conflict"
         assert ctype == "scale_scope_mismatch"
 
-    def test_contradiction_without_type_parenthetical(self):
-        raw = "High contradiction - Targets directly conflict."
+    def test_conflict_without_type_parenthetical(self):
+        raw = "Likely conflict - Targets directly conflict."
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "high_contradiction"
+        assert level == "likely_conflict"
         assert ctype is None
 
     def test_case_insensitive(self):
-        raw = "HIGH CONTRADICTION (GOAL CONFLICT) - Opposing objectives."
+        raw = "LIKELY CONFLICT (GOAL CONFLICT) - Opposing objectives."
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "high_contradiction"
+        assert level == "likely_conflict"
         assert ctype == "goal_conflict"
+
+    def test_legacy_high_contradiction_maps_to_likely_conflict(self):
+        """Backward-compat: LLM regression to old wording still parses cleanly."""
+        raw = "High contradiction (Goal conflict) - Opposing objectives."
+        level, _, ctype = parse_alignment(raw)
+        assert level == "likely_conflict"
+        assert ctype == "goal_conflict"
+
+    def test_legacy_low_tension_maps_to_possible_misalignment(self):
+        """Backward-compat: LLM regression to old wording still parses cleanly."""
+        raw = "Low tension (Implementation tension) - Irrigation strain."
+        level, _, ctype = parse_alignment(raw)
+        assert level == "possible_misalignment"
+        assert ctype == "implementation_tension"
 
 
 # ---------------------------------------------------------------------------
@@ -105,9 +119,9 @@ class TestParseAlignmentFallback:
         assert ctype is None
 
     def test_json_format_contradiction(self):
-        raw = '{"alignment": "high contradiction", "contradiction_type": "goal conflict", "explanation": "Opposing goals."}'
+        raw = '{"alignment": "likely conflict", "contradiction_type": "goal conflict", "explanation": "Opposing goals."}'
         level, explanation, ctype = parse_alignment(raw)
-        assert level == "high_contradiction"
+        assert level == "likely_conflict"
 
     def test_unknown_defaults_to_none(self):
         raw = "Some completely unexpected LLM response."
