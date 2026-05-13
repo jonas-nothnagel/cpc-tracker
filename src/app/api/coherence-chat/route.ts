@@ -47,6 +47,11 @@ interface ChatContext {
   /** Subset of group ids the user currently has toggled on. The model
    *  compares this against `groups` to decide whether to emit show_docs. */
   visibleDocs?: string[];
+  /** Document-type registry from the country config. Provides full names
+   *  for the doc ids so the model can expand abbreviations on first
+   *  mention without relying on a country-specific gloss in the system
+   *  prompt. */
+  documentTypes?: { id: string; fullLabel: string }[];
   targetIndex: {
     id: string;
     sourceLabel: string;
@@ -100,97 +105,56 @@ interface HistoryTurn {
   content: string;
 }
 
-const SYSTEM_PROMPT = `You answer questions about a policy coherence dataset. Targets come from documents (NDC, NBSAP, NAP, FSS, LDN, Vision 2050 / SECTORAL, BTR, etc.).
+const SYSTEM_PROMPT = `ABOUT THIS TOOL AND WHO YOU SERVE
+You are the chat assistant inside the UNDP Climate-Policy Coherence Tracker, a decision-support tool for UNDP country office staff and national policymakers. Most users are not data scientists; they want clear factual answers in plain language about how their country's policies fit together.
 
-A note on what the documents mean: policy targets (NDC, NBSAP, NAP, FSS, LDN, SECTORAL) describe what a country PLANS to do. BTR entries describe what a country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A contradiction between a BTR action and a policy target is qualitatively sharper than two plans on paper disagreeing, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears on either side of a contradiction the user is asking about.
+The tool examines three levels: (1) coherence between policy targets across documents, which is what you mainly answer about, (2) financial alignment, forthcoming, (3) implementation progress, surfaced today through BTR (Biennial Transparency Report) entries that record what is already happening on the ground.
 
-Your job: write a factual ANSWER to the user's question using the precomputed rankings, pair rationales, and target index. The answer text is the primary output. Then optionally call navigation tools that surface the evidence on the wheel, the user will opt in via a Show me button if they want to see it. Never tell the user to click anything or toggle settings themselves.
+Your stance is decision-support, not decision-maker. Surface what the data shows; never recommend what a country, ministry, or sector "should" do. Keep language neutral: an alignment gap is "an opportunity for stronger coherence," not "ministry X is failing." Comparative coherence outputs have historically been used to assign political blame, that risk is real.
 
-CRITICAL OUTPUT REQUIREMENT: you MUST always write the answer in your message content (the text channel). The tool calls are SEPARATE from the answer and only configure the Show me button. Do not tool call without also writing the answer text. The answer is required even when you call tools.
+THE DATASET
+Targets come from policy documents the country has published. The user message lists the documents currently in this corpus under DATA, including their short ids and full names. Expand abbreviations on first mention if the user is unlikely to know them.
 
-CRITICAL NAVIGATION REQUIREMENT: whenever your answer names a specific pair, target, or document group as the focal evidence, you MUST also call the corresponding navigation tool so the Show me button has something to apply. For example, if the answer says "the sharpest is BTR X versus FSS Y", you MUST call select_pair(BTR X id, FSS Y id). If the answer says "<doc> carries the most tensions", you MUST call focus_category(<doc id>). The only time you skip tool calls is when the answer reports "no matches in the data" or is purely descriptive of the dataset as a whole.
+Policy targets describe what the country PLANS to do. BTR entries describe what the country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A contradiction between a BTR entry and a policy target is qualitatively sharper than two plans disagreeing on paper, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears in a pair the user is asking about.
 
-Answer shape: 2 to 4 short sentences, 60 to 80 words. Sentence 1 states the most relevant fact: the count, the top entry, the sharpest pair. Sentences 2 to 4 add supporting facts drawn directly from the context. Every number and label you mention must trace to the context. Stop early if you would have to invent a number.
+YOUR JOB
+Write a factual ANSWER (3 to 5 short sentences, 60 to 95 words) using the precomputed rankings, pair rationales, target index, and topic resolution. Lead with the most relevant fact (the count, the top entry, or the sharpest pair). Every number and label must trace to the context. Stop early if you would have to invent a number.
 
-Allowed sentence shapes:
-- "There are N pairs where <category A> and <category B> contradict each other."
-- "The sharpest tension is <doc> <label> versus <doc> <label> (high contradiction)."
-- "<topic> carries N contradictions across M targets, the heaviest concentration in the dataset."
-- "Connected to N of the <total> visible documents."
-- "Appears in both the top-5 tensions and the top-5 alignments lists."
-- "No pairs in the data match that pattern."
+Then call navigation tools so the user can see the evidence on the wheel via a Show me button. The answer text is REQUIRED; always write it, even when calling tools.
 
-If the data does not contain the answer (eg the question is about a document, topic, or pattern that is not in the corpus or has zero matches), say so plainly in one short sentence and do NOT call any navigation tools.
+WHEN TO CALL A NAVIGATION TOOL
+When your answer names a specific pair, target, or document group as the focal evidence, you MUST also call the corresponding navigation tool:
+- "X versus Y" / "X conflicts with Y" -> select_pair(X_id, Y_id)
+- "X is the most contested target" -> select_target(X_id)
+- "Group G carries the most tensions" -> focus_category(G_id)
 
-Forbidden anywhere in the answer: rationale paraphrase, value judgements, policy recommendations, narrative analysis, follow-up questions, em dashes (use a comma, colon, or period instead), any number or topic name not in the context.
+If the answer says "no matches in the data" or is purely descriptive of the dataset as a whole, do not call navigation tools.
 
-Optional navigation tools (call these AFTER deciding the answer, only when there is a specific view that backs it):
+Failure mode to avoid: writing a comparative sentence and forgetting the corresponding tool call hides the Show me button, and the user, who is typically a non-technical policymaker, has no way to navigate to the underlying evidence. Treat the tool call as part of the answer, not an afterthought.
+
+TOOLS
 - set_filter(filter): all | high_medium | high_contra | high | contradictions
-- focus_category(categoryId): focus a group on the wheel
-- select_target(targetId): select a single target (opens its detail panel)
-- select_pair(targetAId, targetBId): open the pair compare view (best for "why X conflicts with Y" since the rationale renders automatically)
+- focus_category(categoryId): focus a group arc on the wheel
+- select_target(targetId): open the target detail panel
+- select_pair(targetAId, targetBId): open the pair compare view, best for "why X conflicts with Y" since the rationale renders automatically
 - set_mode(mode): document | globe | sector
-- show_docs(ids): unhide listed document group ids so a subsequent select / focus action lands on a visible target. Use ONLY when the action references a doc that is currently hidden.
+- show_docs(ids): unhide a hidden document group; call BEFORE focus / select if your target's doc is currently hidden
 
-Common patterns (each shows the answer first, then the tools to call):
+SCOPE OF THIS TURN
+The user message lists which documents are currently visible on the wheel under "USER'S CURRENT VIEW". The DATA block has already been filtered to only the visible documents. Reason and answer only over that subset. When the user has hidden documents, that signals intent to focus. If they ask a question whose answer would require hidden documents, say so plainly without naming what is missing.
 
-- "Most contested target?" / "Which single target has the most contradictions?"
-  Answer: "<doc>: <label> is the most contested target with N contradictions and M strong alignments."
-  Tools: set_filter(contradictions) + select_target(topTargetsByTension[0].id).
+CONVERSATION MEMORY
+If a "Conversation context" line is present, resolve referring expressions ("it", "this", "what about X") against the prior selection or focus. Do not ask the user to clarify; pick the most likely referent.
 
-- "Most aligned target?"
-  Answer: "<doc>: <label> anchors N strong alignments, the biggest connector in the dataset."
-  Tools: set_filter(high) + select_target(topTargetsByAlignment[0].id).
-
-- "Show a target that's both broadly aligned and contested"
-  Answer: "<doc>: <label> appears in both the top-5 tensions and the top-5 alignments lists."
-  Tools: set_filter(high_contra) + select_target(<that id>).
-
-- "Where do plans contradict most?" / "Top conflicts overall"
-  Answer: "<group> carries N tensions, more than any other group."
-  Tools: set_filter(contradictions) + focus_category(top tension group).
-
-- "Where does X clash with Y?" / "How does X conflict with Y?"
-  Answer: "<X> targets carry N tensions with <Y> targets, sharpest is <doc>: <label> versus <doc>: <label>."
-  Tools: set_filter(contradictions) + focus_category(<X group id>). Emit show_docs([...]) first if either group is hidden.
-
-- "Why does X conflict with Y?" / "Why is there tension between X and Y?"
-  Answer: "<X> and <Y> contradict because <one short sentence summarising the pair's rationale text>."
-  Tools: select_pair(X_id, Y_id).
-
-- "What does X align with?"
-  Answer: "<X> aligns strongly with N other targets, including <doc>: <label> and <doc>: <label>."
-  Tools: select_target(X_id).
-
-- "Most contested target on <topic>" (pollution, livestock, forests, etc.)
-  When the user message contains a "Topic resolution" block: use the topic-scoped ranking from that block. Answer with the first entry's count.
-  Answer: "<doc>: <label> is the most contested <topic> target with N contradictions across the dataset."
-  Tools: set_mode(<suggested mode>) + set_filter(contradictions) + select_target(<that id>).
-  If the topic-scoped top entry has count 0: answer "No tensions on file for <topic> targets." and call focus_category on the topic category id instead.
-
-- "Where do reported actions contradict policy targets?" / "Find the sharpest action-versus-plan conflict"
-  Scan pairs for entries where one side is a BTR target (sourceDocument === "BTR") and the other side is a policy target. Prefer high_contradiction over moderate_contradiction over low_tension.
-  Answer: "N reported actions contradict policy targets. The sharpest is BTR <label> versus <doc> <label> (high contradiction). <Status> on the BTR side."
-  Tools: show_docs(["BTR"]) if BTR is hidden, then select_pair(BTR_id, policy_id).
-
-- "Does <country>'s food security plan clash with reported actions?"
-  Scope to BTR pairs where the policy side is FSS.
-  Answer: same shape as above, scoped to FSS-versus-BTR. If no match: "No BTR-versus-FSS tensions on file." with no navigation tools.
-
-Scope: every request carries the full corpus. The "Available groups" list contains every doc group; the "Visible groups right now" line shows which subset is currently unhidden on the user's wheel. When the navigation action you call references a doc that is NOT in the visible-groups list, emit show_docs(<doc_ids>) FIRST so it runs before the focus / select.
-
-Conversation memory: if a "Conversation context" line is present, the user is following up on the prior turn. Resolve referring expressions (it, this, these, "what about X", "show me more") against the prior selection or focus from that line. Do not ask the user to clarify, pick the most likely referent.
-
-Hard rules:
-- The answer text is REQUIRED. Always write at least one sentence answering the question, even if you call no tools.
-- If your answer names a specific target, pair, doc, or category as the focal evidence, you MUST call at least one of select_target, select_pair, or focus_category so Show me has something to apply. A bare show_docs is NOT enough; if you call show_docs you MUST also call one of those three navigation tools.
+HARD RULES
+- 3 to 5 short sentences, 60 to 95 words.
+- Plain text only. No markdown, asterisks, bullets, or quotes around the reply.
+- No em dashes. Use a comma, colon, or period.
 - Only use ids that appear in the context. Never invent ids.
-- Plain text only. No markdown, no asterisks, no bullets, no quotes around the reply.
-- No em dashes (—) in the reply. Use a period, comma, or colon instead.
-- 2 to 4 short sentences, 60 to 80 words max.
-- No follow-up questions to the user.
-- No policy recommendations, no value judgments, no narrative analysis.
-- Use the precomputed rankings to pick the right group/target for aggregate questions; don't guess.`;
+- No follow-up questions.
+- No value judgements, or narrative analysis.
+- Use the precomputed rankings for aggregate questions; do not guess.
+- If you select / focus on a hidden doc's target, you MUST emit show_docs first.`;
 
 const TOOLS = [
   {
@@ -511,22 +475,45 @@ function buildUserMessage(
         .join("\n")
     : "";
 
+  // The DATA block has been server-side filtered to the visible documents.
+  // The model's answer should reflect that subset only. When the user has
+  // hidden documents, that's intent to focus, not noise to compensate for.
   const scopeHeader =
-    "Scope: full corpus. Every doc the user could load is available; the 'Visible groups right now' line indicates which subset is currently unhidden on the wheel.";
+    "Scope of this turn: every target, pair, and ranking below has been filtered to the documents the user currently has visible on the wheel. Reason and answer over this subset only.";
 
-  const groupsHeader =
-    "Available groups (id | label) — every document type in the data, including ones the user has toggled off:";
+  // Per-country document gloss with full names, built from the country
+  // config so the system prompt can stay country-agnostic. Only documents
+  // currently in the corpus are listed; BTR gets a parenthetical because
+  // its plans-vs-reported distinction is load-bearing for the answer.
+  const docGloss = (ctx.documentTypes ?? []).length
+    ? (ctx.documentTypes ?? [])
+        .map((dt) => {
+          const note =
+            dt.id === "BTR" ? " (reported actions, not plans)" : "";
+          return `- ${dt.id} | ${dt.fullLabel}${note}`;
+        })
+        .join("\n")
+    : groups; // Fallback: short labels from groups list.
 
+  const docGlossHeader = (ctx.documentTypes ?? []).length
+    ? "DOCUMENTS IN THIS CORPUS (id | full name), expand on first mention if the user is unlikely to know the abbreviation:"
+    : "Available groups (id | label):";
+
+  // View state and data are separated so the user's current filter / mode
+  // doesn't bleed into the model's reasoning over the corpus. View state is
+  // for picking the right Show-me action.
   const sections: string[] = [
+    "USER'S CURRENT VIEW (for navigation and Show-me targeting only, do NOT let this filter or bias your reasoning over the dataset):",
     `Country: ${ctx.country ?? "Unknown"}`,
     `Current mode: ${ctx.mode}`,
     `Current filter: ${ctx.filter}`,
+    `Visible groups right now: ${(ctx.visibleDocs ?? []).join(", ") || "(none, all hidden)"}`,
+    "",
+    "DATA (reason and answer from here):",
     scopeHeader,
     "",
-    groupsHeader,
-    groups || "(none)",
-    "",
-    `Visible groups right now: ${(ctx.visibleDocs ?? []).join(", ") || "(none — all hidden)"}`,
+    docGlossHeader,
+    docGloss || "(none)",
     "",
   ];
   if (taxonomyBlock) {
@@ -878,6 +865,124 @@ function synthesizeAnswer(
   return sentences.join(" ");
 }
 
+// ─── Content-without-actions rescue ─────────────────────────────────
+//
+// synthesizeAnswer covers the common gpt-5 failure mode (tool calls but no
+// content). The inverse failure also happens: the model writes a substantive
+// answer naming "BTR X versus FSS Y" but skips select_pair, leaving the Show
+// me button hidden. Parse named targets out of the answer text and return
+// them in order of appearance so the first two can drive a select_pair
+// injection. Matches the same three phrasings the entity extractor uses
+// ("<doc> <label>", "<doc>: <label>", and the raw id) so the rescue stays
+// in lockstep with what the inline chips can detect.
+function extractTargetMentionsFromContent(
+  content: string,
+  ctx: ChatContext,
+): string[] {
+  const norm = content.replace(/\s+/g, " ");
+  const found: { id: string; pos: number }[] = [];
+  for (const t of ctx.targetIndex) {
+    if (!t.id) continue;
+    const phrases = [t.id];
+    if (t.sourceDocument && t.sourceLabel) {
+      phrases.push(`${t.sourceDocument} ${t.sourceLabel}`);
+      phrases.push(`${t.sourceDocument}: ${t.sourceLabel}`);
+    }
+    let bestPos = -1;
+    for (const phrase of phrases) {
+      // Word-bounded substring match: the char immediately after the phrase
+      // must be end-of-string or non-label-continuation. ".", "0-9",
+      // "A-Za-z" and "_" count as continuation so "NDC 1" does not falsely
+      // match "NDC 1.2" and "FSS_29" does not match "FSS_290".
+      let from = 0;
+      while (from <= norm.length) {
+        const pos = norm.indexOf(phrase, from);
+        if (pos === -1) break;
+        const next = norm[pos + phrase.length];
+        if (next === undefined || !/[A-Za-z0-9_.]/.test(next)) {
+          if (bestPos === -1 || pos < bestPos) bestPos = pos;
+          break;
+        }
+        from = pos + 1;
+      }
+    }
+    if (bestPos !== -1) found.push({ id: t.id, pos: bestPos });
+  }
+  return found.sort((x, y) => x.pos - y.pos).map((x) => x.id);
+}
+
+// ─── Inline target-id entities for the chat reply ───────────────────
+//
+// The client renders the reply text and turns each entity span into a
+// clickable button that selects the target. Distinct from the Show-me
+// rescue above: this one matches raw `target.id` substrings (e.g.
+// "FSS_29", "BTR_9") rather than "<doc> <label>" phrases, and returns
+// every occurrence with start/end byte offsets. Word-bounded so
+// "FSS_29" does not falsely match "FSS_290" or "XFSS_29Y".
+interface ReplyEntity {
+  type: "target";
+  id: string;
+  start: number;
+  end: number;
+}
+
+function extractTargetIdEntities(
+  content: string,
+  ctx: ChatContext,
+): ReplyEntity[] {
+  const entities: ReplyEntity[] = [];
+  // Build candidate phrases per target. The model alternates between
+  // the raw id ("FSS_29"), the doc+space+label form ("FSS 29"), and the
+  // doc+colon+label form ("FSS: 29") depending on phrasing. We match all
+  // three so an inline chip lands no matter which form the model picked.
+  // Phrases are tried in length-descending order so the longest match at
+  // each position wins, preventing "FSS 29" from being shadowed by a
+  // shorter same-position match.
+  type Candidate = { id: string; phrase: string };
+  const candidates: Candidate[] = [];
+  for (const t of ctx.targetIndex) {
+    if (typeof t.id !== "string" || t.id.length === 0) continue;
+    candidates.push({ id: t.id, phrase: t.id });
+    if (t.sourceDocument && t.sourceLabel) {
+      candidates.push({
+        id: t.id,
+        phrase: `${t.sourceDocument} ${t.sourceLabel}`,
+      });
+      candidates.push({
+        id: t.id,
+        phrase: `${t.sourceDocument}: ${t.sourceLabel}`,
+      });
+    }
+  }
+  candidates.sort((a, b) => b.phrase.length - a.phrase.length);
+
+  const taken: Array<[number, number]> = [];
+  for (const { id, phrase } of candidates) {
+    let from = 0;
+    while (from <= content.length) {
+      const pos = content.indexOf(phrase, from);
+      if (pos === -1) break;
+      const prev = content[pos - 1];
+      const next = content[pos + phrase.length];
+      // Boundary char set covers id continuations ("FSS_29" not into
+      // "FSS_290") and label continuations ("FSS 29" not into "FSS 29.1").
+      const prevOk = prev === undefined || !/[A-Za-z0-9_]/.test(prev);
+      const nextOk = next === undefined || !/[A-Za-z0-9_.]/.test(next);
+      if (prevOk && nextOk) {
+        const end = pos + phrase.length;
+        const conflict = taken.some(([s, e]) => pos < e && s < end);
+        if (!conflict) {
+          entities.push({ type: "target", id, start: pos, end });
+          taken.push([pos, end]);
+        }
+      }
+      from = pos + 1;
+    }
+  }
+  entities.sort((a, b) => a.start - b.start);
+  return entities;
+}
+
 // ─── Action ordering for the client ─────────────────────────────────
 //
 // set_mode resets the selection state on the client, so it must run before
@@ -918,6 +1023,27 @@ export async function POST(req: Request) {
   }
   if (!context) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });
+  }
+
+  // Empty visible-docs short circuit: when the user has hidden every
+  // document on the wheel, there's literally nothing for the chat to reason
+  // over. Skip the LLM round-trip and return a self-explanatory reply that
+  // tells the user to toggle a document back on. Cheaper, faster, and
+  // prevents a confused gpt-5 answer.
+  if (context.targetIndex.length === 0) {
+    return NextResponse.json({
+      reply:
+        "All documents are currently hidden on the wheel. Toggle at least one document back on to ask questions about its targets.",
+      actions: [],
+      suggestions: [
+        {
+          label: "Show all documents",
+          query: "Show all documents",
+          kind: "surprise" as const,
+        },
+      ],
+      replyEntities: [],
+    });
   }
 
   // Auto-broaden is decided client-side: when the user's query mentions a
@@ -1068,6 +1194,41 @@ export async function POST(req: Request) {
       });
       finalActions.sort((a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type]);
     }
+
+    // Content-without-actions rescue: even after the show_docs promotion the
+    // response may still have no nav action. If the model wrote a substantive
+    // answer naming specific targets but skipped select_pair / select_target,
+    // recover by parsing target mentions out of the text. Mirrors the
+    // synthesiser pattern, which handles the opposite failure (tools but no
+    // content). Without this, the Show me button stays hidden for the
+    // common "X versus Y" answer shape.
+    const hasNavAfterShowDocs = finalActions.some(
+      (a) =>
+        a.type === "select_target" ||
+        a.type === "select_pair" ||
+        a.type === "focus_category",
+    );
+    if (!hasNavAfterShowDocs && content) {
+      const mentioned = extractTargetMentionsFromContent(content, context);
+      if (mentioned.length >= 2) {
+        finalActions.push({
+          type: "select_pair",
+          targetAId: mentioned[0],
+          targetBId: mentioned[1],
+        });
+        finalActions.sort(
+          (a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type],
+        );
+      } else if (mentioned.length === 1) {
+        finalActions.push({
+          type: "select_target",
+          targetId: mentioned[0],
+        });
+        finalActions.sort(
+          (a, b) => ACTION_ORDER[a.type] - ACTION_ORDER[b.type],
+        );
+      }
+    }
   }
 
   // Prefer the model's content when it wrote one; otherwise synthesise a
@@ -1092,8 +1253,14 @@ export async function POST(req: Request) {
   reply = reply.replace(/—/g, ", ").replace(/\s+,/g, ",");
 
   const suggestions = buildSuggestions(finalActions, context);
+  const replyEntities = extractTargetIdEntities(reply, context);
 
-  return NextResponse.json({ reply, actions: finalActions, suggestions });
+  return NextResponse.json({
+    reply,
+    actions: finalActions,
+    suggestions,
+    replyEntities,
+  });
 }
 
 /**
