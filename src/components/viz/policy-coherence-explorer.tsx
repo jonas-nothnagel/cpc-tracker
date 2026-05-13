@@ -935,6 +935,19 @@ interface ChatStatus {
    *  having the wheel reshape behind their reading. Null when no reply is
    *  active or its actions have already been applied / cleared. */
   pendingActions: ChatServerAction[] | null;
+  /** Inline target-id spans the server identified in the reply text. The
+   *  client renders these as clickable chips so the user can jump straight
+   *  to a single target without applying the model's full action set. */
+  replyEntities: ReplyEntity[];
+}
+
+/** Inline target-id occurrences in the reply. start/end are byte offsets
+ *  into `reply`; type is a target id today, may extend to docs/categories. */
+interface ReplyEntity {
+  type: "target";
+  id: string;
+  start: number;
+  end: number;
 }
 
 /** Server-emitted navigation actions. Mirrors the client `ChatAction` union
@@ -1018,6 +1031,9 @@ interface EmptyPanelProps {
   onApplyHook: () => void;
   /** Whether the Show me affordance has something to apply right now. */
   canShowMe: boolean;
+  /** Click handler for inline target-id chips rendered inside the chat
+   *  reply text. Selects the target without clearing the reply. */
+  onSelectChatEntity: (targetId: string) => void;
 }
 
 type StatView = "overview" | "targets" | "alignments" | "tensions";
@@ -1203,6 +1219,63 @@ const SHOW_ME_LINK_BASE =
 const SHOW_ME_LINK_AMBER = `${SHOW_ME_LINK_BASE} text-amber-800 hover:text-amber-900 hover:underline`;
 const SHOW_ME_LINK_BLUE = `${SHOW_ME_LINK_BASE} text-[var(--undp-blue)] hover:underline`;
 
+/**
+ * Renders a chat reply with inline target-id chips. Each entity in
+ * `entities` is replaced by a clickable button at its `[start, end)` slice
+ * of the full reply. While the typewriter cursor is mid-entity the partial
+ * text renders plain; the chip only appears once the entity is fully
+ * revealed. Falls back to plain text when there are no entities.
+ */
+function ReplyText({
+  typed,
+  full,
+  entities,
+  onSelectTarget,
+}: {
+  typed: string;
+  full: string | null;
+  entities: ReplyEntity[];
+  onSelectTarget: (targetId: string) => void;
+}) {
+  if (!full || entities.length === 0) {
+    return <>{typed}</>;
+  }
+  const cursor = typed.length;
+  const parts: React.ReactNode[] = [];
+  let from = 0;
+  let key = 0;
+  for (const e of entities) {
+    if (e.start >= cursor) break;
+    if (e.start > from) {
+      parts.push(<span key={key++}>{full.slice(from, e.start)}</span>);
+    }
+    if (e.end <= cursor) {
+      parts.push(
+        <button
+          key={key++}
+          type="button"
+          onClick={() => onSelectTarget(e.id)}
+          className="font-medium text-[var(--undp-black)] underline decoration-dotted decoration-gray-400 underline-offset-2 hover:decoration-[var(--undp-blue)] hover:text-[var(--undp-blue)] transition-colors px-0.5 rounded-sm focus:outline-none focus:ring-1 focus:ring-[var(--undp-blue)]/40"
+          title={`Open ${e.id}`}
+        >
+          {full.slice(e.start, e.end)}
+        </button>,
+      );
+      from = e.end;
+    } else {
+      // Entity is mid-typing: render what's revealed as plain text,
+      // stop here, the next render frame will pick up the rest.
+      parts.push(<span key={key++}>{full.slice(e.start, cursor)}</span>);
+      from = cursor;
+      break;
+    }
+  }
+  if (from < cursor) {
+    parts.push(<span key={key++}>{full.slice(from, cursor)}</span>);
+  }
+  return <>{parts}</>;
+}
+
 function ChatBar({
   onAsk,
   chat,
@@ -1211,6 +1284,7 @@ function ChatBar({
   currentInsight,
   onApplyHook,
   canShowMe,
+  onSelectChatEntity,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
@@ -1221,6 +1295,8 @@ function ChatBar({
   /** Whether the Show me affordance has something to apply: either an
    *  insight bubble is showing, or a reply has pending server actions. */
   canShowMe: boolean;
+  /** Inline click handler for target-id chips rendered inside the reply. */
+  onSelectChatEntity: (targetId: string) => void;
 }) {
   const [query, setQuery] = useState("");
   const placeholder = useTypedPlaceholder("Ask anything about this view…");
@@ -1311,7 +1387,14 @@ function ChatBar({
       )}
       {showReply && (
         <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
-          <div>{typedReply}</div>
+          <div>
+            <ReplyText
+              typed={typedReply}
+              full={chat.reply}
+              entities={chat.replyEntities}
+              onSelectTarget={onSelectChatEntity}
+            />
+          </div>
           {/* Reply-side Show me: matches the Ask button's blue text-link
            *  styling so the two CTAs in the panel share a vocabulary. */}
           {canShowMe && (
@@ -1799,6 +1882,7 @@ function EmptyPanel({
   currentInsight,
   onApplyHook,
   canShowMe,
+  onSelectChatEntity,
 }: EmptyPanelProps) {
   // Stats are interactive: clicking a stat sets the wheel filter AND swaps
   // the middle section to a full list of that kind of item (targets, strong
@@ -1968,6 +2052,7 @@ function EmptyPanel({
           currentInsight={currentInsight}
           onApplyHook={onApplyHook}
           canShowMe={canShowMe}
+          onSelectChatEntity={onSelectChatEntity}
         />
 
       </div>
@@ -2588,6 +2673,7 @@ export function PolicyCoherenceExplorer({
     error: null,
     suggestions: [],
     pendingActions: null,
+    replyEntities: [],
   });
 
   // Rolling buffer of the last 3 user+assistant turns, sent on each ask so
@@ -2617,6 +2703,7 @@ export function PolicyCoherenceExplorer({
             error: null,
             suggestions: [],
             pendingActions: null,
+            replyEntities: [],
           }
         : prev,
     );
@@ -2645,6 +2732,28 @@ export function PolicyCoherenceExplorer({
       clearChat();
     },
     [clearChat],
+  );
+
+  // Inline target id clicks inside the chat reply bubble. Lighter than
+  // handleNodeClick: keeps the chat reply and pending-actions visible so the
+  // user can still hit Show me for the model's full intent, while jumping
+  // directly to the named target. Reveals the doc if hidden so the wheel
+  // can render the selection.
+  const handleChatEntityClick = useCallback(
+    (targetId: string) => {
+      const target = targets.find((t) => t.id === targetId);
+      if (!target) return;
+      if (hiddenDocs.has(target.sourceDocument)) {
+        setHiddenDocs((prev) => {
+          const next = new Set(prev);
+          next.delete(target.sourceDocument);
+          return next;
+        });
+      }
+      setComparedPair(null);
+      setSelectedId(targetId);
+    },
+    [targets, hiddenDocs],
   );
 
   const handleBgClick = useCallback(() => {
@@ -2726,6 +2835,7 @@ export function PolicyCoherenceExplorer({
         error: null,
         suggestions: [],
         pendingActions: null,
+        replyEntities: [],
       });
       // Chat always sees the full corpus. Scoping the chat to the visible
       // view forced users to set the view correctly BEFORE asking, which
@@ -2779,16 +2889,29 @@ export function PolicyCoherenceExplorer({
           reply: string;
           actions: ChatServerAction[];
           suggestions?: ChatSuggestion[];
+          replyEntities?: ReplyEntity[];
         };
 
         const suggestions = (json.suggestions ?? []).slice(0, 3);
         const actions = Array.isArray(json.actions) ? json.actions : [];
+        const replyEntities = Array.isArray(json.replyEntities)
+          ? json.replyEntities.filter(
+              (e): e is ReplyEntity =>
+                !!e &&
+                e.type === "target" &&
+                typeof e.id === "string" &&
+                typeof e.start === "number" &&
+                typeof e.end === "number" &&
+                e.end > e.start,
+            )
+          : [];
         setChat({
           loading: false,
           reply: json.reply,
           error: null,
           suggestions,
           pendingActions: actions.length > 0 ? actions : null,
+          replyEntities,
         });
         // Append this turn to history, capped at 3 turns (~6 messages).
         setHistory((prev) =>
@@ -2806,6 +2929,7 @@ export function PolicyCoherenceExplorer({
             err instanceof Error ? err.message : "Sorry, that didn't work.",
           suggestions: [],
           pendingActions: null,
+          replyEntities: [],
         });
       }
     },
@@ -2912,6 +3036,7 @@ export function PolicyCoherenceExplorer({
             error: null,
             suggestions: [],
             pendingActions: null,
+            replyEntities: [],
           }
         : prev,
     );
@@ -4042,6 +4167,7 @@ export function PolicyCoherenceExplorer({
                 currentInsight={currentInsight}
                 onApplyHook={onApplyHook}
                 canShowMe={canShowMe}
+                onSelectChatEntity={handleChatEntityClick}
               />
             )}
         </div>

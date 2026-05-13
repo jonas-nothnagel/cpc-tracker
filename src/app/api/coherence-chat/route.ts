@@ -909,6 +909,78 @@ function extractTargetMentionsFromContent(
   return found.sort((x, y) => x.pos - y.pos).map((x) => x.id);
 }
 
+// ─── Inline target-id entities for the chat reply ───────────────────
+//
+// The client renders the reply text and turns each entity span into a
+// clickable button that selects the target. Distinct from the Show-me
+// rescue above: this one matches raw `target.id` substrings (e.g.
+// "FSS_29", "BTR_9") rather than "<doc> <label>" phrases, and returns
+// every occurrence with start/end byte offsets. Word-bounded so
+// "FSS_29" does not falsely match "FSS_290" or "XFSS_29Y".
+interface ReplyEntity {
+  type: "target";
+  id: string;
+  start: number;
+  end: number;
+}
+
+function extractTargetIdEntities(
+  content: string,
+  ctx: ChatContext,
+): ReplyEntity[] {
+  const entities: ReplyEntity[] = [];
+  // Build candidate phrases per target. The model alternates between
+  // the raw id ("FSS_29"), the doc+space+label form ("FSS 29"), and the
+  // doc+colon+label form ("FSS: 29") depending on phrasing. We match all
+  // three so an inline chip lands no matter which form the model picked.
+  // Phrases are tried in length-descending order so the longest match at
+  // each position wins, preventing "FSS 29" from being shadowed by a
+  // shorter same-position match.
+  type Candidate = { id: string; phrase: string };
+  const candidates: Candidate[] = [];
+  for (const t of ctx.targetIndex) {
+    if (typeof t.id !== "string" || t.id.length === 0) continue;
+    candidates.push({ id: t.id, phrase: t.id });
+    if (t.sourceDocument && t.sourceLabel) {
+      candidates.push({
+        id: t.id,
+        phrase: `${t.sourceDocument} ${t.sourceLabel}`,
+      });
+      candidates.push({
+        id: t.id,
+        phrase: `${t.sourceDocument}: ${t.sourceLabel}`,
+      });
+    }
+  }
+  candidates.sort((a, b) => b.phrase.length - a.phrase.length);
+
+  const taken: Array<[number, number]> = [];
+  for (const { id, phrase } of candidates) {
+    let from = 0;
+    while (from <= content.length) {
+      const pos = content.indexOf(phrase, from);
+      if (pos === -1) break;
+      const prev = content[pos - 1];
+      const next = content[pos + phrase.length];
+      // Boundary char set covers id continuations ("FSS_29" not into
+      // "FSS_290") and label continuations ("FSS 29" not into "FSS 29.1").
+      const prevOk = prev === undefined || !/[A-Za-z0-9_]/.test(prev);
+      const nextOk = next === undefined || !/[A-Za-z0-9_.]/.test(next);
+      if (prevOk && nextOk) {
+        const end = pos + phrase.length;
+        const conflict = taken.some(([s, e]) => pos < e && s < end);
+        if (!conflict) {
+          entities.push({ type: "target", id, start: pos, end });
+          taken.push([pos, end]);
+        }
+      }
+      from = pos + 1;
+    }
+  }
+  entities.sort((a, b) => a.start - b.start);
+  return entities;
+}
+
 // ─── Action ordering for the client ─────────────────────────────────
 //
 // set_mode resets the selection state on the client, so it must run before
@@ -968,6 +1040,7 @@ export async function POST(req: Request) {
           kind: "surprise" as const,
         },
       ],
+      replyEntities: [],
     });
   }
 
@@ -1178,8 +1251,14 @@ export async function POST(req: Request) {
   reply = reply.replace(/—/g, ", ").replace(/\s+,/g, ",");
 
   const suggestions = buildSuggestions(finalActions, context);
+  const replyEntities = extractTargetIdEntities(reply, context);
 
-  return NextResponse.json({ reply, actions: finalActions, suggestions });
+  return NextResponse.json({
+    reply,
+    actions: finalActions,
+    suggestions,
+    replyEntities,
+  });
 }
 
 /**
