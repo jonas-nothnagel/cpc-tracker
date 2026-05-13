@@ -87,6 +87,30 @@ interface ChatContext {
     topTargetsByTension: RankedItem[];
     topTargetsByAlignment: RankedItem[];
   };
+  /** Per-primary-GLOBE budget rollup. Present when the country has BER
+   *  (Biodiversity Expenditure Review) data classified to GLOBE
+   *  subcategories. Always supplied regardless of which lens the user is on
+   *  so a user can ask budget questions from any view. */
+  budgetByCategory?: {
+    categoryId: string;
+    categoryName: string;
+    /** Cumulative tagged BER spend in `budgetMeta.unit` (typically billions of
+     *  `budgetMeta.currency`). */
+    totalBudget: number;
+    /** Share of the total tagged BER spend across all primary categories,
+     *  0..1. */
+    shareOfTotalBudget: number;
+    targetCount: number;
+    shareOfTargets: number;
+    contradictionPairCount: number;
+  }[];
+  /** Metadata for the budget block: currency, unit, reporting period. */
+  budgetMeta?: {
+    currency: string;
+    unit: string;
+    period: { start: number; end: number };
+    totalBudget: number;
+  };
   country: string | null;
 }
 
@@ -110,7 +134,7 @@ You are the chat assistant inside the UNDP Climate-Policy Coherence Tracker, a d
 
 The tool examines three levels: (1) coherence between policy targets across documents, which is what you mainly answer about, (2) financial alignment, forthcoming, (3) implementation progress, surfaced today through BTR (Biennial Transparency Report) entries that record what is already happening on the ground.
 
-Your stance is decision-support, not decision-maker. Surface what the data shows; never recommend what a country, ministry, or sector "should" do. Keep language neutral: an alignment gap is "an opportunity for stronger coherence," not "ministry X is failing." Comparative coherence outputs have historically been used to assign political blame, that risk is real.
+Your stance is decision-support, not decision-maker. Lead with what the data shows. When the user asks how coherence could be improved, what they could do, or how to address a specific tension, you may also suggest process-level pathways (boundary review, joint M&E, coordination across documents, indicator alignment, sequencing) that reference the visible evidence. Use hedged phrasing ("could potentially", "may help", "consider"), never "should" or "must". Do not prescribe country-specific policy choices ("reduce subsidy X", "cut target Y") and do not name a single ministry as lagging. Keep language neutral: an alignment gap is "an opportunity for stronger coherence," not "ministry X is failing." Comparative coherence outputs have historically been used to assign political blame, that risk is real.
 
 THE DATASET
 Targets come from policy documents the country has published. The user message lists the documents currently in this corpus under DATA, including their short ids and full names. Expand abbreviations on first mention if the user is unlikely to know them.
@@ -146,15 +170,20 @@ The user message lists which documents are currently visible on the wheel under 
 CONVERSATION MEMORY
 If a "Conversation context" line is present, resolve referring expressions ("it", "this", "what about X") against the prior selection or focus. Do not ask the user to clarify; pick the most likely referent.
 
+BUDGET DATA (when present)
+When the user message includes a BUDGET BY GLOBE CATEGORY block, you may answer questions about how a country's tagged biodiversity expenditure (BER, Biodiversity Expenditure Review) is distributed across primary GLOBE categories. The block lists, per primary category: total tagged spend, share of total tagged spend, target count, share of targets, and count of flagged conflict pairs. Always qualify figures as "tagged BER spend" or "in the uploaded BER", since the BER is a subset of national expenditure, not the full budget. Never call a category "underfunded" as a verdict; describe shares and counts as observations. Acceptable framings: "X has Y% of tagged BER spend against Z% of GLOBE-tagged targets", "X has the most flagged pairs and the smallest budget share in this view". The currency, unit, and reporting period live in the block's header line; quote them on first mention of a figure.
+
 HARD RULES
 - 3 to 5 short sentences, 60 to 95 words.
 - Plain text only. No markdown, asterisks, bullets, or quotes around the reply.
 - No em dashes. Use a comma, colon, or period.
-- Only use ids that appear in the context. Never invent ids.
+- Only use ids that appear in the context, and only inside tool calls. Never write raw ids in the answer text.
+- In your answer, name categories, sectors, documents, and targets by their human-readable name only. Never include the raw id alongside the name (for example, write "Biodiversity awareness and knowledge", not "Biodiversity awareness and knowledge, globe_2"). The Show me button carries the id; the reply is for humans.
 - No follow-up questions.
-- No value judgements, or narrative analysis.
+- No value judgements or extended narrative analysis. Hedged process pointers (boundary review, coordination, indicator alignment, sequencing) are allowed when the user asks how coherence could be improved and the pointers reference visible evidence.
 - Use the precomputed rankings for aggregate questions; do not guess.
-- If you select / focus on a hidden doc's target, you MUST emit show_docs first.`;
+- If you select / focus on a hidden doc's target, you MUST emit show_docs first.
+- Do not call a category "underfunded" or "overfunded" without qualification. Describe the observed shares; let the user draw the verdict.`;
 
 const TOOLS = [
   {
@@ -564,6 +593,30 @@ function buildUserMessage(
   if (rankings) {
     sections.push("Pre-computed rankings — use these to pick groups/targets for aggregate questions:", rankings);
   }
+
+  // Budget rollup: one line per primary GLOBE category. Plain text, pipe-
+  // delimited so the model can quote a number without hallucinating one. Sent
+  // unconditionally when the data exists, not gated by the wheel's overlay.
+  if (ctx.budgetByCategory && ctx.budgetByCategory.length > 0 && ctx.budgetMeta) {
+    const meta = ctx.budgetMeta;
+    const periodLabel = `${meta.period.start}-${meta.period.end}`;
+    const unitLabel = meta.unit ? `${meta.unit} ${meta.currency}` : meta.currency;
+    const lines = ctx.budgetByCategory
+      .slice()
+      .sort((a, b) => b.shareOfTotalBudget - a.shareOfTotalBudget)
+      .map((b) => {
+        const sharePct = (b.shareOfTotalBudget * 100).toFixed(1);
+        const tSharePct = (b.shareOfTargets * 100).toFixed(1);
+        return `${b.categoryId} | ${b.categoryName} | ${b.totalBudget.toFixed(2)} ${unitLabel} | ${sharePct}% of tagged BER | ${b.targetCount} targets (${tSharePct}% of GLOBE-tagged) | ${b.contradictionPairCount} flagged pairs`;
+      })
+      .join("\n");
+    sections.push(
+      `BUDGET BY GLOBE CATEGORY (tagged BER spend, ${periodLabel}, ${unitLabel}; total tagged ${meta.totalBudget.toFixed(2)} ${unitLabel} which is a subset of national expenditure). Format: id | name | total | share of tagged BER | target count (share of GLOBE-tagged targets) | flagged conflict pairs:`,
+      lines,
+      "",
+    );
+  }
+
   sections.push(
     `Available targets — ${ctx.targetIndex.length} total. Format: id | doc: label [flags]\\n  text: <full target text>\\n  primary: <taxonomy tags>:`,
     targets || "(none)",

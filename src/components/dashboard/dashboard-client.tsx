@@ -473,9 +473,11 @@ export function DashboardClient({
           alignment={data.alignment}
           sectors={data.sectors}
           globeCategories={data.globeCategories}
+          globeSubcategories={data.globeSubcategories}
           classifications={data.classifications}
           nr7Data={data.nr7Data}
           btrData={data.btrData}
+          berData={data.berData}
           focusTargetId={focusTargetId}
           countryConfig={data.countryConfig}
         />

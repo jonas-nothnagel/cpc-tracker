@@ -8,8 +8,11 @@
  *
  * Discipline matches the chat's:
  *   - no em dashes (commas, colons, periods only)
- *   - no recommendations or value judgements
  *   - every number quoted must be derived from the data passed in
+ *   - pathway lines (optional) carry a brief, hedged "worth a closer
+ *     look" thought rooted in the same evidence. Never prescriptive,
+ *     never country-specific. Render is a quiet italic line beneath the
+ *     callout, not a stacked block.
  */
 
 import { isContradiction } from "@/types";
@@ -45,6 +48,14 @@ export interface Insight {
   pattern: InsightPattern;
   /** 1-2 sentence factual callout. No em dashes. */
   callout: string;
+  /**
+   * Optional hedged pathway hint shown as a quiet italic line beneath the
+   * callout. Only the detectors with a very clear, deterministic next
+   * thought emit this; others stay factual-only. Always hedged
+   * ("could potentially", "may", "worth a closer look"), never
+   * prescriptive or country-specific.
+   */
+  pathway?: string;
   /** Action(s) to dispatch when the user clicks Show me. */
   actions: ChatAction[];
   /**
@@ -186,6 +197,8 @@ function detectTensionCluster(args: DetectArgs): Insight | null {
   return {
     pattern: "tension_cluster",
     callout: `${n} contradictions converge on ${label}, the single biggest driver of tension in the dataset.`,
+    pathway:
+      "A boundary review on this target could potentially help unlock alignment with the conflicting documents.",
     actions: [
       { type: "set_mode", mode: "document" },
       { type: "focus_category", categoryId: t.sourceDocument },
@@ -398,6 +411,8 @@ function detectImbalance(args: DetectArgs): Insight | null {
   return {
     pattern: "imbalance",
     callout: `${labelA} and ${labelB} carry ${best.pair.contras} tensions versus ${best.pair.aligns} strong alignments, the most lopsided pair in the dataset.`,
+    pathway:
+      "A joint review across these two may help surface where their mandates diverge.",
     actions: [
       { type: "set_mode", mode: "document" },
       { type: "focus_category", categoryId: dA },
@@ -480,6 +495,8 @@ function detectImplementationContradiction(args: DetectArgs): Insight | null {
   return {
     pattern: "implementation_contradiction",
     callout: `Reported action ${btrLabel} (${status.toLowerCase()}) ${severityWord} planned target ${policyLabel}. What's being done versus what's been planned.`,
+    pathway:
+      "Reconciling the two, or flagging the pair for human review, could potentially close the gap between plan and practice.",
     actions: [
       {
         type: "select_pair",
@@ -605,7 +622,9 @@ function detectQuantitativeGap(args: DetectArgs): Insight | null {
     const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)} ${t.sourceLabel}`;
     return {
       pattern: "quantitative_gap",
-      callout: `${label} sits in ${n} contradictions but carries no measurable indicator, hard to track without a number to anchor it.`,
+      callout: `${label} sits in ${n} contradictions but carries no measurable indicator.`,
+      pathway:
+        "Without a number to anchor the target, several of these tensions may rest on interpretation rather than policy conflict, worth a closer look before treating them as decision-grade signals.",
       actions: [{ type: "select_target", targetId: id }],
       filter: "contradictions",
     };
@@ -785,6 +804,8 @@ function detectQuantitativeCoverage(args: DetectArgs): Insight | null {
   return {
     pattern: "quantitative_coverage",
     callout: `Only ${quant} of ${total} targets carry a measurable indicator. The rest read as direction-of-travel statements, hard to track without a number to anchor them.`,
+    pathway:
+      "Many of the alignment and contradiction counts here may carry more interpretive weight than substantive policy conflict, given how many targets are direction-of-travel statements.",
     actions: [{ type: "set_mode", mode: "document" }],
     filter: "all",
   };
