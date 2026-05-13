@@ -21,6 +21,15 @@ import type {
 } from "@/types";
 import { isContradiction } from "@/types";
 
+/**
+ * Pseudo-target id prefix used to mark BER programme classifications in the
+ * `classifications` array (e.g. `BER_71407`). Used as a literal in three
+ * places in this file; pulling it out keeps a future rename in lock-step
+ * and saves readers from having to grep for "BER_" to confirm the
+ * convention.
+ */
+const BER_ID_PREFIX = "BER_";
+
 export interface CategoryBudgetEntry {
   /** Primary GLOBE category id, e.g. "globe_5". */
   categoryId: string;
@@ -94,7 +103,7 @@ export function computeBudgetByGlobeCategory(args: {
   const expByBerId = new Map<string, number>();
   for (const e of berData.expenditure) {
     const t = totalExpenditure(e);
-    if (t > 0) expByBerId.set(`BER_${e.code}`, t);
+    if (t > 0) expByBerId.set(`${BER_ID_PREFIX}${e.code}`, t);
   }
   if (expByBerId.size === 0) return null;
 
@@ -112,7 +121,7 @@ export function computeBudgetByGlobeCategory(args: {
   for (const c of classifications) {
     if (c.taxonomyType !== "globe_sub") continue;
     if (c.isPrimary !== true) continue;
-    if (!c.targetId.startsWith("BER_")) continue;
+    if (!c.targetId.startsWith(BER_ID_PREFIX)) continue;
     const parentId = subToParent.get(c.categoryId);
     if (!parentId) continue;
     const exp = expByBerId.get(c.targetId) ?? 0;
@@ -314,8 +323,8 @@ export function computeProgrammesByCategory(args: {
   for (const c of classifications) {
     if (c.taxonomyType !== "globe_sub") continue;
     if (c.isPrimary !== true) continue;
-    if (!c.targetId.startsWith("BER_")) continue;
-    const programmeCode = c.targetId.slice("BER_".length);
+    if (!c.targetId.startsWith(BER_ID_PREFIX)) continue;
+    const programmeCode = c.targetId.slice(BER_ID_PREFIX.length);
     const programme = programmeIndex.get(programmeCode);
     if (!programme || programme.totalBudget <= 0) continue;
     const sub = subIndex.get(c.categoryId);
