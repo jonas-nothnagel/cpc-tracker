@@ -62,19 +62,20 @@ overlap but incomplete coverage of the target's objectives.
 **4.** "High alignment" – The action directly implements or strongly advances the target.
     Return: High alignment - [Concise 2-sentence explanation.]
 
-=== CONTRADICTION LEVELS ===
+=== FLAGGED MISALIGNMENT LEVELS ===
 
-Specify contradiction type in parentheses: Goal conflict | Resource competition | \
+The vocabulary is intentionally cautious ("possible" / "likely") because you flag pairs for human review rather \
+than establish certain contradictions. Specify contradiction type in parentheses: Goal conflict | Resource competition | \
 Implementation tension | Scale/scope mismatch.
 
-**5.** "Low tension" – Minor friction or trade-off.
-    Return: Low tension (Type) - [Concise 2-sentence explanation.]
+**5.** "Possible misalignment" – Minor friction or trade-off.
+    Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
 
-**6.** "Moderate contradiction" – Clear conflict, though partial coexistence possible.
-    Return: Moderate contradiction (Type) - [Concise 2-sentence explanation.]
+**6.** "Possible conflict" – Clear conflict, though partial coexistence possible.
+    Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
 
-**7.** "High contradiction" – Direct opposition to the target's goals.
-    Return: High contradiction (Type) - [Concise 2-sentence explanation.]
+**7.** "Likely conflict" – Direct opposition to the target's goals.
+    Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
 
 Your output should be in English."""
 

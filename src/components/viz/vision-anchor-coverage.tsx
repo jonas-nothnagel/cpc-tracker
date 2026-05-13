@@ -59,7 +59,7 @@ const STATUS_TONE_CLASSES: Record<AnchorStatus["tone"], string> = {
 
 const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: "weakest_support", label: "Weakest support first" },
-  { value: "tension_first", label: "Tension-heavy first" },
+  { value: "tension_first", label: "Misalignment-heavy first" },
   { value: "anchor_order", label: "Vision 2050 order" },
 ];
 
@@ -152,7 +152,7 @@ export function VisionAnchorCoverage({
     if (view === "sunburst") {
       return `${anchorDocLabel} sits at the center; the inner ring shows each ambition tinted by its status, the outer ring shows each ambition's alignment-level distribution. Hover any wedge to focus, click to drill in, click an outer slice to read the underlying targets.`;
     }
-    return `Peripheral targets whose strongest link to any ${anchorDocLabel} ambition is "low" or "low tension" only. They may operationalise priorities outside ${anchorDocLabel}'s long-term framing — or signal where ${anchorDocLabel} itself does not yet capture an emerging priority.`;
+    return `Peripheral targets whose strongest link to any ${anchorDocLabel} ambition is "low" or "possible misalignment" only. They may operationalise priorities outside ${anchorDocLabel}'s long-term framing — or signal where ${anchorDocLabel} itself does not yet capture an emerging priority.`;
   })();
 
   return (
@@ -170,10 +170,10 @@ export function VisionAnchorCoverage({
             <br />
             <br />
             <em>
-              The corpus contains <strong>no outright contradictions</strong> with{" "}
+              The corpus contains <strong>no outright conflicts flagged</strong> with{" "}
               {anchorDocLabel}; the only friction signal the model emits here is{" "}
-              <em>low tension</em>. The default sort surfaces ambitions with the weakest
-              operational backing first, since that is the actionable gap.
+              <em>possible misalignment</em>. The default sort surfaces ambitions with the
+              weakest operational backing first, since that is the actionable gap.
             </em>
           </InfoBox>
           <DataProvenance
@@ -651,7 +651,7 @@ function LoosePanel({
     byDoc.set(lt.target.sourceDocument, list);
   }
   // Within each document, surface the truest outliers (no relationship at all,
-  // then low_tension-only, then low-only) at the top so the eye lands on the
+  // then possible_misalignment-only, then low-only) at the top so the eye lands on the
   // actionable cases first.
   for (const list of byDoc.values()) {
     list.sort((a, b) => {
@@ -746,7 +746,7 @@ function LoosePanel({
                         <>
                           {lt.lowTensionCount > 0 && (
                             <>
-                              {lt.lowTensionCount} low-tension link
+                              {lt.lowTensionCount} possible-misalignment link
                               {lt.lowTensionCount === 1 ? "" : "s"}
                               {lt.lowCount > 0 ? " · " : ""}
                             </>

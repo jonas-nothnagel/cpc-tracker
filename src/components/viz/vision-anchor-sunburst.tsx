@@ -22,7 +22,7 @@ const LEVEL_OUTER = 250;
 const LABEL_R = LEVEL_OUTER + 14;
 
 // Levels we render in the outer ring, ordered best→worst clockwise within a wedge.
-const RENDERED_LEVELS: AlignmentLevel[] = ["high", "medium", "low", "low_tension"];
+const RENDERED_LEVELS: AlignmentLevel[] = ["high", "medium", "low", "possible_misalignment"];
 
 const STATUS_TONE_FILL: Record<AnchorStatus["tone"], string> = {
   amber: "#fed7aa", // tension-heavy: warm orange tint
@@ -354,7 +354,7 @@ export function VisionSunburst({
             {focusedSubArcs.map((sub) => {
               const subMid = (sub.startAngle + sub.endAngle) / 2;
               const labelPos = pointForAngle(subMid, (LEVEL_INNER + LEVEL_OUTER) / 2);
-              const labelDark = sub.level === "low_tension" || sub.level === "low";
+              const labelDark = sub.level === "possible_misalignment" || sub.level === "low";
               const span = sub.endAngle - sub.startAngle;
               const showInlineLabel = span > 0.18; // skip text in tiny slices
               return (

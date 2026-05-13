@@ -14,9 +14,9 @@ interface ContradictionSummaryProps {
 }
 
 const SEVERITY_ORDER: AlignmentLevel[] = [
-  "high_contradiction",
-  "moderate_contradiction",
-  "low_tension",
+  "likely_conflict",
+  "possible_conflict",
+  "possible_misalignment",
 ];
 
 /**

@@ -12,10 +12,17 @@
     "section": "CTF-NDC Table 5 / PDF Table II.6",
     "pages": "93-94"
   },
-  "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity.",
+  "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity. Order: anchor (Vision 2050) first; BTR last among country-declared docs (OTHER catch-all comes after).",
   "anchorDocType": "SECTORAL",
   "defaultHiddenDocTypes": [],
   "documentTypes": [
+    {
+      "id": "SECTORAL",
+      "shortLabel": "Vision 2050",
+      "mediumLabel": "Vision 2050",
+      "fullLabel": "Vision 2050 (Long-term Development Policy)",
+      "color": "#4f7942"
+    },
     {
       "id": "NDC",
       "shortLabel": "NDC",
@@ -38,20 +45,6 @@
       "color": "#b45309"
     },
     {
-      "id": "SECTORAL",
-      "shortLabel": "Vision 2050",
-      "mediumLabel": "Vision 2050",
-      "fullLabel": "Vision 2050 (Long-term Development Policy)",
-      "color": "#4f7942"
-    },
-    {
-      "id": "BTR",
-      "shortLabel": "BTR Action",
-      "mediumLabel": "BTR",
-      "fullLabel": "Biennial Transparency Report",
-      "color": "#7c3aed"
-    },
-    {
       "id": "BER",
       "shortLabel": "BER",
       "mediumLabel": "BER",
@@ -64,6 +57,13 @@
       "mediumLabel": "FSS",
       "fullLabel": "Food Supply and Security Measures (Parliament Resolution 36, June 2022)",
       "color": "#d97706"
+    },
+    {
+      "id": "BTR",
+      "shortLabel": "BTR Action",
+      "mediumLabel": "BTR",
+      "fullLabel": "Biennial Transparency Report",
+      "color": "#7c3aed"
     },
     {
       "id": "OTHER",

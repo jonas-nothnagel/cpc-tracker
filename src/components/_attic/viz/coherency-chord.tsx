@@ -21,14 +21,14 @@ type DetailBreakdown = {
   medium: number;
   low: number;
   none: number;
-  low_tension: number;
-  moderate_contradiction: number;
-  high_contradiction: number;
+  possible_misalignment: number;
+  possible_conflict: number;
+  likely_conflict: number;
 };
 
 const EMPTY_DETAIL: DetailBreakdown = {
   high: 0, medium: 0, low: 0, none: 0,
-  low_tension: 0, moderate_contradiction: 0, high_contradiction: 0,
+  possible_misalignment: 0, possible_conflict: 0, likely_conflict: 0,
 };
 
 /**
@@ -108,7 +108,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
         const score = possible > 0 ? Math.round((weighted / (3 * possible)) * 100) : 0;
         const aligned = d.high + d.medium + d.low;
         const coverage = possible > 0 ? Math.round((aligned / possible) * 100) : 0;
-        const contradictions = d.high_contradiction + d.moderate_contradiction + d.low_tension;
+        const contradictions = d.likely_conflict + d.possible_conflict + d.possible_misalignment;
         scores.push({ iA: i, iB: j, score, coverage, contradictions });
       }
     }
@@ -172,18 +172,18 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
 
   function chordColor(sourceIdx: number, targetIdx: number): string {
     const d = getChordDetail(sourceIdx, targetIdx);
-    const contraTotal = d.high_contradiction + d.moderate_contradiction + d.low_tension;
+    const contraTotal = d.likely_conflict + d.possible_conflict + d.possible_misalignment;
     const alignTotal = d.high + d.medium + d.low;
 
     if (contraTotal > alignTotal) {
-      if (d.high_contradiction > 0) return ALIGNMENT_COLORS.high_contradiction;
-      if (d.moderate_contradiction > 0) return ALIGNMENT_COLORS.moderate_contradiction;
-      return ALIGNMENT_COLORS.low_tension;
+      if (d.likely_conflict > 0) return ALIGNMENT_COLORS.likely_conflict;
+      if (d.possible_conflict > 0) return ALIGNMENT_COLORS.possible_conflict;
+      return ALIGNMENT_COLORS.possible_misalignment;
     }
     if (d.high > 0 && d.high >= d.medium && d.high >= d.low) return ALIGNMENT_COLORS.high;
     if (d.medium > 0 && d.medium >= d.low) return ALIGNMENT_COLORS.medium;
     if (d.low > 0) return ALIGNMENT_COLORS.low;
-    if (contraTotal > 0) return ALIGNMENT_COLORS.low_tension;
+    if (contraTotal > 0) return ALIGNMENT_COLORS.possible_misalignment;
     return "#e5e7eb";
   }
 
@@ -257,14 +257,14 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
           <div className="flex items-center gap-1.5">
             <span
               className="w-3.5 h-3.5 rounded-sm inline-block"
-              style={{ backgroundColor: ALIGNMENT_COLORS.low_tension }}
+              style={{ backgroundColor: ALIGNMENT_COLORS.possible_misalignment }}
             />
             <span className="text-[var(--undp-gray)]">Tension</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span
               className="w-3.5 h-3.5 rounded-sm inline-block"
-              style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }}
+              style={{ backgroundColor: ALIGNMENT_COLORS.likely_conflict }}
             />
             <span className="text-[var(--undp-gray)]">Contradiction</span>
           </div>
@@ -414,7 +414,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
                     {totalAlignPairs}
                   </td>
                   <td className="py-1.5 text-right tabular-nums" style={{
-                    color: ps.contradictions > 0 ? ALIGNMENT_COLORS.high_contradiction : "#94a3b8",
+                    color: ps.contradictions > 0 ? ALIGNMENT_COLORS.likely_conflict : "#94a3b8",
                     fontWeight: ps.contradictions > 0 ? 600 : 400,
                   }}>
                     {ps.contradictions}
@@ -435,7 +435,7 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
       {hoveredChord && (() => {
         const d = getChordDetail(hoveredChord.source, hoveredChord.target);
         const totalAlign = d.high + d.medium + d.low;
-        const totalContra = d.high_contradiction + d.moderate_contradiction + d.low_tension;
+        const totalContra = d.likely_conflict + d.possible_conflict + d.possible_misalignment;
         const srcType = docTypes[hoveredChord.source];
         const tgtType = docTypes[hoveredChord.target];
         const ps = pairScores.find(
@@ -489,22 +489,22 @@ export function CoherencyChord({ alignmentData, targets, onPairClick, countryCon
             </div>
             {totalContra > 0 && (
               <div className="flex gap-3 mt-1 text-xs">
-                {d.high_contradiction > 0 && (
+                {d.likely_conflict > 0 && (
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />
-                    {d.high_contradiction} high contr.
+                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.likely_conflict }} />
+                    {d.likely_conflict} high contr.
                   </span>
                 )}
-                {d.moderate_contradiction > 0 && (
+                {d.possible_conflict > 0 && (
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.moderate_contradiction }} />
-                    {d.moderate_contradiction} mod. contr.
+                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.possible_conflict }} />
+                    {d.possible_conflict} mod. contr.
                   </span>
                 )}
-                {d.low_tension > 0 && (
+                {d.possible_misalignment > 0 && (
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.low_tension }} />
-                    {d.low_tension} tension
+                    <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.possible_misalignment }} />
+                    {d.possible_misalignment} tension
                   </span>
                 )}
               </div>

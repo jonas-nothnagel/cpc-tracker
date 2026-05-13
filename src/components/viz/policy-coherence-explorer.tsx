@@ -296,9 +296,9 @@ function wrapLabel(label: string, maxCharsPerLine: number): string[] {
  * (= no relationship assessed) so the bar only reflects real signal.
  */
 const DIST_ORDER: AlignmentLevel[] = [
-  "high_contradiction",
-  "moderate_contradiction",
-  "low_tension",
+  "likely_conflict",
+  "possible_conflict",
+  "possible_misalignment",
   "low",
   "medium",
   "high",
@@ -342,7 +342,7 @@ function DetailPanel({
 }) {
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
-      high_contradiction: 0, moderate_contradiction: 1, low_tension: 2,
+      likely_conflict: 0, possible_conflict: 1, possible_misalignment: 2,
       high: 3, medium: 4, low: 5,
       none: 6,
     };
@@ -855,8 +855,8 @@ function BarRow({
   countryConfig?: CountryConfig | null;
   tone: "neutral" | "red";
   /** Worst contradiction level this target is involved in. Drives the
-   *  red intensity so rows with a high_contradiction stand out from rows
-   *  whose only contradictions are low_tension. Only consulted when
+   *  red intensity so rows with a likely_conflict stand out from rows
+   *  whose only contradictions are possible_misalignment. Only consulted when
    *  tone="red"; ignored otherwise. */
   severity?: AlignmentLevel;
   /** Optional inline label after the count (e.g., "alignments"). */
@@ -866,19 +866,19 @@ function BarRow({
   const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
   // Severity-driven red intensity. One step lighter than before so the
   // row reads as a quiet wash; the border accent below still distinguishes
-  // high_contradiction from moderate_contradiction (which now share the
-  // floor wash with low_tension).
+  // likely_conflict from possible_conflict (which now share the
+  // floor wash with possible_misalignment).
   const redFill =
-    severity === "high_contradiction"
+    severity === "likely_conflict"
       ? "bg-red-100 group-hover:bg-red-200"
       : "bg-red-50 group-hover:bg-red-100";
   const fillBg = tone === "red" ? redFill : "bg-gray-100 group-hover:bg-gray-200";
   // Left-edge accent on the hardest-severity rows reinforces the color
   // step without relying on viewers to distinguish red-50 from red-100.
   const borderAccent =
-    tone === "red" && severity === "high_contradiction"
+    tone === "red" && severity === "likely_conflict"
       ? "border-l-2 border-red-500"
-      : tone === "red" && severity === "moderate_contradiction"
+      : tone === "red" && severity === "possible_conflict"
         ? "border-l-2 border-red-400"
         : "";
   const countColor = "text-[var(--undp-black)]";
@@ -1042,9 +1042,9 @@ type StatView = "overview" | "targets" | "alignments" | "tensions";
 // high-severity pairs surface first. Module-level so the useMemo dep array
 // can reference a stable identity.
 const TENSION_SEVERITY: Record<string, number> = {
-  high_contradiction: 0,
-  moderate_contradiction: 1,
-  low_tension: 2,
+  likely_conflict: 0,
+  possible_conflict: 1,
+  possible_misalignment: 2,
 };
 
 // Example chip queries are now generated upstream by `pickExampleQueries`
@@ -1900,10 +1900,10 @@ function EmptyPanel({
   // alignment subset so numbers match what's drawn.
   //
   // For tensions we also track the MAX severity a target is involved in
-  // (high_contradiction > moderate_contradiction > low_tension) so the
+  // (likely_conflict > possible_conflict > possible_misalignment) so the
   // row can render in a darker red when at least one pair is a hard
-  // contradiction. Without this, a target with 50 low_tensions and one
-  // with a single high_contradiction looked identical.
+  // contradiction. Without this, a target with 50 possible_misalignments and one
+  // with a single likely_conflict looked identical.
   const { connRanks, tensRanks } = useMemo(() => {
     const connCounts = new Map<string, number>();
     const tensCounts = new Map<string, number>();
@@ -1911,9 +1911,9 @@ function EmptyPanel({
     // Lower rank value = more severe. Matches the ordering used elsewhere
     // in this file (e.g. line 827, line 1629).
     const severityRank: Record<string, number> = {
-      high_contradiction: 0,
-      moderate_contradiction: 1,
-      low_tension: 2,
+      likely_conflict: 0,
+      possible_conflict: 1,
+      possible_misalignment: 2,
     };
     const bumpSeverity = (id: string, level: AlignmentLevel) => {
       const prev = tensSeverity.get(id);
@@ -1978,11 +1978,11 @@ function EmptyPanel({
               active={statView === "alignments"}
             />
             <Stat
-              label="Tensions"
+              label="Possible misalignments"
               value={totalContra}
               accent="red"
               onClick={() => toggleStatView("tensions", "contradictions")}
-              title="Browse all contradiction pairs"
+              title="Browse all pairs flagged as possible/likely conflict"
               active={statView === "tensions"}
             />
           </div>
@@ -2171,9 +2171,9 @@ function CategoryPanel({
   // and high alignments separate so each can be hidden when its filter is
   // off (the involvedAlignments arg is already filter-aware).
   const SEVERITY: Record<string, number> = {
-    high_contradiction: 0,
-    moderate_contradiction: 1,
-    low_tension: 2,
+    likely_conflict: 0,
+    possible_conflict: 1,
+    possible_misalignment: 2,
     high: 3,
   };
   const contradictionPairs = useMemo(
@@ -2232,11 +2232,11 @@ function CategoryPanel({
             active={statView === "alignments"}
           />
           <Stat
-            label="Tensions"
+            label="Possible misalignments"
             value={totalContra}
             accent="red"
             onClick={() => toggleStatView("tensions", "contradictions")}
-            title="Browse all contradiction pairs in this category"
+            title="Browse all pairs flagged as possible/likely conflict in this category"
             active={statView === "tensions"}
           />
         </div>
@@ -2253,7 +2253,7 @@ function CategoryPanel({
              a single column on narrow viewports. */
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-6">
             <div>
-              <Section title="Tensions with other categories">
+              <Section title="Possible misalignments with other categories">
                 {topTensionPartners.length > 0 ? (
                   <ul className="space-y-0.5">
                     {topTensionPartners.map(({ arc, count }) => (
@@ -3334,7 +3334,7 @@ export function PolicyCoherenceExplorer({
           <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
             Policy Coherence Explorer
             <InfoBox>
-              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate contradictions.
+              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate possible or likely conflicts the AI has flagged for review.
               <br /><br />
               The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.
               <br /><br />
@@ -3363,7 +3363,7 @@ export function PolicyCoherenceExplorer({
                   }
                   className="text-[var(--undp-black)] font-medium underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] transition-colors"
                 >
-                  {filteredCounts.contra} contradiction
+                  {filteredCounts.contra} possible misalignment
                   {filteredCounts.contra !== 1 ? "s" : ""}
                 </button>
               );
@@ -4105,7 +4105,7 @@ export function PolicyCoherenceExplorer({
                   ))}
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
-                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.high_contradiction} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
+                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.likely_conflict} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
                       <span className="text-[var(--undp-gray)]">Contradiction: potential conflict</span>
                     </span>
                   )}

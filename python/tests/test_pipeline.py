@@ -102,7 +102,7 @@ async def test_alignment_with_mock_llm(sample_targets, sample_classifications):
         assert "alignment" in r
         assert "description" in r
 
-    contradictions = [r for r in results if r["alignment"] in ("high_contradiction", "moderate_contradiction", "low_tension")]
+    contradictions = [r for r in results if r["alignment"] in ("likely_conflict", "possible_conflict", "possible_misalignment")]
     for c in contradictions:
         if "contradictionType" in c:
             assert c["contradictionType"] in ("goal_conflict", "resource_competition", "implementation_tension", "scale_scope_mismatch")
@@ -122,7 +122,7 @@ async def test_alignment_all_contradictions():
     decompositions = {"A": '{"Goal/Purpose": "test"}', "B": '{"Goal/Purpose": "other"}'}
 
     responses = [
-        "High contradiction (Goal conflict) - Directly opposing objectives on the same land.",
+        "Likely conflict (Goal conflict) - Directly opposing objectives on the same land.",
     ]
 
     with patch("src.align.call_llm_batch", new_callable=AsyncMock) as mock_batch:
@@ -131,7 +131,7 @@ async def test_alignment_all_contradictions():
 
     assert len(results) == 1
     r = results[0]
-    assert r["alignment"] == "high_contradiction"
+    assert r["alignment"] == "likely_conflict"
     assert r["contradictionType"] == "goal_conflict"
     assert "opposing" in r["description"].lower()
 

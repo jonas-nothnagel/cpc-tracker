@@ -231,9 +231,9 @@ export function buildChatRequest({
 
 function isDiagnostic(level: AlignmentLevel): boolean {
   return (
-    level === "high_contradiction" ||
-    level === "moderate_contradiction" ||
-    level === "low_tension" ||
+    level === "likely_conflict" ||
+    level === "possible_conflict" ||
+    level === "possible_misalignment" ||
     level === "high"
   );
 }

@@ -17,7 +17,7 @@
       "medium": 30338,
       "low": 6967,
       "none": 806,
-      "low_tension": 548
+      "possible_misalignment": 548
     },
     "totalContradictions": 548,
     "measureAlignmentPairs": 9936,

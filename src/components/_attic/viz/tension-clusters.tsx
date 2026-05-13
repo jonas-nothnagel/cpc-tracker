@@ -37,9 +37,9 @@ interface TensionClustersProps {
 }
 
 const SEVERITY_ORDER: AlignmentLevel[] = [
-  "high_contradiction",
-  "moderate_contradiction",
-  "low_tension",
+  "likely_conflict",
+  "possible_conflict",
+  "possible_misalignment",
 ];
 
 const TAXONOMY_LABELS: Record<string, string> = {
@@ -69,10 +69,10 @@ function DriverExpanded({
   const [showLow, setShowLow] = useState(false);
 
   const critical = driver.tensionPairs.filter(
-    (p) => p.alignment !== "low_tension"
+    (p) => p.alignment !== "possible_misalignment"
   );
   const low = driver.tensionPairs.filter(
-    (p) => p.alignment === "low_tension"
+    (p) => p.alignment === "possible_misalignment"
   );
 
   const toggleRationale = (key: string) => {
@@ -312,13 +312,13 @@ export function TensionClusters({
   // Severity counts
   const severityCounts = useMemo(() => {
     const high = visibleTensions.filter(
-      (t) => t.alignment === "high_contradiction"
+      (t) => t.alignment === "likely_conflict"
     ).length;
     const moderate = visibleTensions.filter(
-      (t) => t.alignment === "moderate_contradiction"
+      (t) => t.alignment === "possible_conflict"
     ).length;
     const low = visibleTensions.filter(
-      (t) => t.alignment === "low_tension"
+      (t) => t.alignment === "possible_misalignment"
     ).length;
     return { high, moderate, low };
   }, [visibleTensions]);
@@ -625,7 +625,7 @@ export function TensionClusters({
                 className="h-full"
                 style={{
                   width: `${Math.max((severityCounts.high / visibleTensions.length) * 100, 4)}%`,
-                  backgroundColor: ALIGNMENT_COLORS.high_contradiction,
+                  backgroundColor: ALIGNMENT_COLORS.likely_conflict,
                 }}
               />
             )}
@@ -634,7 +634,7 @@ export function TensionClusters({
                 className="h-full"
                 style={{
                   width: `${Math.max((severityCounts.moderate / visibleTensions.length) * 100, 4)}%`,
-                  backgroundColor: ALIGNMENT_COLORS.moderate_contradiction,
+                  backgroundColor: ALIGNMENT_COLORS.possible_conflict,
                 }}
               />
             )}
@@ -643,7 +643,7 @@ export function TensionClusters({
                 className="h-full"
                 style={{
                   width: `${Math.max((severityCounts.low / visibleTensions.length) * 100, 3)}%`,
-                  backgroundColor: ALIGNMENT_COLORS.low_tension,
+                  backgroundColor: ALIGNMENT_COLORS.possible_misalignment,
                 }}
               />
             )}
@@ -651,19 +651,19 @@ export function TensionClusters({
           <div className="flex items-center gap-3 mt-1 text-[11px] text-[var(--undp-gray)]">
             {severityCounts.high > 0 && (
               <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.high_contradiction }} />
+                <span className="w-1.5 h-1.5 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.likely_conflict }} />
                 {severityCounts.high} high
               </span>
             )}
             {severityCounts.moderate > 0 && (
               <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.moderate_contradiction }} />
+                <span className="w-1.5 h-1.5 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.possible_conflict }} />
                 {severityCounts.moderate} moderate
               </span>
             )}
             {severityCounts.low > 0 && (
               <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.low_tension }} />
+                <span className="w-1.5 h-1.5 rounded-sm inline-block" style={{ backgroundColor: ALIGNMENT_COLORS.possible_misalignment }} />
                 {severityCounts.low} low
               </span>
             )}

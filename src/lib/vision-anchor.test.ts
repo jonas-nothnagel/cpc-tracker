@@ -64,10 +64,10 @@ describe("aggregateAnchorCoverage", () => {
     makeAlignment("SECTORAL_1", "NDC_2", "medium"),
     makeAlignment("SECTORAL_1", "NBSAP_1", "medium"),
     makeAlignment("NAP_1", "SECTORAL_1", "low"), // bidirectional flip
-    // SECTORAL_2 — mostly low_tension
-    makeAlignment("SECTORAL_2", "NDC_1", "low_tension"),
-    makeAlignment("SECTORAL_2", "NDC_2", "low_tension"),
-    makeAlignment("SECTORAL_2", "NBSAP_1", "low_tension"),
+    // SECTORAL_2 — mostly possible_misalignment
+    makeAlignment("SECTORAL_2", "NDC_1", "possible_misalignment"),
+    makeAlignment("SECTORAL_2", "NDC_2", "possible_misalignment"),
+    makeAlignment("SECTORAL_2", "NBSAP_1", "possible_misalignment"),
     makeAlignment("SECTORAL_2", "NAP_1", "medium"),
     // Stray non-anchor pair, must be ignored
     makeAlignment("NDC_1", "NBSAP_1", "high"),
@@ -122,17 +122,17 @@ describe("aggregateAnchorCoverage", () => {
 
   it("excludes `none`-level records from totals, shares, and status rules", () => {
     // Same anchor (SECTORAL_1) with extra "none" records that should NOT
-    // dilute the low_tension share or pad the cell totals.
+    // dilute the possible_misalignment share or pad the cell totals.
     const noneTargets = [anchorA, ndc1, ndc2, nbsap1];
     const noneAlignment: AlignmentResult[] = [
-      makeAlignment("SECTORAL_1", "NDC_1", "low_tension"),
-      makeAlignment("SECTORAL_1", "NDC_2", "low_tension"),
+      makeAlignment("SECTORAL_1", "NDC_1", "possible_misalignment"),
+      makeAlignment("SECTORAL_1", "NDC_2", "possible_misalignment"),
       // 6 "none" records that should be ignored by the matrix path.
       makeAlignment("SECTORAL_1", "NBSAP_1", "none"),
     ];
     const result = aggregateAnchorCoverage(noneTargets, noneAlignment, "SECTORAL");
     const row = result.rows[0];
-    expect(row.totalRecords).toBe(2); // only the two low_tension records
+    expect(row.totalRecords).toBe(2); // only the two possible_misalignment records
     expect(row.lowTensionShare).toBe(1); // 100%, not 2/3
     expect(row.cells.has("NBSAP")).toBe(false);
     expect(row.status?.id).toBe("tension_heavy");
@@ -140,7 +140,7 @@ describe("aggregateAnchorCoverage", () => {
 });
 
 describe("computeAnchorStatus", () => {
-  it("flags tension-heavy when low_tension >= 50% of records", () => {
+  it("flags tension-heavy when possible_misalignment >= 50% of records", () => {
     const status = computeAnchorStatus(
       makeRow({ totalRecords: 10, lowTensionShare: 0.6, mediumOrHighCount: 2, distinctDocsWithMediumPlus: 1 }),
       5,
@@ -201,21 +201,21 @@ describe("findLooselyConnectedTargets", () => {
   it("includes peripherals whose strongest anchor link is at most 'low'", () => {
     const alignment = [
       makeAlignment("SECTORAL_1", "NDC_1", "low"),
-      makeAlignment("SECTORAL_2", "NDC_1", "low_tension"),
+      makeAlignment("SECTORAL_2", "NDC_1", "possible_misalignment"),
       // NDC_2 reaches medium → excluded
       makeAlignment("SECTORAL_1", "NDC_2", "medium"),
-      // NAP_1 has only low_tension → included
-      makeAlignment("SECTORAL_1", "NAP_1", "low_tension"),
-      makeAlignment("SECTORAL_2", "NAP_1", "low_tension"),
+      // NAP_1 has only possible_misalignment → included
+      makeAlignment("SECTORAL_1", "NAP_1", "possible_misalignment"),
+      makeAlignment("SECTORAL_2", "NAP_1", "possible_misalignment"),
     ];
     const loose = findLooselyConnectedTargets(targets, alignment, "SECTORAL");
     const ids = loose.map((l) => l.target.id).sort();
     expect(ids).toEqual(["NAP_1", "NDC_1"]);
   });
 
-  it("captures the strongest anchor and counts low / low_tension links", () => {
+  it("captures the strongest anchor and counts low / possible_misalignment links", () => {
     const alignment = [
-      makeAlignment("SECTORAL_1", "NDC_1", "low_tension"),
+      makeAlignment("SECTORAL_1", "NDC_1", "possible_misalignment"),
       makeAlignment("SECTORAL_2", "NDC_1", "low"),
     ];
     const loose = findLooselyConnectedTargets(targets, alignment, "SECTORAL");

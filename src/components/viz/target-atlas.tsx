@@ -307,8 +307,8 @@ export function TargetAtlas({
             selected <strong>lens</strong>. Horizontal = # cross-doc policy
             targets sharing a category. Vertical = # BTR actions + # BER
             programmes sharing a category.
-            <span style={{ color: "#dc2626" }}> Red ring</span> = LLM-detected
-            contradictions with other targets. See &ldquo;How to read
+            <span style={{ color: "#dc2626" }}> Red ring</span> = LLM-flagged
+            possible misalignments with other targets. See &ldquo;How to read
             this&rdquo; below the header for the full story.
           </InfoBox>
           <DataProvenance
@@ -418,13 +418,14 @@ export function TargetAtlas({
                 <strong className="text-[var(--undp-black)]">
                   <span style={{ color: "#dc2626" }}>Red ring</span>
                 </strong>{" "}
-                marks <em>high-tension</em> targets only: those
-                flagged as contradicting <strong>5 or more</strong> other
-                policy targets. Low-tension targets aren&apos;t ringed, to
-                keep the chart readable; every tension is still listed in
-                the side panel when you click a dot. Tensions sit alongside
-                the axes, not subtracted from them. A target can be
-                strongly aligned <em>and</em> contested.
+                marks targets with <em>many flagged misalignments</em> only:
+                those the AI has flagged as a possible or likely conflict with{" "}
+                <strong>5 or more</strong> other policy targets. Targets with
+                fewer flags aren&apos;t ringed, to keep the chart readable;
+                every flagged pair is still listed in the side panel when you
+                click a dot. Flagged misalignments sit alongside the axes,
+                not subtracted from them. A target can be strongly aligned{" "}
+                <em>and</em> flagged for review.
               </li>
             </ul>
             <p className="mt-2 text-xs italic">
@@ -776,7 +777,7 @@ export function TargetAtlas({
                       Coherence {s.coherenceCount} · Implementation{" "}
                       {s.implementationCount} · Budget {s.budgetCount}
                       {s.tensionCount > 0
-                        ? `\nTensions ${s.tensionCount}`
+                        ? `\nFlagged misalignments ${s.tensionCount}`
                         : ""}
                     </title>
                   </g>
@@ -834,7 +835,7 @@ export function TargetAtlas({
           Coherence {hoverSignal.coherenceCount} · Implementation{" "}
           {hoverSignal.implementationCount} · Budget {hoverSignal.budgetCount}
           {hoverSignal.tensionCount > 0
-            ? ` · Tensions ${hoverSignal.tensionCount}`
+            ? ` · Flagged misalignments ${hoverSignal.tensionCount}`
             : ""}
         </div>
       )}
@@ -1352,7 +1353,7 @@ function Legend({
             <circle cx="14" cy="14" r="9.5" fill="none" stroke="#dc2626" strokeWidth={3} />
           </svg>
           <span className="text-[var(--undp-gray)]">
-            5+ contradictions with other targets
+            5+ flagged misalignments with other targets
           </span>
         </span>
       </div>
@@ -1523,7 +1524,7 @@ function SidePanel({
         />
       </div>
 
-      {/* Tension badge — only when there are contradictions */}
+      {/* Misalignment badge — only when the AI has flagged possible/likely conflicts */}
       {signal.tensionCount > 0 && (
         <div className="mb-3 flex items-center gap-1.5 text-[11px] bg-red-50 border border-red-100 text-red-700 rounded px-2 py-1">
           <span
@@ -1532,7 +1533,9 @@ function SidePanel({
           />
           <span>
             {signal.tensionCount}{" "}
-            {signal.tensionCount === 1 ? "contradiction" : "contradictions"}{" "}
+            {signal.tensionCount === 1
+              ? "possible misalignment"
+              : "possible misalignments"}{" "}
             with other targets (LLM-flagged)
           </span>
         </div>

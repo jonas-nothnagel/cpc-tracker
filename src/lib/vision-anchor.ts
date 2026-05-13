@@ -50,7 +50,7 @@ export interface AnchorRow {
   totalRecords: number;
   /** Sum of `medium` and `high` records — used by status rules. */
   mediumOrHighCount: number;
-  /** Share of relationship records (0..1) at the `low_tension` level. */
+  /** Share of relationship records (0..1) at the `possible_misalignment` level. */
   lowTensionShare: number;
   /** Distinct peripheral documents contributing at least one `medium`+ record. */
   distinctDocsWithMediumPlus: number;
@@ -71,7 +71,7 @@ export interface LooselyConnectedTarget {
   target: Target;
   /** Highest alignment level the peripheral reached against any anchor target. */
   maxLevel: AlignmentLevel | null;
-  /** Number of `low_tension` links to anchor targets. */
+  /** Number of `possible_misalignment` links to anchor targets. */
   lowTensionCount: number;
   /** Number of `low` links to anchor targets. */
   lowCount: number;
@@ -152,7 +152,7 @@ export function aggregateAnchorCoverage(
   const visibleDocTypeSet = new Set<string>();
   let maxCellTotal = 0;
   for (const row of rowMap.values()) {
-    const lowTension = row.totalsByLevel.low_tension ?? 0;
+    const lowTension = row.totalsByLevel.possible_misalignment ?? 0;
     const medium = row.totalsByLevel.medium ?? 0;
     const high = row.totalsByLevel.high ?? 0;
     row.mediumOrHighCount = medium + high;
@@ -179,9 +179,10 @@ export function aggregateAnchorCoverage(
 }
 
 /**
- * Status chip rules. Order matters: the first matching rule wins, so
- * "tension-heavy" beats "diversified backing" (a tense ambition can also
- * be widely operationalised, but the tension is the more actionable signal).
+ * Status chip rules. Order matters: the first matching rule wins, so the
+ * misalignment-heavy chip beats "diversified backing" (an ambition with
+ * many flagged misalignments can also be widely operationalised, but the
+ * friction is the more actionable signal).
  *
  * Returns null when none of the rules fires — that's the implicit "Partial
  * coverage" state and we deliberately do not mint a "well-supported" chip
@@ -194,10 +195,10 @@ export function computeAnchorStatus(
   if (row.lowTensionShare >= 0.5 && row.totalRecords > 0) {
     return {
       id: "tension_heavy",
-      label: "Tension-heavy",
+      label: "Misalignment-heavy",
       tone: "amber",
       description:
-        "Low-tension links dominate the relationships with this ambition — worth examining where the friction comes from.",
+        "Possible-misalignment links dominate the relationships with this ambition — worth examining where the friction comes from.",
     };
   }
   if (row.mediumOrHighCount < sparseStrongSupportThreshold) {
@@ -232,7 +233,7 @@ export function computeAnchorStatus(
 
 /**
  * Peripheral targets whose strongest link to any anchor target is "low" or
- * "low_tension" (or weaker). These are the closest honest analog of "outliers"
+ * "possible_misalignment" (or weaker). These are the closest honest analog of "outliers"
  * the data supports — they're not orphaned (every pair was scored), but their
  * relationship to the long-term vision is loose.
  */
@@ -272,7 +273,7 @@ export function findLooselyConnectedTargets(
     }
     const s = stats.get(peripheralId);
     if (!s) continue;
-    if (a.alignment === "low_tension") s.lowTension += 1;
+    if (a.alignment === "possible_misalignment") s.lowTension += 1;
     if (a.alignment === "low") s.low += 1;
     if (s.maxLevel == null || LEVEL_RANK[a.alignment] > LEVEL_RANK[s.maxLevel]) {
       s.maxLevel = a.alignment;

@@ -33,9 +33,9 @@ export const ALIGNMENT_WEIGHTS: Record<AlignmentLevel, number> = {
   low: 1,
   medium: 2,
   high: 3,
-  low_tension: 1,
-  moderate_contradiction: 2,
-  high_contradiction: 3,
+  possible_misalignment: 1,
+  possible_conflict: 2,
+  likely_conflict: 3,
   none: 0,
 };
 

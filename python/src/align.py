@@ -69,15 +69,15 @@ ADVISOR_USER_TEMPLATE = """    Role: Alignment Advisor
 
     Backstory: You specialize in evaluating alignment potential between policy targets. Your assessments are based on \
 real-world feasibility, operational synergy, and strategic overlap. You never assume alignment based on superficial wording alone. \
-You also identify genuine contradictions when targets truly work against each other, but you recognize that most targets within \
-national climate-nature policy frameworks share some degree of alignment since they are all working \
-toward environmental and climate goals.
+You also flag pairs that may pull against each other for human review when targets appear to work in opposite directions, but you \
+recognize that most targets within national climate-nature policy frameworks share some degree of alignment since they are all \
+working toward environmental and climate goals.
 
-    IMPORTANT: High and moderate contradictions should be reserved for cases where implementing one target genuinely \
+    IMPORTANT: Likely and possible conflicts should be reserved for cases where implementing one target genuinely \
 undermines, opposes, or competes with the other. Two targets operating in different sectors or at different scales are NOT \
-contradictory — they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Low tension" \
+in conflict — they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Possible misalignment" \
 when targets create real-world trade-offs even if both are positively framed. For example, a target to expand agricultural operations \
-inherently creates tension with a target to restore ecosystems in the same area, even if both targets mention \
+inherently creates friction with a target to restore ecosystems in the same area, even if both targets mention \
 "sustainability." Look for implicit resource competition, not just explicit opposition.
 
     Task:
@@ -151,46 +151,47 @@ implementation would significantly enhance outcomes, efficiency, or scale; the t
       High alignment - Both targets focus on the same ecosystem (mangroves), within the same timeframe, and involve similar actions and actors. \
 Coordinated implementation would clearly enhance efficiency and maximize both climate and biodiversity outcomes.
 
-    === CONTRADICTION LEVELS (use only when targets genuinely conflict) ===
+    === FLAGGED MISALIGNMENT LEVELS (use only when targets genuinely pull against each other) ===
 
-    For contradiction levels, you MUST also specify the contradiction type in parentheses after the label. \
-The four types are:
+    These three levels flag pairs for human review. The vocabulary is intentionally cautious ("possible" / \
+"likely") because you cannot establish certain contradictions from policy text alone — you flag pairs that warrant \
+a closer look. You MUST also specify the contradiction type in parentheses after the label. The four types are:
     - Goal conflict: Targets have directly opposing objectives (e.g., expand agriculture vs protect forests).
     - Resource competition: Targets compete for the same specific limited resources in ways that are mutually exclusive.
     - Implementation tension: Achieving one target actively undermines the feasibility of achieving the other.
     - Scale/scope mismatch: Targets set incompatible geographic scales, timelines, or intensity levels that cannot coexist.
 
-    **5.** "Low tension" – There is minor friction or an implicit trade-off between the targets, but they are not \
+    **5.** "Possible misalignment" – There is minor friction or an implicit trade-off between the targets, but they are not \
 fundamentally incompatible. The tension is manageable with coordination.
-       Return: Low tension (Type) - [Concise 2-sentence explanation.]
+       Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
 
     Example:
       Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
       Target 2: Protect watershed ecosystems and maintain minimum environmental water flows.
       Output:
-      Low tension (Resource competition) - Rapid irrigation expansion could reduce water availability that the watershed target aims to protect. \
+      Possible misalignment (Resource competition) - Rapid irrigation expansion could reduce water availability that the watershed target aims to protect. \
 However, the targets are not fundamentally incompatible and could coexist with careful water allocation planning.
 
-    **6.** "Moderate contradiction" – There is a clear conflict in approach, resources, or expected outcomes, though \
+    **6.** "Possible conflict" – There is a clear conflict in approach, resources, or expected outcomes, though \
 partial coexistence may be possible with significant trade-offs.
-       Return: Moderate contradiction (Type) - [Concise 2-sentence explanation.]
+       Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
 
     Example:
       Target 1: Strengthen sustainable agricultural productivity through expansion of farming operations in rural watersheds.
       Target 2: Restore degraded riparian ecosystems and reduce nutrient runoff by 40% in agricultural watersheds by 2030.
       Output:
-      Moderate contradiction (Resource competition) - Both targets place competing demands on the same watershed resources. \
+      Possible conflict (Resource competition) - Both targets place competing demands on the same watershed resources. \
 Expanding farming operations would increase nutrient loads in the very waterways the second target aims to restore.
 
-    **7.** "High contradiction" – The targets directly oppose each other in goals, actions, or expected outcomes. \
+    **7.** "Likely conflict" – The targets directly oppose each other in goals, actions, or expected outcomes. \
 Implementing both would be counterproductive.
-       Return: High contradiction (Type) - [Concise 2-sentence explanation.]
+       Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
 
     Example:
       Target 1: Convert 500,000 hectares of forest land to commercial agriculture by 2030.
       Target 2: Increase national forest cover by 20% and halt all deforestation by 2030.
       Output:
-      High contradiction (Goal conflict) - These targets have directly opposing objectives for the same land resource. \
+      Likely conflict (Goal conflict) - These targets have directly opposing objectives for the same land resource. \
 Implementing commercial agricultural expansion on forest land fundamentally contradicts the goal of increasing forest cover and halting deforestation.
 
     Your output should be in English.
@@ -202,16 +203,23 @@ Implementing commercial agricultural expansion on forest land fundamentally cont
 # ---------------------------------------------------------------------------
 
 ALIGNMENT_MAP = {
-    "high contradiction": "high_contradiction",
-    "moderate contradiction": "moderate_contradiction",
-    "low tension": "low_tension",
+    # New (cautious) vocabulary — surface these as the canonical LLM outputs.
+    "likely conflict": "likely_conflict",
+    "possible conflict": "possible_conflict",
+    "possible misalignment": "possible_misalignment",
+    # Backward-compat: older LLM completions may still emit the previous
+    # labels. Map them onto the renamed enum keys so existing prompts and
+    # any regression to legacy phrasing still parse cleanly.
+    "high contradiction": "likely_conflict",
+    "moderate contradiction": "possible_conflict",
+    "low tension": "possible_misalignment",
     "no alignment": "none",
     "low alignment": "low",
     "medium alignment": "medium",
     "high alignment": "high",
 }
 
-CONTRADICTION_LEVELS = {"high_contradiction", "moderate_contradiction", "low_tension"}
+CONTRADICTION_LEVELS = {"likely_conflict", "possible_conflict", "possible_misalignment"}
 
 CONTRADICTION_TYPE_MAP = {
     "goal conflict": "goal_conflict",

@@ -510,94 +510,122 @@ export function DashboardClient({
           countryConfig={data.countryConfig}
         />
 
-        {/* --- Budget & Financing Coherence --- */}
+        {/* --- Budget & Financing Coherence — Beta, collapsed by default --- */}
         {data.berData && (
           <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
-            <FinancingCoherence
-              berData={data.berData}
-              targets={targets.filter((t) => !t.id.startsWith("BER_"))}
-              classifications={data.classifications}
-              budgetAlignment={data.budgetAlignment ?? []}
-              globeCategories={data.globeCategories}
-              globeSubcategories={data.globeSubcategories}
-              sectors={data.sectors}
-              countryConfig={data.countryConfig}
-            />
+            <details className="bg-[var(--undp-light)] border border-gray-100 p-4 rounded-lg">
+              <summary className="cursor-pointer flex items-center flex-wrap gap-x-3 gap-y-1">
+                <span className="text-lg font-semibold text-[var(--undp-black)]">
+                  Budget &amp; Financing Coherence
+                </span>
+                <span className="bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] px-2 py-0.5 rounded-full text-xs uppercase tracking-wide font-medium">
+                  Beta
+                </span>
+                <span className="text-sm text-[var(--undp-gray)]">
+                  Financing layer is still in development; outputs may change.
+                </span>
+              </summary>
+
+              <div className="mt-6">
+                <FinancingCoherence
+                  berData={data.berData}
+                  targets={targets.filter((t) => !t.id.startsWith("BER_"))}
+                  classifications={data.classifications}
+                  budgetAlignment={data.budgetAlignment ?? []}
+                  globeCategories={data.globeCategories}
+                  globeSubcategories={data.globeSubcategories}
+                  sectors={data.sectors}
+                  countryConfig={data.countryConfig}
+                  embedded
+                />
+              </div>
+            </details>
           </section>
         )}
 
-        {/* --- Progress Alignment (unified NR7 + BTR) --- */}
+        {/* --- Progress Alignment (unified NR7 + BTR) — Beta, collapsed by default --- */}
         {((data.nr7Data && data.nr7Data.progressItems.length > 0) ||
           (data.btrData && data.btrData.mitigationMeasures.some(m => m.status?.trim()))) && (
           <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-                Implementation Progress
-                <InfoBox>
+            <details className="bg-[var(--undp-light)] border border-gray-100 p-4 rounded-lg">
+              <summary className="cursor-pointer flex items-center flex-wrap gap-x-3 gap-y-1">
+                <span className="text-lg font-semibold text-[var(--undp-black)]">
+                  Implementation Progress
+                </span>
+                <span className="bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] px-2 py-0.5 rounded-full text-xs uppercase tracking-wide font-medium">
+                  Beta
+                </span>
+                <span className="text-sm text-[var(--undp-gray)]">
+                  Reporting layer is still in development; outputs may change.
+                </span>
+              </summary>
+
+              <div className="mt-6">
+                <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-6">
                   Reported actions and progress from official reporting mechanisms.
                   NBSAP progress comes from the 7th National Report to the CBD;
                   NDC implementation from the Biennial Transparency Report. This
                   view shows what was reported, not whether it is sufficient to
                   meet the underlying targets.
-                </InfoBox>
-              </h2>
-            </div>
+                </p>
 
-            {data.nr7Data && data.nr7Data.progressItems.length > 0 && (
-              <Nr7Progress
-                nr7Data={data.nr7Data}
-                alignmentData={data.alignment}
-                targets={targets}
-              />
-            )}
+                {data.nr7Data && data.nr7Data.progressItems.length > 0 && (
+                  <Nr7Progress
+                    nr7Data={data.nr7Data}
+                    alignmentData={data.alignment}
+                    targets={targets}
+                  />
+                )}
 
-            {data.btrData && data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length > 0 && (
-              <div className={data.nr7Data && data.nr7Data.progressItems.length > 0 ? "mt-8" : ""}>
-                <div className="mb-4">
-                  <h3 className="text-base font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-                    Reporting &amp; Implementation Coverage
-                    <DataProvenance
-                      origin="user-uploaded"
-                      sources={[
-                        {
-                          label: getDocFullLabel(data.countryConfig, "BTR"),
-                          citation:
-                            formatSourceRef(data.countryConfig?.btrMitigationSourceRef)
-                            ?? data.countryConfig?.docProvenance?.BTR,
-                        },
-                        ...(data.btrData.adaptationSourceRef
-                          ? [{
-                              label: "BTR adaptation actions",
-                              citation: formatSourceRef(data.btrData.adaptationSourceRef),
-                            }]
-                          : []),
-                      ]}
-                      method="Reported actions are read from the BTR's CTF tables as filed by the country. The dashboard groups them by IPCC sector (mitigation) or the country's adaptation framework, and maps each action to taxonomy categories via the LLM classifier for the coverage tables below."
-                      caveat="Implementation status, action descriptions, and support-project counts are reproduced from the BTR as filed. The dashboard does not independently verify whether reported actions are sufficient to meet the underlying targets."
+                {data.btrData && data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length > 0 && (
+                  <div className={data.nr7Data && data.nr7Data.progressItems.length > 0 ? "mt-8" : ""}>
+                    <div className="mb-4">
+                      <h3 className="text-base font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
+                        Reporting &amp; Implementation Coverage
+                        <DataProvenance
+                          origin="user-uploaded"
+                          sources={[
+                            {
+                              label: getDocFullLabel(data.countryConfig, "BTR"),
+                              citation:
+                                formatSourceRef(data.countryConfig?.btrMitigationSourceRef)
+                                ?? data.countryConfig?.docProvenance?.BTR,
+                            },
+                            ...(data.btrData.adaptationSourceRef
+                              ? [{
+                                  label: "BTR adaptation actions",
+                                  citation: formatSourceRef(data.btrData.adaptationSourceRef),
+                                }]
+                              : []),
+                          ]}
+                          method="Reported actions are read from the BTR's CTF tables as filed by the country. The dashboard groups them by IPCC sector (mitigation) or the country's adaptation framework, and maps each action to taxonomy categories via the LLM classifier for the coverage tables below."
+                          caveat="Implementation status, action descriptions, and support-project counts are reproduced from the BTR as filed. The dashboard does not independently verify whether reported actions are sufficient to meet the underlying targets."
+                        />
+                      </h3>
+                      <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+                        {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
+                        {(data.btrData.supportProjects ?? [...data.btrData.technologySupport, ...data.btrData.capacityBuilding]).length} support
+                        projects from the Biennial Transparency Report
+                        {(() => { const v = data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]; return v ? ` (${v})` : ""; })()}
+                      </p>
+                    </div>
+
+                    <ImplementationCoverage
+                      btrData={data.btrData}
+                      targets={targets}
+                      sectors={data.sectors}
+                      globeCategories={data.globeCategories}
+                      classifications={data.classifications}
+                      countryConfig={data.countryConfig}
                     />
-                  </h3>
-                  <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-                    {data.btrData.mitigationMeasures.filter(m => m.status?.trim()).length} reported actions and{" "}
-                    {(data.btrData.supportProjects ?? [...data.btrData.technologySupport, ...data.btrData.capacityBuilding]).length} support
-                    projects from the Biennial Transparency Report
-                    {(() => { const v = data.btrData.sourceFile?.match(/BTR(\d+)/)?.[0]; return v ? ` (${v})` : ""; })()}
-                  </p>
-                </div>
 
-                <ImplementationCoverage
-                  btrData={data.btrData}
-                  targets={targets}
-                  sectors={data.sectors}
-                  globeCategories={data.globeCategories}
-                  classifications={data.classifications}
-                  countryConfig={data.countryConfig}
-                />
-
-                <div className="bg-[var(--undp-light)] border border-gray-100 p-6 mt-4 rounded-lg">
-                  <EmissionsTrend btrData={data.btrData} />
-                </div>
+                    <div className="bg-white border border-gray-100 p-6 mt-4 rounded-lg">
+                      <EmissionsTrend btrData={data.btrData} />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+            </details>
           </section>
         )}
 
@@ -617,7 +645,7 @@ export function DashboardClient({
                 document source{policySources !== 1 ? "s" : ""} were classified
                 against {data.sectors.length} Climate Mitigation and{" "}
                 {data.globeCategories.length} Biodiversity categories. Alignment
-                and contradictions are assessed pairwise across documents.
+                and flagged misalignments are assessed pairwise across documents.
                 {btrActions > 0 && (
                   <>
                     {" "}
