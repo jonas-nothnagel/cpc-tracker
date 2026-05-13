@@ -4106,7 +4106,7 @@ export function PolicyCoherenceExplorer({
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
                       <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.likely_conflict} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
-                      <span className="text-[var(--undp-gray)]">Contradiction: potential conflict</span>
+                      <span className="text-[var(--undp-gray)]">Possible misalignment or conflict</span>
                     </span>
                   )}
                 </div>
