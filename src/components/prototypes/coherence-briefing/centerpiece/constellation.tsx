@@ -75,8 +75,16 @@ function buildLayout(
   // Only use strong+medium alignments as link forces; tensions are visual
   // only, not gravitational (so the constellation doesn't get pulled apart
   // by tensions, which would muddle the metaphor).
+  //
+  // The alignment payload includes BTR/BER pseudo-target pairs which the
+  // orchestrator filters out before render. forceLink throws if a link
+  // endpoint can't resolve, so drop any pair whose ids aren't on the rim.
+  const nodeIds = new Set(nodes.map((n) => n.id));
   const linkPairs = alignment.filter(
-    (a) => a.alignment === "high" || a.alignment === "medium",
+    (a) =>
+      (a.alignment === "high" || a.alignment === "medium") &&
+      nodeIds.has(a.targetAId) &&
+      nodeIds.has(a.targetBId),
   );
   const links: LinkDatum[] = linkPairs.map((a) => ({
     source: a.targetAId,
