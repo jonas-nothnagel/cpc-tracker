@@ -269,6 +269,7 @@ export function PrototypesClient({
       ) : (
         <CoherenceBriefing
           countryName={displayCountry}
+          countryId={country}
           targets={briefingTargets}
           alignment={data.alignment}
           classifications={data.classifications}

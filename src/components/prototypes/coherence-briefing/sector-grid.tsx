@@ -37,6 +37,12 @@ interface LensOption {
   categories: { id: string; name: string }[];
 }
 
+export interface SectorSelection {
+  categoryId: string;
+  categoryName: string;
+  taxonomyType: string;
+}
+
 export function SectorGrid({
   targets,
   alignment,
@@ -45,6 +51,7 @@ export function SectorGrid({
   globeCategories,
   nbsCategories,
   countryConfig,
+  onSectorSelect,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -53,6 +60,7 @@ export function SectorGrid({
   globeCategories: GlobeCategory[];
   nbsCategories: NbsCategory[];
   countryConfig: CountryConfig | null;
+  onSectorSelect?: (selection: SectorSelection) => void;
 }) {
   const lenses = useMemo<LensOption[]>(() => {
     const out: LensOption[] = [];
@@ -133,25 +141,13 @@ export function SectorGrid({
 
   return (
     <div className="max-w-5xl mx-auto px-6">
-      <div className="mb-8">
-        <p className="text-xs uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-3">
-          Sector by sector
-        </p>
-        <h2
-          className="text-2xl md:text-3xl text-[var(--undp-black)] font-medium leading-tight"
-          style={{
-            fontFamily:
-              "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif",
-          }}
-        >
-          Where the tensions concentrate.
-        </h2>
-        <p className="mt-3 text-sm text-[var(--undp-gray)] max-w-2xl leading-relaxed">
+      <div className="mb-6">
+        <p className="text-sm text-[var(--undp-gray)] max-w-2xl leading-relaxed">
           Each tile counts how many flagged pairs touch a target in that
-          category. Click-through into the sector briefing arrives in Phase C.
+          category. Click a tile to see the pairs behind the number.
         </p>
         {lenses.length > 1 && (
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             {lenses.map((l) => {
               const isActive = l.id === activeLens;
               return (
@@ -176,15 +172,23 @@ export function SectorGrid({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {rows.map((row) => (
-          <SectorTile key={row.categoryId} row={row} peakTension={peakTension} />
+          <SectorTile
+            key={row.categoryId}
+            row={row}
+            peakTension={peakTension}
+            onSelect={
+              onSectorSelect
+                ? () =>
+                    onSectorSelect({
+                      categoryId: row.categoryId,
+                      categoryName: row.categoryName,
+                      taxonomyType: lens.taxonomyType,
+                    })
+                : undefined
+            }
+          />
         ))}
       </div>
-
-      <p className="mt-8 text-xs text-[var(--undp-gray)] leading-relaxed">
-        Tile click opens a per-sector briefing in Phase C with the top
-        flagged pairs, budget angle (where BER data is available), and a
-        hedged pathway hint.
-      </p>
     </div>
   );
 }
@@ -192,9 +196,11 @@ export function SectorGrid({
 function SectorTile({
   row,
   peakTension,
+  onSelect,
 }: {
   row: SectorTension;
   peakTension: number;
+  onSelect?: () => void;
 }) {
   const peakColor = row.peakSeverity
     ? ALIGNMENT_COLORS[row.peakSeverity]
@@ -207,12 +213,17 @@ function SectorTile({
   const filled = peakTension > 0
     ? Math.min(5, Math.max(row.tensionCount > 0 ? 1 : 0, Math.round((row.tensionCount / peakTension) * 5)))
     : 0;
+  const interactive = !!onSelect && row.targetCount > 0;
   return (
     <button
       type="button"
-      disabled
-      title="Per-sector briefing arrives in Phase C"
-      className="text-left rounded-md border border-gray-200 bg-white p-4 transition-colors hover:border-gray-400 cursor-not-allowed opacity-90"
+      onClick={onSelect}
+      disabled={!interactive}
+      className={`text-left rounded-md border bg-white p-4 transition-colors ${
+        interactive
+          ? "border-gray-200 hover:border-[var(--undp-black)] hover:shadow-sm cursor-pointer"
+          : "border-gray-200 opacity-60 cursor-not-allowed"
+      }`}
     >
       <p className="text-sm font-medium text-[var(--undp-black)] leading-snug mb-3 line-clamp-2">
         {row.categoryName}

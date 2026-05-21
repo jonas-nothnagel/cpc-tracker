@@ -128,8 +128,8 @@ export function Scene({
   id,
   children,
   fullBleed = false,
-  paddingY = "py-20",
-  minHeight = "min-h-[90vh]",
+  paddingY = "py-14",
+  minHeight = "min-h-[62vh]",
 }: {
   id: number;
   children: ReactNode;

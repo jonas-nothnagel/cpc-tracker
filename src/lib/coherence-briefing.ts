@@ -17,6 +17,7 @@ import type {
   AlignmentLevel,
   AlignmentResult,
   Target,
+  ThematicClassification,
 } from "@/types";
 
 // ─── Headline verdict ───────────────────────────────────────────────
@@ -246,4 +247,172 @@ export function buildSectorTensionDensity(args: {
     tensionCount: tensionsByCat.get(cat.id) ?? 0,
     peakSeverity: peakByCat.get(cat.id) ?? null,
   }));
+}
+
+// ─── Per-sector briefing (Q2 drawer MVP) ────────────────────────────
+
+export interface SectorBriefing {
+  categoryId: string;
+  categoryName: string;
+  targetCount: number;
+  /** Top tension pairs (any side touches this sector), severity-sorted. */
+  topTensions: FaultLine[];
+  /** Top strong alignments (any side touches this sector), high first. */
+  topAlignments: FaultLine[];
+  /** Total pairs of any positive or negative level that touch the sector. */
+  signalCount: number;
+}
+
+/**
+ * Build the Q2 drawer payload for a single sector. Caps each list at
+ * `cap` rows so the drawer stays scannable even on a heavy sector.
+ *
+ * "Touches the sector" = at least one side of the pair is primary-classified
+ * to the category under the named taxonomy. Same-sector both-sides pairs
+ * count once.
+ */
+export function buildSectorBriefing(args: {
+  categoryId: string;
+  categoryName: string;
+  taxonomyType: string;
+  targets: Target[];
+  alignment: AlignmentResult[];
+  classifications: ThematicClassification[];
+  cap?: number;
+}): SectorBriefing {
+  const {
+    categoryId,
+    categoryName,
+    taxonomyType,
+    targets,
+    alignment,
+    classifications,
+    cap = 5,
+  } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  // Targets whose PRIMARY classification under the lens taxonomy matches.
+  const sectorTargetIds = new Set<string>();
+  for (const c of classifications) {
+    if (!c.isPrimary || c.taxonomyType !== taxonomyType) continue;
+    if (c.categoryId !== categoryId) continue;
+    if (!targetMap.has(c.targetId)) continue;
+    sectorTargetIds.add(c.targetId);
+  }
+  const tensions: FaultLine[] = [];
+  const aligns: FaultLine[] = [];
+  let signalCount = 0;
+  for (const a of alignment) {
+    if (a.alignment === "none") continue;
+    if (
+      !sectorTargetIds.has(a.targetAId) &&
+      !sectorTargetIds.has(a.targetBId)
+    ) {
+      continue;
+    }
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    signalCount += 1;
+    if (isContradiction(a.alignment)) {
+      tensions.push({ pair: a, targetA: tA, targetB: tB });
+    } else if (a.alignment === "high" || a.alignment === "medium") {
+      aligns.push({ pair: a, targetA: tA, targetB: tB });
+    }
+  }
+  tensions.sort((x, y) => {
+    const dS =
+      SEVERITY_RANK[x.pair.alignment] - SEVERITY_RANK[y.pair.alignment];
+    if (dS !== 0) return dS;
+    const xCross = x.targetA.sourceDocument === x.targetB.sourceDocument ? 1 : 0;
+    const yCross = y.targetA.sourceDocument === y.targetB.sourceDocument ? 1 : 0;
+    return xCross - yCross;
+  });
+  const ALIGN_RANK: Record<AlignmentLevel, number> = {
+    high: 0,
+    medium: 1,
+    low: 2,
+    likely_conflict: 99,
+    possible_conflict: 99,
+    possible_misalignment: 99,
+    none: 99,
+  };
+  aligns.sort(
+    (x, y) => ALIGN_RANK[x.pair.alignment] - ALIGN_RANK[y.pair.alignment],
+  );
+  return {
+    categoryId,
+    categoryName,
+    targetCount: sectorTargetIds.size,
+    topTensions: tensions.slice(0, cap),
+    topAlignments: aligns.slice(0, cap),
+    signalCount,
+  };
+}
+
+// ─── Pair fingerprint coordinates ───────────────────────────────────
+
+export interface PairDot {
+  pair: AlignmentResult;
+  /** 0 → 1. 0 = identical thematic profile, 1 = no overlap. */
+  thematicDistance: number;
+  /** Signed alignment, -1 (likely_conflict) → +1 (high). */
+  alignmentY: number;
+}
+
+const ALIGNMENT_Y: Record<AlignmentLevel, number> = {
+  likely_conflict: -1,
+  possible_conflict: -0.66,
+  possible_misalignment: -0.33,
+  none: 0,
+  low: 0.33,
+  medium: 0.66,
+  high: 1,
+};
+
+/**
+ * Project every non-"none" pair to a (thematicDistance, alignmentY) coordinate
+ * for the Fingerprint centerpiece.
+ *
+ * Distance uses Jaccard on the set of `relevant` classifications shared by the
+ * two targets, across every taxonomy. Two targets sharing many relevant
+ * categories sit on the left (close); two with no overlap sit on the right
+ * (distant). The metric is taxonomy-agnostic — combining all taxonomies
+ * dampens noise from any single one.
+ */
+export function buildPairDots(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  classifications: ThematicClassification[],
+): PairDot[] {
+  const targetIds = new Set(targets.map((t) => t.id));
+  const relevantByTarget = new Map<string, Set<string>>();
+  for (const c of classifications) {
+    if (!c.isRelevant) continue;
+    if (!targetIds.has(c.targetId)) continue;
+    const key = `${c.taxonomyType}:${c.categoryId}`;
+    const set = relevantByTarget.get(c.targetId) ?? new Set<string>();
+    set.add(key);
+    relevantByTarget.set(c.targetId, set);
+  }
+  const out: PairDot[] = [];
+  for (const a of alignment) {
+    if (a.alignment === "none") continue;
+    if (!targetIds.has(a.targetAId) || !targetIds.has(a.targetBId)) continue;
+    const setA = relevantByTarget.get(a.targetAId) ?? new Set<string>();
+    const setB = relevantByTarget.get(a.targetBId) ?? new Set<string>();
+    if (setA.size === 0 && setB.size === 0) {
+      out.push({ pair: a, thematicDistance: 1, alignmentY: ALIGNMENT_Y[a.alignment] });
+      continue;
+    }
+    let intersect = 0;
+    for (const k of setA) if (setB.has(k)) intersect += 1;
+    const union = setA.size + setB.size - intersect;
+    const jaccard = union === 0 ? 0 : intersect / union;
+    out.push({
+      pair: a,
+      thematicDistance: 1 - jaccard,
+      alignmentY: ALIGNMENT_Y[a.alignment],
+    });
+  }
+  return out;
 }

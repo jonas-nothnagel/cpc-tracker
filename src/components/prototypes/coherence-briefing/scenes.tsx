@@ -1,29 +1,24 @@
 "use client";
 
 /**
- * The four narrative scenes that surround the centerpiece in the findings-first
- * briefing. The centerpiece (Scene 4) lives in `centerpiece/index.tsx` because
- * it dispatches between multiple visualisation variants.
+ * Narrative scenes that surround the centerpiece. The centerpiece itself (the
+ * tour of variants) lives in `centerpiece/index.tsx`.
  *
- * Copy is hardcoded English prose plus data-driven counts. No LLM text. Per
- * guardrails:
+ * Copy is hardcoded English prose plus data-driven counts. No LLM text.
+ * Per guardrails:
  *   - no em dashes (commas, semicolons, periods only)
  *   - hedged language on the verdict; never prescriptive
  *   - numbers always trace to the data passed in
  */
 
-import { ALIGNMENT_COLORS } from "@/lib/utils";
-import { getDocMediumLabel } from "@/lib/utils";
-import type {
-  HeadlineVerdict,
-  FaultLine,
-} from "@/lib/coherence-briefing";
+import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
+import type { HeadlineVerdict, FaultLine } from "@/lib/coherence-briefing";
 import type { CountryConfig } from "@/types";
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 
-// ─── Scene 1: Hero ──────────────────────────────────────────────────
+// ─── Scene 0: Hero — both questions in focus ────────────────────────
 
 export function HeroScene({
   countryName,
@@ -38,39 +33,70 @@ export function HeroScene({
 }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-6">
-        Policy coherence briefing
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-5">
+        Policy coherence briefing  ·  {countryName}
       </p>
       <h1
-        className="text-[var(--undp-black)] leading-[1.05] font-medium"
+        className="text-[var(--undp-black)] leading-[1.05] font-medium mb-10"
         style={{
           fontFamily: HEADLINE_SERIF,
-          fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
+          fontSize: "clamp(2rem, 4.4vw, 3.25rem)",
           letterSpacing: "-0.015em",
         }}
       >
-        Are {countryName}&rsquo;s policies pulling in the same direction?
+        A briefing in two questions.
       </h1>
-      <p className="mt-8 text-base md:text-lg text-[var(--undp-gray)] leading-relaxed">
+
+      <ol className="space-y-5 mb-10">
+        <QuestionRow
+          tag="Q1"
+          text="Are these policies pulling in the same direction?"
+        />
+        <QuestionRow
+          tag="Q2"
+          text="And where are the biggest gaps, sector by sector?"
+        />
+      </ol>
+
+      <p className="text-sm md:text-base text-[var(--undp-gray)] leading-relaxed">
         {docCount} {docCount === 1 ? "document" : "documents"},{" "}
         {targetCount.toLocaleString()} targets,{" "}
-        {pairCount.toLocaleString()} pairwise comparisons. The next few minutes
-        walk you through what the dataset is saying.
+        {pairCount.toLocaleString()} pairwise comparisons. Scroll through
+        both, then dig into any sector.
       </p>
-      <p className="mt-10 text-xs text-[var(--undp-gray)] flex items-center gap-2">
+      <p className="mt-8 text-[11px] text-[var(--undp-gray)] flex items-center gap-2">
         <span aria-hidden="true">↓</span>
-        Scroll to begin
+        Begin
       </p>
     </div>
   );
 }
 
-// ─── Scene 2: Primer ────────────────────────────────────────────────
+function QuestionRow({ tag, text }: { tag: string; text: string }) {
+  return (
+    <li className="flex items-start gap-5">
+      <span
+        className="text-xs font-medium tabular-nums tracking-wider text-[var(--undp-gray)] pt-2 select-none"
+        aria-hidden="true"
+      >
+        {tag}
+      </span>
+      <span
+        className="text-2xl md:text-3xl text-[var(--undp-black)] leading-snug"
+        style={{ fontFamily: HEADLINE_SERIF }}
+      >
+        {text}
+      </span>
+    </li>
+  );
+}
+
+// ─── Scene 1: Primer ────────────────────────────────────────────────
 
 /**
- * Teach the reader what a "pair" is by showing one verified aligned pair and
- * one verified tension pair, side by side. Picks come from the data via
- * `pickPrimerExamples`, so the wording is always real.
+ * Two real pairs side by side: one alignment, one tension. Teaches the
+ * reader what "a pair" means before the centerpiece floods the screen
+ * with hundreds of them.
  */
 export function PrimerScene({
   aligned,
@@ -84,38 +110,31 @@ export function PrimerScene({
   return (
     <div>
       <h2
-        className="text-2xl md:text-3xl text-[var(--undp-black)] font-medium leading-snug mb-3"
+        className="text-xl md:text-2xl text-[var(--undp-black)] font-medium leading-snug mb-2"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
-        First, a small vocabulary.
+        First, what we mean by a pair.
       </h2>
-      <p className="text-[var(--undp-gray)] leading-relaxed mb-10">
-        Every comparison in this dataset is a pair: two targets, drawn from
-        two policy documents, and a verdict on whether they support each
-        other or pull against each other.
+      <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-7 max-w-xl">
+        Every comparison is two targets, drawn from two policy documents,
+        with a verdict on whether they support each other or pull against
+        each other.
       </p>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-4">
         <PrimerCard
           kind="aligned"
           example={aligned}
           countryConfig={countryConfig}
-          heading="Two targets can support each other."
-          subhead="The verdict reads as alignment."
+          heading="Targets that support each other."
         />
         <PrimerCard
           kind="tension"
           example={tension}
           countryConfig={countryConfig}
-          heading="Or pull against each other."
-          subhead="Flagged for human review as a possible conflict."
+          heading="Targets that pull against each other."
         />
       </div>
-
-      <p className="mt-10 text-sm text-[var(--undp-gray)] leading-relaxed">
-        Every pair in this briefing was scored individually. The next section
-        shows what happens when you look at all of them at once.
-      </p>
     </div>
   );
 }
@@ -125,20 +144,18 @@ function PrimerCard({
   example,
   countryConfig,
   heading,
-  subhead,
 }: {
   kind: "aligned" | "tension";
   example: FaultLine | null;
   countryConfig: CountryConfig | null;
   heading: string;
-  subhead: string;
 }) {
   const color =
     kind === "aligned" ? ALIGNMENT_COLORS.high : ALIGNMENT_COLORS.possible_conflict;
   if (!example) {
     return (
-      <div className="rounded-md border border-gray-200 bg-white/60 p-5">
-        <p className="text-sm font-medium text-[var(--undp-black)] mb-2">
+      <div className="rounded-md border border-gray-200 bg-white/60 p-4">
+        <p className="text-sm font-medium text-[var(--undp-black)] mb-1">
           {heading}
         </p>
         <p className="text-xs text-[var(--undp-gray)]">
@@ -152,14 +169,17 @@ function PrimerCard({
   const labelA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const labelB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-5">
-      <p className="text-sm font-medium text-[var(--undp-black)] mb-1">
+    <div className="rounded-md border border-gray-200 bg-white p-4">
+      <p className="text-sm font-medium text-[var(--undp-black)] mb-3">
         {heading}
       </p>
-      <p className="text-xs text-[var(--undp-gray)] mb-5">{subhead}</p>
-      <div className="space-y-4">
-        <TargetSnippet docLabel={labelA} sourceLabel={targetA.sourceLabel} text={targetA.text} />
-        <div className="flex items-center gap-3 pl-1">
+      <div className="space-y-2.5">
+        <TargetSnippet
+          docLabel={labelA}
+          sourceLabel={targetA.sourceLabel}
+          text={targetA.text}
+        />
+        <div className="flex items-center gap-2 pl-1">
           <span
             aria-hidden="true"
             className="block h-px flex-1"
@@ -181,7 +201,11 @@ function PrimerCard({
             }}
           />
         </div>
-        <TargetSnippet docLabel={labelB} sourceLabel={targetB.sourceLabel} text={targetB.text} />
+        <TargetSnippet
+          docLabel={labelB}
+          sourceLabel={targetB.sourceLabel}
+          text={targetB.text}
+        />
       </div>
     </div>
   );
@@ -202,7 +226,7 @@ function TargetSnippet({
         {docLabel} · {sourceLabel}
       </p>
       <p
-        className="text-sm text-[var(--undp-black)] leading-snug overflow-hidden"
+        className="text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
         style={{
           display: "-webkit-box",
           WebkitLineClamp: 3,
@@ -215,54 +239,60 @@ function TargetSnippet({
   );
 }
 
-// ─── Scene 3: Build-up prelude ──────────────────────────────────────
+// ─── Scene 2: Centerpiece intro (lives ABOVE the centerpiece) ───────
 
-export function BuildupPreludeScene({ targetCount }: { targetCount: number }) {
+export function CenterpieceIntroBlock({
+  targetCount,
+  countryName,
+}: {
+  targetCount: number;
+  countryName: string;
+}) {
   return (
-    <div className="text-center">
+    <div className="max-w-[680px] mx-auto px-6 mb-8 text-center">
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-3">
+        Question 1
+      </p>
       <h2
-        className="text-3xl md:text-4xl text-[var(--undp-black)] font-medium leading-tight mb-6"
+        className="text-2xl md:text-3xl text-[var(--undp-black)] font-medium leading-tight mb-2"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
-        Now, all {targetCount.toLocaleString()} targets.
+        All {targetCount.toLocaleString()} {countryName} targets, in one frame.
       </h2>
-      <p className="text-[var(--undp-gray)] text-base md:text-lg leading-relaxed">
-        Watch what happens when the whole policy set sits in one frame.
-      </p>
-      <p className="mt-12 text-xs text-[var(--undp-gray)] flex items-center justify-center gap-2">
-        <span aria-hidden="true">↓</span>
-        Keep scrolling
+      <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+        Each connecting line is one pair. Green where the two targets
+        support each other; red where the pipeline flagged a tension.
+        Switch visuals via the chips below.
       </p>
     </div>
   );
 }
 
-// ─── Scene 5: Verdict + handoff ─────────────────────────────────────
+// ─── Scene 3: Verdict + hinge to Q2 ─────────────────────────────────
 
 export function VerdictScene({
   verdict,
-  faultLineCount,
-  onJumpToFaultLines,
-  onJumpToSectors,
+  topSectors,
+  onContinue,
 }: {
   verdict: HeadlineVerdict;
-  faultLineCount: number;
-  onJumpToFaultLines: () => void;
-  onJumpToSectors: () => void;
+  /** Up to 3 sector names with the highest tension density, for the hinge. */
+  topSectors: string[];
+  onContinue: () => void;
 }) {
   const tensionPct = Math.round(verdict.tensionShare * 100);
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-6">
-        Verdict
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-3">
+        Answer to question 1
       </p>
       <h2
-        className="text-3xl md:text-5xl text-[var(--undp-black)] font-medium leading-tight"
+        className="text-3xl md:text-4xl text-[var(--undp-black)] font-medium leading-tight mb-4"
         style={{ fontFamily: HEADLINE_SERIF, letterSpacing: "-0.015em" }}
       >
         {verdict.headline}
       </h2>
-      <p className="mt-6 text-base md:text-lg text-[var(--undp-gray)] leading-relaxed">
+      <p className="text-sm md:text-base text-[var(--undp-gray)] leading-relaxed mb-10">
         Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
         scored pairs, {verdict.alignmentPairs.toLocaleString()} show medium or
         strong alignment, while {verdict.tensionPairs.toLocaleString()}{" "}
@@ -270,29 +300,49 @@ export function VerdictScene({
         conflicts.
       </p>
 
-      <div className="mt-10 flex flex-wrap gap-3">
+      <div className="border-t border-gray-200 pt-8">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-3">
+          On to question 2
+        </p>
+        <h3
+          className="text-2xl md:text-3xl text-[var(--undp-black)] font-medium leading-snug mb-3"
+          style={{ fontFamily: HEADLINE_SERIF }}
+        >
+          Where do those {verdict.tensionPairs.toLocaleString()} tensions
+          concentrate?
+        </h3>
+        {topSectors.length > 0 ? (
+          <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-6">
+            The dataset points to{" "}
+            {topSectors.slice(0, 3).map((s, i, arr) => (
+              <span key={s}>
+                <span className="text-[var(--undp-black)] font-medium">
+                  {s}
+                </span>
+                {i < arr.length - 1
+                  ? i === arr.length - 2
+                    ? ", and "
+                    : ", "
+                  : ""}
+              </span>
+            ))}
+            . Click any sector below to see the pairs behind the number.
+          </p>
+        ) : (
+          <p className="text-sm text-[var(--undp-gray)] leading-relaxed mb-6">
+            The next section breaks tensions down by sector. Click any tile
+            to see the pairs behind the number.
+          </p>
+        )}
         <button
           type="button"
-          onClick={onJumpToFaultLines}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-white bg-[var(--undp-black)] hover:bg-[var(--undp-blue-dark)] transition-colors"
+          onClick={onContinue}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-white bg-[var(--undp-black)] hover:bg-[var(--undp-blue-dark)] transition-colors"
         >
-          See the {faultLineCount} biggest fault lines
-          <span aria-hidden="true">↓</span>
-        </button>
-        <button
-          type="button"
-          onClick={onJumpToSectors}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium border border-[var(--undp-black)]/40 text-[var(--undp-black)] hover:border-[var(--undp-black)] transition-colors"
-        >
-          Sector by sector
+          See the gaps, sector by sector
           <span aria-hidden="true">↓</span>
         </button>
       </div>
-
-      <p className="mt-12 text-xs text-[var(--undp-gray)] leading-relaxed max-w-md">
-        This is a brainstorming prototype. Verdict bucketing thresholds are
-        Phase A heuristics and will tighten as more countries are added.
-      </p>
     </div>
   );
 }
