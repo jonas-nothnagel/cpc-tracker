@@ -1,30 +1,31 @@
 "use client";
 
 /**
- * CoherenceBriefing — Phase A3 of the findings-first prototype.
+ * CoherenceBriefing — A4 single-page cockpit.
  *
- * Architecture change: replaced the scrollytell with a slide deck. The
- * visual (wheel or constellation) is a PERSISTENT element on the right
- * of the viewport that reacts to scene-driven state. The user advances
- * via next/prev (or arrow keys), no vertical scroll inside the briefing.
+ * No more slide deck. Everything is on the landing page:
+ *   - Hero strip with the Q1 verdict + Q1 / Q2 framing
+ *   - Two-column main grid:
+ *       Left:  Wheel with filter chips (Aggregate / Alignments / Tensions /
+ *              By sector / Idle). Top fault lines below the wheel.
+ *       Right: Q2 sector grid (clickable to drawer) + chat panel.
  *
- * The final slide is an "explore" layout: the text panel becomes a chat
- * input + sector picker, the wheel becomes interactive. The chat hits
- * the existing /api/coherence-chat route.
+ * Click affordances open drawers, not new slides:
+ *   - Fault-line row    → PairDrawer
+ *   - Sector tile       → SectorDrawer + wheel switches to that sector
+ *   - Wheel chord (when in sector / pair mode) → PairDrawer
  *
- * Fingerprint and River centerpiece variants were dropped after the A2
- * round. Only Wheel + Constellation remain.
+ * Primer ("what's a pair") is kept as a small inline expand-toggle so
+ * first-time readers can still see the slide-2/3 example, without forcing
+ * everyone through a 10-step navigation.
  */
 
 import { useCallback, useMemo, useState } from "react";
-import { SlideDeckShell, type SlideDef } from "./slide-deck-shell";
-import { Centerpiece } from "./centerpiece";
+import Link from "next/link";
+import { Centerpiece, type CenterpieceVariant } from "./centerpiece";
 import { ChatPanel } from "./chat-panel";
 import { SectorDrawer } from "./sector-drawer";
-import {
-  ALIGNMENT_COLORS,
-  getDocMediumLabel,
-} from "@/lib/utils";
+import { PairDrawer, type PairDrawerData } from "./pair-drawer";
 import {
   buildSectorBriefing,
   buildSectorTensionDensity,
@@ -33,22 +34,30 @@ import {
   pickPrimerExamples,
   type FaultLine,
   type SectorBriefing,
+  type SectorTension,
   type VerdictBucket,
 } from "@/lib/coherence-briefing";
-import type { WheelState } from "./centerpiece/wheel";
+import {
+  ALIGNMENT_COLORS,
+  ALIGNMENT_LABELS,
+  getDocMediumLabel,
+} from "@/lib/utils";
+import { isContradiction } from "@/types";
+import type { WheelState, WheelStateMode } from "./centerpiece/wheel";
 import type {
   AlignmentResult,
   CountryConfig,
   GlobeCategory,
   IpccSector,
   NbsCategory,
+  PolicyDocumentType,
   Target,
   ThematicClassification,
-  PolicyDocumentType,
 } from "@/types";
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
+const FAULT_LINES_TO_SHOW = 6;
 
 interface CoherenceBriefingProps {
   countryName: string;
@@ -62,15 +71,11 @@ interface CoherenceBriefingProps {
   countryConfig: CountryConfig | null;
 }
 
-interface SectorRow {
-  id: string;
-  name: string;
-  count: number;
-  taxonomyType: string;
-}
+type FilterChip = "aggregate" | "alignments" | "tensions" | "all";
 
 export function CoherenceBriefing({
   countryName,
+  countryId,
   targets,
   alignment,
   classifications,
@@ -78,10 +83,10 @@ export function CoherenceBriefing({
   globeCategories,
   countryConfig,
 }: CoherenceBriefingProps) {
-  // ── Derived briefing inputs ─────────────────────────────────────
+  // ── Derived insights, computed once per dataset ─────────────────
   const verdict = useMemo(() => pickHeadlineVerdict(alignment), [alignment]);
   const faultLines = useMemo(
-    () => pickFaultLines(alignment, targets, 6),
+    () => pickFaultLines(alignment, targets, FAULT_LINES_TO_SHOW),
     [alignment, targets],
   );
   const primer = useMemo(
@@ -102,24 +107,33 @@ export function CoherenceBriefing({
     for (const t of targets) docs.add(t.sourceDocument);
     return Array.from(docs);
   }, [targets]);
+  const targetMap = useMemo(
+    () => new Map(targets.map((t) => [t.id, t])),
+    [targets],
+  );
 
-  // Top sectors picked under the country's default lens. Drives the Q2
-  // hinge slides + the explore-mode sector grid.
-  const { lensTaxonomy, topSectors } = useMemo(() => {
+  // ── Sector grid lens + density ─────────────────────────────────
+  const { lens, sectorRows } = useMemo(() => {
     const countryCats = countryConfig?.countrySectors ?? [];
-    const lens =
+    const chosen =
       countryCats.length > 0
         ? {
+            id: "country" as const,
+            label: "Country sectors",
             taxonomyType: "sector",
             categories: countryCats.map((c) => ({ id: c.id, name: c.name })),
           }
         : sectors.length > 0
           ? {
+              id: "sector" as const,
+              label: "IPCC sectors",
               taxonomyType: "sector",
               categories: sectors.map((s) => ({ id: s.id, name: s.name })),
             }
           : globeCategories.length > 0
             ? {
+                id: "globe" as const,
+                label: "GLOBE",
                 taxonomyType: "globe",
                 categories: globeCategories.map((g) => ({
                   id: g.id,
@@ -127,25 +141,23 @@ export function CoherenceBriefing({
                 })),
               }
             : null;
-    if (!lens) return { lensTaxonomy: null, topSectors: [] as SectorRow[] };
+    if (!chosen) {
+      return { lens: null, sectorRows: [] as SectorTension[] };
+    }
     const density = buildSectorTensionDensity({
       targets,
       alignment,
       classifications,
-      categories: lens.categories,
-      taxonomyType: lens.taxonomyType,
+      categories: chosen.categories,
+      taxonomyType: chosen.taxonomyType,
     });
-    const top = density
-      .filter((d) => d.tensionCount > 0)
-      .sort((a, b) => b.tensionCount - a.tensionCount)
-      .slice(0, 3)
-      .map((d) => ({
-        id: d.categoryId,
-        name: d.categoryName,
-        count: d.tensionCount,
-        taxonomyType: lens.taxonomyType,
-      }));
-    return { lensTaxonomy: lens.taxonomyType, topSectors: top };
+    const sorted = [...density].sort((a, b) => {
+      if (b.tensionCount !== a.tensionCount) {
+        return b.tensionCount - a.tensionCount;
+      }
+      return b.targetCount - a.targetCount;
+    });
+    return { lens: chosen, sectorRows: sorted };
   }, [
     targets,
     alignment,
@@ -155,488 +167,224 @@ export function CoherenceBriefing({
     countryConfig,
   ]);
 
-  // ── Centerpiece variant (shared across slides) ──────────────────
-  const [variant, setVariant] = useState<"wheel" | "constellation">("wheel");
-
-  // ── Explore-mode state ──────────────────────────────────────────
-  const [exploreState, setExploreState] = useState<WheelState>({
-    mode: "aggregate",
-  });
-  const [selection, setSelection] = useState<{
+  // ── Wheel state + filter chips ─────────────────────────────────
+  const [filter, setFilter] = useState<FilterChip>("aggregate");
+  const [variant, setVariant] = useState<CenterpieceVariant>("wheel");
+  const [sectorFocus, setSectorFocus] = useState<{
     categoryId: string;
     categoryName: string;
     taxonomyType: string;
   } | null>(null);
-  const handleCloseDrawer = useCallback(() => setSelection(null), []);
+
+  const wheelState: WheelState = useMemo(() => {
+    if (sectorFocus) {
+      return {
+        mode: "sector",
+        sectorCategoryId: sectorFocus.categoryId,
+        sectorTaxonomyType: sectorFocus.taxonomyType,
+      };
+    }
+    const map: Record<FilterChip, WheelStateMode> = {
+      aggregate: "aggregate",
+      alignments: "alignments",
+      tensions: "tensions",
+      all: "aggregate",
+    };
+    return { mode: map[filter] };
+  }, [filter, sectorFocus]);
+
+  // ── Drawers ─────────────────────────────────────────────────────
+  const [pairData, setPairData] = useState<PairDrawerData | null>(null);
+  const openPair = useCallback(
+    (a: string, b: string) => {
+      const tA = targetMap.get(a);
+      const tB = targetMap.get(b);
+      if (!tA || !tB) return;
+      const conn = alignment.find(
+        (p) =>
+          (p.targetAId === a && p.targetBId === b) ||
+          (p.targetAId === b && p.targetBId === a),
+      );
+      if (!conn) return;
+      setPairData({ pair: conn, targetA: tA, targetB: tB });
+    },
+    [alignment, targetMap],
+  );
+
   const drawerBriefing = useMemo<SectorBriefing | null>(() => {
-    if (!selection) return null;
+    if (!sectorFocus) return null;
     return buildSectorBriefing({
-      categoryId: selection.categoryId,
-      categoryName: selection.categoryName,
-      taxonomyType: selection.taxonomyType,
+      categoryId: sectorFocus.categoryId,
+      categoryName: sectorFocus.categoryName,
+      taxonomyType: sectorFocus.taxonomyType,
       targets,
       alignment,
       classifications,
       cap: 6,
     });
-  }, [selection, targets, alignment, classifications]);
-
-  // ── Slides ──────────────────────────────────────────────────────
-  const slides: SlideDef[] = buildSlides({
-    countryName,
-    docCount,
-    targetCount: targets.length,
-    pairCount,
-    verdict,
-    primer,
-    faultLines,
-    topSectors,
-    countryConfig,
-  });
-
-  // ── Visual state per slide ──────────────────────────────────────
-  const slideStates = useMemo<WheelState[]>(
-    () => deriveSlideStates(primer, topSectors, lensTaxonomy),
-    [primer, topSectors, lensTaxonomy],
-  );
-
-  // ── Render visual ───────────────────────────────────────────────
-  const renderVisual = useCallback(
-    (idx: number) => {
-      const slide = slides[idx];
-      const state: WheelState = slide?.exploreLayout
-        ? exploreState
-        : slideStates[idx] ?? { mode: "idle" };
-      return (
-        <Centerpiece
-          targets={targets}
-          alignments={alignment}
-          classifications={classifications}
-          countryConfig={countryConfig}
-          state={state}
-          variant={variant}
-          onVariantChange={setVariant}
-          showPicker={!!slide?.exploreLayout}
-        />
-      );
-    },
-    [
-      slides,
-      slideStates,
-      exploreState,
-      targets,
-      alignment,
-      classifications,
-      countryConfig,
-      variant,
-    ],
-  );
-
-  // ── Render explore mode left panel ──────────────────────────────
-  const renderExplore = useCallback(
-    () => (
-      <ExploreMode
-        targets={targets}
-        alignment={alignment}
-        classifications={classifications}
-        sectors={sectors}
-        globeCategories={globeCategories}
-        countryConfig={countryConfig}
-        availableDocs={availableDocs}
-        topSectors={topSectors}
-        exploreState={exploreState}
-        onExploreState={setExploreState}
-        onOpenSector={(s) => {
-          setSelection(s);
-          setExploreState({
-            mode: "sector",
-            sectorCategoryId: s.categoryId,
-            sectorTaxonomyType: s.taxonomyType,
-          });
-        }}
-      />
-    ),
-    [
-      targets,
-      alignment,
-      classifications,
-      sectors,
-      globeCategories,
-      countryConfig,
-      availableDocs,
-      topSectors,
-      exploreState,
-    ],
-  );
+  }, [sectorFocus, targets, alignment, classifications]);
 
   return (
-    <main className="flex-1 w-full">
-      <SlideDeckShell
-        slides={slides}
-        renderVisual={renderVisual}
-        renderExplore={renderExplore}
+    <main className="flex-1 w-full px-6 md:px-10 py-6 max-w-[1400px] mx-auto">
+      <HeroStrip
+        countryName={countryName}
+        verdict={verdict}
+        docCount={docCount}
+        targetCount={targets.length}
+        pairCount={pairCount}
       />
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
+        <div className="space-y-6">
+          <WheelPanel
+            targets={targets}
+            alignment={alignment}
+            classifications={classifications}
+            countryConfig={countryConfig}
+            wheelState={wheelState}
+            variant={variant}
+            onVariantChange={setVariant}
+            filter={filter}
+            onFilterChange={(f) => {
+              setFilter(f);
+              setSectorFocus(null);
+            }}
+            sectorFocus={sectorFocus}
+            onClearSector={() => setSectorFocus(null)}
+            primer={primer}
+            countryName={countryName}
+            onPairClick={openPair}
+          />
+          <FaultLinesPanel
+            faultLines={faultLines}
+            countryConfig={countryConfig}
+            onSelect={(line) =>
+              setPairData({
+                pair: line.pair,
+                targetA: line.targetA,
+                targetB: line.targetB,
+              })
+            }
+          />
+        </div>
+
+        <div className="space-y-6">
+          <SectorPanel
+            lens={lens}
+            rows={sectorRows}
+            sectorFocus={sectorFocus}
+            onSelect={(r) =>
+              setSectorFocus({
+                categoryId: r.categoryId,
+                categoryName: r.categoryName,
+                taxonomyType: lens?.taxonomyType ?? "sector",
+              })
+            }
+          />
+          <ChatStrip
+            targets={targets}
+            alignment={alignment}
+            classifications={classifications}
+            sectors={sectors}
+            globeCategories={globeCategories}
+            countryConfig={countryConfig}
+            availableDocs={availableDocs}
+          />
+        </div>
+      </div>
+
+      <ExploreFooter countryId={countryId} countryName={countryName} />
+
       <SectorDrawer
         briefing={drawerBriefing}
         countryConfig={countryConfig}
-        onClose={handleCloseDrawer}
+        onClose={() => setSectorFocus(null)}
+      />
+      <PairDrawer
+        data={pairData}
+        countryConfig={countryConfig}
+        onClose={() => setPairData(null)}
       />
     </main>
   );
 }
 
-// ─── Slide content builder ──────────────────────────────────────────
+// ─── Hero strip ─────────────────────────────────────────────────────
 
-function buildSlides(args: {
+function HeroStrip({
+  countryName,
+  verdict,
+  docCount,
+  targetCount,
+  pairCount,
+}: {
   countryName: string;
+  verdict: ReturnType<typeof pickHeadlineVerdict>;
   docCount: number;
   targetCount: number;
   pairCount: number;
-  verdict: ReturnType<typeof pickHeadlineVerdict>;
-  primer: ReturnType<typeof pickPrimerExamples>;
-  faultLines: FaultLine[];
-  topSectors: SectorRow[];
-  countryConfig: CountryConfig | null;
-}): SlideDef[] {
-  const {
-    countryName,
-    docCount,
-    targetCount,
-    pairCount,
-    verdict,
-    primer,
-    faultLines,
-    topSectors,
-    countryConfig,
-  } = args;
-
-  const slides: SlideDef[] = [];
-
-  // 0 — Hero
-  slides.push({
-    eyebrow: `Policy coherence briefing · ${countryName}`,
-    headline: <>A briefing in two questions.</>,
-    body: (
-      <>
-        <p>
-          {docCount} {docCount === 1 ? "document" : "documents"},{" "}
-          {targetCount.toLocaleString()} targets,{" "}
-          {pairCount.toLocaleString()} pairwise comparisons. We answer
-          both questions in the next few slides.
-        </p>
-      </>
-    ),
-    extra: (
-      <ol className="space-y-3 mt-2">
-        <li className="flex gap-4 items-baseline">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--undp-gray)] tabular-nums">
+}) {
+  const tensionPct = Math.round(verdict.tensionShare * 100);
+  return (
+    <header>
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-3">
+        Policy coherence briefing  ·  {countryName}
+      </p>
+      <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+        <div>
+          <h1
+            className="text-[var(--undp-black)] font-medium leading-[1.1] mb-3"
+            style={{
+              fontFamily: HEADLINE_SERIF,
+              fontSize: "clamp(1.875rem, 4vw, 2.875rem)",
+              letterSpacing: "-0.012em",
+            }}
+          >
+            {verdict.headline}
+          </h1>
+          <p className="text-sm md:text-base text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+            Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
+            scored pairs across {docCount}{" "}
+            {docCount === 1 ? "document" : "documents"} and{" "}
+            {targetCount.toLocaleString()} targets,{" "}
+            <strong className="text-[var(--undp-black)] font-medium">
+              {verdict.alignmentPairs.toLocaleString()}
+            </strong>{" "}
+            show medium or strong alignment.{" "}
+            <strong className="text-[var(--undp-black)] font-medium">
+              {verdict.tensionPairs.toLocaleString()}
+            </strong>{" "}
+            ({tensionPct}%) are flagged for review.
+          </p>
+        </div>
+        <VerdictBadge bucket={verdict.bucket} />
+      </div>
+      <div className="mt-5 flex flex-wrap gap-x-8 gap-y-2 text-[12px] text-[var(--undp-gray)]">
+        <span className="flex gap-2 items-baseline">
+          <span className="font-medium tracking-wider text-[10px] uppercase">
             Q1
           </span>
-          <span
-            className="text-lg text-[var(--undp-black)]"
-            style={{ fontFamily: HEADLINE_SERIF }}
-          >
-            Are these policies pulling the same direction?
+          Are these policies pulling the same direction?
+          <span className="text-[var(--undp-black)] font-medium ml-1">
+            Answered above.
           </span>
-        </li>
-        <li className="flex gap-4 items-baseline">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--undp-gray)] tabular-nums">
+        </span>
+        <span className="flex gap-2 items-baseline">
+          <span className="font-medium tracking-wider text-[10px] uppercase">
             Q2
           </span>
-          <span
-            className="text-lg text-[var(--undp-black)]"
-            style={{ fontFamily: HEADLINE_SERIF }}
-          >
-            And where are the biggest gaps, sector by sector?
+          Where are the biggest gaps?
+          <span className="text-[var(--undp-black)] font-medium ml-1">
+            See sector panel  →
           </span>
-        </li>
-      </ol>
-    ),
-  });
-
-  // 1 — Primer 1: aligned example
-  slides.push({
-    eyebrow: "What you are looking at",
-    headline: <>Each line is a pair of targets.</>,
-    body: (
-      <p>
-        Two targets, drawn from two different policy documents, with a
-        verdict on whether they pull in the same direction.
-      </p>
-    ),
-    extra: primer.aligned ? (
-      <PairCard
-        kind="aligned"
-        line={primer.aligned}
-        countryConfig={countryConfig}
-      />
-    ) : undefined,
-  });
-
-  // 2 — Primer 2: tension example
-  slides.push({
-    eyebrow: "What you are looking at",
-    headline: <>Or sometimes against each other.</>,
-    body: (
-      <p>
-        The pipeline flags these for human review as possible
-        misalignments, possible conflicts, or likely conflicts. It does
-        not declare a final verdict.
-      </p>
-    ),
-    extra: primer.tension ? (
-      <PairCard
-        kind="tension"
-        line={primer.tension}
-        countryConfig={countryConfig}
-      />
-    ) : undefined,
-  });
-
-  // 3 — Reveal
-  slides.push({
-    eyebrow: "Question 1",
-    headline: (
-      <>
-        Now all {targetCount.toLocaleString()} targets, in one frame.
-      </>
-    ),
-    body: (
-      <>
-        <p>
-          Each ribbon shows the relationship between a pair of documents.
-          Green means most pairs across them align; red means most are
-          flagged for review.
-        </p>
-        <p className="text-xs italic text-[var(--undp-gray)]/80">
-          Hover a ribbon to see the counts.
-        </p>
-      </>
-    ),
-  });
-
-  // 4 — Q1 Verdict
-  slides.push({
-    eyebrow: "Answer to question 1",
-    headline: <>{verdict.headline}</>,
-    body: (
-      <>
-        <p>
-          Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
-          scored pairs,{" "}
-          <strong className="text-[var(--undp-black)] font-medium">
-            {verdict.alignmentPairs.toLocaleString()}
-          </strong>{" "}
-          show medium or strong alignment.{" "}
-          <strong className="text-[var(--undp-black)] font-medium">
-            {verdict.tensionPairs.toLocaleString()}
-          </strong>{" "}
-          are flagged for review.
-        </p>
-        <p className="text-xs italic text-[var(--undp-gray)]/80">
-          Visual filtered to alignment ribbons only.
-        </p>
-      </>
-    ),
-    extra: <VerdictBadge bucket={verdict.bucket} />,
-  });
-
-  // 5 — Q2 Intro
-  slides.push({
-    eyebrow: "On to question 2",
-    headline: (
-      <>
-        Where do those{" "}
-        {verdict.tensionPairs.toLocaleString()} tensions concentrate?
-      </>
-    ),
-    body: (
-      <>
-        <p>
-          The visual now shows only the red side, document pair by
-          document pair. Two stand out as the heaviest contributors to
-          the country&rsquo;s flagged set.
-        </p>
-        <p className="text-xs italic text-[var(--undp-gray)]/80">
-          Next, we zoom into the sectors carrying most of those flags.
-        </p>
-      </>
-    ),
-  });
-
-  // 6, 7, 8 — Sector tours (up to 3 top sectors)
-  for (let i = 0; i < topSectors.length; i++) {
-    const s = topSectors[i];
-    // Show the country-wide top fault line on the first sector slide only,
-    // as the illustrative example. Resolving sector membership per fault
-    // line would need a back-lookup we don't carry here.
-    const fl = i === 0 ? faultLines[0] : undefined;
-    slides.push({
-      eyebrow: `Sector ${i + 1} of ${topSectors.length}`,
-      headline: <>{s.name}</>,
-      body: (
-        <>
-          <p>
-            <strong className="text-[var(--undp-black)] font-medium">
-              {s.count}
-            </strong>{" "}
-            flagged pairs touch a target primary-classified to{" "}
-            {s.name.toLowerCase()}.
-          </p>
-          {fl && i === 0 && (
-            <p className="text-xs text-[var(--undp-gray)]">
-              The headline tension across the dataset:{" "}
-              {getDocMediumLabel(countryConfig, fl.targetA.sourceDocument)}{" "}
-              {fl.targetA.sourceLabel} vs{" "}
-              {getDocMediumLabel(countryConfig, fl.targetB.sourceDocument)}{" "}
-              {fl.targetB.sourceLabel}.
-            </p>
-          )}
-        </>
-      ),
-    });
-  }
-
-  // Final — Explore
-  slides.push({
-    eyebrow: "Take it further",
-    headline: <>Now make the briefing your own.</>,
-    exploreLayout: true,
-  });
-
-  return slides;
-}
-
-// ─── Visual state per slide ─────────────────────────────────────────
-
-function deriveSlideStates(
-  primer: ReturnType<typeof pickPrimerExamples>,
-  topSectors: SectorRow[],
-  lensTaxonomy: string | null,
-): WheelState[] {
-  const states: WheelState[] = [];
-  // 0 hero
-  states.push({ mode: "idle" });
-  // 1 primer aligned
-  states.push(
-    primer.aligned
-      ? {
-          mode: "pair",
-          pair: {
-            aId: primer.aligned.pair.targetAId,
-            bId: primer.aligned.pair.targetBId,
-          },
-        }
-      : { mode: "idle" },
-  );
-  // 2 primer tension
-  states.push(
-    primer.tension
-      ? {
-          mode: "pair",
-          pair: {
-            aId: primer.tension.pair.targetAId,
-            bId: primer.tension.pair.targetBId,
-          },
-        }
-      : { mode: "idle" },
-  );
-  // 3 reveal
-  states.push({ mode: "aggregate" });
-  // 4 Q1 verdict — alignments only
-  states.push({ mode: "alignments" });
-  // 5 Q2 intro — tensions only
-  states.push({ mode: "tensions" });
-  // 6..n sector tours
-  for (const s of topSectors) {
-    states.push({
-      mode: "sector",
-      sectorCategoryId: s.id,
-      sectorTaxonomyType: lensTaxonomy ?? s.taxonomyType,
-    });
-  }
-  // explore (state managed separately)
-  states.push({ mode: "aggregate" });
-  return states;
-}
-
-// ─── Pair card ──────────────────────────────────────────────────────
-
-function PairCard({
-  kind,
-  line,
-  countryConfig,
-}: {
-  kind: "aligned" | "tension";
-  line: FaultLine;
-  countryConfig: CountryConfig | null;
-}) {
-  const color =
-    kind === "aligned"
-      ? ALIGNMENT_COLORS.high
-      : ALIGNMENT_COLORS.possible_conflict;
-  const { targetA, targetB } = line;
-  const labelA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
-  const labelB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
-  return (
-    <div className="rounded-md border border-gray-200 bg-white p-4">
-      <Snippet docLabel={labelA} sourceLabel={targetA.sourceLabel} text={targetA.text} />
-      <div className="flex items-center gap-2 my-2 pl-1">
-        <span
-          aria-hidden="true"
-          className="block h-px flex-1"
-          style={{
-            backgroundImage: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-          }}
-        />
-        <span
-          className="text-[9px] uppercase tracking-wider font-medium"
-          style={{ color }}
-        >
-          {kind === "aligned" ? "supports" : "in tension with"}
         </span>
-        <span
-          aria-hidden="true"
-          className="block h-px flex-1"
-          style={{
-            backgroundImage: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-          }}
-        />
       </div>
-      <Snippet docLabel={labelB} sourceLabel={targetB.sourceLabel} text={targetB.text} />
-    </div>
+      <p className="mt-5 text-[10px] text-[var(--undp-gray)] tracking-wide">
+        {pairCount.toLocaleString()} pairwise comparisons analysed.
+      </p>
+    </header>
   );
 }
-
-function Snippet({
-  docLabel,
-  sourceLabel,
-  text,
-}: {
-  docLabel: string;
-  sourceLabel: string;
-  text: string;
-}) {
-  return (
-    <div>
-      <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
-        {docLabel} · {sourceLabel}
-      </p>
-      <p
-        className="text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
-        style={{
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical",
-        }}
-      >
-        {text}
-      </p>
-    </div>
-  );
-}
-
-// ─── Verdict badge ──────────────────────────────────────────────────
 
 function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   const palette: Record<VerdictBucket, { color: string; label: string }> = {
@@ -650,7 +398,7 @@ function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   const p = palette[bucket];
   return (
     <span
-      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider self-start"
       style={{
         backgroundColor: `${p.color}1a`,
         color: p.color,
@@ -667,9 +415,508 @@ function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   );
 }
 
-// ─── Explore mode left panel ────────────────────────────────────────
+// ─── Wheel panel ────────────────────────────────────────────────────
 
-function ExploreMode({
+function WheelPanel({
+  targets,
+  alignment,
+  classifications,
+  countryConfig,
+  wheelState,
+  variant,
+  onVariantChange,
+  filter,
+  onFilterChange,
+  sectorFocus,
+  onClearSector,
+  primer,
+  countryName,
+  onPairClick,
+}: {
+  targets: Target[];
+  alignment: AlignmentResult[];
+  classifications: ThematicClassification[];
+  countryConfig: CountryConfig | null;
+  wheelState: WheelState;
+  variant: CenterpieceVariant;
+  onVariantChange: (v: CenterpieceVariant) => void;
+  filter: FilterChip;
+  onFilterChange: (f: FilterChip) => void;
+  sectorFocus: {
+    categoryId: string;
+    categoryName: string;
+    taxonomyType: string;
+  } | null;
+  onClearSector: () => void;
+  primer: ReturnType<typeof pickPrimerExamples>;
+  countryName: string;
+  onPairClick: (a: string, b: string) => void;
+}) {
+  const [showPrimer, setShowPrimer] = useState(false);
+  return (
+    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <div className="flex flex-wrap items-center gap-2">
+          {(["aggregate", "alignments", "tensions"] as const).map((f) => (
+            <Chip
+              key={f}
+              active={filter === f && !sectorFocus}
+              onClick={() => onFilterChange(f)}
+            >
+              {f === "aggregate"
+                ? "Both"
+                : f === "alignments"
+                  ? "Alignments"
+                  : "Tensions"}
+            </Chip>
+          ))}
+          {sectorFocus && (
+            <Chip active onClick={onClearSector}>
+              {sectorFocus.categoryName}  ×
+            </Chip>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowPrimer((p) => !p)}
+            className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline-offset-2 hover:underline"
+          >
+            {showPrimer ? "Hide primer" : "What is a pair?"}
+          </button>
+          <span className="text-gray-300">·</span>
+          <VariantSwitcher active={variant} onChange={onVariantChange} />
+        </div>
+      </div>
+
+      {showPrimer && (
+        <PrimerInline
+          primer={primer}
+          countryConfig={countryConfig}
+          countryName={countryName}
+        />
+      )}
+
+      <div className="mt-2">
+        <Centerpiece
+          targets={targets}
+          alignments={alignment}
+          classifications={classifications}
+          countryConfig={countryConfig}
+          state={wheelState}
+          variant={variant}
+          onVariantChange={onVariantChange}
+          onPairClick={onPairClick}
+          showPicker={false}
+        />
+      </div>
+
+      <WheelLegend />
+    </section>
+  );
+}
+
+function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+        active
+          ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+          : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function VariantSwitcher({
+  active,
+  onChange,
+}: {
+  active: CenterpieceVariant;
+  onChange: (v: CenterpieceVariant) => void;
+}) {
+  return (
+    <div className="inline-flex border border-gray-300 rounded-full overflow-hidden">
+      {(["wheel", "constellation"] as const).map((v) => {
+        const isActive = active === v;
+        return (
+          <button
+            key={v}
+            type="button"
+            onClick={() => onChange(v)}
+            aria-pressed={isActive}
+            className={`px-2.5 py-1 text-[10px] uppercase tracking-wider font-medium transition-colors ${
+              isActive
+                ? "bg-[var(--undp-black)] text-white"
+                : "bg-white text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+            }`}
+          >
+            {v === "wheel" ? "Wheel" : "Constellation"}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function WheelLegend() {
+  return (
+    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[10.5px] text-[var(--undp-gray)]">
+      <LegendDot color="#196127" label="Alignment" />
+      <LegendDot color="#dc2626" label="Flagged tension" dashed />
+      <span className="text-[10px] text-[var(--undp-gray)]/70">
+        ribbon width = number of pairs · hover for breakdown
+      </span>
+    </div>
+  );
+}
+
+function LegendDot({
+  color,
+  label,
+  dashed,
+}: {
+  color: string;
+  label: string;
+  dashed?: boolean;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        aria-hidden="true"
+        className="inline-block w-4 h-[3px] rounded-full"
+        style={{
+          background: dashed
+            ? `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 7px)`
+            : color,
+        }}
+      />
+      {label}
+    </span>
+  );
+}
+
+// ─── Primer (inline expand) ─────────────────────────────────────────
+
+function PrimerInline({
+  primer,
+  countryConfig,
+  countryName,
+}: {
+  primer: ReturnType<typeof pickPrimerExamples>;
+  countryConfig: CountryConfig | null;
+  countryName: string;
+}) {
+  return (
+    <div className="rounded-md border border-gray-200 bg-[#fdfcf8] p-3 mb-3 text-xs text-[var(--undp-gray)]">
+      <p className="mb-2 leading-relaxed">
+        A pair is two targets, one from each of two policy documents in{" "}
+        {countryName}. The pipeline scores how the two relate.
+      </p>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <PrimerCard
+          kind="aligned"
+          line={primer.aligned}
+          countryConfig={countryConfig}
+        />
+        <PrimerCard
+          kind="tension"
+          line={primer.tension}
+          countryConfig={countryConfig}
+        />
+      </div>
+    </div>
+  );
+}
+
+function PrimerCard({
+  kind,
+  line,
+  countryConfig,
+}: {
+  kind: "aligned" | "tension";
+  line: FaultLine | null;
+  countryConfig: CountryConfig | null;
+}) {
+  const color =
+    kind === "aligned"
+      ? ALIGNMENT_COLORS.high
+      : ALIGNMENT_COLORS.possible_conflict;
+  if (!line) {
+    return (
+      <div className="rounded border border-gray-200 bg-white/60 p-2.5 text-[11px]">
+        No {kind === "aligned" ? "aligned" : "tension"} example available.
+      </div>
+    );
+  }
+  const labelA = getDocMediumLabel(
+    countryConfig,
+    line.targetA.sourceDocument,
+  );
+  const labelB = getDocMediumLabel(
+    countryConfig,
+    line.targetB.sourceDocument,
+  );
+  return (
+    <div className="rounded border border-gray-200 bg-white p-2.5 text-[11px] leading-snug">
+      <p
+        className="text-[9px] uppercase tracking-wider font-medium mb-1"
+        style={{ color }}
+      >
+        {kind === "aligned" ? "Aligned" : "Tension"}
+      </p>
+      <p className="text-[var(--undp-black)] line-clamp-2">
+        {labelA} {line.targetA.sourceLabel}: {line.targetA.text}
+      </p>
+      <p className="my-1 text-[var(--undp-gray)]">
+        {kind === "aligned" ? "supports" : "in tension with"}
+      </p>
+      <p className="text-[var(--undp-black)] line-clamp-2">
+        {labelB} {line.targetB.sourceLabel}: {line.targetB.text}
+      </p>
+    </div>
+  );
+}
+
+// ─── Fault lines panel (under the wheel) ────────────────────────────
+
+function FaultLinesPanel({
+  faultLines,
+  countryConfig,
+  onSelect,
+}: {
+  faultLines: FaultLine[];
+  countryConfig: CountryConfig | null;
+  onSelect: (line: FaultLine) => void;
+}) {
+  return (
+    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
+      <div className="flex items-baseline justify-between gap-3 mb-3">
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+            The pairs most worth a closer look
+          </p>
+          <h2
+            className="text-lg text-[var(--undp-black)] font-medium leading-tight"
+            style={{ fontFamily: HEADLINE_SERIF }}
+          >
+            Top {faultLines.length} fault lines
+          </h2>
+        </div>
+        <p className="text-[10px] text-[var(--undp-gray)]">
+          Click any row to open the pair detail.
+        </p>
+      </div>
+      {faultLines.length === 0 ? (
+        <p className="text-xs text-[var(--undp-gray)] italic">
+          No flagged pairs in this dataset.
+        </p>
+      ) : (
+        <ol className="divide-y divide-gray-200 border-y border-gray-200">
+          {faultLines.map((line, i) => (
+            <FaultLineRow
+              key={`${line.pair.targetAId}__${line.pair.targetBId}`}
+              line={line}
+              countryConfig={countryConfig}
+              index={i}
+              onSelect={() => onSelect(line)}
+            />
+          ))}
+        </ol>
+      )}
+    </section>
+  );
+}
+
+function FaultLineRow({
+  line,
+  countryConfig,
+  index,
+  onSelect,
+}: {
+  line: FaultLine;
+  countryConfig: CountryConfig | null;
+  index: number;
+  onSelect: () => void;
+}) {
+  const { targetA, targetB, pair } = line;
+  const color = ALIGNMENT_COLORS[pair.alignment];
+  const isContra = isContradiction(pair.alignment);
+  const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
+  const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onSelect}
+        className="w-full text-left py-3 grid grid-cols-[2rem_1fr] gap-3 items-start hover:bg-gray-50 transition-colors rounded-md px-1"
+      >
+        <span
+          className="text-xs text-[var(--undp-gray)] tabular-nums pt-0.5"
+          aria-hidden="true"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <div>
+          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+            <span
+              className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full"
+              style={{
+                backgroundColor: `${color}20`,
+                color: color,
+                border: `1px solid ${color}40`,
+              }}
+            >
+              {ALIGNMENT_LABELS[pair.alignment]}
+            </span>
+            <span className="text-[10px] text-[var(--undp-gray)]">
+              {docA} {targetA.sourceLabel} {isContra ? "↮" : "↔"} {docB}{" "}
+              {targetB.sourceLabel}
+            </span>
+          </div>
+          <div className="grid md:grid-cols-2 gap-2">
+            <p
+              className="text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {targetA.text}
+            </p>
+            <p
+              className="text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {targetB.text}
+            </p>
+          </div>
+        </div>
+      </button>
+    </li>
+  );
+}
+
+// ─── Sector panel (right column) ────────────────────────────────────
+
+function SectorPanel({
+  lens,
+  rows,
+  sectorFocus,
+  onSelect,
+}: {
+  lens: { id: string; label: string; taxonomyType: string } | null;
+  rows: SectorTension[];
+  sectorFocus: { categoryId: string } | null;
+  onSelect: (row: SectorTension) => void;
+}) {
+  const peak = rows.reduce((m, r) => Math.max(m, r.tensionCount), 0);
+  return (
+    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+        Question 2  ·  {lens?.label ?? "sector"}
+      </p>
+      <h2
+        className="text-lg text-[var(--undp-black)] font-medium leading-tight mb-1"
+        style={{ fontFamily: HEADLINE_SERIF }}
+      >
+        Where the gaps concentrate.
+      </h2>
+      <p className="text-[10px] text-[var(--undp-gray)] mb-3">
+        Click a sector to open the pairs and refocus the wheel.
+      </p>
+      <ul className="space-y-1.5">
+        {rows.map((row) => {
+          const isActive = sectorFocus?.categoryId === row.categoryId;
+          const color = row.peakSeverity
+            ? ALIGNMENT_COLORS[row.peakSeverity]
+            : "#d4d4d4";
+          const filled =
+            peak > 0
+              ? Math.min(
+                  5,
+                  Math.max(
+                    row.tensionCount > 0 ? 1 : 0,
+                    Math.round((row.tensionCount / peak) * 5),
+                  ),
+                )
+              : 0;
+          return (
+            <li key={row.categoryId}>
+              <button
+                type="button"
+                onClick={() => onSelect(row)}
+                disabled={row.targetCount === 0}
+                className={`w-full grid grid-cols-[1fr_auto_auto] gap-3 items-center px-2.5 py-2 rounded-md text-left transition-colors ${
+                  isActive
+                    ? "bg-[var(--undp-black)] text-white"
+                    : row.targetCount === 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-gray-50"
+                }`}
+              >
+                <span
+                  className={`text-sm font-medium leading-snug truncate ${
+                    isActive ? "text-white" : "text-[var(--undp-black)]"
+                  }`}
+                >
+                  {row.categoryName}
+                </span>
+                <div className="flex items-center gap-1" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span
+                      key={i}
+                      className="block h-1.5 w-3 rounded-sm"
+                      style={{
+                        backgroundColor:
+                          i < filled
+                            ? isActive
+                              ? "white"
+                              : color
+                            : isActive
+                              ? "rgba(255,255,255,0.25)"
+                              : "#f1f1ed",
+                      }}
+                    />
+                  ))}
+                </div>
+                <span
+                  className={`text-xs tabular-nums w-12 text-right ${
+                    isActive ? "text-white" : "text-[var(--undp-gray)]"
+                  }`}
+                >
+                  {row.tensionCount}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+// ─── Chat strip ─────────────────────────────────────────────────────
+
+function ChatStrip({
   targets,
   alignment,
   classifications,
@@ -677,10 +924,6 @@ function ExploreMode({
   globeCategories,
   countryConfig,
   availableDocs,
-  topSectors,
-  exploreState,
-  onExploreState,
-  onOpenSector,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -689,136 +932,60 @@ function ExploreMode({
   globeCategories: GlobeCategory[];
   countryConfig: CountryConfig | null;
   availableDocs: PolicyDocumentType[];
-  topSectors: SectorRow[];
-  exploreState: WheelState;
-  onExploreState: (s: WheelState) => void;
-  onOpenSector: (s: {
-    categoryId: string;
-    categoryName: string;
-    taxonomyType: string;
-  }) => void;
 }) {
-  const sectorsForChat = useMemo(
-    () =>
-      sectors.map((s) => ({
-        id: s.id,
-        name: s.name,
-        description: s.description,
-      })),
-    [sectors],
-  );
-  const globesForChat = useMemo(
-    () =>
-      globeCategories.map((g) => ({
-        id: g.id,
-        name: g.name,
-        description: g.description,
-      })),
-    [globeCategories],
-  );
   return (
-    <div className="flex flex-col gap-5 h-full overflow-hidden">
-      <div className="shrink-0">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
-          Take it further
-        </p>
-        <h2
-          className="text-2xl text-[var(--undp-black)] font-medium leading-tight mb-1"
-          style={{ fontFamily: HEADLINE_SERIF }}
-        >
-          Make the briefing your own.
-        </h2>
-        <p className="text-xs text-[var(--undp-gray)]">
-          Ask a question, or click a sector to focus the wheel on its
-          tensions.
-        </p>
-      </div>
+    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
+      <ChatPanel
+        targets={targets}
+        alignment={alignment}
+        classifications={classifications}
+        sectors={sectors.map((s) => ({
+          id: s.id,
+          name: s.name,
+          description: s.description,
+        }))}
+        globeCategories={globeCategories.map((g) => ({
+          id: g.id,
+          name: g.name,
+          description: g.description,
+        }))}
+        countryConfig={countryConfig}
+        availableDocs={availableDocs}
+        starterPrompts={[
+          "Which two documents disagree the most?",
+          "Which target shows up in the most tensions?",
+          "Which sector has the strongest cross-doc alignment?",
+        ]}
+      />
+    </section>
+  );
+}
 
-      <div className="border-t border-gray-200 pt-4 shrink-0">
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => onExploreState({ mode: "aggregate" })}
-            className={chip(exploreState.mode === "aggregate")}
-          >
-            Overview
-          </button>
-          <button
-            type="button"
-            onClick={() => onExploreState({ mode: "alignments" })}
-            className={chip(exploreState.mode === "alignments")}
-          >
-            Alignments only
-          </button>
-          <button
-            type="button"
-            onClick={() => onExploreState({ mode: "tensions" })}
-            className={chip(exploreState.mode === "tensions")}
-          >
-            Tensions only
-          </button>
-        </div>
-        {topSectors.length > 0 && (
-          <div className="mt-3">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-              Top sectors by tension count
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {topSectors.map((s) => {
-                const isActive =
-                  exploreState.mode === "sector" &&
-                  exploreState.sectorCategoryId === s.id;
-                return (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() =>
-                      onOpenSector({
-                        categoryId: s.id,
-                        categoryName: s.name,
-                        taxonomyType: s.taxonomyType,
-                      })
-                    }
-                    className={chip(isActive)}
-                    title={`Open ${s.name} (${s.count} flagged pairs)`}
-                  >
-                    {s.name}{" "}
-                    <span className="opacity-60 ml-1">{s.count}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
+// ─── Explore footer ─────────────────────────────────────────────────
 
-      <div className="border-t border-gray-200 pt-4 flex-1 overflow-hidden flex flex-col min-h-0">
-        <ChatPanel
-          targets={targets}
-          alignment={alignment}
-          classifications={classifications}
-          sectors={sectorsForChat}
-          globeCategories={globesForChat}
-          countryConfig={countryConfig}
-          availableDocs={availableDocs}
-          starterPrompts={[
-            "Which two documents disagree the most?",
-            "Which target shows up in the most tensions?",
-            "Which sector has the strongest alignment?",
-          ]}
-        />
+function ExploreFooter({
+  countryId,
+  countryName,
+}: {
+  countryId?: string;
+  countryName: string;
+}) {
+  const dashboardHref = countryId
+    ? `/dashboard?country=${encodeURIComponent(countryId)}`
+    : "/";
+  return (
+    <div className="mt-10 border-t border-gray-200 pt-6 flex flex-wrap items-baseline justify-between gap-4 text-xs text-[var(--undp-gray)]">
+      <div className="max-w-xl leading-relaxed">
+        Pipeline outputs are LLM-derived verdicts on pairwise comparisons,
+        not settled findings. Treat each as a prompt to review. Sectoral
+        view defaults to {countryName}&rsquo;s most relevant taxonomy.
       </div>
+      <Link
+        href={dashboardHref}
+        className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-[11px] font-medium border border-[var(--undp-black)]/40 text-[var(--undp-black)] hover:border-[var(--undp-black)] hover:bg-white transition-colors"
+      >
+        Open the full coherence explorer  →
+      </Link>
     </div>
   );
 }
-
-function chip(active: boolean): string {
-  return `px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-    active
-      ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-      : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-  }`;
-}
-
-// Re-export the type alias so prototypes-client doesn't need its own import.
-export type { WheelState };

@@ -18,7 +18,8 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-type Variant = "wheel" | "constellation";
+export type CenterpieceVariant = "wheel" | "constellation";
+type Variant = CenterpieceVariant;
 
 export function Centerpiece({
   targets,
@@ -29,6 +30,7 @@ export function Centerpiece({
   variant: variantProp,
   onVariantChange,
   showPicker = true,
+  onPairClick,
 }: {
   targets: Target[];
   alignments: AlignmentResult[];
@@ -38,6 +40,7 @@ export function Centerpiece({
   variant?: Variant;
   onVariantChange?: (v: Variant) => void;
   showPicker?: boolean;
+  onPairClick?: (a: string, b: string) => void;
 }) {
   const [internalVariant, setInternalVariant] = useState<Variant>("wheel");
   const variant = variantProp ?? internalVariant;
@@ -53,6 +56,7 @@ export function Centerpiece({
             classifications={classifications}
             countryConfig={countryConfig}
             state={state}
+            onPairClick={onPairClick}
           />
         ) : (
           <ConstellationCenterpiece
