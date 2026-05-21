@@ -1,27 +1,30 @@
 "use client";
 
 /**
- * CoherenceBriefing — A4 single-page cockpit.
+ * CoherenceBriefing — insight-first slide deck.
  *
- * No more slide deck. Everything is on the landing page:
- *   - Hero strip with the Q1 verdict + Q1 / Q2 framing
- *   - Two-column main grid:
- *       Left:  Wheel with filter chips (Aggregate / Alignments / Tensions /
- *              By sector / Idle). Top fault lines below the wheel.
- *       Right: Q2 sector grid (clickable to drawer) + chat panel.
+ * Each slide IS a finding, not buildup. ~4 steps total:
  *
- * Click affordances open drawers, not new slides:
- *   - Fault-line row    → PairDrawer
- *   - Sector tile       → SectorDrawer + wheel switches to that sector
- *   - Wheel chord (when in sector / pair mode) → PairDrawer
+ *   1. Q1 verdict       — "Mostly aligned" with the wheel showing the
+ *                          aggregate pattern. Side panel: verdict badge,
+ *                          counts, the strongest aligned doc pair.
+ *   2. Q2 sectors       — "Tensions concentrate in these sectors" with
+ *                          the wheel switched to tensions. Side panel:
+ *                          top 5 sector tiles, clickable to drawer.
+ *   3. Fault lines      — "Top N pairs worth a closer look" with the
+ *                          wheel idle (story is the list). Side panel:
+ *                          fault-line rows, clickable to pair drawer.
+ *   4. Explore          — Wheel goes interactive with filter chips,
+ *                          chat panel + sector chips on the side.
  *
- * Primer ("what's a pair") is kept as a small inline expand-toggle so
- * first-time readers can still see the slide-2/3 example, without forcing
- * everyone through a 10-step navigation.
+ * The wheel is persistent on the right; only its state changes between
+ * slides. Drill-downs (sector tile, fault-line row, pair) open side
+ * drawers rather than advancing slides.
  */
 
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
+import { SlideDeckShell, type SlideDef } from "./slide-deck-shell";
 import { Centerpiece, type CenterpieceVariant } from "./centerpiece";
 import { ChatPanel } from "./chat-panel";
 import { SectorDrawer } from "./sector-drawer";
@@ -43,7 +46,7 @@ import {
   getDocMediumLabel,
 } from "@/lib/utils";
 import { isContradiction } from "@/types";
-import type { WheelState, WheelStateMode } from "./centerpiece/wheel";
+import type { WheelState } from "./centerpiece/wheel";
 import type {
   AlignmentResult,
   CountryConfig,
@@ -55,9 +58,7 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const FAULT_LINES_TO_SHOW = 6;
+const FAULT_LINES_TO_SHOW = 5;
 
 interface CoherenceBriefingProps {
   countryName: string;
@@ -71,8 +72,6 @@ interface CoherenceBriefingProps {
   countryConfig: CountryConfig | null;
 }
 
-type FilterChip = "aggregate" | "alignments" | "tensions" | "all";
-
 export function CoherenceBriefing({
   countryName,
   countryId,
@@ -83,7 +82,7 @@ export function CoherenceBriefing({
   globeCategories,
   countryConfig,
 }: CoherenceBriefingProps) {
-  // ── Derived insights, computed once per dataset ─────────────────
+  // ── Derived insights ───────────────────────────────────────────
   const verdict = useMemo(() => pickHeadlineVerdict(alignment), [alignment]);
   const faultLines = useMemo(
     () => pickFaultLines(alignment, targets, FAULT_LINES_TO_SHOW),
@@ -93,26 +92,16 @@ export function CoherenceBriefing({
     () => pickPrimerExamples(alignment, targets),
     [alignment, targets],
   );
-  const docCount = useMemo(() => {
-    const docs = new Set<string>();
-    for (const t of targets) docs.add(t.sourceDocument);
-    return docs.size;
-  }, [targets]);
-  const pairCount = useMemo(
-    () => alignment.filter((a) => a.alignment !== "none").length,
-    [alignment],
+  const targetMap = useMemo(
+    () => new Map(targets.map((t) => [t.id, t])),
+    [targets],
   );
   const availableDocs = useMemo<PolicyDocumentType[]>(() => {
     const docs = new Set<PolicyDocumentType>();
     for (const t of targets) docs.add(t.sourceDocument);
     return Array.from(docs);
   }, [targets]);
-  const targetMap = useMemo(
-    () => new Map(targets.map((t) => [t.id, t])),
-    [targets],
-  );
 
-  // ── Sector grid lens + density ─────────────────────────────────
   const { lens, sectorRows } = useMemo(() => {
     const countryCats = countryConfig?.countrySectors ?? [];
     const chosen =
@@ -141,9 +130,7 @@ export function CoherenceBriefing({
                 })),
               }
             : null;
-    if (!chosen) {
-      return { lens: null, sectorRows: [] as SectorTension[] };
-    }
+    if (!chosen) return { lens: null, sectorRows: [] as SectorTension[] };
     const density = buildSectorTensionDensity({
       targets,
       alignment,
@@ -167,31 +154,16 @@ export function CoherenceBriefing({
     countryConfig,
   ]);
 
-  // ── Wheel state + filter chips ─────────────────────────────────
-  const [filter, setFilter] = useState<FilterChip>("aggregate");
+  // ── Variant + explore-mode state ────────────────────────────────
   const [variant, setVariant] = useState<CenterpieceVariant>("wheel");
+  const [exploreFilter, setExploreFilter] = useState<
+    "aggregate" | "alignments" | "tensions"
+  >("aggregate");
   const [sectorFocus, setSectorFocus] = useState<{
     categoryId: string;
     categoryName: string;
     taxonomyType: string;
   } | null>(null);
-
-  const wheelState: WheelState = useMemo(() => {
-    if (sectorFocus) {
-      return {
-        mode: "sector",
-        sectorCategoryId: sectorFocus.categoryId,
-        sectorTaxonomyType: sectorFocus.taxonomyType,
-      };
-    }
-    const map: Record<FilterChip, WheelStateMode> = {
-      aggregate: "aggregate",
-      alignments: "alignments",
-      tensions: "tensions",
-      all: "aggregate",
-    };
-    return { mode: map[filter] };
-  }, [filter, sectorFocus]);
 
   // ── Drawers ─────────────────────────────────────────────────────
   const [pairData, setPairData] = useState<PairDrawerData | null>(null);
@@ -210,7 +182,6 @@ export function CoherenceBriefing({
     },
     [alignment, targetMap],
   );
-
   const drawerBriefing = useMemo<SectorBriefing | null>(() => {
     if (!sectorFocus) return null;
     return buildSectorBriefing({
@@ -224,77 +195,118 @@ export function CoherenceBriefing({
     });
   }, [sectorFocus, targets, alignment, classifications]);
 
+  // ── Slide content (insight-first, 4 steps) ──────────────────────
+  const slides: SlideDef[] = useMemo(
+    () =>
+      buildSlides({
+        countryName,
+        verdict,
+        sectorRows: sectorRows.slice(0, 5),
+        faultLines,
+        countryConfig,
+        onSectorSelect: (s) =>
+          setSectorFocus({
+            categoryId: s.categoryId,
+            categoryName: s.categoryName,
+            taxonomyType: lens?.taxonomyType ?? s.taxonomyType,
+          }),
+        onPairSelect: (line) =>
+          setPairData({
+            pair: line.pair,
+            targetA: line.targetA,
+            targetB: line.targetB,
+          }),
+        availableDocs,
+        targets,
+        alignment,
+        classifications,
+        sectorsForChat: sectors,
+        globesForChat: globeCategories,
+        exploreFilter,
+        onExploreFilter: setExploreFilter,
+        sectorFocus,
+        onClearSectorFocus: () => setSectorFocus(null),
+        primerAvailable: !!primer.aligned || !!primer.tension,
+        primer,
+      }),
+    [
+      countryName,
+      verdict,
+      sectorRows,
+      faultLines,
+      countryConfig,
+      lens,
+      availableDocs,
+      targets,
+      alignment,
+      classifications,
+      sectors,
+      globeCategories,
+      exploreFilter,
+      sectorFocus,
+      primer,
+    ],
+  );
+
+  // ── Per-slide wheel state ───────────────────────────────────────
+  const slideStates: WheelState[] = useMemo(() => {
+    const exploreState: WheelState = sectorFocus
+      ? {
+          mode: "sector",
+          sectorCategoryId: sectorFocus.categoryId,
+          sectorTaxonomyType: sectorFocus.taxonomyType,
+        }
+      : { mode: exploreFilter };
+    const topSector = sectorRows[0];
+    return [
+      // 1 — Q1 verdict: aggregate ribbons (both green + red)
+      { mode: "aggregate" },
+      // 2 — Q2 sectors: tensions only, optionally focus the top sector
+      topSector
+        ? {
+            mode: "sector",
+            sectorCategoryId: topSector.categoryId,
+            sectorTaxonomyType: lens?.taxonomyType ?? "sector",
+          }
+        : { mode: "tensions" },
+      // 3 — Fault lines: tensions only so the wheel mirrors the list
+      { mode: "tensions" },
+      // 4 — Explore: chip-driven
+      exploreState,
+    ];
+  }, [exploreFilter, sectorFocus, sectorRows, lens]);
+
+  const renderVisual = useCallback(
+    (idx: number) => {
+      const state = slideStates[idx] ?? { mode: "aggregate" };
+      return (
+        <Centerpiece
+          targets={targets}
+          alignments={alignment}
+          classifications={classifications}
+          countryConfig={countryConfig}
+          state={state}
+          variant={variant}
+          onVariantChange={setVariant}
+          showPicker={false}
+          onPairClick={idx === 3 ? openPair : undefined}
+        />
+      );
+    },
+    [
+      slideStates,
+      targets,
+      alignment,
+      classifications,
+      countryConfig,
+      variant,
+      openPair,
+    ],
+  );
+
   return (
-    <main className="flex-1 w-full px-6 md:px-10 py-6 max-w-[1400px] mx-auto">
-      <HeroStrip
-        countryName={countryName}
-        verdict={verdict}
-        docCount={docCount}
-        targetCount={targets.length}
-        pairCount={pairCount}
-      />
-
-      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
-        <div className="space-y-6">
-          <WheelPanel
-            targets={targets}
-            alignment={alignment}
-            classifications={classifications}
-            countryConfig={countryConfig}
-            wheelState={wheelState}
-            variant={variant}
-            onVariantChange={setVariant}
-            filter={filter}
-            onFilterChange={(f) => {
-              setFilter(f);
-              setSectorFocus(null);
-            }}
-            sectorFocus={sectorFocus}
-            onClearSector={() => setSectorFocus(null)}
-            primer={primer}
-            countryName={countryName}
-            onPairClick={openPair}
-          />
-          <FaultLinesPanel
-            faultLines={faultLines}
-            countryConfig={countryConfig}
-            onSelect={(line) =>
-              setPairData({
-                pair: line.pair,
-                targetA: line.targetA,
-                targetB: line.targetB,
-              })
-            }
-          />
-        </div>
-
-        <div className="space-y-6">
-          <SectorPanel
-            lens={lens}
-            rows={sectorRows}
-            sectorFocus={sectorFocus}
-            onSelect={(r) =>
-              setSectorFocus({
-                categoryId: r.categoryId,
-                categoryName: r.categoryName,
-                taxonomyType: lens?.taxonomyType ?? "sector",
-              })
-            }
-          />
-          <ChatStrip
-            targets={targets}
-            alignment={alignment}
-            classifications={classifications}
-            sectors={sectors}
-            globeCategories={globeCategories}
-            countryConfig={countryConfig}
-            availableDocs={availableDocs}
-          />
-        </div>
-      </div>
-
-      <ExploreFooter countryId={countryId} countryName={countryName} />
-
+    <main className="flex-1 w-full">
+      <SlideDeckShell slides={slides} renderVisual={renderVisual} />
       <SectorDrawer
         briefing={drawerBriefing}
         countryConfig={countryConfig}
@@ -305,86 +317,173 @@ export function CoherenceBriefing({
         countryConfig={countryConfig}
         onClose={() => setPairData(null)}
       />
+      <FooterLink countryId={countryId} />
     </main>
   );
 }
 
-// ─── Hero strip ─────────────────────────────────────────────────────
+// ─── Slide content builder ─────────────────────────────────────────
 
-function HeroStrip({
+function buildSlides({
   countryName,
   verdict,
-  docCount,
-  targetCount,
-  pairCount,
+  sectorRows,
+  faultLines,
+  countryConfig,
+  onSectorSelect,
+  onPairSelect,
+  availableDocs,
+  targets,
+  alignment,
+  classifications,
+  sectorsForChat,
+  globesForChat,
+  exploreFilter,
+  onExploreFilter,
+  sectorFocus,
+  onClearSectorFocus,
+  primer,
 }: {
   countryName: string;
   verdict: ReturnType<typeof pickHeadlineVerdict>;
-  docCount: number;
-  targetCount: number;
-  pairCount: number;
-}) {
+  sectorRows: SectorTension[];
+  faultLines: FaultLine[];
+  countryConfig: CountryConfig | null;
+  onSectorSelect: (s: { categoryId: string; categoryName: string; taxonomyType: string }) => void;
+  onPairSelect: (l: FaultLine) => void;
+  availableDocs: PolicyDocumentType[];
+  targets: Target[];
+  alignment: AlignmentResult[];
+  classifications: ThematicClassification[];
+  sectorsForChat: IpccSector[];
+  globesForChat: GlobeCategory[];
+  exploreFilter: "aggregate" | "alignments" | "tensions";
+  onExploreFilter: (f: "aggregate" | "alignments" | "tensions") => void;
+  sectorFocus: { categoryId: string; categoryName: string; taxonomyType: string } | null;
+  onClearSectorFocus: () => void;
+  primerAvailable: boolean;
+  primer: ReturnType<typeof pickPrimerExamples>;
+}): SlideDef[] {
   const tensionPct = Math.round(verdict.tensionShare * 100);
-  return (
-    <header>
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-3">
-        Policy coherence briefing  ·  {countryName}
-      </p>
-      <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-        <div>
-          <h1
-            className="text-[var(--undp-black)] font-medium leading-[1.1] mb-3"
-            style={{
-              fontFamily: HEADLINE_SERIF,
-              fontSize: "clamp(1.875rem, 4vw, 2.875rem)",
-              letterSpacing: "-0.012em",
-            }}
-          >
-            {verdict.headline}
-          </h1>
-          <p className="text-sm md:text-base text-[var(--undp-gray)] leading-relaxed max-w-2xl">
-            Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
-            scored pairs across {docCount}{" "}
-            {docCount === 1 ? "document" : "documents"} and{" "}
-            {targetCount.toLocaleString()} targets,{" "}
-            <strong className="text-[var(--undp-black)] font-medium">
-              {verdict.alignmentPairs.toLocaleString()}
-            </strong>{" "}
-            show medium or strong alignment.{" "}
-            <strong className="text-[var(--undp-black)] font-medium">
-              {verdict.tensionPairs.toLocaleString()}
-            </strong>{" "}
-            ({tensionPct}%) are flagged for review.
-          </p>
+  return [
+    // 1 — Q1 verdict
+    {
+      eyebrow: `Question 1 · ${countryName}`,
+      headline: <>{verdict.headline}</>,
+      body: (
+        <p>
+          Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
+          scored pairs,{" "}
+          <strong className="text-[var(--undp-black)] font-medium">
+            {verdict.alignmentPairs.toLocaleString()}
+          </strong>{" "}
+          show medium or strong alignment.{" "}
+          <strong className="text-[var(--undp-black)] font-medium">
+            {verdict.tensionPairs.toLocaleString()}
+          </strong>{" "}
+          ({tensionPct}%) are flagged for review.
+        </p>
+      ),
+      extra: (
+        <div className="space-y-3">
+          <VerdictBadge bucket={verdict.bucket} />
+          {primer.aligned && (
+            <PrimerCallout
+              line={primer.aligned}
+              kind="aligned"
+              countryConfig={countryConfig}
+              onSelect={() => onPairSelect(primer.aligned!)}
+            />
+          )}
         </div>
-        <VerdictBadge bucket={verdict.bucket} />
-      </div>
-      <div className="mt-5 flex flex-wrap gap-x-8 gap-y-2 text-[12px] text-[var(--undp-gray)]">
-        <span className="flex gap-2 items-baseline">
-          <span className="font-medium tracking-wider text-[10px] uppercase">
-            Q1
-          </span>
-          Are these policies pulling the same direction?
-          <span className="text-[var(--undp-black)] font-medium ml-1">
-            Answered above.
-          </span>
-        </span>
-        <span className="flex gap-2 items-baseline">
-          <span className="font-medium tracking-wider text-[10px] uppercase">
-            Q2
-          </span>
-          Where are the biggest gaps?
-          <span className="text-[var(--undp-black)] font-medium ml-1">
-            See sector panel  →
-          </span>
-        </span>
-      </div>
-      <p className="mt-5 text-[10px] text-[var(--undp-gray)] tracking-wide">
-        {pairCount.toLocaleString()} pairwise comparisons analysed.
-      </p>
-    </header>
-  );
+      ),
+    },
+    // 2 — Q2 sectors
+    {
+      eyebrow: "Question 2",
+      headline: (
+        <>
+          Tensions concentrate in{" "}
+          {sectorRows.slice(0, 3).map((s, i, arr) => (
+            <span key={s.categoryId}>
+              <span className="underline decoration-2 underline-offset-4 decoration-[var(--undp-red)]/40">
+                {s.categoryName.toLowerCase()}
+              </span>
+              {i < arr.length - 1
+                ? i === arr.length - 2
+                  ? ", and "
+                  : ", "
+                : ""}
+            </span>
+          ))}
+          .
+        </>
+      ),
+      body: (
+        <p>
+          Each tile counts how many flagged pairs touch a target primary-
+          classified to that sector. Click any to open the pairs behind
+          the number.
+        </p>
+      ),
+      extra: (
+        <SectorTilesInline
+          rows={sectorRows}
+          onSelect={(r) =>
+            onSectorSelect({
+              categoryId: r.categoryId,
+              categoryName: r.categoryName,
+              taxonomyType: r.taxonomyType ?? "sector",
+            })
+          }
+        />
+      ),
+    },
+    // 3 — Fault lines
+    {
+      eyebrow: "The single pairs to read first",
+      headline: <>Top {faultLines.length} fault lines.</>,
+      body: (
+        <p>
+          Severity-sorted, cross-document pairs first. Each row is one
+          verdict from the pipeline; open it for the AI rationale.
+        </p>
+      ),
+      extra: (
+        <FaultLineListInline
+          faultLines={faultLines}
+          countryConfig={countryConfig}
+          onSelect={onPairSelect}
+        />
+      ),
+    },
+    // 4 — Explore
+    {
+      eyebrow: "Take it further",
+      headline: <>Make the briefing your own.</>,
+      exploreLayout: true,
+      body: (
+        <ExploreModeInline
+          targets={targets}
+          alignment={alignment}
+          classifications={classifications}
+          sectors={sectorsForChat}
+          globeCategories={globesForChat}
+          countryConfig={countryConfig}
+          availableDocs={availableDocs}
+          sectorRows={sectorRows}
+          exploreFilter={exploreFilter}
+          onExploreFilter={onExploreFilter}
+          sectorFocus={sectorFocus}
+          onSectorSelect={onSectorSelect}
+          onClearSectorFocus={onClearSectorFocus}
+        />
+      ),
+    },
+  ];
 }
+
+// ─── Verdict badge ──────────────────────────────────────────────────
 
 function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   const palette: Record<VerdictBucket, { color: string; label: string }> = {
@@ -398,7 +497,7 @@ function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   const p = palette[bucket];
   return (
     <span
-      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider self-start"
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
       style={{
         backgroundColor: `${p.color}1a`,
         color: p.color,
@@ -415,285 +514,121 @@ function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   );
 }
 
-// ─── Wheel panel ────────────────────────────────────────────────────
+// ─── Primer callout (inline on slide 1) ─────────────────────────────
 
-function WheelPanel({
-  targets,
-  alignment,
-  classifications,
-  countryConfig,
-  wheelState,
-  variant,
-  onVariantChange,
-  filter,
-  onFilterChange,
-  sectorFocus,
-  onClearSector,
-  primer,
-  countryName,
-  onPairClick,
-}: {
-  targets: Target[];
-  alignment: AlignmentResult[];
-  classifications: ThematicClassification[];
-  countryConfig: CountryConfig | null;
-  wheelState: WheelState;
-  variant: CenterpieceVariant;
-  onVariantChange: (v: CenterpieceVariant) => void;
-  filter: FilterChip;
-  onFilterChange: (f: FilterChip) => void;
-  sectorFocus: {
-    categoryId: string;
-    categoryName: string;
-    taxonomyType: string;
-  } | null;
-  onClearSector: () => void;
-  primer: ReturnType<typeof pickPrimerExamples>;
-  countryName: string;
-  onPairClick: (a: string, b: string) => void;
-}) {
-  const [showPrimer, setShowPrimer] = useState(false);
-  return (
-    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-        <div className="flex flex-wrap items-center gap-2">
-          {(["aggregate", "alignments", "tensions"] as const).map((f) => (
-            <Chip
-              key={f}
-              active={filter === f && !sectorFocus}
-              onClick={() => onFilterChange(f)}
-            >
-              {f === "aggregate"
-                ? "Both"
-                : f === "alignments"
-                  ? "Alignments"
-                  : "Tensions"}
-            </Chip>
-          ))}
-          {sectorFocus && (
-            <Chip active onClick={onClearSector}>
-              {sectorFocus.categoryName}  ×
-            </Chip>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowPrimer((p) => !p)}
-            className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline-offset-2 hover:underline"
-          >
-            {showPrimer ? "Hide primer" : "What is a pair?"}
-          </button>
-          <span className="text-gray-300">·</span>
-          <VariantSwitcher active={variant} onChange={onVariantChange} />
-        </div>
-      </div>
-
-      {showPrimer && (
-        <PrimerInline
-          primer={primer}
-          countryConfig={countryConfig}
-          countryName={countryName}
-        />
-      )}
-
-      <div className="mt-2">
-        <Centerpiece
-          targets={targets}
-          alignments={alignment}
-          classifications={classifications}
-          countryConfig={countryConfig}
-          state={wheelState}
-          variant={variant}
-          onVariantChange={onVariantChange}
-          onPairClick={onPairClick}
-          showPicker={false}
-        />
-      </div>
-
-      <WheelLegend />
-    </section>
-  );
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-        active
-          ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-          : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function VariantSwitcher({
-  active,
-  onChange,
-}: {
-  active: CenterpieceVariant;
-  onChange: (v: CenterpieceVariant) => void;
-}) {
-  return (
-    <div className="inline-flex border border-gray-300 rounded-full overflow-hidden">
-      {(["wheel", "constellation"] as const).map((v) => {
-        const isActive = active === v;
-        return (
-          <button
-            key={v}
-            type="button"
-            onClick={() => onChange(v)}
-            aria-pressed={isActive}
-            className={`px-2.5 py-1 text-[10px] uppercase tracking-wider font-medium transition-colors ${
-              isActive
-                ? "bg-[var(--undp-black)] text-white"
-                : "bg-white text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-            }`}
-          >
-            {v === "wheel" ? "Wheel" : "Constellation"}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function WheelLegend() {
-  return (
-    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[10.5px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label="Alignment" />
-      <LegendDot color="#dc2626" label="Flagged tension" dashed />
-      <span className="text-[10px] text-[var(--undp-gray)]/70">
-        ribbon width = number of pairs · hover for breakdown
-      </span>
-    </div>
-  );
-}
-
-function LegendDot({
-  color,
-  label,
-  dashed,
-}: {
-  color: string;
-  label: string;
-  dashed?: boolean;
-}) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span
-        aria-hidden="true"
-        className="inline-block w-4 h-[3px] rounded-full"
-        style={{
-          background: dashed
-            ? `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 7px)`
-            : color,
-        }}
-      />
-      {label}
-    </span>
-  );
-}
-
-// ─── Primer (inline expand) ─────────────────────────────────────────
-
-function PrimerInline({
-  primer,
-  countryConfig,
-  countryName,
-}: {
-  primer: ReturnType<typeof pickPrimerExamples>;
-  countryConfig: CountryConfig | null;
-  countryName: string;
-}) {
-  return (
-    <div className="rounded-md border border-gray-200 bg-[#fdfcf8] p-3 mb-3 text-xs text-[var(--undp-gray)]">
-      <p className="mb-2 leading-relaxed">
-        A pair is two targets, one from each of two policy documents in{" "}
-        {countryName}. The pipeline scores how the two relate.
-      </p>
-      <div className="grid sm:grid-cols-2 gap-3">
-        <PrimerCard
-          kind="aligned"
-          line={primer.aligned}
-          countryConfig={countryConfig}
-        />
-        <PrimerCard
-          kind="tension"
-          line={primer.tension}
-          countryConfig={countryConfig}
-        />
-      </div>
-    </div>
-  );
-}
-
-function PrimerCard({
-  kind,
+function PrimerCallout({
   line,
+  kind,
   countryConfig,
+  onSelect,
 }: {
+  line: FaultLine;
   kind: "aligned" | "tension";
-  line: FaultLine | null;
   countryConfig: CountryConfig | null;
+  onSelect: () => void;
 }) {
   const color =
     kind === "aligned"
       ? ALIGNMENT_COLORS.high
       : ALIGNMENT_COLORS.possible_conflict;
-  if (!line) {
-    return (
-      <div className="rounded border border-gray-200 bg-white/60 p-2.5 text-[11px]">
-        No {kind === "aligned" ? "aligned" : "tension"} example available.
-      </div>
-    );
-  }
-  const labelA = getDocMediumLabel(
-    countryConfig,
-    line.targetA.sourceDocument,
-  );
-  const labelB = getDocMediumLabel(
-    countryConfig,
-    line.targetB.sourceDocument,
-  );
+  const labelA = getDocMediumLabel(countryConfig, line.targetA.sourceDocument);
+  const labelB = getDocMediumLabel(countryConfig, line.targetB.sourceDocument);
   return (
-    <div className="rounded border border-gray-200 bg-white p-2.5 text-[11px] leading-snug">
+    <button
+      type="button"
+      onClick={onSelect}
+      className="w-full text-left rounded-md border border-gray-200 bg-white p-3 hover:border-[var(--undp-black)] transition-colors"
+    >
       <p
-        className="text-[9px] uppercase tracking-wider font-medium mb-1"
+        className="text-[9px] uppercase tracking-wider font-semibold mb-1"
         style={{ color }}
       >
-        {kind === "aligned" ? "Aligned" : "Tension"}
+        Example {kind === "aligned" ? "alignment" : "tension"}
       </p>
-      <p className="text-[var(--undp-black)] line-clamp-2">
-        {labelA} {line.targetA.sourceLabel}: {line.targetA.text}
+      <p className="text-[12px] text-[var(--undp-black)] leading-snug line-clamp-2">
+        <span className="text-[var(--undp-gray)]">{labelA} {line.targetA.sourceLabel}:</span>{" "}
+        {line.targetA.text}
       </p>
-      <p className="my-1 text-[var(--undp-gray)]">
+      <p className="text-[11px] my-1.5 text-[var(--undp-gray)]">
         {kind === "aligned" ? "supports" : "in tension with"}
       </p>
-      <p className="text-[var(--undp-black)] line-clamp-2">
-        {labelB} {line.targetB.sourceLabel}: {line.targetB.text}
+      <p className="text-[12px] text-[var(--undp-black)] leading-snug line-clamp-2">
+        <span className="text-[var(--undp-gray)]">{labelB} {line.targetB.sourceLabel}:</span>{" "}
+        {line.targetB.text}
       </p>
-    </div>
+      <p className="mt-2 text-[10px] text-[var(--undp-gray)]">
+        Click for full text + AI rationale  →
+      </p>
+    </button>
   );
 }
 
-// ─── Fault lines panel (under the wheel) ────────────────────────────
+// ─── Sector tiles inline (slide 2) ──────────────────────────────────
 
-function FaultLinesPanel({
+function SectorTilesInline({
+  rows,
+  onSelect,
+}: {
+  rows: (SectorTension & { taxonomyType?: string })[];
+  onSelect: (row: SectorTension & { taxonomyType?: string }) => void;
+}) {
+  const peak = rows.reduce((m, r) => Math.max(m, r.tensionCount), 0);
+  return (
+    <ul className="space-y-1.5">
+      {rows.map((row) => {
+        const color = row.peakSeverity
+          ? ALIGNMENT_COLORS[row.peakSeverity]
+          : "#d4d4d4";
+        const filled =
+          peak > 0
+            ? Math.min(
+                5,
+                Math.max(
+                  row.tensionCount > 0 ? 1 : 0,
+                  Math.round((row.tensionCount / peak) * 5),
+                ),
+              )
+            : 0;
+        return (
+          <li key={row.categoryId}>
+            <button
+              type="button"
+              onClick={() => onSelect(row)}
+              disabled={row.targetCount === 0}
+              className={`w-full grid grid-cols-[1fr_auto_auto] gap-3 items-center px-2.5 py-2 rounded-md text-left transition-colors border border-transparent ${
+                row.targetCount === 0
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-white hover:border-gray-200"
+              }`}
+            >
+              <span className="text-sm text-[var(--undp-black)] font-medium leading-snug truncate">
+                {row.categoryName}
+              </span>
+              <div className="flex items-center gap-1" aria-hidden="true">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="block h-1.5 w-3 rounded-sm"
+                    style={{
+                      backgroundColor: i < filled ? color : "#f1f1ed",
+                    }}
+                  />
+                ))}
+              </div>
+              <span className="text-xs tabular-nums text-[var(--undp-gray)] w-10 text-right">
+                {row.tensionCount}
+              </span>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+// ─── Fault lines inline (slide 3) ───────────────────────────────────
+
+function FaultLineListInline({
   faultLines,
   countryConfig,
   onSelect,
@@ -702,46 +637,29 @@ function FaultLinesPanel({
   countryConfig: CountryConfig | null;
   onSelect: (line: FaultLine) => void;
 }) {
+  if (faultLines.length === 0) {
+    return (
+      <p className="text-xs text-[var(--undp-gray)] italic">
+        No flagged pairs in this dataset.
+      </p>
+    );
+  }
   return (
-    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
-      <div className="flex items-baseline justify-between gap-3 mb-3">
-        <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-            The pairs most worth a closer look
-          </p>
-          <h2
-            className="text-lg text-[var(--undp-black)] font-medium leading-tight"
-            style={{ fontFamily: HEADLINE_SERIF }}
-          >
-            Top {faultLines.length} fault lines
-          </h2>
-        </div>
-        <p className="text-[10px] text-[var(--undp-gray)]">
-          Click any row to open the pair detail.
-        </p>
-      </div>
-      {faultLines.length === 0 ? (
-        <p className="text-xs text-[var(--undp-gray)] italic">
-          No flagged pairs in this dataset.
-        </p>
-      ) : (
-        <ol className="divide-y divide-gray-200 border-y border-gray-200">
-          {faultLines.map((line, i) => (
-            <FaultLineRow
-              key={`${line.pair.targetAId}__${line.pair.targetBId}`}
-              line={line}
-              countryConfig={countryConfig}
-              index={i}
-              onSelect={() => onSelect(line)}
-            />
-          ))}
-        </ol>
-      )}
-    </section>
+    <ol className="divide-y divide-gray-200 border-y border-gray-200">
+      {faultLines.map((line, i) => (
+        <FaultRow
+          key={`${line.pair.targetAId}__${line.pair.targetBId}`}
+          line={line}
+          countryConfig={countryConfig}
+          index={i}
+          onSelect={() => onSelect(line)}
+        />
+      ))}
+    </ol>
   );
 }
 
-function FaultLineRow({
+function FaultRow({
   line,
   countryConfig,
   index,
@@ -762,7 +680,7 @@ function FaultLineRow({
       <button
         type="button"
         onClick={onSelect}
-        className="w-full text-left py-3 grid grid-cols-[2rem_1fr] gap-3 items-start hover:bg-gray-50 transition-colors rounded-md px-1"
+        className="w-full text-left py-3 grid grid-cols-[1.75rem_1fr] gap-3 items-start hover:bg-gray-50 transition-colors px-1 rounded"
       >
         <span
           className="text-xs text-[var(--undp-gray)] tabular-nums pt-0.5"
@@ -771,12 +689,12 @@ function FaultLineRow({
           {String(index + 1).padStart(2, "0")}
         </span>
         <div>
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span
-              className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full"
+              className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
               style={{
                 backgroundColor: `${color}20`,
-                color: color,
+                color,
                 border: `1px solid ${color}40`,
               }}
             >
@@ -787,136 +705,35 @@ function FaultLineRow({
               {targetB.sourceLabel}
             </span>
           </div>
-          <div className="grid md:grid-cols-2 gap-2">
-            <p
-              className="text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {targetA.text}
-            </p>
-            <p
-              className="text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {targetB.text}
-            </p>
-          </div>
+          <p
+            className="text-[12px] text-[var(--undp-black)] leading-snug overflow-hidden"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            <span className="text-[var(--undp-gray)]">A:</span> {targetA.text}
+          </p>
+          <p
+            className="text-[12px] text-[var(--undp-black)] leading-snug overflow-hidden mt-0.5"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            <span className="text-[var(--undp-gray)]">B:</span> {targetB.text}
+          </p>
         </div>
       </button>
     </li>
   );
 }
 
-// ─── Sector panel (right column) ────────────────────────────────────
+// ─── Explore mode (slide 4) ─────────────────────────────────────────
 
-function SectorPanel({
-  lens,
-  rows,
-  sectorFocus,
-  onSelect,
-}: {
-  lens: { id: string; label: string; taxonomyType: string } | null;
-  rows: SectorTension[];
-  sectorFocus: { categoryId: string } | null;
-  onSelect: (row: SectorTension) => void;
-}) {
-  const peak = rows.reduce((m, r) => Math.max(m, r.tensionCount), 0);
-  return (
-    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
-      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-        Question 2  ·  {lens?.label ?? "sector"}
-      </p>
-      <h2
-        className="text-lg text-[var(--undp-black)] font-medium leading-tight mb-1"
-        style={{ fontFamily: HEADLINE_SERIF }}
-      >
-        Where the gaps concentrate.
-      </h2>
-      <p className="text-[10px] text-[var(--undp-gray)] mb-3">
-        Click a sector to open the pairs and refocus the wheel.
-      </p>
-      <ul className="space-y-1.5">
-        {rows.map((row) => {
-          const isActive = sectorFocus?.categoryId === row.categoryId;
-          const color = row.peakSeverity
-            ? ALIGNMENT_COLORS[row.peakSeverity]
-            : "#d4d4d4";
-          const filled =
-            peak > 0
-              ? Math.min(
-                  5,
-                  Math.max(
-                    row.tensionCount > 0 ? 1 : 0,
-                    Math.round((row.tensionCount / peak) * 5),
-                  ),
-                )
-              : 0;
-          return (
-            <li key={row.categoryId}>
-              <button
-                type="button"
-                onClick={() => onSelect(row)}
-                disabled={row.targetCount === 0}
-                className={`w-full grid grid-cols-[1fr_auto_auto] gap-3 items-center px-2.5 py-2 rounded-md text-left transition-colors ${
-                  isActive
-                    ? "bg-[var(--undp-black)] text-white"
-                    : row.targetCount === 0
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-gray-50"
-                }`}
-              >
-                <span
-                  className={`text-sm font-medium leading-snug truncate ${
-                    isActive ? "text-white" : "text-[var(--undp-black)]"
-                  }`}
-                >
-                  {row.categoryName}
-                </span>
-                <div className="flex items-center gap-1" aria-hidden="true">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <span
-                      key={i}
-                      className="block h-1.5 w-3 rounded-sm"
-                      style={{
-                        backgroundColor:
-                          i < filled
-                            ? isActive
-                              ? "white"
-                              : color
-                            : isActive
-                              ? "rgba(255,255,255,0.25)"
-                              : "#f1f1ed",
-                      }}
-                    />
-                  ))}
-                </div>
-                <span
-                  className={`text-xs tabular-nums w-12 text-right ${
-                    isActive ? "text-white" : "text-[var(--undp-gray)]"
-                  }`}
-                >
-                  {row.tensionCount}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
-}
-
-// ─── Chat strip ─────────────────────────────────────────────────────
-
-function ChatStrip({
+function ExploreModeInline({
   targets,
   alignment,
   classifications,
@@ -924,6 +741,12 @@ function ChatStrip({
   globeCategories,
   countryConfig,
   availableDocs,
+  sectorRows,
+  exploreFilter,
+  onExploreFilter,
+  sectorFocus,
+  onSectorSelect,
+  onClearSectorFocus,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -932,60 +755,126 @@ function ChatStrip({
   globeCategories: GlobeCategory[];
   countryConfig: CountryConfig | null;
   availableDocs: PolicyDocumentType[];
+  sectorRows: SectorTension[];
+  exploreFilter: "aggregate" | "alignments" | "tensions";
+  onExploreFilter: (f: "aggregate" | "alignments" | "tensions") => void;
+  sectorFocus: { categoryId: string; categoryName: string; taxonomyType: string } | null;
+  onSectorSelect: (s: { categoryId: string; categoryName: string; taxonomyType: string }) => void;
+  onClearSectorFocus: () => void;
 }) {
   return (
-    <section className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
-      <ChatPanel
-        targets={targets}
-        alignment={alignment}
-        classifications={classifications}
-        sectors={sectors.map((s) => ({
-          id: s.id,
-          name: s.name,
-          description: s.description,
-        }))}
-        globeCategories={globeCategories.map((g) => ({
-          id: g.id,
-          name: g.name,
-          description: g.description,
-        }))}
-        countryConfig={countryConfig}
-        availableDocs={availableDocs}
-        starterPrompts={[
-          "Which two documents disagree the most?",
-          "Which target shows up in the most tensions?",
-          "Which sector has the strongest cross-doc alignment?",
-        ]}
-      />
-    </section>
+    <div className="flex flex-col gap-4 h-full overflow-hidden">
+      <div className="flex flex-wrap items-center gap-1.5">
+        {(["aggregate", "alignments", "tensions"] as const).map((f) => {
+          const isActive = !sectorFocus && exploreFilter === f;
+          return (
+            <button
+              key={f}
+              type="button"
+              onClick={() => {
+                onExploreFilter(f);
+                onClearSectorFocus();
+              }}
+              aria-pressed={isActive}
+              className={chip(isActive)}
+            >
+              {f === "aggregate" ? "Both" : f === "alignments" ? "Alignments" : "Tensions"}
+            </button>
+          );
+        })}
+        {sectorFocus && (
+          <button
+            type="button"
+            onClick={onClearSectorFocus}
+            className={chip(true)}
+          >
+            {sectorFocus.categoryName}  ×
+          </button>
+        )}
+      </div>
+      {sectorRows.length > 0 && (
+        <div>
+          <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
+            Focus a sector
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {sectorRows.slice(0, 6).map((s) => {
+              const isActive = sectorFocus?.categoryId === s.categoryId;
+              return (
+                <button
+                  key={s.categoryId}
+                  type="button"
+                  onClick={() =>
+                    onSectorSelect({
+                      categoryId: s.categoryId,
+                      categoryName: s.categoryName,
+                      taxonomyType: "sector",
+                    })
+                  }
+                  className={chip(isActive)}
+                  title={`${s.categoryName} · ${s.tensionCount} flagged pairs`}
+                >
+                  {s.categoryName}{" "}
+                  <span className="opacity-60 ml-1">{s.tensionCount}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      <div className="border-t border-gray-200 pt-3 flex-1 overflow-hidden flex flex-col min-h-0">
+        <ChatPanel
+          targets={targets}
+          alignment={alignment}
+          classifications={classifications}
+          sectors={sectors.map((s) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+          }))}
+          globeCategories={globeCategories.map((g) => ({
+            id: g.id,
+            name: g.name,
+            description: g.description,
+          }))}
+          countryConfig={countryConfig}
+          availableDocs={availableDocs}
+          starterPrompts={[
+            "Which two documents disagree the most?",
+            "Which target shows up in the most tensions?",
+            "Which sector has the strongest cross-doc alignment?",
+          ]}
+        />
+      </div>
+    </div>
   );
 }
 
-// ─── Explore footer ─────────────────────────────────────────────────
+function chip(active: boolean) {
+  return `px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+    active
+      ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+      : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+  }`;
+}
 
-function ExploreFooter({
-  countryId,
-  countryName,
-}: {
-  countryId?: string;
-  countryName: string;
-}) {
+// ─── Footer link ────────────────────────────────────────────────────
+
+function FooterLink({ countryId }: { countryId?: string }) {
   const dashboardHref = countryId
     ? `/dashboard?country=${encodeURIComponent(countryId)}`
     : "/";
   return (
-    <div className="mt-10 border-t border-gray-200 pt-6 flex flex-wrap items-baseline justify-between gap-4 text-xs text-[var(--undp-gray)]">
-      <div className="max-w-xl leading-relaxed">
-        Pipeline outputs are LLM-derived verdicts on pairwise comparisons,
-        not settled findings. Treat each as a prompt to review. Sectoral
-        view defaults to {countryName}&rsquo;s most relevant taxonomy.
-      </div>
+    <div className="fixed bottom-3 left-6 z-10 text-[10px] text-[var(--undp-gray)]">
       <Link
         href={dashboardHref}
-        className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-[11px] font-medium border border-[var(--undp-black)]/40 text-[var(--undp-black)] hover:border-[var(--undp-black)] hover:bg-white transition-colors"
+        className="hover:text-[var(--undp-black)] hover:underline"
       >
-        Open the full coherence explorer  →
+        ← Full coherence explorer
       </Link>
     </div>
   );
 }
+
+// Re-export for prototypes-client convenience
+export type { WheelState };
