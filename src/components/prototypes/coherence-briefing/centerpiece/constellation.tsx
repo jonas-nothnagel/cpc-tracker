@@ -1,24 +1,29 @@
 "use client";
 
 /**
- * Constellation centerpiece — every target a node in calm space, every pair
- * a thin line. Aligned pairs in green, tensions in red. The layout uses a
- * one-shot d3-force run (no live animation) clustered by source document so
- * the visual reads as policy-document "constellations" with bridges
- * between them.
+ * Constellation centerpiece — clusters per document with sparse arcs
+ * showing cross-document signal.
  *
- * Static once mounted; deterministic for a given input.
+ * v2 fix: in v1 every node piled up at the center because the link force
+ * dominated the doc-center pull. The new approach pre-positions each
+ * node at its document's anchor with jitter, then runs a short simulation
+ * with strong forceX/forceY toward the anchor, collision spacing, and NO
+ * link force. Aligned pairs render as faint arcs (visual only, not
+ * gravitational). Tensions render as short, contrasting arcs.
+ *
+ * Like the wheel, supports a small state prop so the storytelling deck
+ * can ask for tensions-only or alignments-only renderings.
  */
 
 import { useMemo } from "react";
 import {
   forceCenter,
   forceCollide,
-  forceLink,
   forceManyBody,
   forceSimulation,
+  forceX,
+  forceY,
   type SimulationNodeDatum,
-  type SimulationLinkDatum,
 } from "d3-force";
 import { ALIGNMENT_COLORS, getDocColor } from "@/lib/utils";
 import { isContradiction } from "@/types";
@@ -28,97 +33,78 @@ import type {
   PolicyDocumentType,
   Target,
 } from "@/types";
+import type { WheelState } from "./wheel";
 
-const VB_W = 940;
+const VB_W = 760;
 const VB = 620;
-const RADIUS = 2.2;
+const NODE_R = 2.4;
+const CLUSTER_R = 70;  // approx radius of each doc cluster blob
 
 interface NodeDatum extends SimulationNodeDatum {
   id: string;
   doc: PolicyDocumentType;
-}
-
-interface LinkDatum extends SimulationLinkDatum<NodeDatum> {
-  source: string | NodeDatum;
-  target: string | NodeDatum;
+  anchorX: number;
+  anchorY: number;
 }
 
 interface LayoutResult {
-  nodes: Map<string, { x: number; y: number; doc: PolicyDocumentType }>;
-  docCenters: Map<PolicyDocumentType, { x: number; y: number }>;
+  positions: Map<string, { x: number; y: number; doc: PolicyDocumentType }>;
+  clusterCenters: Map<PolicyDocumentType, { x: number; y: number }>;
 }
 
-function buildLayout(
-  targets: Target[],
-  alignment: AlignmentResult[],
-  width: number,
-  height: number,
-): LayoutResult {
-  const nodes: NodeDatum[] = targets.map((t) => ({
-    id: t.id,
-    doc: t.sourceDocument,
-  }));
+function buildLayout(targets: Target[]): LayoutResult {
+  // 1. Group by document.
+  const byDoc = new Map<PolicyDocumentType, Target[]>();
+  for (const t of targets) {
+    const list = byDoc.get(t.sourceDocument) ?? [];
+    list.push(t);
+    byDoc.set(t.sourceDocument, list);
+  }
+  const docs = Array.from(byDoc.keys()).sort();
 
-  // Anchor each document to a position around a circle so the constellation
-  // has clear "regions" but the simulation can still let nodes breathe.
-  const docs = Array.from(new Set(targets.map((t) => t.sourceDocument)));
-  const docCenters = new Map<PolicyDocumentType, { x: number; y: number }>();
-  const r = Math.min(width, height) * 0.32;
+  // 2. Place document anchors on a circle.
+  const baseR = Math.min(VB_W, VB) * 0.32;
+  const clusterCenters = new Map<PolicyDocumentType, { x: number; y: number }>();
   docs.forEach((d, i) => {
-    const angle = (i / docs.length) * Math.PI * 2;
-    docCenters.set(d, {
-      x: Math.cos(angle) * r,
-      y: Math.sin(angle) * r,
+    const angle = (i / docs.length) * Math.PI * 2 - Math.PI / 2;
+    clusterCenters.set(d, {
+      x: Math.cos(angle) * baseR,
+      y: Math.sin(angle) * baseR,
     });
   });
 
-  // Only use strong+medium alignments as link forces; tensions are visual
-  // only, not gravitational (so the constellation doesn't get pulled apart
-  // by tensions, which would muddle the metaphor).
-  //
-  // The alignment payload includes BTR/BER pseudo-target pairs which the
-  // orchestrator filters out before render. forceLink throws if a link
-  // endpoint can't resolve, so drop any pair whose ids aren't on the rim.
-  const nodeIds = new Set(nodes.map((n) => n.id));
-  const linkPairs = alignment.filter(
-    (a) =>
-      (a.alignment === "high" || a.alignment === "medium") &&
-      nodeIds.has(a.targetAId) &&
-      nodeIds.has(a.targetBId),
-  );
-  const links: LinkDatum[] = linkPairs.map((a) => ({
-    source: a.targetAId,
-    target: a.targetBId,
-  }));
+  // 3. Pre-position nodes around their cluster center with jitter, so the
+  //    starting state is already clustered. Simulation only refines.
+  const nodes: NodeDatum[] = [];
+  for (const [doc, ts] of byDoc) {
+    const c = clusterCenters.get(doc)!;
+    for (let i = 0; i < ts.length; i++) {
+      const a = (i / Math.max(1, ts.length)) * Math.PI * 2;
+      const r = Math.sqrt(Math.random()) * (CLUSTER_R - 6);
+      nodes.push({
+        id: ts[i].id,
+        doc,
+        anchorX: c.x,
+        anchorY: c.y,
+        x: c.x + Math.cos(a) * r,
+        y: c.y + Math.sin(a) * r,
+      });
+    }
+  }
 
+  // 4. Simulation: strong attraction to anchor + collide spacing + light
+  //    repulsion. No link force on purpose.
   const sim = forceSimulation<NodeDatum>(nodes)
     .force("center", forceCenter(0, 0))
-    .force("charge", forceManyBody<NodeDatum>().strength(-9))
-    .force("collide", forceCollide<NodeDatum>().radius(RADIUS + 1.5))
-    .force(
-      "doc",
-      // Pull each node toward its document center for the cluster effect.
-      (alpha: number) => {
-        for (const n of nodes) {
-          const c = docCenters.get(n.doc);
-          if (!c) continue;
-          n.vx = (n.vx ?? 0) + (c.x - (n.x ?? 0)) * 0.05 * alpha;
-          n.vy = (n.vy ?? 0) + (c.y - (n.y ?? 0)) * 0.05 * alpha;
-        }
-      },
-    )
-    .force(
-      "link",
-      forceLink<NodeDatum, LinkDatum>(links)
-        .id((d) => d.id)
-        .distance(28)
-        .strength(0.04),
-    )
+    .force("x", forceX<NodeDatum>().x((d) => d.anchorX).strength(0.28))
+    .force("y", forceY<NodeDatum>().y((d) => d.anchorY).strength(0.28))
+    .force("collide", forceCollide<NodeDatum>().radius(NODE_R + 1.2).strength(0.85))
+    .force("charge", forceManyBody<NodeDatum>().strength(-2))
+    .alpha(0.9)
+    .alphaDecay(0.05)
     .stop();
 
-  // Run a fixed number of ticks synchronously so the layout is
-  // deterministic and we can render the SVG immediately.
-  for (let i = 0; i < 220; i++) sim.tick();
+  for (let i = 0; i < 160; i++) sim.tick();
 
   const positions = new Map<
     string,
@@ -126,46 +112,51 @@ function buildLayout(
   >();
   for (const n of nodes) {
     positions.set(n.id, {
-      x: n.x ?? 0,
-      y: n.y ?? 0,
+      x: n.x ?? n.anchorX,
+      y: n.y ?? n.anchorY,
       doc: n.doc,
     });
   }
-  return { nodes: positions, docCenters };
+  return { positions, clusterCenters };
 }
 
 export interface ConstellationCenterpieceProps {
   targets: Target[];
   alignments: AlignmentResult[];
   countryConfig: CountryConfig | null;
-  buildup?: number;
+  state?: WheelState;
 }
 
 export function ConstellationCenterpiece({
   targets,
   alignments,
   countryConfig,
-  buildup = 1,
+  state = { mode: "aggregate" },
 }: ConstellationCenterpieceProps) {
-  const { nodes, docCenters } = useMemo(
-    () => buildLayout(targets, alignments, VB_W, VB),
-    [targets, alignments],
+  const { positions, clusterCenters } = useMemo(
+    () => buildLayout(targets),
+    [targets],
   );
 
-  // Same render order as the wheel: alignments first, tensions over.
-  const orderedAlignments = useMemo(() => {
+  const ordered = useMemo(() => {
     const aligns: AlignmentResult[] = [];
     const tensions: AlignmentResult[] = [];
     for (const a of alignments) {
       if (a.alignment === "none") continue;
-      if (!nodes.has(a.targetAId) || !nodes.has(a.targetBId)) continue;
+      if (!positions.has(a.targetAId) || !positions.has(a.targetBId)) continue;
+      // Skip same-cluster pairs — internal lines clutter without adding
+      // cross-document signal (which is the constellation's whole point).
+      const pA = positions.get(a.targetAId)!;
+      const pB = positions.get(a.targetBId)!;
+      if (pA.doc === pB.doc) continue;
       if (isContradiction(a.alignment)) tensions.push(a);
       else aligns.push(a);
     }
     return [...aligns, ...tensions];
-  }, [alignments, nodes]);
+  }, [alignments, positions]);
 
-  const clampedBuildup = Math.max(0, Math.min(1, buildup));
+  const showAlignments = state.mode !== "tensions";
+  const showTensions = state.mode !== "alignments";
 
   return (
     <div className="w-full flex justify-center">
@@ -174,37 +165,37 @@ export function ConstellationCenterpiece({
         className="w-full"
         style={{ maxHeight: 600 }}
         role="img"
-        aria-label="Policy coherence constellation: targets as nodes clustered by source document, with arcs for alignments and tensions"
+        aria-label="Policy coherence constellation"
       >
-        {/* Document labels at each cluster anchor */}
-        {Array.from(docCenters.entries()).map(([doc, c]) => (
-          <g key={`doc-${doc}`} pointerEvents="none">
-            <circle
-              cx={c.x}
-              cy={c.y}
-              r={50}
-              fill={getDocColor(countryConfig, doc)}
-              opacity={0.04}
-            />
-          </g>
+        {/* Faint cluster halos */}
+        {Array.from(clusterCenters.entries()).map(([doc, c]) => (
+          <circle
+            key={`halo-${doc}`}
+            cx={c.x}
+            cy={c.y}
+            r={CLUSTER_R + 4}
+            fill={getDocColor(countryConfig, doc)}
+            opacity={0.06}
+            pointerEvents="none"
+          />
         ))}
 
-        {/* Chords */}
-        {orderedAlignments.map((conn) => {
-          const a = nodes.get(conn.targetAId);
-          const b = nodes.get(conn.targetBId);
-          if (!a || !b) return null;
+        {/* Cross-cluster arcs */}
+        {ordered.map((conn) => {
+          if (!showAlignments && !isContradiction(conn.alignment)) return null;
+          if (!showTensions && isContradiction(conn.alignment)) return null;
+          const a = positions.get(conn.targetAId)!;
+          const b = positions.get(conn.targetBId)!;
           const contra = isContradiction(conn.alignment);
-          const op =
-            (contra
-              ? conn.alignment === "likely_conflict"
-                ? 0.7
-                : 0.55
-              : conn.alignment === "high"
-                ? 0.35
-                : conn.alignment === "medium"
-                  ? 0.2
-                  : 0.1) * clampedBuildup;
+          const op = contra
+            ? conn.alignment === "likely_conflict"
+              ? 0.6
+              : 0.4
+            : conn.alignment === "high"
+              ? 0.18
+              : conn.alignment === "medium"
+                ? 0.1
+                : 0.05;
           return (
             <line
               key={`${conn.targetAId}__${conn.targetBId}`}
@@ -213,42 +204,47 @@ export function ConstellationCenterpiece({
               x2={b.x}
               y2={b.y}
               stroke={ALIGNMENT_COLORS[conn.alignment]}
-              strokeWidth={contra ? 1.4 : conn.alignment === "high" ? 0.9 : 0.6}
+              strokeWidth={contra ? 0.9 : 0.55}
               strokeOpacity={op}
               strokeLinecap="round"
-              strokeDasharray={contra ? "4 3" : "none"}
+              strokeDasharray={contra ? "3 3" : "none"}
             />
           );
         })}
 
         {/* Nodes */}
-        {Array.from(nodes.entries()).map(([id, pos]) => (
+        {Array.from(positions.entries()).map(([id, pos]) => (
           <circle
             key={`n-${id}`}
             cx={pos.x}
             cy={pos.y}
-            r={RADIUS}
+            r={NODE_R}
             fill={getDocColor(countryConfig, pos.doc)}
             opacity={0.95}
           />
         ))}
 
-        {/* Document labels — small, near each cluster */}
-        {Array.from(docCenters.entries()).map(([doc, c]) => (
-          <text
-            key={`lbl-${doc}`}
-            x={c.x}
-            y={c.y - 58}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fontSize={11}
-            fontWeight={500}
-            fill="var(--undp-black)"
-            className="select-none pointer-events-none"
-          >
-            {doc}
-          </text>
-        ))}
+        {/* Cluster labels */}
+        {Array.from(clusterCenters.entries()).map(([doc, c]) => {
+          const dy =
+            c.y < 0 ? -(CLUSTER_R + 18) : c.y > 0 ? CLUSTER_R + 22 : 0;
+          const dx = c.y === 0 ? (c.x < 0 ? -(CLUSTER_R + 14) : CLUSTER_R + 14) : 0;
+          return (
+            <text
+              key={`lbl-${doc}`}
+              x={c.x + dx}
+              y={c.y + dy}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize={12}
+              fontWeight={500}
+              fill="var(--undp-black)"
+              className="select-none pointer-events-none"
+            >
+              {doc}
+            </text>
+          );
+        })}
       </svg>
     </div>
   );
