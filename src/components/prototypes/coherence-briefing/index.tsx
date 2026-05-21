@@ -461,7 +461,6 @@ function buildSlides({
     {
       eyebrow: "Take it further",
       headline: <>Make the briefing your own.</>,
-      exploreLayout: true,
       body: (
         <ExploreModeInline
           targets={targets}
@@ -763,7 +762,7 @@ function ExploreModeInline({
   onClearSectorFocus: () => void;
 }) {
   return (
-    <div className="flex flex-col gap-4 h-full overflow-hidden">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-1.5">
         {(["aggregate", "alignments", "tensions"] as const).map((f) => {
           const isActive = !sectorFocus && exploreFilter === f;
@@ -822,7 +821,7 @@ function ExploreModeInline({
           </div>
         </div>
       )}
-      <div className="border-t border-gray-200 pt-3 flex-1 overflow-hidden flex flex-col min-h-0">
+      <div className="border-t border-gray-200 pt-3 flex flex-col">
         <ChatPanel
           targets={targets}
           alignment={alignment}
