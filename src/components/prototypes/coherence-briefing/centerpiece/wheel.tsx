@@ -1,32 +1,35 @@
 "use client";
 
 /**
- * WheelCenterpiece — scene-aware wheel for the slide deck.
+ * WheelCenterpiece — proper d3-chord diagram for the storytelling deck.
  *
- * Two rendering modes:
+ * In A3 the wheel used hand-rolled bezier ribbons that all started at
+ * each doc-arc midpoint, so endpoint positions and widths read as
+ * arbitrary. d3-chord fixes both: each doc's rim arc is subdivided into
+ * segments proportional to its relationship with every other doc, and
+ * the ribbon endpoints sit precisely on those segments. The visual
+ * encoding becomes legible: "this slice of NDC's rim is the share of
+ * NDC's signal that goes to NBSAP".
  *
- *   AGGREGATE (the default for storytelling)
- *     Instead of thousands of individual chords, draw one ribbon per
- *     ordered pair of documents. Width scales with the number of scored
- *     pairs between the two docs; colour blends alignment-green and
- *     tension-red by dominance. Much calmer than the all-pairs view.
+ * State drives the matrix:
+ *   - aggregate   → total signal (alignments + tensions). Ribbons
+ *                   coloured by which side dominates the pair.
+ *   - alignments  → alignment counts only. Green ribbons.
+ *   - tensions    → tension counts only. Red ribbons.
+ *   - idle        → rim arcs only, no ribbons.
+ *   - pair        → stable per-target layout. One bezier highlights the
+ *                   specific pair; rim shows all targets faintly.
+ *   - sector      → stable per-target layout. Individual chords touching
+ *                   the sector category, the rest dimmed.
  *
- *   PAIRS (drill-down)
- *     Render individual chords. Used by the "pair" highlight state to
- *     spotlight a single pair against a faint rest, and by the explore
- *     mode when the user opts into the dense view.
- *
- * The active "state" prop drives both what's rendered and how:
- *   - idle          → rim only, no chords
- *   - aggregate     → doc-pair ribbons
- *   - pair          → one named pair, rest faded to ghosts
- *   - alignments    → aggregate ribbons but tension portion suppressed
- *   - tensions      → aggregate ribbons but alignment portion suppressed
- *   - sector        → individual chords touching the named sector
+ * Chord mode hover shows the doc-pair signal breakdown. Pair / sector
+ * modes use the same per-pair chord rendering as A1/A2 for full
+ * inspectability.
  */
 
 import { useMemo, useState } from "react";
 import { arc as d3arc } from "d3-shape";
+import { chord, ribbon } from "d3-chord";
 import {
   ALIGNMENT_COLORS,
   getDocColor,
@@ -41,30 +44,30 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-// ─── Geometry (kept in sync with the source explorer) ───────────────
+// ─── Geometry ───────────────────────────────────────────────────────
 
 const VB = 720;
 const VB_W = 760;
 const OUTER_R = 220;
 const INNER_R = 213;
+const RIBBON_R = 207;
 const NODE_R = 205;
-const GAP = 0.08;
+const STABLE_GAP = 0.08;
+const CHORD_PAD = 0.04;
 
-// ─── Types ──────────────────────────────────────────────────────────
+// ─── State ──────────────────────────────────────────────────────────
 
 export type WheelStateMode =
   | "idle"
   | "aggregate"
-  | "pair"
   | "alignments"
   | "tensions"
+  | "pair"
   | "sector";
 
 export interface WheelState {
   mode: WheelStateMode;
-  /** For mode === "pair". */
   pair?: { aId: string; bId: string };
-  /** For mode === "sector". */
   sectorCategoryId?: string;
   sectorTaxonomyType?: string;
 }
@@ -78,14 +81,20 @@ interface NodePos {
   y: number;
 }
 
-interface GroupArc {
+interface StableGroup {
   id: PolicyDocumentType;
+  label: string;
+  color: string;
   startAngle: number;
   endAngle: number;
   midAngle: number;
-  label: string;
-  color: string;
   count: number;
+}
+
+interface StableLayout {
+  nodes: NodePos[];
+  groups: StableGroup[];
+  nodeMap: Map<string, NodePos>;
 }
 
 function curvePath(ax: number, ay: number, bx: number, by: number) {
@@ -94,10 +103,13 @@ function curvePath(ax: number, ay: number, bx: number, by: number) {
   return `M${ax},${ay} Q${cx},${cy} ${bx},${by}`;
 }
 
-function buildLayout(
+/** Stable rim layout — one group per source document, proportional to
+ *  target count. Used for pair / sector / idle modes where the rim must
+ *  match individual target positions. */
+function buildStableLayout(
   targets: Target[],
   countryConfig: CountryConfig | null,
-): { nodes: NodePos[]; arcs: GroupArc[] } {
+): StableLayout {
   const byDoc = new Map<PolicyDocumentType, Target[]>();
   for (const t of targets) {
     const list = byDoc.get(t.sourceDocument) ?? [];
@@ -111,26 +123,25 @@ function buildLayout(
       color: getDocColor(countryConfig, d),
       targets: ts,
     }))
-    .sort((a, b) => b.targets.length - a.targets.length);
-  if (groups.length === 0) return { nodes: [], arcs: [] };
+    .sort((a, b) => a.id.localeCompare(b.id));
 
-  const total = groups.reduce((s, g) => s + g.targets.length, 0);
-  const avail = 2 * Math.PI - GAP * groups.length;
+  const totalTargets = groups.reduce((s, g) => s + g.targets.length, 0);
+  const avail = 2 * Math.PI - STABLE_GAP * groups.length;
   const nodes: NodePos[] = [];
-  const arcs: GroupArc[] = [];
+  const out: StableGroup[] = [];
   let cur = 0;
   for (const g of groups) {
-    const span = (g.targets.length / total) * avail;
+    const span = (g.targets.length / totalTargets) * avail;
     const start = cur;
     const end = cur + span;
     const mid = (start + end) / 2;
-    arcs.push({
+    out.push({
       id: g.id,
+      label: g.label,
+      color: g.color,
       startAngle: start,
       endAngle: end,
       midAngle: mid,
-      label: g.label,
-      color: g.color,
       count: g.targets.length,
     });
     const n = g.targets.length;
@@ -148,49 +159,96 @@ function buildLayout(
         y: -NODE_R * Math.cos(a),
       });
     }
-    cur = end + GAP;
+    cur = end + STABLE_GAP;
   }
-  return { nodes, arcs };
+  return { nodes, groups: out, nodeMap: new Map(nodes.map((n) => [n.id, n])) };
 }
 
-// ─── Aggregate ribbons ──────────────────────────────────────────────
-
-interface DocPairAggregate {
-  aId: PolicyDocumentType;
-  bId: PolicyDocumentType;
-  alignmentCount: number;
-  tensionCount: number;
-}
-
-function aggregateByDocPair(
-  alignment: AlignmentResult[],
+/** Build a doc × doc matrix for d3-chord. Filter controls which pair
+ *  levels count toward the matrix entries. */
+function buildDocMatrix(
+  docs: PolicyDocumentType[],
+  alignments: AlignmentResult[],
   nodeMap: Map<string, NodePos>,
-): Map<string, DocPairAggregate> {
-  const out = new Map<string, DocPairAggregate>();
-  for (const a of alignment) {
+  filter: "all" | "alignments" | "tensions",
+): number[][] {
+  const idx = new Map(docs.map((d, i) => [d, i]));
+  const m: number[][] = docs.map(() => docs.map(() => 0));
+  for (const a of alignments) {
     if (a.alignment === "none") continue;
     const nA = nodeMap.get(a.targetAId);
     const nB = nodeMap.get(a.targetBId);
     if (!nA || !nB) continue;
     if (nA.groupId === nB.groupId) continue;
-    const [x, y] =
-      nA.groupId < nB.groupId
-        ? [nA.groupId, nB.groupId]
-        : [nB.groupId, nA.groupId];
+    if (filter === "alignments") {
+      if (!(a.alignment === "high" || a.alignment === "medium")) continue;
+    } else if (filter === "tensions") {
+      if (!isContradiction(a.alignment)) continue;
+    }
+    const i = idx.get(nA.groupId)!;
+    const j = idx.get(nB.groupId)!;
+    m[i][j] += 1;
+    m[j][i] += 1;
+  }
+  return m;
+}
+
+/** Per-pair alignment/tension breakdown, keyed by sorted "i__j". Used to
+ *  colour aggregate ribbons by dominance. */
+function buildDocPairBreakdown(
+  docs: PolicyDocumentType[],
+  alignments: AlignmentResult[],
+  nodeMap: Map<string, NodePos>,
+): Map<string, { aligned: number; tension: number }> {
+  const idx = new Map(docs.map((d, i) => [d, i]));
+  const out = new Map<string, { aligned: number; tension: number }>();
+  for (const a of alignments) {
+    if (a.alignment === "none") continue;
+    const nA = nodeMap.get(a.targetAId);
+    const nB = nodeMap.get(a.targetBId);
+    if (!nA || !nB) continue;
+    if (nA.groupId === nB.groupId) continue;
+    const i = idx.get(nA.groupId)!;
+    const j = idx.get(nB.groupId)!;
+    const [x, y] = i < j ? [i, j] : [j, i];
     const key = `${x}__${y}`;
-    const slot = out.get(key) ?? {
-      aId: x,
-      bId: y,
-      alignmentCount: 0,
-      tensionCount: 0,
-    };
-    if (isContradiction(a.alignment)) slot.tensionCount += 1;
+    const slot = out.get(key) ?? { aligned: 0, tension: 0 };
+    if (isContradiction(a.alignment)) slot.tension += 1;
     else if (a.alignment === "high" || a.alignment === "medium") {
-      slot.alignmentCount += 1;
+      slot.aligned += 1;
     }
     out.set(key, slot);
   }
   return out;
+}
+
+function ribbonColor(
+  mode: WheelStateMode,
+  breakdown: { aligned: number; tension: number } | undefined,
+): { fill: string; opacity: number } {
+  if (mode === "tensions") {
+    return { fill: ALIGNMENT_COLORS.possible_conflict, opacity: 0.7 };
+  }
+  if (mode === "alignments") {
+    return { fill: ALIGNMENT_COLORS.high, opacity: 0.55 };
+  }
+  // aggregate — color by dominance, opacity by clarity of dominance
+  if (!breakdown) {
+    return { fill: ALIGNMENT_COLORS.medium, opacity: 0.5 };
+  }
+  const total = breakdown.aligned + breakdown.tension;
+  if (total === 0) {
+    return { fill: ALIGNMENT_COLORS.medium, opacity: 0.4 };
+  }
+  const alignShare = breakdown.aligned / total;
+  if (alignShare >= 0.6) {
+    return { fill: ALIGNMENT_COLORS.high, opacity: 0.55 };
+  }
+  if (alignShare <= 0.4) {
+    return { fill: ALIGNMENT_COLORS.possible_conflict, opacity: 0.65 };
+  }
+  // Mixed pair — neutral amber stays visible without claiming a verdict.
+  return { fill: "#b45309", opacity: 0.5 };
 }
 
 // ─── Component ──────────────────────────────────────────────────────
@@ -212,27 +270,54 @@ export function WheelCenterpiece({
   state = { mode: "aggregate" },
   onPairClick,
 }: WheelCenterpieceProps) {
-  const { nodes, arcs } = useMemo(
-    () => buildLayout(targets, countryConfig),
+  const stable = useMemo(
+    () => buildStableLayout(targets, countryConfig),
     [targets, countryConfig],
   );
-  const nodeMap = useMemo(
-    () => new Map(nodes.map((n) => [n.id, n])),
-    [nodes],
+
+  // Doc list for chord layout, sorted by id for stability across modes.
+  const docs = useMemo(
+    () => stable.groups.map((g) => g.id),
+    [stable.groups],
   );
-  const arcGen = useMemo(
+
+  // Chord layout per mode (when applicable). Memoised against the mode +
+  // dataset so toggling between idle/pair/sector and chord modes is cheap.
+  const chordData = useMemo(() => {
+    if (
+      state.mode !== "aggregate" &&
+      state.mode !== "alignments" &&
+      state.mode !== "tensions"
+    ) {
+      return null;
+    }
+    if (docs.length < 2) return null;
+    const matrix = buildDocMatrix(
+      docs,
+      alignments,
+      stable.nodeMap,
+      state.mode === "aggregate" ? "all" : state.mode,
+    );
+    const layout = chord().padAngle(CHORD_PAD).sortGroups((a, b) => b - a)(
+      matrix,
+    );
+    return layout;
+  }, [state.mode, docs, alignments, stable.nodeMap]);
+
+  const docBreakdown = useMemo(
+    () => buildDocPairBreakdown(docs, alignments, stable.nodeMap),
+    [docs, alignments, stable.nodeMap],
+  );
+
+  const arcGenChord = useMemo(
     () =>
       d3arc<{ startAngle: number; endAngle: number }>()
         .innerRadius(INNER_R)
         .outerRadius(OUTER_R),
     [],
   );
-  const aggregates = useMemo(
-    () => aggregateByDocPair(alignments, nodeMap),
-    [alignments, nodeMap],
-  );
 
-  // Sector mode needs to know which targets belong to the highlighted sector.
+  // Sector membership (per-target ids) for sector mode.
   const sectorTargetIds = useMemo(() => {
     if (state.mode !== "sector" || !state.sectorCategoryId) {
       return new Set<string>();
@@ -242,7 +327,7 @@ export function WheelCenterpiece({
       if (!c.isPrimary) continue;
       if (c.taxonomyType !== state.sectorTaxonomyType) continue;
       if (c.categoryId !== state.sectorCategoryId) continue;
-      if (!nodeMap.has(c.targetId)) continue;
+      if (!stable.nodeMap.has(c.targetId)) continue;
       ids.add(c.targetId);
     }
     return ids;
@@ -251,319 +336,423 @@ export function WheelCenterpiece({
     state.sectorCategoryId,
     state.sectorTaxonomyType,
     classifications,
-    nodeMap,
+    stable.nodeMap,
   ]);
 
-  // Per-pair chords used by "pair" and "sector" modes.
-  const visiblePairs = useMemo(() => {
-    return alignments.filter(
-      (a) =>
-        a.alignment !== "none" &&
-        nodeMap.has(a.targetAId) &&
-        nodeMap.has(a.targetBId),
-    );
-  }, [alignments, nodeMap]);
+  // Per-pair visible chords for sector / pair modes.
+  const visiblePerPair = useMemo(() => {
+    if (state.mode === "sector") {
+      return alignments.filter(
+        (a) =>
+          a.alignment !== "none" &&
+          stable.nodeMap.has(a.targetAId) &&
+          stable.nodeMap.has(a.targetBId) &&
+          (sectorTargetIds.has(a.targetAId) ||
+            sectorTargetIds.has(a.targetBId)),
+      );
+    }
+    return [];
+  }, [state.mode, alignments, stable.nodeMap, sectorTargetIds]);
 
-  const arcMid = (a: GroupArc) => ({
-    x: NODE_R * Math.sin(a.midAngle),
-    y: -NODE_R * Math.cos(a.midAngle),
-  });
+  const [hoveredChord, setHoveredChord] = useState<{
+    aDoc: PolicyDocumentType;
+    bDoc: PolicyDocumentType;
+  } | null>(null);
 
-  const arcsById = useMemo(
-    () => new Map(arcs.map((a) => [a.id, a])),
-    [arcs],
-  );
-
-  const [hovered, setHovered] = useState<string | null>(null);
+  const isChordMode =
+    state.mode === "aggregate" ||
+    state.mode === "alignments" ||
+    state.mode === "tensions";
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex flex-col items-center">
       <svg
         viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
         className="w-full"
-        style={{ maxHeight: 620 }}
+        style={{ maxHeight: 600 }}
         role="img"
         aria-label="Policy coherence wheel"
       >
-        {/* Subtle guide ring */}
-        <circle
-          cx={0}
-          cy={0}
-          r={NODE_R}
-          fill="none"
-          stroke="#e7e5e0"
-          strokeWidth={1}
-          strokeDasharray="3 5"
-        />
+        {isChordMode && chordData ? (
+          <ChordView
+            chordData={chordData}
+            docs={docs}
+            stable={stable}
+            countryConfig={countryConfig}
+            arcGen={arcGenChord}
+            breakdown={docBreakdown}
+            mode={state.mode}
+            hoveredChord={hoveredChord}
+            onHover={setHoveredChord}
+          />
+        ) : (
+          <StableView
+            stable={stable}
+            arcGen={arcGenChord}
+            countryConfig={countryConfig}
+            visiblePerPair={visiblePerPair}
+            state={state}
+            sectorTargetIds={sectorTargetIds}
+            onPairClick={onPairClick}
+          />
+        )}
+      </svg>
 
-        {/* Rim arcs */}
-        {arcs.map((arc) => {
-          const d = arcGen({
-            startAngle: arc.startAngle,
-            endAngle: arc.endAngle,
-          });
-          if (!d) return null;
-          const isInSector =
-            state.mode === "sector" &&
-            Array.from(sectorTargetIds).some(
-              (tid) => nodeMap.get(tid)?.groupId === arc.id,
-            );
-          return (
-            <g key={arc.id}>
-              <path
-                d={d}
-                fill={arc.color}
-                opacity={
-                  state.mode === "sector" && !isInSector ? 0.25 : 0.85
-                }
-              >
-                <title>{`${arc.label} · ${arc.count} targets`}</title>
-              </path>
-            </g>
+      <ChordHoverCaption
+        hoveredChord={hoveredChord}
+        docs={docs}
+        breakdown={docBreakdown}
+        countryConfig={countryConfig}
+      />
+    </div>
+  );
+}
+
+// ─── Chord view (aggregate / alignments / tensions) ─────────────────
+
+function ChordView({
+  chordData,
+  docs,
+  stable,
+  countryConfig,
+  arcGen,
+  breakdown,
+  mode,
+  hoveredChord,
+  onHover,
+}: {
+  chordData: ReturnType<ReturnType<typeof chord>>;
+  docs: PolicyDocumentType[];
+  stable: StableLayout;
+  countryConfig: CountryConfig | null;
+  arcGen: ReturnType<typeof d3arc<{ startAngle: number; endAngle: number }>>;
+  breakdown: Map<string, { aligned: number; tension: number }>;
+  mode: WheelStateMode;
+  hoveredChord: { aDoc: PolicyDocumentType; bDoc: PolicyDocumentType } | null;
+  onHover: (
+    h: { aDoc: PolicyDocumentType; bDoc: PolicyDocumentType } | null,
+  ) => void;
+}) {
+  // Ribbon generator lives inside the chord-only view so its types stay
+  // local. Cast at call sites because d3-chord's `ribbon()` return
+  // signature doesn't carry the chord-input shape through unless we
+  // declare a heavy generic chain.
+  const ribbonGen = ribbon().radius(RIBBON_R);
+  const renderRibbon = (c: unknown): string =>
+    ribbonGen(c as never) as unknown as string;
+  return (
+    <g>
+      {/* Group arcs */}
+      {chordData.groups.map((g) => {
+        const doc = docs[g.index];
+        const colour = getDocColor(countryConfig, doc);
+        const d = arcGen({ startAngle: g.startAngle, endAngle: g.endAngle });
+        if (!d) return null;
+        return (
+          <g key={`g-${doc}`}>
+            <path d={d} fill={colour} opacity={0.85}>
+              <title>{`${getDocMediumLabel(countryConfig, doc)} · ${g.value} ${mode === "tensions" ? "flagged" : mode === "alignments" ? "aligned" : "scored"} cross-doc pairs`}</title>
+            </path>
+            <GroupLabel
+              doc={doc}
+              startAngle={g.startAngle}
+              endAngle={g.endAngle}
+              countryConfig={countryConfig}
+            />
+          </g>
+        );
+      })}
+
+      {/* Ribbons */}
+      {chordData.map((c, i) => {
+        const aDoc = docs[c.source.index];
+        const bDoc = docs[c.target.index];
+        if (!aDoc || !bDoc) return null;
+        const key =
+          c.source.index < c.target.index
+            ? `${c.source.index}__${c.target.index}`
+            : `${c.target.index}__${c.source.index}`;
+        const breakdownEntry = breakdown.get(key);
+        const colour = ribbonColor(mode, breakdownEntry);
+        const isHovered =
+          hoveredChord &&
+          ((hoveredChord.aDoc === aDoc && hoveredChord.bDoc === bDoc) ||
+            (hoveredChord.aDoc === bDoc && hoveredChord.bDoc === aDoc));
+        return (
+          <path
+            key={`r-${i}`}
+            d={renderRibbon(c)}
+            fill={colour.fill}
+            fillOpacity={isHovered ? Math.min(0.95, colour.opacity + 0.2) : colour.opacity}
+            stroke={colour.fill}
+            strokeOpacity={isHovered ? 0.9 : 0.4}
+            strokeWidth={0.6}
+            style={{ transition: "fill-opacity 200ms, stroke-opacity 200ms" }}
+            onMouseEnter={() => onHover({ aDoc, bDoc })}
+            onMouseLeave={() => onHover(null)}
+          />
+        );
+      })}
+
+      {/* Subtle guide ring inside the rim, so empty wheels read as wheels */}
+      <circle
+        cx={0}
+        cy={0}
+        r={NODE_R - 5}
+        fill="none"
+        stroke="#e7e5e0"
+        strokeWidth={1}
+        strokeDasharray="3 5"
+      />
+
+      {/* Faint per-target tick marks at stable positions so the user can
+          still tell each rim arc covers many targets */}
+      {stable.nodes.map((node) => {
+        const docColour = getDocColor(
+          countryConfig,
+          node.target.sourceDocument,
+        );
+        return (
+          <circle
+            key={`t-${node.id}`}
+            cx={node.x}
+            cy={node.y}
+            r={1.2}
+            fill={docColour}
+            opacity={0.18}
+            pointerEvents="none"
+          />
+        );
+      })}
+    </g>
+  );
+}
+
+// ─── Stable view (idle / pair / sector) ─────────────────────────────
+
+function StableView({
+  stable,
+  arcGen,
+  countryConfig,
+  visiblePerPair,
+  state,
+  sectorTargetIds,
+  onPairClick,
+}: {
+  stable: StableLayout;
+  arcGen: ReturnType<typeof d3arc<{ startAngle: number; endAngle: number }>>;
+  countryConfig: CountryConfig | null;
+  visiblePerPair: AlignmentResult[];
+  state: WheelState;
+  sectorTargetIds: Set<string>;
+  onPairClick?: (a: string, b: string) => void;
+}) {
+  const focusedNodeIds: Set<string> | null =
+    state.mode === "pair" && state.pair
+      ? new Set([state.pair.aId, state.pair.bId])
+      : state.mode === "sector"
+        ? sectorTargetIds
+        : null;
+
+  // Render alignments first, tensions on top.
+  const ordered: AlignmentResult[] = [];
+  if (state.mode === "sector") {
+    const a: AlignmentResult[] = [];
+    const t: AlignmentResult[] = [];
+    for (const p of visiblePerPair) {
+      if (isContradiction(p.alignment)) t.push(p);
+      else a.push(p);
+    }
+    ordered.push(...a, ...t);
+  }
+
+  return (
+    <g>
+      <circle
+        cx={0}
+        cy={0}
+        r={NODE_R}
+        fill="none"
+        stroke="#e7e5e0"
+        strokeWidth={1}
+        strokeDasharray="3 5"
+      />
+
+      {/* Rim arcs */}
+      {stable.groups.map((g) => {
+        const d = arcGen({
+          startAngle: g.startAngle,
+          endAngle: g.endAngle,
+        });
+        if (!d) return null;
+        const dim =
+          focusedNodeIds &&
+          !stable.nodes.some(
+            (n) => n.groupId === g.id && focusedNodeIds.has(n.id),
           );
-        })}
+        return (
+          <g key={`g-${g.id}`}>
+            <path d={d} fill={g.color} opacity={dim ? 0.2 : 0.85}>
+              <title>{`${g.label} · ${g.count} targets`}</title>
+            </path>
+            <GroupLabel
+              doc={g.id}
+              startAngle={g.startAngle}
+              endAngle={g.endAngle}
+              countryConfig={countryConfig}
+            />
+          </g>
+        );
+      })}
 
-        {/* Aggregate ribbons (modes that show an overview) */}
-        {(state.mode === "aggregate" ||
-          state.mode === "alignments" ||
-          state.mode === "tensions" ||
-          state.mode === "pair") &&
-          Array.from(aggregates.values()).map((agg) => {
-            const aArc = arcsById.get(agg.aId);
-            const bArc = arcsById.get(agg.bId);
-            if (!aArc || !bArc) return null;
-            const a = arcMid(aArc);
-            const b = arcMid(bArc);
-            const total = agg.alignmentCount + agg.tensionCount;
-            if (total === 0) return null;
-            const showAlign =
-              state.mode !== "tensions" && agg.alignmentCount > 0;
-            const showTension =
-              state.mode !== "alignments" && agg.tensionCount > 0;
-            // In "pair" mode, the aggregate ribbons fade to ghosts so the
-            // highlighted pair pops.
-            const ghosted = state.mode === "pair";
-            const key = `${agg.aId}__${agg.bId}`;
-            const isHover = hovered === key;
-            return (
-              <g
-                key={`agg-${key}`}
-                onMouseEnter={() => setHovered(key)}
-                onMouseLeave={() => setHovered(null)}
-              >
-                {showAlign && (
-                  <path
-                    d={curvePath(a.x, a.y, b.x, b.y)}
-                    fill="none"
-                    stroke={ALIGNMENT_COLORS.high}
-                    strokeWidth={Math.max(
-                      1,
-                      Math.sqrt(agg.alignmentCount) * 1.6,
-                    )}
-                    strokeOpacity={ghosted ? 0.06 : isHover ? 0.85 : 0.55}
-                    strokeLinecap="round"
-                    style={{ transition: "stroke-opacity 220ms" }}
-                  />
-                )}
-                {showTension && (
-                  <path
-                    d={curvePath(a.x, a.y, b.x, b.y)}
-                    fill="none"
-                    stroke={ALIGNMENT_COLORS.possible_conflict}
-                    strokeWidth={Math.max(
-                      1,
-                      Math.sqrt(agg.tensionCount) * 1.8,
-                    )}
-                    strokeOpacity={ghosted ? 0.08 : isHover ? 0.9 : 0.7}
-                    strokeDasharray="5 3"
-                    strokeLinecap="round"
-                    style={{ transition: "stroke-opacity 220ms" }}
-                  />
-                )}
-              </g>
-            );
-          })}
-
-        {/* Hover tooltip for aggregate ribbons */}
-        {hovered &&
-          (() => {
-            const agg = aggregates.get(hovered);
-            if (!agg) return null;
-            const aArc = arcsById.get(agg.aId);
-            const bArc = arcsById.get(agg.bId);
-            if (!aArc || !bArc) return null;
-            const a = arcMid(aArc);
-            const b = arcMid(bArc);
-            const mx = (a.x + b.x) / 2 * 0.25;
-            const my = (a.y + b.y) / 2 * 0.25;
-            return (
-              <g pointerEvents="none">
-                <rect
-                  x={mx - 90}
-                  y={my - 26}
-                  width={180}
-                  height={52}
-                  rx={4}
-                  fill="white"
-                  stroke="#d4d4d4"
-                />
-                <text
-                  x={mx}
-                  y={my - 10}
-                  textAnchor="middle"
-                  fontSize={11}
-                  fontWeight={600}
-                  fill="var(--undp-black)"
-                >
-                  {aArc.label} ↔ {bArc.label}
-                </text>
-                <text
-                  x={mx}
-                  y={my + 8}
-                  textAnchor="middle"
-                  fontSize={10}
-                  fill="var(--undp-gray)"
-                >
-                  {agg.alignmentCount} aligned · {agg.tensionCount} flagged
-                </text>
-              </g>
-            );
-          })()}
-
-        {/* Single highlighted pair (mode "pair") */}
-        {state.mode === "pair" &&
-          state.pair &&
-          (() => {
-            const nA = nodeMap.get(state.pair.aId);
-            const nB = nodeMap.get(state.pair.bId);
-            if (!nA || !nB) return null;
-            const conn = alignments.find(
-              (a) =>
-                (a.targetAId === state.pair!.aId &&
-                  a.targetBId === state.pair!.bId) ||
-                (a.targetAId === state.pair!.bId &&
-                  a.targetBId === state.pair!.aId),
-            );
-            const color = conn
-              ? ALIGNMENT_COLORS[conn.alignment]
-              : ALIGNMENT_COLORS.high;
-            const contra = conn ? isContradiction(conn.alignment) : false;
-            return (
-              <g>
-                <path
-                  d={curvePath(nA.x, nA.y, nB.x, nB.y)}
-                  fill="none"
-                  stroke={color}
-                  strokeWidth={3.2}
-                  strokeDasharray={contra ? "6 3" : "none"}
-                  strokeLinecap="round"
-                  strokeOpacity={0.95}
-                />
-                <circle cx={nA.x} cy={nA.y} r={5.5} fill={color} />
-                <circle cx={nB.x} cy={nB.y} r={5.5} fill={color} />
-              </g>
-            );
-          })()}
-
-        {/* Sector mode — individual chords touching the sector */}
-        {state.mode === "sector" &&
-          visiblePairs.map((conn) => {
-            const touches =
-              sectorTargetIds.has(conn.targetAId) ||
-              sectorTargetIds.has(conn.targetBId);
-            if (!touches) return null;
-            const nA = nodeMap.get(conn.targetAId);
-            const nB = nodeMap.get(conn.targetBId);
-            if (!nA || !nB) return null;
-            const contra = isContradiction(conn.alignment);
-            return (
-              <path
-                key={`s-${conn.targetAId}__${conn.targetBId}`}
-                d={curvePath(nA.x, nA.y, nB.x, nB.y)}
-                fill="none"
-                stroke={ALIGNMENT_COLORS[conn.alignment]}
-                strokeWidth={contra ? 1.6 : 1.2}
-                strokeOpacity={contra ? 0.85 : 0.5}
-                strokeDasharray={contra ? "5 3" : "none"}
-                strokeLinecap="round"
-                className={onPairClick ? "cursor-pointer" : undefined}
-                onClick={
-                  onPairClick
-                    ? () => onPairClick(conn.targetAId, conn.targetBId)
-                    : undefined
-                }
-              />
-            );
-          })}
-
-        {/* Nodes on rim */}
-        {nodes.map((node) => {
-          const docColor = getDocColor(
-            countryConfig,
-            node.target.sourceDocument,
-          );
-          const isSectorNode =
-            state.mode === "sector" && sectorTargetIds.has(node.id);
-          const isPairNode =
-            state.mode === "pair" &&
-            state.pair &&
-            (node.id === state.pair.aId || node.id === state.pair.bId);
+      {/* Sector chords */}
+      {state.mode === "sector" &&
+        ordered.map((conn) => {
+          const nA = stable.nodeMap.get(conn.targetAId);
+          const nB = stable.nodeMap.get(conn.targetBId);
+          if (!nA || !nB) return null;
+          const contra = isContradiction(conn.alignment);
           return (
-            <circle
-              key={node.id}
-              cx={node.x}
-              cy={node.y}
-              r={isPairNode ? 4 : isSectorNode ? 3 : 1.8}
-              fill={docColor}
-              opacity={
-                state.mode === "sector"
-                  ? isSectorNode
-                    ? 1
-                    : 0.25
-                  : state.mode === "pair"
-                    ? isPairNode
-                      ? 1
-                      : 0.5
-                    : 0.9
+            <path
+              key={`s-${conn.targetAId}__${conn.targetBId}`}
+              d={curvePath(nA.x, nA.y, nB.x, nB.y)}
+              fill="none"
+              stroke={ALIGNMENT_COLORS[conn.alignment]}
+              strokeWidth={contra ? 1.6 : 1.2}
+              strokeOpacity={contra ? 0.85 : 0.55}
+              strokeDasharray={contra ? "5 3" : "none"}
+              strokeLinecap="round"
+              className={onPairClick ? "cursor-pointer" : undefined}
+              onClick={
+                onPairClick
+                  ? () => onPairClick(conn.targetAId, conn.targetBId)
+                  : undefined
               }
             />
           );
         })}
 
-        {/* Group labels */}
-        {arcs.map((arc) => {
-          const labelR = 244;
-          const x = labelR * Math.sin(arc.midAngle);
-          const y = -labelR * Math.cos(arc.midAngle);
-          const deg = (arc.midAngle * 180) / Math.PI;
-          const anchor: "start" | "middle" | "end" =
-            deg > 20 && deg < 160
-              ? "start"
-              : deg > 200 && deg < 340
-                ? "end"
-                : "middle";
+      {/* Pair highlight */}
+      {state.mode === "pair" && state.pair &&
+        (() => {
+          const nA = stable.nodeMap.get(state.pair.aId);
+          const nB = stable.nodeMap.get(state.pair.bId);
+          if (!nA || !nB) return null;
+          // No alignment object available without a lookup; the parent
+          // typically knows the colour. Default to a neutral darker tone
+          // so the highlight reads as "important" without claiming a
+          // verdict that doesn't appear in props.
           return (
-            <text
-              key={`label-${arc.id}`}
-              x={x}
-              y={y}
-              textAnchor={anchor}
-              dominantBaseline="central"
-              fontSize={11}
-              fontWeight={500}
-              fill="var(--undp-black)"
-              className="select-none pointer-events-none"
-            >
-              {arc.label}
-            </text>
+            <g>
+              <path
+                d={curvePath(nA.x, nA.y, nB.x, nB.y)}
+                fill="none"
+                stroke="var(--undp-black)"
+                strokeWidth={3}
+                strokeOpacity={0.85}
+                strokeLinecap="round"
+              />
+              <circle cx={nA.x} cy={nA.y} r={5.5} fill="var(--undp-black)" />
+              <circle cx={nB.x} cy={nB.y} r={5.5} fill="var(--undp-black)" />
+            </g>
           );
-        })}
-      </svg>
+        })()}
 
-      {/* Hidden hover read-out for assistive tech */}
-      <div className="sr-only" aria-live="polite">
-        {hovered ?? ""}
-      </div>
-    </div>
+      {/* Nodes */}
+      {stable.nodes.map((node) => {
+        const docColor = getDocColor(
+          countryConfig,
+          node.target.sourceDocument,
+        );
+        const inFocus = focusedNodeIds === null ? true : focusedNodeIds.has(node.id);
+        return (
+          <circle
+            key={node.id}
+            cx={node.x}
+            cy={node.y}
+            r={inFocus ? 2.4 : 1.6}
+            fill={docColor}
+            opacity={inFocus ? 0.95 : 0.3}
+          />
+        );
+      })}
+    </g>
+  );
+}
+
+// ─── Shared widgets ─────────────────────────────────────────────────
+
+function GroupLabel({
+  doc,
+  startAngle,
+  endAngle,
+  countryConfig,
+}: {
+  doc: PolicyDocumentType;
+  startAngle: number;
+  endAngle: number;
+  countryConfig: CountryConfig | null;
+}) {
+  const mid = (startAngle + endAngle) / 2;
+  const labelR = 244;
+  const x = labelR * Math.sin(mid);
+  const y = -labelR * Math.cos(mid);
+  const deg = (mid * 180) / Math.PI;
+  const anchor: "start" | "middle" | "end" =
+    deg > 20 && deg < 160 ? "start" : deg > 200 && deg < 340 ? "end" : "middle";
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor={anchor}
+      dominantBaseline="central"
+      fontSize={11}
+      fontWeight={500}
+      fill="var(--undp-black)"
+      className="select-none pointer-events-none"
+    >
+      {getDocMediumLabel(countryConfig, doc)}
+    </text>
+  );
+}
+
+function ChordHoverCaption({
+  hoveredChord,
+  docs,
+  breakdown,
+  countryConfig,
+}: {
+  hoveredChord: { aDoc: PolicyDocumentType; bDoc: PolicyDocumentType } | null;
+  docs: PolicyDocumentType[];
+  breakdown: Map<string, { aligned: number; tension: number }>;
+  countryConfig: CountryConfig | null;
+}) {
+  if (!hoveredChord) {
+    return (
+      <p className="mt-1 text-[10px] text-[var(--undp-gray)]">
+        Hover any ribbon to see the alignment / tension breakdown for a
+        document pair.
+      </p>
+    );
+  }
+  const i = docs.indexOf(hoveredChord.aDoc);
+  const j = docs.indexOf(hoveredChord.bDoc);
+  if (i < 0 || j < 0) return null;
+  const key = i < j ? `${i}__${j}` : `${j}__${i}`;
+  const b = breakdown.get(key);
+  return (
+    <p className="mt-1 text-[11px] text-[var(--undp-black)] font-medium tabular-nums">
+      {getDocMediumLabel(countryConfig, hoveredChord.aDoc)}
+      <span className="mx-2 text-[var(--undp-gray)]">↔</span>
+      {getDocMediumLabel(countryConfig, hoveredChord.bDoc)}
+      <span className="mx-3 text-[var(--undp-gray)]">·</span>
+      <span style={{ color: ALIGNMENT_COLORS.high }}>
+        {b?.aligned ?? 0} aligned
+      </span>
+      <span className="mx-2 text-[var(--undp-gray)]">·</span>
+      <span style={{ color: ALIGNMENT_COLORS.possible_conflict }}>
+        {b?.tension ?? 0} flagged
+      </span>
+    </p>
   );
 }
