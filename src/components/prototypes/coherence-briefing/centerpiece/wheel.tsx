@@ -67,6 +67,13 @@ export interface WheelState {
   /** For mode === "sector". */
   sectorCategoryId?: string;
   sectorTaxonomyType?: string;
+  /**
+   * Optional single-pair highlight overlaid on top of aggregate/tensions/
+   * alignments/sector modes without ghosting the rest. Used by the
+   * storytelling scenes to point at one primer pair while the rest of the
+   * wheel still reads as the bigger picture.
+   */
+  highlightPair?: { aId: string; bId: string };
 }
 
 interface NodePos {
@@ -495,6 +502,40 @@ export function WheelCenterpiece({
               />
             );
           })}
+
+        {/* Optional non-ghosting highlight pair (storytelling overlay) */}
+        {state.highlightPair &&
+          (() => {
+            const nA = nodeMap.get(state.highlightPair.aId);
+            const nB = nodeMap.get(state.highlightPair.bId);
+            if (!nA || !nB) return null;
+            const conn = alignments.find(
+              (a) =>
+                (a.targetAId === state.highlightPair!.aId &&
+                  a.targetBId === state.highlightPair!.bId) ||
+                (a.targetAId === state.highlightPair!.bId &&
+                  a.targetBId === state.highlightPair!.aId),
+            );
+            const contra = conn ? isContradiction(conn.alignment) : false;
+            const color = conn
+              ? ALIGNMENT_COLORS[conn.alignment]
+              : ALIGNMENT_COLORS.high;
+            return (
+              <g pointerEvents="none">
+                <path
+                  d={curvePath(nA.x, nA.y, nB.x, nB.y)}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={2.5}
+                  strokeDasharray={contra ? "5 3" : "none"}
+                  strokeLinecap="round"
+                  strokeOpacity={0.95}
+                />
+                <circle cx={nA.x} cy={nA.y} r={4.5} fill={color} />
+                <circle cx={nB.x} cy={nB.y} r={4.5} fill={color} />
+              </g>
+            );
+          })()}
 
         {/* Nodes on rim */}
         {nodes.map((node) => {

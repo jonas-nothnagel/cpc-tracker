@@ -1,31 +1,34 @@
 "use client";
 
 /**
- * CoherenceBriefing — insight-first slide deck.
+ * CoherenceBriefing — 10-slide click-through deck (Prev/Next + arrow keys).
  *
- * Each slide IS a finding, not buildup. ~4 steps total:
+ * Returns to the A3-era deck shape, but the two slots that used to walk
+ * the user through individual sector tours are now occupied by the
+ * sectoral-grid and top-gaps (fault-lines) panels that A1/A2 carried as
+ * scrollable sections. The user explicitly asked for those panels back.
  *
- *   1. Q1 verdict       — "Mostly aligned" with the wheel showing the
- *                          aggregate pattern. Side panel: verdict badge,
- *                          counts, the strongest aligned doc pair.
- *   2. Q2 sectors       — "Tensions concentrate in these sectors" with
- *                          the wheel switched to tensions. Side panel:
- *                          top 5 sector tiles, clickable to drawer.
- *   3. Fault lines      — "Top N pairs worth a closer look" with the
- *                          wheel idle (story is the list). Side panel:
- *                          fault-line rows, clickable to pair drawer.
- *   4. Explore          — Wheel goes interactive with filter chips,
- *                          chat panel + sector chips on the side.
+ * Slide map:
+ *   1  Hero                — both questions, wheel idle
+ *   2  Primer aligned      — one real aligned pair, wheel pair-highlight
+ *   3  Primer tension      — one real tension pair, wheel pair-highlight
+ *   4  Build-up            — "now all targets", wheel aggregate
+ *   5  Pattern             — the full picture, wheel aggregate
+ *   6  Q1 verdict          — wheel alignments-only
+ *   7  Q2 intro            — wheel tensions-only
+ *   8  Sectoral grid       — clickable sector tiles, wheel focused on top
+ *   9  Top gaps list       — clickable fault-line rows, wheel tensions
+ *  10  Explore             — chips + sector chips + chat + interactive wheel
  *
- * The wheel is persistent on the right; only its state changes between
- * slides. Drill-downs (sector tile, fault-line row, pair) open side
- * drawers rather than advancing slides.
+ * Drill-downs (sector tile click, fault-line row click, primer card,
+ * wheel chord click on slide 10) open side drawers, never advance the
+ * deck.
  */
 
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { SlideDeckShell, type SlideDef } from "./slide-deck-shell";
-import { Centerpiece, type CenterpieceVariant } from "./centerpiece";
+import { Centerpiece } from "./centerpiece";
 import { ChatPanel } from "./chat-panel";
 import { SectorDrawer } from "./sector-drawer";
 import { PairDrawer, type PairDrawerData } from "./pair-drawer";
@@ -58,7 +61,9 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-const FAULT_LINES_TO_SHOW = 5;
+const HEADLINE_SERIF =
+  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
+const FAULT_LINES_TO_SHOW = 6;
 
 interface CoherenceBriefingProps {
   countryName: string;
@@ -72,6 +77,8 @@ interface CoherenceBriefingProps {
   countryConfig: CountryConfig | null;
 }
 
+type ExploreFilter = "aggregate" | "alignments" | "tensions";
+
 export function CoherenceBriefing({
   countryName,
   countryId,
@@ -82,7 +89,7 @@ export function CoherenceBriefing({
   globeCategories,
   countryConfig,
 }: CoherenceBriefingProps) {
-  // ── Derived insights ───────────────────────────────────────────
+  // ── Derived data ────────────────────────────────────────────────
   const verdict = useMemo(() => pickHeadlineVerdict(alignment), [alignment]);
   const faultLines = useMemo(
     () => pickFaultLines(alignment, targets, FAULT_LINES_TO_SHOW),
@@ -96,32 +103,39 @@ export function CoherenceBriefing({
     () => new Map(targets.map((t) => [t.id, t])),
     [targets],
   );
+  const docCount = useMemo(() => {
+    const docs = new Set<string>();
+    for (const t of targets) docs.add(t.sourceDocument);
+    return docs.size;
+  }, [targets]);
+  const pairCount = useMemo(
+    () => alignment.filter((a) => a.alignment !== "none").length,
+    [alignment],
+  );
   const availableDocs = useMemo<PolicyDocumentType[]>(() => {
     const docs = new Set<PolicyDocumentType>();
     for (const t of targets) docs.add(t.sourceDocument);
     return Array.from(docs);
   }, [targets]);
 
+  // Sector lens — country-defined first, then IPCC, then GLOBE.
   const { lens, sectorRows } = useMemo(() => {
     const countryCats = countryConfig?.countrySectors ?? [];
     const chosen =
       countryCats.length > 0
         ? {
-            id: "country" as const,
             label: "Country sectors",
             taxonomyType: "sector",
             categories: countryCats.map((c) => ({ id: c.id, name: c.name })),
           }
         : sectors.length > 0
           ? {
-              id: "sector" as const,
               label: "IPCC sectors",
               taxonomyType: "sector",
               categories: sectors.map((s) => ({ id: s.id, name: s.name })),
             }
           : globeCategories.length > 0
             ? {
-                id: "globe" as const,
                 label: "GLOBE",
                 taxonomyType: "globe",
                 categories: globeCategories.map((g) => ({
@@ -153,129 +167,352 @@ export function CoherenceBriefing({
     globeCategories,
     countryConfig,
   ]);
+  const lensTaxonomyType = lens?.taxonomyType ?? "sector";
+  const topTensionSector = useMemo(
+    () => sectorRows.find((s) => s.tensionCount > 0) ?? sectorRows[0] ?? null,
+    [sectorRows],
+  );
 
-  // ── Variant + explore-mode state ────────────────────────────────
-  const [variant, setVariant] = useState<CenterpieceVariant>("wheel");
-  const [exploreFilter, setExploreFilter] = useState<
-    "aggregate" | "alignments" | "tensions"
-  >("aggregate");
-  const [sectorFocus, setSectorFocus] = useState<{
+  // ── Drawer state ────────────────────────────────────────────────
+  const [pairData, setPairData] = useState<PairDrawerData | null>(null);
+  const [sectorFocusForDrawer, setSectorFocusForDrawer] = useState<{
     categoryId: string;
     categoryName: string;
     taxonomyType: string;
   } | null>(null);
 
-  // ── Drawers ─────────────────────────────────────────────────────
-  const [pairData, setPairData] = useState<PairDrawerData | null>(null);
-  const openPair = useCallback(
-    (a: string, b: string) => {
-      const tA = targetMap.get(a);
-      const tB = targetMap.get(b);
+  const openPairFromFaultLine = useCallback((line: FaultLine) => {
+    setPairData({
+      pair: line.pair,
+      targetA: line.targetA,
+      targetB: line.targetB,
+    });
+  }, []);
+
+  const openPairById = useCallback(
+    (aId: string, bId: string) => {
+      const tA = targetMap.get(aId);
+      const tB = targetMap.get(bId);
       if (!tA || !tB) return;
       const conn = alignment.find(
         (p) =>
-          (p.targetAId === a && p.targetBId === b) ||
-          (p.targetAId === b && p.targetBId === a),
+          (p.targetAId === aId && p.targetBId === bId) ||
+          (p.targetAId === bId && p.targetBId === aId),
       );
       if (!conn) return;
       setPairData({ pair: conn, targetA: tA, targetB: tB });
     },
     [alignment, targetMap],
   );
+
+  const openSectorDrawer = useCallback(
+    (s: { categoryId: string; categoryName: string; taxonomyType: string }) =>
+      setSectorFocusForDrawer(s),
+    [],
+  );
+
   const drawerBriefing = useMemo<SectorBriefing | null>(() => {
-    if (!sectorFocus) return null;
+    if (!sectorFocusForDrawer) return null;
     return buildSectorBriefing({
-      categoryId: sectorFocus.categoryId,
-      categoryName: sectorFocus.categoryName,
-      taxonomyType: sectorFocus.taxonomyType,
+      categoryId: sectorFocusForDrawer.categoryId,
+      categoryName: sectorFocusForDrawer.categoryName,
+      taxonomyType: sectorFocusForDrawer.taxonomyType,
       targets,
       alignment,
       classifications,
       cap: 6,
     });
-  }, [sectorFocus, targets, alignment, classifications]);
+  }, [sectorFocusForDrawer, targets, alignment, classifications]);
 
-  // ── Slide content (insight-first, 4 steps) ──────────────────────
-  const slides: SlideDef[] = useMemo(
-    () =>
-      buildSlides({
-        countryName,
-        verdict,
-        sectorRows: sectorRows.slice(0, 5),
-        faultLines,
-        countryConfig,
-        onSectorSelect: (s) =>
-          setSectorFocus({
-            categoryId: s.categoryId,
-            categoryName: s.categoryName,
-            taxonomyType: lens?.taxonomyType ?? s.taxonomyType,
-          }),
-        onPairSelect: (line) =>
-          setPairData({
-            pair: line.pair,
-            targetA: line.targetA,
-            targetB: line.targetB,
-          }),
-        availableDocs,
-        targets,
-        alignment,
-        classifications,
-        sectorsForChat: sectors,
-        globesForChat: globeCategories,
-        exploreFilter,
-        onExploreFilter: setExploreFilter,
-        sectorFocus,
-        onClearSectorFocus: () => setSectorFocus(null),
-        primerAvailable: !!primer.aligned || !!primer.tension,
-        primer,
-      }),
-    [
-      countryName,
-      verdict,
-      sectorRows,
-      faultLines,
-      countryConfig,
-      lens,
-      availableDocs,
-      targets,
-      alignment,
-      classifications,
-      sectors,
-      globeCategories,
-      exploreFilter,
-      sectorFocus,
-      primer,
-    ],
-  );
+  // ── Slide 10 explore state ──────────────────────────────────────
+  const [exploreFilter, setExploreFilter] = useState<ExploreFilter>("aggregate");
+  const [exploreSector, setExploreSector] = useState<{
+    categoryId: string;
+    categoryName: string;
+    taxonomyType: string;
+  } | null>(null);
+
+  // ── Slide content ──────────────────────────────────────────────
+  const slides: SlideDef[] = useMemo(() => {
+    return [
+      // 1 — Hero
+      {
+        eyebrow: `Policy coherence briefing · ${countryName}`,
+        headline: <>A briefing in two questions.</>,
+        body: (
+          <p>
+            {docCount} {docCount === 1 ? "document" : "documents"},{" "}
+            {targets.length.toLocaleString()} targets,{" "}
+            {pairCount.toLocaleString()} pairwise comparisons.
+          </p>
+        ),
+        extra: (
+          <ol className="space-y-3 mt-2">
+            <li className="flex items-baseline gap-4">
+              <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--undp-gray)] tabular-nums">
+                Q1
+              </span>
+              <span
+                className="text-lg text-[var(--undp-black)]"
+                style={{ fontFamily: HEADLINE_SERIF }}
+              >
+                Are these policies pulling the same direction?
+              </span>
+            </li>
+            <li className="flex items-baseline gap-4">
+              <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--undp-gray)] tabular-nums">
+                Q2
+              </span>
+              <span
+                className="text-lg text-[var(--undp-black)]"
+                style={{ fontFamily: HEADLINE_SERIF }}
+              >
+                And where are the biggest gaps, sector by sector?
+              </span>
+            </li>
+          </ol>
+        ),
+      },
+      // 2 — Primer aligned
+      {
+        eyebrow: "What you're looking at",
+        headline: <>Each line is a pair of targets.</>,
+        body: (
+          <p>
+            Two targets, drawn from two different policy documents, with a
+            verdict on whether they pull the same way.
+          </p>
+        ),
+        extra: primer.aligned ? (
+          <PairCard
+            kind="aligned"
+            line={primer.aligned}
+            countryConfig={countryConfig}
+            onSelect={() => openPairFromFaultLine(primer.aligned!)}
+          />
+        ) : undefined,
+      },
+      // 3 — Primer tension
+      {
+        eyebrow: "What you're looking at",
+        headline: <>Or pulling against each other.</>,
+        body: (
+          <p>
+            The pipeline flags these for human review. It does not declare
+            a final verdict.
+          </p>
+        ),
+        extra: primer.tension ? (
+          <PairCard
+            kind="tension"
+            line={primer.tension}
+            countryConfig={countryConfig}
+            onSelect={() => openPairFromFaultLine(primer.tension!)}
+          />
+        ) : undefined,
+      },
+      // 4 — Build-up
+      {
+        eyebrow: "All at once",
+        headline: (
+          <>
+            Now all {targets.length.toLocaleString()} targets, in one frame.
+          </>
+        ),
+        body: (
+          <>
+            <p>
+              Each ribbon shows the relationship between a pair of documents.
+              Green where most pairs align; red where most are flagged.
+            </p>
+            <p className="text-xs italic text-[var(--undp-gray)]/80">
+              Hover a ribbon to see the counts.
+            </p>
+          </>
+        ),
+      },
+      // 5 — Pattern
+      {
+        eyebrow: "The pattern",
+        headline: <>What stands out?</>,
+        body: (
+          <>
+            <p>
+              Two document pairs typically carry most of the signal, both
+              positive and negative. The thickest ribbon is the pair with
+              the most pairwise comparisons in total.
+            </p>
+            <p className="text-xs italic text-[var(--undp-gray)]/80">
+              Next: the verdict on Q1.
+            </p>
+          </>
+        ),
+      },
+      // 6 — Q1 verdict
+      {
+        eyebrow: "Answer to question 1",
+        headline: <>{verdict.headline}</>,
+        body: (
+          <p>
+            Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
+            scored pairs,{" "}
+            <strong className="text-[var(--undp-black)] font-medium">
+              {verdict.alignmentPairs.toLocaleString()}
+            </strong>{" "}
+            show medium or strong alignment.{" "}
+            <strong className="text-[var(--undp-black)] font-medium">
+              {verdict.tensionPairs.toLocaleString()}
+            </strong>{" "}
+            ({Math.round(verdict.tensionShare * 100)}%) are flagged for review.
+          </p>
+        ),
+        extra: <VerdictBadge bucket={verdict.bucket} />,
+      },
+      // 7 — Q2 intro
+      {
+        eyebrow: "On to question 2",
+        headline: (
+          <>
+            Where do those{" "}
+            {verdict.tensionPairs.toLocaleString()} tensions concentrate?
+          </>
+        ),
+        body: (
+          <p>
+            The visual now shows only the red side. The next slide breaks
+            the tensions down by sector. The one after lists the single
+            pairs most worth a closer look.
+          </p>
+        ),
+      },
+      // 8 — Sectoral grid (NEW)
+      {
+        eyebrow: `Question 2 · ${lens?.label ?? "sectors"}`,
+        headline: <>Where the gaps concentrate.</>,
+        body: (
+          <p>
+            Each tile counts how many flagged pairs touch a target primary-
+            classified to that sector. Click any to open the pairs behind
+            the number.
+          </p>
+        ),
+        extra: (
+          <SectorGridPanel
+            rows={sectorRows}
+            onSelect={(r) =>
+              openSectorDrawer({
+                categoryId: r.categoryId,
+                categoryName: r.categoryName,
+                taxonomyType: lensTaxonomyType,
+              })
+            }
+          />
+        ),
+      },
+      // 9 — Top gaps / fault lines (NEW)
+      {
+        eyebrow: "The single pairs to read first",
+        headline: <>Top {faultLines.length} fault lines.</>,
+        body: (
+          <p>
+            Severity-sorted, cross-document pairs first. Each row is one
+            verdict from the pipeline; open it for the AI rationale.
+          </p>
+        ),
+        extra: (
+          <FaultLinesPanel
+            faultLines={faultLines}
+            countryConfig={countryConfig}
+            onSelect={openPairFromFaultLine}
+          />
+        ),
+      },
+      // 10 — Explore
+      {
+        eyebrow: "Take it further",
+        headline: <>Make the briefing your own.</>,
+        exploreLayout: true,
+      },
+    ];
+  }, [
+    countryName,
+    docCount,
+    targets.length,
+    pairCount,
+    primer.aligned,
+    primer.tension,
+    countryConfig,
+    openPairFromFaultLine,
+    verdict,
+    lens,
+    sectorRows,
+    lensTaxonomyType,
+    openSectorDrawer,
+    faultLines,
+  ]);
 
   // ── Per-slide wheel state ───────────────────────────────────────
   const slideStates: WheelState[] = useMemo(() => {
-    const exploreState: WheelState = sectorFocus
-      ? {
-          mode: "sector",
-          sectorCategoryId: sectorFocus.categoryId,
-          sectorTaxonomyType: sectorFocus.taxonomyType,
-        }
-      : { mode: exploreFilter };
-    const topSector = sectorRows[0];
     return [
-      // 1 — Q1 verdict: aggregate ribbons (both green + red)
+      // 1 — Hero: rim only
+      { mode: "idle" },
+      // 2 — Primer aligned: highlight the aligned pair
+      primer.aligned
+        ? {
+            mode: "pair",
+            pair: {
+              aId: primer.aligned.pair.targetAId,
+              bId: primer.aligned.pair.targetBId,
+            },
+          }
+        : { mode: "idle" },
+      // 3 — Primer tension: highlight the tension pair
+      primer.tension
+        ? {
+            mode: "pair",
+            pair: {
+              aId: primer.tension.pair.targetAId,
+              bId: primer.tension.pair.targetBId,
+            },
+          }
+        : { mode: "idle" },
+      // 4 — Build-up: aggregate ribbons
       { mode: "aggregate" },
-      // 2 — Q2 sectors: tensions only, optionally focus the top sector
-      topSector
+      // 5 — Pattern: aggregate ribbons
+      { mode: "aggregate" },
+      // 6 — Q1 verdict: alignments only
+      { mode: "alignments" },
+      // 7 — Q2 intro: tensions only
+      { mode: "tensions" },
+      // 8 — Sectoral grid: focus on top sector
+      topTensionSector
         ? {
             mode: "sector",
-            sectorCategoryId: topSector.categoryId,
-            sectorTaxonomyType: lens?.taxonomyType ?? "sector",
+            sectorCategoryId: topTensionSector.categoryId,
+            sectorTaxonomyType: lensTaxonomyType,
           }
         : { mode: "tensions" },
-      // 3 — Fault lines: tensions only so the wheel mirrors the list
+      // 9 — Top gaps: tensions only (mirrors the list shown)
       { mode: "tensions" },
-      // 4 — Explore: chip-driven
-      exploreState,
+      // 10 — Explore (chips drive this)
+      exploreSector
+        ? {
+            mode: "sector",
+            sectorCategoryId: exploreSector.categoryId,
+            sectorTaxonomyType: exploreSector.taxonomyType,
+          }
+        : { mode: exploreFilter },
     ];
-  }, [exploreFilter, sectorFocus, sectorRows, lens]);
+  }, [
+    primer.aligned,
+    primer.tension,
+    topTensionSector,
+    lensTaxonomyType,
+    exploreFilter,
+    exploreSector,
+  ]);
 
+  // ── Render ──────────────────────────────────────────────────────
   const renderVisual = useCallback(
     (idx: number) => {
       const state = slideStates[idx] ?? { mode: "aggregate" };
@@ -286,10 +523,8 @@ export function CoherenceBriefing({
           classifications={classifications}
           countryConfig={countryConfig}
           state={state}
-          variant={variant}
-          onVariantChange={setVariant}
           showPicker={false}
-          onPairClick={idx === 3 ? openPair : undefined}
+          onPairClick={idx === 9 ? openPairById : undefined}
         />
       );
     },
@@ -299,18 +534,59 @@ export function CoherenceBriefing({
       alignment,
       classifications,
       countryConfig,
-      variant,
-      openPair,
+      openPairById,
+    ],
+  );
+
+  const renderExplore = useCallback(
+    () => (
+      <ExploreLeftPanel
+        targets={targets}
+        alignment={alignment}
+        classifications={classifications}
+        sectors={sectors}
+        globeCategories={globeCategories}
+        countryConfig={countryConfig}
+        availableDocs={availableDocs}
+        sectorRows={sectorRows}
+        lensTaxonomyType={lensTaxonomyType}
+        filter={exploreFilter}
+        onFilter={(f) => {
+          setExploreFilter(f);
+          setExploreSector(null);
+        }}
+        activeSector={exploreSector}
+        onSector={setExploreSector}
+        onOpenSectorDrawer={openSectorDrawer}
+      />
+    ),
+    [
+      targets,
+      alignment,
+      classifications,
+      sectors,
+      globeCategories,
+      countryConfig,
+      availableDocs,
+      sectorRows,
+      lensTaxonomyType,
+      exploreFilter,
+      exploreSector,
+      openSectorDrawer,
     ],
   );
 
   return (
     <main className="flex-1 w-full">
-      <SlideDeckShell slides={slides} renderVisual={renderVisual} />
+      <SlideDeckShell
+        slides={slides}
+        renderVisual={renderVisual}
+        renderExplore={renderExplore}
+      />
       <SectorDrawer
         briefing={drawerBriefing}
         countryConfig={countryConfig}
-        onClose={() => setSectorFocus(null)}
+        onClose={() => setSectorFocusForDrawer(null)}
       />
       <PairDrawer
         data={pairData}
@@ -320,166 +596,6 @@ export function CoherenceBriefing({
       <FooterLink countryId={countryId} />
     </main>
   );
-}
-
-// ─── Slide content builder ─────────────────────────────────────────
-
-function buildSlides({
-  countryName,
-  verdict,
-  sectorRows,
-  faultLines,
-  countryConfig,
-  onSectorSelect,
-  onPairSelect,
-  availableDocs,
-  targets,
-  alignment,
-  classifications,
-  sectorsForChat,
-  globesForChat,
-  exploreFilter,
-  onExploreFilter,
-  sectorFocus,
-  onClearSectorFocus,
-  primer,
-}: {
-  countryName: string;
-  verdict: ReturnType<typeof pickHeadlineVerdict>;
-  sectorRows: SectorTension[];
-  faultLines: FaultLine[];
-  countryConfig: CountryConfig | null;
-  onSectorSelect: (s: { categoryId: string; categoryName: string; taxonomyType: string }) => void;
-  onPairSelect: (l: FaultLine) => void;
-  availableDocs: PolicyDocumentType[];
-  targets: Target[];
-  alignment: AlignmentResult[];
-  classifications: ThematicClassification[];
-  sectorsForChat: IpccSector[];
-  globesForChat: GlobeCategory[];
-  exploreFilter: "aggregate" | "alignments" | "tensions";
-  onExploreFilter: (f: "aggregate" | "alignments" | "tensions") => void;
-  sectorFocus: { categoryId: string; categoryName: string; taxonomyType: string } | null;
-  onClearSectorFocus: () => void;
-  primerAvailable: boolean;
-  primer: ReturnType<typeof pickPrimerExamples>;
-}): SlideDef[] {
-  const tensionPct = Math.round(verdict.tensionShare * 100);
-  return [
-    // 1 — Q1 verdict
-    {
-      eyebrow: `Question 1 · ${countryName}`,
-      headline: <>{verdict.headline}</>,
-      body: (
-        <p>
-          Of {(verdict.alignmentPairs + verdict.tensionPairs).toLocaleString()}{" "}
-          scored pairs,{" "}
-          <strong className="text-[var(--undp-black)] font-medium">
-            {verdict.alignmentPairs.toLocaleString()}
-          </strong>{" "}
-          show medium or strong alignment.{" "}
-          <strong className="text-[var(--undp-black)] font-medium">
-            {verdict.tensionPairs.toLocaleString()}
-          </strong>{" "}
-          ({tensionPct}%) are flagged for review.
-        </p>
-      ),
-      extra: (
-        <div className="space-y-3">
-          <VerdictBadge bucket={verdict.bucket} />
-          {primer.aligned && (
-            <PrimerCallout
-              line={primer.aligned}
-              kind="aligned"
-              countryConfig={countryConfig}
-              onSelect={() => onPairSelect(primer.aligned!)}
-            />
-          )}
-        </div>
-      ),
-    },
-    // 2 — Q2 sectors
-    {
-      eyebrow: "Question 2",
-      headline: (
-        <>
-          Tensions concentrate in{" "}
-          {sectorRows.slice(0, 3).map((s, i, arr) => (
-            <span key={s.categoryId}>
-              <span className="underline decoration-2 underline-offset-4 decoration-[var(--undp-red)]/40">
-                {s.categoryName.toLowerCase()}
-              </span>
-              {i < arr.length - 1
-                ? i === arr.length - 2
-                  ? ", and "
-                  : ", "
-                : ""}
-            </span>
-          ))}
-          .
-        </>
-      ),
-      body: (
-        <p>
-          Each tile counts how many flagged pairs touch a target primary-
-          classified to that sector. Click any to open the pairs behind
-          the number.
-        </p>
-      ),
-      extra: (
-        <SectorTilesInline
-          rows={sectorRows}
-          onSelect={(r) =>
-            onSectorSelect({
-              categoryId: r.categoryId,
-              categoryName: r.categoryName,
-              taxonomyType: r.taxonomyType ?? "sector",
-            })
-          }
-        />
-      ),
-    },
-    // 3 — Fault lines
-    {
-      eyebrow: "The single pairs to read first",
-      headline: <>Top {faultLines.length} fault lines.</>,
-      body: (
-        <p>
-          Severity-sorted, cross-document pairs first. Each row is one
-          verdict from the pipeline; open it for the AI rationale.
-        </p>
-      ),
-      extra: (
-        <FaultLineListInline
-          faultLines={faultLines}
-          countryConfig={countryConfig}
-          onSelect={onPairSelect}
-        />
-      ),
-    },
-    // 4 — Explore
-    {
-      eyebrow: "Take it further",
-      headline: <>Make the briefing your own.</>,
-      body: (
-        <ExploreModeInline
-          targets={targets}
-          alignment={alignment}
-          classifications={classifications}
-          sectors={sectorsForChat}
-          globeCategories={globesForChat}
-          countryConfig={countryConfig}
-          availableDocs={availableDocs}
-          sectorRows={sectorRows}
-          exploreFilter={exploreFilter}
-          onExploreFilter={onExploreFilter}
-          sectorFocus={sectorFocus}
-          onSectorSelect={onSectorSelect}
-          onClearSectorFocus={onClearSectorFocus}
-        />
-      ),
-    },
-  ];
 }
 
 // ─── Verdict badge ──────────────────────────────────────────────────
@@ -513,16 +629,16 @@ function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
   );
 }
 
-// ─── Primer callout (inline on slide 1) ─────────────────────────────
+// ─── Primer pair card ───────────────────────────────────────────────
 
-function PrimerCallout({
-  line,
+function PairCard({
   kind,
+  line,
   countryConfig,
   onSelect,
 }: {
-  line: FaultLine;
   kind: "aligned" | "tension";
+  line: FaultLine;
   countryConfig: CountryConfig | null;
   onSelect: () => void;
 }) {
@@ -545,14 +661,18 @@ function PrimerCallout({
         Example {kind === "aligned" ? "alignment" : "tension"}
       </p>
       <p className="text-[12px] text-[var(--undp-black)] leading-snug line-clamp-2">
-        <span className="text-[var(--undp-gray)]">{labelA} {line.targetA.sourceLabel}:</span>{" "}
+        <span className="text-[var(--undp-gray)]">
+          {labelA} {line.targetA.sourceLabel}:
+        </span>{" "}
         {line.targetA.text}
       </p>
       <p className="text-[11px] my-1.5 text-[var(--undp-gray)]">
         {kind === "aligned" ? "supports" : "in tension with"}
       </p>
       <p className="text-[12px] text-[var(--undp-black)] leading-snug line-clamp-2">
-        <span className="text-[var(--undp-gray)]">{labelB} {line.targetB.sourceLabel}:</span>{" "}
+        <span className="text-[var(--undp-gray)]">
+          {labelB} {line.targetB.sourceLabel}:
+        </span>{" "}
         {line.targetB.text}
       </p>
       <p className="mt-2 text-[10px] text-[var(--undp-gray)]">
@@ -562,18 +682,25 @@ function PrimerCallout({
   );
 }
 
-// ─── Sector tiles inline (slide 2) ──────────────────────────────────
+// ─── Slide 8: sector grid ───────────────────────────────────────────
 
-function SectorTilesInline({
+function SectorGridPanel({
   rows,
   onSelect,
 }: {
-  rows: (SectorTension & { taxonomyType?: string })[];
-  onSelect: (row: SectorTension & { taxonomyType?: string }) => void;
+  rows: SectorTension[];
+  onSelect: (row: SectorTension) => void;
 }) {
   const peak = rows.reduce((m, r) => Math.max(m, r.tensionCount), 0);
+  if (rows.length === 0) {
+    return (
+      <p className="text-xs text-[var(--undp-gray)] italic">
+        No sector taxonomy available for this country.
+      </p>
+    );
+  }
   return (
-    <ul className="space-y-1.5">
+    <ul className="space-y-1.5 max-h-[440px] overflow-y-auto pr-1">
       {rows.map((row) => {
         const color = row.peakSeverity
           ? ALIGNMENT_COLORS[row.peakSeverity]
@@ -625,9 +752,9 @@ function SectorTilesInline({
   );
 }
 
-// ─── Fault lines inline (slide 3) ───────────────────────────────────
+// ─── Slide 9: fault lines list ──────────────────────────────────────
 
-function FaultLineListInline({
+function FaultLinesPanel({
   faultLines,
   countryConfig,
   onSelect,
@@ -644,7 +771,7 @@ function FaultLineListInline({
     );
   }
   return (
-    <ol className="divide-y divide-gray-200 border-y border-gray-200">
+    <ol className="divide-y divide-gray-200 border-y border-gray-200 max-h-[440px] overflow-y-auto">
       {faultLines.map((line, i) => (
         <FaultRow
           key={`${line.pair.targetAId}__${line.pair.targetBId}`}
@@ -730,9 +857,9 @@ function FaultRow({
   );
 }
 
-// ─── Explore mode (slide 4) ─────────────────────────────────────────
+// ─── Slide 10: explore left panel ───────────────────────────────────
 
-function ExploreModeInline({
+function ExploreLeftPanel({
   targets,
   alignment,
   classifications,
@@ -741,11 +868,12 @@ function ExploreModeInline({
   countryConfig,
   availableDocs,
   sectorRows,
-  exploreFilter,
-  onExploreFilter,
-  sectorFocus,
-  onSectorSelect,
-  onClearSectorFocus,
+  lensTaxonomyType,
+  filter,
+  onFilter,
+  activeSector,
+  onSector,
+  onOpenSectorDrawer,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -755,42 +883,60 @@ function ExploreModeInline({
   countryConfig: CountryConfig | null;
   availableDocs: PolicyDocumentType[];
   sectorRows: SectorTension[];
-  exploreFilter: "aggregate" | "alignments" | "tensions";
-  onExploreFilter: (f: "aggregate" | "alignments" | "tensions") => void;
-  sectorFocus: { categoryId: string; categoryName: string; taxonomyType: string } | null;
-  onSectorSelect: (s: { categoryId: string; categoryName: string; taxonomyType: string }) => void;
-  onClearSectorFocus: () => void;
+  lensTaxonomyType: string;
+  filter: ExploreFilter;
+  onFilter: (f: ExploreFilter) => void;
+  activeSector: { categoryId: string; categoryName: string; taxonomyType: string } | null;
+  onSector: (s: { categoryId: string; categoryName: string; taxonomyType: string } | null) => void;
+  onOpenSectorDrawer: (s: { categoryId: string; categoryName: string; taxonomyType: string }) => void;
 }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full overflow-hidden">
+      <div className="shrink-0">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
+          Take it further  <span className="opacity-50 ml-1 tabular-nums">· 10 / 10</span>
+        </p>
+        <h2
+          className="text-2xl text-[var(--undp-black)] font-medium leading-tight mb-1"
+          style={{ fontFamily: HEADLINE_SERIF }}
+        >
+          Make the briefing your own.
+        </h2>
+        <p className="text-xs text-[var(--undp-gray)]">
+          Switch lens, focus a sector, or ask the briefing a question.
+        </p>
+      </div>
+
       <div className="flex flex-wrap items-center gap-1.5">
         {(["aggregate", "alignments", "tensions"] as const).map((f) => {
-          const isActive = !sectorFocus && exploreFilter === f;
+          const isActive = !activeSector && filter === f;
           return (
             <button
               key={f}
               type="button"
-              onClick={() => {
-                onExploreFilter(f);
-                onClearSectorFocus();
-              }}
+              onClick={() => onFilter(f)}
               aria-pressed={isActive}
               className={chip(isActive)}
             >
-              {f === "aggregate" ? "Both" : f === "alignments" ? "Alignments" : "Tensions"}
+              {f === "aggregate"
+                ? "Both"
+                : f === "alignments"
+                  ? "Alignments"
+                  : "Tensions"}
             </button>
           );
         })}
-        {sectorFocus && (
+        {activeSector && (
           <button
             type="button"
-            onClick={onClearSectorFocus}
+            onClick={() => onSector(null)}
             className={chip(true)}
           >
-            {sectorFocus.categoryName}  ×
+            {activeSector.categoryName}  ×
           </button>
         )}
       </div>
+
       {sectorRows.length > 0 && (
         <div>
           <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
@@ -798,16 +944,16 @@ function ExploreModeInline({
           </p>
           <div className="flex flex-wrap gap-1.5">
             {sectorRows.slice(0, 6).map((s) => {
-              const isActive = sectorFocus?.categoryId === s.categoryId;
+              const isActive = activeSector?.categoryId === s.categoryId;
               return (
                 <button
                   key={s.categoryId}
                   type="button"
                   onClick={() =>
-                    onSectorSelect({
+                    onSector({
                       categoryId: s.categoryId,
                       categoryName: s.categoryName,
-                      taxonomyType: "sector",
+                      taxonomyType: lensTaxonomyType,
                     })
                   }
                   className={chip(isActive)}
@@ -818,10 +964,28 @@ function ExploreModeInline({
                 </button>
               );
             })}
+            <button
+              type="button"
+              onClick={() => {
+                const target = activeSector ?? (sectorRows[0]
+                  ? {
+                      categoryId: sectorRows[0].categoryId,
+                      categoryName: sectorRows[0].categoryName,
+                      taxonomyType: lensTaxonomyType,
+                    }
+                  : null);
+                if (target) onOpenSectorDrawer(target);
+              }}
+              className="px-3 py-1.5 rounded-full text-xs font-medium border border-dashed border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)] transition-colors"
+              title="Open the full sector briefing drawer"
+            >
+              + Full briefing
+            </button>
           </div>
         </div>
       )}
-      <div className="border-t border-gray-200 pt-3 flex flex-col">
+
+      <div className="border-t border-gray-200 pt-3 flex flex-col min-h-0 overflow-hidden">
         <ChatPanel
           targets={targets}
           alignment={alignment}
