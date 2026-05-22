@@ -1,0 +1,147 @@
+{
+  "storylines": [
+    {
+      "name": "Link climate-resilient agriculture through shared systems",
+      "type": "reinforcement",
+      "description": "A strong pattern recurs around climate-resilient agriculture being supported by shared enabling systems such as early warning, monitoring, traceability, laboratories, training, legal frameworks, and risk management. These tools tend to align food production, livestock management, crop resilience, and disaster preparedness across climate and sector strategies.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2546,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Reinforce restoration and conservation in land use",
+      "type": "reinforcement",
+      "description": "Land restoration, protected areas, forest management, pasture stewardship, and soil conservation repeatedly align across climate, biodiversity, and long-term development documents. Spatial planning, ecological monitoring, and carrying-capacity-based management tend to reinforce both resilience and ecosystem integrity in the same landscapes.",
+      "contributing_doc_pairs": [
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1922,
+      "spans_documents": [
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Use governance and standards to mainstream safeguards",
+      "type": "reinforcement",
+      "description": "Another recurring storyline is that regulation, certification, biodiversity mainstreaming, subsidy reform, disclosure, and shared data systems align environmental safeguards with agricultural modernization. This points to a common reliance on governance instruments to connect production goals with pollution control, biosecurity, and ecosystem-sensitive planning.",
+      "contributing_doc_pairs": [
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NBSAP",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2609,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Review agricultural expansion against land safeguards",
+      "type": "friction",
+      "description": "Across several pairings, agricultural expansion measures such as new cropland, irrigated cash crops, greenhouses, fodder production, processing capacity, and rural enterprise support are flagged for review where they overlap with restoration, protected areas, forest recovery, and biodiversity-sensitive landscapes. The friction tends to center on siting, intensity, and how expansion is screened within shared land systems rather than on overall policy direction.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->SECTORAL",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 472,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Flag water allocation pressures across sectors",
+      "type": "friction",
+      "description": "Water competition recurs where irrigation, livestock water points, fodder and feed production, crop intensification, and restoration measures depend on the same limited resources. This often points to implementation tension across dryland landscapes where water stewardship, ecosystem services, and agricultural growth all rely on shared allocation decisions.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 395,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Review livestock intensification within carrying capacity",
+      "type": "friction",
+      "description": "Livestock expansion and intensification are repeatedly flagged for review where meat supply, export growth, feed demand, and value-chain development may increase pressure on rangelands, habitats, forests, and pasture carrying capacity. The recurring mechanism is not livestock policy in itself, but whether herd growth, grazing access, and associated infrastructure align with restoration, corridor, and protected-area objectives.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NBSAP<->NDC",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 472,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    }
+  ],
+  "summary_paragraph": "Across Mongolia's policy set, reinforcement appears to dominate, especially around climate-resilient agriculture, restoration-oriented land management, and the use of governance tools such as monitoring, standards, and spatial planning. A consistent storyline recurs in which adaptation, biodiversity, climate, and sector strategies tend to align through shared systems for pasture management, forest and soil stewardship, water governance, and agricultural modernization. At the same time, several pairings point to recurring areas flagged for review where agricultural expansion, irrigation, and livestock intensification may place pressure on the same land, water, habitat, and carrying-capacity limits targeted by restoration and conservation measures. Overall, the evidence suggests broad strategic alignment with a narrower set of implementation tensions concentrated in how growth is sited, resourced, and managed in shared landscapes.",
+  "doc_pair_count": 10
+}

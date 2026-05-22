@@ -37,6 +37,9 @@ import type {
   BerData,
   Nr7Data,
   CountryConfig,
+  CorpusThemes,
+  DocPairSynthesis,
+  SectorSynthesis,
 } from "@/types";
 import type { FootprintSnapshot } from "@/lib/footprint";
 
@@ -54,6 +57,9 @@ interface DashboardData {
   budgetAlignment: AlignmentResult[] | null;
   budgetPseudoTargets: Target[] | null;
   footprint: FootprintSnapshot | null;
+  docPairSynthesis: DocPairSynthesis[];
+  corpusThemes: CorpusThemes | null;
+  sectorSynthesis: SectorSynthesis[];
   countryConfig: CountryConfig | null;
 }
 
@@ -140,6 +146,9 @@ export function PrototypesClient({
               normalizeTarget,
             ) ?? null,
           footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
+          docPairSynthesis: (raw.docPairSynthesis as DocPairSynthesis[] | null) ?? [],
+          corpusThemes: (raw.corpusThemes as CorpusThemes | null) ?? null,
+          sectorSynthesis: (raw.sectorSynthesis as SectorSynthesis[] | null) ?? [],
           countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
         });
       })
@@ -277,6 +286,9 @@ export function PrototypesClient({
           globeCategories={data.globeCategories}
           nbsCategories={data.nbsCategories}
           countryConfig={data.countryConfig}
+          docPairSyntheses={data.docPairSynthesis}
+          corpusThemes={data.corpusThemes}
+          sectorSyntheses={data.sectorSynthesis}
         />
       )}
 

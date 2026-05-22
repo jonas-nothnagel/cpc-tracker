@@ -1,0 +1,592 @@
+[
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_1",
+    "category_name": "Access and benefit sharing",
+    "aligned_count": 2095,
+    "flagged_count": 9,
+    "pool_composition": {
+      "primary_count": 1296,
+      "relevant_only_count": 1284
+    },
+    "contradiction_types": {
+      "implementation_tension": 9
+    },
+    "synthesis": {
+      "storyline_name": "Strengthen ABS governance through broader environmental systems",
+      "reinforce": "Access and benefit sharing measures often align with wider legal, institutional, and monitoring reforms, especially where targets strengthen compliance frameworks, inter-institutional arrangements, safeguards, participation, and reporting. Reinforcement also recurs where fair and equitable benefit-sharing, bioprospecting support, and biodiversity-based livelihoods are linked to REDD+, bioeconomy, corporate accountability, and community-focused implementation mechanisms.",
+      "clash": "Possible misalignment is flagged where ABS-related bioprospecting, benefit-sharing, and consent-based governance could be harder to implement alongside major logistics, transport, housing, agricultural expansion, or watershed infrastructure. The recurring tension is implementation-based, with corridor, road, reservoir, and export-oriented investments potentially increasing land-use pressure, complicating FPIC and safeguards, or making biodiversity and emissions outcomes harder to maintain unless coordinated.",
+      "coordination_hint": "It tends to help to connect ABS legal frameworks, FPIC procedures, benefit-sharing rules, and biodiversity reporting requirements to spatial planning, infrastructure safeguards, and sector-specific participation processes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_2",
+    "category_name": "Biodiversity awareness and knowledge",
+    "aligned_count": 13249,
+    "flagged_count": 60,
+    "pool_composition": {
+      "primary_count": 4181,
+      "relevant_only_count": 11533
+    },
+    "contradiction_types": {
+      "implementation_tension": 60
+    },
+    "synthesis": {
+      "storyline_name": "Build participation, monitoring, and usable biodiversity knowledge",
+      "reinforce": "This sector often aligns where biodiversity awareness, outreach, and training are paired with broader environmental governance, research, and monitoring systems. The sample repeatedly points to reinforcement between REDD+ communication, producer outreach, FPIC, community participation, forest or marine monitoring, and forestry research or protected-area management, because these mechanisms improve access to information, local uptake, and knowledge use in implementation.",
+      "clash": "Possible misalignment is consistently flagged where monitoring, awareness, corridor-building, or community-based biodiversity knowledge efforts meet large infrastructure, logistics, energy, road, or export expansion. The recurring tension is implementation-based, infrastructure or productive expansion can fragment habitats, pressure indigenous or coastal territories, or outpace the use of monitoring and consultation systems unless siting, routing, and safeguards are integrated.",
+      "coordination_hint": "It tends to help to connect biodiversity awareness and knowledge tools, especially monitoring systems, community outreach, and consultation processes, to early spatial planning, permitting, and infrastructure design in the landscapes and coastal areas where these pairs overlap.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_3",
+    "category_name": "Biosafety",
+    "aligned_count": 1043,
+    "flagged_count": 10,
+    "pool_composition": {
+      "primary_count": 1323,
+      "relevant_only_count": 0
+    },
+    "contradiction_types": {
+      "implementation_tension": 10
+    },
+    "synthesis": {
+      "storyline_name": "Embed biosafety controls into environmental governance",
+      "reinforce": "Biosafety targets often align with broader environmental governance measures on coordination, regulatory mapping, monitoring, traceability, transparency, and capacity building. In these pairs, biosafety also reinforces protected-area management, conservation, nursery oversight, and some agricultural or watershed activities when implementation includes risk assessment, surveillance, and information-sharing systems.",
+      "clash": "Possible misalignment recurs where invasive-species prevention or Cartagena Protocol implementation meets expansion of logistics corridors, trade and industrial flows, reforestation using exotic species, forestry development, housing and road construction, and water or irrigation infrastructure. These cases are flagged for review as implementation tension, because the same transport, planting, or water-management pathways can increase introduction, movement, or oversight demands unless biosafety safeguards are built in.",
+      "coordination_hint": "It tends to help when biosafety requirements are integrated early into transport, forestry, water, and land-use planning through pathway screening, species selection rules, inspection capacity, and shared monitoring systems.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_4",
+    "category_name": "Green economy",
+    "aligned_count": 21485,
+    "flagged_count": 513,
+    "pool_composition": {
+      "primary_count": 10468,
+      "relevant_only_count": 15394
+    },
+    "contradiction_types": {
+      "implementation_tension": 503,
+      "resource_competition": 10
+    },
+    "synthesis": {
+      "storyline_name": "Linking green-transition finance, rules, and local delivery",
+      "reinforce": "Green economy documents often align around enabling instruments, climate and green-transition laws, REDD+ and PES finance, certification, safeguards, and territorial coordination that support conservation-compatible livelihoods, restoration, and lower-emission production. This recurs in pairings between REDD+ incentives and biocommerce, deforestation reduction, community capacity, local governance, and broader green-transition architecture, and also in links to renewable energy, water sustainability, and sustainable land-use planning.",
+      "clash": "Possible misalignment is mostly flagged where green-economy conservation and restoration measures meet logistics corridors, roads, housing expansion, tourism development, agro-industrial export promotion, or major watershed infrastructure. The recurring tension is implementation, not direct contradiction, because transport, urban growth, and export-oriented land use can increase pressure on forests, riparian zones, biological corridors, and restoration areas, and a smaller set of pairs also points to land competition between forestry vocation and housing or infrastructure.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, safeguard conditions, and funding rules that connect green-economy finance and restoration goals with infrastructure, housing, tourism, and agricultural modernization decisions in shared territories.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_5",
+    "category_name": "Biodiversity planning and finance",
+    "aligned_count": 33112,
+    "flagged_count": 417,
+    "pool_composition": {
+      "primary_count": 26576,
+      "relevant_only_count": 12937
+    },
+    "contradiction_types": {
+      "implementation_tension": 416,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "build biodiversity governance, data, and finance systems",
+      "reinforce": "This sector often aligns around enabling architecture for biodiversity action, including updated forest and conservation laws, REDD+ safeguards and reporting systems, protected-area governance, transparency platforms, and finance vehicles such as the Nature Pledge architecture and restoration funds. Reinforcement also recurs where communication, community monitoring, indigenous participation, research, and watershed or climate information systems help target conservation, restoration, and adaptation investments more effectively.",
+      "clash": "Possible misalignment is mostly flagged where biodiversity conservation, restoration, PES, mangrove protection, and protected-area management meet infrastructure, logistics, industrial, housing, tourism, or mobility expansion that may compete for land, water, coastal space, or ecological connectivity in the same territories. A second recurring tension appears where agricultural or forestry industry growth could, without spatial safeguards, weaken forest conservation incentives, restoration goals, or controls on unsustainable extraction.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, safeguards, and funding-screening rules that steer infrastructure and productive investment away from protected, restorable, mangrove, riparian, and corridor areas while linking biodiversity finance and monitoring systems to territorial decisions.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_6",
+    "category_name": "Pollution management",
+    "aligned_count": 8066,
+    "flagged_count": 39,
+    "pool_composition": {
+      "primary_count": 4781,
+      "relevant_only_count": 5243
+    },
+    "contradiction_types": {
+      "implementation_tension": 38,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Strengthen monitoring, standards, and circular pollution controls",
+      "reinforce": "Pollution management often aligns with broader governance and capability measures that improve monitoring, verification, inventories, and regulatory tools, including air and water quality control, waste baselines, and environmental oversight. It also tends to reinforce innovation, subsidy reform, and circular-economy actions that support plastics reduction, hazardous chemical and nutrient control, and cleaner production pathways.",
+      "clash": "Possible misalignment recurs where transport, logistics, road, port, oil, irrigation, and agro-industrial expansion could raise air emissions, discharge risks, waste flows, runoff, or land and water pressures in the same watersheds and coastal areas targeted for pollution control. One pair also flagged for review on resource competition, pointing to possible competition between forestry rehabilitation and irrigated production for land and water in the Canal watershed.",
+      "coordination_hint": "This sector would often benefit from linking pollution monitoring and waste-reduction targets to spatial planning, permitting, and operating standards for logistics, roads, irrigation, and productive expansion in shared watersheds and coastal zones.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_7",
+    "category_name": "Protected areas and other conservation measures",
+    "aligned_count": 13783,
+    "flagged_count": 306,
+    "pool_composition": {
+      "primary_count": 5127,
+      "relevant_only_count": 10724
+    },
+    "contradiction_types": {
+      "implementation_tension": 304,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Linking protected-area governance with restoration and monitoring",
+      "reinforce": "Protected-area and forest conservation measures often align with species conservation, restoration, watershed protection, and biodiversity corridor actions, especially where updated management plans, riparian and headwater protection, and natural forest conservation reinforce habitat integrity and effective conservation. A second recurring alignment is enabling architecture, community oversight, safeguards, finance, and MRV systems, which tend to reinforce implementation of protected areas and other conservation measures through clearer governance, local participation, and better tracking of results.",
+      "clash": "Possible misalignment recurs where transport, reservoir, logistics, energy, industrial, or agricultural expansion could overlap with protected areas, wetlands, riparian zones, buffer zones, biological corridors, or other conservation landscapes, creating implementation tension through siting, fragmentation, hydrological change, or indirect land-use pressure. Friction is usually flagged for review as manageable rather than fundamental, and often points to the need to steer infrastructure and productive growth away from conservation-priority areas and high-carbon ecosystems.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, zoning, and safeguard-based coordination so that protected-area management, restoration, and corridor objectives can align with infrastructure, water, energy, and agricultural decisions in overlapping landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_8",
+    "category_name": "Restoration",
+    "aligned_count": 11410,
+    "flagged_count": 179,
+    "pool_composition": {
+      "primary_count": 5456,
+      "relevant_only_count": 7451
+    },
+    "contradiction_types": {
+      "implementation_tension": 171,
+      "resource_competition": 8
+    },
+    "synthesis": {
+      "storyline_name": "Link restoration to watershed, forest, and corridor management",
+      "reinforce": "Restoration in this sector often aligns with forest, riparian, and watershed protection measures, especially through protected-area management, water easement restoration, biological corridors, community oversight, and incentive-based forest management. It also tends to reinforce broader enabling agendas, such as land-use planning, ecotourism, STI, climate governance, and community participation, where these provide monitoring, finance, or local implementation support for restoration.",
+      "clash": "Possible misalignment recurs where transport, energy, housing, water-storage, industrial, and agro-industrial expansion may overlap spatially with riparian zones, protected areas, recharge areas, biological corridors, and degraded lands targeted for restoration. A smaller set of pairs is flagged for review on resource competition, often pointing to shared pressure on land and water between restoration activities and agricultural or housing expansion.",
+      "coordination_hint": "It may help to use restoration-sensitive spatial planning, zoning, and safeguards in shared watersheds and corridor landscapes, so infrastructure, housing, agriculture, and restoration investments can be sequenced and aligned.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "globe",
+    "category_id": "globe_9",
+    "category_name": "Sustainable use",
+    "aligned_count": 26271,
+    "flagged_count": 415,
+    "pool_composition": {
+      "primary_count": 14372,
+      "relevant_only_count": 16356
+    },
+    "contradiction_types": {
+      "implementation_tension": 405,
+      "resource_competition": 10
+    },
+    "synthesis": {
+      "storyline_name": "Linking sustainable land use with enabling governance",
+      "reinforce": "Alignment in this sector often comes from enabling measures that support sustainable use on the ground, especially policy reform on harmful incentives, forest and watershed stewardship, restoration, biotrade training, and inclusive participation by indigenous peoples, women, and local communities. It also recurs through science, innovation, monitoring, and public-sector capacity measures that reinforce sustainable resource management, agroforestry, biological corridors, water regulation, and sustainable agrifood transitions without requiring direct operational integration.",
+      "clash": "Possible misalignment is most often flagged where conservation, restoration, corridor creation, protected-area management, invasive-species control, or zero-deforestation aims meet infrastructure expansion, water-storage works, housing, energy transmission, logistics corridors, or export-oriented agricultural modernization in the same landscapes. The recurring tension is implementation-based rather than a direct policy contradiction, because roads, reservoirs, irrigation, and productivity upgrades can increase habitat fragmentation, land-use pressure, encroachment risk, or species spread unless safeguards are built into delivery.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, zoning, and biosecurity or mitigation conditions so that agricultural modernization, water infrastructure, and connectivity investments align more consistently with restoration, forest protection, and sustainable-use objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_0",
+    "category_name": "Protection, management, and restoration of marine and coastal habitats",
+    "aligned_count": 4175,
+    "flagged_count": 50,
+    "pool_composition": {
+      "primary_count": 2279,
+      "relevant_only_count": 2595
+    },
+    "contradiction_types": {
+      "implementation_tension": 50
+    },
+    "synthesis": {
+      "storyline_name": "strengthen habitat protection through monitoring and zoning",
+      "reinforce": "Within this sector, alignment often centers on expanding and improving protected and conserved areas, restoring degraded habitats including mangroves, and building marine, coastal, wetland, and watershed monitoring systems. These pairs also tend to reinforce governance tools such as safeguards, community participation, benefit-sharing, regulatory modernization, and standardized monitoring procedures that support effective conservation management.",
+      "clash": "Possible misalignment recurs where marine-coastal adaptation, mangrove protection, protected-area expansion, or watershed conservation meet infrastructure and production measures such as roads, ports and logistics corridors, reservoirs and irrigation, energy networks, and export-oriented agriculture. The flagged tension is usually implementation-based rather than strategic, with siting, land-use change, hydrological alteration, and habitat fragmentation flagged for review in shared coastal, watershed, or buffer-zone geographies.",
+      "coordination_hint": "This sector often points to a need to integrate habitat monitoring, zoning, and safeguard requirements early into coastal, watershed, infrastructure, energy, and productive-land planning, so that trade-offs can be managed before implementation hardens.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_1",
+    "category_name": "Agriculture and livestock management",
+    "aligned_count": 9734,
+    "flagged_count": 177,
+    "pool_composition": {
+      "primary_count": 6805,
+      "relevant_only_count": 4844
+    },
+    "contradiction_types": {
+      "implementation_tension": 170,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "Link agricultural transition with forest-smart land management",
+      "reinforce": "Reinforcing pairs often align agriculture and livestock management with agroforestry, restoration, climate-smart agrifood transformation, and bioeconomy approaches, especially where working lands are expected to deliver both production and ecosystem outcomes. A second recurring alignment is enabling support, training for producers, geospatial and agroclimatic information systems, MRV, incentives, and science and innovation capacity that can strengthen sustainable farming, organic production, and lower-impact land use.",
+      "clash": "Possible misalignment recurs where agricultural modernization, export promotion, irrigation, logistics, roads, or other infrastructure could increase pressure on forests, protected areas, wetlands, peatlands, and restoration zones that overlap agricultural landscapes. A smaller set of pairs is flagged for review on resource competition, mainly where irrigation and agricultural production may compete with forest rehabilitation for land or water in shared watersheds.",
+      "coordination_hint": "It tends to help to pair agricultural productivity measures with explicit land-use zoning, watershed planning, deforestation-free safeguards, and shared monitoring so farm and livestock improvements can proceed without weakening restoration or conservation outcomes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_2",
+    "category_name": "Water management",
+    "aligned_count": 12841,
+    "flagged_count": 206,
+    "pool_composition": {
+      "primary_count": 8508,
+      "relevant_only_count": 5985
+    },
+    "contradiction_types": {
+      "implementation_tension": 200,
+      "resource_competition": 6
+    },
+    "synthesis": {
+      "storyline_name": "Linking watershed restoration with water service planning",
+      "reinforce": "Reinforcing pairs often point to forest restoration, riparian protection, REDD+ monitoring, and basin incentive schemes aligning with water management by improving watershed condition, hydrological regulation, and information for planning. This recurs most clearly where water-producing watersheds, water easement zones, and basin-level land-use measures reinforce water availability, monitoring, and service sustainability.",
+      "clash": "Possible misalignment is mostly flagged where water-related restoration or adaptation in watersheds meets reservoirs, roads, logistics corridors, housing, tourism, or agricultural expansion in the same territories. The recurring tension is implementation-side, infrastructure and productive development can fragment riparian zones, recharge areas, corridors, or adaptation priority areas unless routing, safeguards, and land-use controls are integrated.",
+      "coordination_hint": "It tends to help to coordinate water management actions with basin zoning, riparian buffers, invasive-species controls, and infrastructure siting early in planning, especially in Canal watershed and other priority watershed areas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_3",
+    "category_name": "Forest management, restoration, and protection",
+    "aligned_count": 23366,
+    "flagged_count": 366,
+    "pool_composition": {
+      "primary_count": 26556,
+      "relevant_only_count": 1293
+    },
+    "contradiction_types": {
+      "implementation_tension": 359,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "Linking forest governance with finance and watershed delivery",
+      "reinforce": "Forest governance, restoration, and protection measures often align with financing, legal, and monitoring instruments that help implement reforestation, protected-area management, REDD+ safeguards, and payment for ecosystem services. Reinforcement also recurs where forest protection is tied to watershed management and drinking water security, with restoration and natural forest conservation supporting source-water quality and broader water-service goals.",
+      "clash": "Possible misalignment is most often flagged where forest conservation, restoration, or REDD+ safeguards meet housing, transport, logistics, Canal-related infrastructure, energy expansion, or agricultural modernization that could increase land conversion, fragmentation, or access pressure in forested areas. A second recurring tension appears where forest carbon accounting, riparian protection, or protected-area management could be harder to maintain if forestry industry growth or other productive expansion is not spatially and operationally aligned with conservation safeguards.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, safeguard integration, and routing or siting decisions that keep infrastructure, housing, agriculture, and industry expansion away from priority forests, riparian zones, protected areas, and REDD+ territories.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_4",
+    "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+    "aligned_count": 5544,
+    "flagged_count": 84,
+    "pool_composition": {
+      "primary_count": 656,
+      "relevant_only_count": 5733
+    },
+    "contradiction_types": {
+      "implementation_tension": 83,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Strengthen wetland protection through planning and safeguards",
+      "reinforce": "This sector often aligns when wetland, mangrove, riparian, and inland water protection is paired with broader conservation expansion, watershed restoration, adaptation planning, and monitoring systems. Reinforcement also recurs through enabling measures, such as safeguards, community capacity, MRV, and inter-institutional coordination, which tend to support restoration and management of water easement zones, protected inland waters, and marine-coastal wetlands.",
+      "clash": "Possible misalignment is mostly flagged where wetland and freshwater ecosystem protection meets infrastructure, agricultural modernization, housing, energy expansion, or logistics development in the same basins or coastal zones. The recurring tension is implementation-related, where roads, transmission corridors, water-supply works, industrial or agro-industrial expansion, and coastal facilities could constrain mangrove protection, riparian restoration, peatland conservation, hydrological regulation, or ecological connectivity unless siting and zoning are carefully managed.",
+      "coordination_hint": "It tends to help to align this sector's restoration and protection targets with early spatial planning, watershed and coastal zoning, and safeguard-based infrastructure and production design in overlapping territories.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_5",
+    "category_name": "Ecosystem protection and connectivity",
+    "aligned_count": 15106,
+    "flagged_count": 273,
+    "pool_composition": {
+      "primary_count": 8844,
+      "relevant_only_count": 7888
+    },
+    "contradiction_types": {
+      "implementation_tension": 271,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Linking forest protection with finance and governance",
+      "reinforce": "Reinforcing pairs often align protected-area management, forest restoration, agroforestry, and connectivity actions with enabling finance, legal frameworks, monitoring systems, and participation mechanisms. This recurs where REDD+, Nature Pledge, and related instruments provide funding architecture, regulatory tools, inventories, communication, and inclusive governance that could help implement restoration, protected-area control, and landscape recovery.",
+      "clash": "Possible misalignment is mostly flagged where forest protection, species conservation, restoration, protected-area demarcation, and biological corridors meet agricultural expansion, logistics corridors, roads, reservoirs, housing, energy, and irrigation works. The recurring tension tends to be implementation-level land-use pressure and habitat fragmentation in shared landscapes, rather than direct policy contradiction, especially if infrastructure or productive expansion is not steered by safeguards and spatial planning.",
+      "coordination_hint": "It may help to tie ecosystem protection and connectivity actions to corridor-scale land-use screening, protected-area and indigenous boundary checks, and financing or infrastructure conditions that reinforce avoidance, restoration, and monitoring in overlapping territories.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_6",
+    "category_name": "Soil fertility management and restoration",
+    "aligned_count": 3119,
+    "flagged_count": 33,
+    "pool_composition": {
+      "primary_count": 0,
+      "relevant_only_count": 3401
+    },
+    "contradiction_types": {
+      "implementation_tension": 33
+    },
+    "synthesis": {
+      "storyline_name": "Link soil restoration with water and land governance",
+      "reinforce": "Within this sector, alignment often comes from targets that protect organic soils, restore degraded lands, or raise soil carbon, alongside water security, watershed restoration, PES, MRV, and climate-smart agri-food planning. These pairs tend to reinforce through shared mechanisms such as monitoring, territorial prioritization, incentives for sustainable land management, and support for wetlands, agricultural soils, and hydrologically connected landscapes.",
+      "clash": "Possible misalignment recurs where logistics corridors, roads, reservoirs, energy infrastructure, housing expansion, or broader industrial and export growth could overlap with wetlands, peatlands, degraded soils, or restoration areas. The flagged tension is mainly implementation-related, suggesting that siting, routing, drainage controls, and land-use safeguards may need review so infrastructure and productive expansion do not weaken soil protection and restoration outcomes.",
+      "coordination_hint": "It may help to screen infrastructure, water-storage, and productive-investment decisions against mapped organic soils, restoration priorities, and watershed plans, using shared MRV and territorial criteria.",
+      "confidence": "low"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_7",
+    "category_name": "Nature-based risk management and disaster prevention",
+    "aligned_count": 12377,
+    "flagged_count": 104,
+    "pool_composition": {
+      "primary_count": 7518,
+      "relevant_only_count": 7375
+    },
+    "contradiction_types": {
+      "implementation_tension": 103,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Linking ecosystem risk reduction with enabling systems",
+      "reinforce": "Within this sector, alignment often comes from pairing concrete nature-based risk measures, such as forest fire management, mangrove and coastal restoration, nursery development, and biological stewardship, with enabling systems for data, finance, planning, participation, and technology. The sample also reinforces a recurring logic that information platforms, early warning, adaptation planning, gender and Indigenous participation, and ecosystem finance can support prevention and resilience outcomes without requiring identical implementation mechanisms.",
+      "clash": "Possible misalignment recurs where conservation, restoration, protected-area management, biological corridors, invasive-species control, or Indigenous-territory safeguards meet large infrastructure, logistics, reservoir, road, irrigation, or export-oriented expansion in overlapping watersheds, coastal zones, and forest landscapes. These flagged pairs mostly point to implementation tension, especially around land-use change, habitat fragmentation, hydrological alteration, biosecurity risk, and the pace of infrastructure delivery relative to consent, boundary, and community protection processes.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, safeguard integration, and shared watershed or coastal governance, so that infrastructure and productive investments can be screened against restoration, habitat connectivity, fire prevention, and community-based risk management priorities.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_8",
+    "category_name": "Nature-based carbon sequestration",
+    "aligned_count": 11247,
+    "flagged_count": 167,
+    "pool_composition": {
+      "primary_count": 322,
+      "relevant_only_count": 12809
+    },
+    "contradiction_types": {
+      "implementation_tension": 160,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "build REDD-plus incentives, rules, and monitoring",
+      "reinforce": "This sector often aligns where REDD+ governance, MRV, carbon-rights rules, and payment-for-ecosystem-services mechanisms reinforce forest restoration, sustainable forest management, and place-based incentive programmes such as Canal watershed PES and vegetation-cover conservation. Reinforcement also recurs through enabling systems, legal reform, finance tracking, geospatial information, and transparency measures that tend to support implementation of forest carbon conservation and restoration activities.",
+      "clash": "Possible misalignment is mostly flagged where forest carbon conservation, restoration, or PES measures meet agricultural export promotion, housing expansion, logistics corridors, road building, and other infrastructure that can increase land conversion, fragmentation, access, or fire risk in overlapping territories. A smaller pattern flagged for review concerns resource competition, where forestry rehabilitation or reforestation and agro-industrial expansion may compete for land and water, and where commercial plantations or forestry industry growth may sit uneasily with protection or restoration priorities.",
+      "coordination_hint": "This sector tends to benefit from territorial zoning, safeguards, and benefit-sharing rules that link REDD+ incentives and restoration plans with agriculture, transport, housing, and watershed investments before implementation overlaps occur.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "nbs",
+    "category_id": "nbs_9",
+    "category_name": "Urban settlements management",
+    "aligned_count": 2738,
+    "flagged_count": 62,
+    "pool_composition": {
+      "primary_count": 1682,
+      "relevant_only_count": 2021
+    },
+    "contradiction_types": {
+      "implementation_tension": 58,
+      "resource_competition": 4
+    },
+    "synthesis": {
+      "storyline_name": "Steer urban expansion around ecological and service constraints",
+      "reinforce": "Urban settlements management often aligns with measures that improve municipal evidence, standards, and integrated planning, such as standardized urban waste data, sustainable building and housing rules, sanitation expansion, and urban green-blue space planning. The sample also points to reinforcement where housing and land governance frameworks connect with broader climate, transparency, and inter-institutional coordination systems.",
+      "clash": "Possible misalignment recurs where housing provision, land subdivision, transport links, or other urban expansion pressures may compete with forest restoration, carbon-stock protection, riparian buffers, mangroves, ecological corridors, and species conservation in the same territories. A smaller flagged pattern also points to major infrastructure and logistics works potentially fragmenting protected or priority ecological areas linked to settlement growth and spatial planning.",
+      "coordination_hint": "This sector tends to benefit from early spatial zoning, municipal permitting, and land-use screening that integrate housing and infrastructure plans with watershed, corridor, and restoration safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_agriculture",
+    "category_name": "Agriculture",
+    "aligned_count": 10190,
+    "flagged_count": 185,
+    "pool_composition": {
+      "primary_count": 3538,
+      "relevant_only_count": 8134
+    },
+    "contradiction_types": {
+      "implementation_tension": 180,
+      "resource_competition": 5
+    },
+    "synthesis": {
+      "storyline_name": "Link agricultural transformation to land stewardship",
+      "reinforce": "Agriculture-related targets often align when producer training, organic agriculture, agroforestry, and climate-smart agri-food transformation are paired with geospatial and agroclimatic information systems, soil-carbon management, and protected-area or forest governance. The sample also points to reinforcing links where agricultural modernization is framed through technical assistance, territorial planning, and sustainable land management, including organic soils, pasturelands, and rural livelihoods.",
+      "clash": "Possible misalignment recurs where agricultural export growth, rural technification, irrigation, reservoirs, roads, and logistics expansion could increase pressure on forests, riparian zones, wetlands, organic soils, biological corridors, or pollution-reduction goals in overlapping territories. A smaller flagged pattern concerns resource competition, where agricultural water capture and productivity measures may compete with drinking water supply unless allocation and watershed planning are coordinated.",
+      "coordination_hint": "It tends to help to tie agricultural support, infrastructure, and water investments to spatial screening, forest and wetland safeguards, biosecurity, and deforestation-free production criteria in the same rural landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_energy",
+    "category_name": "Energy",
+    "aligned_count": 3160,
+    "flagged_count": 29,
+    "pool_composition": {
+      "primary_count": 1658,
+      "relevant_only_count": 2363
+    },
+    "contradiction_types": {
+      "implementation_tension": 29
+    },
+    "synthesis": {
+      "storyline_name": "Integrate climate resilience and cleaner energy planning",
+      "reinforce": "Energy policy often aligns around strengthening climate resilience in sector planning, especially where climate scenarios, physical risk criteria, and adaptation planning are incorporated into energy system operation and expansion. Reinforcement also recurs through enabling measures such as renewable energy promotion, distributed electrification, household energy efficiency, green transition governance, and science and technology transfer that support more resilient and lower-emission energy implementation.",
+      "clash": "Possible misalignment is repeatedly flagged where electricity coverage expansion, transmission corridors, renewable facilities, and related infrastructure could overlap with protected areas, restoration zones, biological corridors, wetlands, organic soils, and deforestation-control territories. A second recurring tension appears where broader transport, logistics, or infrastructure expansion linked to energy systems could make biodiversity protection, forest safeguards, or economy-wide emissions reduction harder to implement unless siting, routing, and incentive design are coordinated.",
+      "coordination_hint": "It tends to help if energy expansion and resilience planning are jointly screened with land-use, biodiversity, and forest-management instruments early, so renewable and electrification gains can proceed while localized infrastructure pressures are flagged for review.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_ippu",
+    "category_name": "Industrial processes and product use",
+    "aligned_count": 1377,
+    "flagged_count": 15,
+    "pool_composition": {
+      "primary_count": 0,
+      "relevant_only_count": 1656
+    },
+    "contradiction_types": {
+      "implementation_tension": 15
+    },
+    "synthesis": {
+      "storyline_name": "Link industrial footprint reduction with environmental safeguards",
+      "reinforce": "Within Industrial processes and product use, alignment often appears where pollution reduction, cleaner production, traceability, compliance monitoring, and sectoral GHG planning reinforce broader water, climate, and environmental governance goals. The sample also points to industrial policy and productive-sector prioritization aligning when safeguards, reporting systems, and cleaner technologies are used to steer industrial activity toward lower pollution and lower-emission pathways.",
+      "clash": "Possible misalignment recurs around implementation tension between industrial expansion, logistics corridors, and export-oriented growth, and targets on emissions reduction, pollution control, forest protection, protected areas, and restoration. The mechanism flagged for review is indirect pressure from industrial siting, infrastructure, trade flows, crude-oil related logistics, and regulatory simplification, which could make land-use, biosecurity, and pollution objectives harder to achieve unless safeguards are applied.",
+      "coordination_hint": "This sector tends to benefit from early land-use screening, low-carbon and cleaner-logistics design, and environmental compliance requirements being built into industrial and infrastructure planning.",
+      "confidence": "low"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_lulucf",
+    "category_name": "Land use, land-use change and forestry (LULUCF)",
+    "aligned_count": 29928,
+    "flagged_count": 517,
+    "pool_composition": {
+      "primary_count": 29822,
+      "relevant_only_count": 5961
+    },
+    "contradiction_types": {
+      "implementation_tension": 509,
+      "resource_competition": 8
+    },
+    "synthesis": {
+      "storyline_name": "Linking forest restoration with finance and governance",
+      "reinforce": "LULUCF targets often align where forest conservation, restoration, REDD+, and carbon-stock enhancement are paired with enabling finance, benefit-sharing, PES, MRV, and coordination mechanisms. The sample also points to recurring reinforcement between land and forest actions and broader enablers such as territorial planning, community participation, digital systems, watershed protection, and biodiversity-land-climate integration.",
+      "clash": "Possible misalignment recurs when forest protection, zero deforestation, mangrove protection, corridor restoration, or REDD+ rules meet infrastructure, logistics, road building, reservoir works, housing, agricultural expansion, or industrial growth in overlapping landscapes. The flagged pairs often point to implementation tension through habitat fragmentation, land conversion pressure, increased access and fire risk, or projects entering watersheds, protected areas, corridors, riparian zones, or REDD+ territories without sufficiently strong spatial safeguards.",
+      "coordination_hint": "This sector tends to benefit from early territorial screening, watershed and corridor mapping, and explicit no-conversion or mitigation rules so that transport, agriculture, energy, housing, and forest-carbon measures can be sequenced and aligned in shared landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_other",
+    "category_name": "Other / Cross-cutting",
+    "aligned_count": 34327,
+    "flagged_count": 406,
+    "pool_composition": {
+      "primary_count": 33519,
+      "relevant_only_count": 7778
+    },
+    "contradiction_types": {
+      "implementation_tension": 396,
+      "resource_competition": 10
+    },
+    "synthesis": {
+      "storyline_name": "Link cross-sector governance to land and water outcomes",
+      "reinforce": "This sector often aligns where broad governance tools, coordination platforms, safeguards, transparency, monitoring, and financing mechanisms reinforce concrete conservation, restoration, water, and agri-food actions. The sample repeatedly points to enabling links between REDD+, protected areas, watershed protection, climate-smart agriculture, innovation systems, and public information systems, especially when institutions share data, standards, or territorial planning.",
+      "clash": "Possible misalignment recurs when cross-cutting infrastructure, housing, logistics, agricultural expansion, or water-service delivery meets forest, mangrove, restoration, biodiversity-corridor, or indigenous resource-management objectives in the same territory. Most flagged cases are implementation tension, often around siting, land conversion, watershed pressure, or habitat fragmentation, with a smaller flagged-for-review pattern of competition over finite water resources between agricultural use and drinking water supply.",
+      "coordination_hint": "This sector tends to benefit from early territorial screening, shared land and water planning, and embedding biodiversity, forest, and indigenous safeguards into infrastructure, housing, agriculture, and service-delivery decisions.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_transport",
+    "category_name": "Transport",
+    "aligned_count": 1497,
+    "flagged_count": 337,
+    "pool_composition": {
+      "primary_count": 687,
+      "relevant_only_count": 1687
+    },
+    "contradiction_types": {
+      "implementation_tension": 331,
+      "resource_competition": 6
+    },
+    "synthesis": {
+      "storyline_name": "expand transport while embedding environmental safeguards",
+      "reinforce": "Transport targets often align with cross-sector governance, research, and service-planning measures that can support implementation, especially where sustainable mobility, logistics, charging infrastructure, watershed governance, and information systems are involved. The sample also shows transport actions can reinforce market access and low-carbon transition aims, for example through logistics corridors that support commercialization and through clean-energy measures that enable electrified mobility.",
+      "clash": "Possible misalignment recurs where logistics corridors, roads, Canal-related infrastructure, or housing-linked transport works intersect forests, restoration areas, biological corridors, wetlands, species habitat, or indigenous territorial management. The recurring mechanism is implementation tension over routing, land conversion, habitat fragmentation, induced access, and safeguard capacity, rather than direct policy contradiction.",
+      "coordination_hint": "Transport planning in this sector tends to benefit from early spatial screening, watershed and biodiversity safeguards, and coordination with forest, adaptation, and indigenous governance processes, especially for corridor, road, and Canal-linked investments.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "sector",
+    "category_id": "sector_waste",
+    "category_name": "Waste",
+    "aligned_count": 4269,
+    "flagged_count": 8,
+    "pool_composition": {
+      "primary_count": 1999,
+      "relevant_only_count": 3354
+    },
+    "contradiction_types": {
+      "implementation_tension": 8
+    },
+    "synthesis": {
+      "storyline_name": "strengthen waste action through enabling governance",
+      "reinforce": "Waste-related targets often align with cross-cutting governance tools, especially inter-institutional coordination, open data, digitalized administration, and baseline-setting for waste generation, plastics, and high-footprint consumption patterns. The sample also points to enabling links with circular economy, recycling infrastructure, and broader urban water and sanitation systems, where better monitoring and public management tends to reinforce waste reduction and service delivery.",
+      "clash": "Possible misalignment recurs where logistics and infrastructure expansion, especially around ports, corridors, and crude-oil related systems, could increase material throughput, packaging flows, emissions, and pollution risks that make plastics reduction, circular economy, and waste-sector mitigation harder to implement. A smaller flagged pattern also points to road expansion in environmentally sensitive areas, which may complicate broader resource-efficiency and waste-related environmental management goals.",
+      "coordination_hint": "It may help to screen major logistics, transport, and urban service investments against waste baseline data, plastics-reduction goals, and circular-economy standards so infrastructure delivery more often reinforces, rather than weakens, waste outcomes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

@@ -271,6 +271,86 @@ export function isContradiction(level: AlignmentLevel): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// LLM Synthesis layer (post-processing of alignment.json + classifications.json)
+// ---------------------------------------------------------------------------
+//
+// Shapes mirror the Python pipeline outputs in python/output/{country}/:
+//   - doc_pair_synthesis.json  → DocPairSynthesis[]
+//   - corpus_themes.json       → CorpusThemes
+//   - sector_synthesis.json    → SectorSynthesis[]
+//
+// The `confidence` field is LLM-emitted; in current outputs it's always "high"
+// so the UI does NOT render it as a chip. Pool sizes carry the signal instead.
+
+/** LLM-emitted counts of negative-side contradiction subtypes for a doc-pair or sector. */
+export interface ContradictionTypeCounts {
+  implementation_tension?: number;
+  resource_competition?: number;
+  goal_conflict?: number;
+}
+
+/** The shared "reinforce + clash + coordination hint" synthesis block. */
+export interface SynthesisBlock {
+  storyline_name: string;
+  reinforce: string;
+  clash: string;
+  coordination_hint: string;
+  confidence: "high" | "medium" | "low";
+}
+
+/** One per cross-doc pair with ≥3 records (aligned + flagged). */
+export interface DocPairSynthesis {
+  doc_a: string;
+  doc_b: string;
+  label_a: string;
+  label_b: string;
+  aligned_count: number;
+  flagged_count: number;
+  contradiction_types: ContradictionTypeCounts;
+  synthesis: SynthesisBlock;
+  synthesis_error: string | null;
+}
+
+/** One storyline in the corpus-level briefing. */
+export interface CorpusStoryline {
+  name: string;
+  type: "reinforcement" | "friction";
+  description: string;
+  /** Canonical "DocA<->DocB" strings; the corpus augmenter resolves human labels back to doc-ids. */
+  contributing_doc_pairs: string[];
+  confidence: "high" | "medium" | "low";
+  unknown_doc_pairs?: string[];
+  /** Deterministic: sum of aligned + flagged counts across contributing doc-pairs. */
+  pair_count: number;
+  /** Deterministic: sorted unique doc-ids the storyline spans. */
+  spans_documents: string[];
+}
+
+/** Corpus-level briefing: a few high-level storylines + a 3-4 sentence summary. */
+export interface CorpusThemes {
+  storylines: CorpusStoryline[];
+  summary_paragraph: string;
+  doc_pair_count: number;
+}
+
+/** One synthesis per (taxonomy_type, category_id) with sufficient signal. */
+export interface SectorSynthesis {
+  taxonomy_type: string;
+  category_id: string;
+  category_name: string;
+  aligned_count: number;
+  flagged_count: number;
+  /** Pool composition for UI transparency; "primary" = sector is primary on ≥1 side. */
+  pool_composition: {
+    primary_count: number;
+    relevant_only_count: number;
+  };
+  contradiction_types: ContradictionTypeCounts;
+  synthesis: SynthesisBlock;
+  synthesis_error: string | null;
+}
+
+// ---------------------------------------------------------------------------
 // BTR / CTF Data (parsed from Biennial Transparency Report Excel files)
 // ---------------------------------------------------------------------------
 

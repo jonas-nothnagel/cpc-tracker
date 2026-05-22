@@ -131,7 +131,7 @@ export function ConstellationCenterpiece({
   targets,
   alignments,
   countryConfig,
-  state = { mode: "aggregate" },
+  state = { groupBy: "document", focus: null, filter: "all" },
 }: ConstellationCenterpieceProps) {
   const { positions, clusterCenters } = useMemo(
     () => buildLayout(targets),
@@ -155,8 +155,8 @@ export function ConstellationCenterpiece({
     return [...aligns, ...tensions];
   }, [alignments, positions]);
 
-  const showAlignments = state.mode !== "tensions";
-  const showTensions = state.mode !== "alignments";
+  const showAlignments = state.filter !== "tensions";
+  const showTensions = state.filter !== "alignments";
 
   return (
     <div className="w-full flex justify-center">

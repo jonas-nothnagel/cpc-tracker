@@ -1,7 +1,7 @@
-# Coherence Briefing prototype — handoff
+# Policy Coherence prototype — handoff
 
-A 10-slide click-through briefing that ends in an exploration workspace.
-Mounted on `/prototypes`.
+A findings-first home page that replaces the slide deck. Mounted on
+`/prototypes?country=mongolia|panama`.
 
 ## Quick start
 
@@ -11,113 +11,123 @@ pnpm dev
 # (or ?country=panama)
 ```
 
-Existing prototypes (Atlas, Financing Gaps, Funding Network) are hidden behind a
-`SHOW_LEGACY_PROTOTYPES = false` flag in `prototypes-client.tsx` — flip to restore.
+Legacy prototypes (Atlas, Financing Gaps, Funding Network) are hidden
+behind a `SHOW_LEGACY_PROTOTYPES = false` flag in `prototypes-client.tsx`.
+Flip to restore them while the findings-home direction is still shaping.
 
 ## Information architecture
 
-10 slides driven by `SlideDeckShell` (Prev / Next buttons + arrow keys). The
-wheel sits on the right of every slide and changes state per slide; the left
-text panel changes per slide.
+One scrolled page, four sections, sticky wheel on the right.
 
-| # | Slide | Left content | Wheel state |
-|---|-------|--------------|-------------|
-| 1 | Hero — both questions | Q1 / Q2 framing + counts | `idle` |
-| 2 | Primer aligned | one real aligned pair card | `pair` highlight |
-| 3 | Primer tension | one real tension pair card | `pair` highlight |
-| 4 | Build-up | "now all targets in one frame" | `aggregate` |
-| 5 | Pattern | what stands out at a glance | `aggregate` |
-| 6 | Q1 verdict | `pickHeadlineVerdict()` sentence + verdict badge | `alignments` only |
-| 7 | Q2 intro | "where do those tensions concentrate?" | `tensions` only |
-| 8 | **Sectoral grid** | clickable sector tile list, density bars | `sector` on top sector |
-| 9 | **Top gaps** | top 6 fault-line rows, click → pair drawer | `tensions` only |
-| 10 | Explore | chip filters + sector chips + chat | chip-driven, interactive |
+| #  | Section          | What it asserts                                                                 | Wheel default                                                       |
+|----|------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| 01 | Direction        | The country's anchor doc and how it sits with the others (or doc-agnostic).     | `groupBy: doc`, focus = `anchorDocType`                             |
+| 02 | Sectors          | Where flags concentrate, with a one-sentence finding per populated sector.      | `groupBy: sector`, focus = top tension sector, filter = tensions    |
+| 03 | Misalignments    | The single doc-pair that disagrees most, plus the top-6 fault lines.            | `groupBy: doc`, focus = most-flagged doc, filter = tensions         |
+| 04 | Explore          | User-controlled chips + chat for everything the home does not pre-compute.      | `groupBy` auto by doc count (≤5 doc, ≥6 sector), focus from chips   |
 
-Slides 8 and 9 are the A1/A2-style panels (sectoral list + fault lines list)
-that the user explicitly wanted back as their own deck slots rather than being
-folded into individual per-sector tour slides.
+Active section is detected via `IntersectionObserver` in `index.tsx`. The
+sticky wheel reacts: groupBy, focus, and filter all change with the section.
+Jump nav at the top lets users hop directly to any section.
 
-Drill-downs (sector tile click on slide 8, fault-line row click on slide 9,
-primer card on slides 2/3, wheel chord click on slide 10) open side drawers
-— never advance the deck.
+Drill-downs (primer card on Direction, sector card on Sectors, fault-line
+row on Misalignments, arc click on the wheel) either open a side drawer
+(sector / pair) or update focus. The page never advances; clicks are
+non-blocking.
 
 ## File map
 
 ```
 src/components/prototypes/coherence-briefing/
-├── index.tsx              # orchestrator: 10-slide config, drawer state, explore-slide state
-├── slide-deck-shell.tsx   # Prev/Next/arrow-key deck with persistent visual slot
+├── index.tsx                  # orchestrator: derived data, section refs, wheel state, drawers
+├── primer-card.tsx            # extracted from the dropped slide-deck primer pattern
+├── sections/
+│   ├── direction.tsx          # Section 1 — anchor-centric paragraph + verdict + primer
+│   ├── sectors.tsx            # Section 2 — concentration sentence + per-sector cards
+│   ├── misalignments.tsx      # Section 3 — doc-pair sentence + fault-line list
+│   └── explore.tsx            # Section 4 — chips + chat + lens-aware sector chips
 ├── centerpiece/
-│   ├── index.tsx          # dispatcher: wheel ↔ constellation
-│   ├── wheel.tsx          # A3 aggregated bezier ribbons
-│   └── constellation.tsx  # alternative cluster view
-├── chat-panel.tsx         # /api/coherence-chat wrapper, used by slide 10
-├── sector-drawer.tsx      # opened by sector tile click + "Full briefing" chip
-├── pair-drawer.tsx        # opened by primer card / fault-line row / wheel chord
-└── HANDOFF.md             # this file
+│   ├── index.tsx              # dispatcher (wheel ↔ constellation); legend
+│   ├── wheel.tsx              # three-axis state model (see below)
+│   └── constellation.tsx      # alternative cluster view (kept as opt-in only)
+├── chat-panel.tsx             # /api/coherence-chat wrapper, used by Explore
+├── sector-drawer.tsx          # opened from sector row click + "Open sector" chip
+├── pair-drawer.tsx            # opened from primer card / fault-line row / wheel ribbon click
+└── HANDOFF.md                 # this file
 
-src/lib/coherence-briefing.ts  # verdict, fault lines, primer examples, sector density, sector briefing
+src/lib/coherence-briefing.ts   # verdict, fault lines, primer, sector density, anchor headline,
+                                # concentration stat, sector hub, doc-pair disagreement.
+src/lib/vision-anchor.ts        # aggregateAnchorCoverage reused for the Direction headline.
 ```
 
-## Design rules (do not violate without explicit ask)
-
-- **Each slide is a finding.** No buildup slides except slides 4 / 5 which both
-  carry the centerpiece view; the buildup is paid back immediately on slide 6.
-- **Primer is its own pair of slides (2, 3).** The user liked these specifically.
-  Slides 2 and 3 highlight one real pair each on the wheel.
-- **Slides 8 and 9 are the sectoral grid and the fault-lines list.** Do not
-  collapse them into the explore slide; the user wants them as their own
-  deck slots.
-- **Drill-downs are drawers.** Never advance a slide on a click within a slide.
-- **Wheel keeps A3 aggregated-ribbon style.** Not d3-chord. Not individual
-  chords. (`feedback_wheel_aggregated_ribbons` memory).
-- **Off-white background, serif headlines, calm spacing.** Aesthetic locked.
-- **No em dashes in user-facing text.**
-
-## WheelState shape
+## Wheel — three-axis state
 
 ```ts
 interface WheelState {
-  mode: "idle" | "aggregate" | "pair" | "alignments" | "tensions" | "sector";
-  pair?: { aId: string; bId: string };          // for mode === "pair" (ghosts the rest)
-  sectorCategoryId?: string;                     // for mode === "sector"
-  sectorTaxonomyType?: string;
+  groupBy: "document" | "sector";            // arc grouping
+  focus:
+    | { type: "doc"; id: string }
+    | { type: "sector"; id: string; taxonomyType: string }
+    | null;                                  // null = aggregate, all ribbons
+  filter: "all" | "alignments" | "tensions"; // colour overlay
+  highlightPair?: { aId: string; bId: string };
 }
 ```
 
-## Open improvement areas
+- Ribbons are always aggregated per arc-pair. Width is `sqrt(count) * factor`.
+  Green half = aligned (medium+high). Red half = flagged (any negative-side).
+- `groupBy: "sector"` buckets targets by primary classification under the
+  active lens taxonomy (country sectors → IPCC → GLOBE fallback). Targets
+  without a primary classification sit in a quiet "Unclassified" bucket.
+- `focus` is the new mode. When set, only ribbons touching the focused arc
+  render at full opacity; the rest ghost. Click any other arc → focus
+  switches (this is the mode that scales to 15+ docs).
+- Section 1 and Section 3 stay on `document` grouping; Section 2 on `sector`.
+  Section 4 auto-switches based on document count and yields to chip clicks.
 
-- Slides 4 and 5 are both `aggregate` — could differentiate by adding a
-  hover-cue or by isolating one specific doc pair on slide 5.
-- The wheel ribbon endpoints / widths still feel "kinda random" to the user.
-  Untried: connect at the doc-arc edge nearest the partner; encode dominance
-  via a gradient ribbon.
-- Country handling: Panama lacks BER, so any future "Budget angle" content
-  needs graceful skip.
+## Design rules (do not violate without explicit ask)
+
+- **Each section IS a finding from the moment it scrolls into view.** Section
+  headlines are paragraph claims, not labels or questions.
+- **Drill-downs open drawers.** Clicking a sector card or fault-line row
+  never reflows the page; it opens a side panel.
+- **Wheel uses the A3 aggregated bezier ribbon style.** Not d3-chord. Not
+  individual chords. The focus mode is the new addition; ribbon geometry
+  itself is unchanged.
+- **Off-white background, serif headlines, calm spacing.** Aesthetic locked.
+- **No em dashes in user-facing text.**
+- **No "tension" in user-facing strings.** Negative-side vocabulary is
+  "possible misalignment / possible conflict / likely conflict" for levels,
+  "flagged pair" / "potential misalignment" / "possibly misaligned with" for
+  aggregate text. Internal field names (`tensionCount`, `tensionShare`,
+  `WheelFilter` literal `"tensions"`) stay.
+- **No detectors.** The headline content uses generic data-derived helpers
+  in `coherence-briefing.ts`. Detectors in `src/lib/coherence-insights.ts`
+  belong to the curated production dashboard.
 
 ## What was tried and rejected (May 2026)
 
 - Long scrollytell with 5+ narrative scenes — "blog article"
 - Cockpit dashboard with everything flat — "too dashboardy"
-- Snap-scroll 4-scene storytelling — "ends on empty view" + "blog article"
-- 4-slide click-through deck — "want sectoral grid + top gaps back"
-- `d3-chord` proper rim-subdivided layout — "mechanical"
-- Individual chord rendering (top-N curated) — "individual lines without aggregation"
+- 10-slide click-through deck — "tedious; clicking through every visit"
+- 4-slide click-through (compromise) — same click-through cost remained
+- `d3-chord` proper rim-subdivided layout — "looks mechanical"
+- Individual chord rendering (even curated top-N) — "individual lines without
+  aggregation is also not the solution"
+- Doc-theme derivation from classifications — user noted that doc names
+  already carry identity; do not add synthetic "mainly about" tags.
 - Fingerprint scatter and River braids centerpieces (deleted)
-- Constellation as primary (kept as alternative only)
-
-See `MEMORY.md` entries `feedback_briefing_iteration_journey.md` and
-`feedback_wheel_aggregated_ribbons.md` for context.
 
 ## Data dependencies
 
-No new pipeline runs. The briefing reads:
+No new pipeline runs. The findings home reads:
+
 - `python/output/{country}/alignment.json` (target × target)
 - `python/output/{country}/measure_alignment.json` (BTR × target)
 - `python/data/{country}-targets.json`
-- `python/data/{country}-country-config.json`
+- `python/data/{country}-country-config.json` (anchorDocType + document labels)
 - `python/output/{country}/classifications.json`
-- BER for Mongolia only (`python/data/mongolia-ber.json`)
+- BER for Mongolia only (filtered upstream in `prototypes-client.tsx`)
 
 Served by the existing `/api/dashboard?country={id}` endpoint that
 `prototypes-client.tsx` already consumes.

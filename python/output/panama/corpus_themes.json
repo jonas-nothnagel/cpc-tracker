@@ -1,0 +1,160 @@
+{
+  "storylines": [
+    {
+      "name": "Link forest incentives to governance systems",
+      "type": "reinforcement",
+      "description": "A strong pattern recurs in which REDD+ and nature documents pair place-based incentives, restoration, fire management, and community support with enabling systems such as safeguards, FPIC, participation channels, carbon ownership rules, benefit-sharing, and national monitoring platforms. This tends to align local delivery in forests, watersheds, and indigenous territories with broader governance, finance, and accountability architecture.",
+      "contributing_doc_pairs": [
+        "CNR<->ENR",
+        "CNR<->HR",
+        "CNR<->NP",
+        "ENR<->HR",
+        "ENR<->NP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 13138,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP"
+      ]
+    },
+    {
+      "name": "Reinforce restoration through watershed management tools",
+      "type": "reinforcement",
+      "description": "Across several pairs, forest restoration, riparian recovery, protective vegetation, ecological corridors, and payment for environmental services align with water security and Canal watershed planning. The recurring mechanism is that restoration and forest stewardship help regulate flows, reduce erosion, protect source water, and support ecosystem monitoring and local land-use planning.",
+      "contributing_doc_pairs": [
+        "CNR<->PIOTA",
+        "CNR<->PNSH",
+        "ENR<->PIOTA",
+        "ENR<->PNSH",
+        "NP<->PNSH",
+        "PIOTA<->PNRF",
+        "PNRF<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 6157,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "NP",
+        "PIOTA",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Use STI and data as enablers",
+      "type": "reinforcement",
+      "description": "A broad enabling storyline recurs around research funding, digitalization, innovation hubs, interoperability, and science outreach reinforcing environmental monitoring, MRV, early warning, traceability, restoration baselines, and public-sector coordination. This aligns PENCYT and related governance reforms with implementation needs in forests, water, biodiversity, health, and territorial planning.",
+      "contributing_doc_pairs": [
+        "CNR<->PENCYT",
+        "ENR<->PENCYT",
+        "HR<->PENCYT",
+        "NP<->PENCYT",
+        "PEG<->PENCYT",
+        "PENCYT<->PNSH",
+        "PENCYT<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 4782,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PENCYT",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Review infrastructure siting in sensitive landscapes",
+      "type": "friction",
+      "description": "A recurring implementation tension is flagged for review where logistics corridors, roads, Canal-related works, housing, energy networks, and related infrastructure may overlap with forests, mangroves, wetlands, riparian zones, protected areas, corridors, and indigenous territories. The mechanism tends to be spatial overlap that could increase access, fragmentation, land conversion, runoff, or fire pressure unless planning and safeguards align closely.",
+      "contributing_doc_pairs": [
+        "CNR<->PEG",
+        "CNR<->PIOTA",
+        "ENR<->PEG",
+        "ENR<->PIOTA",
+        "HR<->PEG",
+        "HR<->PIOTA",
+        "NP<->PEG",
+        "NP<->PIOTA",
+        "PEG<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 443,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PIOTA",
+        "PNRF"
+      ]
+    },
+    {
+      "name": "Review water infrastructure against conservation priorities",
+      "type": "friction",
+      "description": "Reservoirs, storage, treatment, and freshwater-availability works are repeatedly flagged for review where they may intersect with protected forests, wetlands, mangroves, ecological corridors, or restored watersheds. This points to localized implementation tension around siting, altered hydrology, habitat disturbance, and biosecurity pathways in shared basins and coastal zones.",
+      "contributing_doc_pairs": [
+        "ENR<->PNSH",
+        "HR<->PNSH",
+        "NP<->PNSH",
+        "PIOTA<->PNSH",
+        "PNRF<->PNSH",
+        "PEG<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 22,
+      "spans_documents": [
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PIOTA",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Review production and forestry expansion safeguards",
+      "type": "friction",
+      "description": "Another storyline recurs where agricultural modernization, irrigation, aquaculture, commercial plantations, and forestry industry development may create pressure in landscapes also targeted for restoration, zero deforestation, protected-area management, biodiversity connectivity, or invasive-species control. These cases are generally framed as implementation-related and flagged for review around zoning, species choice, and how productivity support is directed in shared rural territories.",
+      "contributing_doc_pairs": [
+        "CNR<->PENCYT",
+        "ENR<->NP",
+        "ENR<->PENCYT",
+        "ENR<->PNRF",
+        "HR<->PNRF",
+        "NP<->PENCYT",
+        "NP<->PNRF",
+        "PENCYT<->PNRF",
+        "PIOTA<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 70,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PENCYT",
+        "PIOTA",
+        "PNRF"
+      ]
+    }
+  ],
+  "summary_paragraph": "Panama's document set leans strongly toward reinforcement, with recurring alignment between place-based forest, restoration, and watershed actions and enabling systems for safeguards, participation, finance, monitoring, and science. A second broad pattern is that water security, Canal watershed management, and forest restoration often reinforce one another through catchment protection, corridor management, and shared information systems. At the same time, several implementation tensions are repeatedly flagged for review where infrastructure, reservoir development, and some production or forestry expansion measures may overlap with protected forests, wetlands, corridors, mangroves, and indigenous or rural territories. Overall, the evidence points to substantial coherence in governance architecture, alongside recurring spatial and siting issues in shared landscapes.",
+  "doc_pair_count": 36
+}

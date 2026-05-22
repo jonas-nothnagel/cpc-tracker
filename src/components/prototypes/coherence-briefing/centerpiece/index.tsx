@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Centerpiece dispatcher. The slide deck owns the WheelState; this
+ * Centerpiece dispatcher. The findings-home owns the WheelState; this
  * component just switches between Wheel and Constellation as the
  * aesthetic and passes the state through.
  *
@@ -9,7 +9,12 @@
  */
 
 import { useState } from "react";
-import { WheelCenterpiece, type WheelState } from "./wheel";
+import {
+  WheelCenterpiece,
+  type SectorCategoryRef,
+  type WheelFocus,
+  type WheelState,
+} from "./wheel";
 import { ConstellationCenterpiece } from "./constellation";
 import type {
   AlignmentResult,
@@ -27,20 +32,26 @@ export function Centerpiece({
   classifications,
   countryConfig,
   state,
+  sectorCategories,
+  sectorTaxonomyType,
   variant: variantProp,
   onVariantChange,
   showPicker = true,
   onPairClick,
+  onArcClick,
 }: {
   targets: Target[];
   alignments: AlignmentResult[];
   classifications: ThematicClassification[];
   countryConfig: CountryConfig | null;
   state: WheelState;
+  sectorCategories?: SectorCategoryRef[];
+  sectorTaxonomyType?: string;
   variant?: Variant;
   onVariantChange?: (v: Variant) => void;
   showPicker?: boolean;
   onPairClick?: (a: string, b: string) => void;
+  onArcClick?: (focus: WheelFocus) => void;
 }) {
   const [internalVariant, setInternalVariant] = useState<Variant>("wheel");
   const variant = variantProp ?? internalVariant;
@@ -56,7 +67,10 @@ export function Centerpiece({
             classifications={classifications}
             countryConfig={countryConfig}
             state={state}
+            sectorCategories={sectorCategories}
+            sectorTaxonomyType={sectorTaxonomyType}
             onPairClick={onPairClick}
+            onArcClick={onArcClick}
           />
         ) : (
           <ConstellationCenterpiece
@@ -107,7 +121,7 @@ function Legend() {
   return (
     <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
       <LegendDot color="#196127" label="Alignment" />
-      <LegendDot color="#dc2626" label="Flagged tension" dashed />
+      <LegendDot color="#dc2626" label="Flagged pair" dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
         ribbon width = number of pairs
       </span>

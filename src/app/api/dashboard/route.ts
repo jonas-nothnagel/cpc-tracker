@@ -298,6 +298,19 @@ export async function GET(request: NextRequest) {
     join(outputDir, "footprint.json")
   );
 
+  // Synthesis layer (post-processing of alignment + classifications). Three
+  // files per country; each may be absent on older runs. Frontend degrades
+  // gracefully via empty defaults.
+  const docPairSynthesis = readJson<unknown[]>(
+    join(outputDir, "doc_pair_synthesis.json"),
+  );
+  const corpusThemes = readJson<Record<string, unknown>>(
+    join(outputDir, "corpus_themes.json"),
+  );
+  const sectorSynthesis = readJson<unknown[]>(
+    join(outputDir, "sector_synthesis.json"),
+  );
+
   // Strip excluded document types so they never reach the frontend.
   const excluded = new Set<string>(
     (countryConfig as { excludedDocTypes?: string[] } | null)?.excludedDocTypes ?? [],
@@ -367,6 +380,9 @@ export async function GET(request: NextRequest) {
       budgetAlignment: budgetAlignment ?? null,
       budgetPseudoTargets: budgetPseudoTargets ?? null,
       footprint: footprint ?? null,
+      docPairSynthesis: docPairSynthesis ?? [],
+      corpusThemes: corpusThemes ?? null,
+      sectorSynthesis: sectorSynthesis ?? [],
       countryConfig: finalConfig ?? null,
     },
     { status: 200, headers: NO_STORE_HEADERS },
