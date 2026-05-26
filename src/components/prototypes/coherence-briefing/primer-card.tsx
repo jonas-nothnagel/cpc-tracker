@@ -36,7 +36,7 @@ export function PrimerCard({
   const color =
     kind === "aligned"
       ? ALIGNMENT_COLORS.high
-      : ALIGNMENT_COLORS.possible_conflict;
+      : ALIGNMENT_COLORS.flagged;
   const labelA = getDocMediumLabel(countryConfig, line.targetA.sourceDocument);
   const labelB = getDocMediumLabel(countryConfig, line.targetB.sourceDocument);
   const relationLabel =

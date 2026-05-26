@@ -214,7 +214,7 @@ function SectorSynthesisBlock({
             {synthesis.aligned_count.toLocaleString()} aligned
           </span>
           <span className="text-[var(--undp-gray)] mx-2">·</span>
-          <span style={{ color: ALIGNMENT_COLORS.possible_conflict }}>
+          <span style={{ color: ALIGNMENT_COLORS.flagged }}>
             {synthesis.flagged_count.toLocaleString()} flagged
           </span>
         </p>

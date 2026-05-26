@@ -21,10 +21,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  DIRECTION_SECTION_ID,
-  DirectionSection,
-} from "./sections/direction";
-import {
   SECTORS_SECTION_ID,
   SectorsSection,
 } from "./sections/sectors";
@@ -61,7 +57,6 @@ import {
   parseContributingDocPair,
   pickFaultLines,
   pickHeadlineVerdict,
-  pickMostFlaggedDoc,
   pickPrimerExamples,
   type FaultLine,
   type SectorAlignment,
@@ -89,22 +84,24 @@ const FAULT_LINES_TO_SHOW = 6;
 const SECTOR_AUTO_SWITCH_DOC_COUNT = 6;
 
 type SectionId =
-  | typeof DIRECTION_SECTION_ID
-  | typeof SECTORS_SECTION_ID
   | typeof MISALIGNMENTS_SECTION_ID
+  | typeof SECTORS_SECTION_ID
   | typeof EXPLORE_SECTION_ID;
 
+// `MISALIGNMENTS_SECTION_ID` still resolves to the hash "misalignments"
+// for backward compatibility with existing deep-links, but after the
+// round-2 merge this section's user-facing label is "Direction" — it
+// answers the framing question "are these policies pulling the same
+// direction?".
 const SECTION_LABELS: Record<SectionId, string> = {
-  [DIRECTION_SECTION_ID]: "Direction",
+  [MISALIGNMENTS_SECTION_ID]: "Direction",
   [SECTORS_SECTION_ID]: "Sectors",
-  [MISALIGNMENTS_SECTION_ID]: "Misalignments",
   [EXPLORE_SECTION_ID]: "Explore",
 };
 
 const SECTION_ORDER: SectionId[] = [
-  DIRECTION_SECTION_ID,
-  SECTORS_SECTION_ID,
   MISALIGNMENTS_SECTION_ID,
+  SECTORS_SECTION_ID,
   EXPLORE_SECTION_ID,
 ];
 
@@ -152,10 +149,6 @@ export function CoherenceBriefing({
   );
   const docPairDisagreements = useMemo(
     () => findDocPairDisagreement(alignment, targets),
-    [alignment, targets],
-  );
-  const mostFlaggedDoc = useMemo(
-    () => pickMostFlaggedDoc(alignment, targets),
     [alignment, targets],
   );
   const targetMap = useMemo(
@@ -387,7 +380,7 @@ export function CoherenceBriefing({
 
   // ── Active section + focus override (driven by IntersectionObserver) ──
   const [activeSection, setActiveSection] = useState<SectionId>(
-    DIRECTION_SECTION_ID,
+    MISALIGNMENTS_SECTION_ID,
   );
   const [focusBySection, setFocusBySection] = useState<
     Partial<Record<SectionId, WheelFocus | null>>
@@ -401,7 +394,7 @@ export function CoherenceBriefing({
   const [exploreSector, setExploreSector] =
     useState<ExploreSectorSelection | null>(null);
 
-  // Primer-card hover spotlight (Direction section only).
+  // Primer-card hover spotlight (lives in the merged section after R1).
   const [primerHighlight, setPrimerHighlight] =
     useState<PrimerHighlightPair | null>(null);
   // Section 2 row hover → wheel sector focus preview.
@@ -466,20 +459,6 @@ export function CoherenceBriefing({
     const exploreAutoGroup: WheelGroupBy =
       documentCount >= SECTOR_AUTO_SWITCH_DOC_COUNT ? "sector" : "document";
     switch (activeSection) {
-      case DIRECTION_SECTION_ID: {
-        const defaultFocus: WheelFocus = anchorHeadline.isAnchored
-          ? { type: "doc", id: anchorHeadline.anchorDocType! }
-          : null;
-        return {
-          groupBy: "document",
-          focus:
-            sectionFocusOverride === undefined
-              ? defaultFocus
-              : sectionFocusOverride,
-          filter: "all",
-          highlightPair: primerHighlight ?? undefined,
-        };
-      }
       case SECTORS_SECTION_ID: {
         const defaultFocus: WheelFocus = topTensionSector
           ? {
@@ -506,14 +485,20 @@ export function CoherenceBriefing({
         };
       }
       case MISALIGNMENTS_SECTION_ID: {
-        const defaultFocus: WheelFocus = mostFlaggedDoc
-          ? { type: "doc", id: mostFlaggedDoc.docType }
+        // After the round-2 merge this is the top-of-page section: it
+        // answers "are these policies pulling the same direction?" plus
+        // the relationships drill-down. Default focus is the country's
+        // anchor doc (Vision 2050, etc.) — the doc everything is
+        // compared against — matching the verdict sentence's framing.
+        const defaultFocus: WheelFocus = anchorHeadline.isAnchored
+          ? { type: "doc", id: anchorHeadline.anchorDocType! }
           : null;
+        // When themes are active, clear the single-doc focus so the
+        // multi-doc ghost reads as the dominant signal. Doc-pair hover
+        // and primer hover both surface as highlightPair; doc-pair takes
+        // precedence (active interaction) over the static primer.
         return {
           groupBy: "document",
-          // When themes are active, clear the single-doc focus so the
-          // multi-doc ghost reads as the dominant signal. Hover highlight
-          // sits on top of either.
           focus:
             themeGhostDocs && themeGhostDocs.length > 0
               ? null
@@ -521,7 +506,7 @@ export function CoherenceBriefing({
                 ? defaultFocus
                 : sectionFocusOverride,
           filter: "all",
-          highlightPair: docPairHighlightPair,
+          highlightPair: docPairHighlightPair ?? primerHighlight ?? undefined,
           ghostExceptDocs: themeGhostDocs,
         };
       }
@@ -556,7 +541,6 @@ export function CoherenceBriefing({
     anchorHeadline.anchorDocType,
     topTensionSector,
     lensTaxonomyType,
-    mostFlaggedDoc,
     themeGhostDocs,
     docPairHighlightPair,
     exploreFilter,
@@ -598,9 +582,8 @@ export function CoherenceBriefing({
 
   // ── IntersectionObserver wiring ────────────────────────────────
   const sectionRefs = useRef<Record<SectionId, HTMLElement | null>>({
-    [DIRECTION_SECTION_ID]: null,
-    [SECTORS_SECTION_ID]: null,
     [MISALIGNMENTS_SECTION_ID]: null,
+    [SECTORS_SECTION_ID]: null,
     [EXPLORE_SECTION_ID]: null,
   });
 
@@ -664,17 +647,27 @@ export function CoherenceBriefing({
           {/* Content column */}
           <div className="space-y-24">
             <div
-              ref={setSectionRef(DIRECTION_SECTION_ID)}
-              data-section-id={DIRECTION_SECTION_ID}
+              ref={setSectionRef(MISALIGNMENTS_SECTION_ID)}
+              data-section-id={MISALIGNMENTS_SECTION_ID}
             >
-              <DirectionSection
+              <RelationshipsSection
                 countryName={countryName}
                 documentCount={documentCount}
                 anchor={anchorHeadline}
                 verdict={verdict}
                 primer={primer}
+                faultLines={faultLines}
+                docPairDisagreements={docPairDisagreements}
+                docPairSyntheses={docPairSyntheses}
+                corpusThemes={corpusThemes}
                 countryConfig={countryConfig}
                 onOpenPair={openPairFromFaultLine}
+                onOpenDocPair={openDocPairDrawer}
+                selectedThemeNames={selectedThemeNames}
+                onToggleTheme={toggleTheme}
+                themeTypeFilter={themeTypeFilter}
+                onThemeTypeChange={setThemeTypeFilter}
+                onHoverDocPair={setHoveredDocPairKey}
                 onHighlightPair={setPrimerHighlight}
               />
             </div>
@@ -698,25 +691,6 @@ export function CoherenceBriefing({
                 countryConfig={countryConfig}
                 onOpenSector={openSectorDrawer}
                 onHoverSector={setSectorHoverId}
-              />
-            </div>
-            <div
-              ref={setSectionRef(MISALIGNMENTS_SECTION_ID)}
-              data-section-id={MISALIGNMENTS_SECTION_ID}
-            >
-              <RelationshipsSection
-                faultLines={faultLines}
-                docPairDisagreements={docPairDisagreements}
-                docPairSyntheses={docPairSyntheses}
-                corpusThemes={corpusThemes}
-                countryConfig={countryConfig}
-                onOpenPair={openPairFromFaultLine}
-                onOpenDocPair={openDocPairDrawer}
-                selectedThemeNames={selectedThemeNames}
-                onToggleTheme={toggleTheme}
-                themeTypeFilter={themeTypeFilter}
-                onThemeTypeChange={setThemeTypeFilter}
-                onHoverDocPair={setHoveredDocPairKey}
               />
             </div>
             <div

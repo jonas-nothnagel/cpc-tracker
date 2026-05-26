@@ -14,6 +14,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { getCountry, isValidCountryId } from "@/config/countries";
+import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
@@ -134,7 +135,9 @@ export async function GET(request: NextRequest) {
     globe_subcategories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
-  const alignment = readJson<unknown[]>(join(outputDir, "alignment.json"));
+  const alignmentRaw = readJson<Record<string, unknown>[]>(join(outputDir, "alignment.json"));
+  // Migrate any v1 records to v2.1 shape so the rest of the route sees a single schema.
+  const alignment = alignmentRaw ? migrateLegacyAlignmentRecords(alignmentRaw) : null;
   const quantFlags = readJson<
     { targetId: string; isQuantitative: boolean; isTimeBound: boolean; quantitativeDetails?: string; timeBoundDetails?: string }[]
   >(
@@ -270,9 +273,12 @@ export async function GET(request: NextRequest) {
   const measurePseudoTargets = readJson<Record<string, unknown>[]>(
     join(outputDir, "measure_pseudo_targets.json")
   );
-  const measureAlignment = readJson<unknown[]>(
+  const measureAlignmentRaw = readJson<Record<string, unknown>[]>(
     join(outputDir, "measure_alignment.json")
   );
+  const measureAlignment = measureAlignmentRaw
+    ? migrateLegacyAlignmentRecords(measureAlignmentRaw)
+    : null;
 
   const allTargets = measurePseudoTargets
     ? [...enrichedTargets, ...measurePseudoTargets]
@@ -286,9 +292,12 @@ export async function GET(request: NextRequest) {
   const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
     join(outputDir, "budget_pseudo_targets.json")
   );
-  const budgetAlignment = readJson<unknown[]>(
+  const budgetAlignmentRaw = readJson<Record<string, unknown>[]>(
     join(outputDir, "budget_alignment.json")
   );
+  const budgetAlignment = budgetAlignmentRaw
+    ? migrateLegacyAlignmentRecords(budgetAlignmentRaw)
+    : null;
   const berData = readJson<unknown>(
     join(dataDir, deriveCountryFile(targetsFile, "ber"))
   );

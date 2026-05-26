@@ -185,52 +185,56 @@ export function chartDocKey(target: Target): string {
   return target.sourceDocument;
 }
 
-/** Bidirectional color scale: red for possible/likely conflicts, green for alignment */
+/** v2.1 color scale: single flagged state on the negative side, positive scale unchanged. */
 export const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
-  likely_conflict: "#b91c1c",
-  possible_conflict: "#dc2626",
-  possible_misalignment: "#f87171",
+  flagged: "#dc2626",
   none: "#f7f7f7",
   low: "#c6e48b",
   medium: "#7bc96f",
   high: "#196127",
 };
 
-/** Human-readable labels for each relationship level */
+/** Human-readable labels. "Partial" is preferred over "Low" for the positive side per CLAUDE.md guardrail. */
 export const ALIGNMENT_LABELS: Record<AlignmentLevel, string> = {
-  likely_conflict: "Likely conflict",
-  possible_conflict: "Possible conflict",
-  possible_misalignment: "Possible misalignment",
+  flagged: "Flagged for review",
   none: "No relationship",
-  low: "Low",
+  low: "Partial",
   medium: "Medium",
   high: "High",
 };
 
-/** Human-readable labels for contradiction types */
+/** Display labels for the mechanism sub-field on a flagged pair. */
 export const CONTRADICTION_TYPE_LABELS: Record<ContradictionType, string> = {
   goal_conflict: "Goal conflict",
   resource_competition: "Resource competition",
-  implementation_tension: "Implementation tension",
-  scale_scope_mismatch: "Scale/scope mismatch",
+  delivery_friction: "Delivery friction",
 };
 
-/** Ordered list of all levels from most negative to most positive */
+/** Display labels for the manageability sub-field on a flagged pair. */
+export const MANAGEABILITY_LABELS = {
+  manageable: "Manageable",
+  fundamental: "Fundamental",
+} as const;
+
+/** Display labels for the confidence sub-field on a flagged pair. */
+export const CONFIDENCE_LABELS = {
+  high: "High confidence",
+  medium: "Medium confidence",
+  low: "Low confidence",
+} as const;
+
+/** Ordered list of all levels from most negative (flagged) to most positive (high). */
 export const ALIGNMENT_LEVEL_ORDER: AlignmentLevel[] = [
-  "likely_conflict",
-  "possible_conflict",
-  "possible_misalignment",
+  "flagged",
   "none",
   "low",
   "medium",
   "high",
 ];
 
-/** Numeric weight for coherency score calculation (negative for possible/likely conflicts) */
+/** Numeric weight for coherency score calculation. */
 export const ALIGNMENT_WEIGHTS: Record<AlignmentLevel, number> = {
-  likely_conflict: -3,
-  possible_conflict: -2,
-  possible_misalignment: -1,
+  flagged: -3,
   none: 0,
   low: 1,
   medium: 2,

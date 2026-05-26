@@ -65,9 +65,9 @@ describe("aggregateAnchorCoverage", () => {
     makeAlignment("SECTORAL_1", "NBSAP_1", "medium"),
     makeAlignment("NAP_1", "SECTORAL_1", "low"), // bidirectional flip
     // SECTORAL_2 — mostly possible_misalignment
-    makeAlignment("SECTORAL_2", "NDC_1", "possible_misalignment"),
-    makeAlignment("SECTORAL_2", "NDC_2", "possible_misalignment"),
-    makeAlignment("SECTORAL_2", "NBSAP_1", "possible_misalignment"),
+    makeAlignment("SECTORAL_2", "NDC_1", "flagged"),
+    makeAlignment("SECTORAL_2", "NDC_2", "flagged"),
+    makeAlignment("SECTORAL_2", "NBSAP_1", "flagged"),
     makeAlignment("SECTORAL_2", "NAP_1", "medium"),
     // Stray non-anchor pair, must be ignored
     makeAlignment("NDC_1", "NBSAP_1", "high"),
@@ -125,8 +125,8 @@ describe("aggregateAnchorCoverage", () => {
     // dilute the possible_misalignment share or pad the cell totals.
     const noneTargets = [anchorA, ndc1, ndc2, nbsap1];
     const noneAlignment: AlignmentResult[] = [
-      makeAlignment("SECTORAL_1", "NDC_1", "possible_misalignment"),
-      makeAlignment("SECTORAL_1", "NDC_2", "possible_misalignment"),
+      makeAlignment("SECTORAL_1", "NDC_1", "flagged"),
+      makeAlignment("SECTORAL_1", "NDC_2", "flagged"),
       // 6 "none" records that should be ignored by the matrix path.
       makeAlignment("SECTORAL_1", "NBSAP_1", "none"),
     ];
@@ -201,12 +201,12 @@ describe("findLooselyConnectedTargets", () => {
   it("includes peripherals whose strongest anchor link is at most 'low'", () => {
     const alignment = [
       makeAlignment("SECTORAL_1", "NDC_1", "low"),
-      makeAlignment("SECTORAL_2", "NDC_1", "possible_misalignment"),
+      makeAlignment("SECTORAL_2", "NDC_1", "flagged"),
       // NDC_2 reaches medium → excluded
       makeAlignment("SECTORAL_1", "NDC_2", "medium"),
       // NAP_1 has only possible_misalignment → included
-      makeAlignment("SECTORAL_1", "NAP_1", "possible_misalignment"),
-      makeAlignment("SECTORAL_2", "NAP_1", "possible_misalignment"),
+      makeAlignment("SECTORAL_1", "NAP_1", "flagged"),
+      makeAlignment("SECTORAL_2", "NAP_1", "flagged"),
     ];
     const loose = findLooselyConnectedTargets(targets, alignment, "SECTORAL");
     const ids = loose.map((l) => l.target.id).sort();
@@ -215,7 +215,7 @@ describe("findLooselyConnectedTargets", () => {
 
   it("captures the strongest anchor and counts low / possible_misalignment links", () => {
     const alignment = [
-      makeAlignment("SECTORAL_1", "NDC_1", "possible_misalignment"),
+      makeAlignment("SECTORAL_1", "NDC_1", "flagged"),
       makeAlignment("SECTORAL_2", "NDC_1", "low"),
     ];
     const loose = findLooselyConnectedTargets(targets, alignment, "SECTORAL");

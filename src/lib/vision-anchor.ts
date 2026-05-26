@@ -152,7 +152,7 @@ export function aggregateAnchorCoverage(
   const visibleDocTypeSet = new Set<string>();
   let maxCellTotal = 0;
   for (const row of rowMap.values()) {
-    const lowTension = row.totalsByLevel.possible_misalignment ?? 0;
+    const lowTension = row.totalsByLevel.flagged ?? 0;
     const medium = row.totalsByLevel.medium ?? 0;
     const high = row.totalsByLevel.high ?? 0;
     row.mediumOrHighCount = medium + high;
@@ -273,7 +273,7 @@ export function findLooselyConnectedTargets(
     }
     const s = stats.get(peripheralId);
     if (!s) continue;
-    if (a.alignment === "possible_misalignment") s.lowTension += 1;
+    if (a.alignment === "flagged") s.lowTension += 1;
     if (a.alignment === "low") s.low += 1;
     if (s.maxLevel == null || LEVEL_RANK[a.alignment] > LEVEL_RANK[s.maxLevel]) {
       s.maxLevel = a.alignment;

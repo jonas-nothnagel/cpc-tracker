@@ -77,7 +77,9 @@ interface ChatContext {
     a: string;
     b: string;
     level: string;
-    contradictionType?: string;
+    mechanism?: string;
+    manageability?: string;
+    confidence?: string;
     rationale: string;
   }[];
   /** Top-5 rankings derived from the full corpus. */
@@ -386,7 +388,9 @@ function buildTopicRankings(
   const matchingIds = new Set(matchingTargets.map((t) => t.id));
   const tension = new Map<string, number>();
   const alignment = new Map<string, number>();
-  const CONTRA = new Set(["likely_conflict", "possible_conflict", "possible_misalignment"]);
+  // v2.1: single flagged state replaces three v1 severity levels. Legacy
+  // strings included for safety while old records may still flow through.
+  const CONTRA = new Set(["flagged", "likely_conflict", "possible_conflict", "possible_misalignment"]);
   const STRONG_ALIGN = new Set(["high"]);
   for (const p of ctx.pairs ?? []) {
     if (CONTRA.has(p.level)) {
@@ -473,6 +477,10 @@ function buildUserMessage(
   // Pair rationales: contradictions first (most diagnostic), then alignments.
   // Severity-ordered so model can scan top-down for concrete tensions.
   const SEVERITY: Record<string, number> = {
+    // v2.1: all flagged pairs sort to the top; sub-fields (manageability,
+    // confidence) carry the finer ordering once we surface them here.
+    flagged: 0,
+    // Legacy v1 levels kept for any record that has not yet been migrated.
     likely_conflict: 0,
     possible_conflict: 1,
     possible_misalignment: 2,
@@ -486,7 +494,10 @@ function buildUserMessage(
   const pairBlock = pairs.length
     ? pairs
         .map((p) => {
-          const ct = p.contradictionType ? ` (${p.contradictionType})` : "";
+          const subs = [p.mechanism, p.manageability, p.confidence && `conf:${p.confidence}`]
+            .filter(Boolean)
+            .join(", ");
+          const ct = subs ? ` (${subs})` : "";
           const r = p.rationale.replace(/\s+/g, " ").trim();
           return `${p.a} ↔ ${p.b} | ${p.level}${ct} | ${r}`;
         })
@@ -624,7 +635,7 @@ function buildUserMessage(
   );
   if (pairBlock) {
     sections.push(
-      `Pair rationales (${pairs.length} non-"none" pairs, severity-sorted). Format: targetA ↔ targetB | level (contradictionType?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
+      `Pair rationales (${pairs.length} non-"none" pairs, severity-sorted). Format: targetA ↔ targetB | level (mechanism, manageability, conf:level?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
       pairBlock,
       "",
     );
@@ -770,6 +781,8 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 // it can't hallucinate.
 
 const SEVERITY_LABEL: Record<string, string> = {
+  flagged: "flagged for review",
+  // Legacy strings retained so any unmigrated v1 record still renders.
   likely_conflict: "likely conflict",
   possible_conflict: "possible conflict",
   possible_misalignment: "possible misalignment",
@@ -838,6 +851,7 @@ function synthesizeAnswer(
           const bothBtr = pA.doc === "BTR" && pB.doc === "BTR";
           if (!oneIsBtr || bothBtr) return false;
           return (
+            p.level === "flagged" ||
             p.level === "likely_conflict" ||
             p.level === "possible_conflict" ||
             p.level === "possible_misalignment"

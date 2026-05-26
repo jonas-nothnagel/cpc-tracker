@@ -28,14 +28,12 @@ import type {
 } from "@/types";
 import { isContradiction } from "@/types";
 
-/** Weight per alignment level — used for tension severity ordering. */
+/** Weight per alignment level used for tension severity ordering (v2.1). */
 export const ALIGNMENT_WEIGHTS: Record<AlignmentLevel, number> = {
   low: 1,
   medium: 2,
   high: 3,
-  possible_misalignment: 1,
-  possible_conflict: 2,
-  likely_conflict: 3,
+  flagged: 2,
   none: 0,
 };
 

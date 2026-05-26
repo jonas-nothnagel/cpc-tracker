@@ -39,9 +39,7 @@ const AI_DISCLAIMER =
   "AI-generated synthesis. Treat as a prompt to review, not a settled finding.";
 
 const SEVERITY_RANK: Record<AlignmentLevel, number> = {
-  likely_conflict: 0,
-  possible_conflict: 1,
-  possible_misalignment: 2,
+  flagged: 0,
   high: 10,
   medium: 11,
   low: 12,
@@ -202,9 +200,21 @@ function TargetPairBody({
             style={{ fontFamily: HEADLINE_SERIF }}
           >
             {ALIGNMENT_LABELS[pair.alignment]}
-            {pair.contradictionType && (
+            {pair.mechanism && (
               <span className="block text-xs font-normal text-[var(--undp-gray)] mt-1">
-                {CONTRADICTION_TYPE_LABELS[pair.contradictionType]}
+                {CONTRADICTION_TYPE_LABELS[pair.mechanism]}
+                {pair.manageability && (
+                  <>
+                    {" · "}
+                    {pair.manageability === "fundamental" ? "Fundamental" : "Manageable"}
+                  </>
+                )}
+                {pair.confidence && (
+                  <>
+                    {" · "}
+                    Confidence: {pair.confidence}
+                  </>
+                )}
               </span>
             )}
           </h3>
@@ -491,7 +501,7 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
           {docPair.aligned_count.toLocaleString()} aligned
         </span>
         <span className="text-[var(--undp-gray)] mx-2">·</span>
-        <span style={{ color: ALIGNMENT_COLORS.possible_conflict }}>
+        <span style={{ color: ALIGNMENT_COLORS.flagged }}>
           {docPair.flagged_count.toLocaleString()} flagged
         </span>
       </p>

@@ -651,7 +651,7 @@ function LoosePanel({
     byDoc.set(lt.target.sourceDocument, list);
   }
   // Within each document, surface the truest outliers (no relationship at all,
-  // then possible_misalignment-only, then low-only) at the top so the eye lands on the
+  // then flagged-only, then low-only) at the top so the eye lands on the
   // actionable cases first.
   for (const list of byDoc.values()) {
     list.sort((a, b) => {

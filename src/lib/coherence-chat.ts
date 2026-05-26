@@ -212,7 +212,9 @@ export function buildChatRequest({
       a: a.targetAId,
       b: a.targetBId,
       level: a.alignment,
-      contradictionType: a.contradictionType,
+      mechanism: a.mechanism,
+      manageability: a.manageability,
+      confidence: a.confidence,
       rationale: (a.description ?? "").slice(0, 600),
     }));
 
@@ -262,12 +264,9 @@ export function buildChatRequest({
 }
 
 function isDiagnostic(level: AlignmentLevel): boolean {
-  return (
-    level === "likely_conflict" ||
-    level === "possible_conflict" ||
-    level === "possible_misalignment" ||
-    level === "high"
-  );
+  // Strong-signal pairs the chat surfaces verbatim to the LLM: flagged pairs
+  // (the negative side) and high-alignment pairs (strong positive signal).
+  return level === "flagged" || level === "high";
 }
 
 function computeRankings(

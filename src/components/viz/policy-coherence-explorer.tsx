@@ -316,9 +316,7 @@ function wrapLabel(label: string, maxCharsPerLine: number): string[] {
  * (= no relationship assessed) so the bar only reflects real signal.
  */
 const DIST_ORDER: AlignmentLevel[] = [
-  "likely_conflict",
-  "possible_conflict",
-  "possible_misalignment",
+  "flagged",
   "low",
   "medium",
   "high",
@@ -362,7 +360,7 @@ function DetailPanel({
 }) {
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
-      likely_conflict: 0, possible_conflict: 1, possible_misalignment: 2,
+      flagged: 0,
       high: 3, medium: 4, low: 5,
       none: 6,
     };
@@ -688,9 +686,12 @@ function PairDetailModal({
             <span className="text-xs font-semibold uppercase tracking-wide text-[var(--undp-black)]">
               {ALIGNMENT_LABELS[result.alignment]}
             </span>
-            {result.contradictionType && (
+            {result.mechanism && (
               <span className="ml-auto text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/80 text-[var(--undp-black)] border border-gray-200">
-                {CONTRADICTION_TYPE_LABELS[result.contradictionType]}
+                {CONTRADICTION_TYPE_LABELS[result.mechanism]}
+                {result.manageability === "fundamental" && (
+                  <span className="ml-1 text-[var(--undp-gray)]">· fundamental</span>
+                )}
               </span>
             )}
           </div>
@@ -884,23 +885,14 @@ function BarRow({
 }) {
   // 4% min so the smallest non-zero count still has a visible pill.
   const pct = max > 0 ? Math.max(4, (count / max) * 100) : 0;
-  // Severity-driven red intensity. One step lighter than before so the
-  // row reads as a quiet wash; the border accent below still distinguishes
-  // likely_conflict from possible_conflict (which now share the
-  // floor wash with possible_misalignment).
-  const redFill =
-    severity === "likely_conflict"
-      ? "bg-red-100 group-hover:bg-red-200"
-      : "bg-red-50 group-hover:bg-red-100";
+  // v2.1 collapses severity to a single "flagged" state; the previous
+  // "likely_conflict / possible_conflict / possible_misalignment" gradient
+  // is gone. Border accent stays for visual heft on the flagged row.
+  const redFill = "bg-red-50 group-hover:bg-red-100";
   const fillBg = tone === "red" ? redFill : "bg-gray-100 group-hover:bg-gray-200";
-  // Left-edge accent on the hardest-severity rows reinforces the color
-  // step without relying on viewers to distinguish red-50 from red-100.
-  const borderAccent =
-    tone === "red" && severity === "likely_conflict"
-      ? "border-l-2 border-red-500"
-      : tone === "red" && severity === "possible_conflict"
-        ? "border-l-2 border-red-400"
-        : "";
+  const borderAccent = tone === "red" && severity === "flagged"
+    ? "border-l-2 border-red-400"
+    : "";
   const countColor = "text-[var(--undp-black)]";
   return (
     <li>
@@ -4645,8 +4637,8 @@ export function PolicyCoherenceExplorer({
                   ))}
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
-                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.likely_conflict} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
-                      <span className="text-[var(--undp-gray)]">Possible misalignment or conflict</span>
+                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.flagged} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
+                      <span className="text-[var(--undp-gray)]">Flagged for review</span>
                     </span>
                   )}
                 </div>

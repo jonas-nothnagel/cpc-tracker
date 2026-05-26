@@ -188,7 +188,7 @@ export function ConstellationCenterpiece({
           const b = positions.get(conn.targetBId)!;
           const contra = isContradiction(conn.alignment);
           const op = contra
-            ? conn.alignment === "likely_conflict"
+            ? conn.alignment === "flagged" && conn.manageability === "fundamental"
               ? 0.6
               : 0.4
             : conn.alignment === "high"

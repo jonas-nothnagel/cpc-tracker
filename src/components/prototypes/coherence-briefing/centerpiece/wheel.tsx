@@ -552,7 +552,7 @@ export function WheelCenterpiece({
                 <path
                   d={curvePath(a.x, a.y, b.x, b.y)}
                   fill="none"
-                  stroke={ALIGNMENT_COLORS.possible_conflict}
+                  stroke={ALIGNMENT_COLORS.flagged}
                   strokeWidth={Math.max(
                     1,
                     Math.sqrt(agg.tensionCount) * 1.8,

@@ -98,10 +98,10 @@ export function pickHeadlineVerdict(
 
 // ─── Fault lines ────────────────────────────────────────────────────
 
+// v2.1: single negative state. Higher manageability/confidence values can be
+// surfaced via the AlignmentResult sub-fields when ranking flagged pairs.
 const SEVERITY_RANK: Record<AlignmentLevel, number> = {
-  likely_conflict: 0,
-  possible_conflict: 1,
-  possible_misalignment: 2,
+  flagged: 0,
   // Positive side never ranked here, but the map needs to cover the union.
   none: 99,
   low: 99,
@@ -351,9 +351,7 @@ export function buildSectorBriefing(args: {
     high: 0,
     medium: 1,
     low: 2,
-    likely_conflict: 99,
-    possible_conflict: 99,
-    possible_misalignment: 99,
+    flagged: 99,
     none: 99,
   };
   aligns.sort(
@@ -424,9 +422,7 @@ export interface PairDot {
 }
 
 const ALIGNMENT_Y: Record<AlignmentLevel, number> = {
-  likely_conflict: -1,
-  possible_conflict: -0.66,
-  possible_misalignment: -0.33,
+  flagged: -1,
   none: 0,
   low: 0.33,
   medium: 0.66,
@@ -563,10 +559,7 @@ export function buildAnchorHeadline(args: {
       const medium = cell.byLevel.medium ?? 0;
       const high = cell.byLevel.high ?? 0;
       stat.alignedCount += medium + high;
-      const pm = cell.byLevel.possible_misalignment ?? 0;
-      const pc = cell.byLevel.possible_conflict ?? 0;
-      const lc = cell.byLevel.likely_conflict ?? 0;
-      stat.flaggedCount += pm + pc + lc;
+      stat.flaggedCount += cell.byLevel.flagged ?? 0;
     }
   }
 
@@ -869,9 +862,7 @@ export function buildSectorAlignmentDensity(args: {
     high: 0,
     medium: 1,
     low: 2,
-    likely_conflict: 99,
-    possible_conflict: 99,
-    possible_misalignment: 99,
+    flagged: 99,
     none: 99,
   };
   for (const a of alignment) {

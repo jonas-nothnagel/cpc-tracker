@@ -1,28 +1,43 @@
 "use client";
 
 /**
- * Relationships section — Section 3 of the findings home.
+ * Relationships section — merged Section 1 of the findings home.
  *
- * Three layers, top to bottom:
- *   1. Corpus summary paragraph (3-4 sentences) from corpus_themes.json.
- *   2. Theme chips — reinforce + friction storylines from the same JSON.
- *      Multi-select; click chips to filter the doc-pair ranking and ghost
- *      the wheel to the docs the selected themes span.
- *   3. Doc-pair ranking — synthesised storyline per cross-doc pair from
- *      doc_pair_synthesis.json, sorted by total signal. Balance bar shows
- *      aligned / flagged split. Click a row → doc-pair drawer.
+ * Round-2 merge: this section now answers the user's actual framing
+ * question ("are these policies pulling the same direction?") and absorbs
+ * what used to be a separate Direction section above the wheel. Layout,
+ * top to bottom:
+ *
+ *   1. Eyebrow + verdict headline + verdict sentence + verdict badge
+ *      (was the Direction section).
+ *   2. Corpus summary paragraph (3-4 sentences) from corpus_themes.json.
+ *   3. Theme chips — reinforce + friction storylines.
+ *   4. Doc-pair ranking — synthesised storyline per cross-doc pair from
+ *      doc_pair_synthesis.json, with balance bar and an inline clash/
+ *      reinforce excerpt under the storyline name.
+ *   5. "How to read this view" disclosure — the primer pair (aligned +
+ *      flagged examples) tucked behind a closed-by-default disclosure
+ *      at the bottom.
  *
  * If the synthesis JSONs are absent (older runs), falls back to the legacy
- * fault-line list. The exported section id constant stays "misalignments"
- * so jump-nav + deep-links keep working during the demo phase.
+ * fault-line list with the same verdict header + primer block.
+ *
+ * The exported section id constant stays "misalignments" so jump-nav +
+ * deep-links keep working through the round-2 rename.
  */
 
+import { useState } from "react";
+import { PrimerCard, type PrimerHighlightPair } from "../primer-card";
 import {
   computeDocPairBalance,
   getDocPairKey,
   getStorylineDocPairKeys,
+  type AnchorHeadline,
   type DocPairDisagreement,
   type FaultLine,
+  type HeadlineVerdict,
+  type PrimerExamples,
+  type VerdictBucket,
 } from "@/lib/coherence-briefing";
 import {
   ALIGNMENT_COLORS,
@@ -45,10 +60,17 @@ const ALIGNED_DOT_COLOR = "#196127";
 const FRICTION_DOT_COLOR = "#dc2626";
 const AI_DISCLAIMER =
   "AI-generated synthesis. Treat as a prompt to review, not a settled finding.";
+const PRIMER_STORAGE_KEY = "cpc.briefing.primer-collapsed";
+const CLASH_EXCERPT_RATIO = 0.25;
 
 export type ThemeTypeFilter = "all" | "reinforcement" | "friction";
 
 export function RelationshipsSection({
+  countryName,
+  documentCount,
+  anchor,
+  verdict,
+  primer,
   faultLines,
   docPairDisagreements,
   docPairSyntheses,
@@ -61,7 +83,13 @@ export function RelationshipsSection({
   themeTypeFilter,
   onThemeTypeChange,
   onHoverDocPair,
+  onHighlightPair,
 }: {
+  countryName: string;
+  documentCount: number;
+  anchor: AnchorHeadline;
+  verdict: HeadlineVerdict;
+  primer: PrimerExamples;
   faultLines: FaultLine[];
   docPairDisagreements: DocPairDisagreement[];
   docPairSyntheses: DocPairSynthesis[];
@@ -74,6 +102,7 @@ export function RelationshipsSection({
   themeTypeFilter: ThemeTypeFilter;
   onThemeTypeChange: (f: ThemeTypeFilter) => void;
   onHoverDocPair?: (key: string | null) => void;
+  onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
   const hasSynthesis = corpusThemes !== null && docPairSyntheses.length > 0;
 
@@ -110,6 +139,13 @@ export function RelationshipsSection({
     1,
   );
 
+  const sentence = composeDirectionSentence({
+    countryName,
+    documentCount,
+    anchor,
+    verdict,
+  });
+
   return (
     <section
       id={MISALIGNMENTS_SECTION_ID}
@@ -117,15 +153,21 @@ export function RelationshipsSection({
       aria-labelledby={`${MISALIGNMENTS_SECTION_ID}-heading`}
     >
       <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
-        How documents relate
+        Are these policies pulling the same direction?
       </p>
       <h2
         id={`${MISALIGNMENTS_SECTION_ID}-heading`}
         className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-4"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
-        Where the policy set reinforces, and where it clashes.
+        {sentence.headline}
       </h2>
+      <p className="text-[15px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-4">
+        {sentence.body}
+      </p>
+      <div className="mb-8">
+        <VerdictBadge bucket={verdict.bucket} />
+      </div>
 
       {hasSynthesis ? (
         <>
@@ -154,7 +196,108 @@ export function RelationshipsSection({
           onOpenPair={onOpenPair}
         />
       )}
+
+      <PrimerDisclosure
+        primer={primer}
+        countryConfig={countryConfig}
+        onOpenPair={onOpenPair}
+        onHighlightPair={onHighlightPair}
+      />
     </section>
+  );
+}
+
+// ─── Verdict header (lifted from former direction.tsx) ─────────────
+
+interface DirectionSentence {
+  headline: string;
+  body: string;
+}
+
+function composeDirectionSentence({
+  countryName,
+  documentCount,
+  anchor,
+  verdict,
+}: {
+  countryName: string;
+  documentCount: number;
+  anchor: AnchorHeadline;
+  verdict: HeadlineVerdict;
+}): DirectionSentence {
+  const headline = verdict.headline;
+  const docPhrase =
+    documentCount === 1
+      ? "1 document"
+      : `${documentCount.toLocaleString()} documents`;
+  if (anchor.isAnchored && anchor.anchorName) {
+    const clauses: string[] = [];
+    clauses.push(`${countryName} has been compared across ${docPhrase}.`);
+    const supportClause =
+      anchor.alignedRecordCount > 0
+        ? `${anchor.alignedRecordCount.toLocaleString()} of ${anchor.anchorName}'s links to other documents reach medium or strong alignment`
+        : null;
+    const flagClause =
+      anchor.flaggedRecordCount > 0
+        ? `${anchor.flaggedRecordCount.toLocaleString()} are possible misalignments worth a closer look`
+        : null;
+    if (supportClause && flagClause) {
+      clauses.push(`${supportClause} and ${flagClause}.`);
+    } else if (supportClause) {
+      clauses.push(`${supportClause}.`);
+    } else if (flagClause) {
+      clauses.push(
+        `${anchor.anchorName} has ${anchor.flaggedRecordCount.toLocaleString()} possible misalignments with other documents worth a closer look.`,
+      );
+    }
+    if (anchor.mostFlaggedPeripheral) {
+      clauses.push(
+        `The strongest friction is with ${anchor.mostFlaggedPeripheral.label} (${anchor.mostFlaggedPeripheral.flaggedCount} flagged pair${anchor.mostFlaggedPeripheral.flaggedCount === 1 ? "" : "s"}).`,
+      );
+    } else if (anchor.strongestPeripheral) {
+      clauses.push(
+        `Strongest alignment is with ${anchor.strongestPeripheral.label}.`,
+      );
+    }
+    return { headline, body: clauses.join(" ") };
+  }
+  const aligned = verdict.alignmentPairs.toLocaleString();
+  const flagged = verdict.tensionPairs.toLocaleString();
+  const denom = (verdict.alignmentPairs + verdict.tensionPairs).toLocaleString();
+  return {
+    headline,
+    body:
+      `Across ${docPhrase} from ${countryName}, ${denom} pairs of targets were scored. ` +
+      `${aligned} show medium or strong alignment; ${flagged} are flagged as possible misalignments.`,
+  };
+}
+
+function VerdictBadge({ bucket }: { bucket: VerdictBucket }) {
+  const palette: Record<VerdictBucket, { color: string; label: string }> = {
+    mostly_aligned: { color: ALIGNMENT_COLORS.high, label: "Mostly aligned" },
+    mixed: { color: ALIGNMENT_COLORS.medium, label: "Mixed signals" },
+    lots_of_misalignment: {
+      color: ALIGNMENT_COLORS.flagged,
+      label: "Substantial possible misalignment",
+    },
+  };
+  const p = palette[bucket];
+  return (
+    <span
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
+      style={{
+        backgroundColor: `${p.color}1a`,
+        color: p.color,
+        border: `1px solid ${p.color}55`,
+      }}
+    >
+      <span
+        className="block w-2 h-2 rounded-full"
+        style={{ backgroundColor: p.color }}
+        aria-hidden="true"
+      />
+      {p.label}
+    </span>
   );
 }
 
@@ -385,6 +528,20 @@ function DocPairRow({
   const totalWidthPct = maxTotal > 0 ? (balance.total / maxTotal) * 100 : 0;
   const hoverKey = getDocPairKey(dp.doc_a, dp.doc_b);
   const failed = dp.synthesis_error !== null;
+  // R4: pick the excerpt side based on whether friction is meaningfully
+  // present. ratio threshold matches the plan: if flagged >= 25% of
+  // aligned, show the clash; otherwise lead with reinforce.
+  const showClash =
+    !failed && dp.flagged_count > dp.aligned_count * CLASH_EXCERPT_RATIO;
+  const excerptText = failed
+    ? null
+    : showClash
+      ? dp.synthesis.clash
+      : dp.synthesis.reinforce;
+  const excerptPrefix = showClash ? "Flagged" : "Reinforces";
+  const excerptColor = showClash
+    ? ALIGNMENT_COLORS.flagged
+    : ALIGNMENT_COLORS.high;
   return (
     <li>
       <button
@@ -414,6 +571,24 @@ function DocPairRow({
             </span>
           </div>
         </div>
+        {excerptText && (
+          <p
+            className="text-[11.5px] italic text-[var(--undp-gray)] leading-snug mb-2 max-w-prose overflow-hidden"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            <span
+              className="not-italic font-semibold uppercase tracking-wider text-[9.5px] mr-1.5"
+              style={{ color: excerptColor }}
+            >
+              {excerptPrefix} ·
+            </span>
+            {excerptText}
+          </p>
+        )}
         <div className="grid grid-cols-[1fr_auto] items-center gap-3">
           <div
             className="relative h-2.5 rounded-full overflow-hidden bg-gray-100"
@@ -433,7 +608,7 @@ function DocPairRow({
               style={{
                 left: `${balance.alignedShare * 100}%`,
                 width: `${balance.flaggedShare * 100}%`,
-                backgroundColor: ALIGNMENT_COLORS.possible_conflict,
+                backgroundColor: ALIGNMENT_COLORS.flagged,
                 opacity: failed ? 0.4 : 0.95,
               }}
             />
@@ -443,13 +618,96 @@ function DocPairRow({
               {dp.aligned_count.toLocaleString()} aligned
             </span>
             <span className="text-[var(--undp-gray)] mx-1">·</span>
-            <span style={{ color: ALIGNMENT_COLORS.possible_conflict }}>
+            <span style={{ color: ALIGNMENT_COLORS.flagged }}>
               {dp.flagged_count.toLocaleString()} flagged
             </span>
           </p>
         </div>
       </button>
     </li>
+  );
+}
+
+// ─── Primer disclosure ─────────────────────────────────────────────
+
+function PrimerDisclosure({
+  primer,
+  countryConfig,
+  onOpenPair,
+  onHighlightPair,
+}: {
+  primer: PrimerExamples;
+  countryConfig: CountryConfig | null;
+  onOpenPair: (line: FaultLine) => void;
+  onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
+}) {
+  // Default closed (round 2 change). Persist user preference via the same
+  // localStorage key the old direction.tsx used so existing users keep
+  // their preference. Treat absent key as closed.
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return true;
+    try {
+      const stored = localStorage.getItem(PRIMER_STORAGE_KEY);
+      if (stored === "0") return false;
+      return true;
+    } catch {
+      return true;
+    }
+  });
+  const toggle = () => {
+    setCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(PRIMER_STORAGE_KEY, next ? "1" : "0");
+      } catch {
+        // Ignore storage errors.
+      }
+      return next;
+    });
+  };
+  const id = `${MISALIGNMENTS_SECTION_ID}-primer`;
+  return (
+    <div className="mt-8 border-t border-gray-200 pt-4">
+      <button
+        type="button"
+        onClick={toggle}
+        className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+        aria-expanded={!collapsed}
+        aria-controls={id}
+      >
+        <span aria-hidden="true" className="text-[10px]">
+          {collapsed ? "▸" : "▾"}
+        </span>
+        How to read this view
+      </button>
+      {!collapsed && (
+        <div id={id} className="mt-3 grid gap-3 sm:grid-cols-2">
+          {primer.aligned && (
+            <PrimerCard
+              kind="aligned"
+              line={primer.aligned}
+              countryConfig={countryConfig}
+              onSelect={() => onOpenPair(primer.aligned!)}
+              onHoverChange={onHighlightPair}
+            />
+          )}
+          {primer.tension && (
+            <PrimerCard
+              kind="flagged"
+              line={primer.tension}
+              countryConfig={countryConfig}
+              onSelect={() => onOpenPair(primer.tension!)}
+              onHoverChange={onHighlightPair}
+            />
+          )}
+          {!primer.aligned && !primer.tension && (
+            <p className="text-xs italic text-[var(--undp-gray)] sm:col-span-2">
+              Not enough scored pairs to show a primer.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
