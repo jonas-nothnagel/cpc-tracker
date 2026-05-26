@@ -361,10 +361,9 @@ function formatList(items: string[]): string {
   return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
 }
 
-const INTENSITY_DOTS = 5;
-const DOT_TENSION = "#dc2626"; // red, possible_conflict
+const DOT_TENSION = "#dc2626"; // red, flagged
 const DOT_ALIGN = "#196127"; // green, high
-const DOT_EMPTY = "#e5e7eb"; // gray-200
+const DOT_EMPTY = "#e5e7eb"; // gray-200 — bar track
 
 function SectorRow({
   row,
@@ -379,8 +378,6 @@ function SectorRow({
   onHover?: (categoryId: string | null) => void;
   onSelect: () => void;
 }) {
-  const tensionFilled = dotCount(row.tensionCount, maxTension);
-  const alignmentFilled = dotCount(row.alignmentCount, maxAlignment);
   const isMuted = row.tensionCount === 0 && row.alignmentCount === 0;
   const hasPool = row.relevantOnlyCount !== null;
   return (
@@ -411,55 +408,65 @@ function SectorRow({
               : ""}
           </p>
         </div>
-        <DensityCell
-          filled={alignmentFilled}
+        <SeverityBar
           color={DOT_ALIGN}
           count={row.alignmentCount}
-          isMuted={row.alignmentCount === 0}
+          max={maxAlignment}
         />
-        <DensityCell
-          filled={tensionFilled}
+        <SeverityBar
           color={DOT_TENSION}
           count={row.tensionCount}
-          isMuted={row.tensionCount === 0}
+          max={maxTension}
         />
       </button>
     </li>
   );
 }
 
-function dotCount(value: number, max: number): number {
-  if (value === 0 || max <= 0) return 0;
-  return Math.max(1, Math.round((INTENSITY_DOTS * value) / max));
-}
-
-function DensityCell({
-  filled,
+/**
+ * Replaces the 5-dot capped indicator with a continuous proportional bar.
+ * Width = count / columnMax. The column max is computed across the
+ * visible sectors per column so aligned and flagged each have their own
+ * dynamic range, otherwise a country with high alignment counts (the
+ * common case) would visually flatten the flagged column to nothing.
+ *
+ * Per round-2 feedback: a sector with 2 flagged pairs and one with 500
+ * looked identical under the 5-dot scheme because non-zero counts
+ * collapsed to "at least one filled dot". The bar scales linearly so the
+ * difference reads at a glance; the printed count below stays for the
+ * exact number.
+ */
+function SeverityBar({
   color,
   count,
-  isMuted,
+  max,
 }: {
-  filled: number;
   color: string;
   count: number;
-  isMuted: boolean;
+  max: number;
 }) {
+  const fillPct = max > 0 ? Math.min(100, (count / max) * 100) : 0;
+  // Min visible width when count > 0 so a single-pair sector still draws
+  // something distinguishable from an empty sector.
+  const displayPct = count > 0 ? Math.max(fillPct, 4) : 0;
   return (
-    <div className="flex flex-col items-start gap-0.5">
-      <span aria-hidden="true" className="inline-flex items-center gap-0.5">
-        {Array.from({ length: INTENSITY_DOTS }).map((_, i) => (
-          <span
-            key={i}
-            className="inline-block w-1.5 h-1.5 rounded-full"
-            style={{
-              backgroundColor: i < filled ? color : DOT_EMPTY,
-            }}
-          />
-        ))}
+    <div className="flex flex-col items-start gap-1 w-full">
+      <span
+        aria-hidden="true"
+        className="block h-1.5 w-full rounded-full overflow-hidden"
+        style={{ backgroundColor: DOT_EMPTY }}
+      >
+        <span
+          className="block h-full rounded-full"
+          style={{
+            width: `${displayPct}%`,
+            backgroundColor: count > 0 ? color : "transparent",
+          }}
+        />
       </span>
       <span
         className={`text-[11px] tabular-nums leading-none ${
-          isMuted
+          count === 0
             ? "text-[var(--undp-gray)]/60"
             : "text-[var(--undp-black)] font-medium"
         }`}
