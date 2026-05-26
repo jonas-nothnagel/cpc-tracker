@@ -64,9 +64,9 @@
   },
   {
     "targetId": "panama_ENR_3",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "Law No. 37 of August 2, 2016",
+    "quantitativeDetails": "",
     "timeBoundDetails": "August 2, 2016"
   },
   {
@@ -437,7 +437,7 @@
     "targetId": "panama_ENR_56",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "Law No. 37",
+    "quantitativeDetails": "Law No. 37 of August 2, 2016",
     "timeBoundDetails": "August 2, 2016"
   },
   {
@@ -653,9 +653,9 @@
   {
     "targetId": "panama_ENR_87",
     "isQuantitative": false,
-    "isTimeBound": true,
+    "isTimeBound": false,
     "quantitativeDetails": "",
-    "timeBoundDetails": "February 3, 1994"
+    "timeBoundDetails": ""
   },
   {
     "targetId": "panama_ENR_88",
@@ -848,10 +848,10 @@
   },
   {
     "targetId": "panama_ENR_115",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "Law No. 1",
-    "timeBoundDetails": "February 3, 1994"
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
   },
   {
     "targetId": "panama_ENR_116",
@@ -1095,7 +1095,7 @@
     "targetId": "panama_ENR_150",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "Law No. 37",
+    "quantitativeDetails": "No. 37",
     "timeBoundDetails": "August 2, 2016"
   },
   {
@@ -1753,7 +1753,7 @@
     "targetId": "panama_NP_8",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "100,000 ha; 2,500 ha; 25,000 ha; three biological corridors",
+    "quantitativeDetails": "100,000 ha; 2,500 ha; 25,000 ha",
     "timeBoundDetails": "By 2035"
   },
   {
@@ -1816,7 +1816,7 @@
     "targetId": "panama_NP_17",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "By 2030",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -1837,14 +1837,14 @@
     "targetId": "panama_NP_20",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "100%; at least 50%",
+    "quantitativeDetails": "100%",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "panama_NP_21",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "zero illegal deforestation rate",
+    "quantitativeDetails": "2035",
     "timeBoundDetails": "By 2035"
   },
   {
@@ -1866,7 +1866,7 @@
     "isQuantitative": true,
     "isTimeBound": true,
     "quantitativeDetails": "30%; 2025 baseline",
-    "timeBoundDetails": "By 2030; 2025 baseline"
+    "timeBoundDetails": "By 2030; 2025"
   },
   {
     "targetId": "panama_NP_25",
@@ -1877,16 +1877,16 @@
   },
   {
     "targetId": "panama_NP_26",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2035",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2035"
   },
   {
     "targetId": "panama_NP_27",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2027",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2027"
   },
   {
@@ -1907,7 +1907,7 @@
     "targetId": "panama_NP_30",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "at least 80% of public health facilities",
+    "quantitativeDetails": "at least 80%",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -1947,9 +1947,9 @@
   },
   {
     "targetId": "panama_NP_36",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2026",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2026"
   },
   {
@@ -2060,9 +2060,9 @@
   {
     "targetId": "panama_PEG_16",
     "isQuantitative": false,
-    "isTimeBound": false,
+    "isTimeBound": true,
     "quantitativeDetails": "",
-    "timeBoundDetails": ""
+    "timeBoundDetails": "in the medium and long term"
   },
   {
     "targetId": "panama_PEG_17",
