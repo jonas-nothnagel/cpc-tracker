@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 # Constants
 # ---------------------------------------------------------------------------
 
-TENSION_LEVELS = {"possible_misalignment", "possible_conflict", "likely_conflict"}
+TENSION_LEVELS = {"flagged"}
 ALIGNMENT_LEVELS = {"medium", "high"}
 MIN_TOTAL_SIGNAL = 3  # floor for "recurring" claim; below this we skip synthesis
 MAX_SAMPLES_PER_SIDE = 25  # cap prompt size; sample randomly above this
@@ -163,7 +163,8 @@ def _collect_doc_pair_pools(
         entry = pools.setdefault(key, {"aligned": [], "flagged": []})
         rec = {
             "level": level,
-            "ctype": r.get("contradictionType"),
+            # v2.1 uses `mechanism`; fall back to v1 `contradictionType` for legacy records.
+            "ctype": r.get("mechanism") or r.get("contradictionType"),
             "a_doc": tA["sourceDocument"],
             "a_label": tA["sourceLabel"],
             "a_text": tA["text"],

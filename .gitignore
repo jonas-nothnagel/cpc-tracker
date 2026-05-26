@@ -76,3 +76,6 @@ external-docs/
 
 # Deployment artifacts
 .vercel
+
+# Pipeline run logs (regenerated each run, not checked in)
+python/logs/

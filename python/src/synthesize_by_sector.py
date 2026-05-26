@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 # Constants
 # ---------------------------------------------------------------------------
 
-TENSION_LEVELS = {"possible_misalignment", "possible_conflict", "likely_conflict"}
+TENSION_LEVELS = {"flagged"}
 ALIGNMENT_LEVELS = {"medium", "high"}
 RELEVANCE_FLOOR = 0.5  # baseline; can be raised via threshold arg if synthesis is noisy
 MIN_TOTAL_SIGNAL = 3
@@ -258,7 +258,8 @@ def _collect_sector_pool(
         )
         rec = {
             "level": level,
-            "ctype": r.get("contradictionType"),
+            # v2.1 uses `mechanism`; fall back to v1 `contradictionType` for legacy records.
+            "ctype": r.get("mechanism") or r.get("contradictionType"),
             "a_doc": tA["sourceDocument"],
             "a_label": tA["sourceLabel"],
             "a_text": tA["text"],

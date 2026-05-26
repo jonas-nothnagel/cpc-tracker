@@ -14,70 +14,31 @@ import re
 from typing import Any
 
 from .align import (
+    ADVISOR_SYSTEM,
+    ADVISOR_USER_TEMPLATE,
     ANALYST_SYSTEM,
     ANALYST_USER_TEMPLATE,
     DOC_TYPE_LABELS,
-    parse_alignment,
 )
+from .alignment_schema import parse_alignment
 from .llm import call_llm_batch
 
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Adapted Agent 2 prompt for progress alignment
+# NR7 progress alignment: reuses canonical v2.1 advisor prompt via intro_framing
 # ---------------------------------------------------------------------------
 
-NR7_ADVISOR_SYSTEM = (
-    "You are a Biodiversity Progress Advisor assessing whether reported "
-    "national actions and progress genuinely advance stated biodiversity "
-    "targets. You provide factual, grounded assessments."
+NR7_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the v2.1 system prompt.
+
+NR7_INTRO_FRAMING = (
+    "\n    Context for this comparison: one side of this pair is a national biodiversity "
+    "target from an NBSAP; the other side is a reported implementation action from the "
+    "country's National Report (NR7) to the CBD. Apply the same scoring rubric. An action "
+    "that directly implements the target is High alignment; an action in the same broad "
+    "theme that does not meaningfully advance the target is Low alignment; an action that "
+    "works against the target is Flagged for review.\n"
 )
-
-NR7_ADVISOR_USER_TEMPLATE = """\
-Role: Biodiversity Progress Advisor
-Goal: Compare a national biodiversity target with a reported implementation action from the \
-country's National Report (NR7) to the CBD, and assess how well the action advances the target.
-
-Task:
-1. Analyze the following:
-   - {target_type} target: {target_decomp}
-   - NR7 reported action: {action_decomp}
-2. Assess whether the reported action directly implements, partially supports, or is unrelated \
-to the target.
-3. Consider the scope, specificity, and relevance of the reported action to the target's goals.
-
-Classify into one of seven levels. Always use the exact label and format:
-
-**1.** "No alignment" – The action and target operate in unrelated domains.
-    Return: No alignment - [Concise 2-sentence explanation.]
-
-**2.** "Low alignment" – Tangential relationship; broad thematic overlap but the action does \
-not meaningfully advance the target.
-    Return: Low alignment - [Concise 2-sentence explanation.]
-
-**3.** "Medium alignment" – The action partially supports the target with clear thematic \
-overlap but incomplete coverage of the target's objectives.
-    Return: Medium alignment - [Concise 2-sentence explanation.]
-
-**4.** "High alignment" – The action directly implements or strongly advances the target.
-    Return: High alignment - [Concise 2-sentence explanation.]
-
-=== FLAGGED MISALIGNMENT LEVELS ===
-
-The vocabulary is intentionally cautious ("possible" / "likely") because you flag pairs for human review rather \
-than establish certain contradictions. Specify contradiction type in parentheses: Goal conflict | Resource competition | \
-Implementation tension | Scale/scope mismatch.
-
-**5.** "Possible misalignment" – Minor friction or trade-off.
-    Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
-
-**6.** "Possible conflict" – Clear conflict, though partial coexistence possible.
-    Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
-
-**7.** "Likely conflict" – Direct opposition to the target's goals.
-    Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
-
-Your output should be in English."""
 
 
 def nr7_actions_to_pseudo_targets(
@@ -222,25 +183,27 @@ async def assess_nr7_alignment(
         decomp_t = decompositions.get(target["id"], "")
         decomp_a = decompositions.get(action["id"], "")
 
-        user = NR7_ADVISOR_USER_TEMPLATE.format(
-            target_type=labels.get(
+        user = ADVISOR_USER_TEMPLATE.format(
+            intro_framing=NR7_INTRO_FRAMING,
+            target_1_type=labels.get(
                 target["sourceDocument"], target["sourceDocument"]
             ),
-            target_decomp=decomp_t,
-            action_decomp=decomp_a,
+            target_1_decomp=decomp_t,
+            target_2_type="NR7 reported action",
+            target_2_decomp=decomp_a,
         )
         calls.append({"system": NR7_ADVISOR_SYSTEM, "user": user})
         pair_keys.append((target["id"], action["id"]))
 
     results = await call_llm_batch(
-        calls, cache_namespace="nr7_alignment", desc="NR7 alignment"
+        calls, cache_namespace="nr7_alignment_v2", desc="NR7 alignment"
     )
 
     alignment_results = []
     level_counts: dict[str, int] = {}
 
     for (tid, aid), raw in zip(pair_keys, results):
-        level, explanation, contradiction_type = parse_alignment(raw)
+        level, explanation, mechanism, manageability, confidence = parse_alignment(raw)
         level_counts[level] = level_counts.get(level, 0) + 1
         result: dict[str, Any] = {
             "targetAId": tid,
@@ -248,8 +211,12 @@ async def assess_nr7_alignment(
             "alignment": level,
             "description": explanation,
         }
-        if contradiction_type:
-            result["contradictionType"] = contradiction_type
+        if mechanism:
+            result["mechanism"] = mechanism
+        if manageability:
+            result["manageability"] = manageability
+        if confidence:
+            result["confidence"] = confidence
         alignment_results.append(result)
 
     logger.info(f"  NR7 alignment done: {level_counts}")
