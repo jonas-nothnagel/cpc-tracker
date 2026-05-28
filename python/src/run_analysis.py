@@ -53,6 +53,9 @@ from .budget_align import (
     decompose_programs,
     assess_budget_alignment,
 )
+from .synthesize_doc_pairs import synthesize_doc_pairs
+from .synthesize_corpus import synthesize_corpus
+from .synthesize_by_sector import synthesize_by_sector
 
 logging.basicConfig(
     level=logging.INFO,
@@ -61,7 +64,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOTAL_STEPS = 7
+TOTAL_STEPS = 8
 
 
 def write_status(
@@ -585,6 +588,67 @@ async def main() -> None:
         else:
             logger.info("")
             logger.info("STEP 7: Skipped (no BER data)")
+
+        # 9. Synthesis layer — doc-pair, corpus, and per-sector storylines.
+        # Reads existing alignment.json + classifications.json (no re-compute);
+        # writes three new artifacts the findings-home frontend consumes. All
+        # three steps are country-agnostic and taxonomy-agnostic.
+        write_status(8, "Synthesis", "Generating doc-pair, corpus, and sector storylines", started_at=started_at)
+        logger.info("")
+        logger.info("STEP 8: Synthesis (doc-pair, corpus, sector)")
+        logger.info("-" * 40)
+
+        doc_pair_records = await synthesize_doc_pairs(
+            targets, alignment_results, doc_type_labels,
+        )
+        out_path = OUTPUT_DIR / "doc_pair_synthesis.json"
+        out_path.write_text(json.dumps(doc_pair_records, indent=2, ensure_ascii=False))
+        logger.info(f"  Saved {len(doc_pair_records)} doc-pair syntheses to {out_path}")
+
+        country_name = "the country"
+        if config_path.exists():
+            cfg_for_name = json.loads(config_path.read_text())
+            country_name = cfg_for_name.get("name") or country_name
+        corpus_record = await synthesize_corpus(doc_pair_records, country_name)
+        out_path = OUTPUT_DIR / "corpus_themes.json"
+        out_path.write_text(json.dumps(corpus_record, indent=2, ensure_ascii=False))
+        logger.info(
+            f"  Saved corpus themes ({len(corpus_record.get('storylines', []) or [])} "
+            f"storylines) to {out_path}"
+        )
+
+        # Sector synthesis needs category-name resolution. Build it from the
+        # taxonomies already loaded in this run plus country-specific files.
+        sector_category_names: dict[tuple[str, str], str] = {}
+        for cat in nbs_categories:
+            sector_category_names[("nbs", cat["id"])] = cat.get("name", cat["id"])
+        for cat in sectors:
+            sector_category_names[("sector", cat["id"])] = cat.get("name", cat["id"])
+        for cat in globe_categories:
+            sector_category_names[("globe", cat["id"])] = cat.get("name", cat["id"])
+        if config_path.exists():
+            cfg = json.loads(config_path.read_text())
+            for cat in cfg.get("countrySectors", []):
+                sector_category_names[("country", cat["id"])] = cat.get(
+                    "name", cat["id"]
+                )
+        if adp_data:
+            for g in adp_data.get("adaptationGoals", []):
+                gid = str(g["id"])
+                descr = g.get("description", gid)
+                short = descr[:80].rstrip(",.")
+                if len(descr) > 80:
+                    short = short + "…"
+                sector_category_names[("adaptation_goal", gid)] = short
+
+        sector_records = await synthesize_by_sector(
+            targets, alignment_results, all_classifications,
+            category_names=sector_category_names,
+            doc_type_labels=doc_type_labels,
+        )
+        out_path = OUTPUT_DIR / "sector_synthesis.json"
+        out_path.write_text(json.dumps(sector_records, indent=2, ensure_ascii=False))
+        logger.info(f"  Saved {len(sector_records)} sector syntheses to {out_path}")
 
         # Summary
         elapsed = time.time() - start

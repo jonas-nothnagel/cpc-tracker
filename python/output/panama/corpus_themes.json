@@ -1,0 +1,179 @@
+{
+  "storylines": [
+    {
+      "name": "Align governance, finance, and monitoring systems",
+      "type": "reinforcement",
+      "description": "A strong enabling storyline recurs across forest, nature, water, and watershed documents, where safeguards, registries, observatories, open data, legal updates, and inter-institutional coordination tend to reinforce implementation. Dedicated finance vehicles, payment-for-ecosystem-services style instruments, and monitoring platforms align with restoration, protected-area management, basin planning, and community participation in shared territories.",
+      "contributing_doc_pairs": [
+        "CNR<->ENR",
+        "CNR<->HR",
+        "CNR<->NP",
+        "CNR<->PNSH",
+        "ENR<->HR",
+        "ENR<->NP",
+        "ENR<->PNSH",
+        "HR<->NP",
+        "HR<->PEG",
+        "HR<->PNSH",
+        "NP<->PEG",
+        "NP<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 20535,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Link restoration and watershed management delivery",
+      "type": "reinforcement",
+      "description": "Restoration-focused instruments repeatedly align with watershed protection through riparian recovery, ecological corridors, protective vegetation cover, fire management, and basin-scale land-use planning. This tends to connect REDD+ incentives, forest restoration programs, Canal watershed planning, and water security actions through concrete mechanisms such as nurseries, PES-style schemes, local plans, and community brigades or training.",
+      "contributing_doc_pairs": [
+        "CNR<->PIOTA",
+        "CNR<->PNRF",
+        "CNR<->PNSH",
+        "ENR<->PIOTA",
+        "ENR<->PNRF",
+        "ENR<->PNSH",
+        "HR<->PNRF",
+        "NP<->PNRF",
+        "PIOTA<->PNRF",
+        "PIOTA<->PNSH",
+        "PNRF<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 8671,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PIOTA",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Use STI systems to enable delivery",
+      "type": "reinforcement",
+      "description": "Science, technology, and innovation tools recur as enabling supports rather than stand-alone field measures, with digitalization, research capacity, knowledge transfer, and regional innovation systems reinforcing environmental delivery. These mechanisms align with forest monitoring, traceability, biosafety, agroclimatic and climate-risk information, water studies, and implementation support for restoration, circular economy, and watershed management.",
+      "contributing_doc_pairs": [
+        "CNR<->PENCYT",
+        "ENR<->PENCYT",
+        "HR<->PENCYT",
+        "NP<->PENCYT",
+        "PEG<->PENCYT",
+        "PENCYT<->PIOTA",
+        "PENCYT<->PNRF",
+        "PENCYT<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 5154,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PENCYT",
+        "PIOTA",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Review infrastructure siting in sensitive landscapes",
+      "type": "friction",
+      "description": "A recurring friction storyline is flagged for review where roads, logistics corridors, housing, tourism, energy, Canal works, and related infrastructure may overlap with forests, protected areas, corridors, wetlands, headwaters, and restoration zones. The mechanism tends to be delivery pressure through routing, access expansion, fragmentation, runoff, or consultation timing in the same territories targeted for conservation or watershed management.",
+      "contributing_doc_pairs": [
+        "CNR<->PEG",
+        "CNR<->PIOTA",
+        "ENR<->PEG",
+        "ENR<->PIOTA",
+        "HR<->PEG",
+        "HR<->PIOTA",
+        "NP<->PEG",
+        "NP<->PIOTA",
+        "PEG<->PIOTA",
+        "PEG<->PNRF",
+        "PIOTA<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 801,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PIOTA",
+        "PNRF"
+      ]
+    },
+    {
+      "name": "Review agricultural modernization near forest frontiers",
+      "type": "friction",
+      "description": "Another storyline recurs where food-sector modernization, agricultural technification, aquaculture, or agro-industrial expansion may create pressure in rural landscapes that also carry forest, corridor, riparian, or protected-area objectives. The concern is generally flagged for review as land-use or water-use pressure in overlapping areas, rather than as a broad disagreement in policy direction.",
+      "contributing_doc_pairs": [
+        "CNR<->PENCYT",
+        "ENR<->PENCYT",
+        "ENR<->PNRF",
+        "HR<->PENCYT",
+        "HR<->PNRF",
+        "NP<->PENCYT",
+        "NP<->PNRF",
+        "PEG<->PNRF",
+        "PENCYT<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 84,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PENCYT",
+        "PNRF"
+      ]
+    },
+    {
+      "name": "Review reservoirs and water allocation tradeoffs",
+      "type": "friction",
+      "description": "Water-supply expansion through reservoirs and related hydrological works recurs as a narrower area flagged for review where siting, environmental flows, and allocation choices may interact with wetlands, organic soils, riparian restoration, corridor protection, and basin governance. This storyline also points to possible competition over finite water resources among drinking water, Canal reliability, irrigation, industrial use, and ecosystem needs in shared basins.",
+      "contributing_doc_pairs": [
+        "ENR<->PNSH",
+        "HR<->PNSH",
+        "NP<->PNSH",
+        "PEG<->PNSH",
+        "PIOTA<->PNSH",
+        "PNRF<->PNSH",
+        "PEG<->PIOTA"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 50,
+      "spans_documents": [
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PIOTA",
+        "PNRF",
+        "PNSH"
+      ]
+    }
+  ],
+  "summary_paragraph": "Across the document set, reinforcement appears to dominate, especially where governance, finance, monitoring, and participation systems align with restoration, watershed management, and nature delivery. A second strong pattern is that STI, basin planning, and restoration instruments tend to reinforce one another through data systems, local planning, PES-style tools, and community-based implementation. Frictions do recur, most often flagged for review around infrastructure siting, agricultural modernization in forested rural landscapes, and reservoir or water-allocation choices in shared basins. Overall, the evidence points to broad strategic alignment with recurring implementation pressures concentrated in overlapping territories and resource systems.",
+  "doc_pair_count": 36
+}

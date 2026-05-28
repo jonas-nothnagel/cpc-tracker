@@ -22,6 +22,14 @@ from typing import Any
 from collections import defaultdict
 
 from .llm import call_llm, call_llm_batch
+from .alignment_schema import (
+    ALIGNMENT_MAP,
+    FLAGGED_LEVELS,
+    MECHANISM_MAP,
+    MANAGEABILITY_MAP,
+    CONFIDENCE_MAP,
+    parse_alignment,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -62,10 +70,18 @@ from the target.
 # Agent 2: Alignment Advisor prompts (from old scripts)
 # ---------------------------------------------------------------------------
 
-ADVISOR_SYSTEM = "You are a Target Alignment Advisor, ensuring factual, graded alignment assessments. Most policy target pairs within climate-nature frameworks share some degree of alignment."
+ADVISOR_SYSTEM = (
+    "You are a Target Alignment Advisor, ensuring factual, graded alignment "
+    "assessments. Most policy target pairs within climate-nature frameworks "
+    "share some degree of alignment."
+)
 
+# v2.1 canonical template. Use as-is for target-target alignment by passing
+# intro_framing="". The wrapper modules in measure_align.py, budget_align.py,
+# and nr7_align.py format with their own framing string so the same scoring
+# rubric drives every alignment family.
 ADVISOR_USER_TEMPLATE = """    Role: Alignment Advisor
-    Goal: Compare two structured targets from different policies and assign an alignment level from seven clearly defined categories.
+    Goal: Compare two structured targets from different policies and assign an alignment level from five clearly defined categories.
 
     Backstory: You specialize in evaluating alignment potential between policy targets. Your assessments are based on \
 real-world feasibility, operational synergy, and strategic overlap. You never assume alignment based on superficial wording alone. \
@@ -73,160 +89,200 @@ You also flag pairs that may pull against each other for human review when targe
 recognize that most targets within national climate-nature policy frameworks share some degree of alignment since they are all \
 working toward environmental and climate goals.
 
-    IMPORTANT: Likely and possible conflicts should be reserved for cases where implementing one target genuinely \
-undermines, opposes, or competes with the other. Two targets operating in different sectors or at different scales are NOT \
-in conflict; they are simply unrelated (No alignment) or weakly aligned (Low alignment). However, DO identify "Possible misalignment" \
-when targets create real-world trade-offs even if both are positively framed. For example, a target to expand agricultural operations \
-inherently creates friction with a target to restore ecosystems in the same area, even if both targets mention \
-"sustainability." Look for implicit resource competition, not just explicit opposition.
+    IMPORTANT, boundary rule for the negative side: Flagging a pair "for review" is the only negative-side label, and it applies \
+only when you can name a specific real-world friction (goal opposition, competition for the same finite resource, or implementation \
+undermining). Two targets operating in different sectors or at different scales are NOT flagged; they are simply unrelated \
+(No alignment) or weakly aligned (Low alignment). DO flag for review when targets create real-world trade-offs even when both \
+are positively framed, for example expanding agricultural operations in the same area an ecosystem-restoration target seeks \
+to protect, even if both mention "sustainability". Because policy text is aspirational, you observe text-level friction signals, \
+not implementation outcomes, so even a clearly named friction is flagged for review, not asserted as a contradiction.
 
+    Within the single flagged state, you separately characterise three sub-dimensions, rendered inline in parentheses: \
+the mechanism (what kind of friction), the manageability (can coordination resolve it, or would a target need to be redesigned), \
+and your confidence (how strongly the text supports the flag).
+{intro_framing}
     Task:
     1. Analyze the following two targets (structured analysis from Target Analyst):
        - {target_1_type} target: {target_1_decomp}
        - {target_2_type} target: {target_2_decomp}
     2. Compare the goal, action, ecosystem, target audience, and expected impact of both targets to assess their relationship.
-    2a. Pay particular attention to overlaps or conflicts in specific implementation activities and actions/measures, \
-not only high-level goals.
-    2b. Check whether the targets reference the same geographic area, watershed, or ecosystem. \
-Targets that compete for the same physical space or resources within a shared geography \
-are more likely to create implementation tensions, even when both use positive framing.
+    2a. Pay particular attention to overlaps or conflicts in specific implementation activities and actions/measures, not only high-level goals.
+    2b. Check whether the targets reference the same geographic area, watershed, or ecosystem. Targets that compete for the same \
+physical space or resources within a shared geography are more likely to create implementation tensions, even when both use positive framing.
     3. Consider hierarchical relationships between ecosystems. Recognize that specific ecosystems (e.g., mangroves, coral reefs) \
 may fall under broader categories such as coastal-marine ecosystems.
     4. Determine whether aligning these targets would optimize resources, avoid duplication, or create synergies that enhance \
 efficiency. Consider enabling relationships when one target creates the conditions for the other to succeed.
-    5. Ensure that alignment would lead to tangible, measurable outcomes and not just theoretical synergy. Avoid aligning \
-targets that operate at different levels (e.g., policy vs. on-the-ground implementation) without some operational overlap.
-    6. Focus on real-world feasibility — do not propose alignment based solely on similar wording or superficial themes.
-    7. Only flag contradictions when targets have genuinely opposing objectives, compete for the same specific resources, \
-or when implementing one would actively undermine the other. Different approaches to environmental goals are NOT contradictions.
+    5. Ensure that alignment would lead to tangible, measurable outcomes and not just theoretical synergy. Avoid aligning targets \
+that operate at different levels (e.g., policy vs. on-the-ground implementation) without some operational overlap.
+    6. Focus on real-world feasibility. Do not propose alignment based solely on similar wording or superficial themes.
+    7. Only flag pairs for review when targets have genuinely opposing objectives, compete for the same specific resources, or when \
+implementing one would actively undermine the other. Different approaches to environmental goals are NOT a reason to flag.
 
-    Classify the relationship into one of the seven levels below. Always use the exact label and format:
+    Classify the relationship into one of the five categories below. Always use the exact label and format.
 
-    **1.** "No alignment" – The targets have no shared goals, actions, ecosystems, or actors. Aligning them would not make sense in a \
-real-world implementation or policy context.
+    Source-annotated examples below: examples marked "real" are compressed from the project's targets data; \
+examples marked "illustrative" are hand-crafted didactic pairs.
+
+    **1.** "No alignment" - The targets have no shared goals, actions, ecosystems, or actors. Aligning them would not make sense \
+in a real-world implementation or policy context.
         Return: No alignment - [Concise 2-sentence explanation.]
 
-    Example:
-
+    Example (illustrative):
       Target 1: Reduce GHG emissions in the transportation sector by 40% by 2030.
       Target 2: Establish 15 urban pollinator gardens to support bee populations.
       Output:
-      No alignment - These targets operate in completely different domains, with no shared geography, actors, \
-or implementation pathways. Aligning them would not yield any mutual benefit or policy efficiency.
+      No alignment - These targets operate in completely different domains, with no shared geography, actors, or implementation \
+pathways. Aligning them would not yield any mutual benefit or policy efficiency.
 
-    **2.** "Low alignment" – The targets share superficial similarities—such as common terminology or a broad thematic area—but \
-differ significantly in intent, scale, timeline, or geographic scope. Any synergy is weak, \
-unclear, or impractical for coordinated implementation.
+    **2.** "Low alignment" - The targets share superficial similarities, such as common terminology or a broad thematic area, but \
+differ significantly in intent, scale, timeline, or geographic scope. Any synergy is weak, unclear, or impractical for coordinated implementation.
        Return: Low alignment - [Concise 2-sentence explanation.]
 
-    Example:
+    Example (illustrative):
       Target 1: Promote nature-based solutions to sequester carbon through wetland restoration.
       Target 2: Protect migratory bird corridors in high-altitude forest zones.
-
       Output:
-      Low alignment - Both mention natural ecosystems, but they focus on different geographies, species, and purposes. \
-The thematic overlap is too broad for practical coordination.
+      Low alignment - Both mention natural ecosystems, but they focus on different geographies, species, and purposes. The thematic \
+overlap is too broad for practical coordination.
 
-    **3.** "Medium alignment" – The targets share clear thematic or geographic overlap and reflect compatible priorities. \
-They could support each other through shared enabling conditions or parallel efforts, though they are not mutually dependent.
+    **3.** "Medium alignment" - The targets share clear thematic or geographic overlap and reflect compatible priorities. They could \
+support each other through shared enabling conditions or parallel efforts, though they are not mutually dependent.
        Return: Medium alignment - [Concise 2-sentence explanation.]
 
-    Example:
+    Example (illustrative):
       Target 1: Increase national forest cover by 10% by 2035 to enhance carbon sinks.
       Target 2: Implement afforestation and soil restoration programs in degraded upland regions.
-
       Output:
-      Medium alignment - The targets share goals around reforestation and ecosystem recovery, and could align through joint \
-planning or funding. However, they remain independently implementable and serve somewhat distinct primary goals.
+      Medium alignment - The targets share goals around reforestation and ecosystem recovery, and could align through joint planning \
+or funding. However, they remain independently implementable and serve somewhat distinct primary goals.
 
-    **4.** "High alignment" – The targets are strongly aligned across goals, actions, ecosystems, and actors. Coordinated \
-implementation would significantly enhance outcomes, efficiency, or scale; the targets directly support or amplify each other.
+    **4.** "High alignment" - The targets are strongly aligned across goals, actions, ecosystems, and actors. Coordinated implementation \
+would significantly enhance outcomes, efficiency, or scale; the targets directly support or amplify each other.
        Return: High alignment - [Concise 2-sentence explanation.]
 
-    Example:
+    Example (illustrative):
       Target 1: Restore 20,000 hectares of mangroves by 2030 for biodiversity and coastal protection.
       Target 2: Enhance climate resilience by restoring coastal blue carbon ecosystems, including mangroves, by 2030.
-
       Output:
-      High alignment - Both targets focus on the same ecosystem (mangroves), within the same timeframe, and involve similar actions and actors. \
-Coordinated implementation would clearly enhance efficiency and maximize both climate and biodiversity outcomes.
+      High alignment - Both targets focus on the same ecosystem (mangroves), within the same timeframe, and involve similar actions \
+and actors. Coordinated implementation would clearly enhance efficiency and maximize both climate and biodiversity outcomes.
 
-    === FLAGGED MISALIGNMENT LEVELS (use only when targets genuinely pull against each other) ===
+    === FLAGGED FOR REVIEW (use only when a specific real-world friction is identifiable) ===
 
-    These three levels flag pairs for human review. The vocabulary is intentionally cautious ("possible" / \
-"likely") because you cannot establish certain contradictions from policy text alone; you flag pairs that warrant \
-a closer look. You MUST also specify the contradiction type in parentheses after the label. The four types are:
-    - Goal conflict: Targets have directly opposing objectives (e.g., expand agriculture vs protect forests).
-    - Resource competition: Targets compete for the same specific limited resources in ways that are mutually exclusive.
-    - Implementation tension: Achieving one target actively undermines the feasibility of achieving the other.
-    - Scale/scope mismatch: Targets set incompatible geographic scales, timelines, or intensity levels that cannot coexist.
+    **5.** "Flagged for review" - The targets pull against each other in a way that warrants closer human review. You characterise the \
+friction along three sub-dimensions rendered inline in parentheses:
 
-    **5.** "Possible misalignment" – There is minor friction or an implicit trade-off between the targets, but they are not \
-fundamentally incompatible. The tension is manageable with coordination.
-       Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
+       Return: Flagged for review (<Goal conflict | Resource competition | Delivery friction>, <Manageable | Fundamental>, Confidence: \
+<High | Medium | Low>) - [Concise 2-sentence explanation.]
 
-    Example:
-      Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
-      Target 2: Protect watershed ecosystems and maintain minimum environmental water flows.
+    Sub-field A, Mechanism (pick exactly one):
+
+       **1. Goal conflict**: The two targets state demonstrably opposing objectives. Achieving one substantively means not achieving the other.
+          Example (illustrative):
+            Target 1: Convert 500,000 hectares of forest land to commercial agriculture by 2030.
+            Target 2: Increase national forest cover by 20% and halt all deforestation by 2030.
+            This is a Goal conflict because the targets contradict each other at the level of stated intent for the same land base.
+
+       **2. Resource competition**: Both targets place demands on the same specific limited resource (land, water, budget envelope, \
+staff capacity, infrastructure capacity, emissions budget). The competition is for a resource both need in ways that are not freely additive.
+          Example (illustrative):
+            Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
+            Target 2: Protect watershed ecosystems and maintain minimum environmental water flows in those river basins.
+            This is Resource competition because both depend on the same finite water in the same basins.
+
+       **3. Delivery friction**: The targets pursue compatible or even similar goals, but how one is implemented undermines how the \
+other is implemented. Includes mismatched scales, timelines, or operational intensities. This is the most common case for modern policy \
+documents that broadly share goals but compete in delivery.
+          Example (illustrative):
+            Target 1: Strengthen REDD+ safeguards and forest stewardship monitoring.
+            Target 2: Establish more effective logistics corridors, ports, and oil-related infrastructure.
+            This is Delivery friction because both can succeed in principle, but corridor routing through forest landscapes creates \
+pressure that safeguard systems must contain.
+
+    Sub-field B, Manageability (pick exactly one):
+
+       - **Manageable**: The friction is in delivery and can be resolved through coordination, safeguards, sequencing, or zoning. Both \
+targets can stand as written if the coordination happens.
+       - **Fundamental**: At least one target would need to be modified or dropped for both to coexist. The friction is in the targets \
+themselves, not in how they are delivered.
+
+       Apply this test independently of which mechanism applies: ask "could coordination, safeguards, or sequencing fully resolve the \
+friction?" If yes, Manageable. If at least one target would need to be revised or dropped, Fundamental.
+
+    Sub-field C, Confidence (pick exactly one):
+
+       - **High**: Both targets contain language that clearly indicates the named friction. A human reviewer would almost certainly \
+agree this warrants closer review.
+       - **Medium**: The text supports the friction, but a reviewer might reasonably read it as Low alignment or No alignment instead.
+       - **Low**: The friction is inferred from indirect signals, the policy text does not name it directly and you are extrapolating. \
+Treat as a hunch worth checking, not a finding.
+
+    Worked examples of Flagged for review:
+
+    Example A (real; Mongolia FSS_11 + NAP_3) - Delivery friction, Manageable, Confidence: Medium:
+      Target 1: Ensure a stable supply of energy, steam, heat and fuel for food supply and domestic production.
+      Target 2: Improve the adaptive capacity of ecosystems and biodiversity.
       Output:
-      Possible misalignment (Resource competition) - Rapid irrigation expansion could reduce water availability that the watershed target aims to protect. \
-However, the targets are not fundamentally incompatible and could coexist with careful water allocation planning.
+      Flagged for review (Delivery friction, Manageable, Confidence: Medium) - Subsidised energy and fuel for food production can \
+intensify agricultural pressure on ecosystems and habitats the adaptation target seeks to protect. The two are not fundamentally \
+opposed and can coexist if production support is paired with siting and intensity safeguards.
 
-    **6.** "Possible conflict" – There is a clear conflict in approach, resources, or expected outcomes, though \
-partial coexistence may be possible with significant trade-offs.
-       Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
-
-    Example:
-      Target 1: Strengthen sustainable agricultural productivity through expansion of farming operations in rural watersheds.
-      Target 2: Restore degraded riparian ecosystems and reduce nutrient runoff by 40% in agricultural watersheds by 2030.
+    Example B (real; Mongolia FSS_21 + NAP_4) - Resource competition, Manageable, Confidence: Medium:
+      Target 1: Focus on increasing the cultivation of all types of rice, sugar beet, and other cash crops, with policy and financing support.
+      Target 2: Reduce desertification, land degradation, and permafrost loss.
       Output:
-      Possible conflict (Resource competition) - Both targets place competing demands on the same watershed resources. \
-Expanding farming operations would increase nutrient loads in the very waterways the second target aims to restore.
+      Flagged for review (Resource competition, Manageable, Confidence: Medium) - Expanding irrigated cash-crop cultivation increases \
+demand for land and water in regions also targeted for degradation reduction, creating localised competition for the same physical \
+resource. Careful watershed allocation and land-use zoning could keep the two compatible.
 
-    **7.** "Likely conflict" – The targets directly oppose each other in goals, actions, or expected outcomes. \
-Implementing both would be counterproductive.
-       Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
-
-    Example:
-      Target 1: Convert 500,000 hectares of forest land to commercial agriculture by 2030.
-      Target 2: Increase national forest cover by 20% and halt all deforestation by 2030.
+    Example C (real; Mongolia FSS_15 + NAP_7) - Goal conflict, Fundamental, Confidence: High:
+      Target 1: Convert up to 200,000 hectares of newly reclaimed land into agricultural land.
+      Target 2: Establish sustainable forest management and climate-resilient natural forests and better reforestation capacity.
       Output:
-      Likely conflict (Goal conflict) - These targets have directly opposing objectives for the same land resource. \
-Implementing commercial agricultural expansion on forest land fundamentally contradicts the goal of increasing forest cover and halting deforestation.
+      Flagged for review (Goal conflict, Fundamental, Confidence: High) - The agricultural expansion target proposes converting new \
+land to cropland, which competes directly with the forest restoration target's intent for the same land base. Reconciling the two \
+would require revising either the conversion area or the reforestation footprint.
 
-    Your output should be in English.
+    Example D (real; Panama CNR + PEG) - Delivery friction, Manageable, Confidence: High:
+      Target 1: PIEA expansion inside the Panama Canal watershed for sustainable land-use management.
+      Target 2: Establish more effective logistics corridors among ports, airports, and free zones, prioritising export sectors.
+      Output:
+      Flagged for review (Delivery friction, Manageable, Confidence: High) - The PIEA target aims for conservation and sustainable \
+land use in the Canal watershed, while logistics expansion creates development pressure linked to the Canal economy in the same \
+geography. Coordinated spatial planning and safeguards in corridor routing could keep both viable.
+
+    Example E (real; Mongolia FSS_11 + NAP_4) - Delivery friction, Manageable, Confidence: Low:
+      Target 1: Ensure a stable supply of energy, steam, heat and fuel for food supply and domestic production.
+      Target 2: Reduce desertification, land degradation, and permafrost loss.
+      Output:
+      Flagged for review (Delivery friction, Manageable, Confidence: Low) - Subsidised energy and fuel for food producers could \
+indirectly intensify agricultural production in arid and degraded regions, adding pressure to lands the adaptation target seeks to \
+protect. The link is two steps removed from the policy text and inferred rather than named, so a reviewer might equally read the \
+pair as Low alignment with no flag needed.
+
+    Example F (real; Mongolia FSS_29 + NDC_22) - Resource competition, Fundamental, Confidence: High:
+      Target 1: Increase enterprise participation in the expansion and establishment of pig, poultry, and fattening lamb and cattle farms.
+      Target 2: Reduce 5.277 million tons of agricultural CO2 by 2030 by adhering to the national livestock herd cap of 50 million head \
+in line with rangeland carrying capacity.
+      Output:
+      Flagged for review (Resource competition, Fundamental, Confidence: High) - Both targets bind the same finite resource, \
+livestock-sector headcount under rangeland carrying capacity and the emissions budget tied to it, and expanding farms while holding \
+the 50 million head cap is only feasible through efficiency gains, not herd growth. As written, the two targets cannot both be \
+fully delivered without revising one, so the friction lives in the targets themselves rather than in delivery.
+
+    Your output should be in English. Use no em dashes. Do not invent facts.
     """
 
 
 # ---------------------------------------------------------------------------
 # Parsing helpers
 # ---------------------------------------------------------------------------
-
-ALIGNMENT_MAP = {
-    # New (cautious) vocabulary — surface these as the canonical LLM outputs.
-    "likely conflict": "likely_conflict",
-    "possible conflict": "possible_conflict",
-    "possible misalignment": "possible_misalignment",
-    # Backward-compat: older LLM completions may still emit the previous
-    # labels. Map them onto the renamed enum keys so existing prompts and
-    # any regression to legacy phrasing still parse cleanly.
-    "high contradiction": "likely_conflict",
-    "moderate contradiction": "possible_conflict",
-    "low tension": "possible_misalignment",
-    "no alignment": "none",
-    "low alignment": "low",
-    "medium alignment": "medium",
-    "high alignment": "high",
-}
-
-CONTRADICTION_LEVELS = {"likely_conflict", "possible_conflict", "possible_misalignment"}
-
-CONTRADICTION_TYPE_MAP = {
-    "goal conflict": "goal_conflict",
-    "resource competition": "resource_competition",
-    "implementation tension": "implementation_tension",
-    "scale/scope mismatch": "scale_scope_mismatch",
-}
+#
+# ALIGNMENT_MAP, MECHANISM_MAP, MANAGEABILITY_MAP, CONFIDENCE_MAP,
+# FLAGGED_LEVELS, and parse_alignment now live in alignment_schema.py so the
+# four alignment-family modules (align, measure_align, budget_align,
+# nr7_align) share a single source of truth.
 
 DOC_TYPE_LABELS = {
     "NDC": "NDC",
@@ -273,61 +329,9 @@ def parse_decomposition(raw: str) -> dict[str, str]:
     }
 
 
-def _extract_contradiction_type(text: str) -> str | None:
-    """Extract contradiction type from parenthesized label, e.g. '(Goal conflict)'."""
-    m = re.search(r"\(([^)]+)\)", text)
-    if m:
-        inner = m.group(1).strip().lower()
-        return CONTRADICTION_TYPE_MAP.get(inner)
-    return None
-
-
-def parse_alignment(raw: str) -> tuple[str, str, str | None]:
-    """Parse relationship level, explanation, and optional contradiction type.
-
-    Returns (level_code, explanation, contradiction_type).
-    contradiction_type is non-None only for negative levels.
-
-    Output format: "Label (Type) - explanation" for contradictions,
-                   "Label - explanation" for alignment/neutral.
-    """
-    raw_stripped = raw.strip()
-    lower = raw_stripped.lower()
-
-    # Primary: "Label - explanation" text format
-    for label_text, level_code in ALIGNMENT_MAP.items():
-        if label_text in lower:
-            contradiction_type = None
-            if level_code in CONTRADICTION_LEVELS:
-                contradiction_type = _extract_contradiction_type(raw_stripped)
-
-            # Extract explanation: split on first " - " after the label
-            idx = lower.index(label_text)
-            after_label = raw_stripped[idx + len(label_text):]
-            # Skip past optional "(Type)" parenthetical
-            after_paren = re.sub(r"^\s*\([^)]*\)\s*", "", after_label)
-            parts = after_paren.split("-", 1)
-            explanation = parts[1].strip() if len(parts) > 1 else after_paren.strip().lstrip("-").strip()
-            return level_code, explanation, contradiction_type
-
-    # Fallback: JSON format
-    try:
-        cleaned = re.sub(r"```(?:json)?\s*", "", raw_stripped).strip().rstrip("`")
-        data = json.loads(cleaned)
-        label = data.get("alignment", data.get("relationship", "No alignment")).strip().lower()
-        explanation = data.get("explanation", data.get("description", ""))
-        level = ALIGNMENT_MAP.get(label, "none")
-        contradiction_type = None
-        if level in CONTRADICTION_LEVELS:
-            ct = data.get("contradictionType", data.get("contradiction_type", ""))
-            if ct:
-                contradiction_type = CONTRADICTION_TYPE_MAP.get(ct.lower(), ct.lower())
-        return level, explanation, contradiction_type
-    except (json.JSONDecodeError, AttributeError):
-        pass
-
-    logger.warning(f"Could not parse alignment from: {raw_stripped[:100]}")
-    return "none", "", None
+# parse_alignment lives in alignment_schema.py (imported at the top of this
+# module). It returns a 5-tuple (level, explanation, mechanism, manageability,
+# confidence). See assess_alignment() below for the call site.
 
 
 # ---------------------------------------------------------------------------
@@ -456,6 +460,7 @@ async def assess_alignment(
         decomp_b = decompositions.get(tb["id"], "")
 
         user = ADVISOR_USER_TEMPLATE.format(
+            intro_framing="",
             target_1_type=labels.get(ta["sourceDocument"], ta["sourceDocument"]),
             target_1_decomp=decomp_a,
             target_2_type=labels.get(tb["sourceDocument"], tb["sourceDocument"]),
@@ -466,7 +471,7 @@ async def assess_alignment(
 
     results = await call_llm_batch(
         calls,
-        cache_namespace="alignment",
+        cache_namespace="alignment_v2",
         desc="Alignment",
     )
 
@@ -474,7 +479,7 @@ async def assess_alignment(
     level_counts: dict[str, int] = {}
 
     for (aid, bid), raw in zip(pair_keys, results):
-        level, explanation, contradiction_type = parse_alignment(raw)
+        level, explanation, mechanism, manageability, confidence = parse_alignment(raw)
         level_counts[level] = level_counts.get(level, 0) + 1
         result: dict[str, Any] = {
             "targetAId": aid,
@@ -482,8 +487,12 @@ async def assess_alignment(
             "alignment": level,
             "description": explanation,
         }
-        if contradiction_type:
-            result["contradictionType"] = contradiction_type
+        if mechanism:
+            result["mechanism"] = mechanism
+        if manageability:
+            result["manageability"] = manageability
+        if confidence:
+            result["confidence"] = confidence
         alignment_results.append(result)
 
     logger.info(

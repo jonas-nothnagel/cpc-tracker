@@ -75,7 +75,7 @@ async def test_decompose_with_mock_llm(sample_targets):
 
 @pytest.mark.asyncio
 async def test_alignment_with_mock_llm(sample_targets):
-    """assess_alignment should parse alignment AND contradiction levels."""
+    """assess_alignment should parse v2 (Flagged for review) AND v1 (Possible misalignment) strings."""
     pairs = generate_pairs(sample_targets)
     assert len(pairs) > 0
 
@@ -83,8 +83,10 @@ async def test_alignment_with_mock_llm(sample_targets):
 
     mock_responses = [
         "High alignment - Both targets share the same goals.",
-        "Moderate contradiction (Resource competition) - Competing resource demands.",
-        "Low tension (Implementation tension) - Minor friction in approach.",
+        # v2 canonical
+        "Flagged for review (Resource competition, Manageable, Confidence: Medium) - Competing resource demands.",
+        # v1 backward-compat — should parse to flagged + delivery_friction + manageable + medium
+        "Possible misalignment (Implementation tension) - Minor friction in approach.",
         "No alignment - Completely unrelated targets.",
         "Medium alignment - Complementary goals with some overlap.",
     ]
@@ -102,18 +104,47 @@ async def test_alignment_with_mock_llm(sample_targets):
         assert "alignment" in r
         assert "description" in r
 
-    contradictions = [r for r in results if r["alignment"] in ("likely_conflict", "possible_conflict", "possible_misalignment")]
-    for c in contradictions:
-        if "contradictionType" in c:
-            assert c["contradictionType"] in ("goal_conflict", "resource_competition", "implementation_tension", "scale_scope_mismatch")
-
-    has_type = [r for r in results if r.get("contradictionType")]
-    assert len(has_type) > 0
+    flagged = [r for r in results if r["alignment"] == "flagged"]
+    assert len(flagged) > 0
+    for f in flagged:
+        # Every flagged record should carry all three sub-fields (canonical v2 or
+        # backward-compat v1 with defaults from LEGACY_LEVEL_TO_FIELDS).
+        assert f.get("mechanism") in ("goal_conflict", "resource_competition", "delivery_friction")
+        assert f.get("manageability") in ("manageable", "fundamental")
+        assert f.get("confidence") in ("low", "medium", "high")
 
 
 @pytest.mark.asyncio
-async def test_alignment_all_contradictions():
-    """Test pipeline handles all-contradiction scenario."""
+async def test_alignment_v2_canonical_flagged():
+    """v2.1 canonical 'Flagged for review (...)' parses into the three sub-fields."""
+    targets = [
+        {"id": "A", "sourceDocument": "NAP", "text": "target a"},
+        {"id": "B", "sourceDocument": "NDC", "text": "target b"},
+    ]
+    pairs = [(targets[0], targets[1])]
+    decompositions = {"A": '{"Goal/Purpose": "test"}', "B": '{"Goal/Purpose": "other"}'}
+
+    responses = [
+        "Flagged for review (Goal conflict, Fundamental, Confidence: High) - "
+        "Directly opposing objectives on the same land.",
+    ]
+
+    with patch("src.align.call_llm_batch", new_callable=AsyncMock) as mock_batch:
+        mock_batch.return_value = responses
+        results = await assess_alignment(pairs, decompositions)
+
+    assert len(results) == 1
+    r = results[0]
+    assert r["alignment"] == "flagged"
+    assert r["mechanism"] == "goal_conflict"
+    assert r["manageability"] == "fundamental"
+    assert r["confidence"] == "high"
+    assert "opposing" in r["description"].lower()
+
+
+@pytest.mark.asyncio
+async def test_alignment_v1_legacy_backward_compat():
+    """v1 'Likely conflict (Goal conflict)' still parses, now mapped to flagged + Fundamental/High via legacy table."""
     targets = [
         {"id": "A", "sourceDocument": "NAP", "text": "target a"},
         {"id": "B", "sourceDocument": "NDC", "text": "target b"},
@@ -131,9 +162,11 @@ async def test_alignment_all_contradictions():
 
     assert len(results) == 1
     r = results[0]
-    assert r["alignment"] == "likely_conflict"
-    assert r["contradictionType"] == "goal_conflict"
-    assert "opposing" in r["description"].lower()
+    assert r["alignment"] == "flagged"
+    assert r["mechanism"] == "goal_conflict"
+    # LEGACY_LEVEL_TO_FIELDS["likely_conflict"] = ("flagged", "fundamental", "high")
+    assert r["manageability"] == "fundamental"
+    assert r["confidence"] == "high"
 
 
 # ---------------------------------------------------------------------------

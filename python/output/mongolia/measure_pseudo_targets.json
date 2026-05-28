@@ -383,7 +383,7 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_other",
+    "sector": "sector_lulucf",
     "measureStatus": "Ongoing",
     "actionType": "adaptation",
     "adaptationGoal": 5,

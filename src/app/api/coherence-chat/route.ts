@@ -77,7 +77,9 @@ interface ChatContext {
     a: string;
     b: string;
     level: string;
-    contradictionType?: string;
+    mechanism?: string;
+    manageability?: string;
+    confidence?: string;
     rationale: string;
   }[];
   /** Top-5 rankings derived from the full corpus. */
@@ -111,6 +113,31 @@ interface ChatContext {
     period: { start: number; end: number };
     totalBudget: number;
   };
+  /** Precomputed synthesis artifacts from the pipeline: corpus-level
+   *  storylines + summary, per-doc-pair narratives, and per-theme narratives.
+   *  AI-generated; present only when the country's run produced them. Lets the
+   *  chat answer big-picture questions from the derived narrative instead of
+   *  re-deriving it from raw pairs. */
+  synthesis?: {
+    corpus?: {
+      summary: string;
+      storylines: { name: string; type: string; description: string }[];
+    };
+    docPairs?: {
+      a: string;
+      b: string;
+      storyline: string;
+      reinforce: string;
+      clash: string;
+      coordination: string;
+    }[];
+    sectors?: {
+      category: string;
+      reinforce: string;
+      clash: string;
+      coordination: string;
+    }[];
+  };
   country: string | null;
 }
 
@@ -142,7 +169,7 @@ Targets come from policy documents the country has published. The user message l
 Policy targets describe what the country PLANS to do. BTR entries describe what the country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A flagged misalignment between a BTR entry and a policy target is qualitatively sharper than two plans disagreeing on paper, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears in a pair the user is asking about.
 
 YOUR JOB
-Write a factual ANSWER (3 to 5 short sentences, 60 to 95 words) using the precomputed rankings, pair rationales, target index, and topic resolution. Lead with the most relevant fact (the count, the top entry, or the sharpest pair). Every number and label must trace to the context. Stop early if you would have to invent a number.
+Write a factual ANSWER (3 to 5 short sentences, 60 to 95 words) using the precomputed rankings, pair rationales, target index, topic resolution, and, when present, the precomputed synthesis. Lead with the most relevant fact (the count, the top entry, or the sharpest pair). Every number and label must trace to the context. Stop early if you would have to invent a number.
 
 Then call navigation tools so the user can see the evidence on the wheel via a Show me button. The answer text is REQUIRED; always write it, even when calling tools.
 
@@ -172,6 +199,9 @@ If a "Conversation context" line is present, resolve referring expressions ("it"
 
 BUDGET DATA (when present)
 When the user message includes a BUDGET BY GLOBE CATEGORY block, you may answer questions about how a country's tagged biodiversity expenditure (BER, Biodiversity Expenditure Review) is distributed across primary GLOBE categories. The block lists, per primary category: total tagged spend, share of total tagged spend, target count, share of targets, and count of flagged conflict pairs. Always qualify figures as "tagged BER spend" or "in the uploaded BER", since the BER is a subset of national expenditure, not the full budget. Never call a category "underfunded" as a verdict; describe shares and counts as observations. Acceptable framings: "X has Y% of tagged BER spend against Z% of GLOBE-tagged targets", "X has the most flagged pairs and the smallest budget share in this view". The currency, unit, and reporting period live in the block's header line; quote them on first mention of a figure.
+
+PRECOMPUTED SYNTHESIS (when present)
+The user message may include a PRECOMPUTED SYNTHESIS block: AI-generated storylines across the whole corpus, per-document-pair summaries (where two documents reinforce or clash, plus a coordination pointer), and per-theme summaries. The pipeline derived these from the same pairs you can see. Draw on them for big-picture questions like the main storyline, how two documents relate overall, or what a theme's friction is about, and you may pass along a coordination pointer in the same hedged phrasing. These are AI-generated summaries, not ground truth: keep the neutral, decision-support framing and do not present them as certain. When you name a specific storyline, document pair, or theme as the focal evidence, still call the matching navigation tool so the Show me button appears.
 
 HARD RULES
 - 3 to 5 short sentences, 60 to 95 words.
@@ -386,7 +416,9 @@ function buildTopicRankings(
   const matchingIds = new Set(matchingTargets.map((t) => t.id));
   const tension = new Map<string, number>();
   const alignment = new Map<string, number>();
-  const CONTRA = new Set(["likely_conflict", "possible_conflict", "possible_misalignment"]);
+  // v2.1: single flagged state replaces three v1 severity levels. Legacy
+  // strings included for safety while old records may still flow through.
+  const CONTRA = new Set(["flagged", "likely_conflict", "possible_conflict", "possible_misalignment"]);
   const STRONG_ALIGN = new Set(["high"]);
   for (const p of ctx.pairs ?? []) {
     if (CONTRA.has(p.level)) {
@@ -473,6 +505,10 @@ function buildUserMessage(
   // Pair rationales: contradictions first (most diagnostic), then alignments.
   // Severity-ordered so model can scan top-down for concrete tensions.
   const SEVERITY: Record<string, number> = {
+    // v2.1: all flagged pairs sort to the top; sub-fields (manageability,
+    // confidence) carry the finer ordering once we surface them here.
+    flagged: 0,
+    // Legacy v1 levels kept for any record that has not yet been migrated.
     likely_conflict: 0,
     possible_conflict: 1,
     possible_misalignment: 2,
@@ -486,7 +522,10 @@ function buildUserMessage(
   const pairBlock = pairs.length
     ? pairs
         .map((p) => {
-          const ct = p.contradictionType ? ` (${p.contradictionType})` : "";
+          const subs = [p.mechanism, p.manageability, p.confidence && `conf:${p.confidence}`]
+            .filter(Boolean)
+            .join(", ");
+          const ct = subs ? ` (${subs})` : "";
           const r = p.rationale.replace(/\s+/g, " ").trim();
           return `${p.a} ↔ ${p.b} | ${p.level}${ct} | ${r}`;
         })
@@ -594,6 +633,56 @@ function buildUserMessage(
     sections.push("Pre-computed rankings — use these to pick groups/targets for aggregate questions:", rankings);
   }
 
+  // Precomputed synthesis: corpus storylines + per-doc-pair and per-theme
+  // narratives the pipeline derived from the same pairs. Gives the model a
+  // ready big-picture answer for "main storyline" / "how do X and Y relate"
+  // without re-deriving it from raw pairs. AI-generated, so the system prompt
+  // tells the model to keep it hedged.
+  const syn = ctx.synthesis;
+  if (syn && (syn.corpus || syn.docPairs?.length || syn.sectors?.length)) {
+    const parts: string[] = [];
+    if (syn.corpus) {
+      if (syn.corpus.summary) parts.push(`Corpus summary: ${syn.corpus.summary}`);
+      if (syn.corpus.storylines.length) {
+        parts.push(
+          "Storylines across the corpus (name | type | description):\n" +
+            syn.corpus.storylines
+              .map((s) => `- ${s.name} | ${s.type} | ${s.description}`)
+              .join("\n"),
+        );
+      }
+    }
+    if (syn.docPairs && syn.docPairs.length) {
+      parts.push(
+        "Document-pair syntheses (how two documents reinforce / clash, with a coordination pointer):\n" +
+          syn.docPairs
+            .map(
+              (d) =>
+                `- ${d.a} & ${d.b}: ${d.storyline}. Reinforce: ${d.reinforce} Clash: ${d.clash} Coordination: ${d.coordination}`,
+            )
+            .join("\n"),
+      );
+    }
+    if (syn.sectors && syn.sectors.length) {
+      parts.push(
+        "Theme syntheses (per sector/category):\n" +
+          syn.sectors
+            .map(
+              (s) =>
+                `- ${s.category}. Reinforce: ${s.reinforce} Clash: ${s.clash} Coordination: ${s.coordination}`,
+            )
+            .join("\n"),
+      );
+    }
+    if (parts.length) {
+      sections.push(
+        "PRECOMPUTED SYNTHESIS — AI-generated storylines and summaries the pipeline derived from the same pairs. Use for big-picture questions (main storyline, how two documents relate, a theme's friction). Keep the hedged, neutral framing; these are AI-generated, not ground truth:",
+        parts.join("\n\n"),
+        "",
+      );
+    }
+  }
+
   // Budget rollup: one line per primary GLOBE category. Plain text, pipe-
   // delimited so the model can quote a number without hallucinating one. Sent
   // unconditionally when the data exists, not gated by the wheel's overlay.
@@ -624,7 +713,7 @@ function buildUserMessage(
   );
   if (pairBlock) {
     sections.push(
-      `Pair rationales (${pairs.length} non-"none" pairs, severity-sorted). Format: targetA ↔ targetB | level (contradictionType?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
+      `Pair rationales (${pairs.length} non-"none" pairs, severity-sorted). Format: targetA ↔ targetB | level (mechanism, manageability, conf:level?) | rationale. Use these to answer "why does X conflict with Y" or to surface specific flagged misalignments:`,
       pairBlock,
       "",
     );
@@ -770,6 +859,8 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 // it can't hallucinate.
 
 const SEVERITY_LABEL: Record<string, string> = {
+  flagged: "flagged for review",
+  // Legacy strings retained so any unmigrated v1 record still renders.
   likely_conflict: "likely conflict",
   possible_conflict: "possible conflict",
   possible_misalignment: "possible misalignment",
@@ -838,6 +929,7 @@ function synthesizeAnswer(
           const bothBtr = pA.doc === "BTR" && pB.doc === "BTR";
           if (!oneIsBtr || bothBtr) return false;
           return (
+            p.level === "flagged" ||
             p.level === "likely_conflict" ||
             p.level === "possible_conflict" ||
             p.level === "possible_misalignment"

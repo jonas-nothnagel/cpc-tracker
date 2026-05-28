@@ -1,0 +1,146 @@
+{
+  "storylines": [
+    {
+      "name": "Linking spatial planning across land uses",
+      "type": "reinforcement",
+      "description": "A strong storyline recurs around spatial planning, zoning, monitoring, and legal coordination as shared delivery tools for agriculture, adaptation, climate, and biodiversity objectives. This tends to align production, restoration, protected areas, pasture management, and water allocation by giving multiple documents a common implementation architecture.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NBSAP<->NDC",
+        "NBSAP<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2969,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Reinforcing resilient agriculture through enabling systems",
+      "type": "reinforcement",
+      "description": "Enabling systems such as research, training, early warning, data access, laboratory capacity, social protection, and institutional coordination recur as mechanisms that reinforce more resilient agriculture and food systems. This points to broad alignment where governance and knowledge tools support production, storage, livestock health, disaster preparedness, and land management outcomes.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NDC",
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2094,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Supporting restoration with pasture and forest management",
+      "type": "reinforcement",
+      "description": "Pasture rehabilitation, forest restoration, anti-desertification, carrying-capacity rules, and ecosystem-based land stewardship recur as mutually reinforcing measures across climate, biodiversity, and sector planning documents. The pattern aligns livestock and agricultural resilience with restoration and conservation when land management tools are applied in shared landscapes.",
+      "contributing_doc_pairs": [
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1592,
+      "spans_documents": [
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Pressuring land and water through expansion",
+      "type": "friction",
+      "description": "A recurring friction storyline is that cropland, irrigation, greenhouse, fodder, livestock, and processing expansion could compete with restoration, protected areas, pasture limits, forests, and water conservation in the same places. The mechanism flagged for review is usually shared pressure on finite land, water, and grazing resources rather than a settled goal conflict.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 711,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Flagging irrigation and water infrastructure overlaps",
+      "type": "friction",
+      "description": "Irrigation expansion, water points, storage, and related water-resilience investments are repeatedly flagged for review where they overlap with ecosystem protection, watershed limits, protected areas, and biodiversity corridors. This tends to recur most clearly in dryland, pasture, and mixed farming landscapes where multiple policies depend on the same water resources.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NDC",
+        "NAP<->NBSAP",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 395,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Flagging livestock growth against ecological limits",
+      "type": "friction",
+      "description": "Livestock expansion and meat-supply growth recur as areas flagged for review where they may make pasture carrying-capacity, restoration, biodiversity, and low-emission pathways harder to deliver. The friction tends to arise through herd growth, feed and water demand, grazing pressure, and siting of livestock facilities in ecologically sensitive areas.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NDC",
+        "NBSAP<->NDC",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 496,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    }
+  ],
+  "summary_paragraph": "Across the document set, alignment appears stronger than friction, with recurring reinforcement around spatial planning, monitoring, legal coordination, and other enabling systems that support resilient agriculture, restoration, and biodiversity-sensitive land management. Forest, pasture, and degraded-land measures also often align across adaptation, climate, biodiversity, and sector planning frameworks. At the same time, several implementation pressures recur, especially where agricultural expansion, irrigation, and livestock growth may compete with finite land, water, grazing capacity, protected areas, and restoration zones. Overall, the evidence points to a coherent land stewardship narrative with repeated areas flagged for review in shared rural landscapes.",
+  "doc_pair_count": 10
+}

@@ -474,8 +474,11 @@ def estimate_footprint_from_counts(
 # Core call with retry
 # ---------------------------------------------------------------------------
 
-MAX_RETRIES = 8
-BASE_DELAY = 2.0  # seconds — exponential backoff: 2, 4, 8, 16, 32, 64, 128, 256s (cap)
+MAX_RETRIES = 12
+BASE_DELAY = 2.0  # seconds. Exponential backoff capped at 60s (see line 574). With
+# 12 attempts the budget is roughly 2+4+8+16+32+60+60+60+60+60+60+60 ≈ 8 min per
+# call before giving up. Sized for gpt-5.4 on Azure where short TPM bursts can
+# saturate the deployment quota during long pipelines (Panama: ~50K calls).
 
 
 async def call_llm(
@@ -554,6 +557,20 @@ async def call_llm(
 
         except Exception as e:
             last_error = e
+            # Azure content-filter rejections are deterministic — retrying the
+            # exact same prompt will always fail. Short-circuit with a benign
+            # empty result so a single triggered target doesn't kill the whole
+            # pipeline. The caller observes "" and treats it as an unparseable
+            # response (level=none, no flag).
+            err_msg = str(e)
+            if "content_filter" in err_msg or "ResponsibleAIPolicyViolation" in err_msg:
+                logger.warning(
+                    f"LLM call rejected by Azure content filter; returning empty "
+                    f"result for this call. Detail: {err_msg[:200]}"
+                )
+                # Cache the empty result so we don't re-hit the filter on rerun.
+                write_cache(cache_namespace, system, user, model, "")
+                return ""
             # Exponential backoff capped at 60s. Jitter (±25%) avoids thundering-herd
             # retries against bursty rate-limit windows on Azure (where many parallel
             # slots otherwise re-fire at the same instant).

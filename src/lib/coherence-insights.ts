@@ -67,6 +67,14 @@ export interface Insight {
    * cleanly if it doesn't apply.
    */
   filter?: string;
+  /**
+   * Briefing-only: the specific target this insight is about, when it names
+   * one (e.g. "N contradictions converge on X"). The briefing's "Show me"
+   * uses it to refocus the wheel on the target's document and open its
+   * flag-profile decomposition. Additive: the dashboard explorer dispatches
+   * `actions` and ignores this, so its behaviour is unchanged.
+   */
+  subjectTargetId?: string;
 }
 
 interface DetectArgs {
@@ -181,10 +189,10 @@ function detectParadox(args: DetectArgs): Insight | null {
  * Tension cluster: at least three contradictions converge on a single target.
  * Suggests one driver behind a recurring tradeoff in the dataset.
  *
- * The action focuses the target's source-document arc rather than selecting
- * the target itself. The framing is aggregate ("N contradictions converge on
- * X"), so users expect to see X in the context of its document, not a
- * stripped-down single-target view that hides the surrounding wheel.
+ * The `actions` focus the target's source-document arc (the dashboard
+ * explorer's behaviour, kept as-is). `subjectTargetId` additionally carries
+ * the target so the briefing's "Show me" can refocus that document and open
+ * the target's flag-profile decomposition, the "N contradictions" payoff.
  */
 function detectTensionCluster(args: DetectArgs): Insight | null {
   const { targets, alignment, countryConfig } = args;
@@ -210,6 +218,7 @@ function detectTensionCluster(args: DetectArgs): Insight | null {
       { type: "set_mode", mode: "document" },
       { type: "focus_category", categoryId: t.sourceDocument },
     ],
+    subjectTargetId: id,
     filter: "contradictions",
   };
 }

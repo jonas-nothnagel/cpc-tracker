@@ -307,7 +307,7 @@
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "sector": "sector_other",
+    "sector": "sector_lulucf",
     "measureStatus": "Planned",
     "actionType": "mitigation"
   },

@@ -15,11 +15,13 @@ import re
 from typing import Any
 
 from .align import (
+    ADVISOR_SYSTEM,
+    ADVISOR_USER_TEMPLATE,
     ANALYST_SYSTEM,
     ANALYST_USER_TEMPLATE,
     DOC_TYPE_LABELS,
-    parse_alignment,
 )
+from .alignment_schema import parse_alignment
 from .llm import call_llm_batch
 
 logger = logging.getLogger(__name__)
@@ -28,82 +30,33 @@ logger = logging.getLogger(__name__)
 # Adapted Agent 2 prompt for implementation alignment
 # ---------------------------------------------------------------------------
 
-MEASURE_ADVISOR_SYSTEM = (
-    "You are an Implementation Coherence Advisor assessing whether reported "
-    "government measures effectively implement stated policy targets. You "
-    "provide factual, graded assessments."
-)
+MEASURE_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the v2.1 system prompt.
 
-# Prepended to the user template when the reported action is an adaptation action
-# rather than a mitigation measure. Keeps all prompt surface in one place.
+# Prepended to the v2.1 advisor template when the reported action is an
+# adaptation action rather than a mitigation measure. Keeps the same scoring
+# rubric but tells the advisor not to penalise adaptation actions for lacking
+# CO2e reduction estimates.
 ADAPTATION_CONTEXT_NOTE = (
-    "    NOTE: The reported action below is an ADAPTATION action, not a mitigation measure. "
+    "    NOTE: The reported action on one side is an ADAPTATION action, not a mitigation measure. "
     "When assessing coherence, consider whether it reduces vulnerability, builds adaptive "
     "capacity, or could undermine the target's intent. Adaptation outcomes are not measured "
-    "in CO2e; do not penalize the action for lacking emissions reductions.\n\n"
+    "in CO2e; do not penalize the action for lacking emissions reductions.\n"
 )
 
-MEASURE_ADVISOR_USER_TEMPLATE = """{adaptation_note}    Role: Implementation Coherence Advisor
-    Goal: Compare a policy target with a reported implementation measure and assess how well the measure \
-implements or supports the target.
-
-    Backstory: You specialize in evaluating whether government-reported actions (from Biennial \
-Transparency Reports) genuinely implement or support stated policy targets (from national climate-nature policy documents). Your \
-assessments are grounded in real-world feasibility and operational overlap. You identify both strong \
-implementation links and genuine contradictions, including cross-type tensions where a mitigation measure \
-and an adaptation action push the same sector in opposite directions.
-
-    Task:
-    1. Analyze the following policy target and reported implementation action:
-       - {target_type} policy target: {target_decomp}
-       - BTR reported action: {measure_decomp}
-    2. Assess whether the action directly implements, partially supports, or has no relationship to the target.
-    3. Consider whether the action's actions, sector, and intended outcomes genuinely advance the target's goals.
-    4. Also consider whether the action could inadvertently undermine or contradict the target.
-
-    Classify the relationship into one of the seven levels below. Always use the exact label and format:
-
-    **1.** "No alignment" – The measure and target operate in completely different domains with no shared goals, \
-actions, or outcomes.
-        Return: No alignment - [Concise 2-sentence explanation.]
-
-    **2.** "Low alignment" – The measure has a tangential relationship to the target. They share a broad sector \
-or thematic area but the measure does not meaningfully advance the target's specific goals.
-       Return: Low alignment - [Concise 2-sentence explanation.]
-
-    **3.** "Medium alignment" – The measure partially implements or supports the target. There is clear \
-thematic overlap and the measure advances some aspects of the target, but it does not fully address the \
-target's core objectives.
-       Return: Medium alignment - [Concise 2-sentence explanation.]
-
-    **4.** "High alignment" – The measure directly implements or strongly supports the target. The measure's \
-actions, sector, and intended outcomes closely match the target's goals. This measure is a concrete step \
-toward achieving the target.
-       Return: High alignment - [Concise 2-sentence explanation.]
-
-    === CONTRADICTION LEVELS (use only when the measure genuinely conflicts with the target) ===
-
-    For the flagged-misalignment levels, you MUST also specify the contradiction type in parentheses after the label. \
-The vocabulary is intentionally cautious ("possible" / "likely") because you flag pairs for human review rather \
-than establish certain contradictions. The four types are:
-    - Goal conflict: The measure works against the target's objective.
-    - Resource competition: The measure diverts resources that the target needs.
-    - Implementation tension: Implementing the measure undermines feasibility of the target.
-    - Scale/scope mismatch: The measure operates at an incompatible scale or timeline.
-
-    **5.** "Possible misalignment" – Minor friction: the measure creates a trade-off with the target but is not \
-fundamentally incompatible.
-       Return: Possible misalignment (Type) - [Concise 2-sentence explanation.]
-
-    **6.** "Possible conflict" – Clear conflict in approach or resources, though partial coexistence \
-may be possible.
-       Return: Possible conflict (Type) - [Concise 2-sentence explanation.]
-
-    **7.** "Likely conflict" – The measure directly opposes the target's goals or outcomes.
-       Return: Likely conflict (Type) - [Concise 2-sentence explanation.]
-
-    Your output should be in English.
-    """
+# Framing injected into the canonical v2.1 ADVISOR_USER_TEMPLATE's
+# {intro_framing} slot so the advisor knows it is comparing a policy target
+# against a reported implementation action (rather than two policy targets).
+# The scoring rubric (five categories + three sub-fields) is shared with
+# target-target alignment.
+MEASURE_INTRO_FRAMING = (
+    "\n    Context for this comparison: one side of this pair is a policy target "
+    "extracted from a national strategy or policy document; the other side is a "
+    "reported implementation action from a Biennial Transparency Report. Apply the "
+    "same scoring rubric. A measure that directly implements a target is High alignment; "
+    "a measure that operates in the same broad sector but does not advance the target's "
+    "specific goals is Low alignment; a measure that creates real-world friction with the "
+    "target (e.g. expanding livestock while the target caps the herd) is Flagged for review.\n"
+)
 
 
 # ---------------------------------------------------------------------------
@@ -318,21 +271,23 @@ async def assess_measure_alignment(
             if measure.get("actionType") == "adaptation"
             else ""
         )
+        intro_framing = MEASURE_INTRO_FRAMING + adaptation_note
 
-        user = MEASURE_ADVISOR_USER_TEMPLATE.format(
-            adaptation_note=adaptation_note,
-            target_type=labels.get(
+        user = ADVISOR_USER_TEMPLATE.format(
+            intro_framing=intro_framing,
+            target_1_type=labels.get(
                 target["sourceDocument"], target["sourceDocument"]
             ),
-            target_decomp=decomp_t,
-            measure_decomp=decomp_m,
+            target_1_decomp=decomp_t,
+            target_2_type="BTR reported action",
+            target_2_decomp=decomp_m,
         )
         calls.append({"system": MEASURE_ADVISOR_SYSTEM, "user": user})
         pair_keys.append((target["id"], measure["id"]))
 
     results = await call_llm_batch(
         calls,
-        cache_namespace="measure_alignment",
+        cache_namespace="measure_alignment_v2",
         desc="Measure alignment",
     )
 
@@ -340,7 +295,7 @@ async def assess_measure_alignment(
     level_counts: dict[str, int] = {}
 
     for (tid, mid), raw in zip(pair_keys, results):
-        level, explanation, contradiction_type = parse_alignment(raw)
+        level, explanation, mechanism, manageability, confidence = parse_alignment(raw)
         level_counts[level] = level_counts.get(level, 0) + 1
         result: dict[str, Any] = {
             "targetAId": tid,
@@ -348,8 +303,12 @@ async def assess_measure_alignment(
             "alignment": level,
             "description": explanation,
         }
-        if contradiction_type:
-            result["contradictionType"] = contradiction_type
+        if mechanism:
+            result["mechanism"] = mechanism
+        if manageability:
+            result["manageability"] = manageability
+        if confidence:
+            result["confidence"] = confidence
         alignment_results.append(result)
 
     logger.info(f"  Measure alignment done: {level_counts}")

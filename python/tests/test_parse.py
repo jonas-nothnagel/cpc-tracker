@@ -19,90 +19,119 @@ from src.parse_ctf import _METADATA_PATTERNS, _TABLE_REF_RE, _normalize_sector
 class TestParseAlignmentPositive:
     def test_high_alignment(self):
         raw = "High alignment - Both targets focus on the same ecosystem."
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "high"
         assert "same ecosystem" in explanation
-        assert ctype is None
+        assert mech is None and mgmt is None and conf is None
 
     def test_medium_alignment(self):
         raw = "Medium alignment - The targets share goals around reforestation."
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "medium"
         assert "reforestation" in explanation
-        assert ctype is None
+        assert mech is None
 
     def test_low_alignment(self):
         raw = "Low alignment - Both mention natural ecosystems but differ."
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "low"
-        assert ctype is None
+        assert mech is None
 
     def test_no_alignment(self):
         raw = "No alignment - These targets operate in completely different domains."
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "none"
         assert "different domains" in explanation
-        assert ctype is None
+        assert mech is None
 
 
 # ---------------------------------------------------------------------------
-# parse_alignment — contradiction levels
+# parse_alignment — flagged levels (v2.1 canonical + v1 legacy backward-compat)
 # ---------------------------------------------------------------------------
 
 
 class TestParseAlignmentContradiction:
     def test_likely_conflict_with_type(self):
+        """v1 'Likely conflict (Goal conflict)' maps to flagged + fundamental + high."""
         raw = "Likely conflict (Goal conflict) - These targets have directly opposing objectives for the same land resource."
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "likely_conflict"
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
         assert "opposing objectives" in explanation
-        assert ctype == "goal_conflict"
+        assert mech == "goal_conflict"
+        assert mgmt == "fundamental"
+        assert conf == "high"
 
     def test_possible_conflict_with_type(self):
+        """v1 'Possible conflict (Resource competition)' maps to flagged + fundamental + medium."""
         raw = "Possible conflict (Resource competition) - Both targets place competing demands on the same rangeland."
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "possible_conflict"
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
         assert "competing demands" in explanation
-        assert ctype == "resource_competition"
+        assert mech == "resource_competition"
+        assert mgmt == "fundamental"
+        assert conf == "medium"
 
     def test_possible_misalignment_with_type(self):
+        """v1 'Possible misalignment (Implementation tension)' maps to flagged + delivery_friction + manageable + medium."""
         raw = "Possible misalignment (Implementation tension) - Rapid irrigation expansion could strain water resources."
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "possible_misalignment"
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
         assert "irrigation" in explanation
-        assert ctype == "implementation_tension"
+        assert mech == "delivery_friction"  # implementation_tension → delivery_friction
+        assert mgmt == "manageable"
+        assert conf == "medium"
 
-    def test_scale_scope_mismatch_type(self):
+    def test_scale_scope_mismatch_absorbs_into_delivery_friction(self):
+        """v1 'Scale/scope mismatch' is absorbed into delivery_friction."""
         raw = "Likely conflict (Scale/scope mismatch) - National vs local scale conflict."
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "likely_conflict"
-        assert ctype == "scale_scope_mismatch"
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "delivery_friction"
 
     def test_conflict_without_type_parenthetical(self):
+        """v1 label without (Type) — mechanism falls back to delivery_friction default."""
         raw = "Likely conflict - Targets directly conflict."
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "likely_conflict"
-        assert ctype is None
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mgmt == "fundamental"
+        assert conf == "high"
 
     def test_case_insensitive(self):
         raw = "LIKELY CONFLICT (GOAL CONFLICT) - Opposing objectives."
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "likely_conflict"
-        assert ctype == "goal_conflict"
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "goal_conflict"
 
-    def test_legacy_high_contradiction_maps_to_likely_conflict(self):
-        """Backward-compat: LLM regression to old wording still parses cleanly."""
+    def test_legacy_high_contradiction_maps_to_flagged(self):
+        """Pre-v1 backward-compat: 'High contradiction' parses as flagged + fundamental + high."""
         raw = "High contradiction (Goal conflict) - Opposing objectives."
-        level, _, ctype = parse_alignment(raw)
-        assert level == "likely_conflict"
-        assert ctype == "goal_conflict"
+        level, _, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "goal_conflict"
+        assert mgmt == "fundamental"
+        assert conf == "high"
 
-    def test_legacy_low_tension_maps_to_possible_misalignment(self):
-        """Backward-compat: LLM regression to old wording still parses cleanly."""
+    def test_legacy_low_tension_maps_to_flagged(self):
+        """Pre-v1 backward-compat: 'Low tension' parses as flagged + manageable + medium."""
         raw = "Low tension (Implementation tension) - Irrigation strain."
-        level, _, ctype = parse_alignment(raw)
-        assert level == "possible_misalignment"
-        assert ctype == "implementation_tension"
+        level, _, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "delivery_friction"
+        assert mgmt == "manageable"
+        assert conf == "medium"
+
+    def test_v2_canonical_flagged_for_review(self):
+        """v2.1 canonical: 'Flagged for review (Mechanism, Manageability, Confidence: Level)'."""
+        raw = (
+            "Flagged for review (Resource competition, Fundamental, Confidence: High) - "
+            "Both targets bind the same finite resource."
+        )
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "resource_competition"
+        assert mgmt == "fundamental"
+        assert conf == "high"
+        assert "finite resource" in explanation
 
 
 # ---------------------------------------------------------------------------
@@ -113,30 +142,31 @@ class TestParseAlignmentContradiction:
 class TestParseAlignmentFallback:
     def test_json_format_positive(self):
         raw = '{"alignment": "medium alignment", "explanation": "Both share forest goals."}'
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "medium"
         assert "forest" in explanation
-        assert ctype is None
+        assert mech is None
 
-    def test_json_format_contradiction(self):
+    def test_json_format_v1_contradiction(self):
         raw = '{"alignment": "likely conflict", "contradiction_type": "goal conflict", "explanation": "Opposing goals."}'
-        level, explanation, ctype = parse_alignment(raw)
-        assert level == "likely_conflict"
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "goal_conflict"
 
     def test_unknown_defaults_to_none(self):
         raw = "Some completely unexpected LLM response."
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "none"
-        assert ctype is None
+        assert mech is None
 
     def test_empty_string(self):
-        level, explanation, ctype = parse_alignment("")
+        level, explanation, mech, mgmt, conf = parse_alignment("")
         assert level == "none"
-        assert ctype is None
+        assert mech is None
 
     def test_markdown_json_code_block(self):
         raw = '```json\n{"alignment": "low alignment", "explanation": "Weak overlap."}\n```'
-        level, explanation, ctype = parse_alignment(raw)
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
         assert level == "low"
 
 

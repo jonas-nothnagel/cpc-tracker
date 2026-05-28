@@ -325,8 +325,8 @@ describe("buildAtlasSignals — tensions and side-panel data from LLM", () => {
       makeTarget("NAP_1", "NAP"),
     ];
     const alignments: AlignmentResult[] = [
-      { targetAId: "NDC_1", targetBId: "NBSAP_1", alignment: "likely_conflict", description: "" },
-      { targetAId: "NDC_1", targetBId: "NAP_1", alignment: "possible_misalignment", description: "" },
+      { targetAId: "NDC_1", targetBId: "NBSAP_1", alignment: "flagged", description: "" },
+      { targetAId: "NDC_1", targetBId: "NAP_1", alignment: "flagged", description: "" },
     ];
     const [ndc1] = runBuild({ policyTargets: targets, alignments });
     expect(ndc1.tensionCount).toBe(2);

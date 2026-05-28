@@ -227,47 +227,154 @@ export interface ThematicClassification {
 // ---------------------------------------------------------------------------
 
 /**
- * Bidirectional relationship scale from possible misalignment to alignment.
+ * Pairwise relationship scale (v2.1).
  *
- * The negative side intentionally uses cautious vocabulary ("possible" /
- * "likely") because the pipeline flags relationships for human review; it
- * does not establish certain contradictions. The legacy keys
- * `low_tension` / `moderate_contradiction` / `high_contradiction` map to
- * `possible_misalignment` / `possible_conflict` / `likely_conflict`.
+ * Positive side: "none" / "low" / "medium" / "high" (unchanged from v1).
+ * Negative side: single canonical state "flagged" — the pipeline flags pairs
+ * for human review and does not assert certain contradictions. Within the
+ * flagged state, three sub-fields characterise the friction:
+ *   - mechanism      (goal_conflict / resource_competition / delivery_friction)
+ *   - manageability  (manageable / fundamental)
+ *   - confidence     (low / medium / high)
+ *
+ * Legacy v1 keys (`likely_conflict`, `possible_conflict`, `possible_misalignment`,
+ * `low_tension`, `moderate_contradiction`, `high_contradiction`) are migrated
+ * at load time via `migrateLegacyAlignmentRecord` in `src/lib/alignment-migration.ts`.
  */
-export type AlignmentLevel =
-  | "likely_conflict"
-  | "possible_conflict"
-  | "possible_misalignment"
-  | "none"
-  | "low"
-  | "medium"
-  | "high";
+export type AlignmentLevel = "none" | "low" | "medium" | "high" | "flagged";
 
-/** Types of policy contradiction, assigned when the relationship is negative. */
-export type ContradictionType =
+/** Kind of friction within a flagged pair. */
+export type AlignmentMechanism =
   | "goal_conflict"
   | "resource_competition"
-  | "implementation_tension"
-  | "scale_scope_mismatch";
+  | "delivery_friction";
 
-/** Result of comparing two targets for alignment or contradiction. */
+/** Whether the friction needs coordination or target redesign. */
+export type AlignmentManageability = "manageable" | "fundamental";
+
+/** Strength of the text-level signal supporting the flag. */
+export type AlignmentConfidence = "low" | "medium" | "high";
+
+/**
+ * Legacy alias kept for one PR to avoid a rename storm. New code should use
+ * `AlignmentMechanism`. Note the value set differs: v1 had four types
+ * (`implementation_tension`, `scale_scope_mismatch`) which collapse into
+ * `delivery_friction` via the migration helper.
+ */
+export type ContradictionType = AlignmentMechanism;
+
+/** Result of comparing two targets for alignment (v2.1 schema). */
 export interface AlignmentResult {
   /** First target id */
   targetAId: string;
   /** Second target id */
   targetBId: string;
-  /** Assessed relationship level (negative = contradiction, positive = alignment) */
+  /** Assessed relationship level. "flagged" means a real-world friction has been flagged for review. */
   alignment: AlignmentLevel;
-  /** Type of contradiction, present only when relationship is negative */
-  contradictionType?: ContradictionType;
+  /** Kind of friction. Present only when alignment === "flagged". */
+  mechanism?: AlignmentMechanism;
+  /** Can coordination resolve it, or does a target need redesign? Present only when alignment === "flagged". */
+  manageability?: AlignmentManageability;
+  /** How strongly the text supports the flag. Present only when alignment === "flagged". */
+  confidence?: AlignmentConfidence;
   /** AI-generated rationale for the classification */
   description: string;
 }
 
-/** Whether an alignment level represents a possible/likely conflict (negative side of the scale). */
+/** Whether an alignment level represents a flagged pair (negative side of the scale). */
 export function isContradiction(level: AlignmentLevel): boolean {
-  return level === "likely_conflict" || level === "possible_conflict" || level === "possible_misalignment";
+  return level === "flagged";
+}
+
+// ---------------------------------------------------------------------------
+// LLM Synthesis layer (post-processing of alignment.json + classifications.json)
+// ---------------------------------------------------------------------------
+//
+// Shapes mirror the Python pipeline outputs in python/output/{country}/:
+//   - doc_pair_synthesis.json  → DocPairSynthesis[]
+//   - corpus_themes.json       → CorpusThemes
+//   - sector_synthesis.json    → SectorSynthesis[]
+//
+// The `confidence` field is LLM-emitted; in current outputs it's always "high"
+// so the UI does NOT render it as a chip. Pool sizes carry the signal instead.
+
+/**
+ * LLM-emitted counts of negative-side mechanism subtypes for a doc-pair or sector.
+ *
+ * v2.1 uses three mechanisms: goal_conflict / resource_competition / delivery_friction.
+ * The two legacy v1 fields (implementation_tension, scale_scope_mismatch) are
+ * accepted on read so that synthesis outputs produced before the v2 migration
+ * still parse; the v2 pipeline now emits only the canonical keys above.
+ */
+export interface ContradictionTypeCounts {
+  // v2.1 canonical
+  goal_conflict?: number;
+  resource_competition?: number;
+  delivery_friction?: number;
+  // v1 legacy (still accepted from old synthesis JSON; new outputs do not emit these)
+  implementation_tension?: number;
+  scale_scope_mismatch?: number;
+}
+
+/** The shared "reinforce + clash + coordination hint" synthesis block. */
+export interface SynthesisBlock {
+  storyline_name: string;
+  reinforce: string;
+  clash: string;
+  coordination_hint: string;
+  confidence: "high" | "medium" | "low";
+}
+
+/** One per cross-doc pair with ≥3 records (aligned + flagged). */
+export interface DocPairSynthesis {
+  doc_a: string;
+  doc_b: string;
+  label_a: string;
+  label_b: string;
+  aligned_count: number;
+  flagged_count: number;
+  contradiction_types: ContradictionTypeCounts;
+  synthesis: SynthesisBlock;
+  synthesis_error: string | null;
+}
+
+/** One storyline in the corpus-level briefing. */
+export interface CorpusStoryline {
+  name: string;
+  type: "reinforcement" | "friction";
+  description: string;
+  /** Canonical "DocA<->DocB" strings; the corpus augmenter resolves human labels back to doc-ids. */
+  contributing_doc_pairs: string[];
+  confidence: "high" | "medium" | "low";
+  unknown_doc_pairs?: string[];
+  /** Deterministic: sum of aligned + flagged counts across contributing doc-pairs. */
+  pair_count: number;
+  /** Deterministic: sorted unique doc-ids the storyline spans. */
+  spans_documents: string[];
+}
+
+/** Corpus-level briefing: a few high-level storylines + a 3-4 sentence summary. */
+export interface CorpusThemes {
+  storylines: CorpusStoryline[];
+  summary_paragraph: string;
+  doc_pair_count: number;
+}
+
+/** One synthesis per (taxonomy_type, category_id) with sufficient signal. */
+export interface SectorSynthesis {
+  taxonomy_type: string;
+  category_id: string;
+  category_name: string;
+  aligned_count: number;
+  flagged_count: number;
+  /** Pool composition for UI transparency; "primary" = sector is primary on ≥1 side. */
+  pool_composition: {
+    primary_count: number;
+    relevant_only_count: number;
+  };
+  contradiction_types: ContradictionTypeCounts;
+  synthesis: SynthesisBlock;
+  synthesis_error: string | null;
 }
 
 // ---------------------------------------------------------------------------

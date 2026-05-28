@@ -12,9 +12,18 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
+import { CoherenceBriefing } from "./coherence-briefing";
 import { TargetAtlas } from "@/components/viz/target-atlas";
 import { FinancingGaps } from "@/components/viz/financing-gaps";
 import { FundingNetwork } from "@/components/viz/funding-network";
+
+/**
+ * Phase A of the findings-first prototype takes over the prototypes page.
+ * Flip to `true` to restore the original three prototypes (Target Atlas,
+ * Financing Gaps, Funding Network); they remain in source so reverting is
+ * a one-line change while the briefing direction is still being shaped.
+ */
+const SHOW_LEGACY_PROTOTYPES = false;
 import type {
   Target,
   PolicyDocumentType,
@@ -28,6 +37,9 @@ import type {
   BerData,
   Nr7Data,
   CountryConfig,
+  CorpusThemes,
+  DocPairSynthesis,
+  SectorSynthesis,
 } from "@/types";
 import type { FootprintSnapshot } from "@/lib/footprint";
 
@@ -45,6 +57,9 @@ interface DashboardData {
   budgetAlignment: AlignmentResult[] | null;
   budgetPseudoTargets: Target[] | null;
   footprint: FootprintSnapshot | null;
+  docPairSynthesis: DocPairSynthesis[];
+  corpusThemes: CorpusThemes | null;
+  sectorSynthesis: SectorSynthesis[];
   countryConfig: CountryConfig | null;
 }
 
@@ -131,6 +146,9 @@ export function PrototypesClient({
               normalizeTarget,
             ) ?? null,
           footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
+          docPairSynthesis: (raw.docPairSynthesis as DocPairSynthesis[] | null) ?? [],
+          corpusThemes: (raw.corpusThemes as CorpusThemes | null) ?? null,
+          sectorSynthesis: (raw.sectorSynthesis as SectorSynthesis[] | null) ?? [],
           countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
         });
       })
@@ -182,8 +200,15 @@ export function PrototypesClient({
   const displayCountry =
     countryDisplayName ?? data?.targets[0]?.country ?? "Prototypes";
 
+  const briefingTargets = targets.filter(
+    (t) => t.sourceDocument !== "BER" && t.sourceDocument !== "BTR",
+  );
+
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ backgroundColor: SHOW_LEGACY_PROTOTYPES ? "#ffffff" : "#fbfaf7" }}
+    >
       <Header
         subtitle={`${displayCountry} · Prototypes`}
         currentCountryId={country}
@@ -191,78 +216,81 @@ export function PrototypesClient({
         switcherPath="/prototypes"
       />
 
-      <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
-        <section className="mb-6">
-          <div className="flex items-start justify-between gap-6 flex-wrap">
-            <div>
-              <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-1">
-                Prototype visualisations
-              </h1>
-              <p className="text-sm text-[var(--undp-gray)] max-w-2xl">
-                Experimental views scoped with the team. Methodology and
-                visual treatment can change without warning. Treat these as
-                drafts for discussion, not final outputs.
-              </p>
+      {SHOW_LEGACY_PROTOTYPES ? (
+        <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
+          <section className="mb-6">
+            <div className="flex items-start justify-between gap-6 flex-wrap">
+              <div>
+                <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-1">
+                  Prototype visualisations
+                </h1>
+                <p className="text-sm text-[var(--undp-gray)] max-w-2xl">
+                  Experimental views scoped with the team. Methodology and
+                  visual treatment can change without warning. Treat these as
+                  drafts for discussion, not final outputs.
+                </p>
+              </div>
+              <Link
+                href={`/dashboard?country=${country ?? ""}`}
+                className="text-sm text-[var(--undp-blue)] hover:underline whitespace-nowrap"
+              >
+                ← Back to dashboard
+              </Link>
             </div>
-            <Link
-              href={`/dashboard?country=${country ?? ""}`}
-              className="text-sm text-[var(--undp-blue)] hover:underline whitespace-nowrap"
-            >
-              ← Back to dashboard
-            </Link>
-          </div>
-        </section>
+          </section>
 
-        {/* ── Prototype 1: Target Atlas ───────────────────────────────── */}
-        <TargetAtlas
-          policyTargets={targets.filter(
-            (t) => t.sourceDocument !== "BER" && t.sourceDocument !== "BTR",
-          )}
-          allTargets={[...targets, ...(data.budgetPseudoTargets ?? [])]}
-          classifications={data.classifications}
-          alignments={data.alignment}
-          budgetAlignments={data.budgetAlignment}
-          nbsCategories={data.nbsCategories}
-          sectors={data.sectors}
-          globeCategories={data.globeCategories}
-          countryConfig={data.countryConfig}
-          berData={data.berData}
-        />
-
-        {/* ── Prototype 2: Policy vs Spend disparity ──────────────────── */}
-        <FinancingGaps
-          classifications={data.classifications}
-          budgetAlignments={data.budgetAlignment}
-          nbsCategories={data.nbsCategories}
-          sectors={data.sectors}
-          globeCategories={data.globeCategories}
-          berData={data.berData}
-        />
-
-        {/* ── Prototype 3: Funding Cluster Network ────────────────────── */}
-        {data.berData && data.budgetAlignment && data.budgetPseudoTargets && (
-          <FundingNetwork
-            berData={data.berData}
-            budgetAlignment={data.budgetAlignment}
-            budgetPseudoTargets={data.budgetPseudoTargets}
-            targets={targets.filter(
-              (t) => t.sourceDocument !== "BER" && t.sourceDocument !== "BTR",
-            )}
-            targetAlignment={data.alignment}
+          {/* ── Prototype 1: Target Atlas ───────────────────────────────── */}
+          <TargetAtlas
+            policyTargets={briefingTargets}
+            allTargets={[...targets, ...(data.budgetPseudoTargets ?? [])]}
+            classifications={data.classifications}
+            alignments={data.alignment}
+            budgetAlignments={data.budgetAlignment}
+            nbsCategories={data.nbsCategories}
+            sectors={data.sectors}
+            globeCategories={data.globeCategories}
             countryConfig={data.countryConfig}
+            berData={data.berData}
           />
-        )}
 
-        {/* ── Add new prototypes below. Each gets its own section. ────── */}
-        <section className="mb-10 pt-8 border-t border-dashed border-gray-300">
-          <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50/40 px-6 py-10 text-center">
-            <p className="text-sm text-[var(--undp-gray)]">
-              Next prototype slot. Drop a new <code>&lt;section&gt;</code>{" "}
-              here and feed it from the same <code>data</code> object.
-            </p>
-          </div>
-        </section>
-      </main>
+          {/* ── Prototype 2: Policy vs Spend disparity ──────────────────── */}
+          <FinancingGaps
+            classifications={data.classifications}
+            budgetAlignments={data.budgetAlignment}
+            nbsCategories={data.nbsCategories}
+            sectors={data.sectors}
+            globeCategories={data.globeCategories}
+            berData={data.berData}
+          />
+
+          {/* ── Prototype 3: Funding Cluster Network ────────────────────── */}
+          {data.berData && data.budgetAlignment && data.budgetPseudoTargets && (
+            <FundingNetwork
+              berData={data.berData}
+              budgetAlignment={data.budgetAlignment}
+              budgetPseudoTargets={data.budgetPseudoTargets}
+              targets={briefingTargets}
+              targetAlignment={data.alignment}
+              countryConfig={data.countryConfig}
+            />
+          )}
+        </main>
+      ) : (
+        <CoherenceBriefing
+          countryName={displayCountry}
+          countryId={country}
+          targets={briefingTargets}
+          alignment={data.alignment}
+          classifications={data.classifications}
+          sectors={data.sectors}
+          globeCategories={data.globeCategories}
+          nbsCategories={data.nbsCategories}
+          countryConfig={data.countryConfig}
+          docPairSyntheses={data.docPairSynthesis}
+          corpusThemes={data.corpusThemes}
+          sectorSyntheses={data.sectorSynthesis}
+        />
+      )}
 
       <footer className="border-t border-gray-100 mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-[var(--undp-gray)]">
