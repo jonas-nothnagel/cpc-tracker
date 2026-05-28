@@ -13,8 +13,11 @@ import type {
   AlignmentLevel,
   AlignmentResult,
   BtrData,
+  CorpusThemes,
   CountryConfig,
+  DocPairSynthesis,
   PolicyDocumentType,
+  SectorSynthesis,
   Target,
   ThematicClassification,
 } from "@/types";
@@ -92,6 +95,14 @@ interface BuildChatRequestArgs {
    *  forwarded to the chat context (not gated by the overlay toggle) so a user
    *  can ask budget questions from any lens. Null when no budget data. */
   budgetSummary?: CategoryBudgetSummary | null;
+  /** Precomputed synthesis artifacts from the pipeline (corpus-level
+   *  storylines, per-doc-pair and per-sector summaries). When present, they
+   *  let the chat answer big-picture questions ("main storyline", "how do
+   *  these two documents relate") from the LLM-derived narrative rather than
+   *  re-deriving it from raw pairs. All optional; absent on older runs. */
+  corpusThemes?: CorpusThemes | null;
+  docPairSyntheses?: DocPairSynthesis[];
+  sectorSyntheses?: SectorSynthesis[];
 }
 
 /**
@@ -116,6 +127,9 @@ export function buildChatRequest({
   countryConfig,
   history,
   budgetSummary,
+  corpusThemes,
+  docPairSyntheses,
+  sectorSyntheses,
 }: BuildChatRequestArgs) {
   const visibleDocs = availableDocs.filter((d) => !hiddenDocs.has(d));
   const visibleDocSet = new Set(visibleDocs);
@@ -243,6 +257,12 @@ export function buildChatRequest({
       }
     : undefined;
 
+  const synthesis = buildSynthesisContext({
+    corpusThemes,
+    docPairSyntheses,
+    sectorSyntheses,
+  });
+
   return {
     query,
     context: {
@@ -258,9 +278,79 @@ export function buildChatRequest({
       rankings,
       country: targets[0]?.country ?? null,
       ...(budgetByCategory ? { budgetByCategory, budgetMeta } : {}),
+      ...(synthesis ? { synthesis } : {}),
     },
     ...(history && history.length ? { history } : {}),
   };
+}
+
+/** Cap on sector syntheses sent to the chat. Bounds the payload on large
+ *  corpora (Panama has ~26); we send the highest-signal sectors first so the
+ *  most-discussed themes are always present. Data-derived: ranked by total
+ *  signal (aligned + flagged), not an arbitrary alphabetical slice. */
+const SECTOR_SYNTHESIS_CAP = 15;
+
+/**
+ * Shape the precomputed synthesis artifacts into a compact context block.
+ * Drops entries that errored during synthesis, keeps only the human-readable
+ * narrative fields (no counts, the model gets those from rankings/pairs), and
+ * caps sector syntheses to the highest-signal `SECTOR_SYNTHESIS_CAP`. Returns
+ * undefined when there is nothing worth sending so the caller can omit the key.
+ */
+function buildSynthesisContext({
+  corpusThemes,
+  docPairSyntheses,
+  sectorSyntheses,
+}: {
+  corpusThemes?: CorpusThemes | null;
+  docPairSyntheses?: DocPairSynthesis[];
+  sectorSyntheses?: SectorSynthesis[];
+}) {
+  const corpus =
+    corpusThemes &&
+    (corpusThemes.summary_paragraph || corpusThemes.storylines.length)
+      ? {
+          summary: corpusThemes.summary_paragraph,
+          storylines: corpusThemes.storylines.map((s) => ({
+            name: s.name,
+            type: s.type,
+            description: s.description,
+          })),
+        }
+      : undefined;
+
+  const docPairs = (docPairSyntheses ?? [])
+    .filter((d) => !d.synthesis_error && d.synthesis)
+    .map((d) => ({
+      a: d.label_a,
+      b: d.label_b,
+      storyline: d.synthesis.storyline_name,
+      reinforce: d.synthesis.reinforce,
+      clash: d.synthesis.clash,
+      coordination: d.synthesis.coordination_hint,
+    }));
+
+  const sectors = (sectorSyntheses ?? [])
+    .filter((s) => !s.synthesis_error && s.synthesis)
+    .slice()
+    .sort(
+      (a, b) =>
+        b.aligned_count +
+        b.flagged_count -
+        (a.aligned_count + a.flagged_count),
+    )
+    .slice(0, SECTOR_SYNTHESIS_CAP)
+    .map((s) => ({
+      category: s.category_name,
+      reinforce: s.synthesis.reinforce,
+      clash: s.synthesis.clash,
+      coordination: s.synthesis.coordination_hint,
+    }));
+
+  if (!corpus && docPairs.length === 0 && sectors.length === 0) {
+    return undefined;
+  }
+  return { corpus, docPairs, sectors };
 }
 
 function isDiagnostic(level: AlignmentLevel): boolean {

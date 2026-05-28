@@ -5,10 +5,9 @@
  *
  * Wraps the existing /api/coherence-chat route. Sends a minimal request
  * (query + dataset context + 3-turn history) and renders the reply. The
- * server can return navigation actions; we surface them as "Apply" pills
- * so the user can opt into them rather than having the wheel reshape
- * behind their reading. Wiring actions into the wheel state lands when
- * the explore mode adopts a shared visual-state context.
+ * server can return navigation actions, but this panel currently ignores
+ * them and only renders the text reply plus follow-up suggestions. Wiring
+ * those actions into the wheel state is a follow-up.
  *
  * Aesthetic stays consistent with the rest of the page: off-white,
  * serif headline, calm spacing. No emojis, no bot avatars.
@@ -22,14 +21,14 @@ import type {
 } from "@/lib/coherence-chat";
 import type {
   AlignmentResult,
+  CorpusThemes,
   CountryConfig,
+  DocPairSynthesis,
   PolicyDocumentType,
+  SectorSynthesis,
   Target,
   ThematicClassification,
 } from "@/types";
-
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 
 interface ChatReply {
   reply: string;
@@ -44,6 +43,9 @@ export function ChatPanel({
   globeCategories,
   countryConfig,
   availableDocs,
+  docPairSyntheses,
+  corpusThemes,
+  sectorSyntheses,
   starterPrompts,
 }: {
   targets: Target[];
@@ -53,6 +55,9 @@ export function ChatPanel({
   globeCategories: ChatTaxCategory[];
   countryConfig: CountryConfig | null;
   availableDocs: PolicyDocumentType[];
+  docPairSyntheses: DocPairSynthesis[];
+  corpusThemes: CorpusThemes | null;
+  sectorSyntheses: SectorSynthesis[];
   starterPrompts: string[];
 }) {
   const [query, setQuery] = useState("");
@@ -83,6 +88,9 @@ export function ChatPanel({
           hiddenDocs: new Set<string>(),
           countryConfig,
           history,
+          corpusThemes,
+          docPairSyntheses,
+          sectorSyntheses,
         });
         const res = await fetch("/api/coherence-chat", {
           method: "POST",
@@ -129,20 +137,17 @@ export function ChatPanel({
       countryConfig,
       availableDocs,
       history,
+      corpusThemes,
+      docPairSyntheses,
+      sectorSyntheses,
     ],
   );
 
   return (
     <div className="flex flex-col h-full">
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
-        Ask anything
+      <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+        Ask the corpus
       </p>
-      <h3
-        className="text-xl text-[var(--undp-black)] font-medium leading-snug mb-4"
-        style={{ fontFamily: HEADLINE_SERIF }}
-      >
-        Probe the data in your own words.
-      </h3>
 
       <form
         onSubmit={(e) => {

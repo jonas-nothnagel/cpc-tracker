@@ -1272,11 +1272,25 @@ export interface DocFocusFrictions {
 }
 
 /**
+ * Severity order for surfacing flagged pairs: goal conflicts (most
+ * fundamental) before resource competition before delivery friction (most
+ * operational), matching the friction-type bar. Pairs with no mechanism sort
+ * last. Lets the capped Doc-in-Focus list lead with the most severe flags
+ * instead of burying a rare goal conflict behind many delivery-friction ones.
+ */
+const MECHANISM_SEVERITY: Record<string, number> = {
+  goal_conflict: 0,
+  resource_competition: 1,
+  delivery_friction: 2,
+};
+
+/**
  * The Doc-in-Focus analogue of the corpus friction split: which flagged pairs
  * a single document is part of, and how they break down by mechanism. Same
  * target x target subset rules as the rest of the misalignment story (both ids
  * must resolve; same-document and non-touching pairs are excluded). Sorted by
- * peer document then focused-side target id so peers cluster.
+ * mechanism severity (goal > resource > delivery), then peer document, then
+ * focused-side target id, so the most severe flags surface first.
  */
 export function buildDocFocusFrictions(
   alignment: AlignmentResult[],
@@ -1302,7 +1316,11 @@ export function buildDocFocusFrictions(
     line.targetA.sourceDocument === focusedDoc
       ? line.targetB.sourceDocument
       : line.targetA.sourceDocument;
+  const severityOf = (line: FaultLine): number =>
+    line.pair.mechanism ? (MECHANISM_SEVERITY[line.pair.mechanism] ?? 3) : 3;
   flaggedPairs.sort((x, y) => {
+    const ds = severityOf(x) - severityOf(y);
+    if (ds !== 0) return ds;
     const dp = peerOf(x).localeCompare(peerOf(y));
     if (dp !== 0) return dp;
     return x.targetA.id.localeCompare(y.targetA.id);

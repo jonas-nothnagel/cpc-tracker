@@ -46,10 +46,15 @@ import type {
 // ─── Geometry ───────────────────────────────────────────────────────
 
 const VB = 720;
-const VB_W = 760;
+// Widened from 760 to give collision-avoided rim labels and their leader lines
+// horizontal room (the circle itself stays centred and only slightly smaller).
+const VB_W = 820;
 const OUTER_R = 220;
 const INNER_R = 213;
 const NODE_R = 205;
+// Radius for relaxed rim labels: sits outside the arc with an elbow leader line
+// bridging the gap, so a label can slide along the rim without looking detached.
+const GRP_LABEL_R = 250;
 const GAP = 0.08;
 const UNCLASSIFIED_BUCKET_ID = "__unclassified";
 
@@ -759,7 +764,10 @@ export function WheelCenterpiece({
           );
         })}
 
-        {/* Hover tooltip for the active ribbon */}
+        {/* Hover readout for the active ribbon. Pinned to the top of the
+            viewBox (clear of the ribbon mass and the centre focus readout) and
+            auto-sized to its content, so a long document pair stays readable
+            instead of overflowing a fixed box over the wheel centre. */}
         {hovered &&
           (() => {
             const agg = aggregates.get(hovered);
@@ -767,39 +775,40 @@ export function WheelCenterpiece({
             const aArc = arcsById.get(agg.aId);
             const bArc = arcsById.get(agg.bId);
             if (!aArc || !bArc) return null;
-            const a = arcMid(aArc);
-            const b = arcMid(bArc);
-            const mx = ((a.x + b.x) / 2) * 0.25;
-            const my = ((a.y + b.y) / 2) * 0.25;
+            const line1 = `${aArc.shortLabel} ↔ ${bArc.shortLabel}`;
+            const line2 = `${agg.alignmentCount} aligned · ${agg.tensionCount} flagged`;
+            const widest = Math.max(line1.length, line2.length);
+            const boxW = Math.min(VB_W - 24, Math.max(150, widest * 7 + 28));
+            const top = -VB / 2 + 6;
             return (
               <g pointerEvents="none">
                 <rect
-                  x={mx - 96}
-                  y={my - 26}
-                  width={192}
-                  height={52}
+                  x={-boxW / 2}
+                  y={top}
+                  width={boxW}
+                  height={46}
                   rx={4}
                   fill="white"
                   stroke="#d4d4d4"
                 />
                 <text
-                  x={mx}
-                  y={my - 10}
+                  x={0}
+                  y={top + 19}
                   textAnchor="middle"
-                  fontSize={11}
+                  fontSize={12}
                   fontWeight={600}
                   fill="var(--undp-black)"
                 >
-                  {aArc.label} ↔ {bArc.label}
+                  {line1}
                 </text>
                 <text
-                  x={mx}
-                  y={my + 8}
+                  x={0}
+                  y={top + 36}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fill="var(--undp-gray)"
                 >
-                  {agg.alignmentCount} aligned · {agg.tensionCount} flagged
+                  {line2}
                 </text>
               </g>
             );
@@ -878,77 +887,127 @@ export function WheelCenterpiece({
           );
         })}
 
-        {/* Group labels. Long multi-word labels (e.g., "Vision 2050") wrap
-            onto multiple lines instead of overflowing into neighbouring
-            arcs. Vertical anchoring shifts the first tspan up by half the
-            block height so the label stays visually centred on its
-            radial position. */}
-        {arcs.map((arc) => {
-          if (arc.id === UNCLASSIFIED_BUCKET_ID && arc.count < 3) {
-            return null;
-          }
-          const labelR = 244;
-          const x = labelR * Math.sin(arc.midAngle);
-          const y = -labelR * Math.cos(arc.midAngle);
-          const deg = (arc.midAngle * 180) / Math.PI;
-          const anchor: "start" | "middle" | "end" =
-            deg > 20 && deg < 160
-              ? "start"
-              : deg > 200 && deg < 340
-                ? "end"
-                : "middle";
-          const isGhost =
-            focusArcId !== null &&
-            focusArcId !== arc.id &&
-            !state.highlightPair;
-          // For wide-docset corpora (Panama, 8+ docs), fall back to the
-          // short code (mediumLabel) so labels don't overlap each other
-          // around the rim. The full title is still available via the
-          // SVG <title> tooltip on the arc.
-          const labelText = busyWheel ? arc.shortLabel : arc.label;
-          const lines = wrapLabel(labelText);
-          const lineHeight = 12;
-          const firstDy =
-            lines.length > 1 ? -((lines.length - 1) / 2) * lineHeight : 0;
-          // Labels behave like the rim arc they belong to: if the arc accepts
-          // clicks, the label is part of the same hit target (otherwise long
-          // titles read as "labels you can hover but not click", which the
-          // user flagged as feeling broken).
-          const labelClickable =
-            !!onArcClick && arc.id !== UNCLASSIFIED_BUCKET_ID;
-          return (
-            <text
-              key={`label-${arc.id}`}
-              x={x}
-              y={y}
-              textAnchor={anchor}
-              dominantBaseline="central"
-              fontSize={11}
-              fontWeight={focusArcId === arc.id ? 600 : 500}
-              fill="var(--undp-black)"
-              opacity={isGhost ? 0.4 : 1}
-              onClick={
-                labelClickable ? () => handleArcClick(arc) : undefined
-              }
-              className={
-                labelClickable
-                  ? "select-none cursor-pointer"
-                  : "select-none pointer-events-none"
-              }
-              style={{ transition: "opacity 220ms" }}
-            >
-              {lines.map((line, i) => (
-                <tspan
-                  key={i}
-                  x={x}
-                  dy={i === 0 ? firstDy : lineHeight}
-                >
-                  {line}
-                </tspan>
-              ))}
-            </text>
+        {/* Group labels with collision avoidance. A spring relaxation pulls
+            each label toward its arc midpoint and pushes overlapping
+            neighbours apart, then an elbow leader line bridges the rim to the
+            relaxed label position. Ported from the dashboard explorer so
+            labels never stack on dense corpora (e.g. the sector lenses). */}
+        {(() => {
+          const LABEL_H = 14;
+          const CHAR_W = 6.5;
+          const MAX_CHARS_PER_LINE = 22;
+          const entries = arcs
+            .filter(
+              (arc) => !(arc.id === UNCLASSIFIED_BUCKET_ID && arc.count < 3),
+            )
+            .map((arc) => {
+              const lines = wrapLabel(arc.label, MAX_CHARS_PER_LINE);
+              const longest = lines.reduce((m, l) => Math.max(m, l.length), 0);
+              return {
+                arc,
+                lines,
+                angle: arc.midAngle,
+                // Angular footprint uses the longest wrapped line so the
+                // push-apart stays correct for multi-line labels.
+                angularSpan: (longest * CHAR_W) / GRP_LABEL_R,
+              };
+            });
+          const sorted = [...entries].sort(
+            (a, b) => a.arc.midAngle - b.arc.midAngle,
           );
-        })}
+          const PADDING = LABEL_H / GRP_LABEL_R;
+          const HOME_PULL = 0.18;
+          for (let iter = 0; iter < 60; iter++) {
+            for (const e of sorted) {
+              e.angle += HOME_PULL * (e.arc.midAngle - e.angle);
+            }
+            for (let i = 0; i < sorted.length - 1; i++) {
+              const needed =
+                (sorted[i].angularSpan + sorted[i + 1].angularSpan) / 2 +
+                PADDING;
+              const gap = sorted[i + 1].angle - sorted[i].angle;
+              if (gap < needed) {
+                const half = (needed - gap) / 2;
+                sorted[i].angle -= half;
+                sorted[i + 1].angle += half;
+              }
+            }
+          }
+          return sorted.map(({ arc, angle, lines }) => {
+            // Leader line: rim (at the arc's true midAngle) to an elbow just
+            // outside the rim, then out to the relaxed label position.
+            const arcX = (OUTER_R + 3) * Math.sin(arc.midAngle);
+            const arcY = -(OUTER_R + 3) * Math.cos(arc.midAngle);
+            const elbowR = OUTER_R + 14;
+            const elbowX = elbowR * Math.sin(angle);
+            const elbowY = -elbowR * Math.cos(angle);
+            const lx = GRP_LABEL_R * Math.sin(angle);
+            const ly = -GRP_LABEL_R * Math.cos(angle);
+            const deg = (((angle * 180) / Math.PI) % 360 + 360) % 360;
+            const anchor: "start" | "middle" | "end" =
+              deg > 20 && deg < 160
+                ? "start"
+                : deg > 200 && deg < 340
+                  ? "end"
+                  : "middle";
+            const nudge = anchor === "start" ? 3 : anchor === "end" ? -3 : 0;
+            const isFocus = focusArcId === arc.id;
+            const isGhost =
+              focusArcId !== null && !isFocus && !state.highlightPair;
+            // First tspan rises by half the block so the label stays centred
+            // on its radial position (dominantBaseline handles the rest).
+            const firstDy = -((lines.length - 1) * 0.55);
+            // Labels share the arc's hit target: if the arc accepts clicks, so
+            // does its label (otherwise long titles read as broken).
+            const labelClickable =
+              !!onArcClick && arc.id !== UNCLASSIFIED_BUCKET_ID;
+            return (
+              <g key={`label-${arc.id}`}>
+                <path
+                  d={`M${arcX},${arcY} L${elbowX},${elbowY} L${lx},${ly}`}
+                  fill="none"
+                  stroke={arc.color}
+                  strokeWidth={1}
+                  opacity={
+                    focusArcId !== null ? (isFocus ? 0.55 : 0.12) : 0.3
+                  }
+                  className="pointer-events-none"
+                  style={{ transition: "opacity 220ms" }}
+                />
+                <text
+                  x={lx + nudge}
+                  y={ly}
+                  textAnchor={anchor}
+                  dominantBaseline="middle"
+                  fontSize={11}
+                  fontWeight={isFocus ? 700 : 500}
+                  fill="var(--undp-black)"
+                  opacity={isGhost ? 0.4 : 1}
+                  onClick={
+                    labelClickable ? () => handleArcClick(arc) : undefined
+                  }
+                  className={
+                    labelClickable
+                      ? "select-none cursor-pointer"
+                      : "select-none pointer-events-none"
+                  }
+                  style={{ transition: "opacity 220ms" }}
+                >
+                  <title>{arc.fullLabel}</title>
+                  {lines.map((line, i) => (
+                    <tspan
+                      key={i}
+                      x={lx + nudge}
+                      dy={i === 0 ? `${firstDy}em` : "1.1em"}
+                    >
+                      {line}
+                    </tspan>
+                  ))}
+                </text>
+              </g>
+            );
+          });
+        })()}
 
         {/* Document-focus overlay: per-doc balance bands + centre readout. */}
         {focusInfo && (

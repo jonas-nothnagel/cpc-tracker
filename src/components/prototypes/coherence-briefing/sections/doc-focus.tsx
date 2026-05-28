@@ -307,7 +307,10 @@ function FlaggedPairRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
-  // The peer side is whichever target is NOT in the focused document.
+  // Show the focused document's own target (the thing being flagged); the peer
+  // side just supplies the "vs <doc>" label.
+  const focused =
+    line.targetA.sourceDocument === focusedDoc ? line.targetA : line.targetB;
   const peer =
     line.targetA.sourceDocument === focusedDoc ? line.targetB : line.targetA;
   const peerDocLabel = getDocMediumLabel(
@@ -344,7 +347,7 @@ function FlaggedPairRow({
             WebkitBoxOrient: "vertical",
           }}
         >
-          {peer.text}
+          {focused.text}
         </p>
       </button>
     </li>

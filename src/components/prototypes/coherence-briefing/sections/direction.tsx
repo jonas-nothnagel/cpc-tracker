@@ -48,7 +48,6 @@ export function DirectionSection({
   primer,
   countryConfig,
   corpusThemes,
-  onOpenAllStorylines,
   onOpenStoryline,
   onOpenPair,
   onHighlightPair,
@@ -60,7 +59,6 @@ export function DirectionSection({
   primer: PrimerExamples;
   countryConfig: CountryConfig | null;
   corpusThemes: CorpusThemes | null;
-  onOpenAllStorylines: () => void;
   onOpenStoryline: (s: CorpusStoryline) => void;
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
@@ -92,7 +90,6 @@ export function DirectionSection({
             countryConfig={countryConfig}
             totalAvailableDocs={documentCount}
             onOpenStoryline={onOpenStoryline}
-            onOpenAll={onOpenAllStorylines}
           />
         ) : null
       }
@@ -146,13 +143,11 @@ function RecurringPatternsBlock({
   countryConfig,
   totalAvailableDocs,
   onOpenStoryline,
-  onOpenAll,
 }: {
   storylines: CorpusStoryline[];
   countryConfig: CountryConfig | null;
   totalAvailableDocs: number;
   onOpenStoryline: (s: CorpusStoryline) => void;
-  onOpenAll: () => void;
 }) {
   const sortByConfidenceThenPairs = (a: CorpusStoryline, b: CorpusStoryline) => {
     const dC =
@@ -189,13 +184,6 @@ function RecurringPatternsBlock({
           </li>
         ))}
       </ul>
-      <button
-        type="button"
-        onClick={onOpenAll}
-        className="text-[12px] text-[var(--undp-black)] underline underline-offset-2 hover:decoration-2"
-      >
-        Browse all {storylines.length.toLocaleString()} themes →
-      </button>
     </div>
   );
 }

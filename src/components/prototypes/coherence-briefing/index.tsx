@@ -10,8 +10,8 @@
  *   02 doc-focus      — How does one document sit against the rest?
  *   03 doc-pairs      — Which documents pull with which (the gaps)?
  *   04 friction-types — What kind of friction (goal / resource / delivery)?
- *   05 sectors        — Where does the friction concentrate (by theme)?
- *   06 where-to-focus — A few contested targets or many — and which?
+ *   05 where-to-focus — A few contested targets or many, and which?
+ *   06 sectors        — Where does the friction concentrate (by sector)?
  *   07 explore        — Free interaction + chat for everything else.
  *
  * Each section sits inside SlideFrame (eyebrow + serif headline + body
@@ -66,6 +66,8 @@ import { ThemeDrawer } from "./theme-drawer";
 import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
+import { resolveExploreAction } from "./explore-actions";
+import type { ChatAction } from "@/lib/coherence-chat";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
 import {
   buildSectorAlignmentDensity,
@@ -127,8 +129,8 @@ const SECTION_ORDER: SectionId[] = [
   DOC_FOCUS_SECTION_ID,
   DOC_PAIRS_SECTION_ID,
   FRICTION_TYPES_SECTION_ID,
-  SECTORS_SECTION_ID,
   WHERE_TO_FOCUS_SECTION_ID,
+  SECTORS_SECTION_ID,
   EXPLORE_SECTION_ID,
 ];
 
@@ -315,16 +317,13 @@ export function CoherenceBriefing({
     taxonomyType: string;
   } | null>(null);
   const [activeTheme, setActiveTheme] = useState<CorpusStoryline | null>(null);
-  /** True when ThemeDrawer was opened from Direction's "See all" trigger. */
+  // Dormant: Direction now lists every theme inline, so nothing opens the
+  // ThemeDrawer "all storylines" view. Kept until that view is removed.
   const [showAllStorylines, setShowAllStorylines] = useState(false);
 
   const openThemeDrawer = useCallback((s: CorpusStoryline) => {
     setActiveTheme(s);
     setShowAllStorylines(false);
-  }, []);
-  const openAllStorylines = useCallback(() => {
-    setActiveTheme(null);
-    setShowAllStorylines(true);
   }, []);
   const closeThemeDrawer = useCallback(() => {
     setActiveTheme(null);
@@ -445,13 +444,107 @@ export function CoherenceBriefing({
     Partial<Record<SectionId, WheelFocus | null>>
   >({});
 
-  // ── Explore-section state (chips drive the wheel) ───────────────
+  // ── Explore-section state ───────────────────────────────────────
+  // Set by wheel clicks (handleWheelArcClick) and by the insight bar / chat
+  // via applyExploreAction. The lens row is the only on-screen control left.
   const [exploreFilter, setExploreFilter] = useState<WheelFilter>("all");
   const [exploreDoc, setExploreDoc] = useState<PolicyDocumentType | null>(
     null,
   );
   const [exploreSector, setExploreSector] =
     useState<ExploreSectorSelection | null>(null);
+  // Explore's grouping axis and lens are LOCAL to this section: picking a lens
+  // here regroups the Explore wheel without changing the lens the Sectors
+  // section uses. Grouping defaults to the same doc-count heuristic the wheel
+  // applied implicitly before it was switchable, so a small corpus (Mongolia)
+  // still opens on documents.
+  const [exploreGroup, setExploreGroup] = useState<"documents" | "sectors">(
+    documentCount >= SECTOR_AUTO_SWITCH_DOC_COUNT ? "sectors" : "documents",
+  );
+  const [exploreLensId, setExploreLensId] = useState<LensId | null>(null);
+  const exploreLens = useMemo<LensOption | null>(() => {
+    if (exploreLensId) {
+      const found = availableLenses.find((l) => l.id === exploreLensId);
+      if (found) return found;
+    }
+    return lens;
+  }, [exploreLensId, availableLenses, lens]);
+
+  // Switching the Explore grouping axis clears any stale focus carried over
+  // from the other axis, so "Documents" doubles as the wheel's clear/reset.
+  const handleExploreGroupChange = useCallback(
+    (next: "documents" | "sectors") => {
+      setExploreGroup(next);
+      setExploreDoc(null);
+      setExploreSector(null);
+    },
+    [],
+  );
+
+  // Bridge insight "Show me" (and the chat's own navigation tools) onto the
+  // explore wheel state. resolveExploreAction is pure + unit-tested; this only
+  // wires the resolved intent to the setters.
+  const applyExploreAction = useCallback(
+    (action: ChatAction) => {
+      const intent = resolveExploreAction(action, {
+        availableDocs,
+        sectorCategoryIds: new Set(
+          (exploreLens?.categories ?? []).map((c) => c.id),
+        ),
+        taxonomyType: exploreLens?.taxonomyType ?? "sector",
+      });
+      switch (intent.kind) {
+        case "filter":
+          setExploreFilter(intent.filter);
+          break;
+        case "doc":
+          setExploreDoc(intent.id);
+          setExploreSector(null);
+          break;
+        case "sector": {
+          const cat = (exploreLens?.categories ?? []).find(
+            (c) => c.id === intent.id,
+          );
+          setExploreSector(
+            cat
+              ? {
+                  categoryId: cat.id,
+                  categoryName: cat.name,
+                  taxonomyType: intent.taxonomyType,
+                }
+              : null,
+          );
+          setExploreDoc(null);
+          if (cat) setExploreGroup("sectors");
+          break;
+        }
+        case "pair":
+          openPairById(intent.a, intent.b);
+          break;
+        case "target": {
+          const t = targetMap.get(intent.id);
+          if (!t) break;
+          // The wheel has no single-target focus, so refocus the target's
+          // source document (document grouping) for spatial context...
+          setExploreSector(null);
+          setExploreDoc(t.sourceDocument);
+          setExploreGroup("documents");
+          // ...and open the flag-profile decomposition when the target
+          // actually carries flagged pairs (the "N contradictions" payoff).
+          const hasFlags = alignment.some(
+            (a) =>
+              a.alignment === "flagged" &&
+              (a.targetAId === t.id || a.targetBId === t.id),
+          );
+          if (hasFlags) setFlagProfile({ kind: "target", target: t });
+          break;
+        }
+        case "none":
+          break;
+      }
+    },
+    [availableDocs, exploreLens, targetMap, alignment, openPairById],
+  );
 
   // Primer-card hover spotlight (lives in the Direction section).
   const [primerHighlight, setPrimerHighlight] =
@@ -505,8 +598,6 @@ export function CoherenceBriefing({
   // ── Per-section wheel defaults ──────────────────────────────────
   const wheelState: WheelState = useMemo(() => {
     const sectionFocusOverride = focusBySection[activeSection];
-    const exploreAutoGroup: WheelGroupBy =
-      documentCount >= SECTOR_AUTO_SWITCH_DOC_COUNT ? "sector" : "document";
     switch (activeSection) {
       case DIRECTION_SECTION_ID: {
         // Corpus-level backdrop. No focus, no hover state — the per-doc
@@ -586,20 +677,23 @@ export function CoherenceBriefing({
       }
       case EXPLORE_SECTION_ID:
       default: {
-        const userFocus: WheelFocus = exploreSector
-          ? {
-              type: "sector",
-              id: exploreSector.categoryId,
-              taxonomyType: exploreSector.taxonomyType,
-            }
-          : exploreDoc
-            ? { type: "doc", id: exploreDoc }
-            : null;
-        const groupBy: WheelGroupBy = exploreSector
-          ? "sector"
-          : exploreDoc
-            ? "document"
-            : exploreAutoGroup;
+        // The grouping axis is now an explicit, user-switchable control
+        // (Documents vs a sector lens), so the lens visibly restructures the
+        // wheel. Focus is the optional drill within that axis.
+        const groupBy: WheelGroupBy =
+          exploreGroup === "sectors" ? "sector" : "document";
+        const userFocus: WheelFocus =
+          groupBy === "sector"
+            ? exploreSector
+              ? {
+                  type: "sector",
+                  id: exploreSector.categoryId,
+                  taxonomyType: exploreSector.taxonomyType,
+                }
+              : null
+            : exploreDoc
+              ? { type: "doc", id: exploreDoc }
+              : null;
         return {
           groupBy,
           focus: userFocus,
@@ -610,10 +704,10 @@ export function CoherenceBriefing({
   }, [
     activeSection,
     focusBySection,
-    documentCount,
     topTensionSector,
     lensTaxonomyType,
     exploreFilter,
+    exploreGroup,
     exploreDoc,
     exploreSector,
     primerHighlight,
@@ -675,8 +769,11 @@ export function CoherenceBriefing({
         } else if (focus.type === "doc") {
           setExploreDoc(focus.id);
           setExploreSector(null);
+          setExploreGroup("documents");
         } else {
-          const cat = sectorCategories.find((c) => c.id === focus.id);
+          const cat = (exploreLens?.categories ?? []).find(
+            (c) => c.id === focus.id,
+          );
           setExploreSector(
             cat
               ? {
@@ -687,12 +784,13 @@ export function CoherenceBriefing({
               : null,
           );
           setExploreDoc(null);
+          setExploreGroup("sectors");
         }
         return;
       }
       setFocusBySection((prev) => ({ ...prev, [activeSection]: focus }));
     },
-    [activeSection, sectorCategories, scrollToSection],
+    [activeSection, exploreLens, scrollToSection],
   );
 
   // ── IntersectionObserver wiring ────────────────────────────────
@@ -774,7 +872,6 @@ export function CoherenceBriefing({
                 primer={primer}
                 countryConfig={countryConfig}
                 corpusThemes={corpusThemes}
-                onOpenAllStorylines={openAllStorylines}
                 onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
                 onHighlightPair={setPrimerHighlight}
@@ -822,6 +919,19 @@ export function CoherenceBriefing({
               />
             </div>
             <div
+              ref={setSectionRef(WHERE_TO_FOCUS_SECTION_ID)}
+              data-section-id={WHERE_TO_FOCUS_SECTION_ID}
+            >
+              <WhereToFocusSection
+                hotspots={frictionHotspots}
+                concentration={targetConcentration}
+                countryConfig={countryConfig}
+                onOpenTarget={(target) =>
+                  setFlagProfile({ kind: "target", target })
+                }
+              />
+            </div>
+            <div
               ref={setSectionRef(SECTORS_SECTION_ID)}
               data-section-id={SECTORS_SECTION_ID}
             >
@@ -842,19 +952,6 @@ export function CoherenceBriefing({
               />
             </div>
             <div
-              ref={setSectionRef(WHERE_TO_FOCUS_SECTION_ID)}
-              data-section-id={WHERE_TO_FOCUS_SECTION_ID}
-            >
-              <WhereToFocusSection
-                hotspots={frictionHotspots}
-                concentration={targetConcentration}
-                countryConfig={countryConfig}
-                onOpenTarget={(target) =>
-                  setFlagProfile({ kind: "target", target })
-                }
-              />
-            </div>
-            <div
               ref={setSectionRef(EXPLORE_SECTION_ID)}
               data-section-id={EXPLORE_SECTION_ID}
             >
@@ -866,24 +963,15 @@ export function CoherenceBriefing({
                 globeCategories={globeCategories}
                 countryConfig={countryConfig}
                 availableDocs={availableDocs}
-                sectorRows={sectorRows}
-                lensTaxonomyType={lensTaxonomyType}
                 availableLenses={availableLenses}
-                activeLensId={lens?.id ?? null}
-                onLensChange={handleLensChange}
-                filter={exploreFilter}
-                onFilter={setExploreFilter}
-                activeDoc={exploreDoc}
-                onDoc={(d) => {
-                  setExploreDoc(d);
-                  setExploreSector(null);
-                }}
-                activeSector={exploreSector}
-                onSector={(s) => {
-                  setExploreSector(s);
-                  setExploreDoc(null);
-                }}
-                onOpenSectorDrawer={openSectorDrawer}
+                exploreGroup={exploreGroup}
+                onExploreGroupChange={handleExploreGroupChange}
+                exploreLensId={exploreLens?.id ?? null}
+                onExploreLensChange={setExploreLensId}
+                docPairSyntheses={docPairSyntheses}
+                corpusThemes={corpusThemes}
+                sectorSyntheses={sectorSyntheses}
+                onApplyAction={applyExploreAction}
               />
             </div>
           </div>
@@ -922,19 +1010,31 @@ export function CoherenceBriefing({
                     classifications={classifications}
                     countryConfig={countryConfig}
                     state={wheelState}
-                    sectorCategories={sectorCategories}
-                    sectorTaxonomyType={lensTaxonomyType}
+                    sectorCategories={
+                      activeSection === EXPLORE_SECTION_ID
+                        ? (exploreLens?.categories ?? [])
+                        : sectorCategories
+                    }
+                    sectorTaxonomyType={
+                      activeSection === EXPLORE_SECTION_ID
+                        ? (exploreLens?.taxonomyType ?? "sector")
+                        : lensTaxonomyType
+                    }
                     onArcClick={handleWheelArcClick}
                     onPairClick={
                       activeSection === DIRECTION_SECTION_ID ||
-                      activeSection === DOC_FOCUS_SECTION_ID
+                      activeSection === DOC_FOCUS_SECTION_ID ||
+                      (activeSection === EXPLORE_SECTION_ID &&
+                        exploreGroup === "sectors")
                         ? undefined
                         : openPairById
                     }
                     onRibbonNavigate={
                       activeSection === DIRECTION_SECTION_ID
                         ? handleRibbonNavigate
-                        : activeSection === DOC_FOCUS_SECTION_ID
+                        : activeSection === DOC_FOCUS_SECTION_ID ||
+                            (activeSection === EXPLORE_SECTION_ID &&
+                              exploreGroup === "documents")
                           ? (a, b) =>
                               openDocPairByDocs(
                                 a as PolicyDocumentType,

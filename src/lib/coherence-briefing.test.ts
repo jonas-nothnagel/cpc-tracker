@@ -333,7 +333,7 @@ describe("buildDocFocusFrictions", () => {
   it("keeps only cross-document flagged pairs touching the focused doc", () => {
     const r = buildDocFocusFrictions(alignment, targets, "FSS");
     expect(r.flaggedPairs).toHaveLength(2);
-    // Sorted by peer doc: NAP before NDC.
+    // Goal conflict (the NAP pair) outranks resource competition (the NDC pair).
     expect(r.flaggedPairs[0].targetB.id).toBe("NAP_1");
     expect(r.flaggedPairs[1].targetB.id).toBe("NDC_1");
   });
@@ -350,6 +350,21 @@ describe("buildDocFocusFrictions", () => {
     const r = buildDocFocusFrictions(alignment, targets, "ZZZ");
     expect(r.flaggedPairs).toEqual([]);
     expect(r.frictionTotals.total).toBe(0);
+  });
+
+  it("surfaces the most severe mechanism first, regardless of peer order", () => {
+    const t = [
+      makeTarget("V_1", "Vision"),
+      makeTarget("A_1", "AAA"), // alphabetically-early peer
+      makeTarget("Z_1", "ZZZ"), // alphabetically-late peer
+    ];
+    const al = [
+      makeFlagged("V_1", "A_1", "delivery_friction"), // early peer, least severe
+      makeFlagged("V_1", "Z_1", "goal_conflict"), // late peer, most severe
+    ];
+    const r = buildDocFocusFrictions(al, t, "Vision");
+    expect(r.flaggedPairs[0].pair.mechanism).toBe("goal_conflict");
+    expect(r.flaggedPairs[1].pair.mechanism).toBe("delivery_friction");
   });
 });
 
