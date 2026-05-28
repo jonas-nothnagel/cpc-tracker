@@ -31,6 +31,7 @@ import { arc as d3arc } from "d3-shape";
 import {
   ALIGNMENT_COLORS,
   getDocColor,
+  getDocFullLabel,
   getDocMediumLabel,
 } from "@/lib/utils";
 import { isContradiction } from "@/types";
@@ -80,6 +81,13 @@ export interface WheelState {
    * to the documents a corpus storyline spans.
    */
   ghostExceptDocs?: string[];
+  /**
+   * When true, the per-doc balance bands still render in document-focus
+   * view but the centre name+counts readout is suppressed. Used by the
+   * Doc-in-Focus slide which carries that information in its left column
+   * instead of inside the wheel.
+   */
+  suppressFocusReadout?: boolean;
 }
 
 export interface SectorCategoryRef {
@@ -90,7 +98,12 @@ export interface SectorCategoryRef {
 
 interface ArcInfo {
   id: string;
+  /** Rim-display label (full title, parenthetical metadata stripped). */
   label: string;
+  /** Compact label (mediumLabel) for the centre overlay where space is tight. */
+  shortLabel: string;
+  /** Full untouched label including parentheticals — used in tooltips/aria. */
+  fullLabel: string;
   color: string;
   startAngle: number;
   endAngle: number;
@@ -115,11 +128,53 @@ function curvePath(ax: number, ay: number, bx: number, by: number) {
   return `M${ax},${ay} Q${cx},${cy} ${bx},${by}`;
 }
 
+/**
+ * Greedy line-wrap for arc labels so multi-word names ("Vision 2050",
+ * "National Biodiversity Strategy & Action Plan") stack vertically
+ * instead of overflowing into neighbouring arcs.
+ */
+function wrapLabel(label: string, maxCharsPerLine = 20): string[] {
+  const words = label.split(/\s+/).filter((w) => w.length > 0);
+  if (words.length <= 1) return [label];
+  const lines: string[] = [];
+  let current = "";
+  for (const word of words) {
+    if (current.length === 0) {
+      current = word;
+    } else if (current.length + 1 + word.length <= maxCharsPerLine) {
+      current = `${current} ${word}`;
+    } else {
+      lines.push(current);
+      current = word;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
 interface Bucket {
   id: string;
   label: string;
+  /** Short code (e.g. "NDC") kept around for the centre overlay where space is tight. */
+  shortLabel: string;
+  /** Full label including any trailing parenthetical, used as the SVG aria title. */
+  fullLabel: string;
   color: string;
   targets: Target[];
+}
+
+/**
+ * Wheel-display label: full human title minus a trailing parenthetical
+ * (e.g. drops "(Parliament Resolution 36, June 2022)") so the rim stays
+ * readable. The full string remains available via tooltips and aria.
+ */
+function prettyDocLabel(
+  countryConfig: CountryConfig | null,
+  docId: string,
+): string {
+  return getDocFullLabel(countryConfig, docId)
+    .replace(/\s*\([^)]*\)\s*$/, "")
+    .trim();
 }
 
 function bucketByDocument(
@@ -136,7 +191,9 @@ function bucketByDocument(
   for (const [docId, ts] of byDoc) {
     out.push({
       id: docId,
-      label: getDocMediumLabel(countryConfig, docId),
+      label: prettyDocLabel(countryConfig, docId),
+      shortLabel: getDocMediumLabel(countryConfig, docId),
+      fullLabel: getDocFullLabel(countryConfig, docId),
       color: getDocColor(countryConfig, docId),
       targets: ts,
     });
@@ -169,9 +226,12 @@ function bucketBySector(
   const out: Bucket[] = [];
   for (const [cid, ts] of byCat) {
     const info = catInfo.get(cid);
+    const name = info?.name ?? "Unclassified";
     out.push({
       id: cid,
-      label: info?.name ?? "Unclassified",
+      label: name,
+      shortLabel: name,
+      fullLabel: name,
       color: info?.color ?? "#9ca3af",
       targets: ts,
     });
@@ -228,6 +288,8 @@ function buildLayout(args: {
     arcs.push({
       id: b.id,
       label: b.label,
+      shortLabel: b.shortLabel,
+      fullLabel: b.fullLabel,
       color: b.color,
       startAngle: start,
       endAngle: end,
@@ -306,8 +368,17 @@ export interface WheelCenterpieceProps {
   sectorTaxonomyType?: string;
   /** Click an aggregated ribbon (handler is responsible for resolving a pair). */
   onPairClick?: (a: string, b: string) => void;
+  /**
+   * Click an aggregated ribbon and route the doc-pair up to the host as
+   * a navigation request instead of opening a single target-pair drawer.
+   * When set, this fires instead of `onPairClick` — used by the Direction
+   * slide to scroll to Doc Pairs with the matching pair surfaced.
+   */
+  onRibbonNavigate?: (arcAId: string, arcBId: string) => void;
   /** Click a rim arc → host switches focus. Pass null to support "unset focus" via re-clicking. */
   onArcClick?: (focus: WheelFocus) => void;
+  /** Hover a rim arc or its label → host can set ephemeral focus. Pass null on leave. */
+  onArcHover?: (focus: WheelFocus | null) => void;
 }
 
 export function WheelCenterpiece({
@@ -319,7 +390,9 @@ export function WheelCenterpiece({
   sectorCategories = [],
   sectorTaxonomyType = "sector",
   onPairClick,
+  onRibbonNavigate,
   onArcClick,
+  onArcHover,
 }: WheelCenterpieceProps) {
   const { nodes, arcs } = useMemo(
     () =>
@@ -351,10 +424,48 @@ export function WheelCenterpiece({
         .outerRadius(OUTER_R),
     [],
   );
+  // Thin band just outside each arc, used in the document-focus view to show
+  // that doc's aligned/flagged balance with the focused doc.
+  const bandArc = useMemo(
+    () =>
+      d3arc<{ startAngle: number; endAngle: number }>()
+        .innerRadius(OUTER_R + 4)
+        .outerRadius(OUTER_R + 9),
+    [],
+  );
   const aggregates = useMemo(
     () => aggregateByArcPair(alignments, nodeMap),
     [alignments, nodeMap],
   );
+
+  /**
+   * Ribbon-width scale capped to the corpus.
+   *
+   * Mongolia's largest doc-pair carries a few-hundred aligned records,
+   * which the original `sqrt(count) * 1.6` formula renders at ~32px —
+   * just right. Panama's largest doc-pair carries thousands, so the
+   * same formula blows up to ~100+px and turns the wheel into a soup.
+   * We cap the multiplier so the widest ribbon in any corpus tops out
+   * around RIBBON_MAX_PX; corpora with small counts keep the existing
+   * 1.6 multiplier untouched.
+   */
+  const RIBBON_MAX_PX = 30;
+  const ribbonScale = useMemo(() => {
+    let maxCount = 0;
+    for (const agg of aggregates.values()) {
+      if (agg.alignmentCount > maxCount) maxCount = agg.alignmentCount;
+      if (agg.tensionCount > maxCount) maxCount = agg.tensionCount;
+    }
+    if (maxCount <= 0) return 1.6;
+    return Math.min(1.6, RIBBON_MAX_PX / Math.sqrt(maxCount));
+  }, [aggregates]);
+  /**
+   * "Busy wheel" = many doc arcs around the rim. With ≥6 docs, even
+   * normalized ribbons stack and read as opaque; we lower the default
+   * stroke opacity so the underlying rim arcs and labels stay legible.
+   * Hover, focus, and primer-highlight modes still pop up to full opacity.
+   */
+  const busyWheel = arcs.length > 5;
 
   /**
    * The currently focused arc id, validated against the active grouping. We
@@ -396,6 +507,39 @@ export function WheelCenterpiece({
 
   const [hovered, setHovered] = useState<string | null>(null);
 
+  // Document-focus view: when a single document arc is focused, summarise how
+  // it relates to every other document (for the per-doc balance bands + the
+  // centre readout). Doc-to-doc only; sector focus keeps plain ghosting.
+  const docFocusActive =
+    state.groupBy === "document" && focusArcId !== null;
+  // Reinforces/tension split uses the same rule as the Document-pairs list
+  // (flagged > aligned × 0.25), so a doc reads consistently across both views.
+  const FOCUS_CLASH_RATIO = 0.25;
+  const focusInfo = useMemo(() => {
+    if (!docFocusActive || !focusArcId) return null;
+    const focusArc = arcsById.get(focusArcId);
+    if (!focusArc) return null;
+    let reinforces = 0;
+    let tension = 0;
+    const bands: { arc: ArcInfo; alignedShare: number }[] = [];
+    for (const arc of arcs) {
+      if (arc.id === focusArcId || arc.id === UNCLASSIFIED_BUCKET_ID) continue;
+      const [lo, hi] =
+        focusArcId < arc.id ? [focusArcId, arc.id] : [arc.id, focusArcId];
+      const agg = aggregates.get(`${lo}__${hi}`);
+      if (!agg) continue;
+      const signal = agg.alignmentCount + agg.tensionCount;
+      if (signal === 0) continue;
+      if (agg.tensionCount > agg.alignmentCount * FOCUS_CLASH_RATIO) {
+        tension += 1;
+      } else {
+        reinforces += 1;
+      }
+      bands.push({ arc, alignedShare: agg.alignmentCount / signal });
+    }
+    return { focusArc, reinforces, tension, bands };
+  }, [docFocusActive, focusArcId, arcs, arcsById, aggregates]);
+
   const handleArcClick = (arc: ArcInfo) => {
     if (!onArcClick) return;
     if (arc.id === UNCLASSIFIED_BUCKET_ID) return;
@@ -414,7 +558,30 @@ export function WheelCenterpiece({
     }
   };
 
+  const handleArcHover = (arc: ArcInfo | null) => {
+    if (!onArcHover) return;
+    if (!arc || arc.id === UNCLASSIFIED_BUCKET_ID) {
+      onArcHover(null);
+      return;
+    }
+    if (state.groupBy === "document") {
+      onArcHover({ type: "doc", id: arc.id });
+    } else {
+      onArcHover({
+        type: "sector",
+        id: arc.id,
+        taxonomyType: sectorTaxonomyType,
+      });
+    }
+  };
+
   const handleAggregateClick = (agg: ArcPairAggregate) => {
+    // Navigation-style routing wins when configured: the host decides
+    // what to do with the doc-pair (e.g. scroll to the Doc Pairs slide).
+    if (onRibbonNavigate) {
+      onRibbonNavigate(agg.aId, agg.bId);
+      return;
+    }
     if (!onPairClick) return;
     // Pick the first alignment record matching this arc-pair. The host can
     // refine the resolution to "most severe" or "highest aligned" later.
@@ -468,6 +635,7 @@ export function WheelCenterpiece({
             (ghostExceptDocs !== null && !ghostExceptDocs.has(arc.id));
           const clickable =
             !!onArcClick && arc.id !== UNCLASSIFIED_BUCKET_ID;
+          const hoverable = !!onArcHover && arc.id !== UNCLASSIFIED_BUCKET_ID;
           return (
             <g key={arc.id}>
               <path
@@ -475,11 +643,13 @@ export function WheelCenterpiece({
                 fill={arc.color}
                 opacity={isGhost ? 0.25 : isFocus ? 1 : 0.85}
                 onClick={clickable ? () => handleArcClick(arc) : undefined}
+                onMouseEnter={hoverable ? () => handleArcHover(arc) : undefined}
+                onMouseLeave={hoverable ? () => handleArcHover(null) : undefined}
                 className={clickable ? "cursor-pointer" : undefined}
                 style={{ transition: "opacity 220ms" }}
               >
                 <title>
-                  {arc.label} · {arc.count} targets
+                  {arc.fullLabel} · {arc.count} targets
                   {clickable
                     ? isFocus
                       ? " · click to clear focus"
@@ -523,7 +693,7 @@ export function WheelCenterpiece({
             !insideGhostExcept;
           const key = `${agg.aId}__${agg.bId}`;
           const isHover = hovered === key;
-          const clickable = !!onPairClick && !ghosted;
+          const clickable = (!!onPairClick || !!onRibbonNavigate) && !ghosted;
           return (
             <g
               key={`agg-${key}`}
@@ -539,10 +709,20 @@ export function WheelCenterpiece({
                   stroke={ALIGNMENT_COLORS.high}
                   strokeWidth={Math.max(
                     1,
-                    Math.sqrt(agg.alignmentCount) * 1.6,
+                    Math.sqrt(agg.alignmentCount) * ribbonScale,
                   )}
                   strokeOpacity={
-                    ghosted ? 0.06 : isHover ? 0.9 : 0.55
+                    ghosted
+                      ? docFocusActive
+                        ? 0
+                        : 0.06
+                      : isHover
+                        ? 0.9
+                        : docFocusActive
+                          ? 0.7
+                          : busyWheel
+                            ? 0.4
+                            : 0.55
                   }
                   strokeLinecap="round"
                   style={{ transition: "stroke-opacity 220ms" }}
@@ -555,10 +735,20 @@ export function WheelCenterpiece({
                   stroke={ALIGNMENT_COLORS.flagged}
                   strokeWidth={Math.max(
                     1,
-                    Math.sqrt(agg.tensionCount) * 1.8,
+                    Math.sqrt(agg.tensionCount) * ribbonScale * 1.125,
                   )}
                   strokeOpacity={
-                    ghosted ? 0.08 : isHover ? 0.9 : 0.7
+                    ghosted
+                      ? docFocusActive
+                        ? 0
+                        : 0.08
+                      : isHover
+                        ? 0.9
+                        : docFocusActive
+                          ? 0.85
+                          : busyWheel
+                            ? 0.55
+                            : 0.7
                   }
                   strokeDasharray="5 3"
                   strokeLinecap="round"
@@ -688,10 +878,13 @@ export function WheelCenterpiece({
           );
         })}
 
-        {/* Group labels */}
+        {/* Group labels. Long multi-word labels (e.g., "Vision 2050") wrap
+            onto multiple lines instead of overflowing into neighbouring
+            arcs. Vertical anchoring shifts the first tspan up by half the
+            block height so the label stays visually centred on its
+            radial position. */}
         {arcs.map((arc) => {
           if (arc.id === UNCLASSIFIED_BUCKET_ID && arc.count < 3) {
-            // Suppress label noise from tiny unclassified buckets.
             return null;
           }
           const labelR = 244;
@@ -708,6 +901,21 @@ export function WheelCenterpiece({
             focusArcId !== null &&
             focusArcId !== arc.id &&
             !state.highlightPair;
+          // For wide-docset corpora (Panama, 8+ docs), fall back to the
+          // short code (mediumLabel) so labels don't overlap each other
+          // around the rim. The full title is still available via the
+          // SVG <title> tooltip on the arc.
+          const labelText = busyWheel ? arc.shortLabel : arc.label;
+          const lines = wrapLabel(labelText);
+          const lineHeight = 12;
+          const firstDy =
+            lines.length > 1 ? -((lines.length - 1) / 2) * lineHeight : 0;
+          // Labels behave like the rim arc they belong to: if the arc accepts
+          // clicks, the label is part of the same hit target (otherwise long
+          // titles read as "labels you can hover but not click", which the
+          // user flagged as feeling broken).
+          const labelClickable =
+            !!onArcClick && arc.id !== UNCLASSIFIED_BUCKET_ID;
           return (
             <text
               key={`label-${arc.id}`}
@@ -719,13 +927,118 @@ export function WheelCenterpiece({
               fontWeight={focusArcId === arc.id ? 600 : 500}
               fill="var(--undp-black)"
               opacity={isGhost ? 0.4 : 1}
-              className="select-none pointer-events-none"
+              onClick={
+                labelClickable ? () => handleArcClick(arc) : undefined
+              }
+              className={
+                labelClickable
+                  ? "select-none cursor-pointer"
+                  : "select-none pointer-events-none"
+              }
               style={{ transition: "opacity 220ms" }}
             >
-              {arc.label}
+              {lines.map((line, i) => (
+                <tspan
+                  key={i}
+                  x={x}
+                  dy={i === 0 ? firstDy : lineHeight}
+                >
+                  {line}
+                </tspan>
+              ))}
             </text>
           );
         })}
+
+        {/* Document-focus overlay: per-doc balance bands + centre readout. */}
+        {focusInfo && (
+          <g key={`focus-${focusArcId}`}>
+            <defs>
+              <style>{`
+                @keyframes wbBand { from { opacity: 0; } to { opacity: 1; } }
+                @keyframes wbReadout { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+              `}</style>
+            </defs>
+            {focusInfo.bands.map((band, i) => {
+              const span = band.arc.endAngle - band.arc.startAngle;
+              const greenEnd = band.arc.startAngle + span * band.alignedShare;
+              const greenD =
+                band.alignedShare > 0
+                  ? bandArc({
+                      startAngle: band.arc.startAngle,
+                      endAngle: greenEnd,
+                    })
+                  : null;
+              const redD =
+                band.alignedShare < 1
+                  ? bandArc({ startAngle: greenEnd, endAngle: band.arc.endAngle })
+                  : null;
+              return (
+                <g
+                  key={`band-${band.arc.id}`}
+                  style={{ animation: `wbBand 340ms ease-out ${i * 40}ms both` }}
+                >
+                  {greenD && <path d={greenD} fill={ALIGNMENT_COLORS.high} />}
+                  {redD && <path d={redD} fill={ALIGNMENT_COLORS.flagged} />}
+                </g>
+              );
+            })}
+            {!state.suppressFocusReadout && (
+              <g
+                onClick={onArcClick ? () => onArcClick(null) : undefined}
+                className={onArcClick ? "cursor-pointer" : undefined}
+                style={{ animation: "wbReadout 300ms ease-out both" }}
+              >
+                <text
+                  x={0}
+                  y={-10}
+                  textAnchor="middle"
+                  fontSize={15}
+                  fontWeight={700}
+                  fill="var(--undp-black)"
+                  stroke="#fbfaf7"
+                  strokeWidth={3.5}
+                  paintOrder="stroke"
+                  strokeLinejoin="round"
+                >
+                  {focusInfo.focusArc.shortLabel}
+                </text>
+                <text
+                  x={0}
+                  y={11}
+                  textAnchor="middle"
+                  fontSize={12}
+                  fontWeight={600}
+                  stroke="#fbfaf7"
+                  strokeWidth={3}
+                  paintOrder="stroke"
+                  strokeLinejoin="round"
+                >
+                  <tspan fill={ALIGNMENT_COLORS.high}>
+                    {focusInfo.reinforces} reinforces
+                  </tspan>
+                  <tspan fill="var(--undp-gray)"> · </tspan>
+                  <tspan fill={ALIGNMENT_COLORS.flagged}>
+                    {focusInfo.tension} in tension
+                  </tspan>
+                </text>
+                <text
+                  x={0}
+                  y={29}
+                  textAnchor="middle"
+                  fontSize={10}
+                  fill="var(--undp-gray)"
+                  stroke="#fbfaf7"
+                  strokeWidth={2.5}
+                  paintOrder="stroke"
+                  strokeLinejoin="round"
+                >
+                  click to clear focus
+                </text>
+              </g>
+            )}
+          </g>
+        )}
       </svg>
     </div>
   );

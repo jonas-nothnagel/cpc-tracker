@@ -1,33 +1,34 @@
 "use client";
 
 /**
- * Sectors section — Section 2 of the findings home.
+ * Sectors — answers "where does the friction concentrate?" with a
+ * comparative view across the top sectors under the active lens. The
+ * lens switcher (GLOBE / IPCC / Country sectors) is the first-class
+ * control on this slide, surfaced under the headline so a policymaker
+ * can re-frame the concentration question by category system.
  *
- * Paragraph claim about how concentrated (or spread out) the friction is
- * across sectors, then a compact intensity-row list. Each row shows both
- * the tension density and alignment density side by side, plus a small
- * "M primary · N relevant" caption derived from the sector synthesis
- * pool composition. Hover previews the wheel focus on that sector; click
- * opens the sector drawer.
+ * Row list caps to the top 8 by default; the rest hide behind a "Show
+ * all" toggle. Each row pairs the alignment and tension density bars so
+ * one sector's polarity reads at a glance; clicking opens the sector
+ * drawer with the synthesis block and example pairs.
  */
 
 import { useMemo, useState } from "react";
+import { SlideFrame } from "../slide-frame";
 import {
   type ConcentrationStat,
-  type HeadlineVerdict,
   type SectorAlignment,
   type SectorTension,
 } from "@/lib/coherence-briefing";
-import type { CountryConfig, SectorSynthesis } from "@/types";
+import type { SectorSynthesis } from "@/types";
 import type { LensId, LensOption } from "../lens";
 import type { WheelFilter } from "../centerpiece/wheel";
 
 export const SECTORS_SECTION_ID = "sectors";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-
 export type SectorSortMode = "tension" | "alignment";
+
+const VISIBLE_ROWS_DEFAULT = 8;
 
 export function SectorsSection({
   sectorRows,
@@ -35,14 +36,12 @@ export function SectorsSection({
   sectorSyntheses,
   taxonomyType,
   concentration,
-  verdict,
   lensLabel,
   availableLenses,
   activeLensId,
   onLensChange,
   filter,
   onFilterChange,
-  countryConfig,
   onOpenSector,
   onHoverSector,
 }: {
@@ -50,7 +49,6 @@ export function SectorsSection({
   sectorAlignments: SectorAlignment[];
   sectorSyntheses: Map<string, SectorSynthesis>;
   concentration: ConcentrationStat;
-  verdict: HeadlineVerdict;
   lensLabel: string | null;
   taxonomyType: string;
   availableLenses: LensOption[];
@@ -58,7 +56,6 @@ export function SectorsSection({
   onLensChange: (id: LensId) => void;
   filter: WheelFilter;
   onFilterChange: (f: WheelFilter) => void;
-  countryConfig: CountryConfig | null;
   onOpenSector: (s: {
     categoryId: string;
     categoryName: string;
@@ -67,10 +64,8 @@ export function SectorsSection({
   onHoverSector?: (categoryId: string | null) => void;
 }) {
   const [sortMode, setSortMode] = useState<SectorSortMode>("tension");
+  const [showAll, setShowAll] = useState(false);
 
-  // Merge tension + alignment + synthesis-derived pool counts into one row
-  // shape. Both density arrays carry one entry per category in the same
-  // order; the merger here keeps the sort stable.
   const alignmentByCategory = useMemo(
     () => new Map(sectorAlignments.map((s) => [s.categoryId, s])),
     [sectorAlignments],
@@ -79,7 +74,9 @@ export function SectorsSection({
   const mergedRows = useMemo<MergedSectorRow[]>(() => {
     const rows: MergedSectorRow[] = sectorRows.map((tension) => {
       const aligned = alignmentByCategory.get(tension.categoryId);
-      const synth = sectorSyntheses.get(`${taxonomyType}:${tension.categoryId}`);
+      const synth = sectorSyntheses.get(
+        `${taxonomyType}:${tension.categoryId}`,
+      );
       const pool = synth?.pool_composition ?? null;
       return {
         categoryId: tension.categoryId,
@@ -117,71 +114,77 @@ export function SectorsSection({
     (m, r) => (r.alignmentCount > m ? r.alignmentCount : m),
     0,
   );
+  const visibleRows = showAll
+    ? mergedRows
+    : mergedRows.slice(0, VISIBLE_ROWS_DEFAULT);
+  const hiddenCount = mergedRows.length - visibleRows.length;
 
   return (
-    <section
+    <SlideFrame
       id={SECTORS_SECTION_ID}
-      className="scroll-mt-24 pt-2"
-      aria-labelledby={`${SECTORS_SECTION_ID}-heading`}
-    >
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
-        Where do flagged pairs concentrate?
-      </p>
-      <p className="text-[13px] text-[var(--undp-gray)] mb-4">
-        {composeStatsLine({ verdict, concentration, lensLabel })}
-      </p>
-      <h2
-        id={`${SECTORS_SECTION_ID}-heading`}
-        className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-4"
-        style={{ fontFamily: HEADLINE_SERIF }}
-      >
-        {sentence.headline}
-      </h2>
-      <p className="text-[15px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-4">
-        {sentence.body}
-      </p>
-      <SectorControls
-        availableLenses={availableLenses}
-        activeLensId={activeLensId}
-        onLensChange={onLensChange}
-        filter={filter}
-        onFilterChange={onFilterChange}
-      />
-
-      {mergedRows.length === 0 ? (
-        <p className="text-sm italic text-[var(--undp-gray)]">
-          No sector taxonomy is available for this country.
-        </p>
-      ) : (
-        <>
-          <SectorColumnHeader sortMode={sortMode} onSort={setSortMode} />
-          <ul
-            className="divide-y divide-gray-100 border-y border-gray-100"
-            onMouseLeave={() => onHoverSector?.(null)}
-          >
-            {mergedRows.map((row) => (
-              <SectorRow
-                key={row.categoryId}
-                row={row}
-                maxTension={maxTension}
-                maxAlignment={maxAlignment}
-                onHover={onHoverSector}
-                onSelect={() =>
-                  onOpenSector({
-                    categoryId: row.categoryId,
-                    categoryName: row.categoryName,
-                    taxonomyType,
-                  })
-                }
-              />
-            ))}
-          </ul>
-        </>
-      )}
-      <span data-config-ref className="sr-only">
-        {countryConfig?.docProvenance ? "" : ""}
-      </span>
-    </section>
+      eyebrow="Where does the friction concentrate?"
+      headline={sentence.headline}
+      body={sentence.body}
+      controls={
+        <LensChipRow
+          availableLenses={availableLenses}
+          activeLensId={activeLensId}
+          onLensChange={onLensChange}
+          filter={filter}
+          onFilterChange={onFilterChange}
+        />
+      }
+      evidence={
+        mergedRows.length === 0 ? (
+          <p className="text-sm italic text-[var(--undp-gray)]">
+            No sector taxonomy is available for this country.
+          </p>
+        ) : (
+          <div className="border-y border-gray-200 py-3">
+            <SectorColumnHeader sortMode={sortMode} onSort={setSortMode} />
+            <ul
+              className="divide-y divide-gray-100"
+              onMouseLeave={() => onHoverSector?.(null)}
+            >
+              {visibleRows.map((row) => (
+                <SectorRow
+                  key={row.categoryId}
+                  row={row}
+                  maxTension={maxTension}
+                  maxAlignment={maxAlignment}
+                  onHover={onHoverSector}
+                  onSelect={() =>
+                    onOpenSector({
+                      categoryId: row.categoryId,
+                      categoryName: row.categoryName,
+                      taxonomyType,
+                    })
+                  }
+                />
+              ))}
+            </ul>
+            {hiddenCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowAll(true)}
+                className="mt-3 text-[11px] text-[var(--undp-black)] hover:text-[var(--undp-black)] underline underline-offset-2"
+              >
+                Show all {mergedRows.length.toLocaleString()} sectors →
+              </button>
+            )}
+            {showAll && mergedRows.length > VISIBLE_ROWS_DEFAULT && (
+              <button
+                type="button"
+                onClick={() => setShowAll(false)}
+                className="mt-3 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2"
+              >
+                Collapse to top {VISIBLE_ROWS_DEFAULT}
+              </button>
+            )}
+          </div>
+        )
+      }
+    />
   );
 }
 
@@ -191,11 +194,10 @@ interface MergedSectorRow {
   tensionCount: number;
   alignmentCount: number;
   targetCount: number;
-  /** From sector-synthesis pool_composition.relevant_only_count, null if no synthesis. */
   relevantOnlyCount: number | null;
 }
 
-function SectorControls({
+function LensChipRow({
   availableLenses,
   activeLensId,
   onLensChange,
@@ -208,49 +210,62 @@ function SectorControls({
   filter: WheelFilter;
   onFilterChange: (f: WheelFilter) => void;
 }) {
-  const lensValue = activeLensId ?? availableLenses[0]?.id ?? "";
+  const activeLens = activeLensId ?? availableLenses[0]?.id;
   const FILTER_OPTIONS: ReadonlyArray<{ value: WheelFilter; label: string }> = [
-    { value: "tensions", label: "Flagged only" },
-    { value: "alignments", label: "Alignments only" },
+    { value: "tensions", label: "Flagged" },
+    { value: "alignments", label: "Aligned" },
     { value: "all", label: "Both" },
   ];
   return (
-    <div className="mb-6 flex items-center gap-3 flex-wrap text-[12px]">
+    <div className="flex flex-col gap-3">
       {availableLenses.length > 0 && (
-        <label className="inline-flex items-center gap-2">
-          <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-            Lens
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
+            Group by:
           </span>
-          <select
-            value={lensValue}
-            onChange={(e) => onLensChange(e.target.value as LensId)}
-            disabled={availableLenses.length <= 1}
-            className="px-2 py-1 border border-gray-300 rounded bg-white disabled:bg-gray-50 disabled:text-[var(--undp-gray)] focus:outline-none focus:ring-1 focus:ring-[var(--undp-black)] focus:border-[var(--undp-black)]"
-          >
-            {availableLenses.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                By {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
+          {availableLenses.map((opt) => {
+            const active = activeLens === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => onLensChange(opt.id)}
+                aria-pressed={active}
+                className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
+                  active
+                    ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
+                    : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
+                }`}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
       )}
-      <label className="inline-flex items-center gap-2">
-        <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-          Show
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
+          Show:
         </span>
-        <select
-          value={filter}
-          onChange={(e) => onFilterChange(e.target.value as WheelFilter)}
-          className="px-2 py-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-1 focus:ring-[var(--undp-black)] focus:border-[var(--undp-black)]"
-        >
-          {FILTER_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
+        {FILTER_OPTIONS.map((opt) => {
+          const active = filter === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onFilterChange(opt.value)}
+              aria-pressed={active}
+              className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
+                active
+                  ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
+                  : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
+              }`}
+            >
               {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -291,25 +306,6 @@ function SectorColumnHeader({
   );
 }
 
-function composeStatsLine({
-  verdict,
-  concentration,
-  lensLabel,
-}: {
-  verdict: HeadlineVerdict;
-  concentration: ConcentrationStat;
-  lensLabel: string | null;
-}): string {
-  const aligned = verdict.alignmentPairs.toLocaleString();
-  const flagged = verdict.tensionPairs.toLocaleString();
-  const noun = lensLabel === "GLOBE" ? "biodiversity categories" : "sectors";
-  const n = concentration.populatedSectors;
-  if (n === 0) {
-    return `${aligned} alignments and ${flagged} possible misalignments scored.`;
-  }
-  return `${aligned} alignments and ${flagged} possible misalignments across ${n} ${noun}.`;
-}
-
 interface ConcentrationSentence {
   headline: string;
   body: string;
@@ -329,29 +325,34 @@ function composeConcentrationSentence({
   const { populatedSectors, totalFlags, topNames, share } = concentration;
   if (totalFlags === 0 || populatedSectors === 0) {
     return {
-      headline: `No possible misalignments grouped by ${noun}.`,
+      headline: `No flagged pairs grouped by ${noun} yet.`,
       body: `Either the pipeline has not flagged any pairs touching a primary-classified ${noun}, or the country has no ${noun} taxonomy configured.`,
     };
   }
   if (topNames.length === 0) {
     return {
-      headline: "Possible misalignments are widely spread.",
-      body: `${totalFlags.toLocaleString()} flagged pairs touch ${populatedSectors} ${nounPlural}, with no single ${noun} dominating.`,
+      headline: `Flagged pairs spread across ${populatedSectors} ${nounPlural}.`,
+      body: `${totalFlags.toLocaleString()} flagged pairs land across ${populatedSectors} ${nounPlural} with no single ${noun} dominating.`,
     };
   }
   const sharePct = Math.round(share * 100);
-  const headline =
-    topNames.length === populatedSectors
-      ? `Possible misalignments touch every ${noun}.`
-      : `Friction concentrates in ${topNames.length} of ${populatedSectors} ${nounPlural}.`;
   const list = formatList(topNames);
-  const remaining = populatedSectors - topNames.length;
-  const remainingWord = remaining === 1 ? noun : nounPlural;
-  const body =
-    topNames.length === populatedSectors
-      ? `${totalFlags.toLocaleString()} flagged pairs spread across ${populatedSectors} ${nounPlural}; the heaviest are ${list}.`
-      : `${sharePct}% of the ${totalFlags.toLocaleString()} flagged pairs land on ${list}. The rest are spread across the other ${remaining} ${remainingWord}.`;
-  return { headline, body };
+  if (topNames.length === 1) {
+    return {
+      headline: `${topNames[0]} carries ${sharePct}% of flagged pairs.`,
+      body: `${totalFlags.toLocaleString()} flagged pairs land across ${populatedSectors} ${nounPlural}; ${topNames[0]} alone holds ${sharePct}%.`,
+    };
+  }
+  if (topNames.length === populatedSectors) {
+    return {
+      headline: `Flagged pairs touch every ${noun}.`,
+      body: `${totalFlags.toLocaleString()} flagged pairs spread across all ${populatedSectors} ${nounPlural}; the heaviest are ${list}.`,
+    };
+  }
+  return {
+    headline: `Friction concentrates in ${topNames.length} of ${populatedSectors} ${nounPlural}.`,
+    body: `${sharePct}% of the ${totalFlags.toLocaleString()} flagged pairs land on ${list}. Click a row for the underlying pairs.`,
+  };
 }
 
 function formatList(items: string[]): string {
@@ -361,9 +362,9 @@ function formatList(items: string[]): string {
   return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
 }
 
-const DOT_TENSION = "#dc2626"; // red, flagged
-const DOT_ALIGN = "#196127"; // green, high
-const DOT_EMPTY = "#e5e7eb"; // gray-200 — bar track
+const DOT_TENSION = "#dc2626";
+const DOT_ALIGN = "#196127";
+const DOT_EMPTY = "#e5e7eb";
 
 function SectorRow({
   row,
@@ -423,19 +424,6 @@ function SectorRow({
   );
 }
 
-/**
- * Replaces the 5-dot capped indicator with a continuous proportional bar.
- * Width = count / columnMax. The column max is computed across the
- * visible sectors per column so aligned and flagged each have their own
- * dynamic range, otherwise a country with high alignment counts (the
- * common case) would visually flatten the flagged column to nothing.
- *
- * Per round-2 feedback: a sector with 2 flagged pairs and one with 500
- * looked identical under the 5-dot scheme because non-zero counts
- * collapsed to "at least one filled dot". The bar scales linearly so the
- * difference reads at a glance; the printed count below stays for the
- * exact number.
- */
 function SeverityBar({
   color,
   count,
@@ -446,8 +434,6 @@ function SeverityBar({
   max: number;
 }) {
   const fillPct = max > 0 ? Math.min(100, (count / max) * 100) : 0;
-  // Min visible width when count > 0 so a single-pair sector still draws
-  // something distinguishable from an empty sector.
   const displayPct = count > 0 ? Math.max(fillPct, 4) : 0;
   return (
     <div className="flex flex-col items-start gap-1 w-full">

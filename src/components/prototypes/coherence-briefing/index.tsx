@@ -3,19 +3,22 @@
 /**
  * CoherenceBriefing — findings-first home page.
  *
- * One scrolled page with four sections (Direction, Sectors, Misalignments,
- * Explore). The wheel sits in a sticky right column and reacts to the
- * section in the viewport via IntersectionObserver. The user can scroll, hop
- * with the jump nav, or interact in the Explore section.
+ * Scrollable slide-sections plus the Explore + chat finale. Each finding
+ * slide answers one of the recurring policymaker questions:
  *
- * Per-section wheel defaults:
- *   direction      → groupBy doc, focus anchor doc, filter all
- *   sectors        → groupBy sector, focus top-flagged sector, filter tensions
- *   misalignments  → groupBy doc, focus most-flagged doc, filter tensions
- *   explore        → user controls everything
+ *   01 direction      — Are policies pulling the same direction?
+ *   02 doc-focus      — How does one document sit against the rest?
+ *   03 doc-pairs      — Which documents pull with which (the gaps)?
+ *   04 friction-types — What kind of friction (goal / resource / delivery)?
+ *   05 sectors        — Where does the friction concentrate (by theme)?
+ *   06 where-to-focus — A few contested targets or many — and which?
+ *   07 explore        — Free interaction + chat for everything else.
  *
- * Drill-downs (primer card, sector card, fault line row) open side drawers.
- * The deck never advances.
+ * Each section sits inside SlideFrame (eyebrow + serif headline + body
+ * + optional evidence/disclosure). Headlines carry the finding; the
+ * evidence layer carries the substance; drawers carry the full depth.
+ * The right column shows the wheel on every slide except doc-pairs, which
+ * swaps to the doc-coherence matrix, synced with the ranked list on the left.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -25,16 +28,32 @@ import {
   SectorsSection,
 } from "./sections/sectors";
 import {
-  MISALIGNMENTS_SECTION_ID,
-  RelationshipsSection,
-  type ThemeTypeFilter,
-} from "./sections/relationships";
+  DIRECTION_SECTION_ID,
+  DirectionSection,
+} from "./sections/direction";
+import {
+  DOC_FOCUS_SECTION_ID,
+  DocFocusSection,
+} from "./sections/doc-focus";
+import {
+  DOC_PAIRS_SECTION_ID,
+  DocPairsSection,
+} from "./sections/doc-pairs";
+import {
+  FRICTION_TYPES_SECTION_ID,
+  FrictionTypesSection,
+} from "./sections/friction-types";
+import {
+  WHERE_TO_FOCUS_SECTION_ID,
+  WhereToFocusSection,
+} from "./sections/where-to-focus";
 import {
   EXPLORE_SECTION_ID,
   ExploreSection,
   type ExploreSectorSelection,
 } from "./sections/explore";
 import { WheelCenterpiece } from "./centerpiece/wheel";
+import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import type {
   WheelFilter,
   WheelFocus,
@@ -43,21 +62,22 @@ import type {
 } from "./centerpiece/wheel";
 import { SectorDrawer } from "./sector-drawer";
 import { PairDrawer, type PairDrawerData } from "./pair-drawer";
+import { ThemeDrawer } from "./theme-drawer";
+import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
 import {
-  buildAnchorHeadline,
   buildSectorAlignmentDensity,
   buildSectorBriefing,
   buildSectorTensionDensity,
   computeConcentrationStat,
-  findDocPairDisagreement,
+  computeTargetConcentration,
+  frictionTypeTotalsFromAlignment,
   indexSectorSyntheses,
-  parseContributingDocPair,
-  pickFaultLines,
   pickHeadlineVerdict,
   pickPrimerExamples,
+  rankTargetsByFriction,
   type FaultLine,
   type SectorAlignment,
   type SectorBriefing,
@@ -65,6 +85,7 @@ import {
 } from "@/lib/coherence-briefing";
 import type {
   AlignmentResult,
+  CorpusStoryline,
   CorpusThemes,
   CountryConfig,
   DocPairSynthesis,
@@ -79,29 +100,35 @@ import type {
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const FAULT_LINES_TO_SHOW = 6;
 /** Threshold for switching the Explore section's default grouping. */
 const SECTOR_AUTO_SWITCH_DOC_COUNT = 6;
 
 type SectionId =
-  | typeof MISALIGNMENTS_SECTION_ID
+  | typeof DIRECTION_SECTION_ID
+  | typeof DOC_FOCUS_SECTION_ID
+  | typeof DOC_PAIRS_SECTION_ID
+  | typeof FRICTION_TYPES_SECTION_ID
   | typeof SECTORS_SECTION_ID
+  | typeof WHERE_TO_FOCUS_SECTION_ID
   | typeof EXPLORE_SECTION_ID;
 
-// `MISALIGNMENTS_SECTION_ID` still resolves to the hash "misalignments"
-// for backward compatibility with existing deep-links, but after the
-// round-2 merge this section's user-facing label is "Direction" — it
-// answers the framing question "are these policies pulling the same
-// direction?".
 const SECTION_LABELS: Record<SectionId, string> = {
-  [MISALIGNMENTS_SECTION_ID]: "Direction",
+  [DIRECTION_SECTION_ID]: "Direction",
+  [DOC_FOCUS_SECTION_ID]: "Doc in focus",
+  [DOC_PAIRS_SECTION_ID]: "Doc pairs",
+  [FRICTION_TYPES_SECTION_ID]: "Friction types",
   [SECTORS_SECTION_ID]: "Sectors",
+  [WHERE_TO_FOCUS_SECTION_ID]: "Where to focus",
   [EXPLORE_SECTION_ID]: "Explore",
 };
 
 const SECTION_ORDER: SectionId[] = [
-  MISALIGNMENTS_SECTION_ID,
+  DIRECTION_SECTION_ID,
+  DOC_FOCUS_SECTION_ID,
+  DOC_PAIRS_SECTION_ID,
+  FRICTION_TYPES_SECTION_ID,
   SECTORS_SECTION_ID,
+  WHERE_TO_FOCUS_SECTION_ID,
   EXPLORE_SECTION_ID,
 ];
 
@@ -135,25 +162,37 @@ export function CoherenceBriefing({
 }: CoherenceBriefingProps) {
   // ── Derived data ────────────────────────────────────────────────
   const verdict = useMemo(() => pickHeadlineVerdict(alignment), [alignment]);
-  const faultLines = useMemo(
-    () => pickFaultLines(alignment, targets, FAULT_LINES_TO_SHOW),
-    [alignment, targets],
-  );
   const primer = useMemo(
     () => pickPrimerExamples(alignment, targets),
-    [alignment, targets],
-  );
-  const anchorHeadline = useMemo(
-    () => buildAnchorHeadline({ targets, alignment, countryConfig }),
-    [targets, alignment, countryConfig],
-  );
-  const docPairDisagreements = useMemo(
-    () => findDocPairDisagreement(alignment, targets),
     [alignment, targets],
   );
   const targetMap = useMemo(
     () => new Map(targets.map((t) => [t.id, t])),
     [targets],
+  );
+  // Policy-coherence scope is target×target. Some datasets also carry BTR/BER
+  // measure×target flagged pairs in `alignment`; drop them here so the
+  // friction-type bar and its drawer match the rest of the misalignment story
+  // (concentration, matrix, doc-pairs are all target×target) rather than
+  // reporting a larger count on one slide.
+  const policyAlignment = useMemo(
+    () =>
+      alignment.filter(
+        (a) => targetMap.has(a.targetAId) && targetMap.has(a.targetBId),
+      ),
+    [alignment, targetMap],
+  );
+  const frictionTotals = useMemo(
+    () => frictionTypeTotalsFromAlignment(policyAlignment),
+    [policyAlignment],
+  );
+  const targetConcentration = useMemo(
+    () => computeTargetConcentration(policyAlignment, targets),
+    [policyAlignment, targets],
+  );
+  const frictionHotspots = useMemo(
+    () => rankTargetsByFriction(policyAlignment, targets, 8),
+    [policyAlignment, targets],
   );
   const documentCount = useMemo(() => {
     const docs = new Set<string>();
@@ -199,9 +238,6 @@ export function CoherenceBriefing({
         })),
       });
     }
-    // Drop lenses whose category list has no matching primary classifications
-    // in the data — keeps the switcher honest about what the user can actually
-    // see.
     return candidates.filter((opt) => {
       const idSet = new Set(opt.categories.map((c) => c.id));
       return classifications.some(
@@ -221,7 +257,7 @@ export function CoherenceBriefing({
       const found = availableLenses.find((l) => l.id === activeLensId);
       if (found) return found;
     }
-    return availableLenses[0]; // GLOBE first per ordering above
+    return availableLenses[0];
   }, [availableLenses, activeLensId]);
 
   const sectorRows = useMemo<SectorTension[]>(() => {
@@ -257,10 +293,7 @@ export function CoherenceBriefing({
     [sectorSyntheses],
   );
 
-  const sectorCategories = useMemo(
-    () => lens?.categories ?? [],
-    [lens],
-  );
+  const sectorCategories = useMemo(() => lens?.categories ?? [], [lens]);
   const lensTaxonomyType = lens?.taxonomyType ?? "sector";
   const topTensionSector = useMemo(
     () => sectorRows.find((s) => s.tensionCount > 0) ?? sectorRows[0] ?? null,
@@ -273,25 +306,29 @@ export function CoherenceBriefing({
 
   // ── Drawer state ────────────────────────────────────────────────
   const [pairData, setPairData] = useState<PairDrawerData | null>(null);
+  const [flagProfile, setFlagProfile] = useState<FlagProfileSubject | null>(
+    null,
+  );
   const [sectorFocusForDrawer, setSectorFocusForDrawer] = useState<{
     categoryId: string;
     categoryName: string;
     taxonomyType: string;
   } | null>(null);
+  const [activeTheme, setActiveTheme] = useState<CorpusStoryline | null>(null);
+  /** True when ThemeDrawer was opened from Direction's "See all" trigger. */
+  const [showAllStorylines, setShowAllStorylines] = useState(false);
 
-  // Section 3 relationships state — theme filter selection + hover key
-  // for wheel highlightPair + doc-pair drawer open via discriminated union.
-  const [selectedThemeNames, setSelectedThemeNames] = useState<string[]>([]);
-  const [themeTypeFilter, setThemeTypeFilter] =
-    useState<ThemeTypeFilter>("all");
-  const [hoveredDocPairKey, setHoveredDocPairKey] = useState<string | null>(
-    null,
-  );
-
-  const toggleTheme = useCallback((name: string) => {
-    setSelectedThemeNames((prev) =>
-      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name],
-    );
+  const openThemeDrawer = useCallback((s: CorpusStoryline) => {
+    setActiveTheme(s);
+    setShowAllStorylines(false);
+  }, []);
+  const openAllStorylines = useCallback(() => {
+    setActiveTheme(null);
+    setShowAllStorylines(true);
+  }, []);
+  const closeThemeDrawer = useCallback(() => {
+    setActiveTheme(null);
+    setShowAllStorylines(false);
   }, []);
 
   const openPairFromFaultLine = useCallback((line: FaultLine) => {
@@ -324,9 +361,6 @@ export function CoherenceBriefing({
     [alignment, targetMap],
   );
 
-  // Section 3 doc-pair drawer: opens with the synthesis block + the full
-  // slice of alignment records for the doc-pair. The drawer itself decides
-  // how to render (flagged-only default + show-aligned expand).
   const openDocPairDrawer = useCallback(
     (dp: DocPairSynthesis) => {
       const matchingPairs = alignment.filter((a) => {
@@ -348,6 +382,31 @@ export function CoherenceBriefing({
       });
     },
     [alignment, targetMap],
+  );
+
+  const openDocPairByDocs = useCallback(
+    (a: PolicyDocumentType, b: PolicyDocumentType) => {
+      const dp = docPairSyntheses.find(
+        (d) =>
+          (d.doc_a === a && d.doc_b === b) || (d.doc_a === b && d.doc_b === a),
+      );
+      if (dp) {
+        openDocPairDrawer(dp);
+        return;
+      }
+      for (const al of alignment) {
+        if (al.alignment !== "flagged") continue;
+        const tA = targetMap.get(al.targetAId);
+        const tB = targetMap.get(al.targetBId);
+        if (!tA || !tB) continue;
+        const docs = new Set([tA.sourceDocument, tB.sourceDocument]);
+        if (docs.has(a) && docs.has(b)) {
+          openPairById(al.targetAId, al.targetBId);
+          return;
+        }
+      }
+    },
+    [docPairSyntheses, openDocPairDrawer, alignment, targetMap, openPairById],
   );
 
   const openSectorDrawer = useCallback(
@@ -380,7 +439,7 @@ export function CoherenceBriefing({
 
   // ── Active section + focus override (driven by IntersectionObserver) ──
   const [activeSection, setActiveSection] = useState<SectionId>(
-    MISALIGNMENTS_SECTION_ID,
+    DIRECTION_SECTION_ID,
   );
   const [focusBySection, setFocusBySection] = useState<
     Partial<Record<SectionId, WheelFocus | null>>
@@ -394,17 +453,44 @@ export function CoherenceBriefing({
   const [exploreSector, setExploreSector] =
     useState<ExploreSectorSelection | null>(null);
 
-  // Primer-card hover spotlight (lives in the merged section after R1).
+  // Primer-card hover spotlight (lives in the Direction section).
   const [primerHighlight, setPrimerHighlight] =
     useState<PrimerHighlightPair | null>(null);
-  // Section 2 row hover → wheel sector focus preview.
+  // Sectors row hover → wheel sector focus preview.
   const [sectorHoverId, setSectorHoverId] = useState<string | null>(null);
-  // Section 2 filter (exposes the wheel's filter axis to the user). Default
-  // "tensions" because the question Section 2 answers is about flagged pairs.
+  // Doc-in-Focus slide: the currently selected document. Null until the user
+  // (or the IntersectionObserver-driven default) sets one. The Direction
+  // slide no longer drives focus via hover — that interaction moved here.
+  const [selectedFocusDoc, setSelectedFocusDoc] =
+    useState<PolicyDocumentType | null>(null);
+  // Doc Pairs slide pre-selection: set by clicking a ribbon on Direction so
+  // the user lands on the matching doc-pair row instead of an arbitrary
+  // target-pair drawer.
+  const [pendingDocPair, setPendingDocPair] = useState<
+    { docA: PolicyDocumentType; docB: PolicyDocumentType } | null
+  >(null);
+  // Doc Pairs slide: shared hovered pair key linking the ranked list and the
+  // matrix — hovering a row lights the matching cell and vice versa.
+  const [hoveredDocPairKey, setHoveredDocPairKey] = useState<string | null>(
+    null,
+  );
+  // Sectors filter (exposes the wheel's filter axis to the user). Default
+  // "tensions" because the question Sectors answers is about flagged pairs.
   const [sectorFilter, setSectorFilter] = useState<WheelFilter>("tensions");
 
-  // Switching lens invalidates any stored sector focus + Explore sector
-  // selection, which carry category IDs from the previous taxonomy.
+  /**
+   * Default doc for the Doc-in-Focus slide: the country's configured
+   * anchor (Vision 2050 for Mongolia) if present, else the first
+   * available doc. Falls back to null when no docs exist (unlikely).
+   */
+  const defaultFocusDoc = useMemo<PolicyDocumentType | null>(() => {
+    const anchor = countryConfig?.anchorDocType;
+    if (anchor && availableDocs.includes(anchor)) return anchor;
+    return availableDocs[0] ?? null;
+  }, [countryConfig, availableDocs]);
+
+  const focusedDoc = selectedFocusDoc ?? defaultFocusDoc;
+
   const handleLensChange = useCallback((id: LensId) => {
     setActiveLensId(id);
     setFocusBySection((prev) => {
@@ -416,49 +502,53 @@ export function CoherenceBriefing({
     setExploreSector(null);
   }, []);
 
-  // Multi-doc ghost set derived from the selected corpus themes: union of
-  // each selected storyline's spans_documents. When empty, the wheel ghosts
-  // nothing (current behaviour). Only active in Section 3.
-  const themeGhostDocs = useMemo(() => {
-    if (!corpusThemes || selectedThemeNames.length === 0) return undefined;
-    const selected = corpusThemes.storylines.filter((s) =>
-      selectedThemeNames.includes(s.name),
-    );
-    if (selected.length === 0) return undefined;
-    const out = new Set<string>();
-    for (const s of selected) {
-      for (const d of s.spans_documents) out.add(d);
-    }
-    return out.size > 0 ? Array.from(out) : undefined;
-  }, [corpusThemes, selectedThemeNames]);
-
-  // When a doc-pair row is hovered, highlight a representative pair on the
-  // wheel by picking the first alignment record touching that doc-pair.
-  const docPairHighlightPair = useMemo(() => {
-    if (!hoveredDocPairKey) return undefined;
-    const parsed = parseContributingDocPair(hoveredDocPairKey);
-    if (!parsed) return undefined;
-    const match = alignment.find((a) => {
-      if (a.alignment === "none") return false;
-      const tA = targetMap.get(a.targetAId);
-      const tB = targetMap.get(a.targetBId);
-      if (!tA || !tB) return false;
-      return (
-        (tA.sourceDocument === parsed.a && tB.sourceDocument === parsed.b) ||
-        (tA.sourceDocument === parsed.b && tB.sourceDocument === parsed.a)
-      );
-    });
-    return match
-      ? { aId: match.targetAId, bId: match.targetBId }
-      : undefined;
-  }, [hoveredDocPairKey, alignment, targetMap]);
-
   // ── Per-section wheel defaults ──────────────────────────────────
   const wheelState: WheelState = useMemo(() => {
     const sectionFocusOverride = focusBySection[activeSection];
     const exploreAutoGroup: WheelGroupBy =
       documentCount >= SECTOR_AUTO_SWITCH_DOC_COUNT ? "sector" : "document";
     switch (activeSection) {
+      case DIRECTION_SECTION_ID: {
+        // Corpus-level backdrop. No focus, no hover state — the per-doc
+        // exploration lives on the Doc-in-Focus slide. Primer-card hover
+        // still spotlights a single pair in red.
+        return {
+          groupBy: "document",
+          focus: null,
+          filter: "all",
+          highlightPair: primerHighlight ?? undefined,
+        };
+      }
+      case DOC_FOCUS_SECTION_ID: {
+        // The wheel locks onto the selected document and renders per-peer
+        // balance bands. Centre readout is suppressed so the rim labels
+        // stay clean; the doc summary is carried in the slide's left
+        // column instead.
+        return {
+          groupBy: "document",
+          focus: focusedDoc ? { type: "doc", id: focusedDoc } : null,
+          filter: "all",
+          suppressFocusReadout: true,
+        };
+      }
+      case DOC_PAIRS_SECTION_ID: {
+        // Matrix replaces the wheel in the right column for this slide.
+        return {
+          groupBy: "document",
+          focus:
+            sectionFocusOverride === undefined ? null : sectionFocusOverride,
+          filter: "all",
+        };
+      }
+      case FRICTION_TYPES_SECTION_ID: {
+        // Filter wheel to red ribbons so it echoes the chart underneath.
+        return {
+          groupBy: "document",
+          focus:
+            sectionFocusOverride === undefined ? null : sectionFocusOverride,
+          filter: "tensions",
+        };
+      }
       case SECTORS_SECTION_ID: {
         const defaultFocus: WheelFocus = topTensionSector
           ? {
@@ -484,30 +574,14 @@ export function CoherenceBriefing({
           filter: sectorFilter,
         };
       }
-      case MISALIGNMENTS_SECTION_ID: {
-        // After the round-2 merge this is the top-of-page section: it
-        // answers "are these policies pulling the same direction?" plus
-        // the relationships drill-down. Default focus is the country's
-        // anchor doc (Vision 2050, etc.) — the doc everything is
-        // compared against — matching the verdict sentence's framing.
-        const defaultFocus: WheelFocus = anchorHeadline.isAnchored
-          ? { type: "doc", id: anchorHeadline.anchorDocType! }
-          : null;
-        // When themes are active, clear the single-doc focus so the
-        // multi-doc ghost reads as the dominant signal. Doc-pair hover
-        // and primer hover both surface as highlightPair; doc-pair takes
-        // precedence (active interaction) over the static primer.
+      case WHERE_TO_FOCUS_SECTION_ID: {
+        // Ambient red-ribbon backdrop: the slide names the hotspot targets,
+        // the wheel shows the friction they sit in.
         return {
           groupBy: "document",
           focus:
-            themeGhostDocs && themeGhostDocs.length > 0
-              ? null
-              : sectionFocusOverride === undefined
-                ? defaultFocus
-                : sectionFocusOverride,
-          filter: "all",
-          highlightPair: docPairHighlightPair ?? primerHighlight ?? undefined,
-          ghostExceptDocs: themeGhostDocs,
+            sectionFocusOverride === undefined ? null : sectionFocusOverride,
+          filter: "tensions",
         };
       }
       case EXPLORE_SECTION_ID:
@@ -537,22 +611,63 @@ export function CoherenceBriefing({
     activeSection,
     focusBySection,
     documentCount,
-    anchorHeadline.isAnchored,
-    anchorHeadline.anchorDocType,
     topTensionSector,
     lensTaxonomyType,
-    themeGhostDocs,
-    docPairHighlightPair,
     exploreFilter,
     exploreDoc,
     exploreSector,
     primerHighlight,
     sectorHoverId,
     sectorFilter,
+    focusedDoc,
   ]);
+
+  const scrollToSection = useCallback((id: SectionId) => {
+    if (typeof window === "undefined") return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const handleRibbonNavigate = useCallback(
+    (arcAId: string, arcBId: string) => {
+      // Direction-slide ribbon click → land the user on the Doc Pairs slide
+      // with the matching doc-pair pre-selected. The wheel hands us arc ids
+      // (doc ids when groupBy === "document").
+      setPendingDocPair({
+        docA: arcAId as PolicyDocumentType,
+        docB: arcBId as PolicyDocumentType,
+      });
+      scrollToSection(DOC_PAIRS_SECTION_ID);
+    },
+    [scrollToSection],
+  );
+
+  // Stable so DocPairsSection's scroll-into-view effect runs once per focused
+  // pair instead of on every parent render (an inline arrow re-fires the
+  // effect, which re-centres the row and wedges scrolling).
+  const clearPendingDocPair = useCallback(() => setPendingDocPair(null), []);
 
   const handleWheelArcClick = useCallback(
     (focus: WheelFocus) => {
+      if (activeSection === DIRECTION_SECTION_ID) {
+        // On the Direction slide, clicking a doc arc or its label
+        // jumps to the Doc-in-Focus slide with that doc selected.
+        if (focus && focus.type === "doc") {
+          setSelectedFocusDoc(focus.id);
+          scrollToSection(DOC_FOCUS_SECTION_ID);
+        }
+        return;
+      }
+      if (activeSection === DOC_FOCUS_SECTION_ID) {
+        // On the Doc-in-Focus slide, clicking an arc swaps the focused
+        // document directly (no toggle to null — the slide always needs
+        // one in focus).
+        if (focus && focus.type === "doc") {
+          setSelectedFocusDoc(focus.id);
+        }
+        return;
+      }
       if (activeSection === EXPLORE_SECTION_ID) {
         if (!focus) {
           setExploreDoc(null);
@@ -577,24 +692,25 @@ export function CoherenceBriefing({
       }
       setFocusBySection((prev) => ({ ...prev, [activeSection]: focus }));
     },
-    [activeSection, sectorCategories],
+    [activeSection, sectorCategories, scrollToSection],
   );
 
   // ── IntersectionObserver wiring ────────────────────────────────
   const sectionRefs = useRef<Record<SectionId, HTMLElement | null>>({
-    [MISALIGNMENTS_SECTION_ID]: null,
+    [DIRECTION_SECTION_ID]: null,
+    [DOC_FOCUS_SECTION_ID]: null,
+    [DOC_PAIRS_SECTION_ID]: null,
+    [FRICTION_TYPES_SECTION_ID]: null,
     [SECTORS_SECTION_ID]: null,
+    [WHERE_TO_FOCUS_SECTION_ID]: null,
     [EXPLORE_SECTION_ID]: null,
   });
 
   useEffect(() => {
-    const sections: SectionId[] = SECTION_ORDER;
     const visibility = new Map<SectionId, number>();
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          // The ref wraps the section; the `id` attribute sits on the inner
-          // <section>. Read our own data-section-id from the wrapper instead.
           const id = entry.target.getAttribute(
             "data-section-id",
           ) as SectionId | null;
@@ -603,7 +719,7 @@ export function CoherenceBriefing({
         }
         let bestId: SectionId | null = null;
         let bestRatio = -1;
-        for (const id of sections) {
+        for (const id of SECTION_ORDER) {
           const r = visibility.get(id) ?? 0;
           if (r > bestRatio) {
             bestId = id;
@@ -619,7 +735,7 @@ export function CoherenceBriefing({
         threshold: [0, 0.25, 0.5, 0.75, 1],
       },
     );
-    for (const id of sections) {
+    for (const id of SECTION_ORDER) {
       const el = sectionRefs.current[id];
       if (el) observer.observe(el);
     }
@@ -641,34 +757,68 @@ export function CoherenceBriefing({
           countryName={countryName}
           documentCount={documentCount}
         />
-        <JumpNav active={activeSection} />
+        <JumpNav active={activeSection} order={SECTION_ORDER} />
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] gap-x-10 gap-y-8 mt-8">
           {/* Content column */}
           <div className="space-y-24">
             <div
-              ref={setSectionRef(MISALIGNMENTS_SECTION_ID)}
-              data-section-id={MISALIGNMENTS_SECTION_ID}
+              ref={setSectionRef(DIRECTION_SECTION_ID)}
+              data-section-id={DIRECTION_SECTION_ID}
             >
-              <RelationshipsSection
+              <DirectionSection
                 countryName={countryName}
                 documentCount={documentCount}
-                anchor={anchorHeadline}
                 verdict={verdict}
+                concentration={targetConcentration}
                 primer={primer}
-                faultLines={faultLines}
-                docPairDisagreements={docPairDisagreements}
-                docPairSyntheses={docPairSyntheses}
-                corpusThemes={corpusThemes}
                 countryConfig={countryConfig}
+                corpusThemes={corpusThemes}
+                onOpenAllStorylines={openAllStorylines}
+                onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
-                onOpenDocPair={openDocPairDrawer}
-                selectedThemeNames={selectedThemeNames}
-                onToggleTheme={toggleTheme}
-                themeTypeFilter={themeTypeFilter}
-                onThemeTypeChange={setThemeTypeFilter}
-                onHoverDocPair={setHoveredDocPairKey}
                 onHighlightPair={setPrimerHighlight}
+              />
+            </div>
+            {focusedDoc && (
+              <div
+                ref={setSectionRef(DOC_FOCUS_SECTION_ID)}
+                data-section-id={DOC_FOCUS_SECTION_ID}
+              >
+                <DocFocusSection
+                  targets={targets}
+                  alignment={alignment}
+                  countryConfig={countryConfig}
+                  focusedDoc={focusedDoc}
+                  availableDocs={availableDocs}
+                  onSelectDoc={setSelectedFocusDoc}
+                  onOpenPair={openPairById}
+                />
+              </div>
+            )}
+            <div
+              ref={setSectionRef(DOC_PAIRS_SECTION_ID)}
+              data-section-id={DOC_PAIRS_SECTION_ID}
+            >
+              <DocPairsSection
+                docPairSyntheses={docPairSyntheses}
+                countryConfig={countryConfig}
+                onOpenDocPair={openDocPairDrawer}
+                onHoverDocPair={setHoveredDocPairKey}
+                hoveredKey={hoveredDocPairKey}
+                focusedDocPair={pendingDocPair}
+                onClearFocusedDocPair={clearPendingDocPair}
+              />
+            </div>
+            <div
+              ref={setSectionRef(FRICTION_TYPES_SECTION_ID)}
+              data-section-id={FRICTION_TYPES_SECTION_ID}
+            >
+              <FrictionTypesSection
+                totals={frictionTotals}
+                onOpenType={(mechanism) =>
+                  setFlagProfile({ kind: "friction-type", mechanism })
+                }
               />
             </div>
             <div
@@ -680,7 +830,6 @@ export function CoherenceBriefing({
                 sectorAlignments={sectorAlignments}
                 sectorSyntheses={sectorSynthesesIndex}
                 concentration={concentration}
-                verdict={verdict}
                 lensLabel={lens?.label ?? null}
                 taxonomyType={lensTaxonomyType}
                 availableLenses={availableLenses}
@@ -688,9 +837,21 @@ export function CoherenceBriefing({
                 onLensChange={handleLensChange}
                 filter={sectorFilter}
                 onFilterChange={setSectorFilter}
-                countryConfig={countryConfig}
                 onOpenSector={openSectorDrawer}
                 onHoverSector={setSectorHoverId}
+              />
+            </div>
+            <div
+              ref={setSectionRef(WHERE_TO_FOCUS_SECTION_ID)}
+              data-section-id={WHERE_TO_FOCUS_SECTION_ID}
+            >
+              <WhereToFocusSection
+                hotspots={frictionHotspots}
+                concentration={targetConcentration}
+                countryConfig={countryConfig}
+                onOpenTarget={(target) =>
+                  setFlagProfile({ kind: "target", target })
+                }
               />
             </div>
             <div
@@ -707,6 +868,9 @@ export function CoherenceBriefing({
                 availableDocs={availableDocs}
                 sectorRows={sectorRows}
                 lensTaxonomyType={lensTaxonomyType}
+                availableLenses={availableLenses}
+                activeLensId={lens?.id ?? null}
+                onLensChange={handleLensChange}
                 filter={exploreFilter}
                 onFilter={setExploreFilter}
                 activeDoc={exploreDoc}
@@ -724,30 +888,64 @@ export function CoherenceBriefing({
             </div>
           </div>
 
-          {/* Sticky wheel column */}
+          {/* Sticky visual column. The doc-pairs slide swaps the wheel for
+              the coherence matrix (synced with the ranked list on the left);
+              where-to-focus swaps in the concentration waffle; every other
+              slide shows the wheel. */}
           <aside className="hidden lg:block">
-            <div className="sticky top-24">
+            <div className="sticky top-[124px]">
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2 text-center">
                 {SECTION_LABELS[activeSection]}
               </p>
-              {wheelState.groupBy === "sector" && (
-                <DocLegend
-                  docs={availableDocs}
-                  countryConfig={countryConfig}
-                />
+              {activeSection === DOC_PAIRS_SECTION_ID ? (
+                <div className="flex justify-center">
+                  <DocCoherenceMatrix
+                    targets={targets}
+                    alignment={alignment}
+                    countryConfig={countryConfig}
+                    onCellClick={openDocPairByDocs}
+                    highlightedKey={hoveredDocPairKey}
+                    onHoverPair={setHoveredDocPairKey}
+                  />
+                </div>
+              ) : (
+                <>
+                  {wheelState.groupBy === "sector" && (
+                    <DocLegend
+                      docs={availableDocs}
+                      countryConfig={countryConfig}
+                    />
+                  )}
+                  <WheelCenterpiece
+                    targets={targets}
+                    alignments={alignment}
+                    classifications={classifications}
+                    countryConfig={countryConfig}
+                    state={wheelState}
+                    sectorCategories={sectorCategories}
+                    sectorTaxonomyType={lensTaxonomyType}
+                    onArcClick={handleWheelArcClick}
+                    onPairClick={
+                      activeSection === DIRECTION_SECTION_ID ||
+                      activeSection === DOC_FOCUS_SECTION_ID
+                        ? undefined
+                        : openPairById
+                    }
+                    onRibbonNavigate={
+                      activeSection === DIRECTION_SECTION_ID
+                        ? handleRibbonNavigate
+                        : activeSection === DOC_FOCUS_SECTION_ID
+                          ? (a, b) =>
+                              openDocPairByDocs(
+                                a as PolicyDocumentType,
+                                b as PolicyDocumentType,
+                              )
+                          : undefined
+                    }
+                  />
+                  <WheelLegend />
+                </>
               )}
-              <WheelCenterpiece
-                targets={targets}
-                alignments={alignment}
-                classifications={classifications}
-                countryConfig={countryConfig}
-                state={wheelState}
-                sectorCategories={sectorCategories}
-                sectorTaxonomyType={lensTaxonomyType}
-                onArcClick={handleWheelArcClick}
-                onPairClick={openPairById}
-              />
-              <WheelLegend />
             </div>
           </aside>
         </div>
@@ -758,6 +956,55 @@ export function CoherenceBriefing({
         sectorSynthesis={drawerSectorSynthesis}
         countryConfig={countryConfig}
         onClose={() => setSectorFocusForDrawer(null)}
+        onOpenTargetPair={(pair, tA, tB) => {
+          setSectorFocusForDrawer(null);
+          setPairData({
+            mode: "target-pair",
+            pair,
+            targetA: tA,
+            targetB: tB,
+          });
+        }}
+      />
+      <ThemeDrawer
+        theme={activeTheme}
+        allStorylines={
+          showAllStorylines && corpusThemes
+            ? corpusThemes.storylines
+            : null
+        }
+        alignment={alignment}
+        targetsById={targetMap}
+        countryConfig={countryConfig}
+        onClose={closeThemeDrawer}
+        onOpenSingleTheme={openThemeDrawer}
+        onOpenTargetPair={(pair, tA, tB) => {
+          setActiveTheme(null);
+          setShowAllStorylines(false);
+          setPairData({
+            mode: "target-pair",
+            pair,
+            targetA: tA,
+            targetB: tB,
+          });
+        }}
+      />
+      <FlagProfileDrawer
+        subject={flagProfile}
+        alignment={policyAlignment}
+        targets={targets}
+        classifications={classifications}
+        categories={sectorCategories}
+        taxonomyType={lensTaxonomyType}
+        lensLabel={lens?.label ?? null}
+        totalFlagged={frictionTotals.total}
+        countryConfig={countryConfig}
+        onClose={() => setFlagProfile(null)}
+        onOpenTarget={(target) => setFlagProfile({ kind: "target", target })}
+        onOpenPair={(a, b) => {
+          setFlagProfile(null);
+          openPairById(a, b);
+        }}
       />
       <PairDrawer
         data={pairData}
@@ -797,11 +1044,17 @@ function BriefingHeader({
   );
 }
 
-function JumpNav({ active }: { active: SectionId }) {
+function JumpNav({
+  active,
+  order,
+}: {
+  active: SectionId;
+  order: SectionId[];
+}) {
   return (
-    <nav className="sticky top-0 z-10 -mx-6 px-6 py-3 bg-[#fbfaf7]/85 backdrop-blur border-b border-gray-200/70">
+    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#fbfaf7]/85 backdrop-blur border-b border-gray-200/70">
       <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
-        {SECTION_ORDER.map((id, i) => {
+        {order.map((id, i) => {
           const isActive = active === id;
           return (
             <li key={id} className="flex items-center">
@@ -819,7 +1072,7 @@ function JumpNav({ active }: { active: SectionId }) {
                 </span>
                 {SECTION_LABELS[id]}
               </a>
-              {i < SECTION_ORDER.length - 1 && (
+              {i < order.length - 1 && (
                 <span
                   aria-hidden="true"
                   className="text-[var(--undp-gray)]/40 px-1"
@@ -912,5 +1165,4 @@ function FooterLink({ countryId }: { countryId?: string }) {
   );
 }
 
-// Re-export shared types for prototypes-client.
 export type { WheelState } from "./centerpiece/wheel";

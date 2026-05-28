@@ -23,13 +23,17 @@ import {
   getDocFullLabel,
 } from "@/lib/utils";
 import { isContradiction } from "@/types";
+import { SubFieldChip } from "./theme-drawer";
 import type {
+  AlignmentConfidence,
   AlignmentLevel,
   AlignmentResult,
   CountryConfig,
   DocPairSynthesis,
   Target,
 } from "@/types";
+
+const EXAMPLES_DEFAULT_COUNT = 3;
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
@@ -203,18 +207,6 @@ function TargetPairBody({
             {pair.mechanism && (
               <span className="block text-xs font-normal text-[var(--undp-gray)] mt-1">
                 {CONTRADICTION_TYPE_LABELS[pair.mechanism]}
-                {pair.manageability && (
-                  <>
-                    {" · "}
-                    {pair.manageability === "fundamental" ? "Fundamental" : "Manageable"}
-                  </>
-                )}
-                {pair.confidence && (
-                  <>
-                    {" · "}
-                    Confidence: {pair.confidence}
-                  </>
-                )}
               </span>
             )}
           </h3>
@@ -345,7 +337,12 @@ function DocPairBody({
   const labelAFull = getDocFullLabel(countryConfig, docPair.doc_a);
   const labelBFull = getDocFullLabel(countryConfig, docPair.doc_b);
 
-  // Separate flagged from aligned for the default flagged-only view.
+  // Round-2 restructure: flagged + aligned pairs are split into example
+  // sub-lists that live BENEATH each synthesis panel rather than as a
+  // separate target-pair list further down. Flagged side is sorted by
+  // review priority (fundamental first → confidence desc) so the most
+  // decision-relevant pairs surface first. Aligned side is sorted by
+  // alignment strength (high → medium → low).
   const { flaggedPairs, alignedPairs } = useMemo(() => {
     const flagged: AlignmentResult[] = [];
     const aligned: AlignmentResult[] = [];
@@ -354,60 +351,74 @@ function DocPairBody({
       if (isContradiction(p.alignment)) flagged.push(p);
       else aligned.push(p);
     }
-    flagged.sort((x, y) => SEVERITY_RANK[x.alignment] - SEVERITY_RANK[y.alignment]);
+    flagged.sort(compareFlaggedByReviewPriority);
     aligned.sort((x, y) => SEVERITY_RANK[x.alignment] - SEVERITY_RANK[y.alignment]);
     return { flaggedPairs: flagged, alignedPairs: aligned };
   }, [pairs]);
-
-  const [showAligned, setShowAligned] = useState(false);
 
   const failed = docPair.synthesis_error !== null;
 
   return (
     <>
-      <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
-        <div className="min-w-0">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-            Document pair
-          </p>
-          <h3
-            className="text-xl text-[var(--undp-black)] font-medium leading-tight truncate"
-            style={{ fontFamily: HEADLINE_SERIF }}
-          >
-            {labelAFull} ↔ {labelBFull}
-          </h3>
-          {!failed && (
-            <p
-              className="mt-1 text-[13px] text-[var(--undp-gray)] leading-snug"
+      <header className="sticky top-0 z-10 px-6 py-4 bg-white/90 backdrop-blur border-b border-gray-200">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+              Document pair
+            </p>
+            <h3
+              className="text-xl text-[var(--undp-black)] font-medium leading-tight truncate"
               style={{ fontFamily: HEADLINE_SERIF }}
             >
-              {docPair.synthesis.storyline_name}
-            </p>
-          )}
+              {labelAFull} ↔ {labelBFull}
+            </h3>
+            {!failed && (
+              <p
+                className="mt-1 text-[13px] text-[var(--undp-gray)] leading-snug"
+                style={{ fontFamily: HEADLINE_SERIF }}
+              >
+                {docPair.synthesis.storyline_name}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
+          >
+            ×
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
-        >
-          ×
-        </button>
       </header>
 
       <div className="px-6 py-6 space-y-6">
         {!failed && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <SynthesisPanel
+            <SynthesisPanelWithExamples
               label="Reinforces"
               dotColor={ALIGNED_DOT_COLOR}
               body={docPair.synthesis.reinforce}
+              examples={alignedPairs}
+              emptyText="No medium-or-strong aligned pairs in this doc-pair."
+              variant="aligned"
+              targetsById={targetsById}
+              countryConfig={countryConfig}
+              onOpenTargetPair={onOpenTargetPair}
+              totalCount={alignedPairs.length}
             />
-            <SynthesisPanel
+            <SynthesisPanelWithExamples
               label="Flagged for review"
               dotColor={FRICTION_DOT_COLOR}
               dashed
               body={docPair.synthesis.clash}
+              examples={flaggedPairs}
+              emptyText="No flagged pairs in this doc-pair."
+              variant="flagged"
+              targetsById={targetsById}
+              countryConfig={countryConfig}
+              onOpenTargetPair={onOpenTargetPair}
+              totalCount={flaggedPairs.length}
             />
           </div>
         )}
@@ -426,31 +437,85 @@ function DocPairBody({
           {AI_DISCLAIMER}
         </p>
 
-        <TargetPairList
-          flaggedPairs={flaggedPairs}
-          alignedPairs={alignedPairs}
-          showAligned={showAligned}
-          onToggleAligned={() => setShowAligned((v) => !v)}
-          targetsById={targetsById}
-          countryConfig={countryConfig}
-          onOpenTargetPair={onOpenTargetPair}
-        />
+        {failed && (
+          // Synthesis failed → fall back to the legacy flat list so the
+          // drawer still shows raw target-pair data.
+          <FallbackTargetPairList
+            flaggedPairs={flaggedPairs}
+            alignedPairs={alignedPairs}
+            targetsById={targetsById}
+            countryConfig={countryConfig}
+            onOpenTargetPair={onOpenTargetPair}
+          />
+        )}
       </div>
     </>
   );
 }
 
-function SynthesisPanel({
+const CONFIDENCE_RANK: Record<AlignmentConfidence, number> = {
+  high: 0,
+  medium: 1,
+  low: 2,
+};
+const MANAGEABILITY_RANK = {
+  fundamental: 0,
+  manageable: 1,
+} as const;
+
+function compareFlaggedByReviewPriority(
+  x: AlignmentResult,
+  y: AlignmentResult,
+): number {
+  // Fundamental first → confidence desc (high > medium > low) → SEVERITY
+  // fallback so the order is deterministic.
+  const mx = x.manageability;
+  const my = y.manageability;
+  const mScore =
+    (mx ? MANAGEABILITY_RANK[mx] : 9) - (my ? MANAGEABILITY_RANK[my] : 9);
+  if (mScore !== 0) return mScore;
+  const cx = x.confidence;
+  const cy = y.confidence;
+  const cScore =
+    (cx ? CONFIDENCE_RANK[cx] : 9) - (cy ? CONFIDENCE_RANK[cy] : 9);
+  if (cScore !== 0) return cScore;
+  return SEVERITY_RANK[x.alignment] - SEVERITY_RANK[y.alignment];
+}
+
+function SynthesisPanelWithExamples({
   label,
   dotColor,
   dashed,
   body,
+  examples,
+  emptyText,
+  variant,
+  targetsById,
+  countryConfig,
+  onOpenTargetPair,
+  totalCount,
 }: {
   label: string;
   dotColor: string;
   dashed?: boolean;
   body: string;
+  examples: AlignmentResult[];
+  emptyText: string;
+  variant: "aligned" | "flagged";
+  targetsById: Map<string, Target>;
+  countryConfig: CountryConfig | null;
+  onOpenTargetPair: (
+    pair: AlignmentResult,
+    targetA: Target,
+    targetB: Target,
+  ) => void;
+  totalCount: number;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded
+    ? examples
+    : examples.slice(0, EXAMPLES_DEFAULT_COUNT);
+  const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
   return (
     <div className="rounded-md border border-gray-200 bg-white p-4">
       <div className="flex items-center gap-2 mb-2">
@@ -467,28 +532,86 @@ function SynthesisPanel({
           {label}
         </p>
       </div>
-      <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
+      <p className="text-[13px] text-[var(--undp-black)] leading-relaxed mb-4">
         {body}
       </p>
+      <div className="mt-4 border-t border-gray-200 pt-3">
+        <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+          {variant === "flagged"
+            ? `Examples flagged for review (${examples.length.toLocaleString()}${
+                examples.length !== totalCount
+                  ? ` of ${totalCount.toLocaleString()}`
+                  : ""
+              })`
+            : `Examples reinforcing this (${examples.length.toLocaleString()})`}
+        </p>
+        {visible.length === 0 ? (
+          <p className="text-[11px] italic text-[var(--undp-gray)]">
+            {emptyText}
+          </p>
+        ) : (
+          <ol className="space-y-2">
+            {visible.map((p) => {
+              const tA = targetsById.get(p.targetAId);
+              const tB = targetsById.get(p.targetBId);
+              if (!tA || !tB) return null;
+              return (
+                <TargetPairRow
+                  key={`${p.targetAId}__${p.targetBId}`}
+                  pair={p}
+                  targetA={tA}
+                  targetB={tB}
+                  countryConfig={countryConfig}
+                  onOpen={() => onOpenTargetPair(p, tA, tB)}
+                />
+              );
+            })}
+          </ol>
+        )}
+        {remaining > 0 && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+          >
+            {expanded
+              ? "Show fewer"
+              : `Show ${remaining.toLocaleString()} more`}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
 
 function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
+  // v2.1 canonical mechanism keys + legacy v1 fallback. Older synthesis
+  // JSON written before the v2 migration emits `implementation_tension`
+  // and `scale_scope_mismatch`; fold both into delivery_friction so the
+  // subtype counts still total correctly.
+  const ct = docPair.contradiction_types;
+  const merged = {
+    goal_conflict: ct.goal_conflict ?? 0,
+    resource_competition: ct.resource_competition ?? 0,
+    delivery_friction:
+      (ct.delivery_friction ?? 0) +
+      (ct.implementation_tension ?? 0) +
+      (ct.scale_scope_mismatch ?? 0),
+  };
   const parts: string[] = [];
-  if (docPair.contradiction_types.implementation_tension) {
+  if (merged.goal_conflict) {
     parts.push(
-      `implementation tension (${docPair.contradiction_types.implementation_tension.toLocaleString()})`,
+      `${CONTRADICTION_TYPE_LABELS.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
     );
   }
-  if (docPair.contradiction_types.resource_competition) {
+  if (merged.resource_competition) {
     parts.push(
-      `resource competition (${docPair.contradiction_types.resource_competition.toLocaleString()})`,
+      `${CONTRADICTION_TYPE_LABELS.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
     );
   }
-  if (docPair.contradiction_types.goal_conflict) {
+  if (merged.delivery_friction) {
     parts.push(
-      `goal conflict (${docPair.contradiction_types.goal_conflict.toLocaleString()})`,
+      `${CONTRADICTION_TYPE_LABELS.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
     );
   }
   return (
@@ -514,19 +637,15 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
   );
 }
 
-function TargetPairList({
+function FallbackTargetPairList({
   flaggedPairs,
   alignedPairs,
-  showAligned,
-  onToggleAligned,
   targetsById,
   countryConfig,
   onOpenTargetPair,
 }: {
   flaggedPairs: AlignmentResult[];
   alignedPairs: AlignmentResult[];
-  showAligned: boolean;
-  onToggleAligned: () => void;
   targetsById: Map<string, Target>;
   countryConfig: CountryConfig | null;
   onOpenTargetPair: (
@@ -535,6 +654,7 @@ function TargetPairList({
     targetB: Target,
   ) => void;
 }) {
+  const [showAligned, setShowAligned] = useState(false);
   const visible = showAligned
     ? [...flaggedPairs, ...alignedPairs]
     : flaggedPairs;
@@ -543,17 +663,17 @@ function TargetPairList({
       <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
         <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
           {showAligned
-            ? `Target pairs (${(flaggedPairs.length + alignedPairs.length).toLocaleString()})`
+            ? `All target pairs (${(flaggedPairs.length + alignedPairs.length).toLocaleString()})`
             : `Flagged target pairs (${flaggedPairs.length.toLocaleString()})`}
         </p>
         {alignedPairs.length > 0 && (
           <button
             type="button"
-            onClick={onToggleAligned}
+            onClick={() => setShowAligned((v) => !v)}
             className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
           >
             {showAligned
-              ? `Show flagged only`
+              ? "Show flagged only"
               : `Show aligned (${alignedPairs.length.toLocaleString()})`}
           </button>
         )}
@@ -601,14 +721,15 @@ function TargetPairRow({
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
+  const isFlagged = pair.alignment === "flagged";
   return (
     <li>
       <button
         type="button"
         onClick={onOpen}
-        className="w-full text-left py-2.5 px-1 hover:bg-gray-50 rounded transition-colors"
+        className="w-full text-left py-2 px-2 hover:bg-gray-50 rounded transition-colors"
       >
-        <div className="flex items-center gap-2 mb-1 flex-wrap">
+        <div className="flex items-center gap-1.5 mb-1 flex-wrap">
           <span
             className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
             style={{
@@ -619,16 +740,19 @@ function TargetPairRow({
           >
             {ALIGNMENT_LABELS[pair.alignment]}
           </span>
-          <span className="text-[10px] text-[var(--undp-gray)]">
-            {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
-          </span>
+          {isFlagged && pair.mechanism && (
+            <SubFieldChip variant="mechanism" value={pair.mechanism} />
+          )}
         </div>
+        <p className="text-[10px] text-[var(--undp-gray)] mb-0.5">
+          {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
+        </p>
         {pair.description && (
           <p
             className="text-[12px] text-[var(--undp-black)] leading-snug italic overflow-hidden"
             style={{
               display: "-webkit-box",
-              WebkitLineClamp: 1,
+              WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
             }}
           >

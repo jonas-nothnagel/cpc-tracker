@@ -1,0 +1,67 @@
+"use client";
+
+/**
+ * SlideFrame — shared layout wrapper for every coherence-briefing slide.
+ *
+ * Enforces the deck-density template the prototype was retreated toward in
+ * round 3: eyebrow + serif headline that IS the finding + a short body +
+ * one optional evidence card + one optional disclosure trigger. Section
+ * components compose their own evidence/disclosure children; the frame
+ * just keeps the rhythm consistent so the scroll page reads like a deck
+ * rather than a wall of prose.
+ *
+ * Body copy budget: aim for <= 35 words. Anything longer belongs in a
+ * drawer reached via the disclosure slot.
+ */
+
+import { type ReactNode } from "react";
+
+const HEADLINE_SERIF =
+  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
+
+export function SlideFrame({
+  id,
+  eyebrow,
+  headline,
+  body,
+  controls,
+  evidence,
+  disclosure,
+}: {
+  id: string;
+  eyebrow: string;
+  headline: ReactNode;
+  body?: ReactNode;
+  controls?: ReactNode;
+  evidence?: ReactNode;
+  disclosure?: ReactNode;
+}) {
+  return (
+    <section
+      id={id}
+      className="scroll-mt-24 pt-2"
+      aria-labelledby={`${id}-heading`}
+    >
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
+        {eyebrow}
+      </p>
+      <h2
+        id={`${id}-heading`}
+        className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-4"
+        style={{ fontFamily: HEADLINE_SERIF }}
+      >
+        {headline}
+      </h2>
+      {body && (
+        <p className="text-[15px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-4">
+          {body}
+        </p>
+      )}
+      {controls && <div className="mb-6">{controls}</div>}
+      {evidence && <div className="mb-6">{evidence}</div>}
+      {disclosure && (
+        <div className="mt-6 border-t border-gray-200 pt-4">{disclosure}</div>
+      )}
+    </section>
+  );
+}

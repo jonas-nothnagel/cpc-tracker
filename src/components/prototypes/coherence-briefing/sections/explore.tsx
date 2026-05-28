@@ -12,6 +12,7 @@
 import { ChatPanel } from "../chat-panel";
 import { type SectorTension } from "@/lib/coherence-briefing";
 import { getDocMediumLabel } from "@/lib/utils";
+import type { LensId, LensOption } from "../lens";
 import type {
   AlignmentResult,
   CountryConfig,
@@ -45,6 +46,9 @@ export function ExploreSection({
   availableDocs,
   sectorRows,
   lensTaxonomyType,
+  availableLenses,
+  activeLensId,
+  onLensChange,
   filter,
   onFilter,
   activeDoc,
@@ -62,6 +66,9 @@ export function ExploreSection({
   availableDocs: PolicyDocumentType[];
   sectorRows: SectorTension[];
   lensTaxonomyType: string;
+  availableLenses: LensOption[];
+  activeLensId: LensId | null;
+  onLensChange: (id: LensId) => void;
   filter: ExploreFilter;
   onFilter: (f: ExploreFilter) => void;
   activeDoc: PolicyDocumentType | null;
@@ -85,15 +92,22 @@ export function ExploreSection({
         className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-4"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
-        Dig into the corpus on your own terms.
+        Drill into the corpus on your own terms.
       </h2>
       <p className="text-[14px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-6">
-        Focus a document, pick a sector, or change the filter. The wheel
-        follows what you choose. Anything the chips cannot answer, ask in
-        the chat.
+        Switch the lens, focus a document, pick a sector, or change the
+        filter. The wheel follows what you choose. Anything the chips cannot
+        answer, ask in the chat.
       </p>
 
       <div className="space-y-3 mb-6">
+        {availableLenses.length > 1 && (
+          <LensChipRow
+            availableLenses={availableLenses}
+            activeLensId={activeLensId}
+            onLensChange={onLensChange}
+          />
+        )}
         <FilterRow filter={filter} onFilter={onFilter} />
         {availableDocs.length > 0 && (
           <DocChipRow
@@ -139,6 +153,41 @@ export function ExploreSection({
         />
       </div>
     </section>
+  );
+}
+
+function LensChipRow({
+  availableLenses,
+  activeLensId,
+  onLensChange,
+}: {
+  availableLenses: LensOption[];
+  activeLensId: LensId | null;
+  onLensChange: (id: LensId) => void;
+}) {
+  const activeLens = activeLensId ?? availableLenses[0]?.id;
+  return (
+    <div>
+      <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
+        Group by
+      </p>
+      <div className="flex flex-wrap gap-1.5">
+        {availableLenses.map((opt) => {
+          const isActive = activeLens === opt.id;
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => onLensChange(opt.id)}
+              aria-pressed={isActive}
+              className={chip(isActive)}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

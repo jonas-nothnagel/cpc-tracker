@@ -15,10 +15,11 @@
  */
 
 import { isContradiction } from "@/types";
-import { getDocMediumLabel } from "@/lib/utils";
+import { getDocColor, getDocMediumLabel } from "@/lib/utils";
 import { aggregateAnchorCoverage } from "@/lib/vision-anchor";
 import type {
   AlignmentLevel,
+  AlignmentMechanism,
   AlignmentResult,
   CorpusStoryline,
   CorpusThemes,
@@ -519,9 +520,18 @@ export function buildAnchorHeadline(args: {
   targets: Target[];
   alignment: AlignmentResult[];
   countryConfig: CountryConfig | null;
+  /**
+   * Optional override. When set, builds the headline against this doc
+   * instead of the country's configured anchor. Used by the merged
+   * top section so users can interactively pick which doc to focus
+   * the verdict sentence on. When null/undefined the country's
+   * configured anchorDocType is used (legacy behaviour).
+   */
+  anchorDocTypeOverride?: string | null;
 }): AnchorHeadline {
-  const { targets, alignment, countryConfig } = args;
-  const anchorDocType = countryConfig?.anchorDocType ?? null;
+  const { targets, alignment, countryConfig, anchorDocTypeOverride } = args;
+  const anchorDocType =
+    anchorDocTypeOverride ?? countryConfig?.anchorDocType ?? null;
   const empty: AnchorHeadline = {
     isAnchored: false,
     anchorDocType: anchorDocType,
@@ -770,6 +780,116 @@ export function findDocPairDisagreement(
   return out;
 }
 
+// ─── Document coherence graph (Coherence Field centerpiece) ─────────
+
+export interface DocCoherenceNode {
+  docType: PolicyDocumentType;
+  /** mediumLabel for the doc (e.g. "Vision 2050"). */
+  label: string;
+  /** Doc colour from the country config (or neutral fallback). */
+  color: string;
+  /** Targets sourced from this document. Drives a label/tooltip, never node size. */
+  targetCount: number;
+}
+
+export interface DocCoherenceEdge {
+  /** Lexicographically-ordered doc pair so (A,B) and (B,A) collapse. */
+  a: PolicyDocumentType;
+  b: PolicyDocumentType;
+  /** Cross-doc target-pairs at medium or high. */
+  alignedCount: number;
+  /** Cross-doc target-pairs on the flagged (negative) side. */
+  flaggedCount: number;
+  /** Cross-doc target-pairs at any non-`none` level (the denominator). */
+  totalScored: number;
+  /** alignedCount / totalScored, in [0,1]. Drives proximity (attraction). */
+  alignedShare: number;
+  /** flaggedCount / totalScored, in [0,1]. Drives separation + filament weight. */
+  flaggedShare: number;
+}
+
+/**
+ * Document-level coherence graph for the Coherence Field landing viz.
+ *
+ * Nodes: one per source document present in `targets`. Edges: one per ordered
+ * pair of documents that share at least one scored (non-`none`) cross-document
+ * target-pair. The shares are normalised by `totalScored` so the field reads
+ * honestly within a single country regardless of corpus size — a 2%-flagged
+ * corpus settles calm, a 13%-flagged corpus visibly strains — without any
+ * cross-country comparison. Same-document and `none` pairs are excluded.
+ *
+ * Mirrors `findDocPairDisagreement` but carries both the aligned and flagged
+ * sides so the layout can use alignment as attraction and flag-rate as both
+ * separation and filament weight.
+ */
+export function buildDocCoherenceGraph(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  countryConfig: CountryConfig | null,
+): { nodes: DocCoherenceNode[]; edges: DocCoherenceEdge[] } {
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+
+  // Nodes: one per document, counted from the targets.
+  const docCounts = new Map<PolicyDocumentType, number>();
+  for (const t of targets) {
+    docCounts.set(t.sourceDocument, (docCounts.get(t.sourceDocument) ?? 0) + 1);
+  }
+  const nodes: DocCoherenceNode[] = [];
+  for (const [docType, targetCount] of docCounts) {
+    nodes.push({
+      docType,
+      label: getDocMediumLabel(countryConfig, docType),
+      color: getDocColor(countryConfig, docType),
+      targetCount,
+    });
+  }
+
+  // Edges: cross-doc pairs only, keyed lexicographically so reversed authoring
+  // folds into one edge.
+  const edgeMap = new Map<string, DocCoherenceEdge>();
+  for (const al of alignment) {
+    if (al.alignment === "none") continue;
+    const tA = targetMap.get(al.targetAId);
+    const tB = targetMap.get(al.targetBId);
+    if (!tA || !tB) continue;
+    if (tA.sourceDocument === tB.sourceDocument) continue;
+    const [a, b] =
+      tA.sourceDocument < tB.sourceDocument
+        ? [tA.sourceDocument, tB.sourceDocument]
+        : [tB.sourceDocument, tA.sourceDocument];
+    const key = `${a}__${b}`;
+    let edge = edgeMap.get(key);
+    if (!edge) {
+      edge = {
+        a,
+        b,
+        alignedCount: 0,
+        flaggedCount: 0,
+        totalScored: 0,
+        alignedShare: 0,
+        flaggedShare: 0,
+      };
+      edgeMap.set(key, edge);
+    }
+    edge.totalScored += 1;
+    if (isContradiction(al.alignment)) {
+      edge.flaggedCount += 1;
+    } else if (al.alignment === "high" || al.alignment === "medium") {
+      edge.alignedCount += 1;
+    }
+  }
+
+  const edges: DocCoherenceEdge[] = [];
+  for (const edge of edgeMap.values()) {
+    edge.alignedShare =
+      edge.totalScored > 0 ? edge.alignedCount / edge.totalScored : 0;
+    edge.flaggedShare =
+      edge.totalScored > 0 ? edge.flaggedCount / edge.totalScored : 0;
+    edges.push(edge);
+  }
+  return { nodes, edges };
+}
+
 // ─── Most-flagged document (Section 3 wheel focus) ──────────────────
 
 export interface FlaggedDocStat {
@@ -975,4 +1095,488 @@ export function getStorylineDocPairKeys(s: CorpusStoryline): Set<string> {
     out.add(getDocPairKey(p.a, p.b));
   }
   return out;
+}
+
+// ─── Contradiction-type breakdown (Friction-types slide) ─────────────
+
+export type FrictionType =
+  | "goal_conflict"
+  | "resource_competition"
+  | "delivery_friction";
+
+export interface ContradictionTotals {
+  goal_conflict: number;
+  resource_competition: number;
+  delivery_friction: number;
+}
+
+export interface ContradictionPerDocPair {
+  docA: string;
+  docB: string;
+  labelA: string;
+  labelB: string;
+  totals: ContradictionTotals;
+  total: number;
+  storylineName: string | null;
+}
+
+export interface ContradictionBreakdown {
+  corpusTotals: ContradictionTotals;
+  perDocPair: ContradictionPerDocPair[];
+  totalFlagged: number;
+  /** Type with the highest corpus-wide count, or null when no flagged pairs. */
+  dominantType: FrictionType | null;
+}
+
+/**
+ * Rolls the per-doc-pair contradiction_types blocks up into a corpus total and
+ * a sortable per-pair list. Legacy v1 keys (implementation_tension,
+ * scale_scope_mismatch) fold into delivery_friction so older synthesis JSON
+ * still parses correctly.
+ *
+ * topN caps the per-pair list; the corpus totals always cover all pairs.
+ */
+export function buildContradictionBreakdown(
+  syntheses: DocPairSynthesis[],
+  opts: { topN?: number } = {},
+): ContradictionBreakdown {
+  const corpusTotals: ContradictionTotals = {
+    goal_conflict: 0,
+    resource_competition: 0,
+    delivery_friction: 0,
+  };
+  const perDocPair: ContradictionPerDocPair[] = [];
+  for (const dp of syntheses) {
+    const ct = dp.contradiction_types ?? {};
+    const goal = ct.goal_conflict ?? 0;
+    const resource = ct.resource_competition ?? 0;
+    const delivery =
+      (ct.delivery_friction ?? 0) +
+      (ct.implementation_tension ?? 0) +
+      (ct.scale_scope_mismatch ?? 0);
+    const totals: ContradictionTotals = {
+      goal_conflict: goal,
+      resource_competition: resource,
+      delivery_friction: delivery,
+    };
+    const total = goal + resource + delivery;
+    corpusTotals.goal_conflict += goal;
+    corpusTotals.resource_competition += resource;
+    corpusTotals.delivery_friction += delivery;
+    if (total > 0) {
+      perDocPair.push({
+        docA: dp.doc_a,
+        docB: dp.doc_b,
+        labelA: dp.label_a,
+        labelB: dp.label_b,
+        totals,
+        total,
+        storylineName:
+          dp.synthesis_error === null ? dp.synthesis.storyline_name : null,
+      });
+    }
+  }
+  perDocPair.sort((x, y) => y.total - x.total);
+  const capped =
+    opts.topN !== undefined ? perDocPair.slice(0, opts.topN) : perDocPair;
+  const totalFlagged =
+    corpusTotals.goal_conflict +
+    corpusTotals.resource_competition +
+    corpusTotals.delivery_friction;
+  let dominantType: FrictionType | null = null;
+  if (totalFlagged > 0) {
+    let max = -1;
+    for (const key of [
+      "goal_conflict",
+      "resource_competition",
+      "delivery_friction",
+    ] as const) {
+      if (corpusTotals[key] > max) {
+        max = corpusTotals[key];
+        dominantType = key;
+      }
+    }
+  }
+  return {
+    corpusTotals,
+    perDocPair: capped,
+    totalFlagged,
+    dominantType,
+  };
+}
+
+// ─── Friction-type totals from raw flags (Friction-types bar) ───────
+
+export interface FrictionTypeTotals {
+  goal_conflict: number;
+  resource_competition: number;
+  delivery_friction: number;
+  /** Sum of the three buckets (flagged pairs carrying a mechanism). */
+  total: number;
+  /** Bucket with the highest count, or null when none. */
+  dominantType: AlignmentMechanism | null;
+}
+
+/**
+ * Corpus friction-type counts derived directly from `alignment[].mechanism`
+ * (the raw flagged tags), so the Friction-types bar and the friction-type
+ * profile drawer share a single source of truth. Flagged pairs with no
+ * mechanism are excluded from the three buckets. Verified to match the
+ * synthesis-layer counts on current outputs (713 = 8 + 327 + 378 for Mongolia).
+ */
+export function frictionTypeTotalsFromAlignment(
+  alignment: AlignmentResult[],
+): FrictionTypeTotals {
+  const totals = {
+    goal_conflict: 0,
+    resource_competition: 0,
+    delivery_friction: 0,
+  };
+  for (const a of alignment) {
+    if (a.alignment !== "flagged" || !a.mechanism) continue;
+    totals[a.mechanism] += 1;
+  }
+  const total =
+    totals.goal_conflict +
+    totals.resource_competition +
+    totals.delivery_friction;
+  let dominantType: AlignmentMechanism | null = null;
+  if (total > 0) {
+    let max = -1;
+    for (const key of [
+      "goal_conflict",
+      "resource_competition",
+      "delivery_friction",
+    ] as const) {
+      if (totals[key] > max) {
+        max = totals[key];
+        dominantType = key;
+      }
+    }
+  }
+  return { ...totals, total, dominantType };
+}
+
+// ─── Per-document frictions (Doc-in-Focus) ──────────────────────────
+
+export interface DocFocusFrictions {
+  /**
+   * Flagged pairs the focused doc takes part in across documents (exactly one
+   * side sits in the focused doc, the other in a different doc). Matches the
+   * cross-document scope of `buildAnchorHeadline`'s flagged count, so the
+   * Doc-in-Focus body and this list describe the same set.
+   */
+  flaggedPairs: FaultLine[];
+  /** goal / resource / delivery split over those flagged pairs. */
+  frictionTotals: FrictionTypeTotals;
+}
+
+/**
+ * The Doc-in-Focus analogue of the corpus friction split: which flagged pairs
+ * a single document is part of, and how they break down by mechanism. Same
+ * target x target subset rules as the rest of the misalignment story (both ids
+ * must resolve; same-document and non-touching pairs are excluded). Sorted by
+ * peer document then focused-side target id so peers cluster.
+ */
+export function buildDocFocusFrictions(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  focusedDoc: string,
+): DocFocusFrictions {
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const subset: AlignmentResult[] = [];
+  const flaggedPairs: FaultLine[] = [];
+  for (const a of alignment) {
+    if (a.alignment !== "flagged") continue;
+    const tA = targetMap.get(a.targetAId);
+    const tB = targetMap.get(a.targetBId);
+    if (!tA || !tB) continue;
+    const aInDoc = tA.sourceDocument === focusedDoc;
+    const bInDoc = tB.sourceDocument === focusedDoc;
+    // Exactly one side in the focused doc → a cross-document flag.
+    if (aInDoc === bInDoc) continue;
+    subset.push(a);
+    flaggedPairs.push({ pair: a, targetA: tA, targetB: tB });
+  }
+  const peerOf = (line: FaultLine): string =>
+    line.targetA.sourceDocument === focusedDoc
+      ? line.targetB.sourceDocument
+      : line.targetA.sourceDocument;
+  flaggedPairs.sort((x, y) => {
+    const dp = peerOf(x).localeCompare(peerOf(y));
+    if (dp !== 0) return dp;
+    return x.targetA.id.localeCompare(y.targetA.id);
+  });
+  return {
+    flaggedPairs,
+    frictionTotals: frictionTypeTotalsFromAlignment(subset),
+  };
+}
+
+// ─── Target-level friction ranking + concentration (Where-to-focus) ──
+
+export interface TargetFriction {
+  target: Target;
+  /** Flagged pairs (both ids resolvable) this target appears in. */
+  flaggedPairCount: number;
+}
+
+/**
+ * Rank targets by how many flagged pairs they appear in, corpus-wide — the
+ * target-level analogue of findSectorContradictionHub with the sector scope
+ * removed. Counts only pairs where both ids resolve (orphans skipped, matching
+ * pickFaultLines). Sorted by count desc, then id asc for stability; `n` caps.
+ */
+export function rankTargetsByFriction(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  n?: number,
+): TargetFriction[] {
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const counts = new Map<string, number>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    if (!targetMap.has(a.targetAId) || !targetMap.has(a.targetBId)) continue;
+    counts.set(a.targetAId, (counts.get(a.targetAId) ?? 0) + 1);
+    counts.set(a.targetBId, (counts.get(a.targetBId) ?? 0) + 1);
+  }
+  const ranked: TargetFriction[] = [];
+  for (const [tid, count] of counts) {
+    const target = targetMap.get(tid);
+    if (!target) continue;
+    ranked.push({ target, flaggedPairCount: count });
+  }
+  ranked.sort((x, y) =>
+    y.flaggedPairCount !== x.flaggedPairCount
+      ? y.flaggedPairCount - x.flaggedPairCount
+      : x.target.id.localeCompare(y.target.id),
+  );
+  return n !== undefined ? ranked.slice(0, n) : ranked;
+}
+
+export interface TargetConcentrationEntry {
+  target: Target;
+  /** Distinct flagged pairs this target touches. */
+  flaggedPairCount: number;
+  /**
+   * Distinct flagged pairs this target adds beyond the earlier top targets
+   * (greedy order). Segments of a concentration bar use this so they tile to
+   * the covered share without double-counting pairs shared by two top targets.
+   */
+  marginalPairCount: number;
+}
+
+export interface TargetConcentration {
+  /** Distinct targets appearing in ≥1 resolvable flagged pair. */
+  contestedTargetCount: number;
+  /** Distinct resolvable flagged pairs. */
+  totalFlaggedPairs: number;
+  /** Smallest greedy target set covering ≥ targetShare of flagged pairs. */
+  topTargets: TargetConcentrationEntry[];
+  /** topTargets.length (convenience for copy). */
+  topCount: number;
+  /** Share of flagged pairs the topTargets together touch, in [0,1]. */
+  coveredPairShare: number;
+}
+
+/**
+ * How concentrated is the friction at the target level? Greedily selects the
+ * fewest targets (most-flagged first) whose flagged pairs together cover at
+ * least `targetShare` of all flagged pairs, counting each pair once even when
+ * both its targets are selected. Drives the "a few targets dominate" vs
+ * "spread across many" verdict. Mirrors computeConcentrationStat but at target
+ * granularity over distinct pairs. Only pairs with both ids resolved counted.
+ */
+export function computeTargetConcentration(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  targetShare = 0.5,
+): TargetConcentration {
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const pairKeysByTarget = new Map<string, Set<string>>();
+  const allPairKeys = new Set<string>();
+  for (const a of alignment) {
+    if (!isContradiction(a.alignment)) continue;
+    if (!targetMap.has(a.targetAId) || !targetMap.has(a.targetBId)) continue;
+    const key =
+      a.targetAId < a.targetBId
+        ? `${a.targetAId}__${a.targetBId}`
+        : `${a.targetBId}__${a.targetAId}`;
+    allPairKeys.add(key);
+    for (const tid of [a.targetAId, a.targetBId]) {
+      const set = pairKeysByTarget.get(tid) ?? new Set<string>();
+      set.add(key);
+      pairKeysByTarget.set(tid, set);
+    }
+  }
+  const totalFlaggedPairs = allPairKeys.size;
+  if (totalFlaggedPairs === 0) {
+    return {
+      contestedTargetCount: 0,
+      totalFlaggedPairs: 0,
+      topTargets: [],
+      topCount: 0,
+      coveredPairShare: 0,
+    };
+  }
+  const ranked = [...pairKeysByTarget.entries()]
+    .map(([tid, keys]) => ({ tid, count: keys.size }))
+    .sort((x, y) =>
+      y.count !== x.count ? y.count - x.count : x.tid.localeCompare(y.tid),
+    );
+  const covered = new Set<string>();
+  const topTargets: TargetConcentrationEntry[] = [];
+  for (const { tid } of ranked) {
+    if (covered.size / totalFlaggedPairs >= targetShare) break;
+    const keys = pairKeysByTarget.get(tid)!;
+    let marginal = 0;
+    for (const k of keys) if (!covered.has(k)) marginal += 1;
+    for (const k of keys) covered.add(k);
+    topTargets.push({
+      target: targetMap.get(tid)!,
+      flaggedPairCount: keys.size,
+      marginalPairCount: marginal,
+    });
+  }
+  return {
+    contestedTargetCount: pairKeysByTarget.size,
+    totalFlaggedPairs,
+    topTargets,
+    topCount: topTargets.length,
+    coveredPairShare: covered.size / totalFlaggedPairs,
+  };
+}
+
+// ─── Flagged-subset profile (FlagProfileDrawer) ─────────────────────
+
+export interface FlagSubsetProfile {
+  /** Subset size (pairs passed in). */
+  total: number;
+  /** Top document-pairs the subset falls across (count desc). */
+  byDocPair: { a: string; b: string; count: number }[];
+  /** Top themes touched under taxonomyType (count desc). */
+  byTheme: { categoryId: string; categoryName: string; count: number }[];
+  /** Targets recurring across the subset (count desc), minus any focal target. */
+  recurringTargets: { target: Target; count: number }[];
+  /** Manageability tally across the subset. */
+  manageability: { manageable: number; fundamental: number; unknown: number };
+}
+
+/**
+ * Decompose a subset of flagged pairs into "what it consists of": which
+ * document-pairs, which themes (under taxonomyType), which targets recur, and
+ * the manageability split. Powers the FlagProfileDrawer for both a friction
+ * type (pairs filtered by mechanism) and a single target (pairs touching it).
+ *
+ * Pairs whose ids don't resolve are skipped in the breakdowns; `total` still
+ * reflects the subset as passed. Same-document pairs count under a (doc, doc)
+ * key. `excludeTargetId` drops a focal target from recurringTargets (target
+ * view). `cap` limits each list (default 5).
+ */
+export function buildFlagSubsetProfile(args: {
+  pairs: AlignmentResult[];
+  targets: Target[];
+  classifications: Array<{
+    targetId: string;
+    categoryId: string;
+    taxonomyType: string;
+    isPrimary?: boolean;
+  }>;
+  categories: { id: string; name: string }[];
+  taxonomyType: string;
+  excludeTargetId?: string;
+  cap?: number;
+}): FlagSubsetProfile {
+  const {
+    pairs,
+    targets,
+    classifications,
+    categories,
+    taxonomyType,
+    excludeTargetId,
+    cap = 5,
+  } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const catNameById = new Map(categories.map((c) => [c.id, c.name]));
+  const primaryByTarget = new Map<string, string>();
+  for (const c of classifications) {
+    if (!c.isPrimary || c.taxonomyType !== taxonomyType) continue;
+    if (!targetMap.has(c.targetId)) continue;
+    primaryByTarget.set(c.targetId, c.categoryId);
+  }
+
+  const docPairCounts = new Map<
+    string,
+    { a: string; b: string; count: number }
+  >();
+  const themeCounts = new Map<string, number>();
+  const targetCounts = new Map<string, number>();
+  const manageability = { manageable: 0, fundamental: 0, unknown: 0 };
+
+  for (const p of pairs) {
+    const tA = targetMap.get(p.targetAId);
+    const tB = targetMap.get(p.targetBId);
+    if (!tA || !tB) continue;
+
+    const [da, db] =
+      tA.sourceDocument <= tB.sourceDocument
+        ? [tA.sourceDocument, tB.sourceDocument]
+        : [tB.sourceDocument, tA.sourceDocument];
+    const dkey = `${da}__${db}`;
+    const dEntry = docPairCounts.get(dkey);
+    if (dEntry) dEntry.count += 1;
+    else docPairCounts.set(dkey, { a: da, b: db, count: 1 });
+
+    const touched = new Set<string>();
+    const cA = primaryByTarget.get(p.targetAId);
+    const cB = primaryByTarget.get(p.targetBId);
+    if (cA) touched.add(cA);
+    if (cB) touched.add(cB);
+    for (const c of touched) themeCounts.set(c, (themeCounts.get(c) ?? 0) + 1);
+
+    for (const tid of [p.targetAId, p.targetBId]) {
+      targetCounts.set(tid, (targetCounts.get(tid) ?? 0) + 1);
+    }
+
+    if (p.manageability === "manageable") manageability.manageable += 1;
+    else if (p.manageability === "fundamental") manageability.fundamental += 1;
+    else manageability.unknown += 1;
+  }
+
+  const byDocPair = [...docPairCounts.values()]
+    .sort((x, y) =>
+      y.count !== x.count
+        ? y.count - x.count
+        : `${x.a}__${x.b}`.localeCompare(`${y.a}__${y.b}`),
+    )
+    .slice(0, cap);
+
+  const byTheme = [...themeCounts.entries()]
+    .map(([categoryId, count]) => ({
+      categoryId,
+      categoryName: catNameById.get(categoryId) ?? categoryId,
+      count,
+    }))
+    .sort((x, y) =>
+      y.count !== x.count
+        ? y.count - x.count
+        : x.categoryId.localeCompare(y.categoryId),
+    )
+    .slice(0, cap);
+
+  const recurringTargets = [...targetCounts.entries()]
+    .filter(([tid]) => tid !== excludeTargetId)
+    .map(([tid, count]) => ({ target: targetMap.get(tid)!, count }))
+    .sort((x, y) =>
+      y.count !== x.count ? y.count - x.count : x.target.id.localeCompare(y.target.id),
+    )
+    .slice(0, cap);
+
+  return {
+    total: pairs.length,
+    byDocPair,
+    byTheme,
+    recurringTargets,
+    manageability,
+  };
 }

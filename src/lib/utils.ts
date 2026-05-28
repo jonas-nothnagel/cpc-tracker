@@ -210,10 +210,27 @@ export const CONTRADICTION_TYPE_LABELS: Record<ContradictionType, string> = {
   delivery_friction: "Delivery friction",
 };
 
-/** Display labels for the manageability sub-field on a flagged pair. */
+/**
+ * Colours for the friction mechanism, shared by the friction-type bar and the
+ * per-pair mechanism chips so the two read as one system: a warm severity ramp
+ * (deep red → orange → amber) where goal conflict is the most fundamental.
+ * Distinct from the neutral-slate manageability chip so the two sub-fields are
+ * never confused.
+ */
+export const MECHANISM_COLORS: Record<ContradictionType, string> = {
+  goal_conflict: "#b91c1c", // deep red — most fundamental
+  resource_competition: "#ea580c", // orange — zero-sum tradeoff
+  delivery_friction: "#d97706", // amber — operational / procedural
+};
+
+/**
+ * Display labels for the manageability sub-field on a flagged pair. Renamed
+ * from "Manageable / Fundamental" (read as judgy verdicts) to a neutral
+ * description of WHERE the friction sits. Stored pipeline values are unchanged.
+ */
 export const MANAGEABILITY_LABELS = {
-  manageable: "Manageable",
-  fundamental: "Fundamental",
+  manageable: "Coordination-level",
+  fundamental: "Design-level",
 } as const;
 
 /** Display labels for the confidence sub-field on a flagged pair. */
