@@ -4,10 +4,12 @@
  * ChatPanel — lean chat for the Explore section.
  *
  * Wraps the existing /api/coherence-chat route. Sends a minimal request
- * (query + dataset context + 3-turn history) and renders the reply. The
- * server can return navigation actions, but this panel currently ignores
- * them and only renders the text reply plus follow-up suggestions. Wiring
- * those actions into the wheel state is a follow-up.
+ * (query + dataset context + 3-turn history) and renders the reply. When the
+ * server returns navigation actions we surface a single opt-in "Show this on
+ * the wheel" control rather than reshaping the wheel behind the user's
+ * reading; clicking it routes the actions through onApplyAction (the same
+ * resolver the insight bar uses), so the wheel reacts the same way whatever
+ * drove it.
  *
  * Aesthetic stays consistent with the rest of the page: off-white,
  * serif headline, calm spacing. No emojis, no bot avatars.
@@ -16,6 +18,7 @@
 import { useCallback, useState } from "react";
 import { buildChatRequest } from "@/lib/coherence-chat";
 import type {
+  ChatAction,
   ChatHistoryTurn,
   ChatTaxCategory,
 } from "@/lib/coherence-chat";
@@ -33,6 +36,7 @@ import type {
 interface ChatReply {
   reply: string;
   suggestions: { label: string; query: string }[];
+  actions: ChatAction[];
 }
 
 export function ChatPanel({
@@ -47,6 +51,7 @@ export function ChatPanel({
   corpusThemes,
   sectorSyntheses,
   starterPrompts,
+  onApplyAction,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -59,6 +64,7 @@ export function ChatPanel({
   corpusThemes: CorpusThemes | null;
   sectorSyntheses: SectorSynthesis[];
   starterPrompts: string[];
+  onApplyAction: (action: ChatAction) => void;
 }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -108,10 +114,12 @@ export function ChatPanel({
         const json = (await res.json()) as {
           reply: string;
           suggestions?: { label: string; query: string }[];
+          actions?: ChatAction[];
         };
         setReply({
           reply: json.reply,
           suggestions: (json.suggestions ?? []).slice(0, 3),
+          actions: json.actions ?? [],
         });
         setHistory((prev) =>
           [
@@ -213,6 +221,17 @@ export function ChatPanel({
               {reply.reply}
             </p>
           </div>
+          {reply.actions.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                for (const a of reply.actions) onApplyAction(a);
+              }}
+              className="self-start text-xs font-medium text-[var(--undp-black)] hover:underline"
+            >
+              Show this on the wheel →
+            </button>
+          )}
           {reply.suggestions.length > 0 && (
             <div className="flex flex-col gap-2">
               <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">

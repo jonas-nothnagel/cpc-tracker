@@ -193,6 +193,7 @@ export function ExploreSection({
         corpusThemes={corpusThemes}
         sectorSyntheses={sectorSyntheses}
         starterPrompts={starterPrompts}
+        onApplyAction={onApplyAction}
       />
     </section>
   );
