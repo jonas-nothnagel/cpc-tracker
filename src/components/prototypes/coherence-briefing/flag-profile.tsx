@@ -309,6 +309,7 @@ export function FlagProfileDrawer({
               {subject.kind === "target" && frictionTree ? (
                 <TargetFrictionTreeView
                   tree={frictionTree}
+                  focalDoc={subject.target.sourceDocument}
                   countryConfig={countryConfig}
                   onOpenPair={onOpenPair}
                 />
@@ -606,10 +607,12 @@ function RepresentativePairs({
  */
 function TargetFrictionTreeView({
   tree,
+  focalDoc,
   countryConfig,
   onOpenPair,
 }: {
   tree: TargetFrictionTree;
+  focalDoc: PolicyDocumentType;
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
@@ -624,6 +627,7 @@ function TargetFrictionTreeView({
           <MechanismBranch
             key={group.mechanism ?? "__none__"}
             group={group}
+            focalDoc={focalDoc}
             countryConfig={countryConfig}
             onOpenPair={onOpenPair}
           />
@@ -635,10 +639,12 @@ function TargetFrictionTreeView({
 
 function MechanismBranch({
   group,
+  focalDoc,
   countryConfig,
   onOpenPair,
 }: {
   group: TargetFrictionTree["byMechanism"][number];
+  focalDoc: PolicyDocumentType;
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
@@ -672,7 +678,8 @@ function MechanismBranch({
         {group.byDoc.map((doc) => (
           <div key={doc.peerDoc}>
             <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-              vs {getDocMediumLabel(countryConfig, doc.peerDoc)}
+              {doc.peerDoc === focalDoc ? "within" : "vs"}{" "}
+              {getDocMediumLabel(countryConfig, doc.peerDoc)}
               <span className="ml-1.5 tabular-nums">
                 {doc.count.toLocaleString()}
               </span>
