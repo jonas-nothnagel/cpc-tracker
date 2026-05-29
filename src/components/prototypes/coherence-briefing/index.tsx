@@ -1198,9 +1198,7 @@ function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
         red = share of each link that is potentially misaligned
       </span>
       {showArcNote && (
-        <span className="text-[10px] text-[var(--undp-gray)]/70">
-          warmer arc = document with more potential misalignment
-        </span>
+        <LegendGradient label="warmer arc = document with more potential misalignment" />
       )}
     </div>
   );
@@ -1248,6 +1246,24 @@ function LegendDot({
           background: dashed
             ? `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 7px)`
             : color,
+        }}
+      />
+      {label}
+    </span>
+  );
+}
+
+function LegendGradient({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        aria-hidden="true"
+        className="inline-block h-2 w-8 rounded-full"
+        style={{
+          // Mirrors the rim arc scale (doc-coherence-matrix cellColor): green
+          // below the corpus norm, pale near it, terracotta above.
+          background:
+            "linear-gradient(90deg, rgba(25,97,39,0.55), rgba(25,97,39,0.10) 45%, rgba(220,38,38,0.12) 55%, rgba(220,38,38,0.60))",
         }}
       />
       {label}
