@@ -4,7 +4,7 @@
  * Where-to-focus — answers "is the friction a few contested targets or many,
  * and which ones?" No other slide ranks individual targets: Doc-pairs groups
  * by document, Friction-types by mechanism, Sectors by theme. This slide names
- * the specific targets that recur across the most flagged pairs, plus a
+ * the specific targets that recur across the most potentially misaligned pairs, plus a
  * concentration verdict (few vs many), so a policymaker sees where to put
  * attention first. Each row opens that target's FlagProfileDrawer.
  */
@@ -46,7 +46,7 @@ export function WhereToFocusSection({
       evidence={
         hotspots.length === 0 ? (
           <p className="text-sm italic text-[var(--undp-gray)]">
-            No targets are involved in flagged pairs yet.
+            No targets are involved in potentially misaligned pairs yet.
           </p>
         ) : (
           <>
@@ -88,8 +88,8 @@ function composeFocusSentence(c: TargetConcentration): FocusSentence {
     c;
   if (totalFlaggedPairs === 0 || contestedTargetCount === 0) {
     return {
-      headline: "No flagged pairs to focus yet.",
-      body: "Once the pipeline flags pairs for review, the targets carrying the most friction surface here.",
+      headline: "No potential misalignment to focus yet.",
+      body: "Once the pipeline surfaces potential misalignment, the targets it touches most surface here.",
     };
   }
   const sharePct = Math.round(coveredPairShare * 100);
@@ -98,19 +98,19 @@ function composeFocusSentence(c: TargetConcentration): FocusSentence {
     topCount <= Math.max(1, Math.round(contestedTargetCount * 0.2));
   if (topCount === 1) {
     return {
-      headline: `One target sits in ${sharePct}% of all flagged pairs.`,
-      body: `${totalFlaggedPairs.toLocaleString()} flagged pairs trace back to ${contestedTargetCount} targets, but a single one accounts for ${sharePct}%. Click it to see what it clashes with.`,
+      headline: `One target sits in ${sharePct}% of all potentially misaligned pairs.`,
+      body: `${totalFlaggedPairs.toLocaleString()} potentially misaligned pairs trace back to ${contestedTargetCount} targets, but a single one accounts for ${sharePct}%. Click it to see what it is misaligned with.`,
     };
   }
   if (concentrated) {
     return {
-      headline: `Just ${topCount} targets carry ${sharePct}% of the friction.`,
-      body: `${totalFlaggedPairs.toLocaleString()} flagged pairs trace back to ${contestedTargetCount} targets, but only ${topCount} of them are involved in ${sharePct}%. These are where to look first.`,
+      headline: `Just ${topCount} targets carry ${sharePct}% of the misalignment.`,
+      body: `${totalFlaggedPairs.toLocaleString()} potentially misaligned pairs trace back to ${contestedTargetCount} targets, but only ${topCount} of them are involved in ${sharePct}%. These are where to look first.`,
     };
   }
   return {
-    headline: `Friction spreads across ${contestedTargetCount} targets.`,
-    body: `It takes ${topCount} of ${contestedTargetCount} targets to cover ${sharePct}% of the ${totalFlaggedPairs.toLocaleString()} flagged pairs, so no single handful dominates. The heaviest are listed below.`,
+    headline: `Misalignment spreads across ${contestedTargetCount} targets.`,
+    body: `It takes ${topCount} of ${contestedTargetCount} targets to cover ${sharePct}% of the ${totalFlaggedPairs.toLocaleString()} potentially misaligned pairs, so no single handful dominates. The heaviest are listed below.`,
   };
 }
 
@@ -135,7 +135,7 @@ function HotspotRow({
         type="button"
         onClick={onSelect}
         className="w-full text-left grid grid-cols-[1fr_5.5rem] items-center gap-4 px-1 py-3 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
-        aria-label={`${docLabel} ${target.sourceLabel}: involved in ${flaggedPairCount} flagged pairs`}
+        aria-label={`${docLabel} ${target.sourceLabel}: involved in ${flaggedPairCount} potentially misaligned pairs`}
       >
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
@@ -178,7 +178,7 @@ function HotspotRow({
 
 /**
  * Segmented concentration bar: one chunk per hotspot target (width = the
- * distinct flagged pairs it adds, so chunks tile honestly) plus a single "all
+ * distinct potentially misaligned pairs it adds, so chunks tile honestly) plus a single "all
  * other targets" tail. A few fat chunks visibly fill the covered share, then a
  * long thin remainder, so "a few targets carry most friction" reads at a
  * glance. Sits on top of the most-contested list; chunks click into a target.
@@ -205,10 +205,10 @@ function ConcentrationBar({
     <div className="mb-7">
       <div className="flex items-baseline justify-between mb-1.5">
         <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-          Where the friction concentrates
+          Where the misalignment concentrates
         </p>
         <p className="text-[11px] tabular-nums text-[var(--undp-black)] font-medium">
-          {totalFlaggedPairs.toLocaleString()} flagged pairs
+          {totalFlaggedPairs.toLocaleString()} potentially misaligned pairs
         </p>
       </div>
       <div className="flex h-7 w-full overflow-hidden rounded-sm bg-gray-100 gap-px">
@@ -218,7 +218,7 @@ function ConcentrationBar({
             countryConfig,
             t.target.sourceDocument,
           );
-          const title = `${docLabel} ${t.target.sourceLabel}: in ${t.flaggedPairCount.toLocaleString()} flagged pairs · click to open`;
+          const title = `${docLabel} ${t.target.sourceLabel}: in ${t.flaggedPairCount.toLocaleString()} potentially misaligned pairs · click to open`;
           return (
             <button
               key={t.target.id}
@@ -245,7 +245,7 @@ function ConcentrationBar({
               width: `${(remainder / totalFlaggedPairs) * 100}%`,
               backgroundColor: OTHERS_FILL,
             }}
-            title={`${othersCount.toLocaleString()} other targets: ${remainder.toLocaleString()} flagged pairs`}
+            title={`${othersCount.toLocaleString()} other targets: ${remainder.toLocaleString()} potentially misaligned pairs`}
           />
         )}
       </div>
@@ -254,7 +254,7 @@ function ConcentrationBar({
           <span className="font-medium">
             {topTargets.length} target{topTargets.length === 1 ? "" : "s"}
           </span>{" "}
-          carry {sharePct}% of flagged pairs
+          carry {sharePct}% of potentially misaligned pairs
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span

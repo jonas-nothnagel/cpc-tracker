@@ -201,7 +201,7 @@ BUDGET DATA (when present)
 When the user message includes a BUDGET BY GLOBE CATEGORY block, you may answer questions about how a country's tagged biodiversity expenditure (BER, Biodiversity Expenditure Review) is distributed across primary GLOBE categories. The block lists, per primary category: total tagged spend, share of total tagged spend, target count, share of targets, and count of flagged conflict pairs. Always qualify figures as "tagged BER spend" or "in the uploaded BER", since the BER is a subset of national expenditure, not the full budget. Never call a category "underfunded" as a verdict; describe shares and counts as observations. Acceptable framings: "X has Y% of tagged BER spend against Z% of GLOBE-tagged targets", "X has the most flagged pairs and the smallest budget share in this view". The currency, unit, and reporting period live in the block's header line; quote them on first mention of a figure.
 
 PRECOMPUTED SYNTHESIS (when present)
-The user message may include a PRECOMPUTED SYNTHESIS block: AI-generated storylines across the whole corpus, per-document-pair summaries (where two documents reinforce or clash, plus a coordination pointer), and per-theme summaries. The pipeline derived these from the same pairs you can see. Draw on them for big-picture questions like the main storyline, how two documents relate overall, or what a theme's friction is about, and you may pass along a coordination pointer in the same hedged phrasing. These are AI-generated summaries, not ground truth: keep the neutral, decision-support framing and do not present them as certain. When you name a specific storyline, document pair, or theme as the focal evidence, still call the matching navigation tool so the Show me button appears.
+The user message may include a PRECOMPUTED SYNTHESIS block: AI-generated storylines across the whole corpus, per-document-pair summaries (where two documents align or potentially misalign, plus a coordination pointer), and per-theme summaries. The pipeline derived these from the same pairs you can see. Draw on them for big-picture questions like the main storyline, how two documents relate overall, or what a theme's potential misalignment is about, and you may pass along a coordination pointer in the same hedged phrasing. These are AI-generated summaries, not ground truth: keep the neutral, decision-support framing and do not present them as certain. When you name a specific storyline, document pair, or theme as the focal evidence, still call the matching navigation tool so the Show me button appears.
 
 HARD RULES
 - 3 to 5 short sentences, 60 to 95 words.
@@ -654,11 +654,11 @@ function buildUserMessage(
     }
     if (syn.docPairs && syn.docPairs.length) {
       parts.push(
-        "Document-pair syntheses (how two documents reinforce / clash, with a coordination pointer):\n" +
+        "Document-pair syntheses (how two documents align or potentially misalign, with a coordination pointer):\n" +
           syn.docPairs
             .map(
               (d) =>
-                `- ${d.a} & ${d.b}: ${d.storyline}. Reinforce: ${d.reinforce} Clash: ${d.clash} Coordination: ${d.coordination}`,
+                `- ${d.a} & ${d.b}: ${d.storyline}. Strong alignment: ${d.reinforce} Potential misalignment: ${d.clash} Coordination: ${d.coordination}`,
             )
             .join("\n"),
       );
@@ -669,14 +669,14 @@ function buildUserMessage(
           syn.sectors
             .map(
               (s) =>
-                `- ${s.category}. Reinforce: ${s.reinforce} Clash: ${s.clash} Coordination: ${s.coordination}`,
+                `- ${s.category}. Strong alignment: ${s.reinforce} Potential misalignment: ${s.clash} Coordination: ${s.coordination}`,
             )
             .join("\n"),
       );
     }
     if (parts.length) {
       sections.push(
-        "PRECOMPUTED SYNTHESIS — AI-generated storylines and summaries the pipeline derived from the same pairs. Use for big-picture questions (main storyline, how two documents relate, a theme's friction). Keep the hedged, neutral framing; these are AI-generated, not ground truth:",
+        "PRECOMPUTED SYNTHESIS — AI-generated storylines and summaries the pipeline derived from the same pairs. Use for big-picture questions (main storyline, how two documents relate, a theme's potential misalignment). Keep the hedged, neutral framing; these are AI-generated, not ground truth:",
         parts.join("\n\n"),
         "",
       );
@@ -696,7 +696,7 @@ function buildUserMessage(
       .map((b) => {
         const sharePct = (b.shareOfTotalBudget * 100).toFixed(1);
         const tSharePct = (b.shareOfTargets * 100).toFixed(1);
-        return `${b.categoryId} | ${b.categoryName} | ${b.totalBudget.toFixed(2)} ${unitLabel} | ${sharePct}% of tagged BER | ${b.targetCount} targets (${tSharePct}% of GLOBE-tagged) | ${b.contradictionPairCount} flagged pairs`;
+        return `${b.categoryId} | ${b.categoryName} | ${b.totalBudget.toFixed(2)} ${unitLabel} | ${sharePct}% of tagged BER | ${b.targetCount} targets (${tSharePct}% of GLOBE-tagged) | ${b.contradictionPairCount} potentially misaligned pairs`;
       })
       .join("\n");
     sections.push(
@@ -859,7 +859,7 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 // it can't hallucinate.
 
 const SEVERITY_LABEL: Record<string, string> = {
-  flagged: "flagged for review",
+  flagged: "potential misalignment",
   // Legacy strings retained so any unmigrated v1 record still renders.
   likely_conflict: "likely conflict",
   possible_conflict: "possible conflict",

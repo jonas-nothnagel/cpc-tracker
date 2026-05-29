@@ -19,10 +19,16 @@
  * polarity.
  */
 
-import { useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { SlideFrame } from "../slide-frame";
-import { PrimerCard, type PrimerHighlightPair } from "../primer-card";
+import {
+  PrimerCard,
+  PrimerCardBody,
+  type PrimerHighlightPair,
+} from "../primer-card";
 import { StorylineCard } from "../storyline-card";
+import { ALIGNMENT_COLORS } from "@/lib/utils";
 import {
   type FaultLine,
   type HeadlineVerdict,
@@ -73,7 +79,11 @@ export function DirectionSection({
       concentration={concentration}
       reinforce={storylines.reinforce}
       friction={storylines.friction}
+      primer={primer}
+      countryConfig={countryConfig}
       onOpenStoryline={onOpenStoryline}
+      onOpenPair={onOpenPair}
+      onHighlightPair={onHighlightPair}
     />
   );
 
@@ -198,6 +208,11 @@ function focusClause(c: TargetConcentration): string | null {
     : `they spread across ${c.contestedTargetCount} targets`;
 }
 
+const STRONG_ALIGNMENT_DEFINITION =
+  "Two targets that pull in the same direction: one supports or advances the other. A real scored pair from this set:";
+const POTENTIAL_MISALIGNMENT_DEFINITION =
+  "Two targets the AI identified as possibly working against each other: a prompt for human review, not a settled finding. A real scored pair:";
+
 function SynthesisSentence({
   countryName,
   documentCount,
@@ -205,7 +220,11 @@ function SynthesisSentence({
   concentration,
   reinforce,
   friction,
+  primer,
+  countryConfig,
   onOpenStoryline,
+  onOpenPair,
+  onHighlightPair,
 }: {
   countryName: string;
   documentCount: number;
@@ -213,7 +232,11 @@ function SynthesisSentence({
   concentration: TargetConcentration;
   reinforce: CorpusStoryline | null;
   friction: CorpusStoryline | null;
+  primer: PrimerExamples;
+  countryConfig: CountryConfig | null;
   onOpenStoryline: (s: CorpusStoryline) => void;
+  onOpenPair: (line: FaultLine) => void;
+  onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
   const focusText = focusClause(concentration);
   const docPhrase =
@@ -231,7 +254,17 @@ function SynthesisSentence({
       <span className="text-[var(--undp-black)] font-medium tabular-nums">
         {reinforcePct}%
       </span>{" "}
-      reach medium or strong alignment
+      reach{" "}
+      <AlignmentTermPopover
+        kind="aligned"
+        example={primer.aligned}
+        definition={STRONG_ALIGNMENT_DEFINITION}
+        countryConfig={countryConfig}
+        onOpenPair={onOpenPair}
+        onHighlightPair={onHighlightPair}
+      >
+        strong alignment
+      </AlignmentTermPopover>
       {reinforce && (
         <>
           , anchored by{" "}
@@ -250,7 +283,17 @@ function SynthesisSentence({
       <span className="tabular-nums">
         {verdict.tensionPairs.toLocaleString()}
       </span>{" "}
-      pair{verdict.tensionPairs === 1 ? "" : "s"} flagged for review
+      pair{verdict.tensionPairs === 1 ? "" : "s"} show{" "}
+      <AlignmentTermPopover
+        kind="flagged"
+        example={primer.tension}
+        definition={POTENTIAL_MISALIGNMENT_DEFINITION}
+        countryConfig={countryConfig}
+        onOpenPair={onOpenPair}
+        onHighlightPair={onHighlightPair}
+      >
+        potential misalignment
+      </AlignmentTermPopover>
       {friction && (
         <>
           , most prominently around{" "}
@@ -268,6 +311,106 @@ function SynthesisSentence({
       {focusText && <>; {focusText}</>}
       .
     </>
+  );
+}
+
+/**
+ * Inline term in the synthesis sentence that, on hover/focus, reveals a real
+ * example of what the term means (reusing the Direction-section primer tiles).
+ * Clicking opens the full pair. Rendered through a portal because the popover's
+ * card markup can't legally nest inside the sentence <p> or a <button>. Falls
+ * back to plain text when no example pair is available.
+ */
+function AlignmentTermPopover({
+  children,
+  kind,
+  example,
+  definition,
+  countryConfig,
+  onOpenPair,
+  onHighlightPair,
+}: {
+  children: ReactNode;
+  kind: "aligned" | "flagged";
+  example: FaultLine | null;
+  definition: string;
+  countryConfig: CountryConfig | null;
+  onOpenPair: (line: FaultLine) => void;
+  onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
+}) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(
+    null,
+  );
+  const color =
+    kind === "aligned" ? ALIGNMENT_COLORS.high : ALIGNMENT_COLORS.flagged;
+
+  if (!example) {
+    return (
+      <span className="font-medium text-[var(--undp-black)]">{children}</span>
+    );
+  }
+
+  const pair: PrimerHighlightPair = {
+    aId: example.targetA.id,
+    bId: example.targetB.id,
+  };
+  const show = () => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const vw = typeof window === "undefined" ? 1024 : window.innerWidth;
+    const left = Math.min(Math.max(r.left + r.width / 2, 168), vw - 168);
+    setCoords({ top: r.bottom + 8, left });
+    onHighlightPair?.(pair);
+  };
+  const hide = () => {
+    setCoords(null);
+    onHighlightPair?.(null);
+  };
+
+  return (
+    <span onMouseEnter={show} onMouseLeave={hide}>
+      <button
+        ref={ref}
+        type="button"
+        onClick={() => onOpenPair(example)}
+        onFocus={show}
+        onBlur={hide}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") hide();
+        }}
+        aria-label={`Show an example of ${
+          kind === "aligned" ? "strong alignment" : "potential misalignment"
+        }`}
+        className="font-medium text-[var(--undp-black)] underline decoration-dotted decoration-1 underline-offset-2 hover:decoration-2 focus:outline-none focus:decoration-2"
+        style={{ textDecorationColor: color }}
+      >
+        {children}
+      </button>
+      {coords &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            role="tooltip"
+            className="fixed z-50 w-[320px] -translate-x-1/2 rounded-md border border-gray-200 bg-white p-4 shadow-xl"
+            style={{ top: coords.top, left: coords.left, pointerEvents: "none" }}
+          >
+            <p className="text-[11px] leading-relaxed text-[var(--undp-gray)] mb-3">
+              {definition}
+            </p>
+            <PrimerCardBody
+              kind={kind}
+              line={example}
+              countryConfig={countryConfig}
+            />
+            <p className="mt-3 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+              Click the term to open this pair
+            </p>
+          </div>,
+          document.body,
+        )}
+    </span>
   );
 }
 

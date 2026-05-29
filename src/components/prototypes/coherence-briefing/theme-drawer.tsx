@@ -217,7 +217,9 @@ export function ThemeDrawer({
                 }
               />
               <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-                {isReinforce ? "Reinforcing theme" : "Flagged theme"}
+                {isReinforce
+                  ? "Strongly aligned theme"
+                  : "Potentially misaligned theme"}
               </p>
             </div>
             <h3
@@ -232,7 +234,7 @@ export function ThemeDrawer({
               {theme.pair_count.toLocaleString()} pair
               {theme.pair_count === 1 ? "" : "s"} ·{" "}
               {totalRecords.toLocaleString()}{" "}
-              {isReinforce ? "aligned" : "flagged"} record
+              {isReinforce ? "aligned" : "misaligned"} record
               {totalRecords === 1 ? "" : "s"} below
             </p>
           </div>
@@ -552,12 +554,13 @@ function AllStorylinesView({
               className="text-xl text-[var(--undp-black)] font-medium leading-snug"
               style={{ fontFamily: HEADLINE_SERIF }}
             >
-              {storylines.length.toLocaleString()} cross-document themes
+              {storylines.length.toLocaleString()} themes that span multiple
+              documents
             </h3>
             <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-              {reinforce.length.toLocaleString()} reinforcing ·{" "}
-              {friction.length.toLocaleString()} flagged. Click any theme for
-              the underlying target pairs.
+              {reinforce.length.toLocaleString()} strongly aligned ·{" "}
+              {friction.length.toLocaleString()} potentially misaligned. Click
+              any theme for the underlying target pairs.
             </p>
           </div>
           <button
@@ -573,7 +576,7 @@ function AllStorylinesView({
         <div className="px-6 py-6 space-y-6">
           {reinforce.length > 0 && (
             <StorylineGroup
-              label="Reinforcing patterns"
+              label="Strongly aligned patterns"
               tone="reinforce"
               storylines={reinforce}
               onPick={onPick}
@@ -581,7 +584,7 @@ function AllStorylinesView({
           )}
           {friction.length > 0 && (
             <StorylineGroup
-              label="Flagged patterns"
+              label="Potentially misaligned patterns"
               tone="friction"
               storylines={friction}
               onPick={onPick}

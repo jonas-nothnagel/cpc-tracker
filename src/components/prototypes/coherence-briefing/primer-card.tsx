@@ -20,44 +20,29 @@ export interface PrimerHighlightPair {
   bId: string;
 }
 
-export function PrimerCard({
+/**
+ * The presentational guts of a PrimerCard (target A, centred relationship
+ * label, target B) with no interactive wrapper. Split out so it can be reused
+ * read-only inside the Direction-section hover popover without nesting buttons.
+ */
+export function PrimerCardBody({
   kind,
   line,
   countryConfig,
-  onSelect,
-  onHoverChange,
 }: {
   kind: "aligned" | "flagged";
   line: FaultLine;
   countryConfig: CountryConfig | null;
-  onSelect: () => void;
-  onHoverChange?: (pair: PrimerHighlightPair | null) => void;
 }) {
   const color =
-    kind === "aligned"
-      ? ALIGNMENT_COLORS.high
-      : ALIGNMENT_COLORS.flagged;
+    kind === "aligned" ? ALIGNMENT_COLORS.high : ALIGNMENT_COLORS.flagged;
   const labelA = getDocMediumLabel(countryConfig, line.targetA.sourceDocument);
   const labelB = getDocMediumLabel(countryConfig, line.targetB.sourceDocument);
   const relationLabel =
-    kind === "aligned" ? "ALIGNED WITH" : "POSSIBLY MISALIGNED WITH";
-  const pair: PrimerHighlightPair = {
-    aId: line.targetA.id,
-    bId: line.targetB.id,
-  };
+    kind === "aligned" ? "STRONGLY ALIGNED WITH" : "POTENTIALLY MISALIGNED WITH";
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      onMouseEnter={() => onHoverChange?.(pair)}
-      onMouseLeave={() => onHoverChange?.(null)}
-      onFocus={() => onHoverChange?.(pair)}
-      onBlur={() => onHoverChange?.(null)}
-      className="group w-full text-left rounded-md border border-gray-200 bg-white p-4 hover:border-[var(--undp-black)] focus:outline-none focus:border-[var(--undp-black)] transition-colors"
-    >
-      <p
-        className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]"
-      >
+    <>
+      <p className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">
         {labelA} · {line.targetA.sourceLabel}
       </p>
       <p className="text-[13px] text-[var(--undp-black)] leading-snug line-clamp-3">
@@ -83,14 +68,44 @@ export function PrimerCard({
         />
       </div>
 
-      <p
-        className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]"
-      >
+      <p className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">
         {labelB} · {line.targetB.sourceLabel}
       </p>
       <p className="text-[13px] text-[var(--undp-black)] leading-snug line-clamp-3">
         {line.targetB.text}
       </p>
+    </>
+  );
+}
+
+export function PrimerCard({
+  kind,
+  line,
+  countryConfig,
+  onSelect,
+  onHoverChange,
+}: {
+  kind: "aligned" | "flagged";
+  line: FaultLine;
+  countryConfig: CountryConfig | null;
+  onSelect: () => void;
+  onHoverChange?: (pair: PrimerHighlightPair | null) => void;
+}) {
+  const pair: PrimerHighlightPair = {
+    aId: line.targetA.id,
+    bId: line.targetB.id,
+  };
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      onMouseEnter={() => onHoverChange?.(pair)}
+      onMouseLeave={() => onHoverChange?.(null)}
+      onFocus={() => onHoverChange?.(pair)}
+      onBlur={() => onHoverChange?.(null)}
+      className="group w-full text-left rounded-md border border-gray-200 bg-white p-4 hover:border-[var(--undp-black)] focus:outline-none focus:border-[var(--undp-black)] transition-colors"
+    >
+      <PrimerCardBody kind={kind} line={line} countryConfig={countryConfig} />
     </button>
   );
 }

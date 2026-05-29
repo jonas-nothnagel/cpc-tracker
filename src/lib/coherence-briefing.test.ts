@@ -3,6 +3,7 @@ import {
   buildContradictionBreakdown,
   buildDocCoherenceGraph,
   buildDocFocusFrictions,
+  buildDocFrictionShares,
   buildFlagSubsetProfile,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
@@ -137,6 +138,73 @@ describe("buildDocCoherenceGraph", () => {
       ),
     ).toHaveLength(1);
     for (const e of edges) expect(e.a < e.b).toBe(true);
+  });
+});
+
+describe("buildDocFrictionShares", () => {
+  it("computes each document's flagged share on the aligned+flagged basis", () => {
+    const targets = [
+      makeTarget("FSS_1", "FSS"),
+      makeTarget("FSS_2", "FSS"),
+      makeTarget("NAP_1", "NAP"),
+      makeTarget("NDC_1", "NDC"),
+    ];
+    const alignment: AlignmentResult[] = [
+      makeAlignment("FSS_1", "NAP_1", "high"), // FSS<->NAP aligned
+      makeFlagged("FSS_2", "NAP_1", "goal_conflict"), // FSS<->NAP flagged
+      makeFlagged("FSS_1", "NDC_1", "goal_conflict"), // FSS<->NDC flagged
+      makeAlignment("NAP_1", "NDC_1", "medium"), // NAP<->NDC aligned
+      makeAlignment("FSS_1", "FSS_2", "high"), // same-document, ignored
+      makeAlignment("FSS_2", "NDC_1", "none"), // none, ignored
+    ];
+    const { byDoc, mid, maxShare } = buildDocFrictionShares(
+      alignment,
+      targets,
+      null,
+    );
+    // FSS: flagged 2 over (FSS-NAP denom 2 + FSS-NDC denom 1) = 2/3.
+    expect(byDoc.get("FSS")).toBeCloseTo(2 / 3);
+    // NAP: flagged 1 over (FSS-NAP denom 2 + NAP-NDC denom 1) = 1/3.
+    expect(byDoc.get("NAP")).toBeCloseTo(1 / 3);
+    // NDC: flagged 1 over (FSS-NDC denom 1 + NAP-NDC denom 1) = 1/2.
+    expect(byDoc.get("NDC")).toBeCloseTo(1 / 2);
+    // Corpus norm = total flagged 2 / total denom 4.
+    expect(mid).toBeCloseTo(0.5);
+    expect(maxShare).toBeCloseTo(2 / 3);
+  });
+
+  it("keeps a large but clean document's share low (share, not absolute count)", () => {
+    // A sits in the most relationships but is mostly aligned; B and C clash.
+    const targets = [
+      makeTarget("A1", "A"),
+      makeTarget("A2", "A"),
+      makeTarget("A3", "A"),
+      makeTarget("B1", "B"),
+      makeTarget("B2", "B"),
+      makeTarget("C1", "C"),
+      makeTarget("C2", "C"),
+    ];
+    const alignment: AlignmentResult[] = [
+      // A<->B: 3 aligned, 1 flagged.
+      makeAlignment("A1", "B1", "high"),
+      makeAlignment("A2", "B1", "medium"),
+      makeAlignment("A3", "B2", "high"),
+      makeFlagged("A1", "B2", "goal_conflict"),
+      // A<->C: 3 aligned, 0 flagged.
+      makeAlignment("A1", "C1", "high"),
+      makeAlignment("A2", "C1", "medium"),
+      makeAlignment("A3", "C2", "high"),
+      // B<->C: 0 aligned, 2 flagged.
+      makeFlagged("B1", "C1", "resource_competition"),
+      makeFlagged("B2", "C2", "delivery_friction"),
+    ];
+    const { byDoc } = buildDocFrictionShares(alignment, targets, null);
+    const a = byDoc.get("A")!;
+    // A: flagged 1 over denom 7 (A-B denom 4 + A-C denom 3).
+    expect(a).toBeCloseTo(1 / 7);
+    // A participates in the most pairs yet has the lowest friction share.
+    expect(a).toBeLessThan(byDoc.get("B")!);
+    expect(a).toBeLessThan(byDoc.get("C")!);
   });
 });
 

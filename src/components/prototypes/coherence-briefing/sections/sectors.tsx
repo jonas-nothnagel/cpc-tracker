@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Sectors — answers "where does the friction concentrate?" with a
+ * Sectors — answers "where does misalignment concentrate?" with a
  * comparative view across the top sectors under the active lens. The
  * lens switcher (GLOBE / IPCC / Country sectors) is the first-class
  * control on this slide, surfaced under the headline so a policymaker
@@ -122,7 +122,7 @@ export function SectorsSection({
   return (
     <SlideFrame
       id={SECTORS_SECTION_ID}
-      eyebrow="Where does the friction concentrate?"
+      eyebrow="Where does misalignment concentrate?"
       headline={sentence.headline}
       body={sentence.body}
       controls={
@@ -212,7 +212,7 @@ function LensChipRow({
 }) {
   const activeLens = activeLensId ?? availableLenses[0]?.id;
   const FILTER_OPTIONS: ReadonlyArray<{ value: WheelFilter; label: string }> = [
-    { value: "tensions", label: "Flagged" },
+    { value: "tensions", label: "Misaligned" },
     { value: "alignments", label: "Aligned" },
     { value: "all", label: "Both" },
   ];
@@ -300,7 +300,7 @@ function SectorColumnHeader({
             : "hover:text-[var(--undp-black)]"
         }`}
       >
-        Flagged
+        Misaligned
       </button>
     </div>
   );
@@ -325,33 +325,33 @@ function composeConcentrationSentence({
   const { populatedSectors, totalFlags, topNames, share } = concentration;
   if (totalFlags === 0 || populatedSectors === 0) {
     return {
-      headline: `No flagged pairs grouped by ${noun} yet.`,
-      body: `Either the pipeline has not flagged any pairs touching a primary-classified ${noun}, or the country has no ${noun} taxonomy configured.`,
+      headline: `No potentially misaligned pairs grouped by ${noun} yet.`,
+      body: `Either the pipeline has not surfaced any potential misalignment touching a primary-classified ${noun}, or the country has no ${noun} taxonomy configured.`,
     };
   }
   if (topNames.length === 0) {
     return {
-      headline: `Flagged pairs spread across ${populatedSectors} ${nounPlural}.`,
-      body: `${totalFlags.toLocaleString()} flagged pairs land across ${populatedSectors} ${nounPlural} with no single ${noun} dominating.`,
+      headline: `Potentially misaligned pairs spread across ${populatedSectors} ${nounPlural}.`,
+      body: `${totalFlags.toLocaleString()} potentially misaligned pairs land across ${populatedSectors} ${nounPlural} with no single ${noun} dominating.`,
     };
   }
   const sharePct = Math.round(share * 100);
   const list = formatList(topNames);
   if (topNames.length === 1) {
     return {
-      headline: `${topNames[0]} carries ${sharePct}% of flagged pairs.`,
-      body: `${totalFlags.toLocaleString()} flagged pairs land across ${populatedSectors} ${nounPlural}; ${topNames[0]} alone holds ${sharePct}%.`,
+      headline: `${topNames[0]} carries ${sharePct}% of potentially misaligned pairs.`,
+      body: `${totalFlags.toLocaleString()} potentially misaligned pairs land across ${populatedSectors} ${nounPlural}; ${topNames[0]} alone holds ${sharePct}%.`,
     };
   }
   if (topNames.length === populatedSectors) {
     return {
-      headline: `Flagged pairs touch every ${noun}.`,
-      body: `${totalFlags.toLocaleString()} flagged pairs spread across all ${populatedSectors} ${nounPlural}; the heaviest are ${list}.`,
+      headline: `Potentially misaligned pairs touch every ${noun}.`,
+      body: `${totalFlags.toLocaleString()} potentially misaligned pairs spread across all ${populatedSectors} ${nounPlural}; the heaviest are ${list}.`,
     };
   }
   return {
-    headline: `Friction concentrates in ${topNames.length} of ${populatedSectors} ${nounPlural}.`,
-    body: `${sharePct}% of the ${totalFlags.toLocaleString()} flagged pairs land on ${list}. Click a row for the underlying pairs.`,
+    headline: `Misalignment concentrates in ${topNames.length} of ${populatedSectors} ${nounPlural}.`,
+    body: `${sharePct}% of the ${totalFlags.toLocaleString()} potentially misaligned pairs land on ${list}. Click a row for the underlying pairs.`,
   };
 }
 
@@ -389,7 +389,7 @@ function SectorRow({
         onMouseEnter={() => onHover?.(row.categoryId)}
         onFocus={() => onHover?.(row.categoryId)}
         className="w-full text-left grid grid-cols-[1fr_4.25rem_4.25rem] items-center gap-3 px-1 py-2.5 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
-        aria-label={`${row.categoryName}: ${row.tensionCount} flagged, ${row.alignmentCount} aligned`}
+        aria-label={`${row.categoryName}: ${row.tensionCount} potentially misaligned, ${row.alignmentCount} aligned`}
       >
         <div className="min-w-0">
           <p

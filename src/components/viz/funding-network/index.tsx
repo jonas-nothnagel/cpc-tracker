@@ -38,7 +38,7 @@ function AlignmentBadge({ level }: { level: AlignmentLevel }) {
     medium: "Moderate",
     low: "Emerging",
     none: "None",
-    flagged: "Flagged for review",
+    flagged: "Potential misalignment",
   };
   return (
     <span

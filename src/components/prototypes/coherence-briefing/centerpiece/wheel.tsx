@@ -18,8 +18,11 @@
  *     set to the opposite filter.
  *
  * Ribbons are always aggregated per ordered arc-pair (one ribbon per pair of
- * arcs, never per individual chord). Width = sqrt(count) * factor. Green half
- * = aligned (medium+high) count; red half = flagged (any negative-side level).
+ * arcs, never per individual chord). Each is a green base ribbon carrying the
+ * whole relationship with a terracotta core on top whose width is the linear
+ * flagged share, so the red reads as a proportional thread, not a flood. On the
+ * Direction slide the rim arcs are also tinted by per-document friction share.
+ * See ./wheel-encoding for the width math.
  *
  * Click an arc → onArcClick switches focus (or toggles it off when already
  * focused). Click a node → onNodeClick (currently unused but wired in for
@@ -28,6 +31,7 @@
 
 import { useMemo, useState } from "react";
 import { arc as d3arc } from "d3-shape";
+import { buildDocFrictionShares } from "@/lib/coherence-briefing";
 import {
   ALIGNMENT_COLORS,
   getDocColor,
@@ -42,6 +46,12 @@ import type {
   Target,
   ThematicClassification,
 } from "@/types";
+import { cellColor } from "./doc-coherence-matrix";
+import {
+  ribbonBaseWidth,
+  ribbonCoreWidth,
+  ribbonWidthScale,
+} from "./wheel-encoding";
 
 // ─── Geometry ───────────────────────────────────────────────────────
 
@@ -93,6 +103,13 @@ export interface WheelState {
    * instead of inside the wheel.
    */
   suppressFocusReadout?: boolean;
+  /**
+   * When true (and groupBy === "document"), fill each rim arc by that
+   * document's norm-anchored flagged share instead of its identity colour, so
+   * the friction source is legible at a glance. Dots and labels keep identity
+   * colour. Used by the Direction landing slide. Ignored under sector grouping.
+   */
+  frictionArcs?: boolean;
 }
 
 export interface SectorCategoryRef {
@@ -328,6 +345,10 @@ interface ArcPairAggregate {
   bId: string;
   alignmentCount: number;
   tensionCount: number;
+  /** alignmentCount + tensionCount (Partial/`low`, `none` and same-arc pairs excluded). */
+  total: number;
+  /** tensionCount / total; drives the proportional terracotta core width. */
+  flaggedShare: number;
 }
 
 function aggregateByArcPair(
@@ -349,12 +370,18 @@ function aggregateByArcPair(
       bId: y,
       alignmentCount: 0,
       tensionCount: 0,
+      total: 0,
+      flaggedShare: 0,
     };
     if (isContradiction(a.alignment)) slot.tensionCount += 1;
     else if (a.alignment === "high" || a.alignment === "medium") {
       slot.alignmentCount += 1;
     }
     out.set(key, slot);
+  }
+  for (const slot of out.values()) {
+    slot.total = slot.alignmentCount + slot.tensionCount;
+    slot.flaggedShare = slot.total > 0 ? slot.tensionCount / slot.total : 0;
   }
   return out;
 }
@@ -444,26 +471,34 @@ export function WheelCenterpiece({
   );
 
   /**
-   * Ribbon-width scale capped to the corpus.
-   *
-   * Mongolia's largest doc-pair carries a few-hundred aligned records,
-   * which the original `sqrt(count) * 1.6` formula renders at ~32px —
-   * just right. Panama's largest doc-pair carries thousands, so the
-   * same formula blows up to ~100+px and turns the wheel into a soup.
-   * We cap the multiplier so the widest ribbon in any corpus tops out
-   * around RIBBON_MAX_PX; corpora with small counts keep the existing
-   * 1.6 multiplier untouched.
+   * Ribbon-width scale, normalised per corpus. Width is a gentle volume cue:
+   * the busiest document-pair (by total scored pairs) tops out at RIBBON_MAX_PX
+   * and everything else scales down, so a 5-document corpus and a 44k-pair
+   * corpus both fit the wheel without hand-tuned constants. The alignment vs
+   * friction signal is carried by colour (green base + proportional terracotta
+   * core), not by width. See ./wheel-encoding.
    */
-  const RIBBON_MAX_PX = 30;
-  const ribbonScale = useMemo(() => {
-    let maxCount = 0;
+  const widthScale = useMemo(() => {
+    let maxTotal = 0;
     for (const agg of aggregates.values()) {
-      if (agg.alignmentCount > maxCount) maxCount = agg.alignmentCount;
-      if (agg.tensionCount > maxCount) maxCount = agg.tensionCount;
+      if (agg.total > maxTotal) maxTotal = agg.total;
     }
-    if (maxCount <= 0) return 1.6;
-    return Math.min(1.6, RIBBON_MAX_PX / Math.sqrt(maxCount));
+    return ribbonWidthScale(maxTotal);
   }, [aggregates]);
+
+  /**
+   * Per-document friction share for the rim attribution tint. A document's arc
+   * warms toward terracotta in proportion to how much of its cross-document
+   * relationships are flagged, anchored to the corpus norm, so the friction
+   * source is legible at a glance. Document grouping only.
+   */
+  const docFriction = useMemo(
+    () =>
+      state.groupBy === "document"
+        ? buildDocFrictionShares(alignments, targets, countryConfig)
+        : null,
+    [state.groupBy, alignments, targets, countryConfig],
+  );
   /**
    * "Busy wheel" = many doc arcs around the rim. With ≥6 docs, even
    * normalized ribbons stack and read as opaque; we lower the default
@@ -517,6 +552,12 @@ export function WheelCenterpiece({
   // centre readout). Doc-to-doc only; sector focus keeps plain ghosting.
   const docFocusActive =
     state.groupBy === "document" && focusArcId !== null;
+  // Rim arcs encode per-document friction (Direction slide) only when the slide
+  // opts in, we are grouping by document, and the shares are available.
+  const showFrictionArcs =
+    state.frictionArcs === true &&
+    state.groupBy === "document" &&
+    docFriction !== null;
   // Reinforces/tension split uses the same rule as the Document-pairs list
   // (flagged > aligned × 0.25), so a doc reads consistently across both views.
   const FOCUS_CLASH_RATIO = 0.25;
@@ -641,11 +682,19 @@ export function WheelCenterpiece({
           const clickable =
             !!onArcClick && arc.id !== UNCLASSIFIED_BUCKET_ID;
           const hoverable = !!onArcHover && arc.id !== UNCLASSIFIED_BUCKET_ID;
+          const frictionShare =
+            showFrictionArcs && docFriction
+              ? (docFriction.byDoc.get(arc.id as PolicyDocumentType) ?? 0)
+              : null;
+          const arcFill =
+            frictionShare !== null && docFriction
+              ? cellColor(frictionShare, docFriction.mid, docFriction.maxShare)
+              : arc.color;
           return (
             <g key={arc.id}>
               <path
                 d={d}
-                fill={arc.color}
+                fill={arcFill}
                 opacity={isGhost ? 0.25 : isFocus ? 1 : 0.85}
                 onClick={clickable ? () => handleArcClick(arc) : undefined}
                 onMouseEnter={hoverable ? () => handleArcHover(arc) : undefined}
@@ -655,6 +704,9 @@ export function WheelCenterpiece({
               >
                 <title>
                   {arc.fullLabel} · {arc.count} targets
+                  {frictionShare !== null
+                    ? ` · ${Math.round(frictionShare * 100)}% of cross-document links flagged`
+                    : ""}
                   {clickable
                     ? isFocus
                       ? " · click to clear focus"
@@ -673,8 +725,9 @@ export function WheelCenterpiece({
           if (!aArc || !bArc) return null;
           const a = arcMid(aArc);
           const b = arcMid(bArc);
-          const total = agg.alignmentCount + agg.tensionCount;
-          if (total === 0) return null;
+          if (agg.total === 0) return null;
+          const baseWidth = ribbonBaseWidth(agg.total, widthScale);
+          const coreWidth = ribbonCoreWidth(baseWidth, agg.flaggedShare);
           const showAlign =
             state.filter !== "tensions" && agg.alignmentCount > 0;
           const showTension =
@@ -712,10 +765,7 @@ export function WheelCenterpiece({
                   d={curvePath(a.x, a.y, b.x, b.y)}
                   fill="none"
                   stroke={ALIGNMENT_COLORS.high}
-                  strokeWidth={Math.max(
-                    1,
-                    Math.sqrt(agg.alignmentCount) * ribbonScale,
-                  )}
+                  strokeWidth={baseWidth}
                   strokeOpacity={
                     ghosted
                       ? docFocusActive
@@ -738,10 +788,7 @@ export function WheelCenterpiece({
                   d={curvePath(a.x, a.y, b.x, b.y)}
                   fill="none"
                   stroke={ALIGNMENT_COLORS.flagged}
-                  strokeWidth={Math.max(
-                    1,
-                    Math.sqrt(agg.tensionCount) * ribbonScale * 1.125,
-                  )}
+                  strokeWidth={coreWidth}
                   strokeOpacity={
                     ghosted
                       ? docFocusActive
@@ -776,7 +823,8 @@ export function WheelCenterpiece({
             const bArc = arcsById.get(agg.bId);
             if (!aArc || !bArc) return null;
             const line1 = `${aArc.shortLabel} ↔ ${bArc.shortLabel}`;
-            const line2 = `${agg.alignmentCount} aligned · ${agg.tensionCount} flagged`;
+            const pct = Math.round(agg.flaggedShare * 100);
+            const line2 = `${agg.alignmentCount} aligned · ${agg.tensionCount} misaligned (${pct}%)`;
             const widest = Math.max(line1.length, line2.length);
             const boxW = Math.min(VB_W - 24, Math.max(150, widest * 7 + 28));
             const top = -VB / 2 + 6;
@@ -1074,11 +1122,11 @@ export function WheelCenterpiece({
                   strokeLinejoin="round"
                 >
                   <tspan fill={ALIGNMENT_COLORS.high}>
-                    {focusInfo.reinforces} reinforces
+                    {focusInfo.reinforces} aligned
                   </tspan>
                   <tspan fill="var(--undp-gray)"> · </tspan>
                   <tspan fill={ALIGNMENT_COLORS.flagged}>
-                    {focusInfo.tension} in tension
+                    {focusInfo.tension} misaligned
                   </tspan>
                 </text>
                 <text

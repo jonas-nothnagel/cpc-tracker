@@ -18,7 +18,11 @@ import type {
   FrictionType,
   FrictionTypeTotals,
 } from "@/lib/coherence-briefing";
-import { CONTRADICTION_TYPE_LABELS, MECHANISM_COLORS } from "@/lib/utils";
+import {
+  CONTRADICTION_TYPE_DESCRIPTIONS,
+  CONTRADICTION_TYPE_LABELS,
+  MECHANISM_COLORS,
+} from "@/lib/utils";
 
 const ORDER: FrictionType[] = [
   "goal_conflict",
@@ -40,7 +44,7 @@ export function FrictionTypeChart({
   if (totalFlagged === 0) {
     return (
       <p className="text-sm italic text-[var(--undp-gray)]">
-        No flagged pairs to break down.
+        No potential misalignment to break down.
       </p>
     );
   }
@@ -75,7 +79,7 @@ export function FrictionTypeChart({
           {caption}
         </p>
         <p className="text-[11px] text-[var(--undp-black)] tabular-nums font-medium">
-          {totalFlagged.toLocaleString()} flagged pairs
+          {totalFlagged.toLocaleString()} potentially misaligned pairs
         </p>
       </div>
       <div
@@ -163,6 +167,9 @@ function SegmentTotal({
         <span className="text-[11px] text-[var(--undp-gray)] font-normal ml-1">
           ({value.toLocaleString()})
         </span>
+      </p>
+      <p className="text-[10px] text-[var(--undp-gray)] leading-snug mt-1">
+        {CONTRADICTION_TYPE_DESCRIPTIONS[type]}
       </p>
     </div>
   );

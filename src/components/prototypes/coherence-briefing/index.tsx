@@ -607,6 +607,7 @@ export function CoherenceBriefing({
           groupBy: "document",
           focus: null,
           filter: "all",
+          frictionArcs: true,
           highlightPair: primerHighlight ?? undefined,
         };
       }
@@ -1043,7 +1044,7 @@ export function CoherenceBriefing({
                           : undefined
                     }
                   />
-                  <WheelLegend />
+                  <WheelLegend showArcNote={wheelState.frictionArcs === true} />
                 </>
               )}
             </div>
@@ -1188,14 +1189,19 @@ function JumpNav({
   );
 }
 
-function WheelLegend() {
+function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
   return (
     <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label="Alignment" />
-      <LegendDot color="#dc2626" label="Flagged pair" dashed />
+      <LegendDot color="#196127" label="Aligned" />
+      <LegendDot color="#dc2626" label="Potential misalignment" dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
-        ribbon width = number of pairs
+        red = share of each link that is flagged
       </span>
+      {showArcNote && (
+        <span className="text-[10px] text-[var(--undp-gray)]/70">
+          warmer arc = document with more flags
+        </span>
+      )}
     </div>
   );
 }

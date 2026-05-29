@@ -148,9 +148,9 @@ function composeHeadline(
     )
     .join(" and ");
   if (top.length === 1) {
-    return `${names} carries the bulk of the cross-document signal.`;
+    return `${names} carries most of the relationships between documents.`;
   }
-  return `${names} carry most of the cross-document signal.`;
+  return `${names} carry most of the relationships between documents.`;
 }
 
 function composeBody(ranked: DocPairSynthesis[]): string {
@@ -255,7 +255,9 @@ function DocPairRow({
     : showClash
       ? dp.synthesis.clash
       : dp.synthesis.reinforce;
-  const excerptPrefix = showClash ? "Flagged" : "Reinforces";
+  const excerptPrefix = showClash
+    ? "Potential misalignment"
+    : "Strong alignment";
   const excerptColor = showClash
     ? ALIGNMENT_COLORS.flagged
     : ALIGNMENT_COLORS.high;

@@ -30,9 +30,9 @@ export function FrictionTypesSection({
     return (
       <SlideFrame
         id={FRICTION_TYPES_SECTION_ID}
-        eyebrow="What kind of friction?"
-        headline="No flagged pairs to characterise yet."
-        body="Once the pipeline flags pairs for review, the kind of friction (goal / resource / delivery) shows up here."
+        eyebrow="What kind of misalignment?"
+        headline="No potential misalignment to characterise yet."
+        body="Once the pipeline surfaces potential misalignment, the kind (conflicting goals, competing resources, or delivery) shows up here."
       />
     );
   }
@@ -53,22 +53,22 @@ export function FrictionTypesSection({
 function composeHeadline(t: FrictionTypeTotals): string {
   switch (t.dominantType) {
     case "goal_conflict":
-      return "Most flagged pairs are goal conflicts, not resource competition.";
+      return "Most potential misalignment is conflicting goals, not competition for resources.";
     case "resource_competition":
-      return "Resource competition drives most of the flagged friction.";
+      return "Most potential misalignment is competition for resources.";
     case "delivery_friction":
-      return "Most friction is operational, not fundamental.";
+      return "Most potential misalignment is about delivery, not the goals themselves.";
     default:
-      return "Friction takes three forms across the policy set.";
+      return "Potential misalignment takes three forms across the policy set.";
   }
 }
 
 function composeBody(t: FrictionTypeTotals): string {
   const total = t.total;
   if (!t.dominantType) {
-    return `${total.toLocaleString()} flagged pairs split across the three mechanisms. Click any segment to see how those pairs break down.`;
+    return `${total.toLocaleString()} potentially misaligned pairs split across the three types. Click any segment to see how those pairs break down.`;
   }
   const pct = Math.round((t[t.dominantType] / total) * 100);
   const label = CONTRADICTION_TYPE_LABELS[t.dominantType].toLowerCase();
-  return `Of ${total.toLocaleString()} flagged pairs, ${label} accounts for ${pct}%. Click any segment to see how those pairs break down by document, theme, and target.`;
+  return `Of ${total.toLocaleString()} potentially misaligned pairs, ${label} accounts for ${pct}%. Click any segment to see how those pairs break down by document, theme, and target.`;
 }

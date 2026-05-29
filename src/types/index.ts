@@ -269,7 +269,7 @@ export interface AlignmentResult {
   targetAId: string;
   /** Second target id */
   targetBId: string;
-  /** Assessed relationship level. "flagged" means a real-world friction has been flagged for review. */
+  /** Assessed relationship level. "flagged" = a real-world friction surfaced for review (shown as "Potential misalignment"). */
   alignment: AlignmentLevel;
   /** Kind of friction. Present only when alignment === "flagged". */
   mechanism?: AlignmentMechanism;

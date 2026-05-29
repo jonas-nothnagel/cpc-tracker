@@ -418,14 +418,14 @@ export function TargetAtlas({
                 <strong className="text-[var(--undp-black)]">
                   <span style={{ color: "#dc2626" }}>Red ring</span>
                 </strong>{" "}
-                marks targets with <em>many flagged misalignments</em> only:
-                those the AI has flagged as a possible or likely conflict with{" "}
+                marks targets with <em>many potential misalignments</em> only:
+                those the AI has identified as potentially misaligned with{" "}
                 <strong>5 or more</strong> other policy targets. Targets with
-                fewer flags aren&apos;t ringed, to keep the chart readable;
-                every flagged pair is still listed in the side panel when you
-                click a dot. Flagged misalignments sit alongside the axes,
-                not subtracted from them. A target can be strongly aligned{" "}
-                <em>and</em> flagged for review.
+                fewer aren&apos;t ringed, to keep the chart readable;
+                every potentially misaligned pair is still listed in the side
+                panel when you click a dot. Potential misalignments sit
+                alongside the axes, not subtracted from them. A target can be
+                strongly aligned <em>and</em> potentially misaligned.
               </li>
             </ul>
             <p className="mt-2 text-xs italic">

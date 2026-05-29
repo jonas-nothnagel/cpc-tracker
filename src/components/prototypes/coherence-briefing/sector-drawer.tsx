@@ -5,7 +5,7 @@
  *
  * Round-2 restructure: instead of a synthesis block at the top and
  * separate "top alignments / top tensions" lists below, each synthesis
- * panel (Reinforces / Flagged for review) now carries its own example
+ * panel (Strong alignment / Potential misalignment) now carries its own example
  * sub-list directly beneath the LLM text. Single source of truth, the
  * examples are anchored to the claims they support.
  *
@@ -147,14 +147,14 @@ export function SectorDrawer({
             <>
               <LegacyDrawerList
                 heading="What's pulling together"
-                empty="No medium-or-strong alignments touch this sector."
+                empty="No strong alignments touch this sector."
                 entries={briefing.topAlignments}
                 countryConfig={countryConfig}
                 onOpenTargetPair={onOpenTargetPair}
               />
               <LegacyDrawerList
                 heading="What's pulling against the rest"
-                empty="No flagged pairs in this sector."
+                empty="No potential misalignment in this sector."
                 entries={briefing.topTensions}
                 countryConfig={countryConfig}
                 onOpenTargetPair={onOpenTargetPair}
@@ -193,14 +193,14 @@ function SectorSynthesisBlock({
         <div className="mt-4 space-y-6">
           <LegacyDrawerList
             heading="Strongest alignments"
-            empty="No medium-or-strong alignments touch this sector."
+            empty="No strong alignments touch this sector."
             entries={topAlignments}
             countryConfig={countryConfig}
             onOpenTargetPair={onOpenTargetPair}
           />
           <LegacyDrawerList
-            heading="Top flagged pairs"
-            empty="No flagged pairs in this sector."
+            heading="Top potentially misaligned pairs"
+            empty="No potential misalignment in this sector."
             entries={topTensions}
             countryConfig={countryConfig}
             onOpenTargetPair={onOpenTargetPair}
@@ -225,22 +225,22 @@ function SectorSynthesisBlock({
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SynthesisPanelWithExamples
-          label="Reinforces"
+          label="Strong alignment"
           dotColor={ALIGNED_DOT_COLOR}
           body={reinforce}
           examples={topAlignments}
-          emptyText="No medium-or-strong alignments touch this sector."
+          emptyText="No strong alignments touch this sector."
           variant="aligned"
           countryConfig={countryConfig}
           onOpenTargetPair={onOpenTargetPair}
         />
         <SynthesisPanelWithExamples
-          label="Flagged for review"
+          label="Potential misalignment"
           dotColor={FRICTION_DOT_COLOR}
           dashed
           body={clash}
           examples={topTensions}
-          emptyText="No flagged pairs in this sector."
+          emptyText="No potential misalignment in this sector."
           variant="flagged"
           countryConfig={countryConfig}
           onOpenTargetPair={onOpenTargetPair}
@@ -266,7 +266,7 @@ function SectorSynthesisBlock({
           </span>
           <span className="text-[var(--undp-gray)] mx-2">·</span>
           <span style={{ color: ALIGNMENT_COLORS.flagged }}>
-            {synthesis.flagged_count.toLocaleString()} flagged
+            {synthesis.flagged_count.toLocaleString()} potentially misaligned
           </span>
         </p>
         <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
@@ -278,7 +278,7 @@ function SectorSynthesisBlock({
         </p>
         {subtypeParts.length > 0 && (
           <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-            Flagged subtypes: {subtypeParts.join(", ")}
+            Misalignment types: {subtypeParts.join(", ")}
           </p>
         )}
       </div>
@@ -372,8 +372,8 @@ function SynthesisPanelWithExamples({
       <div className="mt-4 border-t border-gray-200 pt-3">
         <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
           {variant === "flagged"
-            ? "Examples flagged for review"
-            : "Examples reinforcing this"}
+            ? "Potentially misaligned examples"
+            : "Strongly aligned examples"}
         </p>
         {visible.length === 0 ? (
           <p className="text-[11px] italic text-[var(--undp-gray)]">

@@ -207,8 +207,10 @@ export function FlagProfileDrawer({
                 </p>
               )}
               <p className="mt-2 text-xs text-[var(--undp-gray)] tabular-nums">
-                {total.toLocaleString()} flagged pair{total === 1 ? "" : "s"}
-                {totalFlagged > 0 && ` · ${sharePct}% of all flags`}
+                {total.toLocaleString()} potentially misaligned pair
+                {total === 1 ? "" : "s"}
+                {totalFlagged > 0 &&
+                  ` · ${sharePct}% of all potential misalignment`}
               </p>
             </div>
             <button
@@ -225,7 +227,7 @@ export function FlagProfileDrawer({
         <div className="px-6 py-6 space-y-7">
           {total === 0 ? (
             <p className="text-sm italic text-[var(--undp-gray)]">
-              No flagged pairs in this subset.
+              No potential misalignment in this subset.
             </p>
           ) : (
             <>
@@ -328,7 +330,11 @@ function CompositionGrid({
         emptyText="No primary-classified themes."
       />
       <CompositionColumn
-        title={subject.kind === "target" ? "Clashes most with" : "Recurs on targets"}
+        title={
+          subject.kind === "target"
+            ? "Most misaligned with"
+            : "Recurs on targets"
+        }
         rows={targetRows}
       />
     </div>
@@ -422,7 +428,7 @@ function ManageabilityBar({
   return (
     <div>
       <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-        Where the friction sits
+        Where the misalignment sits
       </p>
       <div
         className="flex h-2 w-full overflow-hidden rounded-full"
@@ -442,9 +448,9 @@ function ManageabilityBar({
         />
       </div>
       <p className="mt-1.5 text-[11.5px] text-[var(--undp-black)] leading-snug">
-        The AI reads {mPct}% of these as coordination-level (the clash could
-        likely be eased by aligning delivery, sequencing, or safeguards rather
-        than changing the targets)
+        The AI reads {mPct}% of these as coordination-level (the misalignment
+        could likely be eased by aligning delivery, sequencing, or safeguards
+        rather than changing the targets)
         {fundamental > 0
           ? `, and ${fPct}% as design-level, where a target itself may need revisiting`
           : ""}
@@ -469,7 +475,7 @@ function RepresentativePairs({
     <div className="border-t border-gray-200 pt-4">
       <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {subjectKind === "target"
-          ? "Pairs flagged for review"
+          ? "Potentially misaligned pairs"
           : "Representative pairs"}
       </p>
       <ol className="space-y-2">

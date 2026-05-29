@@ -71,7 +71,7 @@ Architecture is evolving — treat the actual code as source of truth.
 - LLM provider: Azure OpenAI 
 - `AlignmentLevel` is bidirectional: negative values (likely_conflict, possible_conflict, possible_misalignment) and positive (low, medium, high alignment)
 - Display labels for positive `AlignmentLevel` values: avoid "Low" — use "Partial" or "Emerging" instead. See guardrails.
-- Display labels for negative `AlignmentLevel` values: "Likely conflict", "Possible conflict", "Possible misalignment". The cautious vocabulary frames the negative side as flagged-for-review, not certain contradictions. See guardrails.
+- Display label for the negative `AlignmentLevel` value (`flagged`): "Potential misalignment". The cautious vocabulary frames the negative side as surfaced for review, not certain contradictions. Legacy v1 level names (possible/likely conflict, possible misalignment) survive only as parser aliases. See guardrails.
 
 ## Collaboration Workflow
 

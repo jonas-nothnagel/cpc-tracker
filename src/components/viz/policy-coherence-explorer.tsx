@@ -3585,7 +3585,7 @@ export function PolicyCoherenceExplorer({
           <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
             Policy Coherence Explorer
             <InfoBox>
-              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate possible or likely conflicts the AI has flagged for review.
+              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate pairs the AI has identified as potential misalignment.
               <br /><br />
               The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.
               <br /><br />
@@ -4638,7 +4638,7 @@ export function PolicyCoherenceExplorer({
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
                       <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.flagged} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
-                      <span className="text-[var(--undp-gray)]">Flagged for review</span>
+                      <span className="text-[var(--undp-gray)]">Potential misalignment</span>
                     </span>
                   )}
                 </div>
