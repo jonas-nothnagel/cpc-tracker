@@ -5,6 +5,7 @@ import {
   buildDocFocusFrictions,
   buildDocFrictionShares,
   buildFlagSubsetProfile,
+  buildTargetFrictionTree,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
   rankTargetsByFriction,
@@ -433,6 +434,92 @@ describe("buildDocFocusFrictions", () => {
     const r = buildDocFocusFrictions(al, t, "Vision");
     expect(r.flaggedPairs[0].pair.mechanism).toBe("goal_conflict");
     expect(r.flaggedPairs[1].pair.mechanism).toBe("delivery_friction");
+  });
+});
+
+
+// ─── buildTargetFrictionTree ────────────────────────────────────────
+
+describe("buildTargetFrictionTree", () => {
+  const targets = [
+    makeTarget("NDC_1", "NDC"), // focal
+    makeTarget("FSS_1", "FSS"),
+    makeTarget("FSS_2", "FSS"),
+    makeTarget("NAP_1", "NAP"),
+  ];
+  const pairs = [
+    makeFlagged("NDC_1", "FSS_2", "goal_conflict"),
+    makeFlagged("NDC_1", "FSS_1", "resource_competition"),
+    makeFlagged("NDC_1", "NAP_1", "resource_competition"),
+    makeFlagged("FSS_1", "NDC_1", "delivery_friction"), // focal as side B
+    makeFlagged("FSS_1", "NAP_1", "goal_conflict"), // does not touch focal → excluded
+    makeFlagged("NDC_1", "ZZZ", "goal_conflict"), // unresolvable counterpart → excluded
+    makeAlignment("NDC_1", "FSS_1", "high"), // not flagged → ignored
+  ];
+
+  it("counts only flagged pairs touching the focal target with both ids resolvable", () => {
+    const tree = buildTargetFrictionTree({
+      focalTargetId: "NDC_1",
+      pairs,
+      targets,
+    });
+    expect(tree.total).toBe(4);
+  });
+
+  it("orders mechanism groups by severity, null mechanism last", () => {
+    const withNull = [
+      ...pairs,
+      { ...makeAlignment("NDC_1", "FSS_2", "flagged"), mechanism: undefined },
+    ];
+    const tree = buildTargetFrictionTree({
+      focalTargetId: "NDC_1",
+      pairs: withNull,
+      targets,
+    });
+    expect(tree.byMechanism.map((g) => g.mechanism)).toEqual([
+      "goal_conflict",
+      "resource_competition",
+      "delivery_friction",
+      null,
+    ]);
+  });
+
+  it("groups counterparts by peer document under each mechanism", () => {
+    const tree = buildTargetFrictionTree({
+      focalTargetId: "NDC_1",
+      pairs,
+      targets,
+    });
+    const resource = tree.byMechanism.find(
+      (g) => g.mechanism === "resource_competition",
+    )!;
+    expect(resource.count).toBe(2);
+    // FSS and NAP each contribute one; tie broken by label.
+    expect(resource.byDoc.map((d) => d.peerDoc)).toEqual(["FSS", "NAP"]);
+    expect(resource.byDoc[0].counterparts[0].counterpart.id).toBe("FSS_1");
+  });
+
+  it("uses the non-focal side as the counterpart regardless of pair order", () => {
+    const tree = buildTargetFrictionTree({
+      focalTargetId: "NDC_1",
+      pairs,
+      targets,
+    });
+    const delivery = tree.byMechanism.find(
+      (g) => g.mechanism === "delivery_friction",
+    )!;
+    // pair was makeFlagged("FSS_1", "NDC_1", ...) — focal is side B.
+    expect(delivery.byDoc[0].counterparts[0].counterpart.id).toBe("FSS_1");
+  });
+
+  it("returns empty when the focal target does not resolve", () => {
+    const tree = buildTargetFrictionTree({
+      focalTargetId: "MISSING",
+      pairs,
+      targets,
+    });
+    expect(tree.total).toBe(0);
+    expect(tree.byMechanism).toEqual([]);
   });
 });
 

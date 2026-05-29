@@ -15,8 +15,13 @@ import {
   CONTRADICTION_TYPE_LABELS,
   getDocColor,
   getDocMediumLabel,
+  MECHANISM_COLORS,
 } from "@/lib/utils";
-import { buildFlagSubsetProfile } from "@/lib/coherence-briefing";
+import {
+  buildFlagSubsetProfile,
+  buildTargetFrictionTree,
+  type TargetFrictionTree,
+} from "@/lib/coherence-briefing";
 import { SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
@@ -38,7 +43,12 @@ const BAR_NEUTRAL = "#94a3b8";
 const BAR_TRACK = "#e5e7eb";
 
 export type FlagProfileSubject =
-  | { kind: "friction-type"; mechanism: AlignmentMechanism }
+  | {
+      kind: "friction-type";
+      mechanism: AlignmentMechanism;
+      /** When set, scope to this one document's cross-document misalignment. */
+      doc?: PolicyDocumentType;
+    }
   | { kind: "target"; target: Target };
 
 const CONFIDENCE_RANK: Record<AlignmentConfidence, number> = {
@@ -104,9 +114,20 @@ export function FlagProfileDrawer({
   const subset = useMemo(() => {
     if (!subject) return [];
     if (subject.kind === "friction-type") {
-      return alignment.filter(
+      const base = alignment.filter(
         (a) => a.alignment === "flagged" && a.mechanism === subject.mechanism,
       );
+      if (!subject.doc) return base;
+      // Doc-scoped: keep only cross-document flags with exactly one side in the
+      // focused doc, matching buildDocFocusFrictions so the drawer reflects the
+      // same set the section-02 breakdown bar is built from.
+      const doc = subject.doc;
+      return base.filter((a) => {
+        const tA = targetMap.get(a.targetAId);
+        const tB = targetMap.get(a.targetBId);
+        if (!tA || !tB) return false;
+        return (tA.sourceDocument === doc) !== (tB.sourceDocument === doc);
+      });
     }
     const id = subject.target.id;
     return alignment.filter(
@@ -114,7 +135,7 @@ export function FlagProfileDrawer({
         a.alignment === "flagged" &&
         (a.targetAId === id || a.targetBId === id),
     );
-  }, [subject, alignment]);
+  }, [subject, alignment, targetMap]);
 
   const profile = useMemo(() => {
     if (!subject) return null;
@@ -155,11 +176,49 @@ export function FlagProfileDrawer({
     return rows.slice(0, EXAMPLE_CAP);
   }, [subset, targetMap]);
 
+  // For a doc-scoped friction type, the share is relative to that document's own
+  // flagged total (its cross-document pairs), not the corpus, so "% of …" reads
+  // honestly against the bar it was opened from.
+  const docScopedFlaggedTotal = useMemo(() => {
+    if (!subject || subject.kind !== "friction-type" || !subject.doc)
+      return null;
+    const doc = subject.doc;
+    let n = 0;
+    for (const a of alignment) {
+      // Require a mechanism so this denominator matches the section-02
+      // breakdown bar (frictionTypeTotalsFromAlignment counts mechanism-tagged
+      // pairs only); the share then equals the clicked segment's percentage.
+      if (a.alignment !== "flagged" || !a.mechanism) continue;
+      const tA = targetMap.get(a.targetAId);
+      const tB = targetMap.get(a.targetBId);
+      if (!tA || !tB) continue;
+      if ((tA.sourceDocument === doc) !== (tB.sourceDocument === doc)) n += 1;
+    }
+    return n;
+  }, [subject, alignment, targetMap]);
+
+  // Three-level hierarchy (mechanism → peer doc → counterpart) for the target view.
+  const frictionTree = useMemo<TargetFrictionTree | null>(() => {
+    if (!subject || subject.kind !== "target") return null;
+    return buildTargetFrictionTree({
+      focalTargetId: subject.target.id,
+      pairs: subset,
+      targets,
+    });
+  }, [subject, subset, targets]);
+
   if (!subject || !profile) return null;
 
   const total = profile.total;
+  const docScope =
+    subject.kind === "friction-type" && subject.doc ? subject.doc : null;
+  const docScopeLabel = docScope
+    ? getDocMediumLabel(countryConfig, docScope)
+    : null;
+  const shareDenom =
+    docScope != null ? (docScopedFlaggedTotal ?? 0) : totalFlagged;
   const sharePct =
-    totalFlagged > 0 ? Math.round((total / totalFlagged) * 100) : 0;
+    shareDenom > 0 ? Math.round((total / shareDenom) * 100) : 0;
   const headerTitle =
     subject.kind === "friction-type"
       ? CONTRADICTION_TYPE_LABELS[subject.mechanism]
@@ -201,6 +260,11 @@ export function FlagProfileDrawer({
               >
                 {headerTitle}
               </h3>
+              {docScopeLabel && (
+                <p className="mt-1 text-[12px] text-[var(--undp-gray)] leading-snug">
+                  {`within ${docScopeLabel}'s potential misalignment`}
+                </p>
+              )}
               {subject.kind === "target" && (
                 <p className="mt-1 text-[12px] text-[var(--undp-gray)] leading-snug line-clamp-3">
                   {subject.target.text}
@@ -209,8 +273,8 @@ export function FlagProfileDrawer({
               <p className="mt-2 text-xs text-[var(--undp-gray)] tabular-nums">
                 {total.toLocaleString()} potentially misaligned pair
                 {total === 1 ? "" : "s"}
-                {totalFlagged > 0 &&
-                  ` · ${sharePct}% of all potential misalignment`}
+                {shareDenom > 0 &&
+                  ` · ${sharePct}% of ${docScopeLabel ? `${docScopeLabel}'s` : "all"} potential misalignment`}
               </p>
             </div>
             <button
@@ -242,12 +306,21 @@ export function FlagProfileDrawer({
                 manageability={profile.manageability}
                 total={total}
               />
-              <RepresentativePairs
-                examples={examples}
-                countryConfig={countryConfig}
-                onOpenPair={onOpenPair}
-                subjectKind={subject.kind}
-              />
+              {subject.kind === "target" && frictionTree ? (
+                <TargetFrictionTreeView
+                  tree={frictionTree}
+                  focalDoc={subject.target.sourceDocument}
+                  countryConfig={countryConfig}
+                  onOpenPair={onOpenPair}
+                />
+              ) : (
+                <RepresentativePairs
+                  examples={examples}
+                  countryConfig={countryConfig}
+                  onOpenPair={onOpenPair}
+                  subjectKind={subject.kind}
+                />
+              )}
               <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
                 {AI_DISCLAIMER}
               </p>
@@ -321,22 +394,23 @@ function CompositionGrid({
     count: r.count,
     onClick: () => onOpenTarget(r.target),
   }));
+  // Target view: the three-level tree below owns the counterpart breakdown, so
+  // the summary grid drops the recurring-targets column (two orthogonal cuts —
+  // document pairs and themes — instead of duplicating counterparts).
+  const isTarget = subject.kind === "target";
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <div
+      className={`grid grid-cols-1 gap-5 ${isTarget ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}
+    >
       <CompositionColumn title="Across document pairs" rows={docRows} />
       <CompositionColumn
         title={`Across ${themeNoun}`}
         rows={themeRows}
         emptyText="No primary-classified themes."
       />
-      <CompositionColumn
-        title={
-          subject.kind === "target"
-            ? "Most misaligned with"
-            : "Recurs on targets"
-        }
-        rows={targetRows}
-      />
+      {!isTarget && (
+        <CompositionColumn title="Recurs on targets" rows={targetRows} />
+      )}
     </div>
   );
 }
@@ -519,6 +593,126 @@ function RepresentativePairs({
           </li>
         ))}
       </ol>
+    </div>
+  );
+}
+
+/**
+ * TargetFrictionTreeView — the high-friction-target drill-in. Renders one focal
+ * target's flagged pairs as a three-level indented hierarchy: friction mechanism
+ * (colour-anchored to the chart palette) → peer document → counterpart target.
+ * Uniform rows, no variable node sizes; every counterpart opens the full pair.
+ * Replaces the old flat 6-capped example list so a target that carries a lot of
+ * misalignment reads as a structure rather than a truncated sample.
+ */
+function TargetFrictionTreeView({
+  tree,
+  focalDoc,
+  countryConfig,
+  onOpenPair,
+}: {
+  tree: TargetFrictionTree;
+  focalDoc: PolicyDocumentType;
+  countryConfig: CountryConfig | null;
+  onOpenPair: (aId: string, bId: string) => void;
+}) {
+  if (tree.byMechanism.length === 0) return null;
+  return (
+    <div className="border-t border-gray-200 pt-4">
+      <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+        {"How this target's potential misalignment breaks down"}
+      </p>
+      <div className="space-y-4">
+        {tree.byMechanism.map((group) => (
+          <MechanismBranch
+            key={group.mechanism ?? "__none__"}
+            group={group}
+            focalDoc={focalDoc}
+            countryConfig={countryConfig}
+            onOpenPair={onOpenPair}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MechanismBranch({
+  group,
+  focalDoc,
+  countryConfig,
+  onOpenPair,
+}: {
+  group: TargetFrictionTree["byMechanism"][number];
+  focalDoc: PolicyDocumentType;
+  countryConfig: CountryConfig | null;
+  onOpenPair: (aId: string, bId: string) => void;
+}) {
+  const color = group.mechanism
+    ? MECHANISM_COLORS[group.mechanism]
+    : BAR_NEUTRAL;
+  const label = group.mechanism
+    ? CONTRADICTION_TYPE_LABELS[group.mechanism]
+    : "Unclassified";
+  return (
+    <div>
+      {/* L1 — mechanism */}
+      <div className="flex items-baseline gap-2">
+        <span
+          aria-hidden="true"
+          className="inline-block w-2.5 h-2.5 rounded-sm shrink-0 translate-y-[1px]"
+          style={{ backgroundColor: color }}
+        />
+        <span
+          className="text-[12px] font-semibold uppercase tracking-wider"
+          style={{ color }}
+        >
+          {label}
+        </span>
+        <span className="text-[11px] tabular-nums text-[var(--undp-gray)]">
+          {group.count.toLocaleString()}
+        </span>
+      </div>
+      {/* L2 — peer document, L3 — counterpart target */}
+      <div className="mt-1.5 ml-[0.3rem] border-l border-gray-200 pl-3.5 space-y-2.5">
+        {group.byDoc.map((doc) => (
+          <div key={doc.peerDoc}>
+            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+              {doc.peerDoc === focalDoc ? "within" : "vs"}{" "}
+              {getDocMediumLabel(countryConfig, doc.peerDoc)}
+              <span className="ml-1.5 tabular-nums">
+                {doc.count.toLocaleString()}
+              </span>
+            </p>
+            <ul className="mt-1 space-y-1">
+              {doc.counterparts.map(({ counterpart, pair }) => (
+                <li key={`${pair.targetAId}__${pair.targetBId}`}>
+                  <button
+                    type="button"
+                    onClick={() => onOpenPair(pair.targetAId, pair.targetBId)}
+                    className="w-full text-left rounded -mx-1 px-1 py-0.5 hover:bg-gray-50 transition-colors"
+                    title={`Open ${counterpart.sourceLabel}`}
+                  >
+                    <span className="text-[11.5px] text-[var(--undp-black)] font-medium">
+                      {counterpart.sourceLabel}
+                    </span>
+                    <span
+                      className="block text-[11px] text-[var(--undp-gray)] leading-snug overflow-hidden"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {counterpart.text}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

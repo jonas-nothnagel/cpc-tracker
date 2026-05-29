@@ -1388,6 +1388,110 @@ export function buildDocFocusFrictions(
   };
 }
 
+// ─── Target friction hierarchy (high-friction-target drill-in) ──
+
+export interface TargetFrictionCounterpart {
+  /** The non-focal target of the flagged pair. */
+  counterpart: Target;
+  /** The flagged pair (carries mechanism, manageability, confidence, description). */
+  pair: AlignmentResult;
+}
+
+export interface TargetFrictionDocGroup {
+  peerDoc: PolicyDocumentType;
+  count: number;
+  counterparts: TargetFrictionCounterpart[];
+}
+
+export interface TargetFrictionMechanismGroup {
+  /** null = the flagged pair carried no mechanism. */
+  mechanism: AlignmentMechanism | null;
+  count: number;
+  byDoc: TargetFrictionDocGroup[];
+}
+
+export interface TargetFrictionTree {
+  /** Total flagged pairs touching the focal target (both ids resolvable). */
+  total: number;
+  byMechanism: TargetFrictionMechanismGroup[];
+}
+
+/**
+ * Decompose every flagged pair touching one focal target into a three-level
+ * hierarchy: friction mechanism → peer document → counterpart target. Powers the
+ * high-friction-target drill-in in the FlagProfileDrawer, so a target carrying a
+ * lot of misalignment reads as a structure rather than a flat capped list.
+ *
+ * Only pairs where both ids resolve are counted (orphans skipped, matching the
+ * rest of the misalignment story). Mechanism groups are ordered by severity
+ * (goal_conflict → resource_competition → delivery_friction), with a trailing
+ * group for flagged pairs lacking a mechanism. Within a mechanism, peer docs are
+ * ordered by count desc then label; counterparts by their sourceLabel.
+ */
+export function buildTargetFrictionTree(args: {
+  focalTargetId: string;
+  pairs: AlignmentResult[];
+  targets: Target[];
+}): TargetFrictionTree {
+  const { focalTargetId, pairs, targets } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  if (!targetMap.has(focalTargetId)) return { total: 0, byMechanism: [] };
+
+  const mechGroups = new Map<
+    string,
+    {
+      mechanism: AlignmentMechanism | null;
+      docs: Map<string, TargetFrictionCounterpart[]>;
+    }
+  >();
+  let total = 0;
+
+  for (const p of pairs) {
+    if (p.alignment !== "flagged") continue;
+    if (p.targetAId !== focalTargetId && p.targetBId !== focalTargetId) continue;
+    const counterpartId =
+      p.targetAId === focalTargetId ? p.targetBId : p.targetAId;
+    const counterpart = targetMap.get(counterpartId);
+    if (!counterpart) continue;
+    total += 1;
+    const mechanism = p.mechanism ?? null;
+    const mKey = mechanism ?? "__none__";
+    let group = mechGroups.get(mKey);
+    if (!group) {
+      group = { mechanism, docs: new Map() };
+      mechGroups.set(mKey, group);
+    }
+    const docKey = counterpart.sourceDocument;
+    const list = group.docs.get(docKey);
+    if (list) list.push({ counterpart, pair: p });
+    else group.docs.set(docKey, [{ counterpart, pair: p }]);
+  }
+
+  // null mechanism sorts last (after delivery_friction = 2).
+  const severityOf = (m: AlignmentMechanism | null): number =>
+    m ? (MECHANISM_SEVERITY[m] ?? 3) : 4;
+
+  const byMechanism: TargetFrictionMechanismGroup[] = [...mechGroups.values()]
+    .map((g) => {
+      const byDoc: TargetFrictionDocGroup[] = [...g.docs.entries()]
+        .map(([peerDoc, counterparts]) => ({
+          peerDoc: peerDoc as PolicyDocumentType,
+          count: counterparts.length,
+          counterparts: [...counterparts].sort((x, y) =>
+            x.counterpart.sourceLabel.localeCompare(y.counterpart.sourceLabel),
+          ),
+        }))
+        .sort((x, y) =>
+          y.count !== x.count ? y.count - x.count : x.peerDoc.localeCompare(y.peerDoc),
+        );
+      const count = byDoc.reduce((s, d) => s + d.count, 0);
+      return { mechanism: g.mechanism, count, byDoc };
+    })
+    .sort((x, y) => severityOf(x.mechanism) - severityOf(y.mechanism));
+
+  return { total, byMechanism };
+}
+
 // ─── Target-level friction ranking + concentration (Where-to-focus) ──
 
 export interface TargetFriction {
