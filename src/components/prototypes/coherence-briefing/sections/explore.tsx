@@ -78,7 +78,7 @@ export function ExploreSection({
   corpusThemes: CorpusThemes | null;
   sectorSyntheses: SectorSynthesis[];
   onApplyAction: (action: ChatAction) => void;
-  /** Open the full-screen explorer overlay. Omitted = no trigger rendered. */
+  /** Switch the Explore section to the full-width explorer view. Omitted = no trigger rendered. */
   onOpenFullData?: () => void;
 }) {
   // Map the domain taxonomies to the chat's lean {id,name,description} shape
