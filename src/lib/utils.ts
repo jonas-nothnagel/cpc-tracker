@@ -196,18 +196,35 @@ export const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
 
 /** Human-readable labels. "Partial" is preferred over "Low" for the positive side per CLAUDE.md guardrail. */
 export const ALIGNMENT_LABELS: Record<AlignmentLevel, string> = {
-  flagged: "Flagged for review",
+  flagged: "Potential misalignment",
   none: "No relationship",
   low: "Partial",
   medium: "Medium",
   high: "High",
 };
 
-/** Display labels for the mechanism sub-field on a flagged pair. */
+/** Display labels for the mechanism sub-field on a potentially misaligned pair. */
 export const CONTRADICTION_TYPE_LABELS: Record<ContradictionType, string> = {
-  goal_conflict: "Goal conflict",
-  resource_competition: "Resource competition",
-  delivery_friction: "Delivery friction",
+  goal_conflict: "Conflicting goals",
+  resource_competition: "Competing for resources",
+  delivery_friction: "Delivery & coordination",
+};
+
+/**
+ * One-line plain-language descriptions of each mechanism, shown as helper text
+ * under the breakdown chart and in the profile drawer. Project-defined
+ * paraphrases of the pipeline's own definitions (python/src/align.py:181-201) so
+ * the UI helper text matches how pairs were actually classified. The key point
+ * for "Delivery & coordination": it is about HOW goals are implemented, not the
+ * goals themselves.
+ */
+export const CONTRADICTION_TYPE_DESCRIPTIONS: Record<ContradictionType, string> = {
+  goal_conflict:
+    "The objectives themselves pull against each other: achieving one substantively means not achieving the other.",
+  resource_competition:
+    "The goals are compatible but compete for the same limited resource: land, water, budget, or capacity.",
+  delivery_friction:
+    "The goals are compatible; the gap is in delivery: how one is implemented undermines the other (mismatched scale, timing, or coordination across actors).",
 };
 
 /**

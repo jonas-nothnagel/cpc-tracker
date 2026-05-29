@@ -75,7 +75,8 @@ interface WheelState {
 ```
 
 - Ribbons are always aggregated per arc-pair. Width is `sqrt(count) * factor`.
-  Green half = aligned (medium+high). Red half = flagged (any negative-side).
+  Green half = strong alignment (medium+high). Red half = potential
+  misalignment (any negative-side).
 - `groupBy: "sector"` buckets targets by primary classification under the
   active lens taxonomy (country sectors → IPCC → GLOBE fallback). Targets
   without a primary classification sit in a quiet "Unclassified" bucket.
@@ -96,11 +97,14 @@ interface WheelState {
   itself is unchanged.
 - **Off-white background, serif headlines, calm spacing.** Aesthetic locked.
 - **No em dashes in user-facing text.**
-- **No "tension" in user-facing strings.** Negative-side vocabulary is
-  "possible misalignment / possible conflict / likely conflict" for levels,
-  "flagged pair" / "potential misalignment" / "possibly misaligned with" for
-  aggregate text. Internal field names (`tensionCount`, `tensionShare`,
-  `WheelFilter` literal `"tensions"`) stay.
+- **No "tension", "flagged for review", or "reinforces" in user-facing
+  strings.** Negative side is "potential misalignment" (state) /
+  "potentially misaligned" / "misaligned" (compact toggles & counts paired
+  with "aligned"). Positive side is "strong alignment" / "strongly aligned" /
+  "aligned" (never "reinforces"). The three mechanism labels are "conflicting
+  goals / competing for resources / delivery & coordination". Internal field
+  names and data keys (`tensionCount`, `tensionShare`, `WheelFilter` literal
+  `"tensions"`, `reinforce`, storyline `type: "friction"`) stay.
 - **No detectors.** The headline content uses generic data-derived helpers
   in `coherence-briefing.ts`. Detectors in `src/lib/coherence-insights.ts`
   belong to the curated production dashboard.

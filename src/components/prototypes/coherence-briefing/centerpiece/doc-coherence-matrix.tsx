@@ -37,7 +37,7 @@ function clamp01(x: number): number {
  * most-contested pair (`maxShare`) anchors full red. Reserving saturation for
  * genuine outliers stops a typical pair from reading as a severe one.
  */
-function cellColor(share: number, mid: number, maxShare: number): string {
+export function cellColor(share: number, mid: number, maxShare: number): string {
   if (share <= mid) {
     const k = mid > 0 ? clamp01((mid - share) / mid) : 0; // 1 at 0, 0 at the norm
     return `rgba(25, 97, 39, ${(0.1 + 0.55 * k).toFixed(3)})`; // #196127
@@ -211,7 +211,7 @@ export function DocCoherenceMatrix({
             className="inline-block w-3 h-3 rounded-sm"
             style={{ backgroundColor: "rgba(25, 97, 39, 0.85)" }}
           />
-          Reinforces
+          Strong alignment
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span

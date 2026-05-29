@@ -396,11 +396,11 @@ function DocPairBody({
         {!failed && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <SynthesisPanelWithExamples
-              label="Reinforces"
+              label="Strong alignment"
               dotColor={ALIGNED_DOT_COLOR}
               body={docPair.synthesis.reinforce}
               examples={alignedPairs}
-              emptyText="No medium-or-strong aligned pairs in this doc-pair."
+              emptyText="No strong alignments in this doc-pair."
               variant="aligned"
               targetsById={targetsById}
               countryConfig={countryConfig}
@@ -408,12 +408,12 @@ function DocPairBody({
               totalCount={alignedPairs.length}
             />
             <SynthesisPanelWithExamples
-              label="Flagged for review"
+              label="Potential misalignment"
               dotColor={FRICTION_DOT_COLOR}
               dashed
               body={docPair.synthesis.clash}
               examples={flaggedPairs}
-              emptyText="No flagged pairs in this doc-pair."
+              emptyText="No potential misalignment in this doc-pair."
               variant="flagged"
               targetsById={targetsById}
               countryConfig={countryConfig}
@@ -538,12 +538,12 @@ function SynthesisPanelWithExamples({
       <div className="mt-4 border-t border-gray-200 pt-3">
         <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
           {variant === "flagged"
-            ? `Examples flagged for review (${examples.length.toLocaleString()}${
+            ? `Potentially misaligned examples (${examples.length.toLocaleString()}${
                 examples.length !== totalCount
                   ? ` of ${totalCount.toLocaleString()}`
                   : ""
               })`
-            : `Examples reinforcing this (${examples.length.toLocaleString()})`}
+            : `Strongly aligned examples (${examples.length.toLocaleString()})`}
         </p>
         {visible.length === 0 ? (
           <p className="text-[11px] italic text-[var(--undp-gray)]">
@@ -625,12 +625,12 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
         </span>
         <span className="text-[var(--undp-gray)] mx-2">·</span>
         <span style={{ color: ALIGNMENT_COLORS.flagged }}>
-          {docPair.flagged_count.toLocaleString()} flagged
+          {docPair.flagged_count.toLocaleString()} potentially misaligned
         </span>
       </p>
       {parts.length > 0 && (
         <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-          Flagged subtypes: {parts.join(", ")}
+          Misalignment types: {parts.join(", ")}
         </p>
       )}
     </div>
@@ -673,7 +673,7 @@ function FallbackTargetPairList({
             className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
           >
             {showAligned
-              ? "Show flagged only"
+              ? "Show misaligned only"
               : `Show aligned (${alignedPairs.length.toLocaleString()})`}
           </button>
         )}

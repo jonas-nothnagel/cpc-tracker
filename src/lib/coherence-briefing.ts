@@ -59,10 +59,10 @@ export interface HeadlineVerdict {
 }
 
 const VERDICT_HEADLINES: Record<VerdictBucket, string> = {
-  mostly_aligned: "Mostly pulling in the same direction.",
-  mixed: "Mixed signals across the policy set.",
+  mostly_aligned: "Policies are largely coherent with one another.",
+  mixed: "Coherence is mixed across the policy set.",
   lots_of_misalignment:
-    "Substantial possible misalignment across the policy set.",
+    "Substantial potential misalignment across the policy set.",
 };
 
 export function pickHeadlineVerdict(
@@ -888,6 +888,63 @@ export function buildDocCoherenceGraph(
     edges.push(edge);
   }
   return { nodes, edges };
+}
+
+// ─── Per-document friction share (wheel rim attribution) ─────────────
+
+export interface DocFrictionShares {
+  /**
+   * flagged / (aligned + flagged) for each document, summed across every
+   * cross-document pair that touches it. Same basis as the headline metric
+   * (Partial/`low` excluded), so a document's rim warmth and the red threads
+   * on its ribbons tell one consistent story.
+   */
+  byDoc: Map<PolicyDocumentType, number>;
+  /** Corpus-wide cross-doc flagged share on the same basis; the diverging-scale anchor. */
+  mid: number;
+  /** Highest single-document share; anchors full saturation so a typical doc never reads severe. */
+  maxShare: number;
+}
+
+/**
+ * Per-document flagged share for the landing wheel's rim attribution.
+ *
+ * Reuses `buildDocCoherenceGraph` edges: for each document, sums the flagged
+ * and aligned cross-doc pairs across every doc-pair touching it, then
+ * share = flagged / (aligned + flagged). Because it is a share (not a count), a
+ * large-but-clean document stays cool while a document that participates in
+ * many flagged pairs warms — so a newly uploaded policy that clashes lights up
+ * its own arc without being penalised merely for being large.
+ */
+export function buildDocFrictionShares(
+  alignment: AlignmentResult[],
+  targets: Target[],
+  countryConfig: CountryConfig | null,
+): DocFrictionShares {
+  const { edges } = buildDocCoherenceGraph(alignment, targets, countryConfig);
+  const flaggedByDoc = new Map<PolicyDocumentType, number>();
+  const denomByDoc = new Map<PolicyDocumentType, number>();
+  let totalFlagged = 0;
+  let totalDenom = 0;
+  for (const e of edges) {
+    const denom = e.alignedCount + e.flaggedCount;
+    if (denom === 0) continue;
+    for (const doc of [e.a, e.b]) {
+      flaggedByDoc.set(doc, (flaggedByDoc.get(doc) ?? 0) + e.flaggedCount);
+      denomByDoc.set(doc, (denomByDoc.get(doc) ?? 0) + denom);
+    }
+    totalFlagged += e.flaggedCount;
+    totalDenom += denom;
+  }
+  const byDoc = new Map<PolicyDocumentType, number>();
+  let maxShare = 0;
+  for (const [doc, denom] of denomByDoc) {
+    const share = denom > 0 ? (flaggedByDoc.get(doc) ?? 0) / denom : 0;
+    byDoc.set(doc, share);
+    if (share > maxShare) maxShare = share;
+  }
+  const mid = totalDenom > 0 ? totalFlagged / totalDenom : 0;
+  return { byDoc, mid, maxShare };
 }
 
 // ─── Most-flagged document (Section 3 wheel focus) ──────────────────

@@ -150,22 +150,42 @@ function composeFocusedDocSentence({
   const aligned = headlineData.alignedRecordCount.toLocaleString();
   const flagged = headlineData.flaggedRecordCount.toLocaleString();
   const peers = headlineData.peripheralDocCount.toLocaleString();
-  const headline =
-    headlineData.flaggedRecordCount === 0
-      ? `${label} reads as a reinforcing thread.`
-      : headlineData.alignedRecordCount === 0
-        ? `${label} carries the friction on its own.`
-        : `${label} reinforces with most other documents, with friction in places.`;
-  // We used to name the strongest-reinforcing and most-flagged peers
-  // here, but both metrics scale with the peer's target count so the
-  // "winner" was effectively whichever doc was largest. The wheel's
-  // balance bands surface the per-peer balance honestly; the prose
-  // sticks to corpus-level counts that ARE meaningful at the doc level.
+  // Scale the headline to this document's own balance so each document reads
+  // differently and the magnitude of potential misalignment is always stated
+  // (qualitatively; the body line below carries the exact counts). `share` is
+  // the per-document analogue of the corpus verdict's tensionShare; the cut
+  // points mirror pickHeadlineVerdict (0.15 / 0.30) plus a 0.50 "more
+  // misaligned than aligned" tier. Fixed ratios for now (memory
+  // feedback_data_driven_scoring: revisit with >2 countries). We deliberately
+  // do NOT name the worst peer here — absolute per-peer counts scale with doc
+  // size, and the pairs list below already names the specific documents.
+  const total =
+    headlineData.alignedRecordCount + headlineData.flaggedRecordCount;
+  const share = total > 0 ? headlineData.flaggedRecordCount / total : 0;
+  const MISALIGN_SHARE_SOME = 0.15;
+  const MISALIGN_SHARE_SUBSTANTIAL = 0.3;
+  const MISALIGN_SHARE_DOMINANT = 0.5;
+  let headline: string;
+  if (total === 0) {
+    headline = `${label} has no scored links to other documents yet.`;
+  } else if (headlineData.flaggedRecordCount === 0) {
+    headline = `${label} aligns with every other document in the set.`;
+  } else if (headlineData.alignedRecordCount === 0) {
+    headline = `${label} is misaligned across all its scored links.`;
+  } else if (share < MISALIGN_SHARE_SOME) {
+    headline = `${label} is strongly aligned with the rest, with only minimal potential misalignment.`;
+  } else if (share < MISALIGN_SHARE_SUBSTANTIAL) {
+    headline = `${label} is broadly aligned with the rest, with some potential misalignment.`;
+  } else if (share < MISALIGN_SHARE_DOMINANT) {
+    headline = `${label} is aligned with the rest but carries a substantial amount of potential misalignment.`;
+  } else {
+    headline = `${label} is more often misaligned than aligned with the rest of the set.`;
+  }
   return {
     headline,
     body:
       `${label} sits with ${peers} other document${headlineData.peripheralDocCount === 1 ? "" : "s"}. ` +
-      `${aligned} of its scored pairs reach medium or strong alignment; ${flagged} are flagged for review.`,
+      `${aligned} of its scored pairs reach strong alignment; ${flagged} show potential misalignment.`,
   };
 }
 
@@ -252,19 +272,19 @@ function DocFocusEvidence({
 
       {flaggedPairs.length === 0 ? (
         <p className="text-[12px] italic text-[var(--undp-gray)]">
-          No cross-document pairs involving {label} are flagged for review.
+          No potential misalignment links {label} to other documents.
         </p>
       ) : (
         <>
           {frictionTotals.total > 0 && (
             <FrictionTypeChart
               totals={frictionTotals}
-              caption={`How ${label}'s flags break down`}
+              caption={`How ${label}'s potential misalignment breaks down`}
             />
           )}
           <div>
             <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
-              Where {label} is flagged for review
+              Where {label} shows potential misalignment
             </p>
             <ul className="divide-y divide-gray-200 border-y border-gray-200">
               {shown.map((line) => (
@@ -281,12 +301,12 @@ function DocFocusEvidence({
             </ul>
             {remainder > 0 && (
               <p className="mt-2 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
-                + {remainder.toLocaleString()} more flagged pair
+                + {remainder.toLocaleString()} more potentially misaligned pair
                 {remainder === 1 ? "" : "s"} involving {label}
               </p>
             )}
             <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
-              Flagged for review, not settled findings. Open a pair for the
+              Potential misalignment, not settled findings. Open a pair for the
               underlying targets.
             </p>
           </div>
