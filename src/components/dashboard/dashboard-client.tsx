@@ -32,6 +32,7 @@ import type {
   Nr7Data,
   CountryConfig,
 } from "@/types";
+import type { DashboardResponse } from "@/lib/dashboard-data";
 
 interface DashboardData {
   targets: Target[];
@@ -82,6 +83,29 @@ function normalizeSector(t: Record<string, unknown>): IpccSector {
     id: String(t.id),
     name: String(t.name),
     description: String(t.description ?? ""),
+  };
+}
+
+/** Build the dashboard view-model from the raw payload. Shared by the
+ *  server-provided initialData path and the client fetch fallback so both
+ *  produce identical state. */
+function normalizeDashboardResponse(raw: DashboardResponse): DashboardData {
+  return {
+    targets: ((raw.targets ?? []) as Record<string, unknown>[]).map(normalizeTarget),
+    nbsCategories: (raw.nbsCategories ?? []) as NbsCategory[],
+    sectors: ((raw.sectors ?? []) as Record<string, unknown>[]).map(normalizeSector),
+    globeCategories: ((raw.globeCategories ?? []) as Record<string, unknown>[]).map(normalizeSector),
+    globeSubcategories: (raw.globeSubcategories ?? []) as GlobeSubcategory[],
+    classifications: (raw.classifications ?? []) as ThematicClassification[],
+    alignment: (raw.alignment ?? []) as AlignmentResult[],
+    btrData: (raw.btrData ?? null) as BtrData | null,
+    nr7Data: (raw.nr7Data ?? null) as Nr7Data | null,
+    berData: (raw.berData ?? null) as BerData | null,
+    budgetAlignment: (raw.budgetAlignment ?? null) as AlignmentResult[] | null,
+    budgetPseudoTargets:
+      (raw.budgetPseudoTargets as Record<string, unknown>[] | null)?.map(normalizeTarget) ?? null,
+    footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
+    countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
   };
 }
 
@@ -246,14 +270,21 @@ export function DashboardClient({
   analysisId,
   country,
   basePath,
+  initialData,
 }: {
   analysisId?: string;
   country?: string;
   /** When set, the dashboard runs in standalone mode: the header hides the
    *  country switcher and scopes all nav links to this path. */
   basePath?: string;
+  /** Server-assembled payload (pilot/country flow). When present the component
+   *  renders from it immediately and skips the client fetch, avoiding the
+   *  ~10 MB post-hydration round trip. */
+  initialData?: DashboardResponse;
 }) {
-  const [data, setData] = useState<DashboardData | null>(null);
+  const [data, setData] = useState<DashboardData | null>(
+    initialData ? normalizeDashboardResponse(initialData) : null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [focusTargetId, setFocusTargetId] = useState<string | null>(null);
 
@@ -265,6 +296,11 @@ export function DashboardClient({
   useEffect(() => {
     if (!analysisId && !country) {
       // Page handler should have redirected before rendering us; bail.
+      return;
+    }
+    // Pilot/country flow: the server already assembled and inlined the payload
+    // (state was seeded from initialData above), so there's nothing to fetch.
+    if (initialData) {
       return;
     }
     // The page handler passes a `key` prop derived from analysisId/country,
@@ -284,22 +320,7 @@ export function DashboardClient({
       })
       .then((raw) => {
         if (cancelled) return;
-        setData({
-          targets: (raw.targets ?? []).map(normalizeTarget),
-          nbsCategories: raw.nbsCategories ?? [],
-          sectors: (raw.sectors ?? []).map(normalizeSector),
-          globeCategories: (raw.globeCategories ?? []).map(normalizeSector),
-          globeSubcategories: raw.globeSubcategories ?? [],
-          classifications: raw.classifications ?? [],
-          alignment: raw.alignment ?? [],
-          btrData: raw.btrData ?? null,
-          nr7Data: raw.nr7Data ?? null,
-          berData: raw.berData ?? null,
-          budgetAlignment: raw.budgetAlignment ?? null,
-          budgetPseudoTargets: (raw.budgetPseudoTargets as Record<string, unknown>[] | null)?.map(normalizeTarget) ?? null,
-          footprint: (raw.footprint as FootprintSnapshot | null) ?? null,
-          countryConfig: (raw.countryConfig as CountryConfig | null) ?? null,
-        });
+        setData(normalizeDashboardResponse(raw));
       })
       .catch((e) => {
         if (cancelled) return;
@@ -308,7 +329,7 @@ export function DashboardClient({
     return () => {
       cancelled = true;
     };
-  }, [analysisId, country]);
+  }, [analysisId, country, initialData]);
 
   if (error) {
     return (
