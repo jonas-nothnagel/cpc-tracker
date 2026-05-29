@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
+import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 
 // Next.js searchParams returns string | string[] | undefined when a key
 // appears multiple times in the URL (e.g. ?country=a&country=b). Without
@@ -82,5 +83,15 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     return <UnavailableState />;
   }
 
-  return <DashboardClient key={`c:${entry.id}`} country={entry.id} />;
+  // Assemble the payload on the server so the client island renders from
+  // inlined data instead of making a ~10 MB post-hydration round trip. The
+  // payload is cached per country for the container's lifetime. On any error
+  // (e.g. pipeline output missing) we omit initialData and let the client fall
+  // back to its own fetch + error handling.
+  const payload = getCountryDashboardPayload(entry.id);
+  const initialData = payload.kind === "ok" ? payload.payload.data : undefined;
+
+  return (
+    <DashboardClient key={`c:${entry.id}`} country={entry.id} initialData={initialData} />
+  );
 }
