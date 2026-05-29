@@ -54,6 +54,7 @@ import {
 } from "./sections/explore";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
+import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
   WheelFocus,
@@ -87,13 +88,17 @@ import {
 } from "@/lib/coherence-briefing";
 import type {
   AlignmentResult,
+  BerData,
+  BtrData,
   CorpusStoryline,
   CorpusThemes,
   CountryConfig,
   DocPairSynthesis,
   GlobeCategory,
+  GlobeSubcategory,
   IpccSector,
   NbsCategory,
+  Nr7Data,
   PolicyDocumentType,
   SectorSynthesis,
   Target,
@@ -147,6 +152,14 @@ interface CoherenceBriefingProps {
   docPairSyntheses?: DocPairSynthesis[];
   corpusThemes?: CorpusThemes | null;
   sectorSyntheses?: SectorSynthesis[];
+  /** FULL target set (incl. BTR + BER pseudo-targets) for the re-hosted
+   *  PolicyCoherenceExplorer. Distinct from `targets`, which is policy-only
+   *  for the narrative sections. Falls back to `targets` when omitted. */
+  explorerTargets?: Target[];
+  btrData?: BtrData | null;
+  berData?: BerData | null;
+  nr7Data?: Nr7Data | null;
+  globeSubcategories?: GlobeSubcategory[];
 }
 
 export function CoherenceBriefing({
@@ -161,8 +174,44 @@ export function CoherenceBriefing({
   docPairSyntheses = [],
   corpusThemes = null,
   sectorSyntheses = [],
+  explorerTargets,
+  btrData = null,
+  berData = null,
+  nr7Data = null,
+  globeSubcategories = [],
 }: CoherenceBriefingProps) {
   // ── Derived data ────────────────────────────────────────────────
+  // The re-hosted explorer needs the FULL corpus (incl. BTR + BER) so BTR
+  // nodes and the Biodiversity Budget overlay appear; the narrative sections
+  // keep using `targets` (policy-only). Fall back to `targets` if a caller
+  // didn't thread the full set.
+  const explorerData = explorerTargets ?? targets;
+  const explorerProps = useMemo(
+    () => ({
+      targets: explorerData,
+      alignment,
+      sectors,
+      globeCategories,
+      globeSubcategories,
+      classifications,
+      nr7Data,
+      btrData,
+      berData,
+      countryConfig,
+    }),
+    [
+      explorerData,
+      alignment,
+      sectors,
+      globeCategories,
+      globeSubcategories,
+      classifications,
+      nr7Data,
+      btrData,
+      berData,
+      countryConfig,
+    ],
+  );
   const verdict = useMemo(() => pickHeadlineVerdict(alignment), [alignment]);
   const primer = useMemo(
     () => pickPrimerExamples(alignment, targets),
@@ -462,6 +511,10 @@ export function CoherenceBriefing({
     documentCount >= SECTOR_AUTO_SWITCH_DOC_COUNT ? "sectors" : "documents",
   );
   const [exploreLensId, setExploreLensId] = useState<LensId | null>(null);
+  // In-page "Explore the full data" view: swaps the narrative for the full
+  // explorer at page width, staying inside the briefing shell (no modal).
+  const [explorerView, setExplorerView] = useState(false);
+  const cameFromExplorer = useRef(false);
   const exploreLens = useMemo<LensOption | null>(() => {
     if (exploreLensId) {
       const found = availableLenses.find((l) => l.id === exploreLensId);
@@ -806,6 +859,7 @@ export function CoherenceBriefing({
   });
 
   useEffect(() => {
+    if (explorerView) return; // narrative unmounted in full-data view — nothing to observe
     const visibility = new Map<SectionId, number>();
     const observer = new IntersectionObserver(
       (entries) => {
@@ -839,7 +893,22 @@ export function CoherenceBriefing({
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, []);
+  }, [explorerView]); // re-observe fresh section nodes after returning from full-data view
+
+  // Entering the full-data view scrolls to its top; returning lands the user
+  // back on the Explore section they triggered it from.
+  useEffect(() => {
+    if (explorerView) {
+      window.scrollTo({ top: 0 });
+    } else if (cameFromExplorer.current) {
+      cameFromExplorer.current = false;
+      requestAnimationFrame(() =>
+        sectionRefs.current[EXPLORE_SECTION_ID]?.scrollIntoView({
+          block: "start",
+        }),
+      );
+    }
+  }, [explorerView]);
 
   const setSectionRef = useCallback(
     (id: SectionId) => (el: HTMLElement | null) => {
@@ -856,9 +925,33 @@ export function CoherenceBriefing({
           countryName={countryName}
           documentCount={documentCount}
         />
-        <JumpNav active={activeSection} order={SECTION_ORDER} />
+        {explorerView ? (
+          <div className="pt-2">
+            <div className="flex items-center justify-between gap-4 mt-6 mb-5">
+              <h2
+                className="text-[22px] sm:text-[26px] leading-tight text-[var(--undp-black)] font-medium"
+                style={{ fontFamily: HEADLINE_SERIF }}
+              >
+                Explore the full data
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  cameFromExplorer.current = true;
+                  setExplorerView(false);
+                }}
+                className="inline-flex items-center gap-1.5 text-[13px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors shrink-0"
+              >
+                <span aria-hidden="true">←</span> Back to chat
+              </button>
+            </div>
+            <PolicyCoherenceExplorer {...explorerProps} variant="embed" />
+          </div>
+        ) : (
+          <>
+            <JumpNav active={activeSection} order={SECTION_ORDER} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] gap-x-10 gap-y-8 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] gap-x-10 gap-y-8 mt-8">
           {/* Content column */}
           <div className="space-y-24">
             <div
@@ -980,6 +1073,7 @@ export function CoherenceBriefing({
                 corpusThemes={corpusThemes}
                 sectorSyntheses={sectorSyntheses}
                 onApplyAction={applyExploreAction}
+                onOpenFullData={() => setExplorerView(true)}
               />
             </div>
           </div>
@@ -1056,7 +1150,9 @@ export function CoherenceBriefing({
               )}
             </div>
           </aside>
-        </div>
+            </div>
+          </>
+        )}
       </div>
 
       <SectorDrawer
