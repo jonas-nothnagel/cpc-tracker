@@ -60,6 +60,7 @@ export function ExploreSection({
   corpusThemes,
   sectorSyntheses,
   onApplyAction,
+  onOpenFullData,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -77,6 +78,8 @@ export function ExploreSection({
   corpusThemes: CorpusThemes | null;
   sectorSyntheses: SectorSynthesis[];
   onApplyAction: (action: ChatAction) => void;
+  /** Open the full-screen explorer overlay. Omitted = no trigger rendered. */
+  onOpenFullData?: () => void;
 }) {
   // Map the domain taxonomies to the chat's lean {id,name,description} shape
   // once; both the insight detectors and the chat reuse it.
@@ -162,10 +165,20 @@ export function ExploreSection({
       >
         Explore the policy coherence yourself.
       </h2>
-      <p className="text-[14px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-6">
+      <p className="text-[14px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-4">
         Ask a question in your own words, surface an insight, or click the
         wheel. Insights and the wheel react together.
       </p>
+
+      {onOpenFullData && (
+        <button
+          type="button"
+          onClick={onOpenFullData}
+          className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-4 py-2 text-[13px] font-medium text-[var(--undp-black)] transition-colors hover:border-[var(--undp-black)]"
+        >
+          Explore the full data <span aria-hidden="true">⤢</span>
+        </button>
+      )}
 
       {availableLenses.length > 0 && (
         <div className="mb-5">

@@ -1046,6 +1046,11 @@ interface EmptyPanelProps {
   /** Click handler for inline target-id chips rendered inside the chat
    *  reply text. Selects the target without clearing the reply. */
   onSelectChatEntity: (targetId: string) => void;
+  /** Whether to render the internal chat bar. False in embed contexts where
+   *  the host already provides a chat surface. */
+  showChat: boolean;
+  /** Embed mode: lighter, cream-friendly chrome to match the briefing. */
+  embed?: boolean;
 }
 
 type StatView = "overview" | "targets" | "alignments" | "tensions";
@@ -1911,6 +1916,8 @@ function EmptyPanel({
   onApplyHook,
   canShowMe,
   onSelectChatEntity,
+  showChat,
+  embed,
 }: EmptyPanelProps) {
   // Stats are interactive: clicking a stat sets the wheel filter AND swaps
   // the middle section to a full list of that kind of item (targets, strong
@@ -1983,7 +1990,7 @@ function EmptyPanel({
   const tensMax = tensRanks[0]?.count ?? 1;
 
   return (
-    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full overflow-hidden">
+    <div className={`flex flex-col h-full overflow-hidden ${embed ? "bg-white/55 border border-gray-200/70 rounded-2xl" : "bg-white border border-gray-100 rounded-lg"}`}>
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
@@ -2072,16 +2079,18 @@ function EmptyPanel({
           />
         )}
 
-        <ChatBar
-          onAsk={onAsk}
-          chat={chat}
-          exampleQueries={exampleQueries}
-          onRotateInsight={onRotateInsight}
-          currentInsight={currentInsight}
-          onApplyHook={onApplyHook}
-          canShowMe={canShowMe}
-          onSelectChatEntity={onSelectChatEntity}
-        />
+        {showChat && (
+          <ChatBar
+            onAsk={onAsk}
+            chat={chat}
+            exampleQueries={exampleQueries}
+            onRotateInsight={onRotateInsight}
+            currentInsight={currentInsight}
+            onApplyHook={onApplyHook}
+            canShowMe={canShowMe}
+            onSelectChatEntity={onSelectChatEntity}
+          />
+        )}
 
       </div>
     </div>
@@ -2616,6 +2625,10 @@ interface PolicyCoherenceExplorerProps {
   berData?: BerData | null;
   focusTargetId?: string | null;
   countryConfig?: CountryConfig | null;
+  /** "dashboard" (default) renders the full standalone chrome. "embed"
+   *  suppresses the internal heading + chat and starts with the side panel
+   *  collapsed (wheel full-width), with an "At a glance" toggle to reveal it. */
+  variant?: "dashboard" | "embed";
 }
 
 export function PolicyCoherenceExplorer({
@@ -2630,7 +2643,31 @@ export function PolicyCoherenceExplorer({
   berData,
   focusTargetId,
   countryConfig,
+  variant = "dashboard",
 }: PolicyCoherenceExplorerProps) {
+  // Embed mode re-hosts the explorer inside the briefing: the host supplies its
+  // own heading + chat, and the side panel starts collapsed so the wheel gets
+  // the full width (toggleable via "At a glance"). Default "dashboard" keeps the
+  // original standalone behaviour byte-for-byte.
+  const isEmbed = variant === "embed";
+  const showHeading = !isEmbed;
+  const showInternalChat = !isEmbed;
+  const [showAtAGlance, setShowAtAGlance] = useState(!isEmbed);
+
+  // Embed mode adopts the briefing's lighter chrome: pill-shaped controls and a
+  // softer card, so the re-hosted explorer reads as part of the new design.
+  const controlCls = isEmbed
+    ? "rounded-full border border-gray-300 bg-white px-3.5 py-1.5 text-xs text-[var(--undp-black)] hover:border-[var(--undp-black)] focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/20 transition-colors"
+    : "border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30";
+  // Embed sits directly on the briefing's cream page — no white card, so the
+  // wheel reads as part of the new design rather than a pasted-in panel.
+  const wheelCardCls = isEmbed
+    ? "h-full"
+    : "bg-white border border-gray-100 rounded-lg p-4 h-full";
+  // Embed thickens the rim arcs outward for the bolder, banded look of the new
+  // design. Node and leader-label radii are unchanged, so the layout stays put.
+  const arcOuterR = isEmbed ? 230 : OUTER_R;
+
   const [groupMode, setGroupMode] = useState<GroupMode>("document");
   const [filter, setFilter] = useState<AlignFilter>("high_contra");
   const [actionTypeFilter, setActionTypeFilter] = useState<ActionTypeFilter>("all");
@@ -3532,6 +3569,10 @@ export function PolicyCoherenceExplorer({
     [arcs, focalGroupId],
   );
 
+  // Panel shows when the user opts into "At a glance", OR whenever a target /
+  // category is selected — detail must stay reachable even when collapsed.
+  const panelOpen = showAtAGlance || selectedNode != null || focalGroup != null;
+
   // Group focus drives the dim treatment on the wheel only when no target is
   // active. Active target takes visual priority and reuses the existing
   // hover/click highlight path.
@@ -3541,9 +3582,9 @@ export function PolicyCoherenceExplorer({
     () =>
       d3Arc<{ startAngle: number; endAngle: number }>()
         .innerRadius(INNER_R)
-        .outerRadius(OUTER_R)
+        .outerRadius(arcOuterR)
         .cornerRadius(3),
-    [],
+    [arcOuterR],
   );
 
   // Wedge generator for the Biodiversity Budget overlay. Annular sectors fill
@@ -3578,10 +3619,11 @@ export function PolicyCoherenceExplorer({
   );
 
   return (
-    <section id="coherence-explorer" className="mb-10">
+    <section id={isEmbed ? undefined : "coherence-explorer"} className={isEmbed ? "" : "mb-10"}>
       {/* Header + controls */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
         <div>
+          {showHeading && (
           <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
             Policy Coherence Explorer
             <InfoBox>
@@ -3592,6 +3634,7 @@ export function PolicyCoherenceExplorer({
               <strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.
             </InfoBox>
           </h2>
+          )}
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {(() => {
               const groupLabel = ({
@@ -3682,19 +3725,44 @@ export function PolicyCoherenceExplorer({
               doc-type toggles below have a full-width budget to wrap into,
               regardless of how many data sources a country exposes. */}
           <div className="flex flex-wrap items-center gap-3">
-            <select
-              value={groupMode}
-              onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
-              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
-            >
-              <option value="document">By Document Type</option>
-              <option value="globe">By Biodiversity Category</option>
-              <option value="sector">By Climate Mitigation Sector</option>
-            </select>
+            {isEmbed ? (
+              <div className="inline-flex flex-wrap gap-1.5">
+                {([
+                  ["document", "Documents", "Group the wheel by source document"],
+                  ["globe", "GLOBE", "Group by biodiversity category (GLOBE taxonomy)"],
+                  ["sector", "IPCC sectors", "Group by climate mitigation sector (IPCC)"],
+                ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => handleGroupChange(mode)}
+                    aria-pressed={groupMode === mode}
+                    title={title}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                      groupMode === mode
+                        ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                        : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <select
+                value={groupMode}
+                onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
+                className={controlCls}
+              >
+                <option value="document">By Document Type</option>
+                <option value="globe">By Biodiversity Category</option>
+                <option value="sector">By Climate Mitigation Sector</option>
+              </select>
+            )}
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as AlignFilter)}
-              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
+              className={controlCls}
             >
               <option value="high_contra">High + Contradictions</option>
               <option value="high_medium">High + Medium</option>
@@ -3702,6 +3770,21 @@ export function PolicyCoherenceExplorer({
               <option value="high">High only</option>
               <option value="contradictions">Contradictions only</option>
             </select>
+            {isEmbed && (
+              <button
+                type="button"
+                onClick={() => setShowAtAGlance((v) => !v)}
+                aria-pressed={showAtAGlance}
+                title="Show or hide the at-a-glance summary panel"
+                className={`ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                  showAtAGlance
+                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                    : "bg-white border-gray-200 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                }`}
+              >
+                At a glance
+              </button>
+            )}
           </div>
           {/* Row 2: per-document toggles + abbreviation key + target search.
               Wraps to multiple lines so countries with many uploaded sources
@@ -3831,8 +3914,8 @@ export function PolicyCoherenceExplorer({
                 setSearchOpen(true);
               }}
               onFocus={() => setSearchOpen(true)}
-              placeholder="Find a target…"
-              className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30 w-44"
+              placeholder="Look for a target…"
+              className={`${controlCls} ${isEmbed ? "w-56 sm:w-72" : "w-44"}`}
             />
             {searchOpen && searchQuery.length >= 2 && (() => {
               const q = searchQuery.toLowerCase();
@@ -3890,8 +3973,8 @@ export function PolicyCoherenceExplorer({
           so the layout reads as one card-pair, not two stacked panes. */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Wheel container */}
-        <div className="min-w-0 lg:col-span-8">
-          <div className="bg-white border border-gray-100 rounded-lg p-4 h-full">
+        <div className={`min-w-0 ${panelOpen ? "lg:col-span-8" : "lg:col-span-12"}`}>
+          <div className={wheelCardCls}>
             {/* Top-left budget overlay control. Only rendered when the country
                 has BER data classified to GLOBE subcategories. Clicking ON
                 snaps groupMode to "globe" so the shading actually paints;
@@ -3905,7 +3988,7 @@ export function PolicyCoherenceExplorer({
                     setBudgetOverlay(next);
                     if (next && groupMode !== "globe") setGroupMode("globe");
                   }}
-                  className={`self-start inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors ${
+                  className={`self-start inline-flex items-center gap-2 px-3 py-1.5 ${isEmbed ? "rounded-full" : "rounded-md"} text-xs font-medium border transition-colors ${
                     budgetShadingActive
                       ? "bg-[var(--undp-blue)]/10 border-[var(--undp-blue)]/40 text-[var(--undp-black)]"
                       : "bg-white border-gray-200 text-[var(--undp-black)] hover:border-gray-300"
@@ -3941,7 +4024,7 @@ export function PolicyCoherenceExplorer({
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
               className="w-full"
-              style={{ maxHeight: 620 }}
+              style={{ maxHeight: isEmbed ? "min(600px, 64vh)" : 620 }}
               onClick={handleBgClick}
             >
               {/* Guide circle */}
@@ -4040,7 +4123,7 @@ export function PolicyCoherenceExplorer({
                           textAnchor="middle"
                           dominantBaseline="central"
                           fontSize={14}
-                          fontWeight={600}
+                          fontWeight={isEmbed ? 500 : 600}
                           fill={labelFill}
                           className="pointer-events-none select-none tabular-nums"
                           style={{ letterSpacing: "0.01em" }}
@@ -4071,7 +4154,7 @@ export function PolicyCoherenceExplorer({
                       (n.id === activeId || connectedIds.has(n.id)),
                   );
                 const isFocal = arc.id === focalGroupId;
-                const arcMidR = (INNER_R + OUTER_R) / 2;
+                const arcMidR = (INNER_R + arcOuterR) / 2;
                 const badgeX = arcMidR * Math.sin(arc.midAngle);
                 const badgeY = -arcMidR * Math.cos(arc.midAngle);
                 // Rim arc opacity. In budget mode we keep overview at 1.0 so
@@ -4272,8 +4355,8 @@ export function PolicyCoherenceExplorer({
                       r={r}
                       fill={nodeColor}
                       stroke="white"
-                      strokeWidth={1.5}
-                      opacity={isDimmed ? 0.12 : 1}
+                      strokeWidth={isEmbed ? 1 : 1.5}
+                      opacity={isDimmed ? 0.12 : isEmbed ? 0.8 : 1}
                       className="transition-opacity duration-200 cursor-pointer"
                       onMouseEnter={() => {
                         if (!selectedId) setHoveredId(node.id);
@@ -4503,9 +4586,9 @@ export function PolicyCoherenceExplorer({
                         dominantBaseline="middle"
                         className="select-none cursor-pointer"
                         fontSize={isFocal && !activeId ? 12 : 11}
-                        fontWeight={isFocal && !activeId ? 700 : 600}
+                        fontWeight={isFocal && !activeId ? 700 : isEmbed ? 500 : 600}
                         fill={labelFill}
-                        style={{ letterSpacing: "0.04em", transition: "fill 200ms, font-size 200ms" }}
+                        style={{ letterSpacing: isEmbed ? "0.015em" : "0.04em", transition: "fill 200ms, font-size 200ms" }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArcClick(arc.id);
@@ -4549,8 +4632,13 @@ export function PolicyCoherenceExplorer({
               <text
                 x={0} y={-14}
                 textAnchor="middle" dominantBaseline="middle"
-                fontSize={15} fontWeight={600}
-                fill="#1e293b"
+                fontSize={isEmbed ? 18 : 15} fontWeight={isEmbed ? 500 : 600}
+                fill={isEmbed ? "var(--undp-black)" : "#1e293b"}
+                style={
+                  isEmbed
+                    ? { fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif" }
+                    : undefined
+                }
                 className="select-none pointer-events-none"
               >
                 {activeId
@@ -4564,7 +4652,7 @@ export function PolicyCoherenceExplorer({
                   x={0} y={8}
                   textAnchor="middle" dominantBaseline="middle"
                   fontSize={10}
-                  fill="#94a3b8"
+                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                   className="select-none pointer-events-none"
                 >
                   {`${activeConns.length} connection${activeConns.length !== 1 ? "s" : ""}`}
@@ -4574,7 +4662,7 @@ export function PolicyCoherenceExplorer({
                   x={0} y={8}
                   textAnchor="middle" dominantBaseline="middle"
                   fontSize={10}
-                  fill="#94a3b8"
+                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                   className="select-none pointer-events-none"
                 >
                   {`${focalGroup.count} target${focalGroup.count !== 1 ? "s" : ""}`}
@@ -4585,7 +4673,7 @@ export function PolicyCoherenceExplorer({
                     x={0} y={6}
                     textAnchor="middle" dominantBaseline="middle"
                     fontSize={10}
-                    fill="#94a3b8"
+                    fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
                     {`${targets.length} targets`}
@@ -4594,7 +4682,7 @@ export function PolicyCoherenceExplorer({
                     x={0} y={22}
                     textAnchor="middle" dominantBaseline="middle"
                     fontSize={10}
-                    fill="#94a3b8"
+                    fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
                     {`${totalAligned} aligned`}
@@ -4651,6 +4739,7 @@ export function PolicyCoherenceExplorer({
             EmptyPanel below the stats — preferred for the cleaner idle
             layout, with the trade-off that the AI reply is only visible
             while the user is in idle state. */}
+        {panelOpen && (
         <div className="min-w-0 lg:col-span-4">
           {selectedNode ? (
               <DetailPanel
@@ -4712,9 +4801,12 @@ export function PolicyCoherenceExplorer({
                 onApplyHook={onApplyHook}
                 canShowMe={canShowMe}
                 onSelectChatEntity={handleChatEntityClick}
+                showChat={showInternalChat}
+                embed={isEmbed}
               />
             )}
         </div>
+        )}
       </div>
 
       <PairDetailModal

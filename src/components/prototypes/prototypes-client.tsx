@@ -280,6 +280,11 @@ export function PrototypesClient({
           countryName={displayCountry}
           countryId={country}
           targets={briefingTargets}
+          explorerTargets={data.targets}
+          btrData={data.btrData}
+          berData={data.berData}
+          nr7Data={data.nr7Data}
+          globeSubcategories={data.globeSubcategories}
           alignment={data.alignment}
           classifications={data.classifications}
           sectors={data.sectors}
