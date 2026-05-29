@@ -2,7 +2,8 @@
 
 /**
  * StorylineCard — one corpus storyline ("theme") rendered as a clickable
- * card: polarity chip (Strongly aligned / Potentially misaligned), the
+ * card: polarity chip (Recurring alignment / Recurring potential
+ * misalignment), the
  * storyline name, the documents it spans, and its pair count. Clicking opens
  * the ThemeDrawer.
  *
@@ -54,7 +55,7 @@ export function StorylineCard({
               : { boxShadow: `inset 0 0 0 1px ${dotColor}` }
           }
         />
-        {isReinforce ? "Strongly aligned" : "Potentially misaligned"}
+        {isReinforce ? "Recurring alignment" : "Recurring potential misalignment"}
       </p>
       <p
         className="text-[13.5px] text-[var(--undp-black)] leading-snug mb-2"

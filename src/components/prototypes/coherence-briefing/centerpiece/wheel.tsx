@@ -705,7 +705,7 @@ export function WheelCenterpiece({
                 <title>
                   {arc.fullLabel} · {arc.count} targets
                   {frictionShare !== null
-                    ? ` · ${Math.round(frictionShare * 100)}% of cross-document links flagged`
+                    ? ` · ${Math.round(frictionShare * 100)}% of cross-document links potentially misaligned`
                     : ""}
                   {clickable
                     ? isFocus

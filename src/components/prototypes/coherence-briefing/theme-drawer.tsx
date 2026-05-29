@@ -218,8 +218,8 @@ export function ThemeDrawer({
               />
               <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
                 {isReinforce
-                  ? "Strongly aligned theme"
-                  : "Potentially misaligned theme"}
+                  ? "Recurring alignment"
+                  : "Recurring potential misalignment"}
               </p>
             </div>
             <h3
@@ -558,7 +558,7 @@ function AllStorylinesView({
               documents
             </h3>
             <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-              {reinforce.length.toLocaleString()} strongly aligned ·{" "}
+              {reinforce.length.toLocaleString()} aligned ·{" "}
               {friction.length.toLocaleString()} potentially misaligned. Click
               any theme for the underlying target pairs.
             </p>
@@ -576,7 +576,7 @@ function AllStorylinesView({
         <div className="px-6 py-6 space-y-6">
           {reinforce.length > 0 && (
             <StorylineGroup
-              label="Strongly aligned patterns"
+              label="Recurring alignment"
               tone="reinforce"
               storylines={reinforce}
               onPick={onPick}
@@ -584,7 +584,7 @@ function AllStorylinesView({
           )}
           {friction.length > 0 && (
             <StorylineGroup
-              label="Potentially misaligned patterns"
+              label="Recurring potential misalignment"
               tone="friction"
               storylines={friction}
               onPick={onPick}

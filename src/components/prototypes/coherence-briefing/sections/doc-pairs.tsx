@@ -255,9 +255,7 @@ function DocPairRow({
     : showClash
       ? dp.synthesis.clash
       : dp.synthesis.reinforce;
-  const excerptPrefix = showClash
-    ? "Potential misalignment"
-    : "Strong alignment";
+  const excerptPrefix = showClash ? "Potential misalignment" : "Aligned";
   const excerptColor = showClash
     ? ALIGNMENT_COLORS.flagged
     : ALIGNMENT_COLORS.high;
