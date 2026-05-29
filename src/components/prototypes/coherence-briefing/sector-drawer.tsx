@@ -5,7 +5,7 @@
  *
  * Round-2 restructure: instead of a synthesis block at the top and
  * separate "top alignments / top tensions" lists below, each synthesis
- * panel (Strong alignment / Potential misalignment) now carries its own example
+ * panel (Aligned / Potential misalignment) now carries its own example
  * sub-list directly beneath the LLM text. Single source of truth, the
  * examples are anchored to the claims they support.
  *
@@ -225,7 +225,7 @@ function SectorSynthesisBlock({
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SynthesisPanelWithExamples
-          label="Strong alignment"
+          label="Aligned"
           dotColor={ALIGNED_DOT_COLOR}
           body={reinforce}
           examples={topAlignments}
@@ -373,7 +373,7 @@ function SynthesisPanelWithExamples({
         <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
           {variant === "flagged"
             ? "Potentially misaligned examples"
-            : "Strongly aligned examples"}
+            : "Aligned examples"}
         </p>
         {visible.length === 0 ? (
           <p className="text-[11px] italic text-[var(--undp-gray)]">

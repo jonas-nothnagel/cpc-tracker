@@ -1195,11 +1195,11 @@ function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
       <LegendDot color="#196127" label="Aligned" />
       <LegendDot color="#dc2626" label="Potential misalignment" dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
-        red = share of each link that is flagged
+        red = share of each link that is potentially misaligned
       </span>
       {showArcNote && (
         <span className="text-[10px] text-[var(--undp-gray)]/70">
-          warmer arc = document with more flags
+          warmer arc = document with more potential misalignment
         </span>
       )}
     </div>

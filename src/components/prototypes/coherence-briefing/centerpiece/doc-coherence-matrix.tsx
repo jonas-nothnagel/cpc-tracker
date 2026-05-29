@@ -211,7 +211,7 @@ export function DocCoherenceMatrix({
             className="inline-block w-3 h-3 rounded-sm"
             style={{ backgroundColor: "rgba(25, 97, 39, 0.85)" }}
           />
-          Strong alignment
+          Aligned
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span

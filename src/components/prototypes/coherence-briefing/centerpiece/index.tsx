@@ -120,7 +120,7 @@ function VariantPicker({
 function Legend() {
   return (
     <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label="Strong alignment" />
+      <LegendDot color="#196127" label="Aligned" />
       <LegendDot color="#dc2626" label="Potential misalignment" dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
         ribbon width = number of pairs

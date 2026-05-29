@@ -97,14 +97,17 @@ interface WheelState {
   itself is unchanged.
 - **Off-white background, serif headlines, calm spacing.** Aesthetic locked.
 - **No em dashes in user-facing text.**
-- **No "tension", "flagged for review", or "reinforces" in user-facing
-  strings.** Negative side is "potential misalignment" (state) /
+- **No "tension", "flagged for review", "flagged", or "reinforces" in
+  user-facing strings.** Negative side is "potential misalignment" (state) /
   "potentially misaligned" / "misaligned" (compact toggles & counts paired
-  with "aligned"). Positive side is "strong alignment" / "strongly aligned" /
-  "aligned" (never "reinforces"). The three mechanism labels are "conflicting
-  goals / competing for resources / delivery & coordination". Internal field
-  names and data keys (`tensionCount`, `tensionShare`, `WheelFilter` literal
-  `"tensions"`, `reinforce`, storyline `type: "friction"`) stay.
+  with "aligned"). Positive pairwise label is "Aligned" (wheel/matrix legends,
+  chips, drawer panel labels); prose findings may still say "strongly aligned".
+  Recurring-pattern cards (storyline cards, theme drawer) use "Recurring
+  alignment" / "Recurring potential misalignment" so they don't read as a
+  single pairwise verdict. The three mechanism labels are "conflicting goals /
+  competing for resources / delivery & coordination". Internal field names and
+  data keys (`tensionCount`, `tensionShare`, `WheelFilter` literal `"tensions"`,
+  `reinforce`, storyline `type: "friction"`) stay.
 - **No detectors.** The headline content uses generic data-derived helpers
   in `coherence-briefing.ts`. Detectors in `src/lib/coherence-insights.ts`
   belong to the curated production dashboard.

@@ -396,7 +396,7 @@ function DocPairBody({
         {!failed && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <SynthesisPanelWithExamples
-              label="Strong alignment"
+              label="Aligned"
               dotColor={ALIGNED_DOT_COLOR}
               body={docPair.synthesis.reinforce}
               examples={alignedPairs}
@@ -543,7 +543,7 @@ function SynthesisPanelWithExamples({
                   ? ` of ${totalCount.toLocaleString()}`
                   : ""
               })`
-            : `Strongly aligned examples (${examples.length.toLocaleString()})`}
+            : `Aligned examples (${examples.length.toLocaleString()})`}
         </p>
         {visible.length === 0 ? (
           <p className="text-[11px] italic text-[var(--undp-gray)]">
