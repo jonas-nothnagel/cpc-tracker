@@ -46,6 +46,7 @@ import {
   getDocMediumLabel,
 } from "@/lib/utils";
 import type {
+  AlignmentMechanism,
   AlignmentResult,
   CountryConfig,
   PolicyDocumentType,
@@ -67,6 +68,7 @@ export function DocFocusSection({
   availableDocs,
   onSelectDoc,
   onOpenPair,
+  onOpenType,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -76,6 +78,8 @@ export function DocFocusSection({
   onSelectDoc: (d: PolicyDocumentType) => void;
   /** Open the pair drawer for a flagged target pair. */
   onOpenPair: (aId: string, bId: string) => void;
+  /** Open the doc-scoped decomposition drawer for a friction mechanism. */
+  onOpenType: (mechanism: AlignmentMechanism) => void;
 }) {
   const headlineData = useMemo<AnchorHeadline>(
     () =>
@@ -124,6 +128,7 @@ export function DocFocusSection({
           focusedDoc={focusedDoc}
           countryConfig={countryConfig}
           onOpenPair={onOpenPair}
+          onOpenType={onOpenType}
         />
       }
     />
@@ -248,6 +253,7 @@ function DocFocusEvidence({
   focusedDoc,
   countryConfig,
   onOpenPair,
+  onOpenType,
 }: {
   fullTitle: string;
   label: string;
@@ -255,6 +261,7 @@ function DocFocusEvidence({
   focusedDoc: PolicyDocumentType;
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
+  onOpenType: (mechanism: AlignmentMechanism) => void;
 }) {
   const { flaggedPairs, frictionTotals } = frictions;
   const shown = flaggedPairs.slice(0, FLAGGED_CAP);
@@ -280,6 +287,7 @@ function DocFocusEvidence({
             <FrictionTypeChart
               totals={frictionTotals}
               caption={`How ${label}'s potential misalignment breaks down`}
+              onSegmentClick={onOpenType}
             />
           )}
           <div>
@@ -327,12 +335,15 @@ function FlaggedPairRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
-  // Show the focused document's own target (the thing being flagged); the peer
-  // side just supplies the "vs <doc>" label.
+  // The serif text is the focused document's own target (the thing being
+  // flagged); name it explicitly as "<focused doc> target" so it's never
+  // ambiguous whose target the reader is looking at. The peer side supplies the
+  // "vs <doc> target" counterpart line.
   const focused =
     line.targetA.sourceDocument === focusedDoc ? line.targetA : line.targetB;
   const peer =
     line.targetA.sourceDocument === focusedDoc ? line.targetB : line.targetA;
+  const focusedDocLabel = getDocMediumLabel(countryConfig, focusedDoc);
   const peerDocLabel = getDocMediumLabel(
     countryConfig,
     peer.sourceDocument as PolicyDocumentType,
@@ -347,7 +358,7 @@ function FlaggedPairRow({
       >
         <div className="flex items-center justify-between gap-2 mb-1">
           <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-            vs {peerDocLabel}
+            {focusedDocLabel} target
           </span>
           {mechanism && (
             <span
@@ -368,6 +379,9 @@ function FlaggedPairRow({
           }}
         >
           {focused.text}
+        </p>
+        <p className="mt-1.5 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+          vs {peerDocLabel} target
         </p>
       </button>
     </li>

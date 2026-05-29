@@ -891,6 +891,13 @@ export function CoherenceBriefing({
                   availableDocs={availableDocs}
                   onSelectDoc={setSelectedFocusDoc}
                   onOpenPair={openPairById}
+                  onOpenType={(mechanism) =>
+                    setFlagProfile({
+                      kind: "friction-type",
+                      mechanism,
+                      doc: focusedDoc,
+                    })
+                  }
                 />
               </div>
             )}
