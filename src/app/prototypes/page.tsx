@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
-import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 
 // Follows the same search-param conventions as /dashboard so URLs can be
 // swapped ("/dashboard?country=..." ↔ "/prototypes?country=...") without
@@ -84,17 +83,13 @@ export default async function PrototypesPage({ searchParams }: PrototypesPagePro
     return <UnavailableState />;
   }
 
-  // Server-assemble the payload (cached per country) so the demoted dashboard
-  // renders from inlined data instead of a ~10 MB post-hydration fetch, matching
-  // the live /dashboard route. Falls back to the client fetch if assembly fails.
-  const payload = getCountryDashboardPayload(entry.id);
-  const initialData = payload.kind === "ok" ? payload.payload.data : undefined;
-
+  // Let the client fetch /api/dashboard (pre-gzipped, cached) instead of inlining
+  // the full ~40 MB payload into the no-store HTML, matching the live /dashboard
+  // route. See src/app/dashboard/page.tsx.
   return (
     <DashboardClient
       key={`c:${entry.id}`}
       country={entry.id}
-      initialData={initialData}
       switcherPath="/prototypes"
     />
   );
