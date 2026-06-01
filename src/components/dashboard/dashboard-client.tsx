@@ -1,5 +1,13 @@
 "use client";
 
+/**
+ * DashboardClient — the detailed explorer dashboard.
+ *
+ * Once the primary view, it now backs the demoted `/prototypes` route after the
+ * findings-first CoherenceDashboard took over `/dashboard` and `/{country}`.
+ * Reads the same `/api/dashboard` payload as CoherenceDashboard.
+ */
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/ui/header";
@@ -271,6 +279,7 @@ export function DashboardClient({
   country,
   basePath,
   initialData,
+  switcherPath,
 }: {
   analysisId?: string;
   country?: string;
@@ -281,6 +290,10 @@ export function DashboardClient({
    *  renders from it immediately and skips the client fetch, avoiding the
    *  ~10 MB post-hydration round trip. */
   initialData?: DashboardResponse;
+  /** Path the header country switcher navigates to. Defaults to "/dashboard".
+   *  This component now backs the demoted explorer on /prototypes, which passes
+   *  "/prototypes" so switching country keeps the user on that route. */
+  switcherPath?: string;
 }) {
   const [data, setData] = useState<DashboardData | null>(
     initialData ? normalizeDashboardResponse(initialData) : null,
@@ -467,6 +480,7 @@ export function DashboardClient({
         currentCountryId={country}
         countries={basePath ? undefined : listVisibleCountries().map(c => ({ id: c.id, name: c.name }))}
         basePath={basePath}
+        switcherPath={switcherPath}
       />
 
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">

@@ -1375,8 +1375,9 @@ function LegendGradient({ label }: { label: string }) {
 }
 
 function FooterLink({ countryId }: { countryId?: string }) {
+  // Points at the demoted explorer dashboard, which now lives on /prototypes.
   const dashboardHref = countryId
-    ? `/dashboard?country=${encodeURIComponent(countryId)}`
+    ? `/prototypes?country=${encodeURIComponent(countryId)}`
     : "/";
   return (
     <div className="fixed bottom-3 left-6 z-10 text-[10px] text-[var(--undp-gray)]">

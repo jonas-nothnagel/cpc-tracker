@@ -1,181 +1,136 @@
 import Image from "next/image";
 import Link from "next/link";
 import { listVisibleCountries } from "@/config/countries";
+import { LandingHeader } from "@/components/landing/landing-header";
+import { HeroVideo } from "@/components/landing/hero-video";
+import { WheelPreview } from "@/components/landing/wheel-preview";
 
 export default function Home() {
   const visibleCountries = listVisibleCountries();
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-100 sticky top-0 bg-white z-20">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/undp-logo.png"
-                alt="UNDP"
-                width={48}
-                height={72}
-                className="h-12 w-auto"
-              />
-              <span className="text-sm font-medium text-[var(--undp-black)] tracking-wide hidden sm:block">
-                Policy Coherence Tracker
-              </span>
-            </Link>
-          </div>
-          <nav className="flex gap-8 text-sm text-[var(--undp-gray)]">
-            <Link href="/upload" className="hover:text-[var(--undp-blue)] transition-colors">
-              Upload Data
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <LandingHeader />
 
-      {/* Hero — image spans full viewport width, text constrained */}
-      <section className="relative min-h-[380px] md:min-h-[440px] flex items-center">
-        {/* Background image — full bleed */}
-        <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src="/biodiversity.jpg"
-            alt="Dense forest canopy over a misty valley"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent" />
-        </div>
-        {/* Content on top */}
-        <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
-          <div className="max-w-xl py-16 md:py-20">
-            <p className="text-sm uppercase tracking-widest text-[var(--undp-blue)] mb-3 font-medium">
-              UNDP AI Sprint Initiative
-            </p>
-            <h1 className="text-4xl md:text-5xl font-normal text-[var(--undp-black)] mb-5 leading-tight tracking-tight">
-              Nature-Climate Policy Coherence Tracker
-            </h1>
-            <p className="text-lg text-[var(--undp-black)] mb-8 leading-relaxed max-w-md">
-              See where your national climate, biodiversity, and land-use targets
-              align, overlap, or may pull in different directions.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {visibleCountries.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/dashboard?country=${c.id}`}
-                  className="px-6 py-3 bg-[var(--undp-blue)] text-white text-base font-medium hover:bg-[var(--undp-blue-dark)] transition-colors"
-                >
-                  Explore {c.name}
-                </Link>
-              ))}
-              <Link
-                href="/upload"
-                className="px-6 py-3 border border-[var(--undp-blue)] text-[var(--undp-blue)] text-base font-medium hover:bg-[var(--undp-blue)]/5 transition-colors"
-              >
-                Analyse Your Policies
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Dashboard teaser */}
-      <section className="py-16 md:py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-xl font-medium text-[var(--undp-black)] mb-3">
-            What the dashboard reveals
-          </h2>
-          <p className="text-sm text-[var(--undp-gray)] mb-10 max-w-lg">
-            Explore pilot analyses of national policy targets across participating countries.
+      {/* Cinematic hero */}
+      <HeroVideo
+        poster="/hero/coherence-hero-poster.jpg"
+        mp4="/hero/coherence-hero.mp4"
+      >
+        <div className="max-w-3xl">
+          <p className="mb-5 text-xs font-medium uppercase tracking-[0.18em] text-white/85 sm:text-sm">
+            UNDP AI Sprint Initiative
           </p>
-          <div className="grid md:grid-cols-3 gap-5">
-            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
-                  src="/teaser-chord-overview.png"
-                  alt="Chord diagram showing alignment connections between policy targets across climate, biodiversity, adaptation, and sectoral policies"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
-                />
-              </div>
-              <div className="px-4 py-3">
-                <p className="text-sm font-medium text-[var(--undp-black)]">Policy Coherence Explorer</p>
-                <p className="text-xs text-[var(--undp-gray)] mt-0.5">Cross-policy alignment and possible misalignments at a glance</p>
-              </div>
+          <h1 className="font-display mb-6 text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+            Nature-Climate Policy Coherence Tracker
+          </h1>
+          <p className="mb-9 max-w-xl text-lg leading-relaxed text-white/90 md:text-xl">
+            See where your national climate, biodiversity, and land-use targets
+            align, overlap, or may pull in different directions.
+          </p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            {visibleCountries.map((c) => (
+              <Link
+                key={c.id}
+                href={`/dashboard?country=${c.id}`}
+                className="bg-[var(--undp-blue)] px-6 py-3 text-base font-medium text-white transition-colors hover:bg-[var(--undp-blue-dark)]"
+              >
+                Explore {c.name}
+              </Link>
+            ))}
+            <Link
+              href="/upload"
+              className="text-base font-medium text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white"
+            >
+              Analyse your policies
             </Link>
-            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
-                  src="/teaser-classification.png"
-                  alt="Stacked bar chart showing targets mapped across nature-based solution categories"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
-                />
-              </div>
-              <div className="px-4 py-3">
-                <p className="text-sm font-medium text-[var(--undp-black)]">Thematic Classification</p>
-                <p className="text-xs text-[var(--undp-gray)] mt-0.5">Targets mapped to Biodiversity and Climate Mitigation categories</p>
-              </div>
-            </Link>
-            <Link href="/dashboard?country=mongolia" className="group block overflow-hidden rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
-                  src="/teaser-coherence-explorer.png"
-                  alt="Target detail view showing alignment connections, rationale, and conflict indicators for a selected biodiversity target"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
-                />
-              </div>
-              <div className="px-4 py-3">
-                <p className="text-sm font-medium text-[var(--undp-black)]">Target-Level Detail</p>
-                <p className="text-xs text-[var(--undp-gray)] mt-0.5">Drill into individual targets to see connections and rationale</p>
-              </div>
-            </Link>
+          </div>
+        </div>
+      </HeroVideo>
+
+      {/* Inside the analysis — live coherence wheel on warm paper ground */}
+      <section className="bg-[var(--undp-paper)] py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
+          <div>
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-[var(--undp-blue)]">
+              Inside the analysis
+            </p>
+            <h2 className="font-display mb-5 text-3xl font-semibold leading-tight text-[var(--undp-black)] md:text-4xl">
+              Every policy target, mapped against every other
+            </h2>
+            <p className="mb-6 max-w-md text-base leading-relaxed text-[var(--undp-gray)] md:text-lg">
+              Each ribbon links two national policy documents. Green shows where
+              their targets are in strong alignment; red threads mark a potential
+              misalignment worth a closer look. Switch between the pilot countries
+              to compare.
+            </p>
+            <p className="max-w-sm text-xs leading-relaxed text-[var(--undp-gray)]/70">
+              AI-generated analysis. Treat as a prompt to review, not a settled
+              finding.
+            </p>
+          </div>
+          <div>
+            <WheelPreview
+              countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
+            />
           </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section className="py-16 md:py-20 bg-[var(--undp-light)]">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-xl font-medium text-[var(--undp-black)] mb-10">
+      <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="font-display mb-12 text-2xl font-semibold text-[var(--undp-black)] md:text-3xl">
             How it works
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid gap-10 md:grid-cols-3 md:gap-12">
             <div>
-              <span className="w-7 h-7 rounded-full bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] flex items-center justify-center text-sm font-semibold">1</span>
-              <h3 className="font-medium text-[var(--undp-black)] mt-2 mb-2">
-                Upload Targets
+              <span className="font-display text-3xl font-semibold text-[var(--undp-blue)]/80">
+                1
+              </span>
+              <h3 className="mb-2 mt-3 font-medium text-[var(--undp-black)]">
+                Upload targets
               </h3>
-              <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+              <p className="text-sm leading-relaxed text-[var(--undp-gray)]">
                 Enter targets from your{" "}
-                <abbr title="Nationally Determined Contribution" className="no-underline">NDC</abbr>,{" "}
-                <abbr title="National Biodiversity Strategy and Action Plan" className="no-underline">NBSAP</abbr>,{" "}
-                <abbr title="National Adaptation Plan" className="no-underline">NAP</abbr>,{" "}
-                and other national policy documents. Upload files directly or type them in.
+                <abbr title="Nationally Determined Contribution" className="no-underline">
+                  NDC
+                </abbr>
+                ,{" "}
+                <abbr
+                  title="National Biodiversity Strategy and Action Plan"
+                  className="no-underline"
+                >
+                  NBSAP
+                </abbr>
+                ,{" "}
+                <abbr title="National Adaptation Plan" className="no-underline">
+                  NAP
+                </abbr>
+                , and other national policy documents. Upload files directly or
+                type them in.
               </p>
             </div>
             <div>
-              <span className="w-7 h-7 rounded-full bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] flex items-center justify-center text-sm font-semibold">2</span>
-              <h3 className="font-medium text-[var(--undp-black)] mt-2 mb-2">
-                Automated Analysis
+              <span className="font-display text-3xl font-semibold text-[var(--undp-blue)]/80">
+                2
+              </span>
+              <h3 className="mb-2 mt-3 font-medium text-[var(--undp-black)]">
+                Automated analysis
               </h3>
-              <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
-                AI classifies each target by theme and sector, then assesses
-                how well targets across different policies align with each
-                other.
+              <p className="text-sm leading-relaxed text-[var(--undp-gray)]">
+                AI classifies each target by theme and sector, then assesses how
+                well targets across different policies align with each other.
               </p>
             </div>
             <div>
-              <span className="w-7 h-7 rounded-full bg-[var(--undp-blue)]/10 text-[var(--undp-blue)] flex items-center justify-center text-sm font-semibold">3</span>
-              <h3 className="font-medium text-[var(--undp-black)] mt-2 mb-2">
-                Explore Results
+              <span className="font-display text-3xl font-semibold text-[var(--undp-blue)]/80">
+                3
+              </span>
+              <h3 className="mb-2 mt-3 font-medium text-[var(--undp-black)]">
+                Explore results
               </h3>
-              <p className="text-sm text-[var(--undp-gray)] leading-relaxed">
+              <p className="text-sm leading-relaxed text-[var(--undp-gray)]">
                 Interactive dashboard showing policy coverage, alignment
                 patterns, and areas where coordination could be strengthened.
               </p>
@@ -185,8 +140,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 mt-auto">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
+      <footer className="mt-auto border-t border-gray-200">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
           <div className="flex items-center gap-3">
             <Image
               src="/undp-logo.png"
