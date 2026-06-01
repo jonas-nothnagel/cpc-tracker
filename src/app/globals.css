@@ -44,10 +44,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Editorial serif headlines (Lora via next/font), with graceful fallbacks. */
+/* Editorial serif headlines. Uses the same system serif stack as the
+   dashboard's HEADLINE_SERIF so the landing and dashboard headlines match. */
 .font-display {
-  font-family: var(--font-serif), ui-serif, Georgia, Cambria, "Times New Roman",
-    Times, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* Landing ambient motion. Both collapse to static under the
