@@ -26,6 +26,8 @@ html {
   --undp-green: #59ba47;
   --undp-yellow: #ffbc00;
   --undp-red: #ee402d;
+  /* Warm off-white page ground for the editorial bands below the hero. */
+  --undp-paper: #faf8f4;
   /* Chart palette — clean UNDP-aligned */
   --chart-ndc: #0468b1;
   --chart-nbt: #0d9488;
@@ -40,6 +42,42 @@ body {
   color: var(--undp-black);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Editorial serif headlines (Lora via next/font), with graceful fallbacks. */
+.font-display {
+  font-family: var(--font-serif), ui-serif, Georgia, Cambria, "Times New Roman",
+    Times, serif;
+}
+
+/* Landing ambient motion. Both collapse to static under the
+   prefers-reduced-motion rule above (durations forced to ~0). */
+@keyframes wheelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.wheel-enter {
+  animation: wheelEnter 700ms ease-out both;
+}
+
+@keyframes wheelBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.012);
+  }
+}
+.wheel-breathe {
+  animation: wheelBreathe 9s ease-in-out infinite;
+  transform-origin: center center;
 }
 
 /* Prevent Recharts focus outline on chart click */
