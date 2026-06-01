@@ -394,33 +394,43 @@ function DocPairBody({
 
       <div className="px-6 py-6 space-y-6">
         {!failed && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <SynthesisPanelWithExamples
-              label="Aligned"
-              dotColor={ALIGNED_DOT_COLOR}
-              body={docPair.synthesis.reinforce}
-              examples={alignedPairs}
-              emptyText="No strong alignments in this doc-pair."
-              variant="aligned"
-              targetsById={targetsById}
-              countryConfig={countryConfig}
-              onOpenTargetPair={onOpenTargetPair}
-              totalCount={alignedPairs.length}
-            />
-            <SynthesisPanelWithExamples
-              label="Potential misalignment"
-              dotColor={FRICTION_DOT_COLOR}
-              dashed
-              body={docPair.synthesis.clash}
-              examples={flaggedPairs}
-              emptyText="No potential misalignment in this doc-pair."
-              variant="flagged"
-              targetsById={targetsById}
-              countryConfig={countryConfig}
-              onOpenTargetPair={onOpenTargetPair}
-              totalCount={flaggedPairs.length}
-            />
-          </div>
+          <>
+            {/* Storylines are the headline content — each keeps its own box. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <StorylinePanel
+                label="Aligned"
+                dotColor={ALIGNED_DOT_COLOR}
+                body={docPair.synthesis.reinforce}
+              />
+              <StorylinePanel
+                label="Potential misalignment"
+                dotColor={FRICTION_DOT_COLOR}
+                dashed
+                body={docPair.synthesis.clash}
+              />
+            </div>
+            {/* Supporting examples sit below the boxes as a plain, unboxed list. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <ExamplesColumn
+                variant="aligned"
+                examples={alignedPairs}
+                emptyText="No strong alignments in this doc-pair."
+                totalCount={alignedPairs.length}
+                targetsById={targetsById}
+                countryConfig={countryConfig}
+                onOpenTargetPair={onOpenTargetPair}
+              />
+              <ExamplesColumn
+                variant="flagged"
+                examples={flaggedPairs}
+                emptyText="No potential misalignment in this doc-pair."
+                totalCount={flaggedPairs.length}
+                targetsById={targetsById}
+                countryConfig={countryConfig}
+                onOpenTargetPair={onOpenTargetPair}
+              />
+            </div>
+          </>
         )}
         {!failed && docPair.synthesis.coordination_hint && (
           <div className="border-l-2 border-gray-300 pl-3">
@@ -482,11 +492,41 @@ function compareFlaggedByReviewPriority(
   return SEVERITY_RANK[x.alignment] - SEVERITY_RANK[y.alignment];
 }
 
-function SynthesisPanelWithExamples({
+function StorylinePanel({
   label,
   dotColor,
   dashed,
   body,
+}: {
+  label: string;
+  dotColor: string;
+  dashed?: boolean;
+  body: string;
+}) {
+  return (
+    <div className="rounded-md border border-gray-200 bg-white p-4">
+      <div className="flex items-center gap-2 mb-2">
+        <span
+          aria-hidden="true"
+          className="block h-2.5 w-2.5 rounded-full"
+          style={
+            dashed
+              ? { boxShadow: `inset 0 0 0 1px ${dotColor}` }
+              : { backgroundColor: dotColor }
+          }
+        />
+        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
+          {label}
+        </p>
+      </div>
+      <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
+        {body}
+      </p>
+    </div>
+  );
+}
+
+function ExamplesColumn({
   examples,
   emptyText,
   variant,
@@ -495,10 +535,6 @@ function SynthesisPanelWithExamples({
   onOpenTargetPair,
   totalCount,
 }: {
-  label: string;
-  dotColor: string;
-  dashed?: boolean;
-  body: string;
   examples: AlignmentResult[];
   emptyText: string;
   variant: "aligned" | "flagged";
@@ -517,69 +553,50 @@ function SynthesisPanelWithExamples({
     : examples.slice(0, EXAMPLES_DEFAULT_COUNT);
   const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <span
-          aria-hidden="true"
-          className="block h-2.5 w-2.5 rounded-full"
-          style={
-            dashed
-              ? { boxShadow: `inset 0 0 0 1px ${dotColor}` }
-              : { backgroundColor: dotColor }
-          }
-        />
-        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
-          {label}
-        </p>
-      </div>
-      <p className="text-[13px] text-[var(--undp-black)] leading-relaxed mb-4">
-        {body}
+    <div>
+      <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+        {variant === "flagged"
+          ? `Potentially misaligned examples (${examples.length.toLocaleString()}${
+              examples.length !== totalCount
+                ? ` of ${totalCount.toLocaleString()}`
+                : ""
+            })`
+          : `Aligned examples (${examples.length.toLocaleString()})`}
       </p>
-      <div className="mt-4 border-t border-gray-200 pt-3">
-        <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
-          {variant === "flagged"
-            ? `Potentially misaligned examples (${examples.length.toLocaleString()}${
-                examples.length !== totalCount
-                  ? ` of ${totalCount.toLocaleString()}`
-                  : ""
-              })`
-            : `Aligned examples (${examples.length.toLocaleString()})`}
+      {visible.length === 0 ? (
+        <p className="text-[11px] italic text-[var(--undp-gray)]">
+          {emptyText}
         </p>
-        {visible.length === 0 ? (
-          <p className="text-[11px] italic text-[var(--undp-gray)]">
-            {emptyText}
-          </p>
-        ) : (
-          <ol className="space-y-2">
-            {visible.map((p) => {
-              const tA = targetsById.get(p.targetAId);
-              const tB = targetsById.get(p.targetBId);
-              if (!tA || !tB) return null;
-              return (
-                <TargetPairRow
-                  key={`${p.targetAId}__${p.targetBId}`}
-                  pair={p}
-                  targetA={tA}
-                  targetB={tB}
-                  countryConfig={countryConfig}
-                  onOpen={() => onOpenTargetPair(p, tA, tB)}
-                />
-              );
-            })}
-          </ol>
-        )}
-        {remaining > 0 && (
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
-          >
-            {expanded
-              ? "Show fewer"
-              : `Show ${remaining.toLocaleString()} more`}
-          </button>
-        )}
-      </div>
+      ) : (
+        <ol className="divide-y divide-gray-200">
+          {visible.map((p) => {
+            const tA = targetsById.get(p.targetAId);
+            const tB = targetsById.get(p.targetBId);
+            if (!tA || !tB) return null;
+            return (
+              <TargetPairRow
+                key={`${p.targetAId}__${p.targetBId}`}
+                pair={p}
+                targetA={tA}
+                targetB={tB}
+                countryConfig={countryConfig}
+                onOpen={() => onOpenTargetPair(p, tA, tB)}
+              />
+            );
+          })}
+        </ol>
+      )}
+      {remaining > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+        >
+          {expanded
+            ? "Show fewer"
+            : `Show ${remaining.toLocaleString()} more`}
+        </button>
+      )}
     </div>
   );
 }

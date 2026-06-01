@@ -223,25 +223,33 @@ function SectorSynthesisBlock({
       >
         {storyline_name}
       </p>
+      {/* Storylines are the headline content — each keeps its own box. */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <SynthesisPanelWithExamples
+        <StorylinePanel
           label="Aligned"
           dotColor={ALIGNED_DOT_COLOR}
           body={reinforce}
-          examples={topAlignments}
-          emptyText="No strong alignments touch this sector."
-          variant="aligned"
-          countryConfig={countryConfig}
-          onOpenTargetPair={onOpenTargetPair}
         />
-        <SynthesisPanelWithExamples
+        <StorylinePanel
           label="Potential misalignment"
           dotColor={FRICTION_DOT_COLOR}
           dashed
           body={clash}
+        />
+      </div>
+      {/* Supporting examples sit below the boxes as a plain, unboxed list. */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ExamplesColumn
+          variant="aligned"
+          examples={topAlignments}
+          emptyText="No strong alignments touch this sector."
+          countryConfig={countryConfig}
+          onOpenTargetPair={onOpenTargetPair}
+        />
+        <ExamplesColumn
+          variant="flagged"
           examples={topTensions}
           emptyText="No potential misalignment in this sector."
-          variant="flagged"
           countryConfig={countryConfig}
           onOpenTargetPair={onOpenTargetPair}
         />
@@ -320,36 +328,17 @@ function renderContradictionSubtypes(synthesis: SectorSynthesis): string[] {
   return parts;
 }
 
-function SynthesisPanelWithExamples({
+function StorylinePanel({
   label,
   dotColor,
   dashed,
   body,
-  examples,
-  emptyText,
-  variant,
-  countryConfig,
-  onOpenTargetPair,
 }: {
   label: string;
   dotColor: string;
   dashed?: boolean;
   body: string;
-  examples: FaultLine[];
-  emptyText: string;
-  variant: "aligned" | "flagged";
-  countryConfig: CountryConfig | null;
-  onOpenTargetPair?: (
-    pair: AlignmentResult,
-    targetA: Target,
-    targetB: Target,
-  ) => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const visible = expanded
-    ? examples
-    : examples.slice(0, EXAMPLES_DEFAULT_COUNT);
-  const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
   return (
     <div className="rounded-md border border-gray-200 bg-white p-3">
       <div className="flex items-center gap-2 mb-2">
@@ -366,48 +355,74 @@ function SynthesisPanelWithExamples({
           {label}
         </p>
       </div>
-      <p className="text-[12px] text-[var(--undp-black)] leading-relaxed mb-4">
+      <p className="text-[12px] text-[var(--undp-black)] leading-relaxed">
         {body}
       </p>
-      <div className="mt-4 border-t border-gray-200 pt-3">
-        <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
-          {variant === "flagged"
-            ? "Potentially misaligned examples"
-            : "Aligned examples"}
+    </div>
+  );
+}
+
+function ExamplesColumn({
+  examples,
+  emptyText,
+  variant,
+  countryConfig,
+  onOpenTargetPair,
+}: {
+  examples: FaultLine[];
+  emptyText: string;
+  variant: "aligned" | "flagged";
+  countryConfig: CountryConfig | null;
+  onOpenTargetPair?: (
+    pair: AlignmentResult,
+    targetA: Target,
+    targetB: Target,
+  ) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded
+    ? examples
+    : examples.slice(0, EXAMPLES_DEFAULT_COUNT);
+  const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
+  return (
+    <div>
+      <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+        {variant === "flagged"
+          ? "Potentially misaligned examples"
+          : "Aligned examples"}
+      </p>
+      {visible.length === 0 ? (
+        <p className="text-[11px] italic text-[var(--undp-gray)]">
+          {emptyText}
         </p>
-        {visible.length === 0 ? (
-          <p className="text-[11px] italic text-[var(--undp-gray)]">
-            {emptyText}
-          </p>
-        ) : (
-          <ol className="space-y-2">
-            {visible.map((line) => (
-              <ExampleRow
-                key={`${line.pair.targetAId}__${line.pair.targetBId}`}
-                line={line}
-                countryConfig={countryConfig}
-                onOpen={
-                  onOpenTargetPair
-                    ? () =>
-                        onOpenTargetPair(line.pair, line.targetA, line.targetB)
-                    : undefined
-                }
-              />
-            ))}
-          </ol>
-        )}
-        {remaining > 0 && (
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
-          >
-            {expanded
-              ? "Show fewer"
-              : `Show ${remaining.toLocaleString()} more`}
-          </button>
-        )}
-      </div>
+      ) : (
+        <ol className="divide-y divide-gray-200">
+          {visible.map((line) => (
+            <ExampleRow
+              key={`${line.pair.targetAId}__${line.pair.targetBId}`}
+              line={line}
+              countryConfig={countryConfig}
+              onOpen={
+                onOpenTargetPair
+                  ? () =>
+                      onOpenTargetPair(line.pair, line.targetA, line.targetB)
+                  : undefined
+              }
+            />
+          ))}
+        </ol>
+      )}
+      {remaining > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+        >
+          {expanded
+            ? "Show fewer"
+            : `Show ${remaining.toLocaleString()} more`}
+        </button>
+      )}
     </div>
   );
 }
