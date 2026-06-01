@@ -1,5 +1,5 @@
 /**
- * Helpers for the findings-first prototype on /prototypes.
+ * Helpers for the findings-first dashboard on /dashboard.
  *
  * Computes what the home sections need:
  *   - a headline verdict ("are policies pulling the same direction?")

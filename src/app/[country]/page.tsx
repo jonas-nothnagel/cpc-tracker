@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { DashboardClient } from "@/components/dashboard/dashboard-client";
+import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 
@@ -30,7 +30,7 @@ export default async function StandaloneCountryPage({ params }: StandalonePagePr
   const initialData = payload.kind === "ok" ? payload.payload.data : undefined;
 
   return (
-    <DashboardClient
+    <CoherenceDashboard
       key={`standalone:${entry.id}`}
       country={entry.id}
       basePath={`/${entry.id}`}

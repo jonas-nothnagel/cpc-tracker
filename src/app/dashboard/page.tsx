@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { DashboardClient } from "@/components/dashboard/dashboard-client";
+import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
@@ -64,7 +64,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   // the client when the target changes, so stale error/data state from a
   // previous country never leaks into the next one.
   if (analysisId) {
-    return <DashboardClient key={`a:${analysisId}`} analysisId={analysisId} />;
+    return <CoherenceDashboard key={`a:${analysisId}`} analysisId={analysisId} />;
   }
 
   // Country-addressed path. Empty string is treated as missing.
@@ -92,6 +92,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   const initialData = payload.kind === "ok" ? payload.payload.data : undefined;
 
   return (
-    <DashboardClient key={`c:${entry.id}`} country={entry.id} initialData={initialData} />
+    <CoherenceDashboard key={`c:${entry.id}`} country={entry.id} initialData={initialData} />
   );
 }
