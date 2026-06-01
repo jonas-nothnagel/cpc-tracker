@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
-import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 
 // Next.js searchParams returns string | string[] | undefined when a key
 // appears multiple times in the URL (e.g. ?country=a&country=b). Without
@@ -83,15 +82,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     return <UnavailableState />;
   }
 
-  // Assemble the payload on the server so the client island renders from
-  // inlined data instead of making a ~10 MB post-hydration round trip. The
-  // payload is cached per country for the container's lifetime. On any error
-  // (e.g. pipeline output missing) we omit initialData and let the client fall
-  // back to its own fetch + error handling.
-  const payload = getCountryDashboardPayload(entry.id);
-  const initialData = payload.kind === "ok" ? payload.payload.data : undefined;
-
+  // Render a lightweight shell and let the client island fetch the payload from
+  // /api/dashboard, which serves the pre-gzipped (~1.4 MB) cached buffer. Server-
+  // inlining the full ~40 MB payload as initialData forced React to re-serialize
+  // it into the no-store HTML on every request (~15s TTFB on Azure); the client
+  // fetch keeps the document tiny and reuses the API's caching.
   return (
-    <CoherenceDashboard key={`c:${entry.id}`} country={entry.id} initialData={initialData} />
+    <CoherenceDashboard key={`c:${entry.id}`} country={entry.id} />
   );
 }

@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
 import { getCountry, isValidCountryId } from "@/config/countries";
-import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 
 interface StandalonePageProps {
   params: Promise<{ country: string }>;
@@ -23,18 +22,14 @@ export default async function StandaloneCountryPage({ params }: StandalonePagePr
   const entry = getCountry(lower);
   if (!entry?.visible) notFound();
 
-  // Server-assemble the payload (cached per country) so the dashboard renders
-  // from inlined data instead of a ~10 MB post-hydration fetch. Falls back to
-  // the client fetch if assembly fails.
-  const payload = getCountryDashboardPayload(entry.id);
-  const initialData = payload.kind === "ok" ? payload.payload.data : undefined;
-
+  // Render a shell and let the client fetch /api/dashboard (pre-gzipped, cached)
+  // instead of inlining the full ~40 MB payload into the no-store HTML, which
+  // dominated server TTFB on Azure. See src/app/dashboard/page.tsx.
   return (
     <CoherenceDashboard
       key={`standalone:${entry.id}`}
       country={entry.id}
       basePath={`/${entry.id}`}
-      initialData={initialData}
     />
   );
 }
