@@ -16,8 +16,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Centerpiece } from "@/components/prototypes/coherence-briefing/centerpiece";
-import type { WheelState } from "@/components/prototypes/coherence-briefing/centerpiece/wheel";
+import { Centerpiece } from "@/components/dashboard/coherence-briefing/centerpiece";
+import type { WheelState } from "@/components/dashboard/coherence-briefing/centerpiece/wheel";
 import type {
   AlignmentResult,
   CountryConfig,
