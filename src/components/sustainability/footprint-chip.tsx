@@ -40,11 +40,15 @@ export function FootprintChip() {
 
   if (suppressed || co2 === null || co2 <= 0) return null;
 
+  // On the landing page the hero's WCAG pause/play control sits bottom-right,
+  // so anchor the chip bottom-left there to avoid overlapping it.
+  const corner = pathname === "/" ? "left-3" : "right-3";
+
   return (
     <Link
       href="/sustainability"
       title="AI sustainability footprint of this tool"
-      className="fixed bottom-3 right-3 z-40 text-[11px] text-[var(--undp-gray)] bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-1 shadow-sm hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors"
+      className={`fixed bottom-3 ${corner} z-40 text-[11px] text-[var(--undp-gray)] bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-1 shadow-sm hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors`}
     >
       AI footprint: {fmtCarbon(co2)} CO2e
     </Link>
