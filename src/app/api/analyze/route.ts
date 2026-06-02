@@ -179,6 +179,12 @@ export async function POST(request: NextRequest) {
           ...process.env,
           CPC_DATA_DIR: inputDir,
           CPC_OUTPUT_DIR: outputDir,
+          // Tag this run in the footprint ledger as a user upload (vs a dev CLI
+          // run) and tie its rows to this analysis id. CPC_LEDGER_DIR and
+          // CPC_ELECTRICITY_ZONE flow through via ...process.env (Azure app
+          // settings), so they don't need to be set explicitly here.
+          CPC_RUN_SOURCE: "user_pipeline",
+          CPC_RUN_ID: id,
         },
         stdio: "ignore",
         detached: true,
