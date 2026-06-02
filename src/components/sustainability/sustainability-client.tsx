@@ -16,6 +16,7 @@ import {
 import type {
   FootprintComponent,
   FootprintRollup,
+  LedgerEvent,
   RollupBucket,
 } from "@/lib/footprint/types";
 
@@ -74,6 +75,52 @@ function compact(value: number): string {
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(value);
+}
+
+// ---------------------------------------------------------------------------
+// Export. CSV is the full ledger (one row per recorded event); JSON is the
+// whole rollup. Both download client-side, no server round trip.
+// ---------------------------------------------------------------------------
+
+const CSV_COLUMNS = [
+  "ts",
+  "component",
+  "model",
+  "region",
+  "country",
+  "run_id",
+  "call_count",
+  "cached_call_count",
+  "energy_wh",
+  "water_ml",
+  "co2_geq",
+  "minerals_ugsbeq",
+  "source",
+] as const;
+
+function csvCell(value: unknown): string {
+  const s = value === null || value === undefined ? "" : String(value);
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function toCsv(events: LedgerEvent[]): string {
+  const rows = [CSV_COLUMNS.join(",")];
+  for (const e of events) {
+    rows.push(CSV_COLUMNS.map((c) => csvCell(e[c])).join(","));
+  }
+  return rows.join("\n");
+}
+
+function download(filename: string, content: string, type: string): void {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 // ---------------------------------------------------------------------------
@@ -330,9 +377,36 @@ function Dashboard({
   const minerals = fmtMinerals(totals.minerals_ugsbeq);
   const callsLabel = `across ${compact(totals.call_count)} model calls`;
   const lastRecorded = data.latestTs ? data.latestTs.slice(0, 10) : "n/a";
+  const stamp = new Date().toISOString().slice(0, 10);
+
+  const exportCsv = () =>
+    download(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");
+  const exportJson = () =>
+    download(
+      `cpc-footprint-${stamp}.json`,
+      JSON.stringify(data, null, 2),
+      "application/json",
+    );
 
   return (
     <div className="space-y-8">
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          onClick={exportCsv}
+          className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
+        >
+          Export CSV
+        </button>
+        <button
+          type="button"
+          onClick={exportJson}
+          className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
+        >
+          Export JSON
+        </button>
+      </div>
+
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricTile
           label="Carbon"
