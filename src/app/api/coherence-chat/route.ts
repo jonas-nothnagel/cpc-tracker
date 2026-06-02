@@ -18,6 +18,9 @@
 
 import { NextResponse } from "next/server";
 
+import { appendEvent } from "@/lib/footprint/ledger";
+import { estimateChatImpacts } from "@/lib/footprint/ecologits-api";
+
 export const runtime = "nodejs";
 
 interface RankedItem {
@@ -758,6 +761,7 @@ interface AssistantMessage {
 
 interface LlmResponse {
   choices?: { message?: AssistantMessage }[];
+  usage?: { prompt_tokens?: number; completion_tokens?: number };
 }
 
 type ChatMessage =
@@ -1214,6 +1218,7 @@ export async function POST(req: Request) {
   ];
 
   let response: LlmResponse;
+  const llmStart = Date.now();
   try {
     response = await callLlm(messages);
   } catch (err) {
@@ -1222,6 +1227,7 @@ export async function POST(req: Request) {
       { status: 502 },
     );
   }
+  const llmLatencyS = (Date.now() - llmStart) / 1000;
 
   const message = response.choices?.[0]?.message;
   const toolCalls = message?.tool_calls ?? [];
@@ -1403,6 +1409,40 @@ export async function POST(req: Request) {
 
   const suggestions = buildSuggestions(finalActions, context);
   const replyEntities = extractTargetIdEntities(reply, context);
+
+  // Non-blocking footprint tracking. Only the output token count + model name
+  // leave the server (never the prompt or any policy content), honouring the
+  // data-sovereignty guardrail. We estimate via the hosted EcoLogits API and
+  // append to the shared ledger AFTER building the reply and without awaiting,
+  // so chat latency and reliability are never affected. Errors are swallowed.
+  const outputTokens = response.usage?.completion_tokens ?? 0;
+  if (outputTokens > 0) {
+    const model =
+      process.env.LLM_CHAT_MODEL ?? process.env.LLM_MODEL ?? "gpt-4o-mini";
+    const zone = process.env.CPC_ELECTRICITY_ZONE ?? "USA";
+    const promptTokens = response.usage?.prompt_tokens ?? null;
+    void estimateChatImpacts({ model, outputTokens, latencyS: llmLatencyS, zone })
+      .then((impacts) =>
+        appendEvent({
+          component: "chat",
+          provider: "openai",
+          model,
+          region: zone,
+          run_id: null,
+          country: null,
+          input_tokens: promptTokens,
+          output_tokens: outputTokens,
+          call_count: 1,
+          cached_call_count: 0,
+          energy_wh: impacts.energy_wh,
+          water_ml: impacts.water_ml,
+          co2_geq: impacts.co2_geq,
+          minerals_ugsbeq: impacts.minerals_ugsbeq,
+          source: impacts.source,
+        }),
+      )
+      .catch(() => {});
+  }
 
   return NextResponse.json({
     reply,

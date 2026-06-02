@@ -1,7 +1,10 @@
 /**
  * Shared types and helpers for environmental footprint data.
  * The Python pipeline writes a snapshot in this shape via EcoLogits;
- * see python/src/llm.py FootprintTracker.snapshot().
+ * see python/src/footprint/tracker.py FootprintTracker.snapshot().
+ *
+ * For the cross-component usage ledger (pipeline + chat, disaggregated by
+ * model/component/region), see src/lib/footprint/ and the /sustainability page.
  */
 
 export interface FootprintSnapshot {

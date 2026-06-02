@@ -27,6 +27,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from .config import LLM_MODEL
+from .footprint import append_event, electricity_zone
 from .llm import call_llm, call_llm_batch, get_footprint_tracker
 
 logger = logging.getLogger(__name__)
@@ -1245,6 +1247,34 @@ async def main_async(args: argparse.Namespace) -> None:
             f"({footprint['tracked_call_count']} tracked, "
             f"{footprint['cached_call_count']} cached)"
         )
+
+    # Append extraction footprint to the shared ledger (component=extract) so it
+    # accumulates on the /sustainability dashboard alongside pipeline + chat.
+    # Best-effort: never fail extraction on a ledger write error.
+    try:
+        run_id = os.getenv("CPC_RUN_ID")
+        zone = electricity_zone()
+        rows = footprint.get("by_model") or [footprint]
+        for row in rows:
+            if not int(row.get("call_count", 0) or 0):
+                continue
+            append_event(
+                component="extract",
+                provider="openai",
+                model=row.get("model") or LLM_MODEL,
+                region=zone,
+                run_id=run_id,
+                country=None,
+                call_count=int(row.get("call_count", 0) or 0),
+                cached_call_count=int(row.get("cached_call_count", 0) or 0),
+                energy_wh=float(row.get("energy_wh", 0) or 0),
+                water_ml=float(row.get("water_ml", 0) or 0),
+                co2_geq=float(row.get("co2_geq", 0) or 0),
+                minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
+                source=footprint.get("source", "unavailable"),
+            )
+    except Exception as e:
+        logger.warning(f"Could not append extraction footprint ledger row: {e}")
 
 
 def main() -> None:

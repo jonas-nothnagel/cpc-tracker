@@ -39,6 +39,7 @@ from .classify_globe import (
 )
 from .align import decompose_targets, generate_pairs, assess_alignment
 from .llm import estimate_footprint_from_counts, get_footprint_tracker
+from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
 from .measure_align import (
     measures_to_pseudo_targets,
@@ -731,6 +732,42 @@ async def main() -> None:
                 footprint = estimated
 
         (OUTPUT_DIR / "footprint.json").write_text(json.dumps(footprint, indent=2))
+
+        # Append one row per model to the shared append-only footprint ledger
+        # (stable path via CPC_LEDGER_DIR, not the per-country OUTPUT_DIR) so the
+        # /sustainability dashboard accumulates this run alongside chat and
+        # extraction. Dev runs (CLI) tag as dev_pipeline; the analyze API sets
+        # CPC_RUN_SOURCE=user_pipeline. Best-effort: never fail the run on a
+        # ledger write error.
+        try:
+            run_source = os.getenv("CPC_RUN_SOURCE", "dev")
+            component = "user_pipeline" if run_source == "user_pipeline" else "dev_pipeline"
+            run_id = os.getenv("CPC_RUN_ID")
+            country = None if os.getenv("CPC_OUTPUT_DIR") else OUTPUT_DIR.name
+            zone = electricity_zone()
+            # Per-model rows when measured; otherwise one row from the flat total
+            # (an estimated, fully-cached run has no by_model breakdown).
+            rows = footprint.get("by_model") or [footprint]
+            for row in rows:
+                if not int(row.get("call_count", 0) or 0):
+                    continue
+                append_event(
+                    component=component,
+                    provider="openai",
+                    model=row.get("model") or LLM_MODEL,
+                    region=zone,
+                    run_id=run_id,
+                    country=country,
+                    call_count=int(row.get("call_count", 0) or 0),
+                    cached_call_count=int(row.get("cached_call_count", 0) or 0),
+                    energy_wh=float(row.get("energy_wh", 0) or 0),
+                    water_ml=float(row.get("water_ml", 0) or 0),
+                    co2_geq=float(row.get("co2_geq", 0) or 0),
+                    minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
+                    source=footprint.get("source", "unavailable"),
+                )
+        except Exception as e:
+            logger.warning(f"Could not append footprint ledger rows: {e}")
 
         if footprint.get("available"):
             source = footprint.get("source", "measured")
