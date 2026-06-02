@@ -20,6 +20,8 @@ import logging
 from dataclasses import asdict, dataclass
 from typing import Any
 
+from .zones import electricity_zone
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -29,7 +31,7 @@ logger = logging.getLogger(__name__)
 try:
     from ecologits import EcoLogits  # type: ignore
 
-    EcoLogits.init(providers=["openai"])
+    EcoLogits.init(providers=["openai"], electricity_mix_zone=electricity_zone())
     _ECOLOGITS_AVAILABLE = True
 except Exception as e:  # pragma: no cover - best-effort
     logger.warning(f"EcoLogits initialisation failed: {e}. Footprint tracking disabled.")
@@ -204,6 +206,7 @@ class FootprintTracker:
                     model_name=normalised,
                     output_token_count=int(output_tokens),
                     request_latency=float(latency_s),
+                    electricity_mix_zone=electricity_zone(),
                 )
                 if _impacts_are_empty(fallback):
                     if not self._warned_missing:
@@ -358,6 +361,7 @@ def estimate_footprint_from_counts(
                 model_name=normalised,
                 output_token_count=tokens,
                 request_latency=latency,
+                electricity_mix_zone=electricity_zone(),
             )
         except Exception as e:
             logger.warning(
