@@ -66,6 +66,18 @@ if [ -d /app/python/output ] && [ ! -L /app/python/output ]; then
             printf '[start.sh] WARN: failed to re-sync %s; falling back to persistent volume contents\n' "${src}" >&2
         fi
     done
+    # Seed the footprint ledger (a top-level file the dir-only loop above
+    # skips) to the persistent volume on FIRST deploy only. Copy-if-absent so
+    # live-recorded rows (chat + per-analysis pipeline runs) accumulate across
+    # redeploys instead of being reset to the image baseline each restart.
+    if [ -f /app/python/output/footprint-ledger.jsonl ] && \
+       [ ! -f "${PERSIST_ROOT}/output/footprint-ledger.jsonl" ]; then
+        if cp -a /app/python/output/footprint-ledger.jsonl "${PERSIST_ROOT}/output/footprint-ledger.jsonl"; then
+            printf '[start.sh] seeded footprint ledger baseline\n'
+        else
+            printf '[start.sh] WARN: failed to seed footprint ledger\n' >&2
+        fi
+    fi
     rm -rf /app/python/output
 fi
 ln -sfn "${PERSIST_ROOT}/output" /app/python/output
