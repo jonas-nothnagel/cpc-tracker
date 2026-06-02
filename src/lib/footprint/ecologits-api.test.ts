@@ -56,10 +56,14 @@ describe("estimateChatImpacts", () => {
   });
 
   it("sends only token count + model name (no prompt content)", async () => {
-    const fetchMock = vi.fn(async () => ({ ok: true, json: async () => SAMPLE_RESPONSE }));
+    const fetchMock = vi.fn(async (_url: string, init: RequestInit) => {
+      void init;
+      return { ok: true, json: async () => SAMPLE_RESPONSE };
+    });
     vi.stubGlobal("fetch", fetchMock);
     await estimateChatImpacts({ model: "openai/gpt-4o-mini", outputTokens: 42, zone: "USA" });
-    const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
+    const init = fetchMock.mock.calls[0][1];
+    const body = JSON.parse(init.body as string);
     expect(body).toEqual({
       provider: "openai",
       model_name: "gpt-4o-mini", // openai/ prefix stripped
