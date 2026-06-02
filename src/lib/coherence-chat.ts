@@ -8,9 +8,13 @@
 
 import { isContradiction } from "@/types";
 import { getDocLabel } from "@/lib/utils";
+import {
+  buildTopicRankings,
+  detectQueryScope,
+  selectChatContext,
+} from "@/lib/chat-context-selection";
 import type { CategoryBudgetSummary } from "@/lib/coherence-budget";
 import type {
-  AlignmentLevel,
   AlignmentResult,
   BtrData,
   CorpusThemes,
@@ -21,8 +25,6 @@ import type {
   Target,
   ThematicClassification,
 } from "@/types";
-
-type ChatScope = "current_view" | "all_documents";
 
 export type ChatAction =
   | { type: "set_filter"; filter: string }
@@ -106,11 +108,14 @@ interface BuildChatRequestArgs {
 }
 
 /**
- * Build the request body sent to `/api/coherence-chat`. The chat sees the
- * full corpus on every turn; the visibleDocs list is sent as context so the
- * model can emit show_docs(...) when it needs to navigate to a doc the user
- * has toggled off. Scoping by current view forced users to manage their
- * filter state before asking, which defeated the point of a chat helper.
+ * Build the request body sent to `/api/coherence-chat`. Reasons over the whole
+ * visible corpus (we don't make users manage filter state before asking), but
+ * the heavy parts (pair rationales, target text) are reduced to an
+ * intent-aware, token-budgeted selection via selectChatContext so a turn stays
+ * under the deployment's per-minute token quota. Aggregate questions are still
+ * answered from the full-corpus rankings + synthesis, which are sent whole. The
+ * visibleDocs list rides along so the model can emit show_docs(...) for a doc
+ * the user has toggled off.
  */
 export function buildChatRequest({
   query,
@@ -178,26 +183,6 @@ export function buildChatRequest({
     btrData,
   );
 
-  // Full target list, full text, scoped to visible docs. Earlier we capped
-  // text at 350 chars but empirically Mongolia's targets fit in full at
-  // negligible token cost (p90 = 307 chars). Sending the full text lets the
-  // model quote and reason accurately rather than from a snipped headline.
-  const targetIndex = visibleTargets.map((t) => {
-    const primary = primaryByTarget.get(t.id);
-    return {
-      id: t.id,
-      sourceLabel: t.sourceLabel,
-      sourceDocument: t.sourceDocument,
-      text: t.text ?? "",
-      actionType: t.actionType,
-      isQuantitative: t.isQuantitative,
-      isTimeBound: t.isTimeBound,
-      primaryGlobe: primary?.globe,
-      primarySector: primary?.sector,
-      primaryAdaptationGoal: primary?.adaptation,
-    };
-  });
-
   const taxonomies = {
     globe: globeCategories.map((c) => ({
       id: c.id,
@@ -215,22 +200,67 @@ export function buildChatRequest({
     })),
   };
 
-  // Pair rationales: only diagnostic pairs (contradictions + strong
-  // alignments), and only within visible docs. Medium/low alignments
-  // aren't what the chat is asked about and would balloon the prompt; the
-  // user can still see every pair via the wheel. Rationale text capped at
-  // 600 chars (median rationale is ~492 and p90 is 565).
-  const pairs = visibleAlignment
-    .filter((a) => isDiagnostic(a.alignment))
-    .map((a) => ({
-      a: a.targetAId,
-      b: a.targetBId,
-      level: a.alignment,
-      mechanism: a.mechanism,
-      manageability: a.manageability,
-      confidence: a.confidence,
-      rationale: (a.description ?? "").slice(0, 600),
-    }));
+  // Intent-aware, token-budgeted context selection. The chat used to ship
+  // every diagnostic pair on every turn, which overflowed the model's
+  // per-minute token quota (deterministic 429s) and buried the relevant
+  // evidence under thousands of pairs. We now detect the question's scope,
+  // pick the most relevant pairs within a token budget, and report what was
+  // used via contextMeta. See chat-context-selection.ts for the algorithm.
+  const scope = detectQueryScope(query, {
+    documentTypes,
+    targets: visibleTargets,
+    taxonomies,
+  });
+  const guaranteedTargetIds = new Set<string>([
+    ...rankings.topTargetsByTension.map((r) => r.id),
+    ...rankings.topTargetsByAlignment.map((r) => r.id),
+  ]);
+  const selection = selectChatContext({
+    query,
+    scope,
+    visibleTargets,
+    visibleAlignment,
+    primaryByTarget,
+    guaranteedTargetIds,
+  });
+  const pairs = selection.pairs;
+
+  // Topic-scoped rankings, computed over the FULL alignment set (never the
+  // budgeted pair subset) so any counts the model quotes stay accurate even
+  // when the evidence pairs are capped. Replaces the route's own recompute.
+  const topicRankings =
+    scope.topic &&
+    buildTopicRankings(scope.topic, visibleTargets, visibleAlignment, primaryByTarget);
+  const topicResolution =
+    scope.topic && topicRankings
+      ? {
+          taxonomy: scope.topic.taxonomy,
+          categoryId: scope.topic.categoryId,
+          categoryLabel: scope.topic.categoryLabel,
+          byTension: topicRankings.byTension,
+          byAlignment: topicRankings.byAlignment,
+        }
+      : undefined;
+
+  // Full target list. Full text is attached only to the targets the selector
+  // kept in scope (those in selected pairs + top-ranked); every target still
+  // appears in the index with id, label, doc, and tags so id resolution,
+  // inline chips, and navigation keep working without shipping every text.
+  const targetIndex = visibleTargets.map((t) => {
+    const primary = primaryByTarget.get(t.id);
+    return {
+      id: t.id,
+      sourceLabel: t.sourceLabel,
+      sourceDocument: t.sourceDocument,
+      text: selection.fullTextTargetIds.has(t.id) ? t.text ?? "" : "",
+      actionType: t.actionType,
+      isQuantitative: t.isQuantitative,
+      isTimeBound: t.isTimeBound,
+      primaryGlobe: primary?.globe,
+      primarySector: primary?.sector,
+      primaryAdaptationGoal: primary?.adaptation,
+    };
+  });
 
   // Budget-by-category block: serialized as a compact array of (categoryId,
   // name, total in unit, share, target count, target share, contradiction
@@ -268,7 +298,6 @@ export function buildChatRequest({
     context: {
       mode: groupMode,
       filter,
-      scope: "all_documents" as ChatScope,
       groups,
       visibleDocs,
       documentTypes,
@@ -276,7 +305,9 @@ export function buildChatRequest({
       taxonomies,
       pairs,
       rankings,
+      contextMeta: selection.meta,
       country: targets[0]?.country ?? null,
+      ...(topicResolution ? { topicResolution } : {}),
       ...(budgetByCategory ? { budgetByCategory, budgetMeta } : {}),
       ...(synthesis ? { synthesis } : {}),
     },
@@ -351,12 +382,6 @@ function buildSynthesisContext({
     return undefined;
   }
   return { corpus, docPairs, sectors };
-}
-
-function isDiagnostic(level: AlignmentLevel): boolean {
-  // Strong-signal pairs the chat surfaces verbatim to the LLM: flagged pairs
-  // (the negative side) and high-alignment pairs (strong positive signal).
-  return level === "flagged" || level === "high";
 }
 
 function computeRankings(

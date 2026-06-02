@@ -22,6 +22,10 @@ import type {
   ChatHistoryTurn,
   ChatTaxCategory,
 } from "@/lib/coherence-chat";
+import {
+  describeChatContext,
+  type ChatContextMeta,
+} from "@/lib/chat-context-selection";
 import type {
   AlignmentResult,
   CorpusThemes,
@@ -37,6 +41,7 @@ interface ChatReply {
   reply: string;
   suggestions: { label: string; query: string }[];
   actions: ChatAction[];
+  contextMeta: ChatContextMeta | null;
 }
 
 export function ChatPanel({
@@ -115,11 +120,13 @@ export function ChatPanel({
           reply: string;
           suggestions?: { label: string; query: string }[];
           actions?: ChatAction[];
+          contextMeta?: ChatContextMeta | null;
         };
         setReply({
           reply: json.reply,
           suggestions: (json.suggestions ?? []).slice(0, 3),
           actions: json.actions ?? [],
+          contextMeta: json.contextMeta ?? null,
         });
         setHistory((prev) =>
           [
@@ -220,6 +227,11 @@ export function ChatPanel({
             <p className="text-sm text-[var(--undp-black)] leading-relaxed whitespace-pre-wrap">
               {reply.reply}
             </p>
+            {reply.contextMeta && (
+              <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
+                {describeChatContext(reply.contextMeta)}
+              </p>
+            )}
           </div>
           {reply.actions.length > 0 && (
             <button
