@@ -1,16 +1,20 @@
 /**
- * Coherence Explorer chat route — navigation-only.
+ * Coherence chat route — answer-first.
  *
- * The chat picks one or more navigation actions (set_filter, focus_category,
- * select_target, select_pair, set_mode) and writes a single short
- * confirmatory sentence. It does NOT generate analytical text from
- * underlying data — analysis lives in the DetailPanel's pair-rationale
- * display, where it's anchored to the actual pair the user clicked on.
+ * The model writes a short factual answer (3-5 sentences) grounded in the
+ * context the client sends: precomputed rankings + synthesis for aggregate
+ * questions, and the most relevant pair rationales for specific ones. When
+ * the answer names a focal pair/target/group it ALSO emits a navigation
+ * action so the client can offer a "Show this on the wheel" jump. The answer
+ * is the product; navigation is a secondary affordance.
  *
- * Earlier experiments with read tools (get_pair_rationale,
- * get_target_neighbors, get_pairs_filtered) were removed: they competed
- * for attention with the wheel and panel without adding reliable value.
- * The wheel + panel ARE the answer; the chat is the navigation shortcut.
+ * The model's only tools are those navigation actions. It has no analytical
+ * read-back tools (an earlier experiment with get_pair_rationale and friends
+ * was dropped: they competed with the wheel and panel without adding value).
+ *
+ * Context is intent-aware and token-budgeted client-side (see
+ * chat-context-selection.ts) so a single turn stays well under the
+ * deployment's per-minute token quota.
  *
  * Backend selection: Azure OpenAI when the deployment env vars are set
  * (matches production), OpenRouter otherwise (dev fallback).
@@ -20,6 +24,7 @@ import { NextResponse } from "next/server";
 
 import { appendEvent } from "@/lib/footprint/ledger";
 import { estimateChatImpacts } from "@/lib/footprint/ecologits-api";
+import type { ChatContextMeta } from "@/lib/chat-context-selection";
 
 export const runtime = "nodejs";
 
@@ -42,10 +47,6 @@ interface PrimaryAdaptation {
 interface ChatContext {
   mode: "document" | "globe" | "sector";
   filter: string;
-  /** Legacy field; always "all_documents" in current callers. The chat now
-   *  sees the full corpus on every turn. Kept optional in case stale
-   *  clients still send "current_view". */
-  scope?: "current_view" | "all_documents";
   groups: { id: string; label: string }[];
   /** Subset of group ids the user currently has toggled on. The model
    *  compares this against `groups` to decide whether to emit show_docs. */
@@ -141,6 +142,19 @@ interface ChatContext {
       coordination: string;
     }[];
   };
+  /** Topic-scoped rankings precomputed client-side over the FULL alignment
+   *  set when the query maps to a taxonomy category. Computed there (not here)
+   *  so the counts stay accurate even though `pairs` is a budgeted subset. */
+  topicResolution?: {
+    taxonomy: "globe" | "sector" | "adaptation";
+    categoryId: string;
+    categoryLabel: string;
+    byTension: RankedItem[];
+    byAlignment: RankedItem[];
+  };
+  /** What the client's context selector kept in scope for this turn. Echoed
+   *  straight back to the client so the UI can caption the answer honestly. */
+  contextMeta?: ChatContextMeta;
   country: string | null;
 }
 
@@ -169,7 +183,7 @@ Your stance is decision-support, not decision-maker. Lead with what the data sho
 THE DATASET
 Targets come from policy documents the country has published. The user message lists the documents currently in this corpus under DATA, including their short ids and full names. Expand abbreviations on first mention if the user is unlikely to know them.
 
-Policy targets describe what the country PLANS to do. BTR entries describe what the country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A flagged misalignment between a BTR entry and a policy target is qualitatively sharper than two plans disagreeing on paper, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears in a pair the user is asking about.
+Policy targets describe what the country PLANS to do. BTR entries describe what the country has REPORTED as already happening (status: Implemented, Ongoing, Adopted, Planned). A potential misalignment between a BTR entry and a policy target is qualitatively sharper than two plans disagreeing on paper, it means a reported action conflicts with a stated plan. Surface this framing when a BTR id appears in a pair the user is asking about.
 
 YOUR JOB
 Write a factual ANSWER (3 to 5 short sentences, 60 to 95 words) using the precomputed rankings, pair rationales, target index, topic resolution, and, when present, the precomputed synthesis. Lead with the most relevant fact (the count, the top entry, or the sharpest pair). Every number and label must trace to the context. Stop early if you would have to invent a number.
@@ -195,13 +209,13 @@ TOOLS
 - show_docs(ids): unhide a hidden document group; call BEFORE focus / select if your target's doc is currently hidden
 
 SCOPE OF THIS TURN
-The user message lists which documents are currently visible on the wheel under "USER'S CURRENT VIEW". The DATA block has already been filtered to only the visible documents. Reason and answer only over that subset. When the user has hidden documents, that signals intent to focus. If they ask a question whose answer would require hidden documents, say so plainly without naming what is missing.
+The DATA block holds the documents currently loaded for analysis (listed under DOCUMENTS IN THIS CORPUS). Answer plainly about the data as a whole. Do NOT caveat findings with "in this view", "in the current view", or "in this subset"; the interface separately tells the user what evidence the answer drew on, so that framing is redundant and confuses non-technical readers. The "USER'S CURRENT VIEW" block is only for choosing navigation actions: if your answer's target sits in a document the user has hidden, emit show_docs for it before selecting. If a question genuinely needs a document that is not in the DATA block, say so plainly without naming what is missing.
 
 CONVERSATION MEMORY
 If a "Conversation context" line is present, resolve referring expressions ("it", "this", "what about X") against the prior selection or focus. Do not ask the user to clarify; pick the most likely referent.
 
 BUDGET DATA (when present)
-When the user message includes a BUDGET BY GLOBE CATEGORY block, you may answer questions about how a country's tagged biodiversity expenditure (BER, Biodiversity Expenditure Review) is distributed across primary GLOBE categories. The block lists, per primary category: total tagged spend, share of total tagged spend, target count, share of targets, and count of flagged conflict pairs. Always qualify figures as "tagged BER spend" or "in the uploaded BER", since the BER is a subset of national expenditure, not the full budget. Never call a category "underfunded" as a verdict; describe shares and counts as observations. Acceptable framings: "X has Y% of tagged BER spend against Z% of GLOBE-tagged targets", "X has the most flagged pairs and the smallest budget share in this view". The currency, unit, and reporting period live in the block's header line; quote them on first mention of a figure.
+When the user message includes a BUDGET BY GLOBE CATEGORY block, you may answer questions about how a country's tagged biodiversity expenditure (BER, Biodiversity Expenditure Review) is distributed across primary GLOBE categories. The block lists, per primary category: total tagged spend, share of total tagged spend, target count, share of targets, and count of flagged conflict pairs. Always qualify figures as "tagged BER spend" or "in the uploaded BER", since the BER is a subset of national expenditure, not the full budget. Never call a category "underfunded" as a verdict; describe shares and counts as observations. Acceptable framings: "X has Y% of tagged BER spend against Z% of GLOBE-tagged targets", "X has the most potential misalignments and the smallest budget share in the data". The currency, unit, and reporting period live in the block's header line; quote them on first mention of a figure.
 
 PRECOMPUTED SYNTHESIS (when present)
 The user message may include a PRECOMPUTED SYNTHESIS block: AI-generated storylines across the whole corpus, per-document-pair summaries (where two documents align or potentially misalign, plus a coordination pointer), and per-theme summaries. The pipeline derived these from the same pairs you can see. Draw on them for big-picture questions like the main storyline, how two documents relate overall, or what a theme's potential misalignment is about, and you may pass along a coordination pointer in the same hedged phrasing. These are AI-generated summaries, not ground truth: keep the neutral, decision-support framing and do not present them as certain. When you name a specific storyline, document pair, or theme as the focal evidence, still call the matching navigation tool so the Show me button appears.
@@ -213,6 +227,8 @@ HARD RULES
 - Only use ids that appear in the context, and only inside tool calls. Never write raw ids in the answer text.
 - In your answer, name categories, sectors, documents, and targets by their human-readable name only. Never include the raw id alongside the name (for example, write "Biodiversity awareness and knowledge", not "Biodiversity awareness and knowledge, globe_2"). The Show me button carries the id; the reply is for humans.
 - No follow-up questions.
+- Do not caveat the answer with "in this view", "in the current view", or "in this subset". State findings plainly (e.g. "The most contested target is X", not "The most contested target in this view is X"). The interface tells the user separately what evidence the answer used.
+- Use the cautious public vocabulary in the reply: call a "flagged" pair a "potential misalignment" and a "high" pair a "strong alignment". Never write the raw level word "flagged" in the reply, and never use "low" as a positive label (say "emerging" or "partial").
 - No value judgements or extended narrative analysis. Hedged process pointers (boundary review, coordination, indicator alignment, sequencing) are allowed when the user asks how coherence could be improved and the pointers reference visible evidence.
 - Use the precomputed rankings for aggregate questions; do not guess.
 - If you select / focus on a hidden doc's target, you MUST emit show_docs first.
@@ -262,7 +278,7 @@ const TOOLS = [
     function: {
       name: "select_target",
       description:
-        "Select a single target from the target index. Opens the target's detail panel which lists all its alignments and flagged misalignments and lets the user click any pair to read its rationale.",
+        "Select a single target from the target index. Opens the target's detail panel which lists all its alignments and potential misalignments and lets the user click any pair to read its rationale.",
       parameters: {
         type: "object",
         properties: { targetId: { type: "string" } },
@@ -334,124 +350,6 @@ function fmtRanking(title: string, items: RankedItem[] | undefined): string {
   return `${title}:\n${lines}\n`;
 }
 
-/** Tokenise a string into lowercase words ≥3 chars, dropping common stop-ish
- *  fragments that would inflate score noise without carrying topic signal. */
-function tokenizeForTopic(text: string): string[] {
-  const STOP = new Set([
-    "the", "and", "for", "with", "from", "into", "that", "this", "these", "those",
-    "are", "was", "were", "has", "have", "had", "can", "may", "will", "would",
-    "should", "what", "which", "where", "when", "how", "why", "who", "any",
-    "all", "most", "more", "less", "than", "then", "but", "not", "their", "they",
-    "its", "out", "over", "under", "between", "across", "through", "throughout",
-    "target", "targets", "policy", "policies", "document", "documents",
-    // Keyword intent list. Keep legacy "tension"/"contradiction" words so
-    // users who learned the old vocabulary still trigger intent matches; the
-    // newer "misalignment" synonyms cover the renamed vocabulary.
-    "contested", "tension", "tensions", "conflict", "conflicts", "contradiction",
-    "contradictions", "misalignment", "misalignments", "misaligned",
-    "aligned", "alignment", "alignments", "relate", "related",
-    "relates", "relating",
-  ]);
-  return text
-    .toLowerCase()
-    .split(/[^a-z0-9]+/)
-    .filter((w) => w.length >= 3 && !STOP.has(w));
-}
-
-interface TopicMatch {
-  taxonomy: "globe" | "sector" | "adaptation";
-  categoryId: string;
-  categoryLabel: string;
-  score: number;
-}
-
-/**
- * Find the taxonomy category that best matches the user's query topic. We
- * score by token overlap between the query and the category's name +
- * description. Returns null if nothing scores above the floor.
- *
- * This is the server-side substitute for asking gpt-4o-mini to do free-form
- * "topic → category" mapping itself, which it does badly without explicit
- * worked examples for every term.
- */
-function findTopicCategory(query: string, ctx: ChatContext): TopicMatch | null {
-  const tax = ctx.taxonomies;
-  if (!tax) return null;
-  const qTokens = new Set(tokenizeForTopic(query));
-  if (qTokens.size === 0) return null;
-
-  let best: TopicMatch | null = null;
-  const consider = (
-    taxonomy: TopicMatch["taxonomy"],
-    id: string,
-    name: string,
-    description: string | undefined,
-  ) => {
-    const nameTokens = tokenizeForTopic(name);
-    const descTokens = tokenizeForTopic(description ?? "");
-    let score = 0;
-    for (const t of nameTokens) if (qTokens.has(t)) score += 3; // name match weighted higher
-    for (const t of descTokens) if (qTokens.has(t)) score += 1;
-    if (score > 0 && (!best || score > best.score)) {
-      best = { taxonomy, categoryId: id, categoryLabel: name, score };
-    }
-  };
-  for (const c of tax.globe) consider("globe", c.id, c.name, c.description);
-  for (const c of tax.sector) consider("sector", c.id, c.name, c.description);
-  for (const g of tax.adaptation) consider("adaptation", g.id, g.description, undefined);
-  return best;
-}
-
-/**
- * Build the topic-scoped rankings: targets whose primary classification
- * matches `topic`, ordered by contradiction count then alignment count.
- */
-function buildTopicRankings(
-  topic: TopicMatch,
-  ctx: ChatContext,
-): { byTension: { id: string; label: string; count: number }[]; byAlignment: { id: string; label: string; count: number }[] } | null {
-  const matchingTargets = ctx.targetIndex.filter((t) => {
-    if (topic.taxonomy === "globe") return t.primaryGlobe?.id === topic.categoryId;
-    if (topic.taxonomy === "sector") return t.primarySector?.id === topic.categoryId;
-    return t.primaryAdaptationGoal?.id === topic.categoryId;
-  });
-  if (matchingTargets.length === 0) return null;
-  const matchingIds = new Set(matchingTargets.map((t) => t.id));
-  const tension = new Map<string, number>();
-  const alignment = new Map<string, number>();
-  // v2.1: single flagged state replaces three v1 severity levels. Legacy
-  // strings included for safety while old records may still flow through.
-  const CONTRA = new Set(["flagged", "likely_conflict", "possible_conflict", "possible_misalignment"]);
-  const STRONG_ALIGN = new Set(["high"]);
-  for (const p of ctx.pairs ?? []) {
-    if (CONTRA.has(p.level)) {
-      if (matchingIds.has(p.a)) tension.set(p.a, (tension.get(p.a) ?? 0) + 1);
-      if (matchingIds.has(p.b)) tension.set(p.b, (tension.get(p.b) ?? 0) + 1);
-    } else if (STRONG_ALIGN.has(p.level)) {
-      if (matchingIds.has(p.a)) alignment.set(p.a, (alignment.get(p.a) ?? 0) + 1);
-      if (matchingIds.has(p.b)) alignment.set(p.b, (alignment.get(p.b) ?? 0) + 1);
-    }
-  }
-  const labelFor = (id: string) => {
-    const t = ctx.targetIndex.find((tt) => tt.id === id);
-    return t ? `${t.sourceDocument}: ${t.sourceLabel}` : id;
-  };
-  // Targets with zero contradictions still surface so the model can answer
-  // "no tensions on file" honestly when the matching set is non-empty but
-  // contradiction-free.
-  const allMatchingScored = matchingTargets.map((t) => ({
-    id: t.id,
-    label: labelFor(t.id),
-    count: tension.get(t.id) ?? 0,
-  }));
-  const byTension = allMatchingScored.sort((a, b) => b.count - a.count).slice(0, 5);
-  const byAlignment = matchingTargets
-    .map((t) => ({ id: t.id, label: labelFor(t.id), count: alignment.get(t.id) ?? 0 }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
-  return { byTension, byAlignment };
-}
-
 function buildUserMessage(
   query: string,
   ctx: ChatContext,
@@ -472,7 +370,10 @@ function buildUserMessage(
       if (t.primaryAdaptationGoal)
         tags.push(`adaptation=${t.primaryAdaptationGoal.id}:${t.primaryAdaptationGoal.description.slice(0, 80)}`);
       const tagStr = tags.length ? `\n  primary: ${tags.join(" | ")}` : "";
-      return `${t.id} | ${t.sourceDocument}: ${t.sourceLabel}${flagStr}\n  text: ${text}${tagStr}`;
+      // Full text is present only for targets the client's selector kept in
+      // scope; others list label + tags only (still navigable, just no body).
+      const textStr = text ? `\n  text: ${text}` : "";
+      return `${t.id} | ${t.sourceDocument}: ${t.sourceLabel}${flagStr}${textStr}${tagStr}`;
     })
     .join("\n");
 
@@ -550,11 +451,12 @@ function buildUserMessage(
         .join("\n")
     : "";
 
-  // The DATA block has been server-side filtered to the visible documents.
-  // The model's answer should reflect that subset only. When the user has
-  // hidden documents, that's intent to focus, not noise to compensate for.
+  // The DATA block holds the documents loaded for analysis (all of them on
+  // the dashboard; a hidden-doc subset only in the explorer). Answer plainly
+  // about the data; the UI tells the user separately what evidence was used,
+  // so the model must not add an "in this view" caveat of its own.
   const scopeHeader =
-    "Scope of this turn: every target, pair, and ranking below has been filtered to the documents the user currently has visible on the wheel. Reason and answer over this subset only.";
+    "The targets, pairs, and rankings below are the data loaded for analysis this turn. Answer plainly about the data as a whole; do not caveat findings with \"in this view\" or \"in this subset\".";
 
   // Per-country document gloss with full names, built from the country
   // config so the system prompt can stay country-agnostic. Only documents
@@ -599,28 +501,29 @@ function buildUserMessage(
     );
   }
 
-  // Server-side topic resolution. If the query maps to a taxonomy category,
-  // pre-compute the topic-scoped ranking so the model doesn't need to
-  // chain "match topic → filter targets → count pairs" itself.
-  const topic = findTopicCategory(query, ctx);
-  const topicRankings = topic ? buildTopicRankings(topic, ctx) : null;
-  if (topic && topicRankings) {
+  // Topic resolution. When the query maps to a taxonomy category, the client
+  // precomputes the topic-scoped ranking over the FULL alignment set (so the
+  // counts stay accurate even though `pairs` is a budgeted subset) and sends
+  // it as ctx.topicResolution. Render it so the model doesn't have to chain
+  // "match topic → filter targets → count pairs" itself.
+  const tr = ctx.topicResolution;
+  if (tr) {
     const modeLabel =
-      topic.taxonomy === "globe"
+      tr.taxonomy === "globe"
         ? "globe"
-        : topic.taxonomy === "sector"
+        : tr.taxonomy === "sector"
           ? "sector"
           : "document";
     const lines = [
-      `Detected topic: "${topic.categoryLabel}" (${topic.taxonomy} category id=${topic.categoryId}).`,
+      `Detected topic: "${tr.categoryLabel}" (${tr.taxonomy} category id=${tr.categoryId}).`,
       `Suggested mode for this topic: ${modeLabel}.`,
       fmtRanking(
-        `Topic-scoped: top targets in "${topic.categoryLabel}" by tensions`,
-        topicRankings.byTension,
+        `Topic-scoped: top targets in "${tr.categoryLabel}" by tensions`,
+        tr.byTension,
       ),
       fmtRanking(
-        `Topic-scoped: top targets in "${topic.categoryLabel}" by strong alignments`,
-        topicRankings.byAlignment,
+        `Topic-scoped: top targets in "${tr.categoryLabel}" by strong alignments`,
+        tr.byAlignment,
       ),
     ]
       .filter(Boolean)
@@ -703,7 +606,7 @@ function buildUserMessage(
       })
       .join("\n");
     sections.push(
-      `BUDGET BY GLOBE CATEGORY (tagged BER spend, ${periodLabel}, ${unitLabel}; total tagged ${meta.totalBudget.toFixed(2)} ${unitLabel} which is a subset of national expenditure). Format: id | name | total | share of tagged BER | target count (share of GLOBE-tagged targets) | flagged conflict pairs:`,
+      `BUDGET BY GLOBE CATEGORY (tagged BER spend, ${periodLabel}, ${unitLabel}; total tagged ${meta.totalBudget.toFixed(2)} ${unitLabel} which is a subset of national expenditure). Format: id | name | total | share of tagged BER | target count (share of GLOBE-tagged targets) | potential-misalignment pairs:`,
       lines,
       "",
     );
@@ -864,13 +767,14 @@ async function callLlm(messages: ChatMessage[]): Promise<LlmResponse> {
 
 const SEVERITY_LABEL: Record<string, string> = {
   flagged: "potential misalignment",
-  // Legacy strings retained so any unmigrated v1 record still renders.
+  // Cautious public vocabulary: "strong alignment", never "low" as a positive.
+  high: "strong alignment",
+  medium: "moderate alignment",
+  low: "emerging alignment",
+  // Legacy v1 strings retained so any unmigrated record still renders.
   likely_conflict: "likely conflict",
   possible_conflict: "possible conflict",
   possible_misalignment: "possible misalignment",
-  high: "high alignment",
-  medium: "medium alignment",
-  low: "partial alignment",
 };
 
 function targetLabel(
@@ -962,7 +866,7 @@ function synthesizeAnswer(
       sentences.push(`${t.full} is the focal target.`);
       if (tensionRank || alignRank) {
         const parts: string[] = [];
-        if (tensionRank) parts.push(`${tensionRank.count} flagged misalignments`);
+        if (tensionRank) parts.push(`${tensionRank.count} potential misalignments`);
         if (alignRank) parts.push(`${alignRank.count} strong alignments`);
         sentences.push(`Carries ${parts.join(" and ")} in the dataset.`);
       }
@@ -1198,12 +1102,6 @@ export async function POST(req: Request) {
       replyEntities: [],
     });
   }
-
-  // Auto-broaden is decided client-side: when the user's query mentions a
-  // doc id that's currently hidden, the client flips searchAllDocs to true
-  // for that turn (mirroring the explicit toggle path). The server therefore
-  // sees scope=all_documents and can emit show_docs to reveal the doc before
-  // the rest of the actions land. The user never sees "toggle a setting".
 
   // Conversation memory: a single short hint line at the head of the user
   // message tells the model how to resolve referring expressions against the
@@ -1449,6 +1347,7 @@ export async function POST(req: Request) {
     actions: finalActions,
     suggestions,
     replyEntities,
+    contextMeta: context.contextMeta ?? null,
   });
 }
 
