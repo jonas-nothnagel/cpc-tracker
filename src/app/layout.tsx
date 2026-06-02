@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { FootprintChip } from "@/components/sustainability/footprint-chip";
 
 export const metadata: Metadata = {
   title: "CPC Tracker | Policy Coherence Analysis",
@@ -26,7 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, minHeight: "100vh" }}>{children}</body>
+      <body style={{ margin: 0, minHeight: "100vh" }}>
+        {children}
+        <FootprintChip />
+      </body>
     </html>
   );
 }
