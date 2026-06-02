@@ -108,22 +108,42 @@ class FootprintTracker:
 
     def __init__(self) -> None:
         self._totals = FootprintTotals()
+        # Per-model breakdown. Same impacts as `_totals`, bucketed by model name,
+        # so the ledger and the /sustainability dashboard can disaggregate.
+        self._by_model: dict[str, FootprintTotals] = {}
         self._lock = asyncio.Lock()
         self._warned_missing = False
         self._warned_fallback = False
 
-    def _add_impacts(self, impacts: Any) -> None:
+    def _bucket(self, model: str) -> FootprintTotals:
+        """Return the per-model accumulator, creating it on first use.
+
+        The caller must hold ``self._lock``.
+        """
+        bucket = self._by_model.get(model)
+        if bucket is None:
+            bucket = FootprintTotals(model=model)
+            self._by_model[model] = bucket
+        return bucket
+
+    def _add_impacts(self, impacts: Any, *targets: FootprintTotals) -> None:
+        """Add one response's impacts to each target (the flat total + its model bucket)."""
         # energy: kWh → Wh
-        self._totals.energy_wh += _impact_value(getattr(impacts, "energy", None)) * 1000
+        energy_wh = _impact_value(getattr(impacts, "energy", None)) * 1000
         # gwp: kgCO2eq → gCO2eq
-        self._totals.co2_geq += _impact_value(getattr(impacts, "gwp", None)) * 1000
+        co2_geq = _impact_value(getattr(impacts, "gwp", None)) * 1000
         # adpe: kgSbeq → ugSbeq
-        self._totals.minerals_ugsbeq += _impact_value(getattr(impacts, "adpe", None)) * 1e9
-        # water consumption footprint is on the usage phase
+        minerals_ugsbeq = _impact_value(getattr(impacts, "adpe", None)) * 1e9
+        # water consumption footprint is on the usage phase; wcf: L → mL
         usage = getattr(impacts, "usage", None)
-        if usage is not None:
-            # wcf: L → mL
-            self._totals.water_ml += _impact_value(getattr(usage, "wcf", None)) * 1000
+        water_ml = (
+            _impact_value(getattr(usage, "wcf", None)) * 1000 if usage is not None else 0.0
+        )
+        for target in targets:
+            target.energy_wh += energy_wh
+            target.co2_geq += co2_geq
+            target.minerals_ugsbeq += minerals_ugsbeq
+            target.water_ml += water_ml
 
     async def record_response(
         self,
@@ -135,13 +155,16 @@ class FootprintTracker:
         async with self._lock:
             self._totals.call_count += 1
             self._totals.model = model
+            bucket = self._bucket(model)
+            bucket.call_count += 1
 
             impacts = getattr(response, "impacts", None)
             # Fast path: EcoLogits instrumented the response directly
             if not _impacts_are_empty(impacts):
                 try:
-                    self._add_impacts(impacts)
+                    self._add_impacts(impacts, self._totals, bucket)
                     self._totals.tracked_call_count += 1
+                    bucket.tracked_call_count += 1
                     return
                 except Exception as e:
                     if not self._warned_missing:
@@ -190,8 +213,9 @@ class FootprintTracker:
                         )
                         self._warned_missing = True
                     return
-                self._add_impacts(fallback)
+                self._add_impacts(fallback, self._totals, bucket)
                 self._totals.tracked_call_count += 1
+                bucket.tracked_call_count += 1
                 if not self._warned_fallback:
                     logger.info(
                         f"EcoLogits fallback active: computing footprint for "
@@ -209,23 +233,45 @@ class FootprintTracker:
             self._totals.call_count += 1
             self._totals.cached_call_count += 1
             self._totals.model = model
+            bucket = self._bucket(model)
+            bucket.call_count += 1
+            bucket.cached_call_count += 1
 
     def snapshot(self) -> dict[str, Any]:
-        """Return a JSON-serialisable snapshot of current totals."""
+        """Return a JSON-serialisable snapshot of current totals.
+
+        The flat top-level keys are unchanged for backward compatibility with
+        the existing footprint.json / status.json consumers. The additive
+        ``by_model`` list disaggregates the same impacts per model.
+        """
         data = asdict(self._totals)
         data["available"] = _ECOLOGITS_AVAILABLE and self._totals.tracked_call_count > 0
         data["source"] = "measured" if data["available"] else "unavailable"
+        data["by_model"] = [
+            {
+                **asdict(bucket),
+                "available": _ECOLOGITS_AVAILABLE and bucket.tracked_call_count > 0,
+            }
+            for bucket in self._by_model.values()
+        ]
         return data
 
     def reset(self) -> None:
         self._totals = FootprintTotals()
+        self._by_model = {}
         self._warned_missing = False
 
     def seed(self, initial: dict[str, Any]) -> None:
         """Seed the tracker with pre-existing footprint totals.
 
         Used to carry over impact from upstream steps (e.g. document
-        extraction) so the final snapshot reflects the full pipeline.
+        extraction) so the final flat snapshot reflects the full pipeline.
+
+        Intentionally seeds only the flat total, NOT the per-model buckets:
+        the upstream step (e.g. extraction) emits its own ledger row, so
+        mirroring its footprint into this run's by_model would double-count it
+        in the ledger. The flat snapshot still includes the seed so the
+        existing dashboard total is unchanged.
         """
         self._totals.energy_wh += float(initial.get("energy_wh", 0) or 0)
         self._totals.water_ml += float(initial.get("water_ml", 0) or 0)
