@@ -14,14 +14,15 @@ function fmtCarbon(g: number): string {
 
 /**
  * Small always-on chip linking to /sustainability, showing the cumulative AI
- * carbon footprint. Suppressed on the cinematic landing and on the
- * sustainability page itself, and hidden until something is recorded.
+ * carbon footprint. Shown on every page (including the landing) and suppressed
+ * only on the sustainability page itself, where it would be a redundant
+ * self-link. Hidden until something is recorded.
  */
 export function FootprintChip() {
   const pathname = usePathname();
   const [co2, setCo2] = useState<number | null>(null);
 
-  const suppressed = pathname === "/" || pathname === "/sustainability";
+  const suppressed = pathname === "/sustainability";
 
   useEffect(() => {
     if (suppressed) return;
@@ -39,11 +40,15 @@ export function FootprintChip() {
 
   if (suppressed || co2 === null || co2 <= 0) return null;
 
+  // On the landing page the hero's WCAG pause/play control sits bottom-right,
+  // so anchor the chip bottom-left there to avoid overlapping it.
+  const corner = pathname === "/" ? "left-3" : "right-3";
+
   return (
     <Link
       href="/sustainability"
       title="AI sustainability footprint of this tool"
-      className="fixed bottom-3 right-3 z-40 text-[11px] text-[var(--undp-gray)] bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-1 shadow-sm hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors"
+      className={`fixed bottom-3 ${corner} z-40 text-[11px] text-[var(--undp-gray)] bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-1 shadow-sm hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors`}
     >
       AI footprint: {fmtCarbon(co2)} CO2e
     </Link>
