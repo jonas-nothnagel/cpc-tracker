@@ -14,14 +14,15 @@ function fmtCarbon(g: number): string {
 
 /**
  * Small always-on chip linking to /sustainability, showing the cumulative AI
- * carbon footprint. Suppressed on the cinematic landing and on the
- * sustainability page itself, and hidden until something is recorded.
+ * carbon footprint. Shown on every page (including the landing) and suppressed
+ * only on the sustainability page itself, where it would be a redundant
+ * self-link. Hidden until something is recorded.
  */
 export function FootprintChip() {
   const pathname = usePathname();
   const [co2, setCo2] = useState<number | null>(null);
 
-  const suppressed = pathname === "/" || pathname === "/sustainability";
+  const suppressed = pathname === "/sustainability";
 
   useEffect(() => {
     if (suppressed) return;
