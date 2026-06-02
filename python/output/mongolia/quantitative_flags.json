@@ -1,114 +1,114 @@
 [
   {
     "targetId": "NBSAP_1",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_2",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "30 percent",
+    "quantitativeDetails": "2030; 30 percent",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_3",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "30%",
+    "quantitativeDetails": "2030; 30%",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_4",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_5",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_6",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_7",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_8",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_9",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_10",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_11",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_12",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_13",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_14",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_15",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_16",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -127,16 +127,16 @@
   },
   {
     "targetId": "NBSAP_19",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_20",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -395,21 +395,21 @@
     "targetId": "NDC_22",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "5.277 million tons of CO2; 9.78 million tons of CO2; 50 million head",
+    "quantitativeDetails": "5.277 million tons of CO2; 2030; 9.78 million tons of CO2; 2035; 50 million head",
     "timeBoundDetails": "until 2030; until 2035"
   },
   {
     "targetId": "NDC_23",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "4.15 million tons; 7.48 million tons",
+    "quantitativeDetails": "4.15 million tons; 2030; 7.48 million tons; 2035",
     "timeBoundDetails": "by 2030; by 2035"
   },
   {
     "targetId": "NDC_24",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "1.12 million tons; 2.29 million tons",
+    "quantitativeDetails": "1.12 million tons; 2030; 2.29 million tons; 2035",
     "timeBoundDetails": "by 2030; by 2035"
   },
   {
@@ -500,7 +500,7 @@
     "targetId": "SECTORAL_10",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "30%; 33%; 35%",
+    "quantitativeDetails": "30% of national territory; 33%; 35%",
     "timeBoundDetails": "by 2030; by 2040; by 2050"
   },
   {
@@ -542,7 +542,7 @@
     "targetId": "FSS_1",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "2022 autumn and 2023 spring",
+    "quantitativeDetails": "2022 autumn and 2023 spring ordinary sessions",
     "timeBoundDetails": "during the 2022 autumn and 2023 spring ordinary sessions"
   },
   {
@@ -731,7 +731,7 @@
     "targetId": "FSS_28",
     "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "50.0 thousand head of beef-oriented breeds; 50.0 thousand head of dairy-oriented breeds",
+    "quantitativeDetails": "50.0 thousand head; 50.0 thousand head",
     "timeBoundDetails": ""
   },
   {
@@ -820,6 +820,251 @@
   },
   {
     "targetId": "FSS_41",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_1",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "9%; 7.85% in 2015",
+    "timeBoundDetails": "by 2030; in 2015"
+  },
+  {
+    "targetId": "NRVTS_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_8",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 30% of total forest area used by forest user groups",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_17",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2.5 t/ha per annum; 1.6 t/ha per annum",
+    "timeBoundDetails": "by 2030; in 2015"
+  },
+  {
+    "targetId": "NRVTS_18",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_19",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_20",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_21",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_22",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_23",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2015; 3963.3 sq. km",
+    "timeBoundDetails": "by 2030; 2015"
+  },
+  {
+    "targetId": "NRVTS_24",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_25",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_26",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NRVTS_27",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "ILDN_8",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",

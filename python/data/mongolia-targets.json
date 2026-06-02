@@ -1902,5 +1902,460 @@
     ],
     "textCleanup": "verbatim",
     "activities": "Provide support for activities that promote educational and awareness-raising initiatives on the proper consumption of food and drink organised by citizens, the private sector, non-governmental organisations and institutions.\nAs part of its social responsibility, include the ‘Food Safety Hour’ programme in all television and radio schedules at fixed times each week, involving the public in efforts to promote proper food consumption.\nOrganise targeted measures to enhance public food and nutrition education."
+  },
+  {
+    "id": "NRVTS_1",
+    "text": "Reduce deforestation and forest degradation to maintain the forest area and reach 9% of the total area by 2030 compared to 7.85% in 2015.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Target 1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Reduce deforestation and forest degradation to maintain the forest area and reach 9% of the total area by 2030 compared to 7.85% in 2015."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_2",
+    "text": "Reforestation of land affected by forest fire, pest insect and deforestation",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 1.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Reforestation of land affected by forest fire, pest insect and deforestation"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_3",
+    "text": "Forest fire monitoring and prevention system",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 1.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Forest fire monitoring and prevention system"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_4",
+    "text": "Forest cleaning and weeding",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 1.3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Forest cleaning and weeding"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_5",
+    "text": "Promote urban greening",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 1.4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Promote urban greening"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_6",
+    "text": "Amend, if necessary newly develop standards and norms for reforestation",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 1.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Amend, if necessary newly develop standards and norms for reforestation"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_7",
+    "text": "Establishing a gene bank for major wood species",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 1.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Establishing a gene bank for major wood species"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_8",
+    "text": "Amend current forest sector policy to oblige forest user groups to conduct reforestation activities on at least 30% of total forest area used by forest user groups.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 1.3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Amend current forest sector policy to oblige forest user groups to conduct reforestation activities on at least 30% of total forest area used by forest user groups."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_9",
+    "text": "Integrate greening programs into the urban development planning process",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 1.4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Integrate greening programs into the urban development planning process"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_10",
+    "text": "Promote sustainable grassland management and stop further grassland degradation.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Target 2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Promote sustainable grassland management and stop further grassland degradation."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_11",
+    "text": "Recover the traditional seasonal rotational pasture system",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 2.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Recover the traditional seasonal rotational pasture system"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_12",
+    "text": "Air seeding, sowing of perennial grasses in areas where gradual grassland decline",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 2.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Air seeding, sowing of perennial grasses inareas where gradual grassland decline"
+      }
+    ],
+    "textCleanup": "cleaned"
+  },
+  {
+    "id": "NRVTS_13",
+    "text": "Developing a system for silvo-pastoral animal husbandry in steppe and forest steppe regions",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 2.3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Developing a systemfor silvo-pastoral animal husbandry in steppe and foreststeppe regions"
+      }
+    ],
+    "textCleanup": "cleaned"
+  },
+  {
+    "id": "NRVTS_14",
+    "text": "Integrate grassland planning into the regional land use plans",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 2.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Integrate grassland planning into the regional land use plans"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_15",
+    "text": "Develop legal instruments and/or establish mechanism for sustainable pastureland use.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 2.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Develop legal instruments and/or establish mechanism for sustainable pastureland use."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_16",
+    "text": "Support researches towards development of adaptive silvo-pastoral systems suitable for traditional ways of nomadic pasture use.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 2.3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Support researches towards development of adaptive silvo-pastoral systems suitable for traditional ways of nomadic pasture use."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_17",
+    "text": "Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per annum in 2015.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Target 3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Increase agricultural yields by 2.5 t/ha perannum by 2030 compared to 1.6t/ha per annumin 2015."
+      }
+    ],
+    "textCleanup": "cleaned"
+  },
+  {
+    "id": "NRVTS_18",
+    "text": "Developing agroforestry including shelter belt system development",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 3.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Developing agroforestry including shelter belt system development"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_19",
+    "text": "Decrease in use of pesticides",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 3.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Decrease in use ofpesticides"
+      }
+    ],
+    "textCleanup": "cleaned"
+  },
+  {
+    "id": "NRVTS_20",
+    "text": "Erosion prevention in agriculture",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 3.3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Erosion prevention in agriculture"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_21",
+    "text": "Amend soil protection and desertification prevention law to support the concept on erosion prevention in croplands.",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 3.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Amend soil protection and desertification prevention law to support the concept on erosion prevention in croplands."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_22",
+    "text": "Revise current norms and standards on use of pesticides in agricultural sector",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 3.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Revise current norms and standards on use of pesticides in agricultural sector"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_23",
+    "text": "Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Target 4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_24",
+    "text": "Expanding the national network of special protected areas",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 4.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Expanding the national network of special protected areas"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_25",
+    "text": "Promote sustainable use of wetland ecosystems",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 4.2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Promote sustainable use of wetland ecosystems"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NRVTS_26",
+    "text": "Develop the suitable system on payment for ecosystem services in headwaters and wetlands",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Technical Measure 4.3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Develop the suitablesystem on payment forecosystem services inheadwaters andwetlands"
+      }
+    ],
+    "textCleanup": "cleaned"
+  },
+  {
+    "id": "NRVTS_27",
+    "text": "Research and development of PES",
+    "sourceDocument": "NRVTS",
+    "sourceLabel": "Policy Action 4.1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Research and development of PES"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_1",
+    "text": "The objective of this project is to reduce negative impacts of mining on rangelands in the western mountain and steppe region by incorporating mitigation hierarchy and offset for land degradation into the landscape level planning and management. GEF Project Grant/Co-financing Total: 1.29 million USD/5.28 million USD",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Land Degradation Offset and Mitigation in Western Mongolia",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "The objective of this project is to reduce negative impacts of mining on rangelands in the western mountain and steppe region by incorporating mitigation hierarchy and offset for land degradation into the landscape level planning and management. GEF Project Grant/Co-financing Total: 1.29 million USD/5.28 million USD"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_2",
+    "text": "Sustainable forest management in Mongolia's forest landscape secures the flow of multiple ecosystem services and benefits, including biological diversity, reduced degradation, and carbon storage, while enhancing resilience to climate change. GEF Project Grant/Co-financing Total: 3.59 million USD/19.79 million USD",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Mainstreaming Biodiversity Conservation, Sustainable Forest Management and Carbon Sink Enhancement Into Mongolia's Productive Forest Landscapes.",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Sustainable forest management in Mongolia's forest landscape secures the flow of multiple ecosystem services and benefits, including biological diversity, reduced degradation, and carbon storage, while enhancing resilience to climate change. GEF Project Grant/Co-financing Total: 3.59 million USD/19.79 million USD"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_3",
+    "text": "The project aims to catalyze the strategic expansion of Mongolia's protected areas system through establishment of a network of managed resource protected areas in under-represented terrestrial ecosystems, catering for the dual objectives of biodiversity conservation and livelihood enhancement.",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Network of Managed Resource Protected Areas",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "The project aims to catalyze the strategic expansion of Mongolia's protected areas system through establishment of a network of managed resource protected areas in under-represented terrestrial ecosystems, catering for the dual objectives of biodiversity conservation and livelihood enhancement."
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_4",
+    "text": "LDN targets: setting targets and establishing the level of ambition",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Element 1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "LDN targets: setting targets and establishing the level of ambition"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_5",
+    "text": "Leverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Element 2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Leverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_6",
+    "text": "Partnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Element 3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Partnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_7",
+    "text": "Transformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Element 4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Transformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits"
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "ILDN_8",
+    "text": "Monitoring and reporting: tracking progress towards achieving the LDN targets",
+    "sourceDocument": "ILDN",
+    "sourceLabel": "Element 5",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Monitoring and reporting: tracking progress towards achieving the LDN targets"
+      }
+    ],
+    "textCleanup": "verbatim"
   }
 ]
