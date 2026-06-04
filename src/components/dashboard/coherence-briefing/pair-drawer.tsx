@@ -15,6 +15,7 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   ALIGNMENT_COLORS,
   getDocMediumLabel,
@@ -41,8 +42,6 @@ const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 const ALIGNED_DOT_COLOR = "#196127";
 const FRICTION_DOT_COLOR = "#dc2626";
-const AI_DISCLAIMER =
-  "AI-generated synthesis. Treat as a prompt to review, not a settled finding.";
 
 const SEVERITY_RANK: Record<AlignmentLevel, number> = {
   flagged: 0,
@@ -75,6 +74,7 @@ export function PairDrawer({
   countryConfig: CountryConfig | null;
   onClose: () => void;
 }) {
+  const t = useTranslations("drawer.pair");
   // Nested mode state — when the user clicks a target-pair row inside a doc-
   // pair view, we remount the body in target-pair mode but remember the
   // doc-pair so a Back button can return without re-opening from the page.
@@ -126,7 +126,7 @@ export function PairDrawer({
     <div className="fixed inset-0 z-30 flex justify-end">
       <button
         type="button"
-        aria-label="Close pair detail"
+        aria-label={t("closeAria")}
         onClick={onClose}
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
@@ -134,7 +134,9 @@ export function PairDrawer({
         role="dialog"
         aria-modal="true"
         aria-label={
-          renderData.mode === "doc-pair" ? "Document pair detail" : "Pair detail"
+          renderData.mode === "doc-pair"
+            ? t("docPairDialogAria")
+            : t("targetPairDialogAria")
         }
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
@@ -145,8 +147,10 @@ export function PairDrawer({
             onClick={() => setNested(null)}
             className="sticky top-0 z-20 w-full text-left text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] px-6 py-2 bg-white/90 backdrop-blur border-b border-gray-200"
           >
-            ← Back to {getDocMediumLabel(countryConfig, nested.parent.docPair.doc_a)} ↔{" "}
-            {getDocMediumLabel(countryConfig, nested.parent.docPair.doc_b)}
+            ← {t("backTo", {
+              a: getDocMediumLabel(countryConfig, nested.parent.docPair.doc_a),
+              b: getDocMediumLabel(countryConfig, nested.parent.docPair.doc_b),
+            })}
           </button>
         )}
         {renderData.mode === "target-pair" ? (
@@ -192,6 +196,7 @@ function TargetPairBody({
   countryConfig: CountryConfig | null;
   onClose: () => void;
 }) {
+  const t = useTranslations("drawer.pair");
   const alignmentLabels = useAlignmentLabels();
   const contradictionLabels = useContradictionTypeLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
@@ -201,7 +206,7 @@ function TargetPairBody({
       <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
         <div>
           <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-            Pair detail
+            {t("eyebrow.target")}
           </p>
           <h3
             className="text-xl text-[var(--undp-black)] font-medium leading-tight"
@@ -218,7 +223,7 @@ function TargetPairBody({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t("closeBtnAria")}
           className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none"
         >
           ×
@@ -243,7 +248,7 @@ function TargetPairBody({
             className="text-[10px] uppercase tracking-wider font-medium"
             style={{ color }}
           >
-            {contra ? "possibly misaligned with" : "supports"}
+            {contra ? t("connector.flagged") : t("connector.aligned")}
           </span>
           <span
             aria-hidden="true"
@@ -262,14 +267,13 @@ function TargetPairBody({
         {pair.description && (
           <section className="border-t border-gray-200 pt-4">
             <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-              AI rationale
+              {t("aiRationaleLabel")}
             </p>
             <p className="text-sm text-[var(--undp-black)] leading-relaxed italic">
               {pair.description}
             </p>
             <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
-              AI-generated assessment of this pair. Treat as a prompt to
-              review, not a settled finding.
+              {t("aiRationaleDisclaimer")}
             </p>
           </section>
         )}
@@ -287,6 +291,7 @@ function TargetCard({
   countryConfig: CountryConfig | null;
   color: string;
 }) {
+  const t = useTranslations("drawer.pair");
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
   const docFull = getDocFullLabel(countryConfig, target.sourceDocument);
   return (
@@ -303,15 +308,15 @@ function TargetCard({
       {(target.isQuantitative || target.isTimeBound) && (
         <p className="mt-2 text-[10px] text-[var(--undp-gray)] uppercase tracking-wider">
           {[
-            target.isQuantitative ? "Quantitative" : null,
-            target.isTimeBound ? "Time-bound" : null,
+            target.isQuantitative ? t("badge.quantitative") : null,
+            target.isTimeBound ? t("badge.timeBound") : null,
           ]
             .filter(Boolean)
             .join(" · ")}
         </p>
       )}
       <p className="mt-2 text-[10px] text-[var(--undp-gray)]">
-        Source: {docFull}
+        {t("sourceLabel", { name: docFull })}
       </p>
     </div>
   );
@@ -338,6 +343,7 @@ function DocPairBody({
     targetB: Target,
   ) => void;
 }) {
+  const t = useTranslations("drawer.pair");
   const labelAFull = getDocFullLabel(countryConfig, docPair.doc_a);
   const labelBFull = getDocFullLabel(countryConfig, docPair.doc_b);
 
@@ -368,7 +374,7 @@ function DocPairBody({
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-              Document pair
+              {t("eyebrow.doc")}
             </p>
             <h3
               className="text-xl text-[var(--undp-black)] font-medium leading-tight truncate"
@@ -388,7 +394,7 @@ function DocPairBody({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("closeBtnAria")}
             className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
           >
             ×
@@ -402,12 +408,12 @@ function DocPairBody({
             {/* Storylines are the headline content — each keeps its own box. */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <StorylinePanel
-                label="Aligned"
+                label={t("panel.aligned")}
                 dotColor={ALIGNED_DOT_COLOR}
                 body={docPair.synthesis.reinforce}
               />
               <StorylinePanel
-                label="Potential misalignment"
+                label={t("panel.flagged")}
                 dotColor={FRICTION_DOT_COLOR}
                 dashed
                 body={docPair.synthesis.clash}
@@ -418,7 +424,7 @@ function DocPairBody({
               <ExamplesColumn
                 variant="aligned"
                 examples={alignedPairs}
-                emptyText="No strong alignments in this doc-pair."
+                emptyText={t("emptyAligned")}
                 totalCount={alignedPairs.length}
                 targetsById={targetsById}
                 countryConfig={countryConfig}
@@ -427,7 +433,7 @@ function DocPairBody({
               <ExamplesColumn
                 variant="flagged"
                 examples={flaggedPairs}
-                emptyText="No potential misalignment in this doc-pair."
+                emptyText={t("emptyFlagged")}
                 totalCount={flaggedPairs.length}
                 targetsById={targetsById}
                 countryConfig={countryConfig}
@@ -439,7 +445,7 @@ function DocPairBody({
         {!failed && docPair.synthesis.coordination_hint && (
           <div className="border-l-2 border-gray-300 pl-3">
             <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
-              Coordination pathway
+              {t("coordinationPathway")}
             </p>
             <p className="text-[13px] text-[var(--undp-black)] leading-relaxed italic">
               {docPair.synthesis.coordination_hint}
@@ -448,7 +454,7 @@ function DocPairBody({
         )}
         <CountsStrip docPair={docPair} />
         <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
-          {AI_DISCLAIMER}
+          {t("aiDisclaimer")}
         </p>
 
         {failed && (
@@ -551,21 +557,25 @@ function ExamplesColumn({
   ) => void;
   totalCount: number;
 }) {
+  const t = useTranslations("drawer.pair");
   const [expanded, setExpanded] = useState(false);
   const visible = expanded
     ? examples
     : examples.slice(0, EXAMPLES_DEFAULT_COUNT);
   const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
+  const exampleHeader =
+    variant === "flagged"
+      ? examples.length !== totalCount
+        ? t("examples.flaggedOfTotal", {
+            count: examples.length,
+            total: totalCount,
+          })
+        : t("examples.flagged", { count: examples.length })
+      : t("examples.aligned", { count: examples.length });
   return (
     <div>
       <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
-        {variant === "flagged"
-          ? `Potentially misaligned examples (${examples.length.toLocaleString()}${
-              examples.length !== totalCount
-                ? ` of ${totalCount.toLocaleString()}`
-                : ""
-            })`
-          : `Aligned examples (${examples.length.toLocaleString()})`}
+        {exampleHeader}
       </p>
       {visible.length === 0 ? (
         <p className="text-[11px] italic text-[var(--undp-gray)]">
@@ -596,9 +606,7 @@ function ExamplesColumn({
           onClick={() => setExpanded((v) => !v)}
           className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
         >
-          {expanded
-            ? "Show fewer"
-            : `Show ${remaining.toLocaleString()} more`}
+          {expanded ? t("showFewer") : t("showMore", { count: remaining })}
         </button>
       )}
     </div>
@@ -606,6 +614,7 @@ function ExamplesColumn({
 }
 
 function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
+  const t = useTranslations("drawer.pair");
   const contradictionLabels = useContradictionTypeLabels();
   // v2.1 canonical mechanism keys + legacy v1 fallback. Older synthesis
   // JSON written before the v2 migration emits `implementation_tension`
@@ -639,20 +648,20 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
   return (
     <div className="border-t border-gray-200 pt-4">
       <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-        Pool composition
+        {t("poolComposition")}
       </p>
       <p className="text-[15px] text-[var(--undp-black)] tabular-nums font-medium">
         <span style={{ color: ALIGNMENT_COLORS.high }}>
-          {docPair.aligned_count.toLocaleString()} aligned
+          {t("alignedCount", { count: docPair.aligned_count })}
         </span>
         <span className="text-[var(--undp-gray)] mx-2">·</span>
         <span style={{ color: ALIGNMENT_COLORS.flagged }}>
-          {docPair.flagged_count.toLocaleString()} potentially misaligned
+          {t("flaggedCount", { count: docPair.flagged_count })}
         </span>
       </p>
       {parts.length > 0 && (
         <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-          Misalignment types: {parts.join(", ")}
+          {t("misalignmentTypes", { list: parts.join(", ") })}
         </p>
       )}
     </div>
@@ -676,6 +685,7 @@ function FallbackTargetPairList({
     targetB: Target,
   ) => void;
 }) {
+  const t = useTranslations("drawer.pair");
   const [showAligned, setShowAligned] = useState(false);
   const visible = showAligned
     ? [...flaggedPairs, ...alignedPairs]
@@ -685,8 +695,10 @@ function FallbackTargetPairList({
       <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
         <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
           {showAligned
-            ? `All target pairs (${(flaggedPairs.length + alignedPairs.length).toLocaleString()})`
-            : `Flagged target pairs (${flaggedPairs.length.toLocaleString()})`}
+            ? t("fallback.allPairs", {
+                count: flaggedPairs.length + alignedPairs.length,
+              })
+            : t("fallback.flaggedOnly", { count: flaggedPairs.length })}
         </p>
         {alignedPairs.length > 0 && (
           <button
@@ -695,14 +707,14 @@ function FallbackTargetPairList({
             className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
           >
             {showAligned
-              ? "Show misaligned only"
-              : `Show aligned (${alignedPairs.length.toLocaleString()})`}
+              ? t("fallback.showMisalignedOnly")
+              : t("fallback.showAligned", { count: alignedPairs.length })}
           </button>
         )}
       </div>
       {visible.length === 0 ? (
         <p className="text-sm italic text-[var(--undp-gray)]">
-          No target pairs to show.
+          {t("fallback.empty")}
         </p>
       ) : (
         <ol className="divide-y divide-gray-200 border-y border-gray-200">

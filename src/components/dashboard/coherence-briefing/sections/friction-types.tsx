@@ -11,6 +11,7 @@
  * profile drawer share one source of truth (alignment[].mechanism).
  */
 
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
 import type { FrictionTypeTotals } from "@/lib/coherence-briefing";
@@ -26,14 +27,15 @@ export function FrictionTypesSection({
   totals: FrictionTypeTotals;
   onOpenType: (mechanism: AlignmentMechanism) => void;
 }) {
+  const t = useTranslations("briefing.frictionTypes");
   const labels = useContradictionTypeLabels();
   if (totals.total === 0) {
     return (
       <SlideFrame
         id={FRICTION_TYPES_SECTION_ID}
-        eyebrow="What kind of misalignment?"
-        headline="No potential misalignment to characterise yet."
-        body="Once the pipeline surfaces potential misalignment, the kind (conflicting goals, competing resources, or delivery) shows up here."
+        eyebrow={t("emptyEyebrow")}
+        headline={t("emptyHeadline")}
+        body={t("emptyBody")}
       />
     );
   }
@@ -41,9 +43,9 @@ export function FrictionTypesSection({
   return (
     <SlideFrame
       id={FRICTION_TYPES_SECTION_ID}
-      eyebrow="What kind of friction?"
-      headline={composeHeadline(totals)}
-      body={composeBody(totals, labels)}
+      eyebrow={t("eyebrow")}
+      headline={composeHeadline(totals, t)}
+      body={composeBody(totals, labels, t)}
       evidence={
         <FrictionTypeChart totals={totals} onSegmentClick={onOpenType} />
       }
@@ -51,28 +53,32 @@ export function FrictionTypesSection({
   );
 }
 
-function composeHeadline(t: FrictionTypeTotals): string {
-  switch (t.dominantType) {
+function composeHeadline(
+  totals: FrictionTypeTotals,
+  t: ReturnType<typeof useTranslations<"briefing.frictionTypes">>,
+): string {
+  switch (totals.dominantType) {
     case "goal_conflict":
-      return "Most potential misalignment is conflicting goals, not competition for resources.";
+      return t("headline.goalConflict");
     case "resource_competition":
-      return "Most potential misalignment is competition for resources.";
+      return t("headline.resourceCompetition");
     case "delivery_friction":
-      return "Most potential misalignment is about delivery, not the goals themselves.";
+      return t("headline.deliveryFriction");
     default:
-      return "Potential misalignment takes three forms across the policy set.";
+      return t("headline.mixed");
   }
 }
 
 function composeBody(
-  t: FrictionTypeTotals,
+  totals: FrictionTypeTotals,
   labels: Record<AlignmentMechanism, string>,
+  t: ReturnType<typeof useTranslations<"briefing.frictionTypes">>,
 ): string {
-  const total = t.total;
-  if (!t.dominantType) {
-    return `${total.toLocaleString()} potentially misaligned pairs split across the three types. Click any segment to see how those pairs break down.`;
+  const total = totals.total;
+  if (!totals.dominantType) {
+    return t("body.mixed", { total });
   }
-  const pct = Math.round((t[t.dominantType] / total) * 100);
-  const label = labels[t.dominantType].toLowerCase();
-  return `Of ${total.toLocaleString()} potentially misaligned pairs, ${label} accounts for ${pct}%. Click any segment to see how those pairs break down by document, theme, and target.`;
+  const pct = Math.round((totals[totals.dominantType] / total) * 100);
+  const label = labels[totals.dominantType].toLowerCase();
+  return t("body.dominant", { total, label, pct });
 }

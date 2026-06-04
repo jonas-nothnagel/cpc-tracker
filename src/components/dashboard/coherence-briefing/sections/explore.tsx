@@ -12,6 +12,7 @@
  */
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ChatPanel } from "../chat-panel";
 import { detectInsights, type Insight } from "@/lib/coherence-insights";
 import { pickExampleQueries } from "@/lib/coherence-chat";
@@ -81,6 +82,7 @@ export function ExploreSection({
   /** Switch the Explore section to the full-width explorer view. Omitted = no trigger rendered. */
   onOpenFullData?: () => void;
 }) {
+  const t = useTranslations("briefing.explore");
   // Map the domain taxonomies to the chat's lean {id,name,description} shape
   // once; both the insight detectors and the chat reuse it.
   const sectorCats = useMemo<ChatTaxCategory[]>(
@@ -141,12 +143,9 @@ export function ExploreSection({
     // Surface the synthesis layer: when a corpus storyline exists, lead with a
     // big-picture probe that exercises the precomputed narrative.
     return corpusThemes && corpusThemes.storylines.length > 0
-      ? ["What is the main storyline across these documents?", ...base].slice(
-          0,
-          4,
-        )
+      ? [t("starterStoryline"), ...base].slice(0, 4)
       : base;
-  }, [alignment, globeCategories, sectors, classifications, corpusThemes]);
+  }, [alignment, globeCategories, sectors, classifications, corpusThemes, t]);
 
   return (
     <section
@@ -163,11 +162,10 @@ export function ExploreSection({
         className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-3"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
-        Explore the policy coherence yourself.
+        {t("heading")}
       </h2>
       <p className="text-[14px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-4">
-        Ask a question in your own words, surface an insight, or click the
-        wheel. Insights and the wheel react together.
+        {t("body")}
       </p>
 
       {onOpenFullData && (
@@ -176,7 +174,7 @@ export function ExploreSection({
           onClick={onOpenFullData}
           className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-4 py-2 text-[13px] font-medium text-[var(--undp-black)] transition-colors hover:border-[var(--undp-black)]"
         >
-          Explore the full data <span aria-hidden="true">⤢</span>
+          {t("openFullData")} <span aria-hidden="true">⤢</span>
         </button>
       )}
 
@@ -224,6 +222,7 @@ function InsightBar({
   insights: Insight[];
   onApplyAction: (action: ChatAction) => void;
 }) {
+  const t = useTranslations("briefing.explore");
   const [idx, setIdx] = useState(0);
   if (insights.length === 0) return null;
   const insight = insights[idx % insights.length];
@@ -249,7 +248,7 @@ function InsightBar({
     <div className="mb-6 rounded-md border border-gray-200 bg-white/60 px-4 py-3">
       <div className="flex items-center justify-between mb-1.5">
         <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-          Worth a look
+          {t("insight.title")}
         </p>
         {insights.length > 1 && (
           <button
@@ -257,7 +256,7 @@ function InsightBar({
             onClick={() => setIdx((i) => (i + 1) % insights.length)}
             className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
           >
-            ↻ Surprise me
+            ↻ {t("insight.surpriseMe")}
           </button>
         )}
       </div>
@@ -275,7 +274,7 @@ function InsightBar({
           onClick={showMe}
           className="text-xs font-medium text-[var(--undp-black)] hover:underline"
         >
-          Show me →
+          {t("insight.showMe")} →
         </button>
       </div>
     </div>
@@ -301,11 +300,12 @@ function GroupByRow({
   onExploreLensChange: (id: LensId) => void;
   onExploreGroupChange: (next: "documents" | "sectors") => void;
 }) {
+  const t = useTranslations("briefing.explore");
   const activeLens = exploreLensId ?? availableLenses[0]?.id;
   return (
     <div>
       <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
-        Group the wheel by
+        {t("groupBy")}
       </p>
       <div className="flex flex-wrap gap-1.5">
         <button
@@ -314,7 +314,7 @@ function GroupByRow({
           aria-pressed={exploreGroup === "documents"}
           className={chip(exploreGroup === "documents")}
         >
-          Documents
+          {t("group.documents")}
         </button>
         {availableLenses.map((opt) => {
           const isActive = exploreGroup === "sectors" && activeLens === opt.id;

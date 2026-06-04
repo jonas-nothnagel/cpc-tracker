@@ -14,6 +14,7 @@
  */
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import {
   type ConcentrationStat,
@@ -63,6 +64,7 @@ export function SectorsSection({
   }) => void;
   onHoverSector?: (categoryId: string | null) => void;
 }) {
+  const t = useTranslations("briefing.sectors");
   const [sortMode, setSortMode] = useState<SectorSortMode>("tension");
   const [showAll, setShowAll] = useState(false);
 
@@ -105,6 +107,7 @@ export function SectorsSection({
   const sentence = composeConcentrationSentence({
     concentration,
     lensLabel,
+    t,
   });
   const maxTension = mergedRows.reduce(
     (m, r) => (r.tensionCount > m ? r.tensionCount : m),
@@ -122,7 +125,7 @@ export function SectorsSection({
   return (
     <SlideFrame
       id={SECTORS_SECTION_ID}
-      eyebrow="Where does misalignment concentrate?"
+      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       controls={
@@ -137,7 +140,7 @@ export function SectorsSection({
       evidence={
         mergedRows.length === 0 ? (
           <p className="text-sm italic text-[var(--undp-gray)]">
-            No sector taxonomy is available for this country.
+            {t("noTaxonomy")}
           </p>
         ) : (
           <div className="border-y border-gray-200 py-3">
@@ -169,7 +172,7 @@ export function SectorsSection({
                 onClick={() => setShowAll(true)}
                 className="mt-3 text-[11px] text-[var(--undp-black)] hover:text-[var(--undp-black)] underline underline-offset-2"
               >
-                Show all {mergedRows.length.toLocaleString()} sectors →
+                {t("showAll", { count: mergedRows.length })}
               </button>
             )}
             {showAll && mergedRows.length > VISIBLE_ROWS_DEFAULT && (
@@ -178,7 +181,7 @@ export function SectorsSection({
                 onClick={() => setShowAll(false)}
                 className="mt-3 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2"
               >
-                Collapse to top {VISIBLE_ROWS_DEFAULT}
+                {t("collapseToTop", { count: VISIBLE_ROWS_DEFAULT })}
               </button>
             )}
           </div>
@@ -210,18 +213,19 @@ function LensChipRow({
   filter: WheelFilter;
   onFilterChange: (f: WheelFilter) => void;
 }) {
+  const t = useTranslations("briefing.sectors");
   const activeLens = activeLensId ?? availableLenses[0]?.id;
   const FILTER_OPTIONS: ReadonlyArray<{ value: WheelFilter; label: string }> = [
-    { value: "tensions", label: "Misaligned" },
-    { value: "alignments", label: "Aligned" },
-    { value: "all", label: "Both" },
+    { value: "tensions", label: t("filter.misaligned") },
+    { value: "alignments", label: t("filter.aligned") },
+    { value: "all", label: t("filter.both") },
   ];
   return (
     <div className="flex flex-col gap-3">
       {availableLenses.length > 0 && (
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
-            Group by:
+            {t("groupBy")}
           </span>
           {availableLenses.map((opt) => {
             const active = activeLens === opt.id;
@@ -245,7 +249,7 @@ function LensChipRow({
       )}
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
-          Show:
+          {t("show")}
         </span>
         {FILTER_OPTIONS.map((opt) => {
           const active = filter === opt.value;
@@ -277,9 +281,10 @@ function SectorColumnHeader({
   sortMode: SectorSortMode;
   onSort: (m: SectorSortMode) => void;
 }) {
+  const t = useTranslations("briefing.sectors");
   return (
     <div className="grid grid-cols-[1fr_4.25rem_4.25rem] items-center gap-3 px-1 pb-1 mb-1 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-      <span>Sector</span>
+      <span>{t("col.sector")}</span>
       <button
         type="button"
         onClick={() => onSort("alignment")}
@@ -289,7 +294,7 @@ function SectorColumnHeader({
             : "hover:text-[var(--undp-black)]"
         }`}
       >
-        Aligned
+        {t("col.aligned")}
       </button>
       <button
         type="button"
@@ -300,7 +305,7 @@ function SectorColumnHeader({
             : "hover:text-[var(--undp-black)]"
         }`}
       >
-        Misaligned
+        {t("col.misaligned")}
       </button>
     </div>
   );
@@ -314,52 +319,89 @@ interface ConcentrationSentence {
 function composeConcentrationSentence({
   concentration,
   lensLabel,
+  t,
 }: {
   concentration: ConcentrationStat;
   lensLabel: string | null;
+  t: ReturnType<typeof useTranslations<"briefing.sectors">>;
 }): ConcentrationSentence {
-  const { noun, nounPlural } =
-    lensLabel === "GLOBE"
-      ? { noun: "category", nounPlural: "categories" }
-      : { noun: "sector", nounPlural: "sectors" };
+  const nounStyle = lensLabel === "GLOBE" ? "category" : "sector";
+  const noun = t(`noun.${nounStyle}.singular`);
+  const nounPlural = t(`noun.${nounStyle}.plural`);
   const { populatedSectors, totalFlags, topNames, share } = concentration;
   if (totalFlags === 0 || populatedSectors === 0) {
     return {
-      headline: `No potentially misaligned pairs grouped by ${noun} yet.`,
-      body: `Either the pipeline has not surfaced any potential misalignment touching a primary-classified ${noun}, or the country has no ${noun} taxonomy configured.`,
+      headline: t("concentration.emptyHeadline", { noun }),
+      body: t("concentration.emptyBody", { noun }),
     };
   }
   if (topNames.length === 0) {
     return {
-      headline: `Potentially misaligned pairs spread across ${populatedSectors} ${nounPlural}.`,
-      body: `${totalFlags.toLocaleString()} potentially misaligned pairs land across ${populatedSectors} ${nounPlural} with no single ${noun} dominating.`,
+      headline: t("concentration.spreadHeadline", {
+        sectors: populatedSectors,
+        nounPlural,
+      }),
+      body: t("concentration.spreadBody", {
+        total: totalFlags,
+        sectors: populatedSectors,
+        noun,
+        nounPlural,
+      }),
     };
   }
   const sharePct = Math.round(share * 100);
-  const list = formatList(topNames);
+  const list = formatList(topNames, t);
   if (topNames.length === 1) {
     return {
-      headline: `${topNames[0]} carries ${sharePct}% of potentially misaligned pairs.`,
-      body: `${totalFlags.toLocaleString()} potentially misaligned pairs land across ${populatedSectors} ${nounPlural}; ${topNames[0]} alone holds ${sharePct}%.`,
+      headline: t("concentration.singleHeadline", {
+        name: topNames[0],
+        pct: sharePct,
+      }),
+      body: t("concentration.singleBody", {
+        total: totalFlags,
+        sectors: populatedSectors,
+        nounPlural,
+        name: topNames[0],
+        pct: sharePct,
+      }),
     };
   }
   if (topNames.length === populatedSectors) {
     return {
-      headline: `Potentially misaligned pairs touch every ${noun}.`,
-      body: `${totalFlags.toLocaleString()} potentially misaligned pairs spread across all ${populatedSectors} ${nounPlural}; the heaviest are ${list}.`,
+      headline: t("concentration.everyHeadline", { noun }),
+      body: t("concentration.everyBody", {
+        total: totalFlags,
+        sectors: populatedSectors,
+        nounPlural,
+        list,
+      }),
     };
   }
   return {
-    headline: `Misalignment concentrates in ${topNames.length} of ${populatedSectors} ${nounPlural}.`,
-    body: `${sharePct}% of the ${totalFlags.toLocaleString()} potentially misaligned pairs land on ${list}. Click a row for the underlying pairs.`,
+    headline: t("concentration.topHeadline", {
+      count: topNames.length,
+      sectors: populatedSectors,
+      nounPlural,
+    }),
+    body: t("concentration.topBody", {
+      pct: sharePct,
+      total: totalFlags,
+      list,
+    }),
   };
 }
 
-function formatList(items: string[]): string {
+function formatList(
+  items: string[],
+  t: ReturnType<typeof useTranslations<"briefing.sectors">>,
+): string {
   if (items.length === 0) return "";
   if (items.length === 1) return items[0];
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+  if (items.length === 2) return t("listJoinTwo", { a: items[0], b: items[1] });
+  return t("listJoinMany", {
+    head: items.slice(0, -1).join(", "),
+    last: items[items.length - 1],
+  });
 }
 
 const DOT_TENSION = "#dc2626";
@@ -379,6 +421,7 @@ function SectorRow({
   onHover?: (categoryId: string | null) => void;
   onSelect: () => void;
 }) {
+  const t = useTranslations("briefing.sectors");
   const isMuted = row.tensionCount === 0 && row.alignmentCount === 0;
   const hasPool = row.relevantOnlyCount !== null;
   return (
@@ -389,7 +432,11 @@ function SectorRow({
         onMouseEnter={() => onHover?.(row.categoryId)}
         onFocus={() => onHover?.(row.categoryId)}
         className="w-full text-left grid grid-cols-[1fr_4.25rem_4.25rem] items-center gap-3 px-1 py-2.5 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
-        aria-label={`${row.categoryName}: ${row.tensionCount} potentially misaligned, ${row.alignmentCount} aligned`}
+        aria-label={t("rowAriaLabel", {
+          name: row.categoryName,
+          flagged: row.tensionCount,
+          aligned: row.alignmentCount,
+        })}
       >
         <div className="min-w-0">
           <p
@@ -403,9 +450,9 @@ function SectorRow({
             {row.categoryName}
           </p>
           <p className="text-[10px] text-[var(--undp-gray)] tabular-nums leading-tight mt-0.5">
-            {row.targetCount.toLocaleString()} primary
+            {t("primaryCount", { count: row.targetCount })}
             {hasPool && row.relevantOnlyCount !== null
-              ? ` · ${row.relevantOnlyCount.toLocaleString()} relevant`
+              ? " · " + t("relevantCount", { count: row.relevantOnlyCount })
               : ""}
           </p>
         </div>

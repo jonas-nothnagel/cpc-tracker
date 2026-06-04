@@ -51,11 +51,387 @@
       "initiative": "AI Sprint Initiative"
     }
   },
-  "dashboard": {},
+  "dashboard": {
+    "unavailable": {
+      "subtitle": "Dashboard",
+      "heading": "This country is not yet available",
+      "body": "Select a country from the homepage to explore the dashboard.",
+      "backToHome": "Back to home"
+    },
+    "loading": {
+      "subtitle": "Dashboard"
+    },
+    "error": {
+      "heading": "No analysis data available",
+      "body": "It looks like no analysis has been run yet. Upload your policy targets or pick a pre-loaded country to get started.",
+      "backToHome": "Back to home"
+    },
+    "footer": {
+      "text": "United Nations Development Programme · CPC Tracker"
+    }
+  },
+  "briefing": {
+    "header": {
+      "eyebrow": "Policy coherence",
+      "subtitle": "{count, plural, one {# document} other {# documents}} compared pairwise. Scroll for the findings or jump to a section."
+    },
+    "sections": {
+      "direction": "Direction",
+      "docFocus": "Doc in focus",
+      "docPairs": "Doc pairs",
+      "frictionTypes": "Friction types",
+      "sectors": "Sectors",
+      "whereToFocus": "Where to focus",
+      "explore": "Explore"
+    },
+    "lens": {
+      "globe": "GLOBE",
+      "ipcc": "IPCC sectors",
+      "country": "Country sectors"
+    },
+    "legend": {
+      "aligned": "Aligned",
+      "flagged": "Potential misalignment",
+      "redShareHint": "red = share of each link that is potentially misaligned",
+      "warmerArcHint": "warmer arc = document with more potential misalignment"
+    },
+    "explorer": {
+      "title": "Explore the full data",
+      "backToChat": "Back to chat"
+    },
+    "footerLink": {
+      "fullExplorer": "Full coherence explorer"
+    },
+    "drawer": {
+      "flagProfile": {
+        "closeAria": "Close profile",
+        "closeBtnAria": "Close",
+        "dialogAria": "Profile: {name}",
+        "eyebrow": {
+          "friction": "Potential misalignment type",
+          "target": "Target in focus"
+        },
+        "themeNoun": {
+          "globe": "categories",
+          "sectors": "themes"
+        },
+        "withinDoc": "within {doc}'s potential misalignment",
+        "pairCount": "{count, plural, one {1 potentially misaligned pair} other {# potentially misaligned pairs}}",
+        "pairShareOfDoc": "{pct}% of {docScoped, select, 1 {{scope}'s} other {all}} potential misalignment",
+        "empty": "No potential misalignment in this subset.",
+        "aiDisclaimer": "AI-generated flags. Treat as prompts to review, not settled findings.",
+        "composition": {
+          "acrossDocPairs": "Across document pairs",
+          "acrossThemes": "Across {themeNoun}",
+          "recurringTargets": "Recurs on targets",
+          "noThemes": "No primary-classified themes.",
+          "none": "None"
+        },
+        "manageability": {
+          "title": "Where the misalignment sits",
+          "summary": "The AI reads {mPct}% of these as coordination-level (the misalignment could likely be eased by aligning delivery, sequencing, or safeguards rather than changing the targets){hasFundamental, select, 1 {, and {fPct}% as design-level, where a target itself may need revisiting} other {}}. A per-pair AI assessment, worth verifying."
+        },
+        "examples": {
+          "target": "Potentially misaligned pairs",
+          "representative": "Representative pairs"
+        },
+        "tree": {
+          "heading": "How this target's potential misalignment breaks down",
+          "unclassified": "Unclassified"
+        }
+      },
+      "pair": {
+        "closeAria": "Close pair detail",
+        "closeBtnAria": "Close",
+        "docPairDialogAria": "Document pair detail",
+        "targetPairDialogAria": "Pair detail",
+        "backTo": "Back to {a} ↔ {b}",
+        "eyebrow": {
+          "target": "Pair detail",
+          "doc": "Document pair"
+        },
+        "connector": {
+          "aligned": "supports",
+          "flagged": "possibly misaligned with"
+        },
+        "aiRationaleLabel": "AI rationale",
+        "aiRationaleDisclaimer": "AI-generated assessment of this pair. Treat as a prompt to review, not a settled finding.",
+        "badge": {
+          "quantitative": "Quantitative",
+          "timeBound": "Time-bound"
+        },
+        "sourceLabel": "Source: {name}",
+        "panel": {
+          "aligned": "Aligned",
+          "flagged": "Potential misalignment"
+        },
+        "emptyAligned": "No strong alignments in this doc-pair.",
+        "emptyFlagged": "No potential misalignment in this doc-pair.",
+        "coordinationPathway": "Coordination pathway",
+        "poolComposition": "Pool composition",
+        "alignedCount": "{count, number} aligned",
+        "flaggedCount": "{count, number} potentially misaligned",
+        "misalignmentTypes": "Misalignment types: {list}",
+        "aiDisclaimer": "AI-generated synthesis. Treat as a prompt to review, not a settled finding.",
+        "examples": {
+          "aligned": "Aligned examples ({count, number})",
+          "flagged": "Potentially misaligned examples ({count, number})",
+          "flaggedOfTotal": "Potentially misaligned examples ({count, number} of {total, number})"
+        },
+        "showFewer": "Show fewer",
+        "showMore": "Show {count, number} more",
+        "fallback": {
+          "allPairs": "All target pairs ({count, number})",
+          "flaggedOnly": "Flagged target pairs ({count, number})",
+          "showMisalignedOnly": "Show misaligned only",
+          "showAligned": "Show aligned ({count, number})",
+          "empty": "No target pairs to show."
+        }
+      },
+      "theme": {
+        "closeAria": "Close theme view",
+        "closeBtnAria": "Close",
+        "dialogAria": "Theme: {name}",
+        "eyebrow": {
+          "reinforce": "Recurring alignment",
+          "friction": "Recurring potential misalignment"
+        },
+        "summary": {
+          "reinforce": "Recurs across {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}} · {records, number} aligned {records, plural, one {record} other {records}} below",
+          "friction": "Recurs across {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}} · {records, number} misaligned {records, plural, one {record} other {records}} below"
+        },
+        "pairsInTheme": "Target pairs in this theme",
+        "noConcretePairs": "The theme names contributing doc-pairs but no concrete target pairs in those doc-pairs match the theme polarity.",
+        "recordsCount": "{count, plural, one {1 record} other {# records}}",
+        "showFewer": "Show fewer",
+        "showAllRecords": "Show all {count, plural, one {1 record} other {# records}}",
+        "aiDisclaimer": "AI-generated synthesis. Treat as a prompt to review, not a settled finding.",
+        "all": {
+          "closeAria": "Close themes view",
+          "dialogAria": "All recurring themes",
+          "eyebrow": "Recurring themes",
+          "heading": "{count, plural, one {1 theme that spans multiple documents} other {# themes that span multiple documents}}",
+          "subtitle": "{aligned, number} aligned · {flagged, number} potentially misaligned. Click any theme for the underlying target pairs."
+        },
+        "storylineMeta": "Spans {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}}{lowConf, select, 1 { · low confidence} other {}}"
+      },
+      "sector": {
+        "eyebrow": "Sector view",
+        "closeAria": "Close sector view",
+        "closeBtnAria": "Close",
+        "dialogAria": "Sector view: {name}",
+        "headerCounts": "{targets, number} targets · {pairs, number} scored pairs touch this sector",
+        "recursLabel": "Recurs:",
+        "synthesisFailed": "Synthesis failed for this sector; raw pairs follow.",
+        "panel": {
+          "aligned": "Aligned",
+          "flagged": "Potential misalignment"
+        },
+        "legacy": {
+          "pullingTogether": "What's pulling together",
+          "pullingAgainst": "What's pulling against the rest",
+          "strongestAlignments": "Strongest alignments",
+          "topFlagged": "Top potentially misaligned pairs"
+        },
+        "emptyAligned": "No strong alignments touch this sector.",
+        "emptyFlagged": "No potential misalignment in this sector.",
+        "examples": {
+          "aligned": "Aligned examples",
+          "flagged": "Potentially misaligned examples"
+        },
+        "showFewer": "Show fewer",
+        "showMore": "Show {count, number} more",
+        "coordinationPathway": "Coordination pathway",
+        "poolComposition": "Pool composition",
+        "alignedCount": "{count, number} aligned",
+        "flaggedCount": "{count, number} potentially misaligned",
+        "synthesisedFrom": "Synthesised from {count, plural, one {1 pair} other {# pairs}} · {primary, number} primary + {relevant, number} relevant",
+        "misalignmentTypes": "Misalignment types: {list}",
+        "aiDisclaimer": "AI-generated synthesis. Treat as a prompt to review, not a settled finding."
+      }
+    },
+    "explore": {
+      "heading": "Explore the policy coherence yourself.",
+      "body": "Ask a question in your own words, surface an insight, or click the wheel. Insights and the wheel react together.",
+      "openFullData": "Explore the full data",
+      "starterStoryline": "What is the main storyline across these documents?",
+      "groupBy": "Group the wheel by",
+      "group": {
+        "documents": "Documents"
+      },
+      "insight": {
+        "title": "Worth a look",
+        "surpriseMe": "Surprise me",
+        "showMe": "Show me"
+      }
+    },
+    "whereToFocus": {
+      "eyebrow": "Where should we focus first?",
+      "empty": "No targets are involved in potentially misaligned pairs yet.",
+      "mostContested": "Most-contested targets",
+      "pairsSuffix": "pairs",
+      "rowAriaLabel": "{doc} {label}: involved in {count, number} potentially misaligned pairs",
+      "sentence": {
+        "emptyHeadline": "No potential misalignment to focus yet.",
+        "emptyBody": "Once the pipeline surfaces potential misalignment, the targets it touches most surface here.",
+        "singleHeadline": "One target sits in {pct}% of all potentially misaligned pairs.",
+        "singleBody": "{total, number} potentially misaligned pairs trace back to {contested, number} targets, but a single one accounts for {pct}%. Click it to see what it is misaligned with.",
+        "concentratedHeadline": "Just {top, number} targets carry {pct}% of the misalignment.",
+        "concentratedBody": "{total, number} potentially misaligned pairs trace back to {contested, number} targets, but only {top, number} of them are involved in {pct}%. These are where to look first.",
+        "spreadHeadline": "Misalignment spreads across {contested, number} targets.",
+        "spreadBody": "It takes {top, number} of {contested, number} targets to cover {pct}% of the {total, number} potentially misaligned pairs, so no single handful dominates. The heaviest are listed below."
+      },
+      "bar": {
+        "title": "Where the misalignment concentrates",
+        "totalPairs": "{count, number} potentially misaligned pairs",
+        "segmentTitle": "{doc} {label}: in {count, number} potentially misaligned pairs · click to open",
+        "othersTitle": "{others, number} other targets: {remainder, number} potentially misaligned pairs",
+        "targetCount": "{count, plural, one {1 target} other {# targets}}",
+        "carryShare": "carry {pct}% of potentially misaligned pairs",
+        "otherTargets": "{count, number} other targets",
+        "legendHint": "each segment is one target, coloured by its document · click to open"
+      }
+    },
+    "sectors": {
+      "eyebrow": "Where does misalignment concentrate?",
+      "noTaxonomy": "No sector taxonomy is available for this country.",
+      "showAll": "Show all {count, number} sectors →",
+      "collapseToTop": "Collapse to top {count, number}",
+      "groupBy": "Group by:",
+      "show": "Show:",
+      "filter": {
+        "misaligned": "Misaligned",
+        "aligned": "Aligned",
+        "both": "Both"
+      },
+      "col": {
+        "sector": "Sector",
+        "aligned": "Aligned",
+        "misaligned": "Misaligned"
+      },
+      "noun": {
+        "category": { "singular": "category", "plural": "categories" },
+        "sector": { "singular": "sector", "plural": "sectors" }
+      },
+      "concentration": {
+        "emptyHeadline": "No potentially misaligned pairs grouped by {noun} yet.",
+        "emptyBody": "Either the pipeline has not surfaced any potential misalignment touching a primary-classified {noun}, or the country has no {noun} taxonomy configured.",
+        "spreadHeadline": "Potentially misaligned pairs spread across {sectors, number} {nounPlural}.",
+        "spreadBody": "{total, number} potentially misaligned pairs land across {sectors, number} {nounPlural} with no single {noun} dominating.",
+        "singleHeadline": "{name} carries {pct}% of potentially misaligned pairs.",
+        "singleBody": "{total, number} potentially misaligned pairs land across {sectors, number} {nounPlural}; {name} alone holds {pct}%.",
+        "everyHeadline": "Potentially misaligned pairs touch every {noun}.",
+        "everyBody": "{total, number} potentially misaligned pairs spread across all {sectors, number} {nounPlural}; the heaviest are {list}.",
+        "topHeadline": "Misalignment concentrates in {count, number} of {sectors, number} {nounPlural}.",
+        "topBody": "{pct}% of the {total, number} potentially misaligned pairs land on {list}. Click a row for the underlying pairs."
+      },
+      "listJoinTwo": "{a} and {b}",
+      "listJoinMany": "{head}, and {last}",
+      "rowAriaLabel": "{name}: {flagged, number} potentially misaligned, {aligned, number} aligned",
+      "primaryCount": "{count, number} primary",
+      "relevantCount": "{count, number} relevant"
+    },
+    "docPairs": {
+      "eyebrow": "How do specific documents relate?",
+      "empty": "No doc-pair synthesis available yet. Run the synthesis step to surface the pairings here.",
+      "headline": {
+        "empty": "No synthesised doc-pair signal yet.",
+        "joiner": " and ",
+        "template": "{names} {count, plural, one {carries} other {carry}} most of the relationships between documents."
+      },
+      "body": {
+        "empty": "Run the doc-pair synthesis step to surface which pairings dominate.",
+        "summary": "{total, number} scored target-pairs across all {pairCount, number} document pairings. The matrix on the right and the ranked list below are two views of the same set: hover either to link them, click for the underlying pairs."
+      },
+      "allPairings": "All {count, number} document pairings",
+      "aiDisclaimer": "AI-synthesised storyline names. Treat as a prompt to review, not a settled finding.",
+      "excerpt": {
+        "aligned": "Aligned",
+        "flagged": "Potential misalignment"
+      },
+      "synthesisFailed": "Synthesis failed, open for raw pair list.",
+      "countAligned": "{count, number} aligned",
+      "countFlagged": "{count, number} flagged"
+    },
+    "frictionTypes": {
+      "eyebrow": "What kind of friction?",
+      "emptyEyebrow": "What kind of misalignment?",
+      "emptyHeadline": "No potential misalignment to characterise yet.",
+      "emptyBody": "Once the pipeline surfaces potential misalignment, the kind (conflicting goals, competing resources, or delivery) shows up here.",
+      "headline": {
+        "goalConflict": "Most potential misalignment is conflicting goals, not competition for resources.",
+        "resourceCompetition": "Most potential misalignment is competition for resources.",
+        "deliveryFriction": "Most potential misalignment is about delivery, not the goals themselves.",
+        "mixed": "Potential misalignment takes three forms across the policy set."
+      },
+      "body": {
+        "mixed": "{total, number} potentially misaligned pairs split across the three types. Click any segment to see how those pairs break down.",
+        "dominant": "Of {total, number} potentially misaligned pairs, {label} accounts for {pct}%. Click any segment to see how those pairs break down by document, theme, and target."
+      }
+    },
+    "docFocus": {
+      "eyebrow": "How coherent is each policy with the others?",
+      "switcherAriaLabel": "Pick a document to focus on",
+      "focusOn": "Focus on",
+      "fullTitle": "Full title",
+      "noMisalignment": "No potential misalignment links {label} to other documents.",
+      "breakdownCaption": "How {label}'s potential misalignment breaks down",
+      "whereShowsMisalignment": "Where {label} shows potential misalignment",
+      "morePairs": "+ {count, plural, one {1 more potentially misaligned pair involving {label}} other {# more potentially misaligned pairs involving {label}}}",
+      "notSettledFindings": "Potential misalignment, not settled findings. Open a pair for the underlying targets.",
+      "targetSide": "{doc} target",
+      "peerSide": "vs {doc} target",
+      "notAnchored": {
+        "headline": "{label} sits outside the scored set so far.",
+        "body": "No scored target pairs link {label} to other documents in the current dataset."
+      },
+      "headline": {
+        "noLinks": "{label} has no scored links to other documents yet.",
+        "fullyAligned": "{label} aligns with every other document in the set.",
+        "fullyMisaligned": "{label} is misaligned across all its scored links.",
+        "minimalMisalignment": "{label} is strongly aligned with the rest, with only minimal potential misalignment.",
+        "someMisalignment": "{label} is broadly aligned with the rest, with some potential misalignment.",
+        "substantialMisalignment": "{label} is aligned with the rest but carries a substantial amount of potential misalignment.",
+        "moreOftenMisaligned": "{label} is more often misaligned than aligned with the rest of the set."
+      },
+      "body": "{label} sits with {peers, plural, one {1 other document} other {# other documents}}. {aligned, number} of its scored pairs reach strong alignment; {flagged, number} show potential misalignment."
+    },
+    "direction": {
+      "eyebrow": "Are these policies coherent with each other?",
+      "docPhrase": "{count, plural, one {1 document} other {# documents}}",
+      "openingPrefix": "Across {docPhrase} from {country},",
+      "scoredSuffix": "target pairs were scored.",
+      "reach": "reach",
+      "strongAlignment": "strong alignment",
+      "potentialMisalignment": "potential misalignment",
+      "anchoredBy": ", anchored by",
+      "mostProminentlyAround": ", most prominently around",
+      "pairsShow": "{count, plural, one {pair shows} other {pairs show}}",
+      "pairsParen": "pairs",
+      "alignedDefinition": "Two targets that pull in the same direction: one supports or advances the other. A real scored pair from this set:",
+      "flaggedDefinition": "Two targets the AI identified as possibly working against each other: a prompt for human review, not a settled finding. A real scored pair:",
+      "popoverAriaLabel": "Show an example of {term}",
+      "clickToOpenPair": "Click the term to open this pair",
+      "storylineOpenTitle": "Open the “{name}” theme",
+      "recurringPatterns": "Recurring patterns",
+      "howPipelineBuilt": "How the pipeline built this view",
+      "onePairFromEnd": "One scored pair from each end of the spectrum.",
+      "notEnoughPairs": "Not enough scored pairs to show an underlying example.",
+      "focusConcentrated": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}",
+      "focusSpread": "they spread across {count, plural, one {1 target} other {# targets}}"
+    }
+  },
   "upload": {},
   "analysis": {},
   "country": {},
-  "prototypes": {},
+  "prototypes": {
+    "unavailable": {
+      "subtitle": "Prototypes",
+      "heading": "Pick a country",
+      "body": "Prototypes render against an existing country dataset. Start from the homepage and choose one.",
+      "backToHome": "Back to home"
+    }
+  },
   "sustainability": {
     "chip": {
       "label": "AI footprint: {value} CO2e",
@@ -111,6 +487,16 @@
     "root": {
       "title": "CPC Tracker | Policy Coherence Analysis",
       "description": "AI-assisted tool for assessing coherence across nature-climate policies and tracking implementation progress."
+    },
+    "dashboard": {
+      "title": "Dashboard | CPC Tracker",
+      "countryTitle": "{name} Dashboard | CPC Tracker",
+      "analysisTitle": "Analysis {id} | CPC Tracker"
+    },
+    "prototypes": {
+      "title": "Prototypes | CPC Tracker",
+      "countryTitle": "{name} Prototypes | CPC Tracker",
+      "analysisTitle": "Prototypes · Analysis {id} | CPC Tracker"
     }
   }
 }

@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
@@ -139,6 +140,7 @@ export function CoherenceDashboard({
    *  ~10 MB post-hydration round trip. */
   initialData?: DashboardResponse;
 }) {
+  const t = useTranslations("dashboard");
   const [data, setData] = useState<DashboardData | null>(
     initialData ? normalize(initialData) : null,
   );
@@ -180,17 +182,16 @@ export function CoherenceDashboard({
       <div className="min-h-screen flex flex-col bg-white p-8">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-lg font-medium text-red-600 mb-2">
-            No analysis data available
+            {t("error.heading")}
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mb-6">
-            It looks like no analysis has been run yet. Upload your policy
-            targets or pick a pre-loaded country to get started.
+            {t("error.body")}
           </p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-[var(--undp-blue)] hover:bg-[var(--undp-blue-dark)] transition-colors"
           >
-            Back to home
+            {t("error.backToHome")}
           </Link>
         </div>
       </div>
@@ -200,7 +201,7 @@ export function CoherenceDashboard({
   if (!data) {
     return (
       <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#fbfaf7" }}>
-        <Header subtitle="Dashboard" basePath={basePath} />
+        <Header subtitle={t("loading.subtitle")} basePath={basePath} />
         <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
           <div className="h-7 w-72 bg-gray-100 rounded animate-pulse mb-2" />
           <div className="h-4 w-96 bg-gray-100 rounded animate-pulse mb-8" />
@@ -212,7 +213,7 @@ export function CoherenceDashboard({
 
   const targets = data.targets;
   const displayCountry =
-    countryDisplayName ?? data?.targets[0]?.country ?? "Dashboard";
+    countryDisplayName ?? data?.targets[0]?.country ?? t("loading.subtitle");
 
   const briefingTargets = targets.filter(
     (t) => t.sourceDocument !== "BER" && t.sourceDocument !== "BTR",
@@ -249,7 +250,7 @@ export function CoherenceDashboard({
 
       <footer className="border-t border-gray-100 mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-[var(--undp-gray)]">
-          United Nations Development Programme · CPC Tracker
+          {t("footer.text")}
         </div>
       </footer>
     </div>

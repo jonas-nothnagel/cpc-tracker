@@ -30,6 +30,7 @@
  */
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
 import {
@@ -81,6 +82,7 @@ export function DocFocusSection({
   /** Open the doc-scoped decomposition drawer for a friction mechanism. */
   onOpenType: (mechanism: AlignmentMechanism) => void;
 }) {
+  const t = useTranslations("briefing.docFocus");
   const headlineData = useMemo<AnchorHeadline>(
     () =>
       buildAnchorHeadline({
@@ -104,12 +106,13 @@ export function DocFocusSection({
     focusedDoc,
     headlineData,
     countryConfig,
+    t,
   });
 
   return (
     <SlideFrame
       id={DOC_FOCUS_SECTION_ID}
-      eyebrow="How coherent is each policy with the others?"
+      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       controls={
@@ -139,58 +142,48 @@ function composeFocusedDocSentence({
   focusedDoc,
   headlineData,
   countryConfig,
+  t,
 }: {
   focusedDoc: PolicyDocumentType;
   headlineData: AnchorHeadline;
   countryConfig: CountryConfig | null;
+  t: ReturnType<typeof useTranslations<"briefing.docFocus">>;
 }): { headline: string; body: string } {
   const label =
     headlineData.anchorName ?? getDocMediumLabel(countryConfig, focusedDoc);
   if (!headlineData.isAnchored) {
     return {
-      headline: `${label} sits outside the scored set so far.`,
-      body: `No scored target pairs link ${label} to other documents in the current dataset.`,
+      headline: t("notAnchored.headline", { label }),
+      body: t("notAnchored.body", { label }),
     };
   }
-  const aligned = headlineData.alignedRecordCount.toLocaleString();
-  const flagged = headlineData.flaggedRecordCount.toLocaleString();
-  const peers = headlineData.peripheralDocCount.toLocaleString();
-  // Scale the headline to this document's own balance so each document reads
-  // differently and the magnitude of potential misalignment is always stated
-  // (qualitatively; the body line below carries the exact counts). `share` is
-  // the per-document analogue of the corpus verdict's tensionShare; the cut
-  // points mirror pickHeadlineVerdict (0.15 / 0.30) plus a 0.50 "more
-  // misaligned than aligned" tier. Fixed ratios for now (memory
-  // feedback_data_driven_scoring: revisit with >2 countries). We deliberately
-  // do NOT name the worst peer here — absolute per-peer counts scale with doc
-  // size, and the pairs list below already names the specific documents.
-  const total =
-    headlineData.alignedRecordCount + headlineData.flaggedRecordCount;
-  const share = total > 0 ? headlineData.flaggedRecordCount / total : 0;
+  const aligned = headlineData.alignedRecordCount;
+  const flagged = headlineData.flaggedRecordCount;
+  const peers = headlineData.peripheralDocCount;
+  const total = aligned + flagged;
+  const share = total > 0 ? flagged / total : 0;
   const MISALIGN_SHARE_SOME = 0.15;
   const MISALIGN_SHARE_SUBSTANTIAL = 0.3;
   const MISALIGN_SHARE_DOMINANT = 0.5;
-  let headline: string;
+  let headlineKey: string;
   if (total === 0) {
-    headline = `${label} has no scored links to other documents yet.`;
-  } else if (headlineData.flaggedRecordCount === 0) {
-    headline = `${label} aligns with every other document in the set.`;
-  } else if (headlineData.alignedRecordCount === 0) {
-    headline = `${label} is misaligned across all its scored links.`;
+    headlineKey = "headline.noLinks";
+  } else if (flagged === 0) {
+    headlineKey = "headline.fullyAligned";
+  } else if (aligned === 0) {
+    headlineKey = "headline.fullyMisaligned";
   } else if (share < MISALIGN_SHARE_SOME) {
-    headline = `${label} is strongly aligned with the rest, with only minimal potential misalignment.`;
+    headlineKey = "headline.minimalMisalignment";
   } else if (share < MISALIGN_SHARE_SUBSTANTIAL) {
-    headline = `${label} is broadly aligned with the rest, with some potential misalignment.`;
+    headlineKey = "headline.someMisalignment";
   } else if (share < MISALIGN_SHARE_DOMINANT) {
-    headline = `${label} is aligned with the rest but carries a substantial amount of potential misalignment.`;
+    headlineKey = "headline.substantialMisalignment";
   } else {
-    headline = `${label} is more often misaligned than aligned with the rest of the set.`;
+    headlineKey = "headline.moreOftenMisaligned";
   }
   return {
-    headline,
-    body:
-      `${label} sits with ${peers} other document${headlineData.peripheralDocCount === 1 ? "" : "s"}. ` +
-      `${aligned} of its scored pairs reach strong alignment; ${flagged} show potential misalignment.`,
+    headline: t(headlineKey, { label }),
+    body: t("body", { label, peers, aligned, flagged }),
   };
 }
 
@@ -205,6 +198,7 @@ function DocSwitcher({
   onSelect: (d: PolicyDocumentType) => void;
   countryConfig: CountryConfig | null;
 }) {
+  const t = useTranslations("briefing.docFocus");
   // Lead with the country's anchor doc (Vision 2050 in Mongolia) so the
   // strategic anchor is the first thing the user sees, then alphabetical
   // for the rest. Falls back gracefully when no anchor is configured.
@@ -217,11 +211,11 @@ function DocSwitcher({
   return (
     <div
       role="group"
-      aria-label="Pick a document to focus on"
+      aria-label={t("switcherAriaLabel")}
       className="flex flex-wrap items-center gap-1.5"
     >
       <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mr-2">
-        Focus on
+        {t("focusOn")}
       </span>
       {ordered.map((d) => {
         const isActive = d === activeDoc;
@@ -263,6 +257,7 @@ function DocFocusEvidence({
   onOpenPair: (aId: string, bId: string) => void;
   onOpenType: (mechanism: AlignmentMechanism) => void;
 }) {
+  const t = useTranslations("briefing.docFocus");
   const { flaggedPairs, frictionTotals } = frictions;
   const shown = flaggedPairs.slice(0, FLAGGED_CAP);
   const remainder = flaggedPairs.length - shown.length;
@@ -270,7 +265,7 @@ function DocFocusEvidence({
     <div className="space-y-5">
       <div>
         <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-          Full title
+          {t("fullTitle")}
         </p>
         <p className="text-[14px] text-[var(--undp-black)] leading-snug">
           {fullTitle}
@@ -279,20 +274,20 @@ function DocFocusEvidence({
 
       {flaggedPairs.length === 0 ? (
         <p className="text-[12px] italic text-[var(--undp-gray)]">
-          No potential misalignment links {label} to other documents.
+          {t("noMisalignment", { label })}
         </p>
       ) : (
         <>
           {frictionTotals.total > 0 && (
             <FrictionTypeChart
               totals={frictionTotals}
-              caption={`How ${label}'s potential misalignment breaks down`}
+              caption={t("breakdownCaption", { label })}
               onSegmentClick={onOpenType}
             />
           )}
           <div>
             <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
-              Where {label} shows potential misalignment
+              {t("whereShowsMisalignment", { label })}
             </p>
             <ul className="divide-y divide-gray-200 border-y border-gray-200">
               {shown.map((line) => (
@@ -309,13 +304,11 @@ function DocFocusEvidence({
             </ul>
             {remainder > 0 && (
               <p className="mt-2 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
-                + {remainder.toLocaleString()} more potentially misaligned pair
-                {remainder === 1 ? "" : "s"} involving {label}
+                {t("morePairs", { count: remainder, label })}
               </p>
             )}
             <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
-              Potential misalignment, not settled findings. Open a pair for the
-              underlying targets.
+              {t("notSettledFindings")}
             </p>
           </div>
         </>
@@ -335,6 +328,7 @@ function FlaggedPairRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
+  const t = useTranslations("briefing.docFocus");
   const contradictionLabels = useContradictionTypeLabels();
   // The serif text is the focused document's own target (the thing being
   // flagged); name it explicitly as "<focused doc> target" so it's never
@@ -359,7 +353,7 @@ function FlaggedPairRow({
       >
         <div className="flex items-center justify-between gap-2 mb-1">
           <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-            {focusedDocLabel} target
+            {t("targetSide", { doc: focusedDocLabel })}
           </span>
           {mechanism && (
             <span
@@ -382,7 +376,7 @@ function FlaggedPairRow({
           {focused.text}
         </p>
         <p className="mt-1.5 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-          vs {peerDocLabel} target
+          {t("peerSide", { doc: peerDocLabel })}
         </p>
       </button>
     </li>
