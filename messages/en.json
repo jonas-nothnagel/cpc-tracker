@@ -1,6 +1,21 @@
 {
   "common": {
-    "appName": "Policy Coherence Tracker"
+    "appName": "Policy Coherence Tracker",
+    "close": "Close",
+    "infoBoxAria": "Show explanation",
+    "provenance": {
+      "ariaLabel": "Data provenance: {label}",
+      "detailsAria": "Data provenance details",
+      "sourcesHeading": "Sources",
+      "aggregationHeading": "Aggregation",
+      "methodHeading": "AI method",
+      "noDetails": "No additional details available.",
+      "origin": {
+        "userUploaded": "User-uploaded data",
+        "aiInferred": "AI-inferred",
+        "mixed": "AI-inferred from uploaded data"
+      }
+    }
   },
   "header": {
     "brand": "Policy Coherence Tracker",
@@ -36,7 +51,131 @@
         "title": "Automated analysis",
         "body": "AI classifies each target by theme and sector, then assesses how well targets across different policies align with each other."
       },
-      "step3": {
+      "estimate": {
+      "quantitative": "Quantitative phrase detection: {count, number} calls",
+      "classification": "Classification against NBS, IPCC, GLOBE: {count, number} calls",
+      "decomposition": "Target decomposition: {count, number} calls",
+      "needsTwoDocs": "Pairwise alignment: requires 2+ document types",
+      "pairwiseCount": "Pairwise alignment: ~{count, number} pairs",
+      "btrIntegration": "BTR/CTF data integration",
+      "addSecondDoc": "Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.",
+      "totalCost": "~{calls, number} LLM calls · estimated cost <strong>${cost}</strong>",
+      "starting": "Starting…",
+      "runAnalysis": "Run analysis →"
+    },
+    "categories": {
+      "hide": "Hide category details",
+      "edit": "Edit categories",
+      "addGroup": "+ Add new classification group",
+      "newGroup": {
+        "title": "New Classification Group",
+        "namePlaceholder": "Group name (e.g. SDG Targets, Custom Themes)",
+        "descPlaceholder": "Brief description of what this group classifies",
+        "create": "Create group",
+        "cancel": "Cancel",
+        "hint": "After creating the group, use \"Edit\" to add individual categories within it."
+      },
+      "group": {
+        "enabledRatio": "{active, number} of {total, number} enabled",
+        "empty": "No categories yet. Click Edit to add.",
+        "disableAll": "Disable all",
+        "enableAll": "Enable all",
+        "collapse": "Collapse",
+        "editBtn": "Edit",
+        "removeTitle": "Remove group"
+      },
+      "item": {
+        "remove": "Remove"
+      },
+      "newItem": {
+        "namePlaceholder": "Name",
+        "descPlaceholder": "Description (optional)",
+        "add": "Add",
+        "cancel": "Cancel",
+        "addBtn": "+ Add category"
+      }
+    },
+    "review": {
+      "title": "Review extracted targets",
+      "subtitle": "{kept, number} of {total, number} kept · {file}",
+      "keepAll": "Keep all",
+      "removeAll": "Remove all",
+      "pagePrefix": "p.",
+      "englishTranslation": "EN: {text}",
+      "keep": "Keep",
+      "removeTitle": "Remove",
+      "removed": "Removed",
+      "restoreTitle": "Restore",
+      "addMissingPrompt": "Add a target that wasn't extracted",
+      "manualPlaceholder": "Target text…",
+      "manualLabelPlaceholder": "Label (optional)",
+      "addBtn": "+ Add",
+      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {target} other {targets}} will be added to this analysis",
+      "discard": "Discard",
+      "acceptBtn": "Add {count, plural, one {1 target} other {# targets}} →"
+    },
+    "editor": {
+      "title": "Edit manual targets: {docType}",
+      "done": "Done",
+      "labelPlaceholder": "Label",
+      "targetPlaceholder": "Target text…",
+      "toggleDetails": "Add activities & actions",
+      "activities": "Activities",
+      "activitiesPlaceholder": "Implementation activities (optional)…",
+      "actions": "Actions / Measures",
+      "actionsPlaceholder": "Actions or measures (optional)…"
+    },
+    "pipeline": {
+      "heading": "Document Pipeline",
+      "status": {
+        "parsing": "Parsing…",
+        "ready": "Ready",
+        "error": "Error"
+      },
+      "policyTargetsCount": "{count, number} policy targets",
+      "btr": {
+        "actions": "{count, number} reported actions",
+        "emissions": "{count, number} emission series",
+        "projections": "{count, number} projections",
+        "techSupport": "{count, number} tech support projects",
+        "capacityBuilding": "{count, number} capacity building"
+      },
+      "remove": "Remove"
+    },
+    "manualForm": {
+      "sourceDocument": "Source Document",
+      "documentName": "Document Name",
+      "placeholderSectoral": "e.g. Transport Policy",
+      "placeholderOther": "e.g. National Development Plan",
+      "labelOptional": "Label (optional)",
+      "labelPlaceholder": "e.g. Biodiversity 1",
+      "targetText": "Target Text",
+      "targetTextPlaceholder": "Paste or type the full target text…",
+      "addTarget": "+ Add Target",
+      "maxReached": "Maximum {max, number} targets reached"
+    },
+    "step4": {
+      "title": "Summary & Run Analysis",
+      "subtitle": "Review your complete analysis configuration below. The pipeline will classify each target, decompose its structure, and assess pairwise alignment across all document types.",
+      "countryLabel": "Country",
+      "notSpecified": "Not specified",
+      "targetsLabel": "Targets",
+      "acrossDocs": "across {count, plural, one {1 document type} other {# document types}}",
+      "targetBreakdown": "Target Breakdown",
+      "btr": {
+        "title": "BTR implementation data included",
+        "description": "Mitigation measures compared against policy targets."
+      },
+      "footprint": {
+        "heading": "Document extraction footprint so far",
+        "energy": "Wh energy",
+        "water": "mL water",
+        "co2": "gCO<sub>2</sub>eq",
+        "minerals": "µgSbeq minerals",
+        "summary": "Accumulated from {count, number} LLM calls during extraction. This will be added to the analysis footprint on the final dashboard. Estimated via EcoLogits."
+      }
+    },
+    "step3": {
         "title": "Explore results",
         "body": "Interactive dashboard showing policy coverage, alignment patterns, and areas where coordination could be strengthened."
       }
@@ -421,8 +560,157 @@
       "focusSpread": "they spread across {count, plural, one {1 target} other {# targets}}"
     }
   },
-  "upload": {},
-  "analysis": {},
+  "upload": {
+    "step2": {
+      "title": "Available Reference Data",
+      "hasRefBody": "Select which pre-loaded data sets for {country} to include. Toggle items on or off as needed.",
+      "noRefBody": "Review any reference data available for your analysis. You can upload BTR data in Step 1.",
+      "progressSummary": "{targets, plural, one {1 target} other {# targets}} selected across {docTypes, plural, one {1 document type} other {# document types}}",
+      "policyTargetsHeading": "Policy Targets for {country}",
+      "loadingRef": "Loading reference data",
+      "targetCount": "{count, plural, one {1 target} other {# targets}}",
+      "moreCount": "+ {count, number} more",
+      "hide": "Hide",
+      "preview": "Preview",
+      "add": "Add",
+      "added": "Added",
+      "additionalSources": "Additional Data Sources",
+      "btr": {
+        "title": "BTR Implementation Data",
+        "description": "Mitigation measures, emissions, and projections"
+      },
+      "nr7": {
+        "title": "NR7 Biodiversity Progress",
+        "description": "7th National Report to the CBD (shown on dashboard)"
+      },
+      "noRefData": {
+        "title": "No pre-loaded reference data for this country.",
+        "hint": "Continue to the next step, or go back to upload your own documents."
+      }
+    },
+    "step1": {
+      "intro": "Select your country and upload policy documents. All common formats are accepted and the system will auto-detect how to process each file.",
+      "countryLabel": "Country",
+      "countryPlaceholder": "e.g. Mongolia",
+      "referenceBadge": "Reference data",
+      "referenceNext": "Reference data in next step",
+      "docTypeLabel": "Document type",
+      "labelPrefixLabel": "Label prefix",
+      "labelPrefixPlaceholder": "e.g. Transport Policy",
+      "extractingFrom": "Extracting targets from {name}…",
+      "queueRemaining": "{count, plural, one {1 more file queued} other {# more files queued}}",
+      "dropPrompt": "Drag and drop files here, or",
+      "browse": "browse",
+      "supportedFormats": "PDF, DOCX, CSV, TSV, XLSX (auto-detected)",
+      "hideManual": "Hide manual entry",
+      "showManual": "+ Add targets manually",
+      "targetsAddedHint": "{count, plural, one {1 target added} other {# targets added}}. Click <strong>Next</strong> to continue.",
+      "reviewModal": {
+        "title": "Review Extracted Targets",
+        "subtitle": "{selected, number} of {total, number} targets selected from {file}"
+      }
+    },
+    "wizard": {
+      "headerSubtitle": "New Analysis",
+      "title": "New Analysis",
+      "subtitle": "Upload policy documents, review targets, configure categories, and run the coherence analysis pipeline.",
+      "footer": "United Nations Development Programme · CPC Tracker",
+      "autoLabel": "Target {n, number}",
+      "unknownCountry": "Unknown",
+      "errors": {
+        "parseBtr": "Failed to parse BTR file",
+        "parseExcel": "Failed to parse Excel file",
+        "noTargets": "No targets found in file",
+        "noTargetsExcel": "No targets found in Excel file",
+        "startAnalysis": "Failed to start analysis",
+        "unexpected": "Unexpected error"
+      },
+      "nav": {
+        "steps": {
+          "countryDocs": "Country & Documents",
+          "referenceData": "Reference Data",
+          "reviewConfigure": "Review & Configure",
+          "summaryRun": "Summary & Run"
+        },
+        "stepCount": "Step {n}",
+        "back": "Back",
+        "next": "Next"
+      }
+    }
+  },
+  "analysis": {
+    "headerSubtitle": "Analysis",
+    "errorHeading": "Error",
+    "backToUpload": "Back to Upload",
+    "loadingStatus": "Loading analysis status…",
+    "footer": "United Nations Development Programme · CPC Tracker",
+    "errors": {
+      "notFound": "Analysis not found",
+      "statusCheck": "Failed to check analysis status"
+    },
+    "running": {
+      "title": "Running Analysis",
+      "stepOf": "Step {step} of {total}",
+      "elapsed": "{sec}s"
+    },
+    "complete": {
+      "title": "Analysis Complete",
+      "summary": "Processed {targets, number} targets with {pairs, number} alignment pairs in {sec}s",
+      "viewDashboard": "View Dashboard →"
+    },
+    "failed": {
+      "title": "Analysis Failed",
+      "body": "The pipeline encountered an error. Please check your targets and try again."
+    },
+    "footprint": {
+      "title": "Environmental footprint",
+      "energyLabel": "Energy",
+      "energyUnit": "Wh",
+      "waterLabel": "Water",
+      "waterUnit": "mL",
+      "co2Label": "CO₂eq",
+      "co2Unit": "g",
+      "mineralsLabel": "Minerals",
+      "mineralsUnit": "µgSbeq",
+      "cachedCalls": "{count, number} cached calls",
+      "callsTracked": "{count, number} calls tracked",
+      "callsWithCache": "{tracked, number} calls tracked · {cached, number} cached",
+      "estimatedNote": "Estimated from call counts (cached run) via EcoLogits.",
+      "measuredNote": "Measured via EcoLogits.",
+      "indicativeNote": "Values are indicative and may differ from actual consumption."
+    },
+    "pipeline": {
+      "input": {
+        "policyTargets": "Your policy targets",
+        "taxonomy": "NBS categories & IPCC sectors"
+      },
+      "step1": {
+        "title": "Quantitative detection",
+        "detail": "Scanning each target for numeric metrics and time-bound commitments",
+        "output": "Metrics and deadlines identified"
+      },
+      "step2": {
+        "title": "Thematic classification",
+        "detail": "Mapping each target to relevant NBS categories and IPCC sectors",
+        "output": "{relevant, number} relevant matches found across {total, number} comparisons"
+      },
+      "step3": {
+        "title": "Cross-document pairing",
+        "detail": "Identifying targets from different documents that share common IPCC sectors",
+        "output": "{count, number} target pairs identified for comparison"
+      },
+      "step4": {
+        "title": "Target decomposition",
+        "detail": "Breaking down each target into goals, actions, ecosystems, audiences, and expected impacts",
+        "output": "All paired targets decomposed"
+      },
+      "step5": {
+        "title": "Alignment assessment",
+        "detail": "Comparing target pairs to determine policy coherence levels",
+        "output": "{count, number} pairs assessed: {high, number} high, {medium, number} medium, {low, number} low alignment"
+      }
+    }
+  },
   "country": {},
   "prototypes": {
     "unavailable": {
@@ -436,6 +724,67 @@
     "chip": {
       "label": "AI footprint: {value} CO2e",
       "title": "AI sustainability footprint of this tool"
+    },
+    "page": {
+      "title": "AI sustainability footprint",
+      "intro": "The estimated environmental cost of the AI computation behind this tool, covering document analysis, the inference pipeline, and the chatbot. This is a transparency record for reporting, not policy advice.",
+      "methodology": "AI-estimated using the <link>EcoLogits</link> methodology. Figures are modelled estimates, not meter readings, and carry a margin of uncertainty."
+    },
+    "loading": "Loading footprint data…",
+    "empty": "No footprint recorded yet. Run an analysis or send a chat message, and this page will start tracking the AI compute behind it.",
+    "errors": {
+      "loadFailed": "Could not load footprint data",
+      "withMessage": "Could not load footprint data: {message}"
+    },
+    "exportCsv": "Export CSV",
+    "exportJson": "Export JSON",
+    "seriesCarbon": "Carbon",
+    "units": {
+      "gCO2e": "g CO2e"
+    },
+    "components": {
+      "dev_pipeline": "Developer pipeline runs",
+      "user_pipeline": "User pipeline runs",
+      "extract": "Document extraction",
+      "chat": "Chatbot"
+    },
+    "sources": {
+      "measured": "Measured",
+      "estimated": "Estimated",
+      "api": "Estimated (API)",
+      "unavailable": "Not available"
+    },
+    "tile": {
+      "carbon": "Carbon",
+      "carbonUnitTitle": "CO2e: carbon dioxide equivalent",
+      "energy": "Energy",
+      "energyUnitTitle": "kWh: kilowatt hours; Wh: watt hours",
+      "water": "Water",
+      "waterUnitTitle": "Water consumption footprint (data-centre cooling)",
+      "waterSub": "consumption footprint",
+      "minerals": "Minerals",
+      "mineralsUnitTitle": "ADPe: abiotic depletion potential, antimony (Sb) equivalent",
+      "mineralsSub": "abiotic resource use",
+      "callsLabel": "across {calls} model calls",
+      "lastRecorded": "last recorded {date}",
+      "notAvailable": "n/a"
+    },
+    "charts": {
+      "carbonOverTime": "Carbon over time",
+      "byComponent": "Carbon by component",
+      "byModel": "Carbon by model",
+      "byRegion": "Carbon by region"
+    },
+    "table": {
+      "title": "Recorded activity",
+      "date": "Date",
+      "component": "Component",
+      "model": "Model",
+      "region": "Region",
+      "calls": "Calls",
+      "energy": "Energy",
+      "carbon": "Carbon",
+      "basis": "Basis"
     }
   },
   "labels": {
@@ -497,6 +846,10 @@
       "title": "Prototypes | CPC Tracker",
       "countryTitle": "{name} Prototypes | CPC Tracker",
       "analysisTitle": "Prototypes · Analysis {id} | CPC Tracker"
+    },
+    "sustainability": {
+      "title": "AI Sustainability Footprint | CPC Tracker",
+      "description": "Estimated environmental footprint of the AI computation behind the CPC Tracker, for transparency reporting."
     }
   }
 }

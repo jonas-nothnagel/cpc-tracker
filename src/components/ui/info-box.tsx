@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 interface InfoBoxProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ interface InfoBoxProps {
  * Closes on outside click or Escape.
  */
 export function InfoBox({ children }: InfoBoxProps) {
+  const t = useTranslations("common");
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -46,7 +48,7 @@ export function InfoBox({ children }: InfoBoxProps) {
             ? "bg-[var(--undp-blue)] text-white"
             : "bg-gray-200 text-[var(--undp-gray)] hover:bg-[var(--undp-blue)]/10 hover:text-[var(--undp-blue)]"
         }`}
-        aria-label="Show explanation"
+        aria-label={t("infoBoxAria")}
         aria-expanded={open}
       >
         i

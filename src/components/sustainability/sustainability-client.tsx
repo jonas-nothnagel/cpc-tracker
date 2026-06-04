@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Area,
   AreaChart,
@@ -23,19 +24,25 @@ import type {
 const UNDP_BLUE = "#0468b1";
 const UNDP_GRAY = "#55606e";
 
-const COMPONENT_LABELS: Record<FootprintComponent, string> = {
-  dev_pipeline: "Developer pipeline runs",
-  user_pipeline: "User pipeline runs",
-  extract: "Document extraction",
-  chat: "Chatbot",
-};
+function useComponentLabels(): Record<FootprintComponent, string> {
+  const t = useTranslations("sustainability.components");
+  return {
+    dev_pipeline: t("dev_pipeline"),
+    user_pipeline: t("user_pipeline"),
+    extract: t("extract"),
+    chat: t("chat"),
+  };
+}
 
-const SOURCE_LABELS: Record<string, string> = {
-  measured: "Measured",
-  estimated: "Estimated",
-  api: "Estimated (API)",
-  unavailable: "Not available",
-};
+function useSourceLabels(): Record<string, string> {
+  const t = useTranslations("sustainability.sources");
+  return {
+    measured: t("measured"),
+    estimated: t("estimated"),
+    api: t("api"),
+    unavailable: t("unavailable"),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Unit-friendly formatters. Each metric is stored in a small base unit (Wh, mL,
@@ -166,6 +173,7 @@ function BreakdownBars({
   title: string;
   data: { label: string; co2_geq: number; calls: number }[];
 }) {
+  const t = useTranslations("sustainability");
   if (data.length === 0) return null;
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5">
@@ -195,9 +203,9 @@ function BreakdownBars({
           />
           <Tooltip
             cursor={{ fill: "rgba(4,104,177,0.06)" }}
-            formatter={(value) => `${num(Number(value))} g CO2e`}
+            formatter={(value) => `${num(Number(value))} ${t("units.gCO2e")}`}
           />
-          <Bar dataKey="co2_geq" name="Carbon" fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
+          <Bar dataKey="co2_geq" name={t("seriesCarbon")} fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -205,11 +213,12 @@ function BreakdownBars({
 }
 
 function TimeSeries({ byDay }: { byDay: RollupBucket[] }) {
+  const t = useTranslations("sustainability");
   if (byDay.length === 0) return null;
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5">
       <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-        Carbon over time
+        {t("charts.carbonOverTime")}
       </h3>
       <ResponsiveContainer width="100%" height={220}>
         <AreaChart data={byDay} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
@@ -222,11 +231,11 @@ function TimeSeries({ byDay }: { byDay: RollupBucket[] }) {
             tickLine={false}
             axisLine={false}
           />
-          <Tooltip formatter={(value) => `${num(Number(value))} g CO2e`} />
+          <Tooltip formatter={(value) => `${num(Number(value))} ${t("units.gCO2e")}`} />
           <Area
             type="monotone"
             dataKey="co2_geq"
-            name="Carbon"
+            name={t("seriesCarbon")}
             stroke={UNDP_BLUE}
             fill={UNDP_BLUE}
             fillOpacity={0.14}
@@ -248,6 +257,8 @@ type LoadState =
   | { status: "ready"; data: FootprintRollup };
 
 export function SustainabilityClient() {
+  const t = useTranslations("sustainability");
+  const componentLabels = useComponentLabels();
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
   useEffect(() => {
@@ -264,22 +275,22 @@ export function SustainabilityClient() {
         if (!cancelled)
           setState({
             status: "error",
-            message: err instanceof Error ? err.message : "Could not load footprint data",
+            message: err instanceof Error ? err.message : t("errors.loadFailed"),
           });
       });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   const componentBars = useMemo(() => {
     if (state.status !== "ready") return [];
     return state.data.byComponent.map((b) => ({
-      label: COMPONENT_LABELS[b.key as FootprintComponent] ?? b.key,
+      label: componentLabels[b.key as FootprintComponent] ?? b.key,
       co2_geq: b.co2_geq,
       calls: b.call_count,
     }));
-  }, [state]);
+  }, [state, componentLabels]);
 
   const modelBars = useMemo(() => {
     if (state.status !== "ready") return [];
@@ -306,43 +317,41 @@ export function SustainabilityClient() {
           className="text-3xl sm:text-4xl text-[var(--undp-black)]"
           style={{ fontFamily: "ui-serif, Georgia, Cambria, serif" }}
         >
-          AI sustainability footprint
+          {t("page.title")}
         </h1>
         <p className="text-[var(--undp-gray)] mt-2 max-w-2xl leading-relaxed">
-          The estimated environmental cost of the AI computation behind this tool,
-          covering document analysis, the inference pipeline, and the chatbot. This
-          is a transparency record for reporting, not policy advice.
+          {t("page.intro")}
         </p>
         <p className="text-xs text-[var(--undp-gray)] mt-3">
-          AI-estimated using the{" "}
-          <a
-            href="https://ecologits.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-[var(--undp-blue)]"
-          >
-            EcoLogits
-          </a>{" "}
-          methodology. Figures are modelled estimates, not meter readings, and carry
-          a margin of uncertainty.
+          {t.rich("page.methodology", {
+            link: (chunks) => (
+              <a
+                href="https://ecologits.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-[var(--undp-blue)]"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </header>
 
       {state.status === "loading" && (
-        <p className="text-sm text-[var(--undp-gray)]">Loading footprint data...</p>
+        <p className="text-sm text-[var(--undp-gray)]">{t("loading")}</p>
       )}
 
       {state.status === "error" && (
         <p className="text-sm text-[var(--undp-red)]">
-          Could not load footprint data: {state.message}
+          {t("errors.withMessage", { message: state.message })}
         </p>
       )}
 
       {state.status === "ready" && state.data.totals.event_count === 0 && (
         <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-8 text-center">
           <p className="text-sm text-[var(--undp-gray)]">
-            No footprint recorded yet. Run an analysis or send a chat message, and
-            this page will start tracking the AI compute behind it.
+            {t("empty")}
           </p>
         </div>
       )}
@@ -370,13 +379,14 @@ function Dashboard({
   modelBars: { label: string; co2_geq: number; calls: number }[];
   regionBars: { label: string; co2_geq: number; calls: number }[];
 }) {
+  const t = useTranslations("sustainability");
   const { totals } = data;
   const carbon = fmtCarbon(totals.co2_geq);
   const energy = fmtEnergy(totals.energy_wh);
   const water = fmtWater(totals.water_ml);
   const minerals = fmtMinerals(totals.minerals_ugsbeq);
-  const callsLabel = `across ${compact(totals.call_count)} model calls`;
-  const lastRecorded = data.latestTs ? data.latestTs.slice(0, 10) : "n/a";
+  const callsLabel = t("tile.callsLabel", { calls: compact(totals.call_count) });
+  const lastRecorded = data.latestTs ? data.latestTs.slice(0, 10) : t("tile.notAvailable");
   const stamp = new Date().toISOString().slice(0, 10);
 
   const exportCsv = () =>
@@ -396,52 +406,52 @@ function Dashboard({
           onClick={exportCsv}
           className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
         >
-          Export CSV
+          {t("exportCsv")}
         </button>
         <button
           type="button"
           onClick={exportJson}
           className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
         >
-          Export JSON
+          {t("exportJson")}
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricTile
-          label="Carbon"
+          label={t("tile.carbon")}
           value={carbon.value}
           unit={carbon.unit}
-          unitTitle="CO2e: carbon dioxide equivalent"
+          unitTitle={t("tile.carbonUnitTitle")}
           sub={callsLabel}
         />
         <MetricTile
-          label="Energy"
+          label={t("tile.energy")}
           value={energy.value}
           unit={energy.unit}
-          unitTitle="kWh: kilowatt hours; Wh: watt hours"
-          sub={`last recorded ${lastRecorded}`}
+          unitTitle={t("tile.energyUnitTitle")}
+          sub={t("tile.lastRecorded", { date: lastRecorded })}
         />
         <MetricTile
-          label="Water"
+          label={t("tile.water")}
           value={water.value}
           unit={water.unit}
-          unitTitle="Water consumption footprint (data-centre cooling)"
-          sub="consumption footprint"
+          unitTitle={t("tile.waterUnitTitle")}
+          sub={t("tile.waterSub")}
         />
         <MetricTile
-          label="Minerals"
+          label={t("tile.minerals")}
           value={minerals.value}
           unit={minerals.unit}
-          unitTitle="ADPe: abiotic depletion potential, antimony (Sb) equivalent"
-          sub="abiotic resource use"
+          unitTitle={t("tile.mineralsUnitTitle")}
+          sub={t("tile.mineralsSub")}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <BreakdownBars title="Carbon by component" data={componentBars} />
-        <BreakdownBars title="Carbon by model" data={modelBars} />
-        <BreakdownBars title="Carbon by region" data={regionBars} />
+        <BreakdownBars title={t("charts.byComponent")} data={componentBars} />
+        <BreakdownBars title={t("charts.byModel")} data={modelBars} />
+        <BreakdownBars title={t("charts.byRegion")} data={regionBars} />
       </div>
 
       <TimeSeries byDay={data.byDay} />
@@ -452,23 +462,26 @@ function Dashboard({
 }
 
 function EventsTable({ data }: { data: FootprintRollup }) {
+  const t = useTranslations("sustainability");
+  const componentLabels = useComponentLabels();
+  const sourceLabels = useSourceLabels();
   const rows = [...data.events].sort((a, b) => b.ts.localeCompare(a.ts));
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5 overflow-x-auto">
       <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-        Recorded activity
+        {t("table.title")}
       </h3>
       <table className="w-full text-xs text-left border-collapse">
         <thead>
           <tr className="text-[var(--undp-gray)] border-b border-gray-100">
-            <th className="py-2 pr-3 font-semibold">Date</th>
-            <th className="py-2 pr-3 font-semibold">Component</th>
-            <th className="py-2 pr-3 font-semibold">Model</th>
-            <th className="py-2 pr-3 font-semibold">Region</th>
-            <th className="py-2 pr-3 font-semibold text-right">Calls</th>
-            <th className="py-2 pr-3 font-semibold text-right">Energy</th>
-            <th className="py-2 pr-3 font-semibold text-right">Carbon</th>
-            <th className="py-2 font-semibold">Basis</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.date")}</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.component")}</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.model")}</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.region")}</th>
+            <th className="py-2 pr-3 font-semibold text-right">{t("table.calls")}</th>
+            <th className="py-2 pr-3 font-semibold text-right">{t("table.energy")}</th>
+            <th className="py-2 pr-3 font-semibold text-right">{t("table.carbon")}</th>
+            <th className="py-2 font-semibold">{t("table.basis")}</th>
           </tr>
         </thead>
         <tbody className="text-[var(--undp-black)]">
@@ -479,7 +492,7 @@ function EventsTable({ data }: { data: FootprintRollup }) {
               <tr key={`${e.ts}-${i}`} className="border-b border-gray-50">
                 <td className="py-2 pr-3 whitespace-nowrap">{e.ts.slice(0, 10)}</td>
                 <td className="py-2 pr-3 whitespace-nowrap">
-                  {COMPONENT_LABELS[e.component] ?? e.component}
+                  {componentLabels[e.component] ?? e.component}
                 </td>
                 <td className="py-2 pr-3 whitespace-nowrap">{e.model}</td>
                 <td className="py-2 pr-3 whitespace-nowrap">{e.region}</td>
@@ -493,7 +506,7 @@ function EventsTable({ data }: { data: FootprintRollup }) {
                   {carbon.value} {carbon.unit}
                 </td>
                 <td className="py-2 whitespace-nowrap text-[var(--undp-gray)]">
-                  {SOURCE_LABELS[e.source] ?? e.source}
+                  {sourceLabels[e.source] ?? e.source}
                 </td>
               </tr>
             );

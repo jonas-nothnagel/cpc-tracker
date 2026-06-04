@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useMemo, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { Header } from "@/components/ui/header";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import { smartParse } from "@/lib/csv-parser";
@@ -33,6 +34,7 @@ interface UploadWizardProps {
 
 export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
   const router = useRouter();
+  const t = useTranslations("upload.wizard");
 
   // ─── Hooks ──────────────────────────────────────────────────────────────
   const {
@@ -117,8 +119,8 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
     const label =
       currentLabel.trim() ||
       (needsCustomName && customDocName.trim()
-        ? `${customDocName.trim()} ${targets.filter((t) => t.sourceDocument === currentDoc).length + 1}`
-        : `Target ${targets.length + 1}`);
+        ? `${customDocName.trim()} ${targets.filter((tg) => tg.sourceDocument === currentDoc).length + 1}`
+        : t("autoLabel", { n: targets.length + 1 }));
     addTarget({
       text: currentText.trim(),
       sourceDocument: currentDoc,
@@ -146,7 +148,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
         .then(async (res) => {
           if (!res.ok) {
             const body = await res.json();
-            throw new Error(body.error || "Failed to parse BTR file");
+            throw new Error(body.error || t("errors.parseBtr"));
           }
           return res.json();
         })
@@ -182,7 +184,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
         .then(async (res) => {
           if (!res.ok) {
             const body = await res.json();
-            throw new Error(body.error || "Failed to parse Excel file");
+            throw new Error(body.error || t("errors.parseExcel"));
           }
           return res.json();
         })
@@ -201,7 +203,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
             ));
           } else {
             setUploadedDocs((prev) => prev.map((d) =>
-              d.id === docId ? { ...d, status: "error" as const, error: "No targets found in Excel file" } : d
+              d.id === docId ? { ...d, status: "error" as const, error: t("errors.noTargetsExcel") } : d
             ));
           }
         })
@@ -230,7 +232,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
           ));
         } else {
           setUploadedDocs((prev) => prev.map((d) =>
-            d.id === docId ? { ...d, status: "error" as const, error: "No targets found in file" } : d
+            d.id === docId ? { ...d, status: "error" as const, error: t("errors.noTargets") } : d
           ));
         }
       };
@@ -318,7 +320,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          country: country || "Unknown",
+          country: country || t("unknownCountry"),
           targets,
           nbsCategories: categories.activeNbs.map(({ id, name, description }) => ({
             id, name, description,
@@ -334,12 +336,12 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
       });
       if (!res.ok) {
         const body = await res.json();
-        throw new Error(body.error || "Failed to start analysis");
+        throw new Error(body.error || t("errors.startAnalysis"));
       }
       const { analysisId } = await res.json();
       router.push(`/analysis/${analysisId}`);
     } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : "Unexpected error");
+      setSubmitError(e instanceof Error ? e.message : t("errors.unexpected"));
       setSubmitting(false);
     }
   }
@@ -347,17 +349,16 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
   // ─── Render ─────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header subtitle="New Analysis" basePath={basePath} />
+      <Header subtitle={t("headerSubtitle")} basePath={basePath} />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-8 w-full">
         {/* Title */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-1">
-            New Analysis
+            {t("title")}
           </h1>
           <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
-            Upload policy documents, review targets, configure categories, and run the
-            coherence analysis pipeline.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -501,7 +502,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
       {/* Footer */}
       <footer className="border-t border-gray-100 mt-auto">
         <div className="max-w-5xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
-          United Nations Development Programme · CPC Tracker
+          {t("footer")}
         </div>
       </footer>
     </div>
