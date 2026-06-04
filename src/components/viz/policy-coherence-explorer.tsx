@@ -10,9 +10,11 @@ import {
   getDocMediumLabel,
   getDocTypeOrder,
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONTRADICTION_TYPE_LABELS,
 } from "@/lib/utils";
+import {
+  useAlignmentLabels,
+  useContradictionTypeLabels,
+} from "@/lib/labels";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -358,6 +360,7 @@ function DetailPanel({
   nr7ProgressMap?: Map<string, string>;
   countryConfig?: CountryConfig | null;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
       flagged: 0,
@@ -458,7 +461,7 @@ function DetailPanel({
                   width: `${(s.n / distTotal) * 100}%`,
                   backgroundColor: ALIGNMENT_COLORS[s.lvl],
                 }}
-                title={`${s.n} ${ALIGNMENT_LABELS[s.lvl].toLowerCase()}`}
+                title={`${s.n} ${alignmentLabels[s.lvl].toLowerCase()}`}
               />
             ))}
           </div>
@@ -469,7 +472,7 @@ function DetailPanel({
                   {s.n}
                 </span>
                 <span className="text-[var(--undp-gray)] ml-1">
-                  {ALIGNMENT_LABELS[s.lvl].toLowerCase()}
+                  {alignmentLabels[s.lvl].toLowerCase()}
                 </span>
               </span>
             ))}
@@ -570,7 +573,7 @@ function DetailPanel({
                       className="text-[11px] font-medium shrink-0"
                       style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
                     >
-                      {ALIGNMENT_LABELS[conn.alignment]}
+                      {alignmentLabels[conn.alignment]}
                     </span>
                   </div>
                   {conn.description && (
@@ -651,6 +654,8 @@ function PairDetailModal({
   countryConfig?: CountryConfig | null;
   onClose: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
+  const contradictionLabels = useContradictionTypeLabels();
   if (!pair || !selectedTarget) return null;
 
   const { result, other } = pair;
@@ -668,7 +673,7 @@ function PairDetailModal({
     <Modal
       open={open}
       onClose={onClose}
-      title={`${ALIGNMENT_LABELS[result.alignment]} · target pair`}
+      title={`${alignmentLabels[result.alignment]} · target pair`}
       maxWidth="max-w-2xl"
     >
       {/* Hero callout: inset rounded card so the AI verdict reads as a
@@ -684,11 +689,11 @@ function PairDetailModal({
               style={{ backgroundColor: tint }}
             />
             <span className="text-xs font-semibold uppercase tracking-wide text-[var(--undp-black)]">
-              {ALIGNMENT_LABELS[result.alignment]}
+              {alignmentLabels[result.alignment]}
             </span>
             {result.mechanism && (
               <span className="ml-auto text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/80 text-[var(--undp-black)] border border-gray-200">
-                {CONTRADICTION_TYPE_LABELS[result.mechanism]}
+                {contradictionLabels[result.mechanism]}
                 {result.manageability === "fundamental" && (
                   <span className="ml-1 text-[var(--undp-gray)]">· fundamental</span>
                 )}

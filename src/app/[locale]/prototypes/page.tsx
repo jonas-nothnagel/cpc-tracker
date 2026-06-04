@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
+import { Link, redirect } from "@/i18n/navigation";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
@@ -71,9 +71,10 @@ export default async function PrototypesPage({ searchParams }: PrototypesPagePro
     );
   }
 
+  const locale = await getLocale();
   const countryLower = country?.toLowerCase();
   if (!countryLower) {
-    redirect("/");
+    return redirect({ href: "/", locale });
   }
   if (!isValidCountryId(countryLower)) {
     return <UnavailableState />;

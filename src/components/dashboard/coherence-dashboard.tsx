@@ -12,7 +12,7 @@
  */
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
 import { CoherenceBriefing } from "./coherence-briefing";

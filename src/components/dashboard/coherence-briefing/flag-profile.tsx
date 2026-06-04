@@ -12,11 +12,11 @@
 
 import { useEffect, useMemo } from "react";
 import {
-  CONTRADICTION_TYPE_LABELS,
   getDocColor,
   getDocMediumLabel,
   MECHANISM_COLORS,
 } from "@/lib/utils";
+import { useContradictionTypeLabels } from "@/lib/labels";
 import {
   buildFlagSubsetProfile,
   buildTargetFrictionTree,
@@ -88,6 +88,7 @@ export function FlagProfileDrawer({
   onOpenTarget: (target: Target) => void;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
+  const contradictionLabels = useContradictionTypeLabels();
   useEffect(() => {
     if (!subject) return;
     const onKey = (e: KeyboardEvent) => {
@@ -221,7 +222,7 @@ export function FlagProfileDrawer({
     shareDenom > 0 ? Math.round((total / shareDenom) * 100) : 0;
   const headerTitle =
     subject.kind === "friction-type"
-      ? CONTRADICTION_TYPE_LABELS[subject.mechanism]
+      ? contradictionLabels[subject.mechanism]
       : subject.target.sourceLabel;
   const themeNoun = lensLabel === "GLOBE" ? "categories" : "themes";
 
@@ -648,11 +649,12 @@ function MechanismBranch({
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
+  const contradictionLabels = useContradictionTypeLabels();
   const color = group.mechanism
     ? MECHANISM_COLORS[group.mechanism]
     : BAR_NEUTRAL;
   const label = group.mechanism
-    ? CONTRADICTION_TYPE_LABELS[group.mechanism]
+    ? contradictionLabels[group.mechanism]
     : "Unclassified";
   return (
     <div>

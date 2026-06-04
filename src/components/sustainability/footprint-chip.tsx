@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 
 import type { FootprintRollup } from "@/lib/footprint/types";
 
@@ -20,6 +20,7 @@ function fmtCarbon(g: number): string {
  */
 export function FootprintChip() {
   const pathname = usePathname();
+  const t = useTranslations("sustainability");
   const [co2, setCo2] = useState<number | null>(null);
 
   const suppressed = pathname === "/sustainability";
@@ -47,10 +48,10 @@ export function FootprintChip() {
   return (
     <Link
       href="/sustainability"
-      title="AI sustainability footprint of this tool"
+      title={t("chip.title")}
       className={`fixed bottom-3 ${corner} z-40 text-[11px] text-[var(--undp-gray)] bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-1 shadow-sm hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors`}
     >
-      AI footprint: {fmtCarbon(co2)} CO2e
+      {t("chip.label", { value: fmtCarbon(co2) })}
     </Link>
   );
 }

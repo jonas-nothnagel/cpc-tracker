@@ -8,10 +8,13 @@
  */
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 export function LandingHeader() {
+  const t = useTranslations("header");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -46,10 +49,10 @@ export function LandingHeader() {
               scrolled ? "text-[var(--undp-black)]" : "text-white"
             }`}
           >
-            Policy Coherence Tracker
+            {t("brand")}
           </span>
         </Link>
-        <nav className="flex gap-8 text-sm">
+        <nav className="flex items-center gap-8 text-sm">
           <Link
             href="/upload"
             className={`transition-colors duration-300 ${
@@ -58,8 +61,9 @@ export function LandingHeader() {
                 : "text-white/90 hover:text-white"
             }`}
           >
-            Upload Data
+            {t("nav.uploadData")}
           </Link>
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>

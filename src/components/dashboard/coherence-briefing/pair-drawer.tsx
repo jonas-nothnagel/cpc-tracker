@@ -17,11 +17,13 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONTRADICTION_TYPE_LABELS,
   getDocMediumLabel,
   getDocFullLabel,
 } from "@/lib/utils";
+import {
+  useAlignmentLabels,
+  useContradictionTypeLabels,
+} from "@/lib/labels";
 import { isContradiction } from "@/types";
 import { SubFieldChip } from "./theme-drawer";
 import type {
@@ -190,6 +192,8 @@ function TargetPairBody({
   countryConfig: CountryConfig | null;
   onClose: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
+  const contradictionLabels = useContradictionTypeLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
   const contra = isContradiction(pair.alignment);
   return (
@@ -203,10 +207,10 @@ function TargetPairBody({
             className="text-xl text-[var(--undp-black)] font-medium leading-tight"
             style={{ fontFamily: HEADLINE_SERIF }}
           >
-            {ALIGNMENT_LABELS[pair.alignment]}
+            {alignmentLabels[pair.alignment]}
             {pair.mechanism && (
               <span className="block text-xs font-normal text-[var(--undp-gray)] mt-1">
-                {CONTRADICTION_TYPE_LABELS[pair.mechanism]}
+                {contradictionLabels[pair.mechanism]}
               </span>
             )}
           </h3>
@@ -602,6 +606,7 @@ function ExamplesColumn({
 }
 
 function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
+  const contradictionLabels = useContradictionTypeLabels();
   // v2.1 canonical mechanism keys + legacy v1 fallback. Older synthesis
   // JSON written before the v2 migration emits `implementation_tension`
   // and `scale_scope_mismatch`; fold both into delivery_friction so the
@@ -618,17 +623,17 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
   const parts: string[] = [];
   if (merged.goal_conflict) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
+      `${contradictionLabels.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
     );
   }
   if (merged.resource_competition) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
+      `${contradictionLabels.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
     );
   }
   if (merged.delivery_friction) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
+      `${contradictionLabels.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
     );
   }
   return (
@@ -735,6 +740,7 @@ function TargetPairRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
@@ -755,7 +761,7 @@ function TargetPairRow({
               border: `1px solid ${color}40`,
             }}
           >
-            {ALIGNMENT_LABELS[pair.alignment]}
+            {alignmentLabels[pair.alignment]}
           </span>
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />

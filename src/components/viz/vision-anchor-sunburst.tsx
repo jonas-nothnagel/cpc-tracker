@@ -4,10 +4,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { arc as d3Arc } from "d3-shape";
 import {
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
   ALIGNMENT_LEVEL_ORDER,
   getDocColor,
 } from "@/lib/utils";
+import { useAlignmentLabels } from "@/lib/labels";
 import type { AlignmentLevel, CountryConfig } from "@/types";
 import type { AnchorRow, AnchorStatus } from "@/lib/vision-anchor";
 
@@ -59,6 +59,7 @@ export function VisionSunburst({
   onSubArcClick,
   onViewAllRecords,
 }: VisionSunburstProps) {
+  const alignmentLabels = useAlignmentLabels();
   const [hoveredAnchor, setHoveredAnchor] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [hoverInfo, setHoverInfo] = useState<{
@@ -187,7 +188,7 @@ export function VisionSunburst({
               className="w-3.5 h-3.5 rounded-sm inline-block"
               style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
             />
-            <span className="text-[var(--undp-gray)]">{ALIGNMENT_LABELS[level]}</span>
+            <span className="text-[var(--undp-gray)]">{alignmentLabels[level]}</span>
           </div>
         ))}
       </div>
@@ -368,7 +369,7 @@ export function VisionSunburst({
                     onClick={() => onSubArcClick(focused.row, sub.level)}
                   >
                     <title>
-                      {ALIGNMENT_LABELS[sub.level]}: {sub.count} record
+                      {alignmentLabels[sub.level]}: {sub.count} record
                       {sub.count === 1 ? "" : "s"}. Click for details.
                     </title>
                   </path>
@@ -380,7 +381,7 @@ export function VisionSunburst({
                       fill={labelDark ? "#1f2937" : "#ffffff"}
                       style={{ fontSize: "12px", fontWeight: 600, pointerEvents: "none" }}
                     >
-                      {ALIGNMENT_LABELS[sub.level]}
+                      {alignmentLabels[sub.level]}
                     </text>
                   )}
                   {showInlineLabel && (
@@ -474,7 +475,7 @@ export function VisionSunburst({
             {hoverInfo.level ? (
               <p className="leading-tight">
                 <span style={{ color: ALIGNMENT_COLORS[hoverInfo.level], fontWeight: 600 }}>
-                  {ALIGNMENT_LABELS[hoverInfo.level]}
+                  {alignmentLabels[hoverInfo.level]}
                 </span>
                 : {row.totalsByLevel[hoverInfo.level] ?? 0} record
                 {(row.totalsByLevel[hoverInfo.level] ?? 0) === 1 ? "" : "s"}

@@ -18,12 +18,11 @@
  */
 
 import { useEffect, useState } from "react";
+import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import {
-  ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONTRADICTION_TYPE_LABELS,
-  getDocMediumLabel,
-} from "@/lib/utils";
+  useAlignmentLabels,
+  useContradictionTypeLabels,
+} from "@/lib/labels";
 import type { FaultLine, SectorBriefing } from "@/lib/coherence-briefing";
 import { SubFieldChip } from "./theme-drawer";
 import type {
@@ -209,12 +208,13 @@ function SectorSynthesisBlock({
       </section>
     );
   }
+  const contradictionLabels = useContradictionTypeLabels();
   const { storyline_name, reinforce, clash, coordination_hint } =
     synthesis.synthesis;
   const total =
     synthesis.pool_composition.primary_count +
     synthesis.pool_composition.relevant_only_count;
-  const subtypeParts = renderContradictionSubtypes(synthesis);
+  const subtypeParts = renderContradictionSubtypes(synthesis, contradictionLabels);
   return (
     <section className="space-y-5">
       <p
@@ -297,7 +297,10 @@ function SectorSynthesisBlock({
   );
 }
 
-function renderContradictionSubtypes(synthesis: SectorSynthesis): string[] {
+function renderContradictionSubtypes(
+  synthesis: SectorSynthesis,
+  labels: Record<"goal_conflict" | "resource_competition" | "delivery_friction", string>,
+): string[] {
   const ct = synthesis.contradiction_types;
   const parts: string[] = [];
   // v2.1 canonical first, with v1 legacy keys folded in so older
@@ -312,17 +315,17 @@ function renderContradictionSubtypes(synthesis: SectorSynthesis): string[] {
   };
   if (merged.goal_conflict) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
+      `${labels.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
     );
   }
   if (merged.resource_competition) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
+      `${labels.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
     );
   }
   if (merged.delivery_friction) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
+      `${labels.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
     );
   }
   return parts;
@@ -436,6 +439,7 @@ function ExampleRow({
   countryConfig: CountryConfig | null;
   onOpen?: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const { targetA, targetB, pair } = line;
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
@@ -460,7 +464,7 @@ function ExampleRow({
               border: `1px solid ${color}40`,
             }}
           >
-            {ALIGNMENT_LABELS[pair.alignment]}
+            {alignmentLabels[pair.alignment]}
           </span>
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />

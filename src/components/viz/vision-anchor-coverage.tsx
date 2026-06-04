@@ -3,13 +3,13 @@
 import { Fragment, useMemo, useState } from "react";
 import {
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
   ALIGNMENT_LEVEL_ORDER,
   getDocColor,
   getDocFullLabel,
   getDocLabel,
   getDocTypeOrder,
 } from "@/lib/utils";
+import { useAlignmentLabels } from "@/lib/labels";
 import { Modal } from "@/components/ui/modal";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
@@ -312,6 +312,7 @@ function SubArcDetailModal({
   onClose: () => void;
   onTargetClick: (id: string) => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const recordsByDoc = useMemo(() => {
     const grouped = new Map<string, AlignmentResult[]>();
     for (const r of alignment) {
@@ -337,7 +338,7 @@ function SubArcDetailModal({
     <Modal
       open
       onClose={onClose}
-      title={`${idLabel} — ${ALIGNMENT_LABELS[level]} (${total} record${total === 1 ? "" : "s"})`}
+      title={`${idLabel} — ${alignmentLabels[level]} (${total} record${total === 1 ? "" : "s"})`}
       maxWidth="max-w-3xl"
     >
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/60">
@@ -407,6 +408,7 @@ function CoverageMatrix({
   onCellClick,
   onRowClick,
 }: CoverageMatrixProps) {
+  const alignmentLabels = useAlignmentLabels();
   return (
     <div>
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
@@ -434,7 +436,7 @@ function CoverageMatrix({
                 className="w-3.5 h-3.5 rounded-sm inline-block"
                 style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
               />
-              <span className="text-[var(--undp-gray)]">{ALIGNMENT_LABELS[level]}</span>
+              <span className="text-[var(--undp-gray)]">{alignmentLabels[level]}</span>
             </div>
           ))}
         </div>
@@ -551,6 +553,7 @@ function CellBar({
   countryConfig: CountryConfig | null;
   onClick: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const cell = row.cells.get(docType);
   if (!cell || cell.total === 0) {
     return (
@@ -569,7 +572,7 @@ function CellBar({
     .sort((a, b) => alignmentLevelRank(b) - alignmentLevelRank(a));
 
   const breakdown = segments
-    .map((l) => `${cell.byLevel[l]} ${ALIGNMENT_LABELS[l].toLowerCase()}`)
+    .map((l) => `${cell.byLevel[l]} ${alignmentLabels[l].toLowerCase()}`)
     .join(", ");
 
   return (
@@ -635,6 +638,7 @@ function LoosePanel({
   anchorDocLabel: string;
   onTargetClick: (id: string) => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   if (looseTargets.length === 0) {
     return (
       <div className="rounded-md border border-gray-100 bg-[var(--undp-light)] p-6 text-sm text-[var(--undp-gray)]">
@@ -718,7 +722,7 @@ function LoosePanel({
                               color: ALIGNMENT_COLORS[lt.maxLevel],
                             }}
                           >
-                            Strongest: {ALIGNMENT_LABELS[lt.maxLevel]}
+                            Strongest: {alignmentLabels[lt.maxLevel]}
                           </span>
                         )
                       )}
@@ -942,6 +946,7 @@ function RecordList({
   peripheralById: Map<string, Target>;
   onTargetClick: (id: string) => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const sorted = useMemo(
     () =>
       [...records].sort(
@@ -972,7 +977,7 @@ function RecordList({
                   color: ALIGNMENT_COLORS[r.alignment],
                 }}
               >
-                {ALIGNMENT_LABELS[r.alignment]}
+                {alignmentLabels[r.alignment]}
               </span>
               <button
                 type="button"

@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
+import { Link, redirect } from "@/i18n/navigation";
 import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
@@ -67,9 +67,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   }
 
   // Country-addressed path. Empty string is treated as missing.
+  const locale = await getLocale();
   const countryLower = country?.toLowerCase();
   if (!countryLower) {
-    redirect("/");
+    return redirect({ href: "/", locale });
   }
 
   // Format gate + registry gate. Invalid or unknown countries land on the

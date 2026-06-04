@@ -32,11 +32,8 @@ import {
   type AtlasTaxonomy,
   type Quadrant,
 } from "@/lib/target-atlas-signals";
-import {
-  ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  getDocMediumLabel,
-} from "@/lib/utils";
+import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
+import { useAlignmentLabels } from "@/lib/labels";
 import { isContradiction } from "@/types";
 import type {
   Target,
@@ -1685,6 +1682,7 @@ function LinkRow({
   categories: string[];
   llm?: AlignmentLevel;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   return (
     <div className="text-[11px] leading-snug py-1 px-2 border-l-2 border-gray-100">
       <div className="text-[var(--undp-black)] font-medium truncate">
@@ -1704,7 +1702,7 @@ function LinkRow({
               className="inline-block w-1.5 h-1.5 rounded-full"
               style={{ backgroundColor: ALIGNMENT_COLORS[llm] }}
             />
-            {ALIGNMENT_LABELS[llm]}
+            {alignmentLabels[llm]}
           </span>
         )}
       </div>

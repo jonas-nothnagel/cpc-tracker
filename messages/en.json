@@ -1,0 +1,116 @@
+{
+  "common": {
+    "appName": "Policy Coherence Tracker"
+  },
+  "header": {
+    "brand": "Policy Coherence Tracker",
+    "nav": {
+      "home": "Home",
+      "uploadData": "Upload Data",
+      "prototypes": "prototypes"
+    }
+  },
+  "footer": {},
+  "landing": {
+    "hero": {
+      "eyebrow": "UNDP AI Sprint Initiative",
+      "title": "Nature-Climate Policy Coherence Tracker",
+      "subtitle": "See where your national climate, biodiversity, and land-use targets align, overlap, or may pull in different directions.",
+      "exploreCountry": "Explore {name}",
+      "analyseCta": "Analyse your policies"
+    },
+    "inside": {
+      "eyebrow": "Inside the analysis",
+      "title": "Every policy target, mapped against every other",
+      "body": "Each ribbon links two national policy documents. Green shows where their targets are in strong alignment; red threads mark a potential misalignment worth a closer look. Switch between the pilot countries to compare.",
+      "disclaimer": "AI-generated analysis. Treat as a prompt to review, not a settled finding."
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "step1": {
+        "title": "Upload targets",
+        "bodyPrefix": "Enter targets from your",
+        "bodySuffix": ", and other national policy documents. Upload files directly or type them in."
+      },
+      "step2": {
+        "title": "Automated analysis",
+        "body": "AI classifies each target by theme and sector, then assesses how well targets across different policies align with each other."
+      },
+      "step3": {
+        "title": "Explore results",
+        "body": "Interactive dashboard showing policy coverage, alignment patterns, and areas where coordination could be strengthened."
+      }
+    },
+    "abbr": {
+      "ndc": "Nationally Determined Contribution",
+      "nbsap": "National Biodiversity Strategy and Action Plan",
+      "nap": "National Adaptation Plan"
+    },
+    "footer": {
+      "undp": "United Nations Development Programme",
+      "initiative": "AI Sprint Initiative"
+    }
+  },
+  "dashboard": {},
+  "upload": {},
+  "analysis": {},
+  "country": {},
+  "prototypes": {},
+  "sustainability": {
+    "chip": {
+      "label": "AI footprint: {value} CO2e",
+      "title": "AI sustainability footprint of this tool"
+    }
+  },
+  "labels": {
+    "alignment": {
+      "flagged": "Potential misalignment",
+      "none": "No relationship",
+      "low": "Partial",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "contradictionType": {
+      "goal_conflict": "Conflicting goals",
+      "resource_competition": "Competing for resources",
+      "delivery_friction": "Delivery & coordination"
+    },
+    "contradictionDescription": {
+      "goal_conflict": "The objectives themselves pull against each other: achieving one substantively means not achieving the other.",
+      "resource_competition": "The goals are compatible but compete for the same limited resource: land, water, budget, or capacity.",
+      "delivery_friction": "The goals are compatible; the gap is in delivery: how one is implemented undermines the other (mismatched scale, timing, or coordination across actors)."
+    },
+    "manageability": {
+      "manageable": "Coordination-level",
+      "fundamental": "Design-level"
+    },
+    "confidence": {
+      "high": "High confidence",
+      "medium": "Medium confidence",
+      "low": "Low confidence"
+    },
+    "docType": {
+      "btr": {
+        "short": "BTR Action",
+        "medium": "BTR (Transparency)",
+        "full": "Biennial Transparency Report"
+      },
+      "btrAdp": {
+        "short": "BTR Adaptation",
+        "medium": "BTR (Adaptation)",
+        "full": "Biennial Transparency Report — adaptation actions"
+      },
+      "other": {
+        "short": "Other",
+        "medium": "Other",
+        "full": "Other Policy Document"
+      }
+    }
+  },
+  "metadata": {
+    "root": {
+      "title": "CPC Tracker | Policy Coherence Analysis",
+      "description": "AI-assisted tool for assessing coherence across nature-climate policies and tracking implementation progress."
+    }
+  }
+}

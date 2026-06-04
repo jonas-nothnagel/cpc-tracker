@@ -21,14 +21,16 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONFIDENCE_LABELS,
-  CONTRADICTION_TYPE_LABELS,
-  MANAGEABILITY_LABELS,
   MECHANISM_COLORS,
   getDocFullLabel,
   getDocMediumLabel,
 } from "@/lib/utils";
+import {
+  useAlignmentLabels,
+  useConfidenceLabels,
+  useContradictionTypeLabels,
+  useManageabilityLabels,
+} from "@/lib/labels";
 import {
   getDocPairKey,
   parseContributingDocPair,
@@ -379,6 +381,7 @@ function ExampleRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
@@ -399,7 +402,7 @@ function ExampleRow({
               border: `1px solid ${color}40`,
             }}
           >
-            {ALIGNMENT_LABELS[pair.alignment]}
+            {alignmentLabels[pair.alignment]}
           </span>
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />
@@ -438,6 +441,9 @@ export function SubFieldChip({
   variant: "mechanism" | "manageability" | "confidence";
   value: AlignmentMechanism | AlignmentManageability | AlignmentConfidence;
 }) {
+  const contradictionLabels = useContradictionTypeLabels();
+  const manageabilityLabels = useManageabilityLabels();
+  const confidenceLabels = useConfidenceLabels();
   if (variant === "mechanism") {
     // Colour per the friction-type palette (same as the bar) so the mechanism
     // reads as a warm severity ramp and is never confused with the neutral
@@ -452,7 +458,7 @@ export function SubFieldChip({
           backgroundColor: `${c}14`,
         }}
       >
-        {CONTRADICTION_TYPE_LABELS[value as AlignmentMechanism]}
+        {contradictionLabels[value as AlignmentMechanism]}
       </span>
     );
   }
@@ -469,7 +475,7 @@ export function SubFieldChip({
           backgroundColor: "#f1f5f9",
         }}
       >
-        {MANAGEABILITY_LABELS[value as AlignmentManageability]}
+        {manageabilityLabels[value as AlignmentManageability]}
       </span>
     );
   }
@@ -484,7 +490,7 @@ export function SubFieldChip({
         border: low ? "1px dashed #f59e0b" : "1px solid #cbd5e1",
       }}
     >
-      {CONFIDENCE_LABELS[value as AlignmentConfidence]}
+      {confidenceLabels[value as AlignmentConfidence]}
     </span>
   );
 }

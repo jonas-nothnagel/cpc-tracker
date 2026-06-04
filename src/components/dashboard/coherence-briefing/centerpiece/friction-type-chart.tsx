@@ -18,11 +18,11 @@ import type {
   FrictionType,
   FrictionTypeTotals,
 } from "@/lib/coherence-briefing";
+import { MECHANISM_COLORS } from "@/lib/utils";
 import {
-  CONTRADICTION_TYPE_DESCRIPTIONS,
-  CONTRADICTION_TYPE_LABELS,
-  MECHANISM_COLORS,
-} from "@/lib/utils";
+  useContradictionTypeDescriptions,
+  useContradictionTypeLabels,
+} from "@/lib/labels";
 
 const ORDER: FrictionType[] = [
   "goal_conflict",
@@ -40,6 +40,7 @@ export function FrictionTypeChart({
   /** Left-hand label above the bar. Defaults to the corpus framing. */
   caption?: string;
 }) {
+  const contradictionLabels = useContradictionTypeLabels();
   const { total: totalFlagged } = totals;
   if (totalFlagged === 0) {
     return (
@@ -95,7 +96,7 @@ export function FrictionTypeChart({
             width: `${widthPct}%`,
             backgroundColor: MECHANISM_COLORS[type],
           };
-          const title = `${CONTRADICTION_TYPE_LABELS[type]} · ${value.toLocaleString()} (${Math.round(widthPct)}%)`;
+          const title = `${contradictionLabels[type]} · ${value.toLocaleString()} (${Math.round(widthPct)}%)`;
           return (
             <Fragment key={type}>
               {handleClick ? (
@@ -149,6 +150,8 @@ function SegmentTotal({
   pct: number;
   color: string;
 }) {
+  const labels = useContradictionTypeLabels();
+  const descriptions = useContradictionTypeDescriptions();
   return (
     <div>
       <p
@@ -160,7 +163,7 @@ function SegmentTotal({
           className="inline-block w-2.5 h-2.5 rounded-sm"
           style={{ backgroundColor: color }}
         />
-        {CONTRADICTION_TYPE_LABELS[type]}
+        {labels[type]}
       </p>
       <p className="text-[15px] text-[var(--undp-black)] font-medium tabular-nums mt-0.5">
         {pct}%
@@ -169,7 +172,7 @@ function SegmentTotal({
         </span>
       </p>
       <p className="text-[10px] text-[var(--undp-gray)] leading-snug mt-1">
-        {CONTRADICTION_TYPE_DESCRIPTIONS[type]}
+        {descriptions[type]}
       </p>
     </div>
   );

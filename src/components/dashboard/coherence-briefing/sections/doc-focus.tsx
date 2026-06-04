@@ -40,11 +40,11 @@ import {
   type FaultLine,
 } from "@/lib/coherence-briefing";
 import {
-  CONTRADICTION_TYPE_LABELS,
   MECHANISM_COLORS,
   getDocFullLabel,
   getDocMediumLabel,
 } from "@/lib/utils";
+import { useContradictionTypeLabels } from "@/lib/labels";
 import type {
   AlignmentMechanism,
   AlignmentResult,
@@ -335,6 +335,7 @@ function FlaggedPairRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
+  const contradictionLabels = useContradictionTypeLabels();
   // The serif text is the focused document's own target (the thing being
   // flagged); name it explicitly as "<focused doc> target" so it's never
   // ambiguous whose target the reader is looking at. The peer side supplies the
@@ -365,7 +366,7 @@ function FlaggedPairRow({
               className="text-[9.5px] uppercase tracking-wider font-semibold shrink-0"
               style={{ color: MECHANISM_COLORS[mechanism] }}
             >
-              {CONTRADICTION_TYPE_LABELS[mechanism]}
+              {contradictionLabels[mechanism]}
             </span>
           )}
         </div>
