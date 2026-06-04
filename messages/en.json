@@ -188,6 +188,12 @@
     "footer": {
       "undp": "United Nations Development Programme",
       "initiative": "AI Sprint Initiative"
+    },
+    "heroVideo": {
+      "pauseAria": "Pause background video",
+      "playAria": "Play background video",
+      "pause": "Pause",
+      "play": "Play"
     }
   },
   "dashboard": {
@@ -240,6 +246,41 @@
     },
     "footerLink": {
       "fullExplorer": "Full coherence explorer"
+    },
+    "storylineCard": {
+      "eyebrow": {
+        "reinforce": "Recurring alignment",
+        "friction": "Recurring potential misalignment"
+      },
+      "spansAll": "Spans all {count, number} documents",
+      "across": "Across",
+      "pairCount": "{count, plural, one {1 pair} other {# pairs}}"
+    },
+    "primerCard": {
+      "alignedRelation": "STRONGLY ALIGNED WITH",
+      "flaggedRelation": "POTENTIALLY MISALIGNED WITH"
+    },
+    "docMatrix": {
+      "noScoredTitle": "{a} ↔ {b}: no scored pairs",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} flagged — click for the gaps",
+      "aligned": "Aligned",
+      "flagged": "Potential misalignment",
+      "legendHint": "deeper colour = further from the average · click a cell for the gaps"
+    },
+    "chat": {
+      "askCorpus": "Ask the corpus",
+      "placeholder": "e.g. Which two documents disagree the most?",
+      "sendAria": "Send",
+      "ask": "Ask →",
+      "tryOne": "Try one of these",
+      "reply": "Reply",
+      "showOnWheel": "Show this on the wheel →",
+      "keepGoing": "Keep going",
+      "disclaimer": "Chat answers are AI-generated against the same dataset shown on the wheel. Treat as a navigation aid, not a final verdict.",
+      "errors": {
+        "requestFailed": "Request failed ({status})",
+        "generic": "That didn't work."
+      }
     },
     "drawer": {
       "flagProfile": {

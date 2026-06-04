@@ -14,6 +14,7 @@
  */
 
 import { Fragment, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { buildDocCoherenceGraph, getDocPairKey } from "@/lib/coherence-briefing";
 import { getDocLabel, getDocMediumLabel } from "@/lib/utils";
 import type {
@@ -64,6 +65,7 @@ export function DocCoherenceMatrix({
   /** Emits the hovered pair key so the host can light the matching list row. */
   onHoverPair?: (key: string | null) => void;
 }) {
+  const t = useTranslations("briefing.docMatrix");
   const { ordered, edgeMap, mid, maxShare } = useMemo(() => {
     const { nodes, edges } = buildDocCoherenceGraph(
       alignment,
@@ -167,7 +169,7 @@ export function DocCoherenceMatrix({
                       key={cellKey}
                       className="rounded-md bg-gray-100"
                       style={{ height: CELL, ...anim }}
-                      title={`${rowLabel} ↔ ${colLabel}: no scored pairs`}
+                      title={t("noScoredTitle", { a: rowLabel, b: colLabel })}
                     />
                   );
                 }
@@ -185,7 +187,12 @@ export function DocCoherenceMatrix({
                     onMouseLeave={() => onHoverPair?.(null)}
                     onFocus={() => onHoverPair?.(pairKey)}
                     onBlur={() => onHoverPair?.(null)}
-                    title={`${rowLabel} ↔ ${colLabel}: ${e.alignedCount} aligned · ${e.flaggedCount} flagged — click for the gaps`}
+                    title={t("cellTitle", {
+                      a: rowLabel,
+                      b: colLabel,
+                      aligned: e.alignedCount,
+                      flagged: e.flaggedCount,
+                    })}
                     className={`rounded-md cursor-pointer transition-transform hover:scale-110 hover:ring-2 hover:ring-[var(--undp-black)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--undp-black)]/50 ${
                       isHighlighted
                         ? "scale-110 ring-2 ring-[var(--undp-black)]/60 relative z-10"
@@ -211,17 +218,17 @@ export function DocCoherenceMatrix({
             className="inline-block w-3 h-3 rounded-sm"
             style={{ backgroundColor: "rgba(25, 97, 39, 0.85)" }}
           />
-          Aligned
+          {t("aligned")}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span
             className="inline-block w-3 h-3 rounded-sm"
             style={{ backgroundColor: "rgba(220, 38, 38, 0.85)" }}
           />
-          Potential misalignment
+          {t("flagged")}
         </span>
         <span className="text-[var(--undp-gray)]/70">
-          deeper colour = further from the average · click a cell for the gaps
+          {t("legendHint")}
         </span>
       </div>
     </div>

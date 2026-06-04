@@ -14,6 +14,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface HeroVideoProps {
   poster: string;
@@ -23,6 +24,7 @@ interface HeroVideoProps {
 }
 
 export function HeroVideo({ poster, mp4, webm, children }: HeroVideoProps) {
+  const t = useTranslations("landing.heroVideo");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showVideo, setShowVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -100,10 +102,10 @@ export function HeroVideo({ poster, mp4, webm, children }: HeroVideoProps) {
         <button
           type="button"
           onClick={toggle}
-          aria-label={isPlaying ? "Pause background video" : "Play background video"}
+          aria-label={isPlaying ? t("pauseAria") : t("playAria")}
           className="absolute bottom-5 right-5 z-20 rounded-full border border-white/40 bg-black/25 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-          {isPlaying ? "Pause" : "Play"}
+          {isPlaying ? t("pause") : t("play")}
         </button>
       ) : null}
     </section>

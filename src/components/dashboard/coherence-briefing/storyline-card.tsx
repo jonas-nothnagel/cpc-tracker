@@ -12,6 +12,7 @@
  * consistent wherever a storyline is surfaced.
  */
 
+import { useTranslations } from "next-intl";
 import { getDocFullLabel, getDocLabel } from "@/lib/utils";
 import type { CorpusStoryline, CountryConfig } from "@/types";
 
@@ -31,6 +32,7 @@ export function StorylineCard({
   totalAvailableDocs: number;
   onOpen: () => void;
 }) {
+  const t = useTranslations("briefing.storylineCard");
   const isReinforce = storyline.type === "reinforcement";
   const dotColor = isReinforce ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
   const uniqueDocs = Array.from(new Set(storyline.spans_documents));
@@ -55,7 +57,7 @@ export function StorylineCard({
               : { boxShadow: `inset 0 0 0 1px ${dotColor}` }
           }
         />
-        {isReinforce ? "Recurring alignment" : "Recurring potential misalignment"}
+        {isReinforce ? t("eyebrow.reinforce") : t("eyebrow.friction")}
       </p>
       <p
         className="text-[13.5px] text-[var(--undp-black)] leading-snug mb-2"
@@ -65,14 +67,11 @@ export function StorylineCard({
       </p>
       <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
         {spansAll ? (
-          <>
-            Spans all{" "}
-            <span className="tabular-nums">{totalAvailableDocs}</span> documents
-          </>
+          t("spansAll", { count: totalAvailableDocs })
         ) : (
           <>
             <span className="uppercase tracking-wider text-[9.5px] mr-1">
-              Across
+              {t("across")}
             </span>
             {uniqueDocs.map((d, i) => (
               <span key={d}>
@@ -89,8 +88,7 @@ export function StorylineCard({
         )}
       </p>
       <p className="mt-1 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
-        {storyline.pair_count.toLocaleString()} pair
-        {storyline.pair_count === 1 ? "" : "s"}
+        {t("pairCount", { count: storyline.pair_count })}
       </p>
     </button>
   );

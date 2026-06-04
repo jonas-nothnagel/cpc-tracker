@@ -16,6 +16,7 @@
  */
 
 import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import { buildChatRequest } from "@/lib/coherence-chat";
 import type {
   ChatAction,
@@ -71,6 +72,7 @@ export function ChatPanel({
   starterPrompts: string[];
   onApplyAction: (action: ChatAction) => void;
 }) {
+  const t = useTranslations("briefing.chat");
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -109,7 +111,7 @@ export function ChatPanel({
           body: JSON.stringify(body),
         });
         if (!res.ok) {
-          let message = `Request failed (${res.status})`;
+          let message = t("errors.requestFailed", { status: res.status });
           try {
             const err = (await res.json()) as { error?: string };
             if (err.error) message = err.error;
@@ -137,7 +139,7 @@ export function ChatPanel({
         );
         setQuery("");
       } catch (e) {
-        setError(e instanceof Error ? e.message : "That didn't work.");
+        setError(e instanceof Error ? e.message : t("errors.generic"));
       } finally {
         setLoading(false);
       }
@@ -155,13 +157,14 @@ export function ChatPanel({
       corpusThemes,
       docPairSyntheses,
       sectorSyntheses,
+      t,
     ],
   );
 
   return (
     <div className="flex flex-col h-full">
       <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-        Ask the corpus
+        {t("askCorpus")}
       </p>
 
       <form
@@ -176,17 +179,17 @@ export function ChatPanel({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="e.g. Which two documents disagree the most?"
+            placeholder={t("placeholder")}
             className="w-full rounded-md border border-gray-300 bg-white px-4 py-3 pr-12 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--undp-black)] focus:border-[var(--undp-black)] placeholder:text-gray-400"
             disabled={loading}
           />
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            aria-label="Send"
+            aria-label={t("sendAria")}
             className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded text-xs font-medium text-white bg-[var(--undp-black)] disabled:bg-gray-300 transition-colors"
           >
-            {loading ? "…" : "Ask →"}
+            {loading ? "…" : t("ask")}
           </button>
         </div>
       </form>
@@ -194,7 +197,7 @@ export function ChatPanel({
       {!reply && !error && (
         <div>
           <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-            Try one of these
+            {t("tryOne")}
           </p>
           <div className="flex flex-col gap-2">
             {starterPrompts.map((p) => (
@@ -222,7 +225,7 @@ export function ChatPanel({
         <div className="space-y-3 overflow-y-auto pr-2 flex-1">
           <div className="rounded-md border border-gray-200 bg-white p-4">
             <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-              Reply
+              {t("reply")}
             </p>
             <p className="text-sm text-[var(--undp-black)] leading-relaxed whitespace-pre-wrap">
               {reply.reply}
@@ -241,13 +244,13 @@ export function ChatPanel({
               }}
               className="self-start text-xs font-medium text-[var(--undp-black)] hover:underline"
             >
-              Show this on the wheel →
+              {t("showOnWheel")}
             </button>
           )}
           {reply.suggestions.length > 0 && (
             <div className="flex flex-col gap-2">
               <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-                Keep going
+                {t("keepGoing")}
               </p>
               {reply.suggestions.map((s) => (
                 <button
@@ -266,8 +269,7 @@ export function ChatPanel({
       )}
 
       <p className="mt-auto pt-4 text-[10px] text-[var(--undp-gray)] leading-relaxed">
-        Chat answers are AI-generated against the same dataset shown on
-        the wheel. Treat as a navigation aid, not a final verdict.
+        {t("disclaimer")}
       </p>
     </div>
   );
