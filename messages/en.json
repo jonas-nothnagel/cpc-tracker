@@ -260,6 +260,10 @@
       "alignedRelation": "STRONGLY ALIGNED WITH",
       "flaggedRelation": "POTENTIALLY MISALIGNED WITH"
     },
+    "wheel": {
+      "wheelAria": "Policy coherence wheel",
+      "unclassified": "Unclassified"
+    },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: no scored pairs",
       "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} flagged — click for the gaps",

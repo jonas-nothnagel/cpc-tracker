@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 /**
  * WheelCenterpiece — three-axis state model.
  *
@@ -230,6 +232,7 @@ function bucketBySector(
   classifications: ThematicClassification[],
   sectorCategories: SectorCategoryRef[],
   sectorTaxonomyType: string,
+  unclassifiedLabel: string,
 ): Bucket[] {
   const primaryByTarget = new Map<string, string>();
   for (const c of classifications) {
@@ -248,7 +251,7 @@ function bucketBySector(
   const out: Bucket[] = [];
   for (const [cid, ts] of byCat) {
     const info = catInfo.get(cid);
-    const name = info?.name ?? "Unclassified";
+    const name = info?.name ?? unclassifiedLabel;
     out.push({
       id: cid,
       label: name,
@@ -274,6 +277,7 @@ function buildLayout(args: {
   groupBy: WheelGroupBy;
   sectorCategories: SectorCategoryRef[];
   sectorTaxonomyType: string;
+  unclassifiedLabel: string;
 }): { nodes: NodePos[]; arcs: ArcInfo[] } {
   const {
     targets,
@@ -282,6 +286,7 @@ function buildLayout(args: {
     groupBy,
     sectorCategories,
     sectorTaxonomyType,
+    unclassifiedLabel,
   } = args;
 
   const buckets =
@@ -292,6 +297,7 @@ function buildLayout(args: {
           classifications,
           sectorCategories,
           sectorTaxonomyType,
+          unclassifiedLabel,
         );
 
   const populated = buckets.filter((b) => b.targets.length > 0);
@@ -426,6 +432,8 @@ export function WheelCenterpiece({
   onArcClick,
   onArcHover,
 }: WheelCenterpieceProps) {
+  const t = useTranslations("briefing.wheel");
+  const unclassifiedLabel = t("unclassified");
   const { nodes, arcs } = useMemo(
     () =>
       buildLayout({
@@ -435,6 +443,7 @@ export function WheelCenterpiece({
         groupBy: state.groupBy,
         sectorCategories,
         sectorTaxonomyType,
+        unclassifiedLabel,
       }),
     [
       targets,
@@ -443,6 +452,7 @@ export function WheelCenterpiece({
       state.groupBy,
       sectorCategories,
       sectorTaxonomyType,
+      unclassifiedLabel,
     ],
   );
   const nodeMap = useMemo(
@@ -653,7 +663,7 @@ export function WheelCenterpiece({
         className="w-full"
         style={{ maxHeight: 620 }}
         role="img"
-        aria-label="Policy coherence wheel"
+        aria-label={t("wheelAria")}
       >
         {/* Subtle guide ring */}
         <circle
