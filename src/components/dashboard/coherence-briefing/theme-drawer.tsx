@@ -489,6 +489,54 @@ export function SubFieldChip({
   );
 }
 
+/**
+ * Plain-language label for the concrete dimension a flag concerns, derived from
+ * the friction-dimensions fields (extract_friction_dimensions.py). Resource
+ * competition names what the two targets compete for; delivery friction names
+ * the shared place they act in. Returns null when the relevant field is empty,
+ * so pairs without an extracted dimension simply show no chip.
+ */
+export function frictionDimensionLabel(
+  mechanism: AlignmentMechanism | undefined,
+  contestedResources: string[] | undefined,
+  sharedContext: string | undefined,
+): string | null {
+  if (mechanism === "resource_competition" && contestedResources?.length) {
+    return `Competes for: ${contestedResources.join(", ")}`;
+  }
+  if (mechanism === "delivery_friction" && sharedContext) {
+    return `Shared area: ${sharedContext}`;
+  }
+  return null;
+}
+
+/**
+ * Quiet, normal-case chip for the friction dimension. Deliberately neutral
+ * (no severity colour) and distinct from the uppercase mechanism/manageability
+ * chips: it carries content (a resource or place) the analyst rationale named,
+ * not a category verdict.
+ */
+export function FrictionDimensionChip({
+  mechanism,
+  contestedResources,
+  sharedContext,
+}: {
+  mechanism?: AlignmentMechanism;
+  contestedResources?: string[];
+  sharedContext?: string;
+}) {
+  const label = frictionDimensionLabel(mechanism, contestedResources, sharedContext);
+  if (!label) return null;
+  return (
+    <span
+      className="text-[10px] px-1.5 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] whitespace-nowrap"
+      title={label}
+    >
+      {label}
+    </span>
+  );
+}
+
 function compareFlaggedByReviewPriority(
   x: AlignmentResult,
   y: AlignmentResult,

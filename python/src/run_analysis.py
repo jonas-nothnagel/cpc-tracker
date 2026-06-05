@@ -38,6 +38,7 @@ from .classify_globe import (
     load_few_shot_examples,
 )
 from .align import decompose_targets, generate_pairs, assess_alignment
+from .extract_friction_dimensions import enrich_with_friction_dimensions
 from .llm import estimate_footprint_from_counts, get_footprint_tracker
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
@@ -380,6 +381,11 @@ async def main() -> None:
         logger.info("-" * 40)
 
         alignment_results = await assess_alignment(pairs, decompositions, doc_type_labels)
+
+        # Tag flagged pairs with the concrete dimension they concern (contested
+        # resource / shared geography), read from the rationale just produced.
+        # Own cache namespace, so this never re-runs alignment.
+        alignment_results = await enrich_with_friction_dimensions(alignment_results)
 
         # Save alignment results
         out_path = OUTPUT_DIR / "alignment.json"

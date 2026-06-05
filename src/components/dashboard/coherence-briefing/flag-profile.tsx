@@ -22,7 +22,7 @@ import {
   buildTargetFrictionTree,
   type TargetFrictionTree,
 } from "@/lib/coherence-briefing";
-import { SubFieldChip } from "./theme-drawer";
+import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
   AlignmentManageability,
@@ -570,6 +570,11 @@ function RepresentativePairs({
                     value={pair.manageability}
                   />
                 )}
+                <FrictionDimensionChip
+                  mechanism={pair.mechanism}
+                  contestedResources={pair.contestedResources}
+                  sharedContext={pair.sharedContext}
+                />
               </div>
               <p className="text-[10px] text-[var(--undp-gray)] mb-1">
                 {getDocMediumLabel(countryConfig, a.sourceDocument)}{" "}
