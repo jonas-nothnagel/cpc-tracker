@@ -100,7 +100,7 @@ function Concentration({
         ))}
         {restSpend > 0 && (
           <li>
-            <details className="group">
+            <details className="group" open>
               <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-[12px]">
                 <span className="flex items-center gap-2 min-w-0">
                   <span

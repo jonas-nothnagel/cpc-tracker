@@ -242,6 +242,7 @@ export function CoherenceDashboard({
         explorerTargets={data.targets}
         btrData={data.btrData}
         berData={data.berData}
+        budgetAlignment={data.budgetAlignment}
         nr7Data={data.nr7Data}
         globeSubcategories={data.globeSubcategories}
         alignment={data.alignment}
