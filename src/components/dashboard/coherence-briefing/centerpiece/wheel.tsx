@@ -558,15 +558,16 @@ export function WheelCenterpiece({
     state.frictionArcs === true &&
     state.groupBy === "document" &&
     docFriction !== null;
-  // Reinforces/tension split uses the same rule as the Document-pairs list
-  // (flagged > aligned × 0.25), so a doc reads consistently across both views.
-  const FOCUS_CLASH_RATIO = 0.25;
+  // Centre readout sums the focused doc's actual target-pairs across every visible
+  // partner: the flagged total (never diluted to 0 by a per-doc majority vote) plus a
+  // share that normalises away document size. The per-arc balance bands still carry the
+  // aligned/flagged split for each individual partner.
   const focusInfo = useMemo(() => {
     if (!docFocusActive || !focusArcId) return null;
     const focusArc = arcsById.get(focusArcId);
     if (!focusArc) return null;
-    let reinforces = 0;
-    let tension = 0;
+    let flagged = 0;
+    let totalScored = 0;
     const bands: { arc: ArcInfo; alignedShare: number }[] = [];
     for (const arc of arcs) {
       if (arc.id === focusArcId || arc.id === UNCLASSIFIED_BUCKET_ID) continue;
@@ -576,14 +577,12 @@ export function WheelCenterpiece({
       if (!agg) continue;
       const signal = agg.alignmentCount + agg.tensionCount;
       if (signal === 0) continue;
-      if (agg.tensionCount > agg.alignmentCount * FOCUS_CLASH_RATIO) {
-        tension += 1;
-      } else {
-        reinforces += 1;
-      }
+      flagged += agg.tensionCount;
+      totalScored += signal;
       bands.push({ arc, alignedShare: agg.alignmentCount / signal });
     }
-    return { focusArc, reinforces, tension, bands };
+    const share = totalScored > 0 ? flagged / totalScored : 0;
+    return { focusArc, flagged, totalScored, share, bands };
   }, [docFocusActive, focusArcId, arcs, arcsById, aggregates]);
 
   const handleArcClick = (arc: ArcInfo) => {
@@ -1121,17 +1120,34 @@ export function WheelCenterpiece({
                   paintOrder="stroke"
                   strokeLinejoin="round"
                 >
-                  <tspan fill={ALIGNMENT_COLORS.high}>
-                    {focusInfo.reinforces} aligned
-                  </tspan>
-                  <tspan fill="var(--undp-gray)"> · </tspan>
                   <tspan fill={ALIGNMENT_COLORS.flagged}>
-                    {focusInfo.tension} misaligned
+                    {focusInfo.flagged === 0
+                      ? "No potential misalignments"
+                      : focusInfo.flagged === 1
+                        ? "1 potential misalignment"
+                        : `${focusInfo.flagged.toLocaleString()} potential misalignments`}
                   </tspan>
                 </text>
                 <text
                   x={0}
-                  y={29}
+                  y={28}
+                  textAnchor="middle"
+                  fontSize={10}
+                  fill="var(--undp-gray)"
+                  stroke="#fbfaf7"
+                  strokeWidth={2.5}
+                  paintOrder="stroke"
+                  strokeLinejoin="round"
+                >
+                  {focusInfo.flagged === 0
+                    ? `across ${focusInfo.totalScored.toLocaleString()} pairs`
+                    : focusInfo.share * 100 < 1
+                      ? `<1% of ${focusInfo.totalScored.toLocaleString()} pairs`
+                      : `${Math.round(focusInfo.share * 100)}% of ${focusInfo.totalScored.toLocaleString()} pairs`}
+                </text>
+                <text
+                  x={0}
+                  y={42}
                   textAnchor="middle"
                   fontSize={10}
                   fill="var(--undp-gray)"
