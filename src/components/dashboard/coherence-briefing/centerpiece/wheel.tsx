@@ -431,13 +431,19 @@ export interface WheelCenterpieceProps {
   ) => void;
 }
 
+// Stable empty default so callers that omit `sectorCategories` (e.g. the landing
+// wheel) don't hand in a fresh `[]` each render. That array is a `buildLayout`
+// memo dependency, so a new reference would recompute the whole layout — and the
+// spotlight — every render, turning the onSpotlight effect into an update loop.
+const EMPTY_SECTOR_CATEGORIES: SectorCategoryRef[] = [];
+
 export function WheelCenterpiece({
   targets,
   alignments,
   classifications = [],
   countryConfig,
   state,
-  sectorCategories = [],
+  sectorCategories = EMPTY_SECTOR_CATEGORIES,
   sectorTaxonomyType = "sector",
   onPairClick,
   onRibbonNavigate,
