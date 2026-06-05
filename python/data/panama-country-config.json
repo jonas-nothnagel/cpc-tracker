@@ -2,7 +2,8 @@
   "_comment": "Country-specific display configuration for Panama. Same shape as mongolia-country-config.json. Document taxonomy and provenance strings drive the dashboard without any code changes.",
   "_documentTypesComment": "Panama's source documents. NP + ENR were carried over from the original Apr 2026 xlsx; HR, PEG, PNSH, PENCYT, PIOTA, PNRF replaced IRMF + SPGCF on 11 May 2026 per Lea's 8 May feedback (data_panama_5May26.xlsx). Short labels come verbatim from the Doc column. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. Colors are mutually distinguishable under deuteranopia/protanopia simulation. NP (Nature Pledge) is the anchor / national development plan; BTR is added at runtime via the reserved-token offset so it sorts last automatically.",
   "anchorDocType": "NP",
-  "defaultHiddenDocTypes": [],
+  "_defaultHiddenDocTypesComment": "ENR (Estrategia Nacional REDD+) is a ~206-target REDD+ strategy, roughly half the Panama corpus. A reviewer flagged that it is not a policy document and skews every visual and insight, while the country office still wants it available. It is therefore HIDDEN BY DEFAULT (soft) but its data ships to the browser and can be toggled back on instantly via the briefing's document filter. Distinct from excludedDocTypes (hard strip). The synthesis pipeline precomputes storyline states for [full corpus] + [ENR hidden] so the toggle stays exact with no live LLM.",
+  "defaultHiddenDocTypes": ["ENR"],
   "excludedDocTypes": ["CNR"],
   "documentTypes": [
     {

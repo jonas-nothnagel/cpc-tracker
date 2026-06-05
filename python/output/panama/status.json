@@ -3,39 +3,52 @@
   "step": 8,
   "totalSteps": 8,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 84306.6s",
-  "startedAt": "2026-05-22T20:22:10.011472+00:00",
-  "completedAt": "2026-05-23T19:47:16.591904+00:00",
+  "message": "Pipeline finished in 46639.9s",
+  "startedAt": "2026-06-03T10:27:24.021459+00:00",
+  "completedAt": "2026-06-03T23:24:43.944136+00:00",
   "error": null,
   "summary": {
     "totalTargets": 368,
     "totalClassifications": 10270,
-    "relevantClassifications": 2077,
+    "relevantClassifications": 2087,
     "totalPairs": 44474,
     "alignmentLevels": {
-      "high": 7832,
-      "medium": 29393,
-      "low": 5622,
-      "none": 734,
-      "flagged": 893
+      "high": 7904,
+      "medium": 28560,
+      "none": 503,
+      "low": 6473,
+      "flagged": 1034
     },
     "totalContradictions": 0,
     "measureAlignmentPairs": 9936,
     "measurePseudoTargets": 27,
     "budgetAlignmentPairs": 0,
     "budgetPseudoTargets": 0,
-    "elapsedSeconds": 84306.6
+    "elapsedSeconds": 46639.9
   },
   "footprint": {
-    "energy_wh": 11297.833296812374,
-    "water_ml": 48891.59954862297,
-    "co2_geq": 4721.761888280336,
-    "minerals_ugsbeq": 22872.895724357142,
-    "call_count": 56083,
-    "tracked_call_count": 56083,
-    "cached_call_count": 0,
+    "energy_wh": 10867.211907412266,
+    "water_ml": 47028.07687356676,
+    "co2_geq": 4558.103302969491,
+    "minerals_ugsbeq": 22914.826248594734,
+    "call_count": 56111,
+    "tracked_call_count": 54500,
+    "cached_call_count": 1611,
     "model": "gpt-5.4",
     "available": true,
-    "source": "measured"
+    "source": "measured",
+    "by_model": [
+      {
+        "energy_wh": 10867.211907412266,
+        "water_ml": 47028.07687356676,
+        "co2_geq": 4558.103302969491,
+        "minerals_ugsbeq": 22914.826248594734,
+        "call_count": 56111,
+        "tracked_call_count": 54500,
+        "cached_call_count": 1611,
+        "model": "gpt-5.4",
+        "available": true
+      }
+    ]
   }
 }
