@@ -208,7 +208,7 @@ function composeSentence(
   if (!concentrated) {
     return {
       headline: `Biodiversity spending is spread across ${totalProgramCount} programs.`,
-      body: `It takes ${programsToHalf} of ${totalProgramCount} programs to reach half of all tracked spending, so no handful dominates. Across the ${commitmentCount} policy commitments — the targets in the country's nature-climate documents — the budget funds the goals of some far more than others.`,
+      body: `It takes ${programsToHalf} of ${totalProgramCount} programs to reach half of all tracked spending, so no handful dominates. Across the ${commitmentCount} policy commitments (the targets in the country's nature-climate documents), the budget funds the goals of some far more than others.`,
     };
   }
 
@@ -218,7 +218,7 @@ function composeSentence(
       : `just ${numberWord(programsToHalf)} of ${totalProgramCount} programs`;
   return {
     headline: `Over half the biodiversity budget sits in ${where}.`,
-    body: `${programsToHalf === 1 ? "One program holds" : `These ${programsToHalf} programs hold`} more than half of all tracked spending. Across the ${commitmentCount} policy commitments — the targets in the country's nature-climate documents — the budget funds the goals of some far more than others.`,
+    body: `${programsToHalf === 1 ? "One program holds" : `These ${programsToHalf} programs hold`} more than half of all tracked spending. Across the ${commitmentCount} policy commitments (the targets in the country's nature-climate documents), the budget funds the goals of some far more than others.`,
   };
 }
 

@@ -93,7 +93,7 @@ export function computeBudgetCoverage(
     if (!target || linkByTarget.has(otherId)) continue;
     linkByTarget.set(otherId, {
       targetId: otherId,
-      targetLabel: target.sourceLabel,
+      targetLabel: target.sourceLabel ?? "",
       targetText: target.text,
       programName: nameByBerId.get(berId) ?? berId,
       rationale: pair.description ?? "",
