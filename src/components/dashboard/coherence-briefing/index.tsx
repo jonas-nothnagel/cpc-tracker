@@ -48,8 +48,13 @@ import {
   WhereToFocusSection,
 } from "./sections/where-to-focus";
 import { EXPLORE_SECTION_ID, ExploreSection } from "./sections/explore";
+import {
+  FINANCING_SECTION_ID,
+  FinancingSection,
+} from "./sections/financing";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
+import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
@@ -85,6 +90,10 @@ import {
   type SectorSynthesisPayload,
   type SectorTension,
 } from "@/lib/coherence-briefing";
+import {
+  computeFinancingCoherence,
+  type FinancingCoherenceSummary,
+} from "@/lib/financing-coherence";
 import type {
   AlignmentResult,
   BerData,
@@ -114,6 +123,7 @@ type SectionId =
   | typeof FRICTION_TYPES_SECTION_ID
   | typeof SECTORS_SECTION_ID
   | typeof WHERE_TO_FOCUS_SECTION_ID
+  | typeof FINANCING_SECTION_ID
   | typeof EXPLORE_SECTION_ID;
 
 const SECTION_LABELS: Record<SectionId, string> = {
@@ -123,9 +133,13 @@ const SECTION_LABELS: Record<SectionId, string> = {
   [FRICTION_TYPES_SECTION_ID]: "Friction types",
   [SECTORS_SECTION_ID]: "Sectors",
   [WHERE_TO_FOCUS_SECTION_ID]: "Where to focus",
+  [FINANCING_SECTION_ID]: "Financing",
   [EXPLORE_SECTION_ID]: "Explore",
 };
 
+// Canonical order. The Financing slide only renders for countries with BER
+// data (Mongolia today); on countries without it the section is dropped from
+// the jump-nav via `visibleSectionOrder` below and never mounts.
 const SECTION_ORDER: SectionId[] = [
   DIRECTION_SECTION_ID,
   DOC_FOCUS_SECTION_ID,
@@ -133,6 +147,7 @@ const SECTION_ORDER: SectionId[] = [
   FRICTION_TYPES_SECTION_ID,
   WHERE_TO_FOCUS_SECTION_ID,
   SECTORS_SECTION_ID,
+  FINANCING_SECTION_ID,
   EXPLORE_SECTION_ID,
 ];
 
@@ -276,6 +291,28 @@ export function CoherenceBriefing({
         (dp) => !hiddenDocs.has(dp.doc_a) && !hiddenDocs.has(dp.doc_b),
       ),
     [docPairSyntheses, hiddenDocs],
+  );
+
+  // ── Financing coherence (Level 2) ───────────────────────────────
+  // Only shown for countries with a Biodiversity Expenditure Review (Mongolia
+  // today). Built on hard BER facts alone — no budget↔policy alignment, no
+  // taxonomy. Null → the Financing slide is dropped entirely. The commitment
+  // count it compares against is the live visible-target count (recomputes
+  // with the document toggle).
+  const financing = useMemo<FinancingCoherenceSummary | null>(() => {
+    if (!berData || !berData.programs || berData.programs.length === 0) {
+      return null;
+    }
+    return computeFinancingCoherence(berData);
+  }, [berData]);
+
+  // Jump-nav / slide order with the Financing slide gated on its data.
+  const visibleSectionOrder = useMemo(
+    () =>
+      financing
+        ? SECTION_ORDER
+        : SECTION_ORDER.filter((id) => id !== FINANCING_SECTION_ID),
+    [financing],
   );
 
   // Storyline-layer selection for the current hidden set. Corpus + sector
@@ -889,6 +926,7 @@ export function CoherenceBriefing({
     [FRICTION_TYPES_SECTION_ID]: null,
     [SECTORS_SECTION_ID]: null,
     [WHERE_TO_FOCUS_SECTION_ID]: null,
+    [FINANCING_SECTION_ID]: null,
     [EXPLORE_SECTION_ID]: null,
   });
 
@@ -966,7 +1004,7 @@ export function CoherenceBriefing({
           </div>
         ) : (
           <>
-            <JumpNav active={activeSection} order={SECTION_ORDER} />
+            <JumpNav active={activeSection} order={visibleSectionOrder} />
 
             {/* Sections 1-6: the scrollytelling narrative with the shared sticky
                 wheel. The Explore finale lives in its own full-width block below. */}
@@ -1071,6 +1109,17 @@ export function CoherenceBriefing({
                 onHoverSector={setSectorHoverId}
               />
             </div>
+            {financing && (
+              <div
+                ref={setSectionRef(FINANCING_SECTION_ID)}
+                data-section-id={FINANCING_SECTION_ID}
+              >
+                <FinancingSection
+                  summary={financing}
+                  commitmentCount={visibleTargets.length}
+                />
+              </div>
+            )}
           </div>
 
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
@@ -1102,6 +1151,8 @@ export function CoherenceBriefing({
                     onHoverPair={setHoveredDocPairKey}
                   />
                 </div>
+              ) : activeSection === FINANCING_SECTION_ID && financing ? (
+                <FinancingCenterpiece summary={financing} />
               ) : (
                 <>
                   <WheelCenterpiece
