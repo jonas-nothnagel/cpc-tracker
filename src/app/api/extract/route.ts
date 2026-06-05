@@ -40,6 +40,9 @@ export async function POST(request: NextRequest) {
   const file = formData.get("file") as File | null;
   const docType = (formData.get("docType") as string) || "policy";
   const sourceDocument = (formData.get("sourceDocument") as string) || "SECTORAL";
+  const localeRaw = (formData.get("locale") as string) || "en";
+  const SUPPORTED_OUTPUT_LANGS = new Set(["en", "es", "mn", "fr"]);
+  const outputLanguage = SUPPORTED_OUTPUT_LANGS.has(localeRaw) ? localeRaw : "en";
 
   if (!file) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -87,6 +90,7 @@ export async function POST(request: NextRequest) {
           "--doc-type", docType,
           "--source-document", sourceDocument,
           "--output", outputPath,
+          "--output-language", outputLanguage,
         ],
         {
           cwd: join(PROJECT_ROOT, "python"),

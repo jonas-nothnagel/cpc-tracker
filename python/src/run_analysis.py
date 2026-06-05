@@ -38,7 +38,7 @@ from .classify_globe import (
     load_few_shot_examples,
 )
 from .align import decompose_targets, generate_pairs, assess_alignment
-from .llm import estimate_footprint_from_counts, get_footprint_tracker
+from .llm import estimate_footprint_from_counts, get_footprint_tracker, set_language
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
 from .measure_align import (
@@ -150,6 +150,15 @@ def parse_args() -> argparse.Namespace:
         default="mongolia-targets.json",
         help="Name of the targets JSON file in DATA_DIR (default: mongolia-targets.json)",
     )
+    parser.add_argument(
+        "--language",
+        default="en",
+        choices=["en", "es", "mn", "fr"],
+        help="Output language for LLM-generated text — alignment rationales, "
+             "decompositions, syntheses, etc. (default: en). Each language uses "
+             "its own cache so re-running with a new value does not invalidate "
+             "prior runs.",
+    )
     return parser.parse_args()
 
 
@@ -161,9 +170,10 @@ async def main() -> None:
     # unaffected: when CPC_OUTPUT_DIR is set, derivation is skipped.
     OUTPUT_DIR = derive_output_dir(args.targets_file, OUTPUT_DIR)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    set_language(args.language)
     start = time.time()
     started_at = datetime.now(timezone.utc).isoformat()
-    logger.info(f"Starting analysis pipeline (model: {LLM_MODEL})")
+    logger.info(f"Starting analysis pipeline (model: {LLM_MODEL}, language: {args.language})")
     logger.info(f"Output dir: {OUTPUT_DIR}")
     logger.info("=" * 60)
 

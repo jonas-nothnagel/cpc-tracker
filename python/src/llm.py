@@ -122,6 +122,48 @@ def get_semaphore() -> asyncio.Semaphore:
 
 
 # ---------------------------------------------------------------------------
+# Output language
+# ---------------------------------------------------------------------------
+# A single pipeline-wide setting drives every LLM call's output language.
+# `set_language()` is called once at startup by `run_analysis.py`; `call_llm`
+# below appends a "Respond in {name}." directive to every system prompt so all
+# 21 generation call sites (align, synthesize_*, classify*, quantitative, etc.)
+# inherit without a per-call parameter. The augmented system prompt feeds the
+# cache key, so each language gets its own cache namespace automatically.
+
+_LANGUAGE_NAMES: dict[str, str] = {
+    "en": "English",
+    "es": "Spanish",
+    "mn": "Mongolian",
+    "fr": "French",
+}
+
+_current_language: str | None = None
+
+
+def set_language(code: str | None) -> None:
+    """Set the pipeline-wide output language (ISO 639-1 code)."""
+    global _current_language
+    _current_language = code
+
+
+def get_language() -> str | None:
+    return _current_language
+
+
+def _augment_system_with_language(system: str) -> str:
+    """Append a language directive to the system prompt when one is set.
+
+    No-op when the language is unset, so existing tests and callers that
+    don't go through `run_analysis.py` keep their current behaviour.
+    """
+    if not _current_language:
+        return system
+    name = _LANGUAGE_NAMES.get(_current_language, _current_language)
+    return f"{system}\n\nRespond in {name}."
+
+
+# ---------------------------------------------------------------------------
 # Disk cache
 # ---------------------------------------------------------------------------
 
@@ -187,6 +229,8 @@ async def call_llm(
     model = model or LLM_MODEL
     temperature = temperature if temperature is not None else LLM_TEMPERATURE
     tracker = get_footprint_tracker()
+
+    system = _augment_system_with_language(system)
 
     # Check cache first
     cached = read_cache(cache_namespace, system, user, model)

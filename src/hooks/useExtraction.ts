@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useLocale } from "next-intl";
 import type { PolicyDocumentType } from "@/types";
 import type { ExtractedItem } from "@/lib/upload-helpers";
 
@@ -23,6 +24,7 @@ const EMPTY_FOOTPRINT: ExtractionFootprint = {
 };
 
 export function useExtraction() {
+  const locale = useLocale();
   const [extracting, setExtracting] = useState(false);
   const [extractedItems, setExtractedItems] = useState<ExtractedItem[]>([]);
   const [extractFileName, setExtractFileName] = useState("");
@@ -52,6 +54,7 @@ export function useExtraction() {
       form.append("file", file);
       form.append("docType", docType);
       form.append("sourceDocument", sourceDocument);
+      form.append("locale", locale);
 
       try {
         const res = await fetch("/api/extract", { method: "POST", body: form });
@@ -104,7 +107,7 @@ export function useExtraction() {
         setExtracting(false);
       }
     },
-    []
+    [locale]
   );
 
   const queueFilesForExtraction = useCallback(

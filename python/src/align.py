@@ -271,7 +271,7 @@ livestock-sector headcount under rangeland carrying capacity and the emissions b
 the 50 million head cap is only feasible through efficiency gains, not herd growth. As written, the two targets cannot both be \
 fully delivered without revising one, so the friction lives in the targets themselves rather than in delivery.
 
-    Your output should be in English. Use no em dashes. Do not invent facts.
+    Use no em dashes. Do not invent facts.
     """
 
 
