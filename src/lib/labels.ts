@@ -26,6 +26,15 @@ const CONTRADICTION_KEYS: AlignmentMechanism[] = [
 const MANAGEABILITY_KEYS: AlignmentManageability[] = ["manageable", "fundamental"];
 const CONFIDENCE_KEYS: AlignmentConfidence[] = ["high", "medium", "low"];
 
+export type Nr7Status = "on_track" | "limited" | "no_progress" | "unknown";
+const NR7_KEYS: Nr7Status[] = ["on_track", "limited", "no_progress", "unknown"];
+const NR7_TRANSLATION_KEYS: Record<Nr7Status, string> = {
+  on_track: "onTrack",
+  limited: "limited",
+  no_progress: "noProgress",
+  unknown: "unknown",
+};
+
 // --- client hooks ---------------------------------------------------------
 
 export function useAlignmentLabels(): Record<AlignmentLevel, string> {
@@ -87,6 +96,17 @@ export function useConfidenceLabels(): Record<AlignmentConfidence, string> {
         AlignmentConfidence,
         string
       >,
+    [t],
+  );
+}
+
+export function useNr7BadgeLabels(): Record<Nr7Status, string> {
+  const t = useTranslations("labels.nr7");
+  return useMemo(
+    () =>
+      Object.fromEntries(
+        NR7_KEYS.map((k) => [k, t(NR7_TRANSLATION_KEYS[k])]),
+      ) as Record<Nr7Status, string>,
     [t],
   );
 }

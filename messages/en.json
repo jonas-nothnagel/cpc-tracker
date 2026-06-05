@@ -859,6 +859,12 @@
       "medium": "Medium confidence",
       "low": "Low confidence"
     },
+    "nr7": {
+      "onTrack": "On track",
+      "limited": "Limited progress",
+      "noProgress": "No progress",
+      "unknown": "Unknown"
+    },
     "docType": {
       "btr": {
         "short": "BTR Action",
@@ -875,6 +881,177 @@
         "medium": "Other",
         "full": "Other Policy Document"
       }
+    }
+  },
+  "explorer": {
+    "heading": {
+      "title": "Policy Coherence Explorer",
+      "info": "This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate pairs the AI has identified as potential misalignment.",
+      "infoScore": "The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.",
+      "infoBtr": "<strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.",
+      "hoverHint": "Hover or click a target to explore connections."
+    },
+    "groupLabel": {
+      "documentSingular": "document type",
+      "documentPlural": "document types",
+      "globeSingular": "biodiversity category",
+      "globePlural": "biodiversity categories",
+      "sectorSingular": "climate mitigation sector",
+      "sectorPlural": "climate mitigation sectors"
+    },
+    "summary": {
+      "across": " across {count, number} {groupLabel}",
+      "highAlignmentsSingular": "{count, number} strong alignment",
+      "highAlignmentsPlural": "{count, number} strong alignments",
+      "possibleMisSingular": "{count, number} possible misalignment",
+      "possibleMisPlural": "{count, number} possible misalignments",
+      "alignedSingular": "{count, number} strong or medium alignment",
+      "alignedPlural": "{count, number} strong or medium alignments",
+      "allOpportunitySingular": "{count, number} alignment opportunity",
+      "allOpportunityPlural": "{count, number} alignment opportunities",
+      "joinAnd": " and ",
+      "joinComma": ", "
+    },
+    "controls": {
+      "groupDocuments": "Documents",
+      "groupGlobe": "GLOBE",
+      "groupSectors": "IPCC sectors",
+      "groupDocumentsTitle": "Group the wheel by source document",
+      "groupGlobeTitle": "Group by biodiversity category (GLOBE taxonomy)",
+      "groupSectorsTitle": "Group by climate mitigation sector (IPCC)",
+      "groupOptionDocument": "By Document Type",
+      "groupOptionGlobe": "By Biodiversity Category",
+      "groupOptionSector": "By Climate Mitigation Sector",
+      "filterHighContra": "High + Contradictions",
+      "filterHighMedium": "High + Medium",
+      "filterAll": "All connections",
+      "filterHigh": "High only",
+      "filterContradictions": "Contradictions only",
+      "atAGlance": "At a glance",
+      "atAGlanceTitle": "Show or hide the at-a-glance summary panel"
+    },
+    "doc": {
+      "mitigation": "Mitigation",
+      "adaptation": "Adaptation",
+      "toggleMitigationTitle": "Toggle BTR mitigation measures",
+      "toggleAdaptationTitle": "Toggle BTR adaptation actions",
+      "abbreviationsTitle": "Document abbreviations",
+      "searchPlaceholder": "Look for a target…"
+    },
+    "budget": {
+      "label": "Biodiversity Budget",
+      "onTitle": "Turn off the Biodiversity Budget shading. The wheel keeps the GLOBE grouping.",
+      "offTitle": "Switch to the Biodiversity Budget view: groups arcs by GLOBE and shades each by its share of tagged BER spend.",
+      "mongoliaNote": "Mongolia BER (Biodiversity Expenditure Review), {start, number}–{end, number} totals. Subset of national expenditure.",
+      "wedgeTooltip": "{label} · {amount} ({pct}% of tagged BER)",
+      "fallbackAmount": "0 MNT"
+    },
+    "wheel": {
+      "legendDocument": "Document",
+      "legendBiodiversity": "Biodiversity Category",
+      "legendSector": "Climate Mitigation Sector",
+      "legendConnectionStrength": "Connection strength",
+      "legendHigh": "High: strong synergy",
+      "legendMedium": "Medium: complementary",
+      "legendLow": "Low: loosely related",
+      "legendPotentialMis": "Potential misalignment",
+      "nodeTooltip": "{label}: {source}",
+      "countryFallback": "Country",
+      "centerTargets": "{count, number} targets",
+      "centerAligned": "{count, number} aligned",
+      "centerConnectionsSingular": "{count, number} connection",
+      "centerConnectionsPlural": "{count, number} connections",
+      "centerTargetSingular": "{count, number} target",
+      "centerTargetPlural": "{count, number} targets"
+    },
+    "detailPanel": {
+      "closeAria": "Close target detail",
+      "showLess": "Show less ▴",
+      "readFull": "Read full ▾",
+      "distSegmentTitle": "{count, number} {label}",
+      "connectionsSingular": "{count, number} connection",
+      "connectionsPlural": "{count, number} connections",
+      "sortedBySeverity": "Sorted by severity",
+      "nr7Heading": "NR7:",
+      "nr7OnTrack": "on track",
+      "nr7Limited": "limited",
+      "nr7None": "none",
+      "nr7Progress": "NR7 Progress: {label}",
+      "nr7TitlePrefix": "NR7: {label}",
+      "keyChallenges": "Key challenges"
+    },
+    "targetCard": {
+      "showLess": "Show less ▴",
+      "readFull": "Read full ▾"
+    },
+    "pairModal": {
+      "title": "{label} · target pair",
+      "noRationale": "No AI rationale available for this pair.",
+      "fundamentalSuffix": "· fundamental"
+    },
+    "stat": {
+      "closeListAria": "Close list"
+    },
+    "empty": {
+      "atAGlance": "At a glance",
+      "statTargets": "Targets",
+      "statAlignments": "Alignments",
+      "statMisalignments": "Possible misalignments",
+      "statTargetsTitle": "Browse all visible targets",
+      "statAlignmentsTitle": "Browse all strong alignment pairs",
+      "statMisalignmentsTitle": "Browse all pairs flagged as possible/likely conflict",
+      "strongestAlignments": "Strongest alignments",
+      "mostConflictedTargets": "Most conflicted targets",
+      "noStrongAlignments": "No strong alignments for the current selection.",
+      "noTensions": "No potential tensions for the current selection.",
+      "allTargetsTitle": "All targets · {count, number}",
+      "allAlignmentsTitle": "All alignments · {count, number}",
+      "allTensionsTitle": "All tensions · {count, number}",
+      "emptyTargets": "No targets in this view.",
+      "emptyAlignments": "No strong alignments in this view.",
+      "emptyTensions": "No tensions in this view.",
+      "docTargetCount": " · {count, plural, one {1 target} other {# targets}}"
+    },
+    "category": {
+      "closeAria": "Close category",
+      "taggedBerSpend": "Tagged BER spend",
+      "shareSuffix": " · {pct}% share",
+      "periodSuffix": " ({start, number}–{end, number})",
+      "policyTargets": "Policy targets",
+      "policyTargetsShareSuffix": " · {pct}% share",
+      "contributingProgrammes": "Contributing programmes",
+      "contributingProgrammesCount": " · {count, number}",
+      "programmeTooltip": "{id} {name}",
+      "statTargets": "Targets",
+      "statAlignments": "Alignments",
+      "statMisalignments": "Possible misalignments",
+      "statTargetsTitle": "Browse all targets in this category",
+      "statAlignmentsTitle": "Browse all strong alignment pairs in this category",
+      "statMisalignmentsTitle": "Browse all pairs flagged as possible/likely conflict in this category",
+      "misWithOther": "Possible misalignments with other categories",
+      "alignsWithOther": "Aligns with other categories",
+      "topConflicts": "Top conflicts",
+      "topConflictsCount": "Top conflicts · {count, number}",
+      "strongestAlignments": "Strongest alignments",
+      "strongestAlignmentsCount": "Strongest alignments · {count, number}",
+      "noTensionsOther": "No tensions with other categories.",
+      "noAlignsOther": "No alignments with other categories.",
+      "noConflicts": "No conflicts in this category.",
+      "noStrongAlignments": "No strong alignments in this category.",
+      "moreCount": "+ {count, number} more"
+    },
+    "chat": {
+      "askPlaceholder": "Ask anything about this view…",
+      "askAria": "Ask the assistant about this view",
+      "ask": "Ask",
+      "loading": "…",
+      "thinking": "Thinking…",
+      "insight": "Insight",
+      "showMe": "Show me",
+      "surpriseMe": "Surprise me",
+      "openEntityTitle": "Open {id}",
+      "requestFailed": "Request failed ({status, number})",
+      "genericError": "Sorry, that didn't work."
     }
   },
   "metadata": {
