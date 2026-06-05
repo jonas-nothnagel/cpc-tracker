@@ -99,11 +99,25 @@ def _parse(text: str) -> dict[str, Any]:
 def _grounded(term: str, description_lc: str) -> bool:
     """True if any alphabetic token (>=4 chars) of `term` appears in the
     rationale. A cheap hallucination guard: keeps "land"/"water"/"watershed"
-    that the analyst actually wrote, drops anything the model invented."""
+    that the analyst actually wrote, drops anything the model invented. The
+    >=4-char floor is deliberate: 2-3 char tokens substring-match too loosely
+    (e.g. "oil" would ground on "soil"), so we trade a little recall for
+    precision in a faithfulness-critical label."""
     tokens = re.findall(r"[a-z]{4,}", term.lower())
     if not tokens:
         return False
     return any(tok in description_lc for tok in tokens)
+
+
+def _fully_grounded(phrase: str, description_lc: str) -> bool:
+    """Stricter than `_grounded`: EVERY significant (>=4-char) token of `phrase`
+    must appear in the rationale. Used for place labels, where a single shared
+    token is too weak — a partly-invented phrase ("coastal mining zones" when
+    only "zones" was written) must not pass through whole."""
+    tokens = re.findall(r"[a-z]{4,}", phrase.lower())
+    if not tokens:
+        return False
+    return all(tok in description_lc for tok in tokens)
 
 
 def _clean_context(ctx: str) -> str:
@@ -122,7 +136,10 @@ def _clean_fields(raw: str, description: str) -> tuple[list[str], str]:
 
     resources: list[str] = []
     seen: set[str] = set()
-    for item in obj.get("contestedResources") or []:
+    # Coerce defensively: the model occasionally returns a scalar or null for
+    # contestedResources, and `for item in <scalar>` would raise.
+    raw_resources = obj.get("contestedResources")
+    for item in raw_resources if isinstance(raw_resources, list) else []:
         term = str(item or "").strip().lower()
         if not term or len(term) > _MAX_RESOURCE_LEN:
             continue
@@ -131,14 +148,9 @@ def _clean_fields(raw: str, description: str) -> tuple[list[str], str]:
             continue
         if not _grounded(term, description_lc):
             continue
-        # Singularize a simple trailing plural ("lands" -> "land") when the
-        # singular still appears in the rationale.
-        if (
-            term.endswith("s")
-            and not term.endswith("ss")
-            and _grounded(term[:-1], description_lc)
-        ):
-            term = term[:-1]
+        # No singularization: displaying the plural the rationale used ("lands")
+        # is faithful, whereas stripping a trailing "s" mangles non-plurals
+        # ("species" -> "specie") and would show a word the analyst never wrote.
         if term in seen:
             continue
         seen.add(term)
@@ -147,7 +159,7 @@ def _clean_fields(raw: str, description: str) -> tuple[list[str], str]:
             break
 
     context = _clean_context(str(obj.get("sharedContext") or ""))
-    if len(context) > _MAX_CONTEXT_LEN or not _grounded(context, description_lc):
+    if len(context) > _MAX_CONTEXT_LEN or not _fully_grounded(context, description_lc):
         context = ""
 
     return resources, context

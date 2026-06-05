@@ -54,9 +54,22 @@ class TestCleanFields:
         )
         assert res == []
 
-    def test_singularizes_plural(self):
+    def test_keeps_plural_faithfully(self):
+        # No singularization: show the plural the rationale actually used.
         res, _ = _clean_fields(_raw(["lands"]), "plantations on private and state lands")
-        assert res == ["land"]
+        assert res == ["lands"]
+
+    def test_does_not_mangle_non_plural(self):
+        # "species" must not become "specie" (a word the rationale never wrote).
+        res, _ = _clean_fields(_raw(["species"]), "habitat for endemic species")
+        assert res == ["species"]
+
+    def test_non_list_resources_safe(self):
+        # A scalar/null for contestedResources must not crash.
+        res, ctx = _clean_fields(
+            json.dumps({"contestedResources": 2, "sharedContext": ""}), "land base"
+        )
+        assert res == [] and ctx == ""
 
     def test_dedupes_and_caps_at_three(self):
         res, _ = _clean_fields(
@@ -74,6 +87,14 @@ class TestCleanFields:
 
     def test_context_dropped_if_ungrounded(self):
         _, ctx = _clean_fields(_raw([], "Atlantic seaboard"), "land and water in the watershed")
+        assert ctx == ""
+
+    def test_partial_place_fabrication_dropped(self):
+        # Every significant word of a place must appear in the rationale; a
+        # phrase with only one matching token is dropped whole.
+        _, ctx = _clean_fields(
+            _raw([], "coastal mining zones"), "development pressure on protected zones"
+        )
         assert ctx == ""
 
     def test_empty_on_non_json(self):

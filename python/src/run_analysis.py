@@ -384,8 +384,15 @@ async def main() -> None:
 
         # Tag flagged pairs with the concrete dimension they concern (contested
         # resource / shared geography), read from the rationale just produced.
-        # Own cache namespace, so this never re-runs alignment.
-        alignment_results = await enrich_with_friction_dimensions(alignment_results)
+        # Own cache namespace, so this never re-runs alignment. Enrichment is
+        # additive and non-essential: a failure here must not discard the
+        # expensive alignment output, so log and save the unenriched results.
+        try:
+            alignment_results = await enrich_with_friction_dimensions(alignment_results)
+        except Exception as e:
+            logger.warning(
+                f"Friction-dimension enrichment failed; saving alignment without it: {e}"
+            )
 
         # Save alignment results
         out_path = OUTPUT_DIR / "alignment.json"

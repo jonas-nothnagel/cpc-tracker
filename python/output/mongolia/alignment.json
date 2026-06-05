@@ -10428,7 +10428,7 @@
     "contestedResources": [
       "land",
       "pastureland",
-      "wetland"
+      "wetlands"
     ]
   },
   {
@@ -17925,7 +17925,7 @@
     "confidence": "high",
     "contestedResources": [
       "livestock",
-      "emission"
+      "emissions"
     ]
   },
   {
