@@ -47,7 +47,7 @@ function composeSentence(
   const concentrated =
     programsToHalf <= Math.max(1, Math.round(totalProgramCount * 0.2));
 
-  if (totalProgramCount === 0 || summary.totalTrackedExpenditure === 0) {
+  if (totalProgramCount === 0 || summary.totalTrackedExpenditure <= 0) {
     return {
       headline: "No tracked biodiversity expenditure to compare yet.",
       body: "Once the Biodiversity Expenditure Review reports program spending, this slide shows whether the money is concentrated where the policy ambition sits.",

@@ -56,6 +56,12 @@ function Concentration({
   const topSpend = top.reduce((s, p) => s + p.totalSpend, 0);
   const restSpend = Math.max(0, total - topSpend);
   const pct = (v: number) => Math.round((v / total) * 100);
+  // "Everything else" absorbs the rounding remainder so the legend's named
+  // shares always sum to 100 (bar widths stay exact fractions).
+  const restPct = Math.max(
+    0,
+    100 - top.reduce((s, p) => s + pct(p.totalSpend), 0),
+  );
 
   return (
     <div>
@@ -79,7 +85,7 @@ function Concentration({
           <span
             className="h-full flex-1"
             style={{ backgroundColor: REST }}
-            title={`Everything else: ${pct(restSpend)}%`}
+            title={`Everything else: ${restPct}%`}
           />
         )}
       </div>
@@ -115,7 +121,7 @@ function Concentration({
                   )}
                 </span>
                 <span className="tabular-nums text-[var(--undp-gray)] shrink-0">
-                  {pct(restSpend)}%
+                  {restPct}%
                 </span>
               </summary>
               {rest.length > 0 && (
@@ -212,10 +218,13 @@ function ExecutionBar({
           {execution.actual.toLocaleString("en-US")}
         </span>{" "}
         of {execution.planned.toLocaleString("en-US")} {unit} {currency} spent
-        <span className="text-[var(--undp-gray)]">
-          {" "}
-          · {formatBerMoney(execution.gap, unit, currency)} ({gapPct}%) unspent
-        </span>
+        {execution.gap > 0 && (
+          <span className="text-[var(--undp-gray)]">
+            {" "}
+            · {formatBerMoney(execution.gap, unit, currency)} (
+            {Math.max(0, gapPct)}%) unspent
+          </span>
+        )}
       </p>
     </div>
   );

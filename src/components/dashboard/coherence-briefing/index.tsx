@@ -1113,6 +1113,13 @@ export function CoherenceBriefing({
               <div
                 ref={setSectionRef(FINANCING_SECTION_ID)}
                 data-section-id={FINANCING_SECTION_ID}
+                // The finding copy is brief; without a min-height this short
+                // section would win "active" while still low in the viewport,
+                // leaving the previous section visible beside the sticky
+                // Financing visual. Fill the column on desktop so the finding
+                // stays in sync with its centerpiece (top-aligned, not centred,
+                // to match the top-pinned sticky visual).
+                className="lg:min-h-[80vh]"
               >
                 <FinancingSection
                   summary={financing}
