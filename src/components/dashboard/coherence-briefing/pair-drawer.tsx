@@ -23,7 +23,7 @@ import {
   getDocFullLabel,
 } from "@/lib/utils";
 import { isContradiction } from "@/types";
-import { SubFieldChip } from "./theme-drawer";
+import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
   AlignmentLevel,
@@ -257,9 +257,16 @@ function TargetPairBody({
 
         {pair.description && (
           <section className="border-t border-gray-200 pt-4">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-              AI rationale
-            </p>
+            <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+                AI rationale
+              </p>
+              <FrictionDimensionChip
+                mechanism={pair.mechanism}
+                contestedResources={pair.contestedResources}
+                sharedContext={pair.sharedContext}
+              />
+            </div>
             <p className="text-sm text-[var(--undp-black)] leading-relaxed italic">
               {pair.description}
             </p>
@@ -760,6 +767,11 @@ function TargetPairRow({
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />
           )}
+          <FrictionDimensionChip
+            mechanism={pair.mechanism}
+            contestedResources={pair.contestedResources}
+            sharedContext={pair.sharedContext}
+          />
         </div>
         <p className="text-[10px] text-[var(--undp-gray)] mb-0.5">
           {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}

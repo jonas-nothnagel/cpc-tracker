@@ -279,6 +279,16 @@ export interface AlignmentResult {
   confidence?: AlignmentConfidence;
   /** AI-generated rationale for the classification */
   description: string;
+  /**
+   * Concrete dimension the flag concerns, extracted from `description` by the
+   * friction-dimensions step (python/src/extract_friction_dimensions.py).
+   * Surfaced as a per-pair chip. Both optional; every value is grounded in the
+   * rationale text. `contestedResources` is the resource(s) two targets compete
+   * for (shown for resource_competition); `sharedContext` is the shared place
+   * they operate in (shown for delivery_friction).
+   */
+  contestedResources?: string[];
+  sharedContext?: string;
 }
 
 /** Whether an alignment level represents a flagged pair (negative side of the scale). */
