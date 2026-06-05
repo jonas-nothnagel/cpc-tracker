@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { spawn } from "child_process";
 import { join } from "path";
 import { getCountry, isValidCountryId } from "@/config/countries";
+import { canonicalHiddenKey } from "@/lib/coherence-briefing";
 
 /**
  * GET /api/storyline-state?country=<id>&hidden=<canonicalKey>
@@ -41,8 +42,10 @@ const MAX_DOCS_IN_KEY = 12;
 // re-spawning Python for a subset already computed this session.
 const stateCache = new Map<string, Promise<Record<string, unknown>>>();
 
-/** Re-canonicalise a hidden-doc key: split on '+', validate each id, sort,
- *  rejoin. Mirrors the client/Python `canonicalHiddenKey` and rejects junk. */
+/** Validate an untrusted hidden-doc key from the query string, then defer to
+ *  the shared `canonicalHiddenKey` for the actual sort+dedupe+join so this
+ *  route can't drift from the client/Python key format. MAX_DOCS_IN_KEY is a
+ *  sanity bound on arbitrary on-demand subsets (not the precompute cap). */
 function canonicaliseHiddenKey(raw: string): string | null {
   const parts = raw
     .split("+")
@@ -52,7 +55,7 @@ function canonicaliseHiddenKey(raw: string): string | null {
   for (const p of parts) {
     if (!/^[A-Za-z0-9_]{1,32}$/.test(p)) return null;
   }
-  return Array.from(new Set(parts)).sort().join("+");
+  return canonicalHiddenKey(parts);
 }
 
 function runSynthesis(
@@ -98,7 +101,23 @@ function runSynthesis(
       }
       try {
         // stdout carries only the JSON; logging goes to stderr.
-        resolve(JSON.parse(stdout.trim()) as Record<string, unknown>);
+        const parsed = JSON.parse(stdout.trim()) as {
+          storylines?: unknown[];
+          parse_error?: boolean;
+        };
+        // synthesize_corpus exits 0 even when the LLM reply fails to parse or
+        // there is no input, returning an empty-storyline payload. Treat that
+        // as a failure so we neither cache it nor overwrite the client's
+        // full-set prose — the client keeps the fallback + caveat instead.
+        if (
+          parsed?.parse_error ||
+          !Array.isArray(parsed?.storylines) ||
+          parsed.storylines.length === 0
+        ) {
+          reject(new Error("synthesis returned no usable storylines"));
+          return;
+        }
+        resolve(parsed as Record<string, unknown>);
       } catch {
         reject(new Error("could not parse synthesis output"));
       }

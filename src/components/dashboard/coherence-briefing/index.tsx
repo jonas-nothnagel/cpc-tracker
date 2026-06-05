@@ -302,53 +302,76 @@ export function CoherenceBriefing({
   // heavy). Numbers + doc-pair storylines are already exact regardless.
   const hiddenKey = useMemo(() => canonicalHiddenKey(hiddenDocs), [hiddenDocs]);
   const corpusIsOffPath = hiddenDocs.size > 0 && !corpusSelection.isExact;
+  // Successful live results, keyed by hidden-set. `liveFailedKeys` records keys
+  // whose fetch failed (or returned no usable storylines) so we show the
+  // full-set caveat instead of a perpetual "updating" state and don't refetch.
   const [liveCorpus, setLiveCorpus] = useState<Record<string, CorpusThemes>>(
     {},
   );
-  const [liveCorpusPending, setLiveCorpusPending] = useState(false);
+  const [liveFailedKeys, setLiveFailedKeys] = useState<Set<string>>(
+    () => new Set(),
+  );
 
   useEffect(() => {
-    if (!corpusIsOffPath || !countryId || liveCorpus[hiddenKey]) return;
+    if (
+      !corpusIsOffPath ||
+      !countryId ||
+      liveCorpus[hiddenKey] ||
+      liveFailedKeys.has(hiddenKey)
+    ) {
+      return;
+    }
     let cancelled = false;
+    const key = hiddenKey;
     const timer = setTimeout(() => {
-      setLiveCorpusPending(true);
       fetch(
         `/api/storyline-state?country=${encodeURIComponent(
           countryId,
-        )}&hidden=${encodeURIComponent(hiddenKey)}`,
+        )}&hidden=${encodeURIComponent(key)}`,
       )
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error("fetch"))))
         .then((data: { corpusThemes?: CorpusThemes }) => {
-          if (cancelled || !data?.corpusThemes) return;
-          setLiveCorpus((prev) => ({ ...prev, [hiddenKey]: data.corpusThemes! }));
+          if (cancelled) return;
+          if (data?.corpusThemes) {
+            setLiveCorpus((prev) => ({ ...prev, [key]: data.corpusThemes! }));
+          } else {
+            throw new Error("no corpusThemes");
+          }
         })
         .catch(() => {
-          /* keep the full-set fallback + caveat */
-        })
-        .finally(() => {
-          if (!cancelled) setLiveCorpusPending(false);
+          // Mark failed so the UI falls back to the full-set caveat rather than
+          // showing "updating" forever, and so we don't hammer a failing subset.
+          if (!cancelled) {
+            setLiveFailedKeys((prev) => new Set(prev).add(key));
+          }
         });
     }, 700);
     return () => {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [corpusIsOffPath, countryId, hiddenKey, liveCorpus]);
+  }, [corpusIsOffPath, countryId, hiddenKey, liveCorpus, liveFailedKeys]);
 
   const liveCorpusForKey = corpusIsOffPath ? liveCorpus[hiddenKey] : undefined;
   const visibleCorpusThemes = liveCorpusForKey ?? corpusSelection.themes;
   // Quiet caveat under the filter control: only the LLM prose may be full-set;
-  // every number stays exact. Three cases, narrowest claim first.
+  // every number stays exact. "Updating" while a live regeneration is in
+  // flight; the full-set fallback once it lands-or-fails; sector-only note when
+  // the corpus is exact but sector prose still reflects all documents.
+  const liveUpdating =
+    corpusIsOffPath &&
+    !!countryId &&
+    !liveCorpusForKey &&
+    !liveFailedKeys.has(hiddenKey);
   const sectorIsFullSetFallback =
     hiddenDocs.size > 0 && !sectorSelection.isExact;
-  const storylineCaveat: string | null =
-    corpusIsOffPath && !liveCorpusForKey && liveCorpusPending
-      ? "Updating storylines for your current selection…"
-      : corpusIsOffPath && !liveCorpusForKey
-        ? "Storylines reflect all policy documents; the figures reflect your current selection."
-        : sectorIsFullSetFallback
-          ? "Sector storylines reflect all policy documents; everything else reflects your current selection."
-          : null;
+  const storylineCaveat: string | null = liveUpdating
+    ? "Updating storylines for your current selection…"
+    : corpusIsOffPath && !liveCorpusForKey
+      ? "Storylines reflect all policy documents; the figures reflect your current selection."
+      : sectorIsFullSetFallback
+        ? "Sector storylines reflect all policy documents; everything else reflects your current selection."
+        : null;
 
   const verdict = useMemo(
     () => pickHeadlineVerdict(visibleAlignment),
@@ -391,11 +414,12 @@ export function CoherenceBriefing({
     for (const t of visibleTargets) docs.add(t.sourceDocument);
     return docs.size;
   }, [visibleTargets]);
-  const availableDocs = useMemo<PolicyDocumentType[]>(() => {
-    const docs = new Set<PolicyDocumentType>();
-    for (const t of visibleTargets) docs.add(t.sourceDocument);
-    return Array.from(docs).sort();
-  }, [visibleTargets]);
+  // Visible docs = all docs minus the hidden ones, keeping `allDocs`' config
+  // order (so the doc list reads consistently with the wheel legend).
+  const availableDocs = useMemo<PolicyDocumentType[]>(
+    () => allDocs.filter((d) => !hiddenDocs.has(d)),
+    [allDocs, hiddenDocs],
+  );
 
   // Sector lens — GLOBE by default, with IPCC and country sectors as
   // alternatives when the underlying classifications back them.
