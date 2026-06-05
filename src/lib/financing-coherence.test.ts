@@ -1,9 +1,10 @@
 import { describe, it, expect } from "vitest";
 import {
+  computeBudgetCoverage,
   computeFinancingCoherence,
   formatBerMoney,
 } from "./financing-coherence";
-import type { BerData } from "@/types";
+import type { AlignmentResult, BerData, Target } from "@/types";
 
 // The L2 slide runs on hard BER facts only: how much, how concentrated, how
 // much unspent. No budget↔policy alignment, no taxonomy. So the compute takes
@@ -100,6 +101,94 @@ describe("computeFinancingCoherence", () => {
     expect(r.currency).toBe("MNT");
     expect(r.unit).toBe("billion");
     expect(r.periodLabel).toBe("2020-2024");
+  });
+});
+
+describe("computeBudgetCoverage", () => {
+  function target(id: string, doc: string): Target {
+    return {
+      id,
+      text: `${id} text`,
+      sourceDocument: doc,
+      sourceLabel: id,
+      country: "Testland",
+      isQuantitative: false,
+      isTimeBound: false,
+    };
+  }
+  function align(
+    a: string,
+    b: string,
+    level: AlignmentResult["alignment"],
+    description = "",
+  ): AlignmentResult {
+    return { targetAId: a, targetBId: b, alignment: level, description };
+  }
+
+  const P1 = { berId: "BER_1", name: "Program One" };
+  const P2 = { berId: "BER_2", name: "Program Two" };
+
+  it("counts only HIGH-confidence links from a FUNDED program", () => {
+    const targets = [
+      target("T1", "NBSAP"),
+      target("T2", "NBSAP"),
+      target("T3", "NAP"),
+    ];
+    const alignment = [
+      align("BER_1", "T1", "high"), // funded + high  -> counts
+      align("BER_1", "T2", "medium"), // funded but only medium -> excluded
+      align("BER_2", "T3", "high"), // high but BER_2 unfunded -> excluded
+    ];
+    const r = computeBudgetCoverage(alignment, [P1], targets);
+    expect(r.reached).toBe(1);
+    expect(r.total).toBe(3);
+  });
+
+  it("carries the strong links (target + program + why) per document", () => {
+    const targets = [
+      target("T1", "NBSAP"),
+      target("T2", "NBSAP"),
+      target("T3", "NAP"),
+      target("T4", "NAP"),
+      target("T5", "NAP"),
+    ];
+    const alignment = [
+      align("BER_1", "T1", "high", "T1 funds protected areas"),
+      align("BER_1", "T2", "medium"), // medium -> not a strong link
+      align("BER_1", "T3", "high", "T3 funds restoration"),
+    ];
+    const r = computeBudgetCoverage(alignment, [P1, P2], targets);
+    // NAP (3) before NBSAP (2). Only HIGH links count.
+    expect(r.byDocument).toEqual([
+      {
+        doc: "NAP",
+        reached: 1,
+        total: 3,
+        links: [
+          {
+            targetId: "T3",
+            targetLabel: "T3",
+            targetText: "T3 text",
+            programName: "Program One",
+            rationale: "T3 funds restoration",
+          },
+        ],
+      },
+      {
+        doc: "NBSAP",
+        reached: 1, // T2 is only medium, so NBSAP reaches 1 of 2
+        total: 2,
+        links: [
+          {
+            targetId: "T1",
+            targetLabel: "T1",
+            targetText: "T1 text",
+            programName: "Program One",
+            rationale: "T1 funds protected areas",
+          },
+        ],
+      },
+    ]);
   });
 });
 

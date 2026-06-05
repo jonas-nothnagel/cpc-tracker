@@ -91,7 +91,9 @@ import {
   type SectorTension,
 } from "@/lib/coherence-briefing";
 import {
+  computeBudgetCoverage,
   computeFinancingCoherence,
+  type BudgetCoverage,
   type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
 import type {
@@ -173,6 +175,9 @@ interface CoherenceBriefingProps {
   explorerTargets?: Target[];
   btrData?: BtrData | null;
   berData?: BerData | null;
+  /** BER program × policy-target alignment. Drives the per-document
+   *  budget-reach read on the Financing slide (AI-estimated). */
+  budgetAlignment?: AlignmentResult[] | null;
   nr7Data?: Nr7Data | null;
   globeSubcategories?: GlobeSubcategory[];
 }
@@ -192,6 +197,7 @@ export function CoherenceBriefing({
   explorerTargets,
   btrData = null,
   berData = null,
+  budgetAlignment = null,
   nr7Data = null,
   globeSubcategories = [],
 }: CoherenceBriefingProps) {
@@ -305,6 +311,17 @@ export function CoherenceBriefing({
     }
     return computeFinancingCoherence(berData);
   }, [berData]);
+
+  // Softer, AI-estimated per-document budget reach for the left-column read.
+  // Recomputes with the document toggle (visibleTargets). Null without budget
+  // alignment to draw on.
+  const budgetCoverage = useMemo<BudgetCoverage | null>(() => {
+    if (!financing || !budgetAlignment || budgetAlignment.length === 0) {
+      return null;
+    }
+    const funded = financing.programs.filter((p) => p.hasSpend);
+    return computeBudgetCoverage(budgetAlignment, funded, visibleTargets);
+  }, [financing, budgetAlignment, visibleTargets]);
 
   // Jump-nav / slide order with the Financing slide gated on its data.
   const visibleSectionOrder = useMemo(
@@ -1124,6 +1141,8 @@ export function CoherenceBriefing({
                 <FinancingSection
                   summary={financing}
                   commitmentCount={visibleTargets.length}
+                  coverage={budgetCoverage}
+                  countryConfig={countryConfig}
                 />
               </div>
             )}

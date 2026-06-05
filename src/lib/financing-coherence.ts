@@ -14,9 +14,119 @@
  * honest concentration measure: the fewest programs whose spend covers half
  * the total. A small number means a few programs dominate; a large one means
  * spend is spread (reported honestly either way).
+ *
+ * `computeBudgetCoverage` is a SEPARATE, softer read: how far the funded budget
+ * reaches into each policy document via the AI-estimated budget↔policy
+ * alignment. It is shown as a clearly-labelled per-document breakdown that also
+ * explains what the policy commitments are (their composition by document) —
+ * never as the headline.
  */
 
-import type { BerData } from "@/types";
+import type { AlignmentResult, BerData, Target } from "@/types";
+
+/** A strong (high-confidence) budget↔commitment link, with the AI's reasoning. */
+export interface BudgetCoverageLink {
+  targetId: string;
+  /** Short commitment label, e.g. "NDC 3". */
+  targetLabel: string;
+  /** Full commitment text (for tooltip / detail). */
+  targetText: string;
+  /** Funded budget line strongly aligned with it. */
+  programName: string;
+  /** The AI's reasoning for the link (the evidence behind the number). */
+  rationale: string;
+}
+
+export interface BudgetCoverageDoc {
+  /** Source document type (e.g. "NBSAP"). */
+  doc: string;
+  /** Commitments in this document a funded program STRONGLY (high) aligns with. */
+  reached: number;
+  /** Commitments in this document. */
+  total: number;
+  /** One strong link per strongly-aligned commitment (the evidence), by label. */
+  links: BudgetCoverageLink[];
+}
+
+export interface BudgetCoverage {
+  /** Visible commitments a FUNDED program strongly (high) aligns with. */
+  reached: number;
+  /** Visible commitments total. */
+  total: number;
+  /** Per-document breakdown, largest document first. */
+  byDocument: BudgetCoverageDoc[];
+}
+
+/**
+ * Where the funded biodiversity budget FUNDS policy commitments, via the
+ * pipeline's budget↔commitment judgement (`python/src/budget_align.py`, which
+ * reuses the coherence advisor with a budget rubric: HIGH = "the programme's
+ * mandate and expenditure clearly fund the target's goals"). We count only
+ * HIGH links — medium ("same sector but doesn't meaningfully fund") is too
+ * generous and links nearly every commitment, washing out the signal. So a
+ * commitment is "funded" when a FUNDED program (spend > 0) judges HIGH against
+ * it. This is a FUNDING judgement, distinct from the policy-to-policy
+ * coherence. Each document carries the actual links — commitment, budget line,
+ * and the AI's reasoning — so the per-document number is substantiated, not
+ * asserted. AI-derived and indicative; never headline it.
+ */
+export function computeBudgetCoverage(
+  budgetAlignment: AlignmentResult[],
+  fundedPrograms: { berId: string; name: string }[],
+  visibleTargets: Target[],
+): BudgetCoverage {
+  const targetById = new Map(visibleTargets.map((t) => [t.id, t]));
+  const nameByBerId = new Map(fundedPrograms.map((p) => [p.berId, p.name]));
+
+  // First high-confidence link per strongly-aligned commitment (the evidence).
+  const linkByTarget = new Map<string, BudgetCoverageLink>();
+  for (const pair of budgetAlignment) {
+    if (pair.alignment !== "high") continue;
+    const berId = pair.targetAId.startsWith("BER_")
+      ? pair.targetAId
+      : pair.targetBId.startsWith("BER_")
+        ? pair.targetBId
+        : null;
+    if (!berId || !nameByBerId.has(berId)) continue;
+    const otherId = pair.targetAId === berId ? pair.targetBId : pair.targetAId;
+    const target = targetById.get(otherId);
+    if (!target || linkByTarget.has(otherId)) continue;
+    linkByTarget.set(otherId, {
+      targetId: otherId,
+      targetLabel: target.sourceLabel ?? "",
+      targetText: target.text,
+      programName: nameByBerId.get(berId) ?? berId,
+      rationale: pair.description ?? "",
+    });
+  }
+
+  const docs = new Map<
+    string,
+    { total: number; links: BudgetCoverageLink[] }
+  >();
+  for (const t of visibleTargets) {
+    const entry = docs.get(t.sourceDocument) ?? { total: 0, links: [] };
+    entry.total += 1;
+    const link = linkByTarget.get(t.id);
+    if (link) entry.links.push(link);
+    docs.set(t.sourceDocument, entry);
+  }
+
+  const byDocument: BudgetCoverageDoc[] = [...docs.entries()]
+    .map(([doc, v]) => ({
+      doc,
+      reached: v.links.length,
+      total: v.total,
+      links: v.links.sort((a, b) =>
+        a.targetLabel.localeCompare(b.targetLabel, undefined, {
+          numeric: true,
+        }),
+      ),
+    }))
+    .sort((a, b) => b.total - a.total || a.doc.localeCompare(b.doc));
+
+  return { reached: linkByTarget.size, total: visibleTargets.length, byDocument };
+}
 
 export interface FinancingProgramStat {
   berId: string;
