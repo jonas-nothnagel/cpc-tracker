@@ -5,7 +5,7 @@ import { defineRouting } from "next-intl/routing";
 // (middleware matcher, language switcher visibility, generateStaticParams)
 // derives from this list automatically.
 export const routing = defineRouting({
-  locales: ["en"],
+  locales: ["en", "es"],
   defaultLocale: "en",
   // 'always' keeps URLs explicit (`/en/...`) so additional locales are purely
   // additive when they ship — existing English URLs never change shape.

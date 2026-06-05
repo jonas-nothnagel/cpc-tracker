@@ -38,7 +38,14 @@
       "eyebrow": "Inside the analysis",
       "title": "Every policy target, mapped against every other",
       "body": "Each ribbon links two national policy documents. Green shows where their targets are in strong alignment; red threads mark a potential misalignment worth a closer look. Switch between the pilot countries to compare.",
-      "disclaimer": "AI-generated analysis. Treat as a prompt to review, not a settled finding."
+      "disclaimer": "AI-generated analysis. Treat as a prompt to review, not a settled finding.",
+      "preview": {
+        "countrySwitcherAria": "Choose a country to preview",
+        "wheelAriaWithCountry": "Live preview of the policy coherence wheel for {name}: aligned and potentially misaligned target pairs across national policy documents.",
+        "wheelAria": "Live preview of the policy coherence wheel: aligned and potentially misaligned target pairs across national policy documents.",
+        "openDashboardWithCountry": "Open the {name} dashboard",
+        "openDashboard": "Open the full dashboard"
+      }
     },
     "howItWorks": {
       "title": "How it works",

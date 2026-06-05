@@ -15,6 +15,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Centerpiece } from "@/components/dashboard/coherence-briefing/centerpiece";
 import type { WheelState } from "@/components/dashboard/coherence-briefing/centerpiece/wheel";
@@ -40,6 +41,7 @@ export interface PreviewCountry {
 }
 
 export function WheelPreview({ countries }: { countries: PreviewCountry[] }) {
+  const t = useTranslations("landing.inside.preview");
   const [selected, setSelected] = useState<string | null>(null);
   const [data, setData] = useState<WheelData | null>(null);
   const [failed, setFailed] = useState(false);
@@ -88,7 +90,7 @@ export function WheelPreview({ countries }: { countries: PreviewCountry[] }) {
         <div
           className="mb-5 flex items-center justify-center gap-1.5"
           role="group"
-          aria-label="Choose a country to preview"
+          aria-label={t("countrySwitcherAria")}
         >
           {countries.map((c) => {
             const isActive = c.id === selected;
@@ -117,9 +119,11 @@ export function WheelPreview({ countries }: { countries: PreviewCountry[] }) {
         <div
           className="wheel-enter"
           role="img"
-          aria-label={`Live preview of the policy coherence wheel${
-            selectedName ? ` for ${selectedName}` : ""
-          }: aligned and potentially misaligned target pairs across national policy documents.`}
+          aria-label={
+            selectedName
+              ? t("wheelAriaWithCountry", { name: selectedName })
+              : t("wheelAria")
+          }
         >
           <div className="wheel-breathe mx-auto w-full max-w-[560px]">
             <Centerpiece
@@ -140,7 +144,9 @@ export function WheelPreview({ countries }: { countries: PreviewCountry[] }) {
             href={`/dashboard?country=${selected}`}
             className="inline-flex items-center gap-2 text-sm font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
           >
-            Open the {selectedName ?? "full"} dashboard
+            {selectedName
+              ? t("openDashboardWithCountry", { name: selectedName })
+              : t("openDashboard")}
             <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
