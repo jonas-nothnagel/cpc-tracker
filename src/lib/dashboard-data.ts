@@ -136,7 +136,8 @@ export interface DashboardResponse {
   footprint: Record<string, unknown> | null;
   docPairSynthesis: unknown[];
   corpusThemes: Record<string, unknown> | null;
-  sectorSynthesis: unknown[];
+  /** Legacy bare array OR the new { synthesis, states } object. */
+  sectorSynthesis: unknown;
   countryConfig: Record<string, unknown> | null;
 }
 
@@ -340,10 +341,15 @@ export function assembleDashboardData(
   const docPairSynthesis = readJson<unknown[]>(
     join(outputDir, "doc_pair_synthesis.json"),
   );
+  // corpus_themes.json and sector_synthesis.json carry a `states` map keyed by
+  // the canonical hidden-doc set (for the document include/exclude toggle).
+  // Pass them through raw — the briefing selects the matching state client-side.
+  // sector_synthesis may be the new { synthesis, states } object or a legacy
+  // bare array; the client selector handles both.
   const corpusThemes = readJson<Record<string, unknown>>(
     join(outputDir, "corpus_themes.json"),
   );
-  const sectorSynthesis = readJson<unknown[]>(
+  const sectorSynthesis = readJson<unknown>(
     join(outputDir, "sector_synthesis.json"),
   );
 

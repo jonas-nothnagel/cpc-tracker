@@ -33,11 +33,11 @@ const ORDER: FrictionType[] = [
 export function FrictionTypeChart({
   totals,
   onSegmentClick,
-  caption = "Across the corpus",
+  caption = "Across all policy documents",
 }: {
   totals: FrictionTypeTotals;
   onSegmentClick?: (type: FrictionType) => void;
-  /** Left-hand label above the bar. Defaults to the corpus framing. */
+  /** Left-hand label above the bar. Defaults to the all-documents framing. */
   caption?: string;
 }) {
   const { total: totalFlagged } = totals;

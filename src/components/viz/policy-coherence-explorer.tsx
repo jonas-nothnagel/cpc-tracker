@@ -1231,6 +1231,10 @@ const CHIP_SURPRISE = `${CHIP_BASE} text-amber-800 bg-amber-50 border border-amb
 const CHIP_SUGGESTION = `${CHIP_BASE} text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)]`;
 const EXAMPLE_ROW =
   "w-full text-left text-[11.5px] leading-snug rounded-md px-3 py-2 text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+// Workbench variant of the example starters: small pills under the prominent
+// chat input, so they stay visibly secondary to the chat itself.
+const EXAMPLE_CHIP =
+  "text-left text-[11px] leading-snug rounded-full px-2.5 py-1 text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 const SHOW_ME_LINK_BASE =
   "text-[11.5px] font-semibold inline-flex items-center gap-1 transition-colors disabled:opacity-30 disabled:cursor-not-allowed";
 const SHOW_ME_LINK_AMBER = `${SHOW_ME_LINK_BASE} text-amber-800 hover:text-amber-900 hover:underline`;
@@ -1302,6 +1306,8 @@ function ChatBar({
   onApplyHook,
   canShowMe,
   onSelectChatEntity,
+  prominent = false,
+  hideInsights = false,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
@@ -1314,9 +1320,20 @@ function ChatBar({
   canShowMe: boolean;
   /** Inline click handler for target-id chips rendered inside the reply. */
   onSelectChatEntity: (targetId: string) => void;
+  /** Workbench mode: a lead label, a larger input with a filled Ask button, and
+   *  example questions shown as small chips rather than full-width rows, so the
+   *  chat reads as the section's primary action. */
+  prominent?: boolean;
+  /** Suppress the rotating insight bubble + Surprise me (used in the expanded
+   *  wheel view, where the user wants just the wheel and the chat). */
+  hideInsights?: boolean;
 }) {
   const [query, setQuery] = useState("");
-  const placeholder = useTypedPlaceholder("Ask anything about this view…");
+  const placeholder = useTypedPlaceholder(
+    prominent
+      ? "Ask anything about these policies…"
+      : "Ask anything about this view…",
+  );
   const submit = (q: string) => {
     const trimmed = q.trim();
     if (!trimmed || chat.loading) return;
@@ -1328,7 +1345,11 @@ function ChatBar({
   // assistant's reply, or an error. They share the same bubble chrome so
   // the UI doesn't shift between states.
   const showInsight =
-    !!currentInsight && !chat.reply && !chat.loading && !chat.error;
+    !hideInsights &&
+    !!currentInsight &&
+    !chat.reply &&
+    !chat.loading &&
+    !chat.error;
   const showReply = !!chat.reply && !chat.loading;
   const showError = !!chat.error && !chat.loading;
   // Drop server-emitted "surprise" follow-ups because the always-visible
@@ -1344,31 +1365,57 @@ function ChatBar({
   const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
 
   return (
-    <div className="space-y-2.5">
+    <div className={prominent ? "space-y-3" : "space-y-2.5"}>
+      {prominent && (
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+          Ask the policies
+        </p>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           submit(query);
         }}
       >
-        <div className="flex items-center gap-2 border border-gray-200 rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={placeholder}
-            disabled={chat.loading}
-            className="flex-1 min-w-0 text-[12.5px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
-            aria-label="Ask the assistant about this view"
-          />
-          <button
-            type="submit"
-            disabled={chat.loading || query.trim().length === 0}
-            className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
-          >
-            {chat.loading ? "…" : "Ask"}
-          </button>
-        </div>
+        {prominent ? (
+          <div className="relative">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={placeholder}
+              disabled={chat.loading}
+              className="w-full rounded-md border border-gray-300 bg-white px-4 py-3 pr-16 text-sm text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none focus:border-[var(--undp-black)] focus:ring-1 focus:ring-[var(--undp-black)] disabled:opacity-50"
+              aria-label="Ask the assistant about the policy documents"
+            />
+            <button
+              type="submit"
+              disabled={chat.loading || query.trim().length === 0}
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded text-xs font-medium text-white bg-[var(--undp-black)] disabled:bg-gray-300 transition-colors"
+            >
+              {chat.loading ? "…" : "Ask →"}
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 border border-gray-200 rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={placeholder}
+              disabled={chat.loading}
+              className="flex-1 min-w-0 text-[12.5px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
+              aria-label="Ask the assistant about this view"
+            />
+            <button
+              type="submit"
+              disabled={chat.loading || query.trim().length === 0}
+              className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
+            >
+              {chat.loading ? "…" : "Ask"}
+            </button>
+          </div>
+        )}
       </form>
 
       {chat.loading && (
@@ -1453,17 +1500,19 @@ function ChatBar({
       {/* Surprise me sits where Show me used to be, right under the
        *  bubble. It's always available so the user has a one-click route
        *  to "give me something else interesting" without needing to clear
-       *  the chat first. */}
-      <div className="flex flex-wrap gap-1.5">
-        <button
-          type="button"
-          onClick={onRotateInsight}
-          disabled={chat.loading}
-          className={CHIP_SURPRISE}
-        >
-          Surprise me
-        </button>
-      </div>
+       *  the chat first. Hidden in the expanded wheel view. */}
+      {!hideInsights && (
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            onClick={onRotateInsight}
+            disabled={chat.loading}
+            className={CHIP_SURPRISE}
+          >
+            Surprise me
+          </button>
+        </div>
+      )}
 
       {/* Server-emitted follow-up chips after a reply. Filtered to drop
        *  any kind:"surprise" suggestion so it doesn't double up with the
@@ -1485,18 +1534,19 @@ function ChatBar({
         </div>
       )}
 
-      {/* Persistent example questions: 3-4 starters, stacked as full-width
-       *  rows so the heights stay uniform even when a question runs long.
-       *  Previously these were flex-wrap pills, which read as ragged ovals
-       *  whenever any one chip wrapped to two lines. */}
-      <div className="flex flex-col gap-1.5">
+      {/* Persistent example questions. In the workbench they shrink to small
+       *  chips so the chat input stays the prominent action; elsewhere they
+       *  stack as full-width rows for uniform heights on long questions. */}
+      <div
+        className={prominent ? "flex flex-wrap gap-1.5" : "flex flex-col gap-1.5"}
+      >
         {exampleQueries.map((q) => (
           <button
             key={q}
             type="button"
             onClick={() => submit(q)}
             disabled={chat.loading}
-            className={EXAMPLE_ROW}
+            className={prominent ? EXAMPLE_CHIP : EXAMPLE_ROW}
           >
             {q}
           </button>
@@ -2000,7 +2050,7 @@ function EmptyPanel({
             <Stat
               label="Targets"
               value={targets.length}
-              onClick={() => toggleStatView("targets", "all")}
+              onClick={() => toggleStatView("targets", "high_contra")}
               title="Browse all visible targets"
               active={statView === "targets"}
             />
@@ -2013,7 +2063,7 @@ function EmptyPanel({
               active={statView === "alignments"}
             />
             <Stat
-              label="Possible misalignments"
+              label="Potential misalignments"
               value={totalContra}
               accent="red"
               onClick={() => toggleStatView("tensions", "contradictions")}
@@ -2292,7 +2342,7 @@ function CategoryPanel({
                 {budgetPeriod && (
                   <span className="text-[var(--undp-gray)]">
                     {" "}({budgetPeriod.start}
-                    {"–"}
+                    {"-"}
                     {budgetPeriod.end})
                   </span>
                 )}
@@ -2386,7 +2436,7 @@ function CategoryPanel({
           <Stat
             label="Targets"
             value={group.count}
-            onClick={() => toggleStatView("targets", "all")}
+            onClick={() => toggleStatView("targets", "high_contra")}
             title="Browse all targets in this category"
             active={statView === "targets"}
           />
@@ -2399,11 +2449,11 @@ function CategoryPanel({
             active={statView === "alignments"}
           />
           <Stat
-            label="Possible misalignments"
+            label="Potential misalignments"
             value={totalContra}
             accent="red"
             onClick={() => toggleStatView("tensions", "contradictions")}
-            title="Browse all pairs flagged as possible/likely conflict in this category"
+            title="Browse all pairs of potential misalignment in this category"
             active={statView === "tensions"}
           />
         </div>
@@ -2420,7 +2470,7 @@ function CategoryPanel({
              a single column on narrow viewports. */
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-6">
             <div>
-              <Section title="Possible misalignments with other categories">
+              <Section title="Potential misalignments with other categories">
                 {topTensionPartners.length > 0 ? (
                   <ul className="space-y-0.5">
                     {topTensionPartners.map(({ arc, count }) => (
@@ -2627,8 +2677,10 @@ interface PolicyCoherenceExplorerProps {
   countryConfig?: CountryConfig | null;
   /** "dashboard" (default) renders the full standalone chrome. "embed"
    *  suppresses the internal heading + chat and starts with the side panel
-   *  collapsed (wheel full-width), with an "At a glance" toggle to reveal it. */
-  variant?: "dashboard" | "embed";
+   *  collapsed (wheel full-width), with an "At a glance" toggle to reveal it.
+   *  "workbench" is the briefing finale: it keeps all embed chrome but the rail
+   *  stays open with a persistent, prominent chat header above the detail. */
+  variant?: "dashboard" | "embed" | "workbench";
 }
 
 export function PolicyCoherenceExplorer({
@@ -2649,8 +2701,13 @@ export function PolicyCoherenceExplorer({
   // own heading + chat, and the side panel starts collapsed so the wheel gets
   // the full width (toggleable via "At a glance"). Default "dashboard" keeps the
   // original standalone behaviour byte-for-byte.
-  const isEmbed = variant === "embed";
+  const isWorkbench = variant === "workbench";
+  // Workbench inherits all of embed's lighter chrome (pill controls, no card,
+  // bolder arcs); it differs only in the always-open, chat-led rail.
+  const isEmbed = variant === "embed" || isWorkbench;
   const showHeading = !isEmbed;
+  // The internal EmptyPanel chat stays off in embed/workbench: the host (or the
+  // persistent workbench rail header) owns the chat surface instead.
   const showInternalChat = !isEmbed;
   const [showAtAGlance, setShowAtAGlance] = useState(!isEmbed);
 
@@ -2694,6 +2751,11 @@ export function PolicyCoherenceExplorer({
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  // Workbench layout. Default (true) is the big-picture wheel: the wheel fills
+  // the page width with the chat as a bar on top, and the side rail only
+  // appears when a target or category is selected (its stats). Toggling this
+  // off brings the chat + insights + at-a-glance panel in beside the wheel.
+  const [wheelExpanded, setWheelExpanded] = useState(true);
 
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
@@ -2998,14 +3060,15 @@ export function PolicyCoherenceExplorer({
     clearChat();
   }, [countryConfig, clearChat]);
 
-  const handleNodeClick = useCallback(
-    (id: string) => {
-      setComparedPair(null);
-      setSelectedId((prev) => (prev === id ? null : id));
-      clearChat();
-    },
-    [clearChat],
-  );
+  const handleNodeClick = useCallback((id: string) => {
+    setComparedPair(null);
+    setSelectedId((prev) => (prev === id ? null : id));
+    // Chat is NOT cleared on selection: in the workbench the chat is a
+    // persistent rail header, so its reply must survive node clicks. (In the
+    // standalone "dashboard" variant the chat lives in the idle EmptyPanel,
+    // which is replaced by DetailPanel on selection anyway, so this is a no-op
+    // there.)
+  }, []);
 
   // Inline target id clicks inside the chat reply bubble. Lighter than
   // handleNodeClick: keeps the chat reply and pending-actions visible so the
@@ -3571,7 +3634,17 @@ export function PolicyCoherenceExplorer({
 
   // Panel shows when the user opts into "At a glance", OR whenever a target /
   // category is selected — detail must stay reachable even when collapsed.
-  const panelOpen = showAtAGlance || selectedNode != null || focalGroup != null;
+  // Workbench keeps the rail open at all times so the persistent chat header is
+  // always visible; otherwise the panel opens on demand (At a glance, or a
+  // selected target / category).
+  const panelOpen =
+    isWorkbench || showAtAGlance || selectedNode != null || focalGroup != null;
+  // Workbench default is the big-picture wheel (rail hidden). The rail appears
+  // when a target / category is selected (its stats), or when the user toggles
+  // the chat + insights + at-a-glance panel in. Other variants reuse panelOpen.
+  const railVisible = isWorkbench
+    ? !wheelExpanded || selectedNode != null || focalGroup != null
+    : panelOpen;
 
   // Group focus drives the dim treatment on the wheel only when no target is
   // active. Active target takes visual priority and reuses the existing
@@ -3603,19 +3676,88 @@ export function PolicyCoherenceExplorer({
     [],
   );
 
-  const { minConn, maxConn } = useMemo(() => {
-    if (nodes.length === 0) return { minConn: 0, maxConn: 1 };
-    const vals = nodes.map((n) => n.connections);
-    return { minConn: Math.min(...vals), maxConn: Math.max(...vals) };
-  }, [nodes]);
+  // Uniform node radius. Variable sizing by connection count added cognitive
+  // load for policymakers without analytic payoff (design guardrail), so every
+  // target reads at the same visual weight. A constant also keeps the
+  // active/connected rings (r + 5 / r + 3) and the group indicator dot stable.
+  const NODE_RADIUS = 4.5;
 
-  const nodeSize = useCallback(
-    (n: NodePos) => {
-      const range = maxConn - minConn || 1;
-      const t = (n.connections - minConn) / range; // 0..1
-      return 3.5 + t * 7; // 3.5px to 10.5px
-    },
-    [minConn, maxConn],
+  // Target search, extracted so the workbench can place it in the top controls
+  // row (a primary control) while the standalone variants keep it in Row 2.
+  const targetSearch = (
+    <div className="relative">
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setSearchOpen(true);
+        }}
+        onFocus={() => setSearchOpen(true)}
+        placeholder="Look for a target…"
+        className={`${controlCls} ${isEmbed ? "w-56 sm:w-72" : "w-44"}`}
+      />
+      {searchOpen && searchQuery.length >= 2 && (() => {
+        const q = searchQuery.toLowerCase();
+        const matches = visibleTargets
+          .filter(
+            (t) =>
+              t.sourceLabel.toLowerCase().includes(q) ||
+              t.text.toLowerCase().includes(q) ||
+              getDocFullLabel(countryConfig, t.sourceDocument)
+                .toLowerCase()
+                .includes(q),
+          )
+          .slice(0, 8);
+        if (matches.length === 0) return null;
+        return (
+          <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 max-h-60 overflow-y-auto">
+            {matches.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                className="w-full text-left px-3 py-1.5 hover:bg-gray-50 flex items-center gap-2"
+                onClick={() => {
+                  handleNodeClick(t.id);
+                  setSearchQuery("");
+                  setSearchOpen(false);
+                }}
+              >
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{
+                    backgroundColor: getDocColor(countryConfig, t.sourceDocument),
+                  }}
+                />
+                <span className="text-xs text-[var(--undp-black)] truncate">
+                  <span className="font-medium text-[var(--undp-gray)]">
+                    {getDocLabel(countryConfig, t.sourceDocument)}
+                  </span>{" "}
+                  {t.sourceLabel}
+                </span>
+              </button>
+            ))}
+          </div>
+        );
+      })()}
+    </div>
+  );
+
+  // The workbench chat, extracted so it can live either in the side rail
+  // (default) or in a full-width bar on top (expanded wheel mode).
+  const workbenchChat = (hideInsights = false) => (
+    <ChatBar
+      onAsk={handleAsk}
+      chat={chat}
+      exampleQueries={exampleQueries}
+      onRotateInsight={rotateInsight}
+      currentInsight={currentInsight}
+      onApplyHook={onApplyHook}
+      canShowMe={canShowMe}
+      onSelectChatEntity={handleChatEntityClick}
+      prominent
+      hideInsights={hideInsights}
+    />
   );
 
   return (
@@ -3629,7 +3771,7 @@ export function PolicyCoherenceExplorer({
             <InfoBox>
               This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate pairs the AI has identified as potential misalignment.
               <br /><br />
-              The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.
+              The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1 to 3 points (low/medium/high), divided by the maximum possible score.
               <br /><br />
               <strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.
             </InfoBox>
@@ -3657,7 +3799,7 @@ export function PolicyCoherenceExplorer({
                   }
                   className="text-[var(--undp-black)] font-medium underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] transition-colors"
                 >
-                  {filteredCounts.contra} possible misalignment
+                  {filteredCounts.contra} potential misalignment
                   {filteredCounts.contra !== 1 ? "s" : ""}
                 </button>
               );
@@ -3764,13 +3906,11 @@ export function PolicyCoherenceExplorer({
               onChange={(e) => setFilter(e.target.value as AlignFilter)}
               className={controlCls}
             >
-              <option value="high_contra">High + Contradictions</option>
-              <option value="high_medium">High + Medium</option>
-              <option value="all">All connections</option>
-              <option value="high">High only</option>
-              <option value="contradictions">Contradictions only</option>
+              <option value="high_contra">Strong + potential misalignment</option>
+              <option value="high">Strong alignment only</option>
+              <option value="contradictions">Potential misalignment only</option>
             </select>
-            {isEmbed && (
+            {isEmbed && !isWorkbench && (
               <button
                 type="button"
                 onClick={() => setShowAtAGlance((v) => !v)}
@@ -3784,6 +3924,34 @@ export function PolicyCoherenceExplorer({
               >
                 At a glance
               </button>
+            )}
+            {isWorkbench && (
+              <div className="ml-auto flex items-center gap-2">
+                {targetSearch}
+                <button
+                  type="button"
+                  onClick={() => setWheelExpanded((v) => !v)}
+                  aria-pressed={!wheelExpanded}
+                  title={
+                    wheelExpanded
+                      ? "Bring the chat, insights and at-a-glance in beside the wheel"
+                      : "Return to the full-width big-picture wheel"
+                  }
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    !wheelExpanded
+                      ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                      : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                  }`}
+                >
+                  {wheelExpanded ? (
+                    "Chat & stats"
+                  ) : (
+                    <>
+                      <span aria-hidden="true">⤢</span> Big wheel
+                    </>
+                  )}
+                </button>
+              </div>
             )}
           </div>
           {/* Row 2: per-document toggles + abbreviation key + target search.
@@ -3895,7 +4063,7 @@ export function PolicyCoherenceExplorer({
                   return (
                     <span key={doc}>
                       <strong>{getDocLabel(countryConfig, doc)}</strong>
-                      {full !== doc ? ` — ${full}` : ""}
+                      {full !== doc ? `: ${full}` : ""}
                       {i < availableDocs.length - 1 ? <br /> : null}
                     </span>
                   );
@@ -3904,58 +4072,9 @@ export function PolicyCoherenceExplorer({
             </span>
           )}
 
-          {/* Target search */}
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setSearchOpen(true);
-              }}
-              onFocus={() => setSearchOpen(true)}
-              placeholder="Look for a target…"
-              className={`${controlCls} ${isEmbed ? "w-56 sm:w-72" : "w-44"}`}
-            />
-            {searchOpen && searchQuery.length >= 2 && (() => {
-              const q = searchQuery.toLowerCase();
-              const matches = visibleTargets
-                .filter((t) =>
-                  t.sourceLabel.toLowerCase().includes(q) ||
-                  t.text.toLowerCase().includes(q) ||
-                  getDocFullLabel(countryConfig, t.sourceDocument).toLowerCase().includes(q),
-                )
-                .slice(0, 8);
-              if (matches.length === 0) return null;
-              return (
-                <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 max-h-60 overflow-y-auto">
-                  {matches.map((t) => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      className="w-full text-left px-3 py-1.5 hover:bg-gray-50 flex items-center gap-2"
-                      onClick={() => {
-                        handleNodeClick(t.id);
-                        setSearchQuery("");
-                        setSearchOpen(false);
-                      }}
-                    >
-                      <span
-                        className="w-2 h-2 rounded-full shrink-0"
-                        style={{ backgroundColor: getDocColor(countryConfig, t.sourceDocument) }}
-                      />
-                      <span className="text-xs text-[var(--undp-black)] truncate">
-                        <span className="font-medium text-[var(--undp-gray)]">
-                          {getDocLabel(countryConfig, t.sourceDocument)}
-                        </span>
-                        {" "}{t.sourceLabel}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              );
-            })()}
-          </div>
+          {/* Target search lives in Row 1 for the workbench; the standalone
+              variants keep it here at the end of the document toggles. */}
+          {!isWorkbench && targetSearch}
         </div>
         </div>
       </div>
@@ -3968,12 +4087,24 @@ export function PolicyCoherenceExplorer({
         />
       )}
 
-      {/* Main content: persistent split — wheel left, context panel right.
-          items-stretch (grid default) lets the panel match the wheel's height
-          so the layout reads as one card-pair, not two stacked panes. */}
+      {/* Workbench "expand wheel": the chat moves to a full-width bar on top so
+          the wheel below can take the whole page width for inspection. */}
+      {isWorkbench && wheelExpanded && (
+        <div className="mb-4 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
+          {workbenchChat(true)}
+        </div>
+      )}
+
+      {/* Main content: wheel + context panel. Side-by-side by default; in
+          expanded mode the wheel spans full width and any open detail stacks
+          below it. */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Wheel container */}
-        <div className={`min-w-0 ${panelOpen ? "lg:col-span-8" : "lg:col-span-12"}`}>
+        <div
+          className={`min-w-0 ${
+            railVisible ? "lg:col-span-8" : "lg:col-span-12"
+          }`}
+        >
           <div className={wheelCardCls}>
             {/* Top-left budget overlay control. Only rendered when the country
                 has BER data classified to GLOBE subcategories. Clicking ON
@@ -4014,7 +4145,7 @@ export function PolicyCoherenceExplorer({
                   <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
                     Mongolia BER (Biodiversity Expenditure Review),{" "}
                     {budgetSummary.period.start}
-                    {"–"}
+                    {"-"}
                     {budgetSummary.period.end} totals. Subset of national
                     expenditure.
                   </p>
@@ -4024,7 +4155,14 @@ export function PolicyCoherenceExplorer({
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
               className="w-full"
-              style={{ maxHeight: isEmbed ? "min(600px, 64vh)" : 620 }}
+              style={{
+                maxHeight:
+                  isWorkbench && wheelExpanded && !railVisible
+                    ? "min(820px, 82vh)"
+                    : isEmbed
+                      ? "min(600px, 64vh)"
+                      : 620,
+              }}
               onClick={handleBgClick}
             >
               {/* Guide circle */}
@@ -4094,7 +4232,7 @@ export function PolicyCoherenceExplorer({
                         entry.totalBudget,
                         budgetSummary.currency ?? "",
                       )
-                    : "0 MNT";
+                    : "";
                   const labelFill =
                     fillAlpha > 0.55 ? "white" : "var(--undp-black)";
                   return (
@@ -4113,7 +4251,7 @@ export function PolicyCoherenceExplorer({
                         }}
                       >
                         <title>
-                          {`${arc.label} · ${amountStr} (${sharePct}% of tagged BER)`}
+                          {`${arc.label}${amountStr ? ` · ${amountStr}` : ""} (${sharePct}% of tagged BER)`}
                         </title>
                       </path>
                       {showLabel && (
@@ -4309,7 +4447,7 @@ export function PolicyCoherenceExplorer({
                   pointer surface. */}
               <g opacity={budgetShadingActive && !activeId && !isGroupFocus ? 0.2 : 1}>
               {nodes.map((node) => {
-                const r = nodeSize(node);
+                const r = NODE_RADIUS;
                 const isActive = node.id === activeId;
                 const isConnected = connectedIds.has(node.id);
                 const isFocalGroupMember =
@@ -4400,13 +4538,22 @@ export function PolicyCoherenceExplorer({
                   if (b.isActive) return 1;
                   return a.node.angle - b.node.angle;
                 });
-                // Greedily filter: skip labels too close to an already-placed label
-                const MIN_ANGLE_GAP = 0.12; // ~7 degrees minimum between labels
+                // Greedily filter: skip labels that would collide with an
+                // already-placed one. The required angular gap grows toward the
+                // top and bottom of the wheel, where labels run horizontally and
+                // a small angular step still overlaps a long neighbour; near the
+                // sides a small gap suffices because neighbours separate
+                // vertically. A highly-connected target therefore shows only a
+                // readable, spread-out subset on the wheel; the full list lives
+                // in the detail panel.
+                const gapFor = (angle: number) =>
+                  0.14 / Math.max(0.22, Math.abs(Math.sin(angle)));
                 const placed: number[] = [];
                 const visible: typeof sorted = [];
                 for (const entry of sorted) {
+                  const gap = gapFor(entry.node.angle);
                   const tooClose = placed.some(
-                    (a) => Math.abs(entry.node.angle - a) < MIN_ANGLE_GAP,
+                    (a) => Math.abs(entry.node.angle - a) < gap,
                   );
                   if (entry.isActive || !tooClose) {
                     visible.push(entry);
@@ -4629,6 +4776,27 @@ export function PolicyCoherenceExplorer({
                   come closer in without crowding the text. Active and focal
                   states only need a single count line, so they stay on one
                   row beneath the title. */}
+              {/* Readable plate behind the title when a specific target or
+                  category is selected: its name can be long and would
+                  otherwise sit unreadable over the crossing ribbons. */}
+              {isEmbed && (activeId || focalGroup) && (() => {
+                const t = activeId
+                  ? targetMap.get(activeId)?.sourceLabel ?? ""
+                  : focalGroup?.label ?? "";
+                const w = Math.min(360, Math.max(110, t.length * 8.6 + 30));
+                return (
+                  <rect
+                    x={-w / 2}
+                    y={-30}
+                    width={w}
+                    height={52}
+                    rx={12}
+                    fill="white"
+                    opacity={0.86}
+                    className="pointer-events-none"
+                  />
+                );
+              })()}
               <text
                 x={0} y={-14}
                 textAnchor="middle" dominantBaseline="middle"
@@ -4735,12 +4903,18 @@ export function PolicyCoherenceExplorer({
           </div>
         </div>
 
-        {/* Right column: context panel only. Chat now lives inside
-            EmptyPanel below the stats — preferred for the cleaner idle
-            layout, with the trade-off that the AI reply is only visible
-            while the user is in idle state. */}
-        {panelOpen && (
-        <div className="min-w-0 lg:col-span-4">
+        {/* Right column. In the workbench a persistent, prominent chat header
+            sits above the on-demand context panel (target detail / category /
+            at-a-glance), so the chat survives selection. In the standalone
+            variants the chat instead lives inside EmptyPanel's idle state. */}
+        {railVisible && (
+        <div className="min-w-0 lg:col-span-4 flex flex-col gap-4">
+          {isWorkbench && !wheelExpanded && (
+            <div className="shrink-0 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
+              {workbenchChat()}
+            </div>
+          )}
+          <div className="flex-1 min-h-0">
           {selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
@@ -4805,6 +4979,7 @@ export function PolicyCoherenceExplorer({
                 embed={isEmbed}
               />
             )}
+          </div>
         </div>
         )}
       </div>

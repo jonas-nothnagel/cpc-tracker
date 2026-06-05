@@ -29,10 +29,13 @@ import type {
   BerData,
   Nr7Data,
   CountryConfig,
-  CorpusThemes,
   DocPairSynthesis,
   SectorSynthesis,
 } from "@/types";
+import type {
+  CorpusThemesPayload,
+  SectorSynthesisPayload,
+} from "@/lib/coherence-briefing";
 import type { FootprintSnapshot } from "@/lib/footprint";
 import type { DashboardResponse } from "@/lib/dashboard-data";
 
@@ -51,8 +54,11 @@ interface DashboardData {
   budgetPseudoTargets: Target[] | null;
   footprint: FootprintSnapshot | null;
   docPairSynthesis: DocPairSynthesis[];
-  corpusThemes: CorpusThemes | null;
-  sectorSynthesis: SectorSynthesis[];
+  // Raw payloads carrying the `states` map for the document toggle; the
+  // briefing selects the matching state client-side. corpusThemes may be a
+  // legacy CorpusThemes (no states); sectorSynthesis may be a legacy bare array.
+  corpusThemes: CorpusThemesPayload | null;
+  sectorSynthesis: SectorSynthesisPayload | SectorSynthesis[];
   countryConfig: CountryConfig | null;
 }
 
@@ -117,8 +123,10 @@ function normalize(raw: DashboardResponse): DashboardData {
       (r.budgetPseudoTargets as Record<string, unknown>[] | null)?.map(normalizeTarget) ?? null,
     footprint: (r.footprint as FootprintSnapshot | null) ?? null,
     docPairSynthesis: (r.docPairSynthesis as DocPairSynthesis[] | null) ?? [],
-    corpusThemes: (r.corpusThemes as CorpusThemes | null) ?? null,
-    sectorSynthesis: (r.sectorSynthesis as SectorSynthesis[] | null) ?? [],
+    corpusThemes: (r.corpusThemes as CorpusThemesPayload | null) ?? null,
+    sectorSynthesis:
+      (r.sectorSynthesis as SectorSynthesisPayload | SectorSynthesis[] | null) ??
+      [],
     countryConfig: (r.countryConfig as CountryConfig | null) ?? null,
   };
 }

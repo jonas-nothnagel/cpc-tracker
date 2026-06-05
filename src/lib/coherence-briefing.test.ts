@@ -6,16 +6,23 @@ import {
   buildDocFrictionShares,
   buildFlagSubsetProfile,
   buildTargetFrictionTree,
+  canonicalHiddenKey,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
   rankTargetsByFriction,
+  selectCorpusThemesForState,
+  selectSectorSynthesesForState,
+  type CorpusThemesPayload,
+  type SectorSynthesisPayload,
 } from "./coherence-briefing";
 import type {
   AlignmentLevel,
   AlignmentManageability,
   AlignmentMechanism,
   AlignmentResult,
+  CorpusThemes,
   DocPairSynthesis,
+  SectorSynthesis,
   Target,
   ThematicClassification,
 } from "@/types";
@@ -683,5 +690,102 @@ describe("buildFlagSubsetProfile", () => {
     expect(p.byDocPair.length).toBeLessThanOrEqual(1);
     expect(p.byTheme.length).toBeLessThanOrEqual(1);
     expect(p.recurringTargets.length).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("document-filter storyline state selection", () => {
+  const fullThemes: CorpusThemes = {
+    storylines: [],
+    summary_paragraph: "full corpus summary",
+    doc_pair_count: 5,
+  };
+  const enrThemes: CorpusThemes = {
+    storylines: [],
+    summary_paragraph: "ENR-hidden summary",
+    doc_pair_count: 3,
+  };
+
+  it("canonicalHiddenKey matches the Python canonical_hidden_key", () => {
+    expect(canonicalHiddenKey([])).toBe("");
+    expect(canonicalHiddenKey(new Set<string>())).toBe("");
+    expect(canonicalHiddenKey(["ENR"])).toBe("ENR");
+    expect(canonicalHiddenKey(["B", "A"])).toBe("A+B");
+    expect(canonicalHiddenKey(new Set(["B", "A", "A"]))).toBe("A+B");
+  });
+
+  it("selects the exact precomputed corpus state for the hidden set", () => {
+    const payload: CorpusThemesPayload = {
+      ...fullThemes,
+      states: { "": fullThemes, ENR: enrThemes },
+    };
+    const full = selectCorpusThemesForState(payload, new Set());
+    expect(full.themes?.summary_paragraph).toBe("full corpus summary");
+    expect(full.isExact).toBe(true);
+
+    const hidden = selectCorpusThemesForState(payload, new Set(["ENR"]));
+    expect(hidden.themes?.summary_paragraph).toBe("ENR-hidden summary");
+    expect(hidden.isExact).toBe(true);
+  });
+
+  it("falls back to full corpus (isExact=false) for an unmatched selection", () => {
+    const payload: CorpusThemesPayload = {
+      ...fullThemes,
+      states: { "": fullThemes, ENR: enrThemes },
+    };
+    const sel = selectCorpusThemesForState(payload, new Set(["HR"]));
+    expect(sel.themes?.summary_paragraph).toBe("full corpus summary");
+    expect(sel.isExact).toBe(false);
+  });
+
+  it("treats a legacy corpus payload without states as the full ('') state", () => {
+    const sel = selectCorpusThemesForState(fullThemes, new Set());
+    expect(sel.themes?.summary_paragraph).toBe("full corpus summary");
+    expect(sel.isExact).toBe(true);
+    // A hidden selection on a legacy payload falls back to full (not exact).
+    const hidden = selectCorpusThemesForState(fullThemes, new Set(["ENR"]));
+    expect(hidden.isExact).toBe(false);
+  });
+
+  it("selects sector syntheses by state and falls back for unmatched", () => {
+    const fullArr: SectorSynthesis[] = [
+      {
+        taxonomy_type: "globe",
+        category_id: "g1",
+        category_name: "Forests",
+        aligned_count: 4,
+        flagged_count: 1,
+        pool_composition: { primary_count: 3, relevant_only_count: 2 },
+        contradiction_types: {},
+        synthesis: {
+          storyline_name: "Forests reinforce one another",
+          reinforce: "x",
+          clash: "y",
+          coordination_hint: "z",
+          confidence: "medium",
+        },
+        synthesis_error: null,
+      },
+    ];
+    const enrArr: SectorSynthesis[] = [];
+    const payload: SectorSynthesisPayload = {
+      synthesis: fullArr,
+      states: { "": fullArr, ENR: enrArr },
+    };
+    expect(selectSectorSynthesesForState(payload, new Set()).syntheses).toBe(
+      fullArr,
+    );
+    const hidden = selectSectorSynthesesForState(payload, new Set(["ENR"]));
+    expect(hidden.syntheses).toBe(enrArr);
+    expect(hidden.isExact).toBe(true);
+    const unmatched = selectSectorSynthesesForState(payload, new Set(["HR"]));
+    expect(unmatched.syntheses).toBe(fullArr);
+    expect(unmatched.isExact).toBe(false);
+  });
+
+  it("treats a legacy sector array as the full state", () => {
+    const arr: SectorSynthesis[] = [];
+    const sel = selectSectorSynthesesForState(arr, new Set());
+    expect(sel.syntheses).toBe(arr);
+    expect(sel.isExact).toBe(true);
   });
 });

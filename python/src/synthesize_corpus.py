@@ -26,6 +26,7 @@ from typing import Any
 
 from .config import DATA_DIR, OUTPUT_DIR
 from .llm import call_llm
+from .synthesis_states import canonical_hidden_key, filter_doc_pair_records
 
 logger = logging.getLogger(__name__)
 
@@ -255,7 +256,7 @@ async def synthesize_corpus(
 # ---------------------------------------------------------------------------
 
 
-async def _cli_run(country: str) -> None:
+async def _cli_run(country: str, hidden_key: str = "") -> None:
     out_dir = OUTPUT_DIR / country
     in_path = out_dir / "doc_pair_synthesis.json"
     if not in_path.exists():
@@ -269,6 +270,25 @@ async def _cli_run(country: str) -> None:
         country_name = config.get("name", country_name)
 
     syntheses = json.loads(in_path.read_text())
+
+    # `--hidden` mode: regenerate corpus themes for an off-path document subset
+    # on demand (used by the /api/storyline-state route). Filter the doc-pair
+    # syntheses to the visible set, emit ONLY JSON on stdout, and do NOT
+    # overwrite corpus_themes.json (which holds the precomputed states). Hits
+    # and populates the same .cache/corpus_themes namespace, so each subset is
+    # an LLM call at most once.
+    hidden = {h for h in hidden_key.split("+") if h}
+    if hidden:
+        syntheses = filter_doc_pair_records(syntheses, hidden)
+        logger.info(
+            f"Synthesising corpus themes for {country_name}, hidden="
+            f"{canonical_hidden_key(hidden)}: {len(syntheses)} doc-pair "
+            f"syntheses after filter"
+        )
+        result = await synthesize_corpus(syntheses, country_name)
+        print(json.dumps(result, ensure_ascii=False))
+        return
+
     logger.info(
         f"Synthesising corpus themes for {country_name}: "
         f"{len(syntheses)} doc-pair syntheses as input"
@@ -304,8 +324,17 @@ def _cli() -> None:
     )
     p = argparse.ArgumentParser(description="Run corpus theme synthesis for one country")
     p.add_argument("--country", required=True, help="Country slug")
+    p.add_argument(
+        "--hidden",
+        default="",
+        help=(
+            "Canonical hidden-doc key (e.g. 'ENR' or 'HR+PEG'). When set, "
+            "regenerate themes for that visible subset and print JSON to "
+            "stdout without writing corpus_themes.json."
+        ),
+    )
     args = p.parse_args()
-    asyncio.run(_cli_run(args.country))
+    asyncio.run(_cli_run(args.country, args.hidden))
 
 
 if __name__ == "__main__":
