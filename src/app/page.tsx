@@ -3,7 +3,7 @@ import Link from "next/link";
 import { listVisibleCountries } from "@/config/countries";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { HeroVideo } from "@/components/landing/hero-video";
-import { WheelPreview } from "@/components/landing/wheel-preview";
+import { InsideAnalysis } from "@/components/landing/inside-analysis";
 
 export default function Home() {
   const visibleCountries = listVisibleCountries();
@@ -49,33 +49,9 @@ export default function Home() {
       </HeroVideo>
 
       {/* Inside the analysis — live coherence wheel on warm paper ground */}
-      <section className="bg-[var(--undp-paper)] py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
-          <div>
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-[var(--undp-blue)]">
-              Inside the analysis
-            </p>
-            <h2 className="font-display mb-5 text-3xl font-semibold leading-tight text-[var(--undp-black)] md:text-4xl">
-              Every policy target, mapped against every other
-            </h2>
-            <p className="mb-6 max-w-md text-base leading-relaxed text-[var(--undp-gray)] md:text-lg">
-              Each ribbon links two national policy documents. Green shows where
-              their targets are in strong alignment; red threads mark a potential
-              misalignment worth a closer look. Switch between the pilot countries
-              to compare.
-            </p>
-            <p className="max-w-sm text-xs leading-relaxed text-[var(--undp-gray)]/70">
-              AI-generated analysis. Treat as a prompt to review, not a settled
-              finding.
-            </p>
-          </div>
-          <div>
-            <WheelPreview
-              countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
-            />
-          </div>
-        </div>
-      </section>
+      <InsideAnalysis
+        countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
+      />
 
       {/* How it works */}
       <section className="bg-white py-20 md:py-28">

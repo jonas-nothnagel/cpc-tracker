@@ -37,8 +37,10 @@ export function Centerpiece({
   variant: variantProp,
   onVariantChange,
   showPicker = true,
+  showLegend = true,
   onPairClick,
   onArcClick,
+  onSpotlight,
 }: {
   targets: Target[];
   alignments: AlignmentResult[];
@@ -50,8 +52,12 @@ export function Centerpiece({
   variant?: Variant;
   onVariantChange?: (v: Variant) => void;
   showPicker?: boolean;
+  showLegend?: boolean;
   onPairClick?: (a: string, b: string) => void;
   onArcClick?: (focus: WheelFocus) => void;
+  onSpotlight?: (
+    s: { aLabel: string; bLabel: string; count: number } | null,
+  ) => void;
 }) {
   const [internalVariant, setInternalVariant] = useState<Variant>("wheel");
   const variant = variantProp ?? internalVariant;
@@ -71,6 +77,7 @@ export function Centerpiece({
             sectorTaxonomyType={sectorTaxonomyType}
             onPairClick={onPairClick}
             onArcClick={onArcClick}
+            onSpotlight={onSpotlight}
           />
         ) : (
           <ConstellationCenterpiece
@@ -81,7 +88,7 @@ export function Centerpiece({
           />
         )}
       </div>
-      <Legend />
+      {showLegend && <WheelLegend />}
     </div>
   );
 }
@@ -117,9 +124,19 @@ function VariantPicker({
   );
 }
 
-function Legend() {
+export function WheelLegend({
+  justify = "center",
+}: {
+  /** Horizontal alignment of the legend items. Defaults to centered (under the
+   * wheel); the landing left column passes "start" to left-align it. */
+  justify?: "center" | "start";
+}) {
   return (
-    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
+    <div
+      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)] ${
+        justify === "start" ? "justify-start" : "justify-center"
+      }`}
+    >
       <LegendDot color="#196127" label="Aligned" />
       <LegendDot color="#dc2626" label="Potential misalignment" dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
