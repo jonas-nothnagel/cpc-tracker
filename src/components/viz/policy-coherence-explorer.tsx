@@ -2719,8 +2719,8 @@ export function PolicyCoherenceExplorer({
   // Embed sits directly on the briefing's cream page — no white card, so the
   // wheel reads as part of the new design rather than a pasted-in panel.
   const wheelCardCls = isEmbed
-    ? "h-full"
-    : "bg-white border border-gray-100 rounded-lg p-4 h-full";
+    ? "h-full relative"
+    : "bg-white border border-gray-100 rounded-lg p-4 h-full relative";
   // Embed thickens the rim arcs outward for the bolder, banded look of the new
   // design. Node and leader-label radii are unchanged, so the layout stays put.
   const arcOuterR = isEmbed ? 230 : OUTER_R;
@@ -2755,7 +2755,7 @@ export function PolicyCoherenceExplorer({
   // the page width with the chat as a bar on top, and the side rail only
   // appears when a target or category is selected (its stats). Toggling this
   // off brings the chat + insights + at-a-glance panel in beside the wheel.
-  const [wheelExpanded, setWheelExpanded] = useState(true);
+  const [wheelExpanded, setWheelExpanded] = useState(false);
 
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
@@ -3926,32 +3926,7 @@ export function PolicyCoherenceExplorer({
               </button>
             )}
             {isWorkbench && (
-              <div className="ml-auto flex items-center gap-2">
-                {targetSearch}
-                <button
-                  type="button"
-                  onClick={() => setWheelExpanded((v) => !v)}
-                  aria-pressed={!wheelExpanded}
-                  title={
-                    wheelExpanded
-                      ? "Bring the chat, insights and at-a-glance in beside the wheel"
-                      : "Return to the full-width big-picture wheel"
-                  }
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                    !wheelExpanded
-                      ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                      : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-                  }`}
-                >
-                  {wheelExpanded ? (
-                    "Chat & stats"
-                  ) : (
-                    <>
-                      <span aria-hidden="true">⤢</span> Big wheel
-                    </>
-                  )}
-                </button>
-              </div>
+              <div className="ml-auto flex items-center gap-2">{targetSearch}</div>
             )}
           </div>
           {/* Row 2: per-document toggles + abbreviation key + target search.
@@ -4106,6 +4081,35 @@ export function PolicyCoherenceExplorer({
           }`}
         >
           <div className={wheelCardCls}>
+            {/* Top-right "Big wheel" toggle, anchored to the wheel itself so the
+                expand affordance reads as belonging to the wheel. Sits above the
+                ribbons via z-10; the white state gets a soft backdrop so it stays
+                legible. Different corner from the budget overlay, so no clash. */}
+            {isWorkbench && (
+              <button
+                type="button"
+                onClick={() => setWheelExpanded((v) => !v)}
+                aria-pressed={!wheelExpanded}
+                title={
+                  wheelExpanded
+                    ? "Bring the chat, insights and at-a-glance in beside the wheel"
+                    : "Return to the full-width big-picture wheel"
+                }
+                className={`absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-sm transition-colors ${
+                  !wheelExpanded
+                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                    : "bg-white/90 backdrop-blur border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                }`}
+              >
+                {wheelExpanded ? (
+                  "Chat & stats"
+                ) : (
+                  <>
+                    <span aria-hidden="true">⤢</span> Big wheel
+                  </>
+                )}
+              </button>
+            )}
             {/* Top-left budget overlay control. Only rendered when the country
                 has BER data classified to GLOBE subcategories. Clicking ON
                 snaps groupMode to "globe" so the shading actually paints;
