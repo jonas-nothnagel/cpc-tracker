@@ -29,7 +29,7 @@
  * future drilldowns). Hover a ribbon → small tooltip with the counts.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { arc as d3arc } from "d3-shape";
 import { buildDocFrictionShares } from "@/lib/coherence-briefing";
 import {
@@ -110,15 +110,6 @@ export interface WheelState {
    * colour. Used by the Direction landing slide. Ignored under sector grouping.
    */
   frictionArcs?: boolean;
-  /**
-   * When true (and groupBy === "document"), spotlight a single real potential
-   * misalignment as a teaching example: the document pair with the most flagged
-   * target pairs gets a pulsing red dot on its ribbon, and the chosen pair is
-   * lifted to the host via `onSpotlight` for a callout card. Nothing else dims —
-   * the full picture stays visible. Used by the landing "Inside the analysis"
-   * section. Ignored under sector grouping.
-   */
-  spotlightFlagged?: boolean;
 }
 
 export interface SectorCategoryRef {
@@ -420,21 +411,12 @@ export interface WheelCenterpieceProps {
   onArcClick?: (focus: WheelFocus) => void;
   /** Hover a rim arc or its label → host can set ephemeral focus. Pass null on leave. */
   onArcHover?: (focus: WheelFocus | null) => void;
-  /**
-   * Fired with the spotlighted potential-misalignment pair when
-   * `state.spotlightFlagged` is on (null when no flagged pair exists). The host
-   * renders the teaching callout card from this. Pass a stable (memoised)
-   * reference so it only fires when the chosen pair actually changes.
-   */
-  onSpotlight?: (
-    s: { aLabel: string; bLabel: string; count: number } | null,
-  ) => void;
 }
 
 // Stable empty default so callers that omit `sectorCategories` (e.g. the landing
 // wheel) don't hand in a fresh `[]` each render. That array is a `buildLayout`
-// memo dependency, so a new reference would recompute the whole layout — and the
-// spotlight — every render, turning the onSpotlight effect into an update loop.
+// memo dependency, so a new reference would recompute the whole layout every
+// render for no reason.
 const EMPTY_SECTOR_CATEGORIES: SectorCategoryRef[] = [];
 
 export function WheelCenterpiece({
@@ -449,7 +431,6 @@ export function WheelCenterpiece({
   onRibbonNavigate,
   onArcClick,
   onArcHover,
-  onSpotlight,
 }: WheelCenterpieceProps) {
   const { nodes, arcs } = useMemo(
     () =>
@@ -569,58 +550,6 @@ export function WheelCenterpiece({
     () => new Map(arcs.map((a) => [a.id, a])),
     [arcs],
   );
-
-  // Teaching spotlight: the document pair with the most flagged target pairs.
-  // We pick by absolute flagged count so the dot lands on the thickest, most
-  // visible red ribbon (best for teaching). The host's copy stays neutral and
-  // never claims a superlative, so this illustrative pick respects the
-  // absolute-count guardrail. Position the dot at the midpoint of the same
-  // quadratic bezier `curvePath` draws (t = 0.5), so it sits on the ribbon.
-  const spotlight = useMemo(() => {
-    if (!state.spotlightFlagged || state.groupBy !== "document") return null;
-    let best: ArcPairAggregate | null = null;
-    for (const agg of aggregates.values()) {
-      if (agg.tensionCount <= 0) continue;
-      if (!best || agg.tensionCount > best.tensionCount) best = agg;
-    }
-    if (!best) return null;
-    const aArc = arcsById.get(best.aId);
-    const bArc = arcsById.get(best.bId);
-    if (!aArc || !bArc) return null;
-    const a = {
-      x: NODE_R * Math.sin(aArc.midAngle),
-      y: -NODE_R * Math.cos(aArc.midAngle),
-    };
-    const b = {
-      x: NODE_R * Math.sin(bArc.midAngle),
-      y: -NODE_R * Math.cos(bArc.midAngle),
-    };
-    const cx = ((a.x + b.x) / 2) * 0.25;
-    const cy = ((a.y + b.y) / 2) * 0.25;
-    return {
-      aLabel: aArc.shortLabel,
-      bLabel: bArc.shortLabel,
-      count: best.tensionCount,
-      x: 0.25 * a.x + 0.5 * cx + 0.25 * b.x,
-      y: 0.25 * a.y + 0.5 * cy + 0.25 * b.y,
-    };
-  }, [state.spotlightFlagged, state.groupBy, aggregates, arcsById]);
-
-  useEffect(() => {
-    if (!onSpotlight) return;
-    onSpotlight(
-      spotlight
-        ? {
-            aLabel: spotlight.aLabel,
-            bLabel: spotlight.bLabel,
-            count: spotlight.count,
-          }
-        : null,
-    );
-  }, [
-    onSpotlight,
-    spotlight,
-  ]);
 
   const [hovered, setHovered] = useState<string | null>(null);
 
@@ -971,40 +900,6 @@ export function WheelCenterpiece({
               </g>
             );
           })()}
-
-        {/* Teaching spotlight: a pulsing red dot on one real flagged ribbon */}
-        {spotlight && (
-          <g pointerEvents="none">
-            <circle
-              cx={spotlight.x}
-              cy={spotlight.y}
-              r={9}
-              fill={ALIGNMENT_COLORS.flagged}
-              opacity={0.2}
-            >
-              <animate
-                attributeName="r"
-                values="7;14;7"
-                dur="2.4s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                values="0.22;0.04;0.22"
-                dur="2.4s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <circle
-              cx={spotlight.x}
-              cy={spotlight.y}
-              r={4.5}
-              fill={ALIGNMENT_COLORS.flagged}
-              stroke="white"
-              strokeWidth={1.5}
-            />
-          </g>
-        )}
 
         {/* Nodes on rim */}
         {nodes.map((node) => {

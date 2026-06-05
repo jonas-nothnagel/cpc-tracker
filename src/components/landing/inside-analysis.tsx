@@ -2,8 +2,8 @@
 
 /**
  * "Inside the analysis" landing section. A single client island so the country
- * toggle, the body copy's CTA, the live coherence wheel, and the teaching
- * spotlight card all share one selected-country state.
+ * toggle, the body copy's CTA, and the live coherence wheel share one
+ * selected-country state.
  *
  * It reuses the prototype's own Centerpiece so the home page and the dashboard
  * read as one product. Country-agnostic: every visible pilot is an equal toggle
@@ -11,9 +11,13 @@
  * structurally favours one country. Sits below the fold, so it fetches
  * client-side (the dashboard payload is large; keeping it out of the
  * server-rendered HTML keeps the hero fast). On failure it renders nothing.
+ *
+ * Documents a country soft-hides by default (countryConfig.defaultHiddenDocTypes,
+ * e.g. Panama's ENR) are filtered out here too, so the landing wheel matches the
+ * dashboard's default view rather than showing a document the dashboard omits.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Centerpiece,
@@ -27,13 +31,11 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-// Group by document, no focus/filter, and ask the wheel to spotlight one real
-// flagged document pair as a teaching example.
+// Group by document, no focus/filter.
 const WHEEL_STATE: WheelState = {
   groupBy: "document",
   focus: null,
   filter: "all",
-  spotlightFlagged: true,
 };
 
 interface WheelData {
@@ -41,12 +43,6 @@ interface WheelData {
   alignments: AlignmentResult[];
   classifications: ThematicClassification[];
   countryConfig: CountryConfig | null;
-}
-
-interface Spotlight {
-  aLabel: string;
-  bLabel: string;
-  count: number;
 }
 
 export interface PreviewCountry {
@@ -57,7 +53,6 @@ export interface PreviewCountry {
 export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [data, setData] = useState<WheelData | null>(null);
-  const [spotlight, setSpotlight] = useState<Spotlight | null>(null);
   const [failed, setFailed] = useState(false);
 
   // Pick the starting country at random on mount (client-only) so neither pilot
@@ -72,10 +67,9 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   useEffect(() => {
     if (!selected) return;
     let active = true;
-    // Clear any prior error and stale spotlight when the country changes.
+    // Clear any prior error when the country changes.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFailed(false);
-    setSpotlight(null);
     fetch(`/api/dashboard?country=${selected}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((d: Record<string, unknown>) => {
@@ -95,10 +89,24 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
     };
   }, [selected]);
 
-  // Stable reference so the wheel only re-fires when the chosen pair changes.
-  const handleSpotlight = useCallback((s: Spotlight | null) => {
-    setSpotlight(s);
-  }, []);
+  // Drop documents the country soft-hides by default (e.g. Panama's ENR) so the
+  // landing wheel matches the dashboard's default view. The dashboard applies the
+  // same filter from countryConfig.defaultHiddenDocTypes; the landing has no
+  // toggle, so it just honours the default hidden set.
+  const visible = useMemo(() => {
+    if (!data) return null;
+    const hidden = new Set(data.countryConfig?.defaultHiddenDocTypes ?? []);
+    if (hidden.size === 0) return data;
+    const targets = data.targets.filter((t) => !hidden.has(t.sourceDocument));
+    const ids = new Set(targets.map((t) => t.id));
+    const alignments = data.alignments.filter(
+      (a) => ids.has(a.targetAId) && ids.has(a.targetBId),
+    );
+    const classifications = data.classifications.filter((c) =>
+      ids.has(c.targetId),
+    );
+    return { ...data, targets, alignments, classifications };
+  }, [data]);
 
   if (failed) return null;
 
@@ -169,9 +177,9 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
             ) : null}
           </div>
 
-          {/* Right column: the wheel + one teaching spotlight card */}
-          <div className="relative">
-            {!data ? (
+          {/* Right column: the wheel */}
+          <div>
+            {!visible ? (
               <div className="mx-auto aspect-square w-full max-w-[560px] animate-pulse rounded-full bg-[var(--undp-black)]/[0.04]" />
             ) : (
               <div
@@ -183,31 +191,17 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
               >
                 <div className="wheel-breathe mx-auto w-full max-w-[620px]">
                   <Centerpiece
-                    targets={data.targets}
-                    alignments={data.alignments}
-                    classifications={data.classifications}
-                    countryConfig={data.countryConfig}
+                    targets={visible.targets}
+                    alignments={visible.alignments}
+                    classifications={visible.classifications}
+                    countryConfig={visible.countryConfig}
                     state={WHEEL_STATE}
                     showPicker={false}
                     showLegend={false}
-                    onSpotlight={handleSpotlight}
                   />
                 </div>
               </div>
             )}
-
-            {data && spotlight ? (
-              <div className="mt-4 rounded-lg bg-white p-3.5 shadow-sm ring-1 ring-black/5 md:absolute md:bottom-6 md:right-0 md:mt-0 md:max-w-[240px]">
-                <p className="text-xs font-semibold text-[var(--undp-black)]">
-                  {spotlight.aLabel} &harr; {spotlight.bLabel}
-                </p>
-                <p className="mt-1 text-xs leading-snug text-[var(--undp-gray)]">
-                  {spotlight.count}{" "}
-                  {spotlight.count === 1 ? "target" : "targets"} may pull in
-                  different directions
-                </p>
-              </div>
-            ) : null}
           </div>
         </div>
       </div>

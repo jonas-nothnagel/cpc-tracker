@@ -40,7 +40,6 @@ export function Centerpiece({
   showLegend = true,
   onPairClick,
   onArcClick,
-  onSpotlight,
 }: {
   targets: Target[];
   alignments: AlignmentResult[];
@@ -55,9 +54,6 @@ export function Centerpiece({
   showLegend?: boolean;
   onPairClick?: (a: string, b: string) => void;
   onArcClick?: (focus: WheelFocus) => void;
-  onSpotlight?: (
-    s: { aLabel: string; bLabel: string; count: number } | null,
-  ) => void;
 }) {
   const [internalVariant, setInternalVariant] = useState<Variant>("wheel");
   const variant = variantProp ?? internalVariant;
@@ -77,7 +73,6 @@ export function Centerpiece({
             sectorTaxonomyType={sectorTaxonomyType}
             onPairClick={onPairClick}
             onArcClick={onArcClick}
-            onSpotlight={onSpotlight}
           />
         ) : (
           <ConstellationCenterpiece
