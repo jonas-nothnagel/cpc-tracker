@@ -1143,6 +1143,7 @@ export function CoherenceBriefing({
                   commitmentCount={visibleTargets.length}
                   coverage={budgetCoverage}
                   countryConfig={countryConfig}
+                  countryName={countryName}
                 />
               </div>
             )}
@@ -1178,7 +1179,10 @@ export function CoherenceBriefing({
                   />
                 </div>
               ) : activeSection === FINANCING_SECTION_ID && financing ? (
-                <FinancingCenterpiece summary={financing} />
+                <FinancingCenterpiece
+                  summary={financing}
+                  countryName={countryName}
+                />
               ) : (
                 <>
                   <WheelCenterpiece

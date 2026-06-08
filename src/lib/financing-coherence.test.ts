@@ -142,6 +142,8 @@ describe("computeBudgetCoverage", () => {
     const r = computeBudgetCoverage(alignment, [P1], targets);
     expect(r.reached).toBe(1);
     expect(r.total).toBe(3);
+    // The other two ambitions sit outside this budget's reach.
+    expect(r.outsideReach).toBe(2);
   });
 
   it("carries the strong links (target + program + why) per document", () => {
@@ -173,6 +175,11 @@ describe("computeBudgetCoverage", () => {
             rationale: "T3 funds restoration",
           },
         ],
+        // T4, T5 are reached by no funded programme: outside the budget's reach.
+        uncovered: [
+          { targetId: "T4", targetLabel: "T4", targetText: "T4 text" },
+          { targetId: "T5", targetLabel: "T5", targetText: "T5 text" },
+        ],
       },
       {
         doc: "NBSAP",
@@ -187,8 +194,15 @@ describe("computeBudgetCoverage", () => {
             rationale: "T1 funds protected areas",
           },
         ],
+        // T2 is only a medium match, so it sits outside the budget's reach.
+        uncovered: [{ targetId: "T2", targetLabel: "T2", targetText: "T2 text" }],
       },
     ]);
+    // Reached + uncovered accounts for every ambition.
+    expect(r.outsideReach).toBe(3);
+    for (const d of r.byDocument) {
+      expect(d.links.length + d.uncovered.length).toBe(d.total);
+    }
   });
 });
 

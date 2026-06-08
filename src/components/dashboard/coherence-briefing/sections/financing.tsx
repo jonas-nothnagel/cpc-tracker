@@ -1,24 +1,30 @@
 "use client";
 
 /**
- * Financing — the Level 2 slide. One question: is the biodiversity money where
- * the policy ambition is?
+ * Financing — the Level 2 slide. One question: how much of the policy does this
+ * budget have a budget line for, and which targets does it leave with none?
+ *
+ * What the pipeline (budget_align.py) actually does, stated honestly: it matches
+ * each policy target to the budget's own lines (programmes) on the same goal,
+ * keeping only HIGH-confidence thematic matches. So a target "has a matching
+ * budget line" when a FUNDED programme (spend > 0) is judged HIGH against it.
+ * This shows where a budget line EXISTS for a target, NOT that money is actually
+ * spent on it, and is distinct from the policy-to-policy coherence elsewhere.
  *
  * Left column:
- *   - HEADLINE (hard facts only): the budget is concentrated in a few programs.
- *   - A per-DOCUMENT read of where the budget FUNDS the policy commitments. The
- *     pipeline (budget_align.py) judges, per budget-programme × commitment pair,
- *     whether the programme's mandate and expenditure fund the commitment's
- *     goals; HIGH = "clearly funds the goals". We count only HIGH (medium is
- *     "same sector but doesn't meaningfully fund" — too generous), so the
- *     gradient is honest. This is a FUNDING judgement, distinct from the
- *     policy-to-policy coherence elsewhere in the briefing. Each document
- *     expands to the actual funded commitments, the budget line, and the AI's
- *     reasoning, so the number is substantiated. AI-derived: indicative, never
- *     headlined.
+ *   - HEADLINE: names the budget and how much of the policy it matches.
+ *   - BODY: grounds the numbers (N targets across the documents, M matched).
+ *   - A per-DOCUMENT dot-map: one uniform dot per target, filled = has a
+ *     matching budget line, hollow = none. Open a document to see both sides:
+ *     the targets with a matching line (and which line), and the targets with
+ *     none.
  *
- * Right column (FinancingCenterpiece, kept simple): where the money
- * concentrates by program, plus how much of the plan went unspent.
+ * Right column (FinancingCenterpiece): the budget object itself. What it is,
+ * where the money concentrates, and how much of the plan went unspent.
+ *
+ * NOTE: "reviewed biodiversity spending" is BER-specific (the only budget wired
+ * today, and deliberately framed as a snapshot review, not the whole budget). If
+ * a non-biodiversity budget is ever added, revisit the headline noun.
  */
 
 import { SlideFrame } from "../slide-frame";
@@ -37,13 +43,20 @@ export function FinancingSection({
   commitmentCount,
   coverage,
   countryConfig,
+  countryName,
 }: {
   summary: FinancingCoherenceSummary;
   commitmentCount: number;
   coverage: BudgetCoverage | null;
   countryConfig: CountryConfig | null;
+  countryName: string;
 }) {
-  const sentence = composeSentence(summary, commitmentCount);
+  const sentence = composeSentence(
+    coverage,
+    summary,
+    commitmentCount,
+    countryName,
+  );
   return (
     <SlideFrame
       id={FINANCING_SECTION_ID}
@@ -52,17 +65,17 @@ export function FinancingSection({
       body={sentence.body}
       evidence={
         coverage && coverage.byDocument.length > 0 ? (
-          <DocumentFunding coverage={coverage} countryConfig={countryConfig} />
+          <DocumentCoverage coverage={coverage} countryConfig={countryConfig} />
         ) : undefined
       }
     />
   );
 }
 
-// Where the budget FUNDS each policy document's commitments (high-confidence
-// judgements only). Bar = the share of a document's commitments a funded
-// budget line covers; expand to the actual links, the budget line, and why.
-function DocumentFunding({
+// Per-document dot-map of where the budget has a matching line. Each dot is one
+// target: filled = has a matching budget line, hollow = none. Opening a
+// document shows BOTH sides (matched targets with their line, and unmatched).
+function DocumentCoverage({
   coverage,
   countryConfig,
 }: {
@@ -71,29 +84,45 @@ function DocumentFunding({
 }) {
   return (
     <div>
-      <p className="text-[13.5px] leading-relaxed text-[var(--undp-black)] mb-3 max-w-prose">
-        Those {coverage.total} commitments are the individual targets in the
-        country&apos;s nature-climate documents. The pipeline checks each against
-        the budget and flags where a programme&apos;s mandate and spending fund a
-        commitment&apos;s goals. Open a document to see those links and why:
+      <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] mb-2.5 max-w-prose">
+        Each dot is one policy target. Open a document to see which of its
+        targets have a matching budget line and which have none.
       </p>
-      <ul className="space-y-2">
+
+      <ul className="space-y-3">
         {coverage.byDocument.map((d) => (
-          <DocFundingRow key={d.doc} doc={d} countryConfig={countryConfig} />
+          <DocCoverageRow key={d.doc} doc={d} countryConfig={countryConfig} />
         ))}
       </ul>
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[11px] text-[var(--undp-gray)]">
+        <span className="flex items-center gap-1.5">
+          <span
+            aria-hidden="true"
+            className="inline-block w-2.5 h-2.5 rounded-full bg-[var(--undp-gray)]"
+          />
+          has a matching budget line
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span
+            aria-hidden="true"
+            className="inline-block w-2.5 h-2.5 rounded-full border border-[var(--undp-gray)]"
+          />
+          no matching budget line
+        </span>
+      </div>
+
       <p className="mt-3 text-[11px] italic text-[var(--undp-gray)] max-w-prose">
-        A funding link is the pipeline&apos;s high-confidence judgement that a
-        budget programme funds a commitment&apos;s goals. This is distinct from
-        the policy-to-policy coherence elsewhere in the briefing. It is
-        AI-assessed and indicative, not an audited allocation; weaker same-sector
-        matches are excluded, so the picture is deliberately selective.
+        The pipeline matches each target to the budget lines on the same goal,
+        keeping only high-confidence matches. It shows where a budget line exists
+        for a target, not whether money is spent on it. AI-estimated and
+        indicative.
       </p>
     </div>
   );
 }
 
-function DocFundingRow({
+function DocCoverageRow({
   doc,
   countryConfig,
 }: {
@@ -102,84 +131,123 @@ function DocFundingRow({
 }) {
   const label = getDocMediumLabel(countryConfig, doc.doc);
   const color = getDocColor(countryConfig, doc.doc);
-  const share = doc.total > 0 ? doc.reached / doc.total : 0;
   return (
     <li>
       <details className="group">
-        <summary className="cursor-pointer list-none grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1">
-          <span className="flex items-center gap-1.5 min-w-0">
-            <span
-              aria-hidden="true"
-              className="inline-block w-2 h-2 rounded-full shrink-0"
-              style={{ backgroundColor: color }}
-            />
-            <span className="text-[13px] text-[var(--undp-black)] truncate">
-              {label}
-            </span>
-            {doc.links.length > 0 && (
+        <summary className="cursor-pointer list-none">
+          <div className="flex items-baseline justify-between gap-3 mb-1.5">
+            <span className="flex items-center gap-1.5 min-w-0">
               <span
                 aria-hidden="true"
-                className="text-[var(--undp-gray)]/60 text-[10px]"
+                className="inline-block w-2 h-2 rounded-full shrink-0"
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-[13px] text-[var(--undp-black)] truncate">
+                {label}
+              </span>
+              <span
+                aria-hidden="true"
+                className="text-[var(--undp-gray)]/50 text-[10px]"
               >
                 +
               </span>
-            )}
-          </span>
-          <span className="text-[11px] tabular-nums text-[var(--undp-gray)] text-right">
-            <span className="text-[var(--undp-black)] font-medium">
-              {doc.reached}
             </span>
-            /{doc.total} funded
-          </span>
-          <span
-            aria-hidden="true"
-            className="col-span-2 block h-2 rounded-full bg-gray-100 overflow-hidden"
-            title={`${Math.round(share * 100)}% funded`}
-          >
-            <span
-              className="block h-full rounded-full"
-              style={{ width: `${share * 100}%`, backgroundColor: color }}
-            />
-          </span>
-        </summary>
-        {doc.links.length > 0 ? (
-          <div className="mt-2.5 ml-3.5">
-            <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
-              Commitments the budget funds
-            </p>
-            <ul className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-              {doc.links.map((link) => (
-                <li
-                  key={link.targetId}
-                  className="border-l-2 pl-2.5"
-                  style={{ borderColor: color }}
-                >
-                  <p
-                    className="text-[12px] font-medium text-[var(--undp-black)] leading-snug"
-                    title={link.targetText}
-                  >
-                    {link.targetLabel}
-                  </p>
-                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-0.5">
-                    <span className="uppercase tracking-wider text-[9.5px] text-[var(--undp-gray)]/70">
-                      funded by
-                    </span>{" "}
-                    {link.programName}
-                  </p>
-                  {link.rationale && (
-                    <p className="text-[11px] italic text-[var(--undp-gray)] leading-snug mt-1 line-clamp-3">
-                      {link.rationale}
-                    </p>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0 text-right">
+              <span className="text-[var(--undp-black)] font-medium">
+                {doc.reached}
+              </span>{" "}
+              of {doc.total} matched
+            </span>
           </div>
-        ) : (
-          <p className="mt-2 ml-3.5 text-[11px] italic text-[var(--undp-gray)]">
-            No funded budget line clearly funds this document&apos;s goals.
-          </p>
-        )}
+          {/* Dot-map: one uniform dot per target. Filled = has a matching
+              budget line; hollow = none. Matched dots first so the proportion
+              reads at a glance. */}
+          <div className="flex flex-wrap gap-1">
+            {doc.links.map((link) => (
+              <span
+                key={link.targetId}
+                aria-hidden="true"
+                className="inline-block w-2.5 h-2.5 rounded-full"
+                style={{ backgroundColor: color }}
+                title={link.targetLabel}
+              />
+            ))}
+            {doc.uncovered.map((a) => (
+              <span
+                key={a.targetId}
+                aria-hidden="true"
+                className="inline-block w-2.5 h-2.5 rounded-full border"
+                style={{ borderColor: color }}
+                title={a.targetLabel}
+              />
+            ))}
+          </div>
+        </summary>
+        <div className="mt-2.5 ml-3.5 space-y-3">
+          {doc.links.length > 0 && (
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+                Targets with a matching budget line
+              </p>
+              <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                {doc.links.map((link) => (
+                  <li
+                    key={link.targetId}
+                    className="border-l-2 pl-2.5"
+                    style={{ borderColor: color }}
+                  >
+                    <p
+                      className="text-[12px] font-medium text-[var(--undp-black)] leading-snug"
+                      title={link.targetText}
+                    >
+                      {link.targetLabel}
+                    </p>
+                    <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-0.5">
+                      <span className="text-[var(--undp-gray)]/70">
+                        budget line:
+                      </span>{" "}
+                      {link.programName}
+                    </p>
+                    {link.rationale && (
+                      <p className="text-[11px] italic text-[var(--undp-gray)] leading-snug mt-1 line-clamp-3">
+                        {link.rationale}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {doc.uncovered.length > 0 ? (
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+                Targets with no matching budget line
+              </p>
+              <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                {doc.uncovered.map((a) => (
+                  <li
+                    key={a.targetId}
+                    className="border-l-2 border-[var(--undp-gray)]/30 pl-2.5"
+                  >
+                    <p
+                      className="text-[12px] font-medium text-[var(--undp-black)] leading-snug"
+                      title={a.targetText}
+                    >
+                      {a.targetLabel}
+                    </p>
+                    <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-0.5 line-clamp-3">
+                      {a.targetText}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="text-[11px] italic text-[var(--undp-gray)]">
+              Every target in this document has a matching budget line.
+            </p>
+          )}
+        </div>
       </details>
     </li>
   );
@@ -190,51 +258,43 @@ interface Sentence {
   body: string;
 }
 
-function composeSentence(
-  summary: FinancingCoherenceSummary,
-  commitmentCount: number,
-): Sentence {
-  const { programsToHalf, totalProgramCount } = summary;
-  const concentrated =
-    programsToHalf <= Math.max(1, Math.round(totalProgramCount * 0.2));
-
-  if (totalProgramCount === 0 || summary.totalTrackedExpenditure <= 0) {
-    return {
-      headline: "No tracked biodiversity expenditure to compare yet.",
-      body: "Once the Biodiversity Expenditure Review reports program spending, this slide shows whether the money is concentrated where the policy ambition sits.",
-    };
-  }
-
-  if (!concentrated) {
-    return {
-      headline: `Biodiversity spending is spread across ${totalProgramCount} programs.`,
-      body: `It takes ${programsToHalf} of ${totalProgramCount} programs to reach half of all tracked spending, so no handful dominates. Across the ${commitmentCount} policy commitments (the targets in the country's nature-climate documents), the budget funds the goals of some far more than others.`,
-    };
-  }
-
-  const where =
-    programsToHalf === 1
-      ? "a single program"
-      : `just ${numberWord(programsToHalf)} of ${totalProgramCount} programs`;
-  return {
-    headline: `Over half the biodiversity budget sits in ${where}.`,
-    body: `${programsToHalf === 1 ? "One program holds" : `These ${programsToHalf} programs hold`} more than half of all tracked spending. Across the ${commitmentCount} policy commitments (the targets in the country's nature-climate documents), the budget funds the goals of some far more than others.`,
-  };
+// "most of" / "about half of" / "under half of" / "few of" — a graspable share
+// word so the headline does not lead with a bare fraction. The body carries the
+// exact counts.
+function coverageWord(share: number): string {
+  if (share >= 0.6) return "most of";
+  if (share >= 0.4) return "about half";
+  if (share >= 0.2) return "under half of";
+  return "few of";
 }
 
-const SMALL_NUMBERS = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-];
+function composeSentence(
+  coverage: BudgetCoverage | null,
+  summary: FinancingCoherenceSummary,
+  commitmentCount: number,
+  countryName: string,
+): Sentence {
+  // No tracked spend yet: nothing to compare.
+  if (summary.totalProgramCount === 0 || summary.totalTrackedExpenditure <= 0) {
+    return {
+      headline: "No tracked biodiversity expenditure to compare yet.",
+      body: "Once the Biodiversity Expenditure Review reports program spending, this slide shows how much of the policy has a matching budget line, and which targets have none.",
+    };
+  }
 
-function numberWord(n: number): string {
-  return SMALL_NUMBERS[n] ?? String(n);
+  // Budget-to-target matching not available for this corpus (rare for Mongolia,
+  // where the alignment exists). Name the budget; do not headline a number.
+  if (!coverage || coverage.byDocument.length === 0) {
+    return {
+      headline: `${countryName}'s reviewed biodiversity spending sits beside ${commitmentCount} policy targets.`,
+      body: "The match between this budget's lines and the policy targets has not been computed for this corpus yet. The right column shows the budget itself: where the money sits, and how much of the plan went unspent.",
+    };
+  }
+
+  const { reached, total, outsideReach, byDocument } = coverage;
+  const share = total > 0 ? reached / total : 0;
+  return {
+    headline: `${countryName}'s reviewed biodiversity spending matches ${coverageWord(share)} the policy targets.`,
+    body: `Across the ${byDocument.length} policy documents there are ${total} targets. ${reached} have a matching budget line in this review; the other ${outsideReach} have none.`,
+  };
 }
