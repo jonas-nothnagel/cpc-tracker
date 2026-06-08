@@ -1,14 +1,18 @@
 "use client";
 
 /**
- * FinancingCenterpiece — the right-column visual for the Financing slide.
+ * FinancingCenterpiece — the right-column visual for the Financing slide. This
+ * is the BUDGET OBJECT: the thing the left column measures ambition reach
+ * against, and the thing a user could swap for another budget dataset.
  *
- * Two hard budget facts, no AI, no taxonomy:
+ * Three hard budget facts, no AI, no taxonomy:
+ *   0. What the spending review is — source (BER), country, period, and the
+ *      budget lines it contains (expandable to the full list, so "28 budget
+ *      lines" is no longer an unexplained number).
  *   1. Where the money concentrates — the largest BER programs' share of
- *      spend, by the BER's OWN program names (air-pollution, waste, ...). The
- *      hero of the slide.
+ *      spend, by the BER's OWN program names (air-pollution, waste, ...).
  *   2. Not all of it is spent — the BER's planned vs actual (a supporting
- *      line below the hero).
+ *      line, labelled with its own wider period).
  */
 
 import { formatBerMoney } from "@/lib/financing-coherence";
@@ -22,11 +26,14 @@ const REST = "#e5e7eb";
 
 export function FinancingCenterpiece({
   summary,
+  countryName,
 }: {
   summary: FinancingCoherenceSummary;
+  countryName: string;
 }) {
   return (
-    <div className="px-1 space-y-7">
+    <div className="px-1 space-y-6">
+      <BudgetObjectHeader summary={summary} countryName={countryName} />
       <Concentration summary={summary} />
       {summary.execution && (
         <ExecutionBar
@@ -35,9 +42,69 @@ export function FinancingCenterpiece({
           currency={summary.currency}
         />
       )}
-      <p className="text-center text-[10px] text-[var(--undp-gray)]/80">
-        Source: Biodiversity Expenditure Review (BER).
+    </div>
+  );
+}
+
+// What the spending review IS. Names the dataset (the BER, a snapshot review,
+// not the whole budget) and expands the budget-line count to the full ranked
+// list, so "28 budget lines" is something the user can actually inspect.
+function BudgetObjectHeader({
+  summary,
+  countryName,
+}: {
+  summary: FinancingCoherenceSummary;
+  countryName: string;
+}) {
+  return (
+    <div>
+      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+        The spending reviewed
       </p>
+      <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">
+        Biodiversity Expenditure Review (BER)
+      </p>
+      <p className="text-[11.5px] text-[var(--undp-gray)] mt-0.5">
+        {countryName} · {summary.periodLabel}
+      </p>
+      <details className="group mt-1.5">
+        <summary className="cursor-pointer list-none text-[11.5px] text-[var(--undp-black)]">
+          <span className="font-medium">
+            {summary.totalProgramCount} budget lines
+          </span>
+          <span className="text-[var(--undp-gray)]">
+            {" "}
+            ({summary.fundedProgramCount} with recorded spend)
+          </span>
+          <span
+            aria-hidden="true"
+            className="text-[var(--undp-gray)]/50 text-[10px]"
+          >
+            {" "}
+            +
+          </span>
+        </summary>
+        <ul className="mt-1.5 space-y-1 max-h-56 overflow-y-auto pr-1">
+          {summary.programs.map((p) => (
+            <li
+              key={p.berId}
+              className="flex items-center justify-between gap-3 text-[11px]"
+            >
+              <span
+                className={`truncate ${p.hasSpend ? "text-[var(--undp-black)]" : "text-[var(--undp-gray)]/60"}`}
+                title={p.name}
+              >
+                {p.name}
+              </span>
+              <span className="tabular-nums shrink-0 text-[var(--undp-gray)]">
+                {p.hasSpend
+                  ? formatBerMoney(p.totalSpend, summary.unit, summary.currency)
+                  : "no recorded spend"}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 }

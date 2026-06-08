@@ -37,38 +37,56 @@ export interface BudgetCoverageLink {
   rationale: string;
 }
 
+/** An ambition no funded programme reaches: outside this budget's reach. */
+export interface BudgetUncoveredAmbition {
+  targetId: string;
+  /** Short ambition label, e.g. "FSS 3". */
+  targetLabel: string;
+  /** Full ambition text (for the inline gap list). */
+  targetText: string;
+}
+
 export interface BudgetCoverageDoc {
   /** Source document type (e.g. "NBSAP"). */
   doc: string;
-  /** Commitments in this document a funded program STRONGLY (high) aligns with. */
+  /** Ambitions in this document a funded program strongly (high) reaches. */
   reached: number;
-  /** Commitments in this document. */
+  /** Ambitions in this document. */
   total: number;
-  /** One strong link per strongly-aligned commitment (the evidence), by label. */
+  /** One strong link per reached ambition (the evidence), by label. */
   links: BudgetCoverageLink[];
+  /**
+   * Ambitions in this document NO funded programme reaches, i.e. outside this
+   * budget's reach. Pure complement of `links`: links.length +
+   * uncovered.length === total.
+   */
+  uncovered: BudgetUncoveredAmbition[];
 }
 
 export interface BudgetCoverage {
-  /** Visible commitments a FUNDED program strongly (high) aligns with. */
+  /** Visible ambitions a FUNDED program strongly (high) reaches. */
   reached: number;
-  /** Visible commitments total. */
+  /** Visible ambitions total. */
   total: number;
+  /** Visible ambitions outside this budget's reach (= total - reached). */
+  outsideReach: number;
   /** Per-document breakdown, largest document first. */
   byDocument: BudgetCoverageDoc[];
 }
 
 /**
- * Where the funded biodiversity budget FUNDS policy commitments, via the
- * pipeline's budget↔commitment judgement (`python/src/budget_align.py`, which
+ * How far the funded biodiversity budget REACHES into the policy ambitions, via
+ * the pipeline's budget↔ambition judgement (`python/src/budget_align.py`, which
  * reuses the coherence advisor with a budget rubric: HIGH = "the programme's
- * mandate and expenditure clearly fund the target's goals"). We count only
- * HIGH links — medium ("same sector but doesn't meaningfully fund") is too
- * generous and links nearly every commitment, washing out the signal. So a
- * commitment is "funded" when a FUNDED program (spend > 0) judges HIGH against
- * it. This is a FUNDING judgement, distinct from the policy-to-policy
- * coherence. Each document carries the actual links — commitment, budget line,
- * and the AI's reasoning — so the per-document number is substantiated, not
- * asserted. AI-derived and indicative; never headline it.
+ * mandate and expenditure clearly connect to the target's goals"). We count
+ * only HIGH links — medium ("same sector but doesn't meaningfully connect") is
+ * too generous and links nearly every ambition, washing out the signal. So an
+ * ambition is "reached" when a FUNDED program (spend > 0) judges HIGH against
+ * it. This is a thematic reach judgement, not a traced allocation, and is
+ * distinct from the policy-to-policy coherence. Each document carries the
+ * actual links — ambition, budget line, and the AI's reasoning — plus the
+ * ambitions left outside the budget's reach, so both sides are substantiated.
+ * AI-derived and indicative; never an audited allocation.
  */
 export function computeBudgetCoverage(
   budgetAlignment: AlignmentResult[],
@@ -102,30 +120,53 @@ export function computeBudgetCoverage(
 
   const docs = new Map<
     string,
-    { total: number; links: BudgetCoverageLink[] }
+    {
+      total: number;
+      links: BudgetCoverageLink[];
+      uncovered: BudgetUncoveredAmbition[];
+    }
   >();
   for (const t of visibleTargets) {
-    const entry = docs.get(t.sourceDocument) ?? { total: 0, links: [] };
+    const entry = docs.get(t.sourceDocument) ?? {
+      total: 0,
+      links: [],
+      uncovered: [],
+    };
     entry.total += 1;
     const link = linkByTarget.get(t.id);
-    if (link) entry.links.push(link);
+    if (link) {
+      entry.links.push(link);
+    } else {
+      // No funded programme reaches this ambition: it sits outside the
+      // budget's reach. Pure complement of `links`.
+      entry.uncovered.push({
+        targetId: t.id,
+        targetLabel: t.sourceLabel ?? "",
+        targetText: t.text,
+      });
+    }
     docs.set(t.sourceDocument, entry);
   }
+
+  const byLabel = (a: { targetLabel: string }, b: { targetLabel: string }) =>
+    a.targetLabel.localeCompare(b.targetLabel, undefined, { numeric: true });
 
   const byDocument: BudgetCoverageDoc[] = [...docs.entries()]
     .map(([doc, v]) => ({
       doc,
       reached: v.links.length,
       total: v.total,
-      links: v.links.sort((a, b) =>
-        a.targetLabel.localeCompare(b.targetLabel, undefined, {
-          numeric: true,
-        }),
-      ),
+      links: v.links.sort(byLabel),
+      uncovered: v.uncovered.sort(byLabel),
     }))
     .sort((a, b) => b.total - a.total || a.doc.localeCompare(b.doc));
 
-  return { reached: linkByTarget.size, total: visibleTargets.length, byDocument };
+  return {
+    reached: linkByTarget.size,
+    total: visibleTargets.length,
+    outsideReach: visibleTargets.length - linkByTarget.size,
+    byDocument,
+  };
 }
 
 export interface FinancingProgramStat {
