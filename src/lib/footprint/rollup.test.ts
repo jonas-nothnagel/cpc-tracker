@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { rollUp } from "./rollup";
+import { cumulativeByComponent, rollUp } from "./rollup";
 import type { LedgerEvent } from "./types";
 
 const ev = (o: Partial<LedgerEvent>): LedgerEvent => ({
@@ -71,5 +71,50 @@ describe("rollUp", () => {
     expect(r.byModel).toEqual([]);
     expect(r.byDay).toEqual([]);
     expect(r.latestTs).toBeNull();
+  });
+});
+
+describe("cumulativeByComponent", () => {
+  it("accumulates the chosen metric per component with carry-forward across days", () => {
+    const { points, components } = cumulativeByComponent(
+      [
+        ev({ ts: "2026-06-01T10:00:00Z", component: "dev_pipeline", co2_geq: 100 }),
+        ev({ ts: "2026-06-01T11:00:00Z", component: "chat", co2_geq: 1 }),
+        ev({ ts: "2026-06-02T10:00:00Z", component: "dev_pipeline", co2_geq: 50 }),
+      ],
+      "co2_geq",
+    );
+    expect(components).toEqual(["dev_pipeline", "chat"]); // ordered by total desc
+    expect(points).toEqual([
+      { key: "2026-06-01", dev_pipeline: 100, chat: 1 },
+      { key: "2026-06-02", dev_pipeline: 150, chat: 1 }, // chat carried forward
+    ]);
+  });
+
+  it("works for any metric, not just carbon", () => {
+    const { points } = cumulativeByComponent(
+      [
+        ev({ ts: "2026-06-01T10:00:00Z", component: "dev_pipeline", energy_wh: 40 }),
+        ev({ ts: "2026-06-02T10:00:00Z", component: "dev_pipeline", energy_wh: 60 }),
+      ],
+      "energy_wh",
+    );
+    expect(points.map((p) => p.dev_pipeline)).toEqual([40, 100]);
+  });
+
+  it("orders components by total value descending", () => {
+    const { components } = cumulativeByComponent(
+      [
+        ev({ component: "chat", co2_geq: 5 }),
+        ev({ component: "dev_pipeline", co2_geq: 1 }),
+        ev({ component: "dev_pipeline", co2_geq: 1 }),
+      ],
+      "co2_geq",
+    );
+    expect(components).toEqual(["chat", "dev_pipeline"]); // chat 5 > dev_pipeline 2
+  });
+
+  it("returns an empty series for no events", () => {
+    expect(cumulativeByComponent([], "co2_geq")).toEqual({ points: [], components: [] });
   });
 });

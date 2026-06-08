@@ -1,23 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
+  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
+import { cumulativeByComponent } from "@/lib/footprint/rollup";
 import type {
   FootprintComponent,
+  FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
-  RollupBucket,
 } from "@/lib/footprint/types";
 
 const UNDP_BLUE = "#0468b1";
@@ -162,9 +164,13 @@ function MetricTile({
 function BreakdownBars({
   title,
   data,
+  name,
+  fmt,
 }: {
   title: string;
-  data: { label: string; co2_geq: number; calls: number }[];
+  data: { label: string; value: number; calls: number }[];
+  name: string;
+  fmt: (v: number) => { value: string; unit: string };
 }) {
   if (data.length === 0) return null;
   return (
@@ -195,24 +201,65 @@ function BreakdownBars({
           />
           <Tooltip
             cursor={{ fill: "rgba(4,104,177,0.06)" }}
-            formatter={(value) => `${num(Number(value))} g CO2e`}
+            formatter={(value) => {
+              const f = fmt(Number(value));
+              return `${f.value} ${f.unit}`;
+            }}
           />
-          <Bar dataKey="co2_geq" name="Carbon" fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
+          <Bar dataKey="value" name={name} fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 }
 
-function TimeSeries({ byDay }: { byDay: RollupBucket[] }) {
-  if (byDay.length === 0) return null;
+// Colour per source (component) for the stacked area chart. The four resource
+// metrics move proportionally, so charting them against each other is redundant;
+// the components do NOT, so cumulative-by-source is the one trend that adds
+// information. A selector picks which metric the chart (and the bars) show.
+const COMPONENT_COLORS: Record<string, string> = {
+  dev_pipeline: UNDP_BLUE,
+  user_pipeline: "#02a38a",
+  extract: "#d9a400",
+  chat: "#6f7d8c",
+};
+
+const METRICS: {
+  key: keyof FootprintMetrics;
+  label: string;
+  fmt: (v: number) => { value: string; unit: string };
+}[] = [
+  { key: "co2_geq", label: "Carbon", fmt: fmtCarbon },
+  { key: "energy_wh", label: "Energy", fmt: fmtEnergy },
+  { key: "water_ml", label: "Water", fmt: fmtWater },
+  { key: "minerals_ugsbeq", label: "Minerals", fmt: fmtMinerals },
+];
+
+function CumulativeImpact({
+  events,
+  metricKey,
+  metricLabel,
+  fmt,
+}: {
+  events: LedgerEvent[];
+  metricKey: keyof FootprintMetrics;
+  metricLabel: string;
+  fmt: (v: number) => { value: string; unit: string };
+}) {
+  const { points, components } = cumulativeByComponent(events, metricKey);
+  if (points.length === 0) return null;
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5">
-      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-        Carbon over time
+      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-1">
+        Cumulative {metricLabel.toLowerCase()} over time
       </h3>
-      <ResponsiveContainer width="100%" height={220}>
-        <AreaChart data={byDay} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
+      <p className="text-xs text-[var(--undp-gray)] mb-3">
+        Running total of {metricLabel.toLowerCase()} to date, split by where it
+        comes from. The four resources move in step, so each shows the same shape
+        in its own units.
+      </p>
+      <ResponsiveContainer width="100%" height={260}>
+        <AreaChart data={points} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
           <CartesianGrid stroke="#f0f0f0" />
           <XAxis dataKey="key" fontSize={11} stroke={UNDP_GRAY} tickLine={false} />
           <YAxis
@@ -222,16 +269,33 @@ function TimeSeries({ byDay }: { byDay: RollupBucket[] }) {
             tickLine={false}
             axisLine={false}
           />
-          <Tooltip formatter={(value) => `${num(Number(value))} g CO2e`} />
-          <Area
-            type="monotone"
-            dataKey="co2_geq"
-            name="Carbon"
-            stroke={UNDP_BLUE}
-            fill={UNDP_BLUE}
-            fillOpacity={0.14}
-            strokeWidth={2}
+          <Tooltip
+            formatter={(value, name) => {
+              const f = fmt(Number(value));
+              return [
+                `${f.value} ${f.unit}`,
+                COMPONENT_LABELS[name as FootprintComponent] ?? name,
+              ];
+            }}
           />
+          <Legend
+            formatter={(value) =>
+              COMPONENT_LABELS[value as FootprintComponent] ?? value
+            }
+          />
+          {components.map((c) => (
+            <Area
+              key={c}
+              type="monotone"
+              dataKey={c}
+              stackId="metric"
+              name={c}
+              stroke={COMPONENT_COLORS[c] ?? UNDP_GRAY}
+              fill={COMPONENT_COLORS[c] ?? UNDP_GRAY}
+              fillOpacity={0.18}
+              strokeWidth={2}
+            />
+          ))}
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -271,33 +335,6 @@ export function SustainabilityClient() {
       cancelled = true;
     };
   }, []);
-
-  const componentBars = useMemo(() => {
-    if (state.status !== "ready") return [];
-    return state.data.byComponent.map((b) => ({
-      label: COMPONENT_LABELS[b.key as FootprintComponent] ?? b.key,
-      co2_geq: b.co2_geq,
-      calls: b.call_count,
-    }));
-  }, [state]);
-
-  const modelBars = useMemo(() => {
-    if (state.status !== "ready") return [];
-    return state.data.byModel.map((b) => ({
-      label: b.key,
-      co2_geq: b.co2_geq,
-      calls: b.call_count,
-    }));
-  }, [state]);
-
-  const regionBars = useMemo(() => {
-    if (state.status !== "ready") return [];
-    return state.data.byRegion.map((b) => ({
-      label: b.key,
-      co2_geq: b.co2_geq,
-      calls: b.call_count,
-    }));
-  }, [state]);
 
   return (
     <main className="max-w-5xl mx-auto px-5 sm:px-8 py-10">
@@ -348,28 +385,16 @@ export function SustainabilityClient() {
       )}
 
       {state.status === "ready" && state.data.totals.event_count > 0 && (
-        <Dashboard
-          data={state.data}
-          componentBars={componentBars}
-          modelBars={modelBars}
-          regionBars={regionBars}
-        />
+        <Dashboard data={state.data} />
       )}
     </main>
   );
 }
 
-function Dashboard({
-  data,
-  componentBars,
-  modelBars,
-  regionBars,
-}: {
-  data: FootprintRollup;
-  componentBars: { label: string; co2_geq: number; calls: number }[];
-  modelBars: { label: string; co2_geq: number; calls: number }[];
-  regionBars: { label: string; co2_geq: number; calls: number }[];
-}) {
+function Dashboard({ data }: { data: FootprintRollup }) {
+  const [metricKey, setMetricKey] = useState<keyof FootprintMetrics>("co2_geq");
+  const metric = METRICS.find((m) => m.key === metricKey) ?? METRICS[0];
+
   const { totals } = data;
   const carbon = fmtCarbon(totals.co2_geq);
   const energy = fmtEnergy(totals.energy_wh);
@@ -378,6 +403,23 @@ function Dashboard({
   const callsLabel = `across ${compact(totals.call_count)} model calls`;
   const lastRecorded = data.latestTs ? data.latestTs.slice(0, 10) : "n/a";
   const stamp = new Date().toISOString().slice(0, 10);
+
+  // Breakdown bars follow the selected metric (all four live in each bucket).
+  const componentBars = data.byComponent.map((b) => ({
+    label: COMPONENT_LABELS[b.key as FootprintComponent] ?? b.key,
+    value: b[metricKey],
+    calls: b.call_count,
+  }));
+  const modelBars = data.byModel.map((b) => ({
+    label: b.key,
+    value: b[metricKey],
+    calls: b.call_count,
+  }));
+  const regionBars = data.byRegion.map((b) => ({
+    label: b.key,
+    value: b[metricKey],
+    calls: b.call_count,
+  }));
 
   const exportCsv = () =>
     download(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");
@@ -438,13 +480,56 @@ function Dashboard({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <BreakdownBars title="Carbon by component" data={componentBars} />
-        <BreakdownBars title="Carbon by model" data={modelBars} />
-        <BreakdownBars title="Carbon by region" data={regionBars} />
-      </div>
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-[var(--undp-gray)]">
+            Break down by resource:
+          </span>
+          {METRICS.map((m) => (
+            <button
+              key={m.key}
+              type="button"
+              onClick={() => setMetricKey(m.key)}
+              aria-pressed={m.key === metricKey}
+              className={`text-xs font-medium rounded-full px-3 py-1 border transition-colors ${
+                m.key === metricKey
+                  ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+                  : "text-[var(--undp-gray)] border-gray-200 hover:border-[var(--undp-blue)]/40"
+              }`}
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
 
-      <TimeSeries byDay={data.byDay} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <BreakdownBars
+            title={`${metric.label} by component`}
+            data={componentBars}
+            name={metric.label}
+            fmt={metric.fmt}
+          />
+          <BreakdownBars
+            title={`${metric.label} by model`}
+            data={modelBars}
+            name={metric.label}
+            fmt={metric.fmt}
+          />
+          <BreakdownBars
+            title={`${metric.label} by region`}
+            data={regionBars}
+            name={metric.label}
+            fmt={metric.fmt}
+          />
+        </div>
+
+        <CumulativeImpact
+          events={data.events}
+          metricKey={metricKey}
+          metricLabel={metric.label}
+          fmt={metric.fmt}
+        />
+      </div>
 
       <EventsTable data={data} />
     </div>
