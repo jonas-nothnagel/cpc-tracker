@@ -55,7 +55,6 @@ export interface FootprintRollup {
   byModel: RollupBucket[];
   byComponent: RollupBucket[];
   byRegion: RollupBucket[];
-  byDay: RollupBucket[]; // key is "YYYY-MM-DD", sorted ascending
   events: LedgerEvent[];
   latestTs: string | null;
 }

@@ -20,6 +20,7 @@ import type {
   FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
+  RollupBucket,
 } from "@/lib/footprint/types";
 
 const UNDP_BLUE = "#0468b1";
@@ -405,21 +406,19 @@ function Dashboard({ data }: { data: FootprintRollup }) {
   const stamp = new Date().toISOString().slice(0, 10);
 
   // Breakdown bars follow the selected metric (all four live in each bucket).
-  const componentBars = data.byComponent.map((b) => ({
-    label: COMPONENT_LABELS[b.key as FootprintComponent] ?? b.key,
-    value: b[metricKey],
-    calls: b.call_count,
-  }));
-  const modelBars = data.byModel.map((b) => ({
-    label: b.key,
-    value: b[metricKey],
-    calls: b.call_count,
-  }));
-  const regionBars = data.byRegion.map((b) => ({
-    label: b.key,
-    value: b[metricKey],
-    calls: b.call_count,
-  }));
+  // Sort by the selected metric so the longest bar is always on top -- the
+  // buckets arrive sorted by carbon, which would otherwise misorder the bars
+  // when a different metric is chosen.
+  const toBars = (buckets: RollupBucket[], labelOf: (key: string) => string) =>
+    buckets
+      .map((b) => ({ label: labelOf(b.key), value: b[metricKey], calls: b.call_count }))
+      .sort((a, b) => b.value - a.value);
+  const componentBars = toBars(
+    data.byComponent,
+    (k) => COMPONENT_LABELS[k as FootprintComponent] ?? k,
+  );
+  const modelBars = toBars(data.byModel, (k) => k);
+  const regionBars = toBars(data.byRegion, (k) => k);
 
   const exportCsv = () =>
     download(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");

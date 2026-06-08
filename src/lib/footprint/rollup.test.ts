@@ -36,9 +36,6 @@ describe("rollUp", () => {
     expect(r.byComponent.find((c) => c.key === "chat")!.co2_geq).toBe(3);
     expect(r.byModel.map((m) => m.key).sort()).toEqual(["gpt-4o-mini", "gpt-5.4"]);
     expect(r.byRegion).toHaveLength(1);
-    expect(r.byDay).toHaveLength(1);
-    expect(r.byDay[0].key).toBe("2026-06-01");
-    expect(r.byDay[0].co2_geq).toBe(10);
   });
 
   it("sorts model/component/region breakdowns by co2 descending", () => {
@@ -50,16 +47,11 @@ describe("rollUp", () => {
     expect(r.byModel[1].key).toBe("small");
   });
 
-  it("sorts byDay ascending and tracks latestTs", () => {
+  it("tracks the latest timestamp", () => {
     const r = rollUp([
       ev({ ts: "2026-06-03T10:00:00Z" }),
       ev({ ts: "2026-06-01T10:00:00Z" }),
       ev({ ts: "2026-06-02T10:00:00Z" }),
-    ]);
-    expect(r.byDay.map((d) => d.key)).toEqual([
-      "2026-06-01",
-      "2026-06-02",
-      "2026-06-03",
     ]);
     expect(r.latestTs).toBe("2026-06-03T10:00:00Z");
   });
@@ -69,7 +61,6 @@ describe("rollUp", () => {
     expect(r.totals.co2_geq).toBe(0);
     expect(r.totals.event_count).toBe(0);
     expect(r.byModel).toEqual([]);
-    expect(r.byDay).toEqual([]);
     expect(r.latestTs).toBeNull();
   });
 });

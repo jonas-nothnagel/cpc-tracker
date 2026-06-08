@@ -75,10 +75,6 @@ export function rollUp(events: LedgerEvent[]): FootprintRollup {
     byModel: bucketBy(events, (e) => e.model).sort(byCo2Desc),
     byComponent: bucketBy(events, (e) => e.component).sort(byCo2Desc),
     byRegion: bucketBy(events, (e) => e.region).sort(byCo2Desc),
-    // Day buckets stay in chronological order for the time series.
-    byDay: bucketBy(events, (e) => e.ts.slice(0, 10)).sort((a, b) =>
-      a.key.localeCompare(b.key),
-    ),
     events,
     latestTs,
   };
@@ -105,16 +101,12 @@ export function cumulativeByComponent(
   events: LedgerEvent[],
   metric: keyof FootprintMetrics,
 ): CumulativeComponentSeries {
+  // Single pass: accumulate per-component totals (for stack order) and the
+  // per-day-per-component sums together.
   const totals = new Map<string, number>();
-  for (const e of events) {
-    totals.set(e.component, (totals.get(e.component) ?? 0) + e[metric]);
-  }
-  const components = [...totals.keys()].sort(
-    (a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0),
-  );
-
   const perDay = new Map<string, Map<string, number>>();
   for (const e of events) {
+    totals.set(e.component, (totals.get(e.component) ?? 0) + e[metric]);
     const day = e.ts.slice(0, 10);
     let dayMap = perDay.get(day);
     if (!dayMap) {
@@ -123,6 +115,9 @@ export function cumulativeByComponent(
     }
     dayMap.set(e.component, (dayMap.get(e.component) ?? 0) + e[metric]);
   }
+  const components = [...totals.keys()].sort(
+    (a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0),
+  );
   const days = [...perDay.keys()].sort();
 
   const running = new Map<string, number>(components.map((c) => [c, 0]));
