@@ -69,6 +69,7 @@ import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { getDocTypeOrder } from "@/lib/utils";
+import { PrototypeBadge } from "@/components/ui/prototype-badge";
 import {
   buildSectorAlignmentDensity,
   buildSectorBriefing,
@@ -1309,9 +1310,12 @@ function BriefingHeader({
 }) {
   return (
     <header className="pt-10 pb-2">
-      <p className="text-[11px] uppercase tracking-[0.24em] text-[var(--undp-gray)] mb-2">
-        Policy coherence
-      </p>
+      <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <p className="text-[11px] uppercase tracking-[0.24em] text-[var(--undp-gray)]">
+          Policy coherence
+        </p>
+        <PrototypeBadge tone="light" />
+      </div>
       <h1
         className="text-[36px] sm:text-[44px] leading-[1.1] text-[var(--undp-black)] font-medium"
         style={{ fontFamily: HEADLINE_SERIF }}
