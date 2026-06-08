@@ -101,7 +101,7 @@ export function HeroVideo({ poster, mp4, webm, children }: HeroVideoProps) {
           type="button"
           onClick={toggle}
           aria-label={isPlaying ? "Pause background video" : "Play background video"}
-          className="absolute bottom-5 right-5 z-20 rounded-full border border-white/40 bg-black/25 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="absolute bottom-5 left-5 z-20 rounded-full border border-white/40 bg-black/25 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           {isPlaying ? "Pause" : "Play"}
         </button>

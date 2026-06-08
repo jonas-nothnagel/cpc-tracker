@@ -1,4 +1,9 @@
-import type { FootprintRollup, LedgerEvent, RollupBucket } from "./types";
+import type {
+  FootprintMetrics,
+  FootprintRollup,
+  LedgerEvent,
+  RollupBucket,
+} from "./types";
 
 /**
  * Aggregate ledger events into totals and breakdowns for the /sustainability
@@ -70,11 +75,61 @@ export function rollUp(events: LedgerEvent[]): FootprintRollup {
     byModel: bucketBy(events, (e) => e.model).sort(byCo2Desc),
     byComponent: bucketBy(events, (e) => e.component).sort(byCo2Desc),
     byRegion: bucketBy(events, (e) => e.region).sort(byCo2Desc),
-    // Day buckets stay in chronological order for the time series.
-    byDay: bucketBy(events, (e) => e.ts.slice(0, 10)).sort((a, b) =>
-      a.key.localeCompare(b.key),
-    ),
     events,
     latestTs,
   };
+}
+
+export interface CumulativeComponentSeries {
+  /** One point per day: { key: "YYYY-MM-DD", [component]: cumulative value }. */
+  points: Array<Record<string, number | string>>;
+  /** Components present, ordered by total value descending (stack order). */
+  components: string[];
+}
+
+/**
+ * Cumulative value of one footprint metric over time, split by component, for a
+ * stacked area chart. The four resource metrics move proportionally (one model
+ * call emits carbon, draws energy, uses water and depletes minerals in a fixed
+ * ratio), so charting them against each other is redundant -- but the components
+ * have distinct time dynamics: a pipeline run is a large step, chat adds slivers,
+ * extraction is different again. The metric is chosen by the caller (a selector
+ * on the page). Carry-forward: every point carries the running total for every
+ * component so the stacked areas stay continuous.
+ */
+export function cumulativeByComponent(
+  events: LedgerEvent[],
+  metric: keyof FootprintMetrics,
+): CumulativeComponentSeries {
+  // Single pass: accumulate per-component totals (for stack order) and the
+  // per-day-per-component sums together.
+  const totals = new Map<string, number>();
+  const perDay = new Map<string, Map<string, number>>();
+  for (const e of events) {
+    totals.set(e.component, (totals.get(e.component) ?? 0) + e[metric]);
+    const day = e.ts.slice(0, 10);
+    let dayMap = perDay.get(day);
+    if (!dayMap) {
+      dayMap = new Map();
+      perDay.set(day, dayMap);
+    }
+    dayMap.set(e.component, (dayMap.get(e.component) ?? 0) + e[metric]);
+  }
+  const components = [...totals.keys()].sort(
+    (a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0),
+  );
+  const days = [...perDay.keys()].sort();
+
+  const running = new Map<string, number>(components.map((c) => [c, 0]));
+  const points = days.map((day) => {
+    const add = perDay.get(day);
+    const point: Record<string, number | string> = { key: day };
+    for (const c of components) {
+      running.set(c, (running.get(c) ?? 0) + (add?.get(c) ?? 0));
+      point[c] = running.get(c) ?? 0;
+    }
+    return point;
+  });
+
+  return { points, components };
 }
