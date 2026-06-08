@@ -1,21 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
+  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
+import { cumulativeByComponent } from "@/lib/footprint/rollup";
 import type {
-  FootprintComponent,
+  FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
   RollupBucket,
@@ -24,24 +26,36 @@ import type {
 const UNDP_BLUE = "#0468b1";
 const UNDP_GRAY = "#55606e";
 
-function useComponentLabels(): Record<FootprintComponent, string> {
-  const t = useTranslations("sustainability.components");
-  return {
-    dev_pipeline: t("dev_pipeline"),
-    user_pipeline: t("user_pipeline"),
-    extract: t("extract"),
-    chat: t("chat"),
-  };
+const COMPONENT_KEY_SET = new Set<string>([
+  "dev_pipeline",
+  "user_pipeline",
+  "extract",
+  "chat",
+]);
+
+// Resolve a footprint-component key to its translated label, falling back to the
+// raw value for anything that is not a known component (e.g. model/region names).
+function componentLabel(
+  t: ReturnType<typeof useTranslations>,
+  value: unknown,
+): string {
+  const key = String(value);
+  return COMPONENT_KEY_SET.has(key) ? t(`components.${key}`) : key;
 }
 
-function useSourceLabels(): Record<string, string> {
-  const t = useTranslations("sustainability.sources");
-  return {
-    measured: t("measured"),
-    estimated: t("estimated"),
-    api: t("api"),
-    unavailable: t("unavailable"),
-  };
+// Resolve a footprint-source key to its translated label, falling back to raw.
+const SOURCE_KEY_SET = new Set<string>([
+  "measured",
+  "estimated",
+  "api",
+  "unavailable",
+]);
+function sourceLabel(
+  t: ReturnType<typeof useTranslations>,
+  value: unknown,
+): string {
+  const key = String(value);
+  return SOURCE_KEY_SET.has(key) ? t(`sources.${key}`) : key;
 }
 
 // ---------------------------------------------------------------------------
@@ -169,11 +183,14 @@ function MetricTile({
 function BreakdownBars({
   title,
   data,
+  name,
+  fmt,
 }: {
   title: string;
-  data: { label: string; co2_geq: number; calls: number }[];
+  data: { label: string; value: number; calls: number }[];
+  name: string;
+  fmt: (v: number) => { value: string; unit: string };
 }) {
-  const t = useTranslations("sustainability");
   if (data.length === 0) return null;
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5">
@@ -203,25 +220,67 @@ function BreakdownBars({
           />
           <Tooltip
             cursor={{ fill: "rgba(4,104,177,0.06)" }}
-            formatter={(value) => `${num(Number(value))} ${t("units.gCO2e")}`}
+            formatter={(value) => {
+              const f = fmt(Number(value));
+              return `${f.value} ${f.unit}`;
+            }}
           />
-          <Bar dataKey="co2_geq" name={t("seriesCarbon")} fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
+          <Bar dataKey="value" name={name} fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 }
 
-function TimeSeries({ byDay }: { byDay: RollupBucket[] }) {
+// Colour per source (component) for the stacked area chart. The four resource
+// metrics move proportionally, so charting them against each other is redundant;
+// the components do NOT, so cumulative-by-source is the one trend that adds
+// information. A selector picks which metric the chart (and the bars) show.
+const COMPONENT_COLORS: Record<string, string> = {
+  dev_pipeline: UNDP_BLUE,
+  user_pipeline: "#02a38a",
+  extract: "#d9a400",
+  chat: "#6f7d8c",
+};
+
+// Each metric's display label is resolved at render time via t(`tile.${tileKey}`)
+// so it stays translatable; module-level arrays cannot call hooks.
+const METRICS: {
+  key: keyof FootprintMetrics;
+  tileKey: "carbon" | "energy" | "water" | "minerals";
+  fmt: (v: number) => { value: string; unit: string };
+}[] = [
+  { key: "co2_geq", tileKey: "carbon", fmt: fmtCarbon },
+  { key: "energy_wh", tileKey: "energy", fmt: fmtEnergy },
+  { key: "water_ml", tileKey: "water", fmt: fmtWater },
+  { key: "minerals_ugsbeq", tileKey: "minerals", fmt: fmtMinerals },
+];
+
+function CumulativeImpact({
+  events,
+  metricKey,
+  metricLabel,
+  fmt,
+}: {
+  events: LedgerEvent[];
+  metricKey: keyof FootprintMetrics;
+  metricLabel: string;
+  fmt: (v: number) => { value: string; unit: string };
+}) {
   const t = useTranslations("sustainability");
-  if (byDay.length === 0) return null;
+  const { points, components } = cumulativeByComponent(events, metricKey);
+  if (points.length === 0) return null;
+  const metricLower = metricLabel.toLowerCase();
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5">
-      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-        {t("charts.carbonOverTime")}
+      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-1">
+        {t("charts.cumulativeOverTime", { metric: metricLabel })}
       </h3>
-      <ResponsiveContainer width="100%" height={220}>
-        <AreaChart data={byDay} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
+      <p className="text-xs text-[var(--undp-gray)] mb-3">
+        {t("charts.cumulativeDescription", { metric: metricLower })}
+      </p>
+      <ResponsiveContainer width="100%" height={260}>
+        <AreaChart data={points} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
           <CartesianGrid stroke="#f0f0f0" />
           <XAxis dataKey="key" fontSize={11} stroke={UNDP_GRAY} tickLine={false} />
           <YAxis
@@ -231,16 +290,26 @@ function TimeSeries({ byDay }: { byDay: RollupBucket[] }) {
             tickLine={false}
             axisLine={false}
           />
-          <Tooltip formatter={(value) => `${num(Number(value))} ${t("units.gCO2e")}`} />
-          <Area
-            type="monotone"
-            dataKey="co2_geq"
-            name={t("seriesCarbon")}
-            stroke={UNDP_BLUE}
-            fill={UNDP_BLUE}
-            fillOpacity={0.14}
-            strokeWidth={2}
+          <Tooltip
+            formatter={(value, name) => {
+              const f = fmt(Number(value));
+              return [`${f.value} ${f.unit}`, componentLabel(t, name)];
+            }}
           />
+          <Legend formatter={(value) => componentLabel(t, value)} />
+          {components.map((c) => (
+            <Area
+              key={c}
+              type="monotone"
+              dataKey={c}
+              stackId="metric"
+              name={c}
+              stroke={COMPONENT_COLORS[c] ?? UNDP_GRAY}
+              fill={COMPONENT_COLORS[c] ?? UNDP_GRAY}
+              fillOpacity={0.18}
+              strokeWidth={2}
+            />
+          ))}
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -258,7 +327,6 @@ type LoadState =
 
 export function SustainabilityClient() {
   const t = useTranslations("sustainability");
-  const componentLabels = useComponentLabels();
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
   useEffect(() => {
@@ -282,33 +350,6 @@ export function SustainabilityClient() {
       cancelled = true;
     };
   }, [t]);
-
-  const componentBars = useMemo(() => {
-    if (state.status !== "ready") return [];
-    return state.data.byComponent.map((b) => ({
-      label: componentLabels[b.key as FootprintComponent] ?? b.key,
-      co2_geq: b.co2_geq,
-      calls: b.call_count,
-    }));
-  }, [state, componentLabels]);
-
-  const modelBars = useMemo(() => {
-    if (state.status !== "ready") return [];
-    return state.data.byModel.map((b) => ({
-      label: b.key,
-      co2_geq: b.co2_geq,
-      calls: b.call_count,
-    }));
-  }, [state]);
-
-  const regionBars = useMemo(() => {
-    if (state.status !== "ready") return [];
-    return state.data.byRegion.map((b) => ({
-      label: b.key,
-      co2_geq: b.co2_geq,
-      calls: b.call_count,
-    }));
-  }, [state]);
 
   return (
     <main className="max-w-5xl mx-auto px-5 sm:px-8 py-10">
@@ -350,44 +391,45 @@ export function SustainabilityClient() {
 
       {state.status === "ready" && state.data.totals.event_count === 0 && (
         <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-8 text-center">
-          <p className="text-sm text-[var(--undp-gray)]">
-            {t("empty")}
-          </p>
+          <p className="text-sm text-[var(--undp-gray)]">{t("empty")}</p>
         </div>
       )}
 
       {state.status === "ready" && state.data.totals.event_count > 0 && (
-        <Dashboard
-          data={state.data}
-          componentBars={componentBars}
-          modelBars={modelBars}
-          regionBars={regionBars}
-        />
+        <Dashboard data={state.data} />
       )}
     </main>
   );
 }
 
-function Dashboard({
-  data,
-  componentBars,
-  modelBars,
-  regionBars,
-}: {
-  data: FootprintRollup;
-  componentBars: { label: string; co2_geq: number; calls: number }[];
-  modelBars: { label: string; co2_geq: number; calls: number }[];
-  regionBars: { label: string; co2_geq: number; calls: number }[];
-}) {
+function Dashboard({ data }: { data: FootprintRollup }) {
   const t = useTranslations("sustainability");
+  const [metricKey, setMetricKey] = useState<keyof FootprintMetrics>("co2_geq");
+  const metric = METRICS.find((m) => m.key === metricKey) ?? METRICS[0];
+  const metricLabel = t(`tile.${metric.tileKey}`);
+
   const { totals } = data;
   const carbon = fmtCarbon(totals.co2_geq);
   const energy = fmtEnergy(totals.energy_wh);
   const water = fmtWater(totals.water_ml);
   const minerals = fmtMinerals(totals.minerals_ugsbeq);
   const callsLabel = t("tile.callsLabel", { calls: compact(totals.call_count) });
-  const lastRecorded = data.latestTs ? data.latestTs.slice(0, 10) : t("tile.notAvailable");
+  const lastRecorded = data.latestTs
+    ? data.latestTs.slice(0, 10)
+    : t("tile.notAvailable");
   const stamp = new Date().toISOString().slice(0, 10);
+
+  // Breakdown bars follow the selected metric (all four live in each bucket).
+  // Sort by the selected metric so the longest bar is always on top -- the
+  // buckets arrive sorted by carbon, which would otherwise misorder the bars
+  // when a different metric is chosen.
+  const toBars = (buckets: RollupBucket[], labelOf: (key: string) => string) =>
+    buckets
+      .map((b) => ({ label: labelOf(b.key), value: b[metricKey], calls: b.call_count }))
+      .sort((a, b) => b.value - a.value);
+  const componentBars = toBars(data.byComponent, (k) => componentLabel(t, k));
+  const modelBars = toBars(data.byModel, (k) => k);
+  const regionBars = toBars(data.byRegion, (k) => k);
 
   const exportCsv = () =>
     download(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");
@@ -448,13 +490,56 @@ function Dashboard({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <BreakdownBars title={t("charts.byComponent")} data={componentBars} />
-        <BreakdownBars title={t("charts.byModel")} data={modelBars} />
-        <BreakdownBars title={t("charts.byRegion")} data={regionBars} />
-      </div>
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-[var(--undp-gray)]">
+            {t("metricSelector.label")}
+          </span>
+          {METRICS.map((m) => (
+            <button
+              key={m.key}
+              type="button"
+              onClick={() => setMetricKey(m.key)}
+              aria-pressed={m.key === metricKey}
+              className={`text-xs font-medium rounded-full px-3 py-1 border transition-colors ${
+                m.key === metricKey
+                  ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+                  : "text-[var(--undp-gray)] border-gray-200 hover:border-[var(--undp-blue)]/40"
+              }`}
+            >
+              {t(`tile.${m.tileKey}`)}
+            </button>
+          ))}
+        </div>
 
-      <TimeSeries byDay={data.byDay} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <BreakdownBars
+            title={t("charts.byComponentMetric", { metric: metricLabel })}
+            data={componentBars}
+            name={metricLabel}
+            fmt={metric.fmt}
+          />
+          <BreakdownBars
+            title={t("charts.byModelMetric", { metric: metricLabel })}
+            data={modelBars}
+            name={metricLabel}
+            fmt={metric.fmt}
+          />
+          <BreakdownBars
+            title={t("charts.byRegionMetric", { metric: metricLabel })}
+            data={regionBars}
+            name={metricLabel}
+            fmt={metric.fmt}
+          />
+        </div>
+
+        <CumulativeImpact
+          events={data.events}
+          metricKey={metricKey}
+          metricLabel={metricLabel}
+          fmt={metric.fmt}
+        />
+      </div>
 
       <EventsTable data={data} />
     </div>
@@ -463,8 +548,6 @@ function Dashboard({
 
 function EventsTable({ data }: { data: FootprintRollup }) {
   const t = useTranslations("sustainability");
-  const componentLabels = useComponentLabels();
-  const sourceLabels = useSourceLabels();
   const rows = [...data.events].sort((a, b) => b.ts.localeCompare(a.ts));
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5 overflow-x-auto">
@@ -492,7 +575,7 @@ function EventsTable({ data }: { data: FootprintRollup }) {
               <tr key={`${e.ts}-${i}`} className="border-b border-gray-50">
                 <td className="py-2 pr-3 whitespace-nowrap">{e.ts.slice(0, 10)}</td>
                 <td className="py-2 pr-3 whitespace-nowrap">
-                  {componentLabels[e.component] ?? e.component}
+                  {componentLabel(t, e.component)}
                 </td>
                 <td className="py-2 pr-3 whitespace-nowrap">{e.model}</td>
                 <td className="py-2 pr-3 whitespace-nowrap">{e.region}</td>
@@ -506,7 +589,7 @@ function EventsTable({ data }: { data: FootprintRollup }) {
                   {carbon.value} {carbon.unit}
                 </td>
                 <td className="py-2 whitespace-nowrap text-[var(--undp-gray)]">
-                  {sourceLabels[e.source] ?? e.source}
+                  {sourceLabel(t, e.source)}
                 </td>
               </tr>
             );

@@ -19,6 +19,10 @@
     "languageSwitcher": {
       "aria": "Idioma",
       "machineTranslatedNote": "Traducción automática"
+    },
+    "prototype": {
+      "badge": "Prototipo",
+      "caption": "Resultados preliminares"
     }
   },
   "header": {
@@ -876,7 +880,7 @@
   },
   "sustainability": {
     "chip": {
-      "label": "Huella de IA: {value} CO2e",
+      "label": "Huella de IA: <b>{value} CO2e</b>",
       "title": "Huella de sostenibilidad de IA de esta herramienta"
     },
     "page": {
@@ -927,7 +931,12 @@
       "carbonOverTime": "Carbono a lo largo del tiempo",
       "byComponent": "Carbono por componente",
       "byModel": "Carbono por modelo",
-      "byRegion": "Carbono por región"
+      "byRegion": "Carbono por región",
+      "byComponentMetric": "{metric} por componente",
+      "byModelMetric": "{metric} por modelo",
+      "byRegionMetric": "{metric} por región",
+      "cumulativeOverTime": "{metric} acumulado a lo largo del tiempo",
+      "cumulativeDescription": "Total acumulado de {metric} hasta la fecha, desglosado por su procedencia. Los cuatro recursos avanzan al mismo ritmo, por lo que cada uno muestra la misma forma en sus propias unidades."
     },
     "table": {
       "title": "Actividad registrada",
@@ -939,6 +948,9 @@
       "energy": "Energía",
       "carbon": "Carbono",
       "basis": "Base"
+    },
+    "metricSelector": {
+      "label": "Desglosar por recurso:"
     }
   },
   "labels": {

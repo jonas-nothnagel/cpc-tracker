@@ -5,6 +5,7 @@ import { listVisibleCountries } from "@/config/countries";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { HeroVideo } from "@/components/landing/hero-video";
 import { InsideAnalysis } from "@/components/landing/inside-analysis";
+import { PrototypeBadge } from "@/components/ui/prototype-badge";
 
 export default async function Home({
   params,
@@ -26,9 +27,12 @@ export default async function Home({
         mp4="/hero/coherence-hero.mp4"
       >
         <div className="max-w-3xl">
-          <p className="mb-5 text-xs font-medium uppercase tracking-[0.18em] text-white/85 sm:text-sm">
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-white/85 sm:text-sm">
             {t("hero.eyebrow")}
           </p>
+          <div className="mb-5">
+            <PrototypeBadge tone="dark" />
+          </div>
           <h1 className="font-display mb-6 text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
             {t("hero.title")}
           </h1>

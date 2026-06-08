@@ -19,6 +19,10 @@
     "languageSwitcher": {
       "aria": "Language",
       "machineTranslatedNote": "Machine translation"
+    },
+    "prototype": {
+      "badge": "Prototype",
+      "caption": "Preliminary results"
     }
   },
   "header": {
@@ -876,7 +880,7 @@
   },
   "sustainability": {
     "chip": {
-      "label": "AI footprint: {value} CO2e",
+      "label": "AI footprint: <b>{value} CO2e</b>",
       "title": "AI sustainability footprint of this tool"
     },
     "page": {
@@ -927,7 +931,12 @@
       "carbonOverTime": "Carbon over time",
       "byComponent": "Carbon by component",
       "byModel": "Carbon by model",
-      "byRegion": "Carbon by region"
+      "byRegion": "Carbon by region",
+      "byComponentMetric": "{metric} by component",
+      "byModelMetric": "{metric} by model",
+      "byRegionMetric": "{metric} by region",
+      "cumulativeOverTime": "Cumulative {metric} over time",
+      "cumulativeDescription": "Running total of {metric} to date, split by where it comes from. The four resources move in step, so each shows the same shape in its own units."
     },
     "table": {
       "title": "Recorded activity",
@@ -939,6 +948,9 @@
       "energy": "Energy",
       "carbon": "Carbon",
       "basis": "Basis"
+    },
+    "metricSelector": {
+      "label": "Break down by resource:"
     }
   },
   "labels": {
