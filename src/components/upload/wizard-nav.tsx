@@ -1,11 +1,14 @@
 "use client";
 
-const STEPS = [
-  { label: "Country & Documents", icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" },
-  { label: "Reference Data", icon: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" },
-  { label: "Review & Configure", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" },
-  { label: "Summary & Run", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
-];
+import { useTranslations } from "next-intl";
+
+const STEP_ICONS = [
+  "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z",
+  "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4",
+  "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+  "M13 10V3L4 14h7v7l9-11h-7z",
+] as const;
+const STEP_KEYS = ["countryDocs", "referenceData", "reviewConfigure", "summaryRun"] as const;
 
 interface WizardNavProps {
   currentStep: number;
@@ -20,14 +23,17 @@ export function WizardNav({
   canProceed,
   hasExtractionPending,
 }: WizardNavProps) {
+  const t = useTranslations("upload.wizard.nav");
   return (
     <div className="mb-8">
       {/* Step cards */}
       <div className="grid grid-cols-4 gap-2 mb-5">
-        {STEPS.map((step, i) => {
+        {STEP_KEYS.map((key, i) => {
           const isActive = i === currentStep;
           const isComplete = i < currentStep;
           const isFuture = i > currentStep;
+          const icon = STEP_ICONS[i];
+          const label = t(`steps.${key}`);
           return (
             <button
               key={i}
@@ -68,7 +74,7 @@ export function WizardNav({
                     </svg>
                   ) : (
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={step.icon} />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
                     </svg>
                   )}
                 </div>
@@ -82,10 +88,10 @@ export function WizardNav({
                           : "text-gray-400"
                     }`}
                   >
-                    {step.label}
+                    {label}
                   </p>
                   <p className="text-[10px] text-gray-400">
-                    Step {i + 1}
+                    {t("stepCount", { n: i + 1 })}
                   </p>
                 </div>
               </div>
@@ -113,10 +119,10 @@ export function WizardNav({
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back
+          {t("back")}
         </button>
 
-        {currentStep < STEPS.length - 1 ? (
+        {currentStep < STEP_KEYS.length - 1 ? (
           <button
             type="button"
             onClick={() => onStepChange(currentStep + 1)}
@@ -127,7 +133,7 @@ export function WizardNav({
                 : "bg-gray-200 text-gray-400 cursor-not-allowed"
             }`}
           >
-            Next
+            {t("next")}
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

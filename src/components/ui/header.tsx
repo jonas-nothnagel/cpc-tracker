@@ -1,16 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-
-// "Home" covers the country index — the landing page is the country picker.
-// A separate "Dashboard" link without a country id would redirect back to "/",
-// so we intentionally omit it.
-const DEFAULT_NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/upload", label: "Upload Data" },
-];
+import { useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 interface HeaderProps {
   subtitle?: string;
@@ -35,14 +28,18 @@ export function Header({
 }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations("header");
   const showSwitcher = currentCountryId && countries && countries.length > 1;
 
   const navItems = basePath
     ? [
-        { href: basePath, label: "Home" },
-        { href: `${basePath}/upload`, label: "Upload Data" },
+        { href: basePath, label: t("nav.home") },
+        { href: `${basePath}/upload`, label: t("nav.uploadData") },
       ]
-    : DEFAULT_NAV_ITEMS;
+    : [
+        { href: "/", label: t("nav.home") },
+        { href: "/upload", label: t("nav.uploadData") },
+      ];
 
   // Prototypes link preserves the active country when the caller gives us
   // one (dashboard and prototypes pages do). On pages without a country
@@ -68,17 +65,24 @@ export function Header({
             />
           </Link>
           <div>
-            <Link href={basePath ?? "/"} className="text-sm font-medium text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors">
-              Policy Coherence Tracker
+            <Link
+              href={basePath ?? "/"}
+              className="text-sm font-medium text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors"
+            >
+              {t("brand")}
             </Link>
             {showSwitcher ? (
               <select
                 value={currentCountryId}
-                onChange={(e) => router.push(`${switcherPath}?country=${e.target.value}`)}
+                onChange={(e) =>
+                  router.push(`${switcherPath}?country=${e.target.value}`)
+                }
                 className="block text-xs text-[var(--undp-gray)] bg-transparent border-none cursor-pointer focus:outline-none hover:text-[var(--undp-blue)]"
               >
                 {countries.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
                 ))}
               </select>
             ) : subtitle ? (
@@ -113,9 +117,10 @@ export function Header({
                   : "text-gray-400 hover:text-[var(--undp-gray)]"
               }`}
             >
-              prototypes
+              {t("nav.prototypes")}
             </Link>
           )}
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 interface ModalProps {
   open: boolean;
@@ -15,6 +16,7 @@ interface ModalProps {
  * and proper ARIA attributes.
  */
 export function Modal({ open, onClose, title, children, maxWidth = "max-w-2xl" }: ModalProps) {
+  const t = useTranslations("common");
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
 
@@ -86,7 +88,7 @@ export function Modal({ open, onClose, title, children, maxWidth = "max-w-2xl" }
             type="button"
             onClick={onClose}
             className="w-7 h-7 flex items-center justify-center rounded-full text-[var(--undp-gray)] hover:bg-gray-100 hover:text-[var(--undp-black)] transition-colors"
-            aria-label="Close"
+            aria-label={t("close")}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

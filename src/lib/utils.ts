@@ -194,39 +194,6 @@ export const ALIGNMENT_COLORS: Record<AlignmentLevel, string> = {
   high: "#196127",
 };
 
-/** Human-readable labels. "Partial" is preferred over "Low" for the positive side per CLAUDE.md guardrail. */
-export const ALIGNMENT_LABELS: Record<AlignmentLevel, string> = {
-  flagged: "Potential misalignment",
-  none: "No relationship",
-  low: "Partial",
-  medium: "Medium",
-  high: "High",
-};
-
-/** Display labels for the mechanism sub-field on a potentially misaligned pair. */
-export const CONTRADICTION_TYPE_LABELS: Record<ContradictionType, string> = {
-  goal_conflict: "Conflicting goals",
-  resource_competition: "Competing for resources",
-  delivery_friction: "Delivery & coordination",
-};
-
-/**
- * One-line plain-language descriptions of each mechanism, shown as helper text
- * under the breakdown chart and in the profile drawer. Project-defined
- * paraphrases of the pipeline's own definitions (python/src/align.py:181-201) so
- * the UI helper text matches how pairs were actually classified. The key point
- * for "Delivery & coordination": it is about HOW goals are implemented, not the
- * goals themselves.
- */
-export const CONTRADICTION_TYPE_DESCRIPTIONS: Record<ContradictionType, string> = {
-  goal_conflict:
-    "The objectives themselves pull against each other: achieving one substantively means not achieving the other.",
-  resource_competition:
-    "The goals are compatible but compete for the same limited resource: land, water, budget, or capacity.",
-  delivery_friction:
-    "The goals are compatible; the gap is in delivery: how one is implemented undermines the other (mismatched scale, timing, or coordination across actors).",
-};
-
 /**
  * Colours for the friction mechanism, shared by the friction-type bar and the
  * per-pair mechanism chips so the two read as one system: a warm severity ramp
@@ -240,22 +207,9 @@ export const MECHANISM_COLORS: Record<ContradictionType, string> = {
   delivery_friction: "#d97706", // amber — operational / procedural
 };
 
-/**
- * Display labels for the manageability sub-field on a flagged pair. Renamed
- * from "Manageable / Fundamental" (read as judgy verdicts) to a neutral
- * description of WHERE the friction sits. Stored pipeline values are unchanged.
- */
-export const MANAGEABILITY_LABELS = {
-  manageable: "Coordination-level",
-  fundamental: "Design-level",
-} as const;
-
-/** Display labels for the confidence sub-field on a flagged pair. */
-export const CONFIDENCE_LABELS = {
-  high: "High confidence",
-  medium: "Medium confidence",
-  low: "Low confidence",
-} as const;
+// Display labels for AlignmentLevel / ContradictionType / AlignmentManageability /
+// AlignmentConfidence are translation-driven now. Import the locale-aware hooks
+// from `src/lib/labels.ts` instead (e.g. `useAlignmentLabels()`).
 
 /** Ordered list of all levels from most negative (flagged) to most positive (high). */
 export const ALIGNMENT_LEVEL_ORDER: AlignmentLevel[] = [

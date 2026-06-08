@@ -1,12 +1,20 @@
 import Image from "next/image";
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { listVisibleCountries } from "@/config/countries";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { HeroVideo } from "@/components/landing/hero-video";
 import { InsideAnalysis } from "@/components/landing/inside-analysis";
 import { PrototypeBadge } from "@/components/ui/prototype-badge";
 
-export default function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("landing");
   const visibleCountries = listVisibleCountries();
 
   return (
@@ -20,17 +28,16 @@ export default function Home() {
       >
         <div className="max-w-3xl">
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-white/85 sm:text-sm">
-            UNDP AI Sprint Initiative
+            {t("hero.eyebrow")}
           </p>
           <div className="mb-5">
             <PrototypeBadge tone="dark" />
           </div>
           <h1 className="font-display mb-6 text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
-            Nature-Climate Policy Coherence Tracker
+            {t("hero.title")}
           </h1>
           <p className="mb-9 max-w-xl text-lg leading-relaxed text-white/90 md:text-xl">
-            See where your national climate, biodiversity, and land-use targets
-            align, overlap, or may pull in different directions.
+            {t("hero.subtitle")}
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             {visibleCountries.map((c) => (
@@ -39,14 +46,14 @@ export default function Home() {
                 href={`/dashboard?country=${c.id}`}
                 className="bg-[var(--undp-blue)] px-6 py-3 text-base font-medium text-white transition-colors hover:bg-[var(--undp-blue-dark)]"
               >
-                Explore {c.name}
+                {t("hero.exploreCountry", { name: c.name })}
               </Link>
             ))}
             <Link
               href="/upload"
               className="text-base font-medium text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white"
             >
-              Analyse your policies
+              {t("hero.analyseCta")}
             </Link>
           </div>
         </div>
@@ -61,7 +68,7 @@ export default function Home() {
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="font-display mb-12 text-2xl font-semibold text-[var(--undp-black)] md:text-3xl">
-            How it works
+            {t("howItWorks.title")}
           </h2>
           <div className="grid gap-10 md:grid-cols-3 md:gap-12">
             <div>
@@ -69,26 +76,22 @@ export default function Home() {
                 1
               </span>
               <h3 className="mb-2 mt-3 font-medium text-[var(--undp-black)]">
-                Upload targets
+                {t("howItWorks.step1.title")}
               </h3>
               <p className="text-sm leading-relaxed text-[var(--undp-gray)]">
-                Enter targets from your{" "}
-                <abbr title="Nationally Determined Contribution" className="no-underline">
+                {t("howItWorks.step1.bodyPrefix")}{" "}
+                <abbr title={t("abbr.ndc")} className="no-underline">
                   NDC
                 </abbr>
                 ,{" "}
-                <abbr
-                  title="National Biodiversity Strategy and Action Plan"
-                  className="no-underline"
-                >
+                <abbr title={t("abbr.nbsap")} className="no-underline">
                   NBSAP
                 </abbr>
                 ,{" "}
-                <abbr title="National Adaptation Plan" className="no-underline">
+                <abbr title={t("abbr.nap")} className="no-underline">
                   NAP
                 </abbr>
-                , and other national policy documents. Upload files directly or
-                type them in.
+                {t("howItWorks.step1.bodySuffix")}
               </p>
             </div>
             <div>
@@ -96,11 +99,10 @@ export default function Home() {
                 2
               </span>
               <h3 className="mb-2 mt-3 font-medium text-[var(--undp-black)]">
-                Automated analysis
+                {t("howItWorks.step2.title")}
               </h3>
               <p className="text-sm leading-relaxed text-[var(--undp-gray)]">
-                AI classifies each target by theme and sector, then assesses how
-                well targets across different policies align with each other.
+                {t("howItWorks.step2.body")}
               </p>
             </div>
             <div>
@@ -108,11 +110,10 @@ export default function Home() {
                 3
               </span>
               <h3 className="mb-2 mt-3 font-medium text-[var(--undp-black)]">
-                Explore results
+                {t("howItWorks.step3.title")}
               </h3>
               <p className="text-sm leading-relaxed text-[var(--undp-gray)]">
-                Interactive dashboard showing policy coverage, alignment
-                patterns, and areas where coordination could be strengthened.
+                {t("howItWorks.step3.body")}
               </p>
             </div>
           </div>
@@ -131,11 +132,11 @@ export default function Home() {
               className="h-10 w-auto"
             />
             <span className="text-sm text-[var(--undp-gray)]">
-              United Nations Development Programme
+              {t("footer.undp")}
             </span>
           </div>
           <span className="text-xs text-[var(--undp-gray)]/60">
-            AI Sprint Initiative
+            {t("footer.initiative")}
           </span>
         </div>
       </footer>

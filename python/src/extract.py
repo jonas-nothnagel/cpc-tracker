@@ -29,7 +29,7 @@ from typing import Any
 
 from .config import LLM_MODEL
 from .footprint import append_event, electricity_zone
-from .llm import call_llm, call_llm_batch, get_footprint_tracker
+from .llm import call_llm, call_llm_batch, get_footprint_tracker, set_language
 
 logger = logging.getLogger(__name__)
 
@@ -835,7 +835,7 @@ async def _extract_activities(
 
         system = ACTIVITIES_SYSTEM
         if not is_english:
-            system += f"\n\nThe source text is in {lang_name}. Return activities in English."
+            system += f"\n\nThe source text is in {lang_name}."
 
         activity_calls.append({
             "system": system,
@@ -1215,6 +1215,8 @@ async def main_async(args: argparse.Namespace) -> None:
         logger.error(f"File not found: {file_path}")
         return
 
+    set_language(args.output_language)
+
     items = await extract_from_file(
         file_path,
         doc_type=args.doc_type,
@@ -1323,8 +1325,17 @@ def main() -> None:
     parser.add_argument(
         "--language",
         default=None,
-        help="ISO 639-1 language code (e.g. 'mn' for Mongolian). "
+        help="ISO 639-1 source-document language code (e.g. 'mn' for Mongolian). "
         "Auto-detected if not provided.",
+    )
+    parser.add_argument(
+        "--output-language",
+        default="en",
+        choices=["en", "es", "mn", "fr"],
+        help="ISO 639-1 code for the language LLM-generated text "
+        "(activities, summaries) should be returned in. Defaults to English; "
+        "set to match the user's UI locale when extracting through the upload "
+        "wizard.",
     )
     args = parser.parse_args()
 

@@ -1,0 +1,1201 @@
+{
+  "common": {
+    "appName": "Rastreador de Coherencia de Políticas",
+    "close": "Cerrar",
+    "infoBoxAria": "Mostrar explicación",
+    "provenance": {
+      "ariaLabel": "Procedencia de los datos: {label}",
+      "detailsAria": "Detalles de procedencia de los datos",
+      "sourcesHeading": "Fuentes",
+      "aggregationHeading": "Agregación",
+      "methodHeading": "Método de IA",
+      "noDetails": "No hay detalles adicionales disponibles.",
+      "origin": {
+        "userUploaded": "Datos cargados por el usuario",
+        "aiInferred": "Inferido por IA",
+        "mixed": "Inferido por IA a partir de datos cargados"
+      }
+    },
+    "languageSwitcher": {
+      "aria": "Idioma",
+      "machineTranslatedNote": "Traducción automática"
+    },
+    "prototype": {
+      "badge": "Prototipo",
+      "caption": "Resultados preliminares"
+    }
+  },
+  "header": {
+    "brand": "Rastreador de Coherencia de Políticas",
+    "nav": {
+      "home": "Inicio",
+      "uploadData": "Cargar datos",
+      "prototypes": "prototipos"
+    }
+  },
+  "footer": {},
+  "landing": {
+    "hero": {
+      "eyebrow": "Iniciativa Sprint de IA del PNUD",
+      "title": "Rastreador de Coherencia de Políticas de Naturaleza y Clima",
+      "subtitle": "Vea dónde sus metas nacionales de clima, biodiversidad y uso de la tierra se alinean, se superponen o pueden ir en direcciones distintas.",
+      "exploreCountry": "Explorar {name}",
+      "analyseCta": "Analizar sus políticas"
+    },
+    "inside": {
+      "eyebrow": "Dentro del análisis",
+      "title": "Cada meta de política, mapeada contra todas las demás",
+      "body": "Cada cinta enlaza dos documentos nacionales de política. El verde muestra dónde sus metas están en fuerte alineación; los hilos rojos marcan una posible desalineación que merece una mirada más cercana.",
+      "disclaimer": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+      "preview": {
+        "countrySwitcherAria": "Elija un país para previsualizar",
+        "wheelAriaWithCountry": "Vista previa en vivo de la rueda de coherencia de políticas para {name}: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
+        "wheelAria": "Vista previa en vivo de la rueda de coherencia de políticas: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
+        "openDashboardWithCountry": "Abrir el panel de {name}",
+        "openDashboard": "Abrir el panel completo"
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "step1": {
+        "title": "Cargar metas",
+        "bodyPrefix": "Ingrese metas de su",
+        "bodySuffix": ", y otros documentos nacionales de política. Cargue archivos directamente o escríbalos."
+      },
+      "step2": {
+        "title": "Análisis automatizado",
+        "body": "La IA clasifica cada meta por tema y sector, luego evalúa qué tan bien se alinean las metas entre distintas políticas."
+      },
+      "step3": {
+        "title": "Explorar resultados",
+        "body": "Panel interactivo que muestra la cobertura de la política, los patrones de alineación y las áreas donde la coordinación podría fortalecerse."
+      }
+    },
+    "abbr": {
+      "ndc": "Contribución Determinada a Nivel Nacional",
+      "nbsap": "Estrategia y Plan de Acción Nacional sobre Biodiversidad",
+      "nap": "Plan Nacional de Adaptación"
+    },
+    "footer": {
+      "undp": "Programa de las Naciones Unidas para el Desarrollo",
+      "initiative": "Iniciativa Sprint de IA"
+    },
+    "heroVideo": {
+      "pauseAria": "Pausar vídeo de fondo",
+      "playAria": "Reproducir vídeo de fondo",
+      "pause": "Pausar",
+      "play": "Reproducir"
+    }
+  },
+  "dashboard": {
+    "unavailable": {
+      "subtitle": "Panel",
+      "heading": "Este país aún no está disponible",
+      "body": "Seleccione un país desde la página principal para explorar el panel.",
+      "backToHome": "Volver al inicio"
+    },
+    "loading": {
+      "subtitle": "Panel"
+    },
+    "error": {
+      "heading": "No hay datos de análisis disponibles",
+      "body": "Parece que aún no se ha ejecutado ningún análisis. Cargue sus metas de política o elija un país precargado para empezar.",
+      "backToHome": "Volver al inicio"
+    },
+    "footer": {
+      "text": "Programa de las Naciones Unidas para el Desarrollo · CPC Tracker"
+    }
+  },
+  "briefing": {
+    "header": {
+      "eyebrow": "Coherencia de políticas",
+      "subtitle": "{count, plural, one {# documento} other {# documentos}} comparados por pares. Desplácese para ver los hallazgos o salte a una sección."
+    },
+    "sections": {
+      "direction": "Dirección",
+      "docFocus": "Documento en foco",
+      "docPairs": "Pares de documentos",
+      "frictionTypes": "Tipos de fricción",
+      "sectors": "Sectores",
+      "whereToFocus": "Dónde enfocar",
+      "explore": "Explorar",
+      "financing": "Financiación"
+    },
+    "lens": {
+      "globe": "GLOBE",
+      "ipcc": "Sectores IPCC",
+      "country": "Sectores del país"
+    },
+    "legend": {
+      "aligned": "Alineado",
+      "flagged": "Posible desalineación",
+      "redShareHint": "rojo = proporción de cada vínculo que está posiblemente desalineada",
+      "warmerArcHint": "arco más cálido = documento con más posible desalineación"
+    },
+    "explorer": {
+      "title": "Explorar los datos completos",
+      "backToChat": "Volver al chat"
+    },
+    "footerLink": {
+      "fullExplorer": "Explorador completo de coherencia"
+    },
+    "storylineCard": {
+      "eyebrow": {
+        "reinforce": "Alineación recurrente",
+        "friction": "Posible desalineación recurrente"
+      },
+      "spansAll": "Abarca los {count, number} documentos",
+      "across": "A través de",
+      "pairCount": "{count, plural, one {1 par} other {# pares}}"
+    },
+    "primerCard": {
+      "alignedRelation": "FUERTEMENTE ALINEADO CON",
+      "flaggedRelation": "POSIBLEMENTE DESALINEADO CON"
+    },
+    "wheel": {
+      "wheelAria": "Rueda de coherencia de políticas",
+      "unclassified": "Sin clasificar"
+    },
+    "docMatrix": {
+      "noScoredTitle": "{a} ↔ {b}: sin pares evaluados",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} alineados · {flagged, number} marcados · pulse para ver las brechas",
+      "aligned": "Alineado",
+      "flagged": "Posible desalineación",
+      "legendHint": "color más intenso = más lejos del promedio · pulse una celda para ver las brechas"
+    },
+    "chat": {
+      "askCorpus": "Pregunte al corpus",
+      "placeholder": "p. ej. ¿Qué dos documentos discrepan más?",
+      "sendAria": "Enviar",
+      "ask": "Preguntar →",
+      "tryOne": "Pruebe alguno de estos",
+      "reply": "Respuesta",
+      "showOnWheel": "Mostrar esto en la rueda →",
+      "keepGoing": "Continuar",
+      "disclaimer": "Las respuestas del chat son generadas por IA contra el mismo conjunto de datos mostrado en la rueda. Trátelas como una ayuda de navegación, no como un veredicto final.",
+      "errors": {
+        "requestFailed": "Solicitud fallida ({status})",
+        "generic": "Eso no funcionó."
+      }
+    },
+    "drawer": {
+      "flagProfile": {
+        "closeAria": "Cerrar perfil",
+        "closeBtnAria": "Cerrar",
+        "dialogAria": "Perfil: {name}",
+        "eyebrow": {
+          "friction": "Tipo de posible desalineación",
+          "target": "Meta en foco"
+        },
+        "themeNoun": {
+          "globe": "categorías",
+          "sectors": "temas"
+        },
+        "withinDoc": "dentro de la posible desalineación de {doc}",
+        "pairCount": "{count, plural, one {1 par posiblemente desalineado} other {# pares posiblemente desalineados}}",
+        "pairShareOfDoc": "{pct}% de la posible desalineación {docScoped, select, 1 {de {scope}} other {total}}",
+        "empty": "Sin posible desalineación en este subconjunto.",
+        "aiDisclaimer": "Marcas generadas por IA. Trátense como avisos para revisar, no como hallazgos definitivos.",
+        "composition": {
+          "acrossDocPairs": "A través de pares de documentos",
+          "acrossThemes": "A través de {themeNoun}",
+          "recurringTargets": "Recurre en metas",
+          "noThemes": "Sin temas clasificados como primarios.",
+          "none": "Ninguna"
+        },
+        "manageability": {
+          "title": "Dónde se sitúa la desalineación",
+          "summary": "La IA interpreta el {mPct}% de estos casos como de nivel de coordinación (la desalineación probablemente podría aliviarse alineando entrega, secuenciación o salvaguardas en lugar de cambiar las metas){hasFundamental, select, 1 {, y el {fPct}% como de nivel de diseño, donde la propia meta podría necesitar revisión} other {}}. Una evaluación de la IA por cada par, que vale la pena verificar."
+        },
+        "examples": {
+          "target": "Pares posiblemente desalineados",
+          "representative": "Pares representativos"
+        },
+        "tree": {
+          "heading": "Cómo se desglosa la posible desalineación de esta meta",
+          "unclassified": "Sin clasificar"
+        }
+      },
+      "pair": {
+        "closeAria": "Cerrar detalle del par",
+        "closeBtnAria": "Cerrar",
+        "docPairDialogAria": "Detalle del par de documentos",
+        "targetPairDialogAria": "Detalle del par",
+        "backTo": "Volver a {a} ↔ {b}",
+        "eyebrow": {
+          "target": "Detalle del par",
+          "doc": "Par de documentos"
+        },
+        "connector": {
+          "aligned": "respalda",
+          "flagged": "posiblemente desalineado con"
+        },
+        "aiRationaleLabel": "Razonamiento de la IA",
+        "aiRationaleDisclaimer": "Evaluación de este par generada por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+        "badge": {
+          "quantitative": "Cuantitativa",
+          "timeBound": "Con plazo"
+        },
+        "sourceLabel": "Fuente: {name}",
+        "panel": {
+          "aligned": "Alineado",
+          "flagged": "Posible desalineación"
+        },
+        "emptyAligned": "Sin alineaciones fuertes en este par de documentos.",
+        "emptyFlagged": "Sin posible desalineación en este par de documentos.",
+        "coordinationPathway": "Vía de coordinación",
+        "poolComposition": "Composición del conjunto",
+        "alignedCount": "{count, number} alineados",
+        "flaggedCount": "{count, number} posiblemente desalineados",
+        "misalignmentTypes": "Tipos de desalineación: {list}",
+        "aiDisclaimer": "Síntesis generada por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+        "examples": {
+          "aligned": "Ejemplos alineados ({count, number})",
+          "flagged": "Ejemplos posiblemente desalineados ({count, number})",
+          "flaggedOfTotal": "Ejemplos posiblemente desalineados ({count, number} de {total, number})"
+        },
+        "showFewer": "Mostrar menos",
+        "showMore": "Mostrar {count, number} más",
+        "fallback": {
+          "allPairs": "Todos los pares de metas ({count, number})",
+          "flaggedOnly": "Pares de metas marcados ({count, number})",
+          "showMisalignedOnly": "Mostrar sólo desalineados",
+          "showAligned": "Mostrar alineados ({count, number})",
+          "empty": "No hay pares de metas para mostrar."
+        }
+      },
+      "theme": {
+        "closeAria": "Cerrar vista de tema",
+        "closeBtnAria": "Cerrar",
+        "dialogAria": "Tema: {name}",
+        "eyebrow": {
+          "reinforce": "Alineación recurrente",
+          "friction": "Posible desalineación recurrente"
+        },
+        "summary": {
+          "reinforce": "Recurre en {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}} · {records, number} {records, plural, one {registro alineado} other {registros alineados}} abajo",
+          "friction": "Recurre en {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}} · {records, number} {records, plural, one {registro desalineado} other {registros desalineados}} abajo"
+        },
+        "pairsInTheme": "Pares de metas en este tema",
+        "noConcretePairs": "El tema nombra pares de documentos contribuyentes pero ningún par concreto de metas en esos pares de documentos coincide con la polaridad del tema.",
+        "recordsCount": "{count, plural, one {1 registro} other {# registros}}",
+        "showFewer": "Mostrar menos",
+        "showAllRecords": "Mostrar los {count, plural, one {1 registro} other {# registros}}",
+        "aiDisclaimer": "Síntesis generada por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+        "all": {
+          "closeAria": "Cerrar vista de temas",
+          "dialogAria": "Todos los temas recurrentes",
+          "eyebrow": "Temas recurrentes",
+          "heading": "{count, plural, one {1 tema que abarca varios documentos} other {# temas que abarcan varios documentos}}",
+          "subtitle": "{aligned, number} alineados · {flagged, number} posiblemente desalineados. Pulse cualquier tema para ver los pares de metas subyacentes."
+        },
+        "storylineMeta": "Abarca {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}}{lowConf, select, 1 { · baja confianza} other {}}"
+      },
+      "sector": {
+        "eyebrow": "Vista de sector",
+        "closeAria": "Cerrar vista de sector",
+        "closeBtnAria": "Cerrar",
+        "dialogAria": "Vista de sector: {name}",
+        "headerCounts": "{targets, number} metas · {pairs, number} pares evaluados tocan este sector",
+        "recursLabel": "Recurre:",
+        "synthesisFailed": "La síntesis falló para este sector; siguen los pares en bruto.",
+        "panel": {
+          "aligned": "Alineado",
+          "flagged": "Posible desalineación"
+        },
+        "legacy": {
+          "pullingTogether": "Lo que tira en conjunto",
+          "pullingAgainst": "Lo que tira en contra del resto",
+          "strongestAlignments": "Alineaciones más fuertes",
+          "topFlagged": "Pares más posiblemente desalineados"
+        },
+        "emptyAligned": "Sin alineaciones fuertes que toquen este sector.",
+        "emptyFlagged": "Sin posible desalineación en este sector.",
+        "examples": {
+          "aligned": "Ejemplos alineados",
+          "flagged": "Ejemplos posiblemente desalineados"
+        },
+        "showFewer": "Mostrar menos",
+        "showMore": "Mostrar {count, number} más",
+        "coordinationPathway": "Vía de coordinación",
+        "poolComposition": "Composición del conjunto",
+        "alignedCount": "{count, number} alineados",
+        "flaggedCount": "{count, number} posiblemente desalineados",
+        "synthesisedFrom": "Sintetizado a partir de {count, plural, one {1 par} other {# pares}} · {primary, number} primarios + {relevant, number} relevantes",
+        "misalignmentTypes": "Tipos de desalineación: {list}",
+        "aiDisclaimer": "Síntesis generada por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo."
+      }
+    },
+    "explore": {
+      "heading": "Explore la coherencia de políticas usted mismo.",
+      "body": "Haga una pregunta sobre las políticas, siga una idea, o trabaje la rueda completa usted mismo: pulse cualquier meta para ver su detalle, busque una específica, reagrupe los arcos, oculte un documento, o incorpore la vista presupuestaria.",
+      "openFullData": "Explorar los datos completos",
+      "starterStoryline": "¿Cuál es la línea narrativa principal en estos documentos?",
+      "groupBy": "Agrupar la rueda por",
+      "group": {
+        "documents": "Documentos"
+      },
+      "insight": {
+        "title": "Vale la pena mirar",
+        "surpriseMe": "Sorpréndame",
+        "showMe": "Muéstreme"
+      }
+    },
+    "whereToFocus": {
+      "eyebrow": "¿Dónde deberíamos enfocarnos primero?",
+      "empty": "Aún no hay metas involucradas en pares posiblemente desalineados.",
+      "mostContested": "Metas más disputadas",
+      "pairsSuffix": "pares",
+      "rowAriaLabel": "{doc} {label}: involucrada en {count, number} pares posiblemente desalineados",
+      "sentence": {
+        "emptyHeadline": "Aún no hay posible desalineación en la cual enfocarse.",
+        "emptyBody": "Una vez que la canalización surja posible desalineación, las metas que más toca aparecerán aquí.",
+        "singleHeadline": "Una meta está en el {pct}% de todos los pares posiblemente desalineados.",
+        "singleBody": "{total, number} pares posiblemente desalineados se rastrean a {contested, number} metas, pero una sola representa el {pct}%. Púlsela para ver con qué está desalineada.",
+        "concentratedHeadline": "Sólo {top, number} metas concentran el {pct}% de la desalineación.",
+        "concentratedBody": "{total, number} pares posiblemente desalineados se rastrean a {contested, number} metas, pero sólo {top, number} de ellas están involucradas en el {pct}%. Allí es donde mirar primero.",
+        "spreadHeadline": "La desalineación se distribuye en {contested, number} metas.",
+        "spreadBody": "Hacen falta {top, number} de {contested, number} metas para cubrir el {pct}% de los {total, number} pares posiblemente desalineados, así que ningún puñado domina. Las más pesadas se listan abajo."
+      },
+      "bar": {
+        "title": "Dónde se concentra la desalineación",
+        "totalPairs": "{count, number} pares posiblemente desalineados",
+        "segmentTitle": "{doc} {label}: en {count, number} pares posiblemente desalineados · pulse para abrir",
+        "othersTitle": "{others, number} otras metas: {remainder, number} pares posiblemente desalineados",
+        "targetCount": "{count, plural, one {1 meta} other {# metas}}",
+        "carryShare": "concentran el {pct}% de los pares posiblemente desalineados",
+        "otherTargets": "{count, number} otras metas",
+        "legendHint": "cada segmento es una meta, coloreada por su documento · pulse para abrir"
+      }
+    },
+    "sectors": {
+      "eyebrow": "¿Dónde se concentra la desalineación?",
+      "noTaxonomy": "No hay taxonomía sectorial disponible para este país.",
+      "showAll": "Mostrar los {count, number} sectores →",
+      "collapseToTop": "Contraer a los {count, number} principales",
+      "groupBy": "Agrupar por:",
+      "show": "Mostrar:",
+      "filter": {
+        "misaligned": "Desalineados",
+        "aligned": "Alineados",
+        "both": "Ambos"
+      },
+      "col": {
+        "sector": "Sector",
+        "aligned": "Alineados",
+        "misaligned": "Desalineados"
+      },
+      "noun": {
+        "category": {
+          "singular": "categoría",
+          "plural": "categorías"
+        },
+        "sector": {
+          "singular": "sector",
+          "plural": "sectores"
+        }
+      },
+      "concentration": {
+        "emptyHeadline": "Aún no hay pares posiblemente desalineados agrupados por {noun}.",
+        "emptyBody": "O la canalización aún no ha surgido posible desalineación que toque una {noun} clasificada como primaria, o el país no tiene una taxonomía de {noun} configurada.",
+        "spreadHeadline": "Los pares posiblemente desalineados se distribuyen en {sectors, number} {nounPlural}.",
+        "spreadBody": "{total, number} pares posiblemente desalineados se reparten en {sectors, number} {nounPlural} sin que un único {noun} domine.",
+        "singleHeadline": "{name} concentra el {pct}% de los pares posiblemente desalineados.",
+        "singleBody": "{total, number} pares posiblemente desalineados se reparten en {sectors, number} {nounPlural}; sólo {name} concentra el {pct}%.",
+        "everyHeadline": "Los pares posiblemente desalineados tocan cada {noun}.",
+        "everyBody": "{total, number} pares posiblemente desalineados se distribuyen en los {sectors, number} {nounPlural}; los más pesados son {list}.",
+        "topHeadline": "La desalineación se concentra en {count, number} de {sectors, number} {nounPlural}.",
+        "topBody": "El {pct}% de los {total, number} pares posiblemente desalineados recae en {list}. Pulse una fila para ver los pares subyacentes."
+      },
+      "listJoinTwo": "{a} y {b}",
+      "listJoinMany": "{head}, y {last}",
+      "rowAriaLabel": "{name}: {flagged, number} posiblemente desalineados, {aligned, number} alineados",
+      "primaryCount": "{count, number} primarios",
+      "relevantCount": "{count, number} relevantes"
+    },
+    "docPairs": {
+      "eyebrow": "¿Cómo se relacionan documentos específicos?",
+      "empty": "Aún no hay síntesis de pares de documentos disponible. Ejecute el paso de síntesis para surgir los pares aquí.",
+      "headline": {
+        "empty": "Aún no hay señal sintetizada de pares de documentos.",
+        "joiner": " y ",
+        "template": "{names} {count, plural, one {concentra} other {concentran}} la mayor parte de las relaciones entre documentos."
+      },
+      "body": {
+        "empty": "Ejecute el paso de síntesis de pares de documentos para surgir qué pares dominan.",
+        "summary": "{total, number} pares de metas evaluados en los {pairCount, number} pares de documentos. La matriz a la derecha y la lista clasificada abajo son dos vistas del mismo conjunto: pase el cursor sobre cualquiera para vincularlas, pulse para ver los pares subyacentes."
+      },
+      "allPairings": "Los {count, number} pares de documentos",
+      "aiDisclaimer": "Nombres de líneas narrativas sintetizados por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+      "excerpt": {
+        "aligned": "Alineado",
+        "flagged": "Posible desalineación"
+      },
+      "synthesisFailed": "La síntesis falló, abra para ver la lista de pares en bruto.",
+      "countAligned": "{count, number} alineados",
+      "countFlagged": "{count, number} marcados"
+    },
+    "frictionTypes": {
+      "eyebrow": "¿Qué clase de fricción?",
+      "emptyEyebrow": "¿Qué clase de desalineación?",
+      "emptyHeadline": "Aún no hay posible desalineación que caracterizar.",
+      "emptyBody": "Una vez que la canalización surja posible desalineación, el tipo (objetivos en conflicto, recursos en competencia o entrega) aparecerá aquí.",
+      "headline": {
+        "goalConflict": "La mayor parte de la posible desalineación son objetivos en conflicto, no competencia por recursos.",
+        "resourceCompetition": "La mayor parte de la posible desalineación es competencia por recursos.",
+        "deliveryFriction": "La mayor parte de la posible desalineación es sobre la entrega, no sobre los objetivos en sí.",
+        "mixed": "La posible desalineación toma tres formas en este conjunto de políticas."
+      },
+      "body": {
+        "mixed": "{total, number} pares posiblemente desalineados se reparten entre los tres tipos. Pulse cualquier segmento para ver cómo se desglosan esos pares.",
+        "dominant": "De {total, number} pares posiblemente desalineados, {label} concentra el {pct}%. Pulse cualquier segmento para ver cómo se desglosan esos pares por documento, tema y meta."
+      }
+    },
+    "docFocus": {
+      "eyebrow": "¿Qué tan coherente es cada política con las demás?",
+      "switcherAriaLabel": "Elija un documento para enfocar",
+      "focusOn": "Enfocar en",
+      "fullTitle": "Título completo",
+      "noMisalignment": "Ninguna posible desalineación enlaza a {label} con otros documentos.",
+      "breakdownCaption": "Cómo se desglosa la posible desalineación de {label}",
+      "whereShowsMisalignment": "Dónde {label} muestra posible desalineación",
+      "morePairs": "+ {count, plural, one {1 par posiblemente desalineado más que involucra a {label}} other {# pares posiblemente desalineados más que involucran a {label}}}",
+      "notSettledFindings": "Posible desalineación, no hallazgos definitivos. Abra un par para ver las metas subyacentes.",
+      "targetSide": "Meta de {doc}",
+      "peerSide": "vs meta de {doc}",
+      "notAnchored": {
+        "headline": "{label} queda fuera del conjunto evaluado por ahora.",
+        "body": "Ningún par de metas evaluado enlaza a {label} con otros documentos en el conjunto de datos actual."
+      },
+      "headline": {
+        "noLinks": "{label} aún no tiene vínculos evaluados con otros documentos.",
+        "fullyAligned": "{label} se alinea con todos los demás documentos del conjunto.",
+        "fullyMisaligned": "{label} está desalineado en todos sus vínculos evaluados.",
+        "minimalMisalignment": "{label} está fuertemente alineado con el resto, con sólo una posible desalineación mínima.",
+        "someMisalignment": "{label} está ampliamente alineado con el resto, con alguna posible desalineación.",
+        "substantialMisalignment": "{label} está alineado con el resto pero acarrea una cantidad sustancial de posible desalineación.",
+        "moreOftenMisaligned": "{label} está desalineado con el resto del conjunto más a menudo que alineado."
+      },
+      "body": "{label} convive con {peers, plural, one {1 otro documento} other {# otros documentos}}. {aligned, number} de sus pares evaluados alcanzan una alineación fuerte; {flagged, number} muestran posible desalineación."
+    },
+    "direction": {
+      "eyebrow": "¿Son coherentes estas políticas entre sí?",
+      "docPhrase": "{count, plural, one {1 documento} other {# documentos}}",
+      "openingPrefix": "En {docPhrase} de {country},",
+      "scoredSuffix": "pares de metas fueron evaluados.",
+      "reach": "alcanzan",
+      "strongAlignment": "alineación fuerte",
+      "potentialMisalignment": "posible desalineación",
+      "anchoredBy": ", ancladas en",
+      "mostProminentlyAround": ", de forma más prominente en torno a",
+      "pairsShow": "{count, plural, one {par muestra} other {pares muestran}}",
+      "pairsParen": "pares",
+      "alignedDefinition": "Dos metas que tiran en la misma dirección: una respalda o impulsa a la otra. Un par real evaluado de este conjunto:",
+      "flaggedDefinition": "Dos metas que la IA identificó como posiblemente en tensión entre sí: un aviso para revisión humana, no un hallazgo definitivo. Un par real evaluado:",
+      "popoverAriaLabel": "Mostrar un ejemplo de {term}",
+      "clickToOpenPair": "Pulse el término para abrir este par",
+      "storylineOpenTitle": "Abrir el tema «{name}»",
+      "recurringPatterns": "Patrones recurrentes",
+      "howPipelineBuilt": "Cómo la canalización construyó esta vista",
+      "onePairFromEnd": "Un par evaluado de cada extremo del espectro.",
+      "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",
+      "focusConcentrated": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}",
+      "focusSpread": "se distribuyen en {count, plural, one {1 meta} other {# metas}}"
+    },
+    "emptyState": {
+      "allDocsHidden": "Todos los documentos están ocultos. Añada al menos un documento arriba para ver el informe de coherencia."
+    },
+    "financing": {
+      "eyebrow": "¿Dónde se encuentra el dinero con la ambición?",
+      "matchedCount": "<strong>{reached}</strong> de {total} coinciden",
+      "matchedHeading": "Metas con una línea presupuestaria correspondiente",
+      "unmatchedHeading": "Metas sin línea presupuestaria correspondiente",
+      "budgetLineLabel": "línea presupuestaria:",
+      "allMatched": "Todas las metas de este documento tienen una línea presupuestaria correspondiente.",
+      "legend": {
+        "matched": "tiene una línea presupuestaria correspondiente",
+        "unmatched": "sin línea presupuestaria correspondiente"
+      },
+      "dotMap": {
+        "intro": "Cada punto es una meta de política. Abra un documento para ver cuáles de sus metas tienen una línea presupuestaria correspondiente y cuáles no.",
+        "disclaimer": "La canalización vincula cada meta con las líneas presupuestarias del mismo objetivo, conservando solo las coincidencias de alta confianza. Muestra dónde existe una línea presupuestaria para una meta, no si se gasta dinero en ella. Estimado por IA e indicativo."
+      },
+      "share": {
+        "most": "la mayoría de",
+        "aboutHalf": "alrededor de la mitad de",
+        "underHalf": "menos de la mitad de",
+        "few": "pocas de"
+      },
+      "noSpend": {
+        "headline": "Aún no hay gasto en biodiversidad registrado para comparar.",
+        "body": "Una vez que el Examen del Gasto en Biodiversidad (BER) reporte el gasto por programa, esta diapositiva mostrará cuánta política tiene una línea presupuestaria correspondiente y cuáles metas no tienen ninguna."
+      },
+      "noMatch": {
+        "headline": "El gasto en biodiversidad examinado de {country} se sitúa junto a {count, plural, one {# meta de política} other {# metas de política}}.",
+        "body": "La correspondencia entre las líneas de este presupuesto y las metas de política aún no se ha calculado para este corpus. La columna de la derecha muestra el presupuesto en sí: dónde se sitúa el dinero y cuánto del plan quedó sin gastar."
+      },
+      "matched": {
+        "headline": "El gasto en biodiversidad examinado de {country} cubre {share} las metas de política.",
+        "body": "En {docCount, plural, one {# documento de política} other {# documentos de política}} hay {total, plural, one {# meta} other {# metas}}. {reached} tienen una línea presupuestaria correspondiente en este examen; las otras {outsideReach} no tienen ninguna."
+      }
+    },
+    "financingCenter": {
+      "header": {
+        "eyebrow": "El gasto revisado",
+        "title": "Revisión del Gasto en Biodiversidad (BER)",
+        "budgetLines": "{count, plural, one {# línea presupuestaria} other {# líneas presupuestarias}}",
+        "withRecordedSpend": "({count, plural, one {# con gasto registrado} other {# con gasto registrado}})",
+        "noRecordedSpend": "sin gasto registrado"
+      },
+      "concentration": {
+        "eyebrow": "A dónde va el {amount} · {period}",
+        "everythingElseTitle": "Todo lo demás: {pct}%",
+        "everythingElse": "todo lo demás"
+      },
+      "execution": {
+        "eyebrow": "No se gasta todo · {period}",
+        "spent": "<strong>{actual}</strong> de {planned} {unit} {currency} gastado",
+        "unspent": "· {amount} ({pct}%) sin gastar"
+      }
+    },
+    "docFilter": {
+      "removeDoc": "Quitar {name}",
+      "addDoc": "Agregar {name}",
+      "included": "{visible} de {total, plural, one {# documento de política} other {# documentos de política}} incluidos.",
+      "excluded": "{names} excluidos.",
+      "done": "Listo",
+      "addOrRemove": "Agregar o quitar documentos",
+      "resetToDefault": "Restablecer valores predeterminados",
+      "toggle": {
+        "clickToAddRemove": "Haga clic en un documento para agregarlo o quitarlo"
+      }
+    },
+    "centerLegend": {
+      "variant": {
+        "wheel": "Rueda",
+        "constellation": "Constelación"
+      },
+      "legend": {
+        "aligned": "Alineado",
+        "potentialMis": "Posible desalineación",
+        "ribbonWidth": "ancho de la cinta = número de conexiones"
+      }
+    }
+  },
+  "upload": {
+    "step2": {
+      "title": "Datos de referencia disponibles",
+      "hasRefBody": "Seleccione qué conjuntos de datos precargados de {country} incluir. Active o desactive elementos según sea necesario.",
+      "noRefBody": "Revise cualquier dato de referencia disponible para su análisis. Puede cargar datos BTR en el Paso 1.",
+      "progressSummary": "{targets, plural, one {1 meta} other {# metas}} seleccionadas en {docTypes, plural, one {1 tipo de documento} other {# tipos de documento}}",
+      "policyTargetsHeading": "Metas de política para {country}",
+      "loadingRef": "Cargando datos de referencia",
+      "targetCount": "{count, plural, one {1 meta} other {# metas}}",
+      "moreCount": "+ {count, number} más",
+      "hide": "Ocultar",
+      "preview": "Previsualizar",
+      "add": "Añadir",
+      "added": "Añadido",
+      "additionalSources": "Fuentes de datos adicionales",
+      "btr": {
+        "title": "Datos de implementación BTR",
+        "description": "Medidas de mitigación, emisiones y proyecciones"
+      },
+      "nr7": {
+        "title": "Progreso de biodiversidad NR7",
+        "description": "7º Informe Nacional al CDB (mostrado en el panel)"
+      },
+      "noRefData": {
+        "title": "No hay datos de referencia precargados para este país.",
+        "hint": "Continúe al siguiente paso o vuelva atrás para cargar sus propios documentos."
+      }
+    },
+    "step1": {
+      "intro": "Seleccione su país y cargue documentos de política. Se aceptan todos los formatos comunes y el sistema detectará automáticamente cómo procesar cada archivo.",
+      "countryLabel": "País",
+      "countryPlaceholder": "p. ej. Mongolia",
+      "referenceBadge": "Datos de referencia",
+      "referenceNext": "Datos de referencia en el siguiente paso",
+      "docTypeLabel": "Tipo de documento",
+      "labelPrefixLabel": "Prefijo de etiqueta",
+      "labelPrefixPlaceholder": "p. ej. Política de Transporte",
+      "extractingFrom": "Extrayendo metas de {name}…",
+      "queueRemaining": "{count, plural, one {1 archivo más en cola} other {# archivos más en cola}}",
+      "dropPrompt": "Arrastre y suelte archivos aquí, o",
+      "browse": "examinar",
+      "supportedFormats": "PDF, DOCX, CSV, TSV, XLSX (autodetectado)",
+      "hideManual": "Ocultar entrada manual",
+      "showManual": "+ Añadir metas manualmente",
+      "targetsAddedHint": "{count, plural, one {1 meta añadida} other {# metas añadidas}}. Pulse <strong>Siguiente</strong> para continuar.",
+      "reviewModal": {
+        "title": "Revisar metas extraídas",
+        "subtitle": "{selected, number} de {total, number} metas seleccionadas de {file}"
+      }
+    },
+    "wizard": {
+      "headerSubtitle": "Nuevo análisis",
+      "title": "Nuevo análisis",
+      "subtitle": "Cargue documentos de política, revise metas, configure categorías y ejecute la canalización de análisis de coherencia.",
+      "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Tracker",
+      "autoLabel": "Meta {n, number}",
+      "unknownCountry": "Desconocido",
+      "errors": {
+        "parseBtr": "Fallo al analizar el archivo BTR",
+        "parseExcel": "Fallo al analizar el archivo Excel",
+        "noTargets": "No se encontraron metas en el archivo",
+        "noTargetsExcel": "No se encontraron metas en el archivo Excel",
+        "startAnalysis": "Fallo al iniciar el análisis",
+        "unexpected": "Error inesperado"
+      },
+      "nav": {
+        "steps": {
+          "countryDocs": "País y documentos",
+          "referenceData": "Datos de referencia",
+          "reviewConfigure": "Revisar y configurar",
+          "summaryRun": "Resumen y ejecución"
+        },
+        "stepCount": "Paso {n}",
+        "back": "Atrás",
+        "next": "Siguiente"
+      }
+    },
+    "estimate": {
+      "quantitative": "Detección de frases cuantitativas: {count, number} llamadas",
+      "classification": "Clasificación contra NBS, IPCC, GLOBE: {count, number} llamadas",
+      "decomposition": "Descomposición de metas: {count, number} llamadas",
+      "needsTwoDocs": "Alineación por pares: requiere 2+ tipos de documento",
+      "pairwiseCount": "Alineación por pares: ~{count, number} pares",
+      "btrIntegration": "Integración de datos BTR/CTF",
+      "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
+      "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
+      "starting": "Iniciando…",
+      "runAnalysis": "Ejecutar análisis →"
+    },
+    "categories": {
+      "hide": "Ocultar detalles de categorías",
+      "edit": "Editar categorías",
+      "addGroup": "+ Añadir nuevo grupo de clasificación",
+      "newGroup": {
+        "title": "Nuevo grupo de clasificación",
+        "namePlaceholder": "Nombre del grupo (p. ej. Metas ODS, Temas personalizados)",
+        "descPlaceholder": "Breve descripción de lo que clasifica este grupo",
+        "create": "Crear grupo",
+        "cancel": "Cancelar",
+        "hint": "Después de crear el grupo, use «Editar» para añadir categorías individuales dentro de él."
+      },
+      "group": {
+        "enabledRatio": "{active, number} de {total, number} habilitadas",
+        "empty": "Aún no hay categorías. Pulse Editar para añadir.",
+        "disableAll": "Deshabilitar todas",
+        "enableAll": "Habilitar todas",
+        "collapse": "Contraer",
+        "editBtn": "Editar",
+        "removeTitle": "Eliminar grupo"
+      },
+      "item": {
+        "remove": "Eliminar"
+      },
+      "newItem": {
+        "namePlaceholder": "Nombre",
+        "descPlaceholder": "Descripción (opcional)",
+        "add": "Añadir",
+        "cancel": "Cancelar",
+        "addBtn": "+ Añadir categoría"
+      }
+    },
+    "pipeline": {
+      "heading": "Canalización de documentos",
+      "status": {
+        "parsing": "Analizando…",
+        "ready": "Listo",
+        "error": "Error"
+      },
+      "policyTargetsCount": "{count, number} metas de política",
+      "btr": {
+        "actions": "{count, number} acciones reportadas",
+        "emissions": "{count, number} series de emisiones",
+        "projections": "{count, number} proyecciones",
+        "techSupport": "{count, number} proyectos de apoyo técnico",
+        "capacityBuilding": "{count, number} de fortalecimiento de capacidades"
+      },
+      "remove": "Eliminar"
+    },
+    "review": {
+      "title": "Revisar metas extraídas",
+      "subtitle": "{kept, number} de {total, number} conservadas · {file}",
+      "keepAll": "Conservar todas",
+      "removeAll": "Eliminar todas",
+      "pagePrefix": "p.",
+      "englishTranslation": "EN: {text}",
+      "keep": "Conservar",
+      "removeTitle": "Eliminar",
+      "removed": "Eliminada",
+      "restoreTitle": "Restaurar",
+      "addMissingPrompt": "Añadir una meta que no fue extraída",
+      "manualPlaceholder": "Texto de la meta…",
+      "manualLabelPlaceholder": "Etiqueta (opcional)",
+      "addBtn": "+ Añadir",
+      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {meta} other {metas}} se añadirán a este análisis",
+      "discard": "Descartar",
+      "acceptBtn": "Añadir {count, plural, one {1 meta} other {# metas}} →"
+    },
+    "manualForm": {
+      "sourceDocument": "Documento de origen",
+      "documentName": "Nombre del documento",
+      "placeholderSectoral": "p. ej. Política de Transporte",
+      "placeholderOther": "p. ej. Plan Nacional de Desarrollo",
+      "labelOptional": "Etiqueta (opcional)",
+      "labelPlaceholder": "p. ej. Biodiversidad 1",
+      "targetText": "Texto de la meta",
+      "targetTextPlaceholder": "Pegue o escriba el texto completo de la meta…",
+      "addTarget": "+ Añadir meta",
+      "maxReached": "Máximo de {max, number} metas alcanzado"
+    },
+    "editor": {
+      "title": "Editar metas manuales: {docType}",
+      "done": "Hecho",
+      "labelPlaceholder": "Etiqueta",
+      "targetPlaceholder": "Texto de la meta…",
+      "toggleDetails": "Añadir actividades y acciones",
+      "activities": "Actividades",
+      "activitiesPlaceholder": "Actividades de implementación (opcional)…",
+      "actions": "Acciones / Medidas",
+      "actionsPlaceholder": "Acciones o medidas (opcional)…"
+    },
+    "step4": {
+      "title": "Resumen y ejecución del análisis",
+      "subtitle": "Revise la configuración completa del análisis a continuación. La canalización clasificará cada meta, descompondrá su estructura y evaluará la alineación por pares entre todos los tipos de documento.",
+      "countryLabel": "País",
+      "notSpecified": "No especificado",
+      "targetsLabel": "Metas",
+      "acrossDocs": "a través de {count, plural, one {1 tipo de documento} other {# tipos de documento}}",
+      "targetBreakdown": "Desglose de metas",
+      "btr": {
+        "title": "Datos de implementación BTR incluidos",
+        "description": "Medidas de mitigación comparadas con metas de política."
+      },
+      "footprint": {
+        "heading": "Huella de la extracción de documentos hasta ahora",
+        "energy": "Wh de energía",
+        "water": "mL de agua",
+        "co2": "gCO<sub>2</sub>eq",
+        "minerals": "µgSbeq de minerales",
+        "summary": "Acumulado a partir de {count, number} llamadas LLM durante la extracción. Esto se añadirá a la huella del análisis en el panel final. Estimado mediante EcoLogits."
+      }
+    },
+    "step3": {
+      "title": "Revisar metas y configurar categorías",
+      "subtitle": "Verifique que sus metas se vean correctas, luego configure qué categorías de clasificación usar. Puede expandir cada grupo de documentos para inspeccionar o eliminar metas individuales.",
+      "categoriesHeading": "Categorías de clasificación",
+      "targetsHeading": "Metas de política",
+      "hideManual": "Ocultar entrada manual",
+      "addTarget": "+ Añadir meta",
+      "targetCount": "{count, plural, one {# meta} other {# metas}}",
+      "removeTarget": "Eliminar meta",
+      "noTargets": "Aún no hay metas",
+      "noTargetsHint": "Vuelva atrás para añadir datos de referencia o cargar documentos."
+    }
+  },
+  "analysis": {
+    "headerSubtitle": "Análisis",
+    "errorHeading": "Error",
+    "backToUpload": "Volver a la carga",
+    "loadingStatus": "Cargando estado del análisis…",
+    "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Tracker",
+    "errors": {
+      "notFound": "Análisis no encontrado",
+      "statusCheck": "Fallo al comprobar el estado del análisis"
+    },
+    "running": {
+      "title": "Ejecutando análisis",
+      "stepOf": "Paso {step} de {total}",
+      "elapsed": "{sec}s"
+    },
+    "complete": {
+      "title": "Análisis completo",
+      "summary": "Procesadas {targets, number} metas con {pairs, number} pares de alineación en {sec}s",
+      "viewDashboard": "Ver panel →"
+    },
+    "failed": {
+      "title": "Análisis fallido",
+      "body": "La canalización encontró un error. Verifique sus metas e inténtelo de nuevo."
+    },
+    "footprint": {
+      "title": "Huella ambiental",
+      "energyLabel": "Energía",
+      "energyUnit": "Wh",
+      "waterLabel": "Agua",
+      "waterUnit": "mL",
+      "co2Label": "CO₂eq",
+      "co2Unit": "g",
+      "mineralsLabel": "Minerales",
+      "mineralsUnit": "µgSbeq",
+      "cachedCalls": "{count, number} llamadas en caché",
+      "callsTracked": "{count, number} llamadas registradas",
+      "callsWithCache": "{tracked, number} llamadas registradas · {cached, number} en caché",
+      "estimatedNote": "Estimado a partir del conteo de llamadas (ejecución en caché) mediante EcoLogits.",
+      "measuredNote": "Medido mediante EcoLogits.",
+      "indicativeNote": "Los valores son indicativos y pueden diferir del consumo real."
+    },
+    "pipeline": {
+      "input": {
+        "policyTargets": "Sus metas de política",
+        "taxonomy": "Categorías NBS y sectores IPCC"
+      },
+      "step1": {
+        "title": "Detección cuantitativa",
+        "detail": "Escaneando cada meta en busca de métricas numéricas y compromisos con plazo",
+        "output": "Métricas y plazos identificados"
+      },
+      "step2": {
+        "title": "Clasificación temática",
+        "detail": "Mapeando cada meta a categorías NBS y sectores IPCC relevantes",
+        "output": "{relevant, number} coincidencias relevantes encontradas en {total, number} comparaciones"
+      },
+      "step3": {
+        "title": "Emparejamiento entre documentos",
+        "detail": "Identificando metas de documentos distintos que comparten sectores IPCC comunes",
+        "output": "{count, number} pares de metas identificados para comparar"
+      },
+      "step4": {
+        "title": "Descomposición de metas",
+        "detail": "Descomponiendo cada meta en objetivos, acciones, ecosistemas, audiencias e impactos esperados",
+        "output": "Todas las metas emparejadas descompuestas"
+      },
+      "step5": {
+        "title": "Evaluación de alineación",
+        "detail": "Comparando pares de metas para determinar niveles de coherencia de política",
+        "output": "{count, number} pares evaluados: {high, number} alta, {medium, number} media, {low, number} parcial alineación"
+      }
+    }
+  },
+  "country": {},
+  "prototypes": {
+    "unavailable": {
+      "subtitle": "Prototipos",
+      "heading": "Elija un país",
+      "body": "Los prototipos se renderizan contra un conjunto de datos de país existente. Comience desde la página principal y elija uno.",
+      "backToHome": "Volver al inicio"
+    }
+  },
+  "sustainability": {
+    "chip": {
+      "label": "Huella de IA: <b>{value} CO2e</b>",
+      "title": "Huella de sostenibilidad de IA de esta herramienta"
+    },
+    "page": {
+      "title": "Huella de sostenibilidad de IA",
+      "intro": "El coste ambiental estimado de la computación de IA detrás de esta herramienta, cubriendo análisis de documentos, la canalización de inferencia y el chatbot. Es un registro de transparencia para reportar, no asesoría de política.",
+      "methodology": "Estimado por IA usando la metodología <link>EcoLogits</link>. Las cifras son estimaciones modeladas, no lecturas de medidor, y conllevan un margen de incertidumbre."
+    },
+    "loading": "Cargando datos de huella…",
+    "empty": "Aún no se ha registrado huella. Ejecute un análisis o envíe un mensaje de chat, y esta página empezará a rastrear el cómputo de IA detrás de ello.",
+    "errors": {
+      "loadFailed": "No se pudieron cargar los datos de huella",
+      "withMessage": "No se pudieron cargar los datos de huella: {message}"
+    },
+    "exportCsv": "Exportar CSV",
+    "exportJson": "Exportar JSON",
+    "seriesCarbon": "Carbono",
+    "units": {
+      "gCO2e": "g CO2e"
+    },
+    "components": {
+      "dev_pipeline": "Ejecuciones de canalización (desarrollo)",
+      "user_pipeline": "Ejecuciones de canalización (usuario)",
+      "extract": "Extracción de documentos",
+      "chat": "Chatbot"
+    },
+    "sources": {
+      "measured": "Medido",
+      "estimated": "Estimado",
+      "api": "Estimado (API)",
+      "unavailable": "No disponible"
+    },
+    "tile": {
+      "carbon": "Carbono",
+      "carbonUnitTitle": "CO2e: equivalente de dióxido de carbono",
+      "energy": "Energía",
+      "energyUnitTitle": "kWh: kilovatios-hora; Wh: vatios-hora",
+      "water": "Agua",
+      "waterUnitTitle": "Huella de consumo de agua (enfriamiento de centros de datos)",
+      "waterSub": "huella de consumo",
+      "minerals": "Minerales",
+      "mineralsUnitTitle": "ADPe: potencial de agotamiento abiótico, equivalente de antimonio (Sb)",
+      "mineralsSub": "uso de recursos abióticos",
+      "callsLabel": "en {calls} llamadas al modelo",
+      "lastRecorded": "último registro {date}",
+      "notAvailable": "n/d"
+    },
+    "charts": {
+      "carbonOverTime": "Carbono a lo largo del tiempo",
+      "byComponent": "Carbono por componente",
+      "byModel": "Carbono por modelo",
+      "byRegion": "Carbono por región",
+      "byComponentMetric": "{metric} por componente",
+      "byModelMetric": "{metric} por modelo",
+      "byRegionMetric": "{metric} por región",
+      "cumulativeOverTime": "{metric} acumulado a lo largo del tiempo",
+      "cumulativeDescription": "Total acumulado de {metric} hasta la fecha, desglosado por su procedencia. Los cuatro recursos avanzan al mismo ritmo, por lo que cada uno muestra la misma forma en sus propias unidades."
+    },
+    "table": {
+      "title": "Actividad registrada",
+      "date": "Fecha",
+      "component": "Componente",
+      "model": "Modelo",
+      "region": "Región",
+      "calls": "Llamadas",
+      "energy": "Energía",
+      "carbon": "Carbono",
+      "basis": "Base"
+    },
+    "metricSelector": {
+      "label": "Desglosar por recurso:"
+    }
+  },
+  "labels": {
+    "alignment": {
+      "flagged": "Posible desalineación",
+      "none": "Sin relación",
+      "low": "Parcial",
+      "medium": "Media",
+      "high": "Alta"
+    },
+    "contradictionType": {
+      "goal_conflict": "Objetivos en conflicto",
+      "resource_competition": "Competencia por recursos",
+      "delivery_friction": "Entrega y coordinación"
+    },
+    "contradictionDescription": {
+      "goal_conflict": "Los propios objetivos tiran en sentidos contrarios: lograr uno sustantivamente significa no lograr el otro.",
+      "resource_competition": "Los objetivos son compatibles pero compiten por el mismo recurso limitado: tierra, agua, presupuesto o capacidad.",
+      "delivery_friction": "Los objetivos son compatibles; la brecha está en la entrega: cómo se implementa uno socava al otro (escala, calendario o coordinación entre actores desalineados)."
+    },
+    "manageability": {
+      "manageable": "Nivel de coordinación",
+      "fundamental": "Nivel de diseño"
+    },
+    "confidence": {
+      "high": "Confianza alta",
+      "medium": "Confianza media",
+      "low": "Confianza baja"
+    },
+    "nr7": {
+      "onTrack": "En curso",
+      "limited": "Progreso limitado",
+      "noProgress": "Sin avances",
+      "unknown": "Desconocido"
+    },
+    "docType": {
+      "btr": {
+        "short": "Acción BTR",
+        "medium": "BTR (Transparencia)",
+        "full": "Informe Bienal de Transparencia"
+      },
+      "btrAdp": {
+        "short": "Adaptación BTR",
+        "medium": "BTR (Adaptación)",
+        "full": "Informe Bienal de Transparencia: acciones de adaptación"
+      },
+      "other": {
+        "short": "Otro",
+        "medium": "Otro",
+        "full": "Otro documento de política"
+      }
+    }
+  },
+  "explorer": {
+    "heading": {
+      "title": "Explorador de Coherencia de Políticas",
+      "info": "Esta visualización mapea relaciones de alineación entre metas de política a través de sus documentos. Las <strong>líneas</strong> entre metas representan relaciones evaluadas. Líneas más gruesas y oscuras muestran alineación más fuerte. Las líneas rojas discontinuas indican pares que la IA ha identificado como posible desalineación.",
+      "infoScore": "El <strong>puntaje de coherencia</strong> es un porcentaje ponderado por calidad: cada par alineado obtiene 1 a 3 puntos (parcial/media/alta), dividido por el puntaje máximo posible.",
+      "infoBtr": "<strong>Colores de los nodos BTR:</strong> las medidas de mitigación reportadas se muestran en violeta y las acciones de adaptación reportadas en fucsia, para que pueda distinguir los dos subconjuntos del BTR de un vistazo.",
+      "hoverHint": "Pase el cursor sobre una meta o púlsela para explorar conexiones."
+    },
+    "groupLabel": {
+      "documentSingular": "tipo de documento",
+      "documentPlural": "tipos de documento",
+      "globeSingular": "categoría de biodiversidad",
+      "globePlural": "categorías de biodiversidad",
+      "sectorSingular": "sector de mitigación climática",
+      "sectorPlural": "sectores de mitigación climática"
+    },
+    "summary": {
+      "across": " en {count, number} {groupLabel}",
+      "highAlignmentsSingular": "{count, number} alineación fuerte",
+      "highAlignmentsPlural": "{count, number} alineaciones fuertes",
+      "possibleMisSingular": "{count, number} posible desalineación",
+      "possibleMisPlural": "{count, number} posibles desalineaciones",
+      "alignedSingular": "{count, number} alineación fuerte o media",
+      "alignedPlural": "{count, number} alineaciones fuertes o medias",
+      "allOpportunitySingular": "{count, number} oportunidad de alineación",
+      "allOpportunityPlural": "{count, number} oportunidades de alineación",
+      "joinAnd": " y ",
+      "joinComma": ", "
+    },
+    "controls": {
+      "groupDocuments": "Documentos",
+      "groupGlobe": "GLOBE",
+      "groupSectors": "Sectores IPCC",
+      "groupDocumentsTitle": "Agrupar la rueda por documento de origen",
+      "groupGlobeTitle": "Agrupar por categoría de biodiversidad (taxonomía GLOBE)",
+      "groupSectorsTitle": "Agrupar por sector de mitigación climática (IPCC)",
+      "groupOptionDocument": "Por tipo de documento",
+      "groupOptionGlobe": "Por categoría de biodiversidad",
+      "groupOptionSector": "Por sector de mitigación climática",
+      "filterHighContra": "Fuerte + posible desalineación",
+      "filterHighMedium": "Alta + Media",
+      "filterAll": "Todas las conexiones",
+      "filterHigh": "Sólo alineación fuerte",
+      "filterContradictions": "Sólo posible desalineación",
+      "atAGlance": "De un vistazo",
+      "atAGlanceTitle": "Mostrar u ocultar el panel resumen de un vistazo"
+    },
+    "doc": {
+      "mitigation": "Mitigación",
+      "adaptation": "Adaptación",
+      "toggleMitigationTitle": "Alternar medidas de mitigación BTR",
+      "toggleAdaptationTitle": "Alternar acciones de adaptación BTR",
+      "abbreviationsTitle": "Abreviaturas de documentos",
+      "searchPlaceholder": "Buscar una meta…"
+    },
+    "budget": {
+      "label": "Presupuesto de biodiversidad",
+      "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación GLOBE.",
+      "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa arcos por GLOBE y sombrea cada uno por su proporción del gasto BER etiquetado.",
+      "mongoliaNote": "BER de Mongolia (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
+      "fallbackAmount": "0 MNT"
+    },
+    "wheel": {
+      "legendDocument": "Documento",
+      "legendBiodiversity": "Categoría de biodiversidad",
+      "legendSector": "Sector de mitigación climática",
+      "legendConnectionStrength": "Fuerza de la conexión",
+      "legendHigh": "Alta: sinergia fuerte",
+      "legendMedium": "Media: complementaria",
+      "legendLow": "Parcial: vínculo emergente",
+      "legendPotentialMis": "Posible desalineación",
+      "nodeTooltip": "{label}: {source}",
+      "countryFallback": "País",
+      "centerTargets": "{count, number} metas",
+      "centerAligned": "{count, number} alineadas",
+      "centerConnectionsSingular": "{count, number} conexión",
+      "centerConnectionsPlural": "{count, number} conexiones",
+      "centerTargetSingular": "{count, number} meta",
+      "centerTargetPlural": "{count, number} metas"
+    },
+    "detailPanel": {
+      "closeAria": "Cerrar detalle de la meta",
+      "showLess": "Mostrar menos ▴",
+      "readFull": "Leer completo ▾",
+      "distSegmentTitle": "{count, number} {label}",
+      "connectionsSingular": "{count, number} conexión",
+      "connectionsPlural": "{count, number} conexiones",
+      "sortedBySeverity": "Ordenado por severidad",
+      "nr7Heading": "NR7:",
+      "nr7OnTrack": "en curso",
+      "nr7Limited": "limitado",
+      "nr7None": "sin avances",
+      "nr7Progress": "Progreso NR7: {label}",
+      "nr7TitlePrefix": "NR7: {label}",
+      "keyChallenges": "Desafíos clave"
+    },
+    "targetCard": {
+      "showLess": "Mostrar menos ▴",
+      "readFull": "Leer completo ▾"
+    },
+    "pairModal": {
+      "title": "{label} · par de metas",
+      "noRationale": "No hay razonamiento de la IA disponible para este par.",
+      "fundamentalSuffix": "· nivel de diseño"
+    },
+    "stat": {
+      "closeListAria": "Cerrar lista"
+    },
+    "empty": {
+      "atAGlance": "De un vistazo",
+      "statTargets": "Metas",
+      "statAlignments": "Alineaciones",
+      "statMisalignments": "Posibles desalineaciones",
+      "statTargetsTitle": "Examinar todas las metas visibles",
+      "statAlignmentsTitle": "Examinar todos los pares de alineación fuerte",
+      "statMisalignmentsTitle": "Examinar todos los pares marcados como posible/probable conflicto",
+      "strongestAlignments": "Alineaciones más fuertes",
+      "mostConflictedTargets": "Metas más en conflicto",
+      "noStrongAlignments": "Sin alineaciones fuertes para la selección actual.",
+      "noTensions": "Sin tensiones potenciales para la selección actual.",
+      "allTargetsTitle": "Todas las metas · {count, number}",
+      "allAlignmentsTitle": "Todas las alineaciones · {count, number}",
+      "allTensionsTitle": "Todas las tensiones · {count, number}",
+      "emptyTargets": "No hay metas en esta vista.",
+      "emptyAlignments": "No hay alineaciones fuertes en esta vista.",
+      "emptyTensions": "No hay tensiones en esta vista.",
+      "docTargetCount": " · {count, plural, one {1 meta} other {# metas}}"
+    },
+    "category": {
+      "closeAria": "Cerrar categoría",
+      "taggedBerSpend": "Gasto BER etiquetado",
+      "shareSuffix": " · {pct}% de proporción",
+      "periodSuffix": " ({start, number}-{end, number})",
+      "policyTargets": "Metas de política",
+      "policyTargetsShareSuffix": " · {pct}% de proporción",
+      "contributingProgrammes": "Programas contribuyentes",
+      "contributingProgrammesCount": " · {count, number}",
+      "programmeTooltip": "{id} {name}",
+      "statTargets": "Metas",
+      "statAlignments": "Alineaciones",
+      "statMisalignments": "Posibles desalineaciones",
+      "statTargetsTitle": "Examinar todas las metas en esta categoría",
+      "statAlignmentsTitle": "Examinar todos los pares de alineación fuerte en esta categoría",
+      "statMisalignmentsTitle": "Examinar todos los pares de posible desalineación en esta categoría",
+      "misWithOther": "Posibles desalineaciones con otras categorías",
+      "alignsWithOther": "Se alinea con otras categorías",
+      "topConflicts": "Principales conflictos",
+      "topConflictsCount": "Principales conflictos · {count, number}",
+      "strongestAlignments": "Alineaciones más fuertes",
+      "strongestAlignmentsCount": "Alineaciones más fuertes · {count, number}",
+      "noTensionsOther": "Sin tensiones con otras categorías.",
+      "noAlignsOther": "Sin alineaciones con otras categorías.",
+      "noConflicts": "Sin conflictos en esta categoría.",
+      "noStrongAlignments": "Sin alineaciones fuertes en esta categoría.",
+      "moreCount": "+ {count, number} más"
+    },
+    "chat": {
+      "askPlaceholder": "Pregunte cualquier cosa sobre esta vista…",
+      "askAria": "Pregunte al asistente sobre esta vista",
+      "ask": "Preguntar",
+      "loading": "…",
+      "thinking": "Pensando…",
+      "insight": "Visión",
+      "showMe": "Muéstreme",
+      "surpriseMe": "Sorpréndame",
+      "openEntityTitle": "Abrir {id}",
+      "requestFailed": "Solicitud fallida ({status, number})",
+      "genericError": "Lo siento, eso no funcionó.",
+      "askPlaceholderProminent": "Pregunte cualquier cosa sobre estas políticas…",
+      "askAriaProminent": "Pregunte al asistente sobre los documentos de política",
+      "askProminent": "Preguntar →"
+    }
+  },
+  "metadata": {
+    "root": {
+      "title": "CPC Tracker | Análisis de Coherencia de Políticas",
+      "description": "Herramienta asistida por IA para evaluar la coherencia entre políticas de naturaleza y clima y rastrear el progreso de implementación."
+    },
+    "dashboard": {
+      "title": "Panel | CPC Tracker",
+      "countryTitle": "Panel de {name} | CPC Tracker",
+      "analysisTitle": "Análisis {id} | CPC Tracker"
+    },
+    "prototypes": {
+      "title": "Prototipos | CPC Tracker",
+      "countryTitle": "Prototipos de {name} | CPC Tracker",
+      "analysisTitle": "Prototipos · Análisis {id} | CPC Tracker"
+    },
+    "sustainability": {
+      "title": "Huella de Sostenibilidad de IA | CPC Tracker",
+      "description": "Huella ambiental estimada de la computación de IA detrás del CPC Tracker, para reporte de transparencia."
+    }
+  }
+}

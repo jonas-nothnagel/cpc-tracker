@@ -1,4 +1,9 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 export function PrototypeBadge({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const t = useTranslations("common.prototype");
   const pill =
     tone === "dark"
       ? "bg-white/20 text-white ring-1 ring-white/40"
@@ -10,9 +15,9 @@ export function PrototypeBadge({ tone = "light" }: { tone?: "light" | "dark" }) 
       <span
         className={`${pill} px-2.5 py-1 rounded-full text-xs uppercase tracking-wide font-semibold`}
       >
-        Prototype
+        {t("badge")}
       </span>
-      <span className={`${caption} text-sm font-medium`}>Preliminary results</span>
+      <span className={`${caption} text-sm font-medium`}>{t("caption")}</span>
     </span>
   );
 }

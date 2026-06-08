@@ -15,6 +15,8 @@
  *      line, labelled with its own wider period).
  */
 
+import { useTranslations } from "next-intl";
+
 import { formatBerMoney } from "@/lib/financing-coherence";
 import type {
   FinancingCoherenceSummary,
@@ -56,13 +58,14 @@ function BudgetObjectHeader({
   summary: FinancingCoherenceSummary;
   countryName: string;
 }) {
+  const t = useTranslations("briefing.financingCenter");
   return (
     <div>
       <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-        The spending reviewed
+        {t("header.eyebrow")}
       </p>
       <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">
-        Biodiversity Expenditure Review (BER)
+        {t("header.title")}
       </p>
       <p className="text-[11.5px] text-[var(--undp-gray)] mt-0.5">
         {countryName} · {summary.periodLabel}
@@ -70,11 +73,13 @@ function BudgetObjectHeader({
       <details className="group mt-1.5">
         <summary className="cursor-pointer list-none text-[11.5px] text-[var(--undp-black)]">
           <span className="font-medium">
-            {summary.totalProgramCount} budget lines
+            {t("header.budgetLines", { count: summary.totalProgramCount })}
           </span>
           <span className="text-[var(--undp-gray)]">
             {" "}
-            ({summary.fundedProgramCount} with recorded spend)
+            {t("header.withRecordedSpend", {
+              count: summary.fundedProgramCount,
+            })}
           </span>
           <span
             aria-hidden="true"
@@ -99,7 +104,7 @@ function BudgetObjectHeader({
               <span className="tabular-nums shrink-0 text-[var(--undp-gray)]">
                 {p.hasSpend
                   ? formatBerMoney(p.totalSpend, summary.unit, summary.currency)
-                  : "no recorded spend"}
+                  : t("header.noRecordedSpend")}
               </span>
             </li>
           ))}
@@ -115,6 +120,7 @@ function Concentration({
 }: {
   summary: FinancingCoherenceSummary;
 }) {
+  const t = useTranslations("briefing.financingCenter");
   const total = summary.totalTrackedExpenditure;
   if (total <= 0) return null;
   const funded = summary.programs.filter((p) => p.totalSpend > 0);
@@ -133,8 +139,10 @@ function Concentration({
   return (
     <div>
       <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
-        Where the {formatBerMoney(total, summary.unit, summary.currency)} goes ·{" "}
-        {summary.periodLabel}
+        {t("concentration.eyebrow", {
+          amount: formatBerMoney(total, summary.unit, summary.currency),
+          period: summary.periodLabel,
+        })}
       </p>
       <div className="flex h-4 w-full overflow-hidden rounded-full bg-gray-100">
         {top.map((p, i) => (
@@ -152,7 +160,7 @@ function Concentration({
           <span
             className="h-full flex-1"
             style={{ backgroundColor: REST }}
-            title={`Everything else: ${restPct}%`}
+            title={t("concentration.everythingElseTitle", { pct: restPct })}
           />
         )}
       </div>
@@ -176,7 +184,7 @@ function Concentration({
                     style={{ backgroundColor: REST }}
                   />
                   <span className="text-[var(--undp-gray)]">
-                    everything else
+                    {t("concentration.everythingElse")}
                   </span>
                   {rest.length > 0 && (
                     <span
@@ -260,13 +268,14 @@ function ExecutionBar({
   unit: string;
   currency: string;
 }) {
+  const t = useTranslations("briefing.financingCenter");
   const spentShare =
     execution.planned > 0 ? execution.actual / execution.planned : 0;
   const gapPct = Math.round((1 - spentShare) * 100);
   return (
     <div>
       <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
-        Not all of it is spent · {execution.period}
+        {t("execution.eyebrow", { period: execution.period })}
       </p>
       <div
         className="h-2.5 w-full rounded-full overflow-hidden"
@@ -281,15 +290,20 @@ function ExecutionBar({
         />
       </div>
       <p className="text-[11px] text-[var(--undp-black)] mt-1.5 tabular-nums">
-        <span className="font-medium">
-          {execution.actual.toLocaleString("en-US")}
-        </span>{" "}
-        of {execution.planned.toLocaleString("en-US")} {unit} {currency} spent
+        {t.rich("execution.spent", {
+          actual: execution.actual.toLocaleString("en-US"),
+          planned: execution.planned.toLocaleString("en-US"),
+          unit,
+          currency,
+          strong: (chunks) => <span className="font-medium">{chunks}</span>,
+        })}
         {execution.gap > 0 && (
           <span className="text-[var(--undp-gray)]">
             {" "}
-            · {formatBerMoney(execution.gap, unit, currency)} (
-            {Math.max(0, gapPct)}%) unspent
+            {t("execution.unspent", {
+              amount: formatBerMoney(execution.gap, unit, currency),
+              pct: Math.max(0, gapPct),
+            })}
           </span>
         )}
       </p>

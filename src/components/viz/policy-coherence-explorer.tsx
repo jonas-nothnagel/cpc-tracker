@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { arc as d3Arc } from "d3-shape";
 import {
   getDocColor,
@@ -10,9 +11,13 @@ import {
   getDocMediumLabel,
   getDocTypeOrder,
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONTRADICTION_TYPE_LABELS,
 } from "@/lib/utils";
+import {
+  useAlignmentLabels,
+  useContradictionTypeLabels,
+  useNr7BadgeLabels,
+  type Nr7Status,
+} from "@/lib/labels";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -358,6 +363,9 @@ function DetailPanel({
   nr7ProgressMap?: Map<string, string>;
   countryConfig?: CountryConfig | null;
 }) {
+  const alignmentLabels = useAlignmentLabels();
+  const nr7BadgeLabels = useNr7BadgeLabels();
+  const t = useTranslations("explorer.detailPanel");
   const sorted = [...connections].sort((a, b) => {
     const order: Record<AlignmentLevel, number> = {
       flagged: 0,
@@ -411,7 +419,7 @@ function DetailPanel({
               type="button"
               onClick={onClose}
               className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none"
-              aria-label="Close target detail"
+              aria-label={t("closeAria")}
             >
               ×
             </button>
@@ -439,7 +447,7 @@ function DetailPanel({
             onClick={() => setTargetTextExpanded((p) => !p)}
             className="mt-1 text-[11px] text-[var(--undp-blue)] hover:underline"
           >
-            {targetTextExpanded ? "Show less ▴" : "Read full ▾"}
+            {targetTextExpanded ? t("showLess") : t("readFull")}
           </button>
         )}
         <ActivitiesActions target={node.target} />
@@ -458,7 +466,7 @@ function DetailPanel({
                   width: `${(s.n / distTotal) * 100}%`,
                   backgroundColor: ALIGNMENT_COLORS[s.lvl],
                 }}
-                title={`${s.n} ${ALIGNMENT_LABELS[s.lvl].toLowerCase()}`}
+                title={t("distSegmentTitle", { count: s.n, label: alignmentLabels[s.lvl].toLowerCase() })}
               />
             ))}
           </div>
@@ -469,7 +477,7 @@ function DetailPanel({
                   {s.n}
                 </span>
                 <span className="text-[var(--undp-gray)] ml-1">
-                  {ALIGNMENT_LABELS[s.lvl].toLowerCase()}
+                  {alignmentLabels[s.lvl].toLowerCase()}
                 </span>
               </span>
             ))}
@@ -485,7 +493,7 @@ function DetailPanel({
               style={{ backgroundColor: NR7_BADGE_COLORS[nr7Item.progressStatus] ?? "#9ca3af" }}
             />
             <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-              NR7 Progress: {NR7_BADGE_LABELS[nr7Item.progressStatus] ?? "Unknown"}
+              {t("nr7Progress", { label: nr7BadgeLabels[(nr7Item.progressStatus as Nr7Status)] ?? nr7BadgeLabels.unknown })}
             </span>
           </div>
           {nr7Item.progressSummary && (
@@ -498,7 +506,7 @@ function DetailPanel({
           {nr7Item.challenges && (
             <details className="text-[11px]">
               <summary className="text-[var(--undp-gray)] cursor-pointer hover:text-[var(--undp-blue)]">
-                Key challenges
+                {t("keyChallenges")}
               </summary>
               <p className="text-[var(--undp-black)] leading-relaxed mt-1 pl-2 border-l-2 border-gray-200">
                 {nr7Item.challenges.length > 300
@@ -517,24 +525,26 @@ function DetailPanel({
       <div className="flex-1 overflow-y-auto min-h-0 border-t border-gray-100">
         <div className="flex items-baseline justify-between px-4 pt-3 pb-2 shrink-0">
           <p className="text-[11px] text-[var(--undp-gray)]">
-            {connections.length} connection{connections.length === 1 ? "" : "s"}
+            {connections.length === 1
+              ? t("connectionsSingular", { count: connections.length })
+              : t("connectionsPlural", { count: connections.length })}
           </p>
-          <p className="text-[11px] text-[var(--undp-gray)]">Sorted by severity</p>
+          <p className="text-[11px] text-[var(--undp-gray)]">{t("sortedBySeverity")}</p>
         </div>
         {hasNr7InConns && (
           <div className="flex items-center gap-3 px-4 pb-2 text-[11px] text-[var(--undp-gray)]">
-            <span>NR7:</span>
+            <span>{t("nr7Heading")}</span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.on_track }} />
-              on track
+              {t("nr7OnTrack")}
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.limited }} />
-              limited
+              {t("nr7Limited")}
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.no_progress }} />
-              none
+              {t("nr7None")}
             </span>
           </div>
         )}
@@ -563,14 +573,14 @@ function DetailPanel({
                       <span
                         className="w-2 h-2 rounded-full shrink-0"
                         style={{ backgroundColor: NR7_BADGE_COLORS[nr7Status] ?? "#9ca3af" }}
-                        title={`NR7: ${NR7_BADGE_LABELS[nr7Status] ?? "Unknown"}`}
+                        title={t("nr7TitlePrefix", { label: nr7BadgeLabels[(nr7Status as Nr7Status)] ?? nr7BadgeLabels.unknown })}
                       />
                     )}
                     <span
                       className="text-[11px] font-medium shrink-0"
                       style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
                     >
-                      {ALIGNMENT_LABELS[conn.alignment]}
+                      {alignmentLabels[conn.alignment]}
                     </span>
                   </div>
                   {conn.description && (
@@ -597,6 +607,7 @@ function TargetCard({
   target: Target;
   countryConfig?: CountryConfig | null;
 }) {
+  const t = useTranslations("explorer.targetCard");
   const isLong = (target.text?.length ?? 0) > 280;
   const [expanded, setExpanded] = useState(!isLong);
   const docColor = getDocColor(countryConfig, target.sourceDocument);
@@ -630,7 +641,7 @@ function TargetCard({
           onClick={() => setExpanded((p) => !p)}
           className="mt-1.5 self-start text-[11px] text-[var(--undp-blue)] hover:underline"
         >
-          {expanded ? "Show less ▴" : "Read full ▾"}
+          {expanded ? t("showLess") : t("readFull")}
         </button>
       )}
       <ActivitiesActions target={target} />
@@ -651,6 +662,9 @@ function PairDetailModal({
   countryConfig?: CountryConfig | null;
   onClose: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
+  const contradictionLabels = useContradictionTypeLabels();
+  const t = useTranslations("explorer.pairModal");
   if (!pair || !selectedTarget) return null;
 
   const { result, other } = pair;
@@ -668,7 +682,7 @@ function PairDetailModal({
     <Modal
       open={open}
       onClose={onClose}
-      title={`${ALIGNMENT_LABELS[result.alignment]} · target pair`}
+      title={t("title", { label: alignmentLabels[result.alignment] })}
       maxWidth="max-w-2xl"
     >
       {/* Hero callout: inset rounded card so the AI verdict reads as a
@@ -684,13 +698,13 @@ function PairDetailModal({
               style={{ backgroundColor: tint }}
             />
             <span className="text-xs font-semibold uppercase tracking-wide text-[var(--undp-black)]">
-              {ALIGNMENT_LABELS[result.alignment]}
+              {alignmentLabels[result.alignment]}
             </span>
             {result.mechanism && (
               <span className="ml-auto text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/80 text-[var(--undp-black)] border border-gray-200">
-                {CONTRADICTION_TYPE_LABELS[result.mechanism]}
+                {contradictionLabels[result.mechanism]}
                 {result.manageability === "fundamental" && (
-                  <span className="ml-1 text-[var(--undp-gray)]">· fundamental</span>
+                  <span className="ml-1 text-[var(--undp-gray)]">{t("fundamentalSuffix")}</span>
                 )}
               </span>
             )}
@@ -701,7 +715,7 @@ function PairDetailModal({
             </p>
           ) : (
             <p className="text-sm leading-relaxed text-[var(--undp-gray)] italic">
-              No AI rationale available for this pair.
+              {t("noRationale")}
             </p>
           )}
         </div>
@@ -828,6 +842,7 @@ function StatListSection({
   isEmpty: boolean;
   children: React.ReactNode;
 }) {
+  const t = useTranslations("explorer.stat");
   return (
     <section>
       <div className="flex items-center justify-between mb-2">
@@ -837,7 +852,7 @@ function StatListSection({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close list"
+          aria-label={t("closeListAria")}
           className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-base leading-none px-1"
         >
           ×
@@ -1258,6 +1273,7 @@ function ReplyText({
   entities: ReplyEntity[];
   onSelectTarget: (targetId: string) => void;
 }) {
+  const t = useTranslations("explorer.chat");
   if (!full || entities.length === 0) {
     return <>{typed}</>;
   }
@@ -1277,7 +1293,7 @@ function ReplyText({
           type="button"
           onClick={() => onSelectTarget(e.id)}
           className="font-medium text-[var(--undp-black)] underline decoration-dotted decoration-gray-400 underline-offset-2 hover:decoration-[var(--undp-blue)] hover:text-[var(--undp-blue)] transition-colors px-0.5 rounded-sm focus:outline-none focus:ring-1 focus:ring-[var(--undp-blue)]/40"
-          title={`Open ${e.id}`}
+          title={t("openEntityTitle", { id: e.id })}
         >
           {full.slice(e.start, e.end)}
         </button>,
@@ -1328,11 +1344,10 @@ function ChatBar({
    *  wheel view, where the user wants just the wheel and the chat). */
   hideInsights?: boolean;
 }) {
+  const t = useTranslations("explorer.chat");
   const [query, setQuery] = useState("");
   const placeholder = useTypedPlaceholder(
-    prominent
-      ? "Ask anything about these policies…"
-      : "Ask anything about this view…",
+    prominent ? t("askPlaceholderProminent") : t("askPlaceholder"),
   );
   const submit = (q: string) => {
     const trimmed = q.trim();
@@ -1386,14 +1401,14 @@ function ChatBar({
               placeholder={placeholder}
               disabled={chat.loading}
               className="w-full rounded-md border border-gray-300 bg-white px-4 py-3 pr-16 text-sm text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none focus:border-[var(--undp-black)] focus:ring-1 focus:ring-[var(--undp-black)] disabled:opacity-50"
-              aria-label="Ask the assistant about the policy documents"
+              aria-label={t("askAriaProminent")}
             />
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
               className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded text-xs font-medium text-white bg-[var(--undp-black)] disabled:bg-gray-300 transition-colors"
             >
-              {chat.loading ? "…" : "Ask →"}
+              {chat.loading ? t("loading") : t("askProminent")}
             </button>
           </div>
         ) : (
@@ -1405,14 +1420,14 @@ function ChatBar({
               placeholder={placeholder}
               disabled={chat.loading}
               className="flex-1 min-w-0 text-[12.5px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
-              aria-label="Ask the assistant about this view"
+              aria-label={t("askAria")}
             />
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
               className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
             >
-              {chat.loading ? "…" : "Ask"}
+              {chat.loading ? t("loading") : t("ask")}
             </button>
           </div>
         )}
@@ -1420,7 +1435,7 @@ function ChatBar({
 
       {chat.loading && (
         <div className="text-[11px] text-[var(--undp-gray)] italic px-1">
-          Thinking…
+          {t("thinking")}
         </div>
       )}
 
@@ -1428,7 +1443,7 @@ function ChatBar({
         <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
           <p className="flex items-baseline gap-2">
             <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
-              Insight
+              {t("insight")}
             </span>
             <span className="flex-1">{currentInsight.callout}</span>
           </p>
@@ -1459,7 +1474,7 @@ function ChatBar({
                 disabled={chat.loading}
                 className={SHOW_ME_LINK_AMBER}
               >
-                Show me <span aria-hidden="true">→</span>
+                {t("showMe")} <span aria-hidden="true">→</span>
               </button>
             </div>
           )}
@@ -1485,7 +1500,7 @@ function ChatBar({
                 disabled={chat.loading}
                 className={SHOW_ME_LINK_BLUE}
               >
-                Show me <span aria-hidden="true">→</span>
+                {t("showMe")} <span aria-hidden="true">→</span>
               </button>
             </div>
           )}
@@ -1509,7 +1524,7 @@ function ChatBar({
             disabled={chat.loading}
             className={CHIP_SURPRISE}
           >
-            Surprise me
+            {t("surpriseMe")}
           </button>
         </div>
       )}
@@ -1801,6 +1816,7 @@ function StatBrowseView({
   getTarget: (id: string) => Target | undefined;
   countryConfig?: CountryConfig | null;
 }) {
+  const t = useTranslations("explorer.empty");
   const {
     statView,
     closeStatView,
@@ -1816,9 +1832,9 @@ function StatBrowseView({
   if (statView === "targets") {
     return (
       <StatListSection
-        title={`All targets · ${allTargetsRanked.length}`}
+        title={t("allTargetsTitle", { count: allTargetsRanked.length })}
         onClose={closeStatView}
-        empty="No targets in this view."
+        empty={t("emptyTargets")}
         isEmpty={allTargetsRanked.length === 0}
       >
         <div className="space-y-1">
@@ -1851,7 +1867,7 @@ function StatBrowseView({
                     {label}
                   </span>
                   <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
-                    · {items.length} target{items.length !== 1 ? "s" : ""}
+                    {t("docTargetCount", { count: items.length })}
                   </span>
                 </summary>
                 <ul className="space-y-0.5 pl-4 mt-1 mb-2">
@@ -1878,9 +1894,9 @@ function StatBrowseView({
   if (statView === "alignments") {
     return (
       <StatListSection
-        title={`All alignments · ${allAlignmentPairs.length}`}
+        title={t("allAlignmentsTitle", { count: allAlignmentPairs.length })}
         onClose={closeStatView}
-        empty="No strong alignments in this view."
+        empty={t("emptyAlignments")}
         isEmpty={allAlignmentPairs.length === 0}
       >
         <ul className="space-y-0.5">
@@ -1915,9 +1931,9 @@ function StatBrowseView({
   if (statView === "tensions") {
     return (
       <StatListSection
-        title={`All tensions · ${allTensionPairs.length}`}
+        title={t("allTensionsTitle", { count: allTensionPairs.length })}
         onClose={closeStatView}
-        empty="No tensions in this view."
+        empty={t("emptyTensions")}
         isEmpty={allTensionPairs.length === 0}
       >
         <ul className="space-y-0.5">
@@ -1969,6 +1985,7 @@ function EmptyPanel({
   showChat,
   embed,
 }: EmptyPanelProps) {
+  const t = useTranslations("explorer.empty");
   // Stats are interactive: clicking a stat sets the wheel filter AND swaps
   // the middle section to a full list of that kind of item (targets, strong
   // alignment pairs, or contradiction pairs). Clicking the same stat again
@@ -2044,30 +2061,30 @@ function EmptyPanel({
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
-            At a glance
+            {t("atAGlance")}
           </p>
           <div className="grid grid-cols-3 gap-4">
             <Stat
-              label="Targets"
+              label={t("statTargets")}
               value={targets.length}
               onClick={() => toggleStatView("targets", "high_contra")}
-              title="Browse all visible targets"
+              title={t("statTargetsTitle")}
               active={statView === "targets"}
             />
             <Stat
-              label="Alignments"
+              label={t("statAlignments")}
               value={totalAligned}
               accent="green"
               onClick={() => toggleStatView("alignments", "high")}
-              title="Browse all strong alignment pairs"
+              title={t("statAlignmentsTitle")}
               active={statView === "alignments"}
             />
             <Stat
-              label="Potential misalignments"
+              label={t("statMisalignments")}
               value={totalContra}
               accent="red"
               onClick={() => toggleStatView("tensions", "contradictions")}
-              title="Browse all pairs flagged as possible/likely conflict"
+              title={t("statMisalignmentsTitle")}
               active={statView === "tensions"}
             />
           </div>
@@ -2075,7 +2092,7 @@ function EmptyPanel({
 
         {statView === "overview" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <Section title="Strongest alignments">
+            <Section title={t("strongestAlignments")}>
               {connRanks.length > 0 ? (
                 <ul className="space-y-0.5">
                   {connRanks.map(({ target, count }) => (
@@ -2092,11 +2109,11 @@ function EmptyPanel({
                 </ul>
               ) : (
                 <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                  No strong alignments for the current selection.
+                  {t("noStrongAlignments")}
                 </p>
               )}
             </Section>
-            <Section title="Most conflicted targets">
+            <Section title={t("mostConflictedTargets")}>
               {tensRanks.length > 0 ? (
                 <ul className="space-y-0.5">
                   {tensRanks.map(({ target, count, severity }) => (
@@ -2114,7 +2131,7 @@ function EmptyPanel({
                 </ul>
               ) : (
                 <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                  No potential tensions for the current selection.
+                  {t("noTensions")}
                 </p>
               )}
             </Section>
@@ -2189,6 +2206,7 @@ function CategoryPanel({
   onSetFilter,
   countryConfig,
 }: CategoryPanelProps) {
+  const t = useTranslations("explorer.category");
   /** Contributing-programmes disclosure starts collapsed on every panel open.
    *  Component-local state is enough because the panel re-mounts on each
    *  category click via `key={focalGroup.id}` upstream — opening Pollution
@@ -2317,7 +2335,7 @@ function CategoryPanel({
             type="button"
             onClick={onClose}
             className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none shrink-0"
-            aria-label="Close category"
+            aria-label={t("closeAria")}
           >
             ×
           </button>
@@ -2326,7 +2344,7 @@ function CategoryPanel({
           <div className="text-[11px] text-[var(--undp-black)] leading-snug mb-3 space-y-0.5">
             <div className="flex items-baseline gap-2">
               <span className="text-[var(--undp-gray)] w-32 shrink-0">
-                Tagged BER spend
+                {t("taggedBerSpend")}
               </span>
               <span className="tabular-nums">
                 <span className="font-medium">
@@ -2336,27 +2354,23 @@ function CategoryPanel({
                   )}
                 </span>
                 <span className="text-[var(--undp-gray)]">
-                  {" · "}
-                  {(budget.shareOfTotalBudget * 100).toFixed(1)}% share
+                  {t("shareSuffix", { pct: (budget.shareOfTotalBudget * 100).toFixed(1) })}
                 </span>
                 {budgetPeriod && (
                   <span className="text-[var(--undp-gray)]">
-                    {" "}({budgetPeriod.start}
-                    {"-"}
-                    {budgetPeriod.end})
+                    {t("periodSuffix", { start: budgetPeriod.start, end: budgetPeriod.end })}
                   </span>
                 )}
               </span>
             </div>
             <div className="flex items-baseline gap-2">
               <span className="text-[var(--undp-gray)] w-32 shrink-0">
-                Policy targets
+                {t("policyTargets")}
               </span>
               <span className="tabular-nums">
                 <span className="font-medium">{budget.targetCount}</span>
                 <span className="text-[var(--undp-gray)]">
-                  {" · "}
-                  {(budget.shareOfTargets * 100).toFixed(0)}% share
+                  {t("policyTargetsShareSuffix", { pct: (budget.shareOfTargets * 100).toFixed(0) })}
                 </span>
               </span>
             </div>
@@ -2372,10 +2386,9 @@ function CategoryPanel({
                     {programmesOpen ? "▾" : "▸"}
                   </span>
                   <span>
-                    Contributing programmes
+                    {t("contributingProgrammes")}
                     <span className="text-[var(--undp-gray)]">
-                      {" · "}
-                      {programmes.length}
+                      {t("contributingProgrammesCount", { count: programmes.length })}
                     </span>
                   </span>
                 </button>
@@ -2397,7 +2410,7 @@ function CategoryPanel({
                         return (
                           <li
                             key={p.code}
-                            title={`${p.subcategoryId} ${p.subcategoryName}`}
+                            title={t("programmeTooltip", { id: p.subcategoryId, name: p.subcategoryName })}
                           >
                             <div className="flex items-baseline gap-2 text-[11px]">
                               <span className="text-[var(--undp-gray)] tabular-nums shrink-0">
@@ -2434,26 +2447,26 @@ function CategoryPanel({
         )}
         <div className="grid grid-cols-3 gap-4">
           <Stat
-            label="Targets"
+            label={t("statTargets")}
             value={group.count}
             onClick={() => toggleStatView("targets", "high_contra")}
-            title="Browse all targets in this category"
+            title={t("statTargetsTitle")}
             active={statView === "targets"}
           />
           <Stat
-            label="Alignments"
+            label={t("statAlignments")}
             value={totalAligned}
             accent="green"
             onClick={() => toggleStatView("alignments", "high")}
-            title="Browse all strong alignment pairs in this category"
+            title={t("statAlignmentsTitle")}
             active={statView === "alignments"}
           />
           <Stat
-            label="Potential misalignments"
+            label={t("statMisalignments")}
             value={totalContra}
             accent="red"
             onClick={() => toggleStatView("tensions", "contradictions")}
-            title="Browse all pairs of potential misalignment in this category"
+            title={t("statMisalignmentsTitle")}
             active={statView === "tensions"}
           />
         </div>
@@ -2470,7 +2483,7 @@ function CategoryPanel({
              a single column on narrow viewports. */
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-6">
             <div>
-              <Section title="Potential misalignments with other categories">
+              <Section title={t("misWithOther")}>
                 {topTensionPartners.length > 0 ? (
                   <ul className="space-y-0.5">
                     {topTensionPartners.map(({ arc, count }) => (
@@ -2497,13 +2510,13 @@ function CategoryPanel({
                   </ul>
                 ) : (
                   <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                    No tensions with other categories.
+                    {t("noTensionsOther")}
                   </p>
                 )}
               </Section>
             </div>
             <div>
-              <Section title="Aligns with other categories">
+              <Section title={t("alignsWithOther")}>
                 {topSynergyPartners.length > 0 ? (
                   <ul className="space-y-0.5">
                     {topSynergyPartners.map(({ arc, count }) => (
@@ -2530,7 +2543,7 @@ function CategoryPanel({
                   </ul>
                 ) : (
                   <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                    No alignments with other categories.
+                    {t("noAlignsOther")}
                   </p>
                 )}
               </Section>
@@ -2539,8 +2552,8 @@ function CategoryPanel({
               <Section
                 title={
                   contradictionPairs.length > 0
-                    ? `Top conflicts · ${contradictionPairs.length}`
-                    : "Top conflicts"
+                    ? t("topConflictsCount", { count: contradictionPairs.length })
+                    : t("topConflicts")
                 }
               >
                 {contradictionPairs.length > 0 ? (
@@ -2572,13 +2585,13 @@ function CategoryPanel({
                         }
                         className="text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
                       >
-                        + {contradictionPairs.length - 6} more
+                        {t("moreCount", { count: contradictionPairs.length - 6 })}
                       </button>
                     )}
                   </>
                 ) : (
                   <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                    No conflicts in this category.
+                    {t("noConflicts")}
                   </p>
                 )}
               </Section>
@@ -2587,8 +2600,8 @@ function CategoryPanel({
               <Section
                 title={
                   alignmentPairs.length > 0
-                    ? `Strongest alignments · ${alignmentPairs.length}`
-                    : "Strongest alignments"
+                    ? t("strongestAlignmentsCount", { count: alignmentPairs.length })
+                    : t("strongestAlignments")
                 }
               >
                 {alignmentPairs.length > 0 ? (
@@ -2618,13 +2631,13 @@ function CategoryPanel({
                         onClick={() => toggleStatView("alignments", "high")}
                         className="text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
                       >
-                        + {alignmentPairs.length - 6} more
+                        {t("moreCount", { count: alignmentPairs.length - 6 })}
                       </button>
                     )}
                   </>
                 ) : (
                   <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
-                    No strong alignments in this category.
+                    {t("noStrongAlignments")}
                   </p>
                 )}
               </Section>
@@ -2651,13 +2664,6 @@ const NR7_BADGE_COLORS: Record<string, string> = {
   limited: "#d97706",
   no_progress: "#dc2626",
   unknown: "#9ca3af",
-};
-
-const NR7_BADGE_LABELS: Record<string, string> = {
-  on_track: "On track",
-  limited: "Limited progress",
-  no_progress: "No progress",
-  unknown: "Unknown",
 };
 
 interface PolicyCoherenceExplorerProps {
@@ -2697,6 +2703,7 @@ export function PolicyCoherenceExplorer({
   countryConfig,
   variant = "dashboard",
 }: PolicyCoherenceExplorerProps) {
+  const t = useTranslations("explorer");
   // Embed mode re-hosts the explorer inside the briefing: the host supplies its
   // own heading + chat, and the side panel starts collapsed so the wheel gets
   // the full width (toggleable via "At a glance"). Default "dashboard" keeps the
@@ -3216,9 +3223,9 @@ export function PolicyCoherenceExplorer({
             message =
               typeof errBody.error === "string" && errBody.error.length > 0
                 ? errBody.error
-                : `Request failed (${res.status})`;
+                : t("chat.requestFailed", { status: res.status });
           } catch {
-            message = `Request failed (${res.status})`;
+            message = t("chat.requestFailed", { status: res.status });
           }
           throw new Error(message);
         }
@@ -3263,7 +3270,7 @@ export function PolicyCoherenceExplorer({
           loading: false,
           reply: null,
           error:
-            err instanceof Error ? err.message : "Sorry, that didn't work.",
+            err instanceof Error ? err.message : t("chat.genericError"),
           suggestions: [],
           pendingActions: null,
           replyEntities: [],
@@ -3284,6 +3291,7 @@ export function PolicyCoherenceExplorer({
       sectors,
       targets,
       budgetSummary,
+      t,
     ],
   );
 
@@ -3694,7 +3702,7 @@ export function PolicyCoherenceExplorer({
           setSearchOpen(true);
         }}
         onFocus={() => setSearchOpen(true)}
-        placeholder="Look for a target…"
+        placeholder={t("doc.searchPlaceholder")}
         className={`${controlCls} ${isEmbed ? "w-56 sm:w-72" : "w-44"}`}
       />
       {searchOpen && searchQuery.length >= 2 && (() => {
@@ -3767,28 +3775,28 @@ export function PolicyCoherenceExplorer({
         <div>
           {showHeading && (
           <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-            Policy Coherence Explorer
+            {t("heading.title")}
             <InfoBox>
-              This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate pairs the AI has identified as potential misalignment.
+              {t.rich("heading.info", { strong: (chunks) => <strong>{chunks}</strong> })}
               <br /><br />
-              The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1 to 3 points (low/medium/high), divided by the maximum possible score.
+              {t.rich("heading.infoScore", { strong: (chunks) => <strong>{chunks}</strong> })}
               <br /><br />
-              <strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.
+              {t.rich("heading.infoBtr", { strong: (chunks) => <strong>{chunks}</strong> })}
             </InfoBox>
           </h2>
           )}
           <p className="text-sm text-[var(--undp-gray)] mt-0.5">
             {(() => {
               const groupLabel = ({
-                document: ["document type", "document types"],
-                globe: ["biodiversity category", "biodiversity categories"],
-                sector: ["climate mitigation sector", "climate mitigation sectors"],
+                document: [t("groupLabel.documentSingular"), t("groupLabel.documentPlural")],
+                globe: [t("groupLabel.globeSingular"), t("groupLabel.globePlural")],
+                sector: [t("groupLabel.sectorSingular"), t("groupLabel.sectorPlural")],
               } as Record<GroupMode, [string, string]>)[groupMode][
                 groups.length !== 1 ? 1 : 0
               ];
               const across = (
                 <>
-                  {" "}across {groups.length} {groupLabel}
+                  {t("summary.across", { count: groups.length, groupLabel })}
                 </>
               );
               const contraButton = filteredCounts.contra > 0 && (
@@ -3799,16 +3807,18 @@ export function PolicyCoherenceExplorer({
                   }
                   className="text-[var(--undp-black)] font-medium underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] transition-colors"
                 >
-                  {filteredCounts.contra} potential misalignment
-                  {filteredCounts.contra !== 1 ? "s" : ""}
+                  {filteredCounts.contra === 1
+                    ? t("summary.possibleMisSingular", { count: filteredCounts.contra })
+                    : t("summary.possibleMisPlural", { count: filteredCounts.contra })}
                 </button>
               );
               switch (filter) {
                 case "high":
                   return (
                     <>
-                      {filteredCounts.high} strong alignment
-                      {filteredCounts.high !== 1 ? "s" : ""}
+                      {filteredCounts.high === 1
+                        ? t("summary.highAlignmentsSingular", { count: filteredCounts.high })
+                        : t("summary.highAlignmentsPlural", { count: filteredCounts.high })}
                       {across}.
                     </>
                   );
@@ -3822,11 +3832,12 @@ export function PolicyCoherenceExplorer({
                 case "high_contra":
                   return (
                     <>
-                      {filteredCounts.high} strong alignment
-                      {filteredCounts.high !== 1 ? "s" : ""}
+                      {filteredCounts.high === 1
+                        ? t("summary.highAlignmentsSingular", { count: filteredCounts.high })
+                        : t("summary.highAlignmentsPlural", { count: filteredCounts.high })}
                       {contraButton && (
                         <>
-                          {" and "}
+                          {t("summary.joinAnd")}
                           {contraButton}
                         </>
                       )}
@@ -3836,8 +3847,9 @@ export function PolicyCoherenceExplorer({
                 case "high_medium":
                   return (
                     <>
-                      {filteredCounts.aligned} strong or medium alignment
-                      {filteredCounts.aligned !== 1 ? "s" : ""}
+                      {filteredCounts.aligned === 1
+                        ? t("summary.alignedSingular", { count: filteredCounts.aligned })
+                        : t("summary.alignedPlural", { count: filteredCounts.aligned })}
                       {across}.
                     </>
                   );
@@ -3845,12 +3857,13 @@ export function PolicyCoherenceExplorer({
                 default:
                   return (
                     <>
-                      {filteredCounts.aligned} alignment opportunit
-                      {filteredCounts.aligned !== 1 ? "ies" : "y"}
+                      {filteredCounts.aligned === 1
+                        ? t("summary.allOpportunitySingular", { count: filteredCounts.aligned })
+                        : t("summary.allOpportunityPlural", { count: filteredCounts.aligned })}
                       {across}
                       {contraButton && (
                         <>
-                          {", "}
+                          {t("summary.joinComma")}
                           {contraButton}
                         </>
                       )}
@@ -3859,7 +3872,7 @@ export function PolicyCoherenceExplorer({
                   );
               }
             })()}
-            {" "}Hover or click a target to explore connections.
+            {" "}{t("heading.hoverHint")}
           </p>
         </div>
         <div className="flex flex-col gap-3">
@@ -3870,9 +3883,9 @@ export function PolicyCoherenceExplorer({
             {isEmbed ? (
               <div className="inline-flex flex-wrap gap-1.5">
                 {([
-                  ["document", "Documents", "Group the wheel by source document"],
-                  ["globe", "GLOBE", "Group by biodiversity category (GLOBE taxonomy)"],
-                  ["sector", "IPCC sectors", "Group by climate mitigation sector (IPCC)"],
+                  ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
+                  ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
+                  ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
                 ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
                   <button
                     key={mode}
@@ -3896,9 +3909,9 @@ export function PolicyCoherenceExplorer({
                 onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
                 className={controlCls}
               >
-                <option value="document">By Document Type</option>
-                <option value="globe">By Biodiversity Category</option>
-                <option value="sector">By Climate Mitigation Sector</option>
+                <option value="document">{t("controls.groupOptionDocument")}</option>
+                <option value="globe">{t("controls.groupOptionGlobe")}</option>
+                <option value="sector">{t("controls.groupOptionSector")}</option>
               </select>
             )}
             <select
@@ -3906,23 +3919,23 @@ export function PolicyCoherenceExplorer({
               onChange={(e) => setFilter(e.target.value as AlignFilter)}
               className={controlCls}
             >
-              <option value="high_contra">Strong + potential misalignment</option>
-              <option value="high">Strong alignment only</option>
-              <option value="contradictions">Potential misalignment only</option>
+              <option value="high_contra">{t("controls.filterHighContra")}</option>
+              <option value="high">{t("controls.filterHigh")}</option>
+              <option value="contradictions">{t("controls.filterContradictions")}</option>
             </select>
             {isEmbed && !isWorkbench && (
               <button
                 type="button"
                 onClick={() => setShowAtAGlance((v) => !v)}
                 aria-pressed={showAtAGlance}
-                title="Show or hide the at-a-glance summary panel"
+                title={t("controls.atAGlanceTitle")}
                 className={`ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                   showAtAGlance
                     ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
                     : "bg-white border-gray-200 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
                 }`}
               >
-                At a glance
+                {t("controls.atAGlance")}
               </button>
             )}
             {isWorkbench && (
@@ -3988,7 +4001,7 @@ export function PolicyCoherenceExplorer({
                           ? "text-[var(--undp-black)]"
                           : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                       }`}
-                      title="Toggle BTR mitigation measures"
+                      title={t("doc.toggleMitigationTitle")}
                     >
                       <span
                         className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -3998,7 +4011,7 @@ export function PolicyCoherenceExplorer({
                             : { backgroundColor: "transparent", border: `1.5px solid ${mitColor}66` }
                         }
                       />
-                      Mitigation
+                      {t("doc.mitigation")}
                     </button>
                     <button
                       type="button"
@@ -4008,7 +4021,7 @@ export function PolicyCoherenceExplorer({
                           ? "text-[var(--undp-black)]"
                           : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                       }`}
-                      title="Toggle BTR adaptation actions"
+                      title={t("doc.toggleAdaptationTitle")}
                     >
                       <span
                         className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -4018,7 +4031,7 @@ export function PolicyCoherenceExplorer({
                             : { backgroundColor: "transparent", border: `1.5px solid ${adpColor}66` }
                         }
                       />
-                      Adaptation
+                      {t("doc.adaptation")}
                     </button>
                   </div>
                 )}
@@ -4031,7 +4044,7 @@ export function PolicyCoherenceExplorer({
           {availableDocs.length > 0 && (
             <span className="self-start">
               <InfoBox>
-                <strong>Document abbreviations</strong>
+                <strong>{t("doc.abbreviationsTitle")}</strong>
                 <br /><br />
                 {availableDocs.map((doc, i) => {
                   const full = getDocFullLabel(countryConfig, doc);
@@ -4130,8 +4143,8 @@ export function PolicyCoherenceExplorer({
                   }`}
                   title={
                     budgetShadingActive
-                      ? "Turn off the Biodiversity Budget shading. The wheel keeps the GLOBE grouping."
-                      : "Switch to the Biodiversity Budget view: groups arcs by GLOBE and shades each by its share of tagged BER spend."
+                      ? t("budget.onTitle")
+                      : t("budget.offTitle")
                   }
                   aria-pressed={budgetShadingActive}
                 >
@@ -4143,15 +4156,14 @@ export function PolicyCoherenceExplorer({
                         : "border border-gray-300 bg-white"
                     }`}
                   />
-                  Biodiversity Budget
+                  {t("budget.label")}
                 </button>
                 {budgetShadingActive && (
                   <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
-                    Mongolia BER (Biodiversity Expenditure Review),{" "}
-                    {budgetSummary.period.start}
-                    {"-"}
-                    {budgetSummary.period.end} totals. Subset of national
-                    expenditure.
+                    {t("budget.mongoliaNote", {
+                      start: budgetSummary.period.start,
+                      end: budgetSummary.period.end,
+                    })}
                   </p>
                 )}
               </div>
@@ -4255,7 +4267,7 @@ export function PolicyCoherenceExplorer({
                         }}
                       >
                         <title>
-                          {`${arc.label}${amountStr ? ` · ${amountStr}` : ""} (${sharePct}% of tagged BER)`}
+                          {t("budget.wedgeTooltip", { label: arc.label, amount: amountStr, pct: sharePct, hasAmount: amountStr ? 1 : 0 })}
                         </title>
                       </path>
                       {showLabel && (
@@ -4341,7 +4353,12 @@ export function PolicyCoherenceExplorer({
                     >
                       <title>
                         {budgetShadingActive && budgetEntry
-                          ? `${arc.label} · ${formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? "")} (${(budgetEntry.shareOfTotalBudget * 100).toFixed(1)}% of tagged BER)`
+                          ? t("budget.wedgeTooltip", {
+                              label: arc.label,
+                              amount: formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? ""),
+                              pct: (budgetEntry.shareOfTotalBudget * 100).toFixed(1),
+                              hasAmount: 1,
+                            })
                           : arc.label}
                       </title>
                     </path>
@@ -4509,7 +4526,7 @@ export function PolicyCoherenceExplorer({
                         handleNodeClick(node.id);
                       }}
                     >
-                      <title>{getDocMediumLabel(countryConfig, node.target.sourceDocument)}: {node.target.sourceLabel}</title>
+                      <title>{t("wheel.nodeTooltip", { label: getDocMediumLabel(countryConfig, node.target.sourceDocument), source: node.target.sourceLabel })}</title>
                     </circle>
                     {/* Small doc-type indicator dot in non-document modes */}
                     {useGroupColor && r >= 4 && !isDimmed && (
@@ -4817,7 +4834,7 @@ export function PolicyCoherenceExplorer({
                   ? targetMap.get(activeId)?.sourceLabel ?? ""
                   : focalGroup
                     ? focalGroup.label
-                    : targets[0]?.country ?? "Country"}
+                    : targets[0]?.country ?? t("wheel.countryFallback")}
               </text>
               {activeId ? (
                 <text
@@ -4827,7 +4844,9 @@ export function PolicyCoherenceExplorer({
                   fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                   className="select-none pointer-events-none"
                 >
-                  {`${activeConns.length} connection${activeConns.length !== 1 ? "s" : ""}`}
+                  {activeConns.length === 1
+                    ? t("wheel.centerConnectionsSingular", { count: activeConns.length })
+                    : t("wheel.centerConnectionsPlural", { count: activeConns.length })}
                 </text>
               ) : focalGroup ? (
                 <text
@@ -4837,7 +4856,9 @@ export function PolicyCoherenceExplorer({
                   fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                   className="select-none pointer-events-none"
                 >
-                  {`${focalGroup.count} target${focalGroup.count !== 1 ? "s" : ""}`}
+                  {focalGroup.count === 1
+                    ? t("wheel.centerTargetSingular", { count: focalGroup.count })
+                    : t("wheel.centerTargetPlural", { count: focalGroup.count })}
                 </text>
               ) : (
                 <>
@@ -4848,7 +4869,7 @@ export function PolicyCoherenceExplorer({
                     fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
-                    {`${targets.length} targets`}
+                    {t("wheel.centerTargets", { count: targets.length })}
                   </text>
                   <text
                     x={0} y={22}
@@ -4857,7 +4878,7 @@ export function PolicyCoherenceExplorer({
                     fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
-                    {`${totalAligned} aligned`}
+                    {t("wheel.centerAligned", { count: totalAligned })}
                   </text>
                 </>
               )}
@@ -4868,7 +4889,7 @@ export function PolicyCoherenceExplorer({
               {/* Document column */}
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? "Document" : groupMode === "globe" ? "Biodiversity Category" : "Climate Mitigation Sector"}
+                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : t("wheel.legendSector")}
                 </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (
@@ -4883,12 +4904,12 @@ export function PolicyCoherenceExplorer({
               </div>
               {/* Connection strength column */}
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">Connection strength</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">{t("wheel.legendConnectionStrength")}</p>
                 <div className="flex flex-col gap-1">
                   {([
-                    ["high", "High: strong synergy"],
-                    ["medium", "Medium: complementary"],
-                    ["low", "Low: loosely related"],
+                    ["high", t("wheel.legendHigh")],
+                    ["medium", t("wheel.legendMedium")],
+                    ["low", t("wheel.legendLow")],
                   ] as [AlignmentLevel, string][]).map(([level, desc]) => (
                     <span key={level} className="flex items-center gap-1.5">
                       <span className="w-6 h-1 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
@@ -4898,7 +4919,7 @@ export function PolicyCoherenceExplorer({
                   {totalContra > 0 && (
                     <span className="flex items-center gap-1.5">
                       <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.flagged} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
-                      <span className="text-[var(--undp-gray)]">Potential misalignment</span>
+                      <span className="text-[var(--undp-gray)]">{t("wheel.legendPotentialMis")}</span>
                     </span>
                   )}
                 </div>

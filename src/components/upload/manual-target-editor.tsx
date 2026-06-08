@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { TargetRow } from "@/lib/csv-parser";
 
 interface ManualTargetEditorProps {
@@ -18,40 +19,41 @@ export function ManualTargetEditor({
   onRemove,
   onSave,
 }: ManualTargetEditorProps) {
+  const t = useTranslations("upload.editor");
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
   return (
     <div className="mb-8 rounded-lg border-2 border-[var(--undp-blue)]/30 bg-blue-50/20 p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
-          Edit manual targets: {docType}
+          {t("title", { docType })}
         </h3>
         <button
           type="button"
           onClick={onSave}
           className="px-3 py-1.5 text-sm bg-[var(--undp-blue)] text-white rounded hover:bg-[var(--undp-blue-dark)] transition-colors"
         >
-          Done
+          {t("done")}
         </button>
       </div>
       <div className="space-y-2 max-h-[24rem] overflow-y-auto">
-        {targets.map((t, idx) => (
+        {targets.map((tg, idx) => (
           <div
-            key={`${t.sourceDocument}-${t.sourceLabel}-${idx}`}
+            key={`${tg.sourceDocument}-${tg.sourceLabel}-${idx}`}
             className="py-2 px-3 rounded border border-gray-200 bg-white"
           >
             <div className="flex items-center gap-2">
               <input
                 type="text"
-                value={t.sourceLabel}
+                value={tg.sourceLabel}
                 onChange={(e) => onUpdate(idx, { sourceLabel: e.target.value })}
-                placeholder="Label"
+                placeholder={t("labelPlaceholder")}
                 className="w-28 shrink-0 px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:border-[var(--undp-blue)]"
               />
               <textarea
-                value={t.text}
+                value={tg.text}
                 onChange={(e) => onUpdate(idx, { text: e.target.value })}
-                placeholder="Target text..."
+                placeholder={t("targetPlaceholder")}
                 rows={2}
                 className="flex-1 min-w-0 px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
               />
@@ -59,7 +61,7 @@ export function ManualTargetEditor({
                 type="button"
                 onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
                 className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-blue)] rounded transition-colors text-xs"
-                title="Add activities & actions"
+                title={t("toggleDetails")}
               >
                 {expandedIdx === idx ? "−" : "+"}
               </button>
@@ -75,24 +77,24 @@ export function ManualTargetEditor({
               <div className="mt-2 pl-[7.5rem] space-y-1.5">
                 <div>
                   <label className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                    Activities
+                    {t("activities")}
                   </label>
                   <textarea
-                    value={t.activities ?? ""}
+                    value={tg.activities ?? ""}
                     onChange={(e) => onUpdate(idx, { activities: e.target.value || undefined })}
-                    placeholder="Implementation activities (optional)..."
+                    placeholder={t("activitiesPlaceholder")}
                     rows={2}
                     className="w-full px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
                   />
                 </div>
                 <div>
                   <label className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                    Actions / Measures
+                    {t("actions")}
                   </label>
                   <textarea
-                    value={t.actions ?? ""}
+                    value={tg.actions ?? ""}
                     onChange={(e) => onUpdate(idx, { actions: e.target.value || undefined })}
-                    placeholder="Actions or measures (optional)..."
+                    placeholder={t("actionsPlaceholder")}
                     rows={2}
                     className="w-full px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
                   />

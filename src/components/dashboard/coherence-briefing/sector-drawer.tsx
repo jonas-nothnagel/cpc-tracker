@@ -18,12 +18,12 @@
  */
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import {
-  ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONTRADICTION_TYPE_LABELS,
-  getDocMediumLabel,
-} from "@/lib/utils";
+  useAlignmentLabels,
+  useContradictionTypeLabels,
+} from "@/lib/labels";
 import type { FaultLine, SectorBriefing } from "@/lib/coherence-briefing";
 import { SubFieldChip } from "./theme-drawer";
 import type {
@@ -37,8 +37,6 @@ const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 const ALIGNED_DOT_COLOR = "#196127";
 const FRICTION_DOT_COLOR = "#dc2626";
-const AI_DISCLAIMER =
-  "AI-generated synthesis. Treat as a prompt to review, not a settled finding.";
 const EXAMPLES_DEFAULT_COUNT = 3;
 
 export function SectorDrawer({
@@ -58,6 +56,7 @@ export function SectorDrawer({
     targetB: Target,
   ) => void;
 }) {
+  const t = useTranslations("briefing.drawer.sector");
   useEffect(() => {
     if (!briefing) return;
     const onKey = (e: KeyboardEvent) => {
@@ -81,14 +80,14 @@ export function SectorDrawer({
     <div className="fixed inset-0 z-30 flex justify-end">
       <button
         type="button"
-        aria-label="Close sector view"
+        aria-label={t("closeAria")}
         onClick={onClose}
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label={`Sector view: ${briefing.categoryName}`}
+        aria-label={t("dialogAria", { name: briefing.categoryName })}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] bg-white shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
       >
@@ -96,7 +95,7 @@ export function SectorDrawer({
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-                Sector view
+                {t("eyebrow")}
               </p>
               <h3
                 className="text-xl text-[var(--undp-black)] font-medium leading-tight"
@@ -105,8 +104,7 @@ export function SectorDrawer({
                 {briefing.categoryName}
               </h3>
               <p className="mt-1 text-xs text-[var(--undp-gray)]">
-                {briefing.targetCount} targets · {briefing.signalCount}{" "}
-                scored pairs touch this sector
+                {t("headerCounts", { targets: briefing.targetCount, pairs: briefing.signalCount })}
               </p>
               <p className="mt-3 text-[13px] leading-snug text-[var(--undp-black)]">
                 {briefing.synthesisSentence}
@@ -115,7 +113,7 @@ export function SectorDrawer({
                 briefing.recurringHub.flaggedPairCount >= 2 && (
                   <p className="mt-2 text-[11px] text-[var(--undp-gray)] line-clamp-3">
                     <span className="uppercase tracking-wider text-[9px] font-semibold mr-1">
-                      Recurs:
+                      {t("recursLabel")}
                     </span>
                     {briefing.recurringHub.target.sourceLabel} ·{" "}
                     {briefing.recurringHub.target.text}
@@ -125,7 +123,7 @@ export function SectorDrawer({
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t("closeBtnAria")}
               className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
             >
               ×
@@ -146,15 +144,15 @@ export function SectorDrawer({
             // Fallback when synthesis is unavailable: legacy two-list view.
             <>
               <LegacyDrawerList
-                heading="What's pulling together"
-                empty="No strong alignments touch this sector."
+                heading={t("legacy.pullingTogether")}
+                empty={t("emptyAligned")}
                 entries={briefing.topAlignments}
                 countryConfig={countryConfig}
                 onOpenTargetPair={onOpenTargetPair}
               />
               <LegacyDrawerList
-                heading="What's pulling against the rest"
-                empty="No potential misalignment in this sector."
+                heading={t("legacy.pullingAgainst")}
+                empty={t("emptyFlagged")}
                 entries={briefing.topTensions}
                 countryConfig={countryConfig}
                 onOpenTargetPair={onOpenTargetPair}
@@ -184,23 +182,25 @@ function SectorSynthesisBlock({
     targetB: Target,
   ) => void;
 }) {
+  const t = useTranslations("briefing.drawer.sector");
+  const contradictionLabels = useContradictionTypeLabels();
   if (synthesis.synthesis_error !== null) {
     return (
       <section className="rounded-md border border-gray-200 bg-white p-4">
         <p className="text-xs italic text-[var(--undp-gray)]">
-          Synthesis failed for this sector; raw pairs follow.
+          {t("synthesisFailed")}
         </p>
         <div className="mt-4 space-y-6">
           <LegacyDrawerList
-            heading="Strongest alignments"
-            empty="No strong alignments touch this sector."
+            heading={t("legacy.strongestAlignments")}
+            empty={t("emptyAligned")}
             entries={topAlignments}
             countryConfig={countryConfig}
             onOpenTargetPair={onOpenTargetPair}
           />
           <LegacyDrawerList
-            heading="Top potentially misaligned pairs"
-            empty="No potential misalignment in this sector."
+            heading={t("legacy.topFlagged")}
+            empty={t("emptyFlagged")}
             entries={topTensions}
             countryConfig={countryConfig}
             onOpenTargetPair={onOpenTargetPair}
@@ -214,7 +214,7 @@ function SectorSynthesisBlock({
   const total =
     synthesis.pool_composition.primary_count +
     synthesis.pool_composition.relevant_only_count;
-  const subtypeParts = renderContradictionSubtypes(synthesis);
+  const subtypeParts = renderContradictionSubtypes(synthesis, contradictionLabels);
   return (
     <section className="space-y-5">
       <p
@@ -226,12 +226,12 @@ function SectorSynthesisBlock({
       {/* Storylines are the headline content — each keeps its own box. */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <StorylinePanel
-          label="Aligned"
+          label={t("panel.aligned")}
           dotColor={ALIGNED_DOT_COLOR}
           body={reinforce}
         />
         <StorylinePanel
-          label="Potential misalignment"
+          label={t("panel.flagged")}
           dotColor={FRICTION_DOT_COLOR}
           dashed
           body={clash}
@@ -242,14 +242,14 @@ function SectorSynthesisBlock({
         <ExamplesColumn
           variant="aligned"
           examples={topAlignments}
-          emptyText="No strong alignments touch this sector."
+          emptyText={t("emptyAligned")}
           countryConfig={countryConfig}
           onOpenTargetPair={onOpenTargetPair}
         />
         <ExamplesColumn
           variant="flagged"
           examples={topTensions}
-          emptyText="No potential misalignment in this sector."
+          emptyText={t("emptyFlagged")}
           countryConfig={countryConfig}
           onOpenTargetPair={onOpenTargetPair}
         />
@@ -257,7 +257,7 @@ function SectorSynthesisBlock({
       {coordination_hint && (
         <div className="border-l-2 border-gray-300 pl-3">
           <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
-            Coordination pathway
+            {t("coordinationPathway")}
           </p>
           <p className="text-[13px] text-[var(--undp-black)] leading-relaxed italic">
             {coordination_hint}
@@ -266,38 +266,41 @@ function SectorSynthesisBlock({
       )}
       <div className="border-t border-gray-200 pt-4">
         <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-          Pool composition
+          {t("poolComposition")}
         </p>
         <p className="text-[14px] text-[var(--undp-black)] tabular-nums font-medium">
           <span style={{ color: ALIGNMENT_COLORS.high }}>
-            {synthesis.aligned_count.toLocaleString()} aligned
+            {t("alignedCount", { count: synthesis.aligned_count })}
           </span>
           <span className="text-[var(--undp-gray)] mx-2">·</span>
           <span style={{ color: ALIGNMENT_COLORS.flagged }}>
-            {synthesis.flagged_count.toLocaleString()} potentially misaligned
+            {t("flaggedCount", { count: synthesis.flagged_count })}
           </span>
         </p>
         <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-          Synthesised from {total.toLocaleString()} pair
-          {total === 1 ? "" : "s"} ·{" "}
-          {synthesis.pool_composition.primary_count.toLocaleString()} primary +{" "}
-          {synthesis.pool_composition.relevant_only_count.toLocaleString()}{" "}
-          relevant
+          {t("synthesisedFrom", {
+            count: total,
+            primary: synthesis.pool_composition.primary_count,
+            relevant: synthesis.pool_composition.relevant_only_count,
+          })}
         </p>
         {subtypeParts.length > 0 && (
           <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-            Misalignment types: {subtypeParts.join(", ")}
+            {t("misalignmentTypes", { list: subtypeParts.join(", ") })}
           </p>
         )}
       </div>
       <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
-        {AI_DISCLAIMER}
+        {t("aiDisclaimer")}
       </p>
     </section>
   );
 }
 
-function renderContradictionSubtypes(synthesis: SectorSynthesis): string[] {
+function renderContradictionSubtypes(
+  synthesis: SectorSynthesis,
+  labels: Record<"goal_conflict" | "resource_competition" | "delivery_friction", string>,
+): string[] {
   const ct = synthesis.contradiction_types;
   const parts: string[] = [];
   // v2.1 canonical first, with v1 legacy keys folded in so older
@@ -312,17 +315,17 @@ function renderContradictionSubtypes(synthesis: SectorSynthesis): string[] {
   };
   if (merged.goal_conflict) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
+      `${labels.goal_conflict.toLowerCase()} (${merged.goal_conflict.toLocaleString()})`,
     );
   }
   if (merged.resource_competition) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
+      `${labels.resource_competition.toLowerCase()} (${merged.resource_competition.toLocaleString()})`,
     );
   }
   if (merged.delivery_friction) {
     parts.push(
-      `${CONTRADICTION_TYPE_LABELS.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
+      `${labels.delivery_friction.toLowerCase()} (${merged.delivery_friction.toLocaleString()})`,
     );
   }
   return parts;
@@ -379,6 +382,7 @@ function ExamplesColumn({
     targetB: Target,
   ) => void;
 }) {
+  const t = useTranslations("briefing.drawer.sector");
   const [expanded, setExpanded] = useState(false);
   const visible = expanded
     ? examples
@@ -388,8 +392,8 @@ function ExamplesColumn({
     <div>
       <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
         {variant === "flagged"
-          ? "Potentially misaligned examples"
-          : "Aligned examples"}
+          ? t("examples.flagged")
+          : t("examples.aligned")}
       </p>
       {visible.length === 0 ? (
         <p className="text-[11px] italic text-[var(--undp-gray)]">
@@ -418,9 +422,7 @@ function ExamplesColumn({
           onClick={() => setExpanded((v) => !v)}
           className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
         >
-          {expanded
-            ? "Show fewer"
-            : `Show ${remaining.toLocaleString()} more`}
+          {expanded ? t("showFewer") : t("showMore", { count: remaining })}
         </button>
       )}
     </div>
@@ -436,6 +438,7 @@ function ExampleRow({
   countryConfig: CountryConfig | null;
   onOpen?: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const { targetA, targetB, pair } = line;
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
@@ -460,7 +463,7 @@ function ExampleRow({
               border: `1px solid ${color}40`,
             }}
           >
-            {ALIGNMENT_LABELS[pair.alignment]}
+            {alignmentLabels[pair.alignment]}
           </span>
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />

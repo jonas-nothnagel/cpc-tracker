@@ -23,6 +23,7 @@
  */
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
 import type { CountryConfig, PolicyDocumentType } from "@/types";
 
@@ -40,6 +41,7 @@ function DocToggleItem({
   countryConfig: CountryConfig | null;
   onToggle: (doc: PolicyDocumentType) => void;
 }) {
+  const t = useTranslations("briefing.docFilter");
   const color = getDocColor(countryConfig, doc);
   const label = getDocMediumLabel(countryConfig, doc);
   return (
@@ -47,7 +49,7 @@ function DocToggleItem({
       type="button"
       onClick={() => onToggle(doc)}
       aria-pressed={included}
-      title={included ? `Remove ${label}` : `Add ${label}`}
+      title={included ? t("removeDoc", { name: label }) : t("addDoc", { name: label })}
       className={`inline-flex items-center gap-1.5 transition-opacity ${
         included
           ? "opacity-100 hover:opacity-80"
@@ -98,6 +100,7 @@ export function DocFilterControl({
   onToggle,
   onReset,
 }: DocFilterControlProps) {
+  const t = useTranslations("briefing.docFilter");
   const [expanded, setExpanded] = useState(false);
 
   const visibleCount = useMemo(
@@ -125,13 +128,12 @@ export function DocFilterControl({
     <div className="mt-3 text-[11px] text-[var(--undp-gray)]">
       <p className="leading-relaxed">
         <span>
-          {visibleCount} of {allDocs.length} policy document
-          {allDocs.length === 1 ? "" : "s"} included.
+          {t("included", { visible: visibleCount, total: allDocs.length })}
         </span>
         {excludedNames.length > 0 && (
           <span className="text-[var(--undp-black)]">
             {" "}
-            {excludedNames.join(", ")} excluded.
+            {t("excluded", { names: excludedNames.join(", ") })}
           </span>
         )}{" "}
         <button
@@ -140,7 +142,7 @@ export function DocFilterControl({
           aria-expanded={expanded}
           className="text-[var(--undp-black)] underline underline-offset-2 hover:text-[var(--undp-black)]"
         >
-          {expanded ? "Done" : "Add or remove documents"}
+          {expanded ? t("done") : t("addOrRemove")}
         </button>
       </p>
 
@@ -161,7 +163,7 @@ export function DocFilterControl({
               onClick={onReset}
               className="mt-1 text-[11px] text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
             >
-              Reset to default
+              {t("resetToDefault")}
             </button>
           )}
         </div>
@@ -182,6 +184,7 @@ export function DocToggleLegend({
   countryConfig,
   onToggle,
 }: DocControlBaseProps) {
+  const t = useTranslations("briefing.docFilter");
   if (allDocs.length === 0) return null;
   return (
     <div className="mb-3">
@@ -197,7 +200,7 @@ export function DocToggleLegend({
         ))}
       </div>
       <p className="mt-1.5 text-center text-[9px] uppercase tracking-wider text-[var(--undp-gray)]/70">
-        Click a document to add or remove it
+        {t("toggle.clickToAddRemove")}
       </p>
     </div>
   );

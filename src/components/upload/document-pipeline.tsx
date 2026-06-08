@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { UploadedDoc } from "@/lib/upload-helpers";
 import { getDocColor } from "@/lib/utils";
 
@@ -9,13 +10,14 @@ interface DocumentPipelineProps {
 }
 
 export function DocumentPipeline({ uploadedDocs, onRemoveDoc }: DocumentPipelineProps) {
+  const t = useTranslations("upload.pipeline");
   if (uploadedDocs.length === 0) return null;
 
   return (
     <div className="mt-4 border border-gray-200 rounded-xl bg-white overflow-hidden">
       <div className="px-4 py-2.5 border-b border-gray-100 bg-gray-50/50">
         <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-          Document Pipeline
+          {t("heading")}
         </p>
       </div>
       <div className="p-4">
@@ -60,13 +62,13 @@ export function DocumentPipeline({ uploadedDocs, onRemoveDoc }: DocumentPipeline
                     <div className="flex items-center gap-2 mb-1">
                       <p className="text-sm font-medium text-[var(--undp-black)] truncate">{doc.fileName}</p>
                       {doc.status === "parsing" && (
-                        <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] animate-pulse">Parsing...</span>
+                        <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] animate-pulse">{t("status.parsing")}</span>
                       )}
                       {doc.status === "ready" && (
-                        <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700">Ready</span>
+                        <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700">{t("status.ready")}</span>
                       )}
                       {doc.status === "error" && (
-                        <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-red-700">Error</span>
+                        <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-red-700">{t("status.error")}</span>
                       )}
                     </div>
                     {doc.status === "error" && doc.error && (
@@ -84,16 +86,16 @@ export function DocumentPipeline({ uploadedDocs, onRemoveDoc }: DocumentPipeline
                             <span className="opacity-80">{count}</span>
                           </span>
                         ))}
-                        <span className="text-xs text-[var(--undp-gray)] ml-1">{doc.targetCount} policy targets</span>
+                        <span className="text-xs text-[var(--undp-gray)] ml-1">{t("policyTargetsCount", { count: doc.targetCount ?? 0 })}</span>
                       </div>
                     )}
                     {doc.status === "ready" && doc.fileType === "btr" && doc.btrSummary && (
                       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-[var(--undp-gray)]">
-                        {doc.btrSummary.mitigationMeasures > 0 && <span>{doc.btrSummary.mitigationMeasures} reported actions</span>}
-                        {doc.btrSummary.sectorEmissions > 0 && <span>{doc.btrSummary.sectorEmissions} emission series</span>}
-                        {doc.btrSummary.projections > 0 && <span>{doc.btrSummary.projections} projections</span>}
-                        {doc.btrSummary.technologySupport > 0 && <span>{doc.btrSummary.technologySupport} tech support projects</span>}
-                        {doc.btrSummary.capacityBuilding > 0 && <span>{doc.btrSummary.capacityBuilding} capacity building</span>}
+                        {doc.btrSummary.mitigationMeasures > 0 && <span>{t("btr.actions", { count: doc.btrSummary.mitigationMeasures })}</span>}
+                        {doc.btrSummary.sectorEmissions > 0 && <span>{t("btr.emissions", { count: doc.btrSummary.sectorEmissions })}</span>}
+                        {doc.btrSummary.projections > 0 && <span>{t("btr.projections", { count: doc.btrSummary.projections })}</span>}
+                        {doc.btrSummary.technologySupport > 0 && <span>{t("btr.techSupport", { count: doc.btrSummary.technologySupport })}</span>}
+                        {doc.btrSummary.capacityBuilding > 0 && <span>{t("btr.capacityBuilding", { count: doc.btrSummary.capacityBuilding })}</span>}
                       </div>
                     )}
                   </div>
@@ -101,7 +103,7 @@ export function DocumentPipeline({ uploadedDocs, onRemoveDoc }: DocumentPipeline
                 <button
                   onClick={() => onRemoveDoc(doc.id)}
                   className="shrink-0 text-[var(--undp-gray)] hover:text-[var(--undp-red)] transition-colors text-lg leading-none mt-0.5"
-                  title="Remove"
+                  title={t("remove")}
                 >
                   &times;
                 </button>

@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 
 import type { FootprintRollup } from "@/lib/footprint/types";
 
@@ -20,6 +20,7 @@ function fmtCarbon(g: number): string {
  */
 export function FootprintChip() {
   const pathname = usePathname();
+  const t = useTranslations("sustainability");
   const [co2, setCo2] = useState<number | null>(null);
 
   const suppressed = pathname === "/sustainability";
@@ -46,13 +47,17 @@ export function FootprintChip() {
   return (
     <Link
       href="/sustainability"
-      title="AI sustainability footprint of this tool"
+      title={t("chip.title")}
       className="group fixed bottom-3 right-3 z-40 text-xs text-[var(--undp-gray)] bg-white/95 backdrop-blur border border-gray-200 rounded-full px-3.5 py-1.5 shadow-md hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors"
     >
-      AI footprint:{" "}
-      <span className="font-semibold text-[var(--undp-black)] group-hover:text-[var(--undp-blue)] transition-colors">
-        {fmtCarbon(co2)} CO2e
-      </span>
+      {t.rich("chip.label", {
+        value: fmtCarbon(co2),
+        b: (chunks) => (
+          <span className="font-semibold text-[var(--undp-black)] group-hover:text-[var(--undp-blue)] transition-colors">
+            {chunks}
+          </span>
+        ),
+      })}
     </Link>
   );
 }

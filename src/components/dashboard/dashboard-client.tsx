@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";

@@ -9,6 +9,7 @@
  * attention first. Each row opens that target's FlagProfileDrawer.
  */
 
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import type {
   TargetConcentration,
@@ -35,18 +36,19 @@ export function WhereToFocusSection({
   countryConfig: CountryConfig | null;
   onOpenTarget: (target: Target) => void;
 }) {
-  const sentence = composeFocusSentence(concentration);
+  const t = useTranslations("briefing.whereToFocus");
+  const sentence = composeFocusSentence(concentration, t);
   const maxCount = hotspots[0]?.flaggedPairCount ?? 0;
   return (
     <SlideFrame
       id={WHERE_TO_FOCUS_SECTION_ID}
-      eyebrow="Where should we focus first?"
+      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       evidence={
         hotspots.length === 0 ? (
           <p className="text-sm italic text-[var(--undp-gray)]">
-            No targets are involved in potentially misaligned pairs yet.
+            {t("empty")}
           </p>
         ) : (
           <>
@@ -58,7 +60,7 @@ export function WhereToFocusSection({
               onOpenTarget={onOpenTarget}
             />
             <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-              Most-contested targets
+              {t("mostContested")}
             </p>
             <ul className="border-y border-gray-200 divide-y divide-gray-100">
               {hotspots.map((h) => (
@@ -83,34 +85,50 @@ interface FocusSentence {
   body: string;
 }
 
-function composeFocusSentence(c: TargetConcentration): FocusSentence {
+function composeFocusSentence(
+  c: TargetConcentration,
+  t: ReturnType<typeof useTranslations<"briefing.whereToFocus">>,
+): FocusSentence {
   const { contestedTargetCount, totalFlaggedPairs, topCount, coveredPairShare } =
     c;
   if (totalFlaggedPairs === 0 || contestedTargetCount === 0) {
     return {
-      headline: "No potential misalignment to focus yet.",
-      body: "Once the pipeline surfaces potential misalignment, the targets it touches most surface here.",
+      headline: t("sentence.emptyHeadline"),
+      body: t("sentence.emptyBody"),
     };
   }
   const sharePct = Math.round(coveredPairShare * 100);
-  // Concentrated when a small fraction of contested targets carries the share.
   const concentrated =
     topCount <= Math.max(1, Math.round(contestedTargetCount * 0.2));
   if (topCount === 1) {
     return {
-      headline: `One target sits in ${sharePct}% of all potentially misaligned pairs.`,
-      body: `${totalFlaggedPairs.toLocaleString()} potentially misaligned pairs trace back to ${contestedTargetCount} targets, but a single one accounts for ${sharePct}%. Click it to see what it is misaligned with.`,
+      headline: t("sentence.singleHeadline", { pct: sharePct }),
+      body: t("sentence.singleBody", {
+        total: totalFlaggedPairs,
+        contested: contestedTargetCount,
+        pct: sharePct,
+      }),
     };
   }
   if (concentrated) {
     return {
-      headline: `Just ${topCount} targets carry ${sharePct}% of the misalignment.`,
-      body: `${totalFlaggedPairs.toLocaleString()} potentially misaligned pairs trace back to ${contestedTargetCount} targets, but only ${topCount} of them are involved in ${sharePct}%. These are where to look first.`,
+      headline: t("sentence.concentratedHeadline", { top: topCount, pct: sharePct }),
+      body: t("sentence.concentratedBody", {
+        total: totalFlaggedPairs,
+        contested: contestedTargetCount,
+        top: topCount,
+        pct: sharePct,
+      }),
     };
   }
   return {
-    headline: `Misalignment spreads across ${contestedTargetCount} targets.`,
-    body: `It takes ${topCount} of ${contestedTargetCount} targets to cover ${sharePct}% of the ${totalFlaggedPairs.toLocaleString()} potentially misaligned pairs, so no single handful dominates. The heaviest are listed below.`,
+    headline: t("sentence.spreadHeadline", { contested: contestedTargetCount }),
+    body: t("sentence.spreadBody", {
+      top: topCount,
+      contested: contestedTargetCount,
+      pct: sharePct,
+      total: totalFlaggedPairs,
+    }),
   };
 }
 
@@ -125,6 +143,7 @@ function HotspotRow({
   countryConfig: CountryConfig | null;
   onSelect: () => void;
 }) {
+  const t = useTranslations("briefing.whereToFocus");
   const { target, flaggedPairCount } = hotspot;
   const color = getDocColor(countryConfig, target.sourceDocument);
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
@@ -135,7 +154,11 @@ function HotspotRow({
         type="button"
         onClick={onSelect}
         className="w-full text-left grid grid-cols-[1fr_5.5rem] items-center gap-4 px-1 py-3 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
-        aria-label={`${docLabel} ${target.sourceLabel}: involved in ${flaggedPairCount} potentially misaligned pairs`}
+        aria-label={t("rowAriaLabel", {
+          doc: docLabel,
+          label: target.sourceLabel,
+          count: flaggedPairCount,
+        })}
       >
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
@@ -168,7 +191,7 @@ function HotspotRow({
           </span>
           <span className="text-[11px] tabular-nums text-[var(--undp-black)] font-medium">
             {flaggedPairCount.toLocaleString()}{" "}
-            <span className="text-[var(--undp-gray)] font-normal">pairs</span>
+            <span className="text-[var(--undp-gray)] font-normal">{t("pairsSuffix")}</span>
           </span>
         </div>
       </button>
@@ -196,6 +219,7 @@ function ConcentrationBar({
   countryConfig: CountryConfig | null;
   onOpenTarget: (target: Target) => void;
 }) {
+  const t = useTranslations("briefing.whereToFocus");
   if (topTargets.length === 0 || totalFlaggedPairs === 0) return null;
   const coveredPairs = topTargets.reduce((s, t) => s + t.marginalPairCount, 0);
   const remainder = Math.max(0, totalFlaggedPairs - coveredPairs);
@@ -205,25 +229,29 @@ function ConcentrationBar({
     <div className="mb-7">
       <div className="flex items-baseline justify-between mb-1.5">
         <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-          Where the misalignment concentrates
+          {t("bar.title")}
         </p>
         <p className="text-[11px] tabular-nums text-[var(--undp-black)] font-medium">
-          {totalFlaggedPairs.toLocaleString()} potentially misaligned pairs
+          {t("bar.totalPairs", { count: totalFlaggedPairs })}
         </p>
       </div>
       <div className="flex h-7 w-full overflow-hidden rounded-sm bg-gray-100 gap-px">
-        {topTargets.map((t) => {
-          const widthPct = (t.marginalPairCount / totalFlaggedPairs) * 100;
+        {topTargets.map((entry) => {
+          const widthPct = (entry.marginalPairCount / totalFlaggedPairs) * 100;
           const docLabel = getDocMediumLabel(
             countryConfig,
-            t.target.sourceDocument,
+            entry.target.sourceDocument,
           );
-          const title = `${docLabel} ${t.target.sourceLabel}: in ${t.flaggedPairCount.toLocaleString()} potentially misaligned pairs · click to open`;
+          const title = t("bar.segmentTitle", {
+            doc: docLabel,
+            label: entry.target.sourceLabel,
+            count: entry.flaggedPairCount,
+          });
           return (
             <button
-              key={t.target.id}
+              key={entry.target.id}
               type="button"
-              onClick={() => onOpenTarget(t.target)}
+              onClick={() => onOpenTarget(entry.target)}
               title={title}
               aria-label={title}
               className="h-full cursor-pointer transition-[filter] hover:brightness-125 focus:outline-none focus:ring-2 focus:ring-[var(--undp-black)]/50"
@@ -232,7 +260,7 @@ function ConcentrationBar({
                 minWidth: 3,
                 backgroundColor: getDocColor(
                   countryConfig,
-                  t.target.sourceDocument,
+                  entry.target.sourceDocument,
                 ),
               }}
             />
@@ -245,16 +273,19 @@ function ConcentrationBar({
               width: `${(remainder / totalFlaggedPairs) * 100}%`,
               backgroundColor: OTHERS_FILL,
             }}
-            title={`${othersCount.toLocaleString()} other targets: ${remainder.toLocaleString()} potentially misaligned pairs`}
+            title={t("bar.othersTitle", {
+              others: othersCount,
+              remainder,
+            })}
           />
         )}
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]">
         <span className="text-[var(--undp-black)]">
           <span className="font-medium">
-            {topTargets.length} target{topTargets.length === 1 ? "" : "s"}
+            {t("bar.targetCount", { count: topTargets.length })}
           </span>{" "}
-          carry {sharePct}% of potentially misaligned pairs
+          {t("bar.carryShare", { pct: sharePct })}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span
@@ -262,10 +293,10 @@ function ConcentrationBar({
             className="inline-block w-2.5 h-2.5 rounded-sm"
             style={{ backgroundColor: OTHERS_FILL }}
           />
-          {othersCount.toLocaleString()} other targets
+          {t("bar.otherTargets", { count: othersCount })}
         </span>
         <span className="text-[var(--undp-gray)]/70">
-          each segment is one target, coloured by its document · click to open
+          {t("bar.legendHint")}
         </span>
       </div>
     </div>

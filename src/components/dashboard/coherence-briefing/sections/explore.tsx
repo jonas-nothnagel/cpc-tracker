@@ -12,6 +12,7 @@
  */
 
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 export const EXPLORE_SECTION_ID = "explore";
 
@@ -19,6 +20,7 @@ const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 
 export function ExploreSection({ children }: { children: ReactNode }) {
+  const t = useTranslations("briefing.explore");
   return (
     <section
       id={EXPLORE_SECTION_ID}
@@ -30,12 +32,10 @@ export function ExploreSection({ children }: { children: ReactNode }) {
         className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-3"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
-        Explore the policy coherence yourself.
+        {t("heading")}
       </h2>
       <p className="text-[14px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-6">
-        Ask a question across the policies, follow an insight, or work the full
-        wheel yourself: click any target for its detail, search for a specific
-        one, regroup the arcs, hide a document, or bring in the budget view.
+        {t("body")}
       </p>
       {children}
     </section>

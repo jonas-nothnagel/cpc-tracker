@@ -27,6 +27,7 @@
  * a non-biodiversity budget is ever added, revisit the headline noun.
  */
 
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import type {
   BudgetCoverage,
@@ -51,16 +52,18 @@ export function FinancingSection({
   countryConfig: CountryConfig | null;
   countryName: string;
 }) {
+  const t = useTranslations("briefing.financing");
   const sentence = composeSentence(
     coverage,
     summary,
     commitmentCount,
     countryName,
+    t,
   );
   return (
     <SlideFrame
       id={FINANCING_SECTION_ID}
-      eyebrow="Where does money meet ambition?"
+      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       evidence={
@@ -82,11 +85,11 @@ function DocumentCoverage({
   coverage: BudgetCoverage;
   countryConfig: CountryConfig | null;
 }) {
+  const t = useTranslations("briefing.financing");
   return (
     <div>
       <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] mb-2.5 max-w-prose">
-        Each dot is one policy target. Open a document to see which of its
-        targets have a matching budget line and which have none.
+        {t("dotMap.intro")}
       </p>
 
       <ul className="space-y-3">
@@ -101,22 +104,19 @@ function DocumentCoverage({
             aria-hidden="true"
             className="inline-block w-2.5 h-2.5 rounded-full bg-[var(--undp-gray)]"
           />
-          has a matching budget line
+          {t("legend.matched")}
         </span>
         <span className="flex items-center gap-1.5">
           <span
             aria-hidden="true"
             className="inline-block w-2.5 h-2.5 rounded-full border border-[var(--undp-gray)]"
           />
-          no matching budget line
+          {t("legend.unmatched")}
         </span>
       </div>
 
       <p className="mt-3 text-[11px] italic text-[var(--undp-gray)] max-w-prose">
-        The pipeline matches each target to the budget lines on the same goal,
-        keeping only high-confidence matches. It shows where a budget line exists
-        for a target, not whether money is spent on it. AI-estimated and
-        indicative.
+        {t("dotMap.disclaimer")}
       </p>
     </div>
   );
@@ -129,6 +129,7 @@ function DocCoverageRow({
   doc: BudgetCoverageDoc;
   countryConfig: CountryConfig | null;
 }) {
+  const t = useTranslations("briefing.financing");
   const label = getDocMediumLabel(countryConfig, doc.doc);
   const color = getDocColor(countryConfig, doc.doc);
   return (
@@ -153,10 +154,15 @@ function DocCoverageRow({
               </span>
             </span>
             <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0 text-right">
-              <span className="text-[var(--undp-black)] font-medium">
-                {doc.reached}
-              </span>{" "}
-              of {doc.total} matched
+              {t.rich("matchedCount", {
+                reached: doc.reached,
+                total: doc.total,
+                strong: (c) => (
+                  <span className="text-[var(--undp-black)] font-medium">
+                    {c}
+                  </span>
+                ),
+              })}
             </span>
           </div>
           {/* Dot-map: one uniform dot per target. Filled = has a matching
@@ -187,7 +193,7 @@ function DocCoverageRow({
           {doc.links.length > 0 && (
             <div>
               <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
-                Targets with a matching budget line
+                {t("matchedHeading")}
               </p>
               <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
                 {doc.links.map((link) => (
@@ -204,7 +210,7 @@ function DocCoverageRow({
                     </p>
                     <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-0.5">
                       <span className="text-[var(--undp-gray)]/70">
-                        budget line:
+                        {t("budgetLineLabel")}
                       </span>{" "}
                       {link.programName}
                     </p>
@@ -221,7 +227,7 @@ function DocCoverageRow({
           {doc.uncovered.length > 0 ? (
             <div>
               <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
-                Targets with no matching budget line
+                {t("unmatchedHeading")}
               </p>
               <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
                 {doc.uncovered.map((a) => (
@@ -244,7 +250,7 @@ function DocCoverageRow({
             </div>
           ) : (
             <p className="text-[11px] italic text-[var(--undp-gray)]">
-              Every target in this document has a matching budget line.
+              {t("allMatched")}
             </p>
           )}
         </div>
@@ -261,11 +267,14 @@ interface Sentence {
 // "most of" / "about half of" / "under half of" / "few of" — a graspable share
 // word so the headline does not lead with a bare fraction. The body carries the
 // exact counts.
-function coverageWord(share: number): string {
-  if (share >= 0.6) return "most of";
-  if (share >= 0.4) return "about half";
-  if (share >= 0.2) return "under half of";
-  return "few of";
+function coverageWord(
+  share: number,
+  t: ReturnType<typeof useTranslations<"briefing.financing">>,
+): string {
+  if (share >= 0.6) return t("share.most");
+  if (share >= 0.4) return t("share.aboutHalf");
+  if (share >= 0.2) return t("share.underHalf");
+  return t("share.few");
 }
 
 function composeSentence(
@@ -273,12 +282,13 @@ function composeSentence(
   summary: FinancingCoherenceSummary,
   commitmentCount: number,
   countryName: string,
+  t: ReturnType<typeof useTranslations<"briefing.financing">>,
 ): Sentence {
   // No tracked spend yet: nothing to compare.
   if (summary.totalProgramCount === 0 || summary.totalTrackedExpenditure <= 0) {
     return {
-      headline: "No tracked biodiversity expenditure to compare yet.",
-      body: "Once the Biodiversity Expenditure Review reports program spending, this slide shows how much of the policy has a matching budget line, and which targets have none.",
+      headline: t("noSpend.headline"),
+      body: t("noSpend.body"),
     };
   }
 
@@ -286,15 +296,26 @@ function composeSentence(
   // where the alignment exists). Name the budget; do not headline a number.
   if (!coverage || coverage.byDocument.length === 0) {
     return {
-      headline: `${countryName}'s reviewed biodiversity spending sits beside ${commitmentCount} policy targets.`,
-      body: "The match between this budget's lines and the policy targets has not been computed for this corpus yet. The right column shows the budget itself: where the money sits, and how much of the plan went unspent.",
+      headline: t("noMatch.headline", {
+        country: countryName,
+        count: commitmentCount,
+      }),
+      body: t("noMatch.body"),
     };
   }
 
   const { reached, total, outsideReach, byDocument } = coverage;
   const share = total > 0 ? reached / total : 0;
   return {
-    headline: `${countryName}'s reviewed biodiversity spending matches ${coverageWord(share)} the policy targets.`,
-    body: `Across the ${byDocument.length} policy documents there are ${total} targets. ${reached} have a matching budget line in this review; the other ${outsideReach} have none.`,
+    headline: t("matched.headline", {
+      country: countryName,
+      share: coverageWord(share, t),
+    }),
+    body: t("matched.body", {
+      docCount: byDocument.length,
+      total,
+      reached,
+      outsideReach,
+    }),
   };
 }

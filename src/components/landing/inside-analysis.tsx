@@ -18,7 +18,8 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Centerpiece,
   WheelLegend,
@@ -51,6 +52,7 @@ export interface PreviewCountry {
 }
 
 export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
+  const t = useTranslations("landing.inside");
   const [selected, setSelected] = useState<string | null>(null);
   const [data, setData] = useState<WheelData | null>(null);
   const [failed, setFailed] = useState(false);
@@ -119,7 +121,7 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
           <div
             className="mb-10 flex items-center justify-center gap-1.5"
             role="group"
-            aria-label="Choose a country to preview"
+            aria-label={t("preview.countrySwitcherAria")}
           >
             {countries.map((c) => {
               const isActive = c.id === selected;
@@ -146,22 +148,19 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
           {/* Left column: copy, legend, disclaimer, CTA */}
           <div>
             <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-[var(--undp-blue)]">
-              Inside the analysis
+              {t("eyebrow")}
             </p>
             <h2 className="font-display mb-5 text-3xl font-semibold leading-tight text-[var(--undp-black)] md:text-4xl">
-              Every policy target, mapped against every other
+              {t("title")}
             </h2>
             <p className="mb-6 max-w-md text-base leading-relaxed text-[var(--undp-gray)] md:text-lg">
-              Each ribbon links two national policy documents. Green shows where
-              their targets are in strong alignment; red threads mark a potential
-              misalignment worth a closer look.
+              {t("body")}
             </p>
 
             <WheelLegend justify="start" />
 
             <p className="mt-6 max-w-sm text-xs leading-relaxed text-[var(--undp-gray)]/70">
-              AI-generated analysis. Treat as a prompt to review, not a settled
-              finding.
+              {t("disclaimer")}
             </p>
 
             {selected ? (
@@ -170,7 +169,9 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
                   href={`/dashboard?country=${selected}`}
                   className="inline-flex items-center gap-2 text-sm font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
                 >
-                  Open the {selectedName ?? "full"} dashboard
+                  {selectedName
+                    ? t("preview.openDashboardWithCountry", { name: selectedName })
+                    : t("preview.openDashboard")}
                   <span aria-hidden="true">&rarr;</span>
                 </Link>
               </div>
@@ -185,9 +186,11 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
               <div
                 className="wheel-enter"
                 role="img"
-                aria-label={`Live preview of the policy coherence wheel${
-                  selectedName ? ` for ${selectedName}` : ""
-                }: aligned and potentially misaligned target pairs across national policy documents.`}
+                aria-label={
+                  selectedName
+                    ? t("preview.wheelAriaWithCountry", { name: selectedName })
+                    : t("preview.wheelAria")
+                }
               >
                 <div className="wheel-breathe mx-auto w-full max-w-[620px]">
                   <Centerpiece

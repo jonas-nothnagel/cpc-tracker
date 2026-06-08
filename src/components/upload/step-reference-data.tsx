@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import type { PolicyDocumentType, Target } from "@/types";
 import type { BtrData, UploadedDoc } from "@/lib/upload-helpers";
 import type { TargetRow } from "@/lib/csv-parser";
@@ -59,6 +60,7 @@ export function StepReferenceData({
   includeNr7,
   onToggleNr7,
 }: StepReferenceDataProps) {
+  const t = useTranslations("upload.step2");
   // Resolve the country to a registry entry at render time. This is pure —
   // free-text country names that don't match a registry entry fall through to
   // the no-data fallback. Hoisted out of the effect so we don't have to
@@ -150,12 +152,10 @@ export function StepReferenceData({
       {/* Step header */}
       <div className="mb-8 p-5 bg-gradient-to-r from-teal-50 to-emerald-50 rounded-xl border border-teal-100">
         <h2 className="text-lg font-semibold text-[var(--undp-black)] mb-1.5">
-          Available Reference Data
+          {t("title")}
         </h2>
         <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
-          {refData
-            ? `Select which pre-loaded data sets for ${country} to include. Toggle items on or off as needed.`
-            : "Review any reference data available for your analysis. You can upload BTR data in Step 1."}
+          {refData ? t("hasRefBody", { country }) : t("noRefBody")}
         </p>
       </div>
 
@@ -166,8 +166,10 @@ export function StepReferenceData({
             {targetCount}
           </div>
           <p className="text-sm text-[var(--undp-black)]">
-            target{targetCount !== 1 ? "s" : ""} selected across{" "}
-            {documentTypeCount} document type{documentTypeCount !== 1 ? "s" : ""}
+            {t("progressSummary", {
+              targets: targetCount,
+              docTypes: documentTypeCount,
+            })}
           </p>
         </div>
       )}
@@ -176,7 +178,7 @@ export function StepReferenceData({
       {refLoading && (
         <div className="mb-8" aria-busy="true">
           <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
-            Policy Targets for {country}
+            {t("policyTargetsHeading", { country })}
           </h3>
           <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
             {[1, 2, 3].map((i) => (
@@ -189,7 +191,7 @@ export function StepReferenceData({
               </div>
             ))}
           </div>
-          <span className="sr-only">Loading reference data</span>
+          <span className="sr-only">{t("loadingRef")}</span>
         </div>
       )}
 
@@ -197,7 +199,7 @@ export function StepReferenceData({
       {!refLoading && refData && refGroups.length > 0 && (
         <div className="mb-8">
           <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
-            Policy Targets for {country}
+            {t("policyTargetsHeading", { country })}
           </h3>
           <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
             {refGroups.map(({ docType, count, targets }) => {
@@ -234,7 +236,7 @@ export function StepReferenceData({
                         })()}
                       </p>
                       <p className="text-xs text-[var(--undp-gray)]">
-                        {count} target{count !== 1 ? "s" : ""}
+                        {t("targetCount", { count })}
                       </p>
                     </div>
                     <button
@@ -244,7 +246,7 @@ export function StepReferenceData({
                       }
                       className="px-2.5 py-1 text-xs rounded-md border border-gray-200 text-[var(--undp-gray)] hover:bg-gray-50"
                     >
-                      {expandedDoc === docType ? "Hide" : "Preview"}
+                      {expandedDoc === docType ? t("hide") : t("preview")}
                     </button>
                     <button
                       type="button"
@@ -260,25 +262,25 @@ export function StepReferenceData({
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                           </svg>
-                          Added
+                          {t("added")}
                         </>
                       ) : (
-                        "Add"
+                        t("add")
                       )}
                     </button>
                   </div>
                   {expandedDoc === docType && (
                     <div className="border-t border-gray-100 bg-gray-50/50 px-4 py-3 max-h-40 overflow-y-auto">
                       <div className="space-y-1.5">
-                        {targets.slice(0, 8).map((t) => (
-                          <p key={t.id} className="text-xs text-[var(--undp-gray)] leading-relaxed">
-                            <span className="font-medium text-[var(--undp-black)]">{t.sourceLabel}:</span>{" "}
-                            {t.text.length > 140 ? t.text.slice(0, 140) + "..." : t.text}
+                        {targets.slice(0, 8).map((tg) => (
+                          <p key={tg.id} className="text-xs text-[var(--undp-gray)] leading-relaxed">
+                            <span className="font-medium text-[var(--undp-black)]">{tg.sourceLabel}:</span>{" "}
+                            {tg.text.length > 140 ? tg.text.slice(0, 140) + "..." : tg.text}
                           </p>
                         ))}
                         {targets.length > 8 && (
                           <p className="text-xs text-gray-400 italic">
-                            + {targets.length - 8} more
+                            {t("moreCount", { count: targets.length - 8 })}
                           </p>
                         )}
                       </div>
@@ -295,7 +297,7 @@ export function StepReferenceData({
       {(refData?.hasBtr || refData?.hasNr7 || (btrParsedData && btrDocs.length > 0)) && (
         <div className="mb-8">
           <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
-            Additional Data Sources
+            {t("additionalSources")}
           </h3>
           <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
             {/* BTR */}
@@ -306,10 +308,10 @@ export function StepReferenceData({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-[var(--undp-black)]">
-                    BTR Implementation Data
+                    {t("btr.title")}
                   </p>
                   <p className="text-xs text-[var(--undp-gray)]">
-                    Mitigation measures, emissions, and projections
+                    {t("btr.description")}
                   </p>
                 </div>
                 <button
@@ -326,10 +328,10 @@ export function StepReferenceData({
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
-                      Added
+                      {t("added")}
                     </>
                   ) : (
-                    "Add"
+                    t("add")
                   )}
                 </button>
               </div>
@@ -342,10 +344,10 @@ export function StepReferenceData({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-[var(--undp-black)]">
-                    NR7 Biodiversity Progress
+                    {t("nr7.title")}
                   </p>
                   <p className="text-xs text-[var(--undp-gray)]">
-                    7th National Report to the CBD (shown on dashboard)
+                    {t("nr7.description")}
                   </p>
                 </div>
                 <button
@@ -362,10 +364,10 @@ export function StepReferenceData({
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
-                      Added
+                      {t("added")}
                     </>
                   ) : (
-                    "Add"
+                    t("add")
                   )}
                 </button>
               </div>
@@ -378,10 +380,10 @@ export function StepReferenceData({
       {!refLoading && !refData && !btrParsedData && targetCount === 0 && (
         <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
           <p className="text-sm text-[var(--undp-gray)] mb-1">
-            No pre-loaded reference data for this country.
+            {t("noRefData.title")}
           </p>
           <p className="text-xs text-gray-400">
-            Continue to the next step, or go back to upload your own documents.
+            {t("noRefData.hint")}
           </p>
         </div>
       )}

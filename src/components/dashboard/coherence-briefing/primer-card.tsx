@@ -11,6 +11,7 @@
  * to the relationship between the two targets, not the card as a whole.
  */
 
+import { useTranslations } from "next-intl";
 import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import type { FaultLine } from "@/lib/coherence-briefing";
 import type { CountryConfig } from "@/types";
@@ -34,12 +35,13 @@ export function PrimerCardBody({
   line: FaultLine;
   countryConfig: CountryConfig | null;
 }) {
+  const t = useTranslations("briefing.primerCard");
   const color =
     kind === "aligned" ? ALIGNMENT_COLORS.high : ALIGNMENT_COLORS.flagged;
   const labelA = getDocMediumLabel(countryConfig, line.targetA.sourceDocument);
   const labelB = getDocMediumLabel(countryConfig, line.targetB.sourceDocument);
   const relationLabel =
-    kind === "aligned" ? "STRONGLY ALIGNED WITH" : "POTENTIALLY MISALIGNED WITH";
+    kind === "aligned" ? t("alignedRelation") : t("flaggedRelation");
   return (
     <>
       <p className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">

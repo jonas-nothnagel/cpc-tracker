@@ -22,7 +22,8 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   SECTORS_SECTION_ID,
   SectorsSection,
@@ -129,16 +130,19 @@ type SectionId =
   | typeof FINANCING_SECTION_ID
   | typeof EXPLORE_SECTION_ID;
 
-const SECTION_LABELS: Record<SectionId, string> = {
-  [DIRECTION_SECTION_ID]: "Direction",
-  [DOC_FOCUS_SECTION_ID]: "Doc in focus",
-  [DOC_PAIRS_SECTION_ID]: "Doc pairs",
-  [FRICTION_TYPES_SECTION_ID]: "Friction types",
-  [SECTORS_SECTION_ID]: "Sectors",
-  [WHERE_TO_FOCUS_SECTION_ID]: "Where to focus",
-  [FINANCING_SECTION_ID]: "Financing",
-  [EXPLORE_SECTION_ID]: "Explore",
-};
+function useSectionLabels(): Record<SectionId, string> {
+  const t = useTranslations("briefing.sections");
+  return {
+    [DIRECTION_SECTION_ID]: t("direction"),
+    [DOC_FOCUS_SECTION_ID]: t("docFocus"),
+    [DOC_PAIRS_SECTION_ID]: t("docPairs"),
+    [FRICTION_TYPES_SECTION_ID]: t("frictionTypes"),
+    [SECTORS_SECTION_ID]: t("sectors"),
+    [WHERE_TO_FOCUS_SECTION_ID]: t("whereToFocus"),
+    [FINANCING_SECTION_ID]: t("financing"),
+    [EXPLORE_SECTION_ID]: t("explore"),
+  };
+}
 
 // Canonical order. The Financing slide only renders for countries with BER
 // data (Mongolia today); on countries without it the section is dropped from
@@ -202,6 +206,8 @@ export function CoherenceBriefing({
   nr7Data = null,
   globeSubcategories = [],
 }: CoherenceBriefingProps) {
+  const t = useTranslations("briefing");
+  const sectionLabels = useSectionLabels();
   // ── Derived data ────────────────────────────────────────────────
   // The re-hosted explorer needs the FULL corpus (incl. BTR + BER) so BTR
   // nodes and the Biodiversity Budget overlay appear; the narrative sections
@@ -483,7 +489,7 @@ export function CoherenceBriefing({
     if (globeCategories.length > 0) {
       candidates.push({
         id: "globe",
-        label: "GLOBE",
+        label: t("lens.globe"),
         taxonomyType: "globe",
         categories: globeCategories.map((g) => ({ id: g.id, name: g.name })),
       });
@@ -491,7 +497,7 @@ export function CoherenceBriefing({
     if (sectors.length > 0) {
       candidates.push({
         id: "ipcc",
-        label: "IPCC sectors",
+        label: t("lens.ipcc"),
         taxonomyType: "sector",
         categories: sectors.map((s) => ({ id: s.id, name: s.name })),
       });
@@ -500,7 +506,7 @@ export function CoherenceBriefing({
     if (countryCats.length > 0) {
       candidates.push({
         id: "country",
-        label: "Country sectors",
+        label: t("lens.country"),
         taxonomyType: "sector",
         categories: countryCats.map((c) => ({
           id: c.id,
@@ -518,7 +524,7 @@ export function CoherenceBriefing({
           idSet.has(c.categoryId),
       );
     });
-  }, [globeCategories, sectors, countryConfig, visibleClassifications]);
+  }, [t, globeCategories, sectors, countryConfig, visibleClassifications]);
 
   const [activeLensId, setActiveLensId] = useState<LensId | null>(null);
 
@@ -1016,8 +1022,7 @@ export function CoherenceBriefing({
         {availableDocs.length === 0 ? (
           <div className="mt-10 border-y border-gray-200 py-16 text-center">
             <p className="text-sm text-[var(--undp-gray)]">
-              All documents are hidden. Add at least one document above to see
-              the coherence briefing.
+              {t("emptyState.allDocsHidden")}
             </p>
           </div>
         ) : (
@@ -1166,7 +1171,7 @@ export function CoherenceBriefing({
                 onToggle={toggleDoc}
               />
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2 text-center">
-                {SECTION_LABELS[activeSection]}
+                {sectionLabels[activeSection]}
               </p>
               {activeSection === DOC_PAIRS_SECTION_ID ? (
                 <div className="flex justify-center">
@@ -1308,11 +1313,12 @@ function BriefingHeader({
   countryName: string;
   documentCount: number;
 }) {
+  const t = useTranslations("briefing.header");
   return (
     <header className="pt-10 pb-2">
       <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-2">
         <p className="text-[11px] uppercase tracking-[0.24em] text-[var(--undp-gray)]">
-          Policy coherence
+          {t("eyebrow")}
         </p>
         <PrototypeBadge tone="light" />
       </div>
@@ -1323,8 +1329,7 @@ function BriefingHeader({
         {countryName}.
       </h1>
       <p className="mt-2 text-sm text-[var(--undp-gray)]">
-        {documentCount} document{documentCount === 1 ? "" : "s"} compared
-        pairwise. Scroll for the findings or jump to a section.
+        {t("subtitle", { count: documentCount })}
       </p>
     </header>
   );
@@ -1337,6 +1342,7 @@ function JumpNav({
   active: SectionId;
   order: SectionId[];
 }) {
+  const sectionLabels = useSectionLabels();
   return (
     <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#fbfaf7]/85 backdrop-blur border-b border-gray-200/70">
       <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
@@ -1356,7 +1362,7 @@ function JumpNav({
                 <span className="text-[10px] tabular-nums opacity-60 mr-1.5">
                   0{i + 1}
                 </span>
-                {SECTION_LABELS[id]}
+                {sectionLabels[id]}
               </a>
               {i < order.length - 1 && (
                 <span
@@ -1375,16 +1381,15 @@ function JumpNav({
 }
 
 function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
+  const t = useTranslations("briefing.legend");
   return (
     <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label="Aligned" />
-      <LegendDot color="#dc2626" label="Potential misalignment" dashed />
+      <LegendDot color="#196127" label={t("aligned")} />
+      <LegendDot color="#dc2626" label={t("flagged")} dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
-        red = share of each link that is potentially misaligned
+        {t("redShareHint")}
       </span>
-      {showArcNote && (
-        <LegendGradient label="warmer arc = document with more potential misalignment" />
-      )}
+      {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
     </div>
   );
 }
@@ -1433,6 +1438,7 @@ function LegendGradient({ label }: { label: string }) {
 }
 
 function FooterLink({ countryId }: { countryId?: string }) {
+  const t = useTranslations("briefing.footerLink");
   // Points at the demoted explorer dashboard, which now lives on /prototypes.
   const dashboardHref = countryId
     ? `/prototypes?country=${encodeURIComponent(countryId)}`
@@ -1443,7 +1449,7 @@ function FooterLink({ countryId }: { countryId?: string }) {
         href={dashboardHref}
         className="hover:text-[var(--undp-black)] hover:underline"
       >
-        ← Full coherence explorer
+        ← {t("fullExplorer")}
       </Link>
     </div>
   );

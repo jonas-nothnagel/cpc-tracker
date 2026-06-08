@@ -19,16 +19,19 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   ALIGNMENT_COLORS,
-  ALIGNMENT_LABELS,
-  CONFIDENCE_LABELS,
-  CONTRADICTION_TYPE_LABELS,
-  MANAGEABILITY_LABELS,
   MECHANISM_COLORS,
   getDocFullLabel,
   getDocMediumLabel,
 } from "@/lib/utils";
+import {
+  useAlignmentLabels,
+  useConfidenceLabels,
+  useContradictionTypeLabels,
+  useManageabilityLabels,
+} from "@/lib/labels";
 import {
   getDocPairKey,
   parseContributingDocPair,
@@ -48,8 +51,6 @@ const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 const ALIGNED_DOT_COLOR = "#196127";
 const FRICTION_DOT_COLOR = "#dc2626";
-const AI_DISCLAIMER =
-  "AI-generated synthesis. Treat as a prompt to review, not a settled finding.";
 
 const SEVERITY_RANK: Record<AlignmentLevel, number> = {
   flagged: 0,
@@ -106,6 +107,7 @@ export function ThemeDrawer({
   onOpenSingleTheme,
   onOpenTargetPair,
 }: ThemeDrawerProps) {
+  const t = useTranslations("briefing.drawer.theme");
   const isOpen = theme !== null || allStorylines !== null;
   useEffect(() => {
     if (!isOpen) return;
@@ -193,14 +195,14 @@ export function ThemeDrawer({
     <div className="fixed inset-0 z-40 flex justify-end">
       <button
         type="button"
-        aria-label="Close theme view"
+        aria-label={t("closeAria")}
         onClick={onClose}
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label={`Theme: ${theme.name}`}
+        aria-label={t("dialogAria", { name: theme.name })}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
       >
@@ -218,8 +220,8 @@ export function ThemeDrawer({
               />
               <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
                 {isReinforce
-                  ? "Recurring alignment"
-                  : "Recurring potential misalignment"}
+                  ? t("eyebrow.reinforce")
+                  : t("eyebrow.friction")}
               </p>
             </div>
             <h3
@@ -229,19 +231,17 @@ export function ThemeDrawer({
               {theme.name}
             </h3>
             <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-              Recurs across {theme.spans_documents.length} doc
-              {theme.spans_documents.length === 1 ? "" : "s"} ·{" "}
-              {theme.pair_count.toLocaleString()} pair
-              {theme.pair_count === 1 ? "" : "s"} ·{" "}
-              {totalRecords.toLocaleString()}{" "}
-              {isReinforce ? "aligned" : "misaligned"} record
-              {totalRecords === 1 ? "" : "s"} below
+              {t(isReinforce ? "summary.reinforce" : "summary.friction", {
+                docs: theme.spans_documents.length,
+                pairs: theme.pair_count,
+                records: totalRecords,
+              })}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("closeBtnAria")}
             className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
           >
             ×
@@ -255,12 +255,11 @@ export function ThemeDrawer({
 
           <section>
             <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
-              Target pairs in this theme
+              {t("pairsInTheme")}
             </p>
             {groups.length === 0 || totalRecords === 0 ? (
               <p className="text-sm italic text-[var(--undp-gray)]">
-                The theme names contributing doc-pairs but no concrete
-                target pairs in those doc-pairs match the theme polarity.
+                {t("noConcretePairs")}
               </p>
             ) : (
               <div className="space-y-6">
@@ -278,7 +277,7 @@ export function ThemeDrawer({
           </section>
 
           <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
-            {AI_DISCLAIMER}
+            {t("aiDisclaimer")}
           </p>
         </div>
       </aside>
@@ -308,6 +307,7 @@ function DocPairGroupBlock({
     targetB: Target,
   ) => void;
 }) {
+  const t = useTranslations("briefing.drawer.theme");
   const [expanded, setExpanded] = useState(false);
   const labelA = getDocMediumLabel(countryConfig, group.a);
   const labelB = getDocMediumLabel(countryConfig, group.b);
@@ -330,8 +330,7 @@ function DocPairGroupBlock({
           {labelA} ↔ {labelB}
         </p>
         <p className="text-[10px] text-[var(--undp-gray)] tabular-nums">
-          {group.records.length.toLocaleString()} record
-          {group.records.length === 1 ? "" : "s"}
+          {t("recordsCount", { count: group.records.length })}
         </p>
       </div>
       <ol className="divide-y divide-gray-200 border-y border-gray-200">
@@ -358,8 +357,8 @@ function DocPairGroupBlock({
           className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
         >
           {expanded
-            ? "Show fewer"
-            : `Show all ${group.records.length.toLocaleString()} record${group.records.length === 1 ? "" : "s"}`}
+            ? t("showFewer")
+            : t("showAllRecords", { count: group.records.length })}
         </button>
       )}
     </div>
@@ -379,6 +378,7 @@ function ExampleRow({
   countryConfig: CountryConfig | null;
   onOpen: () => void;
 }) {
+  const alignmentLabels = useAlignmentLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
@@ -399,7 +399,7 @@ function ExampleRow({
               border: `1px solid ${color}40`,
             }}
           >
-            {ALIGNMENT_LABELS[pair.alignment]}
+            {alignmentLabels[pair.alignment]}
           </span>
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />
@@ -438,6 +438,9 @@ export function SubFieldChip({
   variant: "mechanism" | "manageability" | "confidence";
   value: AlignmentMechanism | AlignmentManageability | AlignmentConfidence;
 }) {
+  const contradictionLabels = useContradictionTypeLabels();
+  const manageabilityLabels = useManageabilityLabels();
+  const confidenceLabels = useConfidenceLabels();
   if (variant === "mechanism") {
     // Colour per the friction-type palette (same as the bar) so the mechanism
     // reads as a warm severity ramp and is never confused with the neutral
@@ -452,7 +455,7 @@ export function SubFieldChip({
           backgroundColor: `${c}14`,
         }}
       >
-        {CONTRADICTION_TYPE_LABELS[value as AlignmentMechanism]}
+        {contradictionLabels[value as AlignmentMechanism]}
       </span>
     );
   }
@@ -469,7 +472,7 @@ export function SubFieldChip({
           backgroundColor: "#f1f5f9",
         }}
       >
-        {MANAGEABILITY_LABELS[value as AlignmentManageability]}
+        {manageabilityLabels[value as AlignmentManageability]}
       </span>
     );
   }
@@ -484,7 +487,7 @@ export function SubFieldChip({
         border: low ? "1px dashed #f59e0b" : "1px solid #cbd5e1",
       }}
     >
-      {CONFIDENCE_LABELS[value as AlignmentConfidence]}
+      {confidenceLabels[value as AlignmentConfidence]}
     </span>
   );
 }
@@ -576,45 +579,46 @@ function AllStorylinesView({
   onPick: (s: CorpusStoryline) => void;
   onClose: () => void;
 }) {
+  const t = useTranslations("briefing.drawer.theme");
   const reinforce = storylines.filter((s) => s.type === "reinforcement");
   const friction = storylines.filter((s) => s.type === "friction");
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
       <button
         type="button"
-        aria-label="Close themes view"
+        aria-label={t("all.closeAria")}
         onClick={onClose}
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label="All recurring themes"
+        aria-label={t("all.dialogAria")}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
       >
         <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
-              Recurring themes
+              {t("all.eyebrow")}
             </p>
             <h3
               className="text-xl text-[var(--undp-black)] font-medium leading-snug"
               style={{ fontFamily: HEADLINE_SERIF }}
             >
-              {storylines.length.toLocaleString()} themes that span multiple
-              documents
+              {t("all.heading", { count: storylines.length })}
             </h3>
             <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
-              {reinforce.length.toLocaleString()} aligned ·{" "}
-              {friction.length.toLocaleString()} potentially misaligned. Click
-              any theme for the underlying target pairs.
+              {t("all.subtitle", {
+                aligned: reinforce.length,
+                flagged: friction.length,
+              })}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("closeBtnAria")}
             className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
           >
             ×
@@ -624,7 +628,7 @@ function AllStorylinesView({
         <div className="px-6 py-6 space-y-6">
           {reinforce.length > 0 && (
             <StorylineGroup
-              label="Recurring alignment"
+              label={t("eyebrow.reinforce")}
               tone="reinforce"
               storylines={reinforce}
               onPick={onPick}
@@ -632,14 +636,14 @@ function AllStorylinesView({
           )}
           {friction.length > 0 && (
             <StorylineGroup
-              label="Recurring potential misalignment"
+              label={t("eyebrow.friction")}
               tone="friction"
               storylines={friction}
               onPick={onPick}
             />
           )}
           <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
-            {AI_DISCLAIMER}
+            {t("aiDisclaimer")}
           </p>
         </div>
       </aside>
@@ -658,6 +662,7 @@ function StorylineGroup({
   storylines: CorpusStoryline[];
   onPick: (s: CorpusStoryline) => void;
 }) {
+  const t = useTranslations("briefing.drawer.theme");
   const dotColor = tone === "reinforce" ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
   const sorted = [...storylines].sort((a, b) => {
     const aRank = CONFIDENCE_RANK[a.confidence] ?? 3;
@@ -696,13 +701,11 @@ function StorylineGroup({
                     {s.name}
                   </p>
                   <p className="mt-1 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
-                    Spans {s.spans_documents.length} doc
-                    {s.spans_documents.length === 1 ? "" : "s"} ·{" "}
-                    {s.pair_count.toLocaleString()} pair
-                    {s.pair_count === 1 ? "" : "s"}
-                    {s.confidence === "low"
-                      ? " · low confidence"
-                      : ""}
+                    {t("storylineMeta", {
+                      docs: s.spans_documents.length,
+                      pairs: s.pair_count,
+                      lowConf: s.confidence === "low" ? 1 : 0,
+                    })}
                   </p>
                 </div>
                 <span

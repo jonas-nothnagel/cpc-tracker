@@ -11,12 +11,13 @@
  */
 
 import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import {
-  CONTRADICTION_TYPE_LABELS,
   getDocColor,
   getDocMediumLabel,
   MECHANISM_COLORS,
 } from "@/lib/utils";
+import { useContradictionTypeLabels } from "@/lib/labels";
 import {
   buildFlagSubsetProfile,
   buildTargetFrictionTree,
@@ -36,8 +37,6 @@ import type {
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const AI_DISCLAIMER =
-  "AI-generated flags. Treat as prompts to review, not settled findings.";
 const EXAMPLE_CAP = 6;
 const BAR_NEUTRAL = "#94a3b8";
 const BAR_TRACK = "#e5e7eb";
@@ -88,6 +87,8 @@ export function FlagProfileDrawer({
   onOpenTarget: (target: Target) => void;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
+  const contradictionLabels = useContradictionTypeLabels();
   useEffect(() => {
     if (!subject) return;
     const onKey = (e: KeyboardEvent) => {
@@ -221,22 +222,22 @@ export function FlagProfileDrawer({
     shareDenom > 0 ? Math.round((total / shareDenom) * 100) : 0;
   const headerTitle =
     subject.kind === "friction-type"
-      ? CONTRADICTION_TYPE_LABELS[subject.mechanism]
+      ? contradictionLabels[subject.mechanism]
       : subject.target.sourceLabel;
-  const themeNoun = lensLabel === "GLOBE" ? "categories" : "themes";
+  const themeNoun = lensLabel === "GLOBE" ? t("themeNoun.globe") : t("themeNoun.sectors");
 
   return (
     <div className="fixed inset-0 z-30 flex justify-end">
       <button
         type="button"
-        aria-label="Close profile"
+        aria-label={t("closeAria")}
         onClick={onClose}
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label={`Profile: ${headerTitle}`}
+        aria-label={t("dialogAria", { name: headerTitle })}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
       >
@@ -245,8 +246,8 @@ export function FlagProfileDrawer({
             <div className="min-w-0">
               <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
                 {subject.kind === "friction-type"
-                  ? "Potential misalignment type"
-                  : "Target in focus"}
+                  ? t("eyebrow.friction")
+                  : t("eyebrow.target")}
               </p>
               {subject.kind === "target" && (
                 <DocBadge
@@ -262,7 +263,7 @@ export function FlagProfileDrawer({
               </h3>
               {docScopeLabel && (
                 <p className="mt-1 text-[12px] text-[var(--undp-gray)] leading-snug">
-                  {`within ${docScopeLabel}'s potential misalignment`}
+                  {t("withinDoc", { doc: docScopeLabel })}
                 </p>
               )}
               {subject.kind === "target" && (
@@ -271,16 +272,20 @@ export function FlagProfileDrawer({
                 </p>
               )}
               <p className="mt-2 text-xs text-[var(--undp-gray)] tabular-nums">
-                {total.toLocaleString()} potentially misaligned pair
-                {total === 1 ? "" : "s"}
+                {t("pairCount", { count: total })}
                 {shareDenom > 0 &&
-                  ` · ${sharePct}% of ${docScopeLabel ? `${docScopeLabel}'s` : "all"} potential misalignment`}
+                  " · " +
+                    t("pairShareOfDoc", {
+                      pct: sharePct,
+                      scope: docScopeLabel ?? "",
+                      docScoped: docScopeLabel ? 1 : 0,
+                    })}
               </p>
             </div>
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t("closeBtnAria")}
               className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
             >
               ×
@@ -291,7 +296,7 @@ export function FlagProfileDrawer({
         <div className="px-6 py-6 space-y-7">
           {total === 0 ? (
             <p className="text-sm italic text-[var(--undp-gray)]">
-              No potential misalignment in this subset.
+              {t("empty")}
             </p>
           ) : (
             <>
@@ -322,7 +327,7 @@ export function FlagProfileDrawer({
                 />
               )}
               <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
-                {AI_DISCLAIMER}
+                {t("aiDisclaimer")}
               </p>
             </>
           )}
@@ -373,18 +378,19 @@ function CompositionGrid({
   themeNoun: string;
   onOpenTarget: (target: Target) => void;
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
   const docRows: CompositionRow[] = profile.byDocPair.map((d) => ({
     key: `${d.a}__${d.b}`,
     label:
       d.a === d.b
-        ? `within ${getDocMediumLabel(countryConfig, d.a)}`
+        ? t("withinDoc", { doc: getDocMediumLabel(countryConfig, d.a) })
         : `${getDocMediumLabel(countryConfig, d.a)} ↔ ${getDocMediumLabel(countryConfig, d.b)}`,
     count: d.count,
   }));
-  const themeRows: CompositionRow[] = profile.byTheme.map((t) => ({
-    key: t.categoryId,
-    label: t.categoryName,
-    count: t.count,
+  const themeRows: CompositionRow[] = profile.byTheme.map((row) => ({
+    key: row.categoryId,
+    label: row.categoryName,
+    count: row.count,
   }));
   // Recurring targets are clickable: they pivot the drawer to that target's
   // own profile (the "follow the chain" drill the user asked for).
@@ -402,14 +408,14 @@ function CompositionGrid({
     <div
       className={`grid grid-cols-1 gap-5 ${isTarget ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}
     >
-      <CompositionColumn title="Across document pairs" rows={docRows} />
+      <CompositionColumn title={t("composition.acrossDocPairs")} rows={docRows} />
       <CompositionColumn
-        title={`Across ${themeNoun}`}
+        title={t("composition.acrossThemes", { themeNoun })}
         rows={themeRows}
-        emptyText="No primary-classified themes."
+        emptyText={t("composition.noThemes")}
       />
       {!isTarget && (
-        <CompositionColumn title="Recurs on targets" rows={targetRows} />
+        <CompositionColumn title={t("composition.recurringTargets")} rows={targetRows} />
       )}
     </div>
   );
@@ -424,6 +430,7 @@ function CompositionColumn({
   rows: CompositionRow[];
   emptyText?: string;
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
   const max = rows[0]?.count ?? 0;
   return (
     <div>
@@ -432,7 +439,7 @@ function CompositionColumn({
       </p>
       {rows.length === 0 ? (
         <p className="text-[11px] italic text-[var(--undp-gray)]/70">
-          {emptyText ?? "None"}
+          {emptyText ?? t("composition.none")}
         </p>
       ) : (
         <ul className="space-y-1.5">
@@ -495,6 +502,7 @@ function ManageabilityBar({
   manageability: { manageable: number; fundamental: number; unknown: number };
   total: number;
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
   const { manageable, fundamental } = manageability;
   if (manageable + fundamental === 0) return null;
   const mPct = Math.round((manageable / total) * 100);
@@ -502,7 +510,7 @@ function ManageabilityBar({
   return (
     <div>
       <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-        Where the misalignment sits
+        {t("manageability.title")}
       </p>
       <div
         className="flex h-2 w-full overflow-hidden rounded-full"
@@ -522,13 +530,11 @@ function ManageabilityBar({
         />
       </div>
       <p className="mt-1.5 text-[11.5px] text-[var(--undp-black)] leading-snug">
-        The AI reads {mPct}% of these as coordination-level (the misalignment
-        could likely be eased by aligning delivery, sequencing, or safeguards
-        rather than changing the targets)
-        {fundamental > 0
-          ? `, and ${fPct}% as design-level, where a target itself may need revisiting`
-          : ""}
-        . A per-pair AI assessment, worth verifying.
+        {t("manageability.summary", {
+          mPct,
+          fPct,
+          hasFundamental: fundamental > 0 ? 1 : 0,
+        })}
       </p>
     </div>
   );
@@ -545,12 +551,13 @@ function RepresentativePairs({
   onOpenPair: (aId: string, bId: string) => void;
   subjectKind: FlagProfileSubject["kind"];
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
   return (
     <div className="border-t border-gray-200 pt-4">
       <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {subjectKind === "target"
-          ? "Potentially misaligned pairs"
-          : "Representative pairs"}
+          ? t("examples.target")
+          : t("examples.representative")}
       </p>
       <ol className="space-y-2">
         {examples.map(({ pair, a, b }) => (
@@ -621,11 +628,12 @@ function TargetFrictionTreeView({
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
   if (tree.byMechanism.length === 0) return null;
   return (
     <div className="border-t border-gray-200 pt-4">
       <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
-        {"How this target's potential misalignment breaks down"}
+        {t("tree.heading")}
       </p>
       <div className="space-y-4">
         {tree.byMechanism.map((group) => (
@@ -653,12 +661,14 @@ function MechanismBranch({
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
+  const t = useTranslations("briefing.drawer.flagProfile");
+  const contradictionLabels = useContradictionTypeLabels();
   const color = group.mechanism
     ? MECHANISM_COLORS[group.mechanism]
     : BAR_NEUTRAL;
   const label = group.mechanism
-    ? CONTRADICTION_TYPE_LABELS[group.mechanism]
-    : "Unclassified";
+    ? contradictionLabels[group.mechanism]
+    : t("tree.unclassified");
   return (
     <div>
       {/* L1 — mechanism */}

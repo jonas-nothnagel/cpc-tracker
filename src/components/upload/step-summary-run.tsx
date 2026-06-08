@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import type { TaxonomyGroup } from "@/hooks/useCategories";
@@ -51,6 +52,7 @@ export function StepSummaryRun({
   onRunAnalysis,
   extractionFootprint,
 }: StepSummaryRunProps) {
+  const t = useTranslations("upload.step4");
   const [expandedDoc, setExpandedDoc] = useState<PolicyDocumentType | null>(null);
 
   return (
@@ -58,26 +60,25 @@ export function StepSummaryRun({
       {/* Step header */}
       <div className="mb-8 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
         <h2 className="text-lg font-semibold text-[var(--undp-black)] mb-1.5">
-          Summary & Run Analysis
+          {t("title")}
         </h2>
         <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
-          Review your complete analysis configuration below. The pipeline will classify each
-          target, decompose its structure, and assess pairwise alignment across all document types.
+          {t("subtitle")}
         </p>
       </div>
 
       {/* Overview grid */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="p-4 border border-gray-200 rounded-xl">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">Country</p>
-          <p className="text-lg font-semibold text-[var(--undp-black)]">{country || "Not specified"}</p>
+          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">{t("countryLabel")}</p>
+          <p className="text-lg font-semibold text-[var(--undp-black)]">{country || t("notSpecified")}</p>
         </div>
         <div className="p-4 border border-gray-200 rounded-xl">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">Targets</p>
+          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">{t("targetsLabel")}</p>
           <p className="text-lg font-semibold text-[var(--undp-black)]">
             {targets.length}
             <span className="text-sm font-normal text-[var(--undp-gray)] ml-1.5">
-              across {targetsByDocument.length} document type{targetsByDocument.length !== 1 ? "s" : ""}
+              {t("acrossDocs", { count: targetsByDocument.length })}
             </span>
           </p>
         </div>
@@ -86,7 +87,7 @@ export function StepSummaryRun({
       {/* Per-document breakdown */}
       <div className="mb-6 border border-gray-200 rounded-xl overflow-hidden">
         <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider">Target Breakdown</p>
+          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider">{t("targetBreakdown")}</p>
         </div>
         <div className="divide-y divide-gray-100">
           {targetsByDocument.map(({ docType, targets: docTargets }) => (
@@ -103,10 +104,10 @@ export function StepSummaryRun({
               </button>
               {expandedDoc === docType && (
                 <div className="px-4 pb-3 ml-6 space-y-1.5 max-h-48 overflow-y-auto">
-                  {docTargets.map(({ t, idx }) => (
+                  {docTargets.map(({ t: tg, idx }) => (
                     <p key={idx} className="text-xs text-[var(--undp-gray)] leading-relaxed">
-                      <span className="font-medium text-[var(--undp-black)]">{t.sourceLabel}:</span>{" "}
-                      {t.text.length > 120 ? t.text.slice(0, 120) + "..." : t.text}
+                      <span className="font-medium text-[var(--undp-black)]">{tg.sourceLabel}:</span>{" "}
+                      {tg.text.length > 120 ? tg.text.slice(0, 120) + "..." : tg.text}
                     </p>
                   ))}
                 </div>
@@ -136,8 +137,8 @@ export function StepSummaryRun({
             <span className="text-xs font-bold text-violet-600">BTR</span>
           </div>
           <div>
-            <p className="text-sm font-medium text-[var(--undp-black)]">BTR implementation data included</p>
-            <p className="text-xs text-[var(--undp-gray)]">Mitigation measures compared against policy targets.</p>
+            <p className="text-sm font-medium text-[var(--undp-black)]">{t("btr.title")}</p>
+            <p className="text-xs text-[var(--undp-gray)]">{t("btr.description")}</p>
           </div>
         </div>
       )}
@@ -145,41 +146,41 @@ export function StepSummaryRun({
       {extractionFootprint && extractionFootprint.call_count > 0 && (
         <div className="mb-4 p-4 border border-gray-200 rounded-xl bg-gray-50/60">
           <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">
-            Document extraction footprint so far
+            {t("footprint.heading")}
           </p>
           <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.energy_wh)}
               </strong>{" "}
-              Wh energy
+              {t("footprint.energy")}
             </span>
             <span className="text-gray-300">·</span>
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.water_ml)}
               </strong>{" "}
-              mL water
+              {t("footprint.water")}
             </span>
             <span className="text-gray-300">·</span>
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.co2_geq)}
               </strong>{" "}
-              gCO<sub>2</sub>eq
+              {t.rich("footprint.co2", {
+                sub: (chunks) => <sub>{chunks}</sub>,
+              })}
             </span>
             <span className="text-gray-300">·</span>
             <span className="text-sm">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.minerals_ugsbeq)}
               </strong>{" "}
-              µgSbeq minerals
+              {t("footprint.minerals")}
             </span>
           </div>
           <p className="text-[11px] text-[var(--undp-gray)] mt-2 leading-snug">
-            Accumulated from {extractionFootprint.call_count.toLocaleString()}{" "}
-            LLM calls during extraction. This will be added to the analysis
-            footprint on the final dashboard. Estimated via EcoLogits.
+            {t("footprint.summary", { count: extractionFootprint.call_count })}
           </p>
         </div>
       )}

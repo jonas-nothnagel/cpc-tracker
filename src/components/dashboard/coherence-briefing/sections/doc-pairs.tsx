@@ -15,6 +15,7 @@
  */
 
 import { useEffect, useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { computeDocPairBalance, getDocPairKey } from "@/lib/coherence-briefing";
 import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
@@ -31,8 +32,6 @@ const HEADLINE_SERIF =
 const HIGHLIGHT_MS = 2400;
 /** Lead the row excerpt with the clash once flagged climbs past this share of aligned. */
 const CLASH_EXCERPT_RATIO = 0.25;
-const AI_DISCLAIMER =
-  "AI-synthesised storyline names. Treat as a prompt to review, not a settled finding.";
 
 export function DocPairsSection({
   docPairSyntheses,
@@ -59,6 +58,7 @@ export function DocPairsSection({
   /** Fires after the highlight decays so the host can drop its pending state. */
   onClearFocusedDocPair?: () => void;
 }) {
+  const t = useTranslations("briefing.docPairs");
   const ranked = useMemo(
     () =>
       [...docPairSyntheses]
@@ -71,8 +71,8 @@ export function DocPairsSection({
         ),
     [docPairSyntheses],
   );
-  const headline = composeHeadline(ranked, countryConfig);
-  const body = composeBody(ranked);
+  const headline = composeHeadline(ranked, countryConfig, t);
+  const body = composeBody(ranked, t);
   const maxTotal = ranked.reduce(
     (m, dp) => Math.max(m, dp.aligned_count + dp.flagged_count),
     1,
@@ -104,14 +104,13 @@ export function DocPairsSection({
   return (
     <SlideFrame
       id={DOC_PAIRS_SECTION_ID}
-      eyebrow="How do specific documents relate?"
+      eyebrow={t("eyebrow")}
       headline={headline}
       body={body}
       evidence={
         ranked.length === 0 ? (
           <p className="text-sm italic text-[var(--undp-gray)]">
-            No doc-pair synthesis available yet. Run the synthesis step to
-            surface the pairings here.
+            {t("empty")}
           </p>
         ) : (
           <DocPairRanking
@@ -136,33 +135,30 @@ export function DocPairsSection({
 function composeHeadline(
   ranked: DocPairSynthesis[],
   countryConfig: CountryConfig | null,
+  t: ReturnType<typeof useTranslations<"briefing.docPairs">>,
 ): string {
-  if (ranked.length === 0) {
-    return "No synthesised doc-pair signal yet.";
-  }
+  if (ranked.length === 0) return t("headline.empty");
   const top = ranked.slice(0, 2);
   const names = top
     .map(
       (p) =>
         `${docLabel(p.doc_a as PolicyDocumentType, countryConfig)} ↔ ${docLabel(p.doc_b as PolicyDocumentType, countryConfig)}`,
     )
-    .join(" and ");
-  if (top.length === 1) {
-    return `${names} carries most of the relationships between documents.`;
-  }
-  return `${names} carry most of the relationships between documents.`;
+    .join(t("headline.joiner"));
+  return t("headline.template", { names, count: top.length });
 }
 
-function composeBody(ranked: DocPairSynthesis[]): string {
+function composeBody(
+  ranked: DocPairSynthesis[],
+  t: ReturnType<typeof useTranslations<"briefing.docPairs">>,
+): string {
   const pairCount = ranked.length;
   const total = ranked.reduce(
     (s, dp) => s + dp.aligned_count + dp.flagged_count,
     0,
   );
-  if (pairCount === 0) {
-    return "Run the doc-pair synthesis step to surface which pairings dominate.";
-  }
-  return `${total.toLocaleString()} scored target-pairs across all ${pairCount.toLocaleString()} document pairings. The matrix on the right and the ranked list below are two views of the same set: hover either to link them, click for the underlying pairs.`;
+  if (pairCount === 0) return t("body.empty");
+  return t("body.summary", { total, pairCount });
 }
 
 function docLabel(
@@ -191,10 +187,11 @@ function DocPairRanking({
   focusedKey: string | null;
   registerRowRef: (key: string, el: HTMLLIElement | null) => void;
 }) {
+  const t = useTranslations("briefing.docPairs");
   return (
     <div>
       <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-        All {docPairs.length.toLocaleString()} document pairings
+        {t("allPairings", { count: docPairs.length })}
       </p>
       <ol className="divide-y divide-gray-200 border-y border-gray-200">
         {docPairs.map((dp) => {
@@ -215,7 +212,7 @@ function DocPairRanking({
         })}
       </ol>
       <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
-        {AI_DISCLAIMER}
+        {t("aiDisclaimer")}
       </p>
     </div>
   );
@@ -240,6 +237,7 @@ function DocPairRow({
   pulsing: boolean;
   registerRef: (el: HTMLLIElement | null) => void;
 }) {
+  const t = useTranslations("briefing.docPairs");
   const labelA = getDocMediumLabel(countryConfig, dp.doc_a as PolicyDocumentType);
   const labelB = getDocMediumLabel(countryConfig, dp.doc_b as PolicyDocumentType);
   const balance = computeDocPairBalance(dp);
@@ -255,7 +253,7 @@ function DocPairRow({
     : showClash
       ? dp.synthesis.clash
       : dp.synthesis.reinforce;
-  const excerptPrefix = showClash ? "Potential misalignment" : "Aligned";
+  const excerptPrefix = showClash ? t("excerpt.flagged") : t("excerpt.aligned");
   const excerptColor = showClash
     ? ALIGNMENT_COLORS.flagged
     : ALIGNMENT_COLORS.high;
@@ -291,9 +289,7 @@ function DocPairRow({
               className="text-[12px] text-[var(--undp-gray)] leading-snug truncate"
               style={{ fontFamily: HEADLINE_SERIF }}
             >
-              {failed
-                ? "Synthesis failed, open for raw pair list."
-                : dp.synthesis.storyline_name}
+              {failed ? t("synthesisFailed") : dp.synthesis.storyline_name}
             </span>
           </div>
         </div>
@@ -341,11 +337,11 @@ function DocPairRow({
           </div>
           <p className="text-[12px] text-[var(--undp-black)] tabular-nums font-medium whitespace-nowrap">
             <span style={{ color: ALIGNMENT_COLORS.high }}>
-              {dp.aligned_count.toLocaleString()} aligned
+              {t("countAligned", { count: dp.aligned_count })}
             </span>
             <span className="text-[var(--undp-gray)] mx-1">·</span>
             <span style={{ color: ALIGNMENT_COLORS.flagged }}>
-              {dp.flagged_count.toLocaleString()} flagged
+              {t("countFlagged", { count: dp.flagged_count })}
             </span>
           </p>
         </div>

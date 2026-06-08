@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
+import { Link, redirect } from "@/i18n/navigation";
 import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
 import { Header } from "@/components/ui/header";
 import { getCountry, isValidCountryId } from "@/config/countries";
@@ -19,34 +19,36 @@ function firstValue(v: SearchParam): string | undefined {
 
 export async function generateMetadata({ searchParams }: DashboardPageProps) {
   const params = await searchParams;
+  const t = await getTranslations("metadata.dashboard");
   const analysisId = firstValue(params.analysisId);
   const country = firstValue(params.country);
   if (analysisId) {
-    return { title: `Analysis ${analysisId} | CPC Tracker` };
+    return { title: t("analysisTitle", { id: analysisId }) };
   }
   const countryLower = country?.toLowerCase();
   const entry = countryLower ? getCountry(countryLower) : undefined;
   return {
-    title: entry ? `${entry.name} Dashboard | CPC Tracker` : "Dashboard | CPC Tracker",
+    title: entry ? t("countryTitle", { name: entry.name }) : t("title"),
   };
 }
 
-function UnavailableState() {
+async function UnavailableState() {
+  const t = await getTranslations("dashboard.unavailable");
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header subtitle="Dashboard" />
+      <Header subtitle={t("subtitle")} />
       <main className="flex-1 max-w-2xl mx-auto px-6 py-16 text-center">
         <h1 className="text-xl font-medium text-[var(--undp-black)] mb-3">
-          This country is not yet available
+          {t("heading")}
         </h1>
         <p className="text-sm text-[var(--undp-gray)] mb-8">
-          Select a country from the homepage to explore the dashboard.
+          {t("body")}
         </p>
         <Link
           href="/"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-[var(--undp-blue)] hover:bg-[var(--undp-blue-dark)] transition-colors"
         >
-          Back to home
+          {t("backToHome")}
         </Link>
       </main>
     </div>
@@ -67,9 +69,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   }
 
   // Country-addressed path. Empty string is treated as missing.
+  const locale = await getLocale();
   const countryLower = country?.toLowerCase();
   if (!countryLower) {
-    redirect("/");
+    return redirect({ href: "/", locale });
   }
 
   // Format gate + registry gate. Invalid or unknown countries land on the

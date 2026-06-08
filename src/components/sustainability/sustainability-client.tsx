@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import {
   Area,
@@ -16,7 +17,6 @@ import {
 
 import { cumulativeByComponent } from "@/lib/footprint/rollup";
 import type {
-  FootprintComponent,
   FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
@@ -26,19 +26,37 @@ import type {
 const UNDP_BLUE = "#0468b1";
 const UNDP_GRAY = "#55606e";
 
-const COMPONENT_LABELS: Record<FootprintComponent, string> = {
-  dev_pipeline: "Developer pipeline runs",
-  user_pipeline: "User pipeline runs",
-  extract: "Document extraction",
-  chat: "Chatbot",
-};
+const COMPONENT_KEY_SET = new Set<string>([
+  "dev_pipeline",
+  "user_pipeline",
+  "extract",
+  "chat",
+]);
 
-const SOURCE_LABELS: Record<string, string> = {
-  measured: "Measured",
-  estimated: "Estimated",
-  api: "Estimated (API)",
-  unavailable: "Not available",
-};
+// Resolve a footprint-component key to its translated label, falling back to the
+// raw value for anything that is not a known component (e.g. model/region names).
+function componentLabel(
+  t: ReturnType<typeof useTranslations>,
+  value: unknown,
+): string {
+  const key = String(value);
+  return COMPONENT_KEY_SET.has(key) ? t(`components.${key}`) : key;
+}
+
+// Resolve a footprint-source key to its translated label, falling back to raw.
+const SOURCE_KEY_SET = new Set<string>([
+  "measured",
+  "estimated",
+  "api",
+  "unavailable",
+]);
+function sourceLabel(
+  t: ReturnType<typeof useTranslations>,
+  value: unknown,
+): string {
+  const key = String(value);
+  return SOURCE_KEY_SET.has(key) ? t(`sources.${key}`) : key;
+}
 
 // ---------------------------------------------------------------------------
 // Unit-friendly formatters. Each metric is stored in a small base unit (Wh, mL,
@@ -225,15 +243,17 @@ const COMPONENT_COLORS: Record<string, string> = {
   chat: "#6f7d8c",
 };
 
+// Each metric's display label is resolved at render time via t(`tile.${tileKey}`)
+// so it stays translatable; module-level arrays cannot call hooks.
 const METRICS: {
   key: keyof FootprintMetrics;
-  label: string;
+  tileKey: "carbon" | "energy" | "water" | "minerals";
   fmt: (v: number) => { value: string; unit: string };
 }[] = [
-  { key: "co2_geq", label: "Carbon", fmt: fmtCarbon },
-  { key: "energy_wh", label: "Energy", fmt: fmtEnergy },
-  { key: "water_ml", label: "Water", fmt: fmtWater },
-  { key: "minerals_ugsbeq", label: "Minerals", fmt: fmtMinerals },
+  { key: "co2_geq", tileKey: "carbon", fmt: fmtCarbon },
+  { key: "energy_wh", tileKey: "energy", fmt: fmtEnergy },
+  { key: "water_ml", tileKey: "water", fmt: fmtWater },
+  { key: "minerals_ugsbeq", tileKey: "minerals", fmt: fmtMinerals },
 ];
 
 function CumulativeImpact({
@@ -247,17 +267,17 @@ function CumulativeImpact({
   metricLabel: string;
   fmt: (v: number) => { value: string; unit: string };
 }) {
+  const t = useTranslations("sustainability");
   const { points, components } = cumulativeByComponent(events, metricKey);
   if (points.length === 0) return null;
+  const metricLower = metricLabel.toLowerCase();
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5">
       <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-1">
-        Cumulative {metricLabel.toLowerCase()} over time
+        {t("charts.cumulativeOverTime", { metric: metricLabel })}
       </h3>
       <p className="text-xs text-[var(--undp-gray)] mb-3">
-        Running total of {metricLabel.toLowerCase()} to date, split by where it
-        comes from. The four resources move in step, so each shows the same shape
-        in its own units.
+        {t("charts.cumulativeDescription", { metric: metricLower })}
       </p>
       <ResponsiveContainer width="100%" height={260}>
         <AreaChart data={points} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
@@ -273,17 +293,10 @@ function CumulativeImpact({
           <Tooltip
             formatter={(value, name) => {
               const f = fmt(Number(value));
-              return [
-                `${f.value} ${f.unit}`,
-                COMPONENT_LABELS[name as FootprintComponent] ?? name,
-              ];
+              return [`${f.value} ${f.unit}`, componentLabel(t, name)];
             }}
           />
-          <Legend
-            formatter={(value) =>
-              COMPONENT_LABELS[value as FootprintComponent] ?? value
-            }
-          />
+          <Legend formatter={(value) => componentLabel(t, value)} />
           {components.map((c) => (
             <Area
               key={c}
@@ -313,6 +326,7 @@ type LoadState =
   | { status: "ready"; data: FootprintRollup };
 
 export function SustainabilityClient() {
+  const t = useTranslations("sustainability");
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
   useEffect(() => {
@@ -329,13 +343,13 @@ export function SustainabilityClient() {
         if (!cancelled)
           setState({
             status: "error",
-            message: err instanceof Error ? err.message : "Could not load footprint data",
+            message: err instanceof Error ? err.message : t("errors.loadFailed"),
           });
       });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   return (
     <main className="max-w-5xl mx-auto px-5 sm:px-8 py-10">
@@ -344,44 +358,40 @@ export function SustainabilityClient() {
           className="text-3xl sm:text-4xl text-[var(--undp-black)]"
           style={{ fontFamily: "ui-serif, Georgia, Cambria, serif" }}
         >
-          AI sustainability footprint
+          {t("page.title")}
         </h1>
         <p className="text-[var(--undp-gray)] mt-2 max-w-2xl leading-relaxed">
-          The estimated environmental cost of the AI computation behind this tool,
-          covering document analysis, the inference pipeline, and the chatbot. This
-          is a transparency record for reporting, not policy advice.
+          {t("page.intro")}
         </p>
         <p className="text-xs text-[var(--undp-gray)] mt-3">
-          AI-estimated using the{" "}
-          <a
-            href="https://ecologits.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-[var(--undp-blue)]"
-          >
-            EcoLogits
-          </a>{" "}
-          methodology. Figures are modelled estimates, not meter readings, and carry
-          a margin of uncertainty.
+          {t.rich("page.methodology", {
+            link: (chunks) => (
+              <a
+                href="https://ecologits.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-[var(--undp-blue)]"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </header>
 
       {state.status === "loading" && (
-        <p className="text-sm text-[var(--undp-gray)]">Loading footprint data...</p>
+        <p className="text-sm text-[var(--undp-gray)]">{t("loading")}</p>
       )}
 
       {state.status === "error" && (
         <p className="text-sm text-[var(--undp-red)]">
-          Could not load footprint data: {state.message}
+          {t("errors.withMessage", { message: state.message })}
         </p>
       )}
 
       {state.status === "ready" && state.data.totals.event_count === 0 && (
         <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-8 text-center">
-          <p className="text-sm text-[var(--undp-gray)]">
-            No footprint recorded yet. Run an analysis or send a chat message, and
-            this page will start tracking the AI compute behind it.
-          </p>
+          <p className="text-sm text-[var(--undp-gray)]">{t("empty")}</p>
         </div>
       )}
 
@@ -393,16 +403,20 @@ export function SustainabilityClient() {
 }
 
 function Dashboard({ data }: { data: FootprintRollup }) {
+  const t = useTranslations("sustainability");
   const [metricKey, setMetricKey] = useState<keyof FootprintMetrics>("co2_geq");
   const metric = METRICS.find((m) => m.key === metricKey) ?? METRICS[0];
+  const metricLabel = t(`tile.${metric.tileKey}`);
 
   const { totals } = data;
   const carbon = fmtCarbon(totals.co2_geq);
   const energy = fmtEnergy(totals.energy_wh);
   const water = fmtWater(totals.water_ml);
   const minerals = fmtMinerals(totals.minerals_ugsbeq);
-  const callsLabel = `across ${compact(totals.call_count)} model calls`;
-  const lastRecorded = data.latestTs ? data.latestTs.slice(0, 10) : "n/a";
+  const callsLabel = t("tile.callsLabel", { calls: compact(totals.call_count) });
+  const lastRecorded = data.latestTs
+    ? data.latestTs.slice(0, 10)
+    : t("tile.notAvailable");
   const stamp = new Date().toISOString().slice(0, 10);
 
   // Breakdown bars follow the selected metric (all four live in each bucket).
@@ -413,10 +427,7 @@ function Dashboard({ data }: { data: FootprintRollup }) {
     buckets
       .map((b) => ({ label: labelOf(b.key), value: b[metricKey], calls: b.call_count }))
       .sort((a, b) => b.value - a.value);
-  const componentBars = toBars(
-    data.byComponent,
-    (k) => COMPONENT_LABELS[k as FootprintComponent] ?? k,
-  );
+  const componentBars = toBars(data.byComponent, (k) => componentLabel(t, k));
   const modelBars = toBars(data.byModel, (k) => k);
   const regionBars = toBars(data.byRegion, (k) => k);
 
@@ -437,52 +448,52 @@ function Dashboard({ data }: { data: FootprintRollup }) {
           onClick={exportCsv}
           className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
         >
-          Export CSV
+          {t("exportCsv")}
         </button>
         <button
           type="button"
           onClick={exportJson}
           className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
         >
-          Export JSON
+          {t("exportJson")}
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricTile
-          label="Carbon"
+          label={t("tile.carbon")}
           value={carbon.value}
           unit={carbon.unit}
-          unitTitle="CO2e: carbon dioxide equivalent"
+          unitTitle={t("tile.carbonUnitTitle")}
           sub={callsLabel}
         />
         <MetricTile
-          label="Energy"
+          label={t("tile.energy")}
           value={energy.value}
           unit={energy.unit}
-          unitTitle="kWh: kilowatt hours; Wh: watt hours"
-          sub={`last recorded ${lastRecorded}`}
+          unitTitle={t("tile.energyUnitTitle")}
+          sub={t("tile.lastRecorded", { date: lastRecorded })}
         />
         <MetricTile
-          label="Water"
+          label={t("tile.water")}
           value={water.value}
           unit={water.unit}
-          unitTitle="Water consumption footprint (data-centre cooling)"
-          sub="consumption footprint"
+          unitTitle={t("tile.waterUnitTitle")}
+          sub={t("tile.waterSub")}
         />
         <MetricTile
-          label="Minerals"
+          label={t("tile.minerals")}
           value={minerals.value}
           unit={minerals.unit}
-          unitTitle="ADPe: abiotic depletion potential, antimony (Sb) equivalent"
-          sub="abiotic resource use"
+          unitTitle={t("tile.mineralsUnitTitle")}
+          sub={t("tile.mineralsSub")}
         />
       </div>
 
       <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-[var(--undp-gray)]">
-            Break down by resource:
+            {t("metricSelector.label")}
           </span>
           {METRICS.map((m) => (
             <button
@@ -496,28 +507,28 @@ function Dashboard({ data }: { data: FootprintRollup }) {
                   : "text-[var(--undp-gray)] border-gray-200 hover:border-[var(--undp-blue)]/40"
               }`}
             >
-              {m.label}
+              {t(`tile.${m.tileKey}`)}
             </button>
           ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <BreakdownBars
-            title={`${metric.label} by component`}
+            title={t("charts.byComponentMetric", { metric: metricLabel })}
             data={componentBars}
-            name={metric.label}
+            name={metricLabel}
             fmt={metric.fmt}
           />
           <BreakdownBars
-            title={`${metric.label} by model`}
+            title={t("charts.byModelMetric", { metric: metricLabel })}
             data={modelBars}
-            name={metric.label}
+            name={metricLabel}
             fmt={metric.fmt}
           />
           <BreakdownBars
-            title={`${metric.label} by region`}
+            title={t("charts.byRegionMetric", { metric: metricLabel })}
             data={regionBars}
-            name={metric.label}
+            name={metricLabel}
             fmt={metric.fmt}
           />
         </div>
@@ -525,7 +536,7 @@ function Dashboard({ data }: { data: FootprintRollup }) {
         <CumulativeImpact
           events={data.events}
           metricKey={metricKey}
-          metricLabel={metric.label}
+          metricLabel={metricLabel}
           fmt={metric.fmt}
         />
       </div>
@@ -536,23 +547,24 @@ function Dashboard({ data }: { data: FootprintRollup }) {
 }
 
 function EventsTable({ data }: { data: FootprintRollup }) {
+  const t = useTranslations("sustainability");
   const rows = [...data.events].sort((a, b) => b.ts.localeCompare(a.ts));
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-5 overflow-x-auto">
       <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-        Recorded activity
+        {t("table.title")}
       </h3>
       <table className="w-full text-xs text-left border-collapse">
         <thead>
           <tr className="text-[var(--undp-gray)] border-b border-gray-100">
-            <th className="py-2 pr-3 font-semibold">Date</th>
-            <th className="py-2 pr-3 font-semibold">Component</th>
-            <th className="py-2 pr-3 font-semibold">Model</th>
-            <th className="py-2 pr-3 font-semibold">Region</th>
-            <th className="py-2 pr-3 font-semibold text-right">Calls</th>
-            <th className="py-2 pr-3 font-semibold text-right">Energy</th>
-            <th className="py-2 pr-3 font-semibold text-right">Carbon</th>
-            <th className="py-2 font-semibold">Basis</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.date")}</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.component")}</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.model")}</th>
+            <th className="py-2 pr-3 font-semibold">{t("table.region")}</th>
+            <th className="py-2 pr-3 font-semibold text-right">{t("table.calls")}</th>
+            <th className="py-2 pr-3 font-semibold text-right">{t("table.energy")}</th>
+            <th className="py-2 pr-3 font-semibold text-right">{t("table.carbon")}</th>
+            <th className="py-2 font-semibold">{t("table.basis")}</th>
           </tr>
         </thead>
         <tbody className="text-[var(--undp-black)]">
@@ -563,7 +575,7 @@ function EventsTable({ data }: { data: FootprintRollup }) {
               <tr key={`${e.ts}-${i}`} className="border-b border-gray-50">
                 <td className="py-2 pr-3 whitespace-nowrap">{e.ts.slice(0, 10)}</td>
                 <td className="py-2 pr-3 whitespace-nowrap">
-                  {COMPONENT_LABELS[e.component] ?? e.component}
+                  {componentLabel(t, e.component)}
                 </td>
                 <td className="py-2 pr-3 whitespace-nowrap">{e.model}</td>
                 <td className="py-2 pr-3 whitespace-nowrap">{e.region}</td>
@@ -577,7 +589,7 @@ function EventsTable({ data }: { data: FootprintRollup }) {
                   {carbon.value} {carbon.unit}
                 </td>
                 <td className="py-2 whitespace-nowrap text-[var(--undp-gray)]">
-                  {SOURCE_LABELS[e.source] ?? e.source}
+                  {sourceLabel(t, e.source)}
                 </td>
               </tr>
             );

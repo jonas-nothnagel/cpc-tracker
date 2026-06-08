@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
 
@@ -29,36 +30,38 @@ interface AnalysisStatus {
 }
 
 function FootprintDisplay({ footprint }: { footprint: FootprintSnapshot }) {
+  const t = useTranslations("analysis.footprint");
   if (!footprint.available) {
     return null;
   }
 
   const metrics = [
-    { label: "Energy", value: formatFootprintValue(footprint.energy_wh), unit: "Wh" },
-    { label: "Water", value: formatFootprintValue(footprint.water_ml), unit: "mL" },
-    { label: "CO\u2082eq", value: formatFootprintValue(footprint.co2_geq), unit: "g" },
+    { label: t("energyLabel"), value: formatFootprintValue(footprint.energy_wh), unit: t("energyUnit") },
+    { label: t("waterLabel"), value: formatFootprintValue(footprint.water_ml), unit: t("waterUnit") },
+    { label: t("co2Label"), value: formatFootprintValue(footprint.co2_geq), unit: t("co2Unit") },
     {
-      label: "Minerals",
+      label: t("mineralsLabel"),
       value: formatFootprintValue(footprint.minerals_ugsbeq),
-      unit: "\u00b5gSbeq",
+      unit: t("mineralsUnit"),
     },
   ];
 
   const callSummary =
     footprint.source === "estimated"
-      ? `${footprint.cached_call_count.toLocaleString()} cached calls`
-      : `${footprint.tracked_call_count.toLocaleString()} calls tracked${
-          footprint.cached_call_count > 0
-            ? ` \u00b7 ${footprint.cached_call_count.toLocaleString()} cached`
-            : ""
-        }`;
+      ? t("cachedCalls", { count: footprint.cached_call_count })
+      : footprint.cached_call_count > 0
+        ? t("callsWithCache", {
+            tracked: footprint.tracked_call_count,
+            cached: footprint.cached_call_count,
+          })
+        : t("callsTracked", { count: footprint.tracked_call_count });
 
   return (
     <div className="mt-6 max-w-md mx-auto">
       <div className="rounded-md border border-gray-100 bg-gray-50/50 px-4 py-3">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-[var(--undp-black)]">
-            Environmental footprint
+            {t("title")}
           </span>
           <span className="text-[10px] text-[var(--undp-gray)]">
             {callSummary}
@@ -77,10 +80,8 @@ function FootprintDisplay({ footprint }: { footprint: FootprintSnapshot }) {
           ))}
         </div>
         <p className="text-[10px] text-[var(--undp-gray)] mt-2 leading-snug">
-          {footprint.source === "estimated"
-            ? "Estimated from call counts (cached run) via EcoLogits."
-            : "Measured via EcoLogits."}{" "}
-          Values are indicative and may differ from actual consumption.
+          {footprint.source === "estimated" ? t("estimatedNote") : t("measuredNote")}{" "}
+          {t("indicativeNote")}
         </p>
       </div>
     </div>
@@ -88,8 +89,6 @@ function FootprintDisplay({ footprint }: { footprint: FootprintSnapshot }) {
 }
 
 type NodeState = "pending" | "active" | "done";
-
-// ─── Pipeline visualization ──────────────────────────────────────────────────
 
 function PipelineNode({
   step,
@@ -108,9 +107,7 @@ function PipelineNode({
 }) {
   return (
     <div className="relative">
-      {/* Node row */}
       <div className="flex items-start gap-4">
-        {/* Step indicator + connector line */}
         <div className="flex flex-col items-center w-8 shrink-0">
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all duration-500 ${
@@ -135,7 +132,6 @@ function PipelineNode({
               step
             )}
           </div>
-          {/* Connector line */}
           {!isLast && (
             <div
               className={`w-0.5 flex-1 min-h-[24px] transition-colors duration-500 ${
@@ -145,7 +141,6 @@ function PipelineNode({
           )}
         </div>
 
-        {/* Content box */}
         <div
           className={`flex-1 rounded-lg border px-4 py-3 mb-3 transition-all duration-500 ${
             state === "active"
@@ -214,6 +209,7 @@ function InputChip({
 }
 
 function PipelineViz({ status }: { status: AnalysisStatus }) {
+  const t = useTranslations("analysis.pipeline");
   const step = status.step;
   const done = status.status === "completed";
   const summary = status.summary;
@@ -225,67 +221,70 @@ function PipelineViz({ status }: { status: AnalysisStatus }) {
     return "pending";
   }
 
-  const pairCount = summary ? summary.totalPairs.toLocaleString() : "...";
-
   return (
     <div>
-      {/* Input labels */}
       <div className="flex items-center justify-center gap-3 mb-4">
-        <InputChip label="Your policy targets" state={step >= 1 ? "active" : "pending"} />
+        <InputChip label={t("input.policyTargets")} state={step >= 1 ? "active" : "pending"} />
         <span className={`text-xs transition-colors duration-500 ${step >= 1 ? "text-[var(--undp-gray)]" : "text-gray-200"}`}>+</span>
-        <InputChip label="NBS categories & IPCC sectors" state={step >= 1 ? "active" : "pending"} />
+        <InputChip label={t("input.taxonomy")} state={step >= 1 ? "active" : "pending"} />
       </div>
 
-      {/* Merge arrow */}
       <div className="flex justify-center mb-2">
         <div className={`w-0.5 h-5 transition-colors duration-500 ${step >= 1 ? "bg-gray-300" : "bg-gray-100"}`} />
       </div>
 
-      {/* Pipeline steps */}
       <div className="max-w-md mx-auto">
         <PipelineNode
           step={1}
-          title="Quantitative detection"
-          detail="Scanning each target for numeric metrics and time-bound commitments"
-          output={getState(1) === "done" ? "Metrics and deadlines identified" : undefined}
+          title={t("step1.title")}
+          detail={t("step1.detail")}
+          output={getState(1) === "done" ? t("step1.output") : undefined}
           state={getState(1)}
         />
         <PipelineNode
           step={2}
-          title="Thematic classification"
-          detail="Mapping each target to relevant NBS categories and IPCC sectors"
+          title={t("step2.title")}
+          detail={t("step2.detail")}
           output={
             getState(2) === "done" && summary
-              ? `${summary.relevantClassifications} relevant matches found across ${summary.totalClassifications.toLocaleString()} comparisons`
+              ? t("step2.output", {
+                  relevant: summary.relevantClassifications,
+                  total: summary.totalClassifications,
+                })
               : undefined
           }
           state={getState(2)}
         />
         <PipelineNode
           step={3}
-          title="Cross-document pairing"
-          detail="Identifying targets from different documents that share common IPCC sectors"
+          title={t("step3.title")}
+          detail={t("step3.detail")}
           output={
-            getState(3) === "done"
-              ? `${pairCount} target pairs identified for comparison`
+            getState(3) === "done" && summary
+              ? t("step3.output", { count: summary.totalPairs })
               : undefined
           }
           state={getState(3)}
         />
         <PipelineNode
           step={4}
-          title="Target decomposition"
-          detail="Breaking down each target into goals, actions, ecosystems, audiences, and expected impacts"
-          output={getState(4) === "done" ? "All paired targets decomposed" : undefined}
+          title={t("step4.title")}
+          detail={t("step4.detail")}
+          output={getState(4) === "done" ? t("step4.output") : undefined}
           state={getState(4)}
         />
         <PipelineNode
           step={5}
-          title="Alignment assessment"
-          detail="Comparing target pairs to determine policy coherence levels"
+          title={t("step5.title")}
+          detail={t("step5.detail")}
           output={
             getState(5) === "done" && summary
-              ? `${pairCount} pairs assessed: ${summary.alignmentLevels?.high ?? 0} high, ${summary.alignmentLevels?.medium ?? 0} medium, ${summary.alignmentLevels?.low ?? 0} low alignment`
+              ? t("step5.output", {
+                  count: summary.totalPairs,
+                  high: summary.alignmentLevels?.high ?? 0,
+                  medium: summary.alignmentLevels?.medium ?? 0,
+                  low: summary.alignmentLevels?.low ?? 0,
+                })
               : undefined
           }
           state={getState(5)}
@@ -296,11 +295,10 @@ function PipelineViz({ status }: { status: AnalysisStatus }) {
   );
 }
 
-// ─── Main page ───────────────────────────────────────────────────────────────
-
 export default function AnalysisPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const t = useTranslations("analysis");
   const [status, setStatus] = useState<AnalysisStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -310,17 +308,17 @@ export default function AnalysisPage() {
       const res = await fetch(`/api/analyze/${id}/status`);
       if (!res.ok) {
         const body = await res.json();
-        setError(body.error ?? "Analysis not found");
+        setError(body.error ?? t("errors.notFound"));
         return null;
       }
       const data: AnalysisStatus = await res.json();
       setStatus(data);
       return data;
     } catch {
-      setError("Failed to check analysis status");
+      setError(t("errors.statusCheck"));
       return null;
     }
-  }, [id]);
+  }, [id, t]);
 
   useEffect(() => {
     let active = true;
@@ -341,7 +339,6 @@ export default function AnalysisPage() {
     };
   }, [poll]);
 
-  // Live elapsed timer
   useEffect(() => {
     if (
       !status ||
@@ -362,53 +359,49 @@ export default function AnalysisPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header subtitle="Analysis" />
+      <Header subtitle={t("headerSubtitle")} />
 
       <main className="flex-1 max-w-3xl mx-auto px-6 py-12 w-full">
-        {/* ─── Error state ──────────────────────────────────── */}
         {error && (
           <div className="text-center">
-            <h2 className="text-lg font-medium text-red-600 mb-2">Error</h2>
+            <h2 className="text-lg font-medium text-red-600 mb-2">{t("errorHeading")}</h2>
             <p className="text-sm text-[var(--undp-gray)]">{error}</p>
             <Link
               href="/upload"
               className="inline-block mt-6 px-6 py-2.5 bg-[var(--undp-blue)] text-white text-sm rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors"
             >
-              Back to Upload
+              {t("backToUpload")}
             </Link>
           </div>
         )}
 
-        {/* ─── Loading ──────────────────────────────────────── */}
         {!error && !status && (
           <div className="text-center py-12">
             <p className="text-[var(--undp-gray)]">
-              Loading analysis status...
+              {t("loadingStatus")}
             </p>
           </div>
         )}
 
-        {/* ─── Running ──────────────────────────────────────── */}
         {status &&
           status.status !== "failed" &&
           status.status !== "completed" && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-2">
-                  Running Analysis
+                  {t("running.title")}
                 </h1>
                 <p className="text-sm text-[var(--undp-gray)]">
                   {status.message}
                 </p>
               </div>
 
-              {/* Progress summary bar */}
               <div className="mb-6 max-w-md mx-auto">
                 <div className="flex justify-between text-xs text-[var(--undp-gray)] mb-2">
                   <span>
-                    Step {status.step} of {status.totalSteps}
+                    {t("running.stepOf", { step: status.step, total: status.totalSteps })}
                   </span>
-                  <span>{elapsed > 0 ? `${elapsed}s` : ""}</span>
+                  <span>{elapsed > 0 ? t("running.elapsed", { sec: elapsed }) : ""}</span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-1.5">
                   <div
@@ -418,19 +411,16 @@ export default function AnalysisPage() {
                 </div>
               </div>
 
-              {/* Running environmental footprint */}
               {status.footprint && (
                 <div className="mb-10">
                   <FootprintDisplay footprint={status.footprint} />
                 </div>
               )}
 
-              {/* Pipeline diagram */}
               <PipelineViz status={status} />
             </div>
           )}
 
-        {/* ─── Completed ────────────────────────────────────── */}
         {status?.status === "completed" && (
           <div>
             <div className="text-center mb-10">
@@ -452,32 +442,32 @@ export default function AnalysisPage() {
                 </svg>
               </div>
               <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-2">
-                Analysis Complete
+                {t("complete.title")}
               </h1>
               {status.summary && (
                 <p className="text-sm text-[var(--undp-gray)] mb-6">
-                  Processed {status.summary.totalTargets} targets with{" "}
-                  {status.summary.totalPairs} alignment pairs in{" "}
-                  {status.summary.elapsedSeconds}s
+                  {t("complete.summary", {
+                    targets: status.summary.totalTargets,
+                    pairs: status.summary.totalPairs,
+                    sec: status.summary.elapsedSeconds,
+                  })}
                 </p>
               )}
               <button
                 onClick={() => router.push(`/dashboard?analysisId=${id}`)}
                 className="px-8 py-3 bg-[var(--undp-blue)] text-white text-sm font-medium rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors"
               >
-                View Dashboard →
+                {t("complete.viewDashboard")}
               </button>
               {status.footprint && (
                 <FootprintDisplay footprint={status.footprint} />
               )}
             </div>
 
-            {/* Show completed pipeline */}
             <PipelineViz status={status} />
           </div>
         )}
 
-        {/* ─── Failed ───────────────────────────────────────── */}
         {status?.status === "failed" && (
           <div>
             <div className="text-center mb-10">
@@ -485,22 +475,20 @@ export default function AnalysisPage() {
                 <span className="text-red-600 text-2xl font-bold">!</span>
               </div>
               <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-2">
-                Analysis Failed
+                {t("failed.title")}
               </h1>
               <p className="text-sm text-red-600 mb-4">{status.error}</p>
               <p className="text-sm text-[var(--undp-gray)] mb-6">
-                The pipeline encountered an error. Please check your targets and
-                try again.
+                {t("failed.body")}
               </p>
               <Link
                 href="/upload"
                 className="inline-block px-6 py-2.5 bg-[var(--undp-blue)] text-white text-sm rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors"
               >
-                Back to Upload
+                {t("backToUpload")}
               </Link>
             </div>
 
-            {/* Show pipeline state at failure */}
             <PipelineViz status={status} />
           </div>
         )}
@@ -508,7 +496,7 @@ export default function AnalysisPage() {
 
       <footer className="border-t border-gray-100 mt-auto">
         <div className="max-w-5xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
-          United Nations Development Programme · CPC Tracker
+          {t("footer")}
         </div>
       </footer>
     </div>

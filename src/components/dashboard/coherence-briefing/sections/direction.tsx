@@ -21,6 +21,7 @@
 
 import { useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import {
   PrimerCard,
@@ -69,6 +70,7 @@ export function DirectionSection({
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
+  const t = useTranslations("briefing.direction");
   const storylines = pickStorylinePreview(corpusThemes?.storylines ?? []);
 
   const synthesis = (
@@ -90,7 +92,7 @@ export function DirectionSection({
   return (
     <SlideFrame
       id={DIRECTION_SECTION_ID}
-      eyebrow="Are these policies coherent with each other?"
+      eyebrow={t("eyebrow")}
       headline={verdict.headline}
       body={synthesis}
       evidence={
@@ -176,12 +178,7 @@ function RecurringPatternsBlock({
   ];
   return (
     <div className="space-y-3">
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-        Recurring patterns{" "}
-        <span className="tabular-nums">
-          ({storylines.length.toLocaleString()})
-        </span>
-      </p>
+      <RecurringPatternsLabel count={storylines.length} />
       <ul className="grid gap-2 sm:grid-cols-2">
         {ordered.map((s) => (
           <li key={`${s.type}-${s.name}`}>
@@ -198,20 +195,31 @@ function RecurringPatternsBlock({
   );
 }
 
-function focusClause(c: TargetConcentration): string | null {
+function RecurringPatternsLabel({ count }: { count: number }) {
+  const t = useTranslations("briefing.direction");
+  return (
+    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+      {t("recurringPatterns")}{" "}
+      <span className="tabular-nums">({count.toLocaleString()})</span>
+    </p>
+  );
+}
+
+function focusClause(
+  c: TargetConcentration,
+  t: ReturnType<typeof useTranslations<"briefing.direction">>,
+): string | null {
   if (c.totalFlaggedPairs === 0 || c.contestedTargetCount === 0) return null;
   const concentrated =
     c.topCount <= Math.max(1, Math.round(c.contestedTargetCount * 0.2));
   const sharePct = Math.round(c.coveredPairShare * 100);
   return concentrated
-    ? `most of them (${sharePct}%) trace to just ${c.topCount} target${c.topCount === 1 ? "" : "s"}`
-    : `they spread across ${c.contestedTargetCount} targets`;
+    ? t("focusConcentrated", { pct: sharePct, count: c.topCount })
+    : t("focusSpread", { count: c.contestedTargetCount });
 }
 
-const STRONG_ALIGNMENT_DEFINITION =
-  "Two targets that pull in the same direction: one supports or advances the other. A real scored pair from this set:";
-const POTENTIAL_MISALIGNMENT_DEFINITION =
-  "Two targets the AI identified as possibly working against each other: a prompt for human review, not a settled finding. A real scored pair:";
+// Definitions surface in the AlignmentTermPopover; consumer reads them from
+// translations via the `t` instance passed in.
 
 function SynthesisSentence({
   countryName,
@@ -238,36 +246,34 @@ function SynthesisSentence({
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
-  const focusText = focusClause(concentration);
-  const docPhrase =
-    documentCount === 1
-      ? "1 document"
-      : `${documentCount.toLocaleString()} documents`;
+  const t = useTranslations("briefing.direction");
+  const focusText = focusClause(concentration, t);
+  const docPhrase = t("docPhrase", { count: documentCount });
   const denom = verdict.alignmentPairs + verdict.tensionPairs;
   const reinforcePct =
     denom > 0 ? Math.round((verdict.alignmentPairs / denom) * 100) : 0;
   return (
     <>
-      Across {docPhrase} from {countryName},{" "}
+      {t("openingPrefix", { docPhrase, country: countryName })}{" "}
       <span className="tabular-nums">{verdict.signalPairs.toLocaleString()}</span>{" "}
-      target pairs were scored.{" "}
+      {t("scoredSuffix")}{" "}
       <span className="text-[var(--undp-black)] font-medium tabular-nums">
         {reinforcePct}%
       </span>{" "}
-      reach{" "}
+      {t("reach")}{" "}
       <AlignmentTermPopover
         kind="aligned"
         example={primer.aligned}
-        definition={STRONG_ALIGNMENT_DEFINITION}
+        definition={t("alignedDefinition")}
         countryConfig={countryConfig}
         onOpenPair={onOpenPair}
         onHighlightPair={onHighlightPair}
       >
-        strong alignment
+        {t("strongAlignment")}
       </AlignmentTermPopover>
       {reinforce && (
         <>
-          , anchored by{" "}
+          {t("anchoredBy")}{" "}
           <InlineStorylineLink
             storyline={reinforce}
             onOpen={() => onOpenStoryline(reinforce)}
@@ -276,27 +282,27 @@ function SynthesisSentence({
           (<span className="tabular-nums">
             {reinforce.pair_count.toLocaleString()}
           </span>
-          {" "}pairs)
+          {" "}{t("pairsParen")})
         </>
       )}
       .{" "}
       <span className="tabular-nums">
         {verdict.tensionPairs.toLocaleString()}
       </span>{" "}
-      pair{verdict.tensionPairs === 1 ? "" : "s"} show{" "}
+      {t("pairsShow", { count: verdict.tensionPairs })}{" "}
       <AlignmentTermPopover
         kind="flagged"
         example={primer.tension}
-        definition={POTENTIAL_MISALIGNMENT_DEFINITION}
+        definition={t("flaggedDefinition")}
         countryConfig={countryConfig}
         onOpenPair={onOpenPair}
         onHighlightPair={onHighlightPair}
       >
-        potential misalignment
+        {t("potentialMisalignment")}
       </AlignmentTermPopover>
       {friction && (
         <>
-          , most prominently around{" "}
+          {t("mostProminentlyAround")}{" "}
           <InlineStorylineLink
             storyline={friction}
             onOpen={() => onOpenStoryline(friction)}
@@ -305,7 +311,7 @@ function SynthesisSentence({
           (<span className="tabular-nums">
             {friction.pair_count.toLocaleString()}
           </span>
-          {" "}pairs)
+          {" "}{t("pairsParen")})
         </>
       )}
       {focusText && <>; {focusText}</>}
@@ -338,6 +344,7 @@ function AlignmentTermPopover({
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
+  const t = useTranslations("briefing.direction");
   const ref = useRef<HTMLButtonElement>(null);
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(
     null,
@@ -380,9 +387,12 @@ function AlignmentTermPopover({
         onKeyDown={(e) => {
           if (e.key === "Escape") hide();
         }}
-        aria-label={`Show an example of ${
-          kind === "aligned" ? "strong alignment" : "potential misalignment"
-        }`}
+        aria-label={t("popoverAriaLabel", {
+          term:
+            kind === "aligned"
+              ? t("strongAlignment")
+              : t("potentialMisalignment"),
+        })}
         className="font-medium text-[var(--undp-black)] underline decoration-dotted decoration-1 underline-offset-2 hover:decoration-2 focus:outline-none focus:decoration-2"
         style={{ textDecorationColor: color }}
       >
@@ -405,7 +415,7 @@ function AlignmentTermPopover({
               countryConfig={countryConfig}
             />
             <p className="mt-3 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
-              Click the term to open this pair
+              {t("clickToOpenPair")}
             </p>
           </div>,
           document.body,
@@ -421,12 +431,13 @@ function InlineStorylineLink({
   storyline: CorpusStoryline;
   onOpen: () => void;
 }) {
+  const t = useTranslations("briefing.direction");
   return (
     <button
       type="button"
       onClick={onOpen}
       className="text-[var(--undp-black)] underline underline-offset-2 decoration-1 hover:decoration-2 italic"
-      title={`Open the “${storyline.name}” theme`}
+      title={t("storylineOpenTitle", { name: storyline.name })}
     >
       {storyline.name}
     </button>
@@ -444,6 +455,7 @@ function PrimerDisclosure({
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
+  const t = useTranslations("briefing.direction");
   const [collapsed, setCollapsed] = useState(() => {
     if (typeof window === "undefined") return true;
     try {
@@ -478,12 +490,12 @@ function PrimerDisclosure({
         <span aria-hidden="true" className="text-[10px]">
           {collapsed ? "▸" : "▾"}
         </span>
-        How the pipeline built this view
+        {t("howPipelineBuilt")}
       </button>
       {!collapsed && (
         <div id={id} className="mt-3 space-y-3">
           <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] max-w-prose">
-            One scored pair from each end of the spectrum.
+            {t("onePairFromEnd")}
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {primer.aligned && (
@@ -506,7 +518,7 @@ function PrimerDisclosure({
             )}
             {!primer.aligned && !primer.tension && (
               <p className="text-xs italic text-[var(--undp-gray)] sm:col-span-2">
-                Not enough scored pairs to show an underlying example.
+                {t("notEnoughPairs")}
               </p>
             )}
           </div>
