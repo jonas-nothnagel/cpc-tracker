@@ -38,6 +38,7 @@ from .classify_globe import (
     load_few_shot_examples,
 )
 from .align import decompose_targets, generate_pairs, assess_alignment
+from .extract_friction_dimensions import enrich_with_friction_dimensions
 from .llm import estimate_footprint_from_counts, get_footprint_tracker, set_language
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
@@ -57,6 +58,12 @@ from .budget_align import (
 from .synthesize_doc_pairs import synthesize_doc_pairs
 from .synthesize_corpus import synthesize_corpus
 from .synthesize_by_sector import synthesize_by_sector
+from .synthesis_states import (
+    canonical_hidden_key,
+    filter_doc_pair_records,
+    filter_targets_alignment,
+    precompute_hidden_states,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -218,16 +225,28 @@ async def main() -> None:
         config_filename = derive_country_file(args.targets_file, "country-config")
         config_path = DATA_DIR / config_filename
         doc_type_labels: dict[str, str] | None = None
+        # Documents hidden by default in the dashboard. Drives the storyline
+        # precompute states (full corpus + each contested doc removed) so the
+        # client's document toggle stays exact with no live LLM call.
+        default_hidden_doc_types: list[str] = []
         if config_path.exists():
             country_config = json.loads(config_path.read_text())
             doc_type_labels = {
                 dt["id"]: dt["mediumLabel"]
                 for dt in country_config.get("documentTypes", [])
             }
+            default_hidden_doc_types = list(
+                country_config.get("defaultHiddenDocTypes", []) or []
+            )
             logger.info(
                 f"Loaded doc-type labels from {config_filename}: "
                 f"{list(doc_type_labels.values())}"
             )
+            if default_hidden_doc_types:
+                logger.info(
+                    f"Default-hidden doc types (drive storyline precompute): "
+                    f"{default_hidden_doc_types}"
+                )
 
         # Load the country's hand-curated BTR adaptation file once if present.
         # Filename is derived from the targets file so a second country only
@@ -372,6 +391,18 @@ async def main() -> None:
         logger.info("-" * 40)
 
         alignment_results = await assess_alignment(pairs, decompositions, doc_type_labels)
+
+        # Tag flagged pairs with the concrete dimension they concern (contested
+        # resource / shared geography), read from the rationale just produced.
+        # Own cache namespace, so this never re-runs alignment. Enrichment is
+        # additive and non-essential: a failure here must not discard the
+        # expensive alignment output, so log and save the unenriched results.
+        try:
+            alignment_results = await enrich_with_friction_dimensions(alignment_results)
+        except Exception as e:
+            logger.warning(
+                f"Friction-dimension enrichment failed; saving alignment without it: {e}"
+            )
 
         # Save alignment results
         out_path = OUTPUT_DIR / "alignment.json"
@@ -609,6 +640,9 @@ async def main() -> None:
         logger.info("STEP 8: Synthesis (doc-pair, corpus, sector)")
         logger.info("-" * 40)
 
+        # Doc-pair synthesis runs ONCE over the full corpus and is written as a
+        # flat array; the frontend filters it live (a pair drops if either side
+        # is hidden), so it needs no per-state precompute.
         doc_pair_records = await synthesize_doc_pairs(
             targets, alignment_results, doc_type_labels,
         )
@@ -620,16 +654,10 @@ async def main() -> None:
         if config_path.exists():
             cfg_for_name = json.loads(config_path.read_text())
             country_name = cfg_for_name.get("name") or country_name
-        corpus_record = await synthesize_corpus(doc_pair_records, country_name)
-        out_path = OUTPUT_DIR / "corpus_themes.json"
-        out_path.write_text(json.dumps(corpus_record, indent=2, ensure_ascii=False))
-        logger.info(
-            f"  Saved corpus themes ({len(corpus_record.get('storylines', []) or [])} "
-            f"storylines) to {out_path}"
-        )
 
-        # Sector synthesis needs category-name resolution. Build it from the
-        # taxonomies already loaded in this run plus country-specific files.
+        # Sector synthesis needs category-name resolution. Build it once from the
+        # taxonomies already loaded in this run plus country-specific files; it is
+        # reused across every precompute state.
         sector_category_names: dict[tuple[str, str], str] = {}
         for cat in nbs_categories:
             sector_category_names[("nbs", cat["id"])] = cat.get("name", cat["id"])
@@ -652,14 +680,66 @@ async def main() -> None:
                     short = short + "…"
                 sector_category_names[("adaptation_goal", gid)] = short
 
-        sector_records = await synthesize_by_sector(
-            targets, alignment_results, all_classifications,
-            category_names=sector_category_names,
-            doc_type_labels=doc_type_labels,
+        # Precompute the corpus + sector storylines for each toggle state the
+        # document filter can reach: the full corpus ("") plus each contested
+        # (default-hidden) document removed. Deterministic (temperature=0), so
+        # the full-corpus calls hit the disk cache on re-run and only the
+        # hidden-state corpus call + changed-prompt sector calls cost new LLM.
+        # This keeps the toggle exact with NO live LLM at view time, and it runs
+        # on every pipeline invocation so adding a document recomputes the
+        # required states automatically.
+        precompute_states = precompute_hidden_states(default_hidden_doc_types)
+        logger.info(
+            f"  Precomputing storyline states for hidden-doc sets: "
+            f"{[canonical_hidden_key(s) or '(full)' for s in precompute_states]}"
         )
+
+        corpus_states: dict[str, dict] = {}
+        sector_states: dict[str, list] = {}
+        for state in precompute_states:
+            hidden = set(state)
+            key = canonical_hidden_key(state)
+            label = key or "full corpus"
+
+            state_doc_pairs = filter_doc_pair_records(doc_pair_records, hidden)
+            corpus_state = await synthesize_corpus(state_doc_pairs, country_name)
+            corpus_states[key] = corpus_state
+
+            state_targets, state_alignment = filter_targets_alignment(
+                targets, alignment_results, hidden
+            )
+            sector_state = await synthesize_by_sector(
+                state_targets, state_alignment, all_classifications,
+                category_names=sector_category_names,
+                doc_type_labels=doc_type_labels,
+            )
+            sector_states[key] = sector_state
+            logger.info(
+                f"    [{label}] {len(corpus_state.get('storylines', []) or [])} "
+                f"corpus storylines, {len(sector_state)} sector syntheses"
+            )
+
+        # corpus_themes.json: legacy full-corpus payload at top level (so older
+        # readers keep working) plus a `states` map keyed by canonical hidden-set.
+        corpus_full = corpus_states.get("", {})
+        corpus_payload = {**corpus_full, "states": corpus_states}
+        out_path = OUTPUT_DIR / "corpus_themes.json"
+        out_path.write_text(json.dumps(corpus_payload, indent=2, ensure_ascii=False))
+        logger.info(
+            f"  Saved corpus themes ({len(corpus_full.get('storylines', []) or [])} "
+            f"full-corpus storylines, {len(corpus_states)} states) to {out_path}"
+        )
+
+        # sector_synthesis.json: legacy full-corpus array under `synthesis` plus
+        # a `states` map. The loader falls back to a bare array as the "" state.
+        sector_full = sector_states.get("", [])
+        sector_payload = {"synthesis": sector_full, "states": sector_states}
         out_path = OUTPUT_DIR / "sector_synthesis.json"
-        out_path.write_text(json.dumps(sector_records, indent=2, ensure_ascii=False))
-        logger.info(f"  Saved {len(sector_records)} sector syntheses to {out_path}")
+        out_path.write_text(json.dumps(sector_payload, indent=2, ensure_ascii=False))
+        logger.info(
+            f"  Saved {len(sector_full)} full-corpus sector syntheses "
+            f"({len(sector_states)} states) to {out_path}"
+        )
 
         # Summary
         elapsed = time.time() - start
@@ -672,17 +752,39 @@ async def main() -> None:
         levels = {}
         for r in alignment_results:
             levels[r["alignment"]] = levels.get(r["alignment"], 0) + 1
-        contradiction_levels = ["likely_conflict", "possible_conflict", "possible_misalignment"]
-        alignment_levels = ["high", "medium", "low", "none"]
-        total_contradictions = sum(levels.get(l, 0) for l in contradiction_levels)
+        # v2.1 uses a single negative state, "flagged". The legacy v1 ladder
+        # (likely_conflict / possible_conflict / possible_misalignment) only
+        # appears in pre-migration data; count both so the summary is correct
+        # whichever schema produced this run.
+        legacy_contradiction_levels = [
+            "likely_conflict",
+            "possible_conflict",
+            "possible_misalignment",
+        ]
+        alignment_levels = ["high", "medium", "low", "none", "flagged"]
+        total_contradictions = levels.get("flagged", 0) + sum(
+            levels.get(l, 0) for l in legacy_contradiction_levels
+        )
         logger.info("  Alignment:")
         for level in alignment_levels:
             logger.info(f"    - {level}: {levels.get(level, 0)}")
         logger.info(f"  Flagged misalignments: {total_contradictions}")
-        for level in contradiction_levels:
+        # Break the flagged set down by mechanism (the v2.1 sub-field), which is
+        # the actionable cut, rather than by the dead legacy levels.
+        if total_contradictions:
+            mechanisms: dict[str, int] = {}
+            for r in alignment_results:
+                if r.get("alignment") == "flagged":
+                    mech = r.get("mechanism") or "unspecified"
+                    mechanisms[mech] = mechanisms.get(mech, 0) + 1
+            for mech, count in sorted(
+                mechanisms.items(), key=lambda kv: kv[1], reverse=True
+            ):
+                logger.info(f"    - {mech}: {count}")
+        for level in legacy_contradiction_levels:
             count = levels.get(level, 0)
             if count > 0:
-                logger.info(f"    - {level}: {count}")
+                logger.info(f"    - {level} (legacy): {count}")
         logger.info(f"  Output dir: {OUTPUT_DIR}")
 
         if measure_alignment_results:

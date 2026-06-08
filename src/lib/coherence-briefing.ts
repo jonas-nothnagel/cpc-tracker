@@ -1154,6 +1154,96 @@ export function getStorylineDocPairKeys(s: CorpusStoryline): Set<string> {
   return out;
 }
 
+// ─── Document-filter storyline state selection ──────────────────────
+// The document toggle filters the raw targets/alignment arrays live, so every
+// number recomputes in the browser. The LLM-written storyline layer can't, so
+// the pipeline precomputes corpus + sector storylines per reachable toggle
+// state (full corpus + each contested doc removed) and these selectors pick the
+// set matching the current hidden-doc selection. Doc-pair storylines are
+// pairwise and filtered live by the caller, so they need no precompute.
+
+/** Raw corpus_themes.json payload: legacy full-corpus fields at the top level
+ *  plus an optional precomputed `states` map keyed by canonical hidden-set. */
+export interface CorpusThemesPayload extends CorpusThemes {
+  states?: Record<string, CorpusThemes>;
+}
+
+/** Raw sector_synthesis.json payload: the full-corpus array under `synthesis`
+ *  plus an optional `states` map. Older outputs are a bare array, handled by
+ *  the selector's fallback. */
+export interface SectorSynthesisPayload {
+  synthesis: SectorSynthesis[];
+  states?: Record<string, SectorSynthesis[]>;
+}
+
+/**
+ * Canonical key for a hidden-doc set. Empty set -> "" (full corpus). Sorted and
+ * "+"-joined. Must stay byte-identical to the Python `canonical_hidden_key` so
+ * the precomputed state keys line up.
+ */
+export function canonicalHiddenKey(hiddenDocs: Iterable<string>): string {
+  return Array.from(new Set(hiddenDocs)).sort().join("+");
+}
+
+export interface CorpusThemesSelection {
+  themes: CorpusThemes | null;
+  /** True when storylines exactly match the current hidden set. False means the
+   *  full-corpus prose is shown as a fallback (the figures stay exact; only the
+   *  prose is full-corpus) and the caller should surface a quiet caveat. */
+  isExact: boolean;
+}
+
+/**
+ * Select the corpus themes matching the current hidden-doc set. Falls back to
+ * the full-corpus payload (with isExact=false) for any selection that has no
+ * precomputed state. Legacy payloads without a `states` map are treated as the
+ * full-corpus "" state, so older outputs render unchanged.
+ */
+export function selectCorpusThemesForState(
+  payload: CorpusThemesPayload | CorpusThemes | null | undefined,
+  hiddenDocs: Iterable<string>,
+): CorpusThemesSelection {
+  if (!payload) return { themes: null, isExact: true };
+  const states = (payload as CorpusThemesPayload).states;
+  const stripStates = (p: CorpusThemesPayload | CorpusThemes): CorpusThemes => {
+    const rest = { ...(p as CorpusThemesPayload) };
+    delete rest.states;
+    return rest as CorpusThemes;
+  };
+  const full = states?.[""] ?? stripStates(payload);
+  const key = canonicalHiddenKey(hiddenDocs);
+  if (key === "") return { themes: full, isExact: true };
+  const exact = states?.[key];
+  if (exact) return { themes: exact, isExact: true };
+  return { themes: full, isExact: false };
+}
+
+export interface SectorSynthesesSelection {
+  syntheses: SectorSynthesis[];
+  isExact: boolean;
+}
+
+/**
+ * Select the sector syntheses matching the current hidden-doc set. Accepts the
+ * new object payload or a legacy bare array (treated as the full-corpus ""
+ * state). Falls back to the full-corpus array (isExact=false) for selections
+ * with no precomputed state.
+ */
+export function selectSectorSynthesesForState(
+  payload: SectorSynthesisPayload | SectorSynthesis[] | null | undefined,
+  hiddenDocs: Iterable<string>,
+): SectorSynthesesSelection {
+  if (!payload) return { syntheses: [], isExact: true };
+  const isArray = Array.isArray(payload);
+  const states = isArray ? undefined : payload.states;
+  const full = isArray ? payload : (payload.synthesis ?? []);
+  const key = canonicalHiddenKey(hiddenDocs);
+  if (key === "") return { syntheses: full, isExact: true };
+  const exact = states?.[key];
+  if (exact) return { syntheses: exact, isExact: true };
+  return { syntheses: full, isExact: false };
+}
+
 // ─── Contradiction-type breakdown (Friction-types slide) ─────────────
 
 export type FrictionType =

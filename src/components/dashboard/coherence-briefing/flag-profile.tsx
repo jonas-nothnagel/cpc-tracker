@@ -23,7 +23,7 @@ import {
   buildTargetFrictionTree,
   type TargetFrictionTree,
 } from "@/lib/coherence-briefing";
-import { SubFieldChip } from "./theme-drawer";
+import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
   AlignmentManageability,
@@ -87,7 +87,7 @@ export function FlagProfileDrawer({
   onOpenTarget: (target: Target) => void;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   const contradictionLabels = useContradictionTypeLabels();
   useEffect(() => {
     if (!subject) return;
@@ -378,7 +378,7 @@ function CompositionGrid({
   themeNoun: string;
   onOpenTarget: (target: Target) => void;
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   const docRows: CompositionRow[] = profile.byDocPair.map((d) => ({
     key: `${d.a}__${d.b}`,
     label:
@@ -430,7 +430,7 @@ function CompositionColumn({
   rows: CompositionRow[];
   emptyText?: string;
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   const max = rows[0]?.count ?? 0;
   return (
     <div>
@@ -502,7 +502,7 @@ function ManageabilityBar({
   manageability: { manageable: number; fundamental: number; unknown: number };
   total: number;
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   const { manageable, fundamental } = manageability;
   if (manageable + fundamental === 0) return null;
   const mPct = Math.round((manageable / total) * 100);
@@ -551,7 +551,7 @@ function RepresentativePairs({
   onOpenPair: (aId: string, bId: string) => void;
   subjectKind: FlagProfileSubject["kind"];
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   return (
     <div className="border-t border-gray-200 pt-4">
       <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
@@ -577,6 +577,11 @@ function RepresentativePairs({
                     value={pair.manageability}
                   />
                 )}
+                <FrictionDimensionChip
+                  mechanism={pair.mechanism}
+                  contestedResources={pair.contestedResources}
+                  sharedContext={pair.sharedContext}
+                />
               </div>
               <p className="text-[10px] text-[var(--undp-gray)] mb-1">
                 {getDocMediumLabel(countryConfig, a.sourceDocument)}{" "}
@@ -623,7 +628,7 @@ function TargetFrictionTreeView({
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   if (tree.byMechanism.length === 0) return null;
   return (
     <div className="border-t border-gray-200 pt-4">
@@ -656,7 +661,7 @@ function MechanismBranch({
   countryConfig: CountryConfig | null;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
-  const t = useTranslations("drawer.flagProfile");
+  const t = useTranslations("briefing.drawer.flagProfile");
   const contradictionLabels = useContradictionTypeLabels();
   const color = group.mechanism
     ? MECHANISM_COLORS[group.mechanism]

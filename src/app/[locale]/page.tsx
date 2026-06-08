@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { listVisibleCountries } from "@/config/countries";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { HeroVideo } from "@/components/landing/hero-video";
-import { WheelPreview } from "@/components/landing/wheel-preview";
+import { InsideAnalysis } from "@/components/landing/inside-analysis";
 
 export default async function Home({
   params,
@@ -56,29 +56,9 @@ export default async function Home({
       </HeroVideo>
 
       {/* Inside the analysis — live coherence wheel on warm paper ground */}
-      <section className="bg-[var(--undp-paper)] py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
-          <div>
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-[var(--undp-blue)]">
-              {t("inside.eyebrow")}
-            </p>
-            <h2 className="font-display mb-5 text-3xl font-semibold leading-tight text-[var(--undp-black)] md:text-4xl">
-              {t("inside.title")}
-            </h2>
-            <p className="mb-6 max-w-md text-base leading-relaxed text-[var(--undp-gray)] md:text-lg">
-              {t("inside.body")}
-            </p>
-            <p className="max-w-sm text-xs leading-relaxed text-[var(--undp-gray)]/70">
-              {t("inside.disclaimer")}
-            </p>
-          </div>
-          <div>
-            <WheelPreview
-              countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
-            />
-          </div>
-        </div>
-      </section>
+      <InsideAnalysis
+        countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
+      />
 
       {/* How it works */}
       <section className="bg-white py-20 md:py-28">

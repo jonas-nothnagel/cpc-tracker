@@ -7,9 +7,10 @@ import { defineRouting } from "next-intl/routing";
 export const routing = defineRouting({
   locales: ["en", "es"],
   defaultLocale: "en",
-  // 'always' keeps URLs explicit (`/en/...`) so additional locales are purely
-  // additive when they ship — existing English URLs never change shape.
-  localePrefix: "always",
+  // 'as-needed' keeps existing English URLs bare (`/dashboard`, `/panama`); only
+  // non-default locales carry a prefix (`/es/...`). Bare `/` serves English
+  // directly with no redirect, so current Azure links and bookmarks keep working.
+  localePrefix: "as-needed",
 });
 
 export type Locale = (typeof routing.locales)[number];

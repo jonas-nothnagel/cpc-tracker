@@ -170,7 +170,8 @@ export function VisionAnchorCoverage({
             <br />
             <br />
             <em>
-              The corpus contains <strong>no outright conflicts flagged</strong> with{" "}
+              These policy documents contain{" "}
+              <strong>no outright conflicts flagged</strong> with{" "}
               {anchorDocLabel}; the only friction signal the model emits here is{" "}
               <em>possible misalignment</em>. The default sort surfaces ambitions with the
               weakest operational backing first, since that is the actionable gap.

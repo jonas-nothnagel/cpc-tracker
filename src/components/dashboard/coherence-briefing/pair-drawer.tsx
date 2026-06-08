@@ -26,7 +26,7 @@ import {
   useContradictionTypeLabels,
 } from "@/lib/labels";
 import { isContradiction } from "@/types";
-import { SubFieldChip } from "./theme-drawer";
+import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
   AlignmentLevel,
@@ -74,7 +74,7 @@ export function PairDrawer({
   countryConfig: CountryConfig | null;
   onClose: () => void;
 }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   // Nested mode state — when the user clicks a target-pair row inside a doc-
   // pair view, we remount the body in target-pair mode but remember the
   // doc-pair so a Back button can return without re-opening from the page.
@@ -196,7 +196,7 @@ function TargetPairBody({
   countryConfig: CountryConfig | null;
   onClose: () => void;
 }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   const alignmentLabels = useAlignmentLabels();
   const contradictionLabels = useContradictionTypeLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
@@ -266,9 +266,16 @@ function TargetPairBody({
 
         {pair.description && (
           <section className="border-t border-gray-200 pt-4">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-              {t("aiRationaleLabel")}
-            </p>
+            <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+                {t("aiRationaleLabel")}
+              </p>
+              <FrictionDimensionChip
+                mechanism={pair.mechanism}
+                contestedResources={pair.contestedResources}
+                sharedContext={pair.sharedContext}
+              />
+            </div>
             <p className="text-sm text-[var(--undp-black)] leading-relaxed italic">
               {pair.description}
             </p>
@@ -291,7 +298,7 @@ function TargetCard({
   countryConfig: CountryConfig | null;
   color: string;
 }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
   const docFull = getDocFullLabel(countryConfig, target.sourceDocument);
   return (
@@ -343,7 +350,7 @@ function DocPairBody({
     targetB: Target,
   ) => void;
 }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   const labelAFull = getDocFullLabel(countryConfig, docPair.doc_a);
   const labelBFull = getDocFullLabel(countryConfig, docPair.doc_b);
 
@@ -557,7 +564,7 @@ function ExamplesColumn({
   ) => void;
   totalCount: number;
 }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   const [expanded, setExpanded] = useState(false);
   const visible = expanded
     ? examples
@@ -614,7 +621,7 @@ function ExamplesColumn({
 }
 
 function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   const contradictionLabels = useContradictionTypeLabels();
   // v2.1 canonical mechanism keys + legacy v1 fallback. Older synthesis
   // JSON written before the v2 migration emits `implementation_tension`
@@ -685,7 +692,7 @@ function FallbackTargetPairList({
     targetB: Target,
   ) => void;
 }) {
-  const t = useTranslations("drawer.pair");
+  const t = useTranslations("briefing.drawer.pair");
   const [showAligned, setShowAligned] = useState(false);
   const visible = showAligned
     ? [...flaggedPairs, ...alignedPairs]
@@ -778,6 +785,11 @@ function TargetPairRow({
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />
           )}
+          <FrictionDimensionChip
+            mechanism={pair.mechanism}
+            contestedResources={pair.contestedResources}
+            sharedContext={pair.sharedContext}
+          />
         </div>
         <p className="text-[10px] text-[var(--undp-gray)] mb-0.5">
           {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}

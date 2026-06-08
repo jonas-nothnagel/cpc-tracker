@@ -56,7 +56,7 @@ export function SectorDrawer({
     targetB: Target,
   ) => void;
 }) {
-  const t = useTranslations("drawer.sector");
+  const t = useTranslations("briefing.drawer.sector");
   useEffect(() => {
     if (!briefing) return;
     const onKey = (e: KeyboardEvent) => {
@@ -182,7 +182,7 @@ function SectorSynthesisBlock({
     targetB: Target,
   ) => void;
 }) {
-  const t = useTranslations("drawer.sector");
+  const t = useTranslations("briefing.drawer.sector");
   const contradictionLabels = useContradictionTypeLabels();
   if (synthesis.synthesis_error !== null) {
     return (
@@ -382,7 +382,7 @@ function ExamplesColumn({
     targetB: Target,
   ) => void;
 }) {
-  const t = useTranslations("drawer.sector");
+  const t = useTranslations("briefing.drawer.sector");
   const [expanded, setExpanded] = useState(false);
   const visible = expanded
     ? examples

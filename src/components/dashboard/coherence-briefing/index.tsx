@@ -48,33 +48,33 @@ import {
   WHERE_TO_FOCUS_SECTION_ID,
   WhereToFocusSection,
 } from "./sections/where-to-focus";
+import { EXPLORE_SECTION_ID, ExploreSection } from "./sections/explore";
 import {
-  EXPLORE_SECTION_ID,
-  ExploreSection,
-  type ExploreSectorSelection,
-} from "./sections/explore";
+  FINANCING_SECTION_ID,
+  FinancingSection,
+} from "./sections/financing";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
+import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
   WheelFocus,
-  WheelGroupBy,
   WheelState,
 } from "./centerpiece/wheel";
 import { SectorDrawer } from "./sector-drawer";
 import { PairDrawer, type PairDrawerData } from "./pair-drawer";
 import { ThemeDrawer } from "./theme-drawer";
 import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
+import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
-import { resolveExploreAction } from "./explore-actions";
-import type { ChatAction } from "@/lib/coherence-chat";
-import { getDocColor, getDocMediumLabel } from "@/lib/utils";
+import { getDocTypeOrder } from "@/lib/utils";
 import {
   buildSectorAlignmentDensity,
   buildSectorBriefing,
   buildSectorTensionDensity,
+  canonicalHiddenKey,
   computeConcentrationStat,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
@@ -82,11 +82,21 @@ import {
   pickHeadlineVerdict,
   pickPrimerExamples,
   rankTargetsByFriction,
+  selectCorpusThemesForState,
+  selectSectorSynthesesForState,
+  type CorpusThemesPayload,
   type FaultLine,
   type SectorAlignment,
   type SectorBriefing,
+  type SectorSynthesisPayload,
   type SectorTension,
 } from "@/lib/coherence-briefing";
+import {
+  computeBudgetCoverage,
+  computeFinancingCoherence,
+  type BudgetCoverage,
+  type FinancingCoherenceSummary,
+} from "@/lib/financing-coherence";
 import type {
   AlignmentResult,
   BerData,
@@ -108,8 +118,6 @@ import type {
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-/** Threshold for switching the Explore section's default grouping. */
-const SECTOR_AUTO_SWITCH_DOC_COUNT = 6;
 
 type SectionId =
   | typeof DIRECTION_SECTION_ID
@@ -118,6 +126,7 @@ type SectionId =
   | typeof FRICTION_TYPES_SECTION_ID
   | typeof SECTORS_SECTION_ID
   | typeof WHERE_TO_FOCUS_SECTION_ID
+  | typeof FINANCING_SECTION_ID
   | typeof EXPLORE_SECTION_ID;
 
 function useSectionLabels(): Record<SectionId, string> {
@@ -129,10 +138,14 @@ function useSectionLabels(): Record<SectionId, string> {
     [FRICTION_TYPES_SECTION_ID]: t("frictionTypes"),
     [SECTORS_SECTION_ID]: t("sectors"),
     [WHERE_TO_FOCUS_SECTION_ID]: t("whereToFocus"),
+    [FINANCING_SECTION_ID]: t("financing"),
     [EXPLORE_SECTION_ID]: t("explore"),
   };
 }
 
+// Canonical order. The Financing slide only renders for countries with BER
+// data (Mongolia today); on countries without it the section is dropped from
+// the jump-nav via `visibleSectionOrder` below and never mounts.
 const SECTION_ORDER: SectionId[] = [
   DIRECTION_SECTION_ID,
   DOC_FOCUS_SECTION_ID,
@@ -140,6 +153,7 @@ const SECTION_ORDER: SectionId[] = [
   FRICTION_TYPES_SECTION_ID,
   WHERE_TO_FOCUS_SECTION_ID,
   SECTORS_SECTION_ID,
+  FINANCING_SECTION_ID,
   EXPLORE_SECTION_ID,
 ];
 
@@ -154,14 +168,20 @@ interface CoherenceBriefingProps {
   nbsCategories: NbsCategory[];
   countryConfig: CountryConfig | null;
   docPairSyntheses?: DocPairSynthesis[];
-  corpusThemes?: CorpusThemes | null;
-  sectorSyntheses?: SectorSynthesis[];
+  /** Raw corpus_themes payload (carries the `states` map); a legacy
+   *  CorpusThemes without states is also accepted. */
+  corpusThemes?: CorpusThemesPayload | CorpusThemes | null;
+  /** Raw sector_synthesis payload (object with `states`) or a legacy array. */
+  sectorSyntheses?: SectorSynthesisPayload | SectorSynthesis[];
   /** FULL target set (incl. BTR + BER pseudo-targets) for the re-hosted
    *  PolicyCoherenceExplorer. Distinct from `targets`, which is policy-only
    *  for the narrative sections. Falls back to `targets` when omitted. */
   explorerTargets?: Target[];
   btrData?: BtrData | null;
   berData?: BerData | null;
+  /** BER program × policy-target alignment. Drives the per-document
+   *  budget-reach read on the Financing slide (AI-estimated). */
+  budgetAlignment?: AlignmentResult[] | null;
   nr7Data?: Nr7Data | null;
   globeSubcategories?: GlobeSubcategory[];
 }
@@ -181,6 +201,7 @@ export function CoherenceBriefing({
   explorerTargets,
   btrData = null,
   berData = null,
+  budgetAlignment = null,
   nr7Data = null,
   globeSubcategories = [],
 }: CoherenceBriefingProps) {
@@ -218,14 +239,211 @@ export function CoherenceBriefing({
       countryConfig,
     ],
   );
-  const verdict = useMemo(() => pickHeadlineVerdict(alignment), [alignment]);
+  // ── Document include/exclude filter ─────────────────────────────
+  // Soft-hidden docs (defaultHiddenDocTypes) ship to the browser but start
+  // hidden; users can toggle any document on/off. Every narrative number,
+  // wheel ribbon, and matrix cell below is derived from these visible arrays,
+  // so they all recompute live with no pipeline re-run. The Explore workbench
+  // (explorerProps above) owns its OWN hiddenDocs and keeps the full corpus.
+  const defaultHiddenDocTypes = useMemo(
+    () => countryConfig?.defaultHiddenDocTypes ?? [],
+    [countryConfig],
+  );
+  const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(
+    () => new Set(defaultHiddenDocTypes),
+  );
+  const toggleDoc = useCallback((doc: PolicyDocumentType) => {
+    setHiddenDocs((prev) => {
+      const next = new Set(prev);
+      if (next.has(doc)) next.delete(doc);
+      else next.add(doc);
+      return next;
+    });
+  }, []);
+  const resetHiddenDocs = useCallback(
+    () => setHiddenDocs(new Set(defaultHiddenDocTypes)),
+    [defaultHiddenDocTypes],
+  );
+
+  // Every document in the FULL corpus, in config order — drives the filter
+  // control so a hidden doc still appears as a toggle.
+  const allDocs = useMemo<PolicyDocumentType[]>(() => {
+    const docs = new Set<PolicyDocumentType>();
+    for (const t of targets) docs.add(t.sourceDocument);
+    return Array.from(docs).sort(
+      (a, b) =>
+        getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+    );
+  }, [targets, countryConfig]);
+
+  const visibleTargets = useMemo(
+    () => targets.filter((t) => !hiddenDocs.has(t.sourceDocument)),
+    [targets, hiddenDocs],
+  );
+  const visibleTargetIds = useMemo(
+    () => new Set(visibleTargets.map((t) => t.id)),
+    [visibleTargets],
+  );
+  const visibleAlignment = useMemo(
+    () =>
+      alignment.filter(
+        (a) =>
+          visibleTargetIds.has(a.targetAId) &&
+          visibleTargetIds.has(a.targetBId),
+      ),
+    [alignment, visibleTargetIds],
+  );
+  const visibleClassifications = useMemo(
+    () => classifications.filter((c) => visibleTargetIds.has(c.targetId)),
+    [classifications, visibleTargetIds],
+  );
+  const visibleDocPairSyntheses = useMemo(
+    () =>
+      docPairSyntheses.filter(
+        (dp) => !hiddenDocs.has(dp.doc_a) && !hiddenDocs.has(dp.doc_b),
+      ),
+    [docPairSyntheses, hiddenDocs],
+  );
+
+  // ── Financing coherence (Level 2) ───────────────────────────────
+  // Only shown for countries with a Biodiversity Expenditure Review (Mongolia
+  // today). Built on hard BER facts alone — no budget↔policy alignment, no
+  // taxonomy. Null → the Financing slide is dropped entirely. The commitment
+  // count it compares against is the live visible-target count (recomputes
+  // with the document toggle).
+  const financing = useMemo<FinancingCoherenceSummary | null>(() => {
+    if (!berData || !berData.programs || berData.programs.length === 0) {
+      return null;
+    }
+    return computeFinancingCoherence(berData);
+  }, [berData]);
+
+  // Softer, AI-estimated per-document budget reach for the left-column read.
+  // Recomputes with the document toggle (visibleTargets). Null without budget
+  // alignment to draw on.
+  const budgetCoverage = useMemo<BudgetCoverage | null>(() => {
+    if (!financing || !budgetAlignment || budgetAlignment.length === 0) {
+      return null;
+    }
+    const funded = financing.programs.filter((p) => p.hasSpend);
+    return computeBudgetCoverage(budgetAlignment, funded, visibleTargets);
+  }, [financing, budgetAlignment, visibleTargets]);
+
+  // Jump-nav / slide order with the Financing slide gated on its data.
+  const visibleSectionOrder = useMemo(
+    () =>
+      financing
+        ? SECTION_ORDER
+        : SECTION_ORDER.filter((id) => id !== FINANCING_SECTION_ID),
+    [financing],
+  );
+
+  // Storyline-layer selection for the current hidden set. Corpus + sector
+  // storylines come from precomputed states; doc-pair storylines are filtered
+  // live above. The numbers always reflect the live arrays — only the LLM prose
+  // may fall back to full-corpus for an arbitrary selection with no precomputed
+  // state (never reached for Panama's "" / "ENR" states).
+  const corpusSelection = useMemo(
+    () => selectCorpusThemesForState(corpusThemes, hiddenDocs),
+    [corpusThemes, hiddenDocs],
+  );
+  const sectorSelection = useMemo(
+    () => selectSectorSynthesesForState(sectorSyntheses, hiddenDocs),
+    [sectorSyntheses, hiddenDocs],
+  );
+  const visibleSectorSyntheses = sectorSelection.syntheses;
+
+  // ── On-demand corpus storyline for off-path selections ──────────
+  // For an arbitrary hidden-set with no precomputed state, the corpus summary
+  // falls back to full-corpus prose. When a country slug is available we
+  // regenerate just the corpus layer on demand (one synthesis call, debounced,
+  // cached) so off-path selections still read consistently. Sector storylines
+  // stay on the caveated full-set fallback (regenerating ~26 live would be too
+  // heavy). Numbers + doc-pair storylines are already exact regardless.
+  const hiddenKey = useMemo(() => canonicalHiddenKey(hiddenDocs), [hiddenDocs]);
+  const corpusIsOffPath = hiddenDocs.size > 0 && !corpusSelection.isExact;
+  // Successful live results, keyed by hidden-set. `liveFailedKeys` records keys
+  // whose fetch failed (or returned no usable storylines) so we show the
+  // full-set caveat instead of a perpetual "updating" state and don't refetch.
+  const [liveCorpus, setLiveCorpus] = useState<Record<string, CorpusThemes>>(
+    {},
+  );
+  const [liveFailedKeys, setLiveFailedKeys] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  useEffect(() => {
+    if (
+      !corpusIsOffPath ||
+      !countryId ||
+      liveCorpus[hiddenKey] ||
+      liveFailedKeys.has(hiddenKey)
+    ) {
+      return;
+    }
+    let cancelled = false;
+    const key = hiddenKey;
+    const timer = setTimeout(() => {
+      fetch(
+        `/api/storyline-state?country=${encodeURIComponent(
+          countryId,
+        )}&hidden=${encodeURIComponent(key)}`,
+      )
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error("fetch"))))
+        .then((data: { corpusThemes?: CorpusThemes }) => {
+          if (cancelled) return;
+          if (data?.corpusThemes) {
+            setLiveCorpus((prev) => ({ ...prev, [key]: data.corpusThemes! }));
+          } else {
+            throw new Error("no corpusThemes");
+          }
+        })
+        .catch(() => {
+          // Mark failed so the UI falls back to the full-set caveat rather than
+          // showing "updating" forever, and so we don't hammer a failing subset.
+          if (!cancelled) {
+            setLiveFailedKeys((prev) => new Set(prev).add(key));
+          }
+        });
+    }, 700);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [corpusIsOffPath, countryId, hiddenKey, liveCorpus, liveFailedKeys]);
+
+  const liveCorpusForKey = corpusIsOffPath ? liveCorpus[hiddenKey] : undefined;
+  const visibleCorpusThemes = liveCorpusForKey ?? corpusSelection.themes;
+  // Quiet caveat under the filter control: only the LLM prose may be full-set;
+  // every number stays exact. "Updating" while a live regeneration is in
+  // flight; the full-set fallback once it lands-or-fails; sector-only note when
+  // the corpus is exact but sector prose still reflects all documents.
+  const liveUpdating =
+    corpusIsOffPath &&
+    !!countryId &&
+    !liveCorpusForKey &&
+    !liveFailedKeys.has(hiddenKey);
+  const sectorIsFullSetFallback =
+    hiddenDocs.size > 0 && !sectorSelection.isExact;
+  const storylineCaveat: string | null = liveUpdating
+    ? "Updating storylines for your current selection…"
+    : corpusIsOffPath && !liveCorpusForKey
+      ? "Storylines reflect all policy documents; the figures reflect your current selection."
+      : sectorIsFullSetFallback
+        ? "Sector storylines reflect all policy documents; everything else reflects your current selection."
+        : null;
+
+  const verdict = useMemo(
+    () => pickHeadlineVerdict(visibleAlignment),
+    [visibleAlignment],
+  );
   const primer = useMemo(
-    () => pickPrimerExamples(alignment, targets),
-    [alignment, targets],
+    () => pickPrimerExamples(visibleAlignment, visibleTargets),
+    [visibleAlignment, visibleTargets],
   );
   const targetMap = useMemo(
-    () => new Map(targets.map((t) => [t.id, t])),
-    [targets],
+    () => new Map(visibleTargets.map((t) => [t.id, t])),
+    [visibleTargets],
   );
   // Policy-coherence scope is target×target. Some datasets also carry BTR/BER
   // measure×target flagged pairs in `alignment`; drop them here so the
@@ -234,33 +452,34 @@ export function CoherenceBriefing({
   // reporting a larger count on one slide.
   const policyAlignment = useMemo(
     () =>
-      alignment.filter(
+      visibleAlignment.filter(
         (a) => targetMap.has(a.targetAId) && targetMap.has(a.targetBId),
       ),
-    [alignment, targetMap],
+    [visibleAlignment, targetMap],
   );
   const frictionTotals = useMemo(
     () => frictionTypeTotalsFromAlignment(policyAlignment),
     [policyAlignment],
   );
   const targetConcentration = useMemo(
-    () => computeTargetConcentration(policyAlignment, targets),
-    [policyAlignment, targets],
+    () => computeTargetConcentration(policyAlignment, visibleTargets),
+    [policyAlignment, visibleTargets],
   );
   const frictionHotspots = useMemo(
-    () => rankTargetsByFriction(policyAlignment, targets, 8),
-    [policyAlignment, targets],
+    () => rankTargetsByFriction(policyAlignment, visibleTargets, 8),
+    [policyAlignment, visibleTargets],
   );
   const documentCount = useMemo(() => {
     const docs = new Set<string>();
-    for (const t of targets) docs.add(t.sourceDocument);
+    for (const t of visibleTargets) docs.add(t.sourceDocument);
     return docs.size;
-  }, [targets]);
-  const availableDocs = useMemo<PolicyDocumentType[]>(() => {
-    const docs = new Set<PolicyDocumentType>();
-    for (const t of targets) docs.add(t.sourceDocument);
-    return Array.from(docs).sort();
-  }, [targets]);
+  }, [visibleTargets]);
+  // Visible docs = all docs minus the hidden ones, keeping `allDocs`' config
+  // order (so the doc list reads consistently with the wheel legend).
+  const availableDocs = useMemo<PolicyDocumentType[]>(
+    () => allDocs.filter((d) => !hiddenDocs.has(d)),
+    [allDocs, hiddenDocs],
+  );
 
   // Sector lens — GLOBE by default, with IPCC and country sectors as
   // alternatives when the underlying classifications back them.
@@ -297,14 +516,14 @@ export function CoherenceBriefing({
     }
     return candidates.filter((opt) => {
       const idSet = new Set(opt.categories.map((c) => c.id));
-      return classifications.some(
+      return visibleClassifications.some(
         (c) =>
           c.isPrimary &&
           c.taxonomyType === opt.taxonomyType &&
           idSet.has(c.categoryId),
       );
     });
-  }, [globeCategories, sectors, countryConfig, classifications]);
+  }, [t, globeCategories, sectors, countryConfig, visibleClassifications]);
 
   const [activeLensId, setActiveLensId] = useState<LensId | null>(null);
 
@@ -320,9 +539,9 @@ export function CoherenceBriefing({
   const sectorRows = useMemo<SectorTension[]>(() => {
     if (!lens) return [];
     const density = buildSectorTensionDensity({
-      targets,
-      alignment,
-      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+      classifications: visibleClassifications,
       categories: lens.categories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
@@ -332,22 +551,22 @@ export function CoherenceBriefing({
       }
       return b.targetCount - a.targetCount;
     });
-  }, [lens, targets, alignment, classifications]);
+  }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
 
   const sectorAlignments = useMemo<SectorAlignment[]>(() => {
     if (!lens) return [];
     return buildSectorAlignmentDensity({
-      targets,
-      alignment,
-      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+      classifications: visibleClassifications,
       categories: lens.categories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
-  }, [lens, targets, alignment, classifications]);
+  }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
 
   const sectorSynthesesIndex = useMemo(
-    () => indexSectorSyntheses(sectorSyntheses),
-    [sectorSyntheses],
+    () => indexSectorSyntheses(visibleSectorSyntheses),
+    [visibleSectorSyntheses],
   );
 
   const sectorCategories = useMemo(() => lens?.categories ?? [], [lens]);
@@ -399,7 +618,7 @@ export function CoherenceBriefing({
       const tA = targetMap.get(aId);
       const tB = targetMap.get(bId);
       if (!tA || !tB) return;
-      const conn = alignment.find(
+      const conn = visibleAlignment.find(
         (p) =>
           (p.targetAId === aId && p.targetBId === bId) ||
           (p.targetAId === bId && p.targetBId === aId),
@@ -412,12 +631,12 @@ export function CoherenceBriefing({
         targetB: tB,
       });
     },
-    [alignment, targetMap],
+    [visibleAlignment, targetMap],
   );
 
   const openDocPairDrawer = useCallback(
     (dp: DocPairSynthesis) => {
-      const matchingPairs = alignment.filter((a) => {
+      const matchingPairs = visibleAlignment.filter((a) => {
         const tA = targetMap.get(a.targetAId);
         const tB = targetMap.get(a.targetBId);
         if (!tA || !tB) return false;
@@ -435,12 +654,12 @@ export function CoherenceBriefing({
         targetsById: targetMap,
       });
     },
-    [alignment, targetMap],
+    [visibleAlignment, targetMap],
   );
 
   const openDocPairByDocs = useCallback(
     (a: PolicyDocumentType, b: PolicyDocumentType) => {
-      const dp = docPairSyntheses.find(
+      const dp = visibleDocPairSyntheses.find(
         (d) =>
           (d.doc_a === a && d.doc_b === b) || (d.doc_a === b && d.doc_b === a),
       );
@@ -448,7 +667,7 @@ export function CoherenceBriefing({
         openDocPairDrawer(dp);
         return;
       }
-      for (const al of alignment) {
+      for (const al of visibleAlignment) {
         if (al.alignment !== "flagged") continue;
         const tA = targetMap.get(al.targetAId);
         const tB = targetMap.get(al.targetBId);
@@ -460,7 +679,13 @@ export function CoherenceBriefing({
         }
       }
     },
-    [docPairSyntheses, openDocPairDrawer, alignment, targetMap, openPairById],
+    [
+      visibleDocPairSyntheses,
+      openDocPairDrawer,
+      visibleAlignment,
+      targetMap,
+      openPairById,
+    ],
   );
 
   const openSectorDrawer = useCallback(
@@ -475,12 +700,17 @@ export function CoherenceBriefing({
       categoryId: sectorFocusForDrawer.categoryId,
       categoryName: sectorFocusForDrawer.categoryName,
       taxonomyType: sectorFocusForDrawer.taxonomyType,
-      targets,
-      alignment,
-      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+      classifications: visibleClassifications,
       cap: 6,
     });
-  }, [sectorFocusForDrawer, targets, alignment, classifications]);
+  }, [
+    sectorFocusForDrawer,
+    visibleTargets,
+    visibleAlignment,
+    visibleClassifications,
+  ]);
 
   const drawerSectorSynthesis = useMemo(() => {
     if (!sectorFocusForDrawer) return null;
@@ -500,110 +730,11 @@ export function CoherenceBriefing({
   >({});
 
   // ── Explore-section state ───────────────────────────────────────
-  // Set by wheel clicks (handleWheelArcClick) and by the insight bar / chat
-  // via applyExploreAction. The lens row is the only on-screen control left.
-  const [exploreFilter, setExploreFilter] = useState<WheelFilter>("all");
-  const [exploreDoc, setExploreDoc] = useState<PolicyDocumentType | null>(
-    null,
-  );
-  const [exploreSector, setExploreSector] =
-    useState<ExploreSectorSelection | null>(null);
-  // Explore's grouping axis and lens are LOCAL to this section: picking a lens
-  // here regroups the Explore wheel without changing the lens the Sectors
-  // section uses. Grouping defaults to the same doc-count heuristic the wheel
-  // applied implicitly before it was switchable, so a small corpus (Mongolia)
-  // still opens on documents.
-  const [exploreGroup, setExploreGroup] = useState<"documents" | "sectors">(
-    documentCount >= SECTOR_AUTO_SWITCH_DOC_COUNT ? "sectors" : "documents",
-  );
-  const [exploreLensId, setExploreLensId] = useState<LensId | null>(null);
-  // In-page "Explore the full data" view: swaps the narrative for the full
-  // explorer at page width, staying inside the briefing shell (no modal).
-  const [explorerView, setExplorerView] = useState(false);
-  const cameFromExplorer = useRef(false);
-  const exploreLens = useMemo<LensOption | null>(() => {
-    if (exploreLensId) {
-      const found = availableLenses.find((l) => l.id === exploreLensId);
-      if (found) return found;
-    }
-    return lens;
-  }, [exploreLensId, availableLenses, lens]);
-
-  // Switching the Explore grouping axis clears any stale focus carried over
-  // from the other axis, so "Documents" doubles as the wheel's clear/reset.
-  const handleExploreGroupChange = useCallback(
-    (next: "documents" | "sectors") => {
-      setExploreGroup(next);
-      setExploreDoc(null);
-      setExploreSector(null);
-    },
-    [],
-  );
-
-  // Bridge insight "Show me" (and the chat's own navigation tools) onto the
-  // explore wheel state. resolveExploreAction is pure + unit-tested; this only
-  // wires the resolved intent to the setters.
-  const applyExploreAction = useCallback(
-    (action: ChatAction) => {
-      const intent = resolveExploreAction(action, {
-        availableDocs,
-        sectorCategoryIds: new Set(
-          (exploreLens?.categories ?? []).map((c) => c.id),
-        ),
-        taxonomyType: exploreLens?.taxonomyType ?? "sector",
-      });
-      switch (intent.kind) {
-        case "filter":
-          setExploreFilter(intent.filter);
-          break;
-        case "doc":
-          setExploreDoc(intent.id);
-          setExploreSector(null);
-          break;
-        case "sector": {
-          const cat = (exploreLens?.categories ?? []).find(
-            (c) => c.id === intent.id,
-          );
-          setExploreSector(
-            cat
-              ? {
-                  categoryId: cat.id,
-                  categoryName: cat.name,
-                  taxonomyType: intent.taxonomyType,
-                }
-              : null,
-          );
-          setExploreDoc(null);
-          if (cat) setExploreGroup("sectors");
-          break;
-        }
-        case "pair":
-          openPairById(intent.a, intent.b);
-          break;
-        case "target": {
-          const t = targetMap.get(intent.id);
-          if (!t) break;
-          // The wheel has no single-target focus, so refocus the target's
-          // source document (document grouping) for spatial context...
-          setExploreSector(null);
-          setExploreDoc(t.sourceDocument);
-          setExploreGroup("documents");
-          // ...and open the flag-profile decomposition when the target
-          // actually carries flagged pairs (the "N contradictions" payoff).
-          const hasFlags = alignment.some(
-            (a) =>
-              a.alignment === "flagged" &&
-              (a.targetAId === t.id || a.targetBId === t.id),
-          );
-          if (hasFlags) setFlagProfile({ kind: "target", target: t });
-          break;
-        }
-        case "none":
-          break;
-      }
-    },
-    [availableDocs, exploreLens, targetMap, alignment, openPairById],
-  );
+  // The Explore finale renders its own full-width workbench wheel
+  // (PolicyCoherenceExplorer, variant="workbench"), which owns all of its
+  // interaction state internally: group-by, filter, target search, hidden
+  // docs, budget overlay, target/category selection, and chat. The briefing no
+  // longer mirrors that state here.
 
   // Primer-card hover spotlight (lives in the Direction section).
   const [primerHighlight, setPrimerHighlight] =
@@ -641,7 +772,13 @@ export function CoherenceBriefing({
     return availableDocs[0] ?? null;
   }, [countryConfig, availableDocs]);
 
-  const focusedDoc = selectedFocusDoc ?? defaultFocusDoc;
+  // If the user hides the document currently in focus, ignore the manual
+  // selection so the slide falls back to the anchor / first visible doc. The
+  // selection itself is kept, so re-showing the doc restores the focus.
+  const focusedDoc =
+    selectedFocusDoc && !hiddenDocs.has(selectedFocusDoc)
+      ? selectedFocusDoc
+      : defaultFocusDoc;
 
   const handleLensChange = useCallback((id: LensId) => {
     setActiveLensId(id);
@@ -651,7 +788,6 @@ export function CoherenceBriefing({
       delete next[SECTORS_SECTION_ID];
       return next;
     });
-    setExploreSector(null);
   }, []);
 
   // ── Per-section wheel defaults ──────────────────────────────────
@@ -737,28 +873,10 @@ export function CoherenceBriefing({
       }
       case EXPLORE_SECTION_ID:
       default: {
-        // The grouping axis is now an explicit, user-switchable control
-        // (Documents vs a sector lens), so the lens visibly restructures the
-        // wheel. Focus is the optional drill within that axis.
-        const groupBy: WheelGroupBy =
-          exploreGroup === "sectors" ? "sector" : "document";
-        const userFocus: WheelFocus =
-          groupBy === "sector"
-            ? exploreSector
-              ? {
-                  type: "sector",
-                  id: exploreSector.categoryId,
-                  taxonomyType: exploreSector.taxonomyType,
-                }
-              : null
-            : exploreDoc
-              ? { type: "doc", id: exploreDoc }
-              : null;
-        return {
-          groupBy,
-          focus: userFocus,
-          filter: exploreFilter,
-        };
+        // The Explore finale renders its own full-width workbench wheel, so the
+        // sticky narrative wheel is never the Explore surface. This is a quiet
+        // fallback for the (off-screen) sticky wheel when Explore is active.
+        return { groupBy: "document", focus: null, filter: "all" };
       }
     }
   }, [
@@ -766,10 +884,6 @@ export function CoherenceBriefing({
     focusBySection,
     topTensionSector,
     lensTaxonomyType,
-    exploreFilter,
-    exploreGroup,
-    exploreDoc,
-    exploreSector,
     primerHighlight,
     sectorHoverId,
     sectorFilter,
@@ -822,35 +936,9 @@ export function CoherenceBriefing({
         }
         return;
       }
-      if (activeSection === EXPLORE_SECTION_ID) {
-        if (!focus) {
-          setExploreDoc(null);
-          setExploreSector(null);
-        } else if (focus.type === "doc") {
-          setExploreDoc(focus.id);
-          setExploreSector(null);
-          setExploreGroup("documents");
-        } else {
-          const cat = (exploreLens?.categories ?? []).find(
-            (c) => c.id === focus.id,
-          );
-          setExploreSector(
-            cat
-              ? {
-                  categoryId: cat.id,
-                  categoryName: cat.name,
-                  taxonomyType: focus.taxonomyType,
-                }
-              : null,
-          );
-          setExploreDoc(null);
-          setExploreGroup("sectors");
-        }
-        return;
-      }
       setFocusBySection((prev) => ({ ...prev, [activeSection]: focus }));
     },
-    [activeSection, exploreLens, scrollToSection],
+    [activeSection, scrollToSection],
   );
 
   // ── IntersectionObserver wiring ────────────────────────────────
@@ -861,11 +949,11 @@ export function CoherenceBriefing({
     [FRICTION_TYPES_SECTION_ID]: null,
     [SECTORS_SECTION_ID]: null,
     [WHERE_TO_FOCUS_SECTION_ID]: null,
+    [FINANCING_SECTION_ID]: null,
     [EXPLORE_SECTION_ID]: null,
   });
 
   useEffect(() => {
-    if (explorerView) return; // narrative unmounted in full-data view — nothing to observe
     const visibility = new Map<SectionId, number>();
     const observer = new IntersectionObserver(
       (entries) => {
@@ -899,22 +987,7 @@ export function CoherenceBriefing({
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, [explorerView]); // re-observe fresh section nodes after returning from full-data view
-
-  // Entering the full-data view scrolls to its top; returning lands the user
-  // back on the Explore section they triggered it from.
-  useEffect(() => {
-    if (explorerView) {
-      window.scrollTo({ top: 0 });
-    } else if (cameFromExplorer.current) {
-      cameFromExplorer.current = false;
-      requestAnimationFrame(() =>
-        sectionRefs.current[EXPLORE_SECTION_ID]?.scrollIntoView({
-          block: "start",
-        }),
-      );
-    }
-  }, [explorerView]);
+  }, []);
 
   const setSectionRef = useCallback(
     (id: SectionId) => (el: HTMLElement | null) => {
@@ -931,32 +1004,32 @@ export function CoherenceBriefing({
           countryName={countryName}
           documentCount={documentCount}
         />
-        {explorerView ? (
-          <div className="pt-2">
-            <div className="flex items-center justify-between gap-4 mt-6 mb-5">
-              <h2
-                className="text-[22px] sm:text-[26px] leading-tight text-[var(--undp-black)] font-medium"
-                style={{ fontFamily: HEADLINE_SERIF }}
-              >
-                {t("explorer.title")}
-              </h2>
-              <button
-                type="button"
-                onClick={() => {
-                  cameFromExplorer.current = true;
-                  setExplorerView(false);
-                }}
-                className="inline-flex items-center gap-1.5 text-[13px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors shrink-0"
-              >
-                <span aria-hidden="true">←</span> {t("explorer.backToChat")}
-              </button>
-            </div>
-            <PolicyCoherenceExplorer {...explorerProps} variant="embed" />
+        <DocFilterControl
+          allDocs={allDocs}
+          hiddenDocs={hiddenDocs}
+          defaultHiddenDocTypes={defaultHiddenDocTypes}
+          countryConfig={countryConfig}
+          onToggle={toggleDoc}
+          onReset={resetHiddenDocs}
+        />
+        {storylineCaveat && (
+          <p className="mt-1.5 text-[11px] italic text-[var(--undp-gray)]">
+            {storylineCaveat}
+          </p>
+        )}
+
+        {availableDocs.length === 0 ? (
+          <div className="mt-10 border-y border-gray-200 py-16 text-center">
+            <p className="text-sm text-[var(--undp-gray)]">
+              {t("emptyState.allDocsHidden")}
+            </p>
           </div>
         ) : (
           <>
-            <JumpNav active={activeSection} order={SECTION_ORDER} />
+            <JumpNav active={activeSection} order={visibleSectionOrder} />
 
+            {/* Sections 1-6: the scrollytelling narrative with the shared sticky
+                wheel. The Explore finale lives in its own full-width block below. */}
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] gap-x-10 gap-y-8 mt-8">
           {/* Content column */}
           <div className="space-y-24">
@@ -971,7 +1044,7 @@ export function CoherenceBriefing({
                 concentration={targetConcentration}
                 primer={primer}
                 countryConfig={countryConfig}
-                corpusThemes={corpusThemes}
+                corpusThemes={visibleCorpusThemes}
                 onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
                 onHighlightPair={setPrimerHighlight}
@@ -983,8 +1056,8 @@ export function CoherenceBriefing({
                 data-section-id={DOC_FOCUS_SECTION_ID}
               >
                 <DocFocusSection
-                  targets={targets}
-                  alignment={alignment}
+                  targets={visibleTargets}
+                  alignment={visibleAlignment}
                   countryConfig={countryConfig}
                   focusedDoc={focusedDoc}
                   availableDocs={availableDocs}
@@ -1005,7 +1078,7 @@ export function CoherenceBriefing({
               data-section-id={DOC_PAIRS_SECTION_ID}
             >
               <DocPairsSection
-                docPairSyntheses={docPairSyntheses}
+                docPairSyntheses={visibleDocPairSyntheses}
                 countryConfig={countryConfig}
                 onOpenDocPair={openDocPairDrawer}
                 onHoverDocPair={setHoveredDocPairKey}
@@ -1058,30 +1131,27 @@ export function CoherenceBriefing({
                 onHoverSector={setSectorHoverId}
               />
             </div>
-            <div
-              ref={setSectionRef(EXPLORE_SECTION_ID)}
-              data-section-id={EXPLORE_SECTION_ID}
-            >
-              <ExploreSection
-                targets={targets}
-                alignment={alignment}
-                classifications={classifications}
-                sectors={sectors}
-                globeCategories={globeCategories}
-                countryConfig={countryConfig}
-                availableDocs={availableDocs}
-                availableLenses={availableLenses}
-                exploreGroup={exploreGroup}
-                onExploreGroupChange={handleExploreGroupChange}
-                exploreLensId={exploreLens?.id ?? null}
-                onExploreLensChange={setExploreLensId}
-                docPairSyntheses={docPairSyntheses}
-                corpusThemes={corpusThemes}
-                sectorSyntheses={sectorSyntheses}
-                onApplyAction={applyExploreAction}
-                onOpenFullData={() => setExplorerView(true)}
-              />
-            </div>
+            {financing && (
+              <div
+                ref={setSectionRef(FINANCING_SECTION_ID)}
+                data-section-id={FINANCING_SECTION_ID}
+                // The finding copy is brief; without a min-height this short
+                // section would win "active" while still low in the viewport,
+                // leaving the previous section visible beside the sticky
+                // Financing visual. Fill the column on desktop so the finding
+                // stays in sync with its centerpiece (top-aligned, not centred,
+                // to match the top-pinned sticky visual).
+                className="lg:min-h-[80vh]"
+              >
+                <FinancingSection
+                  summary={financing}
+                  commitmentCount={visibleTargets.length}
+                  coverage={budgetCoverage}
+                  countryConfig={countryConfig}
+                  countryName={countryName}
+                />
+              </div>
+            )}
           </div>
 
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
@@ -1090,59 +1160,55 @@ export function CoherenceBriefing({
               slide shows the wheel. */}
           <aside className="hidden lg:block">
             <div className="sticky top-[124px]">
+              {/* Interactive doc legend: add/remove documents right at the
+                  visual, so toggling a document visibly adds or drops its arc
+                  (or matrix row). Also the document colour key. */}
+              <DocToggleLegend
+                allDocs={allDocs}
+                hiddenDocs={hiddenDocs}
+                countryConfig={countryConfig}
+                onToggle={toggleDoc}
+              />
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2 text-center">
                 {sectionLabels[activeSection]}
               </p>
               {activeSection === DOC_PAIRS_SECTION_ID ? (
                 <div className="flex justify-center">
                   <DocCoherenceMatrix
-                    targets={targets}
-                    alignment={alignment}
+                    targets={visibleTargets}
+                    alignment={visibleAlignment}
                     countryConfig={countryConfig}
                     onCellClick={openDocPairByDocs}
                     highlightedKey={hoveredDocPairKey}
                     onHoverPair={setHoveredDocPairKey}
                   />
                 </div>
+              ) : activeSection === FINANCING_SECTION_ID && financing ? (
+                <FinancingCenterpiece
+                  summary={financing}
+                  countryName={countryName}
+                />
               ) : (
                 <>
-                  {wheelState.groupBy === "sector" && (
-                    <DocLegend
-                      docs={availableDocs}
-                      countryConfig={countryConfig}
-                    />
-                  )}
                   <WheelCenterpiece
-                    targets={targets}
-                    alignments={alignment}
-                    classifications={classifications}
+                    targets={visibleTargets}
+                    alignments={visibleAlignment}
+                    classifications={visibleClassifications}
                     countryConfig={countryConfig}
                     state={wheelState}
-                    sectorCategories={
-                      activeSection === EXPLORE_SECTION_ID
-                        ? (exploreLens?.categories ?? [])
-                        : sectorCategories
-                    }
-                    sectorTaxonomyType={
-                      activeSection === EXPLORE_SECTION_ID
-                        ? (exploreLens?.taxonomyType ?? "sector")
-                        : lensTaxonomyType
-                    }
+                    sectorCategories={sectorCategories}
+                    sectorTaxonomyType={lensTaxonomyType}
                     onArcClick={handleWheelArcClick}
                     onPairClick={
                       activeSection === DIRECTION_SECTION_ID ||
-                      activeSection === DOC_FOCUS_SECTION_ID ||
-                      (activeSection === EXPLORE_SECTION_ID &&
-                        exploreGroup === "sectors")
+                      activeSection === DOC_FOCUS_SECTION_ID
                         ? undefined
                         : openPairById
                     }
                     onRibbonNavigate={
                       activeSection === DIRECTION_SECTION_ID
                         ? handleRibbonNavigate
-                        : activeSection === DOC_FOCUS_SECTION_ID ||
-                            (activeSection === EXPLORE_SECTION_ID &&
-                              exploreGroup === "documents")
+                        : activeSection === DOC_FOCUS_SECTION_ID
                           ? (a, b) =>
                               openDocPairByDocs(
                                 a as PolicyDocumentType,
@@ -1159,6 +1225,17 @@ export function CoherenceBriefing({
             </div>
           </>
         )}
+
+        {/* Explore finale: the full-width interactive workbench. */}
+        <div
+          ref={setSectionRef(EXPLORE_SECTION_ID)}
+          data-section-id={EXPLORE_SECTION_ID}
+          className="mt-24"
+        >
+          <ExploreSection>
+            <PolicyCoherenceExplorer {...explorerProps} variant="workbench" />
+          </ExploreSection>
+        </div>
       </div>
 
       <SectorDrawer
@@ -1179,11 +1256,11 @@ export function CoherenceBriefing({
       <ThemeDrawer
         theme={activeTheme}
         allStorylines={
-          showAllStorylines && corpusThemes
-            ? corpusThemes.storylines
+          showAllStorylines && visibleCorpusThemes
+            ? visibleCorpusThemes.storylines
             : null
         }
-        alignment={alignment}
+        alignment={visibleAlignment}
         targetsById={targetMap}
         countryConfig={countryConfig}
         onClose={closeThemeDrawer}
@@ -1202,8 +1279,8 @@ export function CoherenceBriefing({
       <FlagProfileDrawer
         subject={flagProfile}
         alignment={policyAlignment}
-        targets={targets}
-        classifications={classifications}
+        targets={visibleTargets}
+        classifications={visibleClassifications}
         categories={sectorCategories}
         taxonomyType={lensTaxonomyType}
         lensLabel={lens?.label ?? null}
@@ -1309,30 +1386,6 @@ function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
         {t("redShareHint")}
       </span>
       {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
-    </div>
-  );
-}
-
-function DocLegend({
-  docs,
-  countryConfig,
-}: {
-  docs: PolicyDocumentType[];
-  countryConfig: CountryConfig | null;
-}) {
-  if (docs.length === 0) return null;
-  return (
-    <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      {docs.map((d) => (
-        <span key={d} className="inline-flex items-center gap-1.5">
-          <span
-            aria-hidden="true"
-            className="inline-block w-2 h-2 rounded-full"
-            style={{ backgroundColor: getDocColor(countryConfig, d) }}
-          />
-          {getDocMediumLabel(countryConfig, d)}
-        </span>
-      ))}
     </div>
   );
 }

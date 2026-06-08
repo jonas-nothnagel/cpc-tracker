@@ -9,6 +9,7 @@
  */
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   WheelCenterpiece,
   type SectorCategoryRef,
@@ -37,6 +38,7 @@ export function Centerpiece({
   variant: variantProp,
   onVariantChange,
   showPicker = true,
+  showLegend = true,
   onPairClick,
   onArcClick,
 }: {
@@ -50,6 +52,7 @@ export function Centerpiece({
   variant?: Variant;
   onVariantChange?: (v: Variant) => void;
   showPicker?: boolean;
+  showLegend?: boolean;
   onPairClick?: (a: string, b: string) => void;
   onArcClick?: (focus: WheelFocus) => void;
 }) {
@@ -81,7 +84,7 @@ export function Centerpiece({
           />
         )}
       </div>
-      <Legend />
+      {showLegend && <WheelLegend />}
     </div>
   );
 }
@@ -93,6 +96,7 @@ function VariantPicker({
   active: Variant;
   onChange: (v: Variant) => void;
 }) {
+  const t = useTranslations("briefing.centerLegend");
   return (
     <div className="flex items-center gap-1.5 justify-center mb-1">
       {(["wheel", "constellation"] as const).map((v) => {
@@ -109,7 +113,7 @@ function VariantPicker({
                 : "bg-white/70 border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
             }`}
           >
-            {v === "wheel" ? "Wheel" : "Constellation"}
+            {v === "wheel" ? t("variant.wheel") : t("variant.constellation")}
           </button>
         );
       })}
@@ -117,13 +121,24 @@ function VariantPicker({
   );
 }
 
-function Legend() {
+export function WheelLegend({
+  justify = "center",
+}: {
+  /** Horizontal alignment of the legend items. Defaults to centered (under the
+   * wheel); the landing left column passes "start" to left-align it. */
+  justify?: "center" | "start";
+}) {
+  const t = useTranslations("briefing.centerLegend");
   return (
-    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label="Aligned" />
-      <LegendDot color="#dc2626" label="Potential misalignment" dashed />
+    <div
+      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)] ${
+        justify === "start" ? "justify-start" : "justify-center"
+      }`}
+    >
+      <LegendDot color="#196127" label={t("legend.aligned")} />
+      <LegendDot color="#dc2626" label={t("legend.potentialMis")} dashed />
       <span className="text-[10px] text-[var(--undp-gray)]/70">
-        ribbon width = number of pairs
+        {t("legend.ribbonWidth")}
       </span>
     </div>
   );

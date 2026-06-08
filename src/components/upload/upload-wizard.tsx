@@ -238,7 +238,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
       };
       reader.readAsText(file);
     }
-  }, [setTargets]);
+  }, [t, setTargets]);
 
   // ─── Unified drop/input handlers ───────────────────────────────────────
   function handleUnifiedDrop(e: React.DragEvent) {

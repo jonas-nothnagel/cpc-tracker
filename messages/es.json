@@ -15,6 +15,10 @@
         "aiInferred": "Inferido por IA",
         "mixed": "Inferido por IA a partir de datos cargados"
       }
+    },
+    "languageSwitcher": {
+      "aria": "Idioma",
+      "machineTranslatedNote": "Traducción automática"
     }
   },
   "header": {
@@ -37,7 +41,7 @@
     "inside": {
       "eyebrow": "Dentro del análisis",
       "title": "Cada meta de política, mapeada contra todas las demás",
-      "body": "Cada cinta enlaza dos documentos nacionales de política. El verde muestra dónde sus metas están en fuerte alineación; los hilos rojos marcan una posible desalineación que merece una mirada más cercana. Cambie entre los países piloto para comparar.",
+      "body": "Cada cinta enlaza dos documentos nacionales de política. El verde muestra dónde sus metas están en fuerte alineación; los hilos rojos marcan una posible desalineación que merece una mirada más cercana.",
       "disclaimer": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
       "preview": {
         "countrySwitcherAria": "Elija un país para previsualizar",
@@ -58,131 +62,7 @@
         "title": "Análisis automatizado",
         "body": "La IA clasifica cada meta por tema y sector, luego evalúa qué tan bien se alinean las metas entre distintas políticas."
       },
-      "estimate": {
-      "quantitative": "Detección de frases cuantitativas: {count, number} llamadas",
-      "classification": "Clasificación contra NBS, IPCC, GLOBE: {count, number} llamadas",
-      "decomposition": "Descomposición de metas: {count, number} llamadas",
-      "needsTwoDocs": "Alineación por pares: requiere 2+ tipos de documento",
-      "pairwiseCount": "Alineación por pares: ~{count, number} pares",
-      "btrIntegration": "Integración de datos BTR/CTF",
-      "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
-      "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
-      "starting": "Iniciando…",
-      "runAnalysis": "Ejecutar análisis →"
-    },
-    "categories": {
-      "hide": "Ocultar detalles de categorías",
-      "edit": "Editar categorías",
-      "addGroup": "+ Añadir nuevo grupo de clasificación",
-      "newGroup": {
-        "title": "Nuevo grupo de clasificación",
-        "namePlaceholder": "Nombre del grupo (p. ej. Metas ODS, Temas personalizados)",
-        "descPlaceholder": "Breve descripción de lo que clasifica este grupo",
-        "create": "Crear grupo",
-        "cancel": "Cancelar",
-        "hint": "Después de crear el grupo, use «Editar» para añadir categorías individuales dentro de él."
-      },
-      "group": {
-        "enabledRatio": "{active, number} de {total, number} habilitadas",
-        "empty": "Aún no hay categorías. Pulse Editar para añadir.",
-        "disableAll": "Deshabilitar todas",
-        "enableAll": "Habilitar todas",
-        "collapse": "Contraer",
-        "editBtn": "Editar",
-        "removeTitle": "Eliminar grupo"
-      },
-      "item": {
-        "remove": "Eliminar"
-      },
-      "newItem": {
-        "namePlaceholder": "Nombre",
-        "descPlaceholder": "Descripción (opcional)",
-        "add": "Añadir",
-        "cancel": "Cancelar",
-        "addBtn": "+ Añadir categoría"
-      }
-    },
-    "review": {
-      "title": "Revisar metas extraídas",
-      "subtitle": "{kept, number} de {total, number} conservadas · {file}",
-      "keepAll": "Conservar todas",
-      "removeAll": "Eliminar todas",
-      "pagePrefix": "p.",
-      "englishTranslation": "EN: {text}",
-      "keep": "Conservar",
-      "removeTitle": "Eliminar",
-      "removed": "Eliminada",
-      "restoreTitle": "Restaurar",
-      "addMissingPrompt": "Añadir una meta que no fue extraída",
-      "manualPlaceholder": "Texto de la meta…",
-      "manualLabelPlaceholder": "Etiqueta (opcional)",
-      "addBtn": "+ Añadir",
-      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {meta} other {metas}} se añadirán a este análisis",
-      "discard": "Descartar",
-      "acceptBtn": "Añadir {count, plural, one {1 meta} other {# metas}} →"
-    },
-    "editor": {
-      "title": "Editar metas manuales: {docType}",
-      "done": "Hecho",
-      "labelPlaceholder": "Etiqueta",
-      "targetPlaceholder": "Texto de la meta…",
-      "toggleDetails": "Añadir actividades y acciones",
-      "activities": "Actividades",
-      "activitiesPlaceholder": "Actividades de implementación (opcional)…",
-      "actions": "Acciones / Medidas",
-      "actionsPlaceholder": "Acciones o medidas (opcional)…"
-    },
-    "pipeline": {
-      "heading": "Canalización de documentos",
-      "status": {
-        "parsing": "Analizando…",
-        "ready": "Listo",
-        "error": "Error"
-      },
-      "policyTargetsCount": "{count, number} metas de política",
-      "btr": {
-        "actions": "{count, number} acciones reportadas",
-        "emissions": "{count, number} series de emisiones",
-        "projections": "{count, number} proyecciones",
-        "techSupport": "{count, number} proyectos de apoyo técnico",
-        "capacityBuilding": "{count, number} de fortalecimiento de capacidades"
-      },
-      "remove": "Eliminar"
-    },
-    "manualForm": {
-      "sourceDocument": "Documento de origen",
-      "documentName": "Nombre del documento",
-      "placeholderSectoral": "p. ej. Política de Transporte",
-      "placeholderOther": "p. ej. Plan Nacional de Desarrollo",
-      "labelOptional": "Etiqueta (opcional)",
-      "labelPlaceholder": "p. ej. Biodiversidad 1",
-      "targetText": "Texto de la meta",
-      "targetTextPlaceholder": "Pegue o escriba el texto completo de la meta…",
-      "addTarget": "+ Añadir meta",
-      "maxReached": "Máximo de {max, number} metas alcanzado"
-    },
-    "step4": {
-      "title": "Resumen y ejecución del análisis",
-      "subtitle": "Revise la configuración completa del análisis a continuación. La canalización clasificará cada meta, descompondrá su estructura y evaluará la alineación por pares entre todos los tipos de documento.",
-      "countryLabel": "País",
-      "notSpecified": "No especificado",
-      "targetsLabel": "Metas",
-      "acrossDocs": "a través de {count, plural, one {1 tipo de documento} other {# tipos de documento}}",
-      "targetBreakdown": "Desglose de metas",
-      "btr": {
-        "title": "Datos de implementación BTR incluidos",
-        "description": "Medidas de mitigación comparadas con metas de política."
-      },
-      "footprint": {
-        "heading": "Huella de la extracción de documentos hasta ahora",
-        "energy": "Wh de energía",
-        "water": "mL de agua",
-        "co2": "gCO<sub>2</sub>eq",
-        "minerals": "µgSbeq de minerales",
-        "summary": "Acumulado a partir de {count, number} llamadas LLM durante la extracción. Esto se añadirá a la huella del análisis en el panel final. Estimado mediante EcoLogits."
-      }
-    },
-    "step3": {
+      "step3": {
         "title": "Explorar resultados",
         "body": "Panel interactivo que muestra la cobertura de la política, los patrones de alineación y las áreas donde la coordinación podría fortalecerse."
       }
@@ -234,7 +114,8 @@
       "frictionTypes": "Tipos de fricción",
       "sectors": "Sectores",
       "whereToFocus": "Dónde enfocar",
-      "explore": "Explorar"
+      "explore": "Explorar",
+      "financing": "Financiación"
     },
     "lens": {
       "globe": "GLOBE",
@@ -273,7 +154,7 @@
     },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: sin pares evaluados",
-      "cellTitle": "{a} ↔ {b}: {aligned, number} alineados · {flagged, number} marcados — pulse para ver las brechas",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} alineados · {flagged, number} marcados · pulse para ver las brechas",
       "aligned": "Alineado",
       "flagged": "Posible desalineación",
       "legendHint": "color más intenso = más lejos del promedio · pulse una celda para ver las brechas"
@@ -443,7 +324,7 @@
     },
     "explore": {
       "heading": "Explore la coherencia de políticas usted mismo.",
-      "body": "Haga una pregunta en sus propias palabras, surja una visión o pulse la rueda. Las visiones y la rueda reaccionan juntas.",
+      "body": "Haga una pregunta sobre las políticas, siga una idea, o trabaje la rueda completa usted mismo: pulse cualquier meta para ver su detalle, busque una específica, reagrupe los arcos, oculte un documento, o incorpore la vista presupuestaria.",
       "openFullData": "Explorar los datos completos",
       "starterStoryline": "¿Cuál es la línea narrativa principal en estos documentos?",
       "groupBy": "Agrupar la rueda por",
@@ -501,12 +382,18 @@
         "misaligned": "Desalineados"
       },
       "noun": {
-        "category": { "singular": "categoría", "plural": "categorías" },
-        "sector": { "singular": "sector", "plural": "sectores" }
+        "category": {
+          "singular": "categoría",
+          "plural": "categorías"
+        },
+        "sector": {
+          "singular": "sector",
+          "plural": "sectores"
+        }
       },
       "concentration": {
         "emptyHeadline": "Aún no hay pares posiblemente desalineados agrupados por {noun}.",
-        "emptyBody": "O la canalización aún no ha surgido posible desalineación que toque una {noun} clasificada como primaria, o el país no tiene una taxonomía de {nounPlural} configurada.",
+        "emptyBody": "O la canalización aún no ha surgido posible desalineación que toque una {noun} clasificada como primaria, o el país no tiene una taxonomía de {noun} configurada.",
         "spreadHeadline": "Los pares posiblemente desalineados se distribuyen en {sectors, number} {nounPlural}.",
         "spreadBody": "{total, number} pares posiblemente desalineados se reparten en {sectors, number} {nounPlural} sin que un único {noun} domine.",
         "singleHeadline": "{name} concentra el {pct}% de los pares posiblemente desalineados.",
@@ -610,6 +497,85 @@
       "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",
       "focusConcentrated": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}",
       "focusSpread": "se distribuyen en {count, plural, one {1 meta} other {# metas}}"
+    },
+    "emptyState": {
+      "allDocsHidden": "Todos los documentos están ocultos. Añada al menos un documento arriba para ver el informe de coherencia."
+    },
+    "financing": {
+      "eyebrow": "¿Dónde se encuentra el dinero con la ambición?",
+      "matchedCount": "<strong>{reached}</strong> de {total} coinciden",
+      "matchedHeading": "Metas con una línea presupuestaria correspondiente",
+      "unmatchedHeading": "Metas sin línea presupuestaria correspondiente",
+      "budgetLineLabel": "línea presupuestaria:",
+      "allMatched": "Todas las metas de este documento tienen una línea presupuestaria correspondiente.",
+      "legend": {
+        "matched": "tiene una línea presupuestaria correspondiente",
+        "unmatched": "sin línea presupuestaria correspondiente"
+      },
+      "dotMap": {
+        "intro": "Cada punto es una meta de política. Abra un documento para ver cuáles de sus metas tienen una línea presupuestaria correspondiente y cuáles no.",
+        "disclaimer": "La canalización vincula cada meta con las líneas presupuestarias del mismo objetivo, conservando solo las coincidencias de alta confianza. Muestra dónde existe una línea presupuestaria para una meta, no si se gasta dinero en ella. Estimado por IA e indicativo."
+      },
+      "share": {
+        "most": "la mayoría de",
+        "aboutHalf": "alrededor de la mitad de",
+        "underHalf": "menos de la mitad de",
+        "few": "pocas de"
+      },
+      "noSpend": {
+        "headline": "Aún no hay gasto en biodiversidad registrado para comparar.",
+        "body": "Una vez que el Examen del Gasto en Biodiversidad (BER) reporte el gasto por programa, esta diapositiva mostrará cuánta política tiene una línea presupuestaria correspondiente y cuáles metas no tienen ninguna."
+      },
+      "noMatch": {
+        "headline": "El gasto en biodiversidad examinado de {country} se sitúa junto a {count, plural, one {# meta de política} other {# metas de política}}.",
+        "body": "La correspondencia entre las líneas de este presupuesto y las metas de política aún no se ha calculado para este corpus. La columna de la derecha muestra el presupuesto en sí: dónde se sitúa el dinero y cuánto del plan quedó sin gastar."
+      },
+      "matched": {
+        "headline": "El gasto en biodiversidad examinado de {country} cubre {share} las metas de política.",
+        "body": "En {docCount, plural, one {# documento de política} other {# documentos de política}} hay {total, plural, one {# meta} other {# metas}}. {reached} tienen una línea presupuestaria correspondiente en este examen; las otras {outsideReach} no tienen ninguna."
+      }
+    },
+    "financingCenter": {
+      "header": {
+        "eyebrow": "El gasto revisado",
+        "title": "Revisión del Gasto en Biodiversidad (BER)",
+        "budgetLines": "{count, plural, one {# línea presupuestaria} other {# líneas presupuestarias}}",
+        "withRecordedSpend": "({count, plural, one {# con gasto registrado} other {# con gasto registrado}})",
+        "noRecordedSpend": "sin gasto registrado"
+      },
+      "concentration": {
+        "eyebrow": "A dónde va el {amount} · {period}",
+        "everythingElseTitle": "Todo lo demás: {pct}%",
+        "everythingElse": "todo lo demás"
+      },
+      "execution": {
+        "eyebrow": "No se gasta todo · {period}",
+        "spent": "<strong>{actual}</strong> de {planned} {unit} {currency} gastado",
+        "unspent": "· {amount} ({pct}%) sin gastar"
+      }
+    },
+    "docFilter": {
+      "removeDoc": "Quitar {name}",
+      "addDoc": "Agregar {name}",
+      "included": "{visible} de {total, plural, one {# documento de política} other {# documentos de política}} incluidos.",
+      "excluded": "{names} excluidos.",
+      "done": "Listo",
+      "addOrRemove": "Agregar o quitar documentos",
+      "resetToDefault": "Restablecer valores predeterminados",
+      "toggle": {
+        "clickToAddRemove": "Haga clic en un documento para agregarlo o quitarlo"
+      }
+    },
+    "centerLegend": {
+      "variant": {
+        "wheel": "Rueda",
+        "constellation": "Constelación"
+      },
+      "legend": {
+        "aligned": "Alineado",
+        "potentialMis": "Posible desalineación",
+        "ribbonWidth": "ancho de la cinta = número de conexiones"
+      }
     }
   },
   "upload": {
@@ -688,6 +654,142 @@
         "back": "Atrás",
         "next": "Siguiente"
       }
+    },
+    "estimate": {
+      "quantitative": "Detección de frases cuantitativas: {count, number} llamadas",
+      "classification": "Clasificación contra NBS, IPCC, GLOBE: {count, number} llamadas",
+      "decomposition": "Descomposición de metas: {count, number} llamadas",
+      "needsTwoDocs": "Alineación por pares: requiere 2+ tipos de documento",
+      "pairwiseCount": "Alineación por pares: ~{count, number} pares",
+      "btrIntegration": "Integración de datos BTR/CTF",
+      "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
+      "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
+      "starting": "Iniciando…",
+      "runAnalysis": "Ejecutar análisis →"
+    },
+    "categories": {
+      "hide": "Ocultar detalles de categorías",
+      "edit": "Editar categorías",
+      "addGroup": "+ Añadir nuevo grupo de clasificación",
+      "newGroup": {
+        "title": "Nuevo grupo de clasificación",
+        "namePlaceholder": "Nombre del grupo (p. ej. Metas ODS, Temas personalizados)",
+        "descPlaceholder": "Breve descripción de lo que clasifica este grupo",
+        "create": "Crear grupo",
+        "cancel": "Cancelar",
+        "hint": "Después de crear el grupo, use «Editar» para añadir categorías individuales dentro de él."
+      },
+      "group": {
+        "enabledRatio": "{active, number} de {total, number} habilitadas",
+        "empty": "Aún no hay categorías. Pulse Editar para añadir.",
+        "disableAll": "Deshabilitar todas",
+        "enableAll": "Habilitar todas",
+        "collapse": "Contraer",
+        "editBtn": "Editar",
+        "removeTitle": "Eliminar grupo"
+      },
+      "item": {
+        "remove": "Eliminar"
+      },
+      "newItem": {
+        "namePlaceholder": "Nombre",
+        "descPlaceholder": "Descripción (opcional)",
+        "add": "Añadir",
+        "cancel": "Cancelar",
+        "addBtn": "+ Añadir categoría"
+      }
+    },
+    "pipeline": {
+      "heading": "Canalización de documentos",
+      "status": {
+        "parsing": "Analizando…",
+        "ready": "Listo",
+        "error": "Error"
+      },
+      "policyTargetsCount": "{count, number} metas de política",
+      "btr": {
+        "actions": "{count, number} acciones reportadas",
+        "emissions": "{count, number} series de emisiones",
+        "projections": "{count, number} proyecciones",
+        "techSupport": "{count, number} proyectos de apoyo técnico",
+        "capacityBuilding": "{count, number} de fortalecimiento de capacidades"
+      },
+      "remove": "Eliminar"
+    },
+    "review": {
+      "title": "Revisar metas extraídas",
+      "subtitle": "{kept, number} de {total, number} conservadas · {file}",
+      "keepAll": "Conservar todas",
+      "removeAll": "Eliminar todas",
+      "pagePrefix": "p.",
+      "englishTranslation": "EN: {text}",
+      "keep": "Conservar",
+      "removeTitle": "Eliminar",
+      "removed": "Eliminada",
+      "restoreTitle": "Restaurar",
+      "addMissingPrompt": "Añadir una meta que no fue extraída",
+      "manualPlaceholder": "Texto de la meta…",
+      "manualLabelPlaceholder": "Etiqueta (opcional)",
+      "addBtn": "+ Añadir",
+      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {meta} other {metas}} se añadirán a este análisis",
+      "discard": "Descartar",
+      "acceptBtn": "Añadir {count, plural, one {1 meta} other {# metas}} →"
+    },
+    "manualForm": {
+      "sourceDocument": "Documento de origen",
+      "documentName": "Nombre del documento",
+      "placeholderSectoral": "p. ej. Política de Transporte",
+      "placeholderOther": "p. ej. Plan Nacional de Desarrollo",
+      "labelOptional": "Etiqueta (opcional)",
+      "labelPlaceholder": "p. ej. Biodiversidad 1",
+      "targetText": "Texto de la meta",
+      "targetTextPlaceholder": "Pegue o escriba el texto completo de la meta…",
+      "addTarget": "+ Añadir meta",
+      "maxReached": "Máximo de {max, number} metas alcanzado"
+    },
+    "editor": {
+      "title": "Editar metas manuales: {docType}",
+      "done": "Hecho",
+      "labelPlaceholder": "Etiqueta",
+      "targetPlaceholder": "Texto de la meta…",
+      "toggleDetails": "Añadir actividades y acciones",
+      "activities": "Actividades",
+      "activitiesPlaceholder": "Actividades de implementación (opcional)…",
+      "actions": "Acciones / Medidas",
+      "actionsPlaceholder": "Acciones o medidas (opcional)…"
+    },
+    "step4": {
+      "title": "Resumen y ejecución del análisis",
+      "subtitle": "Revise la configuración completa del análisis a continuación. La canalización clasificará cada meta, descompondrá su estructura y evaluará la alineación por pares entre todos los tipos de documento.",
+      "countryLabel": "País",
+      "notSpecified": "No especificado",
+      "targetsLabel": "Metas",
+      "acrossDocs": "a través de {count, plural, one {1 tipo de documento} other {# tipos de documento}}",
+      "targetBreakdown": "Desglose de metas",
+      "btr": {
+        "title": "Datos de implementación BTR incluidos",
+        "description": "Medidas de mitigación comparadas con metas de política."
+      },
+      "footprint": {
+        "heading": "Huella de la extracción de documentos hasta ahora",
+        "energy": "Wh de energía",
+        "water": "mL de agua",
+        "co2": "gCO<sub>2</sub>eq",
+        "minerals": "µgSbeq de minerales",
+        "summary": "Acumulado a partir de {count, number} llamadas LLM durante la extracción. Esto se añadirá a la huella del análisis en el panel final. Estimado mediante EcoLogits."
+      }
+    },
+    "step3": {
+      "title": "Revisar metas y configurar categorías",
+      "subtitle": "Verifique que sus metas se vean correctas, luego configure qué categorías de clasificación usar. Puede expandir cada grupo de documentos para inspeccionar o eliminar metas individuales.",
+      "categoriesHeading": "Categorías de clasificación",
+      "targetsHeading": "Metas de política",
+      "hideManual": "Ocultar entrada manual",
+      "addTarget": "+ Añadir meta",
+      "targetCount": "{count, plural, one {# meta} other {# metas}}",
+      "removeTarget": "Eliminar meta",
+      "noTargets": "Aún no hay metas",
+      "noTargetsHint": "Vuelva atrás para añadir datos de referencia o cargar documentos."
     }
   },
   "analysis": {
@@ -881,7 +983,7 @@
       "btrAdp": {
         "short": "Adaptación BTR",
         "medium": "BTR (Adaptación)",
-        "full": "Informe Bienal de Transparencia — acciones de adaptación"
+        "full": "Informe Bienal de Transparencia: acciones de adaptación"
       },
       "other": {
         "short": "Otro",
@@ -894,7 +996,7 @@
     "heading": {
       "title": "Explorador de Coherencia de Políticas",
       "info": "Esta visualización mapea relaciones de alineación entre metas de política a través de sus documentos. Las <strong>líneas</strong> entre metas representan relaciones evaluadas. Líneas más gruesas y oscuras muestran alineación más fuerte. Las líneas rojas discontinuas indican pares que la IA ha identificado como posible desalineación.",
-      "infoScore": "El <strong>puntaje de coherencia</strong> es un porcentaje ponderado por calidad: cada par alineado obtiene 1–3 puntos (parcial/media/alta), dividido por el puntaje máximo posible.",
+      "infoScore": "El <strong>puntaje de coherencia</strong> es un porcentaje ponderado por calidad: cada par alineado obtiene 1 a 3 puntos (parcial/media/alta), dividido por el puntaje máximo posible.",
       "infoBtr": "<strong>Colores de los nodos BTR:</strong> las medidas de mitigación reportadas se muestran en violeta y las acciones de adaptación reportadas en fucsia, para que pueda distinguir los dos subconjuntos del BTR de un vistazo.",
       "hoverHint": "Pase el cursor sobre una meta o púlsela para explorar conexiones."
     },
@@ -929,11 +1031,11 @@
       "groupOptionDocument": "Por tipo de documento",
       "groupOptionGlobe": "Por categoría de biodiversidad",
       "groupOptionSector": "Por sector de mitigación climática",
-      "filterHighContra": "Alta + Contradicciones",
+      "filterHighContra": "Fuerte + posible desalineación",
       "filterHighMedium": "Alta + Media",
       "filterAll": "Todas las conexiones",
-      "filterHigh": "Sólo alta",
-      "filterContradictions": "Sólo contradicciones",
+      "filterHigh": "Sólo alineación fuerte",
+      "filterContradictions": "Sólo posible desalineación",
       "atAGlance": "De un vistazo",
       "atAGlanceTitle": "Mostrar u ocultar el panel resumen de un vistazo"
     },
@@ -949,8 +1051,8 @@
       "label": "Presupuesto de biodiversidad",
       "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación GLOBE.",
       "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa arcos por GLOBE y sombrea cada uno por su proporción del gasto BER etiquetado.",
-      "mongoliaNote": "BER de Mongolia (Revisión del Gasto en Biodiversidad), totales de {start, number}–{end, number}. Subconjunto del gasto nacional.",
-      "wedgeTooltip": "{label} · {amount} ({pct}% del BER etiquetado)",
+      "mongoliaNote": "BER de Mongolia (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
       "fallbackAmount": "0 MNT"
     },
     "wheel": {
@@ -1023,7 +1125,7 @@
       "closeAria": "Cerrar categoría",
       "taggedBerSpend": "Gasto BER etiquetado",
       "shareSuffix": " · {pct}% de proporción",
-      "periodSuffix": " ({start, number}–{end, number})",
+      "periodSuffix": " ({start, number}-{end, number})",
       "policyTargets": "Metas de política",
       "policyTargetsShareSuffix": " · {pct}% de proporción",
       "contributingProgrammes": "Programas contribuyentes",
@@ -1034,7 +1136,7 @@
       "statMisalignments": "Posibles desalineaciones",
       "statTargetsTitle": "Examinar todas las metas en esta categoría",
       "statAlignmentsTitle": "Examinar todos los pares de alineación fuerte en esta categoría",
-      "statMisalignmentsTitle": "Examinar todos los pares marcados como posible/probable conflicto en esta categoría",
+      "statMisalignmentsTitle": "Examinar todos los pares de posible desalineación en esta categoría",
       "misWithOther": "Posibles desalineaciones con otras categorías",
       "alignsWithOther": "Se alinea con otras categorías",
       "topConflicts": "Principales conflictos",
@@ -1058,7 +1160,10 @@
       "surpriseMe": "Sorpréndame",
       "openEntityTitle": "Abrir {id}",
       "requestFailed": "Solicitud fallida ({status, number})",
-      "genericError": "Lo siento, eso no funcionó."
+      "genericError": "Lo siento, eso no funcionó.",
+      "askPlaceholderProminent": "Pregunte cualquier cosa sobre estas políticas…",
+      "askAriaProminent": "Pregunte al asistente sobre los documentos de política",
+      "askProminent": "Preguntar →"
     }
   },
   "metadata": {

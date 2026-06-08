@@ -15,6 +15,10 @@
         "aiInferred": "AI-inferred",
         "mixed": "AI-inferred from uploaded data"
       }
+    },
+    "languageSwitcher": {
+      "aria": "Language",
+      "machineTranslatedNote": "Machine translation"
     }
   },
   "header": {
@@ -37,7 +41,7 @@
     "inside": {
       "eyebrow": "Inside the analysis",
       "title": "Every policy target, mapped against every other",
-      "body": "Each ribbon links two national policy documents. Green shows where their targets are in strong alignment; red threads mark a potential misalignment worth a closer look. Switch between the pilot countries to compare.",
+      "body": "Each ribbon links two national policy documents. Green shows where their targets are in strong alignment; red threads mark a potential misalignment worth a closer look.",
       "disclaimer": "AI-generated analysis. Treat as a prompt to review, not a settled finding.",
       "preview": {
         "countrySwitcherAria": "Choose a country to preview",
@@ -58,131 +62,7 @@
         "title": "Automated analysis",
         "body": "AI classifies each target by theme and sector, then assesses how well targets across different policies align with each other."
       },
-      "estimate": {
-      "quantitative": "Quantitative phrase detection: {count, number} calls",
-      "classification": "Classification against NBS, IPCC, GLOBE: {count, number} calls",
-      "decomposition": "Target decomposition: {count, number} calls",
-      "needsTwoDocs": "Pairwise alignment: requires 2+ document types",
-      "pairwiseCount": "Pairwise alignment: ~{count, number} pairs",
-      "btrIntegration": "BTR/CTF data integration",
-      "addSecondDoc": "Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.",
-      "totalCost": "~{calls, number} LLM calls · estimated cost <strong>${cost}</strong>",
-      "starting": "Starting…",
-      "runAnalysis": "Run analysis →"
-    },
-    "categories": {
-      "hide": "Hide category details",
-      "edit": "Edit categories",
-      "addGroup": "+ Add new classification group",
-      "newGroup": {
-        "title": "New Classification Group",
-        "namePlaceholder": "Group name (e.g. SDG Targets, Custom Themes)",
-        "descPlaceholder": "Brief description of what this group classifies",
-        "create": "Create group",
-        "cancel": "Cancel",
-        "hint": "After creating the group, use \"Edit\" to add individual categories within it."
-      },
-      "group": {
-        "enabledRatio": "{active, number} of {total, number} enabled",
-        "empty": "No categories yet. Click Edit to add.",
-        "disableAll": "Disable all",
-        "enableAll": "Enable all",
-        "collapse": "Collapse",
-        "editBtn": "Edit",
-        "removeTitle": "Remove group"
-      },
-      "item": {
-        "remove": "Remove"
-      },
-      "newItem": {
-        "namePlaceholder": "Name",
-        "descPlaceholder": "Description (optional)",
-        "add": "Add",
-        "cancel": "Cancel",
-        "addBtn": "+ Add category"
-      }
-    },
-    "review": {
-      "title": "Review extracted targets",
-      "subtitle": "{kept, number} of {total, number} kept · {file}",
-      "keepAll": "Keep all",
-      "removeAll": "Remove all",
-      "pagePrefix": "p.",
-      "englishTranslation": "EN: {text}",
-      "keep": "Keep",
-      "removeTitle": "Remove",
-      "removed": "Removed",
-      "restoreTitle": "Restore",
-      "addMissingPrompt": "Add a target that wasn't extracted",
-      "manualPlaceholder": "Target text…",
-      "manualLabelPlaceholder": "Label (optional)",
-      "addBtn": "+ Add",
-      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {target} other {targets}} will be added to this analysis",
-      "discard": "Discard",
-      "acceptBtn": "Add {count, plural, one {1 target} other {# targets}} →"
-    },
-    "editor": {
-      "title": "Edit manual targets: {docType}",
-      "done": "Done",
-      "labelPlaceholder": "Label",
-      "targetPlaceholder": "Target text…",
-      "toggleDetails": "Add activities & actions",
-      "activities": "Activities",
-      "activitiesPlaceholder": "Implementation activities (optional)…",
-      "actions": "Actions / Measures",
-      "actionsPlaceholder": "Actions or measures (optional)…"
-    },
-    "pipeline": {
-      "heading": "Document Pipeline",
-      "status": {
-        "parsing": "Parsing…",
-        "ready": "Ready",
-        "error": "Error"
-      },
-      "policyTargetsCount": "{count, number} policy targets",
-      "btr": {
-        "actions": "{count, number} reported actions",
-        "emissions": "{count, number} emission series",
-        "projections": "{count, number} projections",
-        "techSupport": "{count, number} tech support projects",
-        "capacityBuilding": "{count, number} capacity building"
-      },
-      "remove": "Remove"
-    },
-    "manualForm": {
-      "sourceDocument": "Source Document",
-      "documentName": "Document Name",
-      "placeholderSectoral": "e.g. Transport Policy",
-      "placeholderOther": "e.g. National Development Plan",
-      "labelOptional": "Label (optional)",
-      "labelPlaceholder": "e.g. Biodiversity 1",
-      "targetText": "Target Text",
-      "targetTextPlaceholder": "Paste or type the full target text…",
-      "addTarget": "+ Add Target",
-      "maxReached": "Maximum {max, number} targets reached"
-    },
-    "step4": {
-      "title": "Summary & Run Analysis",
-      "subtitle": "Review your complete analysis configuration below. The pipeline will classify each target, decompose its structure, and assess pairwise alignment across all document types.",
-      "countryLabel": "Country",
-      "notSpecified": "Not specified",
-      "targetsLabel": "Targets",
-      "acrossDocs": "across {count, plural, one {1 document type} other {# document types}}",
-      "targetBreakdown": "Target Breakdown",
-      "btr": {
-        "title": "BTR implementation data included",
-        "description": "Mitigation measures compared against policy targets."
-      },
-      "footprint": {
-        "heading": "Document extraction footprint so far",
-        "energy": "Wh energy",
-        "water": "mL water",
-        "co2": "gCO<sub>2</sub>eq",
-        "minerals": "µgSbeq minerals",
-        "summary": "Accumulated from {count, number} LLM calls during extraction. This will be added to the analysis footprint on the final dashboard. Estimated via EcoLogits."
-      }
-    },
-    "step3": {
+      "step3": {
         "title": "Explore results",
         "body": "Interactive dashboard showing policy coverage, alignment patterns, and areas where coordination could be strengthened."
       }
@@ -234,7 +114,8 @@
       "frictionTypes": "Friction types",
       "sectors": "Sectors",
       "whereToFocus": "Where to focus",
-      "explore": "Explore"
+      "explore": "Explore",
+      "financing": "Financing"
     },
     "lens": {
       "globe": "GLOBE",
@@ -273,7 +154,7 @@
     },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: no scored pairs",
-      "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} flagged — click for the gaps",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} flagged · click for the gaps",
       "aligned": "Aligned",
       "flagged": "Potential misalignment",
       "legendHint": "deeper colour = further from the average · click a cell for the gaps"
@@ -443,7 +324,7 @@
     },
     "explore": {
       "heading": "Explore the policy coherence yourself.",
-      "body": "Ask a question in your own words, surface an insight, or click the wheel. Insights and the wheel react together.",
+      "body": "Ask a question across the policies, follow an insight, or work the full wheel yourself: click any target for its detail, search for a specific one, regroup the arcs, hide a document, or bring in the budget view.",
       "openFullData": "Explore the full data",
       "starterStoryline": "What is the main storyline across these documents?",
       "groupBy": "Group the wheel by",
@@ -501,8 +382,14 @@
         "misaligned": "Misaligned"
       },
       "noun": {
-        "category": { "singular": "category", "plural": "categories" },
-        "sector": { "singular": "sector", "plural": "sectors" }
+        "category": {
+          "singular": "category",
+          "plural": "categories"
+        },
+        "sector": {
+          "singular": "sector",
+          "plural": "sectors"
+        }
       },
       "concentration": {
         "emptyHeadline": "No potentially misaligned pairs grouped by {noun} yet.",
@@ -610,6 +497,85 @@
       "notEnoughPairs": "Not enough scored pairs to show an underlying example.",
       "focusConcentrated": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}",
       "focusSpread": "they spread across {count, plural, one {1 target} other {# targets}}"
+    },
+    "emptyState": {
+      "allDocsHidden": "All documents are hidden. Add at least one document above to see the coherence briefing."
+    },
+    "financing": {
+      "eyebrow": "Where does money meet ambition?",
+      "matchedCount": "<strong>{reached}</strong> of {total} matched",
+      "matchedHeading": "Targets with a matching budget line",
+      "unmatchedHeading": "Targets with no matching budget line",
+      "budgetLineLabel": "budget line:",
+      "allMatched": "Every target in this document has a matching budget line.",
+      "legend": {
+        "matched": "has a matching budget line",
+        "unmatched": "no matching budget line"
+      },
+      "dotMap": {
+        "intro": "Each dot is one policy target. Open a document to see which of its targets have a matching budget line and which have none.",
+        "disclaimer": "The pipeline matches each target to the budget lines on the same goal, keeping only high-confidence matches. It shows where a budget line exists for a target, not whether money is spent on it. AI-estimated and indicative."
+      },
+      "share": {
+        "most": "most of",
+        "aboutHalf": "about half",
+        "underHalf": "under half of",
+        "few": "few of"
+      },
+      "noSpend": {
+        "headline": "No tracked biodiversity expenditure to compare yet.",
+        "body": "Once the Biodiversity Expenditure Review reports program spending, this slide shows how much of the policy has a matching budget line, and which targets have none."
+      },
+      "noMatch": {
+        "headline": "{country}'s reviewed biodiversity spending sits beside {count, plural, one {# policy target} other {# policy targets}}.",
+        "body": "The match between this budget's lines and the policy targets has not been computed for this corpus yet. The right column shows the budget itself: where the money sits, and how much of the plan went unspent."
+      },
+      "matched": {
+        "headline": "{country}'s reviewed biodiversity spending matches {share} the policy targets.",
+        "body": "Across the {docCount, plural, one {# policy document} other {# policy documents}} there are {total, plural, one {# target} other {# targets}}. {reached} have a matching budget line in this review; the other {outsideReach} have none."
+      }
+    },
+    "financingCenter": {
+      "header": {
+        "eyebrow": "The spending reviewed",
+        "title": "Biodiversity Expenditure Review (BER)",
+        "budgetLines": "{count, plural, one {# budget line} other {# budget lines}}",
+        "withRecordedSpend": "({count, plural, one {# with recorded spend} other {# with recorded spend}})",
+        "noRecordedSpend": "no recorded spend"
+      },
+      "concentration": {
+        "eyebrow": "Where the {amount} goes · {period}",
+        "everythingElseTitle": "Everything else: {pct}%",
+        "everythingElse": "everything else"
+      },
+      "execution": {
+        "eyebrow": "Not all of it is spent · {period}",
+        "spent": "<strong>{actual}</strong> of {planned} {unit} {currency} spent",
+        "unspent": "· {amount} ({pct}%) unspent"
+      }
+    },
+    "docFilter": {
+      "removeDoc": "Remove {name}",
+      "addDoc": "Add {name}",
+      "included": "{visible} of {total, plural, one {# policy document} other {# policy documents}} included.",
+      "excluded": "{names} excluded.",
+      "done": "Done",
+      "addOrRemove": "Add or remove documents",
+      "resetToDefault": "Reset to default",
+      "toggle": {
+        "clickToAddRemove": "Click a document to add or remove it"
+      }
+    },
+    "centerLegend": {
+      "variant": {
+        "wheel": "Wheel",
+        "constellation": "Constellation"
+      },
+      "legend": {
+        "aligned": "Aligned",
+        "potentialMis": "Potential misalignment",
+        "ribbonWidth": "ribbon width = number of pairs"
+      }
     }
   },
   "upload": {
@@ -688,6 +654,142 @@
         "back": "Back",
         "next": "Next"
       }
+    },
+    "estimate": {
+      "quantitative": "Quantitative phrase detection: {count, number} calls",
+      "classification": "Classification against NBS, IPCC, GLOBE: {count, number} calls",
+      "decomposition": "Target decomposition: {count, number} calls",
+      "needsTwoDocs": "Pairwise alignment: requires 2+ document types",
+      "pairwiseCount": "Pairwise alignment: ~{count, number} pairs",
+      "btrIntegration": "BTR/CTF data integration",
+      "addSecondDoc": "Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.",
+      "totalCost": "~{calls, number} LLM calls · estimated cost <strong>${cost}</strong>",
+      "starting": "Starting…",
+      "runAnalysis": "Run analysis →"
+    },
+    "categories": {
+      "hide": "Hide category details",
+      "edit": "Edit categories",
+      "addGroup": "+ Add new classification group",
+      "newGroup": {
+        "title": "New Classification Group",
+        "namePlaceholder": "Group name (e.g. SDG Targets, Custom Themes)",
+        "descPlaceholder": "Brief description of what this group classifies",
+        "create": "Create group",
+        "cancel": "Cancel",
+        "hint": "After creating the group, use \"Edit\" to add individual categories within it."
+      },
+      "group": {
+        "enabledRatio": "{active, number} of {total, number} enabled",
+        "empty": "No categories yet. Click Edit to add.",
+        "disableAll": "Disable all",
+        "enableAll": "Enable all",
+        "collapse": "Collapse",
+        "editBtn": "Edit",
+        "removeTitle": "Remove group"
+      },
+      "item": {
+        "remove": "Remove"
+      },
+      "newItem": {
+        "namePlaceholder": "Name",
+        "descPlaceholder": "Description (optional)",
+        "add": "Add",
+        "cancel": "Cancel",
+        "addBtn": "+ Add category"
+      }
+    },
+    "pipeline": {
+      "heading": "Document Pipeline",
+      "status": {
+        "parsing": "Parsing…",
+        "ready": "Ready",
+        "error": "Error"
+      },
+      "policyTargetsCount": "{count, number} policy targets",
+      "btr": {
+        "actions": "{count, number} reported actions",
+        "emissions": "{count, number} emission series",
+        "projections": "{count, number} projections",
+        "techSupport": "{count, number} tech support projects",
+        "capacityBuilding": "{count, number} capacity building"
+      },
+      "remove": "Remove"
+    },
+    "review": {
+      "title": "Review extracted targets",
+      "subtitle": "{kept, number} of {total, number} kept · {file}",
+      "keepAll": "Keep all",
+      "removeAll": "Remove all",
+      "pagePrefix": "p.",
+      "englishTranslation": "EN: {text}",
+      "keep": "Keep",
+      "removeTitle": "Remove",
+      "removed": "Removed",
+      "restoreTitle": "Restore",
+      "addMissingPrompt": "Add a target that wasn't extracted",
+      "manualPlaceholder": "Target text…",
+      "manualLabelPlaceholder": "Label (optional)",
+      "addBtn": "+ Add",
+      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {target} other {targets}} will be added to this analysis",
+      "discard": "Discard",
+      "acceptBtn": "Add {count, plural, one {1 target} other {# targets}} →"
+    },
+    "manualForm": {
+      "sourceDocument": "Source Document",
+      "documentName": "Document Name",
+      "placeholderSectoral": "e.g. Transport Policy",
+      "placeholderOther": "e.g. National Development Plan",
+      "labelOptional": "Label (optional)",
+      "labelPlaceholder": "e.g. Biodiversity 1",
+      "targetText": "Target Text",
+      "targetTextPlaceholder": "Paste or type the full target text…",
+      "addTarget": "+ Add Target",
+      "maxReached": "Maximum {max, number} targets reached"
+    },
+    "editor": {
+      "title": "Edit manual targets: {docType}",
+      "done": "Done",
+      "labelPlaceholder": "Label",
+      "targetPlaceholder": "Target text…",
+      "toggleDetails": "Add activities & actions",
+      "activities": "Activities",
+      "activitiesPlaceholder": "Implementation activities (optional)…",
+      "actions": "Actions / Measures",
+      "actionsPlaceholder": "Actions or measures (optional)…"
+    },
+    "step4": {
+      "title": "Summary & Run Analysis",
+      "subtitle": "Review your complete analysis configuration below. The pipeline will classify each target, decompose its structure, and assess pairwise alignment across all document types.",
+      "countryLabel": "Country",
+      "notSpecified": "Not specified",
+      "targetsLabel": "Targets",
+      "acrossDocs": "across {count, plural, one {1 document type} other {# document types}}",
+      "targetBreakdown": "Target Breakdown",
+      "btr": {
+        "title": "BTR implementation data included",
+        "description": "Mitigation measures compared against policy targets."
+      },
+      "footprint": {
+        "heading": "Document extraction footprint so far",
+        "energy": "Wh energy",
+        "water": "mL water",
+        "co2": "gCO<sub>2</sub>eq",
+        "minerals": "µgSbeq minerals",
+        "summary": "Accumulated from {count, number} LLM calls during extraction. This will be added to the analysis footprint on the final dashboard. Estimated via EcoLogits."
+      }
+    },
+    "step3": {
+      "title": "Review Targets & Configure Categories",
+      "subtitle": "Verify your targets look correct, then configure which classification categories to use. You can expand each document group to inspect or remove individual targets.",
+      "categoriesHeading": "Classification Categories",
+      "targetsHeading": "Policy Targets",
+      "hideManual": "Hide manual entry",
+      "addTarget": "+ Add target",
+      "targetCount": "{count, plural, one {# target} other {# targets}}",
+      "removeTarget": "Remove target",
+      "noTargets": "No targets yet",
+      "noTargetsHint": "Go back to add reference data or upload documents."
     }
   },
   "analysis": {
@@ -881,7 +983,7 @@
       "btrAdp": {
         "short": "BTR Adaptation",
         "medium": "BTR (Adaptation)",
-        "full": "Biennial Transparency Report — adaptation actions"
+        "full": "Biennial Transparency Report: adaptation actions"
       },
       "other": {
         "short": "Other",
@@ -894,7 +996,7 @@
     "heading": {
       "title": "Policy Coherence Explorer",
       "info": "This visualization maps alignment relationships between policy targets across your documents. <strong>Lines</strong> between targets represent assessed relationships. Thicker, darker lines show stronger alignment. Dashed red lines indicate pairs the AI has identified as potential misalignment.",
-      "infoScore": "The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1–3 points (low/medium/high), divided by the maximum possible score.",
+      "infoScore": "The <strong>coherency score</strong> is a quality-weighted percentage: each aligned pair scores 1 to 3 points (low/medium/high), divided by the maximum possible score.",
       "infoBtr": "<strong>BTR node colors:</strong> reported mitigation measures are shown in violet and reported adaptation actions in fuchsia, so you can tell the two BTR subsets apart at a glance.",
       "hoverHint": "Hover or click a target to explore connections."
     },
@@ -910,8 +1012,8 @@
       "across": " across {count, number} {groupLabel}",
       "highAlignmentsSingular": "{count, number} strong alignment",
       "highAlignmentsPlural": "{count, number} strong alignments",
-      "possibleMisSingular": "{count, number} possible misalignment",
-      "possibleMisPlural": "{count, number} possible misalignments",
+      "possibleMisSingular": "{count, number} potential misalignment",
+      "possibleMisPlural": "{count, number} potential misalignments",
       "alignedSingular": "{count, number} strong or medium alignment",
       "alignedPlural": "{count, number} strong or medium alignments",
       "allOpportunitySingular": "{count, number} alignment opportunity",
@@ -929,11 +1031,11 @@
       "groupOptionDocument": "By Document Type",
       "groupOptionGlobe": "By Biodiversity Category",
       "groupOptionSector": "By Climate Mitigation Sector",
-      "filterHighContra": "High + Contradictions",
+      "filterHighContra": "Strong + potential misalignment",
       "filterHighMedium": "High + Medium",
       "filterAll": "All connections",
-      "filterHigh": "High only",
-      "filterContradictions": "Contradictions only",
+      "filterHigh": "Strong alignment only",
+      "filterContradictions": "Potential misalignment only",
       "atAGlance": "At a glance",
       "atAGlanceTitle": "Show or hide the at-a-glance summary panel"
     },
@@ -949,8 +1051,8 @@
       "label": "Biodiversity Budget",
       "onTitle": "Turn off the Biodiversity Budget shading. The wheel keeps the GLOBE grouping.",
       "offTitle": "Switch to the Biodiversity Budget view: groups arcs by GLOBE and shades each by its share of tagged BER spend.",
-      "mongoliaNote": "Mongolia BER (Biodiversity Expenditure Review), {start, number}–{end, number} totals. Subset of national expenditure.",
-      "wedgeTooltip": "{label} · {amount} ({pct}% of tagged BER)",
+      "mongoliaNote": "Mongolia BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
+      "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% of tagged BER)",
       "fallbackAmount": "0 MNT"
     },
     "wheel": {
@@ -1003,7 +1105,7 @@
       "atAGlance": "At a glance",
       "statTargets": "Targets",
       "statAlignments": "Alignments",
-      "statMisalignments": "Possible misalignments",
+      "statMisalignments": "Potential misalignments",
       "statTargetsTitle": "Browse all visible targets",
       "statAlignmentsTitle": "Browse all strong alignment pairs",
       "statMisalignmentsTitle": "Browse all pairs flagged as possible/likely conflict",
@@ -1023,7 +1125,7 @@
       "closeAria": "Close category",
       "taggedBerSpend": "Tagged BER spend",
       "shareSuffix": " · {pct}% share",
-      "periodSuffix": " ({start, number}–{end, number})",
+      "periodSuffix": " ({start, number}-{end, number})",
       "policyTargets": "Policy targets",
       "policyTargetsShareSuffix": " · {pct}% share",
       "contributingProgrammes": "Contributing programmes",
@@ -1031,11 +1133,11 @@
       "programmeTooltip": "{id} {name}",
       "statTargets": "Targets",
       "statAlignments": "Alignments",
-      "statMisalignments": "Possible misalignments",
+      "statMisalignments": "Potential misalignments",
       "statTargetsTitle": "Browse all targets in this category",
       "statAlignmentsTitle": "Browse all strong alignment pairs in this category",
-      "statMisalignmentsTitle": "Browse all pairs flagged as possible/likely conflict in this category",
-      "misWithOther": "Possible misalignments with other categories",
+      "statMisalignmentsTitle": "Browse all pairs of potential misalignment in this category",
+      "misWithOther": "Potential misalignments with other categories",
       "alignsWithOther": "Aligns with other categories",
       "topConflicts": "Top conflicts",
       "topConflictsCount": "Top conflicts · {count, number}",
@@ -1058,7 +1160,10 @@
       "surpriseMe": "Surprise me",
       "openEntityTitle": "Open {id}",
       "requestFailed": "Request failed ({status, number})",
-      "genericError": "Sorry, that didn't work."
+      "genericError": "Sorry, that didn't work.",
+      "askPlaceholderProminent": "Ask anything about these policies…",
+      "askAriaProminent": "Ask the assistant about the policy documents",
+      "askProminent": "Ask →"
     }
   },
   "metadata": {
