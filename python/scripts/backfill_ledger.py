@@ -31,8 +31,14 @@ _OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
 _HISTORICAL_REGION = "USA"
 
 
-def _existing_backfill_countries() -> set[str]:
-    """Countries already seeded, identified by a ``backfill:<country>`` run_id."""
+def _countries_with_pipeline_rows() -> set[str]:
+    """Countries already represented by a pipeline run in the ledger.
+
+    Matches either a ``backfill:<country>`` run_id (this script's own rows) or
+    any ``dev_pipeline`` row carrying a ``country`` -- so a country fed in by a
+    real run (e.g. committed by hand) is not re-added as a duplicate backfill
+    row on the next run.
+    """
     path = ledger_path()
     countries: set[str] = set()
     if not path.exists():
@@ -48,11 +54,13 @@ def _existing_backfill_countries() -> set[str]:
         run_id = row.get("run_id") or ""
         if run_id.startswith("backfill:"):
             countries.add(run_id.split(":", 1)[1])
+        elif row.get("component") == "dev_pipeline" and row.get("country"):
+            countries.add(row["country"])
     return countries
 
 
 def main() -> None:
-    already = _existing_backfill_countries()
+    already = _countries_with_pipeline_rows()
     seeded = 0
     for fp_path in sorted(_OUTPUT_DIR.glob("*/footprint.json")):
         country = fp_path.parent.name
