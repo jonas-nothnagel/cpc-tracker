@@ -4357,6 +4357,7 @@ export function PolicyCoherenceExplorer({
                               label: arc.label,
                               amount: formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? ""),
                               pct: (budgetEntry.shareOfTotalBudget * 100).toFixed(1),
+                              hasAmount: 1,
                             })
                           : arc.label}
                       </title>
