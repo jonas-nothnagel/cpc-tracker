@@ -150,9 +150,28 @@ export type AssembleResult =
  * reads only). `kind` only affects the 404 message wording. The returned data
  * object is byte-identical to the legacy `/api/dashboard` response body.
  */
+/** Read a per-locale variant of an output file when present, else the base
+ *  (English) file. Used for the AI-narrative synthesis files, which carry a
+ *  machine-translated `<name>.<locale>.json` snapshot alongside the English
+ *  original. Any other locale, or a missing variant, falls back to English. */
+function readLocalizedJson<T>(
+  outputDir: string,
+  name: string,
+  locale?: string,
+): T | null {
+  if (locale && locale !== "en") {
+    const variant = readJson<T>(
+      join(outputDir, name.replace(/\.json$/, `.${locale}.json`)),
+    );
+    if (variant) return variant;
+  }
+  return readJson<T>(join(outputDir, name));
+}
+
 export function assembleDashboardData(
   paths: DerivedPaths,
   kind: "country" | "analysis",
+  locale?: string,
 ): AssembleResult {
   const { dataDir, outputDir, targetsFile, iso3 } = paths;
 
@@ -338,19 +357,25 @@ export function assembleDashboardData(
   // Synthesis layer (post-processing of alignment + classifications). Three
   // files per country; each may be absent on older runs. Frontend degrades
   // gracefully via empty defaults.
-  const docPairSynthesis = readJson<unknown[]>(
-    join(outputDir, "doc_pair_synthesis.json"),
+  const docPairSynthesis = readLocalizedJson<unknown[]>(
+    outputDir,
+    "doc_pair_synthesis.json",
+    locale,
   );
   // corpus_themes.json and sector_synthesis.json carry a `states` map keyed by
   // the canonical hidden-doc set (for the document include/exclude toggle).
   // Pass them through raw — the briefing selects the matching state client-side.
   // sector_synthesis may be the new { synthesis, states } object or a legacy
   // bare array; the client selector handles both.
-  const corpusThemes = readJson<Record<string, unknown>>(
-    join(outputDir, "corpus_themes.json"),
+  const corpusThemes = readLocalizedJson<Record<string, unknown>>(
+    outputDir,
+    "corpus_themes.json",
+    locale,
   );
-  const sectorSynthesis = readJson<unknown>(
-    join(outputDir, "sector_synthesis.json"),
+  const sectorSynthesis = readLocalizedJson<unknown>(
+    outputDir,
+    "sector_synthesis.json",
+    locale,
   );
 
   // Strip excluded document types so they never reach the frontend.
@@ -454,7 +479,10 @@ export type CountryPayloadResult =
  * the result for the container's lifetime. Used by both the API route (serves
  * the gzip buffer) and the dashboard page (server-renders from `.data`).
  */
-export function getCountryDashboardPayload(country: string): CountryPayloadResult {
+export function getCountryDashboardPayload(
+  country: string,
+  locale?: string,
+): CountryPayloadResult {
   const result = derivePaths(null, country);
   if (result.kind === "error") {
     return { kind: "error", status: result.status, error: result.error };
@@ -464,11 +492,14 @@ export function getCountryDashboardPayload(country: string): CountryPayloadResul
   }
 
   // Canonical id from the registry (derivePaths already validated it exists).
-  const key = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
+  // The cache key is per-locale: each locale serves a different narrative
+  // (machine-translated synthesis) while sharing the rest of the dataset.
+  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
+  const key = locale && locale !== "en" ? `${canonical}:${locale}` : canonical;
   const cached = countryPayloadCache.get(key);
   if (cached) return { kind: "ok", payload: cached };
 
-  const assembled = assembleDashboardData(result.paths, "country");
+  const assembled = assembleDashboardData(result.paths, "country", locale);
   if (assembled.kind === "error") {
     return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
   }
