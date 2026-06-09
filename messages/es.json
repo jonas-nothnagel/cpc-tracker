@@ -510,7 +510,12 @@
       "onePairFromEnd": "Un par evaluado de cada extremo del espectro.",
       "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",
       "focusConcentrated": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}",
-      "focusSpread": "se distribuyen en {count, plural, one {1 meta} other {# metas}}"
+      "focusSpread": "se distribuyen en {count, plural, one {1 meta} other {# metas}}",
+      "verdict": {
+        "mostly_aligned": "Las políticas son en gran medida coherentes entre sí.",
+        "mixed": "La coherencia es dispar en el conjunto de políticas.",
+        "lots_of_misalignment": "Considerable posible desalineación en el conjunto de políticas."
+      }
     },
     "emptyState": {
       "allDocsHidden": "Todos los documentos están ocultos. Añada al menos un documento arriba para ver el informe de coherencia."
@@ -1767,7 +1772,25 @@
       "operationalisationBy": "Operacionalización por {doc}",
       "rowModalTitle": "{id} — {count, plural, one {# registro periférico} other {# registros periféricos}}",
       "noRecords": "Sin registros.",
-      "aiRationale": "Justificación de la IA:"
+      "aiRationale": "Justificación de la IA:",
+      "status": {
+        "tension_heavy": {
+          "label": "Predominio de desalineación",
+          "description": "Los vínculos de posible desalineación dominan las relaciones con esta ambición. Vale la pena examinar de dónde viene la fricción."
+        },
+        "sparse_strong_support": {
+          "label": "Escaso respaldo fuerte",
+          "description": "Pocas metas periféricas alcanzan una alineación media o mejor con esta ambición. Puede indicar una brecha de cobertura."
+        },
+        "single_doc_dependency": {
+          "label": "Dependencia de un solo documento",
+          "description": "Toda la operacionalización media o mejor proviene de un solo documento periférico — riesgo de concentración si cambian las prioridades de ese documento."
+        },
+        "diversified_backing": {
+          "label": "Respaldo diversificado",
+          "description": "Al menos tres documentos periféricos contribuyen a una operacionalización media o mejor de esta ambición."
+        }
+      }
     }
   }
 }

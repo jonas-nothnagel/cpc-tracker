@@ -626,14 +626,15 @@ function CellBar({
 }
 
 function StatusChip({ status }: { status: AnchorStatus | null }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   if (!status) return <div />;
   const tone = STATUS_TONE_CLASSES[status.tone];
   return (
     <span
       className={`inline-flex items-center text-[11px] font-medium rounded border px-2 py-1 self-center ${tone}`}
-      title={status.description}
+      title={t(`status.${status.id}.description`)}
     >
-      {status.label}
+      {t(`status.${status.id}.label`)}
     </span>
   );
 }
