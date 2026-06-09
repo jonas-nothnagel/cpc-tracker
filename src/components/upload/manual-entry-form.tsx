@@ -30,6 +30,7 @@ export function ManualEntryForm({
   targetCount,
 }: ManualEntryFormProps) {
   const t = useTranslations("upload.manualForm");
+  const td = useTranslations("upload.docTypes");
   const showCustomDocField = currentDoc === "SECTORAL" || currentDoc === "OTHER";
 
   return (
@@ -49,7 +50,7 @@ export function ManualEntryForm({
           >
             {DOCUMENT_TYPES.map((d) => (
               <option key={d.value} value={d.value}>
-                {d.label}
+                {td(d.value)}
               </option>
             ))}
           </select>
