@@ -16,7 +16,7 @@ const LOCALE_LABELS: Record<string, string> = {
 // Locales whose UI strings are machine-translated and not yet human-reviewed.
 // Surfaced as a caveat beside the switcher so users read them with the right
 // confidence. Remove a code here once a native speaker has reviewed it.
-const MACHINE_TRANSLATED = new Set(["es"]);
+const MACHINE_TRANSLATED = new Set(["es", "mn"]);
 
 export function LanguageSwitcher() {
   const locale = useLocale();
