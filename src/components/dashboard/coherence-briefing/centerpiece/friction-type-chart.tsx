@@ -14,6 +14,7 @@
  */
 
 import { Fragment } from "react";
+import { useTranslations } from "next-intl";
 import type {
   FrictionType,
   FrictionTypeTotals,
@@ -33,19 +34,21 @@ const ORDER: FrictionType[] = [
 export function FrictionTypeChart({
   totals,
   onSegmentClick,
-  caption = "Across all policy documents",
+  caption,
 }: {
   totals: FrictionTypeTotals;
   onSegmentClick?: (type: FrictionType) => void;
   /** Left-hand label above the bar. Defaults to the all-documents framing. */
   caption?: string;
 }) {
+  const t = useTranslations("briefing.frictionTypeChart");
+  const resolvedCaption = caption ?? t("captionDefault");
   const contradictionLabels = useContradictionTypeLabels();
   const { total: totalFlagged } = totals;
   if (totalFlagged === 0) {
     return (
       <p className="text-sm italic text-[var(--undp-gray)]">
-        No potential misalignment to break down.
+        {t("empty")}
       </p>
     );
   }
@@ -77,10 +80,13 @@ export function FrictionTypeChart({
     <div className="border-y border-gray-200 py-5">
       <div className="mb-3 flex items-baseline justify-between gap-3 flex-wrap">
         <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-          {caption}
+          {resolvedCaption}
         </p>
         <p className="text-[11px] text-[var(--undp-black)] tabular-nums font-medium">
-          {totalFlagged.toLocaleString()} potentially misaligned pairs
+          {t("pairCount", {
+            count: totalFlagged,
+            countLabel: totalFlagged.toLocaleString(),
+          })}
         </p>
       </div>
       <div

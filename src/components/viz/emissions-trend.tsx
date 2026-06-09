@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   LineChart,
   Line,
@@ -24,21 +25,23 @@ const SECTOR_COLORS: Record<string, string> = {
   total: "#232e3d",
 };
 
-const SECTOR_LABELS: Record<string, string> = {
-  sector_energy: "Energy",
-  sector_transport: "Transport",
-  sector_ippu: "IPPU",
-  sector_agriculture: "Agriculture",
-  sector_lulucf: "LULUCF",
-  sector_waste: "Waste",
-  total: "Total (excl. LULUCF)",
-};
-
 interface EmissionsTrendProps {
   btrData: BtrData;
 }
 
 export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
+  const t = useTranslations("viz.emissionsTrend");
+
+  const sectorLabels: Record<string, string> = {
+    sector_energy: t("sectors.energy"),
+    sector_transport: t("sectors.transport"),
+    sector_ippu: "IPPU",
+    sector_agriculture: t("sectors.agriculture"),
+    sector_lulucf: "LULUCF",
+    sector_waste: t("sectors.waste"),
+    total: t("sectors.total"),
+  };
+
   const [showLulucf, setShowLulucf] = useState(false);
   const [showTotal, setShowTotal] = useState(false);
   const [hiddenSectors, setHiddenSectors] = useState<Set<string>>(new Set());
@@ -135,24 +138,24 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
           <h3 className="text-lg font-semibold text-[var(--undp-black)] mb-1 flex items-center flex-wrap gap-y-1">
-            GHG Emissions by Sector
+            {t("title")}
             <DataProvenance
               origin="user-uploaded"
               sources={[
                 {
-                  label: "Biennial Transparency Report — historical emissions",
-                  citation: "CTF Table 6 (sector emissions)",
+                  label: t("provenance.historicalLabel"),
+                  citation: t("provenance.historicalCitation"),
                 },
                 {
-                  label: "Biennial Transparency Report — projections",
-                  citation: "CTF Table 7 / 9 (WEM/WAM/WOM scenarios)",
+                  label: t("provenance.projectionsLabel"),
+                  citation: t("provenance.projectionsCitation"),
                 },
               ]}
-              caveat="Historical values are reported by the country in their BTR; projection scenarios (WEM/WAM/WOM) are the country's own modelling and are not recomputed here."
+              caveat={t("provenance.caveat")}
             />
           </h3>
           <p className="text-sm text-[var(--undp-gray)]">
-            Historical emissions (solid) and WEM projections (dashed) in kt CO&#x2082; equivalent.
+            {t("subtitle")}
           </p>
         </div>
         <div className="flex items-center gap-4 shrink-0 pt-1">
@@ -164,7 +167,7 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
                 onChange={() => setShowLulucf((v) => !v)}
                 className="accent-[#00689d] w-3 h-3"
               />
-              Show LULUCF
+              {t("showLulucf")}
             </label>
           )}
           {hasTotalData && (
@@ -175,7 +178,7 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
                 onChange={() => setShowTotal((v) => !v)}
                 className="accent-[#232e3d] w-3 h-3"
               />
-              Show Total
+              {t("showTotal")}
             </label>
           )}
         </div>
@@ -187,7 +190,7 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
           .filter((s) => s !== "sector_lulucf" || showLulucf)
           .map((sectorId) => {
             const isHidden = hiddenSectors.has(sectorId);
-            const label = SECTOR_LABELS[sectorId] ?? sectorId;
+            const label = sectorLabels[sectorId] ?? sectorId;
             const color = SECTOR_COLORS[sectorId];
             return (
               <button
@@ -216,7 +219,7 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
         {showTotal && (
           <span className="flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full border border-gray-300 text-[var(--undp-black)] bg-white">
             <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-[#232e3d]" />
-            Total (excl. LULUCF)
+            {t("sectors.total")}
           </span>
         )}
       </div>
@@ -249,8 +252,8 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
             formatter={(value, name) => {
               const n = String(name);
               const clean = n.replace("_proj", "");
-              const label = SECTOR_LABELS[clean] ?? clean;
-              const suffix = n.endsWith("_proj") ? " (projected)" : "";
+              const label = sectorLabels[clean] ?? clean;
+              const suffix = n.endsWith("_proj") ? ` ${t("projectedSuffix")}` : "";
               return [`${Number(value).toLocaleString()} kt`, `${label}${suffix}`];
             }}
           />
@@ -328,18 +331,17 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
       </ResponsiveContainer>
 
       <p className="text-[10px] text-[var(--undp-gray)] mt-2 text-center">
-        Dashed lines show WEM (With Existing Measures) projections. Click legend items to toggle sectors.
-        {!showLulucf && hasLulucf && " LULUCF hidden (acts as large carbon sink, see checkbox above)."}
+        {t("footer")}
+        {!showLulucf && hasLulucf && ` ${t("footerLulucfHidden")}`}
       </p>
 
       {showLulucf && (
         <div className="mt-3 px-4 py-3 bg-[#00689d]/8 border border-[#00689d]/20 rounded-lg text-[10px] text-[var(--undp-gray)] leading-relaxed">
-          <span className="font-semibold text-[#00689d]">About negative LULUCF values: </span>
-          The Land Use, Land-Use Change and Forestry sector shows negative numbers because Mongolia&apos;s
-          forests and grasslands currently <strong>absorb more CO&#x2082; than they emit</strong>,
-          making this sector a net carbon sink. In international GHG accounting, removals from the atmosphere
-          are reported as negative values. A value becoming <em>less negative</em> (moving toward zero)
-          means the sink is weakening and absorbing less carbon over time, which is a warning sign for climate goals.
+          <span className="font-semibold text-[#00689d]">{t("lulucfExplainer.heading")} </span>
+          {t.rich("lulucfExplainer.body", {
+            strong: (chunks) => <strong>{chunks}</strong>,
+            em: (chunks) => <em>{chunks}</em>,
+          })}
         </div>
       )}
     </div>

@@ -16,6 +16,7 @@
  */
 
 import React, { useMemo, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   LineChart,
   Line,
@@ -81,29 +82,23 @@ const APNDC_GOAL_PALETTE = [
  */
 type CoverageStatus = "active" | "partial" | "no_data";
 
-const STATUS_CONFIG: Record<
-  CoverageStatus,
-  { label: string; color: string; bg: string; description: string }
-> = {
-  active: {
-    label: "Active",
-    color: "#15803d",
-    bg: "bg-green-50",
-    description: "At least one mitigation action has a 'fully implemented' status reported.",
-  },
-  partial: {
-    label: "Partial",
-    color: "#0d9488",
-    bg: "bg-teal-50",
-    description: "Mitigation actions are adopted or ongoing, but none reported as fully implemented yet.",
-  },
-  no_data: {
-    label: "No data",
-    color: "#94a3b8",
-    bg: "bg-gray-50",
-    description: "No mitigation actions reported for this sector.",
-  },
+type TFn = ReturnType<typeof useTranslations>;
+
+const STATUS_STYLES: Record<CoverageStatus, { color: string; bg: string }> = {
+  active: { color: "#15803d", bg: "bg-green-50" },
+  partial: { color: "#0d9488", bg: "bg-teal-50" },
+  no_data: { color: "#94a3b8", bg: "bg-gray-50" },
 };
+
+function statusConfig(
+  t: TFn,
+): Record<CoverageStatus, { label: string; color: string; bg: string; description: string }> {
+  return {
+    active: { ...STATUS_STYLES.active, label: t("status.active.label"), description: t("status.active.description") },
+    partial: { ...STATUS_STYLES.partial, label: t("status.partial.label"), description: t("status.partial.description") },
+    no_data: { ...STATUS_STYLES.no_data, label: t("status.noData.label"), description: t("status.noData.description") },
+  };
+}
 
 function deriveStatus(mitMeasures: number, implemented: number): CoverageStatus {
   if (mitMeasures === 0) return "no_data";
@@ -232,28 +227,29 @@ function buildMitigationRows(
 function imbalanceArrow(
   policyCount: number,
   reportedCount: number,
+  t: TFn,
 ): { arrow: string; tone: "under" | "over" | "neutral"; title: string } {
   if (policyCount === 0 && reportedCount === 0) {
-    return { arrow: "·", tone: "neutral", title: "No policy targets, no reported actions" };
+    return { arrow: "·", tone: "neutral", title: t("imbalance.none") };
   }
   if (policyCount > reportedCount) {
     return {
       arrow: "↗",
       tone: "under",
-      title: `${policyCount} policy targets vs ${reportedCount} reported action${reportedCount === 1 ? "" : "s"} — pledged more than reported`,
+      title: t("imbalance.under", { policyCount, reportedCount }),
     };
   }
   if (reportedCount > policyCount) {
     return {
       arrow: "↘",
       tone: "over",
-      title: `${reportedCount} reported action${reportedCount === 1 ? "" : "s"} vs ${policyCount} policy target${policyCount === 1 ? "" : "s"} — reported more than the explicit policy commitments`,
+      title: t("imbalance.over", { policyCount, reportedCount }),
     };
   }
   return {
     arrow: "·",
     tone: "neutral",
-    title: `${policyCount} policy target${policyCount === 1 ? "" : "s"} and ${reportedCount} reported action${reportedCount === 1 ? "" : "s"} — balanced`,
+    title: t("imbalance.balanced", { policyCount, reportedCount }),
   };
 }
 
@@ -464,11 +460,12 @@ function buildBiodiversityRows(
 // ---------------------------------------------------------------------------
 
 function ReportingGapsCard({ gaps }: { gaps: string[] }) {
+  const t = useTranslations("viz.implementationCoverage");
   if (gaps.length === 0) return null;
   return (
     <div className="border border-amber-200 bg-amber-50/50 rounded-lg p-3.5 mb-5">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-800 mb-2">
-        Reporting gaps
+        {t("gaps.title")}
       </p>
       <ul className="space-y-1.5">
         {gaps.map((g, i) => (
@@ -482,11 +479,7 @@ function ReportingGapsCard({ gaps }: { gaps: string[] }) {
         ))}
       </ul>
       <p className="text-[10px] text-[var(--undp-gray)] italic mt-2.5">
-        Counts use the IPCC sector recorded for each BTR action in the
-        underlying data file (hand-curated for Mongolia, parser-extracted for
-        Panama). Government self-reports rarely surface contradictions, so
-        absence of a reported action is not the same as absence of activity
-        on the ground.
+        {t("gaps.footnote")}
       </p>
     </div>
   );
@@ -497,7 +490,8 @@ function ReportingGapsCard({ gaps }: { gaps: string[] }) {
 // ---------------------------------------------------------------------------
 
 function StatusBadge({ status }: { status: CoverageStatus }) {
-  const cfg = STATUS_CONFIG[status];
+  const t = useTranslations("viz.implementationCoverage");
+  const cfg = statusConfig(t)[status];
   return (
     <span
       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap ${cfg.bg}`}
@@ -553,6 +547,7 @@ function Sparkline({
 }
 
 function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryConfig?: CountryConfig | null }) {
+  const t = useTranslations("viz.implementationCoverage");
   const color = SECTOR_COLORS[row.sector.id] ?? "#a9b1b7";
 
   const combinedChart = useMemo(() => {
@@ -586,11 +581,11 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
         {/* Policy targets classified to this sector across NDC + NBSAP + NAP + Sectoral */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Policy targets in this sector ({row.policyTargets.length})
+            {t("mitigation.policyTargetsInSector", { count: row.policyTargets.length })}
           </p>
           {row.policyTargets.length === 0 ? (
             <p className="text-xs text-[var(--undp-gray)] italic">
-              No policy targets classified to this sector across NDC, NBSAP, NAP or Vision 2050.
+              {t("mitigation.noPolicyTargetsInSector")}
             </p>
           ) : (
             <ul className="divide-y divide-gray-100">
@@ -619,18 +614,18 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
         {/* Reported mitigation actions */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Reported mitigation actions ({row.measures.length})
+            {t("mitigation.reportedActions", { count: row.measures.length })}
           </p>
         {row.measures.length === 0 ? (
           <p className="text-xs text-[var(--undp-gray)] italic">
-            No reported mitigation actions for this sector
+            {t("mitigation.noReportedActions")}
           </p>
         ) : (
           <div className="space-y-3">
             {implemented.length > 0 && (
               <div>
                 <p className="text-[9px] font-semibold uppercase tracking-wide text-[#15803d] mb-1 flex items-center gap-1">
-                  <span>✓</span> Implemented ({implemented.length})
+                  <span>✓</span> {t("status.implementedCount", { count: implemented.length })}
                 </p>
                 <ul className="divide-y divide-gray-100">
                   {implemented.map((m, i) => (
@@ -654,7 +649,7 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
             {other.length > 0 && (
               <div>
                 <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                  Adopted / Planned ({other.length})
+                  {t("status.adoptedPlanned", { count: other.length })}
                 </p>
                 <ul className="divide-y divide-gray-100">
                   {other.map((m, i) => (
@@ -686,7 +681,7 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
       {combinedChart && combinedChart.length > 1 && (
         <div className="pt-4 border-t border-gray-100">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            {row.sector.name} emissions trajectory (kt CO₂ eq). Solid: historical, dashed: WEM projection.
+            {t("mitigation.emissionsTrajectory", { sector: row.sector.name })}
           </p>
           <ResponsiveContainer width="100%" height={180}>
             <LineChart
@@ -708,10 +703,10 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
               <Tooltip
                 contentStyle={{ fontSize: 11, borderRadius: 6, border: "1px solid #e2e8f0" }}
                 formatter={(value) => [
-                  `${Math.round(Number(value)).toLocaleString()} kt`,
+                  t("chart.ktValue", { value: Math.round(Number(value)) }),
                   "",
                 ]}
-                labelFormatter={(label) => `Year ${label}`}
+                labelFormatter={(label) => t("chart.yearLabel", { year: String(label) })}
               />
               {lastHistYear && (
                 <ReferenceLine
@@ -728,7 +723,7 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
                 strokeWidth={2}
                 dot={false}
                 connectNulls
-                name="Historical"
+                name={t("chart.historical")}
               />
               <Line
                 type="monotone"
@@ -738,7 +733,7 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
                 strokeDasharray="6 4"
                 dot={false}
                 connectNulls
-                name="Projected (WEM)"
+                name={t("chart.projectedWem")}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -761,6 +756,7 @@ function MitigationByIpccSector({
   highlightSector?: string | null;
   countryConfig?: CountryConfig | null;
 }) {
+  const t = useTranslations("viz.implementationCoverage");
   // Show all IPCC sectors. Empty rows still convey signal -- "this sector has
   // policy targets but no reported mitigation action" is exactly the gap the
   // view exists to surface, and seeing the full sector list inline matters.
@@ -772,18 +768,19 @@ function MitigationByIpccSector({
     <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
       <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
-          Mitigation, by IPCC sector
+          {t("mitigation.byIpccSector")}
         </h3>
         <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
-          Reported mitigation actions by IPCC sector. Implementation status is as self-reported
-          by the country. Click any row for the full action list{hasAnyEmissionsData ? " and emissions trajectory" : ""}.
+          {hasAnyEmissionsData
+            ? t("mitigation.byIpccSectorDescWithChart")
+            : t("mitigation.byIpccSectorDesc")}
         </p>
       </div>
       {rows.map((row) => {
         const isExpanded = expandedSector === row.sector.id;
         const isHighlighted = highlightSector === row.sector.id;
         const color = SECTOR_COLORS[row.sector.id] ?? "#a9b1b7";
-        const imbalance = imbalanceArrow(row.policyTargets.length, row.measures.length);
+        const imbalance = imbalanceArrow(row.policyTargets.length, row.measures.length, t);
 
         return (
           <div
@@ -822,7 +819,7 @@ function MitigationByIpccSector({
                   <span className="font-semibold text-[var(--undp-black)]">
                     {row.policyTargets.length}
                   </span>{" "}
-                  policy tgt{row.policyTargets.length === 1 ? "" : "s"}{" "}
+                  {t("counts.policyTargetsShort", { count: row.policyTargets.length })}{" "}
                   <span
                     className={`font-semibold ${IMBALANCE_TONE_CLASSES[imbalance.tone]}`}
                     title={imbalance.title}
@@ -836,11 +833,11 @@ function MitigationByIpccSector({
                   <span className="font-semibold text-[var(--undp-black)]">
                     {row.measures.length}
                   </span>{" "}
-                  reported
+                  {t("counts.reported")}
                   {row.implementedCount > 0 && (
                     <span className="text-[#15803d]">
                       {" "}
-                      ({row.implementedCount} ✓ implemented)
+                      {t("counts.implementedParen", { count: row.implementedCount })}
                     </span>
                   )}
                 </span>
@@ -883,7 +880,7 @@ function MitigationByIpccSector({
                         </div>
                       </>
                     ) : (
-                      <span className="text-[10px] text-[var(--undp-gray)]">no data</span>
+                      <span className="text-[10px] text-[var(--undp-gray)]">{t("counts.noDataLower")}</span>
                     )}
                   </div>
                 )}
@@ -932,6 +929,7 @@ function adaptationStatusBadgeClasses(status: string | undefined): string {
 }
 
 function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryConfig?: CountryConfig | null }) {
+  const t = useTranslations("viz.implementationCoverage");
   // Sort actions: implemented first, then adopted, then ongoing.
   // Mirrors MitigationDetail's "Implemented (X)" promotion to the top.
   const sortedActions = useMemo(
@@ -949,7 +947,7 @@ function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryC
       {row.goalDescription && (
         <div className="mb-4">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-            Goal {row.goalNumber}
+            {t("adaptation.goal", { number: row.goalNumber })}
           </p>
           <p className="text-xs text-[var(--undp-black)] leading-relaxed">
             {row.goalDescription}
@@ -961,7 +959,7 @@ function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryC
       {row.policyTargets.length > 0 && (
         <div className="mb-4">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Policy targets aligned to this goal ({row.policyTargets.length})
+            {t("adaptation.policyTargetsAligned", { count: row.policyTargets.length })}
           </p>
           <ul className="divide-y divide-gray-100">
             {row.policyTargets.map((t) => (
@@ -987,7 +985,7 @@ function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryC
       )}
 
       <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-        Reported adaptation actions ({sortedActions.length})
+        {t("adaptation.reportedActions", { count: sortedActions.length })}
       </p>
       <ul className="divide-y divide-gray-100">
         {sortedActions.map((a, i) => {
@@ -1002,7 +1000,7 @@ function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryC
               <div className="flex items-center gap-1.5 mb-1 flex-wrap">
                 <ActionTypeBadge actionType="adaptation" />
                 <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                  Goal {row.goalNumber}
+                  {t("adaptation.goal", { number: row.goalNumber })}
                 </span>
                 <span
                   className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none ${adaptationStatusBadgeClasses(a.status)}`}
@@ -1016,7 +1014,7 @@ function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryC
               {a.indicator && (
                 <p className="text-[11px] text-[var(--undp-gray)] mt-0.5">
                   <span className="font-semibold uppercase text-[9px] tracking-wide">
-                    Indicator:
+                    {t("adaptation.indicatorLabel")}
                   </span>{" "}
                   {a.indicator}
                 </p>
@@ -1028,7 +1026,7 @@ function AdaptationDetail({ row, countryConfig }: { row: AdaptationRow; countryC
               )}
               {a.implementingEntity && (
                 <p className="text-[10px] text-[var(--undp-gray)]/80 mt-1">
-                  Responsible: {a.implementingEntity}
+                  {t("adaptation.responsible", { entity: a.implementingEntity })}
                 </p>
               )}
             </li>
@@ -1053,33 +1051,29 @@ function AdaptationByApndcGoal({
   groupingLabel?: string;
   countryConfig?: CountryConfig | null;
 }) {
+  const t = useTranslations("viz.implementationCoverage");
   if (rows.length === 0) return null;
   const sectionTitle = groupingLabel
-    ? `Adaptation, by ${groupingLabel}`
-    : "Adaptation actions";
+    ? t("adaptation.sectionTitleWithLabel", { label: groupingLabel })
+    : t("adaptation.sectionTitle");
   return (
     <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
       <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
           {sectionTitle}
           <InfoBox>
-            Adaptation actions are organised around the country&apos;s own adaptation action plan
-            rather than IPCC sectors, because IPCC sector classifications don&apos;t fit adaptation
-            outcomes like water, disaster, health and social safeguard. Each row shows one grouping
-            with the actions reported under it; click to read each action&apos;s indicator, status
-            narrative and responsible organisations.
+            {t("adaptation.infoBox")}
           </InfoBox>
         </h3>
         <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
-          Reported adaptation actions grouped by the country&apos;s adaptation action plan.
-          Progress shown as narrative status (not quantitative completion).
+          {t("adaptation.sectionDesc")}
         </p>
       </div>
       {rows.map((row) => {
         const isExpanded = expandedGoal === row.goalNumber;
         const color =
           APNDC_GOAL_PALETTE[(row.goalNumber - 1) % APNDC_GOAL_PALETTE.length];
-        const imbalance = imbalanceArrow(row.policyTargets.length, row.actions.length);
+        const imbalance = imbalanceArrow(row.policyTargets.length, row.actions.length, t);
         return (
           <div
             key={row.goalNumber}
@@ -1104,9 +1098,9 @@ function AdaptationByApndcGoal({
                   />
                   <p
                     className="text-xs font-medium text-[var(--undp-black)] truncate"
-                    title={row.goalDescription || `Goal ${row.goalNumber}`}
+                    title={row.goalDescription || t("adaptation.goal", { number: row.goalNumber })}
                   >
-                    Goal {row.goalNumber}
+                    {t("adaptation.goal", { number: row.goalNumber })}
                     {row.goalDescription ? ` — ${row.goalDescription}` : ""}
                   </p>
                 </div>
@@ -1115,7 +1109,7 @@ function AdaptationByApndcGoal({
                   <span className="font-semibold text-[var(--undp-black)]">
                     {row.policyTargets.length}
                   </span>{" "}
-                  policy tgt{row.policyTargets.length === 1 ? "" : "s"}{" "}
+                  {t("counts.policyTargetsShort", { count: row.policyTargets.length })}{" "}
                   <span
                     className={`font-semibold ${IMBALANCE_TONE_CLASSES[imbalance.tone]}`}
                     title={imbalance.title}
@@ -1128,13 +1122,13 @@ function AdaptationByApndcGoal({
                   <span className="font-semibold text-[var(--undp-black)]">
                     {row.actions.length}
                   </span>{" "}
-                  action{row.actions.length === 1 ? "" : "s"}
+                  {t("counts.actions", { count: row.actions.length })}
                   <div className="text-[10px] text-[var(--undp-gray)] mt-0.5 flex flex-wrap gap-x-2">
-                    {row.ongoing > 0 && <span>{row.ongoing} ongoing</span>}
-                    {row.adopted > 0 && <span>{row.adopted} adopted</span>}
+                    {row.ongoing > 0 && <span>{t("counts.ongoing", { count: row.ongoing })}</span>}
+                    {row.adopted > 0 && <span>{t("counts.adopted", { count: row.adopted })}</span>}
                     {row.implemented > 0 && (
                       <span className="text-[#15803d]">
-                        {row.implemented} ✓ implemented
+                        {t("counts.implementedCheck", { count: row.implemented })}
                       </span>
                     )}
                   </div>
@@ -1158,6 +1152,7 @@ function AdaptationByApndcGoal({
 // ---------------------------------------------------------------------------
 
 function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; countryConfig?: CountryConfig | null }) {
+  const t = useTranslations("viz.implementationCoverage");
   const implemented = row.measures.filter((m) =>
     m.status.toLowerCase().includes("implemented"),
   );
@@ -1170,11 +1165,11 @@ function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; coun
       <div className="grid md:grid-cols-2 gap-6 mb-4">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Policy targets in this category ({row.policyTargets.length})
+            {t("biodiversity.policyTargetsInCategory", { count: row.policyTargets.length })}
           </p>
           {row.policyTargets.length === 0 ? (
             <p className="text-xs text-[var(--undp-gray)] italic">
-              No policy targets classified to this biodiversity category.
+              {t("biodiversity.noPolicyTargets")}
             </p>
           ) : (
             <ul className="divide-y divide-gray-100">
@@ -1201,18 +1196,18 @@ function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; coun
         </div>
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-            Reported actions ({row.measures.length})
+            {t("biodiversity.reportedActions", { count: row.measures.length })}
           </p>
           {row.measures.length === 0 ? (
             <p className="text-xs text-[var(--undp-gray)] italic">
-              No reported actions for this category.
+              {t("biodiversity.noReportedActions")}
             </p>
           ) : (
             <div className="space-y-3">
               {implemented.length > 0 && (
                 <div>
                   <p className="text-[9px] font-semibold uppercase tracking-wide text-[#15803d] mb-1 flex items-center gap-1">
-                    <span>✓</span> Implemented ({implemented.length})
+                    <span>✓</span> {t("status.implementedCount", { count: implemented.length })}
                   </p>
                   <ul className="divide-y divide-gray-100">
                     {implemented.map((m, i) => (
@@ -1232,7 +1227,7 @@ function BiodiversityDetail({ row, countryConfig }: { row: BiodiversityRow; coun
               {other.length > 0 && (
                 <div>
                   <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                    Adopted / Ongoing / Planned ({other.length})
+                    {t("status.adoptedOngoingPlanned", { count: other.length })}
                   </p>
                   <ul className="divide-y divide-gray-100">
                     {other.map((m, i) => (
@@ -1273,24 +1268,22 @@ function BiodiversityByGlobe({
   onToggle: (id: string) => void;
   countryConfig?: CountryConfig | null;
 }) {
+  const t = useTranslations("viz.implementationCoverage");
   if (rows.length === 0 && unclassified.length === 0) return null;
 
   return (
     <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
       <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
-          All reported actions, by Biodiversity category
+          {t("biodiversity.title")}
           <InfoBox>
-            This view groups <strong>all</strong> BTR-reported actions (both mitigation and
-            adaptation) by BIOFIN&apos;s GLOBE Biodiversity Expenditure Taxonomy. This is an
-            alternative lens that shows which biodiversity categories have implementation
-            activity, regardless of whether the action is classified as mitigation or adaptation.
-            Actions that don&apos;t map to any biodiversity category appear under
-            &quot;Not classified&quot;.
+            {t.rich("biodiversity.infoBox", {
+              strong: (chunks) => <strong>{chunks}</strong>,
+            })}
           </InfoBox>
         </h3>
         <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
-          Mitigation and adaptation actions unified under biodiversity categories.
+          {t("biodiversity.sectionDesc")}
         </p>
       </div>
       {rows.map((row, idx) => {
@@ -1323,25 +1316,25 @@ function BiodiversityByGlobe({
                   <span className="font-semibold text-[var(--undp-black)]">
                     {row.policyTargets.length}
                   </span>{" "}
-                  policy tgt{row.policyTargets.length === 1 ? "" : "s"}
+                  {t("counts.policyTargetsShort", { count: row.policyTargets.length })}
                 </span>
                 <div className="text-xs text-[var(--undp-gray)] tabular-nums">
                   {row.measures.length === 0 && row.policyTargets.length > 0 ? (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700" title="Policy targets exist but no reported actions are classified under this category">
-                      0 actions (gap)
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700" title={t("biodiversity.gapTitle")}>
+                      {t("biodiversity.zeroActionsGap")}
                     </span>
                   ) : row.measures.length === 0 && row.policyTargets.length === 0 ? (
-                    <span className="text-[var(--undp-gray)] italic text-[10px]">no coverage yet</span>
+                    <span className="text-[var(--undp-gray)] italic text-[10px]">{t("biodiversity.noCoverageYet")}</span>
                   ) : (
                     <>
                       <span className="font-semibold text-[var(--undp-black)]">
                         {row.measures.length}
                       </span>{" "}
-                      action{row.measures.length === 1 ? "" : "s"}
+                      {t("counts.actions", { count: row.measures.length })}
                       <div className="text-[10px] text-[var(--undp-gray)] mt-0.5 flex flex-wrap gap-x-2">
-                        {row.ongoingCount > 0 && <span>{row.ongoingCount} ongoing</span>}
+                        {row.ongoingCount > 0 && <span>{t("counts.ongoing", { count: row.ongoingCount })}</span>}
                         {row.implementedCount > 0 && (
-                          <span className="text-[#15803d]">{row.implementedCount} ✓ implemented</span>
+                          <span className="text-[#15803d]">{t("counts.implementedCheck", { count: row.implementedCount })}</span>
                         )}
                       </div>
                     </>
@@ -1370,7 +1363,7 @@ function BiodiversityByGlobe({
               <div className="flex items-center gap-2 min-w-0">
                 <span className="w-2 h-2 rounded-full shrink-0 bg-gray-300" />
                 <span className="text-xs font-medium text-[var(--undp-gray)] italic">
-                  Not classified under any biodiversity category
+                  {t("biodiversity.notClassified")}
                 </span>
               </div>
               <span className="text-xs text-[var(--undp-gray)]" />
@@ -1378,7 +1371,7 @@ function BiodiversityByGlobe({
                 <span className="font-semibold text-[var(--undp-black)]">
                   {unclassified.length}
                 </span>{" "}
-                action{unclassified.length === 1 ? "" : "s"}
+                {t("counts.actions", { count: unclassified.length })}
               </span>
               <span className="text-[10px] text-[var(--undp-gray)]">
                 {expandedCategory === "__unclassified" ? "▾" : "▸"}
@@ -1452,6 +1445,7 @@ function buildCountrySectorRows(
 }
 
 function CountrySectorDetail({ row }: { row: CountrySectorRow }) {
+  const t = useTranslations("viz.implementationCoverage");
   const implemented = row.measures.filter((m) =>
     m.status.toLowerCase().includes("implemented"),
   );
@@ -1463,22 +1457,22 @@ function CountrySectorDetail({ row }: { row: CountrySectorRow }) {
     <div className="border-t border-gray-100 px-5 py-5 bg-[var(--undp-light)]/40">
       {row.nameOriginal && (
         <p className="text-[10px] text-[var(--undp-gray)] mb-3 italic">
-          Original: {row.nameOriginal}
+          {t("countrySector.original", { name: row.nameOriginal })}
         </p>
       )}
       <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-2">
-        Reported mitigation actions ({row.measures.length})
+        {t("mitigation.reportedActions", { count: row.measures.length })}
       </p>
       {row.measures.length === 0 ? (
         <p className="text-xs text-[var(--undp-gray)] italic">
-          No reported mitigation actions for this category.
+          {t("countrySector.noReportedActions")}
         </p>
       ) : (
         <div className="space-y-3">
           {implemented.length > 0 && (
             <div>
               <p className="text-[9px] font-semibold uppercase tracking-wide text-[#15803d] mb-1 flex items-center gap-1">
-                <span>✓</span> Implemented ({implemented.length})
+                <span>✓</span> {t("status.implementedCount", { count: implemented.length })}
               </p>
               <ul className="divide-y divide-gray-100">
                 {implemented.map((m, i) => (
@@ -1497,7 +1491,7 @@ function CountrySectorDetail({ row }: { row: CountrySectorRow }) {
           {other.length > 0 && (
             <div>
               <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-                Adopted / Planned ({other.length})
+                {t("status.adoptedPlanned", { count: other.length })}
               </p>
               <ul className="divide-y divide-gray-100">
                 {other.map((m, i) => (
@@ -1533,17 +1527,17 @@ function MitigationByCountrySector({
   expandedSector: string | null;
   onToggle: (id: string) => void;
 }) {
+  const t = useTranslations("viz.implementationCoverage");
   if (rows.length === 0) return null;
 
   return (
     <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
       <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
-          Mitigation, by national sector
+          {t("countrySector.title")}
         </h3>
         <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
-          Reported mitigation actions grouped by the country&apos;s own sector categories
-          from CTF Table 5. Click any row for the full action list.
+          {t("countrySector.sectionDesc")}
         </p>
       </div>
       {rows.map((row, idx) => {
@@ -1588,10 +1582,10 @@ function MitigationByCountrySector({
                   <span className="font-semibold text-[var(--undp-black)]">
                     {row.measures.length}
                   </span>{" "}
-                  reported
+                  {t("counts.reported")}
                   {row.implementedCount > 0 && (
                     <span className="text-[#15803d]">
-                      {" "}({row.implementedCount} ✓ implemented)
+                      {" "}{t("counts.implementedParen", { count: row.implementedCount })}
                     </span>
                   )}
                 </span>
@@ -1647,6 +1641,7 @@ export function ImplementationCoverage({
   highlightSector,
   countryConfig,
 }: ImplementationCoverageProps) {
+  const t = useTranslations("viz.implementationCoverage");
   const hasCountrySectors =
     countryConfig?.mitigationTaxonomy === "country_sectors" &&
     countryConfig.countrySectors != null &&
@@ -1736,9 +1731,13 @@ export function ImplementationCoverage({
       const csCovered = csList.filter((s) => csWithMit.has(s.id)).length;
       if (csList.length > 0 && csCovered < csList.length) {
         const uncovered = csList.filter((s) => !csWithMit.has(s.id)).map((s) => s.name);
-        const plural = uncovered.length === 1 ? "is" : "are";
         out.push(
-          `BTR mitigation reporting covers ${csCovered} of ${csList.length} national sector categories. ${uncovered.join(", ")} ${plural} not covered by any reported mitigation action.`,
+          t("gaps.nationalSectorCoverage", {
+            covered: csCovered,
+            total: csList.length,
+            names: uncovered.join(", "),
+            count: uncovered.length,
+          }),
         );
       }
     } else {
@@ -1754,9 +1753,13 @@ export function ImplementationCoverage({
         const uncoveredNames = sectors
           .filter((s) => !sectorsWithMit.has(s.id))
           .map((s) => s.name);
-        const plural = uncoveredNames.length === 1 ? "is" : "are";
         out.push(
-          `BTR mitigation reporting covers ${coveredCount} of ${totalSectors} IPCC sectors. ${uncoveredNames.join(", ")} ${plural} not covered by any reported mitigation action.`,
+          t("gaps.ipccSectorCoverage", {
+            covered: coveredCount,
+            total: totalSectors,
+            names: uncoveredNames.join(", "),
+            count: uncoveredNames.length,
+          }),
         );
       }
     }
@@ -1765,7 +1768,11 @@ export function ImplementationCoverage({
     const totalActions = mitigationCount + adaptationCount;
     if (totalActions > 0) {
       out.push(
-        `Only ${implementedCount} of ${totalActions} reported BTR action${totalActions === 1 ? " is" : "s are"} marked 'fully implemented'. The other ${totalActions - implementedCount} are ongoing, adopted or planned.`,
+        t("gaps.implementationStatus", {
+          implemented: implementedCount,
+          total: totalActions,
+          other: totalActions - implementedCount,
+        }),
       );
     }
 
@@ -1778,13 +1785,16 @@ export function ImplementationCoverage({
       ).length;
       if (ongoingAdp > 0) {
         out.push(
-          `Adaptation actions are reported in narrative form. ${ongoingAdp} of ${adaptationCount} are 'ongoing' with no quantitative completion metric.`,
+          t("gaps.adaptationNarrative", {
+            ongoing: ongoingAdp,
+            total: adaptationCount,
+          }),
         );
       }
     }
 
     return out;
-  }, [btrData, sectors, mitigationCount, adaptationCount, implementedCount, hasCountrySectors, countryConfig]);
+  }, [btrData, sectors, mitigationCount, adaptationCount, implementedCount, hasCountrySectors, countryConfig, t]);
 
   const toggleSector = useCallback((id: string) => {
     setExpandedSector((prev) => (prev === id ? null : id));
@@ -1814,19 +1824,19 @@ export function ImplementationCoverage({
             {hasCountrySectors ? (
               <>
                 <option value="country_sectors">
-                  By National Sector Categories
+                  {t("groupMode.byNationalSector")}
                 </option>
                 <option value="default">
-                  By IPCC Sector (standardised)
+                  {t("groupMode.byIpccSector")}
                 </option>
               </>
             ) : (
               <option value="default">
-                Default (Climate Mitigation + Adaptation Goals)
+                {t("groupMode.default")}
               </option>
             )}
             {hasBiodiversityData && (
-              <option value="biodiversity">By Biodiversity Taxonomy</option>
+              <option value="biodiversity">{t("groupMode.byBiodiversity")}</option>
             )}
           </select>
         </div>

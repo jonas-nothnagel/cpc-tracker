@@ -19,6 +19,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import {
@@ -27,7 +28,6 @@ import {
   classifyQuadrant,
   quadrantThreshold,
   tensionRingWidth,
-  QUADRANT_LABELS,
   type AtlasSignal,
   type AtlasTaxonomy,
   type Quadrant,
@@ -100,16 +100,17 @@ export function TargetAtlas({
   countryConfig,
   berData,
 }: Props) {
+  const t = useTranslations("viz.targetAtlas");
   const taxonomyChoices: TaxonomyChoice[] = useMemo(() => {
     const out: TaxonomyChoice[] = [];
     if (globeCategories.length > 0)
-      out.push({ id: "globe", label: "Biodiversity (GLOBE)", categories: globeCategories });
+      out.push({ id: "globe", label: t("lensGlobe"), categories: globeCategories });
     if (sectors.length > 0)
-      out.push({ id: "sector", label: "Climate mitigation (IPCC)", categories: sectors });
+      out.push({ id: "sector", label: t("lensSector"), categories: sectors });
     if (nbsCategories.length > 0)
-      out.push({ id: "nbs", label: "Nature-based solutions (NBS)", categories: nbsCategories });
+      out.push({ id: "nbs", label: t("lensNbs"), categories: nbsCategories });
     return out;
-  }, [globeCategories, sectors, nbsCategories]);
+  }, [globeCategories, sectors, nbsCategories, t]);
 
   const [lens, setLens] = useState<AtlasTaxonomy>(
     taxonomyChoices[0]?.id ?? "globe"
@@ -157,12 +158,12 @@ export function TargetAtlas({
   // dashboard carries the document-level citations.
   const provenanceSources = useMemo<ProvenanceSource[]>(() => {
     const out: ProvenanceSource[] = [
-      { label: `Policy targets (${policyTargets.length})` },
+      { label: t("provPolicyTargets", { count: policyTargets.length }) },
     ];
-    if (hasBtr) out.push({ label: "BTR reported actions" });
-    if (hasBer) out.push({ label: "BER budget programmes" });
+    if (hasBtr) out.push({ label: t("provBtrActions") });
+    if (hasBer) out.push({ label: t("provBerProgrammes") });
     return out;
-  }, [policyTargets.length, hasBtr, hasBer]);
+  }, [policyTargets.length, hasBtr, hasBer, t]);
 
   const colorLookup = useMemo(() => {
     const choice = taxonomyChoices.find((t) => t.id === lens);
@@ -235,14 +236,14 @@ export function TargetAtlas({
     if (matches.length > 0) return null;
     const name =
       selectedCategoryId === "_unclassified"
-        ? "Unclassified"
+        ? t("unclassified")
         : colorLookup.get(selectedCategoryId)?.name ?? selectedCategoryId;
     return {
       name,
       ber: budgetByCat.get(selectedCategoryId) ?? 0,
       btr: implByCat.get(selectedCategoryId) ?? 0,
     };
-  }, [selectedCategoryId, signals, colorLookup, budgetByCat, implByCat]);
+  }, [selectedCategoryId, signals, colorLookup, budgetByCat, implByCat, t]);
 
   const xMax = Math.max(1, ...signals.map((s) => s.coherenceCount));
   const yMax = Math.max(1, ...signals.map((s) => s.backingCount));
@@ -298,42 +299,36 @@ export function TargetAtlas({
     <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
       <div className="mb-3 flex items-center justify-between flex-wrap gap-3">
         <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-          Target Atlas
+          {t("title")}
           <InfoBox>
-            Items are connected when they share a relevant category in the
-            selected <strong>lens</strong>. Horizontal = # cross-doc policy
-            targets sharing a category. Vertical = # BTR actions + # BER
-            programmes sharing a category.
-            <span style={{ color: "#dc2626" }}> Red ring</span> = LLM-flagged
-            possible misalignments with other targets. See &ldquo;How to read
-            this&rdquo; below the header for the full story.
+            {t.rich("infoBox", {
+              strong: (chunks) => <strong>{chunks}</strong>,
+              red: (chunks) => <span style={{ color: "#dc2626" }}>{chunks}</span>,
+            })}
           </InfoBox>
           <DataProvenance
             origin="mixed"
             sources={provenanceSources}
             method={
               <>
-                Each dot is a policy target. Connections are inferred from LLM
-                taxonomy classifications under the selected lens; the red ring
-                comes from the same LLM pairwise alignment pass used by the
-                coherency views. BTR actions and BER programmes contribute to
-                the vertical &ldquo;backing&rdquo; axis only when they share a
-                lens category with a target.
+                {t.rich("provenanceMethod", {
+                  quoted: (chunks) => <>&ldquo;{chunks}&rdquo;</>,
+                })}
               </>
             }
-            caveat="Both axes depend on the chosen lens — switching lenses recomputes positions. The Atlas shows semantic coherence (shared categories), not material flows of money or implementation effort."
+            caveat={t("provenanceCaveat")}
           />
         </h2>
         <div className="flex items-center gap-3 text-xs">
           <label htmlFor="atlas-tax" className="text-[var(--undp-gray)]">
-            Lens
+            {t("lensLabel")}
           </label>
           <select
             id="atlas-tax"
             value={lens}
             onChange={(e) => setLens(e.target.value as AtlasTaxonomy)}
             className="border border-gray-200 rounded-md px-2 py-1 text-xs bg-white"
-            title="The connecting taxonomy. Two items are linked (on both axes) if they share a relevant category."
+            title={t("lensSelectTitle")}
           >
             {taxonomyChoices.map((t) => (
               <option key={t.id} value={t.id}>
@@ -348,7 +343,7 @@ export function TargetAtlas({
               onChange={(e) => setHideLensOrphans(e.target.checked)}
               className="accent-[var(--undp-blue)]"
             />
-            Hide lens-orphans
+            {t("hideLensOrphans")}
             {lensOrphanCount > 0 && (
               <span className="text-[10px] text-[var(--undp-gray)]">
                 ({lensOrphanCount})
@@ -362,182 +357,167 @@ export function TargetAtlas({
               onChange={(e) => setShowEdges(e.target.checked)}
               className="accent-[var(--undp-blue)]"
             />
-            LLM connection lines
+            {t("connectionLines")}
           </label>
         </div>
       </div>
 
       <p className="text-sm text-[var(--undp-gray)] mb-2">
-        Every dot is a policy target from your national documents (NDC,
-        NBSAP, NAP, &hellip;). Its position tells you two things at once,
-        both seen through the <strong>Lens</strong> chosen above: how this
-        target relates to <em>other policies</em>, and how it relates to
-        <em> reported government action and national budget</em>. Click any
-        dot for details.
-        {!hasBer && " No BER (budget) data for this country, so the vertical axis reflects reported action only."}
-        {!hasBtr && " No BTR (reported action) data, so the vertical axis reflects budget only."}
+        {t.rich("intro", {
+          strong: (chunks) => <strong>{chunks}</strong>,
+          em: (chunks) => <em>{chunks}</em>,
+        })}
+        {!hasBer && ` ${t("introNoBer")}`}
+        {!hasBtr && ` ${t("introNoBtr")}`}
       </p>
 
       <details className="mb-3 text-sm [&_summary]:list-none">
         <summary className="cursor-pointer inline-flex items-center gap-1.5 text-[var(--undp-blue)] hover:underline">
           <span className="text-xs transition-transform details-chevron">▸</span>
-          How to read this &ndash; and what it answers
+          {t("howToReadSummary")}
         </summary>
         <div className="mt-2 pl-4 space-y-4 text-[13px] text-[var(--undp-gray)] leading-snug max-w-3xl">
 
           <div>
             <p className="font-semibold text-[var(--undp-black)] mb-1">
-              How a target gets its position
+              {t("htrPositionTitle")}
             </p>
             <p>
-              Every target, every reported action (BTR), and every budget
-              programme (BER) is tagged with categories from a shared
-              taxonomy: the <strong>Lens</strong>. Two items are
-              &ldquo;linked&rdquo; when they share at least one tag. No
-              human hand-picks these links, and no single opaque score
-              drives position.
+              {t.rich("htrPositionBody", {
+                strong: (chunks) => <strong>{chunks}</strong>,
+                quoted: (chunks) => <>&ldquo;{chunks}&rdquo;</>,
+              })}
             </p>
             <ul className="mt-1 space-y-1 list-disc pl-5">
               <li>
-                <strong className="text-[var(--undp-black)]">Horizontal (coherence)</strong>{" "}
-                counts linked policy targets in <em>other</em> documents.
-                Further right = the same idea comes up again and again
-                across the policy stack.
+                {t.rich("htrHorizontal", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                  em: (chunks) => <em>{chunks}</em>,
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Vertical (backing)</strong>{" "}
-                combines linked BTR actions and BER programmes, weighted:
-                BTR by reported execution stage, BER by spend relative to
-                the country average. Further up = stronger evidence of
-                action and budget in the same area.
+                {t.rich("htrVertical", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">
-                  <span style={{ color: "#dc2626" }}>Red ring</span>
-                </strong>{" "}
-                marks targets with <em>many potential misalignments</em> only:
-                those the AI has identified as potentially misaligned with{" "}
-                <strong>5 or more</strong> other policy targets. Targets with
-                fewer aren&apos;t ringed, to keep the chart readable;
-                every potentially misaligned pair is still listed in the side
-                panel when you click a dot. Potential misalignments sit
-                alongside the axes, not subtracted from them. A target can be
-                strongly aligned <em>and</em> potentially misaligned.
+                {t.rich("htrRedRing", {
+                  strongRed: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">
+                      <span style={{ color: "#dc2626" }}>{chunks}</span>
+                    </strong>
+                  ),
+                  strong: (chunks) => <strong>{chunks}</strong>,
+                  em: (chunks) => <em>{chunks}</em>,
+                })}
               </li>
             </ul>
             <p className="mt-2 text-xs italic">
-              Only targets that carry at least one tag in the current lens
-              are shown. Turn on &ldquo;Hide lens-orphans&rdquo; to remove
-              targets pinned to the origin because this lens doesn&apos;t
-              apply to them (e.g. public-health targets under a biodiversity
-              lens).
+              {t.rich("htrOrphansNote", {
+                quoted: (chunks) => <>&ldquo;{chunks}&rdquo;</>,
+              })}
             </p>
           </div>
 
           <div>
             <p className="font-semibold text-[var(--undp-black)] mb-1">
-              What the four quadrants mean
+              {t("htrQuadrantsTitle")}
             </p>
             <ul className="space-y-2">
               <li>
-                <strong className="text-[var(--undp-black)]">Well-supported (top right):</strong>{" "}
-                linked to many other policy targets <em>and</em> to
-                reported action or budget. The country&apos;s policy stack
-                and its implementation/financing machinery both back this
-                target.{" "}
-                <em className="text-[var(--undp-gray)]">
-                  e.g. a renewable-energy target that recurs across NDC,
-                  NBSAP and NAP and is covered by BTR mitigation measures
-                  and a BER programme.
-                </em>
+                {t.rich("htrQuadWellSupported", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                  em: (chunks) => <em>{chunks}</em>,
+                  eg: (chunks) => (
+                    <em className="text-[var(--undp-gray)]">{chunks}</em>
+                  ),
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Ambition gap (bottom right):</strong>{" "}
-                echoed across many policies, but no reported action
-                and no budget programme touches the same area. The classic
-                &ldquo;say-do&rdquo; gap.{" "}
-                <em className="text-[var(--undp-gray)]">
-                  e.g. a pollinator-habitat restoration target that several
-                  documents mention but no BTR action or BER programme
-                  covers.
-                </em>
+                {t.rich("htrQuadAmbitionGap", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                  quoted: (chunks) => <>&ldquo;{chunks}&rdquo;</>,
+                  eg: (chunks) => (
+                    <em className="text-[var(--undp-gray)]">{chunks}</em>
+                  ),
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Backed but isolated (top left):</strong>{" "}
-                reported action or budget is there, but few other
-                policy targets reinforce it. The country is doing or paying
-                for something that stands on its own.{" "}
-                <em className="text-[var(--undp-gray)]">
-                  e.g. an anti-desertification budget line that isn&apos;t
-                  strongly echoed in NBSAP, NDC or NAP.
-                </em>
+                {t.rich("htrQuadBackedIsolated", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                  eg: (chunks) => (
+                    <em className="text-[var(--undp-gray)]">{chunks}</em>
+                  ),
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Limited uptake (bottom left):</strong>{" "}
-                few cross-policy links, few reported actions, few
-                budget programmes in this area. Could be a strategic
-                orphan, a very narrow target, or a poor fit for this lens.
-                Worth a direct read before judging.
+                {t.rich("htrQuadLimitedUptake", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                })}
               </li>
             </ul>
           </div>
 
           <div>
             <p className="font-semibold text-[var(--undp-black)] mb-1">
-              What each kind of link actually tells you
+              {t("htrLinksTitle")}
             </p>
             <ul className="space-y-1 list-disc pl-5">
               <li>
-                <strong className="text-[var(--undp-black)]">Link to another policy target</strong>{" "}
-                &rarr; two documents contain objectives that fall in the
-                same thematic area. They reinforce each other.
+                {t.rich("htrLinkPolicy", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Link to a BTR action</strong>{" "}
-                &rarr; the country&apos;s Biennial Transparency Report lists
-                a mitigation measure or adaptation action in the same
-                thematic area. It means the country is <em>already doing
-                something</em> related to this target.
+                {t.rich("htrLinkBtr", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                  em: (chunks) => <em>{chunks}</em>,
+                })}
               </li>
               <li>
-                <strong className="text-[var(--undp-black)]">Link to a BER programme</strong>{" "}
-                &rarr; a named budget line in the Biodiversity Expenditure
-                Review funds activity in the same thematic area. The
-                country is <em>already paying for</em> something related.
-                It&apos;s a count of programmes, not a currency amount;
-                dollar totals per category live in the{" "}
-                <em>Financing Coherence</em> section below.
+                {t.rich("htrLinkBer", {
+                  strong: (chunks) => (
+                    <strong className="text-[var(--undp-black)]">{chunks}</strong>
+                  ),
+                  em: (chunks) => <em>{chunks}</em>,
+                })}
               </li>
             </ul>
           </div>
 
           <div>
             <p className="font-semibold text-[var(--undp-black)] mb-1">
-              Switching the lens changes everything
+              {t("htrLensTitle")}
             </p>
             <p>
-              A target classified as &ldquo;Restoration&rdquo; in GLOBE may
-              be classified as &ldquo;LULUCF&rdquo; under IPCC sector and
-              &ldquo;Forest management&rdquo; under NBS. Each lens re-wires
-              the network of shared tags, so the same target can move from
-              edge to centre when you pick a different lens. Use this to
-              cross-check: a target that looks isolated under one lens but
-              load-bearing under another is telling you something about
-              framing, not failure.
+              {t.rich("htrLensBody", {
+                quoted: (chunks) => <>&ldquo;{chunks}&rdquo;</>,
+              })}
             </p>
           </div>
 
           <div>
             <p className="font-semibold text-[var(--undp-black)] mb-1">
-              Auditability
+              {t("htrAuditTitle")}
             </p>
             <p>
-              Click any dot. The side panel lists the shared tags connecting
-              it to every linked programme and action, alongside a second,
-              independent LLM-generated alignment score. Where the two
-              agree, confidence is high. Where they disagree, surface for
-              discussion. The tags are the authoritative link; the
-              LLM read is a cross-check.
+              {t("htrAuditBody")}
             </p>
           </div>
         </div>
@@ -545,26 +525,33 @@ export function TargetAtlas({
 
       {emptyCategoryNote && (
         <div className="mb-3 text-xs bg-amber-50 border border-amber-200 rounded px-3 py-2 text-[var(--undp-black)] leading-snug">
-          <span className="font-semibold">0 policy targets</span> are primarily
-          classified under{" "}
-          <strong>{emptyCategoryNote.name}</strong>. The category appears in
-          the ranking because{" "}
+          {t.rich("emptyCategoryLead", {
+            name: emptyCategoryNote.name,
+            strong: (chunks) => <span className="font-semibold">{chunks}</span>,
+            cat: (chunks) => <strong>{chunks}</strong>,
+          })}{" "}
           {emptyCategoryNote.ber > 0 && (
             <>
-              <strong>{emptyCategoryNote.ber}</strong> BER programme
-              {emptyCategoryNote.ber === 1 ? "" : "s"}
+              {t.rich("emptyCategoryBer", {
+                count: emptyCategoryNote.ber,
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </>
           )}
-          {emptyCategoryNote.ber > 0 && emptyCategoryNote.btr > 0 && " and "}
+          {emptyCategoryNote.ber > 0 &&
+            emptyCategoryNote.btr > 0 &&
+            ` ${t("emptyCategoryAnd")} `}
           {emptyCategoryNote.btr > 0 && (
             <>
-              <strong>{emptyCategoryNote.btr}</strong> BTR action
-              {emptyCategoryNote.btr === 1 ? "" : "s"}
+              {t.rich("emptyCategoryBtr", {
+                count: emptyCategoryNote.btr,
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </>
           )}
           {emptyCategoryNote.ber + emptyCategoryNote.btr > 0
-            ? " are classified there, but no policy target anchors it directly. The chart has nothing to highlight: that gap is the signal."
-            : " has backing here."}
+            ? ` ${t("emptyCategoryTailHas")}`
+            : ` ${t("emptyCategoryTailNone")}`}
         </div>
       )}
 
@@ -613,7 +600,7 @@ export function TargetAtlas({
                 fontSize={12}
                 fill="#64748b"
               >
-                Coherence: cross-doc policy targets sharing a lens category
+                {t("axisX")}
               </text>
               <text
                 x={-(MARGIN.top + PLOT_H / 2)}
@@ -623,7 +610,7 @@ export function TargetAtlas({
                 fontSize={12}
                 fill="#64748b"
               >
-                Backing: weighted by BTR execution stage and BER spend share
+                {t("axisY")}
               </text>
             </g>
 
@@ -771,10 +758,11 @@ export function TargetAtlas({
                       {target?.sourceLabel ?? s.targetId} ·{" "}
                       {getDocMediumLabel(countryConfig, target?.sourceDocument ?? "")}
                       {"\n"}
-                      Coherence {s.coherenceCount} · Implementation{" "}
-                      {s.implementationCount} · Budget {s.budgetCount}
+                      {t("statCoherence")} {s.coherenceCount} ·{" "}
+                      {t("statImplementation")} {s.implementationCount} ·{" "}
+                      {t("statBudget")} {s.budgetCount}
                       {s.tensionCount > 0
-                        ? `\nFlagged misalignments ${s.tensionCount}`
+                        ? `\n${t("flaggedMisalignments")} ${s.tensionCount}`
                         : ""}
                     </title>
                   </g>
@@ -829,10 +817,11 @@ export function TargetAtlas({
             {hoverTarget.sourceLabel}
           </span>
           {" · "}
-          Coherence {hoverSignal.coherenceCount} · Implementation{" "}
-          {hoverSignal.implementationCount} · Budget {hoverSignal.budgetCount}
+          {t("statCoherence")} {hoverSignal.coherenceCount} ·{" "}
+          {t("statImplementation")} {hoverSignal.implementationCount} ·{" "}
+          {t("statBudget")} {hoverSignal.budgetCount}
           {hoverSignal.tensionCount > 0
-            ? ` · Flagged misalignments ${hoverSignal.tensionCount}`
+            ? ` · ${t("flaggedMisalignments")} ${hoverSignal.tensionCount}`
             : ""}
         </div>
       )}
@@ -860,11 +849,7 @@ const QUADRANT_TINTS: Record<Quadrant, string> = {
 
 type RankBy = "policy" | "budget" | "implementation";
 
-const RANK_TABS: { id: RankBy; label: string }[] = [
-  { id: "policy", label: "Policy" },
-  { id: "budget", label: "Budget" },
-  { id: "implementation", label: "Implementation" },
-];
+const RANK_TAB_IDS: RankBy[] = ["policy", "budget", "implementation"];
 
 function CategoryRanking({
   signals,
@@ -893,13 +878,20 @@ function CategoryRanking({
   selectedCategoryId: string | null;
   onSelectCategory: (id: string) => void;
 }) {
+  const t = useTranslations("viz.targetAtlas");
   const [rankBy, setRankBy] = useState<RankBy>("policy");
+
+  const rankTabLabels: Record<RankBy, string> = {
+    policy: t("rankTabPolicy"),
+    budget: t("rankTabBudget"),
+    implementation: t("rankTabImplementation"),
+  };
 
   const catMeta = (id: string) => ({
     id,
     name:
       id === "_unclassified"
-        ? "Unclassified"
+        ? t("unclassified")
         : categoryLookup.get(id)?.name ?? id,
     color:
       id === "_unclassified"
@@ -982,19 +974,19 @@ function CategoryRanking({
 
   const title =
     rankBy === "policy"
-      ? `Most supported ${lensLabel} categories`
+      ? t("rankTitlePolicy", { lens: lensLabel })
       : rankBy === "budget"
-        ? `Where the budget flows (${lensLabel})`
-        : `Where reported action concentrates (${lensLabel})`;
+        ? t("rankTitleBudget", { lens: lensLabel })
+        : t("rankTitleImplementation", { lens: lensLabel });
 
   const subtitle =
     rankBy === "policy"
-      ? "Taxonomy areas ranked by policy targets that land in \u201CWell-supported\u201D (policy, action and budget combined). Click a row to highlight on the chart."
+      ? t("rankSubtitlePolicy")
       : rankBy === "budget"
         ? spendByCat
-          ? `BER programmes grouped by their primary ${lensLabel} category. Bar width is share of total biodiversity expenditure. Click a row to highlight related policy targets on the chart.`
-          : `BER programmes grouped by their primary ${lensLabel} category. Bar width is # programmes. Click a row to highlight related policy targets on the chart.`
-        : `BTR reported actions grouped by their primary ${lensLabel} category. Click a row to highlight related policy targets on the chart.`;
+          ? t("rankSubtitleBudgetSpend", { lens: lensLabel })
+          : t("rankSubtitleBudgetCount", { lens: lensLabel })
+        : t("rankSubtitleImplementation", { lens: lensLabel });
 
   return (
     <div className="border border-gray-100 rounded-lg p-3 bg-white">
@@ -1013,22 +1005,22 @@ function CategoryRanking({
             onClick={() => onSelectCategory(selectedCategoryId)}
             className="text-[11px] text-[var(--undp-blue)] hover:underline whitespace-nowrap shrink-0"
           >
-            Clear
+            {t("clear")}
           </button>
         )}
       </div>
 
       {/* Rank-by tab strip */}
       <div className="flex items-center gap-1 mb-2 border-b border-gray-100">
-        {RANK_TABS.map((t) => {
-          const disabled = tabDisabled[t.id];
-          const active = rankBy === t.id;
+        {RANK_TAB_IDS.map((id) => {
+          const disabled = tabDisabled[id];
+          const active = rankBy === id;
           return (
             <button
-              key={t.id}
+              key={id}
               type="button"
               disabled={disabled}
-              onClick={() => setRankBy(t.id)}
+              onClick={() => setRankBy(id)}
               className={`px-2.5 py-1 text-[11px] rounded-t transition-colors -mb-px border-b-2 ${
                 active
                   ? "border-[var(--undp-blue)] text-[var(--undp-blue)] font-semibold"
@@ -1036,9 +1028,9 @@ function CategoryRanking({
                     ? "border-transparent text-gray-300 cursor-not-allowed"
                     : "border-transparent text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
               }`}
-              title={disabled ? `No ${t.label.toLowerCase()} data for this lens` : undefined}
+              title={disabled ? t("rankTabDisabled", { tab: rankTabLabels[id] }) : undefined}
             >
-              {t.label}
+              {rankTabLabels[id]}
             </button>
           );
         })}
@@ -1087,7 +1079,7 @@ function CategoryRanking({
                   </span>
                   <span
                     className="w-[110px] h-3 flex rounded-sm overflow-hidden bg-gray-100 shrink-0"
-                    title={`Well-supported ${(r as typeof policyRows[number]).well_supported} · Backed but isolated ${(r as typeof policyRows[number]).backed_isolated} · Ambition gap ${(r as typeof policyRows[number]).ambition_gap} · Limited uptake ${(r as typeof policyRows[number]).limited_uptake}`}
+                    title={`${t("quadWellSupported")} ${(r as typeof policyRows[number]).well_supported} · ${t("quadBackedIsolated")} ${(r as typeof policyRows[number]).backed_isolated} · ${t("quadAmbitionGap")} ${(r as typeof policyRows[number]).ambition_gap} · ${t("quadLimitedUptake")} ${(r as typeof policyRows[number]).limited_uptake}`}
                   >
                     {(
                       [
@@ -1123,12 +1115,19 @@ function CategoryRanking({
                     }`}
                     title={
                       spendByCat
-                        ? `${(r as typeof budgetRows[number]).count} programmes · ${((r as typeof budgetRows[number]).share * 100).toFixed(1)}% of BER${
-                            budgetCurrency || budgetUnit
-                              ? ` spend (${[budgetUnit, budgetCurrency].filter(Boolean).join(" ")})`
-                              : ""
-                          }`
-                        : `${(r as typeof budgetRows[number]).count} programmes`
+                        ? t("budgetCountTitleSpend", {
+                            count: (r as typeof budgetRows[number]).count,
+                            pct: ((r as typeof budgetRows[number]).share * 100).toFixed(1),
+                            unit:
+                              budgetCurrency || budgetUnit
+                                ? t("budgetSpendUnit", {
+                                    unit: [budgetUnit, budgetCurrency].filter(Boolean).join(" "),
+                                  })
+                                : "",
+                          })
+                        : t("budgetCountTitlePlain", {
+                            count: (r as typeof budgetRows[number]).count,
+                          })
                     }
                   >
                     {spendByCat
@@ -1139,8 +1138,13 @@ function CategoryRanking({
                     className="w-[110px] h-3 rounded-sm overflow-hidden bg-gray-100 shrink-0 relative"
                     title={
                       spendByCat
-                        ? `${(r as typeof budgetRows[number]).count} BER programme${(r as typeof budgetRows[number]).count === 1 ? "" : "s"} · ${((r as typeof budgetRows[number]).share * 100).toFixed(1)}% of biodiversity expenditure`
-                        : `${(r as typeof budgetRows[number]).count} BER programme${(r as typeof budgetRows[number]).count === 1 ? "" : "s"}`
+                        ? t("budgetBarTitleSpend", {
+                            count: (r as typeof budgetRows[number]).count,
+                            pct: ((r as typeof budgetRows[number]).share * 100).toFixed(1),
+                          })
+                        : t("budgetBarTitlePlain", {
+                            count: (r as typeof budgetRows[number]).count,
+                          })
                     }
                   >
                     <span
@@ -1164,7 +1168,9 @@ function CategoryRanking({
                         ? "font-semibold text-[var(--undp-black)]"
                         : "text-[var(--undp-gray)]"
                     }`}
-                    title={`${(r as typeof implRows[number]).count} BTR action${(r as typeof implRows[number]).count === 1 ? "" : "s"}`}
+                    title={t("implActionTitle", {
+                      count: (r as typeof implRows[number]).count,
+                    })}
                   >
                     {(r as typeof implRows[number]).count}
                   </span>
@@ -1191,10 +1197,10 @@ function CategoryRanking({
         <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]">
           {(
             [
-              ["well_supported", "Well-supported"],
-              ["backed_isolated", "Backed but isolated"],
-              ["ambition_gap", "Ambition gap"],
-              ["limited_uptake", "Limited uptake"],
+              ["well_supported", t("quadWellSupported")],
+              ["backed_isolated", t("quadBackedIsolated")],
+              ["ambition_gap", t("quadAmbitionGap")],
+              ["limited_uptake", t("quadLimitedUptake")],
             ] as [Quadrant, string][]
           ).map(([q, label]) => (
             <span key={q} className="flex items-center gap-1.5">
@@ -1258,6 +1264,7 @@ function QuadrantBackdrop({
 }
 
 function QuadrantLabels() {
+  const t = useTranslations("viz.targetAtlas");
   const left = MARGIN.left + 12;
   const right = MARGIN.left + PLOT_W - 12;
   const top = MARGIN.top + 18;
@@ -1275,34 +1282,34 @@ function QuadrantLabels() {
     <g className="pointer-events-none">
       {/* top-right */}
       <text x={right} y={top} textAnchor="end" {...titleProps}>
-        {QUADRANT_LABELS.well_supported}
+        {t("quadWellSupported")}
       </text>
       <text x={right} y={top + 15} textAnchor="end" {...subtitleProps}>
-        Reinforced across policies and backed by action or budget
+        {t("quadWellSupportedSub")}
       </text>
 
       {/* top-left */}
       <text x={left} y={top} {...titleProps}>
-        {QUADRANT_LABELS.backed_isolated}
+        {t("quadBackedIsolated")}
       </text>
       <text x={left} y={top + 15} {...subtitleProps}>
-        Implementation or budget without broad policy agreement
+        {t("quadBackedIsolatedSub")}
       </text>
 
       {/* bottom-right */}
       <text x={right} y={bottom} textAnchor="end" {...titleProps}>
-        {QUADRANT_LABELS.ambition_gap}
+        {t("quadAmbitionGap")}
       </text>
       <text x={right} y={bottom + 15} textAnchor="end" {...subtitleProps}>
-        Policy ambition without action or funding yet
+        {t("quadAmbitionGapSub")}
       </text>
 
       {/* bottom-left */}
       <text x={left} y={bottom} {...titleProps}>
-        {QUADRANT_LABELS.limited_uptake}
+        {t("quadLimitedUptake")}
       </text>
       <text x={left} y={bottom + 15} {...subtitleProps}>
-        Rarely referenced and rarely acted upon
+        {t("quadLimitedUptakeSub")}
       </text>
     </g>
   );
@@ -1316,7 +1323,8 @@ function Legend({
   taxonomyChoices: TaxonomyChoice[];
   lens: AtlasTaxonomy;
 }) {
-  const choice = taxonomyChoices.find((t) => t.id === lens);
+  const t = useTranslations("viz.targetAtlas");
+  const choice = taxonomyChoices.find((c) => c.id === lens);
   return (
     <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 text-[11px]">
       <div>
@@ -1335,14 +1343,14 @@ function Legend({
           ))}
           <span className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: UNCLASSIFIED_COLOR }} />
-            <span className="text-[var(--undp-gray)]">Unclassified</span>
+            <span className="text-[var(--undp-gray)]">{t("unclassified")}</span>
           </span>
         </div>
       </div>
 
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-          High-tension targets
+          {t("highTensionTargets")}
         </p>
         <span className="flex items-center gap-1.5">
           <svg width={28} height={28} className="shrink-0" aria-hidden>
@@ -1350,7 +1358,7 @@ function Legend({
             <circle cx="14" cy="14" r="9.5" fill="none" stroke="#dc2626" strokeWidth={3} />
           </svg>
           <span className="text-[var(--undp-gray)]">
-            5+ flagged misalignments with other targets
+            {t("highTensionLegend")}
           </span>
         </span>
       </div>
@@ -1380,6 +1388,13 @@ function SidePanel({
   lensCategoryLookup: Map<string, { color: string; name: string }>;
   onClose: () => void;
 }) {
+  const t = useTranslations("viz.targetAtlas");
+  const quadrantLabels: Record<Quadrant, string> = {
+    well_supported: t("quadWellSupported"),
+    backed_isolated: t("quadBackedIsolated"),
+    ambition_gap: t("quadAmbitionGap"),
+    limited_uptake: t("quadLimitedUptake"),
+  };
   const quadrant = classifyQuadrant(
     signal.coherenceCount,
     signal.backingCount,
@@ -1447,7 +1462,7 @@ function SidePanel({
           type="button"
           onClick={onClose}
           className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none shrink-0"
-          aria-label="Close"
+          aria-label={t("close")}
         >
           ×
         </button>
@@ -1463,7 +1478,7 @@ function SidePanel({
             color: "#1e293b",
           }}
         >
-          {QUADRANT_LABELS[quadrant]}
+          {quadrantLabels[quadrant]}
         </span>
       </div>
 
@@ -1475,7 +1490,7 @@ function SidePanel({
       {/* 4-cell stat grid — primary numbers at a glance */}
       <div className="mb-3 grid grid-cols-2 gap-px bg-gray-100 border border-gray-100 rounded overflow-hidden">
         <StatCell
-          label="Backing"
+          label={t("statBacking")}
           value={
             signal.backingCount === 0
               ? "0"
@@ -1483,41 +1498,23 @@ function SidePanel({
                 ? signal.backingCount.toFixed(1)
                 : signal.backingCount.toFixed(0)
           }
-          hint="weighted: stage + spend"
+          hint={t("statBackingHint")}
           emphasis
         />
         <StatCell
-          label="Coherence"
+          label={t("statCoherence")}
           value={signal.coherenceCount}
-          hint={
-            signal.coherenceCount === 0
-              ? "no cross-doc matches"
-              : signal.coherenceCount === 1
-                ? "cross-doc target"
-                : "cross-doc targets"
-          }
+          hint={t("statCoherenceHint", { count: signal.coherenceCount })}
         />
         <StatCell
-          label="Budget"
+          label={t("statBudget")}
           value={signal.budgetCount}
-          hint={
-            signal.budgetCount === 0
-              ? "no BER bridges"
-              : signal.budgetCount === 1
-                ? "BER programme"
-                : "BER programmes"
-          }
+          hint={t("statBudgetHint", { count: signal.budgetCount })}
         />
         <StatCell
-          label="Implementation"
+          label={t("statImplementation")}
           value={signal.implementationCount}
-          hint={
-            signal.implementationCount === 0
-              ? "no BTR bridges"
-              : signal.implementationCount === 1
-                ? "BTR action"
-                : "BTR actions"
-          }
+          hint={t("statImplementationHint", { count: signal.implementationCount })}
         />
       </div>
 
@@ -1529,11 +1526,7 @@ function SidePanel({
             style={{ backgroundColor: "#dc2626" }}
           />
           <span>
-            {signal.tensionCount}{" "}
-            {signal.tensionCount === 1
-              ? "possible misalignment"
-              : "possible misalignments"}{" "}
-            with other targets (LLM-flagged)
+            {t("misalignmentBadge", { count: signal.tensionCount })}
           </span>
         </div>
       )}
@@ -1541,10 +1534,13 @@ function SidePanel({
       {/* Lens-orphan fallback — when target has no relevant categories */}
       {signal.lensCategoryCount === 0 && (
         <div className="mb-3 text-[12px] bg-[var(--undp-light)] border border-gray-100 rounded px-3 py-2 text-[var(--undp-gray)]">
-          No relevant categories in the{" "}
-          <strong className="text-[var(--undp-black)]">{lensLabel}</strong>{" "}
-          lens. Switch lens or enable &ldquo;Hide lens-orphans&rdquo; to
-          refocus.
+          {t.rich("lensOrphanFallback", {
+            lens: lensLabel,
+            strong: (chunks) => (
+              <strong className="text-[var(--undp-black)]">{chunks}</strong>
+            ),
+            quoted: (chunks) => <>&ldquo;{chunks}&rdquo;</>,
+          })}
         </div>
       )}
 
@@ -1552,7 +1548,7 @@ function SidePanel({
       {lensCategoriesForTarget.size > 0 && (
         <div className="mb-3">
           <div className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] mb-1">
-            Lens categories ({lensCategoriesForTarget.size})
+            {t("lensCategories", { count: lensCategoriesForTarget.size })}
           </div>
           <div className="flex flex-wrap gap-1">
             {Array.from(lensCategoriesForTarget).map((c) => (
@@ -1567,7 +1563,7 @@ function SidePanel({
           can collapse noisy sections. */}
       {signal.coherenceBridgeLinks.length > 0 && (
         <BridgeSection
-          title="Bridged policy targets"
+          title={t("bridgedPolicyTargets")}
           count={signal.coherenceBridgeLinks.length}
           defaultOpen
         >
@@ -1588,7 +1584,7 @@ function SidePanel({
           })}
           {signal.coherenceBridgeLinks.length > 3 && (
             <p className="text-[11px] text-[var(--undp-gray)] pl-2">
-              + {signal.coherenceBridgeLinks.length - 3} more
+              {t("plusMore", { count: signal.coherenceBridgeLinks.length - 3 })}
             </p>
           )}
         </BridgeSection>
@@ -1596,7 +1592,7 @@ function SidePanel({
 
       {signal.actionBridgeLinks.length > 0 && (
         <BridgeSection
-          title="Bridged BTR actions"
+          title={t("bridgedBtrActions")}
           count={signal.actionBridgeLinks.length}
           defaultOpen={signal.actionBridgeLinks.length <= 5}
         >
@@ -1610,7 +1606,7 @@ function SidePanel({
           ))}
           {signal.actionBridgeLinks.length > 3 && (
             <p className="text-[11px] text-[var(--undp-gray)] pl-2">
-              + {signal.actionBridgeLinks.length - 3} more
+              {t("plusMore", { count: signal.actionBridgeLinks.length - 3 })}
             </p>
           )}
         </BridgeSection>
@@ -1618,7 +1614,7 @@ function SidePanel({
 
       {signal.budgetBridgeLinks.length > 0 && (
         <BridgeSection
-          title="Bridged BER programmes"
+          title={t("bridgedBerProgrammes")}
           count={signal.budgetBridgeLinks.length}
           defaultOpen={signal.budgetBridgeLinks.length <= 5}
         >
@@ -1632,7 +1628,7 @@ function SidePanel({
           ))}
           {signal.budgetBridgeLinks.length > 3 && (
             <p className="text-[11px] text-[var(--undp-gray)] pl-2">
-              + {signal.budgetBridgeLinks.length - 3} more
+              {t("plusMore", { count: signal.budgetBridgeLinks.length - 3 })}
             </p>
           )}
         </BridgeSection>
@@ -1640,7 +1636,7 @@ function SidePanel({
 
       {tensions.length > 0 && (
         <BridgeSection
-          title="Contradictions"
+          title={t("contradictions")}
           count={tensions.length}
           tone="warn"
           defaultOpen
@@ -1662,7 +1658,7 @@ function SidePanel({
           })}
           {tensions.length > 3 && (
             <p className="text-[11px] text-[var(--undp-gray)] pl-2">
-              + {tensions.length - 3} more
+              {t("plusMore", { count: tensions.length - 3 })}
             </p>
           )}
         </BridgeSection>
@@ -1682,6 +1678,7 @@ function LinkRow({
   categories: string[];
   llm?: AlignmentLevel;
 }) {
+  const t = useTranslations("viz.targetAtlas");
   const alignmentLabels = useAlignmentLabels();
   return (
     <div className="text-[11px] leading-snug py-1 px-2 border-l-2 border-gray-100">
@@ -1691,12 +1688,12 @@ function LinkRow({
       <div className="text-[var(--undp-gray)] flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
         {sublabel && <span className="shrink-0">{sublabel}</span>}
         {categories.length > 0 && (
-          <span>via {categories.slice(0, 3).join(" · ")}</span>
+          <span>{t("via", { categories: categories.slice(0, 3).join(" · ") })}</span>
         )}
         {llm && (
           <span
             className="inline-flex items-center gap-1 shrink-0"
-            title="LLM-assessed pairwise alignment score"
+            title={t("llmScoreTitle")}
           >
             <span
               className="inline-block w-1.5 h-1.5 rounded-full"

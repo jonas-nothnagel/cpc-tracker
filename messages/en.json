@@ -154,7 +154,17 @@
     },
     "wheel": {
       "wheelAria": "Policy coherence wheel",
-      "unclassified": "Unclassified"
+      "unclassified": "Unclassified",
+      "arcTargetCount": "{count, plural, one {# target} other {# targets}}",
+      "arcFrictionShare": "{pct}% of cross-document links potentially misaligned",
+      "clickToFocus": "click to focus",
+      "clickToClearFocus": "click to clear focus",
+      "ribbonTooltipCounts": "{aligned} aligned · {misaligned} misaligned ({pct}%)",
+      "noMisalignments": "No potential misalignments",
+      "misalignmentCount": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "acrossPairs": "across {count, number} pairs",
+      "sharePairsTiny": "<1% of {count, number} pairs",
+      "sharePairs": "{pct}% of {count, number} pairs"
     },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: no scored pairs",
@@ -580,6 +590,11 @@
         "potentialMis": "Potential misalignment",
         "ribbonWidth": "ribbon width = number of pairs"
       }
+    },
+    "frictionTypeChart": {
+      "empty": "No potential misalignment to break down.",
+      "pairCount": "{countLabel} {count, plural, one {potentially misaligned pair} other {potentially misaligned pairs}}",
+      "captionDefault": "Across all policy documents"
     }
   },
   "upload": {
@@ -1197,6 +1212,562 @@
     "sustainability": {
       "title": "AI Sustainability Footprint | CPC Tracker",
       "description": "Estimated environmental footprint of the AI computation behind the CPC Tracker, for transparency reporting."
+    }
+  },
+  "viz": {
+    "fundingNetwork": {
+      "title": "Funding Cluster Network",
+      "info": "Each circle is a policy target, color-coded by its primary government budget programme (Biodiversity Expenditure Review). Nearby targets share strong policy alignment, so distance encodes how closely aligned targets are. Targets without budget backing appear in amber. Node border color indicates the source policy document. Click any target for details. Hover to see strong alignment connections.",
+      "summary": "{targets, plural, one {# target} other {# targets}} across {clusters, plural, one {# cluster} other {# clusters}}",
+      "unfundedSuffix": "{count, plural, one {# without budget backing} other {# without budget backing}}",
+      "targetDetail": "Target Detail",
+      "alignedProgrammes": "Aligned Budget Programmes ({count})",
+      "noAlignmentDetected": "No budget programme alignment detected",
+      "noAlignmentHint": "This target presents an opportunity for increased financing alignment with government budget programmes.",
+      "noBudgetBacking": "No budget backing",
+      "targetCount": "{count, plural, one {# target} other {# targets}}",
+      "strengthScale": {
+        "high": "Strong",
+        "medium": "Moderate",
+        "low": "Emerging",
+        "none": "None",
+        "flagged": "Potential misalignment"
+      },
+      "tooltip": {
+        "noBudgetBacking": "No budget backing",
+        "budgetProgrammes": "{count, plural, one {# budget programme} other {# budget programmes}}",
+        "weaklyAlignedProgrammes": "{count, plural, one {# weakly aligned programme} other {# weakly aligned programmes}}",
+        "stronglyAlignedTargets": "{count, plural, one {# strongly aligned target (nearby)} other {# strongly aligned targets (nearby)}}",
+        "noStrongAlignments": "No strong target alignments"
+      }
+    },
+    "themeBarChart": {
+      "btrMitigation": "BTR Mitigation"
+    },
+    "outcomeStats": {
+      "ofTargets": "of targets",
+      "modalTitle": "{label} ({count})",
+      "measurableOutcomes": "Measurable outcomes",
+      "timeBoundCommitments": "Time-bound commitments"
+    },
+    "dataSources": {
+      "title": "Data Sources",
+      "infoBox": "Policy commitments and reported implementation analysed in this dashboard. Click any label or count to inspect the underlying targets or actions.",
+      "policyTargets": "Policy Targets",
+      "noPolicyTargets": "No policy targets loaded.",
+      "across": "across",
+      "btrReportedActions": "BTR Reported Actions",
+      "btrMitigationActions": "BTR Reported Mitigation Actions",
+      "btrAdaptationActions": "BTR Reported Adaptation Actions",
+      "mitigationChip": "{count, number} mitigation",
+      "adaptationChip": "{count, number} adaptation",
+      "sourcePrefix": "Source:",
+      "implementedOf": "of {total, number} marked fully implemented",
+      "reportedOngoingOrPlanned": "{count, number} reported as ongoing or planned"
+    },
+    "nr7Progress": {
+      "heading": "NBSAP Progress",
+      "infoBox": "Progress data from the 7th National Report to the Convention on Biological Diversity (CBD). Each national biodiversity target is assessed as on track, limited progress, or no progress based on reported implementation status.",
+      "sourceLabel": "7th National Report to the CBD",
+      "caveat": "Progress status (on track / limited / no progress) is reported by the country in the NR7 narrative. The tool does not independently verify implementation.",
+      "subtitle": "{count} national biodiversity targets from the 7th National Report to the CBD",
+      "progressLabel": "Progress:",
+      "challengesLabel": "Challenges:",
+      "examplesLabel": "Examples:",
+      "alignsWithNdc": "Aligns with {count} NDC {count, plural, one {target} other {targets}}",
+      "viewDetails": "View details",
+      "barTooltip": "{label}: {count} {count, plural, one {target} other {targets}} ({percentage}%)",
+      "legendItem": "{label} ({percentage}%)",
+      "groupCount": "({count} {count, plural, one {target} other {targets}})",
+      "hide": "Hide",
+      "seeDetails": "See details"
+    },
+    "targetText": {
+      "language": {
+        "es": "Spanish",
+        "mn": "Mongolian"
+      },
+      "chip": {
+        "ariaLabel": "Show original {language} source text",
+        "title": "Click to see the original {language} source"
+      },
+      "panel": {
+        "ariaLabel": "Original {language} source and English translation",
+        "translatedFrom": "Translated from {language}",
+        "original": "Original ({language})",
+        "translationEnglish": "Translation (English)",
+        "close": "Close"
+      },
+      "actionType": {
+        "mitigation": "Mitigation",
+        "adaptation": "Adaptation",
+        "mitigationTooltip": "Reported mitigation measure (BTR)",
+        "adaptationTooltip": "Reported adaptation action (BTR)"
+      },
+      "measurableOutcome": "Measurable outcome",
+      "activitiesActions": {
+        "toggle": "Activities & Actions ({count})",
+        "activities": "Activities",
+        "actions": "Actions / Measures"
+      }
+    },
+    "visionAnchorSunburst": {
+      "ariaLabel": "Sunburst chart of {count} {docLabel} ambitions and their alignment relationships",
+      "ambitionsCount": "{count, plural, one {# ambition} other {# ambitions}}",
+      "clickWedgeToDrillIn": "click a wedge to drill in",
+      "subArcTitle": "{label}: {count, plural, one {# record} other {# records}}. Click for details.",
+      "backToOverview": "← Back to overview",
+      "seeAllRecords": "See all {count, plural, one {# peripheral record} other {# peripheral records}} →",
+      "levelRecordsSuffix": ": {count, plural, one {# record} other {# records}}",
+      "clickForDetails": "click for details",
+      "relationshipsCount": "{count, plural, one {# relationship} other {# relationships}}",
+      "clickToDrillIn": "click to drill in"
+    },
+    "coherenceTable": {
+      "header": {
+        "shareOfBer": "Share of BER",
+        "shareOfBerTooltip": "Share of classified BER expenditure (not the country's full budget)",
+        "targets": "Targets",
+        "actions": "Actions"
+      },
+      "additionalNoData": "{count, number} additional {noun} with no data",
+      "callouts": {
+        "concentration": "{pct, number}% of classified expenditure flows to {topN, number} of {total, number} {label} ({names}).",
+        "unfunded": "{count, number} {label} with policy commitments but no classified budget: {names}.",
+        "unmandated": "{count, number} {label} with budget but no policy target mapped: {names}.",
+        "unscoped": "{count, number} {label} with implementation actions reported but no policy target or budget mapped: {names}."
+      },
+      "tags": {
+        "unfunded": {
+          "label": "unfunded",
+          "tooltip": "Policy targets exist for this category but no budget is classified to it."
+        },
+        "unscoped": {
+          "label": "unscoped",
+          "tooltip": "Implementation actions are reported in this category but no policy target is classified to it and no budget is identified."
+        }
+      },
+      "childTags": {
+        "noBudget": {
+          "label": "no budget",
+          "tooltip": "Targets exist for this subcategory but no budget is identified."
+        },
+        "unscoped": {
+          "label": "unscoped",
+          "tooltip": "Implementation actions reported here but no policy target nor budget mapped."
+        }
+      }
+    },
+    "programDetailTable": {
+      "summary": {
+        "nonEnvBiodiv": "{count, plural, one {non-environmental program with biodiversity relevance under GLOBE} other {non-environmental programs with biodiversity relevance under GLOBE}}",
+        "zeroSpendClassified": "{count, plural, one {biodiversity-classified program with no recorded spend {period}} other {biodiversity-classified programs with no recorded spend {period}}}",
+        "unclassified": "{count, plural, one {program lacks a primary GLOBE classification} other {programs lack a primary GLOBE classification}}"
+      },
+      "filters": {
+        "type": {
+          "label": "Type",
+          "all": "All",
+          "environmental": "Environmental ({count})",
+          "nonEnvironmental": "Non-environmental ({count})"
+        },
+        "spend": {
+          "label": "Spend",
+          "all": "All",
+          "with": "Recorded spend",
+          "none": "No spend recorded"
+        },
+        "biodiversity": {
+          "label": "Biodiversity",
+          "all": "All",
+          "classified": "Has GLOBE primary",
+          "unclassified": "No GLOBE primary"
+        }
+      },
+      "columns": {
+        "program": "Program",
+        "spend": "Spend {period}",
+        "globePrimary": "GLOBE primary",
+        "ipccSector": "IPCC sector",
+        "alignedTargets": "Aligned targets"
+      },
+      "empty": "No programs match the current filters.",
+      "programType": {
+        "environmental": "Environmental",
+        "non_environmental": "Non-environmental"
+      },
+      "noSpendRecorded": "No spend recorded",
+      "notClassified": "Not classified",
+      "highCount": "({count} high)",
+      "noData": "no data",
+      "expand": {
+        "description": "Description",
+        "globeSubcategories": "GLOBE subcategories",
+        "aiReasoning": "AI reasoning (primary GLOBE)",
+        "topAligned": "Top aligned policy targets",
+        "thematicallyRelated": "Thematically related policy targets",
+        "fallbackNote": "No high or medium alignment. Showing weaker thematic connections.",
+        "noAlignment": "No meaningful alignment with any policy target."
+      }
+    },
+    "financingGaps": {
+      "title": "Policy, budget and action across the taxonomy",
+      "subtitle": "Do policy, money and reported action all concentrate on the same categories? Where the shapes match, they agree. Where they diverge, it's a finding. Hover an axis for the exact numbers.",
+      "infoIntro": "Three overlaid shapes on a radar across the axes of the selected lens. Each polygon shows one dimension's share per axis:",
+      "infoPolicyTargets": "policy targets",
+      "infoBerSpend": "BER spend",
+      "infoBtrActions": "reported BTR actions",
+      "infoNormalise": "Each polygon is normalised to its own total, then plotted against the shared maximum across dimensions so magnitudes stay comparable. Overlapping shapes = aligned; divergent shapes = mismatch.",
+      "infoBerLensPrefix": "On the",
+      "infoBerLensName": "BER programmes",
+      "infoBerLensBody": "lens, the axes become the 28 named budget lines themselves. Policy share on each axis is the number of policy targets medium/high LLM-aligned with that programme. BTR actions aren't directly aligned to BER programmes in the pipeline, so the action polygon is hidden in that lens.",
+      "infoBerPeriod": "BER period: {period}.",
+      "lensLabel": "Lens",
+      "lensGlobe": "Biodiversity (GLOBE)",
+      "lensSector": "Climate mitigation (IPCC)",
+      "lensNbs": "Nature-based solutions (NBS)",
+      "lensBerProgramme": "BER programmes (28)",
+      "envAll": "All",
+      "envEnvironmental": "Env.",
+      "envNonEnvironmental": "Non-env.",
+      "noAxes": "No axes in this selection.",
+      "hoverHint": "Hover an axis to see that axis's shares. The list below shows where each dimension peaks.",
+      "noData": "No data.",
+      "berLensNote": "Darker label = environmental programme; lighter = non-environmental. BTR actions have no direct alignment to BER programmes in the pipeline, so the action polygon is hidden on this lens.",
+      "dimPolicy": "Policy targets",
+      "dimBudget": "BER spend",
+      "dimAction": "BTR actions",
+      "programme": "Programme",
+      "category": "Category",
+      "environmentalProgramme": "Environmental programme",
+      "nonEnvironmentalProgramme": "Non-environmental programme",
+      "ctxPolicyAligned": "{count, plural, one {# policy target med/high-aligned} other {# policy targets med/high-aligned}}",
+      "ctxPolicyClassified": "{count, plural, one {# policy target primarily classified here} other {# policy targets primarily classified here}}",
+      "ctxNoExpenditure": "No expenditure recorded",
+      "ctxProgrammes": "{count, plural, one {# programme} other {# programmes}}",
+      "ctxBtrActions": "{count, plural, one {# BTR action} other {# BTR actions}}"
+    },
+    "emissionsTrend": {
+      "title": "GHG Emissions by Sector",
+      "subtitle": "Historical emissions (solid) and WEM projections (dashed) in kt CO₂ equivalent.",
+      "showLulucf": "Show LULUCF",
+      "showTotal": "Show Total",
+      "projectedSuffix": "(projected)",
+      "footer": "Dashed lines show WEM (With Existing Measures) projections. Click legend items to toggle sectors.",
+      "footerLulucfHidden": "LULUCF hidden (acts as large carbon sink, see checkbox above).",
+      "sectors": {
+        "energy": "Energy",
+        "transport": "Transport",
+        "agriculture": "Agriculture",
+        "waste": "Waste",
+        "total": "Total (excl. LULUCF)"
+      },
+      "provenance": {
+        "historicalLabel": "Biennial Transparency Report — historical emissions",
+        "historicalCitation": "CTF Table 6 (sector emissions)",
+        "projectionsLabel": "Biennial Transparency Report — projections",
+        "projectionsCitation": "CTF Table 7 / 9 (WEM/WAM/WOM scenarios)",
+        "caveat": "Historical values are reported by the country in their BTR; projection scenarios (WEM/WAM/WOM) are the country's own modelling and are not recomputed here."
+      },
+      "lulucfExplainer": {
+        "heading": "About negative LULUCF values:",
+        "body": "The Land Use, Land-Use Change and Forestry sector shows negative numbers because Mongolia's forests and grasslands currently <strong>absorb more CO₂ than they emit</strong>, making this sector a net carbon sink. In international GHG accounting, removals from the atmosphere are reported as negative values. A value becoming <em>less negative</em> (moving toward zero) means the sink is weakening and absorbing less carbon over time, which is a warning sign for climate goals."
+      }
+    },
+    "financingCoherence": {
+      "heading": "Budget & Financing Coherence",
+      "groupBy": "Group by:",
+      "taxonomy": "Taxonomy:",
+      "taxonomyRollup": "Taxonomy rollup",
+      "programOption": "Program ({count, number} BER lines)",
+      "expenditureLabel": "Expenditure ({period})",
+      "barChartNote": "A bar-chart view disaggregated by ministry will follow once the Mongolia BER program-to-ministry mapping is wired (separate workstream).",
+      "viewLabels": {
+        "globe_sub": "BIOFIN GLOBE biodiversity taxonomy",
+        "sector": "IPCC climate mitigation sectors"
+      },
+      "globeSub": {
+        "taxonomyLabel": "GLOBE category / subcategory",
+        "parentLabel": "GLOBE category",
+        "parentLabelPlural": "GLOBE categories"
+      },
+      "sectorView": {
+        "taxonomyLabel": "Climate mitigation sector",
+        "parentLabel": "sector",
+        "parentLabelPlural": "sectors"
+      },
+      "infoBox": {
+        "intro": "How government biodiversity expenditure aligns with policy commitments and reported actions, grouped by a shared taxonomy. Each row shows how much budget is allocated, how many policy targets address the category, and how many BTR-reported actions fall under it.",
+        "detail": "The BIOFIN GLOBE view uses BIOFIN's official framework for Biodiversity Expenditure Reviews (48 subcategories grouped into 9 primary categories). The Climate Mitigation view uses the IPCC sector taxonomy. Subcategory assignments are generated by an LLM classifier calibrated on expert examples. All monetary values in {currency} ({period})."
+      },
+      "provenance": {
+        "sourceLabel": "Biodiversity Expenditure Review (BER)",
+        "method": "Expenditure values come directly from the uploaded BER. Each program is then assigned to one BIOFIN GLOBE category (or IPCC mitigation sector) by an LLM classifier from the program's description.",
+        "caveat": "The BER is a <strong>subset</strong> of national expenditure — only programs flagged in the uploaded review are shown. Totals here do <strong>not</strong> represent the country's full budget. Coverage depends entirely on what was uploaded; programs not in the BER are invisible to this section."
+      },
+      "subtitle": {
+        "intro": "Based on {programCount, number} budget programs in the uploaded BER — a subset of national expenditure, not the full government budget. Compared against {targetCount, number} policy targets and BTR-reported actions.",
+        "rollup": "Rollup by {taxonomy} (AI-classified).",
+        "program": "Drill into each of the {count, number} original BER reporting lines."
+      },
+      "keyFindings": {
+        "horizon": "BER analysis horizon ({period}):",
+        "summary": "{planned} planned, {actual} actual. Execution gap: {gap}.",
+        "note": "Detailed annual data below covers {period}; the BER document analyses the longer {programPeriod} period."
+      },
+      "scopeNote": {
+        "title": "What this section is and is not showing",
+        "berOnly": "<strong>Biodiversity expenditure (BER) only.</strong> Broader green budget tagging (climate mitigation and adaptation flags across ~1,400 projects) is a separate Mongolia data source not yet integrated.",
+        "classification": "Program-to-policy classification is <strong>LLM-generated</strong>. Each program gets a primary single-label and any tags scoring ≥ 0.5 as multi-label.",
+        "period": "Period: BER analysis horizon {programPeriod}; detailed annual data {period}.",
+        "reconciliation": "Sub-program (line-item) reconciliation is in flight; the current view is program-level only ({count, number} BER reporting lines)."
+      },
+      "cards": {
+        "classifiedTitle": "Classified expenditure ({period})",
+        "coverage": "{percent} of the uploaded BER ({total}, {period}). National budget coverage not assessed.",
+        "acrossParents": "across {count, number} of {total, number} {parent}",
+        "fundedTitle": "Funded commitment areas",
+        "fundedDesc": "{parent} with both targets and budget",
+        "unfundedTitle": "Unfunded commitment areas",
+        "unfundedDesc": "{parent} with targets but no classified budget in the uploaded BER",
+        "unfundedNone": "all commitment areas have budget in the uploaded BER"
+      },
+      "footer": {
+        "categoryMethod": "Targets = policy commitments classified under each {parent}. BTR Actions = reported mitigation and adaptation measures. Each item is assigned to its single primary {parent} (the highest-scoring one from the LLM classifier), so per-{parent} sums equal the unique classified totals. Click a row to expand and see subcategory detail (where available).",
+        "categoryScope": "<strong>Scope:</strong> only programs in the uploaded BER are shown. This section does not represent the country's full budget; programs outside the BER are invisible here.",
+        "programMethod": "Environmental and non-environmental tags are the BER's own classification of each budget line. GLOBE and IPCC primaries are assigned by an LLM classifier from each program's description. Zero-spend rows are budget lines that exist in the reporting framework but recorded no expenditure in the period. Click a row for full description, subcategories, reasoning, and top aligned policy targets.",
+        "programScope": "<strong>Scope:</strong> only programs in the uploaded BER are shown here — a subset of national expenditure."
+      }
+    },
+    "implementationCoverage": {
+      "groupMode": {
+        "byNationalSector": "By National Sector Categories",
+        "byIpccSector": "By IPCC Sector (standardised)",
+        "default": "Default (Climate Mitigation + Adaptation Goals)",
+        "byBiodiversity": "By Biodiversity Taxonomy"
+      },
+      "status": {
+        "active": {
+          "label": "Active",
+          "description": "At least one mitigation action has a 'fully implemented' status reported."
+        },
+        "partial": {
+          "label": "Partial",
+          "description": "Mitigation actions are adopted or ongoing, but none reported as fully implemented yet."
+        },
+        "noData": {
+          "label": "No data",
+          "description": "No mitigation actions reported for this sector."
+        },
+        "implementedCount": "Implemented ({count, number})",
+        "adoptedPlanned": "Adopted / Planned ({count, number})",
+        "adoptedOngoingPlanned": "Adopted / Ongoing / Planned ({count, number})"
+      },
+      "imbalance": {
+        "none": "No policy targets, no reported actions",
+        "under": "{policyCount, number} policy targets vs {reportedCount, number} reported {reportedCount, plural, one {action} other {actions}} — pledged more than reported",
+        "over": "{reportedCount, number} reported {reportedCount, plural, one {action} other {actions}} vs {policyCount, number} policy {policyCount, plural, one {target} other {targets}} — reported more than the explicit policy commitments",
+        "balanced": "{policyCount, number} policy {policyCount, plural, one {target} other {targets}} and {reportedCount, number} reported {reportedCount, plural, one {action} other {actions}} — balanced"
+      },
+      "counts": {
+        "policyTargetsShort": "policy {count, plural, one {tgt} other {tgts}}",
+        "reported": "reported",
+        "actions": "{count, plural, one {action} other {actions}}",
+        "implementedParen": "({count, number} ✓ implemented)",
+        "implementedCheck": "{count, number} ✓ implemented",
+        "ongoing": "{count, number} ongoing",
+        "adopted": "{count, number} adopted",
+        "noDataLower": "no data"
+      },
+      "gaps": {
+        "title": "Reporting gaps",
+        "footnote": "Counts use the IPCC sector recorded for each BTR action in the underlying data file (hand-curated for Mongolia, parser-extracted for Panama). Government self-reports rarely surface contradictions, so absence of a reported action is not the same as absence of activity on the ground.",
+        "nationalSectorCoverage": "BTR mitigation reporting covers {covered, number} of {total, number} national sector categories. {names} {count, plural, one {is} other {are}} not covered by any reported mitigation action.",
+        "ipccSectorCoverage": "BTR mitigation reporting covers {covered, number} of {total, number} IPCC sectors. {names} {count, plural, one {is} other {are}} not covered by any reported mitigation action.",
+        "implementationStatus": "Only {implemented, number} of {total, number} reported BTR {total, plural, one {action is} other {actions are}} marked 'fully implemented'. The other {other, number} are ongoing, adopted or planned.",
+        "adaptationNarrative": "Adaptation actions are reported in narrative form. {ongoing, number} of {total, number} are 'ongoing' with no quantitative completion metric."
+      },
+      "mitigation": {
+        "byIpccSector": "Mitigation, by IPCC sector",
+        "byIpccSectorDesc": "Reported mitigation actions by IPCC sector. Implementation status is as self-reported by the country. Click any row for the full action list.",
+        "byIpccSectorDescWithChart": "Reported mitigation actions by IPCC sector. Implementation status is as self-reported by the country. Click any row for the full action list and emissions trajectory.",
+        "policyTargetsInSector": "Policy targets in this sector ({count, number})",
+        "noPolicyTargetsInSector": "No policy targets classified to this sector across NDC, NBSAP, NAP or Vision 2050.",
+        "reportedActions": "Reported mitigation actions ({count, number})",
+        "noReportedActions": "No reported mitigation actions for this sector",
+        "emissionsTrajectory": "{sector} emissions trajectory (kt CO₂ eq). Solid: historical, dashed: WEM projection."
+      },
+      "chart": {
+        "ktValue": "{value, number} kt",
+        "yearLabel": "Year {year}",
+        "historical": "Historical",
+        "projectedWem": "Projected (WEM)"
+      },
+      "adaptation": {
+        "sectionTitle": "Adaptation actions",
+        "sectionTitleWithLabel": "Adaptation, by {label}",
+        "infoBox": "Adaptation actions are organised around the country's own adaptation action plan rather than IPCC sectors, because IPCC sector classifications don't fit adaptation outcomes like water, disaster, health and social safeguard. Each row shows one grouping with the actions reported under it; click to read each action's indicator, status narrative and responsible organisations.",
+        "sectionDesc": "Reported adaptation actions grouped by the country's adaptation action plan. Progress shown as narrative status (not quantitative completion).",
+        "goal": "Goal {number, number}",
+        "policyTargetsAligned": "Policy targets aligned to this goal ({count, number})",
+        "reportedActions": "Reported adaptation actions ({count, number})",
+        "indicatorLabel": "Indicator:",
+        "responsible": "Responsible: {entity}"
+      },
+      "biodiversity": {
+        "title": "All reported actions, by Biodiversity category",
+        "infoBox": "This view groups <strong>all</strong> BTR-reported actions (both mitigation and adaptation) by BIOFIN's GLOBE Biodiversity Expenditure Taxonomy. This is an alternative lens that shows which biodiversity categories have implementation activity, regardless of whether the action is classified as mitigation or adaptation. Actions that don't map to any biodiversity category appear under \"Not classified\".",
+        "sectionDesc": "Mitigation and adaptation actions unified under biodiversity categories.",
+        "policyTargetsInCategory": "Policy targets in this category ({count, number})",
+        "noPolicyTargets": "No policy targets classified to this biodiversity category.",
+        "reportedActions": "Reported actions ({count, number})",
+        "noReportedActions": "No reported actions for this category.",
+        "gapTitle": "Policy targets exist but no reported actions are classified under this category",
+        "zeroActionsGap": "0 actions (gap)",
+        "noCoverageYet": "no coverage yet",
+        "notClassified": "Not classified under any biodiversity category"
+      },
+      "countrySector": {
+        "title": "Mitigation, by national sector",
+        "sectionDesc": "Reported mitigation actions grouped by the country's own sector categories from CTF Table 5. Click any row for the full action list.",
+        "original": "Original: {name}",
+        "noReportedActions": "No reported mitigation actions for this category."
+      }
+    },
+    "targetAtlas": {
+      "title": "Target Atlas",
+      "infoBox": "Items are connected when they share a relevant category in the selected <strong>lens</strong>. Horizontal = # cross-doc policy targets sharing a category. Vertical = # BTR actions + # BER programmes sharing a category.<red> Red ring</red> = LLM-flagged possible misalignments with other targets. See “How to read this” below the header for the full story.",
+      "provenanceMethod": "Each dot is a policy target. Connections are inferred from LLM taxonomy classifications under the selected lens; the red ring comes from the same LLM pairwise alignment pass used by the coherency views. BTR actions and BER programmes contribute to the vertical <quoted>backing</quoted> axis only when they share a lens category with a target.",
+      "provenanceCaveat": "Both axes depend on the chosen lens — switching lenses recomputes positions. The Atlas shows semantic coherence (shared categories), not material flows of money or implementation effort.",
+      "provPolicyTargets": "Policy targets ({count, number})",
+      "provBtrActions": "BTR reported actions",
+      "provBerProgrammes": "BER budget programmes",
+      "lensLabel": "Lens",
+      "lensSelectTitle": "The connecting taxonomy. Two items are linked (on both axes) if they share a relevant category.",
+      "lensGlobe": "Biodiversity (GLOBE)",
+      "lensSector": "Climate mitigation (IPCC)",
+      "lensNbs": "Nature-based solutions (NBS)",
+      "hideLensOrphans": "Hide lens-orphans",
+      "connectionLines": "LLM connection lines",
+      "intro": "Every dot is a policy target from your national documents (NDC, NBSAP, NAP, …). Its position tells you two things at once, both seen through the <strong>Lens</strong> chosen above: how this target relates to <em>other policies</em>, and how it relates to<em> reported government action and national budget</em>. Click any dot for details.",
+      "introNoBer": "No BER (budget) data for this country, so the vertical axis reflects reported action only.",
+      "introNoBtr": "No BTR (reported action) data, so the vertical axis reflects budget only.",
+      "howToReadSummary": "How to read this – and what it answers",
+      "htrPositionTitle": "How a target gets its position",
+      "htrPositionBody": "Every target, every reported action (BTR), and every budget programme (BER) is tagged with categories from a shared taxonomy: the <strong>Lens</strong>. Two items are <quoted>linked</quoted> when they share at least one tag. No human hand-picks these links, and no single opaque score drives position.",
+      "htrHorizontal": "<strong>Horizontal (coherence)</strong> counts linked policy targets in <em>other</em> documents. Further right = the same idea comes up again and again across the policy stack.",
+      "htrVertical": "<strong>Vertical (backing)</strong> combines linked BTR actions and BER programmes, weighted: BTR by reported execution stage, BER by spend relative to the country average. Further up = stronger evidence of action and budget in the same area.",
+      "htrRedRing": "<strongRed>Red ring</strongRed> marks targets with <em>many potential misalignments</em> only: those the AI has identified as potentially misaligned with <strong>5 or more</strong> other policy targets. Targets with fewer aren't ringed, to keep the chart readable; every potentially misaligned pair is still listed in the side panel when you click a dot. Potential misalignments sit alongside the axes, not subtracted from them. A target can be strongly aligned <em>and</em> potentially misaligned.",
+      "htrOrphansNote": "Only targets that carry at least one tag in the current lens are shown. Turn on <quoted>Hide lens-orphans</quoted> to remove targets pinned to the origin because this lens doesn't apply to them (e.g. public-health targets under a biodiversity lens).",
+      "htrQuadrantsTitle": "What the four quadrants mean",
+      "htrQuadWellSupported": "<strong>Well-supported (top right):</strong> linked to many other policy targets <em>and</em> to reported action or budget. The country's policy stack and its implementation/financing machinery both back this target. <eg>e.g. a renewable-energy target that recurs across NDC, NBSAP and NAP and is covered by BTR mitigation measures and a BER programme.</eg>",
+      "htrQuadAmbitionGap": "<strong>Ambition gap (bottom right):</strong> echoed across many policies, but no reported action and no budget programme touches the same area. The classic <quoted>say-do</quoted> gap. <eg>e.g. a pollinator-habitat restoration target that several documents mention but no BTR action or BER programme covers.</eg>",
+      "htrQuadBackedIsolated": "<strong>Backed but isolated (top left):</strong> reported action or budget is there, but few other policy targets reinforce it. The country is doing or paying for something that stands on its own. <eg>e.g. an anti-desertification budget line that isn't strongly echoed in NBSAP, NDC or NAP.</eg>",
+      "htrQuadLimitedUptake": "<strong>Limited uptake (bottom left):</strong> few cross-policy links, few reported actions, few budget programmes in this area. Could be a strategic orphan, a very narrow target, or a poor fit for this lens. Worth a direct read before judging.",
+      "htrLinksTitle": "What each kind of link actually tells you",
+      "htrLinkPolicy": "<strong>Link to another policy target</strong> → two documents contain objectives that fall in the same thematic area. They reinforce each other.",
+      "htrLinkBtr": "<strong>Link to a BTR action</strong> → the country's Biennial Transparency Report lists a mitigation measure or adaptation action in the same thematic area. It means the country is <em>already doing something</em> related to this target.",
+      "htrLinkBer": "<strong>Link to a BER programme</strong> → a named budget line in the Biodiversity Expenditure Review funds activity in the same thematic area. The country is <em>already paying for</em> something related. It's a count of programmes, not a currency amount; dollar totals per category live in the <em>Financing Coherence</em> section below.",
+      "htrLensTitle": "Switching the lens changes everything",
+      "htrLensBody": "A target classified as <quoted>Restoration</quoted> in GLOBE may be classified as <quoted>LULUCF</quoted> under IPCC sector and <quoted>Forest management</quoted> under NBS. Each lens re-wires the network of shared tags, so the same target can move from edge to centre when you pick a different lens. Use this to cross-check: a target that looks isolated under one lens but load-bearing under another is telling you something about framing, not failure.",
+      "htrAuditTitle": "Auditability",
+      "htrAuditBody": "Click any dot. The side panel lists the shared tags connecting it to every linked programme and action, alongside a second, independent LLM-generated alignment score. Where the two agree, confidence is high. Where they disagree, surface for discussion. The tags are the authoritative link; the LLM read is a cross-check.",
+      "unclassified": "Unclassified",
+      "emptyCategoryLead": "<strong>0 policy targets</strong> are primarily classified under <cat>{name}</cat>. The category appears in the ranking because",
+      "emptyCategoryBer": "<strong>{count, number}</strong> {count, plural, one {BER programme} other {BER programmes}}",
+      "emptyCategoryAnd": "and",
+      "emptyCategoryBtr": "<strong>{count, number}</strong> {count, plural, one {BTR action} other {BTR actions}}",
+      "emptyCategoryTailHas": "are classified there, but no policy target anchors it directly. The chart has nothing to highlight: that gap is the signal.",
+      "emptyCategoryTailNone": "has backing here.",
+      "axisX": "Coherence: cross-doc policy targets sharing a lens category",
+      "axisY": "Backing: weighted by BTR execution stage and BER spend share",
+      "quadWellSupported": "Well-supported",
+      "quadWellSupportedSub": "Reinforced across policies and backed by action or budget",
+      "quadBackedIsolated": "Backed but isolated",
+      "quadBackedIsolatedSub": "Implementation or budget without broad policy agreement",
+      "quadAmbitionGap": "Ambition gap",
+      "quadAmbitionGapSub": "Policy ambition without action or funding yet",
+      "quadLimitedUptake": "Limited uptake",
+      "quadLimitedUptakeSub": "Rarely referenced and rarely acted upon",
+      "statCoherence": "Coherence",
+      "statImplementation": "Implementation",
+      "statBudget": "Budget",
+      "statBacking": "Backing",
+      "statBackingHint": "weighted: stage + spend",
+      "statCoherenceHint": "{count, plural, =0 {no cross-doc matches} one {cross-doc target} other {cross-doc targets}}",
+      "statBudgetHint": "{count, plural, =0 {no BER bridges} one {BER programme} other {BER programmes}}",
+      "statImplementationHint": "{count, plural, =0 {no BTR bridges} one {BTR action} other {BTR actions}}",
+      "flaggedMisalignments": "Flagged misalignments",
+      "highTensionTargets": "High-tension targets",
+      "highTensionLegend": "5+ flagged misalignments with other targets",
+      "rankTabPolicy": "Policy",
+      "rankTabBudget": "Budget",
+      "rankTabImplementation": "Implementation",
+      "rankTabDisabled": "No {tab} data for this lens",
+      "rankTitlePolicy": "Most supported {lens} categories",
+      "rankTitleBudget": "Where the budget flows ({lens})",
+      "rankTitleImplementation": "Where reported action concentrates ({lens})",
+      "rankSubtitlePolicy": "Taxonomy areas ranked by policy targets that land in “Well-supported” (policy, action and budget combined). Click a row to highlight on the chart.",
+      "rankSubtitleBudgetSpend": "BER programmes grouped by their primary {lens} category. Bar width is share of total biodiversity expenditure. Click a row to highlight related policy targets on the chart.",
+      "rankSubtitleBudgetCount": "BER programmes grouped by their primary {lens} category. Bar width is # programmes. Click a row to highlight related policy targets on the chart.",
+      "rankSubtitleImplementation": "BTR reported actions grouped by their primary {lens} category. Click a row to highlight related policy targets on the chart.",
+      "clear": "Clear",
+      "budgetCountTitleSpend": "{count, number} programmes · {pct}% of BER{unit}",
+      "budgetCountTitlePlain": "{count, number} programmes",
+      "budgetSpendUnit": " spend ({unit})",
+      "budgetBarTitleSpend": "{count, number} {count, plural, one {BER programme} other {BER programmes}} · {pct}% of biodiversity expenditure",
+      "budgetBarTitlePlain": "{count, number} {count, plural, one {BER programme} other {BER programmes}}",
+      "implActionTitle": "{count, number} {count, plural, one {BTR action} other {BTR actions}}",
+      "close": "Close",
+      "misalignmentBadge": "{count, number} {count, plural, one {possible misalignment} other {possible misalignments}} with other targets (LLM-flagged)",
+      "lensOrphanFallback": "No relevant categories in the <strong>{lens}</strong> lens. Switch lens or enable <quoted>Hide lens-orphans</quoted> to refocus.",
+      "lensCategories": "Lens categories ({count, number})",
+      "bridgedPolicyTargets": "Bridged policy targets",
+      "bridgedBtrActions": "Bridged BTR actions",
+      "bridgedBerProgrammes": "Bridged BER programmes",
+      "contradictions": "Contradictions",
+      "plusMore": "+ {count, number} more",
+      "via": "via {categories}",
+      "llmScoreTitle": "LLM-assessed pairwise alignment score"
+    },
+    "visionAnchorCoverage": {
+      "heading": "Operationalising {anchor}",
+      "infoBoxIntro": "How does the rest of the country's policy stack relate to <strong>{anchorFull}</strong>? Each row is one {anchor} ambition; each column is a peripheral document. Bar segments show the strength of the AI-assessed relationships between each ambition and the targets in that document, colored by the seven-level alignment scale (only the levels present in the data are shown).",
+      "infoBoxNote": "These policy documents contain <strong>no outright conflicts flagged</strong> with {anchor}; the only friction signal the model emits here is <em>possible misalignment</em>. The default sort surfaces ambitions with the weakest operational backing first, since that is the actionable gap.",
+      "provenanceMethod": "Each pair of (Vision target, peripheral target) is scored by an LLM on a seven-level alignment scale. Counts shown in each cell are aggregations of those per-pair judgements.",
+      "provenanceCaveat": "Single-model judgements skew toward 'medium' alignment. Read the per-pair rationale in the click-through modals before treating any cell as a settled finding.",
+      "viewSunburst": "Vision sunburst",
+      "viewMatrix": "Coverage matrix",
+      "viewLoose": "Loosely-connected targets",
+      "subtitleMatrix": "{rows} {anchor} ambitions compared against {peripheral} peripheral targets across {docs} documents. Click a cell to read the underlying targets and AI rationale.",
+      "subtitleSunburst": "{anchor} sits at the center; the inner ring shows each ambition tinted by its status, the outer ring shows each ambition's alignment-level distribution. Hover any wedge to focus, click to drill in, click an outer slice to read the underlying targets.",
+      "subtitleLoose": "Peripheral targets whose strongest link to any {anchor} ambition is \"low\" or \"possible misalignment\" only. They may operationalise priorities outside {anchor}'s long-term framing, or signal where {anchor} itself does not yet capture an emerging priority.",
+      "sortLabel": "Sort:",
+      "sortWeakest": "Weakest support first",
+      "sortMisalignment": "Misalignment-heavy first",
+      "sortAnchorOrder": "Vision 2050 order",
+      "anchorAmbitionLabel": "Vision 2050 ambition",
+      "statusHeader": "Status",
+      "rowAriaLabel": "Open details for {id}: {text}",
+      "linkCount": "{count, plural, one {# link} other {# links}}",
+      "noAlignmentRecords": "No alignment records",
+      "breakdownSegment": "{count} {level}",
+      "cellTitle": "{doc}: {count} records — {breakdown}. Click for details.",
+      "cellAriaLabel": "{doc}: {count} records ({breakdown}). Open details.",
+      "subArcModalTitle": "{id} — {level} ({count, plural, one {# record} other {# records}})",
+      "noRecordsAtLevel": "No peripheral records at this alignment level.",
+      "looseEmpty": "Every peripheral target reaches at least medium-or-better alignment with one {anchor} ambition. No loosely-connected targets surface in this dataset.",
+      "noAnchorLink": "No Vision 2050 link",
+      "strongestPrefix": "Strongest: {level}",
+      "orphanDescription": "The model judged this target unrelated to every Vision 2050 ambition. May operationalise priorities outside Vision 2050's framing.",
+      "possibleMisalignmentLinks": "{count, plural, one {# possible-misalignment link} other {# possible-misalignment links}}",
+      "lowAlignmentLinks": "{count, plural, one {# low-alignment link} other {# low-alignment links}}",
+      "strongestIsWith": "· strongest is with <link>{label}</link>",
+      "cellModalTitle": "{id} ↔ {doc} ({count, plural, one {# record} other {# records}})",
+      "operationalisationBy": "Operationalisation by {doc}",
+      "rowModalTitle": "{id} — {count, plural, one {# peripheral record} other {# peripheral records}}",
+      "noRecords": "No records.",
+      "aiRationale": "AI rationale:"
     }
   }
 }

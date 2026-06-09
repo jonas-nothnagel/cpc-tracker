@@ -16,7 +16,10 @@
  */
 
 import React, { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { ThematicClassification } from "@/types";
+
+type TFn = ReturnType<typeof useTranslations>;
 
 // ---------------------------------------------------------------------------
 // Generic types
@@ -236,6 +239,7 @@ function buildConcentrationCallouts(
   rollups: ParentRollup[],
   parentLabelSingular: string,
   parentLabelPlural: string,
+  t: TFn,
 ): ConcentrationCallout[] {
   const callouts: ConcentrationCallout[] = [];
   const total = rollups.reduce((s, r) => s + r.expenditure, 0);
@@ -256,10 +260,16 @@ function buildConcentrationCallouts(
       const label = rollups.length === 1 ? parentLabelSingular : parentLabelPlural;
       callouts.push({
         kind: "concentration",
-        text: `${pct}% of classified expenditure flows to ${topN} of ${rollups.length} ${label} (${sorted
-          .slice(0, topN)
-          .map((r) => r.name)
-          .join(", ")}).`,
+        text: t("callouts.concentration", {
+          pct,
+          topN,
+          total: rollups.length,
+          label,
+          names: sorted
+            .slice(0, topN)
+            .map((r) => r.name)
+            .join(", "),
+        }),
       });
     }
   }
@@ -273,7 +283,11 @@ function buildConcentrationCallouts(
       unfunded.length === 1 ? parentLabelSingular : parentLabelPlural;
     callouts.push({
       kind: "unfunded",
-      text: `${unfunded.length} ${label} with policy commitments but no classified budget: ${unfunded.map((r) => r.name).join(", ")}.`,
+      text: t("callouts.unfunded", {
+        count: unfunded.length,
+        label,
+        names: unfunded.map((r) => r.name).join(", "),
+      }),
     });
   }
 
@@ -286,7 +300,11 @@ function buildConcentrationCallouts(
       unmandated.length === 1 ? parentLabelSingular : parentLabelPlural;
     callouts.push({
       kind: "unmandated",
-      text: `${unmandated.length} ${label} with budget but no policy target mapped: ${unmandated.map((r) => r.name).join(", ")}.`,
+      text: t("callouts.unmandated", {
+        count: unmandated.length,
+        label,
+        names: unmandated.map((r) => r.name).join(", "),
+      }),
     });
   }
 
@@ -302,7 +320,11 @@ function buildConcentrationCallouts(
       unscoped.length === 1 ? parentLabelSingular : parentLabelPlural;
     callouts.push({
       kind: "unscoped",
-      text: `${unscoped.length} ${label} with implementation actions reported but no policy target or budget mapped: ${unscoped.map((r) => r.name).join(", ")}.`,
+      text: t("callouts.unscoped", {
+        count: unscoped.length,
+        label,
+        names: unscoped.map((r) => r.name).join(", "),
+      }),
     });
   }
 
@@ -324,6 +346,7 @@ export function CoherenceTable({
   parentLabel,
   parentLabelPlural,
 }: CoherenceTableProps) {
+  const t = useTranslations("viz.coherenceTable");
   const singular = parentLabel ?? taxonomyLabel;
   const plural = parentLabelPlural ?? `${singular}s`;
 
@@ -334,8 +357,8 @@ export function CoherenceTable({
   );
 
   const callouts = useMemo(
-    () => buildConcentrationCallouts(rollups, singular, plural),
-    [rollups, singular, plural],
+    () => buildConcentrationCallouts(rollups, singular, plural, t),
+    [rollups, singular, plural, t],
   );
 
   // Expand state per parent id. Collapsed by default.
@@ -384,12 +407,12 @@ export function CoherenceTable({
         {/* Header row */}
         <div className="grid grid-cols-[1fr_90px_200px_80px_80px] gap-2 px-4 py-2 bg-gray-50 border-b border-gray-200 text-xs text-[var(--undp-gray)] font-medium">
           <span>{taxonomyLabel}</span>
-          <span className="text-right" title="Share of classified BER expenditure (not the country's full budget)">
-            Share of BER
+          <span className="text-right" title={t("header.shareOfBerTooltip")}>
+            {t("header.shareOfBer")}
           </span>
           <span className="text-right">{expenditureLabel}</span>
-          <span className="text-center">Targets</span>
-          <span className="text-center">Actions</span>
+          <span className="text-center">{t("header.targets")}</span>
+          <span className="text-center">{t("header.actions")}</span>
         </div>
 
         {populated.map((p) => (
@@ -410,8 +433,11 @@ export function CoherenceTable({
               onClick={() => setShowEmpty((s) => !s)}
               className="w-full text-left px-4 py-2 text-xs text-[var(--undp-gray)] hover:bg-gray-50 transition-colors"
             >
-              {showEmpty ? "\u25BE" : "\u25B8"} {empty.length} additional{" "}
-              {empty.length === 1 ? singular : plural} with no data
+              {showEmpty ? "\u25BE" : "\u25B8"}{" "}
+              {t("additionalNoData", {
+                count: empty.length,
+                noun: empty.length === 1 ? singular : plural,
+              })}
             </button>
             {showEmpty &&
               empty.map((p) => (
@@ -456,6 +482,7 @@ function ParentRowView({
   anyHierarchical,
   dim,
 }: ParentRowViewProps) {
+  const t = useTranslations("viz.coherenceTable");
   // Two distinct gap flavours. `unfunded` is the policy-vs-budget gap
   // (commitment exists but no money). `unscoped` is the implementation-
   // without-policy-or-money case (BTR actions reported here but no NDC/
@@ -495,17 +522,17 @@ function ParentRowView({
           {isUnfunded && (
             <span
               className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0 whitespace-nowrap"
-              title="Policy targets exist for this category but no budget is classified to it."
+              title={t("tags.unfunded.tooltip")}
             >
-              unfunded
+              {t("tags.unfunded.label")}
             </span>
           )}
           {isUnscoped && (
             <span
               className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 shrink-0 whitespace-nowrap"
-              title="Implementation actions are reported in this category but no policy target is classified to it and no budget is identified."
+              title={t("tags.unscoped.tooltip")}
             >
-              unscoped
+              {t("tags.unscoped.label")}
             </span>
           )}
         </div>
@@ -584,6 +611,7 @@ function ChildRowView({
   formatMoney: (v: number) => string;
   dim?: boolean;
 }) {
+  const t = useTranslations("viz.coherenceTable");
   const hasData =
     row.expenditure > 0 || row.targetIds.size > 0 || row.actionIds.size > 0;
   const isUnfunded = row.targetIds.size > 0 && row.expenditure === 0;
@@ -612,17 +640,17 @@ function ChildRowView({
         {isUnfunded && (
           <span
             className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0 whitespace-nowrap"
-            title="Targets exist for this subcategory but no budget is identified."
+            title={t("childTags.noBudget.tooltip")}
           >
-            no budget
+            {t("childTags.noBudget.label")}
           </span>
         )}
         {isUnscoped && (
           <span
             className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 shrink-0 whitespace-nowrap"
-            title="Implementation actions reported here but no policy target nor budget mapped."
+            title={t("childTags.unscoped.tooltip")}
           >
-            unscoped
+            {t("childTags.unscoped.label")}
           </span>
         )}
       </div>

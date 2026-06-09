@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   ALIGNMENT_COLORS,
   ALIGNMENT_LEVEL_ORDER,
@@ -44,10 +45,10 @@ interface VisionAnchorCoverageProps {
 
 type ViewMode = "matrix" | "sunburst" | "loose";
 
-const VIEW_OPTIONS: { value: ViewMode; label: string }[] = [
-  { value: "sunburst", label: "Vision sunburst" },
-  { value: "matrix", label: "Coverage matrix" },
-  { value: "loose", label: "Loosely-connected targets" },
+const VIEW_OPTIONS: { value: ViewMode; labelKey: string }[] = [
+  { value: "sunburst", labelKey: "viewSunburst" },
+  { value: "matrix", labelKey: "viewMatrix" },
+  { value: "loose", labelKey: "viewLoose" },
 ];
 
 const STATUS_TONE_CLASSES: Record<AnchorStatus["tone"], string> = {
@@ -57,10 +58,10 @@ const STATUS_TONE_CLASSES: Record<AnchorStatus["tone"], string> = {
   gray: "bg-gray-50 text-[var(--undp-gray)] border-gray-200",
 };
 
-const SORT_OPTIONS: { value: SortMode; label: string }[] = [
-  { value: "weakest_support", label: "Weakest support first" },
-  { value: "tension_first", label: "Misalignment-heavy first" },
-  { value: "anchor_order", label: "Vision 2050 order" },
+const SORT_OPTIONS: { value: SortMode; labelKey: string }[] = [
+  { value: "weakest_support", labelKey: "sortWeakest" },
+  { value: "tension_first", labelKey: "sortMisalignment" },
+  { value: "anchor_order", labelKey: "sortAnchorOrder" },
 ];
 
 export function VisionAnchorCoverage({
@@ -71,6 +72,7 @@ export function VisionAnchorCoverage({
   sparseStrongSupportThreshold = 5,
   onFocusTarget,
 }: VisionAnchorCoverageProps) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const [view, setView] = useState<ViewMode>("sunburst");
   const [sortMode, setSortMode] = useState<SortMode>("weakest_support");
   const [modal, setModal] = useState<
@@ -147,41 +149,45 @@ export function VisionAnchorCoverage({
 
   const subtitle = (() => {
     if (view === "matrix") {
-      return `${aggregation.rows.length} ${anchorDocLabel} ambitions compared against ${aggregation.peripheralCount} peripheral targets across ${visibleDocTypes.length} documents. Click a cell to read the underlying targets and AI rationale.`;
+      return t("subtitleMatrix", {
+        rows: aggregation.rows.length,
+        anchor: anchorDocLabel,
+        peripheral: aggregation.peripheralCount,
+        docs: visibleDocTypes.length,
+      });
     }
     if (view === "sunburst") {
-      return `${anchorDocLabel} sits at the center; the inner ring shows each ambition tinted by its status, the outer ring shows each ambition's alignment-level distribution. Hover any wedge to focus, click to drill in, click an outer slice to read the underlying targets.`;
+      return t("subtitleSunburst", { anchor: anchorDocLabel });
     }
-    return `Peripheral targets whose strongest link to any ${anchorDocLabel} ambition is "low" or "possible misalignment" only. They may operationalise priorities outside ${anchorDocLabel}'s long-term framing, or signal where ${anchorDocLabel} itself does not yet capture an emerging priority.`;
+    return t("subtitleLoose", { anchor: anchorDocLabel });
   })();
 
   return (
     <section className="mb-10 pt-8 border-t-2 border-[var(--undp-blue)]/20">
       <div className="mb-3 flex items-center justify-between flex-wrap gap-3">
         <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-          Operationalising {anchorDocLabel}
+          {t("heading", { anchor: anchorDocLabel })}
           <InfoBox>
-            How does the rest of the country&apos;s policy stack relate to{" "}
-            <strong>{anchorDocFullLabel}</strong>? Each row is one {anchorDocLabel} ambition;
-            each column is a peripheral document. Bar segments show the strength of the
-            AI-assessed relationships between each ambition and the targets in that document,
-            colored by the seven-level alignment scale (only the levels present in the data
-            are shown).
+            {t.rich("infoBoxIntro", {
+              anchor: anchorDocLabel,
+              anchorFull: anchorDocFullLabel,
+              strong: (chunks) => <strong>{chunks}</strong>,
+            })}
             <br />
             <br />
             <em>
-              These policy documents contain{" "}
-              <strong>no outright conflicts flagged</strong> with{" "}
-              {anchorDocLabel}; the only friction signal the model emits here is{" "}
-              <em>possible misalignment</em>. The default sort surfaces ambitions with the
-              weakest operational backing first, since that is the actionable gap.
+              {t.rich("infoBoxNote", {
+                anchor: anchorDocLabel,
+                strong: (chunks) => <strong>{chunks}</strong>,
+                em: (chunks) => <em>{chunks}</em>,
+              })}
             </em>
           </InfoBox>
           <DataProvenance
             origin="ai-inferred"
             sources={provenanceSources}
-            method="Each pair of (Vision target, peripheral target) is scored by an LLM on a seven-level alignment scale. Counts shown in each cell are aggregations of those per-pair judgements."
-            caveat="Single-model judgements skew toward 'medium' alignment. Read the per-pair rationale in the click-through modals before treating any cell as a settled finding."
+            method={t("provenanceMethod")}
+            caveat={t("provenanceCaveat")}
           />
         </h2>
         <div className="flex gap-1.5 text-xs">
@@ -196,7 +202,7 @@ export function VisionAnchorCoverage({
                   : "bg-gray-100 text-[var(--undp-gray)] hover:bg-gray-200"
               }`}
             >
-              {opt.label}
+              {t(opt.labelKey)}
               {opt.value === "loose" && looseTargets.length > 0 && (
                 <span className="ml-1.5 text-[10px] opacity-80">({looseTargets.length})</span>
               )}
@@ -313,6 +319,7 @@ function SubArcDetailModal({
   onClose: () => void;
   onTargetClick: (id: string) => void;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const alignmentLabels = useAlignmentLabels();
   const recordsByDoc = useMemo(() => {
     const grouped = new Map<string, AlignmentResult[]>();
@@ -339,19 +346,23 @@ function SubArcDetailModal({
     <Modal
       open
       onClose={onClose}
-      title={`${idLabel} — ${alignmentLabels[level]} (${total} record${total === 1 ? "" : "s"})`}
+      title={t("subArcModalTitle", {
+        id: idLabel,
+        level: alignmentLabels[level],
+        count: total,
+      })}
       maxWidth="max-w-3xl"
     >
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/60">
         <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] font-semibold mb-1">
-          Vision 2050 ambition
+          {t("anchorAmbitionLabel")}
         </p>
         <p className="text-xs text-[var(--undp-black)] leading-relaxed">{row.anchor.text}</p>
       </div>
       <div className="px-5 py-4 space-y-5">
         {docs.length === 0 && (
           <p className="text-xs text-[var(--undp-gray)] italic">
-            No peripheral records at this alignment level.
+            {t("noRecordsAtLevel")}
           </p>
         )}
         {docs.map((dt) => {
@@ -409,12 +420,13 @@ function CoverageMatrix({
   onCellClick,
   onRowClick,
 }: CoverageMatrixProps) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const alignmentLabels = useAlignmentLabels();
   return (
     <div>
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
         <div className="flex items-center gap-1.5 text-[11px]">
-          <span className="text-[var(--undp-gray)] mr-1">Sort:</span>
+          <span className="text-[var(--undp-gray)] mr-1">{t("sortLabel")}</span>
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt.value}
@@ -426,7 +438,7 @@ function CoverageMatrix({
                   : "bg-gray-100 text-[var(--undp-gray)] hover:bg-gray-200"
               }`}
             >
-              {opt.label}
+              {t(opt.labelKey)}
             </button>
           ))}
         </div>
@@ -451,7 +463,7 @@ function CoverageMatrix({
           }}
         >
           <div className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] font-semibold pb-2 border-b border-gray-100">
-            Vision 2050 ambition
+            {t("anchorAmbitionLabel")}
           </div>
           {visibleDocTypes.map((dt) => (
             <div
@@ -465,7 +477,7 @@ function CoverageMatrix({
             </div>
           ))}
           <div className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] font-semibold pb-2 border-b border-gray-100">
-            Status
+            {t("statusHeader")}
           </div>
 
           {rows.map((row) => (
@@ -503,6 +515,7 @@ function RowLabel({
   onClick: () => void;
   countryConfig: CountryConfig | null;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const docColor = getDocColor(countryConfig, row.anchor.sourceDocument);
   const provenance = countryConfig?.docProvenance?.[row.anchor.sourceDocument];
   const idLabel = row.anchor.sourceLabel || row.anchor.id;
@@ -512,7 +525,7 @@ function RowLabel({
       onClick={onClick}
       className="text-left -mx-2 px-2 py-1.5 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30 transition-colors"
       title={row.anchor.text}
-      aria-label={`Open details for ${idLabel}: ${row.anchor.text}`}
+      aria-label={t("rowAriaLabel", { id: idLabel, text: row.anchor.text })}
     >
       <div className="flex items-center gap-2 mb-0.5 flex-wrap">
         <span
@@ -523,7 +536,7 @@ function RowLabel({
           {idLabel}
         </span>
         <span className="text-[10px] text-[var(--undp-gray)]">
-          {row.totalRecords} link{row.totalRecords === 1 ? "" : "s"}
+          {t("linkCount", { count: row.totalRecords })}
         </span>
       </div>
       <div
@@ -554,11 +567,12 @@ function CellBar({
   countryConfig: CountryConfig | null;
   onClick: () => void;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const alignmentLabels = useAlignmentLabels();
   const cell = row.cells.get(docType);
   if (!cell || cell.total === 0) {
     return (
-      <div className="flex flex-col items-stretch" aria-label="No alignment records">
+      <div className="flex flex-col items-stretch" aria-label={t("noAlignmentRecords")}>
         <div className="h-5 rounded border border-dashed border-gray-200 bg-gray-50/40" />
         <span className="text-[10px] text-gray-300 mt-0.5 text-center">—</span>
       </div>
@@ -573,15 +587,15 @@ function CellBar({
     .sort((a, b) => alignmentLevelRank(b) - alignmentLevelRank(a));
 
   const breakdown = segments
-    .map((l) => `${cell.byLevel[l]} ${alignmentLabels[l].toLowerCase()}`)
+    .map((l) => t("breakdownSegment", { count: cell.byLevel[l] ?? 0, level: alignmentLabels[l].toLowerCase() }))
     .join(", ");
 
   return (
     <button
       type="button"
       onClick={onClick}
-      title={`${docTitle}: ${cell.total} records — ${breakdown}. Click for details.`}
-      aria-label={`${docTitle}: ${cell.total} records (${breakdown}). Open details.`}
+      title={t("cellTitle", { doc: docTitle, count: cell.total, breakdown })}
+      aria-label={t("cellAriaLabel", { doc: docTitle, count: cell.total, breakdown })}
       className="flex flex-col items-stretch hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/40 rounded"
     >
       <div className="relative h-5 bg-gray-100 rounded overflow-hidden border border-gray-200">
@@ -639,12 +653,12 @@ function LoosePanel({
   anchorDocLabel: string;
   onTargetClick: (id: string) => void;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const alignmentLabels = useAlignmentLabels();
   if (looseTargets.length === 0) {
     return (
       <div className="rounded-md border border-gray-100 bg-[var(--undp-light)] p-6 text-sm text-[var(--undp-gray)]">
-        Every peripheral target reaches at least medium-or-better alignment with one{" "}
-        {anchorDocLabel} ambition. No loosely-connected targets surface in this dataset.
+        {t("looseEmpty", { anchor: anchorDocLabel })}
       </div>
     );
   }
@@ -712,7 +726,7 @@ function LoosePanel({
                       <span className="font-semibold text-[var(--undp-black)]">{idLabel}</span>
                       {isOrphan ? (
                         <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-gray-200 text-[var(--undp-black)]">
-                          No Vision 2050 link
+                          {t("noAnchorLink")}
                         </span>
                       ) : (
                         lt.maxLevel && (
@@ -723,7 +737,7 @@ function LoosePanel({
                               color: ALIGNMENT_COLORS[lt.maxLevel],
                             }}
                           >
-                            Strongest: {alignmentLabels[lt.maxLevel]}
+                            {t("strongestPrefix", { level: alignmentLabels[lt.maxLevel] })}
                           </span>
                         )
                       )}
@@ -742,37 +756,33 @@ function LoosePanel({
                     </p>
                     <p className="text-[var(--undp-gray)]">
                       {isOrphan ? (
-                        <>
-                          The model judged this target unrelated to every Vision 2050
-                          ambition. May operationalise priorities outside Vision 2050&apos;s
-                          framing.
-                        </>
+                        <>{t("orphanDescription")}</>
                       ) : (
                         <>
                           {lt.lowTensionCount > 0 && (
                             <>
-                              {lt.lowTensionCount} possible-misalignment link
-                              {lt.lowTensionCount === 1 ? "" : "s"}
+                              {t("possibleMisalignmentLinks", { count: lt.lowTensionCount })}
                               {lt.lowCount > 0 ? " · " : ""}
                             </>
                           )}
                           {lt.lowCount > 0 && (
-                            <>
-                              {lt.lowCount} low-alignment link
-                              {lt.lowCount === 1 ? "" : "s"}
-                            </>
+                            <>{t("lowAlignmentLinks", { count: lt.lowCount })}</>
                           )}
                           {strongest && (
                             <>
                               {" "}
-                              · strongest is with{" "}
-                              <button
-                                type="button"
-                                onClick={() => onTargetClick(strongest.id)}
-                                className="underline hover:text-[var(--undp-blue)]"
-                              >
-                                {strongest.sourceLabel || strongest.id}
-                              </button>
+                              {t.rich("strongestIsWith", {
+                                link: (chunks) => (
+                                  <button
+                                    type="button"
+                                    onClick={() => onTargetClick(strongest.id)}
+                                    className="underline hover:text-[var(--undp-blue)]"
+                                  >
+                                    {chunks}
+                                  </button>
+                                ),
+                                label: strongest.sourceLabel || strongest.id,
+                              })}
                             </>
                           )}
                         </>
@@ -808,6 +818,7 @@ function CellDetailModal({
   onClose: () => void;
   onTargetClick: (id: string) => void;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const cell = row.cells.get(docType);
   const records = useMemo(() => {
     if (!cell) return [] as AlignmentResult[];
@@ -829,18 +840,22 @@ function CellDetailModal({
     <Modal
       open
       onClose={onClose}
-      title={`${idLabel} ↔ ${docShort} (${records.length} record${records.length === 1 ? "" : "s"})`}
+      title={t("cellModalTitle", {
+        id: idLabel,
+        doc: docShort,
+        count: records.length,
+      })}
       maxWidth="max-w-2xl"
     >
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/60">
         <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] font-semibold mb-1">
-          Vision 2050 ambition
+          {t("anchorAmbitionLabel")}
         </p>
         <p className="text-xs text-[var(--undp-black)] leading-relaxed">{row.anchor.text}</p>
       </div>
       <div className="px-5 py-4">
         <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] font-semibold mb-2">
-          Operationalisation by {docTitle}
+          {t("operationalisationBy", { doc: docTitle })}
         </p>
         <RecordList
           records={records}
@@ -870,6 +885,7 @@ function RowDetailModal({
   onClose: () => void;
   onTargetClick: (id: string) => void;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const recordsByDoc = useMemo(() => {
     const grouped = new Map<string, AlignmentResult[]>();
     for (const r of alignment) {
@@ -894,12 +910,12 @@ function RowDetailModal({
     <Modal
       open
       onClose={onClose}
-      title={`${idLabel} — ${totalRecords} peripheral record${totalRecords === 1 ? "" : "s"}`}
+      title={t("rowModalTitle", { id: idLabel, count: totalRecords })}
       maxWidth="max-w-3xl"
     >
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/60">
         <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] font-semibold mb-1">
-          Vision 2050 ambition
+          {t("anchorAmbitionLabel")}
         </p>
         <p className="text-xs text-[var(--undp-black)] leading-relaxed">{row.anchor.text}</p>
       </div>
@@ -947,6 +963,7 @@ function RecordList({
   peripheralById: Map<string, Target>;
   onTargetClick: (id: string) => void;
 }) {
+  const t = useTranslations("viz.visionAnchorCoverage");
   const alignmentLabels = useAlignmentLabels();
   const sorted = useMemo(
     () =>
@@ -956,7 +973,7 @@ function RecordList({
     [records],
   );
   if (sorted.length === 0) {
-    return <p className="text-xs text-[var(--undp-gray)] italic">No records.</p>;
+    return <p className="text-xs text-[var(--undp-gray)] italic">{t("noRecords")}</p>;
   }
   return (
     <ul className="space-y-3">
@@ -994,7 +1011,7 @@ function RecordList({
             {r.description && (
               <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
                 <span className="font-semibold uppercase tracking-wide text-[10px]">
-                  AI rationale:
+                  {t("aiRationale")}
                 </span>{" "}
                 <span className="italic">{r.description}</span>
               </p>

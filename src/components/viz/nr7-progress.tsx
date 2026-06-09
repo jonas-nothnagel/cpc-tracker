@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance } from "@/components/ui/data-provenance";
+import { useNr7BadgeLabels } from "@/lib/labels";
 import type { Nr7Data, Nr7ProgressItem, AlignmentResult, Target, AlignmentLevel } from "@/types";
 
 const NR7_COLORS: Record<string, string> = {
@@ -10,12 +12,6 @@ const NR7_COLORS: Record<string, string> = {
   limited: "#d97706",
   no_progress: "#dc2626",
   unknown: "#9ca3af",
-};
-const NR7_LABELS: Record<string, string> = {
-  on_track: "On track",
-  limited: "Limited progress",
-  no_progress: "No progress",
-  unknown: "Unknown",
 };
 const STATUS_ORDER = ["on_track", "limited", "no_progress", "unknown"] as const;
 
@@ -38,6 +34,7 @@ function Nr7TargetCard({
   statusColor: string;
   ndcAlignmentCount?: number;
 }) {
+  const t = useTranslations("viz.nr7Progress");
   const displayLabel = item.nbsapTargetId
     ? `NBSAP ${item.nbsapTargetId.replace("NBT_", "")}`
     : item.targetId;
@@ -86,7 +83,7 @@ function Nr7TargetCard({
         {/* Expand hint */}
         {hasDetail && !isExpanded && (
           <span className="text-[10px] text-[var(--undp-blue)] mt-1.5 inline-flex items-center gap-1 opacity-60">
-            View details ▸
+            {t("viewDetails")} ▸
           </span>
         )}
       </button>
@@ -96,26 +93,26 @@ function Nr7TargetCard({
         <div className="px-4 pb-3 pt-0 border-t border-gray-50 text-xs text-[var(--undp-gray)] space-y-2">
           {item.progressSummary && (
             <div>
-              <span className="font-medium text-[var(--undp-black)]">Progress: </span>
+              <span className="font-medium text-[var(--undp-black)]">{t("progressLabel")} </span>
               {item.progressSummary.replace(/\n/g, " ")}
             </div>
           )}
           {item.challenges && (
             <div>
-              <span className="font-medium text-[var(--undp-black)]">Challenges: </span>
+              <span className="font-medium text-[var(--undp-black)]">{t("challengesLabel")} </span>
               {item.challenges}
             </div>
           )}
           {item.examples && (
             <div>
-              <span className="font-medium text-[var(--undp-black)]">Examples: </span>
+              <span className="font-medium text-[var(--undp-black)]">{t("examplesLabel")} </span>
               {item.examples.replace(/\n/g, " ")}
             </div>
           )}
           {ndcAlignmentCount != null && ndcAlignmentCount > 0 && (
             <div className="flex items-center gap-1.5 pt-1">
               <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#0468b1] bg-blue-50 rounded px-2 py-0.5">
-                ↔ Aligns with {ndcAlignmentCount} NDC target{ndcAlignmentCount !== 1 ? "s" : ""}
+                ↔ {t("alignsWithNdc", { count: ndcAlignmentCount })}
               </span>
             </div>
           )}
@@ -138,6 +135,8 @@ export function Nr7Progress({
   alignmentData?: AlignmentResult[];
   targets?: Target[];
 }) {
+  const t = useTranslations("viz.nr7Progress");
+  const nr7Labels = useNr7BadgeLabels();
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     () => new Set()
   );
@@ -207,28 +206,25 @@ export function Nr7Progress({
       {/* Header */}
       <div className="mb-3">
         <h3 className="text-base font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-          NBSAP Progress
+          {t("heading")}
           <InfoBox>
-            Progress data from the 7th National Report to the Convention on Biological Diversity (CBD).{" "}
-            Each national biodiversity target is assessed as on track,{" "}
-            limited progress, or no progress based on reported
-            implementation status.
+            {t("infoBox")}
           </InfoBox>
           <DataProvenance
             origin="user-uploaded"
             sources={[
               {
-                label: "7th National Report to the CBD",
+                label: t("sourceLabel"),
                 citation: nr7Data.reportingPeriod
                   ? `NR7 (${nr7Data.reportingPeriod})`
                   : undefined,
               },
             ]}
-            caveat="Progress status (on track / limited / no progress) is reported by the country in the NR7 narrative. The tool does not independently verify implementation."
+            caveat={t("caveat")}
           />
         </h3>
         <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-          {nr7Data.progressItems.length} national biodiversity targets from the 7th National Report to the CBD
+          {t("subtitle", { count: nr7Data.progressItems.length })}
           {nr7Data.reportingPeriod ? ` (${nr7Data.reportingPeriod})` : ""}
         </p>
       </div>
@@ -246,7 +242,7 @@ export function Nr7Progress({
                     backgroundColor: NR7_COLORS[status],
                     minWidth: count > 0 ? "2rem" : 0,
                   }}
-                  title={`${NR7_LABELS[status]}: ${count} target${count !== 1 ? "s" : ""} (${percentage}%)`}
+                  title={t("barTooltip", { label: nr7Labels[status], count, percentage })}
                 >
                   {percentage >= 15 && (
                     <span className="text-white text-xs font-semibold">{count}</span>
@@ -270,7 +266,7 @@ export function Nr7Progress({
                   />
                   <span className="font-semibold text-[var(--undp-black)]">{count}</span>
                   <span className="text-[var(--undp-gray)]">
-                    {NR7_LABELS[status]} ({percentage}%)
+                    {t("legendItem", { label: nr7Labels[status], percentage })}
                   </span>
                 </button>
               ))}
@@ -296,13 +292,13 @@ export function Nr7Progress({
                     style={{ backgroundColor: NR7_COLORS[status] }}
                   />
                   <span className="text-sm font-semibold text-[var(--undp-black)]">
-                    {NR7_LABELS[status]}
+                    {nr7Labels[status]}
                   </span>
                   <span className="text-sm text-[var(--undp-gray)]">
-                    ({items.length} target{items.length !== 1 ? "s" : ""})
+                    {t("groupCount", { count: items.length })}
                   </span>
                   <span className="ml-auto flex items-center gap-1.5 text-[11px] text-[var(--undp-gray)] group-hover:text-[var(--undp-blue)] transition-colors">
-                    {isGroupExpanded ? "Hide" : "See details"}
+                    {isGroupExpanded ? t("hide") : t("seeDetails")}
                     <span className={`transition-transform ${isGroupExpanded ? "rotate-180" : ""}`}>▾</span>
                   </span>
                 </button>
