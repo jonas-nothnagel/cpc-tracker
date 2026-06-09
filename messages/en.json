@@ -510,7 +510,12 @@
       "onePairFromEnd": "One scored pair from each end of the spectrum.",
       "notEnoughPairs": "Not enough scored pairs to show an underlying example.",
       "focusConcentrated": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}",
-      "focusSpread": "they spread across {count, plural, one {1 target} other {# targets}}"
+      "focusSpread": "they spread across {count, plural, one {1 target} other {# targets}}",
+      "verdict": {
+        "mostly_aligned": "Policies are largely coherent with one another.",
+        "mixed": "Coherence is mixed across the policy set.",
+        "lots_of_misalignment": "Substantial potential misalignment across the policy set."
+      }
     },
     "emptyState": {
       "allDocsHidden": "All documents are hidden. Add at least one document above to see the coherence briefing."
@@ -1767,7 +1772,25 @@
       "operationalisationBy": "Operationalisation by {doc}",
       "rowModalTitle": "{id} — {count, plural, one {# peripheral record} other {# peripheral records}}",
       "noRecords": "No records.",
-      "aiRationale": "AI rationale:"
+      "aiRationale": "AI rationale:",
+      "status": {
+        "tension_heavy": {
+          "label": "Misalignment-heavy",
+          "description": "Possible-misalignment links dominate the relationships with this ambition. Worth examining where the friction comes from."
+        },
+        "sparse_strong_support": {
+          "label": "Sparse strong support",
+          "description": "Few peripheral targets reach medium-or-better alignment with this ambition. May indicate a coverage gap."
+        },
+        "single_doc_dependency": {
+          "label": "Single-document dependency",
+          "description": "All medium-or-better operationalisation comes from a single peripheral document — concentration risk if that document's priorities shift."
+        },
+        "diversified_backing": {
+          "label": "Diversified backing",
+          "description": "At least three peripheral documents contribute medium-or-better operationalisation of this ambition."
+        }
+      }
     }
   }
 }

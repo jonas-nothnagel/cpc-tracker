@@ -93,7 +93,7 @@ export function DirectionSection({
     <SlideFrame
       id={DIRECTION_SECTION_ID}
       eyebrow={t("eyebrow")}
-      headline={verdict.headline}
+      headline={t(`verdict.${verdict.bucket}`)}
       body={synthesis}
       evidence={
         corpusThemes && corpusThemes.storylines.length > 0 ? (
