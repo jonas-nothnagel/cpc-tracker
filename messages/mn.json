@@ -158,7 +158,7 @@
     },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: оноологдсон хос байхгүй",
-      "cellTitle": "{a} ↔ {b}: {aligned, number} уялдсан · {flagged, number} тэмдэглэсэн · зөрүүг харахын тулд дарна уу",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} уялдсан · {flagged, number} болзошгүй үл нийцсэн · зөрүүг харахын тулд дарна уу",
       "aligned": "Уялдсан",
       "flagged": "Болзошгүй үл нийцэл",
       "legendHint": "гүн өнгө = дунджаас илүү хол · нүднийг дарж зөрүүг харна уу"
@@ -433,7 +433,7 @@
       },
       "synthesisFailed": "Нэгтгэл амжилтгүй боллоо, түүхий хосын жагсаалтыг нээнэ үү.",
       "countAligned": "{count, number} уялдсан",
-      "countFlagged": "{count, number} тэмдэглэсэн"
+      "countFlagged": "{count, number} болзошгүй үл нийцсэн"
     },
     "frictionTypes": {
       "eyebrow": "Ямар төрлийн зөрчил вэ?",
