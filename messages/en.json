@@ -814,6 +814,14 @@
       "removeTarget": "Remove target",
       "noTargets": "No targets yet",
       "noTargetsHint": "Go back to add reference data or upload documents."
+    },
+    "docTypes": {
+      "NDC": "NDC (Nationally Determined Contributions)",
+      "NBSAP": "NBSAP / National Biodiversity Targets",
+      "NAP": "NAP (National Adaptation Plan)",
+      "LDN": "LDN (Land Degradation Neutrality)",
+      "SECTORAL": "Sectoral Policy",
+      "OTHER": "Other Document"
     }
   },
   "analysis": {

@@ -814,6 +814,14 @@
       "removeTarget": "Eliminar meta",
       "noTargets": "Aún no hay metas",
       "noTargetsHint": "Vuelva atrás para añadir datos de referencia o cargar documentos."
+    },
+    "docTypes": {
+      "NDC": "NDC (Contribuciones Determinadas a Nivel Nacional)",
+      "NBSAP": "NBSAP / Metas Nacionales de Biodiversidad",
+      "NAP": "NAP (Plan Nacional de Adaptación)",
+      "LDN": "LDN (Neutralidad en la Degradación de las Tierras)",
+      "SECTORAL": "Política sectorial",
+      "OTHER": "Otro documento"
     }
   },
   "analysis": {
