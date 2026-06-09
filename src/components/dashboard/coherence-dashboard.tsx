@@ -185,9 +185,10 @@ export function CoherenceDashboard({
     // seeded from initialData, so there's nothing to fetch.
     if (initialData) return;
 
+    const localeQuery = locale && locale !== "en" ? `&locale=${encodeURIComponent(locale)}` : "";
     const url = analysisId
-      ? `/api/dashboard?analysisId=${encodeURIComponent(analysisId)}`
-      : `/api/dashboard?country=${encodeURIComponent(country!)}`;
+      ? `/api/dashboard?analysisId=${encodeURIComponent(analysisId)}${localeQuery}`
+      : `/api/dashboard?country=${encodeURIComponent(country!)}${localeQuery}`;
 
     let cancelled = false;
     fetch(url)

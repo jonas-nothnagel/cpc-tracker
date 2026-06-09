@@ -51,6 +51,7 @@ function buildJsonResponse(json: string, gzip: Uint8Array | null, cacheControl: 
 export async function GET(request: NextRequest) {
   const analysisId = request.nextUrl.searchParams.get("analysisId");
   const country = request.nextUrl.searchParams.get("country");
+  const locale = request.nextUrl.searchParams.get("locale") ?? undefined;
   const acceptsGzip = (request.headers.get("accept-encoding") ?? "").includes("gzip");
 
   // Upload flow: per-analysis data is dynamic and may still be processing, so
@@ -60,7 +61,7 @@ export async function GET(request: NextRequest) {
     if (result.kind === "error") {
       return NextResponse.json({ error: result.error }, { status: result.status, headers: NO_STORE_HEADERS });
     }
-    const assembled = assembleDashboardData(result.paths, "analysis");
+    const assembled = assembleDashboardData(result.paths, "analysis", locale);
     if (assembled.kind === "error") {
       return NextResponse.json(
         { error: assembled.error, missing: assembled.missing },
@@ -73,7 +74,7 @@ export async function GET(request: NextRequest) {
 
   // Pilot flow: assembled once per container, then served from the cached
   // (and pre-gzipped) payload.
-  const payloadResult = getCountryDashboardPayload(country ?? "");
+  const payloadResult = getCountryDashboardPayload(country ?? "", locale);
   if (payloadResult.kind === "error") {
     return NextResponse.json(
       payloadResult.missing
