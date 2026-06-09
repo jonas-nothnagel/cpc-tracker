@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import type { ClusterMeta } from "./use-cluster-network-data";
 
 // Magnitude prefix only — currency/unit comes from the parent via unitLabel.
@@ -24,6 +25,7 @@ export function ClusterLegend({
   unitLabel,
   onHover,
 }: ClusterLegendProps) {
+  const t = useTranslations("viz.fundingNetwork");
   return (
     <div className="flex flex-wrap gap-x-3 gap-y-1.5 mb-3">
       {clusters.map((c) => {
@@ -42,10 +44,10 @@ export function ClusterLegend({
               style={{ backgroundColor: c.color }}
             />
             <span className="font-semibold text-[var(--undp-black)] truncate max-w-[140px]">
-              {c.type === "unfunded" ? "No budget backing" : c.label}
+              {c.type === "unfunded" ? t("noBudgetBacking") : c.label}
             </span>
             <span className="text-[var(--undp-gray)]">
-              {c.targetCount} target{c.targetCount !== 1 ? "s" : ""}
+              {t("targetCount", { count: c.targetCount })}
             </span>
             {c.latestAmount != null && (
               <span className="text-[var(--undp-gray)]">

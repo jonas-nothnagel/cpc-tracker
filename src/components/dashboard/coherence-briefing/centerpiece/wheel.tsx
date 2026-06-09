@@ -718,14 +718,14 @@ export function WheelCenterpiece({
                 style={{ transition: "opacity 220ms" }}
               >
                 <title>
-                  {arc.fullLabel} · {arc.count} targets
+                  {arc.fullLabel} · {t("arcTargetCount", { count: arc.count })}
                   {frictionShare !== null
-                    ? ` · ${Math.round(frictionShare * 100)}% of cross-document links potentially misaligned`
+                    ? ` · ${t("arcFrictionShare", { pct: Math.round(frictionShare * 100) })}`
                     : ""}
                   {clickable
                     ? isFocus
-                      ? " · click to clear focus"
-                      : " · click to focus"
+                      ? ` · ${t("clickToClearFocus")}`
+                      : ` · ${t("clickToFocus")}`
                     : ""}
                 </title>
               </path>
@@ -839,7 +839,11 @@ export function WheelCenterpiece({
             if (!aArc || !bArc) return null;
             const line1 = `${aArc.shortLabel} ↔ ${bArc.shortLabel}`;
             const pct = Math.round(agg.flaggedShare * 100);
-            const line2 = `${agg.alignmentCount} aligned · ${agg.tensionCount} misaligned (${pct}%)`;
+            const line2 = t("ribbonTooltipCounts", {
+              aligned: agg.alignmentCount,
+              misaligned: agg.tensionCount,
+              pct,
+            });
             const widest = Math.max(line1.length, line2.length);
             const boxW = Math.min(VB_W - 24, Math.max(150, widest * 7 + 28));
             const top = -VB / 2 + 6;
@@ -1138,10 +1142,8 @@ export function WheelCenterpiece({
                 >
                   <tspan fill={ALIGNMENT_COLORS.flagged}>
                     {focusInfo.flagged === 0
-                      ? "No potential misalignments"
-                      : focusInfo.flagged === 1
-                        ? "1 potential misalignment"
-                        : `${focusInfo.flagged.toLocaleString()} potential misalignments`}
+                      ? t("noMisalignments")
+                      : t("misalignmentCount", { count: focusInfo.flagged })}
                   </tspan>
                 </text>
                 <text
@@ -1156,10 +1158,13 @@ export function WheelCenterpiece({
                   strokeLinejoin="round"
                 >
                   {focusInfo.flagged === 0
-                    ? `across ${focusInfo.totalScored.toLocaleString()} pairs`
+                    ? t("acrossPairs", { count: focusInfo.totalScored })
                     : focusInfo.share * 100 < 1
-                      ? `<1% of ${focusInfo.totalScored.toLocaleString()} pairs`
-                      : `${Math.round(focusInfo.share * 100)}% of ${focusInfo.totalScored.toLocaleString()} pairs`}
+                      ? t("sharePairsTiny", { count: focusInfo.totalScored })
+                      : t("sharePairs", {
+                          pct: Math.round(focusInfo.share * 100),
+                          count: focusInfo.totalScored,
+                        })}
                 </text>
                 <text
                   x={0}
@@ -1172,7 +1177,7 @@ export function WheelCenterpiece({
                   paintOrder="stroke"
                   strokeLinejoin="round"
                 >
-                  click to clear focus
+                  {t("clickToClearFocus")}
                 </text>
               </g>
             )}

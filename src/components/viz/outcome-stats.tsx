@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import { Modal } from "@/components/ui/modal";
 import { TargetTextWithHighlights, ActivitiesActions } from "./target-text";
@@ -14,6 +15,7 @@ interface OutcomeStatCardProps {
 }
 
 function OutcomeStatCard({ percentage, label, targets, countryConfig }: OutcomeStatCardProps) {
+  const t = useTranslations("viz.outcomeStats");
   const [isOpen, setIsOpen] = useState(false);
   const isClickable = targets.length > 0;
 
@@ -33,14 +35,14 @@ function OutcomeStatCard({ percentage, label, targets, countryConfig }: OutcomeS
           {percentage}%
         </p>
         <p className="text-xs text-[var(--undp-gray)] mt-0.5">
-          of targets
+          {t("ofTargets")}
         </p>
       </button>
 
       <Modal
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        title={`${label} (${targets.length})`}
+        title={t("modalTitle", { label, count: targets.length })}
         maxWidth="max-w-xl"
       >
         <ul className="divide-y divide-gray-50 px-5 py-2">
@@ -108,6 +110,7 @@ export function OutcomeStats({
   coverageStat,
   countryConfig,
 }: OutcomeStatsProps) {
+  const t = useTranslations("viz.outcomeStats");
   const quantitativePct = Math.round((quantitativeTargets.length / totalTargets) * 100);
   const timeBoundPct = Math.round((timeBoundTargets.length / totalTargets) * 100);
 
@@ -115,13 +118,13 @@ export function OutcomeStats({
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <OutcomeStatCard
         percentage={quantitativePct}
-        label="Measurable outcomes"
+        label={t("measurableOutcomes")}
         targets={quantitativeTargets}
         countryConfig={countryConfig}
       />
       <OutcomeStatCard
         percentage={timeBoundPct}
-        label="Time-bound commitments"
+        label={t("timeBoundCommitments")}
         targets={timeBoundTargets}
         countryConfig={countryConfig}
       />

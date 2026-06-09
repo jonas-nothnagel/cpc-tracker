@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { getDocColor, getDocFriendlyName, getDocFullLabel, getDocLabel, getDocTypeOrder } from "@/lib/utils";
 import { formatSourceRef } from "@/lib/source-ref";
 import { InfoBox } from "@/components/ui/info-box";
@@ -46,6 +47,7 @@ function TargetListModal({ label, targets, sourceRef, implementationStat, countr
   countryConfig?: CountryConfig | null;
   onClose: () => void;
 }) {
+  const t = useTranslations("viz.dataSources");
   const nonImplemented =
     implementationStat ? implementationStat.total - implementationStat.implemented : 0;
   return (
@@ -54,7 +56,7 @@ function TargetListModal({ label, targets, sourceRef, implementationStat, countr
         <div className="px-5 pt-3 pb-2 border-b border-gray-50 space-y-1">
           {sourceRef && (
             <p className="text-[11px] text-[var(--undp-gray)] italic">
-              Source: {sourceRef}
+              {t("sourcePrefix")} {sourceRef}
             </p>
           )}
           {implementationStat && implementationStat.total > 0 && (
@@ -62,11 +64,11 @@ function TargetListModal({ label, targets, sourceRef, implementationStat, countr
               <span className="font-semibold text-[var(--undp-black)]">
                 {implementationStat.implemented}
               </span>{" "}
-              of {implementationStat.total} marked fully implemented
+              {t("implementedOf", { total: implementationStat.total })}
               {nonImplemented > 0 && (
                 <>
                   {" · "}
-                  {nonImplemented} reported as ongoing or planned
+                  {t("reportedOngoingOrPlanned", { count: nonImplemented })}
                 </>
               )}
             </p>
@@ -187,6 +189,7 @@ interface DataSourcesOverviewProps {
  * dashboard and isn't duplicated here.
  */
 export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSourcesOverviewProps) {
+  const t = useTranslations("viz.dataSources");
   const [modal, setModal] = useState<{
     label: string;
     targets: Target[];
@@ -277,9 +280,9 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
       <section className="mb-8">
         <div className="flex items-baseline gap-2 mb-3">
           <h2 className="text-sm font-semibold text-[var(--undp-black)] inline-flex items-center flex-wrap gap-y-1">
-            Data Sources
+            {t("title")}
             <InfoBox>
-              Policy commitments and reported implementation analysed in this dashboard. Click any label or count to inspect the underlying targets or actions.
+              {t("infoBox")}
               {abbrList.length > 0 && (
                 <>
                   <br /><br />
@@ -299,17 +302,17 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
           {/* Card 1 — Policy Targets */}
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-              Policy Targets
+              {t("policyTargets")}
             </p>
             <p className="text-2xl font-semibold text-[var(--undp-black)] tabular-nums leading-tight mt-0.5">
               {policyTargets.length}
             </p>
             <p className="text-[11px] text-[var(--undp-gray)] mt-1.5 leading-relaxed">
               {policyDocTypes.length === 0 ? (
-                <span className="italic">No policy targets loaded.</span>
+                <span className="italic">{t("noPolicyTargets")}</span>
               ) : (
                 <>
-                  across{" "}
+                  {t("across")}{" "}
                   {policyDocTypes.map((doc, i) => {
                     const fullLabel = getDocFullLabel(countryConfig, doc);
                     const docTargets = targetsByDoc.get(doc) ?? [];
@@ -349,7 +352,7 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
           {hasBtr && (
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                BTR Reported Actions
+                {t("btrReportedActions")}
               </p>
               <p className="text-2xl font-semibold text-[var(--undp-black)] tabular-nums leading-tight mt-0.5">
                 {totalBtrActions}
@@ -357,16 +360,16 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
               <p className="text-[11px] text-[var(--undp-gray)] mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
                 {btrMitigationCount > 0 && (
                   <InspectChip
-                    label={`${btrMitigationCount} mitigation`}
+                    label={t("mitigationChip", { count: btrMitigationCount })}
                     color={BTR_MITIGATION_COLOR}
                     title={
                       btrMitigationProvenance
-                        ? `BTR Reported Mitigation Actions · Source: ${btrMitigationProvenance}`
-                        : "BTR Reported Mitigation Actions"
+                        ? `${t("btrMitigationActions")} · ${t("sourcePrefix")} ${btrMitigationProvenance}`
+                        : t("btrMitigationActions")
                     }
                     onClick={() =>
                       setModal({
-                        label: "BTR Reported Mitigation Actions",
+                        label: t("btrMitigationActions"),
                         targets: btrMitigationTargets,
                         sourceRef: btrMitigationProvenance,
                         implementationStat: {
@@ -382,16 +385,16 @@ export function DataSourcesOverview({ targets, btrData, countryConfig }: DataSou
                 )}
                 {btrAdaptationCount > 0 && (
                   <InspectChip
-                    label={`${btrAdaptationCount} adaptation`}
+                    label={t("adaptationChip", { count: btrAdaptationCount })}
                     color={BTR_ADAPTATION_COLOR}
                     title={
                       btrAdaptationProvenance
-                        ? `BTR Reported Adaptation Actions · Source: ${btrAdaptationProvenance}`
-                        : "BTR Reported Adaptation Actions"
+                        ? `${t("btrAdaptationActions")} · ${t("sourcePrefix")} ${btrAdaptationProvenance}`
+                        : t("btrAdaptationActions")
                     }
                     onClick={() =>
                       setModal({
-                        label: "BTR Reported Adaptation Actions",
+                        label: t("btrAdaptationActions"),
                         targets: btrAdaptationTargets,
                         sourceRef: btrAdaptationProvenance,
                         implementationStat: {

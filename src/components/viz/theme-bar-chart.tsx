@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   BarChart,
   Bar,
@@ -95,6 +96,7 @@ export function ThemeBarChart({
   taxonomyType = "sector",
   countryConfig,
 }: ThemeBarChartProps) {
+  const t = useTranslations("viz.themeBarChart");
   const [modal, setModal] = useState<{
     themeName: string;
     docType?: PolicyDocumentType;
@@ -156,7 +158,7 @@ export function ThemeBarChart({
     documentTypes.includes("BTR" as PolicyDocumentType) &&
     documentTypes.includes("BTR_ADP" as PolicyDocumentType);
   const legendLabel = (doc: PolicyDocumentType): string =>
-    hasBtrSplit && doc === "BTR" ? "BTR Mitigation" : getDocLabel(countryConfig, doc);
+    hasBtrSplit && doc === "BTR" ? t("btrMitigation") : getDocLabel(countryConfig, doc);
 
   return (
     <div>

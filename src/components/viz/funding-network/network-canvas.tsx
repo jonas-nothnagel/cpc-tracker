@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { NetworkNode, NetworkLink, ClusterMeta } from "./use-cluster-network-data";
 import { ALIGNMENT_COLORS, getDocColor } from "@/lib/utils";
 import type { CountryConfig } from "@/types";
@@ -28,6 +29,7 @@ export function NetworkCanvas({
   tick,
   onNodeClick,
 }: NetworkCanvasProps) {
+  const t = useTranslations("viz.fundingNetwork");
   const [hoveredNode, setHoveredNode] = useState<NetworkNode | null>(null);
 
   const nodeById = useMemo(
@@ -223,17 +225,16 @@ export function NetworkCanvas({
           <text x={6} y={28} fontSize={9} fill={hoveredNode.color} fontWeight={600}>
             {(() => {
               const n = hoveredNode.programScores.length;
-              if (n === 0) return "No budget backing";
-              const plural = n !== 1 ? "s" : "";
+              if (n === 0) return t("tooltip.noBudgetBacking");
               return hoveredNode.isFunded
-                ? `${n} budget programme${plural}`
-                : `${n} weakly aligned programme${plural}`;
+                ? t("tooltip.budgetProgrammes", { count: n })
+                : t("tooltip.weaklyAlignedProgrammes", { count: n });
             })()}
           </text>
           <text x={6} y={42} fontSize={9} fill="#64748b">
             {hoverEdges.length > 0
-              ? `${hoverEdges.length} strongly aligned target${hoverEdges.length !== 1 ? "s" : ""} (nearby)`
-              : "No strong target alignments"}
+              ? t("tooltip.stronglyAlignedTargets", { count: hoverEdges.length })
+              : t("tooltip.noStrongAlignments")}
           </text>
         </g>
       )}

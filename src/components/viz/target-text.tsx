@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Target, BTRActionType, MitigationMeasure } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 
@@ -47,6 +48,7 @@ export function OriginalLanguageChip({
   languageCode?: string;
   languageName?: string;
 }) {
+  const t = useTranslations("viz.targetText");
   const [open, setOpen] = useState(false);
 
   const resolved = (() => {
@@ -58,6 +60,14 @@ export function OriginalLanguageChip({
     if (target.textOriginal) return detectLanguage(target.textOriginal);
     return LANGUAGE_REGISTRY.es;
   })();
+
+  // Localized display name for the resolved language, keyed by lowercase code.
+  // Falls back to the registry's English name for any code without a translation.
+  const languageLabels: Record<string, string> = {
+    es: t("language.es"),
+    mn: t("language.mn"),
+  };
+  const displayName = languageLabels[resolved.code.toLowerCase()] ?? resolved.name;
 
   // Close on Escape for keyboard users.
   useEffect(() => {
@@ -88,8 +98,8 @@ export function OriginalLanguageChip({
           }
         }}
         aria-expanded={open}
-        aria-label={`Show original ${resolved.name} source text`}
-        title={`Click to see the original ${resolved.name} source`}
+        aria-label={t("chip.ariaLabel", { language: displayName })}
+        title={t("chip.title", { language: displayName })}
         className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-[9px] font-semibold uppercase tracking-wide hover:bg-amber-100 transition-colors cursor-pointer"
       >
         {resolved.code}
@@ -97,18 +107,18 @@ export function OriginalLanguageChip({
       {open && (
         <span
           role="dialog"
-          aria-label={`Original ${resolved.name} source and English translation`}
+          aria-label={t("panel.ariaLabel", { language: displayName })}
           className="absolute left-0 top-full mt-1.5 z-50 w-[420px] max-w-[90vw] bg-white border border-gray-200 rounded-lg shadow-lg p-3.5 text-[11px] text-[var(--undp-black)] leading-relaxed cursor-default"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start justify-between mb-2 gap-2">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">
-              Translated from {resolved.name}
+              {t("panel.translatedFrom", { language: displayName })}
             </span>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              aria-label="Close"
+              aria-label={t("panel.close")}
               className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-base leading-none shrink-0"
             >
               ×
@@ -117,7 +127,7 @@ export function OriginalLanguageChip({
           <div className="space-y-2.5">
             <div>
               <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
-                Original ({resolved.name})
+                {t("panel.original", { language: displayName })}
               </p>
               {target.sourceLabelOriginal && (
                 <p className="font-medium text-[var(--undp-gray)] mb-1">
@@ -128,7 +138,7 @@ export function OriginalLanguageChip({
             </div>
             <div className="border-t border-gray-100 pt-2">
               <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
-                Translation (English)
+                {t("panel.translationEnglish")}
               </p>
               {target.sourceLabel && (
                 <p className="font-medium text-[var(--undp-gray)] mb-1">
@@ -192,15 +202,16 @@ export const BTR_MITIGATION_COLOR = "#7c3aed"; // violet / BTR doc color
 export const BTR_ADAPTATION_COLOR = "#c026d3"; // fuchsia-600
 
 export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) {
+  const t = useTranslations("viz.targetText");
   if (!actionType) return null;
   const isAdaptation = actionType === "adaptation";
-  const label = isAdaptation ? "Adaptation" : "Mitigation";
+  const label = isAdaptation ? t("actionType.adaptation") : t("actionType.mitigation");
   // Generic tooltip — country-specific source citations live on the BTR
   // data source chip in the Data Sources row, not here. Keeping this badge
   // country-agnostic means a second country does not need to touch this file.
   const title = isAdaptation
-    ? "Reported adaptation action (BTR)"
-    : "Reported mitigation measure (BTR)";
+    ? t("actionType.adaptationTooltip")
+    : t("actionType.mitigationTooltip");
   const bg = isAdaptation ? "bg-fuchsia-50" : "bg-purple-50";
   const fg = isAdaptation ? "text-fuchsia-700" : "text-purple-700";
   const border = isAdaptation ? "border-fuchsia-200" : "border-purple-200";
@@ -219,6 +230,7 @@ export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) 
  * Used in modals, tooltips, and lists where targets are displayed.
  */
 export function TargetTextWithHighlights({ target }: { target: Target }) {
+  const t = useTranslations("viz.targetText");
   const { text, quantitativeDetails, timeBoundDetails } = target;
 
   if (!quantitativeDetails && !timeBoundDetails) {
@@ -267,7 +279,7 @@ export function TargetTextWithHighlights({ target }: { target: Target }) {
       parts.push(<span key={key++}>{remaining.slice(0, best.index)}</span>);
     }
     parts.push(
-      <span key={key++} className={best.className} title="Measurable outcome">
+      <span key={key++} className={best.className} title={t("measurableOutcome")}>
         {remaining.slice(best.index, best.index + best.len)}
       </span>
     );
@@ -282,6 +294,7 @@ export function TargetTextWithHighlights({ target }: { target: Target }) {
  * Shows nothing if both fields are empty.
  */
 export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
+  const t = useTranslations("viz.targetText");
   const [open, setOpen] = useState(false);
   const { activities, actions } = target;
 
@@ -299,14 +312,14 @@ export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
         <span className="inline-block transition-transform" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>
           &#9654;
         </span>
-        Activities &amp; Actions ({count})
+        {t("activitiesActions.toggle", { count })}
       </button>
       {open && (
         <div className="mt-1 space-y-1.5 pl-2 border-l-2 border-[var(--undp-blue)]/20">
           {activities && (
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                Activities
+                {t("activitiesActions.activities")}
               </span>
               <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mt-0.5">
                 {activities}
@@ -316,7 +329,7 @@ export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
           {actions && (
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
-                Actions / Measures
+                {t("activitiesActions.actions")}
               </span>
               <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mt-0.5">
                 {actions}

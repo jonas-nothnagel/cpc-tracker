@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { arc as d3Arc } from "d3-shape";
 import {
   ALIGNMENT_COLORS,
@@ -59,6 +60,7 @@ export function VisionSunburst({
   onSubArcClick,
   onViewAllRecords,
 }: VisionSunburstProps) {
+  const t = useTranslations("viz.visionAnchorSunburst");
   const alignmentLabels = useAlignmentLabels();
   const [hoveredAnchor, setHoveredAnchor] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
@@ -198,7 +200,7 @@ export function VisionSunburst({
         className="w-full max-w-[680px] mx-auto block"
         style={{ aspectRatio: "1 / 1" }}
         role="img"
-        aria-label={`Sunburst chart of ${rows.length} ${anchorDocLabel} ambitions and their alignment relationships`}
+        aria-label={t("ariaLabel", { count: rows.length, docLabel: anchorDocLabel })}
       >
         <defs>
           <style>{`
@@ -316,7 +318,7 @@ export function VisionSunburst({
               opacity={0.85}
               style={{ fontSize: "10px" }}
             >
-              {rows.length} ambitions
+              {t("ambitionsCount", { count: rows.length })}
             </text>
             <text
               x={0}
@@ -326,7 +328,7 @@ export function VisionSunburst({
               opacity={0.7}
               style={{ fontSize: "9px" }}
             >
-              click a wedge to drill in
+              {t("clickWedgeToDrillIn")}
             </text>
           </g>
         </g>
@@ -369,8 +371,10 @@ export function VisionSunburst({
                     onClick={() => onSubArcClick(focused.row, sub.level)}
                   >
                     <title>
-                      {alignmentLabels[sub.level]}: {sub.count} record
-                      {sub.count === 1 ? "" : "s"}. Click for details.
+                      {t("subArcTitle", {
+                        label: alignmentLabels[sub.level],
+                        count: sub.count,
+                      })}
                     </title>
                   </path>
                   {showInlineLabel && (
@@ -437,7 +441,7 @@ export function VisionSunburst({
             onClick={() => setFocusedId(null)}
             className="text-xs px-3 py-1.5 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-[var(--undp-gray)] shadow-sm pointer-events-auto"
           >
-            ← Back to overview
+            {t("backToOverview")}
           </button>
           <div className="flex flex-col items-end gap-1.5 pointer-events-auto">
             {focused.row.status && (
@@ -454,7 +458,7 @@ export function VisionSunburst({
               onClick={() => onViewAllRecords(focused.row)}
               className="text-[11px] text-[var(--undp-blue)] hover:underline bg-white px-2 py-1 rounded border border-gray-200 shadow-sm"
             >
-              See all {focused.row.totalRecords} peripheral records →
+              {t("seeAllRecords", { count: focused.row.totalRecords })}
             </button>
           </div>
         </div>
@@ -477,14 +481,13 @@ export function VisionSunburst({
                 <span style={{ color: ALIGNMENT_COLORS[hoverInfo.level], fontWeight: 600 }}>
                   {alignmentLabels[hoverInfo.level]}
                 </span>
-                : {row.totalsByLevel[hoverInfo.level] ?? 0} record
-                {(row.totalsByLevel[hoverInfo.level] ?? 0) === 1 ? "" : "s"}
+                {t("levelRecordsSuffix", { count: row.totalsByLevel[hoverInfo.level] ?? 0 })}
                 <br />
-                <span className="text-[var(--undp-gray)] text-[11px] italic">click for details</span>
+                <span className="text-[var(--undp-gray)] text-[11px] italic">{t("clickForDetails")}</span>
               </p>
             ) : (
               <p className="leading-tight text-[var(--undp-gray)]">
-                {row.totalRecords} relationship{row.totalRecords === 1 ? "" : "s"}
+                {t("relationshipsCount", { count: row.totalRecords })}
                 {row.status && (
                   <>
                     <br />
@@ -492,7 +495,7 @@ export function VisionSunburst({
                   </>
                 )}
                 <br />
-                <span className="italic text-[11px]">click to drill in</span>
+                <span className="italic text-[11px]">{t("clickToDrillIn")}</span>
               </p>
             )}
           </div>

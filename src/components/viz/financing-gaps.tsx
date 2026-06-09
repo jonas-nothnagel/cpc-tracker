@@ -26,6 +26,7 @@
  */
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { InfoBox } from "@/components/ui/info-box";
 import type { AtlasTaxonomy } from "@/lib/target-atlas-signals";
 import type {
@@ -63,11 +64,15 @@ const DIM_COLOR: Record<Dim, string> = {
   action: "#0d9488",
 };
 
-const DIM_LABEL: Record<Dim, string> = {
-  policy: "Policy targets",
-  budget: "BER spend",
-  action: "BTR actions",
-};
+type TFn = (key: string, values?: Record<string, string | number>) => string;
+
+function dimLabels(t: TFn): Record<Dim, string> {
+  return {
+    policy: t("dimPolicy"),
+    budget: t("dimBudget"),
+    action: t("dimAction"),
+  };
+}
 
 // Radar geometry. Viewbox is square and larger than needed so labels have
 // room on every side without clipping, even when the axis count is high.
@@ -91,19 +96,20 @@ export function FinancingGaps({
   globeCategories,
   berData,
 }: Props) {
+  const t = useTranslations("viz.financingGaps");
   const hasBer = !!berData && (berData.expenditure?.length ?? 0) > 0;
 
   const lensChoices: LensChoice[] = useMemo(() => {
     const out: LensChoice[] = [];
     if (globeCategories.length > 0)
-      out.push({ id: "globe", label: "Biodiversity (GLOBE)" });
+      out.push({ id: "globe", label: t("lensGlobe") });
     if (sectors.length > 0)
-      out.push({ id: "sector", label: "Climate mitigation (IPCC)" });
+      out.push({ id: "sector", label: t("lensSector") });
     if (nbsCategories.length > 0)
-      out.push({ id: "nbs", label: "Nature-based solutions (NBS)" });
-    if (hasBer) out.push({ id: "ber_programme", label: "BER programmes (28)" });
+      out.push({ id: "nbs", label: t("lensNbs") });
+    if (hasBer) out.push({ id: "ber_programme", label: t("lensBerProgramme") });
     return out;
-  }, [globeCategories, sectors, nbsCategories, hasBer]);
+  }, [globeCategories, sectors, nbsCategories, hasBer, t]);
 
   const [lens, setLens] = useState<Lens>(lensChoices[0]?.id ?? "globe");
   const [envFilter, setEnvFilter] = useState<EnvFilter>("all");
@@ -252,43 +258,31 @@ export function FinancingGaps({
       <div className="flex items-start justify-between gap-3 flex-wrap mb-3">
         <div className="min-w-0">
           <h2 className="text-lg font-semibold text-[var(--undp-black)]">
-            Policy, budget and action across the taxonomy
+            {t("title")}
             <InfoBox>
-              Three overlaid shapes on a radar across the axes of the
-              selected lens. Each polygon shows one dimension&apos;s share
-              per axis:{" "}
-              <span style={{ color: DIM_COLOR.policy }}>policy targets</span>
+              {t("infoIntro")}{" "}
+              <span style={{ color: DIM_COLOR.policy }}>{t("infoPolicyTargets")}</span>
               ,{" "}
-              <span style={{ color: DIM_COLOR.budget }}>BER spend</span>,
+              <span style={{ color: DIM_COLOR.budget }}>{t("infoBerSpend")}</span>,
               and{" "}
               <span style={{ color: DIM_COLOR.action }}>
-                reported BTR actions
+                {t("infoBtrActions")}
               </span>
-              . Each polygon is normalised to its own total, then plotted
-              against the shared maximum across dimensions so magnitudes
-              stay comparable. Overlapping shapes = aligned; divergent
-              shapes = mismatch.
+              . {t("infoNormalise")}
               <br />
               <br />
-              On the <strong>BER programmes</strong> lens, the axes become
-              the 28 named budget lines themselves. Policy share on each
-              axis is the number of policy targets medium/high LLM-aligned
-              with that programme. BTR actions aren&apos;t directly aligned
-              to BER programmes in the pipeline, so the action polygon is
-              hidden in that lens.
-              {period ? ` BER period: ${period}.` : ""}
+              {t("infoBerLensPrefix")} <strong>{t("infoBerLensName")}</strong>{" "}
+              {t("infoBerLensBody")}
+              {period ? ` ${t("infoBerPeriod", { period })}` : ""}
             </InfoBox>
           </h2>
           <p className="text-sm text-[var(--undp-gray)] mt-1 max-w-3xl">
-            Do policy, money and reported action all concentrate on the
-            same categories? Where the shapes match, they agree. Where
-            they diverge, it&apos;s a finding. Hover an axis for the exact
-            numbers.
+            {t("subtitle")}
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs flex-wrap justify-end">
           <label htmlFor="fingap-lens" className="text-[var(--undp-gray)]">
-            Lens
+            {t("lensLabel")}
           </label>
           <select
             id="fingap-lens"
@@ -312,9 +306,9 @@ export function FinancingGaps({
             >
               {(
                 [
-                  { id: "all", label: "All" },
-                  { id: "environmental", label: "Env." },
-                  { id: "non_environmental", label: "Non-env." },
+                  { id: "all", label: t("envAll") },
+                  { id: "environmental", label: t("envEnvironmental") },
+                  { id: "non_environmental", label: t("envNonEnvironmental") },
                 ] as { id: EnvFilter; label: string }[]
               ).map((o) => {
                 const active = envFilter === o.id;
@@ -414,11 +408,12 @@ function Radar({
   onHoverAxis: (i: number | null) => void;
   isBerLens: boolean;
 }) {
+  const t = useTranslations("viz.financingGaps");
   const n = data.axes.length;
   if (n === 0) {
     return (
       <div className="text-xs text-[var(--undp-gray)] italic p-6 text-center">
-        No axes in this selection.
+        {t("noAxes")}
       </div>
     );
   }
@@ -710,14 +705,15 @@ function DetailPanel({
   unitLabel: string;
   isBerLens: boolean;
 }) {
+  const t = useTranslations("viz.financingGaps");
+  const dimLabel = dimLabels(t);
   const hovered = hoveredAxis != null ? data.axes[hoveredAxis] : null;
 
   if (!hovered) {
     return (
       <div className="text-[12px] space-y-3">
         <p className="text-[var(--undp-gray)]">
-          Hover an axis to see that axis&apos;s shares. The list below
-          shows where each dimension peaks.
+          {t("hoverHint")}
         </p>
         {activeDims.map((dim) => {
           const shares =
@@ -738,10 +734,10 @@ function DetailPanel({
                   className="inline-block w-2.5 h-2.5 rounded-sm"
                   style={{ backgroundColor: DIM_COLOR[dim] }}
                 />
-                {DIM_LABEL[dim]}
+                {dimLabel[dim]}
               </div>
               {top.length === 0 ? (
-                <p className="text-[11px] text-gray-400 italic">No data.</p>
+                <p className="text-[11px] text-gray-400 italic">{t("noData")}</p>
               ) : (
                 <ul className="space-y-0.5">
                   {top.map((x) => (
@@ -770,9 +766,7 @@ function DetailPanel({
         })}
         {isBerLens && (
           <p className="text-[10px] text-[var(--undp-gray)] italic pt-2 border-t border-gray-100">
-            Darker label = environmental programme; lighter = non-environmental.
-            BTR actions have no direct alignment to BER programmes in the
-            pipeline, so the action polygon is hidden on this lens.
+            {t("berLensNote")}
           </p>
         )}
       </div>
@@ -787,8 +781,8 @@ function DetailPanel({
         dim,
         share: data.policy[i],
         ctx: isBerLens
-          ? `${data.policyCount[i]} policy target${data.policyCount[i] === 1 ? "" : "s"} med/high-aligned`
-          : `${data.policyCount[i]} policy target${data.policyCount[i] === 1 ? "" : "s"} primarily classified here`,
+          ? t("ctxPolicyAligned", { count: data.policyCount[i] })
+          : t("ctxPolicyClassified", { count: data.policyCount[i] }),
       });
     } else if (dim === "budget") {
       rows.push({
@@ -797,20 +791,20 @@ function DetailPanel({
         ctx: isBerLens
           ? data.spendAmount[i] > 0 && unitLabel
             ? `${formatAmount(data.spendAmount[i])} ${unitLabel}`
-            : "No expenditure recorded"
+            : t("ctxNoExpenditure")
           : hasBer
-            ? `${data.berCount[i]} programme${data.berCount[i] === 1 ? "" : "s"}${
+            ? `${t("ctxProgrammes", { count: data.berCount[i] })}${
                 data.spendAmount[i] > 0 && unitLabel
                   ? ` \u00b7 ${formatAmount(data.spendAmount[i])} ${unitLabel}`
                   : ""
               }`
-            : `${data.berCount[i]} programme${data.berCount[i] === 1 ? "" : "s"}`,
+            : t("ctxProgrammes", { count: data.berCount[i] }),
       });
     } else {
       rows.push({
         dim,
         share: data.action[i],
-        ctx: `${data.btrCount[i]} BTR action${data.btrCount[i] === 1 ? "" : "s"}`,
+        ctx: t("ctxBtrActions", { count: data.btrCount[i] }),
       });
     }
   }
@@ -819,7 +813,7 @@ function DetailPanel({
     <div className="text-[12px] space-y-3">
       <div>
         <p className="text-[11px] uppercase tracking-wide font-semibold text-[var(--undp-gray)]">
-          {isBerLens ? "Programme" : "Category"}
+          {isBerLens ? t("programme") : t("category")}
         </p>
         <p className="text-[14px] font-semibold text-[var(--undp-black)] mt-0.5">
           {hovered.name}
@@ -827,8 +821,8 @@ function DetailPanel({
         {hovered.type && (
           <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
             {hovered.type === "environmental"
-              ? "Environmental programme"
-              : "Non-environmental programme"}
+              ? t("environmentalProgramme")
+              : t("nonEnvironmentalProgramme")}
           </p>
         )}
       </div>
@@ -841,7 +835,7 @@ function DetailPanel({
                   className="inline-block w-2.5 h-2.5 rounded-sm"
                   style={{ backgroundColor: DIM_COLOR[r.dim] }}
                 />
-                {DIM_LABEL[r.dim]}
+                {dimLabel[r.dim]}
               </span>
               <span
                 className="tabular-nums font-semibold"

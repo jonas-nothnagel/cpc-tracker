@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useAlignmentLabels } from "@/lib/labels";
 import type {
   AlignmentResult,
   BerBudgetProgram,
@@ -51,11 +53,6 @@ interface ProgramDetailTableProps {
 // Helpers
 // ---------------------------------------------------------------------------
 
-const TYPE_LABEL: Record<string, string> = {
-  environmental: "Environmental",
-  non_environmental: "Non-environmental",
-};
-
 const ALIGNMENT_ORDER: Record<string, number> = {
   high: 0,
   medium: 1,
@@ -84,6 +81,7 @@ export function ProgramDetailTable({
   formatMoney,
   periodLabel,
 }: ProgramDetailTableProps) {
+  const t = useTranslations("viz.programDetailTable");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [spendFilter, setSpendFilter] = useState<SpendFilter>("all");
   const [globeFilter, setGlobeFilter] = useState<GlobeFilter>("all");
@@ -274,9 +272,7 @@ export function ProgramDetailTable({
           {nonEnvBiodivCount > 0 && (
             <li>
               <span className="font-semibold text-[var(--undp-black)]">{nonEnvBiodivCount}</span>{" "}
-              non-environmental{" "}
-              {nonEnvBiodivCount === 1 ? "program" : "programs"} with biodiversity
-              relevance under GLOBE
+              {t("summary.nonEnvBiodiv", { count: nonEnvBiodivCount })}
             </li>
           )}
           {zeroSpendClassifiedCount > 0 && (
@@ -284,16 +280,16 @@ export function ProgramDetailTable({
               <span className="font-semibold text-[var(--undp-black)]">
                 {zeroSpendClassifiedCount}
               </span>{" "}
-              biodiversity-classified{" "}
-              {zeroSpendClassifiedCount === 1 ? "program" : "programs"} with no recorded
-              spend {periodLabel}
+              {t("summary.zeroSpendClassified", {
+                count: zeroSpendClassifiedCount,
+                period: periodLabel,
+              })}
             </li>
           )}
           {unclassifiedCount > 0 && (
             <li>
               <span className="font-semibold text-[var(--undp-black)]">{unclassifiedCount}</span>{" "}
-              {unclassifiedCount === 1 ? "program lacks" : "programs lack"} a primary GLOBE
-              classification
+              {t("summary.unclassified", { count: unclassifiedCount })}
             </li>
           )}
         </ul>
@@ -301,32 +297,35 @@ export function ProgramDetailTable({
 
       <div className="flex flex-wrap gap-4 mb-3 text-xs">
         <FilterGroup
-          label="Type"
+          label={t("filters.type.label")}
           value={typeFilter}
           options={[
-            { v: "all", label: "All" },
-            { v: "environmental", label: `Environmental (${envCount})` },
-            { v: "non_environmental", label: `Non-environmental (${nonEnvCount})` },
+            { v: "all", label: t("filters.type.all") },
+            { v: "environmental", label: t("filters.type.environmental", { count: envCount }) },
+            {
+              v: "non_environmental",
+              label: t("filters.type.nonEnvironmental", { count: nonEnvCount }),
+            },
           ]}
           onChange={(v) => setTypeFilter(v as TypeFilter)}
         />
         <FilterGroup
-          label="Spend"
+          label={t("filters.spend.label")}
           value={spendFilter}
           options={[
-            { v: "all", label: "All" },
-            { v: "with", label: "Recorded spend" },
-            { v: "none", label: "No spend recorded" },
+            { v: "all", label: t("filters.spend.all") },
+            { v: "with", label: t("filters.spend.with") },
+            { v: "none", label: t("filters.spend.none") },
           ]}
           onChange={(v) => setSpendFilter(v as SpendFilter)}
         />
         <FilterGroup
-          label="Biodiversity"
+          label={t("filters.biodiversity.label")}
           value={globeFilter}
           options={[
-            { v: "all", label: "All" },
-            { v: "classified", label: "Has GLOBE primary" },
-            { v: "unclassified", label: "No GLOBE primary" },
+            { v: "all", label: t("filters.biodiversity.all") },
+            { v: "classified", label: t("filters.biodiversity.classified") },
+            { v: "unclassified", label: t("filters.biodiversity.unclassified") },
           ]}
           onChange={(v) => setGlobeFilter(v as GlobeFilter)}
         />
@@ -341,7 +340,7 @@ export function ProgramDetailTable({
                   active={sortKey === "code"}
                   onClick={() => setSortKey("code")}
                 >
-                  Program
+                  {t("columns.program")}
                 </SortButton>
               </th>
               <th className="text-right py-2 px-3 font-medium">
@@ -349,17 +348,17 @@ export function ProgramDetailTable({
                   active={sortKey === "spend"}
                   onClick={() => setSortKey("spend")}
                 >
-                  Spend {periodLabel}
+                  {t("columns.spend", { period: periodLabel })}
                 </SortButton>
               </th>
-              <th className="text-left py-2 px-3 font-medium">GLOBE primary</th>
-              <th className="text-left py-2 px-3 font-medium">IPCC sector</th>
+              <th className="text-left py-2 px-3 font-medium">{t("columns.globePrimary")}</th>
+              <th className="text-left py-2 px-3 font-medium">{t("columns.ipccSector")}</th>
               <th className="text-right py-2 px-3 font-medium">
                 <SortButton
                   active={sortKey === "aligned"}
                   onClick={() => setSortKey("aligned")}
                 >
-                  Aligned targets
+                  {t("columns.alignedTargets")}
                 </SortButton>
               </th>
               <th className="w-6" />
@@ -383,7 +382,7 @@ export function ProgramDetailTable({
             {filteredRows.length === 0 && (
               <tr>
                 <td colSpan={6} className="py-6 text-center text-[var(--undp-gray)]">
-                  No programs match the current filters.
+                  {t("empty")}
                 </td>
               </tr>
             )}
@@ -472,6 +471,7 @@ function ProgramRowView({
   formatMoney: (v: number) => string;
   targetById: Map<string, Target>;
 }) {
+  const t = useTranslations("viz.programDetailTable");
   const typeBadgeClass =
     row.program.type === "environmental"
       ? "bg-emerald-50 text-emerald-800 border-emerald-200"
@@ -496,7 +496,7 @@ function ProgramRowView({
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full border ${typeBadgeClass}`}
                 >
-                  {TYPE_LABEL[row.program.type]}
+                  {t(`programType.${row.program.type}`)}
                 </span>
               </div>
             </div>
@@ -515,7 +515,7 @@ function ProgramRowView({
               />
             </div>
           ) : (
-            <span className="text-[var(--undp-gray)]">No spend recorded</span>
+            <span className="text-[var(--undp-gray)]">{t("noSpendRecorded")}</span>
           )}
         </td>
         <td className="py-2 px-3 align-top">
@@ -526,7 +526,7 @@ function ProgramRowView({
               score={row.globePrimary.score}
             />
           ) : (
-            <span className="text-[var(--undp-gray)] italic">Not classified</span>
+            <span className="text-[var(--undp-gray)] italic">{t("notClassified")}</span>
           )}
         </td>
         <td className="py-2 px-3 align-top">
@@ -537,7 +537,7 @@ function ProgramRowView({
               score={row.sectorPrimary.score}
             />
           ) : (
-            <span className="text-[var(--undp-gray)] italic">Not classified</span>
+            <span className="text-[var(--undp-gray)] italic">{t("notClassified")}</span>
           )}
         </td>
         <td className="py-2 px-3 align-top text-right">
@@ -546,8 +546,9 @@ function ProgramRowView({
           </span>
           {row.alignedHighMedium.length > 0 && (
             <span className="text-[var(--undp-gray)] ml-1">
-              (
-              {row.alignedHighMedium.filter((a) => a.alignment === "high").length} high)
+              {t("highCount", {
+                count: row.alignedHighMedium.filter((a) => a.alignment === "high").length,
+              })}
             </span>
           )}
         </td>
@@ -593,6 +594,7 @@ function YearSparkline({
   years: string[];
   max: number;
 }) {
+  const t = useTranslations("viz.programDetailTable");
   const safeMax = max > 0 ? max : 1;
   return (
     <div className="flex items-end gap-0.5 h-4 mt-1 justify-end">
@@ -603,7 +605,7 @@ function YearSparkline({
         return (
           <div
             key={y}
-            title={`${y}: ${hasValue ? v : "no data"}`}
+            title={`${y}: ${hasValue ? v : t("noData")}`}
             className="w-1.5 bg-emerald-500/70 rounded-sm"
             style={{ height: `${height}px`, opacity: hasValue ? 1 : 0.1 }}
           />
@@ -620,6 +622,8 @@ function ProgramExpand({
   row: ProgramRow;
   targetById: Map<string, Target>;
 }) {
+  const t = useTranslations("viz.programDetailTable");
+  const alignmentLabels = useAlignmentLabels();
   const topAligned = row.topAligned.slice(0, 3);
   const fallbackToLow = row.alignedHighMedium.length === 0 && row.alignedLow.length > 0;
 
@@ -627,14 +631,14 @@ function ProgramExpand({
     <div className="grid grid-cols-12 gap-6 text-xs">
       <div className="col-span-12 md:col-span-5">
         <h4 className="uppercase tracking-wide text-[var(--undp-gray)] text-[10px]">
-          Description
+          {t("expand.description")}
         </h4>
         <p className="text-[var(--undp-black)] mt-1">{row.program.description}</p>
 
         {row.globeSubPrimaries.length > 0 && (
           <div className="mt-4">
             <h4 className="uppercase tracking-wide text-[var(--undp-gray)] text-[10px]">
-              GLOBE subcategories
+              {t("expand.globeSubcategories")}
             </h4>
             <ul className="mt-1 space-y-1">
               {row.globeSubPrimaries.map((s) => (
@@ -655,7 +659,7 @@ function ProgramExpand({
         {row.globePrimary?.reasoning && (
           <div className="mt-4">
             <h4 className="uppercase tracking-wide text-[var(--undp-gray)] text-[10px]">
-              AI reasoning (primary GLOBE)
+              {t("expand.aiReasoning")}
             </h4>
             <p className="text-[var(--undp-black)] mt-1 italic">
               {row.globePrimary.reasoning}
@@ -666,16 +670,16 @@ function ProgramExpand({
 
       <div className="col-span-12 md:col-span-7">
         <h4 className="uppercase tracking-wide text-[var(--undp-gray)] text-[10px]">
-          {fallbackToLow ? "Thematically related policy targets" : "Top aligned policy targets"}
+          {fallbackToLow ? t("expand.thematicallyRelated") : t("expand.topAligned")}
         </h4>
         {fallbackToLow && (
           <p className="text-[var(--undp-gray)] mt-0.5 text-[10px]">
-            No high or medium alignment. Showing weaker thematic connections.
+            {t("expand.fallbackNote")}
           </p>
         )}
         {topAligned.length === 0 ? (
           <p className="text-[var(--undp-gray)] mt-1 italic">
-            No meaningful alignment with any policy target.
+            {t("expand.noAlignment")}
           </p>
         ) : (
           <ul className="mt-2 space-y-3">
@@ -692,7 +696,7 @@ function ProgramExpand({
                 <li key={`${a.targetAId}-${a.targetBId}`} className="border-l-2 border-[var(--undp-blue)] pl-3">
                   <div className="flex items-center gap-2 text-[10px] text-[var(--undp-gray)]">
                     <span className={`px-1.5 py-0.5 rounded-full border ${chipClass}`}>
-                      {a.alignment}
+                      {alignmentLabels[a.alignment]}
                     </span>
                     <span className="font-mono">{otherId}</span>
                     {target?.sourceDocument && (
