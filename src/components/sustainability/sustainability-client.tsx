@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Area,
@@ -327,6 +328,7 @@ type LoadState =
 
 export function SustainabilityClient() {
   const t = useTranslations("sustainability");
+  const router = useRouter();
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
   useEffect(() => {
@@ -354,6 +356,16 @@ export function SustainabilityClient() {
   return (
     <main className="max-w-5xl mx-auto px-5 sm:px-8 py-10">
       <header className="mb-8">
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.length > 1) router.back();
+            else router.push("/");
+          }}
+          className="inline-flex items-center gap-1.5 text-sm text-[var(--undp-gray)] hover:text-[var(--undp-blue)] transition-colors mb-4"
+        >
+          <span aria-hidden="true">&larr;</span> {t("back")}
+        </button>
         <h1
           className="text-3xl sm:text-4xl text-[var(--undp-black)]"
           style={{ fontFamily: "ui-serif, Georgia, Cambria, serif" }}

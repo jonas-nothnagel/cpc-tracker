@@ -888,6 +888,7 @@
       "intro": "The estimated environmental cost of the AI computation behind this tool, covering document analysis, the inference pipeline, and the chatbot. This is a transparency record for reporting, not policy advice.",
       "methodology": "AI-estimated using the <link>EcoLogits</link> methodology. Figures are modelled estimates, not meter readings, and carry a margin of uncertainty."
     },
+    "back": "Back",
     "loading": "Loading footprint data…",
     "empty": "No footprint recorded yet. Run an analysis or send a chat message, and this page will start tracking the AI compute behind it.",
     "errors": {

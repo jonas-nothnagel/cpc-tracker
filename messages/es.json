@@ -888,6 +888,7 @@
       "intro": "El coste ambiental estimado de la computación de IA detrás de esta herramienta, cubriendo análisis de documentos, la canalización de inferencia y el chatbot. Es un registro de transparencia para reportar, no asesoría de política.",
       "methodology": "Estimado por IA usando la metodología <link>EcoLogits</link>. Las cifras son estimaciones modeladas, no lecturas de medidor, y conllevan un margen de incertidumbre."
     },
+    "back": "Volver",
     "loading": "Cargando datos de huella…",
     "empty": "Aún no se ha registrado huella. Ejecute un análisis o envíe un mensaje de chat, y esta página empezará a rastrear el cómputo de IA detrás de ello.",
     "errors": {
