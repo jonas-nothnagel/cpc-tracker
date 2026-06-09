@@ -12,7 +12,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
@@ -63,7 +63,7 @@ interface DashboardData {
   countryConfig: CountryConfig | null;
 }
 
-function normalizeTarget(t: Record<string, unknown>): Target {
+function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
   // Pseudo-target extras (`measureStatus` on BTR rows, `expenditure` on
   // BER rows) are not declared on the Target type, but the Atlas
   // signals layer reads them via a narrow cast to compute
@@ -73,11 +73,29 @@ function normalizeTarget(t: Record<string, unknown>): Target {
   const extras: Record<string, unknown> = {};
   if (t.measureStatus !== undefined) extras.measureStatus = t.measureStatus;
   if (t.expenditure !== undefined) extras.expenditure = t.expenditure;
+
+  let text = String(t.text);
+  let sourceLabel = String(t.sourceLabel);
+  let textOriginal = t.textOriginal ? String(t.textOriginal) : undefined;
+  let sourceLabelOriginal = t.sourceLabelOriginal
+    ? String(t.sourceLabelOriginal)
+    : undefined;
+  const language = t.language ? String(t.language) : undefined;
+  // When the target's original-language text matches the active locale, show
+  // that genuine original instead of the English translation — no machine
+  // translation, we only surface text the data actually contains. The chip's
+  // "original" is then redundant (we're already showing it), so drop it.
+  if (locale && language === locale && textOriginal) {
+    text = textOriginal;
+    if (sourceLabelOriginal) sourceLabel = sourceLabelOriginal;
+    textOriginal = undefined;
+    sourceLabelOriginal = undefined;
+  }
   return {
     id: String(t.id),
-    text: String(t.text),
+    text,
     sourceDocument: t.sourceDocument as PolicyDocumentType,
-    sourceLabel: String(t.sourceLabel),
+    sourceLabel,
     country: String(t.country),
     isQuantitative: Boolean(t.isQuantitative),
     isTimeBound: Boolean(t.isTimeBound),
@@ -85,8 +103,8 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
-    textOriginal: t.textOriginal ? String(t.textOriginal) : undefined,
-    sourceLabelOriginal: t.sourceLabelOriginal ? String(t.sourceLabelOriginal) : undefined,
+    textOriginal,
+    sourceLabelOriginal,
     actionType:
       t.actionType === "mitigation" || t.actionType === "adaptation"
         ? t.actionType
@@ -106,10 +124,12 @@ function normalizeCategory(t: Record<string, unknown>): IpccSector {
 /** Build the view-model from the raw payload. Shared by the server-provided
  *  `initialData` path and the client fetch fallback so both produce identical
  *  state. */
-function normalize(raw: DashboardResponse): DashboardData {
+function normalize(raw: DashboardResponse, locale?: string): DashboardData {
   const r = raw as unknown as Record<string, unknown>;
   return {
-    targets: ((r.targets as Record<string, unknown>[]) ?? []).map(normalizeTarget),
+    targets: ((r.targets as Record<string, unknown>[]) ?? []).map((t) =>
+      normalizeTarget(t, locale),
+    ),
     nbsCategories: (r.nbsCategories as NbsCategory[]) ?? [],
     sectors: ((r.sectors as Record<string, unknown>[]) ?? []).map(normalizeCategory),
     globeCategories: ((r.globeCategories as Record<string, unknown>[]) ?? []).map(normalizeCategory),
@@ -121,7 +141,9 @@ function normalize(raw: DashboardResponse): DashboardData {
     berData: (r.berData as BerData | null) ?? null,
     budgetAlignment: (r.budgetAlignment as AlignmentResult[] | null) ?? null,
     budgetPseudoTargets:
-      (r.budgetPseudoTargets as Record<string, unknown>[] | null)?.map(normalizeTarget) ?? null,
+      (r.budgetPseudoTargets as Record<string, unknown>[] | null)?.map((t) =>
+        normalizeTarget(t, locale),
+      ) ?? null,
     footprint: (r.footprint as FootprintSnapshot | null) ?? null,
     docPairSynthesis: (r.docPairSynthesis as DocPairSynthesis[] | null) ?? [],
     corpusThemes: (r.corpusThemes as CorpusThemesPayload | null) ?? null,
@@ -149,8 +171,9 @@ export function CoherenceDashboard({
   initialData?: DashboardResponse;
 }) {
   const t = useTranslations("dashboard");
+  const locale = useLocale();
   const [data, setData] = useState<DashboardData | null>(
-    initialData ? normalize(initialData) : null,
+    initialData ? normalize(initialData, locale) : null,
   );
   const [error, setError] = useState<string | null>(null);
 
@@ -174,7 +197,7 @@ export function CoherenceDashboard({
       })
       .then((raw) => {
         if (cancelled) return;
-        setData(normalize(raw as DashboardResponse));
+        setData(normalize(raw as DashboardResponse, locale));
       })
       .catch((e) => {
         if (cancelled) return;
@@ -183,7 +206,7 @@ export function CoherenceDashboard({
     return () => {
       cancelled = true;
     };
-  }, [analysisId, country, initialData]);
+  }, [analysisId, country, initialData, locale]);
 
   if (error) {
     return (
