@@ -2,7 +2,7 @@
 
 > Nature-Climate Policy Coherence Progress Analysis Tool for UNDP
 
-*Last updated: February 2026*
+*Last updated: June 2026*
 
 The main users of this application will be policy makers, UN country offices, ministries, etc. Therefore, insights have to be clear, actionable, transparent and genuinly helpful. If methodologies are used for calculating, this should always be well thought through, explained and serve the purpose to establish real insights and not for adding or even impostering complexity. 
 
@@ -17,7 +17,7 @@ An interactive web application that allows UNDP country offices and national par
 We also aim to track and visualise implementation and budget, fiscal flows as well for better understanding. 
 We may also include geospatial data in later iterations if it makes sense and work also towards assessing causal relationships, for example, impact on job creation, impact of funding on implemenation etc.
 
-For now, lets assume targets will be submitted in semi-structed format (not focusing on extracting from docs, pdfs for now)
+Targets can be submitted in semi-structured form or extracted from uploaded documents (PDF/DOCX) via the upload wizard.
 
 ### Target Users
 

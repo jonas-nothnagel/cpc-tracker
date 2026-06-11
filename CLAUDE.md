@@ -6,22 +6,11 @@ This file provides guidance to Claude Code when working with this repository.
 
 AI-powered web application that helps UNDP country offices and national policy makers assess coherence across nature-climate policies and track implementation progress.
 
-**Core principle**: Every feature, visualization, and component must deliver real, actionable value for policy making. We do not build things that are merely technically impressive or already available via a quick internet search. Insights must be actionable, easy to grasp for non-technical users and genuinely useful for decision-making. Raise a warning if you think we deviate from this.
-
-**Real value-added or nothing**: Real policymakers may use this tool for decisions that affect real people, real ecosystems, and real climate outcomes. Deadlines, demo polish, and technical interestingness are not acceptable reasons to ship a feature. When proposing anything, ask "would this improve the quality of decision-support a policymaker gets from this tool?" If the answer isn't a clear yes, cut it.
-
-**Positioning**: Decision-support system, not a decision-maker. Final interpretation remains with policymakers. Never generate extended AI-written narrative reports — prefer visuals + short factual insights. Hedged pathway-style suggestions are allowed under the rules in guardrails. All AI outputs must be clearly labeled as AI-generated with confidence caveats.
-
-**Target users**: UNDP country office staff and national policy makers — avoid developer jargon in UI copy. Show what happened in human terms, not system terms.
-
-**Digital Public Good**: Code must be handoverable to vendors. Prioritize UNDP Design System (https://react.design.undp.org/) and UNDP Data Viz Guidelines (https://dataviz.design.undp.org/) for UI and charts. Other libraries may be used where they add clear UX value.
-
-**Scope**: This project is under active development. For domain context, meeting notes, and materials:
-- **Primary source (most up-to-date)**: `dev_data_scripts/sharepoint_sync/` — symlink to the team's shared SharePoint/OneDrive folder. Country materials (Mongolia, Panama), scoping docs, TAG notes, and the authoritative feedback log (`Scoping materials/Feedback log for AI Flagship.docx`) live here. Always check this first.
-- **Secondary**: `dev_data_scripts/rolling_context/` — local dev notes (may be older copies).
-- See also `PROJECT_GUIDELINES.md` for dev conventions.
-
-The tool is hosted on Azure and should be easily buildable through a docker image.
+- **Real value-added or nothing**: policymakers may use this tool for decisions affecting real people, ecosystems, and climate outcomes. Every feature must deliver actionable decision-support, easy to grasp for non-technical users, and not already available via a quick internet search. Deadlines, demo polish, and technical interestingness are not reasons to ship. If "would this improve the quality of decision-support a policymaker gets?" is not a clear yes, cut it; raise a warning if you think we deviate.
+- **Positioning**: decision-support system, not a decision-maker; final interpretation stays with policymakers. Prefer visuals plus short factual insights; never generate extended AI-written narrative reports. Hedged pathway-style suggestions are allowed under the guardrails. All AI outputs are labeled AI-generated with confidence caveats.
+- **Target users**: UNDP country office staff and national policy makers. No developer jargon in UI copy; show what happened in human terms, not system terms.
+- **Digital Public Good**: code must be handoverable to vendors; hosted on Azure, buildable as a Docker image. Prioritize the UNDP Design System (https://react.design.undp.org/) and UNDP Data Viz Guidelines (https://dataviz.design.undp.org/); other libraries where they add clear UX value.
+- **Context sources**: `dev_data_scripts/sharepoint_sync/` (team SharePoint: country materials, scoping docs, TAG notes, and the authoritative `Scoping materials/Feedback log for AI Flagship.docx`) is the primary, most up-to-date source. `dev_data_scripts/rolling_context/` is secondary. See `PROJECT_GUIDELINES.md` for dev conventions.
 
 ## Commands
 
@@ -43,24 +32,24 @@ python -m src.run_analysis --targets-file panama-targets.json  # Other country �
 
 ## Analytical Framework: Three Levels
 
-The tool is structured around three analytical levels. Any new feature should be identified against these levels before scoping, and cross-level features should be flagged explicitly:
+Identify any new feature against these levels before scoping; flag cross-level features explicitly.
 
-- **Level 1 — Policy coherence / alignment.** Current focus. Pairwise alignment between targets and measures to surface synergies, contradictions, and gaps. Chord chart, tension clusters, alignment heatmap, and pairwise scoring all live here.
-- **Level 2 — Financial / budget alignment.** Still pending. Where finance flows get mapped against policy objectives to show where money does and doesn't follow ambition.
-- **Level 3 — Implementation progress tracking.** The "are these policies actually being implemented?" layer. 
+- **Level 1: policy coherence.** Pairwise alignment between targets and measures to surface synergies, potential misalignments, and gaps. Most mature.
+- **Level 2: financial / budget alignment.** Finance flows mapped against policy objectives: where money does and does not follow ambition. Shipped for Mongolia (BER); other countries pending.
+- **Level 3: implementation progress.** Are these policies actually being implemented (BTR measures, national reports). In progress.
 
 ## Architecture (Current State)
 
-Architecture is evolving — treat the actual code as source of truth.
+Architecture is evolving; treat the actual code as source of truth.
 
 **Frontend**: Next.js App Router + TypeScript + Tailwind CSS + Recharts/D3.
-- `src/app/` — Pages and API routes
-- `src/components/` — UI and visualization components
-- `src/data/` — Static TypeScript data (Mongolia pilot)
-- `src/types/` — Domain types
-- `src/lib/` — Shared utilities
+- `src/app/` Pages and API routes
+- `src/components/` UI and visualization components
+- `src/data/` Static TypeScript data
+- `src/types/` Domain types
+- `src/lib/` Shared utilities
 
-**Python pipeline** (`python/src/`): Multi-agent LLM pipeline for classification, alignment analysis, and target parsing. Results stored in `python/analyses/{id}/` and `python/output/`.
+**Python pipeline** (`python/src/`): multi-agent LLM pipeline for classification, alignment analysis, and target parsing. Results in `python/analyses/{id}/` and `python/output/{country}/`.
 
 **Data flow**: Frontend → API route → Python subprocess → JSON results → frontend polls for completion.
 
@@ -68,28 +57,26 @@ Architecture is evolving — treat the actual code as source of truth.
 
 - `@/` path alias for imports from `src/` (configured in tsconfig)
 - Python uses `uv` for package management
-- LLM provider: Azure OpenAI 
-- `AlignmentLevel` is bidirectional: negative values (likely_conflict, possible_conflict, possible_misalignment) and positive (low, medium, high alignment)
-- Display labels for positive `AlignmentLevel` values: avoid "Low" — use "Partial" or "Emerging" instead. See guardrails.
-- Display label for the negative `AlignmentLevel` value (`flagged`): "Potential misalignment". The cautious vocabulary frames the negative side as surfaced for review, not certain contradictions. Legacy v1 level names (possible/likely conflict, possible misalignment) survive only as parser aliases. See guardrails.
+- LLM access is provider-agnostic via `LLM_BASE_URL` / `LLM_MODEL` (`python/src/config.py`): OpenRouter default in dev, Azure OpenAI in prod
+- `AlignmentLevel` canonical values: `none | low | medium | high | flagged`, where `flagged` is the negative side (surfaced for review). Display vocabulary is guardrail-governed (see Guardrails).
 
 ## Collaboration Workflow
 
 - Developers using CC or similar. Feature branches off `main`, PRs back to `main`.
-- PRs should include a brief "why" — not just what changed, but the intent behind it.
+- PRs should include a brief "why": not just what changed, but the intent behind it.
 
 ## Guardrails and Previous Learnings
 
-When a design decision (especially AI/pipeline) is revised and the learning would materially change future implementation choices, propose adding it here. High bar — only non-obvious insights that prevent repeating a real mistake or validate a reusable approach. Format: short rule + `Why:` line.
+When a design decision (especially AI/pipeline) is revised and the learning would materially change future implementation choices, propose adding it here. High bar: short rule plus a one-line `Why:`.
 
-- No hallucination of policy content — AI classifies and compares only user-provided targets.
-- Data sovereignty: no external API calls with government data without consent.
-- Political sensitivity in comparative outputs — never frame results as blame toward specific sectors or ministries. Use neutral language (e.g., "opportunity for stronger alignment" not "ministry X is lagging"). Why: Previous SDG-mapping outputs were used to assign blame, creating political tensions. Government sounding boards validate outputs before broader distribution.
-- Terminology sensitivity — avoid "low" as a standalone positive label (reads as negative culturally). Prefer "emerging" or "partial". All abbreviations  must have tooltips or inline expansions on first use. Why: Mongolia user testing showed abbreviations are opaque and "low" is perceived negatively.
-- Negative-side alignment vocabulary uses "possible misalignment / possible conflict / likely conflict" (not "tension / moderate contradiction / high contradiction"). The pipeline flags pairs for human review; it does not establish certain contradictions. Why: framing AI output as "contradiction" implied a confidence level the model cannot legitimately claim against highly varied policy documents, and could be misread as decisive findings rather than review prompts. The legacy strings (`low_tension`, `moderate_contradiction`, `high_contradiction`) remain in the Python parser map as backward-compatible aliases so an LLM regression to old wording still parses; never emit them in UI or as canonical stored values.
-- No LLM-drafted content in the pipeline infrastructure. Any text concatenated into pipeline LLM prompts — taxonomy names, taxonomy descriptions, prompt templates, classification instructions, framing language, scope text in country-config / BTR-adaptation / BER-taxonomy data files — must trace to a primary source or be explicitly labeled project-defined. Never LLM-draft pipeline-prompt content silently. Why: discovered 2026-04-27 that IPCC sector descriptions in `categories.json` were LLM-generated and stored under a misleading `_source` annotation; they feed `classify.py:151` and `:228` directly, biasing every classification result. Distinct from the rule above (no narrative reports in *outputs*) — this rule covers the pipeline's *inputs*. Pipeline outputs (target classifications, alignment verdicts, decompositions) are LLM-derived by design; pipeline inputs must not be.
-- Usability supersedes country-agnosticism. When a data source or analysis is genuinely valuable to one country but doesn't structurally generalize, work around — don't drop it for symmetry's sake. Why: forcing portability strips local relevance. Some sources are intrinsically country-shaped (APNDC for Mongolia adaptation, BAR codes specific to Mongolia's budget, Panama's 11 BTR sectors). Pair-check during integration: ask separately "is this valuable to the country it serves?" and "is portability cheap?".
-- Multi-label vs multi-class classification policy: each target gets a `primary` (single-label, top-scored category) AND any number of `relevant` (multi-label, score ≥ 0.5) tags. Both modes coexist in the same record. UI surfaces should choose one mode intentionally — primary for ranking, relevant for breadth. The 0.5 threshold is hard-coded today (`python/src/classify.py:32`); future work to derive per-taxonomy from data. Why: prevents accidental visual weighting of all relevant equally regardless of score.
-- GLOBE few-shot calibration scores are positional fallbacks. `python/src/classify_globe.py:55 _FEWSHOT_SCORES = [0.9, 0.7, 0.55, 0.4, 0.3]` are assigned by position because the BIOFIN expert data carries no explicit ranking. Don't surface them as if they were expert weights. Why: surfacing positional scores as "expert relevance" would overclaim.
-- Adaptation alignment uses the same 7-level scale as mitigation, with a prompt-level instruction not to penalise adaptation actions for missing CO2e numbers (`python/src/measure_align.py:39-44`). Why: adaptation is "less structured/standardised" (Apr 7 Mongolia call). The asymmetric relationship is fixed at prompt level not schema level — captured in `project_btr_methodology_limitation.md`.
-- Pathway-style suggestions (process pointers like boundary review, joint M&E, coordination, indicator alignment, triage of flagged pairs) are allowed in chat replies and insight callouts when anchored to visible evidence. Stay hedged ("could potentially", "may", "worth a closer look"), never "should" or "must". No country/ministry/sector-specific prescriptions and no extended narrative reports. Other static surfaces (headline cards, KPI tiles, status badges) stay factual-only. Why: recurring May 2026 CBD/TAG/CO ask for practical recommendations on how coherence could be improved, not just misalignment lists.
+- No hallucination of policy content: AI classifies and compares only user-provided targets.
+- Data sovereignty: no external API calls with government data without consent. Pulling public data into the tool is fine.
+- Political sensitivity: never frame results as blame toward sectors or ministries; use neutral language ("opportunity for stronger alignment"). Why: previous SDG-mapping outputs were used to assign blame; government sounding boards validate outputs before distribution.
+- Terminology: never "low" as a standalone positive label; display "Partial" or "Emerging". All abbreviations get tooltips or inline expansion on first use. Why: Mongolia user testing showed abbreviations are opaque and "low" reads negatively.
+- Negative-side vocabulary: the pipeline flags pairs for human review; it does not establish certain contradictions. Display label for `flagged` is "Potential misalignment"; pipeline wording uses "possible misalignment / possible conflict / likely conflict", never "tension" or "contradiction". Legacy strings (`low_tension`, `moderate_contradiction`, `high_contradiction` and the v1 conflict names) survive only as parser aliases in `alignment_schema.py`; never emit them in UI or as stored values. Why: "contradiction" implies a confidence the model cannot claim against highly varied policy documents; outputs are review prompts, not findings.
+- No LLM-drafted content in pipeline inputs. Any text concatenated into pipeline LLM prompts (taxonomy names and descriptions, prompt templates, classification instructions, framing language, scope text in country-config / BTR / BER data files) must trace to a primary source or be explicitly labeled project-defined; never LLM-draft it silently. Pipeline outputs (classifications, alignment verdicts, decompositions) are LLM-derived by design; this rule covers inputs. Why: LLM-generated IPCC sector descriptions once shipped in `categories.json` under a misleading `_source` annotation, feeding `classify.py` prompts and biasing every classification.
+- Classification is dual-mode: each target gets one `primary` (top score) plus any number of `relevant` tags (score >= `RELEVANCE_THRESHOLD` in `classify.py`; hard-coded today, per-taxonomy derivation is future work). UI surfaces choose one mode intentionally: primary for ranking, relevant for breadth. Why: mixing modes visually weights all relevant tags equally regardless of score.
+- GLOBE few-shot calibration scores (`classify_globe.py`) are positional fallbacks, not expert weights; never surface them as expert relevance. Why: the BIOFIN expert data carries no explicit ranking, so the scores would overclaim.
+- Adaptation alignment uses the same 7-level scale as mitigation, with a prompt-level instruction in `measure_align.py` not to penalize adaptation actions for missing CO2e numbers. Why: adaptation reporting is less structured (Apr 2026 Mongolia call); the asymmetry is prompt-level, not schema-level, so treat it as fragile.
+- Usability supersedes country-agnosticism: when a data source is genuinely valuable to one country but does not structurally generalize, work around it; do not drop it for symmetry. Pair-check during integration: "is this valuable to the country it serves?" and "is portability cheap?". Why: forcing portability strips local relevance; some sources are intrinsically country-shaped (APNDC adaptation, Mongolia BAR codes, Panama's 11 BTR sectors).
+- Pathway-style suggestions (process pointers: boundary review, joint M&E, coordination, indicator alignment, triage of flagged pairs) are allowed only in chat replies and insight callouts, anchored to visible evidence and hedged ("could", "may", "worth a closer look"); never "should" or "must", no country/ministry/sector-specific prescriptions, no extended narratives. All other static surfaces (headline cards, KPI tiles, status badges) stay factual-only. Why: stakeholders asked for practical how-to-improve pointers (May 2026), but unhedged or targeted prescriptions would overclaim and politicize.
