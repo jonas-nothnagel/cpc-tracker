@@ -486,9 +486,16 @@
     "end": 2024
   },
   "keyFindings": {
+    "programName": "National Biodiversity Program",
+    "programNameByLocale": {
+      "en": "National Biodiversity Program",
+      "mn": "Байгаль орчны олон янз байдлын үндэсний хөтөлбөр",
+      "es": "Programa Nacional de Biodiversidad"
+    },
     "plannedBudget": 1900,
     "actualExpenditure": 1200,
     "gap": 700,
-    "programPeriod": "2015-2025"
+    "programPeriod": "2015-2025",
+    "_source": "BER [ENG] v1.2.docx para 15: 'Under the National Biodiversity Program (2015-2025), the originally planned total budget amounted to approximately MNT 1.9 trillion. Over the past nine years, however, only about MNT 1.2 trillion has been executed, leaving an estimated financing shortfall of approximately MNT 700 billion.' Distinct object from the 2020-2024 expenditure analysis (para 7). Mongolian name from BER [MN] v1.1.pdf p.7: 'Байгаль орчны олон янз байдлын үндэсний хөтөлбөр (2015-2025)'."
   }
 }

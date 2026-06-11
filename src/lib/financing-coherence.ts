@@ -189,6 +189,12 @@ export interface FinancingCoherenceSummary {
    * wider period than `periodLabel`.
    */
   execution: {
+    /** Named program the headline refers to (e.g. "National Biodiversity
+     *  Program"). Null when the BER reports no named program. */
+    programName: string | null;
+    /** Localised program names keyed by locale; the UI prefers the active
+     *  locale and falls back to `programName`. Null when none provided. */
+    programNameByLocale: Record<string, string> | null;
     planned: number;
     actual: number;
     gap: number;
@@ -265,6 +271,8 @@ export function computeFinancingCoherence(
     periodLabel: `${berData.period.start}-${berData.period.end}`,
     execution: berData.keyFindings
       ? {
+          programName: berData.keyFindings.programName ?? null,
+          programNameByLocale: berData.keyFindings.programNameByLocale ?? null,
           planned: berData.keyFindings.plannedBudget,
           actual: berData.keyFindings.actualExpenditure,
           gap: berData.keyFindings.gap,

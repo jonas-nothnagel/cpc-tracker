@@ -8,6 +8,12 @@
     "end": 2024
   },
   "keyFindings": {
+    "programName": "National Biodiversity Program",
+    "programNameByLocale": {
+      "en": "National Biodiversity Program",
+      "mn": "Байгаль орчны олон янз байдлын үндэсний хөтөлбөр",
+      "es": "Programa Nacional de Biodiversidad"
+    },
     "plannedBudget": 1900,
     "actualExpenditure": 1200,
     "gap": 700,

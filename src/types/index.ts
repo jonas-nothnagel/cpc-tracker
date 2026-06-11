@@ -668,6 +668,14 @@ export interface BerData {
   unit: string;
   period: { start: number; end: number };
   keyFindings?: {
+    /** Name of the program this planned-vs-actual headline refers to. Distinct
+     *  from the year-by-year expenditure analysis (`period`). Optional: older
+     *  BER data and other countries may not carry a named program. */
+    programName?: string;
+    /** Localised program names keyed by locale (e.g. "en", "mn", "es"). The UI
+     *  prefers the active locale, falling back to `programName`. Sourced from
+     *  the country's own BER, not machine-translated UI copy. */
+    programNameByLocale?: Record<string, string>;
     plannedBudget: number;
     actualExpenditure: number;
     gap: number;
