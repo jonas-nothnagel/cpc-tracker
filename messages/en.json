@@ -119,7 +119,8 @@
       "sectors": "Sectors",
       "whereToFocus": "Where to focus",
       "explore": "Explore",
-      "financing": "Financing"
+      "financing": "Financing",
+      "implementation": "Implementation"
     },
     "lens": {
       "globe": "GLOBE",
@@ -272,7 +273,8 @@
           "showMisalignedOnly": "Show misaligned only",
           "showAligned": "Show aligned ({count, number})",
           "empty": "No target pairs to show."
-        }
+        },
+        "reportedActionTag": "Reported action (BTR)"
       },
       "theme": {
         "closeAria": "Close theme view",
@@ -573,6 +575,75 @@
         "spent": "<strong>{actual}</strong> of {planned} {unit} {currency} spent",
         "unspent": "· {amount} ({pct}%) unspent",
         "scopeNote": "The program's total planned funding across its full {period} period, not the year-by-year spending in the {reviewPeriod} review above."
+      }
+    },
+    "implementation": {
+      "eyebrow": "Is the plan being implemented?",
+      "headline": {
+        "coverage": "{country}'s reported actions address {share} the policy targets.",
+        "noCoverage": "{country} reports {count, plural, one {# action} other {# actions}}; their match to the plan is not yet computed."
+      },
+      "share": {
+        "most": "most of",
+        "aboutHalf": "about half",
+        "underHalf": "under half of",
+        "few": "few of"
+      },
+      "body": {
+        "coverage": "The Biennial Transparency Report (BTR) lists {actions, plural, one {# reported action} other {# reported actions}}. Of {total, plural, one {# policy target} other {# policy targets}} across {docCount, plural, one {# document} other {# documents}}, {reached} have at least one strongly aligned reported action, and for {underWay} of them that action is already under way or implemented; {outsideReach} have none in this report.",
+        "noCoverage": "The action-to-target match has not been computed for this corpus yet. The right column shows what the report contains: which actions, in which sectors, at which country-reported status."
+      },
+      "dotMap": {
+        "intro": "Each dot is one policy target: filled when at least one reported action strongly aligns with it, hollow when none does. Open a document for the target-level detail.",
+        "disclaimer": "AI-estimated and indicative. Addressed means at least one reported action aligns at high confidence; it does not mean the target is on track."
+      },
+      "matchedCount": "<strong>{reached}</strong> of {total} addressed",
+      "matchedHeading": "Addressed by a reported action",
+      "unmatchedHeading": "No reported action yet",
+      "legend": {
+        "matched": "has an aligned reported action",
+        "unmatched": "none in this report",
+        "pull": "targets a reported action may pull against"
+      },
+      "nr7": {
+        "selfAssessment": "Country self-assessment (NR7):",
+        "short": "NR7: {status}"
+      },
+      "footer": {
+        "sources": "Evidence: {country}'s Biennial Transparency Report (BTR). One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
+        "sourcesWithNr7": "Evidence: {country}'s Biennial Transparency Report (BTR) and 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
+        "notIncluded": "Not yet included: indicator time series, budget execution, project-level delivery reporting."
+      },
+      "misalignment": {
+        "lead": "{actions, plural, one {# reported action shows} other {# reported actions show}} potential misalignment with {commitments, plural, one {# policy commitment} other {# policy commitments}}; {underWay, plural, =0 {none of these is under way yet} one {# of these is already under way or implemented} other {# of these are already under way or implemented}}. A target can be addressed by one reported action while another pulls against it; where that action keeps moving, the commitment may become harder to reach.",
+        "pullHeading": "A reported action may pull against"
+      },
+      "status": {
+        "planned": "Planned",
+        "adopted": "Adopted",
+        "ongoing": "Ongoing",
+        "implemented": "Implemented"
+      }
+    },
+    "implementationCenter": {
+      "header": {
+        "eyebrow": "The reported snapshot",
+        "title": "Who delivers the reported actions",
+        "subtitle": "{country} · Biennial Transparency Report (BTR)"
+      },
+      "mixLine": "{total, plural, one {# reported action} other {# reported actions}}: {mitigation} mitigation, {adaptation, plural, =0 {no adaptation actions} one {# adaptation} other {# adaptation}}.",
+      "status": {
+        "planned": "Planned",
+        "adopted": "Adopted",
+        "ongoing": "Ongoing",
+        "implemented": "Implemented"
+      },
+      "statusNote": "Statuses are as reported by the country in the BTR.",
+      "roster": {
+        "heading": "Institutions named on the reported actions",
+        "involvementNote": "An action naming several institutions counts once for each, so counts read as involvement, not shares of a whole.",
+        "noInstitution": "{count, plural, one {# reported action names no institution.} other {# reported actions name no institution.}}",
+        "moreInstitutions": "{count, plural, one {# more institution with fewer actions.} other {# more institutions with fewer actions.}}"
       }
     },
     "docFilter": {

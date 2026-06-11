@@ -18,6 +18,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   ALIGNMENT_COLORS,
+  getDocColor,
   getDocMediumLabel,
   getDocFullLabel,
 } from "@/lib/utils";
@@ -289,6 +290,11 @@ function TargetPairBody({
   );
 }
 
+/** Reported-action stand-ins (Implementation drill-down) carry pseudo-target
+ *  ids from the BTR; they are ACTIONS a country reports doing, not policy
+ *  targets, and must read as a different kind of thing. */
+const REPORTED_ACTION_ID = /^(BTR|BTRA|ADP)_/;
+
 function TargetCard({
   target,
   countryConfig,
@@ -301,13 +307,31 @@ function TargetCard({
   const t = useTranslations("briefing.drawer.pair");
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
   const docFull = getDocFullLabel(countryConfig, target.sourceDocument);
+  const isReportedAction = REPORTED_ACTION_ID.test(target.id);
+  const actionColor = getDocColor(countryConfig, "BTR");
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-4">
+    <div
+      className="rounded-md border p-4"
+      style={
+        isReportedAction
+          ? {
+              // Visibly a different kind of card: tinted in the BTR colour,
+              // never the plain white of a policy-target card.
+              borderColor: `${actionColor}55`,
+              backgroundColor: `${actionColor}0D`,
+            }
+          : { borderColor: "#e5e7eb", backgroundColor: "#ffffff" }
+      }
+    >
       <p
         className="text-[10px] uppercase tracking-wider font-medium mb-2"
-        style={{ color }}
+        style={{ color: isReportedAction ? actionColor : color }}
       >
-        {docLabel} · {target.sourceLabel}
+        {isReportedAction
+          ? [t("reportedActionTag"), target.sourceLabel]
+              .filter(Boolean)
+              .join(" · ")
+          : `${docLabel} · ${target.sourceLabel}`}
       </p>
       <p className="text-sm text-[var(--undp-black)] leading-relaxed">
         {target.text}

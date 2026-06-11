@@ -119,7 +119,8 @@
       "sectors": "Sectores",
       "whereToFocus": "Dónde enfocar",
       "explore": "Explorar",
-      "financing": "Financiación"
+      "financing": "Financiación",
+      "implementation": "Implementación"
     },
     "lens": {
       "globe": "GLOBE",
@@ -272,7 +273,8 @@
           "showMisalignedOnly": "Mostrar sólo desalineados",
           "showAligned": "Mostrar alineados ({count, number})",
           "empty": "No hay pares de metas para mostrar."
-        }
+        },
+        "reportedActionTag": "Acción reportada (BTR)"
       },
       "theme": {
         "closeAria": "Cerrar vista de tema",
@@ -573,6 +575,75 @@
         "spent": "<strong>{actual}</strong> de {planned} {unit} {currency} gastado",
         "unspent": "· {amount} ({pct}%) sin gastar",
         "scopeNote": "El financiamiento total previsto del programa para todo su período {period}, no el gasto anual de la revisión de {reviewPeriod} anterior."
+      }
+    },
+    "implementation": {
+      "eyebrow": "¿Se está aplicando el plan?",
+      "headline": {
+        "coverage": "Las acciones reportadas por {country} abordan {share} las metas de política.",
+        "noCoverage": "{country} reporta {count, plural, one {# acción} other {# acciones}}; su correspondencia con el plan aún no se ha calculado."
+      },
+      "share": {
+        "most": "la mayoría de",
+        "aboutHalf": "cerca de la mitad de",
+        "underHalf": "menos de la mitad de",
+        "few": "pocas de"
+      },
+      "body": {
+        "coverage": "El Informe Bienal de Transparencia (BTR) recoge {actions, plural, one {# acción reportada} other {# acciones reportadas}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada, y en {underWay} de ellas esa acción ya está en curso o implementada; {outsideReach} no tienen ninguna en este informe.",
+        "noCoverage": "La correspondencia entre acciones y metas aún no se ha calculado para este corpus. La columna derecha muestra el contenido del informe: qué acciones, en qué sectores y con qué estado reportado por el país."
+      },
+      "dotMap": {
+        "intro": "Cada punto es una meta de política: relleno cuando al menos una acción reportada se alinea fuertemente con ella, vacío cuando ninguna lo hace. Abra un documento para ver el detalle por meta.",
+        "disclaimer": "Estimado por IA e indicativo. Abordada significa que al menos una acción reportada se alinea con confianza alta; no significa que la meta avance según lo previsto."
+      },
+      "matchedCount": "<strong>{reached}</strong> de {total} abordadas",
+      "matchedHeading": "Abordadas por una acción reportada",
+      "unmatchedHeading": "Aún sin acción reportada",
+      "legend": {
+        "matched": "con una acción reportada alineada",
+        "unmatched": "ninguna en este informe",
+        "pull": "metas contra las que una acción reportada podría ir"
+      },
+      "nr7": {
+        "selfAssessment": "Autoevaluación del país (NR7):",
+        "short": "NR7: {status}"
+      },
+      "footer": {
+        "sources": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country}. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
+        "sourcesWithNr7": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country} y su 7.º Informe Nacional (NR7) al CDB. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
+        "notIncluded": "Aún no incluido: series temporales de indicadores, ejecución presupuestaria, reportes de entrega a nivel de proyecto."
+      },
+      "misalignment": {
+        "lead": "{actions, plural, one {# acción reportada muestra} other {# acciones reportadas muestran}} posible desalineación con {commitments, plural, one {# compromiso de política} other {# compromisos de política}}; {underWay, plural, =0 {ninguna está aún en curso} one {# de ellas ya está en curso o implementada} other {# de ellas ya están en curso o implementadas}}. Una meta puede estar abordada por una acción reportada mientras otra va en su contra; si esa acción sigue avanzando, el compromiso puede volverse más difícil de alcanzar.",
+        "pullHeading": "Una acción reportada podría ir en contra"
+      },
+      "status": {
+        "planned": "Planificada",
+        "adopted": "Adoptada",
+        "ongoing": "En curso",
+        "implemented": "Implementada"
+      }
+    },
+    "implementationCenter": {
+      "header": {
+        "eyebrow": "La instantánea reportada",
+        "title": "Quién ejecuta las acciones reportadas",
+        "subtitle": "{country} · Informe Bienal de Transparencia (BTR)"
+      },
+      "mixLine": "{total, plural, one {# acción reportada} other {# acciones reportadas}}: {mitigation} de mitigación, {adaptation, plural, =0 {ninguna de adaptación} one {# de adaptación} other {# de adaptación}}.",
+      "status": {
+        "planned": "Planificada",
+        "adopted": "Adoptada",
+        "ongoing": "En curso",
+        "implemented": "Implementada"
+      },
+      "statusNote": "Los estados son los reportados por el país en el BTR.",
+      "roster": {
+        "heading": "Instituciones mencionadas en las acciones reportadas",
+        "involvementNote": "Una acción que menciona varias instituciones cuenta una vez por cada una, así que las cifras se leen como participación, no como partes de un todo.",
+        "noInstitution": "{count, plural, one {# acción reportada no menciona ninguna institución.} other {# acciones reportadas no mencionan ninguna institución.}}",
+        "moreInstitutions": "{count, plural, one {# institución más con menos acciones.} other {# instituciones más con menos acciones.}}"
       }
     },
     "docFilter": {
