@@ -290,10 +290,9 @@ function TargetPairBody({
   );
 }
 
-/** Reported-action stand-ins (Implementation drill-down) carry pseudo-target
- *  ids from the BTR; they are ACTIONS a country reports doing, not policy
- *  targets, and must read as a different kind of thing. */
-const REPORTED_ACTION_ID = /^(BTR|BTRA|ADP)_/;
+/** The four country-reported BTR stages with localized labels; anything else
+ *  renders raw (statuses are free text in the source data). */
+const BTR_STATUS_KEYS = ["planned", "adopted", "ongoing", "implemented"];
 
 function TargetCard({
   target,
@@ -305,10 +304,22 @@ function TargetCard({
   color: string;
 }) {
   const t = useTranslations("briefing.drawer.pair");
+  const tc = useTranslations("briefing.implementationCenter");
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
   const docFull = getDocFullLabel(countryConfig, target.sourceDocument);
-  const isReportedAction = REPORTED_ACTION_ID.test(target.id);
+  // Reported-action stand-ins (Implementation drill-down) carry the reserved
+  // "BTR" doc token, set both by the pipeline's pseudo-targets and by the
+  // briefing's synthetic stand-ins; policy documents never use it. An explicit
+  // field beats id-prefix sniffing, which would misfire on uploaded document
+  // abbreviations (e.g. "ADP") or hand-curated action ids.
+  const isReportedAction = target.sourceDocument === "BTR";
   const actionColor = getDocColor(countryConfig, "BTR");
+  // The stand-in's sourceLabel carries the country-reported status; localize
+  // the four known stages so the card matches the slide's status vocabulary.
+  const statusKey = (target.sourceLabel ?? "").trim().toLowerCase();
+  const actionStatusLabel = BTR_STATUS_KEYS.includes(statusKey)
+    ? tc(`status.${statusKey}`)
+    : target.sourceLabel;
   return (
     <div
       className="rounded-md border p-4"
@@ -328,7 +339,7 @@ function TargetCard({
         style={{ color: isReportedAction ? actionColor : color }}
       >
         {isReportedAction
-          ? [t("reportedActionTag"), target.sourceLabel]
+          ? [t("reportedActionTag"), actionStatusLabel]
               .filter(Boolean)
               .join(" · ")
           : `${docLabel} · ${target.sourceLabel}`}

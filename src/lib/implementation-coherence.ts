@@ -91,6 +91,14 @@ export interface ActionPlanAlignmentSummary {
 
 const BTR_ID = /^(BTR|BTRA|ADP)_/;
 
+/**
+ * Mirror of the pipeline's id assignment in `measures_to_pseudo_targets`
+ * (python/src/measure_align.py). The rules MUST match or evidence silently
+ * attaches to the wrong action: rows with an empty name or status are
+ * SKIPPED without consuming a sequence number; mitigation rows get
+ * positional "BTR_{seq}"; adaptation rows keep a non-empty pre-assigned id
+ * verbatim, else fall back to positional "BTRA_{seq}".
+ */
 export function buildActionMeta(
   btrData: BtrData,
 ): Map<string, { name: string; actionType: BTRActionType; measure: BTRAction }> {
@@ -98,18 +106,25 @@ export function buildActionMeta(
     string,
     { name: string; actionType: BTRActionType; measure: BTRAction }
   >();
-  let mitCount = 0;
-  (btrData.mitigationMeasures ?? []).forEach((m, i) => {
+  // One sequence per action type, mirroring the pipeline's SEPARATE
+  // measures_to_pseudo_targets calls for the mitigation and adaptation lists.
+  // The sequence advances for EVERY valid row of its type (also when a
+  // pre-assigned id is honored), exactly like the pipeline's `seq`.
+  let mitSeq = 0;
+  let adpSeq = 0;
+  for (const m of btrData.mitigationMeasures ?? []) {
+    // Pipeline skip rule: no name or no status -> no pseudo-target, no seq.
+    if (!(m.name ?? "").trim() || !(m.status ?? "").trim()) continue;
     const isAdapt = m.actionType === "adaptation";
-    const id = isAdapt
-      ? ((m as { id?: string }).id ?? `ADP_unknown_${i}`)
-      : `BTR_${(mitCount += 1)}`;
+    const seq = isAdapt ? (adpSeq += 1) : (mitSeq += 1);
+    const preId = ((m as { id?: string }).id ?? "").trim();
+    const id = preId || (isAdapt ? `BTRA_${seq}` : `BTR_${seq}`);
     map.set(id, {
       name: m.name,
       actionType: isAdapt ? "adaptation" : "mitigation",
       measure: m,
     });
-  });
+  }
   return map;
 }
 
@@ -249,9 +264,11 @@ export function computeActionPlanAlignment(
 // ── Institution helpers (named institutions = who would coordinate) ──────────
 
 /**
- * Sourced abbreviation expansions, keyed by the lowercased abbreviation. Values
- * MUST trace to a primary source (the country BTR / APNDC abbreviation list) —
- * never invent one. Unmapped abbreviations render as the raw string.
+ * Default (empty) acronym map: the REAL sourced registry lives in
+ * `src/data/org-acronyms.ts` and is passed in explicitly by the briefing.
+ * Do NOT add expansions here — they would only affect tests, never the app.
+ * Values must trace to a primary source (the country BTR / APNDC abbreviation
+ * list); unmapped abbreviations render as the raw string.
  */
 export const SOURCED_ORG_EXPANSIONS: Record<string, string> = {};
 
@@ -279,7 +296,10 @@ export function splitInstitutions(raw: string): string[] {
     .filter(Boolean);
 }
 
-/** The institutions named on a reported action, normalised, deduped, sorted. */
+/** The institutions named on a reported action, normalised, deduped, sorted.
+ *  Dedupe runs on the FINAL label (post sourced-map expansion), so a row that
+ *  names the same ministry twice — acronym and full form — collapses to one
+ *  entry instead of listing the expanded label twice. */
 export function orgLabelsFor(
   m: BTRAction,
   sourcedMap: Record<string, string> = SOURCED_ORG_EXPANSIONS,
@@ -288,16 +308,17 @@ export function orgLabelsFor(
     m.actionType === "adaptation"
       ? (m.responsibleOrgs ?? [])
       : splitInstitutions(m.implementingEntity ?? "");
-  const byKey = new Map<string, string>();
+  const byCanonical = new Map<string, string>();
   for (const raw of raws) {
-    const { key, label, expanded } = normalizeOrg(raw, sourcedMap);
+    const { key, label } = normalizeOrg(raw, sourcedMap);
     if (!key) continue;
-    const current = byKey.get(key);
-    if (!current) byKey.set(key, label);
-    else if (!expanded && startsUpper(label) && !startsUpper(current))
-      byKey.set(key, label);
+    const canonical = label.toLowerCase();
+    const current = byCanonical.get(canonical);
+    if (!current) byCanonical.set(canonical, label);
+    else if (startsUpper(label) && !startsUpper(current))
+      byCanonical.set(canonical, label);
   }
-  return [...byKey.values()].sort((a, b) => a.localeCompare(b));
+  return [...byCanonical.values()].sort((a, b) => a.localeCompare(b));
 }
 
 // ── Country-reported status (lifecycle, not judgement) ───────────────────────

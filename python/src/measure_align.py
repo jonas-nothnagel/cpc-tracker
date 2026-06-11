@@ -72,11 +72,16 @@ _MEASURE_STEP2 = (
     "impact of both sides to assess their relationship."
 )
 
+# Hard RuntimeError (asserts vanish under `python -O`), and uniqueness is
+# required: str.replace rewrites EVERY occurrence, so a needle that appears
+# twice would silently corrupt the rubric.
 for _needle in (_CANON_GOAL, _CANON_TASK1, _CANON_STEP2):
-    assert _needle in ADVISOR_USER_TEMPLATE, (
-        "align.py's v2.1 ADVISOR_USER_TEMPLATE changed; update the "
-        f"measure-alignment rewrites in measure_align.py. Missing: {_needle[:60]}..."
-    )
+    if ADVISOR_USER_TEMPLATE.count(_needle) != 1:
+        raise RuntimeError(
+            "align.py's v2.1 ADVISOR_USER_TEMPLATE changed (needle count "
+            f"{ADVISOR_USER_TEMPLATE.count(_needle)} != 1); update the "
+            f"measure-alignment rewrites in measure_align.py: {_needle[:60]}..."
+        )
 
 MEASURE_ADVISOR_USER_TEMPLATE = (
     ADVISOR_USER_TEMPLATE.replace(_CANON_GOAL, _MEASURE_GOAL)

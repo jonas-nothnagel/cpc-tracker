@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  buildActionMeta,
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
@@ -124,6 +125,20 @@ describe("computeActionPlanAlignment", () => {
     expect(r.rankedActions[0].actionName).toBe("Livestock regulation");
   });
 
+  it("mirrors the pipeline's id rules: skip empty name/status, BTRA fallback, pre-ids honored", () => {
+    const staged = btr([
+      mit("Valid one"), // BTR_1
+      mit("", {}), // empty name -> skipped, consumes NO seq (pipeline rule)
+      mit("No status", { status: "" }), // skipped too
+      mit("Valid two"), // BTR_2 (not BTR_4)
+      { ...adapt("", "Fallback adaptation"), id: "" } as BTRAction, // empty id -> BTRA_1
+      adapt("ADP_7_1", "Curated adaptation"), // pre-assigned id honored
+    ]);
+    const ids = [...buildActionMeta(staged).keys()];
+    expect(ids).toEqual(["BTR_1", "BTR_2", "BTRA_1", "ADP_7_1"]);
+    expect(buildActionMeta(staged).get("BTR_2")!.name).toBe("Valid two");
+  });
+
   it("splits manageability into coordination-level and design-level counts", () => {
     const alignment = [
       flag("BTR_1", "T1", "manageable"),
@@ -244,6 +259,16 @@ describe("orgLabelsFor", () => {
       responsibleOrgs: ["universities", "Universities", "  Universities "],
     } as BTRAction);
     expect(labels).toEqual(["Universities"]);
+  });
+
+  it("collapses an acronym and its full name named on the SAME action into one label", () => {
+    // Source tables sometimes write "acronym / full name" in one cell; after
+    // sourced expansion both tokens carry the same label and must dedupe.
+    const labels = orgLabelsFor(
+      m({ implementingEntity: "MET / Ministry of Environment and Climate Change" }),
+      { met: "Ministry of Environment and Climate Change" },
+    );
+    expect(labels).toEqual(["Ministry of Environment and Climate Change"]);
   });
 });
 

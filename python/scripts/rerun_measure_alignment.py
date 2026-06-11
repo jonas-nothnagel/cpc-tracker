@@ -23,6 +23,7 @@ import argparse
 import asyncio
 import json
 import logging
+import re
 import sys
 from pathlib import Path
 
@@ -63,8 +64,11 @@ async def main() -> None:
     args = parse_args()
     set_language(args.language)
 
-    stem = args.targets_file.replace("-targets.json", "")
-    out_dir = OUTPUT_DIR / stem
+    # Mirror run_analysis's derivation: "mongolia-targets.json" -> "mongolia",
+    # and the upload-flow "targets.json" -> "" (outputs live directly in
+    # OUTPUT_DIR, typically via CPC_OUTPUT_DIR).
+    stem = re.sub(r"-?targets\.json$", "", args.targets_file)
+    out_dir = OUTPUT_DIR / stem if stem else OUTPUT_DIR
     if not out_dir.exists():
         raise SystemExit(f"Output dir {out_dir} does not exist; run the full pipeline first.")
 
@@ -73,7 +77,9 @@ async def main() -> None:
     logger.info(f"Loaded {len(targets)} targets from {args.targets_file}")
 
     doc_type_labels: dict[str, str] | None = None
-    cfg_path = DATA_DIR / f"{stem}-country-config.json"
+    cfg_path = DATA_DIR / (
+        f"{stem}-country-config.json" if stem else "country-config.json"
+    )
     if cfg_path.exists():
         cc = json.loads(cfg_path.read_text())
         doc_type_labels = {

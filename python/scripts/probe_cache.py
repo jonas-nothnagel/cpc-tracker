@@ -19,12 +19,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.config import DATA_DIR, LLM_MODEL  # noqa: E402
+from src.config import DATA_DIR, LLM_MODEL, OUTPUT_DIR  # noqa: E402
 from src.llm import _augment_system_with_language, read_cache, set_language  # noqa: E402
 from src.align import (  # noqa: E402
     ADVISOR_SYSTEM,
@@ -133,12 +134,17 @@ def main() -> None:
     set_language(args.language)
     n = args.sample
 
-    stem = args.targets_file.replace("-targets.json", "")
+    # Mirror run_analysis's derivation: "mongolia-targets.json" -> "mongolia",
+    # and the upload-flow "targets.json" -> "" (outputs live directly in
+    # OUTPUT_DIR, typically via CPC_OUTPUT_DIR).
+    stem = re.sub(r"-?targets\.json$", "", args.targets_file)
     raw = json.loads((DATA_DIR / args.targets_file).read_text())
     targets = raw["targets"] if isinstance(raw, dict) else raw
 
     labels = DOC_TYPE_LABELS
-    cfg_path = DATA_DIR / f"{stem}-country-config.json"
+    cfg_path = DATA_DIR / (
+        f"{stem}-country-config.json" if stem else "country-config.json"
+    )
     if cfg_path.exists():
         cc = json.loads(cfg_path.read_text())
         labels = {dt["id"]: dt["mediumLabel"] for dt in cc.get("documentTypes", [])}
@@ -146,11 +152,19 @@ def main() -> None:
     print(f"Probe: {stem} · language={args.language} · model={LLM_MODEL} · sample={n}\n")
 
     # 1. Target decompositions ("decompose"). Keep the cached content: the
-    #    alignment prompts embed it, so misses here cascade.
+    #    alignment prompts embed it, so misses here cascade. Lookups are
+    #    memoized (write-back) because the same target recurs across pairs.
     decomp_cache: dict[str, str | None] = {}
+
+    def target_decomp(t: dict) -> str | None:
+        tid = t["id"]
+        if tid not in decomp_cache:
+            decomp_cache[tid] = _hit("decompose", *analyst_call(t))
+        return decomp_cache[tid]
+
     sample_targets = targets[:n]
     for t in sample_targets:
-        decomp_cache[t["id"]] = _hit("decompose", *analyst_call(t))
+        target_decomp(t)
     d_hits = sum(1 for v in decomp_cache.values() if v is not None)
     print(f"  decompose            {d_hits:>4}/{len(sample_targets):<4} {verdict(d_hits, len(sample_targets))}")
 
@@ -158,8 +172,8 @@ def main() -> None:
     pairs = generate_pairs(targets)[:n]
     a_hits = a_n = 0
     for ta, tb in pairs:
-        da = decomp_cache.get(ta["id"]) or _hit("decompose", *analyst_call(ta))
-        db = decomp_cache.get(tb["id"]) or _hit("decompose", *analyst_call(tb))
+        da = target_decomp(ta)
+        db = target_decomp(tb)
         if da is None or db is None:
             continue  # cannot reconstruct: counts as unknown, reported below
         a_n += 1
@@ -169,7 +183,10 @@ def main() -> None:
     print(f"  alignment_v2         {a_hits:>4}/{a_n:<4} {verdict(a_hits, a_n)}{note}")
 
     # 3. Measure alignment ("measure_alignment_v3"), when BTR data exists.
-    btr_path = Path(__file__).resolve().parent.parent / "output" / stem / "btr_data.json"
+    # OUTPUT_DIR honors CPC_OUTPUT_DIR, so the probe reads the same outputs
+    # the run would (a hardcoded repo-local path would silently probe stale
+    # or absent data in exactly the redirected setups that need the probe).
+    btr_path = (OUTPUT_DIR / stem if stem else OUTPUT_DIR) / "btr_data.json"
     if btr_path.exists():
         btr = json.loads(btr_path.read_text())
         pseudo = measures_to_pseudo_targets(
@@ -182,10 +199,14 @@ def main() -> None:
                 action_type="adaptation",
             )
         m_pairs = generate_measure_pairs(targets, pseudo)[:n]
+        m_decomp_cache: dict[str, str | None] = {}
         m_hits = m_n = 0
         for ta, m in m_pairs:
-            dt = decomp_cache.get(ta["id"]) or _hit("decompose", *analyst_call(ta))
-            dm = _hit("decompose", *measure_analyst_call(m))
+            dt = target_decomp(ta)
+            mid = m["id"]
+            if mid not in m_decomp_cache:
+                m_decomp_cache[mid] = _hit("decompose", *measure_analyst_call(m))
+            dm = m_decomp_cache[mid]
             if dt is None or dm is None:
                 continue
             m_n += 1

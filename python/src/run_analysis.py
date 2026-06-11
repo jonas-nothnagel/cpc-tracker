@@ -189,9 +189,16 @@ async def main() -> None:
     logger.info(f"Starting analysis pipeline (model: {LLM_MODEL}, language: {args.language})")
     logger.info(f"Output dir: {OUTPUT_DIR}")
     # Cache visibility: a cold cache means a full recompute at full cost.
-    # Probe expected hit rates first with scripts/probe_cache.py.
-    cache_entries = sum(1 for _ in CACHE_DIR.glob("*/*.json"))
-    logger.info(f"Cache: {CACHE_DIR} ({cache_entries} entries)")
+    # Probe expected hit rates first with scripts/probe_cache.py. Count only
+    # the decompose namespace: enumerating the full tree (>100k files) is
+    # expensive on network mounts like the Azure /home share.
+    _decompose_dir = CACHE_DIR / "decompose"
+    _decompose_entries = (
+        sum(1 for _ in _decompose_dir.glob("*.json")) if _decompose_dir.exists() else 0
+    )
+    logger.info(
+        f"Cache: {CACHE_DIR} (decompose namespace: {_decompose_entries} entries)"
+    )
     logger.info("=" * 60)
 
     # Seed tracker with any pre-analysis footprint (e.g. from document
@@ -222,17 +229,16 @@ async def main() -> None:
         # corpora (upload flow) are legitimately cold. Full per-step probe:
         # scripts/probe_cache.py.
         canary = targets[:20]
-        canary_hits = sum(
-            1
-            for t in canary
+        canary_hits = 0
+        for t in canary:
+            call = build_analyst_call(t)
             if read_cache(
                 "decompose",
-                _augment_system_with_language(build_analyst_call(t)["system"]),
-                build_analyst_call(t)["user"],
+                _augment_system_with_language(call["system"]),
+                call["user"],
                 LLM_MODEL,
-            )
-            is not None
-        )
+            ) is not None:
+                canary_hits += 1
         if canary and canary_hits == 0:
             logger.warning(
                 f"Cache canary: 0/{len(canary)} decompose hits — COLD RUN, the "
