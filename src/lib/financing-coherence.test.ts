@@ -83,11 +83,38 @@ describe("computeFinancingCoherence", () => {
       }),
     );
     expect(r.execution).toEqual({
+      programName: null,
+      programNameByLocale: null,
       planned: 1900,
       actual: 1200,
       gap: 700,
       period: "2015-2025",
     });
+  });
+
+  it("carries the program name and locale map through when present", () => {
+    const r = computeFinancingCoherence(
+      ber({
+        keyFindings: {
+          programName: "National Biodiversity Program",
+          programNameByLocale: {
+            en: "National Biodiversity Program",
+            mn: "Байгаль орчны олон янз байдлын үндэсний хөтөлбөр",
+          },
+          plannedBudget: 1900,
+          actualExpenditure: 1200,
+          gap: 700,
+          programPeriod: "2015-2025",
+        },
+      }),
+    );
+    expect(r.execution?.programName).toBe("National Biodiversity Program");
+    expect(r.execution?.programNameByLocale?.mn).toBe(
+      "Байгаль орчны олон янз байдлын үндэсний хөтөлбөр",
+    );
+    // The named program's period is distinct from the year-by-year review
+    // period — the two must not be conflated.
+    expect(r.execution?.period).not.toBe(r.periodLabel);
   });
 
   it("leaves execution null when the BER has no keyFindings", () => {

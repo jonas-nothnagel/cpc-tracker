@@ -15,7 +15,7 @@
  *      line, labelled with its own wider period).
  */
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { formatBerMoney } from "@/lib/financing-coherence";
 import type {
@@ -42,6 +42,7 @@ export function FinancingCenterpiece({
           execution={summary.execution}
           unit={summary.unit}
           currency={summary.currency}
+          reviewPeriod={summary.periodLabel}
         />
       )}
     </div>
@@ -258,24 +259,40 @@ function ProgramLegendRow({
   );
 }
 
-// Supporting fact — not all of the planned budget is spent.
+// Supporting fact — a different, wider envelope than the year-by-year review
+// above: a named multi-year program's planned-vs-actual, over its OWN period.
+// The eyebrow names the program so this never reads as a continuation of the
+// expenditure total above (the two figures don't reconcile — different scope).
 function ExecutionBar({
   execution,
   unit,
   currency,
+  reviewPeriod,
 }: {
   execution: NonNullable<FinancingCoherenceSummary["execution"]>;
   unit: string;
   currency: string;
+  reviewPeriod: string;
 }) {
   const t = useTranslations("briefing.financingCenter");
+  const locale = useLocale();
+  // Prefer the active locale's program name (sourced from the BER), fall back
+  // to the canonical name so non-localised data still renders.
+  const programName =
+    execution.programNameByLocale?.[locale] ?? execution.programName;
   const spentShare =
     execution.planned > 0 ? execution.actual / execution.planned : 0;
   const gapPct = Math.round((1 - spentShare) * 100);
+  const widerThanReview = execution.period !== reviewPeriod;
   return (
     <div>
       <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
-        {t("execution.eyebrow", { period: execution.period })}
+        {programName
+          ? t("execution.eyebrowNamed", {
+              program: programName,
+              period: execution.period,
+            })
+          : t("execution.eyebrow", { period: execution.period })}
       </p>
       <div
         className="h-2.5 w-full rounded-full overflow-hidden"
@@ -307,6 +324,14 @@ function ExecutionBar({
           </span>
         )}
       </p>
+      {widerThanReview && (
+        <p className="text-[10.5px] text-[var(--undp-gray)]/80 mt-1 leading-snug">
+          {t("execution.scopeNote", {
+            period: execution.period,
+            reviewPeriod,
+          })}
+        </p>
+      )}
     </div>
   );
 }

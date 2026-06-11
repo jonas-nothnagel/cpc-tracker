@@ -568,9 +568,11 @@
         "everythingElse": "everything else"
       },
       "execution": {
-        "eyebrow": "Not all of it is spent · {period}",
+        "eyebrow": "Planned vs spent · {period}",
+        "eyebrowNamed": "{program} · {period}",
         "spent": "<strong>{actual}</strong> of {planned} {unit} {currency} spent",
-        "unspent": "· {amount} ({pct}%) unspent"
+        "unspent": "· {amount} ({pct}%) unspent",
+        "scopeNote": "The program's total planned funding across its full {period} period, not the year-by-year spending in the {reviewPeriod} review above."
       }
     },
     "docFilter": {

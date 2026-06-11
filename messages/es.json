@@ -568,9 +568,11 @@
         "everythingElse": "todo lo demás"
       },
       "execution": {
-        "eyebrow": "No se gasta todo · {period}",
+        "eyebrow": "Planificado frente a gastado · {period}",
+        "eyebrowNamed": "{program} · {period}",
         "spent": "<strong>{actual}</strong> de {planned} {unit} {currency} gastado",
-        "unspent": "· {amount} ({pct}%) sin gastar"
+        "unspent": "· {amount} ({pct}%) sin gastar",
+        "scopeNote": "El financiamiento total previsto del programa para todo su período {period}, no el gasto anual de la revisión de {reviewPeriod} anterior."
       }
     },
     "docFilter": {

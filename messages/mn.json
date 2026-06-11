@@ -568,9 +568,11 @@
         "everythingElse": "бусад бүх зүйл"
       },
       "execution": {
-        "eyebrow": "Бүгд зарцуулагдаагүй · {period}",
+        "eyebrow": "Төлөвлөсөн ба зарцуулсан · {period}",
+        "eyebrowNamed": "{program} · {period}",
         "spent": "{planned} {unit} {currency}-аас <strong>{actual}</strong> зарцуулсан",
-        "unspent": "· {amount} ({pct}%) зарцуулаагүй"
+        "unspent": "· {amount} ({pct}%) зарцуулаагүй",
+        "scopeNote": "Тус хөтөлбөрийн {period} оны бүх хугацаанд төлөвлөсөн нийт санхүүжилт. Дээрх {reviewPeriod} оны тойм нь жил бүрийн бодит зарцуулалтыг харуулна."
       }
     },
     "docFilter": {
