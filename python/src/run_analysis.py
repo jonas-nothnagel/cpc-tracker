@@ -30,16 +30,22 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import DATA_DIR, LLM_MODEL, OUTPUT_DIR
+from .config import CACHE_DIR, DATA_DIR, LLM_MODEL, OUTPUT_DIR
 from .classify import rank_classification
 from .classify_globe import (
     classify_globe_subcategories,
     derive_globe_top_level_classifications,
     load_few_shot_examples,
 )
-from .align import decompose_targets, generate_pairs, assess_alignment
+from .align import build_analyst_call, decompose_targets, generate_pairs, assess_alignment
 from .extract_friction_dimensions import enrich_with_friction_dimensions
-from .llm import estimate_footprint_from_counts, get_footprint_tracker, set_language
+from .llm import (
+    _augment_system_with_language,
+    estimate_footprint_from_counts,
+    get_footprint_tracker,
+    read_cache,
+    set_language,
+)
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
 from .measure_align import (
@@ -182,6 +188,17 @@ async def main() -> None:
     started_at = datetime.now(timezone.utc).isoformat()
     logger.info(f"Starting analysis pipeline (model: {LLM_MODEL}, language: {args.language})")
     logger.info(f"Output dir: {OUTPUT_DIR}")
+    # Cache visibility: a cold cache means a full recompute at full cost.
+    # Probe expected hit rates first with scripts/probe_cache.py. Count only
+    # the decompose namespace: enumerating the full tree (>100k files) is
+    # expensive on network mounts like the Azure /home share.
+    _decompose_dir = CACHE_DIR / "decompose"
+    _decompose_entries = (
+        sum(1 for _ in _decompose_dir.glob("*.json")) if _decompose_dir.exists() else 0
+    )
+    logger.info(
+        f"Cache: {CACHE_DIR} (decompose namespace: {_decompose_entries} entries)"
+    )
     logger.info("=" * 60)
 
     # Seed tracker with any pre-analysis footprint (e.g. from document
@@ -204,6 +221,32 @@ async def main() -> None:
     try:
         # 1. Load data
         targets, nbs_categories, sectors, globe_categories, globe_subcategories = load_input_data(args.targets_file)
+
+        # Cache canary: expected hit rate on a decomposition sample. The
+        # decompose prompts are upstream of everything, so 0 hits here means
+        # this run RECOMPUTES THE CORPUS at full cost (cold checkout, model
+        # switch, --language change, or prompt edits). Log-only: brand-new
+        # corpora (upload flow) are legitimately cold. Full per-step probe:
+        # scripts/probe_cache.py.
+        canary = targets[:20]
+        canary_hits = 0
+        for t in canary:
+            call = build_analyst_call(t)
+            if read_cache(
+                "decompose",
+                _augment_system_with_language(call["system"]),
+                call["user"],
+                LLM_MODEL,
+            ) is not None:
+                canary_hits += 1
+        if canary and canary_hits == 0:
+            logger.warning(
+                f"Cache canary: 0/{len(canary)} decompose hits — COLD RUN, the "
+                f"corpus will recompute at full cost. If unexpected, stop now "
+                f"and check model/--language/cache dir (scripts/probe_cache.py)."
+            )
+        else:
+            logger.info(f"Cache canary: {canary_hits}/{len(canary)} decompose hits")
 
         # Load country-specific GLOBE few-shot examples if available.
         # Mongolia ships `mongolia-ber-globe-examples.json` with 138 expert-curated

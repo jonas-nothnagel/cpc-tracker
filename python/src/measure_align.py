@@ -15,7 +15,6 @@ import re
 from typing import Any
 
 from .align import (
-    ADVISOR_SYSTEM,
     ADVISOR_USER_TEMPLATE,
     ANALYST_SYSTEM,
     ANALYST_USER_TEMPLATE,
@@ -29,10 +28,68 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Adapted Agent 2 prompt for implementation alignment
 # ---------------------------------------------------------------------------
+# WHY THIS DIVERGES FROM THE v2.1 TEMPLATE (2026-06-10): the canonical template
+# frames every pair as "two targets" ("Goal: Compare two structured targets...",
+# "- {type} target: ...") and gives no instruction on how the explanation should
+# refer to the sides. With one side being a reported BTR action, ~70% of the
+# stored rationales opened with "Both targets ...", presenting an implementation
+# action as a policy commitment in user-facing text. The fix below keeps the
+# SCORING RUBRIC AND EXAMPLES byte-identical with target-target alignment (to
+# minimise verdict churn and rubric drift) and rewrites only the pair-framing
+# lines plus an explicit wording rule for the explanation. align.py itself is
+# untouched, so the target-target / budget / NR7 prompt caches stay valid.
 
-MEASURE_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the v2.1 system prompt.
+MEASURE_ADVISOR_SYSTEM = (
+    "You are an Implementation Alignment Advisor, ensuring factual, graded "
+    "assessments of whether reported implementation actions support policy "
+    "targets. Most reported actions within climate-nature frameworks share "
+    "some degree of alignment with the policy framework they report under."
+)
 
-# Prepended to the v2.1 advisor template when the reported action is an
+# Targeted rewrites of the canonical template's pair-framing lines. Each
+# original string is asserted below so that if align.py's template drifts,
+# this module fails loudly at import time instead of silently mis-rendering.
+_CANON_GOAL = (
+    "Goal: Compare two structured targets from different policies and assign "
+    "an alignment level from five clearly defined categories."
+)
+_MEASURE_GOAL = (
+    "Goal: Compare a policy target with a reported implementation action and "
+    "assign an alignment level from five clearly defined categories."
+)
+_CANON_TASK1 = """    1. Analyze the following two targets (structured analysis from Target Analyst):
+       - {target_1_type} target: {target_1_decomp}
+       - {target_2_type} target: {target_2_decomp}"""
+_MEASURE_TASK1 = """    1. Analyze the following pair (structured analysis from Target Analyst):
+       - {target_1_type}: {target_1_decomp}
+       - {target_2_type}: {target_2_decomp}"""
+_CANON_STEP2 = (
+    "2. Compare the goal, action, ecosystem, target audience, and expected "
+    "impact of both targets to assess their relationship."
+)
+_MEASURE_STEP2 = (
+    "2. Compare the goal, action, ecosystem, target audience, and expected "
+    "impact of both sides to assess their relationship."
+)
+
+# Hard RuntimeError (asserts vanish under `python -O`), and uniqueness is
+# required: str.replace rewrites EVERY occurrence, so a needle that appears
+# twice would silently corrupt the rubric.
+for _needle in (_CANON_GOAL, _CANON_TASK1, _CANON_STEP2):
+    if ADVISOR_USER_TEMPLATE.count(_needle) != 1:
+        raise RuntimeError(
+            "align.py's v2.1 ADVISOR_USER_TEMPLATE changed (needle count "
+            f"{ADVISOR_USER_TEMPLATE.count(_needle)} != 1); update the "
+            f"measure-alignment rewrites in measure_align.py: {_needle[:60]}..."
+        )
+
+MEASURE_ADVISOR_USER_TEMPLATE = (
+    ADVISOR_USER_TEMPLATE.replace(_CANON_GOAL, _MEASURE_GOAL)
+    .replace(_CANON_TASK1, _MEASURE_TASK1)
+    .replace(_CANON_STEP2, _MEASURE_STEP2)
+)
+
+# Prepended to the advisor template when the reported action is an
 # adaptation action rather than a mitigation measure. Keeps the same scoring
 # rubric but tells the advisor not to penalise adaptation actions for lacking
 # CO2e reduction estimates.
@@ -43,19 +100,33 @@ ADAPTATION_CONTEXT_NOTE = (
     "in CO2e; do not penalize the action for lacking emissions reductions.\n"
 )
 
-# Framing injected into the canonical v2.1 ADVISOR_USER_TEMPLATE's
-# {intro_framing} slot so the advisor knows it is comparing a policy target
-# against a reported implementation action (rather than two policy targets).
-# The scoring rubric (five categories + three sub-fields) is shared with
-# target-target alignment.
+# Framing injected into the {intro_framing} slot for policy-target x reported-
+# action pairs. The scoring rubric (five categories + three sub-fields) is
+# shared with target-target alignment; only the framing and the wording rule
+# differ.
 MEASURE_INTRO_FRAMING = (
     "\n    Context for this comparison: one side of this pair is a policy target "
     "extracted from a national strategy or policy document; the other side is a "
-    "reported implementation action from a Biennial Transparency Report. Apply the "
-    "same scoring rubric. A measure that directly implements a target is High alignment; "
-    "a measure that operates in the same broad sector but does not advance the target's "
-    "specific goals is Low alignment; a measure that creates real-world friction with the "
+    "REPORTED IMPLEMENTATION ACTION from a Biennial Transparency Report. The reported "
+    "action is something the country reports doing; it is NOT a policy target. Apply the "
+    "same scoring rubric. An action that directly implements the target is High alignment; "
+    "an action that operates in the same broad sector but does not advance the target's "
+    "specific goals is Low alignment; an action that creates real-world friction with the "
     "target (e.g. expanding livestock while the target caps the herd) is Flagged for review.\n"
+    '    Wording rule for the explanation: refer to the policy side as "the target" (or by '
+    'its document name) and to the BTR side as "the reported action" or "the action". '
+    'Never call the reported action a target, and never write "both targets".\n'
+)
+
+# Framing for BTR-internal mitigation x adaptation pairs, where NEITHER side
+# is a policy target.
+CROSS_TYPE_INTRO_FRAMING = (
+    "\n    Context for this comparison: BOTH sides of this pair are reported implementation "
+    "actions from the same Biennial Transparency Report (one mitigation, one adaptation); "
+    "neither side is a policy target. Apply the same scoring rubric to whether the two "
+    "reported actions work together or against each other on the ground.\n"
+    '    Wording rule for the explanation: refer to the sides as "the mitigation action" and '
+    '"the adaptation action". Never call either side a target, and never write "both targets".\n'
 )
 
 
@@ -245,6 +316,22 @@ async def decompose_measures(
     return decomps
 
 
+def _side_label(
+    row: dict[str, Any], labels: dict[str, str]
+) -> str:
+    """How the advisor prompt names one side of a pair.
+
+    Pseudo-actions (built by `measures_to_pseudo_targets`, marked by their
+    `measureStatus` field) are named as reported actions, never as targets;
+    real policy targets carry their document label.
+    """
+    if "measureStatus" in row:
+        kind = row.get("actionType", "mitigation")
+        return f"Reported {kind} action (BTR)"
+    doc = row["sourceDocument"]
+    return f"Policy target ({labels.get(doc, doc)})"
+
+
 async def assess_measure_alignment(
     pairs: list[tuple[dict[str, Any], dict[str, Any]]],
     decompositions: dict[str, str],
@@ -263,6 +350,13 @@ async def assess_measure_alignment(
         decomp_t = decompositions.get(target["id"], "")
         decomp_m = decompositions.get(measure["id"], "")
 
+        # Cross-type pairs (mitigation x adaptation, both BTR-internal) get
+        # their own framing: neither side is a policy target.
+        is_cross_type = "measureStatus" in target
+        base_framing = (
+            CROSS_TYPE_INTRO_FRAMING if is_cross_type else MEASURE_INTRO_FRAMING
+        )
+
         # Inject the adaptation context note when the BTR-side row is an
         # adaptation action so the advisor doesn't penalize it for missing
         # CO2e reduction estimates.
@@ -271,15 +365,13 @@ async def assess_measure_alignment(
             if measure.get("actionType") == "adaptation"
             else ""
         )
-        intro_framing = MEASURE_INTRO_FRAMING + adaptation_note
+        intro_framing = base_framing + adaptation_note
 
-        user = ADVISOR_USER_TEMPLATE.format(
+        user = MEASURE_ADVISOR_USER_TEMPLATE.format(
             intro_framing=intro_framing,
-            target_1_type=labels.get(
-                target["sourceDocument"], target["sourceDocument"]
-            ),
+            target_1_type=_side_label(target, labels),
             target_1_decomp=decomp_t,
-            target_2_type="BTR reported action",
+            target_2_type=_side_label(measure, labels),
             target_2_decomp=decomp_m,
         )
         calls.append({"system": MEASURE_ADVISOR_SYSTEM, "user": user})
@@ -287,7 +379,9 @@ async def assess_measure_alignment(
 
     results = await call_llm_batch(
         calls,
-        cache_namespace="measure_alignment_v2",
+        # v3: side-correct framing + explanation wording rule (2026-06-10).
+        # New namespace so stale "both targets" rationales are never reused.
+        cache_namespace="measure_alignment_v3",
         desc="Measure alignment",
     )
 

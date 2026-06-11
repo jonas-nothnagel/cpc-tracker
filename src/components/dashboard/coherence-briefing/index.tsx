@@ -53,9 +53,14 @@ import {
   FINANCING_SECTION_ID,
   FinancingSection,
 } from "./sections/financing";
+import {
+  IMPLEMENTATION_SECTION_ID,
+  ImplementationSection,
+} from "./sections/implementation";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
+import { DeliveryRoster } from "./centerpiece/delivery-roster";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
@@ -98,6 +103,16 @@ import {
   type BudgetCoverage,
   type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
+import {
+  buildActionMeta,
+  computeActionPlanAlignment,
+  computeDeliveryRoster,
+  computeImplementationCoverage,
+  type ActionPlanAlignmentSummary,
+  type DeliveryRosterModel,
+  type ImplementationCoverage,
+} from "@/lib/implementation-coherence";
+import { orgAcronymsFor } from "@/data/org-acronyms";
 import type {
   AlignmentResult,
   BerData,
@@ -128,6 +143,7 @@ type SectionId =
   | typeof SECTORS_SECTION_ID
   | typeof WHERE_TO_FOCUS_SECTION_ID
   | typeof FINANCING_SECTION_ID
+  | typeof IMPLEMENTATION_SECTION_ID
   | typeof EXPLORE_SECTION_ID;
 
 function useSectionLabels(): Record<SectionId, string> {
@@ -140,13 +156,15 @@ function useSectionLabels(): Record<SectionId, string> {
     [SECTORS_SECTION_ID]: t("sectors"),
     [WHERE_TO_FOCUS_SECTION_ID]: t("whereToFocus"),
     [FINANCING_SECTION_ID]: t("financing"),
+    [IMPLEMENTATION_SECTION_ID]: t("implementation"),
     [EXPLORE_SECTION_ID]: t("explore"),
   };
 }
 
 // Canonical order. The Financing slide only renders for countries with BER
-// data (Mongolia today); on countries without it the section is dropped from
-// the jump-nav via `visibleSectionOrder` below and never mounts.
+// data (Mongolia today); the Implementation slide only for countries with BTR
+// data. Each is dropped from the jump-nav via `visibleSectionOrder` below and
+// never mounts when its data is absent.
 const SECTION_ORDER: SectionId[] = [
   DIRECTION_SECTION_ID,
   DOC_FOCUS_SECTION_ID,
@@ -155,6 +173,7 @@ const SECTION_ORDER: SectionId[] = [
   WHERE_TO_FOCUS_SECTION_ID,
   SECTORS_SECTION_ID,
   FINANCING_SECTION_ID,
+  IMPLEMENTATION_SECTION_ID,
   EXPLORE_SECTION_ID,
 ];
 
@@ -330,14 +349,70 @@ export function CoherenceBriefing({
     return computeBudgetCoverage(budgetAlignment, funded, visibleTargets);
   }, [financing, budgetAlignment, visibleTargets]);
 
-  // Jump-nav / slide order with the Financing slide gated on its data.
-  const visibleSectionOrder = useMemo(
-    () =>
-      financing
-        ? SECTION_ORDER
-        : SECTION_ORDER.filter((id) => id !== FINANCING_SECTION_ID),
-    [financing],
-  );
+  // ── Implementation (Level 3) — the BTR lens ─────────────────────
+  // What the BTR self-reports against the plan. Null → the Implementation
+  // slide is dropped entirely. Uses the FULL `alignment` (the merged array
+  // carries the BTR measure↔policy pairs that `visibleAlignment` strips); the
+  // policy side is gated on `visibleTargets` so it tracks the document toggle.
+  // Per-country sourced acronym map: collapses an acronym ("MET") and the full
+  // name ("Ministry of Environment and Climate Change") into one label in the
+  // neutral institution context shown on action detail.
+  // Empty until confirmed against the BTR's own abbreviations list (raw render).
+  const orgMap = useMemo(() => orgAcronymsFor(countryId), [countryId]);
+
+  const implementation = useMemo<ActionPlanAlignmentSummary | null>(() => {
+    if (!btrData || !btrData.mitigationMeasures?.length) return null;
+    return computeActionPlanAlignment(alignment, btrData, visibleTargets, 5, orgMap);
+  }, [btrData, alignment, visibleTargets, orgMap]);
+
+  // Coverage: which visible targets have >= 1 strongly aligned reported
+  // action (the slide's lead story, mirroring the Financing dot-map).
+  const implementationCoverage = useMemo<ImplementationCoverage | null>(() => {
+    if (!btrData || !btrData.mitigationMeasures?.length) return null;
+    return computeImplementationCoverage(alignment, btrData, visibleTargets, orgMap);
+  }, [btrData, alignment, visibleTargets, orgMap]);
+
+  // The report object for the right column: who is named on the reported
+  // actions, with each institution's actions as status-coloured dots.
+  // Neutral involvement as stated by the report, never a strain ranking.
+  const deliveryRoster = useMemo<DeliveryRosterModel | null>(() => {
+    if (!btrData || !btrData.mitigationMeasures?.length) return null;
+    return computeDeliveryRoster(btrData, orgMap);
+  }, [btrData, orgMap]);
+
+  // Synthetic Target stand-ins for reported actions, so an action↔target row
+  // in the Implementation drill-down opens the SAME PairDrawer as everywhere
+  // else in the briefing. sourceDocument "BTR" uses the reserved doc token;
+  // sourceLabel carries the country-reported status ("BTR · Ongoing").
+  const actionPairTargets = useMemo(() => {
+    const map = new Map<string, Target>();
+    if (!btrData?.mitigationMeasures?.length) return map;
+    for (const [id, meta] of buildActionMeta(btrData)) {
+      const status = (meta.measure.status ?? "").trim();
+      map.set(id, {
+        id,
+        text: meta.measure.description
+          ? `${meta.name}. ${meta.measure.description}`
+          : meta.name,
+        sourceDocument: "BTR",
+        sourceLabel: status,
+        country: countryName,
+        isQuantitative: false,
+        isTimeBound: false,
+      });
+    }
+    return map;
+  }, [btrData, countryName]);
+
+  // Jump-nav / slide order with the Financing and Implementation slides each
+  // gated independently on their data.
+  const visibleSectionOrder = useMemo(() => {
+    let order = SECTION_ORDER;
+    if (!financing) order = order.filter((id) => id !== FINANCING_SECTION_ID);
+    if (!implementation)
+      order = order.filter((id) => id !== IMPLEMENTATION_SECTION_ID);
+    return order;
+  }, [financing, implementation]);
 
   // Storyline-layer selection for the current hidden set. Corpus + sector
   // storylines come from precomputed states; doc-pair storylines are filtered
@@ -633,6 +708,33 @@ export function CoherenceBriefing({
       });
     },
     [visibleAlignment, targetMap],
+  );
+
+  // Implementation drill-down: open an action↔target relation in the same
+  // PairDrawer. The pair lives in the RAW merged `alignment` (measure pairs
+  // are stripped from `visibleAlignment`); the action side is a synthetic
+  // Target stand-in from `actionPairTargets`.
+  const openActionPair = useCallback(
+    (actionId: string, targetId: string) => {
+      const tTarget = targetMap.get(targetId);
+      const tAction = actionPairTargets.get(actionId);
+      if (!tTarget || !tAction) return;
+      const conn = alignment.find(
+        (p) =>
+          (p.targetAId === actionId && p.targetBId === targetId) ||
+          (p.targetAId === targetId && p.targetBId === actionId),
+      );
+      if (!conn) return;
+      // Action first: the connector reads in delivery direction ("BTR action
+      // supports / is possibly misaligned with the policy target").
+      setPairData({
+        mode: "target-pair",
+        pair: conn,
+        targetA: tAction,
+        targetB: tTarget,
+      });
+    },
+    [targetMap, actionPairTargets, alignment],
   );
 
   const openDocPairDrawer = useCallback(
@@ -951,6 +1053,7 @@ export function CoherenceBriefing({
     [SECTORS_SECTION_ID]: null,
     [WHERE_TO_FOCUS_SECTION_ID]: null,
     [FINANCING_SECTION_ID]: null,
+    [IMPLEMENTATION_SECTION_ID]: null,
     [EXPLORE_SECTION_ID]: null,
   });
 
@@ -1153,6 +1256,25 @@ export function CoherenceBriefing({
                 />
               </div>
             )}
+            {implementation && implementationCoverage && (
+              <div
+                ref={setSectionRef(IMPLEMENTATION_SECTION_ID)}
+                data-section-id={IMPLEMENTATION_SECTION_ID}
+                // Same short-section fix as Financing: fill the column on
+                // desktop so this brief finding stays in sync with its sticky
+                // reported-snapshot centerpiece.
+                className="lg:min-h-[80vh]"
+              >
+                <ImplementationSection
+                  coverage={implementationCoverage}
+                  summary={implementation}
+                  nr7Data={nr7Data}
+                  countryName={countryName}
+                  countryConfig={countryConfig}
+                  onOpenActionPair={openActionPair}
+                />
+              </div>
+            )}
           </div>
 
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
@@ -1187,6 +1309,12 @@ export function CoherenceBriefing({
               ) : activeSection === FINANCING_SECTION_ID && financing ? (
                 <FinancingCenterpiece
                   summary={financing}
+                  countryName={countryName}
+                />
+              ) : activeSection === IMPLEMENTATION_SECTION_ID &&
+                deliveryRoster ? (
+                <DeliveryRoster
+                  roster={deliveryRoster}
                   countryName={countryName}
                 />
               ) : (

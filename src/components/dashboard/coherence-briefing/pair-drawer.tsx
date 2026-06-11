@@ -18,6 +18,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   ALIGNMENT_COLORS,
+  getDocColor,
   getDocMediumLabel,
   getDocFullLabel,
 } from "@/lib/utils";
@@ -289,6 +290,10 @@ function TargetPairBody({
   );
 }
 
+/** The four country-reported BTR stages with localized labels; anything else
+ *  renders raw (statuses are free text in the source data). */
+const BTR_STATUS_KEYS = ["planned", "adopted", "ongoing", "implemented"];
+
 function TargetCard({
   target,
   countryConfig,
@@ -299,15 +304,45 @@ function TargetCard({
   color: string;
 }) {
   const t = useTranslations("briefing.drawer.pair");
+  const tc = useTranslations("briefing.implementationCenter");
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
   const docFull = getDocFullLabel(countryConfig, target.sourceDocument);
+  // Reported-action stand-ins (Implementation drill-down) carry the reserved
+  // "BTR" doc token, set both by the pipeline's pseudo-targets and by the
+  // briefing's synthetic stand-ins; policy documents never use it. An explicit
+  // field beats id-prefix sniffing, which would misfire on uploaded document
+  // abbreviations (e.g. "ADP") or hand-curated action ids.
+  const isReportedAction = target.sourceDocument === "BTR";
+  const actionColor = getDocColor(countryConfig, "BTR");
+  // The stand-in's sourceLabel carries the country-reported status; localize
+  // the four known stages so the card matches the slide's status vocabulary.
+  const statusKey = (target.sourceLabel ?? "").trim().toLowerCase();
+  const actionStatusLabel = BTR_STATUS_KEYS.includes(statusKey)
+    ? tc(`status.${statusKey}`)
+    : target.sourceLabel;
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-4">
+    <div
+      className="rounded-md border p-4"
+      style={
+        isReportedAction
+          ? {
+              // Visibly a different kind of card: tinted in the BTR colour,
+              // never the plain white of a policy-target card.
+              borderColor: `${actionColor}55`,
+              backgroundColor: `${actionColor}0D`,
+            }
+          : { borderColor: "#e5e7eb", backgroundColor: "#ffffff" }
+      }
+    >
       <p
         className="text-[10px] uppercase tracking-wider font-medium mb-2"
-        style={{ color }}
+        style={{ color: isReportedAction ? actionColor : color }}
       >
-        {docLabel} · {target.sourceLabel}
+        {isReportedAction
+          ? [t("reportedActionTag"), actionStatusLabel]
+              .filter(Boolean)
+              .join(" · ")
+          : `${docLabel} · ${target.sourceLabel}`}
       </p>
       <p className="text-sm text-[var(--undp-black)] leading-relaxed">
         {target.text}

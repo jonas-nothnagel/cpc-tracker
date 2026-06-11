@@ -38,7 +38,11 @@ OUTPUT_DIR = Path(os.getenv("CPC_OUTPUT_DIR") or str(_DEFAULT_OUTPUT))
 
 # Cache is shared across analyses for efficiency. Lives under OUTPUT_DIR so it
 # follows CPC_OUTPUT_DIR onto persistent storage (Azure App Service /home mount).
-CACHE_DIR = OUTPUT_DIR / ".cache"
+# CPC_CACHE_DIR overrides the location independently of OUTPUT_DIR so worktree
+# checkouts can point at the main checkout's warm cache instead of silently
+# starting cold (the 2026-05 full-recompute incident). Probe before long runs:
+# scripts/probe_cache.py reports expected hit rates without any API call.
+CACHE_DIR = Path(os.getenv("CPC_CACHE_DIR") or str(OUTPUT_DIR / ".cache"))
 
 # Ensure directories exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

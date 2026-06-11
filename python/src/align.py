@@ -375,6 +375,40 @@ def generate_pairs(
 # ---------------------------------------------------------------------------
 
 
+def build_analyst_call(t: dict[str, Any]) -> dict[str, str]:
+    """The exact Agent 1 (Target Analyst) call for one target.
+
+    Single source of truth for the decomposition prompt: used by
+    `decompose_targets` below, by the startup cache canary in
+    `run_analysis.py`, and by `scripts/probe_cache.py`. Keeping construction
+    in ONE place is what makes cache-hit probing trustworthy.
+    """
+    activities = (t.get("activities") or "").strip()
+    actions = (t.get("actions") or "").strip()
+
+    activities_block = (
+        f'    The target has associated implementation activities: "{activities}"\n'
+        if activities else ""
+    )
+    actions_block = (
+        f'    The target has associated actions/measures: "{actions}"\n'
+        if actions else ""
+    )
+    action_instruction = (
+        "Use the provided activities and actions/measures to inform this field, "
+        "integrating them with any actions described in the target text itself."
+        if (activities or actions) else ""
+    )
+
+    user = ANALYST_USER_TEMPLATE.format(
+        target_text=t["text"],
+        activities_block=activities_block,
+        actions_block=actions_block,
+        action_instruction=action_instruction,
+    )
+    return {"system": ANALYST_SYSTEM, "user": user}
+
+
 async def decompose_targets(
     targets: list[dict[str, Any]],
 ) -> dict[str, str]:
@@ -391,30 +425,7 @@ async def decompose_targets(
     calls = []
     target_ids = []
     for t in targets:
-        activities = (t.get("activities") or "").strip()
-        actions = (t.get("actions") or "").strip()
-
-        activities_block = (
-            f'    The target has associated implementation activities: "{activities}"\n'
-            if activities else ""
-        )
-        actions_block = (
-            f'    The target has associated actions/measures: "{actions}"\n'
-            if actions else ""
-        )
-        action_instruction = (
-            "Use the provided activities and actions/measures to inform this field, "
-            "integrating them with any actions described in the target text itself."
-            if (activities or actions) else ""
-        )
-
-        user = ANALYST_USER_TEMPLATE.format(
-            target_text=t["text"],
-            activities_block=activities_block,
-            actions_block=actions_block,
-            action_instruction=action_instruction,
-        )
-        calls.append({"system": ANALYST_SYSTEM, "user": user})
+        calls.append(build_analyst_call(t))
         target_ids.append(t["id"])
 
     results = await call_llm_batch(
