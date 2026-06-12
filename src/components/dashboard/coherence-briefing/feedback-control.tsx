@@ -84,15 +84,24 @@ export function FeedbackControl({
   anchorIds,
   contentText,
   context,
+  variant = "inline",
 }: {
   /** Canonical country slug; the control hides when absent (uploaded runs). */
   countryId?: string;
   surface: FeedbackSurface;
-  anchorIds: [string, string];
+  /** 1-2 stable ids: target pair, doc pair, or one storyline slug. */
+  anchorIds: string[];
   /** Full AI text being rated; hashed for re-run staleness detection. */
   contentText: string;
   /** AI verdict fields at vote time (analysis-only). */
   context?: FeedbackContext;
+  /**
+   * "bar" renders as a sticky bottom bar; place it as the LAST child of a
+   * drawer's scroll container so it pins to the viewport bottom (user
+   * testing: inline placement below the fold was missed). "inline" is
+   * chrome-free; the host owns spacing.
+   */
+  variant?: "inline" | "bar";
 }) {
   const t = useTranslations("briefing.drawer.pair.feedback");
   const locale = useLocale();
@@ -217,7 +226,15 @@ export function FeedbackControl({
     vote === "up" ? t("votedUp") : vote === "down" ? t("votedDown") : null;
 
   return (
-    <div className="mt-4 border-t border-gray-200 pt-3">
+    <div
+      className={
+        variant === "bar"
+          ? "sticky bottom-0 z-10 border-t border-gray-200 px-6 py-3"
+          : undefined
+      }
+      // Opaque bg so scrolled content disappears beneath the sticky bar.
+      style={variant === "bar" ? { backgroundColor: "#fbfaf7" } : undefined}
+    >
       <div
         role="group"
         aria-label={t("groupAria")}

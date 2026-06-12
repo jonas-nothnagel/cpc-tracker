@@ -91,6 +91,35 @@ describe("parseFeedbackBody", () => {
     expect(res.event.locale).toBe("en");
   });
 
+  it("accepts a single-id storyline anchor", () => {
+    const res = parseFeedbackBody(
+      validBody({
+        surface: "corpus_storyline",
+        anchorIds: ["link-restoration-systems-across-land-agendas"],
+        context: { storylineType: "reinforcement", confidence: "high" },
+      }),
+    );
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.event.anchorKey).toBe(
+      "link-restoration-systems-across-land-agendas",
+    );
+    expect(res.event.context).toEqual({
+      storylineType: "reinforcement",
+      confidence: "high",
+    });
+  });
+
+  it("accepts non-Latin anchor ids (Mongolian storyline slugs)", () => {
+    const res = parseFeedbackBody(
+      validBody({
+        surface: "corpus_storyline",
+        anchorIds: ["нөхөн-сэргээлтийн-тогтолцоо"],
+      }),
+    );
+    expect(res.ok).toBe(true);
+  });
+
   const rejections: Array<[string, Record<string, unknown>]> = [
     ["unknown country", { country: "atlantis" }],
     ["country with path characters", { country: "../mongolia" }],
@@ -103,7 +132,8 @@ describe("parseFeedbackBody", () => {
     ["anchor id with slash", { anchorIds: ["a/b", "c"] }],
     ["anchor id with dot-dot path", { anchorIds: ["..", "c"] }],
     ["identical anchor ids", { anchorIds: ["same", "same"] }],
-    ["wrong anchor count", { anchorIds: ["only-one"] }],
+    ["empty anchor list", { anchorIds: [] }],
+    ["too many anchor ids", { anchorIds: ["a1", "b2", "c3"] }],
     ["missing snapshot", { contentSnapshot: undefined }],
   ];
 

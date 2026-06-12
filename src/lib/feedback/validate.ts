@@ -18,16 +18,18 @@ import {
 const SURFACES: ReadonlySet<FeedbackSurface> = new Set([
   "target_pair_rationale",
   "doc_pair_synthesis",
+  "corpus_storyline",
 ]);
 const VOTES: ReadonlySet<FeedbackVote> = new Set(["up", "down", "retracted"]);
 const LOCALES = new Set(["en", "es", "mn"]);
 
 /**
- * Target / doc-type ids as they appear in the pipeline outputs. Anchor ids
+ * Target / doc-type ids as they appear in the pipeline outputs, or slugified
+ * storyline names (Unicode: Mongolian storylines are Cyrillic). Anchor ids
  * never become filesystem paths (only the country does), but require at
- * least one alphanumeric so punctuation-only ids like ".." are rejected.
+ * least one letter/number so punctuation-only ids like ".." are rejected.
  */
-const ANCHOR_ID = /^(?=.*[A-Za-z0-9])[A-Za-z0-9_.\-]{1,128}$/;
+const ANCHOR_ID = /^(?=.*[\p{L}\p{N}])[\p{L}\p{N}_.\-]{1,128}$/u;
 const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SHA256_HEX = /^[a-f0-9]{64}$/;
@@ -39,6 +41,7 @@ const CONTEXT_KEYS = [
   "confidence",
   "manageability",
   "synthesisConfidence",
+  "storylineType",
 ] as const;
 
 export type ParsedFeedback =
@@ -73,17 +76,19 @@ export function parseFeedbackBody(raw: unknown): ParsedFeedback {
     return { ok: false, error: "Unknown vote" };
   }
 
+  // 1 id (storyline) or 2 (pair / doc-pair), each anchor-shaped, distinct.
   const anchorIds = body.anchorIds;
   if (
     !Array.isArray(anchorIds) ||
-    anchorIds.length !== 2 ||
+    anchorIds.length < 1 ||
+    anchorIds.length > 2 ||
     anchorIds.some((id) => typeof id !== "string" || !ANCHOR_ID.test(id)) ||
-    anchorIds[0] === anchorIds[1]
+    new Set(anchorIds).size !== anchorIds.length
   ) {
     return { ok: false, error: "Invalid anchor ids" };
   }
-  const [a, b] = anchorIds as [string, string];
-  const anchorKey = [a, b].sort().join("__");
+  const ids = anchorIds as string[];
+  const anchorKey = [...ids].sort().join("__");
 
   let comment: string | null = null;
   if (body.comment !== undefined && body.comment !== null) {
@@ -134,7 +139,7 @@ export function parseFeedbackBody(raw: unknown): ParsedFeedback {
       country: country.id,
       surface: surface as FeedbackSurface,
       anchorKey,
-      anchorIds: [a, b],
+      anchorIds: ids,
       vote: vote as FeedbackVote,
       comment,
       clientId,

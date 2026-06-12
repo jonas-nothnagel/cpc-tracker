@@ -36,6 +36,8 @@ import {
   getDocPairKey,
   parseContributingDocPair,
 } from "@/lib/coherence-briefing";
+import { slugifyAnchorId } from "@/lib/feedback/anchor";
+import { FeedbackControl } from "./feedback-control";
 import type {
   AlignmentConfidence,
   AlignmentLevel,
@@ -82,6 +84,8 @@ export interface ThemeDrawerProps {
   alignment: AlignmentResult[];
   targetsById: Map<string, Target>;
   countryConfig: CountryConfig | null;
+  /** Canonical country slug; enables the feedback control when present. */
+  countryId?: string;
   onClose: () => void;
   /**
    * Fired when the user picks one storyline from the all-storylines grid.
@@ -103,6 +107,7 @@ export function ThemeDrawer({
   alignment,
   targetsById,
   countryConfig,
+  countryId,
   onClose,
   onOpenSingleTheme,
   onOpenTargetPair,
@@ -190,6 +195,7 @@ export function ThemeDrawer({
   const isReinforce = theme.type === "reinforcement";
   const dotColor = isReinforce ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
   const totalRecords = groups.reduce((s, g) => s + g.records.length, 0);
+  const themeAnchor = slugifyAnchorId(theme.name);
 
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
@@ -280,6 +286,23 @@ export function ThemeDrawer({
             {t("aiDisclaimer")}
           </p>
         </div>
+        {/* Sticky last child of the scrolling drawer (always visible).
+            Storylines are LLM-named, so the anchor is the name slug: a
+            renamed storyline starts fresh and the ledger keeps the old
+            feedback. */}
+        {themeAnchor && (
+          <FeedbackControl
+            variant="bar"
+            countryId={countryId}
+            surface="corpus_storyline"
+            anchorIds={[themeAnchor]}
+            contentText={theme.description}
+            context={{
+              storylineType: theme.type,
+              confidence: theme.confidence,
+            }}
+          />
+        )}
       </aside>
     </div>
   );

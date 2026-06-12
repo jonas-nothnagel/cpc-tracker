@@ -12,7 +12,10 @@
 export const FEEDBACK_SCHEMA = 1;
 
 /** Which AI-generated surface the feedback refers to. */
-export type FeedbackSurface = "target_pair_rationale" | "doc_pair_synthesis";
+export type FeedbackSurface =
+  | "target_pair_rationale"
+  | "doc_pair_synthesis"
+  | "corpus_storyline";
 
 /**
  * "retracted" undoes this browser's previous vote on the same anchor; the
@@ -35,6 +38,8 @@ export interface FeedbackContext {
   manageability?: string;
   /** Synthesis confidence (doc-pair surface). */
   synthesisConfidence?: string;
+  /** "reinforcement" | "friction" (corpus-storyline surface). */
+  storylineType?: string;
 }
 
 /** One ledger row. The server stamps `schema` and `ts` and derives `anchorKey`. */
@@ -51,8 +56,13 @@ export interface FeedbackEvent {
    * address the same feedback regardless of display order.
    */
   anchorKey: string;
-  /** [targetAId, targetBId] or [doc_a, doc_b] as displayed when voted. */
-  anchorIds: [string, string];
+  /**
+   * 1-2 ids as displayed when voted: [targetAId, targetBId] for pair
+   * rationales, [doc_a, doc_b] for doc-pair syntheses, or one slugified
+   * storyline name for corpus storylines (LLM-named, so a renamed
+   * storyline orphans old feedback by design; the ledger keeps it).
+   */
+  anchorIds: string[];
   vote: FeedbackVote;
   /** Optional user note (complaint capture); <= 2000 chars; null when absent. */
   comment: string | null;

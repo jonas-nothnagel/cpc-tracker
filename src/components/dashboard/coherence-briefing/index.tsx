@@ -1392,6 +1392,7 @@ export function CoherenceBriefing({
         alignment={visibleAlignment}
         targetsById={targetMap}
         countryConfig={countryConfig}
+        countryId={countryId}
         onClose={closeThemeDrawer}
         onOpenSingleTheme={openThemeDrawer}
         onOpenTargetPair={(pair, tA, tB) => {
