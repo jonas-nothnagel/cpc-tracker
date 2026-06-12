@@ -274,7 +274,24 @@
           "showAligned": "Show aligned ({count, number})",
           "empty": "No target pairs to show."
         },
-        "reportedActionTag": "Reported action (BTR)"
+        "reportedActionTag": "Reported action (BTR)",
+        "feedback": {
+          "prompt": "Was this assessment useful?",
+          "groupAria": "Feedback on this AI-generated assessment",
+          "upAria": "Mark as useful",
+          "downAria": "Mark as not useful",
+          "votedUp": "You marked this as useful.",
+          "votedDown": "You marked this as not useful.",
+          "retractHint": "Select again to undo.",
+          "addNote": "Add a note",
+          "editNote": "Edit note",
+          "noteLabel": "Optional note",
+          "notePlaceholder": "What should the team know about this assessment?",
+          "send": "Send",
+          "cancel": "Cancel",
+          "anonNote": "Feedback is anonymous and goes only to the project team.",
+          "error": "Your feedback could not be saved. Please try again later."
+        }
       },
       "theme": {
         "closeAria": "Close theme view",

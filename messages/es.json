@@ -274,7 +274,24 @@
           "showAligned": "Mostrar alineados ({count, number})",
           "empty": "No hay pares de metas para mostrar."
         },
-        "reportedActionTag": "Acción reportada (BTR)"
+        "reportedActionTag": "Acción reportada (BTR)",
+        "feedback": {
+          "prompt": "¿Le resultó útil esta evaluación?",
+          "groupAria": "Comentarios sobre esta evaluación generada por IA",
+          "upAria": "Marcar como útil",
+          "downAria": "Marcar como no útil",
+          "votedUp": "Marcó esta evaluación como útil.",
+          "votedDown": "Marcó esta evaluación como no útil.",
+          "retractHint": "Seleccione de nuevo para deshacer.",
+          "addNote": "Añadir una nota",
+          "editNote": "Editar nota",
+          "noteLabel": "Nota opcional",
+          "notePlaceholder": "¿Qué debería saber el equipo sobre esta evaluación?",
+          "send": "Enviar",
+          "cancel": "Cancelar",
+          "anonNote": "Los comentarios son anónimos y solo los ve el equipo del proyecto.",
+          "error": "No se pudo guardar su comentario. Inténtelo de nuevo más tarde."
+        }
       },
       "theme": {
         "closeAria": "Cerrar vista de tema",
