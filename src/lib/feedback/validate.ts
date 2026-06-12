@@ -1,5 +1,7 @@
 import { getCountry, isValidCountryId } from "@/config/countries";
 
+import { anchorKeyOf } from "./anchor";
+
 import {
   FEEDBACK_COMMENT_MAX,
   FEEDBACK_SNAPSHOT_MAX,
@@ -88,7 +90,7 @@ export function parseFeedbackBody(raw: unknown): ParsedFeedback {
     return { ok: false, error: "Invalid anchor ids" };
   }
   const ids = anchorIds as string[];
-  const anchorKey = [...ids].sort().join("__");
+  const anchorKey = anchorKeyOf(ids);
 
   let comment: string | null = null;
   if (body.comment !== undefined && body.comment !== null) {

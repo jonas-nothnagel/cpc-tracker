@@ -18,6 +18,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
+import { anchorKeyOf } from "@/lib/feedback/anchor";
 import { sha256Hex } from "@/lib/feedback/hash";
 import {
   FEEDBACK_COMMENT_MAX,
@@ -117,7 +118,7 @@ export function FeedbackControl({
   // across pair changes while the drawer stays mounted.
   const stateKeyRef = useRef<string | null>(null);
 
-  const anchorKey = [...anchorIds].sort().join("__");
+  const anchorKey = anchorKeyOf(anchorIds);
   const mirrorKey = countryId
     ? `${MIRROR_PREFIX}:${countryId}:${surface}:${anchorKey}`
     : null;

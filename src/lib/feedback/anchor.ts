@@ -13,6 +13,15 @@
  * in which case the caller should hide the feedback control rather than
  * guess an identity.
  */
+/**
+ * Canonical anchor identity: sorted ids joined with "__". The ledger
+ * (validate.ts) and the localStorage mirror (feedback-control.tsx) MUST
+ * derive keys identically or own-vote restore silently breaks.
+ */
+export function anchorKeyOf(anchorIds: string[]): string {
+  return [...anchorIds].sort().join("__");
+}
+
 export function slugifyAnchorId(text: string): string | null {
   const slug = text
     .normalize("NFC")

@@ -26,6 +26,12 @@ export const dynamic = "force-dynamic";
 const MAX_BODY_BYTES = 32_768;
 
 export async function POST(req: Request) {
+  // Reject declared-oversize bodies before buffering; the post-read check
+  // below stays as the fallback for chunked requests with no Content-Length.
+  const declaredLength = Number(req.headers.get("content-length"));
+  if (declaredLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Body too large" }, { status: 413 });
+  }
   const text = await req.text();
   if (text.length > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Body too large" }, { status: 413 });
