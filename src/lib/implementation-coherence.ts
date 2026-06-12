@@ -718,6 +718,251 @@ export function computeDeliveryRoster(
   };
 }
 
+// ── Institution → policy-document flow (Sankey) ──────────────────────────────
+
+export interface InstitutionFlowTarget {
+  targetId: string;
+  /** Short commitment label (e.g. "NBSAP 3"). */
+  targetLabel: string;
+  /** Representative reported action (most advanced status) so a target row can
+   *  open the shared drawer on a pair that exists in the alignment array. */
+  actionId: string;
+}
+
+export interface InstitutionFlowLink {
+  /** Lowercased canonical institution key (or the reserved Other key). */
+  institutionKey: string;
+  /** Source document of the supported targets. */
+  doc: string;
+  /** Distinct policy targets in `doc` this institution's actions support. */
+  value: number;
+  /** The supported targets, by label. */
+  targets: InstitutionFlowTarget[];
+}
+
+export interface InstitutionFlowNode {
+  key: string;
+  label: string;
+  /** Distinct supported targets (the deterministic sum of this node's links). */
+  value: number;
+  /** True for the bundled catch-all node; the UI localizes its label. */
+  isOther?: boolean;
+}
+
+export interface InstitutionFlowDoc {
+  doc: string;
+  /** Involvement total: sum of incoming links (a target supported by two
+   *  institutions counts under each), so it never reads as a share of a whole. */
+  value: number;
+}
+
+export interface InstitutionFlowModel {
+  /** True when the alignment array carries ANY measure↔target pair (see
+   *  `computeImplementationCoverage`). */
+  hasMeasureAlignment: boolean;
+  /** Institution nodes, most distinct supported targets first, with the Other
+   *  bundle (when present) last. */
+  institutions: InstitutionFlowNode[];
+  /** Document nodes, largest involvement first. */
+  documents: InstitutionFlowDoc[];
+  /** Institution→document flows. */
+  links: InstitutionFlowLink[];
+  /** Distinct policy targets with >= 1 strongly aligned, institution-attributed
+   *  reported action. */
+  totalSupportedTargets: number;
+  /** Of those, distinct targets supported by actions from >= 2 distinct
+   *  institutions — a neutral coordination signal, never a ranking. */
+  coordinationTargets: number;
+  /** Real institutions folded into the Other node (0 when none). */
+  bundledInstitutions: number;
+}
+
+const OTHER_INSTITUTION_KEY = "__other__";
+
+/**
+ * Where the BTR's reported implementation effort REACHES into the policy plan,
+ * institution by institution: for each named institution, the policy documents
+ * (and, on drill-down, the targets) its reported actions align HIGH with — so a
+ * pattern like "this ministry's actions land mostly on the NDC" reads off the
+ * flow.
+ *
+ * FRESH pass over the alignment (NOT the deduped per-target link of
+ * `computeImplementationCoverage`, which keeps one action per target and would
+ * drop the other institutions on a multi-institution target). A target
+ * supported by actions from several institutions attributes to EACH of them —
+ * involvement as stated by the report, never a strain or blame ranking
+ * (political-sensitivity guardrail). HIGH-only, mirroring the coverage dot-map.
+ * Institutions are capped to `maxInstitutions` by distinct supported targets,
+ * with the remainder folded into a neutral Other node so the flow stays legible
+ * on larger corpora (e.g. Panama).
+ */
+export function computeInstitutionFlow(
+  alignment: AlignmentResult[],
+  btrData: BtrData,
+  visibleTargets: Target[],
+  sourcedMap: Record<string, string> = SOURCED_ORG_EXPANSIONS,
+  maxInstitutions = 8,
+): InstitutionFlowModel {
+  const actionMeta = buildActionMeta(btrData);
+  const targetById = new Map(visibleTargets.map((t) => [t.id, t]));
+
+  type Rep = { targetLabel: string; actionId: string; rank: number };
+  // institutionKey -> doc -> (targetId -> best-status representative). Nested
+  // maps so a multi-word institution label or doc token never needs escaping.
+  const docsByInst = new Map<string, Map<string, Map<string, Rep>>>();
+  const labelByKey = new Map<string, string>();
+  // targetId -> distinct institution keys (coordination + distinct total)
+  const instByTarget = new Map<string, Set<string>>();
+  let hasMeasureAlignment = false;
+
+  for (const pair of alignment) {
+    const aBtr = BTR_ID.test(pair.targetAId);
+    const bBtr = BTR_ID.test(pair.targetBId);
+    if (aBtr === bBtr) continue; // exactly one measure side
+    hasMeasureAlignment = true;
+    if (pair.alignment !== "high") continue;
+    const actionId = aBtr ? pair.targetAId : pair.targetBId;
+    const policyId = aBtr ? pair.targetBId : pair.targetAId;
+    const meta = actionMeta.get(actionId);
+    if (!meta) continue;
+    const target = targetById.get(policyId);
+    if (!target) continue;
+    const labels = orgLabelsFor(meta.measure, sourcedMap);
+    if (labels.length === 0) continue; // unattributed: cannot place in the flow
+    const doc = target.sourceDocument;
+    const rank = statusRank((meta.measure.status ?? "").trim());
+    const targetLabel = target.sourceLabel ?? policyId;
+
+    let instSet = instByTarget.get(policyId);
+    if (!instSet) {
+      instSet = new Set();
+      instByTarget.set(policyId, instSet);
+    }
+    for (const label of labels) {
+      const key = label.toLowerCase();
+      labelByKey.set(key, label);
+      instSet.add(key);
+      let docs = docsByInst.get(key);
+      if (!docs) {
+        docs = new Map();
+        docsByInst.set(key, docs);
+      }
+      let reps = docs.get(doc);
+      if (!reps) {
+        reps = new Map();
+        docs.set(doc, reps);
+      }
+      const prev = reps.get(policyId);
+      if (!prev || rank > prev.rank) {
+        reps.set(policyId, { targetLabel, actionId, rank });
+      }
+    }
+  }
+
+  // Per institution: distinct-target total across its docs.
+  const totalByInst = new Map<string, number>();
+  for (const [key, docs] of docsByInst) {
+    let total = 0;
+    for (const reps of docs.values()) total += reps.size;
+    totalByInst.set(key, total);
+  }
+
+  const toTargets = (reps: Map<string, Rep>): InstitutionFlowTarget[] =>
+    [...reps.entries()]
+      .map(([targetId, r]) => ({
+        targetId,
+        targetLabel: r.targetLabel,
+        actionId: r.actionId,
+      }))
+      .sort((a, b) =>
+        a.targetLabel.localeCompare(b.targetLabel, undefined, { numeric: true }),
+      );
+  const sortLinks = (ls: InstitutionFlowLink[]) =>
+    ls.sort((a, b) => b.value - a.value || a.doc.localeCompare(b.doc));
+
+  const ranked = [...totalByInst.entries()].sort(
+    (a, b) =>
+      b[1] - a[1] || labelByKey.get(a[0])!.localeCompare(labelByKey.get(b[0])!),
+  );
+  const top = ranked.slice(0, maxInstitutions);
+  const bundled = ranked.slice(maxInstitutions);
+
+  const institutions: InstitutionFlowNode[] = [];
+  const links: InstitutionFlowLink[] = [];
+
+  for (const [key, total] of top) {
+    institutions.push({ key, label: labelByKey.get(key)!, value: total });
+    const instLinks = [...docsByInst.get(key)!.entries()].map(([doc, reps]) => ({
+      institutionKey: key,
+      doc,
+      value: reps.size,
+      targets: toTargets(reps),
+    }));
+    links.push(...sortLinks(instLinks));
+  }
+
+  if (bundled.length > 0) {
+    // Fold the remainder into one neutral node: distinct targets per doc across
+    // the group (deduped, most-advanced representative wins).
+    const otherDocs = new Map<string, Map<string, Rep>>();
+    for (const [key] of bundled) {
+      for (const [doc, reps] of docsByInst.get(key)!) {
+        let agg = otherDocs.get(doc);
+        if (!agg) {
+          agg = new Map();
+          otherDocs.set(doc, agg);
+        }
+        for (const [targetId, r] of reps) {
+          const prev = agg.get(targetId);
+          if (!prev || r.rank > prev.rank) agg.set(targetId, r);
+        }
+      }
+    }
+    let otherTotal = 0;
+    const otherLinks = [...otherDocs.entries()].map(([doc, reps]) => {
+      otherTotal += reps.size;
+      return {
+        institutionKey: OTHER_INSTITUTION_KEY,
+        doc,
+        value: reps.size,
+        targets: toTargets(reps),
+      };
+    });
+    institutions.push({
+      key: OTHER_INSTITUTION_KEY,
+      label: "Other",
+      value: otherTotal,
+      isOther: true,
+    });
+    links.push(...sortLinks(otherLinks));
+  }
+
+  // Document involvement totals from the rendered links, so node heights match
+  // the ribbons exactly.
+  const docValue = new Map<string, number>();
+  for (const link of links) {
+    docValue.set(link.doc, (docValue.get(link.doc) ?? 0) + link.value);
+  }
+  const documents: InstitutionFlowDoc[] = [...docValue.entries()]
+    .map(([doc, value]) => ({ doc, value }))
+    .sort((a, b) => b.value - a.value || a.doc.localeCompare(b.doc));
+
+  let coordinationTargets = 0;
+  for (const set of instByTarget.values()) {
+    if (set.size >= 2) coordinationTargets += 1;
+  }
+
+  return {
+    hasMeasureAlignment,
+    institutions,
+    documents,
+    links,
+    totalSupportedTargets: instByTarget.size,
+    coordinationTargets,
+    bundledInstitutions: bundled.length,
+  };
+}
+
 // ── NR7 annotation: the country's own assessment, in target context ──────────
 
 /** NR7 statuses by progress, least first. When two national targets map to

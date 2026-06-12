@@ -275,6 +275,7 @@
           "empty": "No target pairs to show."
         },
         "reportedActionTag": "Reported action (BTR)",
+        "budgetLineTag": "Budget line (BER)",
         "feedback": {
           "prompt": "Was this assessment useful?",
           "groupAria": "Feedback on this AI-generated assessment",
@@ -661,6 +662,18 @@
         "involvementNote": "An action naming several institutions counts once for each, so counts read as involvement, not shares of a whole.",
         "noInstitution": "{count, plural, one {# reported action names no institution.} other {# reported actions name no institution.}}",
         "moreInstitutions": "{count, plural, one {# more institution with fewer actions.} other {# more institutions with fewer actions.}}"
+      },
+      "flow": {
+        "toggleRoster": "Who delivers",
+        "toggleFlow": "Where it lands",
+        "title": "Where reported actions land in the plan",
+        "intro": "Each ribbon links an institution to a policy document its reported actions strongly align with. Thicker means more of the targets in that document.",
+        "other": "Other ({count, plural, one {# institution} other {# institutions}})",
+        "coordination": "{count, plural, one {# target is} other {# targets are}} supported by reported actions from two or more institutions.",
+        "selectHint": "Select a ribbon to list the targets it covers.",
+        "detailCount": "{count, plural, one {# target} other {# targets}}",
+        "caveat": "Involvement as named in the report (one self-reported lens); AI-estimated alignment. A target named by several institutions counts under each.",
+        "empty": "No strongly aligned reported actions to map for the current selection."
       }
     },
     "docFilter": {

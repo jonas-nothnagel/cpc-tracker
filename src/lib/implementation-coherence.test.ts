@@ -4,6 +4,7 @@ import {
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
+  computeInstitutionFlow,
   isUnderWay,
   normalizeOrg,
   nr7StatusByNbsapTarget,
@@ -619,5 +620,157 @@ describe("nr7StatusByNbsapTarget", () => {
       { progressStatus: "on_track", nbsapTargetId: "NBT_3" },
     ]);
     expect(reversed.get("NBSAP_3")).toBe("limited");
+  });
+});
+
+describe("computeInstitutionFlow", () => {
+  const data = btr([
+    mit("Wind farms", { implementingEntity: "Ministry of Energy" }), // BTR_1
+    mit("Solar", { implementingEntity: "Ministry of Energy" }), // BTR_2
+    adapt("ADP_1", "Irrigation", {
+      responsibleOrgs: ["MOFALI", "Water Agency"],
+      status: "Ongoing",
+    }),
+  ]);
+  const targets = [
+    target("T1", "NBSAP"),
+    target("T2", "NBSAP"),
+    target("T3", "NAP"),
+    target("T4", "NAP"),
+  ];
+
+  it("builds entity→document flows from HIGH links only; medium/low/flagged excluded", () => {
+    const alignment = [
+      high("BTR_1", "T1"),
+      high("BTR_2", "T2"),
+      high("ADP_1", "T3"),
+      { targetAId: "BTR_1", targetBId: "T4", alignment: "medium", description: "" },
+      flag("BTR_2", "T4"),
+      high("BTR_1", "BTR_2"), // action-vs-action excluded
+    ] as AlignmentResult[];
+    const r = computeInstitutionFlow(alignment, data, targets);
+    expect(r.hasMeasureAlignment).toBe(true);
+    // Ministry of Energy supports T1+T2 in NBSAP (value 2); MOFALI & Water
+    // Agency each support T3 in NAP (value 1).
+    expect(r.institutions.map((i) => i.label)).toEqual([
+      "Ministry of Energy",
+      "MOFALI",
+      "Water Agency",
+    ]);
+    expect(r.institutions[0].value).toBe(2);
+    const moeNbsap = r.links.find(
+      (l) => l.institutionKey === "ministry of energy" && l.doc === "NBSAP",
+    )!;
+    expect(moeNbsap.value).toBe(2);
+    expect(moeNbsap.targets.map((t) => t.targetId)).toEqual(["T1", "T2"]);
+    expect(r.totalSupportedTargets).toBe(3); // T1, T2, T3 distinct
+  });
+
+  it("flags targets supported by 2+ institutions as coordination points (involvement counting)", () => {
+    const r = computeInstitutionFlow([high("ADP_1", "T3")], data, targets);
+    expect(r.coordinationTargets).toBe(1); // T3: MOFALI + Water Agency
+    // Involvement: T3 counts under each institution, so the doc total is 2.
+    expect(r.documents.find((d) => d.doc === "NAP")!.value).toBe(2);
+  });
+
+  it("counts distinct targets per (entity, doc), not links", () => {
+    const r = computeInstitutionFlow(
+      [high("BTR_1", "T1"), high("BTR_2", "T1")], // both Ministry of Energy, one target
+      data,
+      targets,
+    );
+    const moe = r.institutions.find((i) => i.label === "Ministry of Energy")!;
+    expect(moe.value).toBe(1);
+    expect(r.links.find((l) => l.doc === "NBSAP")!.value).toBe(1);
+  });
+
+  it("picks the most advanced reported action as a target's representative", () => {
+    const staged = btr([
+      mit("Adopted action", {
+        implementingEntity: "Ministry of Energy",
+        status: "Adopted",
+      }), // BTR_1
+      mit("Ongoing action", {
+        implementingEntity: "Ministry of Energy",
+        status: "Ongoing",
+      }), // BTR_2
+    ]);
+    const r = computeInstitutionFlow(
+      [high("BTR_1", "T1"), high("BTR_2", "T1")],
+      staged,
+      targets,
+    );
+    expect(r.links.find((l) => l.doc === "NBSAP")!.targets[0].actionId).toBe(
+      "BTR_2", // Ongoing is more advanced than Adopted
+    );
+  });
+
+  it("caps institutions and bundles the rest into a neutral Other node", () => {
+    const many = btr([
+      mit("a", { implementingEntity: "Alpha" }), // BTR_1
+      mit("b", { implementingEntity: "Beta" }), // BTR_2
+      mit("c", { implementingEntity: "Gamma" }), // BTR_3
+    ]);
+    const ts = [
+      target("T1", "NBSAP"),
+      target("T2", "NBSAP"),
+      target("T3", "NBSAP"),
+      target("T4", "NBSAP"),
+    ];
+    const r = computeInstitutionFlow(
+      [
+        high("BTR_1", "T1"),
+        high("BTR_1", "T2"), // Alpha supports 2 -> ranks first
+        high("BTR_2", "T3"), // Beta 1
+        high("BTR_3", "T4"), // Gamma 1 -> bundled (Beta wins the tie on label)
+      ],
+      many,
+      ts,
+      undefined,
+      2,
+    );
+    expect(r.institutions.map((i) => i.label).slice(0, 2)).toEqual(["Alpha", "Beta"]);
+    const other = r.institutions[2];
+    expect(other.isOther).toBe(true);
+    expect(other.value).toBe(1); // Gamma's single target
+    expect(r.bundledInstitutions).toBe(1);
+    expect(r.links.find((l) => l.institutionKey === other.key)!.value).toBe(1);
+  });
+
+  it("respects visibleTargets: a high link to a hidden target is excluded", () => {
+    const visible = targets.filter((t) => t.sourceDocument !== "NAP");
+    const r = computeInstitutionFlow([high("ADP_1", "T3")], data, visible);
+    expect(r.institutions).toEqual([]);
+    expect(r.totalSupportedTargets).toBe(0);
+  });
+
+  it("excludes actions naming no institution from the flow", () => {
+    const sparse = btr([mit("Anon", { implementingEntity: "" })]); // BTR_1
+    const r = computeInstitutionFlow([high("BTR_1", "T1")], sparse, targets);
+    expect(r.hasMeasureAlignment).toBe(true);
+    expect(r.institutions).toEqual([]);
+    expect(r.totalSupportedTargets).toBe(0);
+  });
+
+  it("distinguishes 'no measure alignment' from 'computed, zero strong matches'", () => {
+    const none = computeInstitutionFlow([high("T1", "T2")], data, targets);
+    expect(none.hasMeasureAlignment).toBe(false);
+    const zero = computeInstitutionFlow(
+      [{ targetAId: "BTR_1", targetBId: "T1", alignment: "medium", description: "" }],
+      data,
+      targets,
+    );
+    expect(zero.hasMeasureAlignment).toBe(true);
+    expect(zero.institutions).toEqual([]);
+  });
+
+  it("is neutral and NaN-free with empty alignment", () => {
+    const r = computeInstitutionFlow([], data, targets);
+    expect(r.institutions).toEqual([]);
+    expect(r.documents).toEqual([]);
+    expect(r.links).toEqual([]);
+    expect(r.totalSupportedTargets).toBe(0);
+    expect(r.coordinationTargets).toBe(0);
+    expect(r.bundledInstitutions).toBe(0);
   });
 });

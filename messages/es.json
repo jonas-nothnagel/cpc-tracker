@@ -275,6 +275,7 @@
           "empty": "No hay pares de metas para mostrar."
         },
         "reportedActionTag": "Acción reportada (BTR)",
+        "budgetLineTag": "Línea presupuestaria (BER)",
         "feedback": {
           "prompt": "¿Le resultó útil esta evaluación?",
           "groupAria": "Comentarios sobre esta evaluación generada por IA",
@@ -661,6 +662,18 @@
         "involvementNote": "Una acción que menciona varias instituciones cuenta una vez por cada una, así que las cifras se leen como participación, no como partes de un todo.",
         "noInstitution": "{count, plural, one {# acción reportada no menciona ninguna institución.} other {# acciones reportadas no mencionan ninguna institución.}}",
         "moreInstitutions": "{count, plural, one {# institución más con menos acciones.} other {# instituciones más con menos acciones.}}"
+      },
+      "flow": {
+        "toggleRoster": "Quién ejecuta",
+        "toggleFlow": "Dónde incide",
+        "title": "Dónde inciden las acciones reportadas en el plan",
+        "intro": "Cada cinta une una institución con un documento de política con el que sus acciones reportadas se alinean con fuerza. A mayor grosor, más metas de ese documento.",
+        "other": "Otras ({count, plural, one {# institución} other {# instituciones}})",
+        "coordination": "{count, plural, one {# meta recibe} other {# metas reciben}} el apoyo de acciones reportadas de dos o más instituciones.",
+        "selectHint": "Seleccione una cinta para ver las metas que cubre.",
+        "detailCount": "{count, plural, one {# meta} other {# metas}}",
+        "caveat": "Participación según la nombra el informe (un único lente autoreportado); alineación estimada por IA. Una meta nombrada por varias instituciones cuenta en cada una.",
+        "empty": "No hay acciones reportadas con alineación fuerte para mostrar en la selección actual."
       }
     },
     "docFilter": {

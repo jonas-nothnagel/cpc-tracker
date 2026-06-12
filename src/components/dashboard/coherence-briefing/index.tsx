@@ -61,6 +61,7 @@ import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
+import { InstitutionFlow } from "./centerpiece/institution-flow";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
@@ -108,9 +109,11 @@ import {
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
+  computeInstitutionFlow,
   type ActionPlanAlignmentSummary,
   type DeliveryRosterModel,
   type ImplementationCoverage,
+  type InstitutionFlowModel,
 } from "@/lib/implementation-coherence";
 import { orgAcronymsFor } from "@/data/org-acronyms";
 import type {
@@ -380,6 +383,18 @@ export function CoherenceBriefing({
     return computeDeliveryRoster(btrData, orgMap);
   }, [btrData, orgMap]);
 
+  // Alternative right-column view: where each institution's reported actions
+  // land across the policy documents (entity→document flow). Same neutral
+  // involvement framing as the roster; gated on the BTR and the document
+  // toggle (visibleTargets).
+  const institutionFlow = useMemo<InstitutionFlowModel | null>(() => {
+    if (!btrData || !btrData.mitigationMeasures?.length) return null;
+    return computeInstitutionFlow(alignment, btrData, visibleTargets, orgMap);
+  }, [btrData, alignment, visibleTargets, orgMap]);
+  const [implCenterView, setImplCenterView] = useState<"roster" | "flow">(
+    "roster",
+  );
+
   // Synthetic Target stand-ins for reported actions, so an action↔target row
   // in the Implementation drill-down opens the SAME PairDrawer as everywhere
   // else in the briefing. sourceDocument "BTR" uses the reserved doc token;
@@ -403,6 +418,28 @@ export function CoherenceBriefing({
     }
     return map;
   }, [btrData, countryName]);
+
+  // Synthetic Target stand-ins for funded budget lines, so a budget↔commitment
+  // match on the Financing slide opens the SAME PairDrawer (full rationale +
+  // both sides). sourceDocument "BER" uses the reserved doc token; sourceLabel
+  // carries the budget code.
+  const budgetPairTargets = useMemo(() => {
+    const map = new Map<string, Target>();
+    if (!berData?.programs?.length) return map;
+    for (const p of berData.programs) {
+      const id = `BER_${p.code}`;
+      map.set(id, {
+        id,
+        text: p.description ? `${p.name}. ${p.description}` : p.name,
+        sourceDocument: "BER",
+        sourceLabel: p.code,
+        country: countryName,
+        isQuantitative: false,
+        isTimeBound: false,
+      });
+    }
+    return map;
+  }, [berData, countryName]);
 
   // Jump-nav / slide order with the Financing and Implementation slides each
   // gated independently on their data.
@@ -735,6 +772,32 @@ export function CoherenceBriefing({
       });
     },
     [targetMap, actionPairTargets, alignment],
+  );
+
+  // Financing drill-down: open a budget-line↔commitment match in the same
+  // PairDrawer. The pair lives in `budgetAlignment`; the budget side is a
+  // synthetic Target stand-in from `budgetPairTargets`.
+  const openBudgetPair = useCallback(
+    (programBerId: string, targetId: string) => {
+      const tTarget = targetMap.get(targetId);
+      const tBudget = budgetPairTargets.get(programBerId);
+      if (!tTarget || !tBudget || !budgetAlignment) return;
+      const conn = budgetAlignment.find(
+        (p) =>
+          (p.targetAId === programBerId && p.targetBId === targetId) ||
+          (p.targetAId === targetId && p.targetBId === programBerId),
+      );
+      if (!conn) return;
+      // Budget line first: the connector reads in funding direction ("budget
+      // line supports the policy commitment").
+      setPairData({
+        mode: "target-pair",
+        pair: conn,
+        targetA: tBudget,
+        targetB: tTarget,
+      });
+    },
+    [targetMap, budgetPairTargets, budgetAlignment],
   );
 
   const openDocPairDrawer = useCallback(
@@ -1253,6 +1316,7 @@ export function CoherenceBriefing({
                   coverage={budgetCoverage}
                   countryConfig={countryConfig}
                   countryName={countryName}
+                  onOpenBudgetPair={openBudgetPair}
                 />
               </div>
             )}
@@ -1313,10 +1377,44 @@ export function CoherenceBriefing({
                 />
               ) : activeSection === IMPLEMENTATION_SECTION_ID &&
                 deliveryRoster ? (
-                <DeliveryRoster
-                  roster={deliveryRoster}
-                  countryName={countryName}
-                />
+                <div>
+                  {/* Toggle the reported-snapshot column between WHO delivers
+                      (roster) and WHERE that effort lands in the plan (flow). */}
+                  <div className="flex items-center gap-1.5 mb-3">
+                    {(["roster", "flow"] as const).map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        onClick={() => setImplCenterView(v)}
+                        aria-pressed={implCenterView === v}
+                        className={`text-[11px] px-2.5 py-0.5 rounded-full border transition-colors ${
+                          implCenterView === v
+                            ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
+                            : "text-[var(--undp-gray)] border-gray-300 hover:text-[var(--undp-black)]"
+                        }`}
+                      >
+                        {t(
+                          v === "roster"
+                            ? "implementationCenter.flow.toggleRoster"
+                            : "implementationCenter.flow.toggleFlow",
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  {implCenterView === "flow" && institutionFlow ? (
+                    <InstitutionFlow
+                      model={institutionFlow}
+                      countryConfig={countryConfig}
+                      countryName={countryName}
+                      onOpenActionPair={openActionPair}
+                    />
+                  ) : (
+                    <DeliveryRoster
+                      roster={deliveryRoster}
+                      countryName={countryName}
+                    />
+                  )}
+                </div>
               ) : (
                 <>
                   <WheelCenterpiece
