@@ -28,9 +28,11 @@ sync_country() {
     local src="$1"
     local country
     country=$(basename "${src}")
-    # Skip dotfile dirs (e.g. .cache; .dockerignore'd but cheap to defend).
+    # Skip dotfile dirs (e.g. .cache; .dockerignore'd but cheap to defend)
+    # and the feedback ledgers, which live only on the persistent volume
+    # and must never be replaced from the image.
     case "${country}" in
-        .*) return 0 ;;
+        .*|feedback) return 0 ;;
     esac
     local target="${PERSIST_ROOT}/output/${country}"
     local staging="${target}.new"

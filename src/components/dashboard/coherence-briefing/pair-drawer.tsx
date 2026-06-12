@@ -27,6 +27,7 @@ import {
   useContradictionTypeLabels,
 } from "@/lib/labels";
 import { isContradiction } from "@/types";
+import { FeedbackControl } from "./feedback-control";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
@@ -69,10 +70,13 @@ export type PairDrawerData =
 export function PairDrawer({
   data,
   countryConfig,
+  countryId,
   onClose,
 }: {
   data: PairDrawerData | null;
   countryConfig: CountryConfig | null;
+  /** Canonical country slug; enables the feedback control when present. */
+  countryId?: string;
   onClose: () => void;
 }) {
   const t = useTranslations("briefing.drawer.pair");
@@ -160,6 +164,7 @@ export function PairDrawer({
             targetA={renderData.targetA}
             targetB={renderData.targetB}
             countryConfig={countryConfig}
+            countryId={countryId}
             onClose={onClose}
           />
         ) : (
@@ -168,6 +173,7 @@ export function PairDrawer({
             pairs={renderData.pairs}
             targetsById={renderData.targetsById}
             countryConfig={countryConfig}
+            countryId={countryId}
             onClose={onClose}
             onOpenTargetPair={(pair, targetA, targetB) =>
               setNested({
@@ -189,12 +195,14 @@ function TargetPairBody({
   targetA,
   targetB,
   countryConfig,
+  countryId,
   onClose,
 }: {
   pair: AlignmentResult;
   targetA: Target;
   targetB: Target;
   countryConfig: CountryConfig | null;
+  countryId?: string;
   onClose: () => void;
 }) {
   const t = useTranslations("briefing.drawer.pair");
@@ -283,6 +291,18 @@ function TargetPairBody({
             <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
               {t("aiRationaleDisclaimer")}
             </p>
+            <FeedbackControl
+              countryId={countryId}
+              surface="target_pair_rationale"
+              anchorIds={[pair.targetAId, pair.targetBId]}
+              contentText={pair.description}
+              context={{
+                alignment: pair.alignment,
+                mechanism: pair.mechanism,
+                confidence: pair.confidence,
+                manageability: pair.manageability,
+              }}
+            />
           </section>
         )}
       </div>
@@ -371,6 +391,7 @@ function DocPairBody({
   pairs,
   targetsById,
   countryConfig,
+  countryId,
   onClose,
   onOpenTargetPair,
 }: {
@@ -378,6 +399,7 @@ function DocPairBody({
   pairs: AlignmentResult[];
   targetsById: Map<string, Target>;
   countryConfig: CountryConfig | null;
+  countryId?: string;
   onClose: () => void;
   onOpenTargetPair: (
     pair: AlignmentResult,
@@ -498,6 +520,22 @@ function DocPairBody({
         <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
           {t("aiDisclaimer")}
         </p>
+        {!failed && (
+          // One control for the whole synthesis: the three panels are a
+          // single LLM output and a single verdict to rate.
+          <FeedbackControl
+            countryId={countryId}
+            surface="doc_pair_synthesis"
+            anchorIds={[docPair.doc_a, docPair.doc_b]}
+            contentText={[
+              docPair.synthesis.storyline_name,
+              docPair.synthesis.reinforce,
+              docPair.synthesis.clash,
+              docPair.synthesis.coordination_hint,
+            ].join("\n")}
+            context={{ synthesisConfidence: docPair.synthesis.confidence }}
+          />
+        )}
 
         {failed && (
           // Synthesis failed → fall back to the legacy flat list so the
