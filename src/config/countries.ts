@@ -99,7 +99,7 @@ export const COUNTRIES: CountryEntry[] = [
       coherence: true,
       btr: { mitigation: true, adaptation: false },
       nr7: false,
-      ber: false,
+      ber: true,
     },
   },
 ];

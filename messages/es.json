@@ -1182,7 +1182,7 @@
       "label": "Presupuesto de biodiversidad",
       "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación GLOBE.",
       "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa arcos por GLOBE y sombrea cada uno por su proporción del gasto BER etiquetado.",
-      "mongoliaNote": "BER de Mongolia (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "mongoliaNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
       "fallbackAmount": "0 MNT"
     },
@@ -1584,7 +1584,7 @@
       "taxonomyRollup": "Agregación por taxonomía",
       "programOption": "Programa ({count, number} líneas BER)",
       "expenditureLabel": "Gasto ({period})",
-      "barChartNote": "Una vista de gráfico de barras desagregada por ministerio se añadirá una vez que se conecte el mapeo de programa a ministerio del BER de Mongolia (flujo de trabajo independiente).",
+      "barChartNote": "Una vista de gráfico de barras desagregada por ministerio se añadirá una vez que se conecte el mapeo de programa a ministerio del BER (flujo de trabajo independiente).",
       "viewLabels": {
         "globe_sub": "Taxonomía de biodiversidad BIOFIN GLOBE",
         "sector": "Sectores de mitigación climática IPCC"
@@ -1620,7 +1620,7 @@
       },
       "scopeNote": {
         "title": "Qué muestra y qué no muestra esta sección",
-        "berOnly": "<strong>Solo gasto en biodiversidad (BER).</strong> El etiquetado más amplio del presupuesto verde (indicadores de mitigación y adaptación climática en ~1.400 proyectos) es una fuente de datos de Mongolia independiente aún no integrada.",
+        "berOnly": "<strong>Solo gasto en biodiversidad (BER).</strong> El etiquetado más amplio del presupuesto verde (indicadores de mitigación y adaptación climática) es una fuente de datos independiente aún no integrada.",
         "classification": "La clasificación de programa a política es <strong>generada por LLM</strong>. Cada programa recibe una etiqueta primaria de etiqueta única y cualquier etiqueta con puntaje ≥ 0.5 como multietiqueta.",
         "period": "Período: horizonte de análisis del BER {programPeriod}; datos anuales detallados {period}.",
         "reconciliation": "La reconciliación de subprogramas (por partida) está en curso; la vista actual es solo a nivel de programa ({count, number} líneas de reporte del BER)."

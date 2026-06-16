@@ -1182,7 +1182,7 @@
       "label": "Biodiversity Budget",
       "onTitle": "Turn off the Biodiversity Budget shading. The wheel keeps the GLOBE grouping.",
       "offTitle": "Switch to the Biodiversity Budget view: groups arcs by GLOBE and shades each by its share of tagged BER spend.",
-      "mongoliaNote": "Mongolia BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
+      "mongoliaNote": "BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% of tagged BER)",
       "fallbackAmount": "0 MNT"
     },
@@ -1584,7 +1584,7 @@
       "taxonomyRollup": "Taxonomy rollup",
       "programOption": "Program ({count, number} BER lines)",
       "expenditureLabel": "Expenditure ({period})",
-      "barChartNote": "A bar-chart view disaggregated by ministry will follow once the Mongolia BER program-to-ministry mapping is wired (separate workstream).",
+      "barChartNote": "A bar-chart view disaggregated by ministry will follow once the BER program-to-ministry mapping is wired (separate workstream).",
       "viewLabels": {
         "globe_sub": "BIOFIN GLOBE biodiversity taxonomy",
         "sector": "IPCC climate mitigation sectors"
@@ -1620,7 +1620,7 @@
       },
       "scopeNote": {
         "title": "What this section is and is not showing",
-        "berOnly": "<strong>Biodiversity expenditure (BER) only.</strong> Broader green budget tagging (climate mitigation and adaptation flags across ~1,400 projects) is a separate Mongolia data source not yet integrated.",
+        "berOnly": "<strong>Biodiversity expenditure (BER) only.</strong> Broader green budget tagging (climate mitigation and adaptation flags) is a separate data source not yet integrated.",
         "classification": "Program-to-policy classification is <strong>LLM-generated</strong>. Each program gets a primary single-label and any tags scoring ≥ 0.5 as multi-label.",
         "period": "Period: BER analysis horizon {programPeriod}; detailed annual data {period}.",
         "reconciliation": "Sub-program (line-item) reconciliation is in flight; the current view is program-level only ({count, number} BER reporting lines)."
