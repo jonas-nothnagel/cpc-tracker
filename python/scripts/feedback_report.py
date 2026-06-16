@@ -132,8 +132,10 @@ def pull_remote(dest_dir: Path) -> Path:
     base = os.environ.get("CPC_KUDU_URL", "").rstrip("/")
     user = os.environ.get("CPC_KUDU_USER", "")
     password = os.environ.get("CPC_KUDU_PASS", "")
+    # Kudu's VFS API is rooted at /home, so the path is relative to it:
+    # /api/vfs/cpc/output/feedback/ resolves to /home/cpc/output/feedback/.
     remote_path = os.environ.get(
-        "CPC_REMOTE_FEEDBACK_PATH", "/home/cpc/output/feedback/"
+        "CPC_REMOTE_FEEDBACK_PATH", "/cpc/output/feedback/"
     )
     if not (base and user and password):
         sys.exit(
@@ -143,6 +145,8 @@ def pull_remote(dest_dir: Path) -> Path:
         )
     token = base64.b64encode(f"{user}:{password}".encode()).decode()
     headers = {"Authorization": f"Basic {token}"}
+    if not remote_path.startswith("/"):
+        remote_path = "/" + remote_path
     if not remote_path.endswith("/"):
         remote_path += "/"
     listing_url = f"{base}/api/vfs{remote_path}"
