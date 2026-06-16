@@ -163,18 +163,29 @@ def pull_remote(dest_dir: Path) -> Path:
             print(f"No feedback directory at {remote_path} yet (nothing voted).")
             dest_dir.mkdir(parents=True, exist_ok=True)
             return dest_dir
-        sys.exit(f"Kudu listing failed ({exc.code}): {listing_url}")
+        hint = " (enable SCM basic auth on the App Service)" if exc.code == 401 else ""
+        sys.exit(f"Kudu listing failed ({exc.code}){hint}: {listing_url}")
     except urllib.error.URLError as exc:
         sys.exit(f"Could not reach Kudu: {exc.reason}")
+    if not isinstance(entries, list):
+        sys.exit(f"Unexpected Kudu listing (not a directory): {listing_url}")
 
     dest_dir.mkdir(parents=True, exist_ok=True)
     pulled = 0
     for entry in entries:
-        name = entry.get("name", "")
+        if not isinstance(entry, dict):
+            continue
+        # Strip any path components from the remote-supplied name so a crafted
+        # listing cannot write outside dest_dir.
+        name = os.path.basename(entry.get("name", ""))
         if not name.endswith(".jsonl"):
             continue
         href = entry.get("href") or f"{listing_url}{name}"
-        (dest_dir / name).write_bytes(get(href))
+        try:
+            (dest_dir / name).write_bytes(get(href))
+        except (urllib.error.URLError, OSError) as exc:
+            print(f"  skipped {name}: {exc}", file=sys.stderr)
+            continue
         pulled += 1
     print(f"Pulled {pulled} ledger file(s) from {base} into {dest_dir}")
     return dest_dir
@@ -213,8 +224,16 @@ class CurrentIndex:
                 return localized
         return base if (self.country_dir / base).is_file() else None
 
-    def _build(self, surface: str, locale: str) -> dict[str, str] | None:
-        index: dict[str, str] = {}
+    def _build(self, surface: str, locale: str) -> dict[str, set[str]] | None:
+        # anchorKey -> set of currently-valid content hashes. A set (not a
+        # single hash) because one storyline name can appear in several
+        # filtered "states" with different text; a vote is live if its hash
+        # matches any current rendering.
+        index: dict[str, set[str]] = {}
+
+        def add(key: str, text: str) -> None:
+            index.setdefault(key, set()).add(content_hash(text))
+
         if surface == "target_pair_rationale":
             found = False
             for fname in ("alignment.json", "measure_alignment.json"):
@@ -223,8 +242,9 @@ class CurrentIndex:
                     continue
                 found = True
                 for rec in data:
-                    key = anchor_key([rec["targetAId"], rec["targetBId"]])
-                    index[key] = content_hash(rec.get("description", ""))
+                    a, b = rec.get("targetAId"), rec.get("targetBId")
+                    if a and b:
+                        add(anchor_key([a, b]), rec.get("description", ""))
             return index if found else None
         if surface == "doc_pair_synthesis":
             fname = self._localised("doc_pair_synthesis.json", locale)
@@ -233,6 +253,9 @@ class CurrentIndex:
                 return None
             for rec in data:
                 if rec.get("synthesis_error") is not None:
+                    continue
+                a, b = rec.get("doc_a"), rec.get("doc_b")
+                if not (a and b):
                     continue
                 syn = rec.get("synthesis") or {}
                 text = "\n".join(
@@ -243,22 +266,35 @@ class CurrentIndex:
                         syn.get("coordination_hint", ""),
                     ]
                 )
-                index[anchor_key([rec["doc_a"], rec["doc_b"]])] = content_hash(text)
+                add(anchor_key([a, b]), text)
             return index
         if surface == "corpus_storyline":
             fname = self._localised("corpus_themes.json", locale)
             data = self._load_json(fname) if fname else None
-            storylines = data.get("storylines") if isinstance(data, dict) else None
-            if not isinstance(storylines, list):
+            if not isinstance(data, dict):
                 return None
-            for rec in storylines:
-                slug = slugify_anchor(rec.get("name", ""))
-                if slug:
-                    index[slug] = content_hash(rec.get("description", ""))
-            return index
+            # The UI can show storylines from a filtered doc subset (the
+            # `states` map) as well as the full-corpus set; index every
+            # storyline the user could have voted on.
+            groups = [data.get("storylines")]
+            states = data.get("states")
+            if isinstance(states, dict):
+                groups.extend(
+                    s.get("storylines") for s in states.values() if isinstance(s, dict)
+                )
+            seen_any = False
+            for storylines in groups:
+                if not isinstance(storylines, list):
+                    continue
+                seen_any = True
+                for rec in storylines:
+                    slug = slugify_anchor(rec.get("name", ""))
+                    if slug:
+                        add(slug, rec.get("description", ""))
+            return index if seen_any else None
         return None
 
-    def lookup(self, surface: str, locale: str) -> dict[str, str] | None:
+    def lookup(self, surface: str, locale: str) -> dict[str, set[str]] | None:
         cache_key = (surface, locale)
         if cache_key not in self._cache:
             self._cache[cache_key] = self._build(surface, locale)
@@ -271,13 +307,13 @@ def status_of(event: dict, index: CurrentIndex | None) -> str:
     pipeline output to compare against."""
     if index is None or not index.available():
         return "unchecked"
-    current = index.lookup(event["surface"], event.get("locale", "en"))
+    current = index.lookup(event["surface"], event.get("locale") or "en")
     if current is None:
         return "unchecked"
     key = event.get("anchorKey", "")
     if key not in current:
         return "orphaned"
-    return "live" if current[key] == event.get("contentHash") else "superseded"
+    return "live" if event.get("contentHash") in current[key] else "superseded"
 
 
 # ── folding + synthesis ──────────────────────────────────────────────────────
@@ -341,6 +377,7 @@ def synthesise(
             "active": active,
             "up": up,
             "down": down,
+            "retracted": sum(b["retracted"] for b in by_surface.values()),
             "helpful_pct": round(100 * up / active) if active else None,
             "with_comment": sum(b["with_comment"] for b in by_surface.values()),
             "events": len(events),
@@ -361,7 +398,7 @@ def fmt_anchor(item: dict) -> str:
 def print_human(country: str, report: dict, comments_only: bool) -> None:
     t = report["totals"]
     print(f"\n{country.upper()}")
-    if t["active"] == 0 and t["by_surface_retracted"] == 0 and not comments_only:
+    if t["active"] == 0 and t["retracted"] == 0 and not comments_only:
         print("  No active feedback.")
         return
 
@@ -487,10 +524,6 @@ def main() -> None:
             else CurrentIndex(args.output_dir, country)
         )
         report = synthesise(events_by_country[country], index)
-        # Convenience flag used by print_human.
-        report["totals"]["by_surface_retracted"] = sum(
-            b["retracted"] for b in report["by_surface"].values()
-        )
         print_human(country, report, args.comments_only)
         export["countries"][country] = {
             "summary": {"by_surface": report["by_surface"], **report["totals"]},
