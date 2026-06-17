@@ -33,6 +33,19 @@ describe("getCountry", () => {
     expect(p?.has.nr7).toBe(false);
   });
 
+  it("returns the Sri Lanka entry as visible, coherence-only", () => {
+    const s = getCountry("sri-lanka");
+    expect(s).toBeDefined();
+    expect(s?.name).toBe("Sri Lanka");
+    expect(s?.iso3).toBe("lka");
+    expect(s?.visible).toBe(true);
+    expect(s?.has.coherence).toBe(true);
+    expect(s?.has.btr.mitigation).toBe(false);
+    expect(s?.has.btr.adaptation).toBe(false);
+    expect(s?.has.nr7).toBe(false);
+    expect(s?.has.ber).toBe(false);
+  });
+
   it("lowercases before lookup", () => {
     expect(getCountry("MONGOLIA")?.id).toBe("mongolia");
     expect(getCountry("Mongolia")?.id).toBe("mongolia");

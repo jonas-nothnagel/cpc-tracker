@@ -1,0 +1,1556 @@
+[
+  {
+    "id": "LDN_1",
+    "text": "Increase forest cover from 29% to 32%",
+    "sourceDocument": "LDN",
+    "sourceLabel": "Target 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Increase forest cover from 29% to 32%",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "LDN_2",
+    "text": "Minimize the conversion of wetlands to other land cover classes",
+    "sourceDocument": "LDN",
+    "sourceLabel": "Target 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Minimize the conversion of wetlands to other land cover classes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "LDN_3",
+    "text": "Reduce rate of soil degradation to improve land productivity and Soil Organic Carbon stocks",
+    "sourceDocument": "LDN",
+    "sourceLabel": "Target 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Reduce rate of soil degradation to improve land productivity and Soil Organic Carbon stocks",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "LDN_4",
+    "text": "Reduce soil erosion of land cultivated with annual and plantation crops",
+    "sourceDocument": "LDN",
+    "sourceLabel": "Target 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Reduce soil erosion of land cultivated with annual and plantation crops",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_1",
+    "text": "Incorporate, biodiversity considerations into national policies and plans, and nature-based approaches into spatial and urban planning to prevent loss of biodiversity and enhance human well-being",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Incorporate, biodiversity considerations into national policies and plans, and nature-based approaches into spatial and urban planning to prevent loss of biodiversity and enhance human well-being",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_2",
+    "text": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems to enhance nature’s contributions to people and the planet",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems to enhance nature’s contributions to people and the planet",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_3",
+    "text": "Conserve 30% of the island’s land and waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conserve 30% of the island’s land and waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_4",
+    "text": "Halt species extinction, protect genetic diversity, and manage human-wildlife conflict",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Halt species extinction, protect genetic diversity, and manage human-wildlife conflict",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_5",
+    "text": "Ensure wild species are managed, used, and traded sustainably, safely, and legally providing benefits to people and the planet",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensure wild species are managed, used, and traded sustainably, safely, and legally providing benefits to people and the planet",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_6",
+    "text": "Prevention and control of Invasive Alien Species (IAS) for enhanced biosecurity",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Prevention and control of Invasive Alien Species (IAS) for enhanced biosecurity",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_7",
+    "text": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_8",
+    "text": "Minimize the impact of climate change on biodiversity and build resilience",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "8",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Minimize the impact of climate change on biodiversity and build resilience",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_9",
+    "text": "Enable sustainable consumption choices to reduce waste and overconsumption",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "9",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enable sustainable consumption choices to reduce waste and overconsumption",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_10",
+    "text": "Enhance sustainability in agriculture, aquaculture, fisheries, forestry and tourism through wiseuse of biodiversity",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "10",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enhance sustainability in agriculture, aquaculture, fisheries, forestry and tourism through wiseuse of biodiversity",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_11",
+    "text": "Enable businesses to assess, disclose and mitigate risks and negative impacts on biodiversity, while benefiting from and supporting biodiversity and taking steps to minimize harmful incentives while upscaling positive incentives",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "11",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enable businesses to assess, disclose and mitigate risks and negative impacts on biodiversity, while benefiting from and supporting biodiversity and taking steps to minimize harmful incentives while upscaling positive incentives",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_12",
+    "text": "Strengthen biosafety while accruing the benefits of biotechnology",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "12",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Strengthen biosafety while accruing the benefits of biotechnology",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_13",
+    "text": "Enable benefit sharing from biological resources, related digital sequence information, and traditional knowledge",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "13",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enable benefit sharing from biological resources, related digital sequence information, and traditional knowledge",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_14",
+    "text": "Decision-making is based on best possible available data and participatory approach with an emphasis on access to justice and information relating to biodiversity",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "14",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Decision-making is based on best possible available data and participatory approach with an emphasis on access to justice and information relating to biodiversity",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_15",
+    "text": "Mobilize funding while enhancing the capacity at all levels for effective implementation of the NBSAP to achieve the NBTs by 2030",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "15",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Mobilize funding while enhancing the capacity at all levels for effective implementation of the NBSAP to achieve the NBTs by 2030",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NBSAP_16",
+    "text": "Ensure gender equality and a gender-responsive approach for biodiversity conservation, management and sustainable use",
+    "sourceDocument": "NBSAP",
+    "sourceLabel": "16",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensure gender equality and a gender-responsive approach for biodiversity conservation, management and sustainable use",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_1",
+    "text": "Mainstreaming climate change considerations into agriculture",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 1 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Mainstreaming climate change considerations into agriculture",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_2",
+    "text": "Develop and strengthen National Weather and Climate Platform for early warning and risk management",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 2 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop and strengthen National Weather and Climate Platform for early warning and risk management",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_3",
+    "text": "Revising the Agro-ecological Map of Sri Lanka considering current and future scenarios",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 3 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Revising the Agro-ecological Map of Sri Lanka considering current and future scenarios",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_4",
+    "text": "Development and promotion of Integrated Plant Nutrition Management Systems (IPNS) and Integrated Pest Management (IPM) in all crop production systems",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 4 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Development and promotion of Integrated Plant Nutrition Management Systems (IPNS) and Integrated Pest Management (IPM) in all crop production systems",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_5",
+    "text": "Sustainable land use and efficienct resource management for improved production & productivity",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 5 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Sustainable land use and efficienct resource management for improved production & productivity",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_6",
+    "text": "Reduce post-harvest losses and promote value addition of crops in a changing climate",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 6 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Reduce post-harvest losses and promote value addition of crops in a changing climate",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_7",
+    "text": "Reduce post-harvest losses and improve the value addition of crops",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 1 (mitigation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Reduce post-harvest losses and improve the value addition of crops",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_8",
+    "text": "Increase crop productivity and production through efficient resource management",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 2 (mitigation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Increase crop productivity and production through efficient resource management",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_9",
+    "text": "Improve the adoption of renewable energy for crop farming and processing",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Agriculture 3 (mitigation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improve the adoption of renewable energy for crop farming and processing",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_10",
+    "text": "Identification, mapping and management of areas that are highly vulnerable to adverse impacts of climate change, including the restoration of degraded areas inside and outside of the protected areas (PAs) network to conserve habitats",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identification, mapping and management of areas that are highly vulnerable to adverse impacts of climate change, including the restoration of degraded areas inside and outside of the protected areas (PAs) network to conserve habitats",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_11",
+    "text": "Increase connectivity in the zones that will be subjected to climate-driven changes according to current predictions through landscape and seascape approaches",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Increase connectivity in the zones that will be subjected to climate-driven changes according to current predictions through landscape and seascape approaches",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_12",
+    "text": "Expansion of protected area (PA) extent to enhance the ability of the PA network to function as an additional area to build resilience to climate change",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Expansion of protected area (PA) extent to enhance the ability of the PA network to function as an additional area to build resilience to climate change",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_13",
+    "text": "Strengthen ex-situ conservation programmes covering climate-vulnerable taxa",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Strengthen ex-situ conservation programmes covering climate-vulnerable taxa",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_14",
+    "text": "Effective management of the spread of Invasive Alien Species (IAS) triggered by favorable climate conditions",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Effective management of the spread of Invasive Alien Species (IAS) triggered by favorable climate conditions",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_15",
+    "text": "Review and modify/update existing policies, laws, and regulations related to biodiversity and natural resources to incorporate climate change adaptation considerations",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Review and modify/update existing policies, laws, and regulations related to biodiversity and natural resources to incorporate climate change adaptation considerations",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_16",
+    "text": "Advancing multi-stakeholder financing towards biodiversity",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Advancing multi-stakeholder financing towards biodiversity",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_17",
+    "text": "Develop an accurate forecasting system for sea level rise and establish a sea level database in Sri Lanka",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Coastal and Marine  1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop an accurate forecasting system for sea level rise and establish a sea level database in Sri Lanka",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_18",
+    "text": "Coastal hazard and vulnerability mapping to cover the entire coastal belt of the country",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Coastal and Marine  2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Coastal hazard and vulnerability mapping to cover the entire coastal belt of the country",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_19",
+    "text": "Incorporate climate change information into the coastal zone management plan (CZMP)",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Coastal and Marine  3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Incorporate climate change information into the coastal zone management plan (CZMP)",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_20",
+    "text": "Identify, designate, and prioritize climate-sensitive coastal and marine areas, and prepare management plans for enhancing resilience",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Coastal and Marine  4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identify, designate, and prioritize climate-sensitive coastal and marine areas, and prepare management plans for enhancing resilience",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_21",
+    "text": "Restore coastal ecosystems (e.g. coral reefs, mangrove, sand dunes) and improve conservation actions for marine mammals and other threatened species",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Coastal and Marine  5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Restore coastal ecosystems (e.g. coral reefs, mangrove, sand dunes) and improve conservation actions for marine mammals and other threatened species",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_22",
+    "text": "Enhance renewable energy contribution to the national electricity generation mix by increasing Solar PV, Wind, Hydro and Sustainable Biomass based electricity generation",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Energy 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enhance renewable energy contribution to the national electricity generation mix by increasing Solar PV, Wind, Hydro and Sustainable Biomass based electricity generation",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_23",
+    "text": "Introduction of grid integrated energy storage systems such as Pumped Storage and Battery Energy Storage Systems (BESS) to increase absorption of renewable energy and reduce thermal generation as a conditional measure",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Energy 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introduction of grid integrated energy storage systems such as Pumped Storage and Battery Energy Storage Systems (BESS) to increase absorption of renewable energy and reduce thermal generation as a conditional measure",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_24",
+    "text": "Implement Demand Side Management (DSM) measures by promoting energy-efficient equipment, technologies, and system improvements in a national Energy Efficiency Improvement and Conservation (EEI&C) programme covering commercial, institutional, and residential sectors",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Energy 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Implement Demand Side Management (DSM) measures by promoting energy-efficient equipment, technologies, and system improvements in a national Energy Efficiency Improvement and Conservation (EEI&C) programme covering commercial, institutional, and residential sectors",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_25",
+    "text": "Conversion of existing fuel oil-based combined cycle power plants to Natural Gas (NG) and establishment of new NG plants as conditional measures (once the necessary infrastructure is available)",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Energy 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conversion of existing fuel oil-based combined cycle power plants to Natural Gas (NG) and establishment of new NG plants as conditional measures (once the necessary infrastructure is available)",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_26",
+    "text": "Conduct R&D activities and other necessary studies to implement clean energy technologies and other grid supporting infrastructure to increase readiness to deploy such technologies in the future",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Energy 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conduct R&D activities and other necessary studies to implement clean energy technologies and other grid supporting infrastructure to increase readiness to deploy such technologies in the future",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_27",
+    "text": "Ecosystem-based approach to fisheries management (EAFM) in already identified high vulnerability areas will be extended to identify more areas of vulnerability to enhance resilience",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ecosystem-based approach to fisheries management (EAFM) in already identified high vulnerability areas will be extended to identify more areas of vulnerability to enhance resilience",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_28",
+    "text": "Identify and expand sustainable fisheries, aquaculture and culture-based fisheries to address food security issues relating to climate change.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identify and expand sustainable fisheries, aquaculture and culture-based fisheries to address food security issues relating to climate change.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_29",
+    "text": "Develop climatic-resilient varieties, and farming and breeding technologies to increase resilience in a changing climate",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop climatic-resilient varieties, and farming and breeding technologies to increase resilience in a changing climate",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_30",
+    "text": "Evaluate the production capabilities of fisheries and aquatic resources in climate vulnerable lagoons to maintain sustainable and stable productivity levels",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Evaluate the production capabilities of fisheries and aquatic resources in climate vulnerable lagoons to maintain sustainable and stable productivity levels",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_31",
+    "text": "Develop technologies to predict changing weather conditions and enhance safety at sea in coastal fisheries, against extreme climatic conditions",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop technologies to predict changing weather conditions and enhance safety at sea in coastal fisheries, against extreme climatic conditions",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_32",
+    "text": "Conduct fisheries and aquatic research to identify climatic change-driven impacts that affect production",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conduct fisheries and aquatic research to identify climatic change-driven impacts that affect production",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_33",
+    "text": "Introduce alternative livelihoods and strengthen capacity developments to reduce climate vulnerability",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Fisheries 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introduce alternative livelihoods and strengthen capacity developments to reduce climate vulnerability",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_34",
+    "text": "Sustainable management of forests and the restoration of other degraded lands, at least 32% by 2035",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forestry 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Sustainable management of forests and the restoration of other degraded lands, at least 32% by 2035",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_35",
+    "text": "Expansion, restoration, and sustainable management of trees outside forest (TROF)",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forestry 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Expansion, restoration, and sustainable management of trees outside forest (TROF)",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_36",
+    "text": "Promote catchment protection in major rivers through tree planting",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forestry 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote catchment protection in major rivers through tree planting",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_37",
+    "text": "Conservation and enhancement of blue carbon ecosystems including mangroves, sea grass, salt marshes",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forestry 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conservation and enhancement of blue carbon ecosystems including mangroves, sea grass, salt marshes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_38",
+    "text": "Policy initiatives for enhancing the climate resilience of the health sector are promoted and integrated into all related sectors",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Health 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Policy initiatives for enhancing the climate resilience of the health sector are promoted and integrated into all related sectors",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_39",
+    "text": "Improved capacity to manage non-communicable diseases (NCDs) and health conditions directly attributable to climate change",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Health 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improved capacity to manage non-communicable diseases (NCDs) and health conditions directly attributable to climate change",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_40",
+    "text": "Manage the worsening of malnutrition due to climate change",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Health 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Manage the worsening of malnutrition due to climate change",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_41",
+    "text": "Strengthen surveillance and management of climate-sensitive vector-borne and zoonotic diseases (dengue, malaria, filariasis, leishmaniasis and leptospirosis)",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Health 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Strengthen surveillance and management of climate-sensitive vector-borne and zoonotic diseases (dengue, malaria, filariasis, leishmaniasis and leptospirosis)",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_42",
+    "text": "Reduce morbidity and mortality resulting from extreme weather/climate events and other climate-related emergencies",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Health 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Reduce morbidity and mortality resulting from extreme weather/climate events and other climate-related emergencies",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_43",
+    "text": "The application of energy efficiency practices across the industry sector, with a particular focus on energy-intensive industries.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The application of energy efficiency practices across the industry sector, with a particular focus on energy-intensive industries.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_44",
+    "text": "The integration of renewable energy technologies to expand the proportion of renewable energy within industrial energy usage and the electrification of industrial heating",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The integration of renewable energy technologies to expand the proportion of renewable energy within industrial energy usage and the electrification of industrial heating",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_45",
+    "text": "Increase industrial support interventions by applying Resource Efficient and Cleaner Production (RECP), Life Cycle Analysis (LCA), Circular Economy, Sustainable Consumption and Production (SCP), industrial symbiosis, eco labelling and green reporting in industries",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Increase industrial support interventions by applying Resource Efficient and Cleaner Production (RECP), Life Cycle Analysis (LCA), Circular Economy, Sustainable Consumption and Production (SCP), industrial symbiosis, eco labelling and green reporting in industries",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_46",
+    "text": "Establish eco-industrial parks and networks",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Establish eco-industrial parks and networks",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_47",
+    "text": "The implementation of measures to mitigate GHG emissions under the Industrial Processes and Product Use (IPPU) category",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The implementation of measures to mitigate GHG emissions under the Industrial Processes and Product Use (IPPU) category",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_48",
+    "text": "Conversion of industry refrigeration and commercial refrigeration systems to low-GWP alternative technology",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conversion of industry refrigeration and commercial refrigeration systems to low-GWP alternative technology",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_49",
+    "text": "Increase innovation and investment in industrial decarbonization",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Industry 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Increase innovation and investment in industrial decarbonization",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_50",
+    "text": "National level stocktaking and progress reviewing on Loss and Damage related to all sectors such as but not exclusive to - power and energy, industries, telecommunication, agriculture, livestock and fisheries, biodiversity and forestry, housing, coastal and marine infrastructure, transport, education, water, health, tourism, gender and child protection, social protection",
+    "sourceDocument": "NDC",
+    "sourceLabel": "L&D 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "National level stocktaking and progress reviewing on Loss and Damage related to all sectors such as but not exclusive to - power and energy, industries, telecommunication, agriculture, livestock and fisheries, biodiversity and forestry, housing, coastal and marine infrastructure, transport, education, water, health, tourism, gender and child protection, social protection",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_51",
+    "text": "Strengthen the existing weather and climate forecasting system including extreme weather and slow onset events and encompassing economic and non-economic impacts",
+    "sourceDocument": "NDC",
+    "sourceLabel": "L&D 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Strengthen the existing weather and climate forecasting system including extreme weather and slow onset events and encompassing economic and non-economic impacts",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_52",
+    "text": "Improve the integrated data management system for losses and damages for evidence-based policymaking, including technical and socio-economic information",
+    "sourceDocument": "NDC",
+    "sourceLabel": "L&D 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improve the integrated data management system for losses and damages for evidence-based policymaking, including technical and socio-economic information",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_53",
+    "text": "Establish an overarching, nationally appropriate, functional and coordinated institutional mechanism for L&D",
+    "sourceDocument": "NDC",
+    "sourceLabel": "L&D 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Establish an overarching, nationally appropriate, functional and coordinated institutional mechanism for L&D",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_54",
+    "text": "Develop a Risk Management Framework covering social, economic, physical and ecological risks due to climate change related and extreme disaster events, enabling climate/disaster risk financing",
+    "sourceDocument": "NDC",
+    "sourceLabel": "L&D 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop a Risk Management Framework covering social, economic, physical and ecological risks due to climate change related and extreme disaster events, enabling climate/disaster risk financing",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_55",
+    "text": "Improve dairy sector productivity by introducing Good Animal Husbandry practices (GAHP) in consideration of managing herds, herd health, feed and by improving animal comfort and welfare",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock 1 (mitigation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improve dairy sector productivity by introducing Good Animal Husbandry practices (GAHP) in consideration of managing herds, herd health, feed and by improving animal comfort and welfare",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_56",
+    "text": "Improve the productivity of Monogastrics by GAHP such as improving genetics, feed efficiency, animal health, comfort and welfare",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock 2 (mitigation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improve the productivity of Monogastrics by GAHP such as improving genetics, feed efficiency, animal health, comfort and welfare",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_57",
+    "text": "Adopt renewable energy for livestock and poultry applications",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock 3 (mitigation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Adopt renewable energy for livestock and poultry applications",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_58",
+    "text": "Introduce adaptation measures, particularly genetic improvement, disease surveillance and forage improvement strategies to address climate impacts on ruminant livestock",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock 1 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introduce adaptation measures, particularly genetic improvement, disease surveillance and forage improvement strategies to address climate impacts on ruminant livestock",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_59",
+    "text": "Introduce technological innovations and interventions, especially by improved feeding, disease surveillance and management strategies, to build resilience in poultry and swine farming",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock 2 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introduce technological innovations and interventions, especially by improved feeding, disease surveillance and management strategies, to build resilience in poultry and swine farming",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_60",
+    "text": "Improve research, education, awareness and, capacity building for climate change adaptation through private-public partnerships",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock 3 (adaptation)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improve research, education, awareness and, capacity building for climate change adaptation through private-public partnerships",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_61",
+    "text": "Build resilience through sustainable tourism practices and awareness for improved risk preparedness in destinations of high climate change vulnerability",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Tourism 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Build resilience through sustainable tourism practices and awareness for improved risk preparedness in destinations of high climate change vulnerability",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_62",
+    "text": "Introduce risk reduction and risk transfer mechanisms for climate-induced disasters affecting tourism",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Tourism 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introduce risk reduction and risk transfer mechanisms for climate-induced disasters affecting tourism",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_63",
+    "text": "Promote climate resilience in the tourism sector by introducing green building design to all new constructions and refurbishments",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Tourism 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote climate resilience in the tourism sector by introducing green building design to all new constructions and refurbishments",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_64",
+    "text": "Promote climate change awareness and educational programmes in the tourism sector",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Tourism 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote climate change awareness and educational programmes in the tourism sector",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_65",
+    "text": "Transport sector system improvement",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Transport 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Transport sector system improvement",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_66",
+    "text": "Strengthen and promote public passenger transport",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Transport 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Strengthen and promote public passenger transport",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_67",
+    "text": "Shift freight to efficient modes",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Transport 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Shift freight to efficient modes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_68",
+    "text": "Promote electric mobility",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Transport 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote electric mobility",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_69",
+    "text": "Improve vehicle fleet efficiency",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Transport 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Improve vehicle fleet efficiency",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_70",
+    "text": "Energy efficient built environment related to transport systems",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Transport 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Energy efficient built environment related to transport systems",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_71",
+    "text": "Enhance the resilience of human settlements and infrastructure through mainstreaming climate change adaptation into national, regional and local level physical planning processes",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Urban Planning & Human Settlements  1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enhance the resilience of human settlements and infrastructure through mainstreaming climate change adaptation into national, regional and local level physical planning processes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_72",
+    "text": "Incorporate Disaster Risk Reduction (DRR) into the urban and human settlement planning/implementation in areas of high vulnerability to climate change risks",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Urban Planning & Human Settlements  2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Incorporate Disaster Risk Reduction (DRR) into the urban and human settlement planning/implementation in areas of high vulnerability to climate change risks",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_73",
+    "text": "Minimize the impact of slow onset climate events (sea-level rise in coastal settlements and urban heat islands (UHIs))",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Urban Planning & Human Settlements  3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Minimize the impact of slow onset climate events (sea-level rise in coastal settlements and urban heat islands (UHIs))",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_74",
+    "text": "Demonstrate “Circular economy’’ practices across solid waste sources",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Demonstrate “Circular economy’’ practices across solid waste sources",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_75",
+    "text": "Manage biodegradable solid waste component through biological treatments and other means",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Manage biodegradable solid waste component through biological treatments and other means",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_76",
+    "text": "Introduce energy recovery using non-compostable, non-reusable and non-recyclable waste",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introduce energy recovery using non-compostable, non-reusable and non-recyclable waste",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_77",
+    "text": "Use of sanitary and engineered landfills for the disposal of solid waste, which were not diverted for composting, reusing, recycling, and energy recovery facilities",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Use of sanitary and engineered landfills for the disposal of solid waste, which were not diverted for composting, reusing, recycling, and energy recovery facilities",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_78",
+    "text": "Implement and promote sustainable wastewater management systems in urban and rural areas",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Implement and promote sustainable wastewater management systems in urban and rural areas",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_79",
+    "text": "Destruction of industrial hazardous waste and infectious waste via incineration processes that does not involve material and energy recovery",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Destruction of industrial hazardous waste and infectious waste via incineration processes that does not involve material and energy recovery",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_80",
+    "text": "Supportive interventions that facilitate progress or support broader goals",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Waste 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Supportive interventions that facilitate progress or support broader goals",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_81",
+    "text": "Integrated River Basin Management (IRBM) approach adopted in Sri Lanka",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Integrated River Basin Management (IRBM) approach adopted in Sri Lanka",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_82",
+    "text": "Groundwater and surface water monitoring and vulnerability assessment in highly sensitive and drought-prone areas of the country and implementing remedial measures",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Groundwater and surface water monitoring and vulnerability assessment in highly sensitive and drought-prone areas of the country and implementing remedial measures",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_83",
+    "text": "Promote, identify and implement climate-resilient water supply & sanitation",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote, identify and implement climate-resilient water supply & sanitation",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_84",
+    "text": "Promote water conservation, efficient water use, and the re-use of treated wastewater for other purposes",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote water conservation, efficient water use, and the re-use of treated wastewater for other purposes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_85",
+    "text": "Establish and improve salinity barriers in rivers where intakes are subjected to climate induced saline water intrusion during the drought season",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Establish and improve salinity barriers in rivers where intakes are subjected to climate induced saline water intrusion during the drought season",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_86",
+    "text": "Capacity building for water, health and educational sectors and public awareness on building resilience to climate change",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Capacity building for water, health and educational sectors and public awareness on building resilience to climate change",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_87",
+    "text": "Restoration, rehabilitation, and augmentation of existing irrigation systems",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Restoration, rehabilitation, and augmentation of existing irrigation systems",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_88",
+    "text": "Enhance water management in irrigation schemes",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 8",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Enhance water management in irrigation schemes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_89",
+    "text": "Assess river floods and adopt mitigation measures and early warning systems for priority basins",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water 9",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Assess river floods and adopt mitigation measures and early warning systems for priority basins",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_90",
+    "text": "20.09% total GHG reduction vs BAU (2026-2035)",
+    "sourceDocument": "NDC",
+    "sourceLabel": "GHG 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "20.09% total GHG reduction vs BAU (2026-2035)",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NDC_91",
+    "text": "70% renewable energy in electricity generation by 2030",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Renewables 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "70% renewable energy in electricity generation by 2030",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  }
+]
