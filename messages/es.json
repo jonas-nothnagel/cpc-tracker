@@ -671,6 +671,7 @@
         "other": "Otras ({count, plural, one {# institución} other {# instituciones}})",
         "coordination": "{count, plural, one {# meta recibe} other {# metas reciben}} el apoyo de acciones reportadas de dos o más instituciones.",
         "selectHint": "Seleccione una cinta para ver las metas que cubre.",
+        "focusHint": "Pase el cursor sobre una institución o documento para ver sus flujos.",
         "detailCount": "{count, plural, one {# meta} other {# metas}}",
         "caveat": "Participación según la nombra el informe (un único lente autoreportado); alineación estimada por IA. Una meta nombrada por varias instituciones cuenta en cada una.",
         "empty": "No hay acciones reportadas con alineación fuerte para mostrar en la selección actual."

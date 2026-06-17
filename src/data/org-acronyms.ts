@@ -19,8 +19,12 @@
  * full-name string character-for-character.
  *
  * STATUS: Mongolia MET + MOFALI confirmed against the BTR1 (Dec 2025) tables by
- * the UNDP team (2026-06). MON / MOES (Mongolia) and the Panama acronyms remain
- * unverified, so they render raw until confirmed.
+ * the UNDP team (2026-06). Panama MiAMBIENTE + MIDA sourced (2026-06) from the
+ * Panama BTR's own implementingEntity strings, which name each ministry both
+ * ways (the full name alongside the brand acronym / an inline "(MIDA)"). Mongolia
+ * MOES / MON / NAMEM / NEMA appear ONLY as acronyms in the adaptation table with
+ * no full-name form anywhere in the BTR data, so they cannot be sourced by
+ * co-occurrence and stay raw pending the BTR1 abbreviations list.
  */
 export const ORG_ACRONYMS: Record<string, Record<string, string>> = {
   mongolia: {
@@ -29,13 +33,21 @@ export const ORG_ACRONYMS: Record<string, Record<string, string>> = {
     // character so the two collapse into one institution label.
     met: "Ministry of Environment and Climate Change",
     mofali: "Ministry of Food Agriculture and Light Industry",
-    // Unverified (render raw until confirmed against the BTR1 abbreviations list):
-    // mon: "...",
-    // moes: "...",
+    // Adaptation-table-only acronyms (MOES, MON, NAMEM, NEMA) have no full-name
+    // form anywhere in the BTR data, so they cannot be sourced by co-occurrence.
+    // They render raw until confirmed against the BTR1 abbreviations list.
   },
   panama: {
-    // Unverified (render raw until confirmed against the Panama BTR):
-    // miambiente: "Ministerio de Ambiente",
+    // Sourced from the Panama BTR's own implementingEntity strings, where the
+    // same ministry is named two ways; map each variant to one full-name string
+    // so they collapse into a single institution instead of double-counting.
+    //   "Ministerio de Ambiente" (15 rows) ← "MiAMBIENTE" (5 rows), the
+    //   ministry's official brand acronym.
+    miambiente: "Ministerio de Ambiente",
+    //   "Ministerio de Desarrollo Agropecuario (MIDA)" (4 rows) spells the
+    //   acronym out inline; the bare "MIDA" row folds into that exact string.
+    //   (The "(UACC)" sub-unit row is left separate — a distinct office.)
+    mida: "Ministerio de Desarrollo Agropecuario (MIDA)",
   },
 };
 

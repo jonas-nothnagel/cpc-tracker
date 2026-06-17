@@ -671,6 +671,7 @@
         "other": "Other ({count, plural, one {# institution} other {# institutions}})",
         "coordination": "{count, plural, one {# target is} other {# targets are}} supported by reported actions from two or more institutions.",
         "selectHint": "Select a ribbon to list the targets it covers.",
+        "focusHint": "Hover an institution or document to trace its flows.",
         "detailCount": "{count, plural, one {# target} other {# targets}}",
         "caveat": "Involvement as named in the report (one self-reported lens); AI-estimated alignment. A target named by several institutions counts under each.",
         "empty": "No strongly aligned reported actions to map for the current selection."

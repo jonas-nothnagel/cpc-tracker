@@ -37,6 +37,15 @@ const RIGHT_X0 = VIEW_W - RIGHT_LABEL - NODE_W; // ribbons arrive here
 
 const INSTITUTION_NODE = "#9ca3af"; // neutral gray; documents carry their colour
 
+// "Focused Sankey" opacities (Option C): calm at rest, legible on demand. The
+// flow is a dense many-to-many — the one shape ribbons read worst — so ribbons
+// rest faint; hovering an institution or document lights just its flows and
+// drops the rest back, letting the reader trace one actor at a time.
+const RIBBON_REST = 0.16;
+const RIBBON_FOCUS = 0.78;
+const RIBBON_DIM = 0.05;
+const RIBBON_SELECTED = 0.9;
+
 function truncate(s: string, n: number): string {
   return s.length > n ? `${s.slice(0, n - 1)}…` : s;
 }
@@ -94,7 +103,12 @@ export function InstitutionFlow({
     const instGaps = (institutions.length - 1) * NODE_GAP;
     const docGaps = (documents.length - 1) * NODE_GAP;
     const maxGaps = Math.max(instGaps, docGaps);
-    const scale = Math.min(16, Math.max(3, (TALLEST - maxGaps) / total));
+    // Fixed height (Option C never scrolls): scale so the stacked ribbons + gaps
+    // fill at most TALLEST. No lower clamp — a busy corpus shrinks to fit rather
+    // than overflowing; the institution cap (Other bundle) plus a min ribbon
+    // width keep thin flows visible. Capped at 16 px/target so sparse corpora
+    // stay compact instead of ballooning.
+    const scale = Math.min(16, (TALLEST - maxGaps) / total);
     const contentH = total * scale + maxGaps;
     const svgH = contentH + PAD_TOP * 2;
 
@@ -191,6 +205,20 @@ export function InstitutionFlow({
       ? t("flow.other", { count: model.bundledInstitutions })
       : node.label;
 
+  // Name shown in the focus hint under the chart: the hovered institution (its
+  // full sourced label) or document. Resolving here means a hovered ribbon, node
+  // bar, or label all surface the same name — and a full ministry name reads out
+  // in full in the hint even though the node bar truncates it.
+  const hoveredLabel =
+    hovered === null
+      ? null
+      : (() => {
+          const inst = model.institutions.find((i) => i.key === hovered);
+          if (inst) return labelFor(inst);
+          const doc = documents.find((d) => d.doc === hovered);
+          return doc ? getDocMediumLabel(countryConfig, doc.doc) : null;
+        })();
+
   return (
     <div className="px-1 space-y-4">
       <div>
@@ -224,12 +252,18 @@ export function InstitutionFlow({
             {/* Ribbons first, so the thin node bars and labels sit on top. */}
             {layout.placedLinks.map((l) => {
               const xm = (LEFT_X1 + RIGHT_X0) / 2;
-              const active =
-                hovered === null
-                  ? true
-                  : hovered === l.institutionKey || hovered === l.doc;
+              const focused =
+                hovered !== null &&
+                (hovered === l.institutionKey || hovered === l.doc);
               const isSel =
                 selected?.key === l.institutionKey && selected?.doc === l.doc;
+              const strokeOpacity = isSel
+                ? RIBBON_SELECTED
+                : hovered === null
+                  ? RIBBON_REST
+                  : focused
+                    ? RIBBON_FOCUS
+                    : RIBBON_DIM;
               return (
                 <path
                   key={`${l.institutionKey}-${l.doc}`}
@@ -237,7 +271,7 @@ export function InstitutionFlow({
                   fill="none"
                   stroke={l.color}
                   strokeWidth={l.width}
-                  strokeOpacity={isSel ? 0.85 : active ? 0.45 : 0.12}
+                  strokeOpacity={strokeOpacity}
                   className="cursor-pointer transition-[stroke-opacity]"
                   onMouseEnter={() => setHovered(l.institutionKey)}
                   onMouseLeave={() => setHovered(null)}
@@ -324,6 +358,20 @@ export function InstitutionFlow({
               );
             })}
           </svg>
+
+          {/* Focus hint: at rest invites the hover; on hover names the focused
+              institution or document (full sourced name when available). */}
+          <p className="text-[11px] min-h-[1.25em] -mt-1.5">
+            {hoveredLabel ? (
+              <span className="font-medium text-[var(--undp-black)]">
+                {hoveredLabel}
+              </span>
+            ) : (
+              <span className="italic text-[var(--undp-gray)]">
+                {t("flow.focusHint")}
+              </span>
+            )}
+          </p>
 
           {model.coordinationTargets > 0 && (
             <p className="text-[11px] text-[var(--undp-black)] leading-relaxed max-w-prose">
