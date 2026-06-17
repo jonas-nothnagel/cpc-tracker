@@ -1,0 +1,1160 @@
+{
+  "synthesis": [
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_1",
+      "category_name": "Access and benefit sharing",
+      "aligned_count": 37,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 93,
+        "relevant_only_count": 0
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Enable equitable use across biodiversity actions",
+        "reinforce": "Access and benefit sharing often aligns as an enabling governance layer for biodiversity, fisheries, agriculture, forestry, coastal and water actions. The recurring mechanism is that fair arrangements for biological resources, digital sequence information, and traditional knowledge tend to reinforce participation, legitimacy, financing, knowledge use, and institutional support for sector measures, especially in biodiversity finance, protected areas, ex-situ conservation, fisheries, and climate-sensitive ecosystem management.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "Coordination could usefully focus on embedding access-and-benefit-sharing provisions into implementation rules, financing, research, and management plans where biological resources or traditional knowledge are used.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_2",
+      "category_name": "Biodiversity awareness and knowledge",
+      "aligned_count": 221,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 314
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Strengthening biodiversity information for sector decisions",
+        "reinforce": "This sector often aligns through enabling measures on data, participation, access to information, awareness, and knowledge use. Across fisheries, coastal planning, tourism, water, industry, agriculture, and loss-and-damage systems, biodiversity-informed decision-making tends to reinforce climate resilience research, planning, education, and ecosystem management, while benefit-sharing and gender-responsive approaches also support knowledge legitimacy and uptake.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "It may help to connect biodiversity data, participatory processes, awareness programmes, and traditional knowledge arrangements with sector-specific climate planning and research so knowledge generated in one process can inform the others.",
+        "confidence": "low"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_3",
+      "category_name": "Biosafety",
+      "aligned_count": 123,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 207,
+        "relevant_only_count": 0
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Link biosafety controls to cross-sector risk management",
+        "reinforce": "Biosafety targets often align as enabling measures for safer biotechnology use and invasive alien species control across agriculture, livestock, fisheries, water, waste, health, land, and coastal planning. A stronger reinforcement recurs where invasive alien species management directly matches climate biodiversity action on preventing and controlling climate-driven spread, and elsewhere the relationship tends to be supportive through shared surveillance, risk management, and ecosystem protection functions.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "Coordination could focus on using biosafety institutions, especially invasive-species surveillance and biotechnology risk oversight, to inform sector plans where biological risks are a stated implementation pathway.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_4",
+      "category_name": "Green economy",
+      "aligned_count": 766,
+      "flagged_count": 7,
+      "pool_composition": {
+        "primary_count": 642,
+        "relevant_only_count": 438
+      },
+      "contradiction_types": {
+        "resource_competition": 3,
+        "delivery_friction": 4
+      },
+      "synthesis": {
+        "storyline_name": "Linking biodiversity governance with greener production",
+        "reinforce": "Reinforcement often comes through enabling frameworks that connect biodiversity planning, disclosure, data access, and participation with greener business practice, including resource efficient and cleaner production, circular economy approaches, sustainable consumption, and waste reduction. It also tends to align conservation and resilience measures with climate-resilient water, tourism, urban planning, and some energy actions, mainly through indirect ecosystem services, better planning, and lower pollution or resource pressure.",
+        "clash": "Possible misalignment recurs where green growth measures need land or infrastructure that may overlap with conservation priorities, especially around forest expansion, wetland protection, 30 percent land and water conservation, agricultural production growth, industrial park siting, and new natural gas facilities. A smaller delivery friction is also flagged for review where productivity-led livestock expansion could pull against sustainable consumption goals unless demand-side measures are coordinated.",
+        "coordination_hint": "This sector often points to the value of spatial planning, land-use zoning, project screening, and shared business reporting so greener production and infrastructure can align with biodiversity safeguards rather than compete with them.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_5",
+      "category_name": "Biodiversity planning and finance",
+      "aligned_count": 995,
+      "flagged_count": 7,
+      "pool_composition": {
+        "primary_count": 715,
+        "relevant_only_count": 528
+      },
+      "contradiction_types": {
+        "resource_competition": 3,
+        "delivery_friction": 4
+      },
+      "synthesis": {
+        "storyline_name": "Enable biodiversity delivery through planning, data, and finance",
+        "reinforce": "This sector often aligns through enabling measures, especially biodiversity finance, capacity, data, participation, and mainstreaming that support delivery in agriculture, water, coastal, industry, energy, and loss-and-damage planning. It also reinforces more directly where climate and biodiversity actions share ecosystem-resilience mechanisms, such as connectivity, restoration of vulnerable areas, invasive species control, wetland protection, and support for conserved areas including OECMs.",
+        "clash": "Possible misalignment recurs where biodiversity planning and land or water protection objectives, especially wetland retention and area-based conservation, meet production or infrastructure expansion in agriculture, livestock, irrigation, industry, and energy. Several pairs are flagged for review because siting, land-use change, hydrological alteration, or associated infrastructure could compete with conserved areas or biodiversity-risk mitigation expectations unless safeguards are applied.",
+        "coordination_hint": "This sector tends to benefit from early spatial planning, zoning, hydrological safeguards, and biodiversity screening, alongside finance and data systems that help production and infrastructure measures align with wetland protection, OECMs, and broader biodiversity implementation.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_6",
+      "category_name": "Pollution management",
+      "aligned_count": 409,
+      "flagged_count": 2,
+      "pool_composition": {
+        "primary_count": 283,
+        "relevant_only_count": 314
+      },
+      "contradiction_types": {
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Link pollution control with water and ecosystem planning",
+        "reinforce": "Reinforcement often points to pollution management aligning with ecosystem restoration, wastewater treatment, treated wastewater reuse, and broader water conservation measures, because cleaner discharges and better water handling tend to reduce pressures on freshwater, coastal, and marine systems. It also recurs as an enabling link through spatial planning, coastal management, cleaner production, business disclosure, finance, and data systems, where biodiversity-oriented pollution goals can be built into sector delivery rather than implemented as stand-alone actions.",
+        "clash": "Possible misalignment is limited in this sector sample, but flagged for review where delivery could create indirect pressure on environmental quality outcomes through land-use or consumption pathways. The flagged pairs suggest industrial park expansion may need zoning and safeguards to avoid wetland loss, and productivity-led livestock measures may need accompanying demand-side measures so gains do not work against sustainable consumption and waste reduction aims.",
+        "coordination_hint": "It may help to coordinate pollution management through shared spatial screening, water and wastewater standards, and demand-side safeguards, especially where restoration, industrial development, or productivity programs touch sensitive ecosystems.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_7",
+      "category_name": "Protected areas and other conservation measures",
+      "aligned_count": 585,
+      "flagged_count": 6,
+      "pool_composition": {
+        "primary_count": 469,
+        "relevant_only_count": 314
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Link protected-area planning with climate-resilient restoration",
+        "reinforce": "Protected-area and OECM targets often align with climate biodiversity actions that identify, map, restore, and connect vulnerable habitats inside and outside protected areas. This also recurs for coastal and wetland systems, where blue carbon conservation, wetland protection, invasive species control, and better biodiversity data and participation reinforce area-based conservation delivery.",
+        "clash": "Possible misalignment is mainly flagged for review where conservation area expansion, forest cover increase, or wetland retention may compete with agriculture, livestock, or industrial and irrigation siting on the same land or water base. The recurring mechanism is resource competition or delivery friction from land conversion, hydrological alteration, or infrastructure placement in landscapes relevant to protected areas and other conservation measures.",
+        "coordination_hint": "This sector tends to benefit from spatial zoning, hydrological safeguards, and shared land-use screening so conservation areas, wetlands, and restoration sites can be planned alongside production and infrastructure expansion.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_8",
+      "category_name": "Restoration",
+      "aligned_count": 434,
+      "flagged_count": 2,
+      "pool_composition": {
+        "primary_count": 291,
+        "relevant_only_count": 253
+      },
+      "contradiction_types": {
+        "resource_competition": 1,
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link restoration with conservation and resilience planning",
+        "reinforce": "Restoration in this sector often aligns with broader conservation and climate resilience targets, especially where coastal, marine, wetland, forest, and degraded-area actions are paired with area protection, biodiversity resilience, species conservation, or blue carbon management. The sample also recurs around enabling links, where funding, business safeguards, governance, data, and climate or water information systems tend to reinforce restoration delivery rather than duplicate it.",
+        "clash": "Possible misalignment is limited but recurs around land and water competition affecting restoration-related outcomes. One flagged pair points to forest expansion potentially competing with agricultural production on the same land base, and another is flagged for review because irrigation rehabilitation or augmentation could alter wetlands unless hydrological safeguards and siting are coordinated.",
+        "coordination_hint": "It often helps to coordinate restoration with area-based conservation, hydrological planning, and land-use allocation early, so forest, wetland, coastal, and degraded-land actions reinforce each other and flagged delivery frictions can be managed.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_9",
+      "category_name": "Sustainable use",
+      "aligned_count": 811,
+      "flagged_count": 6,
+      "pool_composition": {
+        "primary_count": 781,
+        "relevant_only_count": 292
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Enable sustainable land and water stewardship",
+        "reinforce": "Within Sustainable use, alignment often comes through enabling measures that support better stewardship of working landscapes and waters, including soil protection, wetland retention, invasive species control, river-basin management, biosafety, and biodiversity-sensitive planning. Stronger reinforcement recurs where sustainable forestry, restoration of degraded lands, trees outside forests, and wise biodiversity use in production landscapes are coordinated, and where data, forecasting, finance, and participation help guide these actions.",
+        "clash": "Possible misalignment is mostly flagged for review where conservation or land-retention aims, especially forest cover increase, wetland protection, and broader land and water conservation, may compete with efforts to raise agricultural or dairy output on the same land or water base. Delivery friction also recurs where irrigation expansion or higher dairy productivity could undermine wetland objectives or sustainable consumption goals unless hydrological safeguards, land-use zoning, and demand-side measures are built in.",
+        "coordination_hint": "This sector tends to benefit from integrated land and water planning that checks whether production gains come from efficiency on existing managed areas, rather than conversion or infrastructure changes that could weaken sustainable-use outcomes.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_0",
+      "category_name": "Protection, management, and restoration of marine and coastal habitats",
+      "aligned_count": 412,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 180,
+        "relevant_only_count": 309
+      },
+      "contradiction_types": {
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Expand and restore coastal ecosystems through integrated planning",
+        "reinforce": "This sector often aligns with area-based conservation, ecosystem restoration, and climate resilience measures, especially where protected area expansion, OECMs, blue carbon conservation, coastal hazard mapping, and restoration of mangroves, reefs, dunes, and other coastal ecosystems are linked. Reinforcement also recurs through land-sea management connections, where soil erosion reduction, soil restoration, sustainable fisheries, lagoon assessments, ecosystem-based fisheries management, and broader biodiversity finance or governance measures can support marine and coastal habitat condition.",
+        "clash": "A possible misalignment is flagged for review where coastal and marine conservation area targets may compete with efforts to increase crop productivity if land or associated water resources are allocated to agriculture instead of conservation or OECMs. This tends to point to resource competition at the land-use planning stage, rather than a fixed contradiction.",
+        "coordination_hint": "Integrated coastal and land-use planning, with zoning, upstream watershed management, and site selection, would often help determine whether conservation, restoration, fisheries resilience, and agricultural production reinforce each other in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_1",
+      "category_name": "Agriculture and livestock management",
+      "aligned_count": 506,
+      "flagged_count": 6,
+      "pool_composition": {
+        "primary_count": 460,
+        "relevant_only_count": 225
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Linking agricultural efficiency with land stewardship",
+        "reinforce": "Alignment in this sector often centers on soil, pollution, and ecosystem management measures that can reinforce agricultural productivity and resilience. The sample repeatedly points to efficient resource management, IPNS and IPM, ecosystem restoration, and soil erosion or degradation reduction as mechanisms that align biodiversity, land, and agriculture objectives in working landscapes.",
+        "clash": "Possible misalignment recurs where crop or dairy productivity gains could place pressure on the same land and water base targeted for forest expansion, wetland protection, or area-based conservation. A smaller delivery friction is also flagged for review where irrigation expansion could affect wetlands, and where higher dairy output could pull against sustainable consumption aims unless demand-side measures are paired with production gains.",
+        "coordination_hint": "This sector tends to benefit from land-use zoning, wetland and hydrological safeguards, and sustainable intensification rules that keep productivity gains on existing agricultural land while aligning them with conservation and consumption objectives.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_2",
+      "category_name": "Water management",
+      "aligned_count": 359,
+      "flagged_count": 4,
+      "pool_composition": {
+        "primary_count": 180,
+        "relevant_only_count": 226
+      },
+      "contradiction_types": {
+        "resource_competition": 3,
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link ecosystem restoration and basin planning",
+        "reinforce": "Water management often aligns with biodiversity restoration, pollution reduction, and evidence-based planning. The sample repeatedly points to watershed and freshwater ecosystem restoration, river basin management, water monitoring, and resilient water supply and sanitation as mutually supportive through better water quality, sediment control, flood regulation, and shared data and participation mechanisms.",
+        "clash": "Possible misalignment is limited but recurs where irrigation rehabilitation or augmentation may affect wetlands, and where broader land and water conservation objectives may compete with agricultural expansion on the same landscapes. These cases are flagged for review rather than treated as direct contradictions, with hydrological change, siting, and land allocation as the main mechanisms.",
+        "coordination_hint": "It tends to help to coordinate basin planning, irrigation upgrades, wetland safeguards, and ecosystem restoration through shared land and water zoning, hydrological assessment, and participatory data systems.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_3",
+      "category_name": "Forest management, restoration, and protection",
+      "aligned_count": 298,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 145,
+        "relevant_only_count": 218
+      },
+      "contradiction_types": {
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link forest restoration with wider land resilience",
+        "reinforce": "This sector often aligns with restoration, catchment protection, invasive species control, and broader sustainable land-use measures. The sample points to recurring reinforcement where forest cover expansion, sustainable forest management, tree planting, and ecosystem restoration are supported by enabling governance, planning, financing, and biodiversity-wise production practices.",
+        "clash": "A possible misalignment is flagged for review where increasing forest cover could compete with efforts to raise crop production if implementation draws on the same finite land base. The tension appears conditional rather than explicit, and tends to depend on whether agricultural gains come from efficiency improvements or from area expansion.",
+        "coordination_hint": "Coordination could focus on integrated land-use planning that sequences forest expansion, restoration, and agricultural productivity measures so land competition is checked early.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_4",
+      "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+      "aligned_count": 347,
+      "flagged_count": 4,
+      "pool_composition": {
+        "primary_count": 201,
+        "relevant_only_count": 213
+      },
+      "contradiction_types": {
+        "resource_competition": 2,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Protect wetlands through integrated restoration and planning",
+        "reinforce": "This sector often aligns when wetland and freshwater protection is linked to broader ecosystem restoration, river-basin management, and area-based conservation, including restoration of degraded freshwater, coastal, and lagoon systems. Reinforcement also recurs through enabling measures such as biodiversity-sensitive spatial planning, policy and legal updates, better data and participation, and finance and capacity support that can help keep wetlands intact and improve management of connected aquatic habitats.",
+        "clash": "Possible misalignment is flagged where minimizing wetland conversion meets land and water demands from agricultural production, dairy-related expansion, irrigation augmentation, or the siting of eco-industrial parks. The recurring mechanism is competition over the same landscapes or hydrological systems, which tends to require review of zoning, siting, drainage, and water-control decisions to avoid indirect wetland loss.",
+        "coordination_hint": "It may help to coordinate wetland protection with basin planning, restoration policy, and land-use screening for agriculture, irrigation, and industrial development, so shared landscapes and water regimes are reviewed early.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_5",
+      "category_name": "Ecosystem protection and connectivity",
+      "aligned_count": 941,
+      "flagged_count": 3,
+      "pool_composition": {
+        "primary_count": 654,
+        "relevant_only_count": 472
+      },
+      "contradiction_types": {
+        "delivery_friction": 2,
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Embedding biodiversity safeguards into land and infrastructure planning",
+        "reinforce": "Alignment in this sector often comes through enabling measures that fold biodiversity into planning, governance, restoration, and sustainable use. The sample repeatedly points to ecosystem restoration, protected area and OECM expansion, invasive species control, pollution reduction, and better data, participation, and business risk management as reinforcing climate resilience, sustainable production, and coastal and marine conservation actions.",
+        "clash": "Possible misalignment is flagged mainly where conservation and biodiversity-sensitive planning meet energy or agricultural expansion pressures. The flagged pairs point to delivery friction around new natural gas infrastructure siting and biodiversity risk mitigation, and to resource competition where land and water for conservation targets could compete with efforts to raise crop productivity unless zoning and site selection are coordinated.",
+        "coordination_hint": "This sector tends to benefit from early spatial planning, biodiversity screening, and land and water allocation processes that can steer restoration, conservation, agriculture, and infrastructure measures toward reinforcing outcomes.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_6",
+      "category_name": "Soil fertility management and restoration",
+      "aligned_count": 196,
+      "flagged_count": 3,
+      "pool_composition": {
+        "primary_count": 211,
+        "relevant_only_count": 72
+      },
+      "contradiction_types": {
+        "resource_competition": 3
+      },
+      "synthesis": {
+        "storyline_name": "Link soil stewardship with broader land planning",
+        "reinforce": "This sector often aligns with targets on sustainable land use, efficient resource management, irrigation improvement, and crop-system practices such as IPNS and IPM. The sample also points to enabling reinforcement from biodiversity governance, agro-ecological mapping, restoration, and participation measures, which can support soil erosion reduction, lower degradation, and improved soil organic carbon in cultivated landscapes.",
+        "clash": "Possible misalignment is flagged where agricultural production increases could compete with forest expansion, wetland protection, or wider land and water conservation if delivery depends on expanding into the same finite land base. The recurring mechanism is resource competition over land, while the texts also leave room for alignment if productivity gains come mainly from efficiency and site-sensitive planning.",
+        "coordination_hint": "It tends to help to coordinate soil fertility and restoration actions with land-use zoning, irrigation planning, and crop productivity measures, to check whether implementation reinforces soil recovery on existing farmland rather than shifting pressure onto forests, wetlands, or conserved areas.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_7",
+      "category_name": "Nature-based risk management and disaster prevention",
+      "aligned_count": 810,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 641,
+        "relevant_only_count": 373
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Use risk information to support ecosystem resilience",
+        "reinforce": "This sector often aligns where climate and disaster risk tools, such as early warning systems, forecasting, hazard or vulnerability mapping, and broader risk frameworks, reinforce biodiversity resilience, ecosystem restoration, invasive species management, and species protection. The recurring mechanism is enabling coordination, where better spatial information, climate intelligence, and institutional capacity can inform where nature-based restoration, conservation, or ecological risk responses are most needed.",
+        "clash": "Possible misalignment is flagged once around business biodiversity-risk mitigation expectations and expansion of natural gas power infrastructure. The friction appears to be delivery-related rather than a direct contradiction, and tends to point to siting, screening, and infrastructure management choices that may need review to avoid biodiversity pressures.",
+        "coordination_hint": "It may help to link this sector's restoration and resilience actions with shared screening, mapping, and early warning processes, so infrastructure and adaptation delivery more often aligns with biodiversity-risk management expectations.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_8",
+      "category_name": "Nature-based carbon sequestration",
+      "aligned_count": 99,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 145
+      },
+      "contradiction_types": {
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link tree and blue-carbon actions through planning",
+        "reinforce": "Nature-based carbon sequestration in these pairs often aligns through tree cover expansion, restoration, and blue carbon conservation being reinforced by biodiversity planning, pollution reduction, catchment protection, connectivity, and restoration measures. The recurring mechanism is enabling coordination, where spatial planning, finance, mapping, and ecosystem management tend to support forest cover gains, trees outside forests, and mangrove, seagrass, and salt marsh protection.",
+        "clash": "A possible misalignment is flagged for review where increasing forest cover could compete with efforts to raise crop productivity and production if implementation draws on the same finite land base. The tension appears conditional rather than explicit, and often points to checking whether agricultural delivery relies on intensification alone or could expand into land suited for forest increase.",
+        "coordination_hint": "It tends to help to coordinate land-use planning, catchment and coastal ecosystem management, and agricultural implementation choices so sequestration actions can be sited and financed without avoidable land competition.",
+        "confidence": "low"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_9",
+      "category_name": "Urban settlements management",
+      "aligned_count": 170,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 114,
+        "relevant_only_count": 95
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "mainstreaming biodiversity into settlement resilience planning",
+        "reinforce": "Urban settlements management often aligns with cross-sector targets that embed biodiversity, nature-based approaches, climate adaptation, and disaster risk reduction into spatial and physical planning. The sample also points to reinforcing links where ecosystem restoration, forest cover, sustainable consumption, wastewater management, and green building design can support settlement resilience indirectly through heat reduction, coastal protection, lower system pressure, and better planning conditions.",
+        "clash": "A possible misalignment is flagged for review where biodiversity-sensitive spatial and urban planning meets expansion or conversion of natural gas power infrastructure. The friction tends to be about delivery, especially siting, land-use pressure, and the need for safeguards so new energy facilities do not weaken biodiversity considerations in settlement planning.",
+        "coordination_hint": "This sector would often benefit from coordinated spatial planning that screens infrastructure, resilience, and urban development measures for biodiversity and nature-based options early in project design.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_agriculture",
+      "category_name": "Agriculture",
+      "aligned_count": 518,
+      "flagged_count": 6,
+      "pool_composition": {
+        "primary_count": 280,
+        "relevant_only_count": 421
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Link sustainable farm productivity with land safeguards",
+        "reinforce": "Within agriculture, alignment often points to sustainable land management and lower-impact production practices reinforcing broader biodiversity and land goals. This recurs through soil erosion control with sustainable land use, renewable energy in crop farming and processing with pollution reduction and biodiversity-wise agriculture, and crop practices such as IPNS, IPM, mapping, and post-harvest loss reduction that can support more sustainable land use.",
+        "clash": "Possible misalignment is mainly flagged for review where agriculture or livestock productivity gains could increase pressure on the same land or water base targeted for forest expansion, wetland protection, or area-based conservation. Delivery friction also recurs where irrigation augmentation or dairy productivity measures may need safeguards so implementation does not undermine wetland objectives or pull against sustainable consumption aims.",
+        "coordination_hint": "Agriculture planning tends to benefit from land-use zoning, wetland and forest safeguards, and implementation checks on whether productivity gains come from efficiency on existing land rather than expansion.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_energy",
+      "category_name": "Energy",
+      "aligned_count": 188,
+      "flagged_count": 2,
+      "pool_composition": {
+        "primary_count": 160,
+        "relevant_only_count": 140
+      },
+      "contradiction_types": {
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Expanding cleaner energy with biodiversity planning safeguards",
+        "reinforce": "Energy measures in this sector often align with biodiversity and land objectives when they reduce thermal generation, pollution, or conventional energy use, especially through renewables, storage, efficiency, and electrification. The recurring mechanism is enabling rather than direct, with biodiversity planning, finance, participation, gender responsiveness, and business-risk governance tending to reinforce how energy actions are designed and implemented.",
+        "clash": "Possible misalignment is flagged for review around natural gas power conversion and new NG infrastructure, where delivery can create siting and associated infrastructure pressures against biodiversity-sensitive spatial planning and business biodiversity-risk mitigation expectations. The friction recurs as delivery friction rather than outright contradiction, and often points to the need for screening, safeguards, and careful siting.",
+        "coordination_hint": "This sector tends to benefit from early spatial planning, biodiversity-risk screening, and participatory siting so lower-emission energy delivery can proceed while reinforcing biodiversity safeguards.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_ippu",
+      "category_name": "Industrial processes and product use",
+      "aligned_count": 62,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 80,
+        "relevant_only_count": 40
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link industrial efficiency tools with biodiversity governance",
+        "reinforce": "Within IPPU-related targets, alignment often comes through cleaner production, circular economy, life cycle analysis, energy efficiency, low-GWP refrigeration, and broader IPPU mitigation measures reinforcing biodiversity governance, pollution reduction, and business disclosure expectations. The strongest pattern is that industrial practice-change tools tend to reinforce biodiversity aims when the same firms, reporting systems, financing channels, or implementation capacity can be used across both agendas.",
+        "clash": "A possible misalignment is flagged for review where eco-industrial parks and networks could create delivery friction with efforts to minimize wetland conversion, if industrial siting or expansion affects wetland areas. This points to a recurring land-use interface rather than a direct policy contradiction, with spatial planning, zoning, and safeguards identified as the practical mechanism to manage it.",
+        "coordination_hint": "Coordination in this sector would often focus on using industrial planning, cleaner production standards, business disclosure, and siting safeguards so IPPU delivery aligns with biodiversity and land-use objectives.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_lulucf",
+      "category_name": "Land use, land-use change and forestry (LULUCF)",
+      "aligned_count": 1167,
+      "flagged_count": 8,
+      "pool_composition": {
+        "primary_count": 1012,
+        "relevant_only_count": 509
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 4
+      },
+      "synthesis": {
+        "storyline_name": "Protecting forests and wetlands while steering land use",
+        "reinforce": "Within LULUCF, alignment often comes through conservation, restoration, pollution reduction, invasive species control, and planning or finance measures that support forest, wetland, coastal blue carbon, and broader ecosystem management. These pairs tend to reinforce when governance tools, data, participation, and restoration actions improve conditions for sustainable land and ecosystem stewardship.",
+        "clash": "Possible misalignment recurs where forest expansion, wetland retention, or area-based conservation may compete with agriculture, livestock, irrigation, industrial siting, or energy infrastructure for the same land or hydrological space. The flagged pairs often point to delivery friction or resource competition that would need spatial planning, zoning, siting safeguards, and hydrological management to avoid undermining LULUCF objectives.",
+        "coordination_hint": "It tends to help to use landscape-scale land-use planning, with wetland and forest safeguards, to check whether production or infrastructure measures can be delivered through efficiency and careful siting rather than conversion of sensitive land.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_other",
+      "category_name": "Other / Cross-cutting",
+      "aligned_count": 1314,
+      "flagged_count": 5,
+      "pool_composition": {
+        "primary_count": 1411,
+        "relevant_only_count": 302
+      },
+      "contradiction_types": {
+        "delivery_friction": 4,
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link cross-cutting governance to sector delivery",
+        "reinforce": "This sector often aligns through enabling measures, data systems, risk frameworks, participation, gender responsiveness, and business disclosure that support delivery in biodiversity, water, health, tourism, industry, and coastal planning. The recurring pattern is indirect reinforcement, where cross-cutting planning, monitoring, forecasting, and institutional coordination tends to strengthen implementation rather than prescribe the same on-the-ground action.",
+        "clash": "Possible misalignment is mostly flagged for review where broad conservation, biodiversity-planning, or business-risk expectations meet infrastructure or production expansion, especially eco-industrial parks, natural gas power infrastructure, higher crop productivity, and dairy productivity. The friction tends to arise through land-use siting, wetland conversion risk, shared land and water demands, or demand-side signals that could pull against sustainable consumption goals unless safeguards and zoning are applied.",
+        "coordination_hint": "This sector often points to a need for early spatial planning, screening, and cross-sector governance so that enabling policies, disclosure duties, and conservation objectives can be built into infrastructure, industry, and production decisions.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_transport",
+      "category_name": "Transport",
+      "aligned_count": 63,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 116,
+        "relevant_only_count": 20
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Link transport efficiency to biodiversity and planning goals",
+        "reinforce": "Transport measures often align with biodiversity and land-related targets through indirect mechanisms, especially lower pollution from public transport and fleet efficiency, lower emissions from freight modal shift and electric mobility, and more energy-efficient transport-related built environments. A second recurring pattern is enabling alignment through planning and governance, where biodiversity mainstreaming, business risk disclosure, participatory decision-making, and national loss-and-damage stocktaking could inform transport design, review, and implementation.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "It tends to help to connect transport efficiency and modal-shift actions with biodiversity-sensitive spatial planning, pollution monitoring, and cross-sector review processes, because the overlap here is often enabling rather than directly operational.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_waste",
+      "category_name": "Waste",
+      "aligned_count": 159,
+      "flagged_count": 1,
+      "pool_composition": {
+        "primary_count": 118,
+        "relevant_only_count": 127
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link waste reduction with circular residual management",
+        "reinforce": "Waste-related targets often align around a hierarchy in which sustainable consumption and circular economy measures reduce waste upstream, while composting, biological treatment, wastewater management, sanitary disposal, and energy recovery manage residuals downstream. This sample also tends to show waste actions reinforcing biodiversity, soil, and ecosystem goals by lowering pollution, reducing unmanaged dumping, and supporting cleaner water and land conditions.",
+        "clash": "A possible misalignment is flagged for review where waste reduction and lower overconsumption objectives meet livestock productivity expansion, because higher dairy output could pull demand and consumption patterns in a different direction. The friction appears to be about delivery logic rather than a direct contradiction, and often points to the need to pair productivity gains with demand-side measures.",
+        "coordination_hint": "It may help to sequence this sector around the waste hierarchy, so prevention, reuse, recycling, composting, and wastewater improvements guide when residual disposal or energy recovery is used.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    }
+  ],
+  "states": {
+    "": [
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_1",
+        "category_name": "Access and benefit sharing",
+        "aligned_count": 37,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 93,
+          "relevant_only_count": 0
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Enable equitable use across biodiversity actions",
+          "reinforce": "Access and benefit sharing often aligns as an enabling governance layer for biodiversity, fisheries, agriculture, forestry, coastal and water actions. The recurring mechanism is that fair arrangements for biological resources, digital sequence information, and traditional knowledge tend to reinforce participation, legitimacy, financing, knowledge use, and institutional support for sector measures, especially in biodiversity finance, protected areas, ex-situ conservation, fisheries, and climate-sensitive ecosystem management.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "Coordination could usefully focus on embedding access-and-benefit-sharing provisions into implementation rules, financing, research, and management plans where biological resources or traditional knowledge are used.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_2",
+        "category_name": "Biodiversity awareness and knowledge",
+        "aligned_count": 221,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 314
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Strengthening biodiversity information for sector decisions",
+          "reinforce": "This sector often aligns through enabling measures on data, participation, access to information, awareness, and knowledge use. Across fisheries, coastal planning, tourism, water, industry, agriculture, and loss-and-damage systems, biodiversity-informed decision-making tends to reinforce climate resilience research, planning, education, and ecosystem management, while benefit-sharing and gender-responsive approaches also support knowledge legitimacy and uptake.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "It may help to connect biodiversity data, participatory processes, awareness programmes, and traditional knowledge arrangements with sector-specific climate planning and research so knowledge generated in one process can inform the others.",
+          "confidence": "low"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_3",
+        "category_name": "Biosafety",
+        "aligned_count": 123,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 207,
+          "relevant_only_count": 0
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Link biosafety controls to cross-sector risk management",
+          "reinforce": "Biosafety targets often align as enabling measures for safer biotechnology use and invasive alien species control across agriculture, livestock, fisheries, water, waste, health, land, and coastal planning. A stronger reinforcement recurs where invasive alien species management directly matches climate biodiversity action on preventing and controlling climate-driven spread, and elsewhere the relationship tends to be supportive through shared surveillance, risk management, and ecosystem protection functions.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "Coordination could focus on using biosafety institutions, especially invasive-species surveillance and biotechnology risk oversight, to inform sector plans where biological risks are a stated implementation pathway.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_4",
+        "category_name": "Green economy",
+        "aligned_count": 766,
+        "flagged_count": 7,
+        "pool_composition": {
+          "primary_count": 642,
+          "relevant_only_count": 438
+        },
+        "contradiction_types": {
+          "resource_competition": 3,
+          "delivery_friction": 4
+        },
+        "synthesis": {
+          "storyline_name": "Linking biodiversity governance with greener production",
+          "reinforce": "Reinforcement often comes through enabling frameworks that connect biodiversity planning, disclosure, data access, and participation with greener business practice, including resource efficient and cleaner production, circular economy approaches, sustainable consumption, and waste reduction. It also tends to align conservation and resilience measures with climate-resilient water, tourism, urban planning, and some energy actions, mainly through indirect ecosystem services, better planning, and lower pollution or resource pressure.",
+          "clash": "Possible misalignment recurs where green growth measures need land or infrastructure that may overlap with conservation priorities, especially around forest expansion, wetland protection, 30 percent land and water conservation, agricultural production growth, industrial park siting, and new natural gas facilities. A smaller delivery friction is also flagged for review where productivity-led livestock expansion could pull against sustainable consumption goals unless demand-side measures are coordinated.",
+          "coordination_hint": "This sector often points to the value of spatial planning, land-use zoning, project screening, and shared business reporting so greener production and infrastructure can align with biodiversity safeguards rather than compete with them.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_5",
+        "category_name": "Biodiversity planning and finance",
+        "aligned_count": 995,
+        "flagged_count": 7,
+        "pool_composition": {
+          "primary_count": 715,
+          "relevant_only_count": 528
+        },
+        "contradiction_types": {
+          "resource_competition": 3,
+          "delivery_friction": 4
+        },
+        "synthesis": {
+          "storyline_name": "Enable biodiversity delivery through planning, data, and finance",
+          "reinforce": "This sector often aligns through enabling measures, especially biodiversity finance, capacity, data, participation, and mainstreaming that support delivery in agriculture, water, coastal, industry, energy, and loss-and-damage planning. It also reinforces more directly where climate and biodiversity actions share ecosystem-resilience mechanisms, such as connectivity, restoration of vulnerable areas, invasive species control, wetland protection, and support for conserved areas including OECMs.",
+          "clash": "Possible misalignment recurs where biodiversity planning and land or water protection objectives, especially wetland retention and area-based conservation, meet production or infrastructure expansion in agriculture, livestock, irrigation, industry, and energy. Several pairs are flagged for review because siting, land-use change, hydrological alteration, or associated infrastructure could compete with conserved areas or biodiversity-risk mitigation expectations unless safeguards are applied.",
+          "coordination_hint": "This sector tends to benefit from early spatial planning, zoning, hydrological safeguards, and biodiversity screening, alongside finance and data systems that help production and infrastructure measures align with wetland protection, OECMs, and broader biodiversity implementation.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_6",
+        "category_name": "Pollution management",
+        "aligned_count": 409,
+        "flagged_count": 2,
+        "pool_composition": {
+          "primary_count": 283,
+          "relevant_only_count": 314
+        },
+        "contradiction_types": {
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Link pollution control with water and ecosystem planning",
+          "reinforce": "Reinforcement often points to pollution management aligning with ecosystem restoration, wastewater treatment, treated wastewater reuse, and broader water conservation measures, because cleaner discharges and better water handling tend to reduce pressures on freshwater, coastal, and marine systems. It also recurs as an enabling link through spatial planning, coastal management, cleaner production, business disclosure, finance, and data systems, where biodiversity-oriented pollution goals can be built into sector delivery rather than implemented as stand-alone actions.",
+          "clash": "Possible misalignment is limited in this sector sample, but flagged for review where delivery could create indirect pressure on environmental quality outcomes through land-use or consumption pathways. The flagged pairs suggest industrial park expansion may need zoning and safeguards to avoid wetland loss, and productivity-led livestock measures may need accompanying demand-side measures so gains do not work against sustainable consumption and waste reduction aims.",
+          "coordination_hint": "It may help to coordinate pollution management through shared spatial screening, water and wastewater standards, and demand-side safeguards, especially where restoration, industrial development, or productivity programs touch sensitive ecosystems.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_7",
+        "category_name": "Protected areas and other conservation measures",
+        "aligned_count": 585,
+        "flagged_count": 6,
+        "pool_composition": {
+          "primary_count": 469,
+          "relevant_only_count": 314
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Link protected-area planning with climate-resilient restoration",
+          "reinforce": "Protected-area and OECM targets often align with climate biodiversity actions that identify, map, restore, and connect vulnerable habitats inside and outside protected areas. This also recurs for coastal and wetland systems, where blue carbon conservation, wetland protection, invasive species control, and better biodiversity data and participation reinforce area-based conservation delivery.",
+          "clash": "Possible misalignment is mainly flagged for review where conservation area expansion, forest cover increase, or wetland retention may compete with agriculture, livestock, or industrial and irrigation siting on the same land or water base. The recurring mechanism is resource competition or delivery friction from land conversion, hydrological alteration, or infrastructure placement in landscapes relevant to protected areas and other conservation measures.",
+          "coordination_hint": "This sector tends to benefit from spatial zoning, hydrological safeguards, and shared land-use screening so conservation areas, wetlands, and restoration sites can be planned alongside production and infrastructure expansion.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_8",
+        "category_name": "Restoration",
+        "aligned_count": 434,
+        "flagged_count": 2,
+        "pool_composition": {
+          "primary_count": 291,
+          "relevant_only_count": 253
+        },
+        "contradiction_types": {
+          "resource_competition": 1,
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link restoration with conservation and resilience planning",
+          "reinforce": "Restoration in this sector often aligns with broader conservation and climate resilience targets, especially where coastal, marine, wetland, forest, and degraded-area actions are paired with area protection, biodiversity resilience, species conservation, or blue carbon management. The sample also recurs around enabling links, where funding, business safeguards, governance, data, and climate or water information systems tend to reinforce restoration delivery rather than duplicate it.",
+          "clash": "Possible misalignment is limited but recurs around land and water competition affecting restoration-related outcomes. One flagged pair points to forest expansion potentially competing with agricultural production on the same land base, and another is flagged for review because irrigation rehabilitation or augmentation could alter wetlands unless hydrological safeguards and siting are coordinated.",
+          "coordination_hint": "It often helps to coordinate restoration with area-based conservation, hydrological planning, and land-use allocation early, so forest, wetland, coastal, and degraded-land actions reinforce each other and flagged delivery frictions can be managed.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_9",
+        "category_name": "Sustainable use",
+        "aligned_count": 811,
+        "flagged_count": 6,
+        "pool_composition": {
+          "primary_count": 781,
+          "relevant_only_count": 292
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Enable sustainable land and water stewardship",
+          "reinforce": "Within Sustainable use, alignment often comes through enabling measures that support better stewardship of working landscapes and waters, including soil protection, wetland retention, invasive species control, river-basin management, biosafety, and biodiversity-sensitive planning. Stronger reinforcement recurs where sustainable forestry, restoration of degraded lands, trees outside forests, and wise biodiversity use in production landscapes are coordinated, and where data, forecasting, finance, and participation help guide these actions.",
+          "clash": "Possible misalignment is mostly flagged for review where conservation or land-retention aims, especially forest cover increase, wetland protection, and broader land and water conservation, may compete with efforts to raise agricultural or dairy output on the same land or water base. Delivery friction also recurs where irrigation expansion or higher dairy productivity could undermine wetland objectives or sustainable consumption goals unless hydrological safeguards, land-use zoning, and demand-side measures are built in.",
+          "coordination_hint": "This sector tends to benefit from integrated land and water planning that checks whether production gains come from efficiency on existing managed areas, rather than conversion or infrastructure changes that could weaken sustainable-use outcomes.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_0",
+        "category_name": "Protection, management, and restoration of marine and coastal habitats",
+        "aligned_count": 412,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 180,
+          "relevant_only_count": 309
+        },
+        "contradiction_types": {
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Expand and restore coastal ecosystems through integrated planning",
+          "reinforce": "This sector often aligns with area-based conservation, ecosystem restoration, and climate resilience measures, especially where protected area expansion, OECMs, blue carbon conservation, coastal hazard mapping, and restoration of mangroves, reefs, dunes, and other coastal ecosystems are linked. Reinforcement also recurs through land-sea management connections, where soil erosion reduction, soil restoration, sustainable fisheries, lagoon assessments, ecosystem-based fisheries management, and broader biodiversity finance or governance measures can support marine and coastal habitat condition.",
+          "clash": "A possible misalignment is flagged for review where coastal and marine conservation area targets may compete with efforts to increase crop productivity if land or associated water resources are allocated to agriculture instead of conservation or OECMs. This tends to point to resource competition at the land-use planning stage, rather than a fixed contradiction.",
+          "coordination_hint": "Integrated coastal and land-use planning, with zoning, upstream watershed management, and site selection, would often help determine whether conservation, restoration, fisheries resilience, and agricultural production reinforce each other in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_1",
+        "category_name": "Agriculture and livestock management",
+        "aligned_count": 506,
+        "flagged_count": 6,
+        "pool_composition": {
+          "primary_count": 460,
+          "relevant_only_count": 225
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Linking agricultural efficiency with land stewardship",
+          "reinforce": "Alignment in this sector often centers on soil, pollution, and ecosystem management measures that can reinforce agricultural productivity and resilience. The sample repeatedly points to efficient resource management, IPNS and IPM, ecosystem restoration, and soil erosion or degradation reduction as mechanisms that align biodiversity, land, and agriculture objectives in working landscapes.",
+          "clash": "Possible misalignment recurs where crop or dairy productivity gains could place pressure on the same land and water base targeted for forest expansion, wetland protection, or area-based conservation. A smaller delivery friction is also flagged for review where irrigation expansion could affect wetlands, and where higher dairy output could pull against sustainable consumption aims unless demand-side measures are paired with production gains.",
+          "coordination_hint": "This sector tends to benefit from land-use zoning, wetland and hydrological safeguards, and sustainable intensification rules that keep productivity gains on existing agricultural land while aligning them with conservation and consumption objectives.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_2",
+        "category_name": "Water management",
+        "aligned_count": 359,
+        "flagged_count": 4,
+        "pool_composition": {
+          "primary_count": 180,
+          "relevant_only_count": 226
+        },
+        "contradiction_types": {
+          "resource_competition": 3,
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link ecosystem restoration and basin planning",
+          "reinforce": "Water management often aligns with biodiversity restoration, pollution reduction, and evidence-based planning. The sample repeatedly points to watershed and freshwater ecosystem restoration, river basin management, water monitoring, and resilient water supply and sanitation as mutually supportive through better water quality, sediment control, flood regulation, and shared data and participation mechanisms.",
+          "clash": "Possible misalignment is limited but recurs where irrigation rehabilitation or augmentation may affect wetlands, and where broader land and water conservation objectives may compete with agricultural expansion on the same landscapes. These cases are flagged for review rather than treated as direct contradictions, with hydrological change, siting, and land allocation as the main mechanisms.",
+          "coordination_hint": "It tends to help to coordinate basin planning, irrigation upgrades, wetland safeguards, and ecosystem restoration through shared land and water zoning, hydrological assessment, and participatory data systems.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_3",
+        "category_name": "Forest management, restoration, and protection",
+        "aligned_count": 298,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 145,
+          "relevant_only_count": 218
+        },
+        "contradiction_types": {
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link forest restoration with wider land resilience",
+          "reinforce": "This sector often aligns with restoration, catchment protection, invasive species control, and broader sustainable land-use measures. The sample points to recurring reinforcement where forest cover expansion, sustainable forest management, tree planting, and ecosystem restoration are supported by enabling governance, planning, financing, and biodiversity-wise production practices.",
+          "clash": "A possible misalignment is flagged for review where increasing forest cover could compete with efforts to raise crop production if implementation draws on the same finite land base. The tension appears conditional rather than explicit, and tends to depend on whether agricultural gains come from efficiency improvements or from area expansion.",
+          "coordination_hint": "Coordination could focus on integrated land-use planning that sequences forest expansion, restoration, and agricultural productivity measures so land competition is checked early.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_4",
+        "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+        "aligned_count": 347,
+        "flagged_count": 4,
+        "pool_composition": {
+          "primary_count": 201,
+          "relevant_only_count": 213
+        },
+        "contradiction_types": {
+          "resource_competition": 2,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Protect wetlands through integrated restoration and planning",
+          "reinforce": "This sector often aligns when wetland and freshwater protection is linked to broader ecosystem restoration, river-basin management, and area-based conservation, including restoration of degraded freshwater, coastal, and lagoon systems. Reinforcement also recurs through enabling measures such as biodiversity-sensitive spatial planning, policy and legal updates, better data and participation, and finance and capacity support that can help keep wetlands intact and improve management of connected aquatic habitats.",
+          "clash": "Possible misalignment is flagged where minimizing wetland conversion meets land and water demands from agricultural production, dairy-related expansion, irrigation augmentation, or the siting of eco-industrial parks. The recurring mechanism is competition over the same landscapes or hydrological systems, which tends to require review of zoning, siting, drainage, and water-control decisions to avoid indirect wetland loss.",
+          "coordination_hint": "It may help to coordinate wetland protection with basin planning, restoration policy, and land-use screening for agriculture, irrigation, and industrial development, so shared landscapes and water regimes are reviewed early.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_5",
+        "category_name": "Ecosystem protection and connectivity",
+        "aligned_count": 941,
+        "flagged_count": 3,
+        "pool_composition": {
+          "primary_count": 654,
+          "relevant_only_count": 472
+        },
+        "contradiction_types": {
+          "delivery_friction": 2,
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Embedding biodiversity safeguards into land and infrastructure planning",
+          "reinforce": "Alignment in this sector often comes through enabling measures that fold biodiversity into planning, governance, restoration, and sustainable use. The sample repeatedly points to ecosystem restoration, protected area and OECM expansion, invasive species control, pollution reduction, and better data, participation, and business risk management as reinforcing climate resilience, sustainable production, and coastal and marine conservation actions.",
+          "clash": "Possible misalignment is flagged mainly where conservation and biodiversity-sensitive planning meet energy or agricultural expansion pressures. The flagged pairs point to delivery friction around new natural gas infrastructure siting and biodiversity risk mitigation, and to resource competition where land and water for conservation targets could compete with efforts to raise crop productivity unless zoning and site selection are coordinated.",
+          "coordination_hint": "This sector tends to benefit from early spatial planning, biodiversity screening, and land and water allocation processes that can steer restoration, conservation, agriculture, and infrastructure measures toward reinforcing outcomes.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_6",
+        "category_name": "Soil fertility management and restoration",
+        "aligned_count": 196,
+        "flagged_count": 3,
+        "pool_composition": {
+          "primary_count": 211,
+          "relevant_only_count": 72
+        },
+        "contradiction_types": {
+          "resource_competition": 3
+        },
+        "synthesis": {
+          "storyline_name": "Link soil stewardship with broader land planning",
+          "reinforce": "This sector often aligns with targets on sustainable land use, efficient resource management, irrigation improvement, and crop-system practices such as IPNS and IPM. The sample also points to enabling reinforcement from biodiversity governance, agro-ecological mapping, restoration, and participation measures, which can support soil erosion reduction, lower degradation, and improved soil organic carbon in cultivated landscapes.",
+          "clash": "Possible misalignment is flagged where agricultural production increases could compete with forest expansion, wetland protection, or wider land and water conservation if delivery depends on expanding into the same finite land base. The recurring mechanism is resource competition over land, while the texts also leave room for alignment if productivity gains come mainly from efficiency and site-sensitive planning.",
+          "coordination_hint": "It tends to help to coordinate soil fertility and restoration actions with land-use zoning, irrigation planning, and crop productivity measures, to check whether implementation reinforces soil recovery on existing farmland rather than shifting pressure onto forests, wetlands, or conserved areas.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_7",
+        "category_name": "Nature-based risk management and disaster prevention",
+        "aligned_count": 810,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 641,
+          "relevant_only_count": 373
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Use risk information to support ecosystem resilience",
+          "reinforce": "This sector often aligns where climate and disaster risk tools, such as early warning systems, forecasting, hazard or vulnerability mapping, and broader risk frameworks, reinforce biodiversity resilience, ecosystem restoration, invasive species management, and species protection. The recurring mechanism is enabling coordination, where better spatial information, climate intelligence, and institutional capacity can inform where nature-based restoration, conservation, or ecological risk responses are most needed.",
+          "clash": "Possible misalignment is flagged once around business biodiversity-risk mitigation expectations and expansion of natural gas power infrastructure. The friction appears to be delivery-related rather than a direct contradiction, and tends to point to siting, screening, and infrastructure management choices that may need review to avoid biodiversity pressures.",
+          "coordination_hint": "It may help to link this sector's restoration and resilience actions with shared screening, mapping, and early warning processes, so infrastructure and adaptation delivery more often aligns with biodiversity-risk management expectations.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_8",
+        "category_name": "Nature-based carbon sequestration",
+        "aligned_count": 99,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 145
+        },
+        "contradiction_types": {
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link tree and blue-carbon actions through planning",
+          "reinforce": "Nature-based carbon sequestration in these pairs often aligns through tree cover expansion, restoration, and blue carbon conservation being reinforced by biodiversity planning, pollution reduction, catchment protection, connectivity, and restoration measures. The recurring mechanism is enabling coordination, where spatial planning, finance, mapping, and ecosystem management tend to support forest cover gains, trees outside forests, and mangrove, seagrass, and salt marsh protection.",
+          "clash": "A possible misalignment is flagged for review where increasing forest cover could compete with efforts to raise crop productivity and production if implementation draws on the same finite land base. The tension appears conditional rather than explicit, and often points to checking whether agricultural delivery relies on intensification alone or could expand into land suited for forest increase.",
+          "coordination_hint": "It tends to help to coordinate land-use planning, catchment and coastal ecosystem management, and agricultural implementation choices so sequestration actions can be sited and financed without avoidable land competition.",
+          "confidence": "low"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_9",
+        "category_name": "Urban settlements management",
+        "aligned_count": 170,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 114,
+          "relevant_only_count": 95
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "mainstreaming biodiversity into settlement resilience planning",
+          "reinforce": "Urban settlements management often aligns with cross-sector targets that embed biodiversity, nature-based approaches, climate adaptation, and disaster risk reduction into spatial and physical planning. The sample also points to reinforcing links where ecosystem restoration, forest cover, sustainable consumption, wastewater management, and green building design can support settlement resilience indirectly through heat reduction, coastal protection, lower system pressure, and better planning conditions.",
+          "clash": "A possible misalignment is flagged for review where biodiversity-sensitive spatial and urban planning meets expansion or conversion of natural gas power infrastructure. The friction tends to be about delivery, especially siting, land-use pressure, and the need for safeguards so new energy facilities do not weaken biodiversity considerations in settlement planning.",
+          "coordination_hint": "This sector would often benefit from coordinated spatial planning that screens infrastructure, resilience, and urban development measures for biodiversity and nature-based options early in project design.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_agriculture",
+        "category_name": "Agriculture",
+        "aligned_count": 518,
+        "flagged_count": 6,
+        "pool_composition": {
+          "primary_count": 280,
+          "relevant_only_count": 421
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Link sustainable farm productivity with land safeguards",
+          "reinforce": "Within agriculture, alignment often points to sustainable land management and lower-impact production practices reinforcing broader biodiversity and land goals. This recurs through soil erosion control with sustainable land use, renewable energy in crop farming and processing with pollution reduction and biodiversity-wise agriculture, and crop practices such as IPNS, IPM, mapping, and post-harvest loss reduction that can support more sustainable land use.",
+          "clash": "Possible misalignment is mainly flagged for review where agriculture or livestock productivity gains could increase pressure on the same land or water base targeted for forest expansion, wetland protection, or area-based conservation. Delivery friction also recurs where irrigation augmentation or dairy productivity measures may need safeguards so implementation does not undermine wetland objectives or pull against sustainable consumption aims.",
+          "coordination_hint": "Agriculture planning tends to benefit from land-use zoning, wetland and forest safeguards, and implementation checks on whether productivity gains come from efficiency on existing land rather than expansion.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_energy",
+        "category_name": "Energy",
+        "aligned_count": 188,
+        "flagged_count": 2,
+        "pool_composition": {
+          "primary_count": 160,
+          "relevant_only_count": 140
+        },
+        "contradiction_types": {
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Expanding cleaner energy with biodiversity planning safeguards",
+          "reinforce": "Energy measures in this sector often align with biodiversity and land objectives when they reduce thermal generation, pollution, or conventional energy use, especially through renewables, storage, efficiency, and electrification. The recurring mechanism is enabling rather than direct, with biodiversity planning, finance, participation, gender responsiveness, and business-risk governance tending to reinforce how energy actions are designed and implemented.",
+          "clash": "Possible misalignment is flagged for review around natural gas power conversion and new NG infrastructure, where delivery can create siting and associated infrastructure pressures against biodiversity-sensitive spatial planning and business biodiversity-risk mitigation expectations. The friction recurs as delivery friction rather than outright contradiction, and often points to the need for screening, safeguards, and careful siting.",
+          "coordination_hint": "This sector tends to benefit from early spatial planning, biodiversity-risk screening, and participatory siting so lower-emission energy delivery can proceed while reinforcing biodiversity safeguards.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_ippu",
+        "category_name": "Industrial processes and product use",
+        "aligned_count": 62,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 80,
+          "relevant_only_count": 40
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link industrial efficiency tools with biodiversity governance",
+          "reinforce": "Within IPPU-related targets, alignment often comes through cleaner production, circular economy, life cycle analysis, energy efficiency, low-GWP refrigeration, and broader IPPU mitigation measures reinforcing biodiversity governance, pollution reduction, and business disclosure expectations. The strongest pattern is that industrial practice-change tools tend to reinforce biodiversity aims when the same firms, reporting systems, financing channels, or implementation capacity can be used across both agendas.",
+          "clash": "A possible misalignment is flagged for review where eco-industrial parks and networks could create delivery friction with efforts to minimize wetland conversion, if industrial siting or expansion affects wetland areas. This points to a recurring land-use interface rather than a direct policy contradiction, with spatial planning, zoning, and safeguards identified as the practical mechanism to manage it.",
+          "coordination_hint": "Coordination in this sector would often focus on using industrial planning, cleaner production standards, business disclosure, and siting safeguards so IPPU delivery aligns with biodiversity and land-use objectives.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_lulucf",
+        "category_name": "Land use, land-use change and forestry (LULUCF)",
+        "aligned_count": 1167,
+        "flagged_count": 8,
+        "pool_composition": {
+          "primary_count": 1012,
+          "relevant_only_count": 509
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 4
+        },
+        "synthesis": {
+          "storyline_name": "Protecting forests and wetlands while steering land use",
+          "reinforce": "Within LULUCF, alignment often comes through conservation, restoration, pollution reduction, invasive species control, and planning or finance measures that support forest, wetland, coastal blue carbon, and broader ecosystem management. These pairs tend to reinforce when governance tools, data, participation, and restoration actions improve conditions for sustainable land and ecosystem stewardship.",
+          "clash": "Possible misalignment recurs where forest expansion, wetland retention, or area-based conservation may compete with agriculture, livestock, irrigation, industrial siting, or energy infrastructure for the same land or hydrological space. The flagged pairs often point to delivery friction or resource competition that would need spatial planning, zoning, siting safeguards, and hydrological management to avoid undermining LULUCF objectives.",
+          "coordination_hint": "It tends to help to use landscape-scale land-use planning, with wetland and forest safeguards, to check whether production or infrastructure measures can be delivered through efficiency and careful siting rather than conversion of sensitive land.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_other",
+        "category_name": "Other / Cross-cutting",
+        "aligned_count": 1314,
+        "flagged_count": 5,
+        "pool_composition": {
+          "primary_count": 1411,
+          "relevant_only_count": 302
+        },
+        "contradiction_types": {
+          "delivery_friction": 4,
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link cross-cutting governance to sector delivery",
+          "reinforce": "This sector often aligns through enabling measures, data systems, risk frameworks, participation, gender responsiveness, and business disclosure that support delivery in biodiversity, water, health, tourism, industry, and coastal planning. The recurring pattern is indirect reinforcement, where cross-cutting planning, monitoring, forecasting, and institutional coordination tends to strengthen implementation rather than prescribe the same on-the-ground action.",
+          "clash": "Possible misalignment is mostly flagged for review where broad conservation, biodiversity-planning, or business-risk expectations meet infrastructure or production expansion, especially eco-industrial parks, natural gas power infrastructure, higher crop productivity, and dairy productivity. The friction tends to arise through land-use siting, wetland conversion risk, shared land and water demands, or demand-side signals that could pull against sustainable consumption goals unless safeguards and zoning are applied.",
+          "coordination_hint": "This sector often points to a need for early spatial planning, screening, and cross-sector governance so that enabling policies, disclosure duties, and conservation objectives can be built into infrastructure, industry, and production decisions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_transport",
+        "category_name": "Transport",
+        "aligned_count": 63,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 116,
+          "relevant_only_count": 20
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Link transport efficiency to biodiversity and planning goals",
+          "reinforce": "Transport measures often align with biodiversity and land-related targets through indirect mechanisms, especially lower pollution from public transport and fleet efficiency, lower emissions from freight modal shift and electric mobility, and more energy-efficient transport-related built environments. A second recurring pattern is enabling alignment through planning and governance, where biodiversity mainstreaming, business risk disclosure, participatory decision-making, and national loss-and-damage stocktaking could inform transport design, review, and implementation.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "It tends to help to connect transport efficiency and modal-shift actions with biodiversity-sensitive spatial planning, pollution monitoring, and cross-sector review processes, because the overlap here is often enabling rather than directly operational.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_waste",
+        "category_name": "Waste",
+        "aligned_count": 159,
+        "flagged_count": 1,
+        "pool_composition": {
+          "primary_count": 118,
+          "relevant_only_count": 127
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link waste reduction with circular residual management",
+          "reinforce": "Waste-related targets often align around a hierarchy in which sustainable consumption and circular economy measures reduce waste upstream, while composting, biological treatment, wastewater management, sanitary disposal, and energy recovery manage residuals downstream. This sample also tends to show waste actions reinforcing biodiversity, soil, and ecosystem goals by lowering pollution, reducing unmanaged dumping, and supporting cleaner water and land conditions.",
+          "clash": "A possible misalignment is flagged for review where waste reduction and lower overconsumption objectives meet livestock productivity expansion, because higher dairy output could pull demand and consumption patterns in a different direction. The friction appears to be about delivery logic rather than a direct contradiction, and often points to the need to pair productivity gains with demand-side measures.",
+          "coordination_hint": "It may help to sequence this sector around the waste hierarchy, so prevention, reuse, recycling, composting, and wastewater improvements guide when residual disposal or energy recovery is used.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      }
+    ]
+  }
+}
