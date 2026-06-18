@@ -106,6 +106,26 @@ function DocRow({
   );
 }
 
+function trendDirection(series: { year: string; value: number }[]): "up" | "down" | "flat" {
+  // Compare the average of the first 3 years to the last 3 years. Robust to
+  // year-to-year noise and to "programme came online mid-period" cases that
+  // a 2015-vs-2024 single-point comparison gets wrong. Threshold ±30% so a
+  // small wiggle reads as flat.
+  if (series.length < 4) return "flat";
+  const n = Math.min(3, Math.floor(series.length / 2));
+  const head = series.slice(0, n).reduce((s, p) => s + p.value, 0) / n;
+  const tail = series.slice(-n).reduce((s, p) => s + p.value, 0) / n;
+  // Both near-zero: nothing's happening either side. Calling it "rising"
+  // because one of three early years had a stray 0.1M is the bug we are
+  // fixing.
+  if (head < 0.5 && tail < 0.5) return "flat";
+  if (head <= 0) return tail > 0.5 ? "up" : "flat";
+  const ratio = tail / head;
+  if (ratio > 1.3) return "up";
+  if (ratio < 0.7) return "down";
+  return "flat";
+}
+
 function YearlySpark({ series }: { series: { year: string; value: number }[] }) {
   if (series.length === 0) return null;
   const total = series.reduce((s, p) => s + p.value, 0);
@@ -121,9 +141,7 @@ function YearlySpark({ series }: { series: { year: string; value: number }[] }) 
   const plotH = H - PAD_T - PAD_B;
   const barGap = 2;
   const barW = (plotW - barGap * (series.length - 1)) / series.length;
-  const first = series[0].value;
-  const last = series[series.length - 1].value;
-  const dir = last > first * 1.1 ? "up" : last < first * 0.9 ? "down" : "flat";
+  const dir = trendDirection(series);
   return (
     <div className="mt-2">
       <div className="flex items-baseline justify-between mb-1">
