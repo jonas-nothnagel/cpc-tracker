@@ -184,9 +184,9 @@ export default async function FinancingAlignmentPrototypePage() {
           </h1>
           <p className="text-[13px] leading-relaxed text-[var(--undp-gray)] mt-2 max-w-prose">
             Every Panama biodiversity-policy target as one dot, grouped by document.
-            Color marks its funding tier. Hover any dot for the target text, funding
-            tier, and the programmes the LLM judged aligned with it. AI-judged
-            semantic coherence — not traced material flow.
+            Color marks its funding tier. Click any dot to open the detail panel
+            with the target text and the programmes the LLM judged aligned with
+            it. AI-judged semantic coherence — not traced material flow.
           </p>
           <p className="text-[12px] mt-3">
             <Link
