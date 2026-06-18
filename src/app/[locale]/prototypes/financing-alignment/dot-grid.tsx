@@ -205,6 +205,35 @@ function HoverPanel({ row, onClose }: { row: Row | null; onClose: () => void }) 
   );
 }
 
+function ColorLegend() {
+  const items: { kind: FundingKind; label: string }[] = [
+    { kind: "well-funded", label: "Well-funded (top 10)" },
+    { kind: "normal", label: "Funded" },
+    { kind: "under-funded", label: "Under-funded (bottom 10)" },
+    { kind: "unfunded", label: "No aligned spend" },
+  ];
+  return (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 px-1 text-[11px] text-[var(--undp-gray)]">
+      {items.map(({ kind, label }) => (
+        <span key={kind} className="flex items-center gap-1.5">
+          <span
+            aria-hidden="true"
+            className={
+              "inline-block w-2.5 h-2.5 rounded-full " +
+              (kind === "unfunded" ? "border" : "")
+            }
+            style={kind === "unfunded"
+              ? { borderColor: KIND_COLOR[kind] }
+              : { backgroundColor: KIND_COLOR[kind] }
+            }
+          />
+          {label}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function FundingDotGrid({
   docs,
 }: {
@@ -213,17 +242,20 @@ export function FundingDotGrid({
   const [selected, setSelected] = useState<Row | null>(null);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 items-start">
-      <div className="bg-white border border-gray-100 rounded-lg px-4 py-1">
-        {docs.map((d) => (
-          <DocRow
-            key={d.docId}
-            docId={d.docId}
-            docLabel={d.docLabel}
-            rows={d.rows}
-            selectedId={selected?.targetId ?? null}
-            onSelect={setSelected}
-          />
-        ))}
+      <div>
+        <div className="px-1">
+          {docs.map((d) => (
+            <DocRow
+              key={d.docId}
+              docId={d.docId}
+              docLabel={d.docLabel}
+              rows={d.rows}
+              selectedId={selected?.targetId ?? null}
+              onSelect={setSelected}
+            />
+          ))}
+        </div>
+        <ColorLegend />
       </div>
       <aside className="lg:sticky lg:top-4">
         <HoverPanel row={selected} onClose={() => setSelected(null)} />
