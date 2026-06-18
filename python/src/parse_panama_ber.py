@@ -100,6 +100,28 @@ OVERHEAD_NAME_PATTERNS = (
     "administración general",
 )
 
+# Hand-curated English translations for Panama institutions. These are the
+# standard English names used in bilingual UNDP / Panamanian government
+# reports; not LLM-translated. Programme names (e.g., "Sanidad Agropecuaria")
+# are MEF budget vocabulary and stay Spanish — translating them would lose
+# the link back to source budget documents. Falls back to the Spanish name
+# if an institution isn't in the lookup.
+INSTITUTION_NAME_EN = {
+    "AUTORIDAD AERONÁUTICA CIVIL": "Civil Aviation Authority",
+    "AUTORIDAD DE LOS RECURSOS ACUÁTICOS DE PANAMÁ": "Aquatic Resources Authority of Panama",
+    "AUTORIDAD DE TURISMO DE PANAMÁ": "Tourism Authority of Panama",
+    "AUTORIDAD NACIONAL DE ADMINISTRACIÓN DE TIERRAS": "National Land Administration Authority",
+    "INSTITUTO CONMEMORATIVO GORGAS DE ESTUDIOS DE LA SALUD": "Gorgas Memorial Institute for Health Studies",
+    "INSTITUTO DE INNOVACIÓN AGROPECUARIA": "Agricultural Innovation Institute",
+    "MINISTERIO DE AMBIENTE": "Ministry of Environment",
+    "MINISTERIO DE COMERCIO E INDUSTRIAS": "Ministry of Commerce and Industries",
+    "MINISTERIO DE DESARROLLO AGROPECUARIO": "Ministry of Agricultural Development",
+    "MINISTERIO DE ECONOMÍA Y FINANZAS": "Ministry of Economy and Finance",
+    "MINISTERIO DE RELACIONES EXTERIORES": "Ministry of Foreign Relations",
+    "MINISTERIO DE SALUD": "Ministry of Health",
+    "PRESIDENCIA DE LA REPÚBLICA": "Office of the President",
+}
+
 
 # ---------------------------------------------------------------------------
 # Row representation
@@ -376,6 +398,13 @@ def _institution_name_short(name: str) -> str:
     return name.title()
 
 
+def _institution_name_en(name_es: str) -> str:
+    """Return the curated English name for an institution; fall back to a
+    title-cased Spanish name if the institution isn't in the lookup so
+    nothing renders as SHOUTY-CAPS on the EN locale."""
+    return INSTITUTION_NAME_EN.get(name_es.strip(), _institution_name_short(name_es))
+
+
 def build_substantive_pseudo(
     institution_idx: int,
     programme_idx: int,
@@ -451,7 +480,10 @@ def build_overhead_rollup_pseudo(
 def _render_description(p: ProgrammePseudo) -> str:
     """Render the pseudo-target's description text. Substantive vs overhead
     differ in framing; both quote the Tablas LLM description verbatim and
-    state Tablas as the descriptive source."""
+    state Tablas as the descriptive source.
+
+    This is the LLM-input narrative — kept stable so the budget_alignment
+    cache key doesn't change when bilingual display fields are added."""
     total = sum(p.values.values())
     avg = total / len(ALL_YEARS) if ALL_YEARS else 0.0
     desc_text = p.desc_en or p.desc_es or "(no description available)"
@@ -472,6 +504,40 @@ def _render_description(p: ProgrammePseudo) -> str:
     )
 
 
+def _render_description_en(p: ProgrammePseudo) -> str:
+    """English UI description. Uses curated EN institution name and the
+    Tablas EN description column verbatim. No money totals — those are
+    rendered separately by the UI from `expenditure.values`."""
+    institution_en = _institution_name_en(p.institution_name)
+    desc = p.desc_en or p.desc_es or ""
+    if p.is_overhead:
+        body = f"Cross-cutting institutional support and general administration at the {institution_en}."
+    else:
+        body = f'Programme "{p.programme_name}" under the {institution_en}.'
+    return f"{body} {desc}".strip()
+
+
+def _render_description_es(p: ProgrammePseudo) -> str:
+    """Spanish UI description. Uses the source-of-record Spanish institution
+    and programme names and the Tablas ES description column verbatim."""
+    desc = p.desc_es or p.desc_en or ""
+    institution_es = _institution_name_short(p.institution_name)
+    if p.is_overhead:
+        body = f"Apoyo institucional transversal y administración general en {institution_es}."
+    else:
+        body = f'Programa «{p.programme_name}» en {institution_es}.'
+    return f"{body} {desc}".strip()
+
+
+def _programme_name_en(p: ProgrammePseudo) -> str:
+    """English display name. Substantive programme names are MEF proper
+    nouns — kept Spanish. Overhead rollups use 'Institutional support —
+    {institution_en}'."""
+    if p.is_overhead:
+        return f"Institutional support — {_institution_name_en(p.institution_name)}"
+    return p.programme_name
+
+
 def assemble_ber_payload(pseudos: list[ProgrammePseudo]) -> dict[str, Any]:
     """Assemble final BER JSON payload (Mongolia-shape)."""
     programs: list[dict[str, Any]] = []
@@ -484,12 +550,16 @@ def assemble_ber_payload(pseudos: list[ProgrammePseudo]) -> dict[str, Any]:
         programs.append({
             "code": code,
             "name": p.programme_name,
+            "nameEn": _programme_name_en(p),
             "description": _render_description(p),
+            "descriptionEs": _render_description_es(p),
+            "descriptionEn": _render_description_en(p),
             "type": "environmental",
         })
         expenditure.append({
             "code": code,
             "name": p.programme_name,
+            "nameEn": _programme_name_en(p),
             "values": _to_year_dict(p.values),
         })
     return {

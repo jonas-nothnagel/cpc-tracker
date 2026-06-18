@@ -22,7 +22,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   SECTORS_SECTION_ID,
@@ -226,6 +226,7 @@ export function CoherenceBriefing({
   globeSubcategories = [],
 }: CoherenceBriefingProps) {
   const t = useTranslations("briefing");
+  const locale = useLocale();
   const sectionLabels = useSectionLabels();
   // ── Derived data ────────────────────────────────────────────────
   // The re-hosted explorer needs the FULL corpus (incl. BTR + BER) so BTR
@@ -335,8 +336,8 @@ export function CoherenceBriefing({
     if (!berData || !berData.programs || berData.programs.length === 0) {
       return null;
     }
-    return computeFinancingCoherence(berData);
-  }, [berData]);
+    return computeFinancingCoherence(berData, locale);
+  }, [berData, locale]);
 
   // Softer, AI-estimated per-document budget reach for the left-column read.
   // Recomputes with the document toggle (visibleTargets). Null without budget

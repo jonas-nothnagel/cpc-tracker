@@ -7,6 +7,7 @@ import type {
   BerExpenditureSeries,
 } from "@/types";
 import { ALIGNMENT_WEIGHTS } from "@/lib/utils";
+import { pickBerName } from "@/lib/financing-coherence";
 
 export interface NetworkNode {
   id: string;
@@ -96,6 +97,7 @@ interface UseClusterNetworkDataProps {
   budgetPseudoTargets: Target[];
   berData: BerData;
   targetAlignment: AlignmentResult[];
+  locale: string;
 }
 
 export function useClusterNetworkData({
@@ -104,6 +106,7 @@ export function useClusterNetworkData({
   budgetPseudoTargets,
   berData,
   targetAlignment,
+  locale,
 }: UseClusterNetworkDataProps) {
   return useMemo(() => {
     // 1. Expenditure lookup
@@ -123,7 +126,7 @@ export function useClusterNetworkData({
       const prog = berData.programs.find((p) => p.code === code);
       programInfo.set(code, {
         code,
-        name: prog?.name ?? pt.sourceLabel,
+        name: prog ? pickBerName(prog, locale) : pt.sourceLabel,
         type: prog?.type ?? "environmental",
       });
     }
@@ -289,5 +292,5 @@ export function useClusterNetworkData({
     });
 
     return { nodes, links, adjacency, clusterTargets, clusterMeta, expByCode, endYear };
-  }, [targets, budgetAlignment, budgetPseudoTargets, berData, targetAlignment]);
+  }, [targets, budgetAlignment, budgetPseudoTargets, berData, targetAlignment, locale]);
 }

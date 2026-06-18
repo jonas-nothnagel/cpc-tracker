@@ -3,8 +3,15 @@ import {
   computeBudgetCoverage,
   computeFinancingCoherence,
   formatBerMoney,
+  pickBerDescription,
+  pickBerName,
 } from "./financing-coherence";
-import type { AlignmentResult, BerData, Target } from "@/types";
+import type {
+  AlignmentResult,
+  BerBudgetProgram,
+  BerData,
+  Target,
+} from "@/types";
 
 // The L2 slide runs on hard BER facts only: how much, how concentrated, how
 // much unspent. No budget↔policy alignment, no taxonomy. So the compute takes
@@ -248,5 +255,59 @@ describe("formatBerMoney", () => {
 
   it("groups thousands", () => {
     expect(formatBerMoney(1234.5, "billion", "MNT")).toBe("1,235 billion MNT");
+  });
+});
+
+describe("pickBerName", () => {
+  it("returns nameEn on EN locale when present", () => {
+    expect(
+      pickBerName(
+        { name: "Sanidad Agropecuaria", nameEn: "Agricultural Sanitation" },
+        "en",
+      ),
+    ).toBe("Agricultural Sanitation");
+  });
+
+  it("falls back to name when nameEn is absent (Mongolia BER, older Panama files)", () => {
+    expect(pickBerName({ name: "Эрчим хүч" }, "en")).toBe("Эрчим хүч");
+  });
+
+  it("returns Spanish name on ES locale regardless of nameEn", () => {
+    expect(
+      pickBerName(
+        { name: "Sanidad Agropecuaria", nameEn: "Agricultural Sanitation" },
+        "es",
+      ),
+    ).toBe("Sanidad Agropecuaria");
+  });
+});
+
+describe("pickBerDescription", () => {
+  const prog: BerBudgetProgram = {
+    code: "X",
+    name: "Sanidad",
+    description: "LEGACY LLM input",
+    descriptionEs: "Descripción en español",
+    descriptionEn: "English description",
+    type: "environmental",
+  };
+
+  it("prefers descriptionEn on EN locale", () => {
+    expect(pickBerDescription(prog, "en")).toBe("English description");
+  });
+
+  it("prefers descriptionEs on ES locale", () => {
+    expect(pickBerDescription(prog, "es")).toBe("Descripción en español");
+  });
+
+  it("falls back to legacy description when locale variant absent", () => {
+    const skinny: BerBudgetProgram = {
+      code: "Y",
+      name: "Y",
+      description: "ONLY legacy",
+      type: "environmental",
+    };
+    expect(pickBerDescription(skinny, "en")).toBe("ONLY legacy");
+    expect(pickBerDescription(skinny, "es")).toBe("ONLY legacy");
   });
 });

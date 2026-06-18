@@ -95,3 +95,22 @@ def test_fixture_currency_and_unit_match_panama_constants():
     assert payload["currency"] == "PAB"
     assert payload["unit"] == "million"
     assert payload["period"] == {"start": 2015, "end": 2024}
+
+
+def test_fixture_emits_bilingual_fields_for_ui():
+    """A/B/C bilingual fields: nameEn, descriptionEs, descriptionEn must
+    appear on every programme. Overhead nameEn must use curated English."""
+    payload, _preview = run_ingest(FIXTURE_XLSX)
+    for prog in payload["programs"]:
+        assert prog.get("nameEn"), f"{prog['code']} missing nameEn"
+        assert prog.get("descriptionEs"), f"{prog['code']} missing descriptionEs"
+        assert prog.get("descriptionEn"), f"{prog['code']} missing descriptionEn"
+    overhead = next(p for p in payload["programs"] if "OVERHEAD" in p["code"])
+    assert overhead["nameEn"] == "Institutional support — Ministry of Environment"
+    # The curated English institution name must reach the EN description.
+    miambiente_substantive = next(
+        p for p in payload["programs"]
+        if "BER_PA_03_" in p["code"] and "OVERHEAD" not in p["code"]
+    )
+    assert "Ministry of Environment" in miambiente_substantive["descriptionEn"]
+    assert "Ministerio De Ambiente" in miambiente_substantive["descriptionEs"]

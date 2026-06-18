@@ -22,7 +22,37 @@
  * never as the headline.
  */
 
-import type { AlignmentResult, BerData, Target } from "@/types";
+import type {
+  AlignmentResult,
+  BerBudgetProgram,
+  BerData,
+  BerExpenditureSeries,
+  Target,
+} from "@/types";
+
+/** Pick the locale-appropriate display name for a BER programme or
+ *  expenditure series. Prefers `nameEn` on the English locale; falls back to
+ *  the Spanish/canonical `name` everywhere else and when `nameEn` is absent
+ *  (older BER files, Mongolia data which only ships `name`). */
+export function pickBerName(
+  item: { name: string; nameEn?: string },
+  locale: string,
+): string {
+  if (locale === "en" && item.nameEn) return item.nameEn;
+  return item.name;
+}
+
+/** Pick the locale-appropriate display description for a BER programme.
+ *  Falls back to the legacy `description` (LLM-input narrative) when no
+ *  locale-specific UI description is provided. */
+export function pickBerDescription(
+  program: BerBudgetProgram,
+  locale: string,
+): string {
+  if (locale === "en" && program.descriptionEn) return program.descriptionEn;
+  if (locale === "es" && program.descriptionEs) return program.descriptionEs;
+  return program.description;
+}
 
 /** A strong (high-confidence) budget↔commitment link, with the AI's reasoning. */
 export interface BudgetCoverageLink {
@@ -227,6 +257,7 @@ export function formatBerMoney(
 
 export function computeFinancingCoherence(
   berData: BerData,
+  locale: string = "en",
 ): FinancingCoherenceSummary {
   const valuesByCode = new Map<string, Record<string, number | null>>();
   for (const e of berData.expenditure) valuesByCode.set(e.code, e.values);
@@ -240,7 +271,7 @@ export function computeFinancingCoherence(
     return {
       berId: `BER_${p.code}`,
       code: p.code,
-      name: p.name,
+      name: pickBerName(p, locale),
       type: p.type,
       totalSpend,
       hasSpend: totalSpend > 0,

@@ -18,12 +18,17 @@ from src.parse_panama_ber import (
     BALANCE_TOLERANCE,
     COLS,
     CURRENCY,
+    INSTITUTION_NAME_EN,
     OVERHEAD_NAME_PATTERNS,
     UNIT,
     ProgrammePseudo,
     TablasRow,
     _absorb_subtree,
+    _institution_name_en,
+    _programme_name_en,
     _render_description,
+    _render_description_en,
+    _render_description_es,
     _round_money,
     assemble_ber_payload,
     build_overhead_rollup_pseudo,
@@ -419,3 +424,122 @@ def test_balance_tolerance_is_small_but_loose_enough_for_rounding():
     values (so it catches real drift) but big enough to absorb 4-decimal
     rounding (so identical sums don't mismatch)."""
     assert 0 < BALANCE_TOLERANCE < 0.1
+
+
+# ---------------------------------------------------------------------------
+# Bilingual display fields (Option A/B/C: i18n-able name + descriptions).
+# Descriptions and labels are hand-curated EN/ES; no LLM translation, no
+# silent rename of the LLM-input `description` field (cache-stable).
+# ---------------------------------------------------------------------------
+
+
+def test_institution_name_en_uses_curated_lookup():
+    assert _institution_name_en("MINISTERIO DE AMBIENTE") == "Ministry of Environment"
+    assert _institution_name_en("AUTORIDAD AERONÁUTICA CIVIL") == "Civil Aviation Authority"
+
+
+def test_institution_name_en_falls_back_to_title_case_for_unknown():
+    """Defensive: if a new institution appears that isn't in the lookup,
+    fall back to title-cased Spanish so the EN page doesn't show SHOUTY caps."""
+    out = _institution_name_en("MINISTERIO DE COSAS INVENTADAS")
+    assert out == "Ministerio De Cosas Inventadas"
+
+
+def test_institution_name_en_covers_all_known_panama_institutions():
+    """Smoke check: lookup must cover the institutions visible in current
+    Panama BER data. New institution in the source → this fails and prompts
+    a curated translation."""
+    assert "MINISTERIO DE AMBIENTE" in INSTITUTION_NAME_EN
+    assert len(INSTITUTION_NAME_EN) >= 13
+
+
+def test_programme_name_en_keeps_substantive_spanish_proper_noun():
+    """Substantive programme names are MEF budget vocabulary — Spanish only.
+    Translating loses the link to source budget documents."""
+    p = ProgrammePseudo(
+        institution_idx=1, programme_idx=1,
+        institution_name="MINISTERIO DE AMBIENTE",
+        programme_name="Sanidad Agropecuaria",
+        values={2020: 1.0}, desc_es="", desc_en="",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    assert _programme_name_en(p) == "Sanidad Agropecuaria"
+
+
+def test_programme_name_en_rewrites_overhead_with_english_prefix_and_institution():
+    p = ProgrammePseudo(
+        institution_idx=3, programme_idx=0,
+        institution_name="MINISTERIO DE AMBIENTE",
+        programme_name="Apoyo institucional — Ministerio De Ambiente",
+        values={2020: 1.0}, desc_es="", desc_en="",
+        fuente_url="", derived_from_row_count=1, is_overhead=True,
+    )
+    assert _programme_name_en(p) == "Institutional support — Ministry of Environment"
+
+
+def test_render_description_en_uses_curated_english_institution_name():
+    p = ProgrammePseudo(
+        institution_idx=1, programme_idx=1,
+        institution_name="MINISTERIO DE AMBIENTE", programme_name="Áreas Protegidas",
+        values={2020: 1.0}, desc_es="ES", desc_en="EN body",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    text = _render_description_en(p)
+    assert "Ministry of Environment" in text
+    assert "MINISTERIO DE AMBIENTE" not in text
+    assert "EN body" in text
+
+
+def test_render_description_es_uses_spanish_institution_name():
+    p = ProgrammePseudo(
+        institution_idx=1, programme_idx=1,
+        institution_name="MINISTERIO DE AMBIENTE", programme_name="Áreas Protegidas",
+        values={2020: 1.0}, desc_es="ES body", desc_en="EN",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    text = _render_description_es(p)
+    assert "Ministerio De Ambiente" in text
+    assert "Ministry of Environment" not in text
+    assert "ES body" in text
+
+
+def test_assemble_ber_payload_emits_bilingual_fields_on_every_programme():
+    substantive = ProgrammePseudo(
+        institution_idx=1, programme_idx=1,
+        institution_name="MINISTERIO DE AMBIENTE", programme_name="Sanidad",
+        values={2020: 1.0}, desc_es="ES", desc_en="EN",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    overhead = ProgrammePseudo(
+        institution_idx=2, programme_idx=0,
+        institution_name="MINISTERIO DE SALUD",
+        programme_name="Apoyo institucional — Ministerio De Salud",
+        values={2020: 1.0}, desc_es="ES", desc_en="EN",
+        fuente_url="", derived_from_row_count=1, is_overhead=True,
+    )
+    payload = assemble_ber_payload([substantive, overhead])
+    for prog, exp in zip(payload["programs"], payload["expenditure"]):
+        assert "nameEn" in prog and prog["nameEn"]
+        assert "descriptionEs" in prog and prog["descriptionEs"]
+        assert "descriptionEn" in prog and prog["descriptionEn"]
+        assert "nameEn" in exp and exp["nameEn"]
+    # Overhead nameEn must be the curated English label, not the Spanish one
+    assert payload["programs"][1]["nameEn"] == "Institutional support — Ministry of Health"
+    # Spanish `name` field stays unchanged (legacy contract)
+    assert payload["programs"][1]["name"].startswith("Apoyo institucional")
+
+
+def test_assemble_ber_payload_preserves_legacy_description_field_for_cache_stability():
+    """budget_alignment caches on the `description` field. Adding bilingual
+    fields must not change `description` content for the same programme."""
+    p = ProgrammePseudo(
+        institution_idx=1, programme_idx=1,
+        institution_name="MINISTERIO DE AMBIENTE", programme_name="Sanidad",
+        values={2020: 1.0}, desc_es="ES body", desc_en="EN body",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    payload = assemble_ber_payload([p])
+    legacy = payload["programs"][0]["description"]
+    assert legacy == _render_description(p)
+    # Sanity: legacy still uses the Spanish institution name (LLM-input form).
+    assert "MINISTERIO DE AMBIENTE" in legacy
