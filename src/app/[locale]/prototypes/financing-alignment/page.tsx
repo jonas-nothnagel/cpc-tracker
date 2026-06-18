@@ -53,13 +53,24 @@ function buildRows(
   visibleDocIds: Set<string>,
 ): Row[] {
   const spendByCode = new Map<string, number>();
+  const yearlyByCode = new Map<string, Record<string, number>>();
   for (const e of berData.expenditure) {
     const total = Object.values(e.values).reduce<number>(
       (s, v) => s + (typeof v === "number" ? v : 0),
       0,
     );
     spendByCode.set(e.code, total);
+    const yearly: Record<string, number> = {};
+    for (const [y, v] of Object.entries(e.values)) {
+      yearly[y] = typeof v === "number" ? v : 0;
+    }
+    yearlyByCode.set(e.code, yearly);
   }
+  // Years present in the BER (assumed identical across programmes — true for
+  // Panama's Tablas-based ingest, 2015–2024).
+  const allYears = berData.expenditure.length > 0
+    ? Object.keys(berData.expenditure[0].values).sort()
+    : [];
   const nameByCode = new Map<string, string>();
   for (const p of berData.programs) {
     nameByCode.set(p.code, (p as { nameEn?: string }).nameEn ?? p.name);
@@ -88,6 +99,17 @@ function buildRows(
     if (t.id.startsWith("BER_") || t.id.startsWith("BTR_")) continue;
     if (!visibleDocIds.has(t.sourceDocument)) continue;
     const contribs = (contribByPolicy.get(t.id) ?? []).sort((a, b) => b.spend - a.spend);
+    // Year-by-year aligned spend: sum each contributing programme's yearly
+    // values. Same many-targets-share-one-programme caveat as alignedSpend
+    // (the LLM links a programme to many targets, so each target sees the
+    // full series — not a divided share). Surfaces trend, not allocation.
+    const yearlySpend = allYears.map((y) => {
+      let v = 0;
+      for (const c of contribs) {
+        v += yearlyByCode.get(c.code)?.[y] ?? 0;
+      }
+      return { year: y, value: v };
+    });
     partial.push({
       targetId: t.id,
       docId: t.sourceDocument,
@@ -96,6 +118,7 @@ function buildRows(
       alignedSpend: contribs.reduce((s, c) => s + c.spend, 0),
       alignedProgrammeCount: contribs.length,
       contributors: contribs,
+      yearlySpend,
     });
   }
   // Tie-aware classification: round each spend to the displayed precision

@@ -21,6 +21,9 @@ export type Row = {
   alignedProgrammeCount: number;
   kind: FundingKind;
   contributors: Contributor[];
+  /** Year-by-year aligned spend (M PAB), summed across this target's
+   *  contributing programmes. Years ascending. */
+  yearlySpend: { year: string; value: number }[];
 };
 
 const KIND_COLOR: Record<FundingKind, string> = {
@@ -103,6 +106,88 @@ function DocRow({
   );
 }
 
+function YearlySpark({ series }: { series: { year: string; value: number }[] }) {
+  if (series.length === 0) return null;
+  const total = series.reduce((s, p) => s + p.value, 0);
+  if (total <= 0) return null;
+  const max = Math.max(...series.map((p) => p.value), 0.01);
+  const W = 280;
+  const H = 50;
+  const PAD_L = 0;
+  const PAD_R = 0;
+  const PAD_T = 4;
+  const PAD_B = 14;
+  const plotW = W - PAD_L - PAD_R;
+  const plotH = H - PAD_T - PAD_B;
+  const barGap = 2;
+  const barW = (plotW - barGap * (series.length - 1)) / series.length;
+  const first = series[0].value;
+  const last = series[series.length - 1].value;
+  const dir = last > first * 1.1 ? "up" : last < first * 0.9 ? "down" : "flat";
+  return (
+    <div className="mt-2">
+      <div className="flex items-baseline justify-between mb-1">
+        <p className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)]">
+          Spend per year
+        </p>
+        <p className="text-[10px] text-[var(--undp-gray)]">
+          {series[0].year}–{series[series.length - 1].year}
+          {" · "}
+          <span
+            style={{
+              color: dir === "up"
+                ? "var(--undp-green)"
+                : dir === "down"
+                  ? "var(--undp-red)"
+                  : "var(--undp-gray)",
+            }}
+          >
+            {dir === "up" ? "↑ rising" : dir === "down" ? "↓ falling" : "→ flat"}
+          </span>
+        </p>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
+        {series.map((p, i) => {
+          const x = PAD_L + i * (barW + barGap);
+          const h = (p.value / max) * plotH;
+          const y = PAD_T + plotH - h;
+          return (
+            <g key={p.year}>
+              <rect
+                x={x}
+                y={y}
+                width={barW}
+                height={Math.max(h, 1)}
+                fill="var(--undp-blue)"
+                opacity={0.85}
+              >
+                <title>{`${p.year}: ${p.value < 1 ? "< 1" : Math.round(p.value)}M PAB`}</title>
+              </rect>
+            </g>
+          );
+        })}
+        {/* Year labels on the first / middle / last bar to keep the chart
+            readable without crowding. */}
+        {[0, Math.floor(series.length / 2), series.length - 1].map((i) => {
+          const x = PAD_L + i * (barW + barGap) + barW / 2;
+          return (
+            <text
+              key={i}
+              x={x}
+              y={H - 2}
+              textAnchor="middle"
+              fontSize="9"
+              fill="var(--undp-gray)"
+            >
+              {series[i].year.slice(2)}
+            </text>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 function HoverPanel({ row, onClose }: { row: Row | null; onClose: () => void }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -171,6 +256,7 @@ function HoverPanel({ row, onClose }: { row: Row | null; onClose: () => void }) 
             {row.alignedProgrammeCount}
           </span>
         </div>
+        <YearlySpark series={row.yearlySpend} />
         {top.length > 0 ? (
           <>
             <p className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
