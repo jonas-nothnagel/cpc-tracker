@@ -98,25 +98,31 @@ function buildRows(
       contributors: contribs,
     });
   }
-  const nonZero = partial.filter((r) => r.alignedSpend > 0).sort((a, b) => b.alignedSpend - a.alignedSpend);
+  // Tie-aware classification: round each spend to the displayed precision
+  // (1M PAB) before ranking, so two targets that read as "713M" in the UI
+  // always get the same colour even if the raw float differs at the 5th
+  // decimal. Pick the cutoff spend at rank TOP_N (or BOTTOM_N), then tag
+  // every target at or beyond that rounded value.
+  const round1M = (v: number) => Math.round(v);
+  const desc = [...partial]
+    .filter((r) => r.alignedSpend > 0)
+    .sort((a, b) => b.alignedSpend - a.alignedSpend);
   const TOP_N = 10;
   const BOTTOM_N = 10;
-  const wellSet = new Set(nonZero.slice(0, TOP_N).map((r) => r.targetId));
-  const underSet = new Set(
-    [...nonZero].sort((a, b) => a.alignedSpend - b.alignedSpend).slice(0, BOTTOM_N).map((r) => r.targetId),
-  );
+  const topCutoff = desc.length >= TOP_N ? round1M(desc[TOP_N - 1].alignedSpend) : 0;
+  const bottomCutoff = desc.length >= BOTTOM_N
+    ? round1M([...desc].reverse()[BOTTOM_N - 1].alignedSpend)
+    : Infinity;
   return partial
-    .map<Row>((r) => ({
-      ...r,
-      kind:
-        r.alignedSpend === 0
-          ? "unfunded"
-          : wellSet.has(r.targetId)
-            ? "well-funded"
-            : underSet.has(r.targetId)
-              ? "under-funded"
-              : "normal",
-    }))
+    .map<Row>((r) => {
+      const rounded = round1M(r.alignedSpend);
+      let kind: Row["kind"];
+      if (r.alignedSpend === 0) kind = "unfunded";
+      else if (rounded >= topCutoff) kind = "well-funded";
+      else if (rounded <= bottomCutoff) kind = "under-funded";
+      else kind = "normal";
+      return { ...r, kind };
+    })
     .sort((a, b) => b.alignedSpend - a.alignedSpend);
 }
 
@@ -217,7 +223,7 @@ export default async function FinancingAlignmentPrototypePage() {
             <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-green)" }}>
               {wellCount}
             </p>
-            <p className="text-[11px] text-[var(--undp-gray)] mt-1">top 10 by aligned spend</p>
+            <p className="text-[11px] text-[var(--undp-gray)] mt-1">≥ top-10 spend threshold</p>
           </div>
           <div className="bg-white border border-gray-100 rounded-lg p-3">
             <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--undp-yellow)" }}>
@@ -226,7 +232,7 @@ export default async function FinancingAlignmentPrototypePage() {
             <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-yellow)" }}>
               {underCount}
             </p>
-            <p className="text-[11px] text-[var(--undp-gray)] mt-1">lowest 10 with non-zero spend</p>
+            <p className="text-[11px] text-[var(--undp-gray)] mt-1">≤ bottom-10 spend threshold</p>
           </div>
           <div className="bg-white border border-gray-100 rounded-lg p-3">
             <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--undp-red)" }}>

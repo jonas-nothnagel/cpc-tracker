@@ -30,9 +30,9 @@ const KIND_COLOR: Record<FundingKind, string> = {
   "unfunded": "var(--undp-red)",
 };
 const KIND_LABEL: Record<FundingKind, string> = {
-  "well-funded": "Well-funded (top 10)",
+  "well-funded": "Well-funded",
   "normal": "Funded",
-  "under-funded": "Under-funded (bottom 10)",
+  "under-funded": "Under-funded",
   "unfunded": "No aligned spend",
 };
 const LEVEL_COLOR: Record<AlignmentLevel, string> = {
@@ -207,9 +207,9 @@ function HoverPanel({ row, onClose }: { row: Row | null; onClose: () => void }) 
 
 function ColorLegend() {
   const items: { kind: FundingKind; label: string }[] = [
-    { kind: "well-funded", label: "Well-funded (top 10)" },
+    { kind: "well-funded", label: "Well-funded (at or above the top-10 threshold)" },
     { kind: "normal", label: "Funded" },
-    { kind: "under-funded", label: "Under-funded (bottom 10)" },
+    { kind: "under-funded", label: "Under-funded (at or below the bottom-10 threshold)" },
     { kind: "unfunded", label: "No aligned spend" },
   ];
   return (
