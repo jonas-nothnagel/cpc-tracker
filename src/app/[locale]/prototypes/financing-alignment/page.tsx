@@ -1,9 +1,9 @@
 /**
  * Prototype page — outlier-aware target funding view, BTR-style compact.
  * Every policy target rendered as one dot, color-coded by funding tier
- * (well-funded green / normal blue / under-funded amber / unfunded red),
- * grouped by document. Hover any dot for a rich detail panel on the right
- * (target text, funding tier, contributing programmes).
+ * (well-funded / normal / under-funded / unfunded), grouped by document.
+ * Filters to the same document set the financing visualization uses (drops
+ * defaultHiddenDocTypes + excludedDocTypes from countryConfig).
  *
  * "Aligned spend" = total executed expenditure of all programmes the LLM
  * judged high- or medium-aligned with this target. Semantic coherence, not
@@ -11,10 +11,12 @@
  */
 import Link from "next/link";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
+import { getDocMediumLabel } from "@/lib/utils";
 import type {
   AlignmentLevel,
   AlignmentResult,
   BerData,
+  CountryConfig,
   Target,
 } from "@/types";
 import { FundingDotGrid, type Row } from "./dot-grid";
@@ -47,6 +49,8 @@ function buildRows(
   targets: Target[],
   alignment: AlignmentResult[],
   berData: BerData,
+  countryConfig: CountryConfig | null,
+  visibleDocIds: Set<string>,
 ): Row[] {
   const spendByCode = new Map<string, number>();
   for (const e of berData.expenditure) {
@@ -60,9 +64,6 @@ function buildRows(
   for (const p of berData.programs) {
     nameByCode.set(p.code, (p as { nameEn?: string }).nameEn ?? p.name);
   }
-  // Per policy target: collect the (programme, level) pairs from any
-  // high/medium alignment, sorted by spend descending. Each contributor
-  // surfaces in the hover panel.
   const contribByPolicy = new Map<string, Row["contributors"]>();
   for (const pair of alignment) {
     const berId = berIdOf(pair);
@@ -85,10 +86,12 @@ function buildRows(
   const partial: Partial[] = [];
   for (const t of targets) {
     if (t.id.startsWith("BER_") || t.id.startsWith("BTR_")) continue;
+    if (!visibleDocIds.has(t.sourceDocument)) continue;
     const contribs = (contribByPolicy.get(t.id) ?? []).sort((a, b) => b.spend - a.spend);
     partial.push({
       targetId: t.id,
       docId: t.sourceDocument,
+      docLabel: getDocMediumLabel(countryConfig, t.sourceDocument),
       text: t.text,
       alignedSpend: contribs.reduce((s, c) => s + c.spend, 0),
       alignedProgrammeCount: contribs.length,
@@ -125,9 +128,9 @@ export default async function FinancingAlignmentPrototypePage() {
   const result = getCountryDashboardPayload("panama", "en");
   if (result.kind !== "ok") {
     return (
-      <main className="p-8">
-        <h1 className="text-2xl mb-2">Prototype unavailable</h1>
-        <p className="text-sm text-gray-700">{result.error}</p>
+      <main className="p-8 bg-[var(--undp-paper)] min-h-screen">
+        <h1 className="text-2xl mb-2 text-[var(--undp-black)]">Prototype unavailable</h1>
+        <p className="text-sm text-[var(--undp-gray)]">{result.error}</p>
       </main>
     );
   }
@@ -135,19 +138,34 @@ export default async function FinancingAlignmentPrototypePage() {
   const targets = data.targets as Target[];
   const alignment = (data.budgetAlignment ?? []) as AlignmentResult[];
   const berData = data.berData as BerData;
+  const countryConfig = (data.countryConfig as CountryConfig | null) ?? null;
 
-  const rows = buildRows(targets, alignment, berData);
+  // Match the financing-coherence document set: drop defaultHiddenDocTypes
+  // (ENR for Panama — 206-target REDD+ corpus that skews everything) and
+  // excludedDocTypes (CNR for Panama). Same filter applied in the dashboard's
+  // financing surfaces.
+  const hidden = new Set([
+    ...(countryConfig?.defaultHiddenDocTypes ?? []),
+    ...(countryConfig?.excludedDocTypes ?? []),
+  ]);
+  const declaredDocs = (countryConfig?.documentTypes ?? []).map((d) => d.id);
+  const visibleDocIds = new Set(declaredDocs.filter((id) => !hidden.has(id)));
+
+  const rows = buildRows(targets, alignment, berData, countryConfig, visibleDocIds);
   const byDoc = new Map<string, Row[]>();
   for (const r of rows) {
     if (!byDoc.has(r.docId)) byDoc.set(r.docId, []);
     byDoc.get(r.docId)!.push(r);
   }
-  const docs = [...byDoc.entries()]
-    .map(([docId, docRows]) => ({ docId, rows: docRows }))
-    .sort((a, b) =>
-      b.rows.reduce((s, r) => s + r.alignedSpend, 0) -
-      a.rows.reduce((s, r) => s + r.alignedSpend, 0),
-    );
+  // Preserve countryConfig's declared doc order rather than sorting by spend
+  // — matches the financing viz's stable per-doc order.
+  const docs = declaredDocs
+    .filter((id) => byDoc.has(id))
+    .map((docId) => ({
+      docId,
+      docLabel: getDocMediumLabel(countryConfig, docId),
+      rows: byDoc.get(docId)!,
+    }));
 
   const wellCount = rows.filter((r) => r.kind === "well-funded").length;
   const underCount = rows.filter((r) => r.kind === "under-funded").length;
@@ -155,51 +173,74 @@ export default async function FinancingAlignmentPrototypePage() {
   const totalAligned = rows.reduce((s, r) => s + r.alignedSpend, 0);
 
   return (
-    <main className="max-w-6xl mx-auto p-8 space-y-6">
-      <header>
-        <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">
-          Prototype · not production · Panama only · EN labels
-        </p>
-        <h1 className="text-3xl font-semibold">Which policy targets have money behind them?</h1>
-        <p className="text-gray-700 mt-2 max-w-3xl">
-          Every Panama biodiversity-policy target as one dot, grouped by document.
-          Color marks its funding tier. Hover any dot for the target text, funding
-          tier, and the programmes the LLM judged aligned with it. AI-judged
-          semantic coherence — not traced material flow.
-        </p>
-        <p className="text-sm mt-3">
-          <Link href="/dashboard?country=panama" className="text-blue-700 underline">
-            ← back to dashboard
-          </Link>
-        </p>
-      </header>
-
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="border border-gray-200 rounded p-3">
-          <p className="text-xs uppercase tracking-wide text-gray-500">Targets reviewed</p>
-          <p className="text-2xl font-semibold tabular-nums">{rows.length}</p>
-          <p className="text-xs text-gray-500 mt-1">
-            {fmtMoney(totalAligned)} aligned spend (sum across targets)
+    <main className="bg-[var(--undp-paper)] min-h-screen">
+      <div className="max-w-6xl mx-auto p-8 space-y-6">
+        <header>
+          <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
+            Prototype · not production · Panama only · EN labels
           </p>
-        </div>
-        <div className="border border-emerald-200 bg-emerald-50 rounded p-3">
-          <p className="text-xs uppercase tracking-wide text-emerald-700">Well-funded</p>
-          <p className="text-2xl font-semibold tabular-nums text-emerald-700">{wellCount}</p>
-          <p className="text-xs text-emerald-700/80 mt-1">top 10 by aligned spend</p>
-        </div>
-        <div className="border border-amber-200 bg-amber-50 rounded p-3">
-          <p className="text-xs uppercase tracking-wide text-amber-700">Under-funded</p>
-          <p className="text-2xl font-semibold tabular-nums text-amber-700">{underCount}</p>
-          <p className="text-xs text-amber-700/80 mt-1">lowest 10 with non-zero spend</p>
-        </div>
-        <div className="border border-red-200 bg-red-50 rounded p-3">
-          <p className="text-xs uppercase tracking-wide text-red-700">No aligned spend</p>
-          <p className="text-2xl font-semibold tabular-nums text-red-700">{unfundedCount}</p>
-          <p className="text-xs text-red-700/80 mt-1">no programme judged aligned</p>
-        </div>
-      </section>
+          <h1 className="text-3xl font-semibold text-[var(--undp-black)]">
+            Which policy targets have money behind them?
+          </h1>
+          <p className="text-[13px] leading-relaxed text-[var(--undp-gray)] mt-2 max-w-prose">
+            Every Panama biodiversity-policy target as one dot, grouped by document.
+            Color marks its funding tier. Hover any dot for the target text, funding
+            tier, and the programmes the LLM judged aligned with it. AI-judged
+            semantic coherence — not traced material flow.
+          </p>
+          <p className="text-[12px] mt-3">
+            <Link
+              href="/dashboard?country=panama"
+              className="text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
+            >
+              ← back to dashboard
+            </Link>
+          </p>
+        </header>
 
-      <FundingDotGrid docs={docs} />
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="bg-white border border-gray-100 rounded-lg p-3">
+            <p className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)]">
+              Targets reviewed
+            </p>
+            <p className="text-2xl font-semibold tabular-nums text-[var(--undp-black)]">
+              {rows.length}
+            </p>
+            <p className="text-[11px] text-[var(--undp-gray)] mt-1">
+              {fmtMoney(totalAligned)} aligned spend
+            </p>
+          </div>
+          <div className="bg-white border border-gray-100 rounded-lg p-3">
+            <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--undp-green)" }}>
+              Well-funded
+            </p>
+            <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-green)" }}>
+              {wellCount}
+            </p>
+            <p className="text-[11px] text-[var(--undp-gray)] mt-1">top 10 by aligned spend</p>
+          </div>
+          <div className="bg-white border border-gray-100 rounded-lg p-3">
+            <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--undp-yellow)" }}>
+              Under-funded
+            </p>
+            <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-yellow)" }}>
+              {underCount}
+            </p>
+            <p className="text-[11px] text-[var(--undp-gray)] mt-1">lowest 10 with non-zero spend</p>
+          </div>
+          <div className="bg-white border border-gray-100 rounded-lg p-3">
+            <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--undp-red)" }}>
+              No aligned spend
+            </p>
+            <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-red)" }}>
+              {unfundedCount}
+            </p>
+            <p className="text-[11px] text-[var(--undp-gray)] mt-1">no programme judged aligned</p>
+          </div>
+        </section>
+
+        <FundingDotGrid docs={docs} />
+      </div>
     </main>
   );
 }

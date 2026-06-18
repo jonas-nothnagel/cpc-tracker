@@ -15,6 +15,7 @@ export type Contributor = {
 export type Row = {
   targetId: string;
   docId: string;
+  docLabel: string;
   text: string;
   alignedSpend: number;
   alignedProgrammeCount: number;
@@ -23,10 +24,10 @@ export type Row = {
 };
 
 const KIND_COLOR: Record<FundingKind, string> = {
-  "well-funded": "#0d8a4a",
-  "normal": "#7aa9e0",
-  "under-funded": "#e0a020",
-  "unfunded": "#c62828",
+  "well-funded": "var(--undp-green)",
+  "normal": "var(--undp-blue)",
+  "under-funded": "var(--undp-yellow)",
+  "unfunded": "var(--undp-red)",
 };
 const KIND_LABEL: Record<FundingKind, string> = {
   "well-funded": "Well-funded (top 10)",
@@ -35,7 +36,11 @@ const KIND_LABEL: Record<FundingKind, string> = {
   "unfunded": "No aligned spend",
 };
 const LEVEL_COLOR: Record<AlignmentLevel, string> = {
-  high: "#0d8a4a", medium: "#7cb342", low: "#fdd835", none: "#bdbdbd", flagged: "#c62828",
+  high: "var(--undp-green)",
+  medium: "var(--undp-blue-light)",
+  low: "var(--undp-yellow)",
+  none: "var(--undp-gray)",
+  flagged: "var(--undp-red)",
 };
 
 function fmtMoney(mPab: number): string {
@@ -47,10 +52,12 @@ function fmtMoney(mPab: number): string {
 
 function DocBlock({
   docId,
+  docLabel,
   rows,
   onHover,
 }: {
   docId: string;
+  docLabel: string;
   rows: Row[];
   onHover: (r: Row | null) => void;
 }) {
@@ -60,10 +67,12 @@ function DocBlock({
   };
   for (const r of rows) counts[r.kind] += 1;
   return (
-    <div className="border border-gray-200 rounded p-3">
-      <div className="flex items-baseline justify-between gap-3 mb-2">
-        <span className="text-sm font-medium text-gray-900">{docId}</span>
-        <span className="text-xs tabular-nums text-gray-600">
+    <div className="bg-white border border-gray-100 rounded-lg p-4">
+      <div className="flex items-baseline justify-between gap-3 mb-2.5">
+        <span className="text-[13px] text-[var(--undp-black)] font-medium">
+          {docLabel}
+        </span>
+        <span className="text-[11px] tabular-nums text-[var(--undp-gray)]">
           {rows.length} targets · {fmtMoney(docSpend)} aligned spend
         </span>
       </div>
@@ -76,8 +85,8 @@ function DocBlock({
             tabIndex={0}
             aria-label={`${r.targetId}: ${KIND_LABEL[r.kind]}, ${fmtMoney(r.alignedSpend)}`}
             className={
-              "inline-block w-3 h-3 rounded-full cursor-pointer transition-transform hover:scale-150 focus:scale-150 focus:outline-none " +
-              (r.kind === "unfunded" ? "border-2" : "")
+              "inline-block w-2.5 h-2.5 rounded-full cursor-pointer transition-transform hover:scale-150 focus:scale-150 focus:outline-none " +
+              (r.kind === "unfunded" ? "border" : "")
             }
             style={r.kind === "unfunded"
               ? { borderColor: KIND_COLOR[r.kind] }
@@ -86,16 +95,44 @@ function DocBlock({
           />
         ))}
       </div>
-      <div className="mt-2 flex gap-3 text-[11px] text-gray-600 tabular-nums">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
         {counts["well-funded"] > 0 && (
-          <span style={{ color: KIND_COLOR["well-funded"] }}>● {counts["well-funded"]} well</span>
+          <span className="flex items-center gap-1.5">
+            <span
+              aria-hidden="true"
+              className="inline-block w-2 h-2 rounded-full"
+              style={{ backgroundColor: KIND_COLOR["well-funded"] }}
+            />
+            {counts["well-funded"]} well-funded
+          </span>
         )}
-        <span style={{ color: KIND_COLOR["normal"] }}>● {counts["normal"]} funded</span>
+        <span className="flex items-center gap-1.5">
+          <span
+            aria-hidden="true"
+            className="inline-block w-2 h-2 rounded-full"
+            style={{ backgroundColor: KIND_COLOR["normal"] }}
+          />
+          {counts["normal"]} funded
+        </span>
         {counts["under-funded"] > 0 && (
-          <span style={{ color: KIND_COLOR["under-funded"] }}>● {counts["under-funded"]} under</span>
+          <span className="flex items-center gap-1.5">
+            <span
+              aria-hidden="true"
+              className="inline-block w-2 h-2 rounded-full"
+              style={{ backgroundColor: KIND_COLOR["under-funded"] }}
+            />
+            {counts["under-funded"]} under-funded
+          </span>
         )}
         {counts["unfunded"] > 0 && (
-          <span style={{ color: KIND_COLOR["unfunded"] }}>○ {counts["unfunded"]} unfunded</span>
+          <span className="flex items-center gap-1.5">
+            <span
+              aria-hidden="true"
+              className="inline-block w-2 h-2 rounded-full border"
+              style={{ borderColor: KIND_COLOR["unfunded"] }}
+            />
+            {counts["unfunded"]} unfunded
+          </span>
         )}
       </div>
     </div>
@@ -105,7 +142,7 @@ function DocBlock({
 function HoverPanel({ row }: { row: Row | null }) {
   if (!row) {
     return (
-      <div className="border border-gray-200 rounded p-4 bg-gray-50 text-xs text-gray-500">
+      <div className="bg-[var(--undp-paper)] border border-gray-100 rounded-lg p-4 text-[12px] leading-relaxed text-[var(--undp-gray)]">
         Hover or focus any dot to see the target, the funding tier, and the
         programmes the LLM judged aligned with it.
       </div>
@@ -114,41 +151,41 @@ function HoverPanel({ row }: { row: Row | null }) {
   const top = row.contributors.slice(0, 5);
   const rest = row.contributors.length - top.length;
   return (
-    <div className="border border-gray-200 rounded p-4 bg-white">
-      <div className="flex items-baseline justify-between gap-2 mb-1">
-        <span className="font-mono text-[11px] text-gray-500">
+    <div className="bg-white border border-gray-100 rounded-lg p-4">
+      <div className="flex items-baseline justify-between gap-2 mb-2">
+        <span className="font-mono text-[10px] text-[var(--undp-gray)]">
           {row.targetId.replace(/^panama_/, "")}
         </span>
-        <span className="text-[10px] uppercase tracking-wide text-gray-500">
-          {row.docId}
+        <span className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)]">
+          {row.docLabel}
         </span>
       </div>
       <span
-        className="inline-block text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded mb-2"
-        style={{ backgroundColor: KIND_COLOR[row.kind] + "22", color: KIND_COLOR[row.kind] }}
+        className="inline-block text-[10px] uppercase tracking-wide font-medium px-1.5 py-0.5 rounded mb-2.5"
+        style={{ backgroundColor: KIND_COLOR[row.kind] + "1f", color: KIND_COLOR[row.kind] }}
       >
         {KIND_LABEL[row.kind]}
       </span>
-      <p className="text-xs text-gray-800 leading-snug">{row.text}</p>
-      <div className="mt-3 border-t border-gray-100 pt-2 text-xs">
+      <p className="text-[12px] leading-relaxed text-[var(--undp-black)]">{row.text}</p>
+      <div className="mt-3 border-t border-gray-100 pt-2.5 text-[12px]">
         <div className="flex items-baseline justify-between mb-1">
-          <span className="text-gray-600">Aligned spend</span>
-          <span className="tabular-nums font-medium text-gray-900">
+          <span className="text-[var(--undp-gray)]">Aligned spend</span>
+          <span className="tabular-nums font-medium text-[var(--undp-black)]">
             {fmtMoney(row.alignedSpend)}
           </span>
         </div>
-        <div className="flex items-baseline justify-between mb-2">
-          <span className="text-gray-600">Aligned programmes</span>
-          <span className="tabular-nums font-medium text-gray-900">
+        <div className="flex items-baseline justify-between mb-2.5">
+          <span className="text-[var(--undp-gray)]">Aligned programmes</span>
+          <span className="tabular-nums font-medium text-[var(--undp-black)]">
             {row.alignedProgrammeCount}
           </span>
         </div>
         {top.length > 0 ? (
           <>
-            <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">
+            <p className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
               Top contributing programmes
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-1.5">
               {top.map((c) => (
                 <li key={c.code} className="flex items-start gap-2 text-[11px]">
                   <span
@@ -156,19 +193,19 @@ function HoverPanel({ row }: { row: Row | null }) {
                     style={{ backgroundColor: LEVEL_COLOR[c.level] }}
                     title={c.level}
                   />
-                  <span className="flex-1 text-gray-800 leading-snug">{c.name}</span>
-                  <span className="tabular-nums text-gray-600 shrink-0">{fmtMoney(c.spend)}</span>
+                  <span className="flex-1 text-[var(--undp-black)] leading-snug">{c.name}</span>
+                  <span className="tabular-nums text-[var(--undp-gray)] shrink-0">{fmtMoney(c.spend)}</span>
                 </li>
               ))}
             </ul>
             {rest > 0 && (
-              <p className="mt-1 text-[10px] text-gray-500">
+              <p className="mt-1.5 text-[10px] text-[var(--undp-gray)]">
                 + {rest} more aligned programme{rest === 1 ? "" : "s"}
               </p>
             )}
           </>
         ) : (
-          <p className="text-[11px] text-gray-500 italic">
+          <p className="text-[11px] italic text-[var(--undp-gray)]">
             No high or medium-aligned programmes for this target.
           </p>
         )}
@@ -177,13 +214,23 @@ function HoverPanel({ row }: { row: Row | null }) {
   );
 }
 
-export function FundingDotGrid({ docs }: { docs: { docId: string; rows: Row[] }[] }) {
+export function FundingDotGrid({
+  docs,
+}: {
+  docs: { docId: string; docLabel: string; rows: Row[] }[];
+}) {
   const [hovered, setHovered] = useState<Row | null>(null);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 items-start">
       <div className="space-y-3">
         {docs.map((d) => (
-          <DocBlock key={d.docId} docId={d.docId} rows={d.rows} onHover={setHovered} />
+          <DocBlock
+            key={d.docId}
+            docId={d.docId}
+            docLabel={d.docLabel}
+            rows={d.rows}
+            onHover={setHovered}
+          />
         ))}
       </div>
       <aside className="lg:sticky lg:top-4">
