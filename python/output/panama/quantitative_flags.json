@@ -561,9 +561,9 @@
   },
   {
     "targetId": "panama_ENR_74",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "311 citizen service hotline",
     "timeBoundDetails": ""
   },
   {
@@ -652,9 +652,9 @@
   },
   {
     "targetId": "panama_ENR_87",
-    "isQuantitative": false,
+    "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "",
+    "quantitativeDetails": "Law No. 1 of February 3, 1994",
     "timeBoundDetails": "February 3, 1994"
   },
   {
@@ -849,9 +849,9 @@
   {
     "targetId": "panama_ENR_115",
     "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "Law No. 1",
-    "timeBoundDetails": "February 3, 1994"
+    "isTimeBound": false,
+    "quantitativeDetails": "Law No. 1 of February 3, 1994",
+    "timeBoundDetails": ""
   },
   {
     "targetId": "panama_ENR_116",
@@ -1471,9 +1471,9 @@
   },
   {
     "targetId": "panama_ENR_204",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "No. 142",
+    "quantitativeDetails": "",
     "timeBoundDetails": "December 9, 2021"
   },
   {
@@ -1753,7 +1753,7 @@
     "targetId": "panama_NP_8",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "100,000 ha; 2,500 ha; 25,000 ha; three biological corridors",
+    "quantitativeDetails": "100,000 ha; 2,500 ha; 25,000 ha",
     "timeBoundDetails": "By 2035"
   },
   {
@@ -1816,7 +1816,7 @@
     "targetId": "panama_NP_17",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "By 2030",
+    "quantitativeDetails": "2030",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -1877,9 +1877,9 @@
   },
   {
     "targetId": "panama_NP_26",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2035",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2035"
   },
   {
