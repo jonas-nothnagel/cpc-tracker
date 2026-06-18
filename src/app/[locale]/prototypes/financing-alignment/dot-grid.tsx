@@ -107,22 +107,41 @@ function DocRow({
 }
 
 function trendDirection(series: { year: string; value: number }[]): "up" | "down" | "flat" {
-  // Compare the average of the first 3 years to the last 3 years. Robust to
-  // year-to-year noise and to "programme came online mid-period" cases that
-  // a 2015-vs-2024 single-point comparison gets wrong. Threshold ±30% so a
-  // small wiggle reads as flat.
+  // Linear regression with R² check. Using all data points (not just the
+  // endpoints) captures the actual shape, and gating on R² rejects "ramped
+  // up then plateaued" series whose first-vs-last comparison lies. Slope
+  // gives direction; relative slope * period vs mean gives magnitude; R²
+  // gates on whether a linear trend is even a sensible read.
   if (series.length < 4) return "flat";
-  const n = Math.min(3, Math.floor(series.length / 2));
-  const head = series.slice(0, n).reduce((s, p) => s + p.value, 0) / n;
-  const tail = series.slice(-n).reduce((s, p) => s + p.value, 0) / n;
-  // Both near-zero: nothing's happening either side. Calling it "rising"
-  // because one of three early years had a stray 0.1M is the bug we are
-  // fixing.
-  if (head < 0.5 && tail < 0.5) return "flat";
-  if (head <= 0) return tail > 0.5 ? "up" : "flat";
-  const ratio = tail / head;
-  if (ratio > 1.3) return "up";
-  if (ratio < 0.7) return "down";
+  const n = series.length;
+  const ys = series.map((p) => p.value);
+  const meanY = ys.reduce((s, v) => s + v, 0) / n;
+  if (meanY < 0.5) return "flat"; // negligible spend either way
+  const meanX = (n - 1) / 2;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
+    num += (i - meanX) * (ys[i] - meanY);
+    den += (i - meanX) ** 2;
+  }
+  if (den === 0) return "flat";
+  const slope = num / den;
+  const intercept = meanY - slope * meanX;
+  let ssRes = 0;
+  let ssTot = 0;
+  for (let i = 0; i < n; i++) {
+    const pred = slope * i + intercept;
+    ssRes += (ys[i] - pred) ** 2;
+    ssTot += (ys[i] - meanY) ** 2;
+  }
+  const r2 = ssTot > 0 ? 1 - ssRes / ssTot : 0;
+  // Relative change over the full period vs the mean. A ramped-then-flat
+  // series will show a non-trivial slope but a low R² because the bulk of
+  // its variance is the ramp, not the trend — gate on r2 catches that.
+  const relChange = (slope * (n - 1)) / meanY;
+  if (r2 < 0.4) return "flat";
+  if (relChange > 0.3) return "up";
+  if (relChange < -0.3) return "down";
   return "flat";
 }
 
