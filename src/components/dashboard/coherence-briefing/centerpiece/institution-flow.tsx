@@ -104,11 +104,13 @@ export function InstitutionFlow({
     const docGaps = (documents.length - 1) * NODE_GAP;
     const maxGaps = Math.max(instGaps, docGaps);
     // Fixed height (Option C never scrolls): scale so the stacked ribbons + gaps
-    // fill at most TALLEST. No lower clamp — a busy corpus shrinks to fit rather
-    // than overflowing; the institution cap (Other bundle) plus a min ribbon
-    // width keep thin flows visible. Capped at 16 px/target so sparse corpora
-    // stay compact instead of ballooning.
-    const scale = Math.min(16, (TALLEST - maxGaps) / total);
+    // fill at most TALLEST. A busy corpus shrinks to fit rather than overflowing;
+    // the institution cap (Other bundle) plus a min ribbon width keep thin flows
+    // visible. Capped at 16 px/target so sparse corpora stay compact. The usable
+    // height is floored at 1px so a pathological number of document types (gaps
+    // alone exceeding TALLEST) degrades to a slight overflow, never a negative
+    // scale that would invert ribbon widths and node heights.
+    const scale = Math.min(16, Math.max(1, TALLEST - maxGaps) / total);
     const contentH = total * scale + maxGaps;
     const svgH = contentH + PAD_TOP * 2;
 
