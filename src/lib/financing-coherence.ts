@@ -412,11 +412,19 @@ export function computeFundingTargetRows(args: {
     const lvl = pair.alignment as AlignmentLevel;
     if (lvl !== "high" && lvl !== "medium") continue;
     const code = berId.replace(/^BER_/, "");
+    const programmeSpend = spendByCode.get(code) ?? 0;
+    // Drop zero-spend programmes from the contributor list. They're aligned
+    // by the LLM (their mandate connects), but they had no executed budget
+    // over the period — so they shouldn't inflate `alignedProgrammeCount`
+    // or clutter the top-contributing list with 0M lines. A target whose
+    // only "matches" are all zero-spend programmes correctly stays in the
+    // "no aligned spend" tier.
+    if (programmeSpend <= 0) continue;
     const list = contribByPolicy.get(policyId) ?? [];
     list.push({
       code,
       name: nameByCode.get(code) ?? code,
-      spend: spendByCode.get(code) ?? 0,
+      spend: programmeSpend,
       level: lvl,
     });
     contribByPolicy.set(policyId, list);
