@@ -45,12 +45,15 @@ export function FinancingSection({
   coverage,
   countryConfig,
   countryName,
+  onOpenBudgetPair,
 }: {
   summary: FinancingCoherenceSummary;
   commitmentCount: number;
   coverage: BudgetCoverage | null;
   countryConfig: CountryConfig | null;
   countryName: string;
+  /** Open the shared drawer on a budget-line↔commitment match (full rationale). */
+  onOpenBudgetPair: (programBerId: string, targetId: string) => void;
 }) {
   const t = useTranslations("briefing.financing");
   const sentence = composeSentence(
@@ -68,7 +71,11 @@ export function FinancingSection({
       body={sentence.body}
       evidence={
         coverage && coverage.byDocument.length > 0 ? (
-          <DocumentCoverage coverage={coverage} countryConfig={countryConfig} />
+          <DocumentCoverage
+            coverage={coverage}
+            countryConfig={countryConfig}
+            onOpenBudgetPair={onOpenBudgetPair}
+          />
         ) : undefined
       }
     />
@@ -81,9 +88,11 @@ export function FinancingSection({
 function DocumentCoverage({
   coverage,
   countryConfig,
+  onOpenBudgetPair,
 }: {
   coverage: BudgetCoverage;
   countryConfig: CountryConfig | null;
+  onOpenBudgetPair: (programBerId: string, targetId: string) => void;
 }) {
   const t = useTranslations("briefing.financing");
   return (
@@ -94,7 +103,12 @@ function DocumentCoverage({
 
       <ul className="space-y-3">
         {coverage.byDocument.map((d) => (
-          <DocCoverageRow key={d.doc} doc={d} countryConfig={countryConfig} />
+          <DocCoverageRow
+            key={d.doc}
+            doc={d}
+            countryConfig={countryConfig}
+            onOpenBudgetPair={onOpenBudgetPair}
+          />
         ))}
       </ul>
 
@@ -125,9 +139,11 @@ function DocumentCoverage({
 function DocCoverageRow({
   doc,
   countryConfig,
+  onOpenBudgetPair,
 }: {
   doc: BudgetCoverageDoc;
   countryConfig: CountryConfig | null;
+  onOpenBudgetPair: (programBerId: string, targetId: string) => void;
 }) {
   const t = useTranslations("briefing.financing");
   const label = getDocMediumLabel(countryConfig, doc.doc);
@@ -195,30 +211,38 @@ function DocCoverageRow({
               <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
                 {t("matchedHeading")}
               </p>
-              <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              <ul className="space-y-1 max-h-72 overflow-y-auto pr-1">
                 {doc.links.map((link) => (
-                  <li
-                    key={link.targetId}
-                    className="border-l-2 pl-2.5"
-                    style={{ borderColor: color }}
-                  >
-                    <p
-                      className="text-[12px] font-medium text-[var(--undp-black)] leading-snug"
+                  <li key={link.targetId}>
+                    {/* Click opens the shared drawer with both sides and the
+                        full AI rationale — no truncated inline paragraph. */}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onOpenBudgetPair(link.programBerId, link.targetId)
+                      }
                       title={link.targetText}
+                      className="w-full text-left border-l-2 pl-2.5 pr-1 py-1 rounded-r hover:bg-black/[0.04] cursor-pointer flex items-start gap-2"
+                      style={{ borderColor: color }}
                     >
-                      {link.targetLabel}
-                    </p>
-                    <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-0.5">
-                      <span className="text-[var(--undp-gray)]/70">
-                        {t("budgetLineLabel")}
-                      </span>{" "}
-                      {link.programName}
-                    </p>
-                    {link.rationale && (
-                      <p className="text-[11px] italic text-[var(--undp-gray)] leading-snug mt-1 line-clamp-3">
-                        {link.rationale}
-                      </p>
-                    )}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[12px] font-medium text-[var(--undp-black)] leading-snug truncate">
+                          {link.targetLabel}
+                        </span>
+                        <span className="block text-[11px] text-[var(--undp-gray)] leading-snug truncate">
+                          <span className="text-[var(--undp-gray)]/70">
+                            {t("budgetLineLabel")}
+                          </span>{" "}
+                          {link.programName}
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="shrink-0 self-center text-[var(--undp-gray)]/50 text-[12px]"
+                      >
+                        ›
+                      </span>
+                    </button>
                   </li>
                 ))}
               </ul>
