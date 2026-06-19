@@ -23,10 +23,12 @@
  */
 
 import type {
+  AlignmentLevel,
   AlignmentResult,
   BerBudgetProgram,
   BerData,
   BerExpenditureSeries,
+  CountryConfig,
   Target,
 } from "@/types";
 
@@ -316,4 +318,205 @@ export function computeFinancingCoherence(
     programs,
     programsToHalf,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Per-target funding view: aligned spend per policy target, with outlier
+// classification. Powers the Financing section's dot-grid evidence panel.
+// ---------------------------------------------------------------------------
+
+/** Funding tier for a single policy target. Outlier-aware: top/bottom 10 by
+ *  aligned spend get flagged so unusually well-funded and unusually
+ *  under-funded targets stand out on the dot grid. */
+export type FundingTier = "well-funded" | "normal" | "under-funded" | "unfunded";
+
+/** One programme contributing to a target's aligned spend. */
+export interface FundingTargetContributor {
+  code: string;
+  name: string;
+  spend: number;
+  level: AlignmentLevel;
+}
+
+/** One row in the funding-target grid: a policy target with its aligned-spend
+ *  total, contributing programmes, and per-year aligned spend trend. */
+export interface FundingTargetRow {
+  targetId: string;
+  docId: string;
+  docLabel: string;
+  text: string;
+  /** Sum of contributing programmes' total executed spend (M PAB for Panama).
+   *  Each programme contributes its FULL spend even if it aligns with many
+   *  targets — the LLM links a programme to many targets, so this overcounts
+   *  in aggregate. The cross-target ranking still works because all targets
+   *  share the same overcount basis. Surfaces association strength, not
+   *  traced allocation. */
+  alignedSpend: number;
+  alignedProgrammeCount: number;
+  tier: FundingTier;
+  contributors: FundingTargetContributor[];
+  /** Year-by-year aligned spend, summed across this target's contributing
+   *  programmes. Same overcount caveat as `alignedSpend`. Years ascending. */
+  yearlySpend: { year: string; value: number }[];
+}
+
+/** Compute one FundingTargetRow per policy target visible to the financing
+ *  section. Visibility = countryConfig.documentTypes minus defaultHidden and
+ *  excluded. Tiers are tie-aware (rounding to 1M PAB before ranking) so two
+ *  targets that read as the same amount in the UI always get the same colour. */
+export function computeFundingTargetRows(args: {
+  targets: Target[];
+  alignment: AlignmentResult[];
+  berData: BerData;
+  countryConfig: CountryConfig | null;
+  locale: string;
+  visibleDocIds: ReadonlySet<string>;
+}): FundingTargetRow[] {
+  const { targets, alignment, berData, countryConfig, locale, visibleDocIds } = args;
+
+  const spendByCode = new Map<string, number>();
+  const yearlyByCode = new Map<string, Record<string, number>>();
+  for (const e of berData.expenditure) {
+    const total = Object.values(e.values).reduce<number>(
+      (s, v) => s + (typeof v === "number" ? v : 0),
+      0,
+    );
+    spendByCode.set(e.code, total);
+    const yearly: Record<string, number> = {};
+    for (const [y, v] of Object.entries(e.values)) {
+      yearly[y] = typeof v === "number" ? v : 0;
+    }
+    yearlyByCode.set(e.code, yearly);
+  }
+  const allYears = berData.expenditure.length > 0
+    ? Object.keys(berData.expenditure[0].values).sort()
+    : [];
+
+  const nameByCode = new Map<string, string>();
+  for (const p of berData.programs) {
+    nameByCode.set(p.code, pickBerName(p, locale));
+  }
+
+  // Per policy target: collect (programme, level) pairs from any high/medium
+  // alignment, sorted by spend descending. Each contributor surfaces in the
+  // detail panel.
+  const contribByPolicy = new Map<string, FundingTargetContributor[]>();
+  for (const pair of alignment) {
+    const berId = pair.targetAId.startsWith("BER_")
+      ? pair.targetAId
+      : pair.targetBId.startsWith("BER_")
+        ? pair.targetBId
+        : null;
+    const policyId = berId === pair.targetAId ? pair.targetBId : pair.targetAId;
+    if (!berId || !policyId) continue;
+    const lvl = pair.alignment as AlignmentLevel;
+    if (lvl !== "high" && lvl !== "medium") continue;
+    const code = berId.replace(/^BER_/, "");
+    const list = contribByPolicy.get(policyId) ?? [];
+    list.push({
+      code,
+      name: nameByCode.get(code) ?? code,
+      spend: spendByCode.get(code) ?? 0,
+      level: lvl,
+    });
+    contribByPolicy.set(policyId, list);
+  }
+
+  type Partial = Omit<FundingTargetRow, "tier">;
+  const partial: Partial[] = [];
+  for (const t of targets) {
+    if (t.id.startsWith("BER_") || t.id.startsWith("BTR_")) continue;
+    if (!visibleDocIds.has(t.sourceDocument)) continue;
+    const contribs = (contribByPolicy.get(t.id) ?? []).sort((a, b) => b.spend - a.spend);
+    const yearlySpend = allYears.map((y) => {
+      let v = 0;
+      for (const c of contribs) {
+        v += yearlyByCode.get(c.code)?.[y] ?? 0;
+      }
+      return { year: y, value: v };
+    });
+    partial.push({
+      targetId: t.id,
+      docId: t.sourceDocument,
+      docLabel: docMediumLabel(countryConfig, t.sourceDocument),
+      text: t.text,
+      alignedSpend: contribs.reduce((s, c) => s + c.spend, 0),
+      alignedProgrammeCount: contribs.length,
+      contributors: contribs,
+      yearlySpend,
+    });
+  }
+
+  // Tie-aware outlier classification — round to 1M PAB (the displayed
+  // precision) before comparing so two targets that read as identical never
+  // get split across colour buckets by a 5th-decimal float difference.
+  const round1M = (v: number) => Math.round(v);
+  const desc = [...partial]
+    .filter((r) => r.alignedSpend > 0)
+    .sort((a, b) => b.alignedSpend - a.alignedSpend);
+  const TOP_N = 10;
+  const BOTTOM_N = 10;
+  const topCutoff = desc.length >= TOP_N ? round1M(desc[TOP_N - 1].alignedSpend) : 0;
+  const bottomCutoff = desc.length >= BOTTOM_N
+    ? round1M([...desc].reverse()[BOTTOM_N - 1].alignedSpend)
+    : Infinity;
+  return partial
+    .map<FundingTargetRow>((r) => {
+      const rounded = round1M(r.alignedSpend);
+      let tier: FundingTier;
+      if (r.alignedSpend === 0) tier = "unfunded";
+      else if (rounded >= topCutoff) tier = "well-funded";
+      else if (rounded <= bottomCutoff) tier = "under-funded";
+      else tier = "normal";
+      return { ...r, tier };
+    })
+    .sort((a, b) => b.alignedSpend - a.alignedSpend);
+}
+
+/** Group rows by source document, in the order declared in countryConfig.
+ *  Same visibility filter as computeFundingTargetRows. */
+export function groupFundingRowsByDoc(
+  rows: FundingTargetRow[],
+  countryConfig: CountryConfig | null,
+): { docId: string; docLabel: string; rows: FundingTargetRow[] }[] {
+  const byDoc = new Map<string, FundingTargetRow[]>();
+  for (const r of rows) {
+    if (!byDoc.has(r.docId)) byDoc.set(r.docId, []);
+    byDoc.get(r.docId)!.push(r);
+  }
+  const declared = (countryConfig?.documentTypes ?? []).map((d) => d.id);
+  // Preserve declared order; append any unexpected doc ids at the end so
+  // we never silently drop rows.
+  const ordered: string[] = [
+    ...declared.filter((id) => byDoc.has(id)),
+    ...[...byDoc.keys()].filter((id) => !declared.includes(id)),
+  ];
+  return ordered.map((docId) => ({
+    docId,
+    docLabel: docMediumLabel(countryConfig, docId),
+    rows: byDoc.get(docId)!,
+  }));
+}
+
+/** Document set the financing section is allowed to surface: countryConfig
+ *  declared docs minus defaultHidden minus excluded. */
+export function visibleFinancingDocIds(countryConfig: CountryConfig | null): Set<string> {
+  const declared = (countryConfig?.documentTypes ?? []).map((d) => d.id);
+  const hidden = new Set([
+    ...(countryConfig?.defaultHiddenDocTypes ?? []),
+    ...(countryConfig?.excludedDocTypes ?? []),
+  ]);
+  return new Set(declared.filter((id) => !hidden.has(id)));
+}
+
+// Local mirror of getDocMediumLabel to avoid a circular import with @/lib/utils
+// (financing-coherence is already imported there by coherence-budget). Keeps
+// the same fallback semantics: shortLabel from countryConfig.documentTypes,
+// otherwise the raw docId.
+function docMediumLabel(
+  countryConfig: CountryConfig | null,
+  docId: string,
+): string {
+  const entry = countryConfig?.documentTypes?.find((d) => d.id === docId);
+  return entry?.mediumLabel ?? entry?.shortLabel ?? docId;
 }

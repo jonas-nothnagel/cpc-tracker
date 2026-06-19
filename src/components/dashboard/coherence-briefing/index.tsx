@@ -1254,6 +1254,9 @@ export function CoherenceBriefing({
                   coverage={budgetCoverage}
                   countryConfig={countryConfig}
                   countryName={countryName}
+                  targets={targets}
+                  budgetAlignment={budgetAlignment}
+                  berData={berData}
                 />
               </div>
             )}

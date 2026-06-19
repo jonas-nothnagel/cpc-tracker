@@ -571,6 +571,35 @@
       "matched": {
         "headline": "El gasto en biodiversidad examinado de {country} cubre {share} las metas de política.",
         "body": "En {docCount, plural, one {# documento de política} other {# documentos de política}} hay {total, plural, one {# meta} other {# metas}}. {reached} tienen una línea presupuestaria correspondiente en este examen; las otras {outsideReach} no tienen ninguna."
+      },
+      "targetGrid": {
+        "kpi": {
+          "reviewed": "Metas revisadas",
+          "wellFunded": "Bien financiadas",
+          "wellFundedCaption": "≥ umbral del top 10 de gasto",
+          "underFunded": "Sub-financiadas",
+          "underFundedCaption": "≤ umbral del bottom 10 de gasto",
+          "unfunded": "Sin gasto alineado",
+          "unfundedCaption": "ningún programa juzgado alineado"
+        },
+        "tier": {
+          "well-funded": "Bien financiada",
+          "normal": "Financiada",
+          "under-funded": "Sub-financiada",
+          "unfunded": "Sin gasto alineado"
+        },
+        "detail": {
+          "placeholder": "Haga clic en cualquier punto para ver la meta, el nivel de financiamiento y los programas que la IA juzgó alineados con ella.",
+          "close": "Cerrar detalles de la meta",
+          "readMore": "Leer más",
+          "showLess": "Ver menos",
+          "alignedSpend": "Gasto alineado",
+          "alignedProgrammes": "Programas alineados",
+          "spendPerYear": "Gasto por año",
+          "topContributing": "Principales programas que contribuyen",
+          "moreProgrammes": "+ {count, plural, one {# programa alineado más} other {# programas alineados más}}",
+          "noContributors": "No hay programas de alineación alta o media para esta meta."
+        }
       }
     },
     "financingCenter": {

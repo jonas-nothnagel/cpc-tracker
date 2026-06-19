@@ -571,6 +571,35 @@
       "matched": {
         "headline": "{country}'s reviewed biodiversity spending matches {share} the policy targets.",
         "body": "Across the {docCount, plural, one {# policy document} other {# policy documents}} there are {total, plural, one {# target} other {# targets}}. {reached} have a matching budget line in this review; the other {outsideReach} have none."
+      },
+      "targetGrid": {
+        "kpi": {
+          "reviewed": "Targets reviewed",
+          "wellFunded": "Well-funded",
+          "wellFundedCaption": "≥ top-10 spend threshold",
+          "underFunded": "Under-funded",
+          "underFundedCaption": "≤ bottom-10 spend threshold",
+          "unfunded": "No aligned spend",
+          "unfundedCaption": "no programme judged aligned"
+        },
+        "tier": {
+          "well-funded": "Well-funded",
+          "normal": "Funded",
+          "under-funded": "Under-funded",
+          "unfunded": "No aligned spend"
+        },
+        "detail": {
+          "placeholder": "Click any dot to see the target, the funding tier, and the programmes the AI judged aligned with it.",
+          "close": "Close target details",
+          "readMore": "Read more",
+          "showLess": "Show less",
+          "alignedSpend": "Aligned spend",
+          "alignedProgrammes": "Aligned programmes",
+          "spendPerYear": "Spend per year",
+          "topContributing": "Top contributing programmes",
+          "moreProgrammes": "+ {count, plural, one {# more aligned programme} other {# more aligned programmes}}",
+          "noContributors": "No high or medium-aligned programmes for this target."
+        }
       }
     },
     "financingCenter": {
