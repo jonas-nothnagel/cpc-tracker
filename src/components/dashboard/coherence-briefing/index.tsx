@@ -1241,12 +1241,13 @@ export function CoherenceBriefing({
                 ref={setSectionRef(FINANCING_SECTION_ID)}
                 data-section-id={FINANCING_SECTION_ID}
                 // The finding copy is brief; without a min-height this short
-                // section would win "active" while still low in the viewport,
-                // leaving the previous section visible beside the sticky
-                // Financing visual. Fill the column on desktop so the finding
-                // stays in sync with its centerpiece (top-aligned, not centred,
-                // to match the top-pinned sticky visual).
-                className="lg:min-h-[80vh]"
+                // section would win "active" while still low in the viewport.
+                // Width: this section has no sticky centerpiece (rendered as
+                // null above), so the FundingTargetGrid extends 520px to the
+                // right into the empty aside area (480px aside + 40px gap-x
+                // declared on the outer grid). The parent column has overflow
+                // visible by default, so the overflow paints cleanly.
+                className="lg:min-h-[80vh] lg:w-[calc(100%+520px)]"
               >
                 <FinancingSection
                   summary={financing}
@@ -1284,8 +1285,16 @@ export function CoherenceBriefing({
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
               the coherence matrix (synced with the ranked list on the left);
               where-to-focus swaps in the concentration waffle; every other
-              slide shows the wheel. */}
-          <aside className="hidden lg:block">
+              slide shows the wheel. Financing hides the aside entirely so
+              the FundingTargetGrid block can stretch into this space — its
+              own dot grid already carries the doc filter implicitly via the
+              per-doc rows + outlier counts. */}
+          <aside
+            className={
+              "hidden lg:block " +
+              (activeSection === FINANCING_SECTION_ID ? "lg:invisible" : "")
+            }
+          >
             <div className="sticky top-[124px]">
               {/* Interactive doc legend: add/remove documents right at the
                   visual, so toggling a document visibly adds or drops its arc
@@ -1311,10 +1320,13 @@ export function CoherenceBriefing({
                   />
                 </div>
               ) : activeSection === FINANCING_SECTION_ID && financing ? (
-                <FinancingCenterpiece
-                  summary={financing}
-                  countryName={countryName}
-                />
+                // Centerpiece dropped — the FundingTargetGrid in the left
+                // column already carries the per-target outlier view + a
+                // contributing-programmes panel, so the BER concentration
+                // sankey was duplicative. Leaving null here so the section
+                // visually breaks out across both columns via the wrapper
+                // class on the FinancingSection block.
+                null
               ) : activeSection === IMPLEMENTATION_SECTION_ID &&
                 deliveryRoster ? (
                 <DeliveryRoster
