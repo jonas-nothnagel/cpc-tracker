@@ -1,200 +1,184 @@
-# Pipeline Walkthrough: Step-by-Step with Example
+# Pipeline Walkthrough: One Analysis Run, Step by Step
 
-## Example: NBT 7 vs NDC Animal husbandry and pastureland 4
+This traces a single coherence analysis from policy targets to dashboard-ready
+JSON, against the live code in `python/src/`. It is the "how it runs" companion
+to [`../METHODOLOGY.md`](../METHODOLOGY.md), which explains the "why". For the
+document → targets extraction phase that produces the input, see
+[`EXTRACTION_PIPELINE.md`](EXTRACTION_PIPELINE.md).
 
-**Original report:** No alignment  
-**Our pipeline:** Medium alignment  
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
 
-This pair illustrates where the two pipelines diverge.
+The whole run is orchestrated by **`run_analysis.py`** as eight stages (`TOTAL_STEPS = 8`). Steps 6 and 7 run only when the relevant data exists. Every LLM call is cached on disk by a hash of `{system_prompt, user_prompt, model}`, namespaced per step, so re-running with the same inputs and model costs nothing.
+
+## How to run
+
+```bash
+cd python
+uv venv && source .venv/bin/activate
+uv pip install -e ".[dev]"
+
+python -m src.run_analysis                                   # default: Mongolia
+python -m src.run_analysis --targets-file panama-targets.json
+python -m src.run_analysis --language mn                     # en | es | mn | fr
+```
+
+`--targets-file` selects the country (`mongolia` / `panama` / `sri-lanka`); output lands in `python/output/{country}/`. `--language` threads an output language through the LLM prompts and uses a separate cache namespace.
+
+## Running example
+
+We follow two Mongolia targets through the run. Mongolia has **153 targets** across seven document types (FSS 41, NDC 27, NRVTS 27, NBSAP 20, NAP 15, Vision 2050 / SECTORAL 15, ILDN 8).
+
+| ID | Document | Text (abridged) |
+|----|----------|-----------------|
+| `FSS_1` | Food Security Strategy | "Draft legislation establishing a legal framework for ensuring food supply and safety ... increase export-oriented food and agricultural products." |
+| `ILDN_3` | Land Degradation Neutrality | "Catalyze the strategic expansion of Mongolia's protected areas system through a network of managed resource protected areas in under-represented ecosystems." |
 
 ---
 
-## Step 1: Load Input Data
+## Step 1: Quantitative & Time-Bound Detection
 
-**Inputs:**
-- `mongolia-targets.json` — 59 targets from NAP (15), NDC (25), NBSAP (19)
-- `categories.json` — 19 themes from `themes_18Jul25.xlsx`
+- **Script:** `quantitative.py` · **Cache:** `quantitative_flags`
+- **Reads:** the targets file · **Writes:** `quantitative_flags.json`
 
-**Our example targets:**
-
-| ID | Document | Text |
-|----|----------|------|
-| NBT_7 | NBSAP | "Develop highly productive and sustainable forestry and agricultural production through the adoption of environmentally friendly practices" |
-| NDC_AnimalHusbandry_4 | NDC | "Establish sustainable and rational collaborative management practices for pastures and expand the scope of pasture restoration." |
+An LLM flags each target for measurable values (`isQuantitative`) and explicit time horizons (`isTimeBound`). Targets are batched 12 per call (`BATCH_SIZE = 12`).
 
 ---
 
 ## Step 2: Thematic Classification
 
-For each **(target, theme)** pair, the LLM returns 0 or 1: does the target cover this theme?
+- **Script:** `classify.py` (`rank_classification`), `classify_globe.py` for GLOBE · **Cache:** `rank_{taxonomy}`
+- **Reads:** targets + `data/categories.json` (+ optional adaptation goals) · **Writes:** `classifications.json`
 
-**Prompt structure:**
-- System: Policy specialist persona + 19 theme names
-- User: `"Here are the cross-reference theme texts: {theme_name} {theme_description}. Here is the target texts: {target_text}. Assess whether or not the target texts cover the topics of the cross-reference theme texts."`
-- Response: `0` or `1`
-
-**Results for our example:**
-
-| Target | Themes matched (isRelevant=true) |
-|--------|----------------------------------|
-| NBT_7 | theme_1 (Agriculture), theme_3 (Forest), theme_7 (Soil), theme_9 (Value chain), theme_10 (Carbon), theme_11 (Climate), theme_14 (AFOLU), theme_15 (Pollution), theme_18 (SDGs) |
-| NDC_AnimalHusbandry_4 | theme_1 (Agriculture), theme_5 (Grassland) |
-
-**Shared theme:** theme_1 (Agriculture and livestock management) — both targets are classified as relevant.
+For each target the **ranked** classifier scores every category in a taxonomy (0.0–1.0). Each record carries `score`, `isRelevant` (`score >= 0.5`), `isPrimary` (top score), and `taxonomyType`. Taxonomies: NBS (10), IPCC sectors (7), GLOBE categories (9) + subcategories (49), and optional country adaptation goals. GLOBE uses BIOFIN expert few-shot examples when a country provides them. Classification feeds dashboard grouping (lenses); it is **not** a pairing filter.
 
 ---
 
-## Step 3: Generate Pairs
+## Step 3: Generate Cross-Document Pairs
 
-All cross-document pairs are generated — every target is paired with every target from a different document type. Classification (Step 2) is used for visualization grouping only, not as a pairing filter.
+- **Script:** `align.py` (`generate_pairs`) · computation, no LLM
 
-**Logic:**
-1. Group targets by document type
-2. For each pair of document types (NBSAP×NDC, NBSAP×NAP, NDC×NAP), take the Cartesian product
-3. Deduplicate by target pair
-
-**For (NBT_7, NDC_AnimalHusbandry_4):**
-- NBT_7 is NBSAP, NDC_AnimalHusbandry_4 is NDC → different document types
-- Pair is included (as are all cross-document pairs)
+Every target is paired with every target from a **different** document type (Cartesian product across doc types, deduplicated by id-sorted pair). No classification filter is applied. For Mongolia this yields **9,678** pairs to assess. `FSS_1` (FSS) and `ILDN_3` (ILDN) are different document types, so the pair is included.
 
 ---
 
-## Step 4: Decompose Targets (Agent 1 – Target Analyst)
+## Step 4: Decompose Targets — Agent 1 (Target Analyst)
 
-Each target is decomposed into five structured fields.
+- **Script:** `align.py` (`decompose_targets`) · **Cache:** `decompose`
+- **Writes:** `decompositions.json`
 
-**Prompt:** Extract Goal/Purpose, Action/Intervention, Ecosystem/Area, Target Audience, Expected Impact/Outcome.
+Each target is broken into five fields so alignment is judged on policy content, not keywords: Goal/Purpose, Action/Intervention, Ecosystem/Area, Target Audience, Expected Impact/Outcome. The agent stays factual (no inference beyond the target text).
 
-**Decompositions for our example:**
+Decomposition for `FSS_1` (abridged):
 
-**NBT_7:**
 ```json
 {
-  "Goal/Purpose": "Develop highly productive and sustainable forestry and agricultural production",
-  "Action/Intervention": "Adoption of environmentally friendly practices",
-  "Ecosystem/Area": "Forestry and agriculture",
-  "Target Audience": "Farmers, forestry managers, agricultural producers",
-  "Expected Impact/Outcome": "Increased productivity and sustainability in forestry and agricultural sectors"
-}
-```
-
-**NDC_AnimalHusbandry_4:**
-```json
-{
-  "Goal/Purpose": "Establish sustainable and rational collaborative management practices for pastures and expand the scope of pasture restoration.",
-  "Action/Intervention": "Implement collaborative management practices and expand pasture restoration efforts.",
-  "Ecosystem/Area": "Pastures and grassland ecosystems.",
-  "Target Audience": "Land managers, farmers, and stakeholders involved in pasture management.",
-  "Expected Impact/Outcome": "Improved sustainability of pasture management and increased area of restored pastures."
+  "Goal/Purpose": "Establish a legal framework for ensuring food supply and safety, reduce reliance on imported food, and increase export-oriented food and agricultural products.",
+  "Action/Intervention": "Draft legislation and submit it to the State Great Khural ...",
+  "Ecosystem/Area": "Food and agricultural production; legal/regulatory environment",
+  "...": "..."
 }
 ```
 
 ---
 
-## Step 5: Assess Alignment (Agent 2 – Alignment Advisor)
+## Step 5: Assess Alignment — Agent 2 (Alignment Advisor)
 
-**Input:** Only the decomposition strings (no raw target text).
+- **Script:** `align.py` (`assess_alignment`), schema in `alignment_schema.py` · **Cache:** `alignment_v2`
+- **Reads:** the two decompositions (never the raw target text) · **Writes:** `alignment.json`
 
-**Prompt:** Compare the two decompositions and assign one of:
-- No alignment
-- Low alignment
-- Medium alignment
-- High alignment
+The advisor assigns one of **five states** (v2.1 schema): `none`, `low`, `medium`, `high`, or `flagged`. A `flagged` pair (display label "Potential misalignment") additionally carries `mechanism` (`goal_conflict` / `resource_competition` / `delivery_friction`), `manageability` (`manageable` / `fundamental`), and `confidence` (`high` / `medium` / `low`). Earlier labels (`possible conflict`, `likely conflict`, `low_tension`, ...) parse only as backward-compatible aliases collapsing onto `flagged`.
 
-**Our pipeline output for this pair:**
-> **Medium alignment** — "The targets share a common goal of promoting sustainability in agricultural practices, with both addressing the needs of farmers and land managers. While they focus on different ecosystems—forestry and agriculture versus pastures—they could benefit from coordinated efforts in sustainable land management practices, enhancing overall productivity and environmental health."
+Real output for `FSS_1` × `ILDN_3`:
 
-**Original report output:**
-> **No alignment** — (Report states this pair explicitly as a No alignment example in Figure 3.5.)
+```json
+{
+  "targetAId": "FSS_1",
+  "targetBId": "ILDN_3",
+  "alignment": "flagged",
+  "mechanism": "delivery_friction",
+  "manageability": "manageable",
+  "confidence": "medium",
+  "description": "The food-security target seeks to build a legal environment for expanding export-oriented agriculture ... while the LDN target seeks to expand a network of managed resource protected areas. These targets share land-use relevance ... but agricultural legal expansion may create implementation pressure on some of the same landscapes the protected-area network aims to conserve, so coordination through zoning and safeguards would be needed."
+}
+```
+
+A positive verdict looks the same minus the three sub-fields, e.g. `FSS_17` × `ILDN_4` → `high` (soil-protection measures directly support land-degradation-neutrality outcomes). Across Mongolia's 9,678 pairs the spread is roughly medium 5,691 · low 1,512 · high 1,336 · flagged 1,128 · none 11.
+
+### Step 5a: Friction-Dimension Enrichment
+
+- **Script:** `extract_friction_dimensions.py` · **Cache:** `friction_dimensions`
+
+A separate cached pass reads the rationale of `flagged` pairs whose mechanism is `resource_competition` or `delivery_friction` and, grounded strictly in that text, adds `contestedResources` (≤3 common nouns) and `sharedContext` (a place name) in place. For our pair it adds `"contestedResources": ["landscape"]`. Running it separately keeps verdicts stable across re-runs.
 
 ---
 
-## Why the Difference?
+## Step 6: BTR Measure Alignment — Level 3 (conditional)
 
-| Factor | Original (Azure GPT-4o-mini) | Ours (OpenRouter GPT-4o-mini) |
-|--------|-----------------------------|-------------------------------|
-| **Input to Alignment Advisor** | Decomposition only | Decomposition only (now matched) |
-| **Decomposition content** | May differ (different model run) | "Forestry and agriculture" vs "Pastures and grassland" |
-| **Model behaviour** | More conservative → No alignment | Sees shared "sustainability", "farmers", "land management" → Medium |
-| **Strictness** | "Forestry+agriculture" vs "Pastures" → distinct → No | "Agricultural practices" overlap → Medium |
+- **Script:** `measure_align.py` · **Writes:** `measure_alignment.json`, `measure_pseudo_targets.json`
+- **Runs when:** BTR data (`btr_data.json`) is present
 
-The original model treats forestry/agriculture and pastures as distinct ecosystems and chooses No alignment. Our model emphasises shared sustainability and land management and chooses Medium. Both use the same prompts; the difference comes from model behaviour.
+BTR mitigation measures and, where available, adaptation actions become pseudo-targets, are paired with every policy target, decomposed by Agent 1, and assessed by an adapted Agent 2 on the same five-state scale (reported side is called "the action"; adaptation actions are not penalised for missing CO2e figures). Mitigation×adaptation cross-pairs are assessed when both sets exist.
 
 ---
 
-## Pipeline Diagram
+## Step 7: Budget Alignment — Level 2 (conditional)
+
+- **Script:** `budget_align.py` · **Writes:** `budget_alignment.json`, `budget_pseudo_targets.json`
+- **Runs when:** a Biodiversity Expenditure Review (`{country}-ber.json`) is present (Mongolia)
+
+Budget programmes (name, description, multi-year expenditure) become pseudo-targets and are aligned against each policy target on the same five-state scale, surfacing where reviewed biodiversity spending matches policy ambition.
+
+---
+
+## Step 8: Synthesis Layer
+
+- **Scripts:** `synthesize_doc_pairs.py`, `synthesize_corpus.py`, `synthesize_by_sector.py`, states by `synthesis_states.py`
+- **Writes:** `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` (+ `.{lang}.json` variants)
+
+Three LLM passes turn the pairwise verdicts into short, hedged storylines: per document-pair, country-wide (corpus), and per sector within each lens. Coordination hints are process pointers only and always hedged. Syntheses are pre-computed for every document include/exclude state the dashboard filter can reach, so nothing runs at view time.
+
+---
+
+## Output files (`python/output/{country}/`)
+
+| File | Step | Always? |
+|------|------|---------|
+| `quantitative_flags.json` | 1 | yes |
+| `classifications.json` | 2 | yes |
+| `decompositions.json` | 4 | yes |
+| `alignment.json` | 5 + 5a | yes |
+| `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` | 8 | yes |
+| `measure_alignment.json`, `measure_pseudo_targets.json` | 6 | if BTR data |
+| `budget_alignment.json`, `budget_pseudo_targets.json` | 7 | if BER data |
+| `status.json`, `footprint.json` | all | yes (progress + footprint) |
+
+---
+
+## Pipeline diagram
 
 ```mermaid
 flowchart TB
-    subgraph INPUT["1. Load Input"]
-        TARGETS["mongolia-targets.json\n(59 targets)"]
-        CATS["categories.json\n(19 themes from themes_18Jul25.xlsx)"]
-    end
+    IN["Targets file + categories.json"]
+    S1["Step 1 quantitative.py\nquantitative_flags.json"]
+    S2["Step 2 classify.py / classify_globe.py\nranked scores -> classifications.json"]
+    S3["Step 3 align.py generate_pairs\nall cross-document pairs (no filter)"]
+    S4["Step 4 align.py decompose_targets (Agent 1)\ndecompositions.json"]
+    S5["Step 5 align.py assess_alignment (Agent 2)\nnone | low | medium | high | flagged -> alignment.json"]
+    S5A["Step 5a extract_friction_dimensions.py\ncontestedResources + sharedContext on flagged"]
+    S6["Step 6 measure_align.py (if BTR)\nmeasure_alignment.json"]
+    S7["Step 7 budget_align.py (if BER)\nbudget_alignment.json"]
+    S8["Step 8 synthesize_*\ndoc_pair / corpus / sector storylines"]
 
-    subgraph STEP2["2. Thematic Classification"]
-        direction TB
-        LOOP1["For each (target, theme):"]
-        PROMPT1["LLM: Does target cover theme?\nPrompt: theme_text + target_text"]
-        PARSE1["Parse: 0 or 1"]
-        CLASS["classifications.json\n(59×19 = 1121 rows)"]
-        LOOP1 --> PROMPT1 --> PARSE1 --> CLASS
-    end
-
-    subgraph STEP3["3. Generate Pairs"]
-        direction TB
-        FILTER["Keep only isRelevant=true"]
-        PAIRS["For each theme: cross-document Cartesian product\nFilter: Target1.doc ≠ Target2.doc"]
-        DEDUP["Deduplicate by (targetA, targetB)"]
-        RESULT["306 unique pairs"]
-        FILTER --> PAIRS --> DEDUP --> RESULT
-    end
-
-    subgraph STEP4["4. Decompose (Agent 1)"]
-        direction TB
-        ANALYST["Target Analyst prompt:\nExtract Goal, Action, Ecosystem, Audience, Impact"]
-        DECOMP["decompositions.json\n(one per target in pairs)"]
-        ANALYST --> DECOMP
-    end
-
-    subgraph STEP5["5. Assess Alignment (Agent 2)"]
-        direction TB
-        ADVISOR["Alignment Advisor prompt:\nCompare two decompositions"]
-        LEVELS["Classify: No | Low | Medium | High"]
-        ALIGN["alignment.json"]
-        ADVISOR --> LEVELS --> ALIGN
-    end
-
-    INPUT --> STEP2
-    CLASS --> STEP3
-    TARGETS --> STEP4
-    RESULT --> STEP4
-    DECOMP --> STEP5
-    RESULT --> STEP5
+    IN --> S1 --> S2 --> S3 --> S4 --> S5 --> S5A --> S8
+    S5A --> S6 --> S8
+    S5A --> S7 --> S8
 ```
 
 ---
 
-## Simplified Data Flow
+## Key points
 
-```
-mongolia-targets.json ──┐
-                        ├──► [Step 2] 59×19 classification calls ──► classifications.json
-categories.json ────────┘
-                                    │
-                                    ▼
-                        [Step 3] Shared-theme pairs ──► 306 pairs
-                                    │
-                                    ▼
-                        [Step 4] Decompose each target in pairs ──► decompositions.json
-                                    │
-                                    ▼
-                        [Step 5] Compare each pair's decompositions ──► alignment.json
-```
-
----
-
-## Key Decision Points
-
-1. **Classification:** LLM returns 0/1. Parsing uses `startswith("1")` or `startswith("0")` plus fallbacks for "yes"/"pertains".
-2. **Pair formation:** A pair is created only if both targets share at least one theme with `isRelevant=true`.
-3. **Alignment:** Only decomposition strings are passed to the Alignment Advisor; the Advisor assigns one of four levels based on goal, action, ecosystem, audience, and impact overlap.
+1. **Classification is grouping-only.** It never gates which pairs are assessed; all cross-document pairs go to Agent 2.
+2. **Two agents.** Decomposition (Agent 1) and alignment (Agent 2) are separated so verdicts rest on structured content; the same two-agent flow is reused for BTR (Step 6) and budget (Step 7).
+3. **Negative side is one state.** `flagged` with `mechanism` / `manageability` / `confidence`, not a graded severity scale. It is shown as "Potential misalignment"; "tension"/"contradiction" wording appears only as legacy parser aliases.
+4. **Caching is per step and per language.** Identical inputs and model recompute nothing; a cold-run canary warns when the cache will recompute at full cost.
