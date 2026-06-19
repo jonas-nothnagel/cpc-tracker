@@ -36,6 +36,10 @@ export interface CountryEntry {
   status: "pilot" | "demo";
   /** Whether the country appears on the landing page and upload dropdown. */
   visible: boolean;
+  /** Announced as forthcoming: listed in the landing hero menu's "coming soon"
+   *  section but not yet a live destination. Pair with `visible: false` so it
+   *  never leaks into live country lists. */
+  comingSoon?: boolean;
   /** Feature-presence flags. When false, the corresponding dashboard section
    *  hides rather than renders empty. */
   has: {
@@ -153,6 +157,15 @@ export function listCountries(): CountryEntry[] {
 /** Return only visible countries — what the landing page and upload dropdown show. */
 export function listVisibleCountries(): CountryEntry[] {
   return COUNTRIES.filter((c) => c.visible);
+}
+
+/**
+ * Countries announced as forthcoming — rendered in the landing hero menu's
+ * "coming soon" section. Empty until a country office is onboarded and an entry
+ * is added with `visible: false, comingSoon: true`.
+ */
+export function listComingSoonCountries(): CountryEntry[] {
+  return COUNTRIES.filter((c) => c.comingSoon);
 }
 
 // ─── Module-load validation ─────────────────────────────────────────────────

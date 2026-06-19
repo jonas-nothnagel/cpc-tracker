@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
-import { listVisibleCountries } from "@/config/countries";
+import {
+  listVisibleCountries,
+  listComingSoonCountries,
+} from "@/config/countries";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { HeroVideo } from "@/components/landing/hero-video";
+import { HeroCta } from "@/components/landing/hero-cta";
 import { InsideAnalysis } from "@/components/landing/inside-analysis";
 import { PrototypeBadge } from "@/components/ui/prototype-badge";
 
@@ -39,23 +42,10 @@ export default async function Home({
           <p className="mb-9 max-w-xl text-lg leading-relaxed text-white/90 md:text-xl">
             {t("hero.subtitle")}
           </p>
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-            {visibleCountries.map((c) => (
-              <Link
-                key={c.id}
-                href={`/dashboard?country=${c.id}`}
-                className="bg-[var(--undp-blue)] px-6 py-3 text-base font-medium text-white transition-colors hover:bg-[var(--undp-blue-dark)]"
-              >
-                {t("hero.exploreCountry", { name: c.name })}
-              </Link>
-            ))}
-            <Link
-              href="/upload"
-              className="text-base font-medium text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white"
-            >
-              {t("hero.analyseCta")}
-            </Link>
-          </div>
+          <HeroCta
+            countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
+            comingSoon={listComingSoonCountries().map((c) => ({ name: c.name }))}
+          />
         </div>
       </HeroVideo>
 

@@ -39,8 +39,10 @@
       "eyebrow": "Iniciativa Sprint de IA del PNUD",
       "title": "Rastreador de Coherencia de Políticas de Naturaleza y Clima",
       "subtitle": "Vea dónde sus metas nacionales de clima, biodiversidad y uso de la tierra se alinean, se superponen o pueden ir en direcciones distintas.",
-      "exploreCountry": "Explorar {name}",
-      "analyseCta": "Analizar sus políticas"
+      "analyseCta": "Analizar sus políticas",
+      "exploreMenu": "Explorar un país piloto",
+      "pilotCountriesHeader": "Países piloto",
+      "comingSoonTag": "Pronto"
     },
     "inside": {
       "eyebrow": "Dentro del análisis",
