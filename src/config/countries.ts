@@ -196,6 +196,14 @@ export function validateRegistry(countries: readonly CountryEntry[]): void {
       // format gate as canonical ids.
       throw new Error(`[countries] Invalid iso3 "${c.iso3}" in ${c.id} (must match /^[a-z]{3}$/)`);
     }
+    if (c.comingSoon && c.visible) {
+      // Enforce the documented pairing: a "coming soon" country is announced as
+      // forthcoming and must not also be a live destination, or it would appear
+      // in both listVisibleCountries() and listComingSoonCountries() at once.
+      throw new Error(
+        `[countries] "${c.id}" sets comingSoon but is also visible; coming-soon countries must set visible: false`,
+      );
+    }
     seenCanonicals.add(c.id);
   }
 

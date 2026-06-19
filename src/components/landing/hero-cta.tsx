@@ -129,7 +129,6 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
         <button
           ref={triggerRef}
           type="button"
-          aria-haspopup="true"
           aria-expanded={open}
           aria-controls={menuId}
           onClick={() => setOpen((v) => !v)}
