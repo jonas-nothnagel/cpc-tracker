@@ -36,6 +36,10 @@ export interface CountryEntry {
   status: "pilot" | "demo";
   /** Whether the country appears on the landing page and upload dropdown. */
   visible: boolean;
+  /** Announced as forthcoming: listed in the landing hero menu's "coming soon"
+   *  section but not yet a live destination. Pair with `visible: false` so it
+   *  never leaks into live country lists. */
+  comingSoon?: boolean;
   /** Feature-presence flags. When false, the corresponding dashboard section
    *  hides rather than renders empty. */
   has: {
@@ -155,6 +159,15 @@ export function listVisibleCountries(): CountryEntry[] {
   return COUNTRIES.filter((c) => c.visible);
 }
 
+/**
+ * Countries announced as forthcoming — rendered in the landing hero menu's
+ * "coming soon" section. Empty until a country office is onboarded and an entry
+ * is added with `visible: false, comingSoon: true`.
+ */
+export function listComingSoonCountries(): CountryEntry[] {
+  return COUNTRIES.filter((c) => c.comingSoon);
+}
+
 // ─── Module-load validation ─────────────────────────────────────────────────
 //
 // Runs once when this file is first imported. Crashes the app at startup if
@@ -182,6 +195,14 @@ export function validateRegistry(countries: readonly CountryEntry[]): void {
       // iso3 flows into nr7_<iso3>.json path construction, so it gets the same
       // format gate as canonical ids.
       throw new Error(`[countries] Invalid iso3 "${c.iso3}" in ${c.id} (must match /^[a-z]{3}$/)`);
+    }
+    if (c.comingSoon && c.visible) {
+      // Enforce the documented pairing: a "coming soon" country is announced as
+      // forthcoming and must not also be a live destination, or it would appear
+      // in both listVisibleCountries() and listComingSoonCountries() at once.
+      throw new Error(
+        `[countries] "${c.id}" sets comingSoon but is also visible; coming-soon countries must set visible: false`,
+      );
     }
     seenCanonicals.add(c.id);
   }

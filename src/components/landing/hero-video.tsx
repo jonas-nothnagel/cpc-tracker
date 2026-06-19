@@ -56,9 +56,10 @@ export function HeroVideo({ poster, mp4, webm, children }: HeroVideoProps) {
   };
 
   return (
-    <section className="relative isolate flex items-center overflow-hidden min-h-[620px] md:min-h-[min(90svh,840px)]">
-      {/* Media layer */}
-      <div className="absolute inset-0 -z-10">
+    <section className="relative isolate flex items-center min-h-[620px] md:min-h-[min(90svh,840px)]">
+      {/* Media layer. Clips the video/scrim here (not on the section) so the
+          hero CTA's country menu can open downward past the section edge. */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
         {showVideo ? (
           <video
             ref={videoRef}

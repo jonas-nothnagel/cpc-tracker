@@ -39,8 +39,10 @@
       "eyebrow": "UNDP AI Sprint Initiative",
       "title": "Nature-Climate Policy Coherence Tracker",
       "subtitle": "See where your national climate, biodiversity, and land-use targets align, overlap, or may pull in different directions.",
-      "exploreCountry": "Explore {name}",
-      "analyseCta": "Analyse your policies"
+      "analyseCta": "Analyse your policies",
+      "exploreMenu": "Explore a pilot country",
+      "pilotCountriesHeader": "Pilot countries",
+      "comingSoonTag": "Soon"
     },
     "inside": {
       "eyebrow": "Inside the analysis",
