@@ -30,7 +30,8 @@
     "nav": {
       "home": "Inicio",
       "uploadData": "Cargar datos",
-      "prototypes": "prototipos"
+      "prototypes": "prototipos",
+      "howItWorks": "Cómo funciona"
     }
   },
   "footer": {},
@@ -1331,6 +1332,10 @@
     "sustainability": {
       "title": "Huella de Sostenibilidad de IA | CPC Tracker",
       "description": "Huella ambiental estimada de la computación de IA detrás del CPC Tracker, para reporte de transparencia."
+    },
+    "methodology": {
+      "title": "Cómo funciona | CPC Tracker",
+      "description": "Cómo la herramienta de coherencia de políticas naturaleza-clima convierte los documentos de política nacional en información transparente y trazable para apoyar la toma de decisiones."
     }
   },
   "viz": {

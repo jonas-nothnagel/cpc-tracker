@@ -54,6 +54,16 @@ export function LandingHeader() {
         </Link>
         <nav className="flex items-center gap-8 text-sm">
           <Link
+            href="/methodology"
+            className={`transition-colors duration-300 ${
+              scrolled
+                ? "text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
+                : "text-white/90 hover:text-white"
+            }`}
+          >
+            {t("nav.howItWorks")}
+          </Link>
+          <Link
             href="/upload"
             className={`transition-colors duration-300 ${
               scrolled

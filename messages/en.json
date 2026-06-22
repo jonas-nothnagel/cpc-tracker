@@ -30,7 +30,8 @@
     "nav": {
       "home": "Home",
       "uploadData": "Upload Data",
-      "prototypes": "prototypes"
+      "prototypes": "prototypes",
+      "howItWorks": "How it works"
     }
   },
   "footer": {},
@@ -1331,6 +1332,10 @@
     "sustainability": {
       "title": "AI Sustainability Footprint | CPC Tracker",
       "description": "Estimated environmental footprint of the AI computation behind the CPC Tracker, for transparency reporting."
+    },
+    "methodology": {
+      "title": "How it works | CPC Tracker",
+      "description": "How the Nature-Climate Policy Coherence Tool turns national policy documents into transparent, traceable insights for decision support."
     }
   },
   "viz": {
