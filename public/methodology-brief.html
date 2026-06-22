@@ -9,6 +9,7 @@
     --blue: #0468b1; --blue-dark: #035293; --black: #232e3d; --gray: #55606e;
     --paper: #faf8f4; --line: #e6e3dd;
     --l1: #0468b1; --l2: #b45309; --l3: #7c3aed;
+    --ph-ex: #b45309; --ph-an: #0468b1; --ph-sy: #196127;
     --a-high: #196127; --a-med: #7bc96f; --a-low: #c6e48b; --a-none: #d1d5db; --a-flag: #dc2626;
   }
   * { box-sizing: border-box; }
@@ -48,13 +49,13 @@
   .level p { font-size: 9pt; color: var(--gray); margin: 0; }
   .level .badge { display: inline-block; margin-top: 6px; font-size: 7.5pt; color: var(--gray); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
 
-  /* pipeline */
+  /* pipeline: three colour-coded phases */
   .pipe { display: flex; align-items: stretch; gap: 0; margin: 10px 0 6px; }
-  .pstep { flex: 1; border: 1px solid var(--line); border-radius: 6px; padding: 8px 9px; background: #fff; text-align: center; }
-  .pstep .n { font-size: 7.5pt; font-weight: 700; color: var(--blue); letter-spacing: .08em; }
-  .pstep .t { font-size: 9.5pt; font-weight: 600; margin: 2px 0 2px; }
-  .pstep .d { font-size: 7.8pt; color: var(--gray); line-height: 1.3; }
-  .arrow { display: flex; align-items: center; color: var(--blue); font-size: 14pt; padding: 0 4px; font-weight: 700; }
+  .phase { flex: 1; border: 1px solid var(--line); border-top: 4px solid var(--pc); border-radius: 6px; padding: 9px 11px; background: #fff; }
+  .phase .pk { font-size: 7.5pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--pc); }
+  .phase .pt { font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif; font-size: 10.5pt; font-weight: 600; margin: 2px 0 4px; color: var(--black); }
+  .phase .pd { font-size: 8pt; color: var(--gray); line-height: 1.35; }
+  .arrow { display: flex; align-items: center; color: var(--line); font-size: 15pt; padding: 0 5px; font-weight: 700; }
 
   /* alignment scale */
   .scale { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); margin: 8px 0 4px; }
@@ -116,15 +117,25 @@
   </div>
 
   <h2>How insights are created</h2>
-  <p>Every result is produced by the same transparent sequence. The AI reads only the policy text you provide; it never invents policy content.</p>
+  <p>Every result is produced by the same transparent sequence, organised in three phases. The AI reads only the policy text it is given; it never invents policy content.</p>
   <div class="pipe">
-    <div class="pstep"><div class="n">STEP 1</div><div class="t">Read &amp; classify</div><div class="d">Each target is sorted against expert reference lenses (e.g. nature-based solutions, sectors, biodiversity-finance).</div></div>
+    <div class="phase" style="--pc: var(--ph-ex)">
+      <div class="pk">Phase 1 &middot; Extraction</div>
+      <div class="pt">Documents to targets</div>
+      <div class="pd">Read each page, set aside boilerplate, extract every target word-for-word with its source, merge duplicates, and verify each figure traces back to the original document.</div>
+    </div>
     <div class="arrow">&rarr;</div>
-    <div class="pstep"><div class="n">STEP 2</div><div class="t">Compare every pair</div><div class="d">Each target is compared with every target from a different document, with no pre-filtering that could hide a connection.</div></div>
+    <div class="phase" style="--pc: var(--ph-an)">
+      <div class="pk">Phase 2 &middot; Analysis</div>
+      <div class="pt">Targets to coherence</div>
+      <div class="pd">Flag what is measurable and time-bound, classify each target against expert lenses, then compare every cross-document pair: one agent breaks a target into its parts, a second judges the alignment.</div>
+    </div>
     <div class="arrow">&rarr;</div>
-    <div class="pstep"><div class="n">STEP 3</div><div class="t">Two-agent assessment</div><div class="d">One agent breaks each target into its parts; a second judges the relationship from that structure, not surface wording.</div></div>
-    <div class="arrow">&rarr;</div>
-    <div class="pstep"><div class="n">STEP 4</div><div class="t">Synthesise</div><div class="d">Patterns become short, hedged storylines for a non-technical reader.</div></div>
+    <div class="phase" style="--pc: var(--ph-sy)">
+      <div class="pk">Phase 3 &middot; Synthesis &amp; Delivery</div>
+      <div class="pt">Pairs to patterns</div>
+      <div class="pd">Roll the judgements into coherency scores and coverage, surface where potential misalignment concentrates, and extend the same method to finance and implementation where the data exists.</div>
+    </div>
   </div>
   <p class="scale-note">Each pair is placed on a five-state scale. Four positive levels describe how strongly two targets align; a single review state, <strong>Potential misalignment</strong>, flags pairs for a human to examine rather than declaring a conflict.</p>
   <div class="scale">
@@ -141,7 +152,7 @@
   <div class="two">
     <div>
       <h3>Classification (the lenses)</h3>
-      <p>Reference categories are defined by experts and traced to published sources, never drafted by the AI. For each target the system gives every category a relevance score, keeping a single primary theme for ranking and any number of related themes for breadth. You can switch lenses to view the same evidence different ways.</p>
+      <p>Targets are scored against expert reference frameworks: nature-based solutions, IPCC sectors, the GLOBE biodiversity taxonomy, and, where relevant, national adaptation goals. Categories are traced to published sources, never drafted by the AI, and are configurable per country. Each target keeps one primary category plus any others it clearly relates to, so the same evidence can be viewed through different lenses.</p>
       <h3>Comparison (two agents)</h3>
       <p>Separating the work into two steps (first decomposing a target into goal, action, area, actors and expected outcome, then assessing alignment from that structure) keeps judgements consistent across countries and policy frameworks, and grounded in content rather than shared keywords.</p>
     </div>
@@ -153,7 +164,7 @@
     </div>
   </div>
 
-  <h2>What you see</h2>
+  <h2>What the dashboard shows</h2>
   <ul>
     <li><strong>Visuals plus short, factual insights</strong> (coverage, alignment patterns, and where coordination could be strengthened), never an automated report.</li>
     <li><strong>Switchable lenses</strong> so the same analysis can be read by theme, by sector, or by finance and implementation overlays.</li>
@@ -163,8 +174,8 @@
   <h2>Safeguards &amp; trust</h2>
   <div class="guards">
     <div class="guard"><b>Human in the loop.</b> Outputs are AI-assisted and require validation by national experts before use in policy processes.</div>
-    <div class="guard"><b>Fully traceable.</b> Every result links back to the source text it came from; nothing is asserted that you cannot check.</div>
-    <div class="guard"><b>No hallucinated content.</b> The AI only classifies and compares the targets you provide.</div>
+    <div class="guard"><b>Fully traceable.</b> Every result links back to the source text it came from; nothing is asserted that cannot be checked.</div>
+    <div class="guard"><b>No hallucinated content.</b> The AI only classifies and compares the targets it is given.</div>
     <div class="guard"><b>Neutral language.</b> Findings are framed as opportunities for stronger alignment, never as blame.</div>
     <div class="guard"><b>Data sovereignty.</b> Government data runs on UNDP-controlled infrastructure and is not exposed to the open internet.</div>
     <div class="guard"><b>Frugal &amp; Fair AI.</b> A low-footprint design whose environmental cost is measured and reported openly.</div>
