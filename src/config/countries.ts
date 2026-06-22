@@ -122,6 +122,26 @@ export const COUNTRIES: CountryEntry[] = [
       ber: false,
     },
   },
+  {
+    id: "cote-divoire",
+    aliases: ["cote-d-ivoire", "cotedivoire"],
+    name: "Côte d'Ivoire",
+    iso3: "civ",
+    status: "pilot",
+    // Coherence-only (Level 1): the CO delivered policy targets only — NDC 3.0
+    // (Climate), National Biodiversity Targets (Nature, reported via the CBD
+    // Online Reporting Tool), and LDN (Land degradation). Bilingual corpus
+    // (French original + English translation). No BTR / BER / NR7 data, so those
+    // sections auto-hide. Targets, country config, and the pipeline run all land
+    // in this branch.
+    visible: true,
+    has: {
+      coherence: true,
+      btr: { mitigation: false, adaptation: false },
+      nr7: false,
+      ber: false,
+    },
+  },
 ];
 
 /**
