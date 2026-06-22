@@ -10,7 +10,7 @@
  * actual composition. Shares the shell conventions of SectorDrawer.
  */
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   getDocColor,
@@ -23,6 +23,8 @@ import {
   buildTargetFrictionTree,
   type TargetFrictionTree,
 } from "@/lib/coherence-briefing";
+import { useDrawerHistory } from "@/lib/use-drawer-history";
+import { DrawerBackButton } from "@/components/ui/drawer-back-button";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
@@ -61,7 +63,7 @@ const MANAGEABILITY_RANK: Record<AlignmentManageability, number> = {
 };
 
 export function FlagProfileDrawer({
-  subject,
+  subject: rootSubject,
   alignment,
   targets,
   classifications,
@@ -71,7 +73,6 @@ export function FlagProfileDrawer({
   totalFlagged,
   countryConfig,
   onClose,
-  onOpenTarget,
   onOpenPair,
 }: {
   subject: FlagProfileSubject | null;
@@ -84,19 +85,34 @@ export function FlagProfileDrawer({
   totalFlagged: number;
   countryConfig: CountryConfig | null;
   onClose: () => void;
-  onOpenTarget: (target: Target) => void;
   onOpenPair: (aId: string, bId: string) => void;
 }) {
   const t = useTranslations("briefing.drawer.flagProfile");
   const contradictionLabels = useContradictionTypeLabels();
+  // Drill-into-target navigation (Recurring Targets column) is owned by the
+  // drawer, not the parent — clicking pushes a new subject onto the internal
+  // stack and the Back button pops it. Resets automatically when the parent
+  // hands us a different rootSubject.
+  const {
+    current: subject,
+    push: pushSubject,
+    back: goBack,
+    canGoBack,
+  } = useDrawerHistory<FlagProfileSubject>(rootSubject);
+  const handleOpenTarget = useCallback(
+    (target: Target) => pushSubject({ kind: "target", target }),
+    [pushSubject],
+  );
   useEffect(() => {
     if (!subject) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key !== "Escape") return;
+      if (canGoBack) goBack();
+      else onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [subject, onClose]);
+  }, [subject, canGoBack, goBack, onClose]);
 
   useEffect(() => {
     if (!subject) return;
@@ -241,6 +257,7 @@ export function FlagProfileDrawer({
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
       >
+        {canGoBack && <DrawerBackButton onBack={goBack} />}
         <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 bg-white/90 backdrop-blur">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
@@ -305,7 +322,7 @@ export function FlagProfileDrawer({
                 subject={subject}
                 countryConfig={countryConfig}
                 themeNoun={themeNoun}
-                onOpenTarget={onOpenTarget}
+                onOpenTarget={handleOpenTarget}
               />
               <ManageabilityBar
                 manageability={profile.manageability}

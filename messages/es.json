@@ -2,6 +2,8 @@
   "common": {
     "appName": "Rastreador de Coherencia de Políticas",
     "close": "Cerrar",
+    "back": "Atrás",
+    "backAria": "Volver",
     "infoBoxAria": "Mostrar explicación",
     "provenance": {
       "ariaLabel": "Procedencia de los datos: {label}",

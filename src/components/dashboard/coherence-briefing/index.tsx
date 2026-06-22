@@ -1515,7 +1515,6 @@ export function CoherenceBriefing({
         totalFlagged={frictionTotals.total}
         countryConfig={countryConfig}
         onClose={() => setFlagProfile(null)}
-        onOpenTarget={(target) => setFlagProfile({ kind: "target", target })}
         onOpenPair={(a, b) => {
           setFlagProfile(null);
           openPairById(a, b);

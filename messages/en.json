@@ -2,6 +2,8 @@
   "common": {
     "appName": "Policy Coherence Tracker",
     "close": "Close",
+    "back": "Back",
+    "backAria": "Go back",
     "infoBoxAria": "Show explanation",
     "provenance": {
       "ariaLabel": "Data provenance: {label}",

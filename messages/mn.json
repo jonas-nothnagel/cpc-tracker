@@ -2,6 +2,8 @@
   "common": {
     "appName": "Бодлогын уялдаа хянагч",
     "close": "Хаах",
+    "back": "Буцах",
+    "backAria": "Буцах",
     "infoBoxAria": "Тайлбар харах",
     "provenance": {
       "ariaLabel": "Өгөгдлийн гарал үүсэл: {label}",
