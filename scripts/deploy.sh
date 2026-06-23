@@ -139,8 +139,10 @@ if [ "${GIT_BRANCH}" != "main" ]; then
   WARNINGS=$((WARNINGS+1))
 fi
 if [ -n "${GIT_DIRTY}" ]; then
-  echo "  ⚠️  Working tree has uncommitted changes — the image will contain"
-  echo "      the COMMITTED code, not your local changes."
+  echo "  ⚠️  Working tree has uncommitted changes — docker build copies"
+  echo "      from your working tree (not git), so your local edits WILL"
+  echo "      ship in the image. The deployed commit shown above will not"
+  echo "      reflect what's actually running."
   WARNINGS=$((WARNINGS+1))
 fi
 [ "${WARNINGS}" -gt 0 ] && echo "─────────────────────────────────────────────────────────────"
