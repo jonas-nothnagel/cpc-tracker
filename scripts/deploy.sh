@@ -58,15 +58,59 @@ GIT_SHA_FULL=$(git rev-parse HEAD)
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 GIT_DIRTY=$(git status --porcelain)
 
+# ── What's currently deployed? ───────────────────────────────────────────
+# Look up the SHA tag that shares its manifest with :latest on ACR. The
+# build pushes both :sha and :latest in one operation, so the non-latest
+# tag on the :latest manifest tells us which commit is live.
+echo "▸ Looking up currently-deployed commit on ${REGISTRY}…"
+DEPLOYED_SHA=$(az acr manifest list-metadata \
+  -r "${REGISTRY_NAME}" -n "${IMAGE}" \
+  --query "[?tags[?@=='latest']].tags[?@!='latest' && @!='buildcache']|[0]|[0]" \
+  -o tsv 2>/dev/null || true)
+
 # ── Summary + confirmation ───────────────────────────────────────────────
+echo
 echo "═════════════════════════════════════════════════════════════"
 echo "  Deploy ${IMAGE} → ${REGISTRY}"
 echo "═════════════════════════════════════════════════════════════"
 echo "  Branch:        ${GIT_BRANCH}"
-echo "  Commit:        ${GIT_SHA}"
-echo "  Tags pushed:   :${GIT_SHA_FULL}  :latest"
+echo "  Local HEAD:    ${GIT_SHA}  ($(git log -1 --format='%s' | head -c 60))"
+if [ -n "${DEPLOYED_SHA}" ]; then
+  DEPLOYED_SHORT="${DEPLOYED_SHA:0:7}"
+  if git cat-file -e "${DEPLOYED_SHA}" 2>/dev/null; then
+    DEPLOYED_SUBJECT=$(git log -1 --format='%s' "${DEPLOYED_SHA}" | head -c 60)
+    echo "  Deployed now:  ${DEPLOYED_SHORT}  (${DEPLOYED_SUBJECT})"
+  else
+    echo "  Deployed now:  ${DEPLOYED_SHORT}  (not in local history — git fetch?)"
+  fi
+else
+  echo "  Deployed now:  (none — :latest tag not found on ACR)"
+fi
 echo "  App Service:   ${APP_URL}"
 echo "─────────────────────────────────────────────────────────────"
+
+# Show new commits that will go live, if we can resolve the range.
+if [ -n "${DEPLOYED_SHA}" ] && git cat-file -e "${DEPLOYED_SHA}" 2>/dev/null; then
+  if [ "${DEPLOYED_SHA}" = "${GIT_SHA_FULL}" ]; then
+    echo "  ℹ️  Local HEAD matches what's deployed — this is a re-push."
+  else
+    NEW_COMMIT_COUNT=$(git rev-list --count "${DEPLOYED_SHA}..HEAD" 2>/dev/null || echo "?")
+    if [ "${NEW_COMMIT_COUNT}" = "0" ]; then
+      echo "  ℹ️  HEAD is behind or unrelated to the deployed SHA."
+      echo "      Deployed: $(git log -1 --format='%h %s' "${DEPLOYED_SHA}")"
+    else
+      echo "  ${NEW_COMMIT_COUNT} new commit(s) since the live deploy:"
+      git log --oneline --no-decorate "${DEPLOYED_SHA}..HEAD" \
+        | head -20 \
+        | sed 's/^/    /'
+      [ "${NEW_COMMIT_COUNT}" -gt 20 ] && echo "    … and $((NEW_COMMIT_COUNT - 20)) more"
+      # Compact file-change summary across the whole range.
+      STATS=$(git diff --shortstat "${DEPLOYED_SHA}..HEAD" 2>/dev/null || echo "")
+      [ -n "${STATS}" ] && echo "   ${STATS}"
+    fi
+  fi
+  echo "─────────────────────────────────────────────────────────────"
+fi
 
 WARNINGS=0
 if [ "${GIT_BRANCH}" != "main" ]; then
