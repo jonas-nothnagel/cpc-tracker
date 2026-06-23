@@ -156,6 +156,75 @@
   .p-tech .specs span { font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border-200); border-radius: 4px; padding: 2px 8px; color: var(--undp-gray); }
   .p-deep { margin-top: 16px; }
 
+  /* ===== worked-example overlay (orthogonal to depth) ===== */
+  .p-example { display: none; margin-top: 18px; }
+  body.show-example .p-example { display: block; }
+  .ex-card { border: 1px solid rgba(4,104,177,0.22); border-left: 3px solid var(--undp-blue);
+    background: var(--undp-paper); border-radius: 10px; padding: 12px 14px; }
+  .ex-card .exl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--undp-blue); margin-bottom: 9px; display: flex; align-items: center; gap: 7px; }
+  .ex-card .exl .dotm { width: 6px; height: 6px; border-radius: 50%; background: var(--undp-blue); flex: none; }
+  .ex-card .exb { font-size: 12.5px; line-height: 1.5; color: #3c4654; }
+  .ex-card .exb b { color: var(--undp-black); font-weight: 600; }
+  .ex-pair { display: flex; flex-direction: column; gap: 7px; margin: 10px 0 2px; }
+  .ex-t { border: 1px solid var(--border-200); border-radius: 7px; padding: 8px 10px; background: #fff; }
+  .ex-t .ex-doc { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: var(--undp-gray); }
+  .ex-t .ex-doc .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .ex-t .ex-txt { font-size: 11.5px; line-height: 1.4; color: var(--undp-black); }
+  .ex-verdict { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 11.5px; font-weight: 700; color: var(--align-flagged); }
+  .ex-verdict .o { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--align-flagged); flex: none; }
+  .ex-facets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+
+  /* example toggle in the top bar */
+  .ex-toggle { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border-300);
+    background: #fff; color: var(--undp-gray); border-radius: 999px; padding: 6px 13px; font: inherit;
+    font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s var(--ease); white-space: nowrap; }
+  .ex-toggle:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
+  .ex-toggle[aria-pressed="true"] { background: var(--undp-blue); border-color: var(--undp-blue); color: #fff; }
+  .ex-toggle svg { flex: none; }
+  @media (max-width: 720px) { .ex-toggle .lbl { display: none; } .ex-toggle { padding: 6px 9px; } }
+
+  /* ===== human-in-the-loop nodes ===== */
+  .node.human { background: #fdfaf3; border-color: rgba(168,127,74,0.55); border-style: dashed; }
+  .node.human::before { background: #a87f4a; }
+  .node.human .nnum, .node.human .nb { color: #a87f4a; }
+  .node.human .htag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; background: #a87f4a; color: #fff; padding: 2px 8px; border-radius: 999px; }
+  .node.human.active { border-color: #a87f4a; box-shadow: 0 0 0 3px rgba(168,127,74,0.14), var(--shadow-pop); }
+  .node .glyph { width: 15px; height: 15px; flex: none; color: #a87f4a; }
+
+  /* feedback loop-back edge + its label */
+  .edge.fb { stroke: #a87f4a; stroke-width: 2; stroke-dasharray: 2 5; stroke-linecap: round; }
+  .edge.fb.drawn { opacity: 0.9; }
+  .fb-lab { position: absolute; z-index: 3; font-family: var(--font-sans); font-size: 9.5px; font-weight: 600;
+    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px;
+    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); white-space: nowrap; }
+  .fb-lab.shown { opacity: 1; }
+
+  /* node-kind legend */
+  .legend { position: absolute; right: 16px; top: 14px; z-index: 25; display: flex; flex-wrap: wrap; gap: 5px 14px;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border: 1px solid var(--border-200);
+    border-radius: 10px; padding: 8px 12px; box-shadow: var(--shadow-card); font-size: 10.5px; color: var(--undp-gray); }
+  .legend .li { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .legend .sw.ai { background: var(--an); }
+  .legend .sw.agent { background: var(--agent); }
+  .legend .sw.human { background: #a87f4a; border: 1px dashed #7a5b30; }
+  @media (max-width: 820px) { .legend { display: none; } }
+
+  /* lens-switch visual (classify step) + inline human marker */
+  .lens-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center; }
+  .lens-chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-300); background: #fff; color: var(--undp-gray); }
+  .lens-chip.on { background: var(--undp-black); border-color: var(--undp-black); color: #fff; font-weight: 600; }
+  .lens-cap { font-size: 11px; color: var(--undp-gray); text-align: center; margin-top: 10px; }
+  .lens-cap b { color: var(--undp-black); font-weight: 600; }
+  .you-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
+    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px; padding: 3px 9px; }
+  .you-tag svg { width: 11px; height: 11px; }
+  .ex-label { display: inline-flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--undp-gray); margin-bottom: 9px; }
+  .ex-label .dotm { width: 6px; height: 6px; border-radius: 50%; background: var(--doc-nap); flex: none; }
+
   /* clean prompt component (not raw code) */
   .prompt { border: 1px solid var(--border-200); border-radius: 11px; overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
   .prow { display: flex; gap: 11px; padding: 11px 13px; border-bottom: 1px solid var(--border-100); }
@@ -294,7 +363,7 @@
   .impl-status.mis { background: rgba(220,38,38,0.1); color: var(--align-flagged); }
 </style>
 </head>
-<body class="show-deep">
+<body>
 
 <div class="topbar">
   <div class="brand">
@@ -307,10 +376,14 @@
       <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 1.5h6L13 4.5v10H4z M10 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
       2-page brief
     </a>
+    <button id="exToggle" class="ex-toggle" type="button" aria-pressed="false" title="Follow one real example through every step">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      <span class="lbl">Follow an example</span>
+    </button>
     <div class="seg" role="group" aria-label="Detail level">
-      <button id="depthPlain" aria-pressed="false">Plain</button>
+      <button id="depthPlain" aria-pressed="true">Plain</button>
       <button id="depthTech" aria-pressed="false">Technical</button>
-      <button id="depthDeep" aria-pressed="true">Deep dive</button>
+      <button id="depthDeep" aria-pressed="false">Deep dive</button>
     </div>
   </div>
 </div>
@@ -330,15 +403,21 @@
     <div class="intro" id="intro">
       <div class="card">
         <p class="eyebrow">Methodology · How it works</p>
-        <h1 class="serif">Watch the pipeline assemble itself</h1>
-        <p>From a folder of national policy documents to a coherence map: every phase, every agent, and how they connect. As it builds on the left, the panel explains each step in plain language.</p>
+        <h1 class="serif">The analysis pipeline, step by step</h1>
+        <p>From a set of national policy documents to a coherence map: every phase, every agent, and how they connect. The diagram builds on the left while the panel explains each step in plain language.</p>
         <button class="start" id="startBtn">
           <svg width="14" height="14" viewBox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/></svg>
-          Start the build
+          Start the walkthrough
         </button>
-        <span class="auto">or it begins on its own in a moment…</span>
-        <span class="auto"><a href="/methodology-brief.html" target="_blank" rel="noopener" style="color:var(--undp-blue);text-decoration:none">Prefer a 2-page summary? Open the printable brief</a></span>
+        <span class="auto">It begins automatically in a moment.</span>
+        <span class="auto"><b>Follow an example</b>, in the top bar, traces one real case through every step.</span>
+        <span class="auto"><a href="/methodology-brief.html" target="_blank" rel="noopener" style="color:var(--undp-blue);text-decoration:none">A printable 2-page brief is also available</a></span>
       </div>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span class="li"><span class="sw ai"></span> AI step</span>
+      <span class="li"><span class="sw agent"></span> Specialist agent</span>
+      <span class="li"><span class="sw human"></span> Human step</span>
     </div>
     <div class="controls">
       <button class="cbtn" id="prev" aria-label="Previous" title="Previous (←)"><svg class="ico" viewBox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -356,14 +435,17 @@
     <div class="pstep" data-i="0">
       <p class="p-eyebrow ex"><span class="pp">Phase 1 · Extraction</span><span class="ps">Step 01</span></p>
       <h2 class="p-title serif">Upload the policy documents</h2>
-      <p class="p-say">The user provides the national documents to compare: an <abbr title="Nationally Determined Contribution">NDC</abbr>, an <abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr>, a <abbr title="National Adaptation Plan">NAP</abbr>, an <abbr title="Land Degradation Neutrality target">LDN</abbr> target, sectoral strategies, each as a <strong>PDF, Word or text file</strong>, tagged with its type.</p>
-      <div class="p-viz"><div class="doc-grid">
+      <p class="p-say">The method works for <strong>any set of national policy documents that set targets</strong>. The user provides two or more, each as a <strong>PDF, Word or text file</strong> and tagged with its type. Common examples are an <abbr title="Nationally Determined Contribution">NDC</abbr>, an <abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr>, a <abbr title="National Adaptation Plan">NAP</abbr> or an <abbr title="Land Degradation Neutrality target">LDN</abbr> target, plus sectoral strategies.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="ex-label"><span class="dotm"></span> Example set · Mongolia</div>
+        <div class="doc-grid">
         <div class="doc-card"><div class="spine" style="background:var(--doc-ndc)"></div><div class="abbr" style="color:var(--doc-ndc)">NDC</div><div class="full">Nationally Determined Contribution</div><div class="conv"><img src="/unfccc.png" alt="UNFCCC"><span class="cnt">27 targets</span></div></div>
         <div class="doc-card"><div class="spine" style="background:var(--doc-nbsap)"></div><div class="abbr" style="color:var(--doc-nbsap)">NBSAP</div><div class="full">Biodiversity Strategy &amp; Action Plan</div><div class="conv"><img src="/cbd_logo.png" alt="CBD"><span class="cnt">20 targets</span></div></div>
         <div class="doc-card"><div class="spine" style="background:var(--doc-nap)"></div><div class="abbr" style="color:var(--doc-nap)">NAP</div><div class="full">National Adaptation Plan</div><div class="conv"><span class="cnt">15 targets</span></div></div>
         <div class="doc-card"><div class="spine" style="background:var(--doc-ldn)"></div><div class="abbr" style="color:var(--doc-ldn)">LDN +</div><div class="full">Land Degradation &amp; sectoral plans</div><div class="conv"><img src="/unccd.png" alt="UNCCD"><span class="cnt">optional</span></div></div>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Documents enter via <code>POST /api/extract</code>; the document type is recorded per file. Worked example throughout: an illustrative three-document set from Mongolia (NDC 27, NBSAP 20, NAP 15 targets).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
+      </div></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">This walkthrough follows two of Mongolia's documents: its <b>NBSAP</b> (biodiversity) and its <b>NDC</b> (climate). One target from each is traced through to the insight.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Documents enter via <code>POST /api/extract</code>; the document type is recorded per file. The worked example uses Mongolia's real analysis (NDC 27, NBSAP 20, NAP 15 targets).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
     </div>
 
     <div class="pstep" data-i="1">
@@ -390,9 +472,15 @@
       <h2 class="p-title serif">Extract each target, word for word</h2>
       <p class="p-say">From the relevant passages, each <strong>policy target</strong> is recorded together with the exact sentence it came from. The wording may be lightly tidied (a stray label dropped) but it is never reworded, summarised or embellished, and every target is labelled to show how.</p>
       <div class="p-viz"><div class="vstack" style="gap:6px">
-        <div class="src-quote"><span class="lab">SOURCE · NBSAP · p.7</span>"Target 7. <span class="hl">Develop highly productive and sustainable forestry and agricultural production…</span>"</div>
+        <div class="src-quote"><span class="lab">SOURCE · NBSAP · Target 1</span>"<span class="hl">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</span>"</div>
         <div class="flow-arrow">↓</div>
-        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · NBT 7</span></div><div class="tc-text">Develop highly productive and sustainable forestry and agricultural production…</div><div class="prov"><span class="badge cleaned">cleaned</span><small>label removed · wording unchanged</small></div></div>
+        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</div><div class="prov"><span class="badge cleaned">verbatim</span><small>recorded word for word</small></div></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the second target</p>
+        <div class="ex-pair">
+          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">"Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability."</div></div>
+        </div>
+        <p class="exb" style="margin-top:9px">Together with <b>NBSAP Target 1</b> above, this is the pair traced through the walkthrough, each recorded word for word.</p>
       </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A strict <em>verbatim contract</em>: <code>sourceText</code> is copied character-for-character; the displayed <code>text</code> allows only deterministic cleanup (drop a numeric label, rejoin broken lines). Every target keeps its sources and page numbers.</p><div class="specs"><span>verbatim contract</span><span>sources[]</span><span>verbatim · cleaned · synthesis</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
@@ -423,6 +511,19 @@
       </div>
     </div>
 
+    <div class="pstep" data-i="13">
+      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Human in the loop</span><span class="ps">Target review</span></p>
+      <h2 class="p-title serif">Confirm the extracted targets</h2>
+      <p class="p-say">Before any analysis runs, the extracted targets are returned to the user for review. Each is <strong>checked against its source</strong> and kept, removed, corrected, or supplemented where the reader missed something. Nothing proceeds until a reviewer has confirmed the set, so the analysis always starts from validated targets.</p>
+      <div class="p-viz"><div class="vstack" style="gap:8px">
+        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span><span class="tag-pill tag-keep" style="margin-left:auto">Kept</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity…</div></div>
+        <div class="target-card" style="opacity:.55"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">NAP · foreword line</span><span class="tag-pill tag-drop" style="margin-left:auto">Removed</span></div><div class="tc-text">Not a target. Removed by the reviewer.</div></div>
+        <div class="check-row"><span class="check" style="background:#a87f4a">+</span><span style="font-size:12px;color:var(--undp-black)">Add a target the extraction missed</span></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">Mongolia's reviewer keeps <b>NBSAP Target 1</b> and <b>NDC Water resources 2</b>, checking both against their source pages, before the comparison begins.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">This is the extraction-review step in the upload wizard: targets can be kept, dropped, edited (text and page numbers), or added by hand. Rejected targets never enter the pairing or alignment stages.</p><div class="specs"><span>human review</span><span>keep · edit · add</span><span>gates analysis</span></div></div>
+    </div>
+
     <div class="pstep" data-i="4">
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 05</span></p>
       <h2 class="p-title serif">Flag what is measurable and time-bound</h2>
@@ -431,6 +532,7 @@
         <div class="detect-card"><span class="lab" style="font-family:var(--font-mono);font-size:10px;color:var(--undp-gray);display:block;margin-bottom:8px">NDC · pastureland target</span><div class="dt-text">Reduce overgrazing on <span class="mark-num">50%</span> of degraded pastures <span class="mark-yr">by 2030</span>.</div></div>
         <div class="flag-row"><span class="flag q"><span class="d"></span> Measurable: "50%"</span><span class="flag t"><span class="d"></span> Time-bound: "by 2030"</span></div>
       </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> target is time-bound (<b>"by 2030"</b>). The <b>NDC</b> water target names technologies and outcomes but no single headline figure, so it reads as qualitative here.</p></div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Targets are evaluated in batches of 12 for <code>isQuantitative</code> / <code>isTimeBound</code>, returning the phrases. Administrative references ("Article 2") are excluded. Multilingual, no extra NLP dependencies.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
         <div class="prompt">
@@ -443,14 +545,26 @@
     <div class="pstep" data-i="5">
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 06</span></p>
       <h2 class="p-title serif">Classify each target by category</h2>
-      <p class="p-say">Every target is scored against expert reference frameworks: <strong>nature-based solutions</strong>, the <strong><abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr> sectors</strong>, the <strong><abbr title="BIOFIN biodiversity-finance taxonomy">GLOBE</abbr> biodiversity taxonomy</strong>, and, where relevant, national adaptation goals. Each target keeps one <strong>primary</strong> category plus any others it clearly relates to. This shows where effort concentrates and where the gaps are, and gives the dashboard its grouping. The frameworks are only a starting point: each country is free to adjust the categories or add its own.</p>
+      <p class="p-say">Every target is scored against expert reference frameworks: <strong>nature-based solutions</strong>, the <strong><abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr> sectors</strong>, the <strong><abbr title="BIOFIN biodiversity-finance taxonomy">GLOBE</abbr> biodiversity taxonomy</strong>, and, where relevant, national adaptation goals. Each target keeps one <strong>primary</strong> category plus any others it clearly relates to. The lenses are interchangeable: on the dashboard the active lens can be <strong>switched with one click</strong>, and the same targets regroup under a different taxonomy while the classification itself does not re-run. Each country can also adjust the categories or add its own.</p>
       <div class="p-viz"><div style="width:100%"><div class="chip-grid">
         <span class="chip on">Agriculture &amp; livestock</span><span class="chip on">Forest &amp; land use</span>
         <span class="chip">Wetlands</span><span class="chip on">Grasslands &amp; soils</span>
         <span class="chip">Coastal &amp; marine</span><span class="chip on">Climate mitigation</span>
         <span class="chip">Water resources</span><span class="chip">Adaptation</span>
       </div>
-      <p class="mini-cap" style="text-align:center;margin-top:12px">Drawn from the <b>nature-based-solutions</b>, <b>IPCC-sector</b> and <b>GLOBE</b> taxonomies &middot; fully editable per country</p>
+      <div class="lens-row" style="margin-top:14px">
+        <span class="lens-chip on">GLOBE</span>
+        <span class="lens-chip">IPCC sectors</span>
+        <span class="lens-chip">Country</span>
+      </div>
+      <p class="lens-cap"><span class="you-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4 13c0-2.3 1.8-3.8 4-3.8s4 1.5 4 3.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> User-selected lens</span> Switching regroups the whole view, with no re-analysis.</p>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · under the GLOBE lens</p>
+        <div class="ex-pair">
+          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-nbsap)"></span> NBSAP · Target 1</div><div class="ex-txt">Primary category: <b>Biodiversity planning and finance</b></div></div>
+          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">Primary category: <b>Sustainable use</b></div></div>
+        </div>
+        <p class="exb" style="margin-top:9px">Switching to IPCC sectors or a country's own set regroups both targets, with no re-analysis.</p>
       </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A relevance score (0&ndash;1) for each <code>(target × category)</code>; the top-scoring category becomes <code>primary</code>, and any above the relevance threshold are tagged <code>relevant</code> (dual-mode). Taxonomies: nature-based solutions, IPCC sectors, the GLOBE taxonomy with sub-categories, and optional adaptation goals, all configurable per country. The most call-intensive step (<em>n × c</em> scores), so results are cached.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>primary + relevant</span><span>cached</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
@@ -471,6 +585,7 @@
         <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
         <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
       </svg><p class="pair-cap"><b>1,245 pairs</b> in this example · highlighted = the example pair</p></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> spatial-planning target and the <b>NDC</b> water target become <b>one of the 1,245 pairs</b>. The tool then checks whether they reinforce one another or pull apart.</p></div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">The cross-product of every different-document pairing, de-duplicated: 20×27 + 20×15 + 27×15 = 1,245. No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the logic</p>
         <div class="prompt">
@@ -491,6 +606,16 @@
         <div class="field-row"><span class="fk">Audience</span><span class="fv">Land managers, farmers</span></div>
         <div class="field-row"><span class="fk">Outcome</span><span class="fv">More sustainable, more restored pasture</span></div>
       </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the NDC target, broken down</p>
+        <div style="margin-top:4px">
+          <div class="field-row"><span class="fk">Goal</span><span class="fv">Water-sector resilience and secure water availability</span></div>
+          <div class="field-row"><span class="fk">Action</span><span class="fv">Headwater protection and monitoring, plus water infrastructure: ponds, reservoirs, managed aquifer recharge, hydropower feasibility and flow transfer</span></div>
+          <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Rivers, groundwater, glaciers, lakes, wetlands, upstream basins</span></div>
+          <div class="field-row"><span class="fk">Audience</span><span class="fv">Local governments, private sector, industry; livestock and households</span></div>
+          <div class="field-row"><span class="fk">Outcome</span><span class="fv">More secure water; restored aquatic and wetland ecosystems</span></div>
+        </div>
+        <p class="exb" style="margin-top:9px">The infrastructure in the Action field is what the comparison weighs against the NBSAP target.</p>
+      </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Agent 1 extracts five fields, strictly factual, no inference beyond the target text. Separating the breakdown (Agent 1) from the judgement (Agent 2) keeps assessments grounded and consistent across countries and frameworks.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
         <div class="prompt">
@@ -506,11 +631,11 @@
       <p class="p-say">A second agent, the <strong>Alignment Advisor</strong>, receives only the two breakdowns and places the pair on a <strong>five-level scale</strong>, or raises a single <strong>"Potential misalignment"</strong> flag, but only when a real friction can be named. A merely loose link stays "Partial". Every judgement carries a short rationale.</p>
       <div class="p-viz"><div style="width:100%">
         <div class="scale">
-          <p class="scale-cap">Where this example pair lands: <b>Medium alignment</b></p>
+          <p class="scale-cap">The positive side: <b>four levels</b>, from No to High</p>
           <div class="scale-track">
             <div class="scale-seg" style="background:var(--undp-gray)">No</div>
             <div class="scale-seg" style="background:#9bbf6a">Partial</div>
-            <div class="scale-seg sel" style="background:var(--align-medium)">Medium</div>
+            <div class="scale-seg" style="background:var(--align-medium)">Medium</div>
             <div class="scale-seg" style="background:var(--align-high)">High</div>
           </div>
         </div>
@@ -518,11 +643,20 @@
         <div class="flagged-panel">
           <div class="fh"><span class="o"></span> Potential misalignment</div>
           <div class="facet-row">
-            <span class="facet" style="background:rgba(234,88,12,0.1);color:#c2410c"><span class="fl">Mechanism</span> Resource competition</span>
-            <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Fundamental</span>
-            <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> High</span>
+            <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
+            <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
+            <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
           </div>
         </div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the verdict</p>
+        <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
+        <div class="ex-facets">
+          <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
+          <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
+          <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
+        </div>
+        <p class="exb" style="margin-top:10px">Both targets share land and water governance, but the NDC's water infrastructure (reservoirs, irrigation, managed aquifer recharge) could press on the ecosystems the NBSAP target protects. Coordination through spatial planning, zoning and safeguards would keep them aligned.</p>
       </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Runs on <code>gpt-5.4</code> (private Azure, temperature 0 for repeatable results). Levels none / low ("Partial") / medium / high / flagged, shown as <strong>"Potential misalignment"</strong>. A flag adds mechanism, manageability and confidence, so a reviewer sees <em>why</em> a pair was flagged rather than a bare severity number.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
@@ -537,28 +671,50 @@
     <div class="pstep" data-i="9">
       <p class="p-eyebrow sy"><span class="pp">Phase 3 · Synthesis</span><span class="ps">Step 10</span></p>
       <h2 class="p-title serif">Score it, and map the whole picture</h2>
-      <p class="p-say">Finally, with no further AI, the individual judgements roll up into <strong>coherency scores</strong> between each pair of documents and a companion <strong>coverage</strong> figure. These feed the dashboard: the coherence wheel, alignment heatmaps and theme breakdowns.</p>
+      <p class="p-say">Finally, with no further AI, the individual judgements roll up into <strong>coherency scores</strong> between each pair of documents, plus a simple count of <strong>how many pairs are flagged</strong> for a closer look. These feed the dashboard: the coherence wheel, alignment heatmaps and theme breakdowns.</p>
       <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
-        <div class="gauge-row"><div class="gauge"><div class="gv">41%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">68%</div><div class="gl">coverage</div></div></div>
+        <div class="gauge-row"><div class="gauge"><div class="gv">66%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">46</div><div class="gl">pairs flagged (of 540)</div></div></div>
         <svg id="wheelSvg" viewBox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
         <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. Coverage is the share of pairs that connect at all. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency + coverage</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · where it lands</p><p class="exb">The example pair is <b>1 of 46 flagged</b> between the NDC and NBSAP. The other <b>494 of 540</b> pairs sit on the positive scale (471 of them medium or high), so one flag barely moves the <b>66%</b> score, but it is now visible on the wheel and ready for review.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. For Mongolia's NDC and NBSAP that is 66% across 540 pairs, of which 46 are flagged for review. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
     </div>
 
     <div class="pstep" data-i="10">
       <p class="p-eyebrow sy"><span class="pp">Phase 3 · Synthesis</span><span class="ps">Step 11</span></p>
       <h2 class="p-title serif">Surface the recurring patterns</h2>
-      <p class="p-say">Across every pair, the tool shows <strong>where</strong> potential misalignment concentrates (a few "magnet" targets often carry most of it) and <strong>what kind</strong> it is. It is framed as where to look first: a prompt for review, never a verdict. Every result is <strong>AI-assisted and traceable to the source text</strong>, and the final interpretation rests with national experts.</p>
+      <p class="p-say">Across every pair, the tool shows <strong>how much</strong> potential misalignment there is and <strong>what kind</strong> it is. It is framed as where to look first: a prompt for review, never a verdict. Every result is <strong>AI-assisted and traceable to the source text</strong>, and the final interpretation rests with national experts.</p>
       <div class="p-viz"><div style="width:100%">
-        <p class="mini-lab">Where it concentrates</p>
-        <div class="conc-bar"><span style="flex:.30;background:var(--align-flagged)"></span><span style="flex:.19;background:#e8736a"></span><span style="flex:.12;background:#f0a59e"></span><span style="flex:.39;background:var(--border-200)"></span></div>
-        <p class="mini-cap">Just <b>3 targets</b> carry <b>61%</b> of all potential misalignment</p>
+        <p class="mini-lab">How much is flagged</p>
+        <div class="conc-bar"><span style="flex:.12;background:var(--align-flagged)"></span><span style="flex:.88;background:var(--border-200)"></span></div>
+        <p class="mini-cap">About <b>1 in 8 pairs</b> is flagged for review (1,128 of 9,678). Most pairs align, so the flags are where to focus.</p>
         <p class="mini-lab" style="margin-top:16px">What kind it is</p>
-        <div class="mech-bar"><span style="flex:.53;background:var(--mech-delivery)"></span><span style="flex:.46;background:var(--mech-resource)"></span><span style="flex:.04;background:var(--mech-goal)"></span></div>
-        <p class="mech-leg"><b style="color:var(--mech-delivery)">●</b> Delivery 53% &nbsp; <b style="color:var(--mech-resource)">●</b> Competing resources 46% &nbsp; <b style="color:var(--mech-goal)">●</b> Conflicting goals 1%</p>
+        <div class="mech-bar"><span style="flex:.50;background:var(--mech-resource)"></span><span style="flex:.49;background:var(--mech-delivery)"></span><span style="flex:.02;background:var(--mech-goal)"></span></div>
+        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Competing resources 50% &nbsp; <b style="color:var(--mech-delivery)">●</b> Delivery 49% &nbsp; <b style="color:var(--mech-goal)">●</b> Conflicting goals 2%</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces "magnet" targets, recurring potential misalignment across document pairs, and hedged pathway pointers, anchored to visible evidence, never prescriptive.</p><div class="specs"><span>concentration</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">In the NDC and NBSAP pairing, <b>46 of 540</b> pairs are flagged, and most are the <b>delivery</b> kind, like the example pair: coordinating water infrastructure with spatial planning would ease it.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's corpus the flagged share is about 12%, spread across many targets rather than a few.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+    </div>
+
+    <div class="pstep" data-i="14">
+      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Human in the loop</span><span class="ps">Feedback</span></p>
+      <h2 class="p-title serif">Rate the insights to improve them</h2>
+      <p class="p-say">Every AI judgement on the dashboard can be rated. A <strong>thumbs up or down</strong>, with an optional note, records where the reading was helpful and where it fell short. The feedback is anonymous and stored, and it <strong>informs future runs</strong>, so the analysis improves over time.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets share land and water governance, but the NDC's water infrastructure could press on the ecosystems the NBSAP target protects…"</div>
+          <div class="prov" style="justify-content:space-between">
+            <span style="font-size:11.5px;color:var(--undp-gray)">Was this assessment helpful?</span>
+            <span style="display:inline-flex;gap:9px;align-items:center">
+              <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 7h2v7H4z" fill="#196127"/><path d="M6.5 7l2.3-3.6c.6-.1 1.2.4 1.2 1V6.4h2.7c.7 0 1.2.6 1 1.3l-.7 3.6c-.1.5-.6.9-1.1.9H6.5z" fill="#196127"/></svg>
+              <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h2v7H4z" fill="var(--align-flagged)"/><path d="M6.5 9l2.3 3.6c.6.1 1.2-.4 1.2-1V9.6h2.7c.7 0 1.2-.6 1-1.3l-.7-3.6c-.1-.5-.6-.9-1.1-.9H6.5z" fill="var(--align-flagged)"/></svg>
+              <span style="font-size:11px;color:var(--undp-blue)">Add a note</span>
+            </span>
+          </div>
+        </div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">A reviewer who disagrees that the water and spatial-planning targets conflict can <b>rate this rationale down</b> and record the reason. The response is logged against this exact text and informs the next run.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Feedback is captured on target-pair rationales and document-pair syntheses (<code>POST /api/feedback</code>) into an append-only ledger keyed to the exact AI text, so a rating stays interpretable even after the pipeline is re-run.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
     </div>
 
     <div class="pstep" data-i="11">
@@ -591,6 +747,7 @@
         <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Community pasture agreements <span class="impl-status way">Under way</span></div>
         <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--align-flagged);flex:none"></span> Feed-import subsidy <span class="impl-status mis">Potential misalignment</span></div>
       </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · in summary</p><p class="exb">The walkthrough followed one pair, the NBSAP spatial-planning target and the NDC water target, from upload to a flagged coherence finding ready for review. Levels 2 and 3 apply the same steps to budgets and reported actions wherever that data exists.</p></div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Level 3, delivery. Reported measures (<abbr title="Biennial Transparency Report">BTR</abbr>, national reports) become pseudo-targets through the same two-agent workflow; an adapted prompt asks whether a measure "directly implements, partially supports, or has no relationship to" each target. In progress.</p><div class="specs"><span>Level 3 · delivery</span><span>BTR · <abbr title="Seventh National Report to the CBD">NR7</abbr></span><span>in progress</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the question</p>
         <div class="prompt">
@@ -607,31 +764,33 @@
   var DOCC = { ndc: "#0468b1", nbsap: "#0d9488", nap: "#b45309" };
   // map nodes, one per panel step
   var NODES = [
-    { i: 0,  ph: "ex", t: "Upload documents",       b: "Input \u00b7 5 doc types" },
+    { i: 0,  ph: "ex", t: "Upload documents",       b: "Input \u00b7 policy documents" },
     { i: 1,  ph: "ex", t: "Read every page",        b: "Page-aware reading" },
     { i: 2,  ph: "ex", t: "Extract verbatim",       b: "Word for word" },
     { i: 3,  ph: "ex", t: "Consolidate & verify",   b: "Merge \u00b7 claim check" },
+    { i: 13, ph: "an", kind: "human", t: "Confirm the targets", b: "Keep · edit · add" },
     { i: 4,  ph: "an", t: "Measurable & timed",     b: "Quantitative \u00b7 time-bound" },
-    { i: 5,  ph: "an", t: "Classify by category",   b: "NBS \u00b7 IPCC \u00b7 GLOBE \u00b7 editable" },
+    { i: 5,  ph: "an", t: "Classify by category",   b: "NBS \u00b7 IPCC \u00b7 GLOBE \u00b7 switchable" },
     { i: 6,  ph: "an", t: "Compare across docs",    b: "Every cross-doc pair" },
     { i: 7,  ph: "an", t: "Decompose",              b: "5 structured fields", agent: "Agent 1" },
     { i: 8,  ph: "an", t: "Assess alignment",       b: "5 levels, or a flag", agent: "Agent 2" },
     { i: 9,  ph: "sy", t: "Score & map",            b: "Coherency \u00b7 wheel" },
     { i: 10, ph: "sy", t: "Recurring patterns",     b: "Concentration & type" },
+    { i: 14, ph: "sy", kind: "human", t: "Rate the insights", b: "Thumbs · note" },
     { i: 11, ph: "sy", t: "Follow the finance",     b: "Budget review (BER)", level: "L2" },
     { i: 12, ph: "sy", t: "Track implementation",   b: "BTR \u00b7 NR7", level: "L3" }
   ];
-  // lane layout
+  // lane layout. array order = visual order = play order; n.i is the stable id used by panels + edges.
   var COL = 200, NW = 178, NH = 66;
   var LANE = { ex: 40, an: 226, sy: 412 };
   var IDX = { ex: 0, an: 0, sy: 0 };
   NODES.forEach(function (n) { n.x = 30 + IDX[n.ph] * COL; n.y = LANE[n.ph]; IDX[n.ph]++; });
-  var byI = {}; NODES.forEach(function (n) { byI[n.i] = n; });
+  var byI = {}, AIDX = {}; NODES.forEach(function (n, k) { byI[n.i] = n; AIDX[n.i] = k; });
 
   var EDGES = [
-    [0,1],[1,2],[2,3],[3,4,"cross","Targets","traceable"],
-    [4,5],[5,6],[6,7],[7,8],[8,9,"cross","Coherence","5-level + facets"],
-    [9,10],[8,11,"feed"],[8,12,"feed"]
+    [0,1],[1,2],[2,3],[3,13,"cross","Targets","confirmed"],
+    [13,4],[4,5],[5,6],[6,7],[7,8],[8,9,"cross","Coherence","5-level + facets"],
+    [9,10],[10,14],[8,11,"feed"],[8,12,"feed"],[14,5,"fb","Feedback","improves future analysis"]
   ];
 
   var board = document.getElementById("board");
@@ -642,13 +801,17 @@
   var N = NODES.length;
 
   // build node elements
-  NODES.forEach(function (n) {
+  NODES.forEach(function (n, k) {
     var el = document.createElement("div");
-    el.className = "node " + n.ph + (n.agent ? " agent" : "");
+    el.className = "node " + n.ph + (n.agent ? " agent" : "") + (n.kind === "human" ? " human" : "");
     el.style.left = n.x + "px"; el.style.top = n.y + "px";
-    var badge = n.agent ? '<span class="atag">' + n.agent + "</span>" : (n.level ? '<span class="ltag">' + n.level + "</span>" : "");
-    el.innerHTML = badge + '<span class="nnum">' + ("0" + (n.i + 1)).slice(-2) + '</span><span class="ntext"><span class="nt">' + n.t + '</span><span class="nb">' + n.b + "</span></span>";
-    el.addEventListener("click", function () { stop(); goTo(n.i, true); });
+    var badge = n.kind === "human" ? '<span class="htag">Human</span>'
+      : (n.agent ? '<span class="atag">' + n.agent + "</span>" : (n.level ? '<span class="ltag">' + n.level + "</span>" : ""));
+    var num = n.kind === "human"
+      ? '<span class="nnum"><svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>'
+      : '<span class="nnum">' + ("0" + (n.i + 1)).slice(-2) + '</span>';
+    el.innerHTML = badge + num + '<span class="ntext"><span class="nt">' + n.t + '</span><span class="nb">' + n.b + "</span></span>";
+    el.addEventListener("click", function () { stop(); goTo(k, true); });
     board.appendChild(el);
     n.el = el;
   });
@@ -676,22 +839,22 @@
 
   // edges + artifact labels
   EDGES.forEach(function (e) {
-    var a = byI[e[0]], b = byI[e[1]], feed = e[2] === "feed", cross = e[2] === "cross";
+    var a = byI[e[0]], b = byI[e[1]], feed = e[2] === "feed", cross = e[2] === "cross", fb = e[2] === "fb";
     var sx = a.x + NW, sy = a.y + NH / 2, tx = b.x, ty = b.y + NH / 2;
     var mx = (sx + tx) / 2;
     var d = "M " + sx + " " + sy + " C " + mx + " " + sy + " " + mx + " " + ty + " " + (tx - 8) + " " + ty;
     var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    p.setAttribute("d", d); p.setAttribute("class", "edge" + (feed ? " feed" : ""));
-    p.setAttribute("marker-end", "url(#" + (feed ? "arrowF" : "arrow") + ")");
+    p.setAttribute("d", d); p.setAttribute("class", "edge" + (feed ? " feed" : "") + (fb ? " fb" : ""));
+    p.setAttribute("marker-end", "url(#" + (feed || fb ? "arrowF" : "arrow") + ")");
     var len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
-    p.dataset.stage = Math.max(a.i, b.i);
+    p.dataset.stage = Math.max(AIDX[e[0]], AIDX[e[1]]);
     edgesSvg.appendChild(p); e.el = p;
-    if (cross) {
+    if ((cross || fb) && e[3]) {
       var lab = document.createElement("div");
-      lab.className = "elabel";
+      lab.className = fb ? "fb-lab" : "elabel";
       lab.style.left = mx + "px"; lab.style.top = ((sy + ty) / 2) + "px";
-      lab.innerHTML = e[3] + ' <span class="dt">· ' + e[4] + "</span>";
-      board.appendChild(lab); e.lab = lab; e.labStage = Math.max(a.i, b.i);
+      lab.innerHTML = fb ? e[3] : (e[3] + ' <span class="dt">· ' + e[4] + "</span>");
+      board.appendChild(lab); e.lab = lab; e.labStage = Math.max(AIDX[e[0]], AIDX[e[1]]);
     }
   });
 
@@ -719,26 +882,25 @@
   // ---- state ----
   var cur = 0;
   function render() {
-    NODES.forEach(function (n) { n.el.classList.toggle("shown", n.i <= cur); n.el.classList.toggle("active", n.i === cur); });
+    NODES.forEach(function (n, k) { n.el.classList.toggle("shown", k <= cur); n.el.classList.toggle("active", k === cur); });
     EDGES.forEach(function (e) {
       var on = parseInt(e.el.dataset.stage, 10) <= cur; e.el.classList.toggle("drawn", on);
       if (e.lab) e.lab.classList.toggle("shown", e.labStage <= cur);
     });
-    var actPh = byI[cur].ph, shown = {}; NODES.forEach(function (n) { if (n.i <= cur) shown[n.ph] = 1; });
+    var actPh = NODES[cur].ph, shown = {}; NODES.forEach(function (n, k) { if (k <= cur) shown[n.ph] = 1; });
     Object.keys(bands).forEach(function (ph) {
       bands[ph].band.classList.toggle("shown", !!shown[ph]); bands[ph].label.classList.toggle("shown", !!shown[ph]);
       bands[ph].band.classList.toggle("active", ph === actPh);
     });
-    psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === cur); });
+    psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === NODES[cur].i); });
     Array.prototype.forEach.call(dotsWrap.children, function (d, i) { d.setAttribute("aria-current", i === cur ? "true" : "false"); d.classList.toggle("seen", i <= cur); });
     document.getElementById("prev").disabled = cur === 0;
     try { localStorage.setItem("cpc_phases2_stage", String(cur)); } catch (e) {}
   }
   function goTo(i, animate) {
     cur = clamp(i, 0, N - 1); render();
-    var list = NODES.filter(function (n) { return n.i <= cur; });
-    // keep active node comfortably framed but show the growth
-    fitNodes(list, animate);
+    // keep every node up to the active one framed, so the build is visible
+    fitNodes(NODES.slice(0, cur + 1), animate);
   }
   function next() { if (cur < N - 1) goTo(cur + 1, true); else stop(); }
   function prev() { if (cur > 0) goTo(cur - 1, true); }
@@ -760,6 +922,9 @@
   var dP = document.getElementById("depthPlain"), dT = document.getElementById("depthTech"), dD = document.getElementById("depthDeep");
   function depth(m) { document.body.classList.toggle("show-tech", m === "tech"); document.body.classList.toggle("show-deep", m === "deep"); dP.setAttribute("aria-pressed", String(m === "plain")); dT.setAttribute("aria-pressed", String(m === "tech")); dD.setAttribute("aria-pressed", String(m === "deep")); }
   dP.addEventListener("click", function () { depth("plain"); }); dT.addEventListener("click", function () { depth("tech"); }); dD.addEventListener("click", function () { depth("deep"); });
+
+  var exT = document.getElementById("exToggle");
+  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); });
 
   // ---- diagrams ----
   function buildPairs() {
@@ -802,12 +967,12 @@
   document.getElementById("startBtn").addEventListener("click", boot);
 
   function init() {
-    depth("deep");
+    depth("plain");
     buildPairs(); buildWheel();
     cur = 0; render(); goTo(0, false);
     autoTimer = setTimeout(boot, 2800);
   }
-  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { fitNodes(NODES.filter(function (n) { return n.i <= cur; }), false); }, 130); });
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { fitNodes(NODES.slice(0, cur + 1), false); }, 130); });
   if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
 })();
 </script>
