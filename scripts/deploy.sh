@@ -51,6 +51,27 @@ az account show --query name -o tsv >/dev/null 2>&1 || {
   exit 1
 }
 
+# PIM Contributor check. ACR push requires AcrPush, which Contributor
+# includes. The subscription's standing assignment is Reader only — push
+# needs the elevated role active. This catches the common case before the
+# 5-minute buildx wastes wall-clock.
+SUB_ID=$(az account show --query id -o tsv)
+HAS_PUSH=$(az role assignment list \
+  --assignee "$(az account show --query user.name -o tsv)" \
+  --scope "/subscriptions/${SUB_ID}" \
+  --query "[?roleDefinitionName=='Contributor' || roleDefinitionName=='Owner' || roleDefinitionName=='AcrPush'] | length(@)" \
+  -o tsv 2>/dev/null || echo "0")
+if [ "${HAS_PUSH:-0}" = "0" ]; then
+  echo "❌ Your active Azure role is Reader-level; ACR push needs Contributor or AcrPush."
+  echo
+  echo "   Activate PIM Contributor via the portal (fastest):"
+  echo "     https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac"
+  echo
+  echo "   Or via CLI — see scripts/deploy.sh comments for the az rest call."
+  echo "   PIM activations last for the duration you choose (default 2h)."
+  exit 1
+fi
+
 cd "$(git rev-parse --show-toplevel)"
 
 GIT_SHA=$(git rev-parse --short HEAD)
