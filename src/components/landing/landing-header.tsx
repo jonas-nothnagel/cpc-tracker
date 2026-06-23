@@ -73,7 +73,7 @@ export function LandingHeader() {
           >
             {t("nav.uploadData")}
           </Link>
-          <LanguageSwitcher />
+          <LanguageSwitcher onDark={!scrolled} />
         </nav>
       </div>
     </header>
