@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 #
-# CPC Tracker — single image serving Next.js + spawning the Python pipeline.
+# CPC Analyzer — single image serving Next.js + spawning the Python pipeline.
 # Targets Azure App Service for Containers (Linux).
 #
 # Two stages:

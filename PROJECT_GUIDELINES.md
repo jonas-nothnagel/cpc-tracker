@@ -1,4 +1,4 @@
-# CPC Tracker - Project Guidelines
+# CPC Analyzer - Project Guidelines
 
 > Nature-Climate Policy Coherence Progress Analysis Tool for UNDP
 

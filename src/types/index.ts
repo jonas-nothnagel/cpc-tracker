@@ -1,5 +1,5 @@
 /**
- * Core data types for the CPC Tracker.
+ * Core data types for the CPC Analyzer.
  *
  * These types model the entities described in the Mongolia Target
  * Alignment Assessment methodology, generalised for any country.

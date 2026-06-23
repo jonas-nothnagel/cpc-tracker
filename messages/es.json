@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Rastreador de Coherencia de Políticas",
+    "appName": "Analizador de Coherencia de Políticas",
     "close": "Cerrar",
     "back": "Atrás",
     "backAria": "Volver",
@@ -28,7 +28,7 @@
     }
   },
   "header": {
-    "brand": "Rastreador de Coherencia de Políticas",
+    "brand": "Analizador de Coherencia de Políticas",
     "nav": {
       "home": "Inicio",
       "uploadData": "Cargar datos",
@@ -40,7 +40,7 @@
   "landing": {
     "hero": {
       "eyebrow": "Iniciativa Sprint de IA del PNUD",
-      "title": "Rastreador de Coherencia de Políticas de Naturaleza y Clima",
+      "title": "Analizador de Coherencia de Políticas de Naturaleza y Clima",
       "subtitle": "Vea dónde sus metas nacionales de clima, biodiversidad y uso de la tierra se alinean, se superponen o pueden ir en direcciones distintas.",
       "analyseCta": "Analizar sus políticas",
       "exploreMenu": "Explorar un país piloto",
@@ -108,7 +108,7 @@
       "backToHome": "Volver al inicio"
     },
     "footer": {
-      "text": "Programa de las Naciones Unidas para el Desarrollo · CPC Tracker"
+      "text": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer"
     }
   },
   "briefing": {
@@ -765,7 +765,7 @@
       "headerSubtitle": "Nuevo análisis",
       "title": "Nuevo análisis",
       "subtitle": "Cargue documentos de política, revise metas, configure categorías y ejecute la canalización de análisis de coherencia.",
-      "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Tracker",
+      "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
       "autoLabel": "Meta {n, number}",
       "unknownCountry": "Desconocido",
       "errors": {
@@ -938,7 +938,7 @@
     "errorHeading": "Error",
     "backToUpload": "Volver a la carga",
     "loadingStatus": "Cargando estado del análisis…",
-    "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Tracker",
+    "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
     "errors": {
       "notFound": "Análisis no encontrado",
       "statusCheck": "Fallo al comprobar el estado del análisis"
@@ -1318,26 +1318,26 @@
   },
   "metadata": {
     "root": {
-      "title": "CPC Tracker | Análisis de Coherencia de Políticas",
+      "title": "CPC Analyzer | Análisis de Coherencia de Políticas",
       "description": "Herramienta asistida por IA para evaluar la coherencia entre políticas de naturaleza y clima y rastrear el progreso de implementación."
     },
     "dashboard": {
-      "title": "Panel | CPC Tracker",
-      "countryTitle": "Panel de {name} | CPC Tracker",
-      "analysisTitle": "Análisis {id} | CPC Tracker"
+      "title": "Panel | CPC Analyzer",
+      "countryTitle": "Panel de {name} | CPC Analyzer",
+      "analysisTitle": "Análisis {id} | CPC Analyzer"
     },
     "prototypes": {
-      "title": "Prototipos | CPC Tracker",
-      "countryTitle": "Prototipos de {name} | CPC Tracker",
-      "analysisTitle": "Prototipos · Análisis {id} | CPC Tracker"
+      "title": "Prototipos | CPC Analyzer",
+      "countryTitle": "Prototipos de {name} | CPC Analyzer",
+      "analysisTitle": "Prototipos · Análisis {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "Huella de Sostenibilidad de IA | CPC Tracker",
-      "description": "Huella ambiental estimada de la computación de IA detrás del CPC Tracker, para reporte de transparencia."
+      "title": "Huella de Sostenibilidad de IA | CPC Analyzer",
+      "description": "Huella ambiental estimada de la computación de IA detrás del CPC Analyzer, para reporte de transparencia."
     },
     "methodology": {
-      "title": "Cómo funciona | CPC Tracker",
-      "description": "Cómo la herramienta de coherencia de políticas naturaleza-clima convierte los documentos de política nacional en información transparente y trazable para apoyar la toma de decisiones."
+      "title": "Cómo funciona | CPC Analyzer",
+      "description": "Cómo el Analizador de Coherencia de Políticas Naturaleza-Clima convierte los documentos de política nacional en información transparente y trazable para apoyar la toma de decisiones."
     }
   },
   "viz": {

@@ -1,4 +1,4 @@
-"""Shared fixtures for CPC Tracker tests.
+"""Shared fixtures for CPC Analyzer tests.
 
 All LLM calls are mocked -- no network access or API keys needed.
 """

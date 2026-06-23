@@ -159,7 +159,7 @@ def fetch_agri_support(
                 end=end_year,
             )
             try:
-                req = urllib.request.Request(url, headers={"User-Agent": "CPC-Tracker/1.0"})
+                req = urllib.request.Request(url, headers={"User-Agent": "CPC-Analyzer/1.0"})
                 with urllib.request.urlopen(req, timeout=60) as resp:
                     data = json.loads(resp.read().decode())
 

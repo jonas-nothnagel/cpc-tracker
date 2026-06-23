@@ -1,6 +1,6 @@
 # Methodology: Nature-Climate Policy Coherence Analysis
 
-> How the CPC Tracker analyzes alignment between national policy targets.
+> How the CPC Analyzer analyzes alignment between national policy targets.
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 

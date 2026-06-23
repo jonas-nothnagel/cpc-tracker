@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Policy Coherence Tracker",
+    "appName": "Policy Coherence Analyzer",
     "close": "Close",
     "back": "Back",
     "backAria": "Go back",
@@ -28,7 +28,7 @@
     }
   },
   "header": {
-    "brand": "Policy Coherence Tracker",
+    "brand": "Policy Coherence Analyzer",
     "nav": {
       "home": "Home",
       "uploadData": "Upload Data",
@@ -40,7 +40,7 @@
   "landing": {
     "hero": {
       "eyebrow": "UNDP AI Sprint Initiative",
-      "title": "Nature-Climate Policy Coherence Tracker",
+      "title": "Nature-Climate Policy Coherence Analyzer",
       "subtitle": "See where your national climate, biodiversity, and land-use targets align, overlap, or may pull in different directions.",
       "analyseCta": "Analyse your policies",
       "exploreMenu": "Explore a pilot country",
@@ -108,7 +108,7 @@
       "backToHome": "Back to home"
     },
     "footer": {
-      "text": "United Nations Development Programme · CPC Tracker"
+      "text": "United Nations Development Programme · CPC Analyzer"
     }
   },
   "briefing": {
@@ -765,7 +765,7 @@
       "headerSubtitle": "New Analysis",
       "title": "New Analysis",
       "subtitle": "Upload policy documents, review targets, configure categories, and run the coherence analysis pipeline.",
-      "footer": "United Nations Development Programme · CPC Tracker",
+      "footer": "United Nations Development Programme · CPC Analyzer",
       "autoLabel": "Target {n, number}",
       "unknownCountry": "Unknown",
       "errors": {
@@ -938,7 +938,7 @@
     "errorHeading": "Error",
     "backToUpload": "Back to Upload",
     "loadingStatus": "Loading analysis status…",
-    "footer": "United Nations Development Programme · CPC Tracker",
+    "footer": "United Nations Development Programme · CPC Analyzer",
     "errors": {
       "notFound": "Analysis not found",
       "statusCheck": "Failed to check analysis status"
@@ -1318,26 +1318,26 @@
   },
   "metadata": {
     "root": {
-      "title": "CPC Tracker | Policy Coherence Analysis",
+      "title": "CPC Analyzer | Policy Coherence Analysis",
       "description": "AI-assisted tool for assessing coherence across nature-climate policies and tracking implementation progress."
     },
     "dashboard": {
-      "title": "Dashboard | CPC Tracker",
-      "countryTitle": "{name} Dashboard | CPC Tracker",
-      "analysisTitle": "Analysis {id} | CPC Tracker"
+      "title": "Dashboard | CPC Analyzer",
+      "countryTitle": "{name} Dashboard | CPC Analyzer",
+      "analysisTitle": "Analysis {id} | CPC Analyzer"
     },
     "prototypes": {
-      "title": "Prototypes | CPC Tracker",
-      "countryTitle": "{name} Prototypes | CPC Tracker",
-      "analysisTitle": "Prototypes · Analysis {id} | CPC Tracker"
+      "title": "Prototypes | CPC Analyzer",
+      "countryTitle": "{name} Prototypes | CPC Analyzer",
+      "analysisTitle": "Prototypes · Analysis {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "AI Sustainability Footprint | CPC Tracker",
-      "description": "Estimated environmental footprint of the AI computation behind the CPC Tracker, for transparency reporting."
+      "title": "AI Sustainability Footprint | CPC Analyzer",
+      "description": "Estimated environmental footprint of the AI computation behind the CPC Analyzer, for transparency reporting."
     },
     "methodology": {
-      "title": "How it works | CPC Tracker",
-      "description": "How the Nature-Climate Policy Coherence Tool turns national policy documents into transparent, traceable insights for decision support."
+      "title": "How it works | CPC Analyzer",
+      "description": "How the Nature-Climate Policy Coherence Analyzer turns national policy documents into transparent, traceable insights for decision support."
     }
   },
   "viz": {
