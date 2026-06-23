@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: StandalonePageProps) {
   const { country } = await params;
   const lower = country.toLowerCase();
   const entry = isValidCountryId(lower) ? getCountry(lower) : undefined;
-  if (!entry?.visible) return { title: "CPC Tracker" };
-  return { title: `${entry.name} | CPC Tracker` };
+  if (!entry?.visible) return { title: "CPC Analyzer" };
+  return { title: `${entry.name} | CPC Analyzer` };
 }
 
 export default async function StandaloneCountryPage({ params }: StandalonePageProps) {

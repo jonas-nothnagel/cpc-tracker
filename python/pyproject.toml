@@ -1,7 +1,7 @@
 [project]
 name = "cpc-tracker-data"
 version = "0.1.0"
-description = "Data processing and LLM pipeline for CPC Tracker"
+description = "Data processing and LLM pipeline for CPC Analyzer"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

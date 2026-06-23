@@ -1,6 +1,6 @@
 # AI Carbon Footprint Methodology
 
-How the CPC Tracker measures and reports the environmental footprint of the AI
+How the CPC Analyzer measures and reports the environmental footprint of the AI
 computation behind the tool. This is a transparency record for reporting, not a
 decision-support output. It is designed to be reusable as a standard for other
 UNDP projects that run LLM and API calls.
