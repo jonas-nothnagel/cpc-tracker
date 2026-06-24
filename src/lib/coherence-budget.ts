@@ -347,3 +347,96 @@ export function computeProgrammesByCategory(args: {
   }
   return result;
 }
+
+/**
+ * One GLOBE subcategory under a primary outcome, with its share of reviewed
+ * spend and its policy-target count — the "distribution within the category"
+ * a parent row expands to show.
+ */
+export interface OutcomeSubcategory {
+  /** Subcategory code/id, e.g. "6.02". */
+  id: string;
+  /** Verbatim subcategory name. */
+  name: string;
+  /** Parent primary GLOBE id, e.g. "globe_6". */
+  parentId: string;
+  /** BER spend classified to this subcategory, in `berData.unit`. */
+  totalBudget: number;
+  /** Share of the SAME grand total as the primary entries (so a parent's
+   *  subcategory shares sum to the parent's share). 0..1. */
+  shareOfTotalBudget: number;
+  /** Policy targets (scoped to `targets`) whose primary globe_sub is this id. */
+  targetCount: number;
+  hasBudget: boolean;
+}
+
+/**
+ * Per-primary list of GLOBE subcategories that carry either reviewed spend or a
+ * policy target — the breakdown a funded OR unfunded outcome row expands into.
+ * Subcategories with neither (no budget, no target) are dropped as noise.
+ * Mirrors `computeBudgetByGlobeCategory`'s single-label, BER-only money rollup,
+ * so subcategory budgets sum back to the primary's `totalBudget` exactly. Keyed
+ * by parent primary id; each list sorted funded-first then by target count.
+ */
+export function computeOutcomeSubcategories(args: {
+  berData: BerData | null;
+  globeSubcategories: GlobeSubcategory[];
+  classifications: ThematicClassification[];
+  targets: Target[];
+}): Map<string, OutcomeSubcategory[]> {
+  const { berData, globeSubcategories, classifications, targets } = args;
+  const result = new Map<string, OutcomeSubcategory[]>();
+  if (!berData || globeSubcategories.length === 0) return result;
+
+  const expByBerId = new Map<string, number>();
+  for (const e of berData.expenditure) {
+    const tot = totalExpenditure(e);
+    if (tot > 0) expByBerId.set(`${BER_ID_PREFIX}${e.code}`, tot);
+  }
+
+  // Budget per subcategory: BER programme spend via its primary globe_sub tag.
+  const budgetBySub = new Map<string, number>();
+  for (const c of classifications) {
+    if (c.taxonomyType !== "globe_sub" || c.isPrimary !== true) continue;
+    if (!c.targetId.startsWith(BER_ID_PREFIX)) continue;
+    const exp = expByBerId.get(c.targetId) ?? 0;
+    if (exp <= 0) continue;
+    budgetBySub.set(c.categoryId, (budgetBySub.get(c.categoryId) ?? 0) + exp);
+  }
+  const grandTotal = Array.from(budgetBySub.values()).reduce((a, b) => a + b, 0);
+
+  // Policy-target count per subcategory (primary globe_sub, scoped to targets).
+  const targetIds = new Set(targets.map((t) => t.id));
+  const targetsBySub = new Map<string, Set<string>>();
+  for (const c of classifications) {
+    if (c.taxonomyType !== "globe_sub" || c.isPrimary !== true) continue;
+    if (!targetIds.has(c.targetId)) continue;
+    const set = targetsBySub.get(c.categoryId) ?? new Set<string>();
+    set.add(c.targetId);
+    targetsBySub.set(c.categoryId, set);
+  }
+
+  for (const s of globeSubcategories) {
+    const budget = budgetBySub.get(s.id) ?? 0;
+    const tCount = targetsBySub.get(s.id)?.size ?? 0;
+    if (budget <= 0 && tCount <= 0) continue;
+    const list = result.get(s.parentId) ?? [];
+    list.push({
+      id: s.id,
+      name: s.name,
+      parentId: s.parentId,
+      totalBudget: budget,
+      shareOfTotalBudget: grandTotal > 0 ? budget / grandTotal : 0,
+      targetCount: tCount,
+      hasBudget: budget > 0,
+    });
+    result.set(s.parentId, list);
+  }
+
+  for (const list of result.values()) {
+    list.sort(
+      (a, b) => b.totalBudget - a.totalBudget || b.targetCount - a.targetCount,
+    );
+  }
+  return result;
+}

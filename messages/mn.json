@@ -592,6 +592,16 @@
         "everythingElseTitle": "Бусад бүх зүйл: {pct}%",
         "everythingElse": "бусад бүх зүйл"
       },
+      "outcome": {
+        "eyebrow": "{amount} хаашаа явдаг вэ · чиглэлээр",
+        "concentratesIn": "Ангилсан биологийн төрөл зүйлийн зарлагын {pct}% нь {category} чиглэлд төвлөрчээ.",
+        "largestShare": "Ангилсан биологийн төрөл зүйлийн зарлагын хамгийн их хувь буюу {pct}% нь {category} чиглэлд ногдож байна.",
+        "unfunded": "{count, plural, one {бодлогын зорилттой # чиглэл санхүүжилтгүй байна} other {бодлогын зорилттой # чиглэл санхүүжилтгүй байна}}.",
+        "colShare": "BER-ийн хувь",
+        "colTargets": "Зорилт",
+        "noBudget": "төсөвгүй",
+        "shareCaveat": "Ангилсан BER зарлагын хувь, тус улсын нийт төсөв биш."
+      },
       "execution": {
         "eyebrow": "Төлөвлөсөн ба зарцуулсан · {period}",
         "eyebrowNamed": "{program} · {period}",
@@ -1221,7 +1231,8 @@
       "centerConnectionsSingular": "{count, number} холбоос",
       "centerConnectionsPlural": "{count, number} холбоос",
       "centerTargetSingular": "{count, number} зорилт",
-      "centerTargetPlural": "{count, number} зорилт"
+      "centerTargetPlural": "{count, number} зорилт",
+      "centerSpendTagged": "тэмдэглэсэн биологийн төрөл зүйлийн зарлага"
     },
     "detailPanel": {
       "closeAria": "Зорилтын дэлгэрэнгүйг хаах",
@@ -1313,7 +1324,50 @@
       "genericError": "Уучлаарай, энэ ажиллаагүй.",
       "askPlaceholderProminent": "Эдгээр бодлогуудын талаар юу ч асууна уу…",
       "askAriaProminent": "Бодлогын баримт бичгүүдийн талаар туслахаас асуух",
-      "askProminent": "Асуух →"
+      "askProminent": "Асуух →",
+      "askPoliciesLabel": "Бодлогоос асуух"
+    },
+    "workbench": {
+      "viewLabel": "Харагдац",
+      "viewCoherence": "Уялдаа",
+      "viewFinance": "Санхүү · BER",
+      "groupByLabel": "Нуман хаалтыг бүлэглэх",
+      "groupSectors": "Салбарууд",
+      "showLabel": "Харуулах",
+      "answersHeading": "Хариултууд",
+      "documentsLabel": "Баримт бичгүүд",
+      "documentsShown": "{shown, number}/{total, number} харагдаж байна",
+      "answersHandle": "{count, plural, =0 {Хариултууд} other {Хариултууд · #}}",
+      "answersTitle": "Хариулт болон дэлгэрэнгүйг харуулах/нуух",
+      "answersClose": "Хураах",
+      "answersEmpty": "Асуулт асууж, зорилт нээж, эсвэл Гайхуулаач товчийг туршина уу. Хариулт болон дэлгэрэнгүй энд гарч ирнэ.",
+      "statCoherence": "{strong, number} хүчтэй уялдаа · {potential, number} болзошгүй үл нийцэл · {country}, {targets, number} зорилт",
+      "statFinance": "{country} · {targets, number} зорилт · GLOBE ангиллаар тэмдэглэсэн биологийн төрөл зүйлийн зарлага",
+      "finance": {
+        "budgetLabel": "Төсөв",
+        "periodLabel": "BER {start, number}-{end, number}",
+        "tileTaggedSpend": "Тэмдэглэсэн зарлага",
+        "tileFundedCategories": "Санхүүжсэн ангилал",
+        "tileFundedValue": "{funded, number}/{total, number}",
+        "helperNote": "Нуман хаалт бүрийн гүн нь тухайн ангиллын тэмдэглэсэн биологийн төрөл зүйлийн зарлагад эзлэх хувийг харуулна; үүнийг болзошгүй үл нийцэл хаана байгаатай харьцуулан уншина уу.",
+        "scopeCaveat": "Улсын нийт төсөв биш, хянасан биологийн төрөл зүйлийн зарлагын хувь."
+      },
+      "footerCaveat": "AI-аар үүсгэсэн дүн шинжилгээ. Эцсийн дүгнэлт биш, нягтлах сэрэмж гэж үзнэ үү."
+    },
+    "questions": {
+      "coherence": {
+        "reportedVsPlanned": "Тайлагнасан арга хэмжээ төлөвлөсөн зорилтоос хаана зөрж байна вэ?",
+        "ministryCoordination": "Аль зорилт яам хоорондын зохицуулалтаас үр өгөөж хүртэх вэ?",
+        "tightenBoundary": "Зорилтын хүрээг нарийсгаснаар уялдааг хаана нээж болох вэ?",
+        "missingIndicator": "Аль болзошгүй үл нийцэлд хэмжигдэхүйц үзүүлэлт дутагдаж байна вэ?",
+        "themeConcentration": "Аль сэдвүүд хамгийн их болзошгүй үл нийцлийг агуулж байна вэ?",
+        "adaptationAlignment": "Дасан зохицох арга хэмжээ үндэсний зорилттой хэр сайн уялдаж байна вэ?"
+      },
+      "finance": {
+        "spendVsMisalignment": "Биологийн төрөл зүйлийн зарлага болзошгүй үл нийцэлтэй харьцуулахад хаана байна вэ?",
+        "underFunded": "Аль үндэсний зорилт дутуу санхүүжсэн бол?",
+        "fundedCategories": "Аль GLOBE ангилал хамгийн их тэмдэглэсэн зарлагатай вэ?"
+      }
     }
   },
   "metadata": {

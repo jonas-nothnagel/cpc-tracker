@@ -105,6 +105,12 @@ import {
   type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
 import {
+  computeBudgetByGlobeCategory,
+  computeOutcomeSubcategories,
+  type CategoryBudgetSummary,
+  type OutcomeSubcategory,
+} from "@/lib/coherence-budget";
+import {
   buildActionMeta,
   computeActionPlanAlignment,
   computeDeliveryRoster,
@@ -340,6 +346,47 @@ export function CoherenceBriefing({
     }
     return computeFinancingCoherence(berData);
   }, [berData]);
+
+  // Reviewed spending rolled up to the biodiversity-OUTCOME taxonomy (primary
+  // GLOBE), so the centerpiece can lead with where money concentrates AND which
+  // outcome areas carry policy targets but no classified budget — the signal the
+  // raw program-name view can't show (an absent budget line never appears).
+  // Pass the FULL classifications array: BER_* programme classifications are not
+  // document-scoped, so visibleClassifications (policy-target filtered) would
+  // strip them and zero the budget. Target counts are scoped via visibleTargets,
+  // so the gap list's counts track the document toggle while spend stays fixed.
+  // Null (no GLOBE-classified BER) → the centerpiece falls back to the raw view.
+  const outcomeBudget = useMemo<CategoryBudgetSummary | null>(() => {
+    if (!financing || !berData) return null;
+    return computeBudgetByGlobeCategory({
+      berData,
+      globeCategories,
+      globeSubcategories,
+      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+    });
+  }, [
+    financing,
+    berData,
+    globeCategories,
+    globeSubcategories,
+    classifications,
+    visibleTargets,
+    visibleAlignment,
+  ]);
+
+  // Per-outcome subcategory distribution (the rows a category expands into).
+  // Same FULL-classifications / visible-targets scoping as outcomeBudget.
+  const outcomeSubcategories = useMemo<Map<string, OutcomeSubcategory[]>>(() => {
+    if (!outcomeBudget || !berData) return new Map();
+    return computeOutcomeSubcategories({
+      berData,
+      globeSubcategories,
+      classifications,
+      targets: visibleTargets,
+    });
+  }, [outcomeBudget, berData, globeSubcategories, classifications, visibleTargets]);
 
   // Softer, AI-estimated per-document budget reach for the left-column read.
   // Recomputes with the document toggle (visibleTargets). Null without budget
@@ -1373,6 +1420,8 @@ export function CoherenceBriefing({
               ) : activeSection === FINANCING_SECTION_ID && financing ? (
                 <FinancingCenterpiece
                   summary={financing}
+                  outcomeBudget={outcomeBudget}
+                  outcomeSubcategories={outcomeSubcategories}
                   countryName={countryName}
                 />
               ) : activeSection === IMPLEMENTATION_SECTION_ID &&

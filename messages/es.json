@@ -592,6 +592,16 @@
         "everythingElseTitle": "Todo lo demás: {pct}%",
         "everythingElse": "todo lo demás"
       },
+      "outcome": {
+        "eyebrow": "A dónde va el {amount} · por área de resultado",
+        "concentratesIn": "El {pct}% del gasto clasificado en biodiversidad se concentra en {category}.",
+        "largestShare": "La mayor parte del gasto clasificado en biodiversidad, el {pct}%, se destina a {category}.",
+        "unfunded": "{count, plural, one {# área de resultado con metas de política no recibe nada} other {# áreas de resultado con metas de política no reciben nada}}.",
+        "colShare": "Proporción del BER",
+        "colTargets": "Metas",
+        "noBudget": "sin presupuesto",
+        "shareCaveat": "Proporción del gasto BER clasificado, no del presupuesto total del país."
+      },
       "execution": {
         "eyebrow": "Planificado frente a gastado · {period}",
         "eyebrowNamed": "{program} · {period}",
@@ -1221,7 +1231,8 @@
       "centerConnectionsSingular": "{count, number} conexión",
       "centerConnectionsPlural": "{count, number} conexiones",
       "centerTargetSingular": "{count, number} meta",
-      "centerTargetPlural": "{count, number} metas"
+      "centerTargetPlural": "{count, number} metas",
+      "centerSpendTagged": "gasto en biodiversidad etiquetado"
     },
     "detailPanel": {
       "closeAria": "Cerrar detalle de la meta",
@@ -1313,7 +1324,50 @@
       "genericError": "Lo siento, eso no funcionó.",
       "askPlaceholderProminent": "Pregunte cualquier cosa sobre estas políticas…",
       "askAriaProminent": "Pregunte al asistente sobre los documentos de política",
-      "askProminent": "Preguntar →"
+      "askProminent": "Preguntar →",
+      "askPoliciesLabel": "Pregunte a las políticas"
+    },
+    "workbench": {
+      "viewLabel": "Vista",
+      "viewCoherence": "Coherencia",
+      "viewFinance": "Finanzas · BER",
+      "groupByLabel": "Agrupar los arcos por",
+      "groupSectors": "Sectores",
+      "showLabel": "Mostrar",
+      "answersHeading": "Respuestas",
+      "documentsLabel": "Documentos",
+      "documentsShown": "{shown, number}/{total, number} visibles",
+      "answersHandle": "{count, plural, =0 {Respuestas} other {Respuestas · #}}",
+      "answersTitle": "Mostrar u ocultar las respuestas y el detalle",
+      "answersClose": "Contraer",
+      "answersEmpty": "Haga una pregunta, abra una meta o pruebe Sorpréndame. Las respuestas y el detalle aparecen aquí.",
+      "statCoherence": "{strong, number} alineaciones fuertes · {potential, number} posibles desalineaciones · {country}, {targets, number} metas",
+      "statFinance": "{country} · {targets, number} metas · gasto en biodiversidad etiquetado por categorías GLOBE",
+      "finance": {
+        "budgetLabel": "Presupuesto",
+        "periodLabel": "BER {start, number}-{end, number}",
+        "tileTaggedSpend": "Gasto etiquetado",
+        "tileFundedCategories": "Categorías financiadas",
+        "tileFundedValue": "{funded, number}/{total, number}",
+        "helperNote": "La profundidad de cada cuña muestra la parte del gasto en biodiversidad etiquetado de cada categoría, leída frente a dónde se sitúan las posibles desalineaciones.",
+        "scopeCaveat": "Parte del gasto en biodiversidad revisado, no del presupuesto total del país."
+      },
+      "footerCaveat": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo."
+    },
+    "questions": {
+      "coherence": {
+        "reportedVsPlanned": "¿Dónde divergen las acciones reportadas de las metas planificadas?",
+        "ministryCoordination": "¿Qué meta podría beneficiarse de la coordinación entre ministerios?",
+        "tightenBoundary": "¿Dónde podría un límite de meta más estricto desbloquear la alineación?",
+        "missingIndicator": "¿Qué posibles desalineaciones carecen de un indicador medible?",
+        "themeConcentration": "¿Qué temas concentran más posibles desalineaciones?",
+        "adaptationAlignment": "¿Qué tan bien se alinean las acciones de adaptación con las metas nacionales?"
+      },
+      "finance": {
+        "spendVsMisalignment": "¿Dónde se sitúa el gasto en biodiversidad respecto a las posibles desalineaciones?",
+        "underFunded": "¿Qué metas nacionales parecen estar infrafinanciadas?",
+        "fundedCategories": "¿Qué categorías GLOBE concentran más gasto etiquetado?"
+      }
     }
   },
   "metadata": {

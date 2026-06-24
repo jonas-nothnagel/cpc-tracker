@@ -47,6 +47,8 @@ import {
   BTR_ADAPTATION_COLOR,
   OriginalLanguageChip,
 } from "./target-text";
+import { WorkbenchStage } from "./explorer-workbench/workbench-stage";
+import { LensPane } from "./explorer-workbench/lens-pane";
 import type {
   BerData,
   BtrData,
@@ -1313,6 +1315,107 @@ function ReplyText({
   return <>{parts}</>;
 }
 
+/**
+ * The chat output bubbles (rotating insight, typed reply, error) plus the
+ * inline "Show me" affordance. Extracted from ChatBar so the Explorer B
+ * workbench can keep the chat INPUT in the bottom dock while the OUTPUT lands
+ * in the answers drawer. In the standalone variants ChatBar renders this inline
+ * exactly as before.
+ */
+function ChatOutput({
+  chat,
+  currentInsight,
+  canShowMe,
+  onApplyHook,
+  onSelectChatEntity,
+  hideInsights = false,
+}: {
+  chat: ChatStatus;
+  currentInsight: Insight | null;
+  canShowMe: boolean;
+  onApplyHook: () => void;
+  onSelectChatEntity: (targetId: string) => void;
+  hideInsights?: boolean;
+}) {
+  const t = useTranslations("explorer.chat");
+  const showInsight =
+    !hideInsights &&
+    !!currentInsight &&
+    !chat.reply &&
+    !chat.loading &&
+    !chat.error;
+  const showReply = !!chat.reply && !chat.loading;
+  const showError = !!chat.error && !chat.loading;
+  const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
+
+  return (
+    <>
+      {showInsight && currentInsight && (
+        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
+          <p className="flex items-baseline gap-2">
+            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
+              {t("insight")}
+            </span>
+            <span className="flex-1">{currentInsight.callout}</span>
+          </p>
+          {currentInsight.pathway && (
+            <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
+              <span
+                aria-hidden="true"
+                className="mr-1.5 not-italic text-amber-700/70"
+              >
+                ↪
+              </span>
+              {currentInsight.pathway}
+            </p>
+          )}
+          {canShowMe && (
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                onClick={onApplyHook}
+                disabled={chat.loading}
+                className={SHOW_ME_LINK_AMBER}
+              >
+                {t("showMe")} <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {showReply && (
+        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
+          <div>
+            <ReplyText
+              typed={typedReply}
+              full={chat.reply}
+              entities={chat.replyEntities}
+              onSelectTarget={onSelectChatEntity}
+            />
+          </div>
+          {canShowMe && (
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                onClick={onApplyHook}
+                disabled={chat.loading}
+                className={SHOW_ME_LINK_BLUE}
+              >
+                {t("showMe")} <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {showError && (
+        <div className="text-[12px] text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
+          {chat.error}
+        </div>
+      )}
+    </>
+  );
+}
+
 function ChatBar({
   onAsk,
   chat,
@@ -1324,6 +1427,9 @@ function ChatBar({
   onSelectChatEntity,
   prominent = false,
   hideInsights = false,
+  hideReply = false,
+  surprisePool,
+  surpriseFills = false,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
@@ -1343,6 +1449,16 @@ function ChatBar({
   /** Suppress the rotating insight bubble + Surprise me (used in the expanded
    *  wheel view, where the user wants just the wheel and the chat). */
   hideInsights?: boolean;
+  /** Render the input + chips only, with the reply / insight / error bubbles
+   *  suppressed. The Explorer B dock sets this so the output lands in the
+   *  answers drawer instead. */
+  hideReply?: boolean;
+  /** Full pool of questions Surprise me draws from when surpriseFills is set
+   *  (wider than the few chips shown). */
+  surprisePool?: string[];
+  /** Explorer B behaviour: Surprise me fills the input with a random question
+   *  from surprisePool instead of rotating a data-derived insight. */
+  surpriseFills?: boolean;
 }) {
   const t = useTranslations("explorer.chat");
   const [query, setQuery] = useState("");
@@ -1356,17 +1472,10 @@ function ChatBar({
     setQuery("");
   };
 
-  // The visible message slot shows one of: the current insight bubble, the
-  // assistant's reply, or an error. They share the same bubble chrome so
-  // the UI doesn't shift between states.
-  const showInsight =
-    !hideInsights &&
-    !!currentInsight &&
-    !chat.reply &&
-    !chat.loading &&
-    !chat.error;
+  // showReply gates the server follow-up chips below. The reply / insight /
+  // error bubbles render via <ChatOutput> (suppressed when hideReply, e.g. the
+  // Explorer B dock, where the output moves to the answers drawer instead).
   const showReply = !!chat.reply && !chat.loading;
-  const showError = !!chat.error && !chat.loading;
   // Drop server-emitted "surprise" follow-ups because the always-visible
   // Surprise me chip below already covers that affordance.
   const visibleSuggestions = chat.suggestions.filter(
@@ -1374,18 +1483,18 @@ function ChatBar({
   );
   const showSuggestions = showReply && visibleSuggestions.length > 0;
 
-  // Only the reply types out. The insight bubble appears instantly because
-  // it's a pre-loaded hook the user didn't explicitly request; making it
-  // type would imply more thinking-in-progress than is actually happening.
-  const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
+  const onSurprise = () => {
+    if (surpriseFills) {
+      const pool = surprisePool ?? [];
+      if (pool.length === 0) return;
+      setQuery(pool[Math.floor(Math.random() * pool.length)]);
+      return;
+    }
+    onRotateInsight();
+  };
 
   return (
-    <div className={prominent ? "space-y-3" : "space-y-2.5"}>
-      {prominent && (
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
-          Ask the policies
-        </p>
-      )}
+    <div className="space-y-2.5">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -1393,20 +1502,28 @@ function ChatBar({
         }}
       >
         {prominent ? (
-          <div className="relative">
+          // Explorer B dock: a single embedded bar — lead label, search input,
+          // filled Ask button — so the chat reads as part of the canvas.
+          <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm">
+            <span className="hidden max-w-[54px] shrink-0 text-[10px] font-semibold uppercase leading-[1.15] tracking-wider text-[var(--undp-gray)] sm:block">
+              {t("askPoliciesLabel")}
+            </span>
+            <span aria-hidden="true" className="text-[15px] text-gray-300">
+              ⌕
+            </span>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               disabled={chat.loading}
-              className="w-full rounded-md border border-gray-300 bg-white px-4 py-3 pr-16 text-sm text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none focus:border-[var(--undp-black)] focus:ring-1 focus:ring-[var(--undp-black)] disabled:opacity-50"
+              className="min-w-0 flex-1 bg-transparent text-[13px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none disabled:opacity-50"
               aria-label={t("askAriaProminent")}
             />
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded text-xs font-medium text-white bg-[var(--undp-black)] disabled:bg-gray-300 transition-colors"
+              className="shrink-0 rounded-full bg-[var(--undp-blue)] px-5 py-2 text-[13px] font-semibold text-white transition-colors disabled:opacity-40"
             >
               {chat.loading ? t("loading") : t("askProminent")}
             </button>
@@ -1439,133 +1556,62 @@ function ChatBar({
         </div>
       )}
 
-      {showInsight && currentInsight && (
-        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
-          <p className="flex items-baseline gap-2">
-            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
-              {t("insight")}
-            </span>
-            <span className="flex-1">{currentInsight.callout}</span>
-          </p>
-          {/* Optional hedged pathway hint. Rendered as a quiet italic line
-           *  beneath the callout with a small ↪ marker, no chip / border,
-           *  so it reads as a secondary thought rather than a separate UI
-           *  block. Only some detectors emit a pathway; absence renders
-           *  exactly as before. */}
-          {currentInsight.pathway && (
-            <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
-              <span
-                aria-hidden="true"
-                className="mr-1.5 not-italic text-amber-700/70"
-              >
-                ↪
-              </span>
-              {currentInsight.pathway}
-            </p>
-          )}
-          {/* Show me lives inside the bubble at bottom-right as a text-link
-           *  with arrow. Picks up the bubble's amber accent so it reads as
-           *  the bubble's own action rather than a stacked extra chrome. */}
-          {canShowMe && (
-            <div className="flex justify-end mt-2">
-              <button
-                type="button"
-                onClick={onApplyHook}
-                disabled={chat.loading}
-                className={SHOW_ME_LINK_AMBER}
-              >
-                {t("showMe")} <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      {showReply && (
-        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
-          <div>
-            <ReplyText
-              typed={typedReply}
-              full={chat.reply}
-              entities={chat.replyEntities}
-              onSelectTarget={onSelectChatEntity}
-            />
-          </div>
-          {/* Reply-side Show me: matches the Ask button's blue text-link
-           *  styling so the two CTAs in the panel share a vocabulary. */}
-          {canShowMe && (
-            <div className="flex justify-end mt-2">
-              <button
-                type="button"
-                onClick={onApplyHook}
-                disabled={chat.loading}
-                className={SHOW_ME_LINK_BLUE}
-              >
-                {t("showMe")} <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      {showError && (
-        <div className="text-[12px] text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
-          {chat.error}
-        </div>
+      {!hideReply && (
+        <ChatOutput
+          chat={chat}
+          currentInsight={currentInsight}
+          canShowMe={canShowMe}
+          onApplyHook={onApplyHook}
+          onSelectChatEntity={onSelectChatEntity}
+          hideInsights={hideInsights}
+        />
       )}
 
-      {/* Surprise me sits where Show me used to be, right under the
-       *  bubble. It's always available so the user has a one-click route
-       *  to "give me something else interesting" without needing to clear
-       *  the chat first. Hidden in the expanded wheel view. */}
-      {!hideInsights && (
-        <div className="flex flex-wrap gap-1.5">
-          <button
-            type="button"
-            onClick={onRotateInsight}
-            disabled={chat.loading}
-            className={CHIP_SURPRISE}
-          >
-            {t("surpriseMe")}
-          </button>
-        </div>
-      )}
-
-      {/* Server-emitted follow-up chips after a reply. Filtered to drop
-       *  any kind:"surprise" suggestion so it doesn't double up with the
-       *  always-visible Surprise me chip above. Kept as pills because the
-       *  server labels are short ("Find similar tensions"). */}
-      {showSuggestions && (
-        <div className="flex flex-wrap gap-1.5">
-          {visibleSuggestions.map((s) => (
+      {/* Chips: Surprise me + server follow-ups + example questions. In the
+       *  prominent dock they all flow into one wrapping row under the bar
+       *  (`contents` lets each group join the same flex line); elsewhere they
+       *  stack as separate blocks. */}
+      <div className={prominent ? "flex flex-wrap items-center gap-2" : "space-y-2.5"}>
+        {!hideInsights && (
+          <div className={prominent ? "contents" : "flex flex-wrap gap-1.5"}>
             <button
-              key={s.query}
               type="button"
-              onClick={() => submit(s.query)}
+              onClick={onSurprise}
               disabled={chat.loading}
-              className={CHIP_SUGGESTION}
+              className={CHIP_SURPRISE}
             >
-              {s.label}
+              {t("surpriseMe")}
+            </button>
+          </div>
+        )}
+        {showSuggestions && (
+          <div className={prominent ? "contents" : "flex flex-wrap gap-1.5"}>
+            {visibleSuggestions.map((s) => (
+              <button
+                key={s.query}
+                type="button"
+                onClick={() => submit(s.query)}
+                disabled={chat.loading}
+                className={CHIP_SUGGESTION}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className={prominent ? "contents" : "flex flex-col gap-1.5"}>
+          {exampleQueries.map((q) => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => submit(q)}
+              disabled={chat.loading}
+              className={prominent ? EXAMPLE_CHIP : EXAMPLE_ROW}
+            >
+              {q}
             </button>
           ))}
         </div>
-      )}
-
-      {/* Persistent example questions. In the workbench they shrink to small
-       *  chips so the chat input stays the prominent action; elsewhere they
-       *  stack as full-width rows for uniform heights on long questions. */}
-      <div
-        className={prominent ? "flex flex-wrap gap-1.5" : "flex flex-col gap-1.5"}
-      >
-        {exampleQueries.map((q) => (
-          <button
-            key={q}
-            type="button"
-            onClick={() => submit(q)}
-            disabled={chat.loading}
-            className={prominent ? EXAMPLE_CHIP : EXAMPLE_ROW}
-          >
-            {q}
-          </button>
-        ))}
       </div>
     </div>
   );
@@ -2764,6 +2810,13 @@ export function PolicyCoherenceExplorer({
   // off brings the chat + insights + at-a-glance panel in beside the wheel.
   const [wheelExpanded, setWheelExpanded] = useState(false);
 
+  // Explorer B answers drawer. Collapsed by default so the wheel reads as the
+  // clean hero; opens when a question is answered, a target / category is
+  // selected, or the user rotates an insight, so output is never hidden behind
+  // the bottom dock. answerCount badges the current thread on the handle.
+  const [answersCollapsed, setAnswersCollapsed] = useState(true);
+  const [answerCount, setAnswerCount] = useState(0);
+
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
   // wheel and the panel shows target detail; closing the target falls back to
@@ -2780,6 +2833,7 @@ export function PolicyCoherenceExplorer({
     if (focusTargetId) {
       setSelectedId(focusTargetId);
       setFilter("contradictions");
+      setAnswersCollapsed(false);
       const t = targets.find((tt) => tt.id === focusTargetId);
       if (t) {
         setHiddenDocs((prev) => {
@@ -3050,6 +3104,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory((prev) => (prev.length > 0 ? [] : prev));
+    setAnswerCount(0);
   }, []);
 
   // Returns the panel to the country's load-time defaults: clears any
@@ -3065,11 +3120,13 @@ export function PolicyCoherenceExplorer({
     setFocalGroupId(null);
     setHiddenDocs(new Set(countryConfig?.defaultHiddenDocTypes ?? []));
     clearChat();
+    setAnswersCollapsed(true);
   }, [countryConfig, clearChat]);
 
   const handleNodeClick = useCallback((id: string) => {
     setComparedPair(null);
     setSelectedId((prev) => (prev === id ? null : id));
+    setAnswersCollapsed(false);
     // Chat is NOT cleared on selection: in the workbench the chat is a
     // persistent rail header, so its reply must survive node clicks. (In the
     // standalone "dashboard" variant the chat lives in the idle EmptyPanel,
@@ -3095,6 +3152,7 @@ export function PolicyCoherenceExplorer({
       }
       setComparedPair(null);
       setSelectedId(targetId);
+      setAnswersCollapsed(false);
     },
     [targets, hiddenDocs],
   );
@@ -3123,6 +3181,7 @@ export function PolicyCoherenceExplorer({
       setComparedPair(null);
       setFocalGroupId((prev) => (prev === id ? null : id));
       clearChat();
+      setAnswersCollapsed(false);
     },
     [clearChat],
   );
@@ -3265,6 +3324,10 @@ export function PolicyCoherenceExplorer({
             { role: "assistant" as const, content: json.reply },
           ].slice(-6),
         );
+        // A fresh answer landed: badge it and make sure the answers drawer is
+        // open so the reply is visible (the chat input lives in the dock).
+        setAnswerCount((c) => c + 1);
+        setAnswersCollapsed(false);
       } catch (err) {
         setChat({
           loading: false,
@@ -3275,6 +3338,7 @@ export function PolicyCoherenceExplorer({
           pendingActions: null,
           replyEntities: [],
         });
+        setAnswersCollapsed(false);
       }
     },
     [
@@ -3304,7 +3368,24 @@ export function PolicyCoherenceExplorer({
     () => availableDocs.filter((d) => !hiddenDocs.has(d)),
     [availableDocs, hiddenDocs],
   );
-  const exampleQueries = useMemo(
+  // Coherence / Finance view, derived from the budget overlay (no second
+  // source of truth). Selecting Finance also snaps the grouping to GLOBE so the
+  // spend shading lands somewhere the data maps — the same rule the legacy
+  // toggle used. Only offered when the country has tagged budget data.
+  const view: "coherence" | "finance" = budgetOverlay ? "finance" : "coherence";
+  const setView = useCallback(
+    (next: "coherence" | "finance") => {
+      const finance = next === "finance";
+      setBudgetOverlay(finance);
+      if (finance && groupMode !== "globe") setGroupMode("globe");
+    },
+    [groupMode],
+  );
+  // Example chips, split into coherence and finance pools. Keys come from
+  // pickExampleQueries (gated by the dataset); the labels live in the explorer
+  // i18n catalogue. The workbench dock shows up to three for the active view;
+  // the standalone EmptyPanel shows up to four across both pools.
+  const exampleKeys = useMemo(
     () =>
       pickExampleQueries({
         globeCategoriesAvailable: globeCategories.length > 0,
@@ -3326,6 +3407,24 @@ export function PolicyCoherenceExplorer({
       budgetSummary,
     ],
   );
+  const exampleQueries = useMemo(
+    () =>
+      [
+        ...exampleKeys.coherence.map((k) => t(`questions.coherence.${k}`)),
+        ...exampleKeys.finance.map((k) => t(`questions.finance.${k}`)),
+      ].slice(0, 4),
+    [exampleKeys, t],
+  );
+  // Full pool for the active view; Surprise me draws from all of it, the dock
+  // shows the first three as chips.
+  const surprisePool = useMemo(
+    () =>
+      view === "finance"
+        ? exampleKeys.finance.map((k) => t(`questions.finance.${k}`))
+        : exampleKeys.coherence.map((k) => t(`questions.coherence.${k}`)),
+    [exampleKeys, view, t],
+  );
+  const dockQuestions = surprisePool.slice(0, 3);
 
   // Compute all available insights once per data shift. The list is ordered
   // by interestingness; `insightIdx` rotates through it.
@@ -3384,6 +3483,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory([]);
+    setAnswersCollapsed(false);
   }, [insights.length]);
 
   // Apply an insight's action set to the wheel. Surfaces the callout as the
@@ -3753,11 +3853,15 @@ export function PolicyCoherenceExplorer({
 
   // The workbench chat, extracted so it can live either in the side rail
   // (default) or in a full-width bar on top (expanded wheel mode).
-  const workbenchChat = (hideInsights = false) => (
+  const workbenchChat = (
+    hideInsights = false,
+    hideReply = false,
+    surpriseFills = false,
+  ) => (
     <ChatBar
       onAsk={handleAsk}
       chat={chat}
-      exampleQueries={exampleQueries}
+      exampleQueries={dockQuestions}
       onRotateInsight={rotateInsight}
       currentInsight={currentInsight}
       onApplyHook={onApplyHook}
@@ -3765,419 +3869,24 @@ export function PolicyCoherenceExplorer({
       onSelectChatEntity={handleChatEntityClick}
       prominent
       hideInsights={hideInsights}
+      hideReply={hideReply}
+      surprisePool={surprisePool}
+      surpriseFills={surpriseFills}
     />
   );
 
-  return (
-    <section id={isEmbed ? undefined : "coherence-explorer"} className={isEmbed ? "" : "mb-10"}>
-      {/* Header + controls */}
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
-        <div>
-          {showHeading && (
-          <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-            {t("heading.title")}
-            <InfoBox>
-              {t.rich("heading.info", { strong: (chunks) => <strong>{chunks}</strong> })}
-              <br /><br />
-              {t.rich("heading.infoScore", { strong: (chunks) => <strong>{chunks}</strong> })}
-              <br /><br />
-              {t.rich("heading.infoBtr", { strong: (chunks) => <strong>{chunks}</strong> })}
-            </InfoBox>
-          </h2>
-          )}
-          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
-            {(() => {
-              const groupLabel = ({
-                document: [t("groupLabel.documentSingular"), t("groupLabel.documentPlural")],
-                globe: [t("groupLabel.globeSingular"), t("groupLabel.globePlural")],
-                sector: [t("groupLabel.sectorSingular"), t("groupLabel.sectorPlural")],
-              } as Record<GroupMode, [string, string]>)[groupMode][
-                groups.length !== 1 ? 1 : 0
-              ];
-              const across = (
-                <>
-                  {t("summary.across", { count: groups.length, groupLabel })}
-                </>
-              );
-              const contraButton = filteredCounts.contra > 0 && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setFilter(filter === "contradictions" ? "all" : "contradictions")
-                  }
-                  className="text-[var(--undp-black)] font-medium underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] transition-colors"
-                >
-                  {filteredCounts.contra === 1
-                    ? t("summary.possibleMisSingular", { count: filteredCounts.contra })
-                    : t("summary.possibleMisPlural", { count: filteredCounts.contra })}
-                </button>
-              );
-              switch (filter) {
-                case "high":
-                  return (
-                    <>
-                      {filteredCounts.high === 1
-                        ? t("summary.highAlignmentsSingular", { count: filteredCounts.high })
-                        : t("summary.highAlignmentsPlural", { count: filteredCounts.high })}
-                      {across}.
-                    </>
-                  );
-                case "contradictions":
-                  return (
-                    <>
-                      {contraButton}
-                      {across}.
-                    </>
-                  );
-                case "high_contra":
-                  return (
-                    <>
-                      {filteredCounts.high === 1
-                        ? t("summary.highAlignmentsSingular", { count: filteredCounts.high })
-                        : t("summary.highAlignmentsPlural", { count: filteredCounts.high })}
-                      {contraButton && (
-                        <>
-                          {t("summary.joinAnd")}
-                          {contraButton}
-                        </>
-                      )}
-                      {across}.
-                    </>
-                  );
-                case "high_medium":
-                  return (
-                    <>
-                      {filteredCounts.aligned === 1
-                        ? t("summary.alignedSingular", { count: filteredCounts.aligned })
-                        : t("summary.alignedPlural", { count: filteredCounts.aligned })}
-                      {across}.
-                    </>
-                  );
-                case "all":
-                default:
-                  return (
-                    <>
-                      {filteredCounts.aligned === 1
-                        ? t("summary.allOpportunitySingular", { count: filteredCounts.aligned })
-                        : t("summary.allOpportunityPlural", { count: filteredCounts.aligned })}
-                      {across}
-                      {contraButton && (
-                        <>
-                          {t("summary.joinComma")}
-                          {contraButton}
-                        </>
-                      )}
-                      .
-                    </>
-                  );
-              }
-            })()}
-            {" "}{t("heading.hoverHint")}
-          </p>
-        </div>
-        <div className="flex flex-col gap-3">
-          {/* Row 1: grouping + filter selects. Kept on their own row so the
-              doc-type toggles below have a full-width budget to wrap into,
-              regardless of how many data sources a country exposes. */}
-          <div className="flex flex-wrap items-center gap-3">
-            {isEmbed ? (
-              <div className="inline-flex flex-wrap gap-1.5">
-                {([
-                  ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
-                  ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
-                  ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
-                ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
-                  <button
-                    key={mode}
-                    type="button"
-                    onClick={() => handleGroupChange(mode)}
-                    aria-pressed={groupMode === mode}
-                    title={title}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                      groupMode === mode
-                        ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                        : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <select
-                value={groupMode}
-                onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
-                className={controlCls}
-              >
-                <option value="document">{t("controls.groupOptionDocument")}</option>
-                <option value="globe">{t("controls.groupOptionGlobe")}</option>
-                <option value="sector">{t("controls.groupOptionSector")}</option>
-              </select>
-            )}
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as AlignFilter)}
-              className={controlCls}
-            >
-              <option value="high_contra">{t("controls.filterHighContra")}</option>
-              <option value="high">{t("controls.filterHigh")}</option>
-              <option value="contradictions">{t("controls.filterContradictions")}</option>
-            </select>
-            {isEmbed && !isWorkbench && (
-              <button
-                type="button"
-                onClick={() => setShowAtAGlance((v) => !v)}
-                aria-pressed={showAtAGlance}
-                title={t("controls.atAGlanceTitle")}
-                className={`ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                  showAtAGlance
-                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                    : "bg-white border-gray-200 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-                }`}
-              >
-                {t("controls.atAGlance")}
-              </button>
-            )}
-            {isWorkbench && (
-              <div className="ml-auto flex items-center gap-2">{targetSearch}</div>
-            )}
-          </div>
-          {/* Row 2: per-document toggles + abbreviation key + target search.
-              Wraps to multiple lines so countries with many uploaded sources
-              (Panama 8+, future uploads more) stay inside the viewport. */}
-          <div className="flex flex-wrap items-start gap-x-2 gap-y-2">
-          {availableDocs.map((doc) => {
-            const active = !hiddenDocs.has(doc);
-            const color = getDocColor(countryConfig, doc);
-            // Sub-pills for BTR's Mit/Adp split — only render when the BTR
-            // pill is active and the country actually has adaptation actions
-            // loaded. Replaces the older "All BTR actions" select.
-            const showSubPills =
-              doc === "BTR" && hasAdaptationActions && active;
-            const mitActive =
-              actionTypeFilter === "all" || actionTypeFilter === "mitigation";
-            const adpActive =
-              actionTypeFilter === "all" || actionTypeFilter === "adaptation";
-            const togglePill = (which: "mitigation" | "adaptation") => {
-              // Cycle: when both visible (filter=all), clicking deselects
-              // the clicked one (filter = the other). Clicking the lone
-              // active type re-enables both.
-              const other = which === "mitigation" ? "adaptation" : "mitigation";
-              if (actionTypeFilter === "all") setActionTypeFilter(other);
-              else if (actionTypeFilter === which) setActionTypeFilter("all");
-              else setActionTypeFilter("all");
-            };
-            const mitColor = getDocColor(countryConfig, "BTR");
-            const adpColor = getDocColor(countryConfig, "BTR_ADP");
-            return (
-              <div key={doc} className="flex flex-col items-start gap-1">
-                <button
-                  type="button"
-                  onClick={() => toggleDoc(doc)}
-                  className={`inline-flex items-center gap-1.5 px-1 py-1 text-xs font-medium transition-colors ${
-                    active
-                      ? "text-[var(--undp-black)]"
-                      : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-                  }`}
-                  title={getDocFullLabel(countryConfig, doc)}
-                >
-                  <span
-                    className="w-2 h-2 rounded-full shrink-0"
-                    style={
-                      active
-                        ? { backgroundColor: color }
-                        : { backgroundColor: "transparent", border: `1.5px solid ${color}66` }
-                    }
-                  />
-                  {getDocFriendlyName(countryConfig, doc)}
-                </button>
-                {showSubPills && (
-                  <div className="flex gap-2 pl-4">
-                    <button
-                      type="button"
-                      onClick={() => togglePill("mitigation")}
-                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
-                        mitActive
-                          ? "text-[var(--undp-black)]"
-                          : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-                      }`}
-                      title={t("doc.toggleMitigationTitle")}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0"
-                        style={
-                          mitActive
-                            ? { backgroundColor: mitColor }
-                            : { backgroundColor: "transparent", border: `1.5px solid ${mitColor}66` }
-                        }
-                      />
-                      {t("doc.mitigation")}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => togglePill("adaptation")}
-                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
-                        adpActive
-                          ? "text-[var(--undp-black)]"
-                          : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-                      }`}
-                      title={t("doc.toggleAdaptationTitle")}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0"
-                        style={
-                          adpActive
-                            ? { backgroundColor: adpColor }
-                            : { backgroundColor: "transparent", border: `1.5px solid ${adpColor}66` }
-                        }
-                      />
-                      {t("doc.adaptation")}
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-
-          {/* Doc-type legend popover — surfaces full document names for the
-              abbreviations shown in the chip row above. */}
-          {availableDocs.length > 0 && (
-            <span className="self-start">
-              <InfoBox>
-                <strong>{t("doc.abbreviationsTitle")}</strong>
-                <br /><br />
-                {availableDocs.map((doc, i) => {
-                  const full = getDocFullLabel(countryConfig, doc);
-                  return (
-                    <span key={doc}>
-                      <strong>{getDocLabel(countryConfig, doc)}</strong>
-                      {full !== doc ? `: ${full}` : ""}
-                      {i < availableDocs.length - 1 ? <br /> : null}
-                    </span>
-                  );
-                })}
-              </InfoBox>
-            </span>
-          )}
-
-          {/* Target search lives in Row 1 for the workbench; the standalone
-              variants keep it here at the end of the document toggles. */}
-          {!isWorkbench && targetSearch}
-        </div>
-        </div>
-      </div>
-
-      {/* Click-away handler for search dropdown — only when dropdown is visible */}
-      {searchOpen && searchQuery.length >= 2 && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setSearchOpen(false)}
-        />
-      )}
-
-      {/* Workbench "expand wheel": the chat moves to a full-width bar on top so
-          the wheel below can take the whole page width for inspection. */}
-      {isWorkbench && wheelExpanded && (
-        <div className="mb-4 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
-          {workbenchChat(true)}
-        </div>
-      )}
-
-      {/* Main content: wheel + context panel. Side-by-side by default; in
-          expanded mode the wheel spans full width and any open detail stacks
-          below it. */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Wheel container */}
-        <div
-          className={`min-w-0 ${
-            railVisible ? "lg:col-span-8" : "lg:col-span-12"
-          }`}
-        >
-          <div className={wheelCardCls}>
-            {/* Top-right "Big wheel" toggle, anchored to the wheel itself so the
-                expand affordance reads as belonging to the wheel. Sits above the
-                ribbons via z-10; the white state gets a soft backdrop so it stays
-                legible. Different corner from the budget overlay, so no clash. */}
-            {isWorkbench && (
-              <button
-                type="button"
-                onClick={() => setWheelExpanded((v) => !v)}
-                aria-pressed={!wheelExpanded}
-                title={
-                  wheelExpanded
-                    ? "Bring the chat, insights and at-a-glance in beside the wheel"
-                    : "Return to the full-width big-picture wheel"
-                }
-                className={`absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-sm transition-colors ${
-                  !wheelExpanded
-                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                    : "bg-white/90 backdrop-blur border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-                }`}
-              >
-                {wheelExpanded ? (
-                  "Chat & stats"
-                ) : (
-                  <>
-                    <span aria-hidden="true">⤢</span> Big wheel
-                  </>
-                )}
-              </button>
-            )}
-            {/* Top-left budget overlay control. Only rendered when the country
-                has BER data classified to GLOBE subcategories. Clicking ON
-                snaps groupMode to "globe" so the shading actually paints;
-                clicking OFF stops painting but leaves the lens where it is. */}
-            {budgetSummary && (
-              <div className="flex flex-col gap-1.5 mb-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const next = !budgetOverlay;
-                    setBudgetOverlay(next);
-                    if (next && groupMode !== "globe") setGroupMode("globe");
-                  }}
-                  className={`self-start inline-flex items-center gap-2 px-3 py-1.5 ${isEmbed ? "rounded-full" : "rounded-md"} text-xs font-medium border transition-colors ${
-                    budgetShadingActive
-                      ? "bg-[var(--undp-blue)]/10 border-[var(--undp-blue)]/40 text-[var(--undp-black)]"
-                      : "bg-white border-gray-200 text-[var(--undp-black)] hover:border-gray-300"
-                  }`}
-                  title={
-                    budgetShadingActive
-                      ? t("budget.onTitle")
-                      : t("budget.offTitle")
-                  }
-                  aria-pressed={budgetShadingActive}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`w-2.5 h-2.5 rounded-sm shrink-0 ${
-                      budgetShadingActive
-                        ? "bg-[var(--undp-blue)]"
-                        : "border border-gray-300 bg-white"
-                    }`}
-                  />
-                  {t("budget.label")}
-                </button>
-                {budgetShadingActive && (
-                  <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
-                    {t("budget.mongoliaNote", {
-                      start: budgetSummary.period.start,
-                      end: budgetSummary.period.end,
-                    })}
-                  </p>
-                )}
-              </div>
-            )}
+  // Hoisted so the legacy return and the Explorer B workbench stage render
+  // the exact same wheel and detail panels without duplicating their JSX.
+  const wheelSvg = (
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
               className="w-full"
               style={{
-                maxHeight:
-                  isWorkbench && wheelExpanded && !railVisible
-                    ? "min(820px, 82vh)"
-                    : isEmbed
-                      ? "min(600px, 64vh)"
-                      : 620,
+                maxHeight: isWorkbench
+                  ? "min(660px, 70vh)"
+                  : isEmbed
+                    ? "min(600px, 64vh)"
+                    : 620,
               }}
               onClick={handleBgClick}
             >
@@ -4878,69 +4587,16 @@ export function PolicyCoherenceExplorer({
                     fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
-                    {t("wheel.centerAligned", { count: totalAligned })}
+                    {budgetShadingActive
+                      ? t("wheel.centerSpendTagged")
+                      : t("wheel.centerAligned", { count: totalAligned })}
                   </text>
                 </>
               )}
             </svg>
-
-            {/* Legend — structured grid */}
-            <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
-              {/* Document column */}
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : t("wheel.legendSector")}
-                </p>
-                <div className="flex flex-col gap-1">
-                  {arcs.map((arc) => (
-                    <span key={arc.id} className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: arc.color }} />
-                      <span className="text-[var(--undp-gray)]">
-                        {arc.label} ({arc.count})
-                      </span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-              {/* Connection strength column */}
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">{t("wheel.legendConnectionStrength")}</p>
-                <div className="flex flex-col gap-1">
-                  {([
-                    ["high", t("wheel.legendHigh")],
-                    ["medium", t("wheel.legendMedium")],
-                    ["low", t("wheel.legendLow")],
-                  ] as [AlignmentLevel, string][]).map(([level, desc]) => (
-                    <span key={level} className="flex items-center gap-1.5">
-                      <span className="w-6 h-1 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
-                      <span className="text-[var(--undp-gray)]">{desc}</span>
-                    </span>
-                  ))}
-                  {totalContra > 0 && (
-                    <span className="flex items-center gap-1.5">
-                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.flagged} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
-                      <span className="text-[var(--undp-gray)]">{t("wheel.legendPotentialMis")}</span>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right column. In the workbench a persistent, prominent chat header
-            sits above the on-demand context panel (target detail / category /
-            at-a-glance), so the chat survives selection. In the standalone
-            variants the chat instead lives inside EmptyPanel's idle state. */}
-        {railVisible && (
-        <div className="min-w-0 lg:col-span-4 flex flex-col gap-4">
-          {isWorkbench && !wheelExpanded && (
-            <div className="shrink-0 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
-              {workbenchChat()}
-            </div>
-          )}
-          <div className="flex-1 min-h-0">
-          {selectedNode ? (
+  );
+  const railPanel = (
+          selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
                 node={selectedNode}
@@ -5003,7 +4659,547 @@ export function PolicyCoherenceExplorer({
                 showChat={showInternalChat}
                 embed={isEmbed}
               />
+            )
+  );
+  // Explorer B: the live "Explore" workbench. A floating-canvas stage that
+  // reuses every piece of state and logic above, rearranged into a lens pane
+  // (left), the hero wheel (centre), a command dock (bottom) and an answers
+  // drawer (right). The standalone "dashboard" / "embed" variants fall through
+  // to the original layout below, so /prototypes is unchanged.
+  if (isWorkbench) {
+    const countryName = targets[0]?.country ?? t("wheel.countryFallback");
+    const strongCount = visibleAlignment.filter(
+      (a) => a.alignment === "high",
+    ).length;
+    const financeView = view === "finance";
+    const statLine = financeView
+      ? t("workbench.statFinance", {
+          country: countryName,
+          targets: targets.length,
+        })
+      : t("workbench.statCoherence", {
+          strong: strongCount,
+          potential: totalContra,
+          country: countryName,
+          targets: targets.length,
+        });
+    return (
+      <WorkbenchStage
+        statLine={statLine}
+        wheel={wheelSvg}
+        dock={workbenchChat(false, true, true)}
+        answersOpen={!answersCollapsed}
+        onToggleAnswers={() => setAnswersCollapsed((c) => !c)}
+        answersHandleLabel={t("workbench.answersHandle", { count: answerCount })}
+        answersHeading={t("workbench.answersHeading")}
+        answersToggleTitle={t("workbench.answersTitle")}
+        answersClose={t("workbench.answersClose")}
+        financeActive={financeView}
+        financeNote={t("workbench.finance.helperNote")}
+        footerCaveat={t("workbench.footerCaveat")}
+        lensPane={
+          <LensPane
+            view={view}
+            onViewChange={setView}
+            showViewSwitch={!!budgetSummary}
+            groupMode={groupMode}
+            onGroupChange={handleGroupChange}
+            filter={filter}
+            onFilter={setFilter}
+            budgetSummary={budgetSummary}
+            availableDocs={availableDocs}
+            hiddenDocs={hiddenDocs}
+            onToggleDoc={toggleDoc}
+            countryConfig={countryConfig}
+          />
+        }
+        answers={
+          <div className="space-y-3">
+            {!answersCollapsed && (
+              <ChatOutput
+                chat={chat}
+                currentInsight={currentInsight}
+                canShowMe={canShowMe}
+                onApplyHook={onApplyHook}
+                onSelectChatEntity={handleChatEntityClick}
+                hideInsights
+              />
             )}
+            {railPanel}
+          </div>
+        }
+        modal={
+          <PairDetailModal
+            open={comparedPair != null}
+            pair={comparedPair}
+            selectedTarget={selectedNode?.target ?? null}
+            countryConfig={countryConfig}
+            onClose={() => setComparedPair(null)}
+          />
+        }
+      />
+    );
+  }
+
+  return (
+    <section id={isEmbed ? undefined : "coherence-explorer"} className={isEmbed ? "" : "mb-10"}>
+      {/* Header + controls */}
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
+        <div>
+          {showHeading && (
+          <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
+            {t("heading.title")}
+            <InfoBox>
+              {t.rich("heading.info", { strong: (chunks) => <strong>{chunks}</strong> })}
+              <br /><br />
+              {t.rich("heading.infoScore", { strong: (chunks) => <strong>{chunks}</strong> })}
+              <br /><br />
+              {t.rich("heading.infoBtr", { strong: (chunks) => <strong>{chunks}</strong> })}
+            </InfoBox>
+          </h2>
+          )}
+          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+            {(() => {
+              const groupLabel = ({
+                document: [t("groupLabel.documentSingular"), t("groupLabel.documentPlural")],
+                globe: [t("groupLabel.globeSingular"), t("groupLabel.globePlural")],
+                sector: [t("groupLabel.sectorSingular"), t("groupLabel.sectorPlural")],
+              } as Record<GroupMode, [string, string]>)[groupMode][
+                groups.length !== 1 ? 1 : 0
+              ];
+              const across = (
+                <>
+                  {t("summary.across", { count: groups.length, groupLabel })}
+                </>
+              );
+              const contraButton = filteredCounts.contra > 0 && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFilter(filter === "contradictions" ? "all" : "contradictions")
+                  }
+                  className="text-[var(--undp-black)] font-medium underline decoration-dotted decoration-gray-300 underline-offset-2 hover:decoration-[var(--undp-blue)] transition-colors"
+                >
+                  {filteredCounts.contra === 1
+                    ? t("summary.possibleMisSingular", { count: filteredCounts.contra })
+                    : t("summary.possibleMisPlural", { count: filteredCounts.contra })}
+                </button>
+              );
+              switch (filter) {
+                case "high":
+                  return (
+                    <>
+                      {filteredCounts.high === 1
+                        ? t("summary.highAlignmentsSingular", { count: filteredCounts.high })
+                        : t("summary.highAlignmentsPlural", { count: filteredCounts.high })}
+                      {across}.
+                    </>
+                  );
+                case "contradictions":
+                  return (
+                    <>
+                      {contraButton}
+                      {across}.
+                    </>
+                  );
+                case "high_contra":
+                  return (
+                    <>
+                      {filteredCounts.high === 1
+                        ? t("summary.highAlignmentsSingular", { count: filteredCounts.high })
+                        : t("summary.highAlignmentsPlural", { count: filteredCounts.high })}
+                      {contraButton && (
+                        <>
+                          {t("summary.joinAnd")}
+                          {contraButton}
+                        </>
+                      )}
+                      {across}.
+                    </>
+                  );
+                case "high_medium":
+                  return (
+                    <>
+                      {filteredCounts.aligned === 1
+                        ? t("summary.alignedSingular", { count: filteredCounts.aligned })
+                        : t("summary.alignedPlural", { count: filteredCounts.aligned })}
+                      {across}.
+                    </>
+                  );
+                case "all":
+                default:
+                  return (
+                    <>
+                      {filteredCounts.aligned === 1
+                        ? t("summary.allOpportunitySingular", { count: filteredCounts.aligned })
+                        : t("summary.allOpportunityPlural", { count: filteredCounts.aligned })}
+                      {across}
+                      {contraButton && (
+                        <>
+                          {t("summary.joinComma")}
+                          {contraButton}
+                        </>
+                      )}
+                      .
+                    </>
+                  );
+              }
+            })()}
+            {" "}{t("heading.hoverHint")}
+          </p>
+        </div>
+        <div className="flex flex-col gap-3">
+          {/* Row 1: grouping + filter selects. Kept on their own row so the
+              doc-type toggles below have a full-width budget to wrap into,
+              regardless of how many data sources a country exposes. */}
+          <div className="flex flex-wrap items-center gap-3">
+            {isEmbed ? (
+              <div className="inline-flex flex-wrap gap-1.5">
+                {([
+                  ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
+                  ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
+                  ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
+                ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => handleGroupChange(mode)}
+                    aria-pressed={groupMode === mode}
+                    title={title}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                      groupMode === mode
+                        ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                        : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <select
+                value={groupMode}
+                onChange={(e) => handleGroupChange(e.target.value as GroupMode)}
+                className={controlCls}
+              >
+                <option value="document">{t("controls.groupOptionDocument")}</option>
+                <option value="globe">{t("controls.groupOptionGlobe")}</option>
+                <option value="sector">{t("controls.groupOptionSector")}</option>
+              </select>
+            )}
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as AlignFilter)}
+              className={controlCls}
+            >
+              <option value="high_contra">{t("controls.filterHighContra")}</option>
+              <option value="high">{t("controls.filterHigh")}</option>
+              <option value="contradictions">{t("controls.filterContradictions")}</option>
+            </select>
+            {isEmbed && !isWorkbench && (
+              <button
+                type="button"
+                onClick={() => setShowAtAGlance((v) => !v)}
+                aria-pressed={showAtAGlance}
+                title={t("controls.atAGlanceTitle")}
+                className={`ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                  showAtAGlance
+                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                    : "bg-white border-gray-200 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                }`}
+              >
+                {t("controls.atAGlance")}
+              </button>
+            )}
+            {isWorkbench && (
+              <div className="ml-auto flex items-center gap-2">{targetSearch}</div>
+            )}
+          </div>
+          {/* Row 2: per-document toggles + abbreviation key + target search.
+              Wraps to multiple lines so countries with many uploaded sources
+              (Panama 8+, future uploads more) stay inside the viewport. */}
+          <div className="flex flex-wrap items-start gap-x-2 gap-y-2">
+          {availableDocs.map((doc) => {
+            const active = !hiddenDocs.has(doc);
+            const color = getDocColor(countryConfig, doc);
+            // Sub-pills for BTR's Mit/Adp split — only render when the BTR
+            // pill is active and the country actually has adaptation actions
+            // loaded. Replaces the older "All BTR actions" select.
+            const showSubPills =
+              doc === "BTR" && hasAdaptationActions && active;
+            const mitActive =
+              actionTypeFilter === "all" || actionTypeFilter === "mitigation";
+            const adpActive =
+              actionTypeFilter === "all" || actionTypeFilter === "adaptation";
+            const togglePill = (which: "mitigation" | "adaptation") => {
+              // Cycle: when both visible (filter=all), clicking deselects
+              // the clicked one (filter = the other). Clicking the lone
+              // active type re-enables both.
+              const other = which === "mitigation" ? "adaptation" : "mitigation";
+              if (actionTypeFilter === "all") setActionTypeFilter(other);
+              else if (actionTypeFilter === which) setActionTypeFilter("all");
+              else setActionTypeFilter("all");
+            };
+            const mitColor = getDocColor(countryConfig, "BTR");
+            const adpColor = getDocColor(countryConfig, "BTR_ADP");
+            return (
+              <div key={doc} className="flex flex-col items-start gap-1">
+                <button
+                  type="button"
+                  onClick={() => toggleDoc(doc)}
+                  className={`inline-flex items-center gap-1.5 px-1 py-1 text-xs font-medium transition-colors ${
+                    active
+                      ? "text-[var(--undp-black)]"
+                      : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+                  }`}
+                  title={getDocFullLabel(countryConfig, doc)}
+                >
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={
+                      active
+                        ? { backgroundColor: color }
+                        : { backgroundColor: "transparent", border: `1.5px solid ${color}66` }
+                    }
+                  />
+                  {getDocFriendlyName(countryConfig, doc)}
+                </button>
+                {showSubPills && (
+                  <div className="flex gap-2 pl-4">
+                    <button
+                      type="button"
+                      onClick={() => togglePill("mitigation")}
+                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
+                        mitActive
+                          ? "text-[var(--undp-black)]"
+                          : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+                      }`}
+                      title={t("doc.toggleMitigationTitle")}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={
+                          mitActive
+                            ? { backgroundColor: mitColor }
+                            : { backgroundColor: "transparent", border: `1.5px solid ${mitColor}66` }
+                        }
+                      />
+                      {t("doc.mitigation")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => togglePill("adaptation")}
+                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
+                        adpActive
+                          ? "text-[var(--undp-black)]"
+                          : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+                      }`}
+                      title={t("doc.toggleAdaptationTitle")}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={
+                          adpActive
+                            ? { backgroundColor: adpColor }
+                            : { backgroundColor: "transparent", border: `1.5px solid ${adpColor}66` }
+                        }
+                      />
+                      {t("doc.adaptation")}
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {/* Doc-type legend popover — surfaces full document names for the
+              abbreviations shown in the chip row above. */}
+          {availableDocs.length > 0 && (
+            <span className="self-start">
+              <InfoBox>
+                <strong>{t("doc.abbreviationsTitle")}</strong>
+                <br /><br />
+                {availableDocs.map((doc, i) => {
+                  const full = getDocFullLabel(countryConfig, doc);
+                  return (
+                    <span key={doc}>
+                      <strong>{getDocLabel(countryConfig, doc)}</strong>
+                      {full !== doc ? `: ${full}` : ""}
+                      {i < availableDocs.length - 1 ? <br /> : null}
+                    </span>
+                  );
+                })}
+              </InfoBox>
+            </span>
+          )}
+
+          {/* Target search lives in Row 1 for the workbench; the standalone
+              variants keep it here at the end of the document toggles. */}
+          {!isWorkbench && targetSearch}
+        </div>
+        </div>
+      </div>
+
+      {/* Click-away handler for search dropdown — only when dropdown is visible */}
+      {searchOpen && searchQuery.length >= 2 && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setSearchOpen(false)}
+        />
+      )}
+
+      {/* Workbench "expand wheel": the chat moves to a full-width bar on top so
+          the wheel below can take the whole page width for inspection. */}
+      {isWorkbench && wheelExpanded && (
+        <div className="mb-4 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
+          {workbenchChat(true)}
+        </div>
+      )}
+
+      {/* Main content: wheel + context panel. Side-by-side by default; in
+          expanded mode the wheel spans full width and any open detail stacks
+          below it. */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Wheel container */}
+        <div
+          className={`min-w-0 ${
+            railVisible ? "lg:col-span-8" : "lg:col-span-12"
+          }`}
+        >
+          <div className={wheelCardCls}>
+            {/* Top-right "Big wheel" toggle, anchored to the wheel itself so the
+                expand affordance reads as belonging to the wheel. Sits above the
+                ribbons via z-10; the white state gets a soft backdrop so it stays
+                legible. Different corner from the budget overlay, so no clash. */}
+            {isWorkbench && (
+              <button
+                type="button"
+                onClick={() => setWheelExpanded((v) => !v)}
+                aria-pressed={!wheelExpanded}
+                title={
+                  wheelExpanded
+                    ? "Bring the chat, insights and at-a-glance in beside the wheel"
+                    : "Return to the full-width big-picture wheel"
+                }
+                className={`absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-sm transition-colors ${
+                  !wheelExpanded
+                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                    : "bg-white/90 backdrop-blur border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                }`}
+              >
+                {wheelExpanded ? (
+                  "Chat & stats"
+                ) : (
+                  <>
+                    <span aria-hidden="true">⤢</span> Big wheel
+                  </>
+                )}
+              </button>
+            )}
+            {/* Top-left budget overlay control. Only rendered when the country
+                has BER data classified to GLOBE subcategories. Clicking ON
+                snaps groupMode to "globe" so the shading actually paints;
+                clicking OFF stops painting but leaves the lens where it is. */}
+            {budgetSummary && (
+              <div className="flex flex-col gap-1.5 mb-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !budgetOverlay;
+                    setBudgetOverlay(next);
+                    if (next && groupMode !== "globe") setGroupMode("globe");
+                  }}
+                  className={`self-start inline-flex items-center gap-2 px-3 py-1.5 ${isEmbed ? "rounded-full" : "rounded-md"} text-xs font-medium border transition-colors ${
+                    budgetShadingActive
+                      ? "bg-[var(--undp-blue)]/10 border-[var(--undp-blue)]/40 text-[var(--undp-black)]"
+                      : "bg-white border-gray-200 text-[var(--undp-black)] hover:border-gray-300"
+                  }`}
+                  title={
+                    budgetShadingActive
+                      ? t("budget.onTitle")
+                      : t("budget.offTitle")
+                  }
+                  aria-pressed={budgetShadingActive}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`w-2.5 h-2.5 rounded-sm shrink-0 ${
+                      budgetShadingActive
+                        ? "bg-[var(--undp-blue)]"
+                        : "border border-gray-300 bg-white"
+                    }`}
+                  />
+                  {t("budget.label")}
+                </button>
+                {budgetShadingActive && (
+                  <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
+                    {t("budget.mongoliaNote", {
+                      start: budgetSummary.period.start,
+                      end: budgetSummary.period.end,
+                    })}
+                  </p>
+                )}
+              </div>
+            )}
+            {wheelSvg}
+
+            {/* Legend — structured grid */}
+            <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
+              {/* Document column */}
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : t("wheel.legendSector")}
+                </p>
+                <div className="flex flex-col gap-1">
+                  {arcs.map((arc) => (
+                    <span key={arc.id} className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: arc.color }} />
+                      <span className="text-[var(--undp-gray)]">
+                        {arc.label} ({arc.count})
+                      </span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              {/* Connection strength column */}
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">{t("wheel.legendConnectionStrength")}</p>
+                <div className="flex flex-col gap-1">
+                  {([
+                    ["high", t("wheel.legendHigh")],
+                    ["medium", t("wheel.legendMedium")],
+                    ["low", t("wheel.legendLow")],
+                  ] as [AlignmentLevel, string][]).map(([level, desc]) => (
+                    <span key={level} className="flex items-center gap-1.5">
+                      <span className="w-6 h-1 rounded-full shrink-0" style={{ backgroundColor: ALIGNMENT_COLORS[level] }} />
+                      <span className="text-[var(--undp-gray)]">{desc}</span>
+                    </span>
+                  ))}
+                  {totalContra > 0 && (
+                    <span className="flex items-center gap-1.5">
+                      <svg width="24" height="4" className="shrink-0"><line x1="0" y1="2" x2="24" y2="2" stroke={ALIGNMENT_COLORS.flagged} strokeWidth="3" strokeDasharray="4 3" strokeLinecap="round" /></svg>
+                      <span className="text-[var(--undp-gray)]">{t("wheel.legendPotentialMis")}</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right column. In the workbench a persistent, prominent chat header
+            sits above the on-demand context panel (target detail / category /
+            at-a-glance), so the chat survives selection. In the standalone
+            variants the chat instead lives inside EmptyPanel's idle state. */}
+        {railVisible && (
+        <div className="min-w-0 lg:col-span-4 flex flex-col gap-4">
+          {isWorkbench && !wheelExpanded && (
+            <div className="shrink-0 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
+              {workbenchChat()}
+            </div>
+          )}
+          <div className="flex-1 min-h-0">
+          {railPanel}
           </div>
         </div>
         )}
