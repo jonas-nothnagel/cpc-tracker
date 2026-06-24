@@ -1349,6 +1349,10 @@
         "tileTaggedSpend": "Gasto etiquetado",
         "tileFundedCategories": "Categorías financiadas",
         "tileFundedValue": "{funded, number}/{total, number}",
+        "scaleLabel": "Escalar los arcos por",
+        "scaleByTargets": "Metas",
+        "scaleBySpend": "Gasto",
+        "encodingSpend": "El ancho de cada cuña muestra la parte del gasto etiquetado de cada categoría. Seleccione una cuña para ver sus metas de política y sus conexiones.",
         "helperNote": "La profundidad de cada cuña muestra la parte del gasto en biodiversidad etiquetado de cada categoría, leída frente a dónde se sitúan las posibles desalineaciones.",
         "scopeCaveat": "Parte del gasto en biodiversidad revisado, no del presupuesto total del país."
       },

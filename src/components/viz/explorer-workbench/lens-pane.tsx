@@ -17,6 +17,7 @@ type AlignFilter =
   | "high"
   | "contradictions";
 type ViewMode = "coherence" | "finance";
+type ScaleMode = "targets" | "spend";
 
 const EYEBROW =
   "text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--undp-gray)]";
@@ -38,6 +39,8 @@ export function LensPane({
   filter,
   onFilter,
   budgetSummary,
+  budgetScale,
+  onBudgetScaleChange,
   availableDocs,
   hiddenDocs,
   onToggleDoc,
@@ -52,6 +55,8 @@ export function LensPane({
   filter: AlignFilter;
   onFilter: (filter: AlignFilter) => void;
   budgetSummary: CategoryBudgetSummary | null;
+  budgetScale: ScaleMode;
+  onBudgetScaleChange: (scale: ScaleMode) => void;
   availableDocs: string[];
   hiddenDocs: Set<string>;
   onToggleDoc: (doc: string) => void;
@@ -179,6 +184,37 @@ export function LensPane({
               </div>
             </div>
           </div>
+          {/* Arc-scaling toggle: size wedges by target count or by spend.
+              Only on the GLOBE lens, where per-category spend is defined. */}
+          {groupMode === "globe" && (
+            <div className="mt-3">
+              <div className={`${EYEBROW} mb-2`}>
+                {t("workbench.finance.scaleLabel")}
+              </div>
+              <div className="flex w-full gap-1 rounded-lg border border-gray-300 p-[2px]">
+                {(
+                  [
+                    ["targets", t("workbench.finance.scaleByTargets")],
+                    ["spend", t("workbench.finance.scaleBySpend")],
+                  ] as [ScaleMode, string][]
+                ).map(([mode, label]) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => onBudgetScaleChange(mode)}
+                    aria-pressed={budgetScale === mode}
+                    className={`${seg} ${
+                      budgetScale === mode
+                        ? "bg-[#0e7490] text-white"
+                        : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

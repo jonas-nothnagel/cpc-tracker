@@ -1349,6 +1349,10 @@
         "tileTaggedSpend": "Tagged spend",
         "tileFundedCategories": "Funded categories",
         "tileFundedValue": "{funded, number}/{total, number}",
+        "scaleLabel": "Scale the arcs by",
+        "scaleByTargets": "Targets",
+        "scaleBySpend": "Spend",
+        "encodingSpend": "Wedge width shows each category's share of tagged spend. Select a wedge to see its policy targets and their connections.",
         "helperNote": "Wedge depth shows each category's share of tagged biodiversity spend, read against where the potential misalignments sit.",
         "scopeCaveat": "Share of reviewed biodiversity spending, not the country's full budget."
       },

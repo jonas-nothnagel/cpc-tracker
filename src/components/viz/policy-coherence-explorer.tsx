@@ -206,10 +206,43 @@ function buildGroups(
   return buildGroupsByTaxonomy(targets, globeCategories, "globe", classifications);
 }
 
-function computeLayout(groups: Group[], alignment: AlignmentResult[]) {
-  const total = groups.reduce((s, g) => s + g.targets.length, 0);
-  if (total === 0) return { nodes: [] as NodePos[], arcs: [] as GroupArc[] };
+/**
+ * Build the wheel's arcs and per-target nodes.
+ *
+ * By default each arc's angular span is proportional to its target count
+ * (breadth of policy ambition). When `opts.weightById` is supplied, the span is
+ * driven by that weight instead — the Finance view passes per-category tagged
+ * spend so the wheel can be read as "where does the money go". Zero-weight
+ * groups (e.g. GLOBE categories that carry targets but no tagged BER spend)
+ * keep a fixed minimum sliver so they stay visible and clickable; the remaining
+ * angle is split among weighted groups in exact proportion, so funded shares
+ * stay faithful. Group order is unchanged either way, so the two layouts can be
+ * interpolated arc-for-arc (the morph between the Targets and Spend scalings).
+ */
+function computeLayout(
+  groups: Group[],
+  alignment: AlignmentResult[],
+  opts?: { weightById?: Map<string, number>; minSpanFrac?: number },
+) {
+  const totalTargets = groups.reduce((s, g) => s + g.targets.length, 0);
+  if (totalTargets === 0) return { nodes: [] as NodePos[], arcs: [] as GroupArc[] };
   const avail = 2 * Math.PI - GAP * groups.length;
+
+  const wantsWeights = !!opts?.weightById;
+  const weights = groups.map((g) =>
+    wantsWeights ? Math.max(0, opts!.weightById!.get(g.id) ?? 0) : g.targets.length,
+  );
+  const totalWeight = weights.reduce((s, w) => s + w, 0);
+  // Fall back to target-count spans when a weight map was supplied but summed
+  // to zero (no funded category currently has a visible target — e.g. after
+  // doc-hiding). Without this every wedge would collapse to the min-span sliver
+  // and the wheel would look broken instead of showing the target-count layout.
+  const useWeights = wantsWeights && totalWeight > 0;
+  // Min sliver only applies in weighted mode; default mode is pixel-identical
+  // to before (every group has >= 1 target, so no zero spans arise).
+  const minSpan = useWeights ? (opts?.minSpanFrac ?? 0.012) * avail : 0;
+  const zeroCount = useWeights ? weights.filter((w) => w <= 0).length : 0;
+  const flexAvail = Math.max(0, avail - zeroCount * minSpan);
 
   const cc = new Map<string, number>();
   for (const a of alignment) {
@@ -222,8 +255,14 @@ function computeLayout(groups: Group[], alignment: AlignmentResult[]) {
   const arcs: GroupArc[] = [];
   let cur = 0;
 
-  for (const g of groups) {
-    const span = (g.targets.length / total) * avail;
+  for (let gi = 0; gi < groups.length; gi++) {
+    const g = groups[gi];
+    const w = weights[gi];
+    const span = useWeights
+      ? w > 0
+        ? (w / totalWeight) * flexAvail
+        : minSpan
+      : (g.targets.length / totalTargets) * avail;
     const start = cur;
     const end = cur + span;
     const mid = (start + end) / 2;
@@ -255,6 +294,31 @@ function computeLayout(groups: Group[], alignment: AlignmentResult[]) {
     }
     cur = end + GAP;
   }
+  return { nodes, arcs };
+}
+
+type WheelLayout = { nodes: NodePos[]; arcs: GroupArc[] };
+
+/**
+ * Interpolate two layouts arc-for-arc / node-for-node (both built from the same
+ * groups in the same order, so indices line up). Used to morph the wheel
+ * between the Targets and Spend scalings. `t` is clamped 0..1; the endpoints
+ * short-circuit so the common (not-animating) case returns the layout as-is.
+ */
+function lerpLayout(a: WheelLayout, b: WheelLayout, t: number): WheelLayout {
+  if (t <= 0) return a;
+  if (t >= 1) return b;
+  const arcs = a.arcs.map((arc, i) => {
+    const arcB = b.arcs[i] ?? arc;
+    const startAngle = arc.startAngle + (arcB.startAngle - arc.startAngle) * t;
+    const endAngle = arc.endAngle + (arcB.endAngle - arc.endAngle) * t;
+    return { ...arc, startAngle, endAngle, midAngle: (startAngle + endAngle) / 2 };
+  });
+  const nodes = a.nodes.map((node, i) => {
+    const nodeB = b.nodes[i] ?? node;
+    const angle = node.angle + (nodeB.angle - node.angle) * t;
+    return { ...node, angle, x: NODE_R * Math.sin(angle), y: -NODE_R * Math.cos(angle) };
+  });
   return { nodes, arcs };
 }
 
@@ -2790,6 +2854,21 @@ export function PolicyCoherenceExplorer({
    * exists in v1) but the state survives so a return to GLOBE re-paints.
    */
   const [budgetOverlay, setBudgetOverlay] = useState(false);
+  /**
+   * Arc-scaling mode within the Finance view. "targets" (default) sizes each
+   * GLOBE wedge by its policy-target count and shades it by spend share — the
+   * original behaviour. "spend" re-sizes wedges by their share of tagged spend
+   * so the wheel reads as "where does the money go"; individual targets are
+   * then revealed on click rather than tiled along the rim. Only meaningful on
+   * the GLOBE lens with budget data, and reset to "targets" when the user
+   * leaves that context so the toggle never lingers where spend is undefined.
+   */
+  const [budgetScale, setBudgetScale] = useState<"targets" | "spend">("targets");
+  // Animated morph between the two scalings: 0 = targets, 1 = spend. Driven by
+  // a rAF tween (see effect below) so toggling visibly animates the wedge
+  // widths; snaps instantly under prefers-reduced-motion.
+  const [morph, setMorph] = useState(0);
+  const morphRef = useRef(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [comparedPair, setComparedPair] = useState<{
@@ -2985,6 +3064,11 @@ export function PolicyCoherenceExplorer({
   const budgetShadingActive =
     budgetOverlay && groupMode === "globe" && !!budgetSummary;
 
+  /** True iff arcs should be sized by spend right now (Finance + GLOBE + the
+   *  Spend scaling). Drives the layout morph and the hide-dots-until-click
+   *  behaviour. */
+  const spendScaleActive = budgetShadingActive && budgetScale === "spend";
+
   const activeId = selectedId ?? hoveredId;
 
   const groups = useMemo(
@@ -2994,10 +3078,67 @@ export function PolicyCoherenceExplorer({
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
 
-  const { nodes, arcs } = useMemo(
+  // Target-count layout (the default scaling) and, when on the GLOBE lens with
+  // budget data, a spend-weighted layout. The rendered layout interpolates
+  // between them by `morph` so switching scalings animates the wedge widths.
+  const layoutByTargets = useMemo(
     () => computeLayout(groups, filtered),
     [groups, filtered],
   );
+  // Per-category spend weights for the Spend scaling, derived from the same map
+  // that drives the arc shading so a wedge's width and its shade can never
+  // disagree about how much spend the category carries.
+  const budgetWeightMap = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const [id, e] of budgetByCategoryId) m.set(id, e.totalBudget);
+    return m;
+  }, [budgetByCategoryId]);
+  const layoutBySpend = useMemo<WheelLayout | null>(() => {
+    if (groupMode !== "globe" || !budgetSummary) return null;
+    return computeLayout(groups, filtered, {
+      weightById: budgetWeightMap,
+      minSpanFrac: 0.012,
+    });
+  }, [groupMode, budgetSummary, groups, filtered, budgetWeightMap]);
+
+  const { nodes, arcs } = useMemo(
+    () =>
+      layoutBySpend && morph > 0
+        ? lerpLayout(layoutByTargets, layoutBySpend, morph)
+        : layoutByTargets,
+    [layoutByTargets, layoutBySpend, morph],
+  );
+
+  // rAF tween of `morph` toward the active scaling. Cancels any in-flight tween
+  // on change/unmount; snaps under prefers-reduced-motion.
+  useEffect(() => {
+    const target = spendScaleActive ? 1 : 0;
+    if (morphRef.current === target) return;
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      morphRef.current = target;
+      setMorph(target);
+      return;
+    }
+    const from = morphRef.current;
+    const dur = 550;
+    let raf = 0;
+    let startTs = 0;
+    const tick = (ts: number) => {
+      if (!startTs) startTs = ts;
+      const p = Math.min(1, (ts - startTs) / dur);
+      // easeInOutQuad
+      const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const v = from + (target - from) * eased;
+      morphRef.current = v;
+      setMorph(v);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [spendScaleActive]);
 
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
   const groupColorMap = useMemo(() => new Map(arcs.map((a) => [a.id, a.color])), [arcs]);
@@ -3167,6 +3308,9 @@ export function PolicyCoherenceExplorer({
       setSelectedId(null);
       setComparedPair(null);
       setFocalGroupId(null);
+      // Spend scaling only maps onto the GLOBE lens; drop it elsewhere so the
+      // wheel reverts to target-count widths.
+      if (m !== "globe") setBudgetScale("targets");
       clearChat();
     },
     [clearChat],
@@ -3378,6 +3522,8 @@ export function PolicyCoherenceExplorer({
       const finance = next === "finance";
       setBudgetOverlay(finance);
       if (finance && groupMode !== "globe") setGroupMode("globe");
+      // Leaving Finance returns the wheel to the target-count scaling.
+      if (!finance) setBudgetScale("targets");
     },
     [groupMode],
   );
@@ -3922,6 +4068,11 @@ export function PolicyCoherenceExplorer({
                   const wedgeColor = isUnfunded
                     ? "#94a3b8"
                     : BUDGET_WEDGE_COLOR;
+                  // Gradual saturation by spend share in BOTH scalings: the
+                  // most-funded category renders darkest, the rest fade down.
+                  // In the Spend scaling the wedge width also encodes spend, so
+                  // width and shade reinforce each other (the dominant category
+                  // is both widest and darkest).
                   const fillAlpha = isUnfunded
                     ? 0.08
                     : alphaForBudgetShare(share, budgetSummary.maxShare);
@@ -3943,8 +4094,15 @@ export function PolicyCoherenceExplorer({
                   //     into the leader label in that state),
                   //   - or the category has zero tagged BER spend (showing
                   //     "0%" is redundant once the wedge itself is greyed).
+                  // Suppression threshold: the resting Targets view keeps the
+                  // original ~14deg floor (below which the glyphs overlap the
+                  // wedge edge); the Spend scaling relaxes it toward ~11.5deg so
+                  // narrow-but-funded wedges (e.g. a 4-5% category) still show
+                  // their share. Interpolated by morph so the Targets view is
+                  // byte-for-byte unchanged at rest.
+                  const labelMinSpan = 0.244 - 0.044 * morph;
                   const showLabel =
-                    angularSpan > 0.244 &&
+                    angularSpan > labelMinSpan &&
                     !activeId &&
                     !isGroupFocus &&
                     !isUnfunded;
@@ -4175,7 +4333,23 @@ export function PolicyCoherenceExplorer({
                   doesn't overpower the wedge fill underneath. Click and hover
                   still work because the underlying nodes keep their full
                   pointer surface. */}
-              <g opacity={budgetShadingActive && !activeId && !isGroupFocus ? 0.2 : 1}>
+              <g
+                opacity={
+                  budgetShadingActive && !activeId && !isGroupFocus
+                    ? 0.2 * (1 - morph)
+                    : 1
+                }
+                style={
+                  // Gate interactivity on the same `morph` signal that drives
+                  // the fade (not the stepped spendScaleActive) so visibility
+                  // and clickability stay in sync across the tween — otherwise
+                  // toggling back to Targets restores clicks ~550ms before the
+                  // dots reappear, letting users hit invisible nodes.
+                  budgetShadingActive && !activeId && !isGroupFocus && morph > 0.5
+                    ? { pointerEvents: "none" }
+                    : undefined
+                }
+              >
               {nodes.map((node) => {
                 const r = NODE_RADIUS;
                 const isActive = node.id === activeId;
@@ -4359,17 +4533,27 @@ export function PolicyCoherenceExplorer({
                 // overlap constraint allows.
                 const PADDING = LABEL_H / GRP_LABEL_R;
                 const HOME_PULL = 0.18;
+                const N = sorted.length;
                 for (let iter = 0; iter < 60; iter++) {
                   for (const e of sorted) {
                     e.angle += HOME_PULL * (e.arc.midAngle - e.angle);
                   }
-                  for (let i = 0; i < sorted.length - 1; i++) {
-                    const needed = (sorted[i].angularSpan + sorted[i + 1].angularSpan) / 2 + PADDING;
-                    const gap = sorted[i + 1].angle - sorted[i].angle;
+                  // Circular de-collision: pair i with (i+1) AND the last with
+                  // the first across the 12 o'clock seam (gap measured with a
+                  // +2π offset). Without the wrap pair the two labels straddling
+                  // the top never de-collide — which is exactly where the Spend
+                  // scaling parks the shrunken lead category next to the
+                  // unfunded slivers, causing the overlap.
+                  for (let i = 0; i < N; i++) {
+                    const a = sorted[i];
+                    const b = sorted[(i + 1) % N];
+                    const wrap = i + 1 === N;
+                    const needed = (a.angularSpan + b.angularSpan) / 2 + PADDING;
+                    const gap = b.angle + (wrap ? 2 * Math.PI : 0) - a.angle;
                     if (gap < needed) {
                       const half = (needed - gap) / 2;
-                      sorted[i].angle -= half;
-                      sorted[i + 1].angle += half;
+                      a.angle -= half;
+                      b.angle += half;
                     }
                   }
                 }
@@ -4695,7 +4879,11 @@ export function PolicyCoherenceExplorer({
         answersToggleTitle={t("workbench.answersTitle")}
         answersClose={t("workbench.answersClose")}
         financeActive={financeView}
-        financeNote={t("workbench.finance.helperNote")}
+        financeNote={t(
+          spendScaleActive
+            ? "workbench.finance.encodingSpend"
+            : "workbench.finance.helperNote",
+        )}
         footerCaveat={t("workbench.footerCaveat")}
         lensPane={
           <LensPane
@@ -4707,6 +4895,8 @@ export function PolicyCoherenceExplorer({
             filter={filter}
             onFilter={setFilter}
             budgetSummary={budgetSummary}
+            budgetScale={budgetScale}
+            onBudgetScaleChange={setBudgetScale}
             availableDocs={availableDocs}
             hiddenDocs={hiddenDocs}
             onToggleDoc={toggleDoc}
