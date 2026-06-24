@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>How the tool works | Nature-Climate Policy Coherence Analyzer</title>
+<title>How the analysis works | Nature-Climate Policy Coherence Analyzer</title>
 <style>
   :root {
     --blue: #0468b1; --blue-dark: #035293; --black: #232e3d; --gray: #55606e;
@@ -29,7 +29,7 @@
     font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
     font-size: 23pt; line-height: 1.1; margin: 0 0 8px; color: var(--black); font-weight: 700;
   }
-  .standfirst { font-size: 11pt; color: var(--gray); margin: 0 0 4px; max-width: 64ch; }
+  .standfirst { font-size: 11pt; color: var(--gray); margin: 0 0 4px; max-width: 66ch; }
   h2 {
     font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
     font-size: 13.5pt; margin: 22px 0 8px; color: var(--blue-dark);
@@ -40,8 +40,9 @@
   a { color: var(--blue); }
   strong { color: var(--black); }
   .lead-rule { height: 4px; background: var(--blue); width: 54px; border: 0; margin: 14px 0 18px; }
+  .section-intro { margin: 0 0 8px; }
 
-  /* three levels */
+  /* three levels (scope band) */
   .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 6px 0 4px; }
   .level { border: 1px solid var(--line); border-top: 4px solid var(--lc); border-radius: 6px; padding: 10px 12px; background: var(--paper); }
   .level .tag { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--lc); }
@@ -66,6 +67,13 @@
   ul { margin: 4px 0 8px; padding-left: 16px; }
   li { margin: 0 0 4px; font-size: 9.5pt; }
 
+  /* worked example */
+  .example { border: 1px solid var(--line); border-left: 4px solid var(--ph-an); background: var(--paper); border-radius: 6px; padding: 11px 14px; margin: 12px 0 4px; }
+  .example .ek { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ph-an); margin: 0 0 5px; }
+  .example p { font-size: 9.5pt; color: var(--gray); margin: 0; }
+  .example strong { color: var(--black); }
+  .example .flag { color: var(--a-flag); font-weight: 700; }
+
   /* safeguards */
   .guards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin: 4px 0; }
   .guard { font-size: 9pt; }
@@ -78,7 +86,7 @@
     .page { max-width: none; margin: 0; padding: 0; }
     .page-break { page-break-before: always; }
     h2 { break-after: avoid; }
-    .levels, .pipe, .guards { break-inside: avoid; }
+    .levels, .pipe, .guards, .example { break-inside: avoid; }
     body { font-size: 10pt; }
   }
 </style>
@@ -86,58 +94,59 @@
 <body>
 <div class="page">
 
-  <p class="eyebrow">UNDP AI Sprint &middot; Nature-Climate Policy Coherence</p>
-  <h1>How the tool works</h1>
-  <p class="standfirst">A transparent look at how the tool turns national policy documents into clear, traceable insights on where commitments reinforce one another and where coordination could be stronger.</p>
+  <p class="eyebrow">Nature-Climate Policy Coherence Analyzer &middot; Methodology</p>
+  <h1>How the analysis works</h1>
+  <p class="standfirst">A transparent account of how national policy documents are turned into traceable, evidence-based insights on policy coherence: where commitments reinforce one another, where they may compete, and where gaps remain.</p>
   <hr class="lead-rule" />
 
-  <h2>Why this tool exists</h2>
-  <p>Across the new generation of Nationally Determined Contributions (NDCs), National Biodiversity Strategies and Action Plans (NBSAPs) and adaptation plans, ambition has risen, yet there is often limited clarity on how these commitments fit together and on the gaps between them. This tool provides data-based evidence to support that judgement. It is a <strong>decision-support system, not a decision-maker</strong>: it surfaces patterns for national experts to interpret, and the final reading always stays with policymakers.</p>
+  <h2>Purpose</h2>
+  <p>Across the new generation of Nationally Determined Contributions (NDCs), National Biodiversity Strategies and Action Plans (NBSAPs) and adaptation plans, ambition has risen while clarity on how these commitments fit together has not. The analysis provides data-based evidence on the synergies, opportunities and gaps across a country&rsquo;s nature and climate policies. It is a <strong>decision-support system, not a decision-maker</strong>: it surfaces patterns for national experts to interpret, and the final interpretation rests with policymakers.</p>
 
-  <h2>What it analyses: three levels</h2>
+  <h2>What the analysis covers</h2>
+  <p class="section-intro">The same analytical method is applied at three levels, as far as each country&rsquo;s data allows.</p>
   <div class="levels">
     <div class="level" style="--lc: var(--l1)">
       <div class="tag">Level 1</div>
       <h3>Policy coherence</h3>
-      <p>How targets across different national documents align, reinforce one another, or could compete.</p>
+      <p>How targets across national policy documents align, reinforce one another, or could compete.</p>
       <span class="badge">Established</span>
     </div>
     <div class="level" style="--lc: var(--l2)">
       <div class="tag">Level 2</div>
       <h3>Financial alignment</h3>
-      <p>Where government budget programmes match policy ambition, and where they do not.</p>
+      <p>Where government budget programmes follow policy ambition, and where they do not.</p>
       <span class="badge">Where budget data exists</span>
     </div>
     <div class="level" style="--lc: var(--l3)">
       <div class="tag">Level 3</div>
       <h3>Implementation progress</h3>
-      <p>Whether reported measures actually deliver on the stated targets.</p>
+      <p>Whether reported measures deliver on the stated targets.</p>
       <span class="badge">Where reporting data exists</span>
     </div>
   </div>
 
-  <h2>How insights are created</h2>
-  <p>Every result is produced by the same transparent sequence, organised in three phases. The AI reads only the policy text it is given; it never invents policy content.</p>
+  <h2>The method</h2>
+  <p class="section-intro">Every result is produced by the same transparent sequence, organised in three phases. The analysis reads only the policy text it is given and never introduces policy content of its own.</p>
   <div class="pipe">
     <div class="phase" style="--pc: var(--ph-ex)">
       <div class="pk">Phase 1 &middot; Extraction</div>
       <div class="pt">Documents to targets</div>
-      <div class="pd">Read each page, set aside boilerplate, extract every target word-for-word with its source, merge duplicates, and verify each figure traces back to the original document.</div>
+      <div class="pd">Each page is read in full, boilerplate is set aside, and every target is extracted word for word with its source. Duplicates are merged, and each figure, year and named framework is verified against the original document.</div>
     </div>
     <div class="arrow">&rarr;</div>
     <div class="phase" style="--pc: var(--ph-an)">
       <div class="pk">Phase 2 &middot; Analysis</div>
       <div class="pt">Targets to coherence</div>
-      <div class="pd">Flag what is measurable and time-bound, classify each target against expert lenses, then compare every cross-document pair: one agent breaks a target into its parts, a second judges the alignment.</div>
+      <div class="pd">Each target is flagged for whether it is measurable and time-bound, and classified against expert lenses. Every cross-document pair is then assessed: one specialist agent decomposes each target into its parts, and a second judges how the two align.</div>
     </div>
     <div class="arrow">&rarr;</div>
     <div class="phase" style="--pc: var(--ph-sy)">
-      <div class="pk">Phase 3 &middot; Synthesis &amp; Delivery</div>
+      <div class="pk">Phase 3 &middot; Synthesis</div>
       <div class="pt">Pairs to patterns</div>
-      <div class="pd">Roll the judgements into coherency scores and coverage, surface where potential misalignment concentrates, and extend the same method to finance and implementation where the data exists.</div>
+      <div class="pd">The individual judgements are rolled into coherency scores and coverage, recurring potential misalignment is surfaced, and the same method is extended to finance and implementation where the data exists.</div>
     </div>
   </div>
-  <p class="scale-note">Each pair is placed on a five-state scale. Four positive levels describe how strongly two targets align; a single review state, <strong>Potential misalignment</strong>, flags pairs for a human to examine rather than declaring a conflict.</p>
+  <p class="scale-note">Each pair is placed on a five-state scale. Four positive levels describe how strongly two targets align; a single review state, <strong>Potential misalignment</strong>, flags a pair for expert examination rather than declaring a conflict.</p>
   <div class="scale">
     <div class="scell" style="background: var(--a-flag); color:#fff">Potential misalignment</div>
     <div class="scell" style="background: var(--a-none); color:#374151">No alignment</div>
@@ -148,39 +157,42 @@
 
   <div class="page-break"></div>
 
-  <h2>The method in a little more detail</h2>
+  <h2>Inside the analysis</h2>
   <div class="two">
     <div>
-      <h3>Classification (the lenses)</h3>
-      <p>Targets are scored against expert reference frameworks: nature-based solutions, IPCC sectors, the GLOBE biodiversity taxonomy, and, where relevant, national adaptation goals. Categories are traced to published sources, never drafted by the AI, and are configurable per country. Each target keeps one primary category plus any others it clearly relates to, so the same evidence can be viewed through different lenses.</p>
-      <h3>Comparison (two agents)</h3>
-      <p>Separating the work into two steps (first decomposing a target into goal, action, area, actors and expected outcome, then assessing alignment from that structure) keeps judgements consistent across countries and policy frameworks, and grounded in content rather than shared keywords.</p>
+      <h3>Classification against expert lenses</h3>
+      <p>Targets are scored against published reference frameworks: nature-based solutions, IPCC sectors, the GLOBE biodiversity taxonomy, and, where relevant, national adaptation goals. Categories trace to their sources and are configurable per country. Each target keeps one primary category plus any others it clearly relates to, so the same evidence can be read through different lenses without re-analysis.</p>
+      <h3>Comparison in two steps</h3>
+      <p>The comparison is deliberately separated into two stages. A target is first decomposed into its goal, action, area, actors and expected outcome; alignment is then assessed from that structure. This keeps judgements consistent across countries and policy frameworks, and grounded in policy substance rather than shared keywords.</p>
     </div>
     <div>
       <h3>Why &ldquo;potential misalignment&rdquo;, not &ldquo;conflict&rdquo;</h3>
-      <p>The negative side of the scale is deliberately cautious. A flag is a prompt for review, accompanied by the nature of the friction (competing goals, a shared resource, or delivery pressure), how manageable it looks, and how confident the reading is. The language is neutral and never frames a sector or ministry as at fault.</p>
-      <h3>Synthesis</h3>
-      <p>The tool produces short factual insights and visuals, not long AI-written narratives. Suggested next steps are framed as possibilities to explore (&ldquo;could&rdquo;, &ldquo;may&rdquo;), never instructions.</p>
+      <p>The negative side of the scale is deliberately cautious. A potential misalignment is a prompt for review, never a verdict: each one records what kind it is (competing goals, a shared resource, or delivery pressure), how manageable it appears, and how confident the reading is, so a reviewer sees why a pair was flagged.</p>
+      <h3>Synthesis and framing</h3>
+      <p>The analysis produces short factual insights and visuals, not extended AI-written narratives. Where next steps are suggested, they are framed as possibilities to explore (&ldquo;could&rdquo;, &ldquo;may&rdquo;), never as instructions.</p>
     </div>
   </div>
 
-  <h2>What the dashboard shows</h2>
+  <div class="example">
+    <p class="ek">Worked example &middot; Mongolia</p>
+    <p>The NBSAP target to include all territory in <strong>spatial planning</strong> is paired with the NDC target to secure <strong>water availability</strong> through new infrastructure. Both concern land and water governance, but the infrastructure could press on the ecosystems the spatial-planning target protects. The analysis records the pair as a <span class="flag">Potential misalignment</span> of the delivery type, assessed as manageable and at medium confidence, and notes that coordination through spatial planning, zoning and safeguards would keep the two aligned. It is one of <strong>46 pairs flagged for review</strong>; the other <strong>494</strong> of the <strong>540</strong> pairs compared between the two documents sit on the positive side of the scale.</p>
+  </div>
+
+  <h2>What the analysis produces</h2>
   <ul>
-    <li><strong>Visuals plus short, factual insights</strong> (coverage, alignment patterns, and where coordination could be strengthened), never an automated report.</li>
-    <li><strong>Switchable lenses</strong>, user-controlled, so the same analysis can be regrouped by theme, by sector (GLOBE, IPCC, or a country's own set), or by finance and implementation overlays, with no re-analysis.</li>
-    <li><strong>A grounded chat</strong> that answers questions using only the analysed evidence.</li>
+    <li><strong>Visuals and short, factual insights</strong> on coverage, alignment patterns, and where coordination could be strengthened, rather than an automated report.</li>
+    <li><strong>Switchable lenses</strong>, under the user&rsquo;s control, so the same analysis can be regrouped by theme, by sector (GLOBE, IPCC, or a country&rsquo;s own set), or by finance and implementation overlays, with no re-analysis.</li>
+    <li><strong>A grounded assistant</strong> that answers questions using only the analysed evidence.</li>
   </ul>
 
-  <h2>Safeguards &amp; trust</h2>
+  <h2>Safeguards</h2>
   <div class="guards">
-    <div class="guard"><b>Human in the loop.</b> The user confirms and edits the extracted targets before any analysis runs, and can rate any AI rationale with a thumbs and a note that feeds future improvement. Outputs are AI-assisted and require expert validation before use in policy processes.</div>
-    <div class="guard"><b>Fully traceable.</b> Every result links back to the source text it came from; nothing is asserted that cannot be checked.</div>
-    <div class="guard"><b>No hallucinated content.</b> The AI only classifies and compares the targets it is given.</div>
-    <div class="guard"><b>Neutral language.</b> Findings are framed as opportunities for stronger alignment, never as blame.</div>
+    <div class="guard"><b>Human in the loop.</b> Extracted targets are confirmed and edited before any analysis runs, and any AI rationale can be rated to improve future runs. Outputs are AI-assisted and require expert validation before use in policy processes.</div>
+    <div class="guard"><b>Grounded and traceable.</b> Only the targets provided are classified and compared; every result links back to the source text it came from, and nothing is asserted that cannot be checked.</div>
     <div class="guard"><b>Data sovereignty.</b> Government data runs on UNDP-controlled infrastructure and is not exposed to the open internet.</div>
-    <div class="guard"><b>Frugal &amp; Fair AI.</b> A low-footprint design whose environmental cost is measured and reported openly.</div>
+    <div class="guard"><b>Frugal and Fair AI.</b> A low-footprint design whose environmental cost is measured and reported openly.</div>
   </div>
-  <p style="font-size:9pt; margin-top:6px;">The tool is being built as an open-source <strong>Digital Public Good</strong>, so that national governments can eventually run it on their own data and infrastructure.</p>
+  <p style="font-size:9pt; margin-top:6px;">The analysis is being built as an open-source <strong>Digital Public Good</strong>, so that national governments can eventually run it on their own data and infrastructure.</p>
 
   <p class="footnote">AI-assisted analysis for decision support. All outputs require expert validation before use in policy processes. This brief reflects the analysis pipeline as of June 2026. &middot; UNDP Nature-Climate Policy Coherence Analyzer.</p>
 
