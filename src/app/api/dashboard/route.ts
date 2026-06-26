@@ -52,6 +52,9 @@ export async function GET(request: NextRequest) {
   const analysisId = request.nextUrl.searchParams.get("analysisId");
   const country = request.nextUrl.searchParams.get("country");
   const locale = request.nextUrl.searchParams.get("locale") ?? undefined;
+  // Optional ?model= picks a per-model output subdir (Mongolia model-comparison).
+  // Validation lives in derivePaths so callers can't bypass the slug allow-list.
+  const model = request.nextUrl.searchParams.get("model");
   const acceptsGzip = (request.headers.get("accept-encoding") ?? "").includes("gzip");
 
   // Upload flow: per-analysis data is dynamic and may still be processing, so
@@ -73,8 +76,9 @@ export async function GET(request: NextRequest) {
   }
 
   // Pilot flow: assembled once per container, then served from the cached
-  // (and pre-gzipped) payload.
-  const payloadResult = getCountryDashboardPayload(country ?? "", locale);
+  // (and pre-gzipped) payload. Each (country, locale, model) combination
+  // gets its own cache entry.
+  const payloadResult = getCountryDashboardPayload(country ?? "", locale, model);
   if (payloadResult.kind === "error") {
     return NextResponse.json(
       payloadResult.missing

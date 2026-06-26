@@ -23,12 +23,12 @@ from typing import Any
 import httpx
 from openai import AsyncAzureOpenAI, AsyncOpenAI
 
+from . import config
 from .config import (
     CACHE_DIR,
     LLM_API_KEY,
     LLM_BASE_URL,
     LLM_CONCURRENCY,
-    LLM_MODEL,
     LLM_TEMPERATURE,
 )
 
@@ -226,7 +226,7 @@ async def call_llm(
 
     Returns the assistant message content as a string.
     """
-    model = model or LLM_MODEL
+    model = model or config.LLM_MODEL
     temperature = temperature if temperature is not None else LLM_TEMPERATURE
     tracker = get_footprint_tracker()
 

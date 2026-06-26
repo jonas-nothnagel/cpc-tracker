@@ -30,7 +30,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import ACTIVE_TAXONOMIES, CACHE_DIR, DATA_DIR, LLM_MODEL, OUTPUT_DIR
+from . import config
+from .config import ACTIVE_TAXONOMIES, CACHE_DIR, DATA_DIR, OUTPUT_DIR
 from .classify import rank_classification
 from .classify_globe import (
     classify_globe_subcategories,
@@ -184,16 +185,38 @@ def derive_country_file(targets_file: str, suffix: str) -> str:
     return f"{prefix}-{suffix}.json" if prefix else f"{suffix}.json"
 
 
-def derive_output_dir(targets_file: str, base_output_dir: Path) -> Path:
-    """Derive the per-country output dir from the targets filename.
+def slugify_model(model: str) -> str:
+    """Filesystem-safe slug for a model name used as an output subdir.
 
-    mongolia-targets.json → <base>/mongolia/
-    panama-targets.json   → <base>/panama/
-    targets.json          → <base>/                 (no prefix, flat fallback)
+    gpt-5.4          → gpt-5-4
+    gpt-5.4-mini     → gpt-5-4-mini
+    DeepSeek-V4-Pro  → deepseek-v4-pro
+    Phi-4            → phi-4
+    openai/gpt-4o-mini → openai-gpt-4o-mini
+
+    Lowercases, replaces any non-[a-z0-9-] with '-', collapses runs of '-'.
+    """
+    s = model.lower()
+    s = re.sub(r"[^a-z0-9-]+", "-", s)
+    s = re.sub(r"-+", "-", s).strip("-")
+    return s
+
+
+def derive_output_dir(
+    targets_file: str,
+    base_output_dir: Path,
+    model: str | None = None,
+) -> Path:
+    """Derive the per-country (and optionally per-model) output dir.
+
+    mongolia-targets.json, model=None    → <base>/mongolia/
+    mongolia-targets.json, model=gpt-5.4 → <base>/mongolia/gpt-5-4/
+    panama-targets.json,   model=None    → <base>/panama/
+    targets.json,          model=None    → <base>/                 (flat fallback)
 
     When CPC_OUTPUT_DIR env var is set (upload flow via /api/analyze), we skip
-    this derivation entirely and honor the env var path as-is, because uploads
-    write to python/analyses/{id}/output/ which is already a per-analysis dir.
+    derivation entirely and honor the env var path as-is — upload runs always
+    use their per-analysis dir and don't need a model subdir.
 
     .cache/ is managed separately by python/src/config.py and stays shared
     across countries at python/output/.cache/. We never touch it from here.
@@ -203,7 +226,10 @@ def derive_output_dir(targets_file: str, base_output_dir: Path) -> Path:
         return base_output_dir
     stem = targets_file[:-5] if targets_file.endswith(".json") else targets_file
     country_stem = re.sub(r"-?targets$", "", stem)
-    return base_output_dir / country_stem if country_stem else base_output_dir
+    country_dir = base_output_dir / country_stem if country_stem else base_output_dir
+    if model:
+        return country_dir / slugify_model(model)
+    return country_dir
 
 
 def parse_args() -> argparse.Namespace:
@@ -222,21 +248,57 @@ def parse_args() -> argparse.Namespace:
              "its own cache so re-running with a new value does not invalidate "
              "prior runs.",
     )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="Override LLM_MODEL for this run. When set, the run writes to "
+             "<output>/<country>/<model-slug>/ so multiple model runs of the "
+             "same country coexist for side-by-side comparison. Defaults to "
+             "the LLM_MODEL env var.",
+    )
+    parser.add_argument(
+        "--limit-targets",
+        type=int,
+        default=None,
+        help="Truncate the targets list to the first N entries for a smoke "
+             "test. Useful for verifying routing + output paths on a new "
+             "model before committing to a full ~21k-call run. The smoke run "
+             "still writes to a per-model subdir, so its outputs do not "
+             "overwrite a real run for the same model.",
+    )
     return parser.parse_args()
 
 
 async def main() -> None:
     global OUTPUT_DIR
     args = parse_args()
-    # Derive the per-country output dir from the targets filename so multiple
-    # countries can coexist under python/output/{country}/. Upload flow is
+    # --model overrides config.LLM_MODEL for this run. We update the live
+    # attribute on the config module so every call site that reads it
+    # (`llm.py`, the canary below, the ledger row) picks up the new value.
+    # The env var is updated too so any child process inherits the choice.
+    if args.model:
+        config.LLM_MODEL = args.model
+        os.environ["LLM_MODEL"] = args.model
+    # Derive the per-country (and per-model when --model is set) output dir
+    # from the targets filename. Multiple model runs of the same country
+    # coexist under python/output/{country}/{model-slug}/. Upload flow is
     # unaffected: when CPC_OUTPUT_DIR is set, derivation is skipped.
-    OUTPUT_DIR = derive_output_dir(args.targets_file, OUTPUT_DIR)
+    OUTPUT_DIR = derive_output_dir(args.targets_file, OUTPUT_DIR, args.model)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    # When running into a fresh per-model subdir, seed btr_data.json from the
+    # country-root copy so the BTR alignment step finds its input. The file is
+    # logically shared input (the upload flow's BTR ingestion writes it to the
+    # country root); only LLM-derived sector enrichment is per-model.
+    if args.model:
+        country_btr = OUTPUT_DIR.parent / "btr_data.json"
+        model_btr = OUTPUT_DIR / "btr_data.json"
+        if country_btr.exists() and not model_btr.exists():
+            model_btr.write_bytes(country_btr.read_bytes())
+            logger.info(f"Seeded btr_data.json into {OUTPUT_DIR.name}/ from country root")
     set_language(args.language)
     start = time.time()
     started_at = datetime.now(timezone.utc).isoformat()
-    logger.info(f"Starting analysis pipeline (model: {LLM_MODEL}, language: {args.language})")
+    logger.info(f"Starting analysis pipeline (model: {config.LLM_MODEL}, language: {args.language})")
     logger.info(f"Output dir: {OUTPUT_DIR}")
     # Cache visibility: a cold cache means a full recompute at full cost.
     # Probe expected hit rates first with scripts/probe_cache.py. Count only
@@ -271,6 +333,13 @@ async def main() -> None:
     try:
         # 1. Load data
         targets, nbs_categories, sectors, globe_categories, globe_subcategories, gga_categories = load_input_data(args.targets_file)
+        if args.limit_targets is not None:
+            original_count = len(targets)
+            targets = targets[: args.limit_targets]
+            logger.info(
+                f"--limit-targets {args.limit_targets}: truncated targets "
+                f"from {original_count} to {len(targets)} (smoke test mode)"
+            )
 
         # Cache canary: expected hit rate on a decomposition sample. The
         # decompose prompts are upstream of everything, so 0 hits here means
@@ -286,7 +355,7 @@ async def main() -> None:
                 "decompose",
                 _augment_system_with_language(call["system"]),
                 call["user"],
-                LLM_MODEL,
+                config.LLM_MODEL,
             ) is not None:
                 canary_hits += 1
         if canary and canary_hits == 0:
@@ -932,7 +1001,7 @@ async def main() -> None:
                     "avg_latency_s": 2.0,
                 },
             ]
-            estimated = estimate_footprint_from_counts(call_groups, model=LLM_MODEL)
+            estimated = estimate_footprint_from_counts(call_groups, model=config.LLM_MODEL)
             if estimated.get("available"):
                 footprint = estimated
 
@@ -959,7 +1028,7 @@ async def main() -> None:
                 append_event(
                     component=component,
                     provider="openai",
-                    model=row.get("model") or LLM_MODEL,
+                    model=row.get("model") or config.LLM_MODEL,
                     region=zone,
                     run_id=run_id,
                     country=country,
