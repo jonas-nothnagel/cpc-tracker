@@ -1,0 +1,28 @@
+{
+  "energy_wh": 3005.634000000083,
+  "water_ml": 1202.25360000004,
+  "co2_geq": 1202.25360000004,
+  "minerals_ugsbeq": 300.56340000001,
+  "call_count": 29585,
+  "tracked_call_count": 0,
+  "estimated_call_count": 27718,
+  "cached_call_count": 1867,
+  "model": "DeepSeek-V4-Pro",
+  "available": true,
+  "source": "estimated",
+  "by_model": [
+    {
+      "energy_wh": 3005.634000000083,
+      "water_ml": 1202.25360000004,
+      "co2_geq": 1202.25360000004,
+      "minerals_ugsbeq": 300.56340000001,
+      "call_count": 29585,
+      "tracked_call_count": 0,
+      "estimated_call_count": 27718,
+      "cached_call_count": 1867,
+      "model": "DeepSeek-V4-Pro",
+      "available": true,
+      "source": "estimated"
+    }
+  ]
+}

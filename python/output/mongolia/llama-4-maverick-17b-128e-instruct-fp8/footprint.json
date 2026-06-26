@@ -1,0 +1,28 @@
+{
+  "energy_wh": 22862.8604999999,
+  "water_ml": 9145.144200000314,
+  "co2_geq": 9145.144200000314,
+  "minerals_ugsbeq": 2286.2860500000784,
+  "call_count": 21427,
+  "tracked_call_count": 0,
+  "estimated_call_count": 20930,
+  "cached_call_count": 497,
+  "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+  "available": true,
+  "source": "estimated",
+  "by_model": [
+    {
+      "energy_wh": 22862.8604999999,
+      "water_ml": 9145.144200000314,
+      "co2_geq": 9145.144200000314,
+      "minerals_ugsbeq": 2286.2860500000784,
+      "call_count": 21427,
+      "tracked_call_count": 0,
+      "estimated_call_count": 20930,
+      "cached_call_count": 497,
+      "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "available": true,
+      "source": "estimated"
+    }
+  ]
+}

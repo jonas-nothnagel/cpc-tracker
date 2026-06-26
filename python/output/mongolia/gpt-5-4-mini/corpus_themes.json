@@ -1,0 +1,330 @@
+{
+  "storylines": [
+    {
+      "name": "Align land restoration with biodiversity goals",
+      "type": "reinforcement",
+      "description": "A recurring pattern is that land restoration, protected areas, and biodiversity governance tend to reinforce one another through shared tools such as spatial planning, monitoring, reforestation, agroforestry, and restoration finance. This points to a common implementation space where restoration sites, biodiversity mainstreaming, and ecosystem protection can be sequenced together.",
+      "contributing_doc_pairs": [
+        "ILDN<->NBSAP",
+        "ILDN<->NRVTS",
+        "NAP<->NBSAP",
+        "NBSAP<->NRVTS",
+        "NDC<->NRVTS"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1430,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS"
+      ]
+    },
+    {
+      "name": "Coordinate agriculture with land and water limits",
+      "type": "friction",
+      "description": "Across several pairs, agricultural expansion tends to meet the same land, water, and pasture base that restoration or conservation targets seek to protect. The flagged cases recur around irrigated crops, livestock growth, fodder, and processing infrastructure, which points to resource competition rather than a settled policy contradiction.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->NRVTS",
+        "FSS<->SECTORAL",
+        "NAP<->SECTORAL",
+        "NDC<->SECTORAL",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 289,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Use shared planning for climate and biodiversity",
+      "type": "reinforcement",
+      "description": "Climate adaptation and biodiversity agendas often reinforce each other through early warning systems, ecosystem protection, land-use planning, and monitoring. This recurs where soil conservation, pasture management, reforestation, and water monitoring can serve both resilience and biodiversity objectives.",
+      "contributing_doc_pairs": [
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NAP<->NRVTS",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1427,
+      "spans_documents": [
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS"
+      ]
+    },
+    {
+      "name": "Sequence food-system growth with safeguards",
+      "type": "friction",
+      "description": "Food-system modernization often aligns with resilience tools such as traceability, standards, storage, irrigation, and training, but the flagged pairs show recurring pressure where expansion draws on land, water, feed, and administrative capacity. The friction tends to appear most clearly when crop and livestock growth overlaps with conservation, rangeland, or emissions objectives.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->NRVTS",
+        "FSS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 255,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Reinforce restoration through financing instruments",
+      "type": "reinforcement",
+      "description": "LDN investment instruments recur as an enabling layer that can support restoration, monitoring, and implementation across land, biodiversity, and climate agendas. The evidence points to finance mobilization, partnerships, and transformative projects reinforcing target-setting and on-the-ground land stewardship.",
+      "contributing_doc_pairs": [
+        "ILDN<->NAP",
+        "ILDN<->NBSAP",
+        "ILDN<->NDC",
+        "ILDN<->NRVTS",
+        "ILDN<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 647,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Manage irrigation pressure on shared landscapes",
+      "type": "friction",
+      "description": "Irrigated agriculture recurs as a pressure point where multiple documents point to the same finite land and water base. The flagged cases suggest possible tension with wetlands, biodiversity areas, pasture recovery, and soil protection, especially where irrigation expansion or wells are sited in shared rural landscapes.",
+      "contributing_doc_pairs": [
+        "NAP<->SECTORAL",
+        "NBSAP<->SECTORAL",
+        "NRVTS<->SECTORAL",
+        "FSS<->NAP",
+        "FSS<->NBSAP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 97,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NBSAP",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Link productivity gains with ecosystem stewardship",
+      "type": "reinforcement",
+      "description": "Several pairs show that productivity and ecosystem stewardship can move together through agroforestry, pasture management, erosion control, certification, and climate-resilient farming. This recurs where land-use standards and subsidy reform are used as shared instruments across agriculture, restoration, and conservation.",
+      "contributing_doc_pairs": [
+        "FSS<->NRVTS",
+        "FSS<->SECTORAL",
+        "NRVTS<->SECTORAL",
+        "NBSAP<->SECTORAL",
+        "NDC<->NRVTS"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2209,
+      "spans_documents": [
+        "FSS",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    }
+  ],
+  "summary_paragraph": "Across the document set, a strong recurring pattern is that land restoration, biodiversity protection, and climate resilience tend to reinforce one another through shared tools such as spatial planning, monitoring, reforestation, and pasture or watershed management. A second broad thread is that agricultural modernization and food-system growth often align with resilience goals, but the same pairs also repeatedly flag pressure on land, water, pasture, and implementation capacity. The main friction points are concentrated around irrigated expansion, livestock intensification, and siting decisions in shared rural landscapes, where resource competition is often flagged for review. Overall, the evidence points to substantial overlap in objectives, with coordination needs most visible where production, restoration, and conservation rely on the same land base.",
+  "doc_pair_count": 21,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Align land restoration with biodiversity goals",
+          "type": "reinforcement",
+          "description": "A recurring pattern is that land restoration, protected areas, and biodiversity governance tend to reinforce one another through shared tools such as spatial planning, monitoring, reforestation, agroforestry, and restoration finance. This points to a common implementation space where restoration sites, biodiversity mainstreaming, and ecosystem protection can be sequenced together.",
+          "contributing_doc_pairs": [
+            "ILDN<->NBSAP",
+            "ILDN<->NRVTS",
+            "NAP<->NBSAP",
+            "NBSAP<->NRVTS",
+            "NDC<->NRVTS"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1430,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS"
+          ]
+        },
+        {
+          "name": "Coordinate agriculture with land and water limits",
+          "type": "friction",
+          "description": "Across several pairs, agricultural expansion tends to meet the same land, water, and pasture base that restoration or conservation targets seek to protect. The flagged cases recur around irrigated crops, livestock growth, fodder, and processing infrastructure, which points to resource competition rather than a settled policy contradiction.",
+          "contributing_doc_pairs": [
+            "FSS<->NAP",
+            "FSS<->NBSAP",
+            "FSS<->NDC",
+            "FSS<->NRVTS",
+            "FSS<->SECTORAL",
+            "NAP<->SECTORAL",
+            "NDC<->SECTORAL",
+            "NRVTS<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 289,
+          "spans_documents": [
+            "FSS",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Use shared planning for climate and biodiversity",
+          "type": "reinforcement",
+          "description": "Climate adaptation and biodiversity agendas often reinforce each other through early warning systems, ecosystem protection, land-use planning, and monitoring. This recurs where soil conservation, pasture management, reforestation, and water monitoring can serve both resilience and biodiversity objectives.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "NAP<->NRVTS",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1427,
+          "spans_documents": [
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS"
+          ]
+        },
+        {
+          "name": "Sequence food-system growth with safeguards",
+          "type": "friction",
+          "description": "Food-system modernization often aligns with resilience tools such as traceability, standards, storage, irrigation, and training, but the flagged pairs show recurring pressure where expansion draws on land, water, feed, and administrative capacity. The friction tends to appear most clearly when crop and livestock growth overlaps with conservation, rangeland, or emissions objectives.",
+          "contributing_doc_pairs": [
+            "FSS<->NAP",
+            "FSS<->NBSAP",
+            "FSS<->NDC",
+            "FSS<->NRVTS",
+            "FSS<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 255,
+          "spans_documents": [
+            "FSS",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Reinforce restoration through financing instruments",
+          "type": "reinforcement",
+          "description": "LDN investment instruments recur as an enabling layer that can support restoration, monitoring, and implementation across land, biodiversity, and climate agendas. The evidence points to finance mobilization, partnerships, and transformative projects reinforcing target-setting and on-the-ground land stewardship.",
+          "contributing_doc_pairs": [
+            "ILDN<->NAP",
+            "ILDN<->NBSAP",
+            "ILDN<->NDC",
+            "ILDN<->NRVTS",
+            "ILDN<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 647,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Manage irrigation pressure on shared landscapes",
+          "type": "friction",
+          "description": "Irrigated agriculture recurs as a pressure point where multiple documents point to the same finite land and water base. The flagged cases suggest possible tension with wetlands, biodiversity areas, pasture recovery, and soil protection, especially where irrigation expansion or wells are sited in shared rural landscapes.",
+          "contributing_doc_pairs": [
+            "NAP<->SECTORAL",
+            "NBSAP<->SECTORAL",
+            "NRVTS<->SECTORAL",
+            "FSS<->NAP",
+            "FSS<->NBSAP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 97,
+          "spans_documents": [
+            "FSS",
+            "NAP",
+            "NBSAP",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Link productivity gains with ecosystem stewardship",
+          "type": "reinforcement",
+          "description": "Several pairs show that productivity and ecosystem stewardship can move together through agroforestry, pasture management, erosion control, certification, and climate-resilient farming. This recurs where land-use standards and subsidy reform are used as shared instruments across agriculture, restoration, and conservation.",
+          "contributing_doc_pairs": [
+            "FSS<->NRVTS",
+            "FSS<->SECTORAL",
+            "NRVTS<->SECTORAL",
+            "NBSAP<->SECTORAL",
+            "NDC<->NRVTS"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2209,
+          "spans_documents": [
+            "FSS",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        }
+      ],
+      "summary_paragraph": "Across the document set, a strong recurring pattern is that land restoration, biodiversity protection, and climate resilience tend to reinforce one another through shared tools such as spatial planning, monitoring, reforestation, and pasture or watershed management. A second broad thread is that agricultural modernization and food-system growth often align with resilience goals, but the same pairs also repeatedly flag pressure on land, water, pasture, and implementation capacity. The main friction points are concentrated around irrigated expansion, livestock intensification, and siting decisions in shared rural landscapes, where resource competition is often flagged for review. Overall, the evidence points to substantial overlap in objectives, with coordination needs most visible where production, restoration, and conservation rely on the same land base.",
+      "doc_pair_count": 21
+    }
+  }
+}

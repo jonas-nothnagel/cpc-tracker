@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "step": 8,
+  "totalSteps": 8,
+  "currentStep": "Complete",
+  "message": "Pipeline finished in 37720.2s",
+  "startedAt": "2026-06-26T02:10:40.547081+00:00",
+  "completedAt": "2026-06-26T12:39:20.794034+00:00",
+  "error": null,
+  "summary": {
+    "totalTargets": 153,
+    "totalClassifications": 17724,
+    "relevantClassifications": 1794,
+    "totalPairs": 9678,
+    "alignmentLevels": {
+      "none": 3280,
+      "low": 3378,
+      "medium": 2251,
+      "flagged": 673,
+      "high": 96
+    },
+    "totalContradictions": 673,
+    "measureAlignmentPairs": 6327,
+    "measurePseudoTargets": 39,
+    "budgetAlignmentPairs": 4284,
+    "budgetPseudoTargets": 28,
+    "elapsedSeconds": 37720.2
+  },
+  "footprint": {
+    "energy_wh": 22862.8604999999,
+    "water_ml": 9145.144200000314,
+    "co2_geq": 9145.144200000314,
+    "minerals_ugsbeq": 2286.2860500000784,
+    "call_count": 21427,
+    "tracked_call_count": 0,
+    "estimated_call_count": 20930,
+    "cached_call_count": 497,
+    "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "available": true,
+    "source": "estimated",
+    "by_model": [
+      {
+        "energy_wh": 22862.8604999999,
+        "water_ml": 9145.144200000314,
+        "co2_geq": 9145.144200000314,
+        "minerals_ugsbeq": 2286.2860500000784,
+        "call_count": 21427,
+        "tracked_call_count": 0,
+        "estimated_call_count": 20930,
+        "cached_call_count": 497,
+        "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+        "available": true,
+        "source": "estimated"
+      }
+    ]
+  }
+}

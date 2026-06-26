@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "step": 8,
+  "totalSteps": 8,
+  "currentStep": "Complete",
+  "message": "Pipeline finished in 23863.9s",
+  "startedAt": "2026-06-25T19:32:55.610834+00:00",
+  "completedAt": "2026-06-26T02:10:39.550776+00:00",
+  "error": null,
+  "summary": {
+    "totalTargets": 153,
+    "totalClassifications": 17724,
+    "relevantClassifications": 2046,
+    "totalPairs": 9678,
+    "alignmentLevels": {
+      "flagged": 8215,
+      "low": 1275,
+      "none": 99,
+      "medium": 35,
+      "high": 54
+    },
+    "totalContradictions": 8215,
+    "measureAlignmentPairs": 6327,
+    "measurePseudoTargets": 39,
+    "budgetAlignmentPairs": 4284,
+    "budgetPseudoTargets": 28,
+    "elapsedSeconds": 23863.9
+  },
+  "footprint": {
+    "energy_wh": 3005.634000000083,
+    "water_ml": 1202.25360000004,
+    "co2_geq": 1202.25360000004,
+    "minerals_ugsbeq": 300.56340000001,
+    "call_count": 29585,
+    "tracked_call_count": 0,
+    "estimated_call_count": 27718,
+    "cached_call_count": 1867,
+    "model": "DeepSeek-V4-Pro",
+    "available": true,
+    "source": "estimated",
+    "by_model": [
+      {
+        "energy_wh": 3005.634000000083,
+        "water_ml": 1202.25360000004,
+        "co2_geq": 1202.25360000004,
+        "minerals_ugsbeq": 300.56340000001,
+        "call_count": 29585,
+        "tracked_call_count": 0,
+        "estimated_call_count": 27718,
+        "cached_call_count": 1867,
+        "model": "DeepSeek-V4-Pro",
+        "available": true,
+        "source": "estimated"
+      }
+    ]
+  }
+}

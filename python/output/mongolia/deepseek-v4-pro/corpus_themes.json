@@ -1,0 +1,310 @@
+{
+  "storylines": [
+    {
+      "name": "Agricultural expansion competes with land and water safeguards",
+      "type": "friction",
+      "description": "Targets for cropland, livestock, and agro-processing expansion across food security plans tend to increase demand for finite land and water, recurringly flagged against conservation, restoration, and sustainable abstraction goals in climate, biodiversity, and land degradation neutrality documents.",
+      "contributing_doc_pairs": [
+        "FSS<->ILDN",
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->NRVTS",
+        "FSS<->SECTORAL",
+        "ILDN<->SECTORAL",
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NAP<->NRVTS",
+        "NAP<->SECTORAL",
+        "NBSAP<->SECTORAL",
+        "NDC<->NRVTS",
+        "NDC<->SECTORAL",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 6711,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Protected area and restoration targets reinforce across plans",
+      "type": "reinforcement",
+      "description": "Multiple documents share concrete commitments to expand protected areas to 30% by 2030, restore forests, and combat desertification, with overlapping actions on spatial planning, ecosystem monitoring, and sustainable forest management that could amplify conservation outcomes.",
+      "contributing_doc_pairs": [
+        "ILDN<->NRVTS",
+        "ILDN<->SECTORAL",
+        "NAP<->SECTORAL",
+        "NBSAP<->NDC",
+        "NBSAP<->NRVTS",
+        "NBSAP<->SECTORAL",
+        "NDC<->NRVTS",
+        "NDC<->SECTORAL",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 54,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Climate and biodiversity plans align on ecosystem resilience",
+      "type": "reinforcement",
+      "description": "The NAP, NBSAP, and NDC consistently reinforce each other through shared mechanisms for capacity building, early warning systems, nature-based solutions, and social safety nets, creating complementary pathways for adaptation and biodiversity mainstreaming.",
+      "contributing_doc_pairs": [
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 41,
+      "spans_documents": [
+        "NAP",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Delivery friction arises where broad investments meet specific safeguards",
+      "type": "friction",
+      "description": "Recurring delivery-level tensions are flagged when transformative land-use investments or sectoral intensification programs lack explicit safeguards, potentially constraining on-the-ground conservation, sustainable use, or procedural alignment in overlapping landscapes.",
+      "contributing_doc_pairs": [
+        "ILDN<->NAP",
+        "ILDN<->NBSAP",
+        "ILDN<->NDC",
+        "ILDN<->NRVTS",
+        "NAP<->NBSAP",
+        "NAP<->NRVTS",
+        "NBSAP<->NDC",
+        "NBSAP<->NRVTS",
+        "NDC<->NRVTS",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3106,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Modernisation and sustainable intensification offer shared pathways",
+      "type": "reinforcement",
+      "description": "Food security and climate documents both promote technology-driven modernisation of crop and livestock systems, with FSS advanced irrigation and mechanisation aligning with NDC climate-smart varieties and pasture management, pointing to complementary sustainable intensification.",
+      "contributing_doc_pairs": [
+        "FSS<->NDC",
+        "FSS<->SECTORAL"
+      ],
+      "confidence": "medium",
+      "unknown_doc_pairs": [],
+      "pair_count": 6,
+      "spans_documents": [
+        "FSS",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Forest and rangeland goals face spatial competition with production",
+      "type": "friction",
+      "description": "Targets for afforestation, forest cover increase, and rangeland restoration tend to compete for land with agricultural intensification and livestock herd management, often flagged as resource competition in forest-steppe and grassland zones.",
+      "contributing_doc_pairs": [
+        "ILDN<->NDC",
+        "NAP<->NRVTS",
+        "NBSAP<->NRVTS",
+        "NDC<->NRVTS",
+        "NDC<->SECTORAL",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2327,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    }
+  ],
+  "summary_paragraph": "The country's policy landscape shows strong alignment on expanding protected areas, restoring ecosystems, and building climate resilience, with multiple documents reinforcing shared targets for 30% protected area coverage and 9% forest cover by 2030. At the same time, agricultural expansion and intensification targets recur in friction with land and water safeguards across nearly all doc-pairs, pointing to persistent resource competition and delivery tensions in shared landscapes. Modernisation pathways in food security and climate plans offer some complementary ground, but broad investment programs often lack the explicit safeguards needed to align with specific conservation and sustainable-use goals. Integrated spatial planning and joint screening criteria are flagged across many doc-pairs as a recurring coordination need to manage these overlapping ambitions.",
+  "doc_pair_count": 21,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Agricultural expansion competes with land and water safeguards",
+          "type": "friction",
+          "description": "Targets for cropland, livestock, and agro-processing expansion across food security plans tend to increase demand for finite land and water, recurringly flagged against conservation, restoration, and sustainable abstraction goals in climate, biodiversity, and land degradation neutrality documents.",
+          "contributing_doc_pairs": [
+            "FSS<->ILDN",
+            "FSS<->NAP",
+            "FSS<->NBSAP",
+            "FSS<->NDC",
+            "FSS<->NRVTS",
+            "FSS<->SECTORAL",
+            "ILDN<->SECTORAL",
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "NAP<->NRVTS",
+            "NAP<->SECTORAL",
+            "NBSAP<->SECTORAL",
+            "NDC<->NRVTS",
+            "NDC<->SECTORAL",
+            "NRVTS<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 6711,
+          "spans_documents": [
+            "FSS",
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Protected area and restoration targets reinforce across plans",
+          "type": "reinforcement",
+          "description": "Multiple documents share concrete commitments to expand protected areas to 30% by 2030, restore forests, and combat desertification, with overlapping actions on spatial planning, ecosystem monitoring, and sustainable forest management that could amplify conservation outcomes.",
+          "contributing_doc_pairs": [
+            "ILDN<->NRVTS",
+            "ILDN<->SECTORAL",
+            "NAP<->SECTORAL",
+            "NBSAP<->NDC",
+            "NBSAP<->NRVTS",
+            "NBSAP<->SECTORAL",
+            "NDC<->NRVTS",
+            "NDC<->SECTORAL",
+            "NRVTS<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 54,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Climate and biodiversity plans align on ecosystem resilience",
+          "type": "reinforcement",
+          "description": "The NAP, NBSAP, and NDC consistently reinforce each other through shared mechanisms for capacity building, early warning systems, nature-based solutions, and social safety nets, creating complementary pathways for adaptation and biodiversity mainstreaming.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 41,
+          "spans_documents": [
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Delivery friction arises where broad investments meet specific safeguards",
+          "type": "friction",
+          "description": "Recurring delivery-level tensions are flagged when transformative land-use investments or sectoral intensification programs lack explicit safeguards, potentially constraining on-the-ground conservation, sustainable use, or procedural alignment in overlapping landscapes.",
+          "contributing_doc_pairs": [
+            "ILDN<->NAP",
+            "ILDN<->NBSAP",
+            "ILDN<->NDC",
+            "ILDN<->NRVTS",
+            "NAP<->NBSAP",
+            "NAP<->NRVTS",
+            "NBSAP<->NDC",
+            "NBSAP<->NRVTS",
+            "NDC<->NRVTS",
+            "NDC<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3106,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Modernisation and sustainable intensification offer shared pathways",
+          "type": "reinforcement",
+          "description": "Food security and climate documents both promote technology-driven modernisation of crop and livestock systems, with FSS advanced irrigation and mechanisation aligning with NDC climate-smart varieties and pasture management, pointing to complementary sustainable intensification.",
+          "contributing_doc_pairs": [
+            "FSS<->NDC",
+            "FSS<->SECTORAL"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 6,
+          "spans_documents": [
+            "FSS",
+            "NDC",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Forest and rangeland goals face spatial competition with production",
+          "type": "friction",
+          "description": "Targets for afforestation, forest cover increase, and rangeland restoration tend to compete for land with agricultural intensification and livestock herd management, often flagged as resource competition in forest-steppe and grassland zones.",
+          "contributing_doc_pairs": [
+            "ILDN<->NDC",
+            "NAP<->NRVTS",
+            "NBSAP<->NRVTS",
+            "NDC<->NRVTS",
+            "NDC<->SECTORAL",
+            "NRVTS<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2327,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        }
+      ],
+      "summary_paragraph": "The country's policy landscape shows strong alignment on expanding protected areas, restoring ecosystems, and building climate resilience, with multiple documents reinforcing shared targets for 30% protected area coverage and 9% forest cover by 2030. At the same time, agricultural expansion and intensification targets recur in friction with land and water safeguards across nearly all doc-pairs, pointing to persistent resource competition and delivery tensions in shared landscapes. Modernisation pathways in food security and climate plans offer some complementary ground, but broad investment programs often lack the explicit safeguards needed to align with specific conservation and sustainable-use goals. Integrated spatial planning and joint screening criteria are flagged across many doc-pairs as a recurring coordination need to manage these overlapping ambitions.",
+      "doc_pair_count": 21
+    }
+  }
+}

@@ -1,0 +1,375 @@
+[
+  {
+    "doc_a": "FSS",
+    "doc_b": "ILDN",
+    "label_a": "FSS",
+    "label_b": "LDN Investment",
+    "aligned_count": 15,
+    "flagged_count": 20,
+    "contradiction_types": {
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural Expansion and Land Degradation Neutrality Efforts",
+      "reinforce": "Both FSS and LDN Investment targets share compatible priorities around sustainable land management, with FSS's specific actions potentially supporting LDN goals through improved agricultural practices and land-use planning.",
+      "clash": "FSS targets on agricultural expansion and intensification could potentially compete with LDN Investment targets on protected areas and land degradation neutrality, particularly if not managed sustainably.",
+      "coordination_hint": "Coordinated land-use planning and sustainable practices could help mitigate potential frictions between agricultural expansion and land degradation neutrality efforts.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NAP",
+    "label_a": "FSS",
+    "label_b": "NAP",
+    "aligned_count": 73,
+    "flagged_count": 45,
+    "contradiction_types": {
+      "resource_competition": 3,
+      "delivery_friction": 1
+    },
+    "synthesis": null,
+    "synthesis_error": "parse_failed"
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NBSAP",
+    "label_a": "FSS",
+    "label_b": "NBSAP",
+    "aligned_count": 70,
+    "flagged_count": 115,
+    "contradiction_types": {
+      "delivery_friction": 5,
+      "goal_conflict": 1,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural Development and Biodiversity Conservation Interplay",
+      "reinforce": "The FSS and NBSAP targets share compatible priorities around sustainable agricultural practices, environmental conservation, and biodiversity, with potential synergies in areas like agroforestry, sustainable agriculture, and ecosystem restoration. Coordinated implementation could enhance their mutual benefits.",
+      "clash": "The expansion of agricultural activities under FSS could potentially conflict with NBSAP's biodiversity conservation goals, particularly around protected areas, pollution, and resource competition, but careful land-use planning and zoning could mitigate these risks.",
+      "coordination_hint": "Coordinated planning and safeguards in agricultural practices could help manage potential frictions and enhance synergies between the FSS and NBSAP targets.",
+      "confidence": "medium"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NDC",
+    "label_a": "FSS",
+    "label_b": "NDC",
+    "aligned_count": 110,
+    "flagged_count": 103,
+    "contradiction_types": {
+      "delivery_friction": 2,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural Development and Climate Change Mitigation Efforts",
+      "reinforce": "The FSS and NDC targets share thematic links through agriculture, livestock, and environmental sustainability, with many targets complementing each other through improved practices and resource management. Coordinated planning and implementation could enhance their mutual benefits.",
+      "clash": "Some FSS targets, particularly those expanding agricultural land or intensifying livestock farming, could compete with NDC targets focused on biodiversity conservation, forest protection, and emission reductions, potentially straining the same resources or ecosystems.",
+      "coordination_hint": "Careful land-use planning, zoning, and coordination in implementing these targets could mitigate potential frictions and enhance their compatibility.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NRVTS",
+    "label_a": "FSS",
+    "label_b": "LDN Targets",
+    "aligned_count": 107,
+    "flagged_count": 73,
+    "contradiction_types": {
+      "resource_competition": 3,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural Development and Land Degradation Neutrality Measures",
+      "reinforce": "The FSS and LDN targets share thematic overlap in improving agricultural practices and land management, with the LDN target sometimes being a specific instance of good practices in areas like livestock farming or agroforestry. They could support each other through parallel efforts or joint planning.",
+      "clash": "The FSS target's expansion of agricultural land and intensification of livestock farming could potentially conflict with the LDN target's goals of reforestation, grassland restoration, and wetland conservation if not carefully managed, leading to resource competition or environmental degradation.",
+      "coordination_hint": "Careful land-use planning and zoning could mitigate potential conflicts between agricultural development and land degradation neutrality measures.",
+      "confidence": "medium"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "SECTORAL",
+    "label_a": "FSS",
+    "label_b": "Vision 2050",
+    "aligned_count": 123,
+    "flagged_count": 98,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 3
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural Development and Sustainability Efforts",
+      "reinforce": "Both targets share compatible priorities in the agricultural sector, with FSS targets focusing on specific actions like improving irrigation, storage capacity, and livestock management, which can support Vision 2050's broader goals for a sustainable and climate-resilient agriculture sector through coordinated planning or funding.",
+      "clash": "Some FSS targets, particularly those related to intensifying livestock farming and expanding agricultural land, could potentially conflict with Vision 2050 targets aimed at reducing land degradation, conserving ecosystems, and maintaining ecological balance, indicating a possible misalignment that requires careful coordination and safeguards.",
+      "coordination_hint": "Coordinated land-use planning and implementation of sustainable practices could help mitigate potential frictions and enhance synergies between the two targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NAP",
+    "label_a": "LDN Investment",
+    "label_b": "NAP",
+    "aligned_count": 51,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "LDN Investment and NAP share climate resilience goals",
+      "reinforce": "The LDN Investment and NAP targets share environmental conservation goals and mechanisms, such as sustainable forest management and climate-resilient practices, which can support each other through parallel efforts or joint planning. They often point to compatible priorities around land and forest management.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Coordinated planning between LDN Investment and NAP could enhance their mutual effectiveness in achieving climate resilience and environmental conservation goals.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NBSAP",
+    "label_a": "LDN Investment",
+    "label_b": "NBSAP",
+    "aligned_count": 82,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Shared Environmental Goals and Complementary Actions",
+      "reinforce": "The LDN Investment and NBSAP targets share compatible environmental conservation goals and mechanisms, such as sustainable forest management and biodiversity mainstreaming, which can support each other through coordinated or parallel efforts.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Coordinated planning and joint funding strategies could enhance the alignment and impact of these targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NDC",
+    "label_a": "LDN Investment",
+    "label_b": "NDC",
+    "aligned_count": 81,
+    "flagged_count": 5,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "LDN Investment and NDC Targets Share Environmental Goals",
+      "reinforce": "The LDN Investment and NDC targets share compatible priorities around sustainable land management, climate change mitigation, and ecosystem conservation, with potential synergies in supporting vulnerable communities and enhancing resilience through coordinated efforts.",
+      "clash": "Some NDC targets related to increasing meat supply and livestock exports could potentially intensify land degradation if not managed sustainably, undermining the LDN target's goal of achieving Land Degradation Neutrality.",
+      "coordination_hint": "Coordinated planning and implementation of sustainable practices could help mitigate potential risks and enhance the combined effectiveness of LDN Investment and NDC targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NRVTS",
+    "label_a": "LDN Investment",
+    "label_b": "LDN Targets",
+    "aligned_count": 104,
+    "flagged_count": 1,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "LDN Targets and Investments Aligning on Sustainable Land Management",
+      "reinforce": "The targets share goals around Land Degradation Neutrality (LDN) and ecosystem recovery, with actions like reforestation, sustainable grassland management, and erosion prevention supporting broader LDN objectives. They can support each other through joint planning, monitoring, and reporting efforts.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Coordinating land-use planning could help manage potential resource competition between protected area expansion and agricultural productivity goals.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "SECTORAL",
+    "label_a": "LDN Investment",
+    "label_b": "Vision 2050",
+    "aligned_count": 69,
+    "flagged_count": 7,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Sustainable Land Management and Conservation Efforts Alignment",
+      "reinforce": "Both documents focus on sustainable land management, with the LDN Investment document's targets and projects reinforcing the Vision 2050's goals on environmental conservation and sustainable agriculture through shared mechanisms like protected areas expansion and sustainable land use practices.",
+      "clash": "The expansion of irrigated agricultural production capacity under Vision 2050 could potentially compete with LDN initiatives for resources like land and water, potentially leading to land degradation if not properly managed.",
+      "coordination_hint": "Coordinated land-use planning and zoning could help mitigate potential frictions and enhance synergies between the two documents' targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NBSAP",
+    "label_a": "NAP",
+    "label_b": "NBSAP",
+    "aligned_count": 123,
+    "flagged_count": 3,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "NAP and NBSAP Align on Environmental Conservation Goals",
+      "reinforce": "Both documents share goals and actions related to enhancing ecosystem resilience to climate change, biodiversity conservation, and sustainable natural resource management through coordinated implementation and complementary actions.",
+      "clash": "Possible misalignment recurs around land use and resource management, particularly where NAP's development goals intersect with NBSAP's conservation objectives in protected areas or sensitive ecosystems.",
+      "coordination_hint": "Coordinated planning and implementation could enhance synergies and mitigate potential conflicts between NAP and NBSAP targets, particularly around land use and resource management.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NDC",
+    "label_a": "NAP",
+    "label_b": "NDC",
+    "aligned_count": 135,
+    "flagged_count": 15,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Climate Resilience and Sustainable Land Use Efforts",
+      "reinforce": "The NAP and NDC targets share compatible priorities around climate change adaptation, environmental sustainability, and resilience, with potential synergies in practices that support both agricultural productivity and ecosystem health. They could support each other through coordinated planning and implementation, particularly in areas like sustainable forest management, climate-smart agriculture, and water resource management.",
+      "clash": "The NDC target's actions to increase meat supply and livestock exports could potentially strain pasture resources and compete with the NAP target's goals for sustainable pasture management and reducing pasture overuse, requiring careful planning and coordination to mitigate this risk.",
+      "coordination_hint": "Coordinated planning and implementation across the NAP and NDC targets could help mitigate potential frictions and enhance synergies, particularly in managing livestock numbers and pasture resources sustainably.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NRVTS",
+    "label_a": "NAP",
+    "label_b": "LDN Targets",
+    "aligned_count": 123,
+    "flagged_count": 5,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Aligning Climate Adaptation and Land Degradation Efforts",
+      "reinforce": "The NAP and LDN targets share a common focus on sustainable land management, reforestation, and ecosystem conservation, with potential synergies in planning and implementation. They could support each other through joint planning or complementary efforts.",
+      "clash": "The targets could potentially compete for the same land or water resources, particularly if agricultural yield increases are achieved through expansion into pasturelands or other ecosystems, creating a resource competition.",
+      "coordination_hint": "Coordinated land-use planning and zoning could help mitigate potential resource competition and enhance synergies between the targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "SECTORAL",
+    "label_a": "NAP",
+    "label_b": "Vision 2050",
+    "aligned_count": 98,
+    "flagged_count": 17,
+    "contradiction_types": {
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Environmental Conservation and Climate Change Adaptation Efforts",
+      "reinforce": "The NAP and Vision 2050 targets share a common focus on sustainable land management, climate change adaptation, and environmental conservation, with complementary actions that could enhance efficiency and outcomes through coordinated implementation, such as improving pasture management and reducing land degradation.",
+      "clash": "The targets could potentially compete for resources such as water and land, particularly in cases where agricultural expansion or intensification is planned in areas targeted for conservation or restoration under NAP.",
+      "coordination_hint": "Coordinated planning and resource allocation could help mitigate potential resource competition and enhance synergies between the targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NDC",
+    "label_a": "NBSAP",
+    "label_b": "NDC",
+    "aligned_count": 163,
+    "flagged_count": 26,
+    "contradiction_types": {
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "NBSAP and NDC targets show mixed alignment on environmental goals",
+      "reinforce": "The NBSAP and NDC targets share compatible environmental goals and could support each other through coordinated planning, particularly in areas like sustainable agriculture, forest conservation, and ecosystem resilience.",
+      "clash": "Some NDC targets, particularly those focused on increasing meat supply and livestock production, could potentially conflict with NBSAP targets related to biodiversity conservation, ecosystem restoration, and pollution reduction if not managed sustainably.",
+      "coordination_hint": "Coordinated planning and implementation could help mitigate potential frictions and enhance synergies between NBSAP and NDC targets, particularly through sustainable practices and safeguards.",
+      "confidence": "medium"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NRVTS",
+    "label_a": "NBSAP",
+    "label_b": "LDN Targets",
+    "aligned_count": 191,
+    "flagged_count": 10,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Biodiversity and Land Degradation Targets Alignment Efforts",
+      "reinforce": "The NBSAP and LDN targets share common goals related to forest conservation, sustainable land management, and biodiversity conservation, with specific actions like reforestation, protected area expansion, and sustainable agriculture practices reinforcing each other.",
+      "clash": "The LDN target to increase agricultural yields could potentially conflict with several NBSAP targets if achieved through unsustainable practices, but coordinated planning and safeguards could mitigate this risk.",
+      "coordination_hint": "Coordinated land-use planning and implementation of sustainable practices could help align the NBSAP and LDN targets and mitigate potential frictions.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "SECTORAL",
+    "label_a": "NBSAP",
+    "label_b": "Vision 2050",
+    "aligned_count": 122,
+    "flagged_count": 28,
+    "contradiction_types": {
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural Expansion and Biodiversity Conservation Interplay",
+      "reinforce": "The targets share thematic overlap around ecosystem management and could support each other through parallel efforts, with ecosystem resilience potentially underpinning agricultural resilience.",
+      "clash": "The expansion of irrigated agriculture, agricultural expansion, and livestock farming could compete with biodiversity conservation efforts for land and water resources, potentially undermining conservation goals.",
+      "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions between agricultural expansion and biodiversity conservation targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "NRVTS",
+    "label_a": "NDC",
+    "label_b": "LDN Targets",
+    "aligned_count": 165,
+    "flagged_count": 19,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "NDC and LDN Targets Share Environmental Conservation Goals",
+      "reinforce": "The NDC and LDN targets share conservation goals and mechanisms, such as sustainable forest management, reforestation, and soil conservation practices, which could be mutually supportive through coordinated planning and implementation.",
+      "clash": "Some NDC and LDN targets could potentially conflict, particularly where agricultural yield increases under LDN targets may encroach on protected areas or forests targeted by NDC targets for conservation or restoration.",
+      "coordination_hint": "Coordinated land-use planning and sustainable practices could help mitigate potential frictions and enhance synergies between NDC and LDN targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "SECTORAL",
+    "label_a": "NDC",
+    "label_b": "Vision 2050",
+    "aligned_count": 154,
+    "flagged_count": 43,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": null,
+    "synthesis_error": "parse_failed"
+  },
+  {
+    "doc_a": "NRVTS",
+    "doc_b": "SECTORAL",
+    "label_a": "LDN Targets",
+    "label_b": "Vision 2050",
+    "aligned_count": 188,
+    "flagged_count": 40,
+    "contradiction_types": {
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Sustainable Land Use and Agricultural Development",
+      "reinforce": "Both documents share compatible priorities around sustainable land use, restoration, and agricultural resilience, with specific actions in the LDN Targets supporting the broader goals of the Vision 2050, such as sustainable pastureland use and reducing land degradation.",
+      "clash": "The documents recur in friction around resource competition, particularly between agricultural expansion and conservation goals, such as irrigated agriculture expansion potentially encroaching on protected areas or wetlands.",
+      "coordination_hint": "Coordinated land-use planning and zoning could help mitigate potential frictions and enhance synergies between the targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

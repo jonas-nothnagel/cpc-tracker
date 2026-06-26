@@ -1,0 +1,430 @@
+[
+  {
+    "doc_a": "FSS",
+    "doc_b": "ILDN",
+    "label_a": "FSS",
+    "label_b": "LDN Investment",
+    "aligned_count": 0,
+    "flagged_count": 233,
+    "contradiction_types": {
+      "delivery_friction": 157,
+      "resource_competition": 76
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural expansion competes with land degradation neutrality",
+      "reinforce": "No reinforcing pairs in this set.",
+      "clash": "Recurring friction arises where FSS targets for cropland expansion, intensive livestock, and agro-processing infrastructure tend to increase demand for land and water, potentially undermining LDN Investment goals for land degradation neutrality and protected area expansion. Resource competition and delivery mismatches are flagged across multiple FSS actions, including new cropland, cash crop irrigation, and greenhouse development, which could conflict with LDN transformative projects and managed resource protected areas.",
+      "coordination_hint": "Integrated spatial planning and sustainable sourcing safeguards could help align agricultural development with land degradation neutrality objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NAP",
+    "label_a": "FSS",
+    "label_b": "NAP",
+    "aligned_count": 1,
+    "flagged_count": 473,
+    "contradiction_types": {
+      "delivery_friction": 294,
+      "resource_competition": 177,
+      "goal_conflict": 2
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural expansion versus environmental and climate safeguards",
+      "reinforce": "No reinforcing pairs in this set.",
+      "clash": "FSS targets for expanding livestock, crop, and processing infrastructure recur in friction with NAP targets for sustainable land, water, and forest management, often through delivery_friction and resource_competition over finite land and water.",
+      "coordination_hint": "Integrated land-use zoning and climate-risk screening for agricultural investments could help align production goals with ecosystem and adaptation commitments.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NBSAP",
+    "label_a": "FSS",
+    "label_b": "NBSAP",
+    "aligned_count": 0,
+    "flagged_count": 746,
+    "contradiction_types": {
+      "delivery_friction": 581,
+      "resource_competition": 165
+    },
+    "synthesis": {
+      "storyline_name": "Food production expansion versus biodiversity safeguards",
+      "reinforce": "No reinforcing pairs in this set.",
+      "clash": "FSS targets for expanding food processing, fodder cultivation, and agricultural infrastructure recur in friction with NBSAP targets for protected areas, spatial planning, and species conservation, often through land-use pressure, resource competition, and delivery tensions in shared landscapes.",
+      "coordination_hint": "Spatial planning and sustainable sourcing safeguards could help align agricultural expansion with biodiversity goals without requiring either target to be revised.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NDC",
+    "label_a": "FSS",
+    "label_b": "NDC",
+    "aligned_count": 3,
+    "flagged_count": 920,
+    "contradiction_types": {
+      "delivery_friction": 544,
+      "resource_competition": 371,
+      "goal_conflict": 5
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural expansion competes with climate and resource safeguards",
+      "reinforce": "Both documents share a focus on modernising crop and livestock systems through technology, with FSS promoting advanced irrigation and mechanisation and the NDC supporting climate-smart crop varieties and pasture management, creating complementary pathways for sustainable intensification.",
+      "clash": "Recurring friction centres on FSS targets that expand cropland, livestock herds, and agro-processing, which tend to increase demand for land and water, while NDC targets seek to protect forests, restore rangelands, and establish sustainable water abstraction, often flagged as resource competition or delivery friction in shared agricultural landscapes.",
+      "coordination_hint": "Integrated land-use zoning and water allocation planning across agriculture, forestry, and water sectors could help align expansion goals with conservation and climate targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NRVTS",
+    "label_a": "FSS",
+    "label_b": "LDN Targets",
+    "aligned_count": 1,
+    "flagged_count": 835,
+    "contradiction_types": {
+      "delivery_friction": 544,
+      "resource_competition": 291
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural expansion recurringly flagged against land degradation neutrality",
+      "reinforce": "No reinforcing pairs in this set.",
+      "clash": "Recurring delivery friction and resource competition flagged where food security targets promote agricultural intensification, expansion, or relocation, and land degradation neutrality targets seek to protect grasslands, wetlands, forests, and reduce pesticide use, often through spatial or input-level tensions.",
+      "coordination_hint": "Integrated spatial planning and conditional safeguards, such as zoning that directs agricultural expansion away from ecologically sensitive areas and linking input support to sustainable practice standards, could help manage the recurring land-use tensions.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "SECTORAL",
+    "label_a": "FSS",
+    "label_b": "Vision 2050",
+    "aligned_count": 3,
+    "flagged_count": 566,
+    "contradiction_types": {
+      "delivery_friction": 322,
+      "resource_competition": 244
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural expansion versus land and resource limits",
+      "reinforce": "Both documents reinforce modern irrigation and soil protection, with FSS targets on water-efficient technology and anti-desertification aligning directly with Vision 2050's irrigated agriculture expansion and national anti-desertification programme.",
+      "clash": "Recurring friction centres on agricultural and food-processing expansion intensifying pressure on finite land, water, and pasture resources that Vision 2050 seeks to protect through protected area expansion, carrying capacity limits, and anti-desertification, often flagged as resource competition or delivery friction.",
+      "coordination_hint": "Integrated spatial planning and sustainable sourcing safeguards could help align production growth with ecological limits without revising either document's core targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NAP",
+    "label_a": "LDN Investment",
+    "label_b": "NAP",
+    "aligned_count": 3,
+    "flagged_count": 98,
+    "contradiction_types": {
+      "delivery_friction": 79,
+      "resource_competition": 18,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Land-use tensions between LDN investments and NAP sectoral actions",
+      "reinforce": "Both documents share a commitment to sustainable forest management and ecosystem protection in Mongolia's forest landscapes, with LDN targets on biodiversity and carbon storage directly reinforcing NAP goals for forest resilience and ecosystem adaptive capacity.",
+      "clash": "Recurring delivery friction and resource competition arise where LDN's broad land-degradation-neutrality investments intersect with NAP's sector-specific actions, particularly in agriculture, livestock, and water infrastructure, often flagged for potential land-use conflicts without explicit safeguards.",
+      "coordination_hint": "Integrated spatial planning and joint safeguards across LDN transformative projects and NAP sectoral targets could help align land-use priorities and reduce delivery-level friction.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NBSAP",
+    "label_a": "LDN Investment",
+    "label_b": "NBSAP",
+    "aligned_count": 1,
+    "flagged_count": 136,
+    "contradiction_types": {
+      "delivery_friction": 133,
+      "resource_competition": 3
+    },
+    "synthesis": {
+      "storyline_name": "Land-use ambition collides with conservation safeguards",
+      "reinforce": "Both documents aim to enhance nature's benefits for climate and human well-being, with the LDN target on leveraging multiple benefits and the NBSAP target on ecosystem services from nature-based solutions reinforcing each other.",
+      "clash": "Recurring delivery friction arises where LDN's transformative projects, sustainable forest management, and resource mobilization could intensify land use or redirect finance in ways that constrain NBSAP's protected area expansion, species conservation, and pollution reduction targets.",
+      "coordination_hint": "Integrated spatial planning and investment screening could help align LDN project siting and finance flows with NBSAP conservation and restoration priorities.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NDC",
+    "label_a": "LDN Investment",
+    "label_b": "NDC",
+    "aligned_count": 1,
+    "flagged_count": 190,
+    "contradiction_types": {
+      "delivery_friction": 173,
+      "resource_competition": 17
+    },
+    "synthesis": {
+      "storyline_name": "Land-use tensions between forest-rangeland restoration and agricultural expansion",
+      "reinforce": "The documents share a concrete alignment on sustainable forest management in Mongolia's productive forest landscapes, where the LDN investment target and the NDC forest legal framework both aim to enhance ecosystem services, biodiversity, and carbon storage through coordinated on-ground management and policy strengthening.",
+      "clash": "Recurring friction tends to arise where LDN restoration and protected-area investments compete for land, water, and finance with NDC-driven agricultural intensification, livestock herd management, and mining mitigation, often flagged as delivery friction or resource competition in overlapping rangeland and forest-steppe zones.",
+      "coordination_hint": "Integrated spatial planning and joint investment screening across forest, rangeland, and agricultural interventions could help align land-use priorities and reduce resource competition.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NRVTS",
+    "label_a": "LDN Investment",
+    "label_b": "LDN Targets",
+    "aligned_count": 1,
+    "flagged_count": 190,
+    "contradiction_types": {
+      "delivery_friction": 183,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "Protected area expansion versus broad land-use pressures",
+      "reinforce": "Both documents reinforce the expansion of Mongolia's protected area network, with the LDN Investment's managed resource protected areas aligning directly with the LDN Targets' goal to expand special protected areas.",
+      "clash": "Recurring friction tends to arise when the LDN Investment's broad transformative projects, resource mobilization, and monitoring frameworks intersect with the LDN Targets' specific sectoral goals, such as forest cover increase, agricultural yield intensification, and wetland protection, often creating spatial or financial competition.",
+      "coordination_hint": "Integrated spatial planning and joint resource allocation criteria could help align transformative land-use projects with specific conservation and sectoral targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "SECTORAL",
+    "label_a": "LDN Investment",
+    "label_b": "Vision 2050",
+    "aligned_count": 2,
+    "flagged_count": 114,
+    "contradiction_types": {
+      "delivery_friction": 94,
+      "resource_competition": 20
+    },
+    "synthesis": {
+      "storyline_name": "Land-use competition between conservation and agriculture",
+      "reinforce": "Both documents reinforce protected area expansion and land degradation neutrality, with ILDN's managed resource protected areas directly supporting Vision 2050's 30% by 2030 target and anti-desertification programme.",
+      "clash": "Recurring friction centres on spatial competition for land and water, where ILDN's conservation and restoration goals often overlap with Vision 2050's agricultural intensification, irrigated expansion, and pasture management, flagged for delivery friction and resource competition.",
+      "coordination_hint": "Integrated spatial planning and land-use zoning could help align conservation and agricultural targets by clarifying geographic priorities and investment safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NBSAP",
+    "label_a": "NAP",
+    "label_b": "NBSAP",
+    "aligned_count": 7,
+    "flagged_count": 270,
+    "contradiction_types": {
+      "delivery_friction": 221,
+      "resource_competition": 48,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Shared goals, delivery-level friction",
+      "reinforce": "The documents reinforce each other on capacity building, ecosystem resilience, and early warning systems, with overlapping actions in training, research, monitoring, and nature-based solutions that could pool resources and amplify outcomes.",
+      "clash": "Recurring friction tends to arise in delivery, where agricultural intensification, water infrastructure, and land-use pressures from one plan risk undermining the other's conservation, sustainable-use, or inclusive-participation goals, often manageable through safeguards and spatial planning.",
+      "coordination_hint": "Joint spatial planning and integrated safeguards for agriculture, water, and infrastructure could help align operational delivery across both plans.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NDC",
+    "label_a": "NAP",
+    "label_b": "NDC",
+    "aligned_count": 14,
+    "flagged_count": 348,
+    "contradiction_types": {
+      "delivery_friction": 241,
+      "resource_competition": 105,
+      "goal_conflict": 2
+    },
+    "synthesis": {
+      "storyline_name": "Water and land competition across sectors",
+      "reinforce": "The documents strongly reinforce each other on capacity development, ecosystem protection, early warning systems, and social safety nets, with shared mechanisms like training, forest restoration, multi-hazard forecasting, and insurance for vulnerable groups.",
+      "clash": "Recurring friction tends to center on competition for finite water and land resources, especially where agricultural expansion, livestock watering, and irrigation targets in one document may strain the water availability and land conservation goals of the other.",
+      "coordination_hint": "Integrated water allocation and land-use zoning across agricultural, livestock, and conservation programs could help manage the resource competition that recurs in the flagged pairs.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NRVTS",
+    "label_a": "NAP",
+    "label_b": "LDN Targets",
+    "aligned_count": 1,
+    "flagged_count": 344,
+    "contradiction_types": {
+      "delivery_friction": 251,
+      "resource_competition": 89,
+      "goal_conflict": 4
+    },
+    "synthesis": {
+      "storyline_name": "Land and water use tensions across sectors",
+      "reinforce": "No reinforcing pairs in this set.",
+      "clash": "Recurring friction tends to center on competition for finite land and water resources, where NAP targets for afforestation, water accumulation, or agricultural intensification could constrain LDN goals for grassland conservation, rotational grazing, and protected area expansion. Delivery-level misalignments also recur, often where broad NAP capacity-building or legal frameworks lack explicit safeguards to prevent undermining LDN on-the-ground measures like pesticide reduction or traditional pasture recovery.",
+      "coordination_hint": "Integrated spatial planning and joint water-allocation protocols could help align land-intensive and water-intensive targets across the two documents.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "SECTORAL",
+    "label_a": "NAP",
+    "label_b": "Vision 2050",
+    "aligned_count": 5,
+    "flagged_count": 208,
+    "contradiction_types": {
+      "delivery_friction": 130,
+      "resource_competition": 76,
+      "goal_conflict": 2
+    },
+    "synthesis": {
+      "storyline_name": "Land and water use tensions across sectors",
+      "reinforce": "The documents share concrete commitments to expand protected areas, combat desertification, and strengthen early warning and social protection systems, with overlapping actions around ecosystem monitoring and land restoration.",
+      "clash": "Recurring friction centres on competition for finite land and water resources between agricultural expansion, livestock intensification, and forest or soil protection targets, often flagged for delivery friction where broad coordination mandates could slow specific sectoral actions.",
+      "coordination_hint": "Integrated spatial planning and watershed-level resource allocation could help align competing land and water demands without requiring target revisions.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NDC",
+    "label_a": "NBSAP",
+    "label_b": "NDC",
+    "aligned_count": 20,
+    "flagged_count": 473,
+    "contradiction_types": {
+      "delivery_friction": 426,
+      "resource_competition": 47
+    },
+    "synthesis": {
+      "storyline_name": "Biodiversity and climate plans reinforce but face delivery friction",
+      "reinforce": "The NBSAP and NDC consistently reinforce each other on expanding protected areas, restoring ecosystems, and mainstreaming biodiversity into sectoral planning, with shared mechanisms like spatial planning frameworks, ecological corridors, and sustainable pasture management contracts.",
+      "clash": "Recurring delivery friction arises where NBSAP conservation and restoration actions, such as expanding protected areas or promoting biodiversity offsets, could constrain NDC livestock, afforestation, or infrastructure measures, often due to land-use competition or uncoordinated operational standards.",
+      "coordination_hint": "Integrated spatial planning and joint safeguards for land-use, incentive design, and infrastructure siting could help align delivery across these overlapping agendas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NRVTS",
+    "label_a": "NBSAP",
+    "label_b": "LDN Targets",
+    "aligned_count": 9,
+    "flagged_count": 417,
+    "contradiction_types": {
+      "delivery_friction": 405,
+      "resource_competition": 12
+    },
+    "synthesis": {
+      "storyline_name": "Forest and land-use targets create delivery friction",
+      "reinforce": "The documents reinforce each other on urban greening, protected area expansion, and agroforestry, with shared spatial planning and nature-based solution instruments that could amplify outcomes.",
+      "clash": "Recurring delivery friction arises where reforestation mandates, agricultural intensification, and urban water features risk competing for land, water, or procedural alignment with biodiversity safeguards, often involving forest user group obligations.",
+      "coordination_hint": "Integrated spatial planning and watershed-level resource allocation could help align reforestation, urban greening, and agricultural targets with biodiversity goals.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "SECTORAL",
+    "label_a": "NBSAP",
+    "label_b": "Vision 2050",
+    "aligned_count": 7,
+    "flagged_count": 278,
+    "contradiction_types": {
+      "delivery_friction": 222,
+      "resource_competition": 56
+    },
+    "synthesis": {
+      "storyline_name": "Conservation expansion meets agricultural intensification",
+      "reinforce": "The documents share a strong alignment on expanding protected areas to 30% of national territory by 2030 and on valuing ecosystem services, with overlapping targets for restoration, connectivity, and regulatory frameworks that could amplify conservation outcomes.",
+      "clash": "Recurring friction tends to arise where agricultural expansion and intensification targets, such as irrigated cultivation and livestock development, compete for land and water resources with biodiversity protection, restoration, and sustainable use goals, often flagged for delivery friction or resource competition.",
+      "coordination_hint": "Integrated spatial planning and safeguards that align agricultural investment criteria with biodiversity and land-use zoning could help manage the recurring tensions.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "NRVTS",
+    "label_a": "NDC",
+    "label_b": "LDN Targets",
+    "aligned_count": 3,
+    "flagged_count": 612,
+    "contradiction_types": {
+      "delivery_friction": 458,
+      "resource_competition": 154
+    },
+    "synthesis": {
+      "storyline_name": "Land-use tensions between production and protection",
+      "reinforce": "Both documents reinforce ecosystem restoration and legal framework strengthening, with shared actions on sustainable forest management, disaster risk reduction, and rangeland recovery through techniques like air seeding.",
+      "clash": "Recurring friction tends to arise where NDC livestock and agricultural intensification targets compete for land and water with LDN goals for protected areas, forest expansion, and grassland conservation, often flagged as delivery friction or resource competition.",
+      "coordination_hint": "Integrated spatial planning and aligned land-use zoning could help reconcile production-oriented actions with conservation and restoration targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "SECTORAL",
+    "label_a": "NDC",
+    "label_b": "Vision 2050",
+    "aligned_count": 3,
+    "flagged_count": 376,
+    "contradiction_types": {
+      "resource_competition": 196,
+      "delivery_friction": 176,
+      "goal_conflict": 4
+    },
+    "synthesis": {
+      "storyline_name": "Land and water competition across sectors",
+      "reinforce": "The documents reinforce each other on expanding forest cover and establishing herder cooperatives for sustainable pasture management, with shared actions around afforestation, restoration, and collaborative governance.",
+      "clash": "Recurring friction centers on competition for finite land and water between expanding protected areas, afforestation, and agricultural intensification, and on delivery tensions where insurance or restoration programs may undercut on-the-ground resilience measures or procedural safeguards.",
+      "coordination_hint": "Integrated spatial planning and sequenced policy design could align land-use zoning, water allocation, and incentive structures across these targets.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NRVTS",
+    "doc_b": "SECTORAL",
+    "label_a": "LDN Targets",
+    "label_b": "Vision 2050",
+    "aligned_count": 4,
+    "flagged_count": 388,
+    "contradiction_types": {
+      "resource_competition": 131,
+      "delivery_friction": 257
+    },
+    "synthesis": {
+      "storyline_name": "Land-use competition between restoration and production",
+      "reinforce": "The documents strongly reinforce each other on forest expansion and protected areas, sharing identical quantitative targets for 9% forest cover and 30% protected area coverage by 2030, with complementary reforestation and conservation actions.",
+      "clash": "Recurring friction centres on competition for finite land and water between land restoration goals and agricultural or livestock intensification, with 131 resource competition and 257 delivery friction flags, often involving peri-urban zones, grasslands, and degraded lands.",
+      "coordination_hint": "Integrated spatial planning and zoning could help align reforestation, protected area expansion, and agricultural development by designating distinct areas for each use.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

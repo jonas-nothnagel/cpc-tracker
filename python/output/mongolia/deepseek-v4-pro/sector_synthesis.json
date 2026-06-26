@@ -1,0 +1,1630 @@
+{
+  "synthesis": [
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "1",
+      "category_name": "Reduce impact and risk of climate change in the livestock sector, ensure sustain…",
+      "aligned_count": 18,
+      "flagged_count": 5022,
+      "pool_composition": {
+        "primary_count": 3008,
+        "relevant_only_count": 2641
+      },
+      "contradiction_types": {
+        "delivery_friction": 3520,
+        "resource_competition": 1489,
+        "goal_conflict": 13
+      },
+      "synthesis": {
+        "storyline_name": "Balancing livestock expansion with land and emissions goals",
+        "reinforce": "Protected-area expansion and sustainable pasture management targets tend to align, with coordinated implementation reinforcing shared goals around ecosystem representation and herder-group-based restoration. Climate-smart crop production and soil protection measures also recur as mutually supportive, often linking agricultural modernization with land degradation neutrality.",
+        "clash": "Livestock intensification and value-chain development targets frequently create delivery friction with emissions-reduction and land-degradation goals, as expanding animal farming tends to increase grazing pressure and CO2 output. Resource competition also recurs between agricultural expansion and rangeland or water conservation, often flagged for review where spatial planning is absent.",
+        "coordination_hint": "Integrating spatial safeguards, sustainable sourcing conditions, and emissions criteria into livestock investment and processing incentives could reduce recurring friction with climate and land targets.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "2",
+      "category_name": "Establish a sustainable supply chain mechanism of healthy food products, livesto…",
+      "aligned_count": 24,
+      "flagged_count": 6314,
+      "pool_composition": {
+        "primary_count": 4363,
+        "relevant_only_count": 2863
+      },
+      "contradiction_types": {
+        "delivery_friction": 4211,
+        "resource_competition": 2088,
+        "goal_conflict": 15
+      },
+      "synthesis": {
+        "storyline_name": "Land-use tensions between production expansion and ecosystem protection",
+        "reinforce": "Targets that promote soil conservation, anti-desertification, and sustainable pasture management tend to align with climate-smart agriculture and land degradation neutrality goals, reinforcing shared soil health and restoration outcomes.",
+        "clash": "Recurring delivery friction and resource competition arise when agricultural modernization, livestock intensification, or food processing expansion targets intersect with land restoration, protected area, or sustainable pasture management targets, often competing for the same land and water resources.",
+        "coordination_hint": "Spatial planning and integrated land-use zoning could help balance production goals with ecosystem protection in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "3",
+      "category_name": "Introducing optimal water consumption and build capacity to increase water reser…",
+      "aligned_count": 16,
+      "flagged_count": 2516,
+      "pool_composition": {
+        "primary_count": 763,
+        "relevant_only_count": 2015
+      },
+      "contradiction_types": {
+        "delivery_friction": 1480,
+        "resource_competition": 1031,
+        "goal_conflict": 5
+      },
+      "synthesis": {
+        "storyline_name": "Water and land competition under agricultural expansion",
+        "reinforce": "Modern irrigation and water monitoring targets tend to align with agricultural expansion and urban greening, reinforcing water-efficient infrastructure and technology deployment across crop, pasture, and urban systems.",
+        "clash": "Recurring resource competition and delivery friction often point to agricultural and irrigation expansion targets competing with pasture restoration, protected areas, and wetland conservation for the same finite land and water resources.",
+        "coordination_hint": "Integrated spatial planning and water-use zoning could help reconcile agricultural expansion with conservation and sustainable pasture management in shared landscapes.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "4",
+      "category_name": "Create forest ecosystems well adapted to climate change and enhance carbon seque…",
+      "aligned_count": 70,
+      "flagged_count": 5351,
+      "pool_composition": {
+        "primary_count": 2890,
+        "relevant_only_count": 3260
+      },
+      "contradiction_types": {
+        "delivery_friction": 3949,
+        "resource_competition": 1390,
+        "goal_conflict": 12
+      },
+      "synthesis": {
+        "storyline_name": "Forest expansion and protection align, but land-use competition recurs",
+        "reinforce": "Targets that expand protected areas, increase forest cover, and promote sustainable forest management tend to reinforce each other, often sharing the same ecosystems and operational actions like reforestation and monitoring. Urban greening and biodiversity mainstreaming also align by embedding green infrastructure and cross-sectoral safeguards into planning.",
+        "clash": "Recurring friction arises when agricultural intensification, infrastructure development, or resource use competes for land and water that forest and ecosystem targets seek to protect or restore. Delivery friction often stems from uncoordinated operational practices, such as pesticide use or fire management, that can undermine forest health and biodiversity goals.",
+        "coordination_hint": "Integrated land-use zoning and spatial planning that explicitly allocates areas for forest expansion, agriculture, and infrastructure tends to resolve competition and align operational practices.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "5",
+      "category_name": "Enable adaptation opportunities and adaptive capacities for vulnerable biodivers…",
+      "aligned_count": 70,
+      "flagged_count": 5572,
+      "pool_composition": {
+        "primary_count": 3330,
+        "relevant_only_count": 3097
+      },
+      "contradiction_types": {
+        "delivery_friction": 4120,
+        "resource_competition": 1440,
+        "goal_conflict": 12
+      },
+      "synthesis": {
+        "storyline_name": "Balancing land protection with production pressures",
+        "reinforce": "Protected area expansion and ecosystem restoration targets tend to align, with coordinated implementation amplifying outcomes for biodiversity connectivity and forest cover goals. Capacity building and sustainable agriculture targets also reinforce each other by pooling resources for training and technology deployment.",
+        "clash": "Agricultural expansion and food production targets frequently create delivery friction or resource competition with biodiversity conservation and land restoration goals, often competing for the same finite land and water base. Forest management and restoration targets also clash with other land uses like mining rehabilitation or afforestation expansion due to differing operational standards or spatial overlap.",
+        "coordination_hint": "Integrated spatial planning and safeguards that steer agricultural and infrastructure development away from ecologically sensitive zones could resolve many recurring land-use tensions.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "6",
+      "category_name": "Build resilience to natural disasters by reducing the risks and adapting to impa…",
+      "aligned_count": 52,
+      "flagged_count": 3920,
+      "pool_composition": {
+        "primary_count": 1132,
+        "relevant_only_count": 3501
+      },
+      "contradiction_types": {
+        "delivery_friction": 2786,
+        "resource_competition": 1132,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Aligning ecosystem protection with productive land use",
+        "reinforce": "Targets that expand protected areas, restore forests, and enhance ecosystem monitoring tend to align directly, often reinforcing shared goals for biodiversity and climate resilience. Early warning systems and water monitoring also show strong operational overlap, amplifying disaster preparedness and resource management.",
+        "clash": "Agricultural expansion and intensification targets frequently create delivery friction or resource competition with ecosystem protection, forest restoration, and land degradation neutrality goals. This tension recurs where crop expansion, livestock intensification, or agroforestry projects may encroach on protected areas, increase water demand, or alter landscapes targeted for conservation.",
+        "coordination_hint": "Integrated spatial planning and safeguards that direct agricultural development away from priority conservation zones could resolve much of the recurring land-use tension.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "7",
+      "category_name": "Strengthening healthcare services and capacities for early warning of potential …",
+      "aligned_count": 12,
+      "flagged_count": 894,
+      "pool_composition": {
+        "primary_count": 461,
+        "relevant_only_count": 737
+      },
+      "contradiction_types": {
+        "delivery_friction": 806,
+        "resource_competition": 88
+      },
+      "synthesis": {
+        "storyline_name": "Early warning and health systems face delivery tensions",
+        "reinforce": "Disaster risk reduction and early warning targets consistently align with social protection and capacity building, reinforcing integrated climate adaptation and resilience for vulnerable groups. Health system strengthening for climate threats also aligns with broader disaster risk management, pointing to shared operational actions.",
+        "clash": "Early warning and public health infrastructure expansion tends to create delivery friction with land-based targets, including forest conservation, reforestation, and sustainable pasture management, often through spatial competition or indirect ecosystem disturbance. Food safety and agricultural intensification targets also recur as sources of tension, potentially increasing chemical use or grazing pressure that undermines pollution reduction and land degradation goals.",
+        "coordination_hint": "Spatial planning and integrated safeguards for infrastructure siting, chemical use, and stocking rates could help reconcile early warning and health system goals with land and pollution targets.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "8",
+      "category_name": "Establish a system providing social safeguard, insurance and prevention measures…",
+      "aligned_count": 17,
+      "flagged_count": 1388,
+      "pool_composition": {
+        "primary_count": 618,
+        "relevant_only_count": 1107
+      },
+      "contradiction_types": {
+        "delivery_friction": 1082,
+        "resource_competition": 305,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Social protection delivery competes with land and resource pressures",
+        "reinforce": "Social safety nets, insurance, and inclusive participation targets tend to align with disaster risk reduction and capacity building, reinforcing resilience for vulnerable groups. Early warning systems and climate adaptation knowledge also directly support social protection and livelihood diversification.",
+        "clash": "Expanding protected areas, agricultural intensification, and urban green infrastructure often create delivery friction or resource competition with social protection and livelihood targets, especially where land access is restricted or water demand increases. Gender and inclusion mandates can also add procedural friction to sectoral financing and reporting.",
+        "coordination_hint": "Integrating spatial planning, gender-responsive budgeting, and community safeguards into social protection and livelihood programmes could reduce tensions with land-use and resource targets.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_1",
+      "category_name": "Access and benefit sharing",
+      "aligned_count": 1,
+      "flagged_count": 111,
+      "pool_composition": {
+        "primary_count": 131,
+        "relevant_only_count": 0
+      },
+      "contradiction_types": {
+        "delivery_friction": 92,
+        "resource_competition": 19
+      },
+      "synthesis": {
+        "storyline_name": "Genetic resource governance lags behind sectoral expansion",
+        "reinforce": "No reinforcing pairs in this sector.",
+        "clash": "Delivery friction recurs where agricultural modernization, food system expansion, and land management targets outpace the legal and institutional frameworks for access and benefit sharing, risking unregulated use of genetic resources and traditional knowledge. Resource competition also appears between genetic conservation infrastructure and land or water demands from other sectors.",
+        "coordination_hint": "Sequencing benefit-sharing safeguards before or alongside sectoral investments in agriculture, food processing, and land restoration tends to reduce friction.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_2",
+      "category_name": "Biodiversity awareness and knowledge",
+      "aligned_count": 21,
+      "flagged_count": 1485,
+      "pool_composition": {
+        "primary_count": 727,
+        "relevant_only_count": 1164
+      },
+      "contradiction_types": {
+        "delivery_friction": 1261,
+        "resource_competition": 223,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Knowledge and awareness as enablers, production pressures as friction",
+        "reinforce": "Targets that build biodiversity knowledge, public awareness, and capacity for ecosystem service valuation tend to align, often reinforcing each other through shared training, outreach, and data-access activities. This pattern recurs across NBSAP, NAP, and NDC education targets, where coordinated implementation amplifies stakeholder engagement and mainstreaming.",
+        "clash": "Recurring delivery friction arises when agricultural production or food-sector expansion targets, such as establishing research institutes or expanding cash crops, risk undermining biodiversity awareness and sustainable-use goals by intensifying land and resource use. These tensions often involve competition for land, water, or policy attention, and are flagged for review where production-oriented research or subsidies may conflict with conservation-oriented knowledge and valuation efforts.",
+        "coordination_hint": "Integrating biodiversity awareness and ecosystem-service valuation criteria into agricultural research agendas and spatial planning could help manage tensions between production expansion and conservation knowledge goals.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_3",
+      "category_name": "Biosafety",
+      "aligned_count": 1,
+      "flagged_count": 212,
+      "pool_composition": {
+        "primary_count": 263,
+        "relevant_only_count": 0
+      },
+      "contradiction_types": {
+        "delivery_friction": 197,
+        "resource_competition": 15
+      },
+      "synthesis": {
+        "storyline_name": "Managing biosafety tensions in land-use expansion",
+        "reinforce": "Invasive alien species control tends to align with anti-desertification efforts, as both aim to protect ecosystem health and reduce land degradation.",
+        "clash": "Biosafety and invasive species targets often face delivery friction with agricultural expansion, infrastructure development, and resource mobilization, where new activities risk introducing or spreading harmful organisms or genetically modified organisms without adequate safeguards.",
+        "coordination_hint": "Integrating biosecurity protocols and risk assessments into sectoral plans for agriculture, transport, and land management could resolve most flagged tensions.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_4",
+      "category_name": "Green economy",
+      "aligned_count": 14,
+      "flagged_count": 2060,
+      "pool_composition": {
+        "primary_count": 1078,
+        "relevant_only_count": 1285
+      },
+      "contradiction_types": {
+        "delivery_friction": 1483,
+        "resource_competition": 574,
+        "goal_conflict": 3
+      },
+      "synthesis": {
+        "storyline_name": "Balancing land and water use pressures",
+        "reinforce": "Targets that expand modern irrigation, water monitoring, and disaster risk reduction tend to align with nature-based solutions and ecosystem service valuation, reinforcing climate-resilient water and land management. Urban greening and spatial planning targets also directly support each other, amplifying green infrastructure outcomes.",
+        "clash": "Agricultural intensification and livestock expansion targets frequently create delivery friction or resource competition with land rehabilitation, biodiversity mainstreaming, and wetland conservation goals, often due to uncoordinated spatial planning and water use. Urban greening and food processing targets also tend to compete for finite water, land, and institutional resources with conservation and sustainable consumption objectives.",
+        "coordination_hint": "Integrating spatial planning, water allocation safeguards, and sustainability criteria into agricultural and urban development incentives could help reconcile production goals with green economy land and water commitments.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_5",
+      "category_name": "Biodiversity planning and finance",
+      "aligned_count": 58,
+      "flagged_count": 4620,
+      "pool_composition": {
+        "primary_count": 2782,
+        "relevant_only_count": 2642
+      },
+      "contradiction_types": {
+        "delivery_friction": 3583,
+        "resource_competition": 1024,
+        "goal_conflict": 13
+      },
+      "synthesis": {
+        "storyline_name": "Integrating conservation with productive land use",
+        "reinforce": "Targets that expand protected areas, sustainable forest management, and ecosystem service valuation tend to align, often reinforcing each other through shared spatial planning, monitoring, and awareness-raising actions.",
+        "clash": "Recurring friction arises when agricultural intensification, livestock expansion, or infrastructure development competes for land and water with biodiversity and ecosystem protection goals, or when procedural requirements like environmental assessments slow conservation delivery.",
+        "coordination_hint": "Integrated land-use planning and streamlined assessment procedures could help balance production targets with biodiversity safeguards in shared landscapes.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_6",
+      "category_name": "Pollution management",
+      "aligned_count": 27,
+      "flagged_count": 1943,
+      "pool_composition": {
+        "primary_count": 619,
+        "relevant_only_count": 1550
+      },
+      "contradiction_types": {
+        "delivery_friction": 1319,
+        "resource_competition": 612,
+        "goal_conflict": 12
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural intensification versus pollution and land protection",
+        "reinforce": "Targets that expand protected areas, reforestation, and soil conservation tend to align directly with national anti-desertification and climate resilience goals, often sharing quantitative forest cover or land restoration objectives.",
+        "clash": "Agricultural production targets, especially those promoting intensive crop and livestock farming, frequently create delivery friction or resource competition with pollution reduction, pesticide regulation, and ecosystem protection commitments.",
+        "coordination_hint": "Integrating spatial planning, input standards, and water allocation across agricultural and environmental frameworks could reduce recurring tensions in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_7",
+      "category_name": "Protected areas and other conservation measures",
+      "aligned_count": 37,
+      "flagged_count": 2198,
+      "pool_composition": {
+        "primary_count": 1272,
+        "relevant_only_count": 1173
+      },
+      "contradiction_types": {
+        "delivery_friction": 1563,
+        "resource_competition": 634,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Expanding protected areas while managing land-use tensions",
+        "reinforce": "Targets that expand protected area networks, strengthen ecological connectivity, and enhance ecosystem services tend to align directly, often sharing quantitative 30x30 goals and operational actions like legal framework updates and spatial planning. Forest management and biodiversity resilience targets also reinforce each other through shared monitoring, restoration, and nature-based solution approaches.",
+        "clash": "Agricultural intensification, livestock expansion, and infrastructure development targets frequently create delivery friction or resource competition with conservation goals, particularly over land and water in shared rangelands, forests, and watersheds. Spatial planning and biodiversity mainstreaming targets also face friction when sectoral development policies lack explicit integration with ecological safeguards.",
+        "coordination_hint": "Integrated land-use zoning and water allocation planning that explicitly link protected area expansion with agricultural and livestock development zones could resolve most flagged tensions.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_8",
+      "category_name": "Restoration",
+      "aligned_count": 35,
+      "flagged_count": 2250,
+      "pool_composition": {
+        "primary_count": 1066,
+        "relevant_only_count": 1425
+      },
+      "contradiction_types": {
+        "delivery_friction": 1507,
+        "resource_competition": 731,
+        "goal_conflict": 12
+      },
+      "synthesis": {
+        "storyline_name": "Restoration competes with agriculture and infrastructure for land and water",
+        "reinforce": "Restoration targets tend to align strongly with forest protection, protected area expansion, and climate resilience goals, often sharing operational actions like reforestation, monitoring, and ecosystem-based adaptation. These synergies recur where both sides aim to increase forest cover, improve ecological connectivity, or enhance biodiversity resilience.",
+        "clash": "Flagged pairs frequently show delivery friction or resource competition between restoration and agricultural expansion, livestock management, or infrastructure development, often over finite land and water resources. Recurring tensions involve afforestation versus pasture restoration, protected area expansion versus agricultural land use, and water allocation between ecosystem restoration and food processing.",
+        "coordination_hint": "Integrated spatial planning and water allocation frameworks could help reconcile restoration objectives with agricultural and infrastructure demands, reducing land-use conflicts flagged in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_9",
+      "category_name": "Sustainable use",
+      "aligned_count": 39,
+      "flagged_count": 6398,
+      "pool_composition": {
+        "primary_count": 6477,
+        "relevant_only_count": 752
+      },
+      "contradiction_types": {
+        "delivery_friction": 4350,
+        "resource_competition": 2029,
+        "goal_conflict": 19
+      },
+      "synthesis": {
+        "storyline_name": "Land and water use tensions underpin sustainable use",
+        "reinforce": "Targets that expand protected areas, restore forests, and modernize irrigation tend to align directly, reinforcing shared goals for ecosystem protection and climate-resilient production. Sustainable agriculture and pasture management targets also frequently reinforce each other through coordinated cooperative and technological approaches.",
+        "clash": "Recurring friction tends to arise when agricultural expansion, livestock intensification, or infrastructure development competes for land and water with forest restoration, protected area expansion, or wetland conservation. Delivery friction also recurs where production-oriented subsidies or supply-chain investments risk undermining biodiversity, pollution reduction, or sustainable resource management goals.",
+        "coordination_hint": "Spatial planning, integrated land-use zoning, and safeguards that steer agricultural and infrastructure investments away from ecologically sensitive areas could resolve many flagged tensions.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_0",
+      "category_name": "Protection, management, and restoration of marine and coastal habitats",
+      "aligned_count": 50,
+      "flagged_count": 2703,
+      "pool_composition": {
+        "primary_count": 660,
+        "relevant_only_count": 2529
+      },
+      "contradiction_types": {
+        "delivery_friction": 2205,
+        "resource_competition": 496,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Expanding protected areas while managing land-use pressures",
+        "reinforce": "Protected area expansion targets tend to align strongly with ecosystem restoration, biodiversity monitoring, and climate adaptation goals, often sharing spatial priorities and operational actions. Ecosystem service valuation and inclusive participation targets also reinforce each other by combining regulatory frameworks with on-the-ground capacity building.",
+        "clash": "Agricultural intensification, livestock expansion, and food processing targets frequently create delivery friction or resource competition with habitat protection and restoration, especially where land and water use overlap. Payment for ecosystem services and land-use planning targets also face recurring friction from sectoral development goals that do not explicitly incorporate conservation safeguards.",
+        "coordination_hint": "Integrated spatial planning and safeguards that align agricultural and infrastructure development with protected area and restoration priorities could reduce recurring friction in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_1",
+      "category_name": "Agriculture and livestock management",
+      "aligned_count": 62,
+      "flagged_count": 7367,
+      "pool_composition": {
+        "primary_count": 6458,
+        "relevant_only_count": 2044
+      },
+      "contradiction_types": {
+        "delivery_friction": 5155,
+        "resource_competition": 2195,
+        "goal_conflict": 17
+      },
+      "synthesis": {
+        "storyline_name": "Pasture and production pressures on land",
+        "reinforce": "Sustainable agriculture and pasture management targets tend to align through shared goals of soil conservation, ecosystem restoration, and cooperative management, often reinforcing each other when nature-based solutions and spatial planning are integrated.",
+        "clash": "Livestock intensification and fodder expansion targets frequently create delivery friction or resource competition with land restoration, biodiversity conservation, and pasture carrying capacity goals, especially where incentives for increased production are not explicitly linked to ecological limits.",
+        "coordination_hint": "Coordinating incentive design, spatial planning, and water infrastructure siting could help reconcile production ambitions with ecosystem and pasture resilience in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_2",
+      "category_name": "Water management",
+      "aligned_count": 60,
+      "flagged_count": 4446,
+      "pool_composition": {
+        "primary_count": 642,
+        "relevant_only_count": 4458
+      },
+      "contradiction_types": {
+        "delivery_friction": 3167,
+        "resource_competition": 1274,
+        "goal_conflict": 5
+      },
+      "synthesis": {
+        "storyline_name": "Water management tensions between production and protection",
+        "reinforce": "Targets that expand protected areas, restore ecosystems, and value ecosystem services tend to align with water management by safeguarding freshwater sources and promoting nature-based solutions. Capacity building and knowledge access targets also reinforce water-related goals through shared training and data infrastructure.",
+        "clash": "Agricultural intensification and irrigation expansion targets frequently create delivery friction or resource competition with water management, as they increase demand for finite water and land resources. Energy subsidies for food production and livestock development also risk undermining water ecosystem services and sustainable use goals.",
+        "coordination_hint": "Integrated land and water-use planning, paired with safeguards like ecological flow requirements and spatial zoning, could resolve recurring tensions between production-oriented targets and water management objectives.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_3",
+      "category_name": "Forest management, restoration, and protection",
+      "aligned_count": 63,
+      "flagged_count": 4175,
+      "pool_composition": {
+        "primary_count": 1856,
+        "relevant_only_count": 2961
+      },
+      "contradiction_types": {
+        "delivery_friction": 3161,
+        "resource_competition": 1002,
+        "goal_conflict": 12
+      },
+      "synthesis": {
+        "storyline_name": "Forest restoration and protection align, but land-use competition recurs",
+        "reinforce": "Forest cover expansion, reforestation, and sustainable forest management targets tend to align across NDCs, NBSAPs, and sectoral plans, often sharing quantitative goals like 9% forest cover or 30% protected areas. Ecosystem service valuation and inclusive participation measures also reinforce forest governance.",
+        "clash": "Agricultural expansion, livestock intensification, and energy subsidies for food production frequently compete with forest and protected area targets for land and water. Delivery friction also recurs where afforestation methods or restoration sequencing risk undermining ecological integrity or where subsidy reforms may inadvertently reduce forest-positive incentives.",
+        "coordination_hint": "Integrated spatial planning and safeguards on agricultural subsidies could help reconcile forest cover goals with food production and livestock pressures.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_4",
+      "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+      "aligned_count": 51,
+      "flagged_count": 2864,
+      "pool_composition": {
+        "primary_count": 377,
+        "relevant_only_count": 2935
+      },
+      "contradiction_types": {
+        "delivery_friction": 2220,
+        "resource_competition": 642,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Wetland protection competes with agricultural expansion",
+        "reinforce": "Wetland and freshwater restoration targets tend to align with protected area expansion, ecosystem service valuation, and inclusive governance frameworks, as seen in pairs linking NBSAP restoration goals to spatial planning and gender-responsive participation.",
+        "clash": "Recurring friction arises where agricultural intensification, irrigation expansion, and livestock support measures compete for land and water with wetland no-net-loss and restoration targets, flagged primarily as resource competition and delivery friction.",
+        "coordination_hint": "Integrated land-use zoning and water allocation planning could help reconcile agricultural development with wetland conservation goals.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_5",
+      "category_name": "Ecosystem protection and connectivity",
+      "aligned_count": 58,
+      "flagged_count": 4639,
+      "pool_composition": {
+        "primary_count": 2279,
+        "relevant_only_count": 3025
+      },
+      "contradiction_types": {
+        "delivery_friction": 3567,
+        "resource_competition": 1059,
+        "goal_conflict": 13
+      },
+      "synthesis": {
+        "storyline_name": "Balancing protection with production pressures",
+        "reinforce": "Forest and protected-area expansion targets consistently align with climate adaptation and ecosystem service valuation, creating a reinforcing loop where nature-based solutions, reforestation, and spatial protection mutually strengthen biodiversity and resilience outcomes.",
+        "clash": "Agricultural intensification, irrigation expansion, and livestock supply-chain development recurrently create delivery friction and resource competition with ecosystem protection, as cropland reclamation, water extraction, and infrastructure growth place direct pressure on the land, water, and connectivity goals of conservation targets.",
+        "coordination_hint": "Spatial planning and integrated land-use zoning tend to be the most referenced mechanism for reconciling production-oriented targets with ecosystem protection and connectivity objectives in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_6",
+      "category_name": "Soil fertility management and restoration",
+      "aligned_count": 38,
+      "flagged_count": 5428,
+      "pool_composition": {
+        "primary_count": 1133,
+        "relevant_only_count": 4931
+      },
+      "contradiction_types": {
+        "delivery_friction": 3697,
+        "resource_competition": 1718,
+        "goal_conflict": 13
+      },
+      "synthesis": {
+        "storyline_name": "Balancing agricultural expansion with land restoration goals",
+        "reinforce": "Targets that promote sustainable agriculture, agroforestry, and soil conservation tend to align with ecosystem restoration and biodiversity knowledge-sharing, often reinforcing each other through shared practices like shelterbelt development and climate-smart crop adoption.",
+        "clash": "Recurring friction arises where crop expansion, fodder intensification, or irrigated agriculture targets compete for land and water with forest protection, pasture restoration, and soil conservation goals, often flagged for delivery friction or resource competition in shared rural landscapes.",
+        "coordination_hint": "Integrated land-use zoning and water-allocation planning could help reconcile agricultural productivity targets with soil and ecosystem restoration commitments in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_7",
+      "category_name": "Nature-based risk management and disaster prevention",
+      "aligned_count": 44,
+      "flagged_count": 4422,
+      "pool_composition": {
+        "primary_count": 2406,
+        "relevant_only_count": 2961
+      },
+      "contradiction_types": {
+        "delivery_friction": 3419,
+        "resource_competition": 1001,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Integrating nature-based resilience with productive land use",
+        "reinforce": "Targets that expand urban green infrastructure, reforestation, and ecosystem service valuation tend to align with disaster risk reduction and climate adaptation frameworks, creating operational synergies for nature-based solutions. Capacity building and early warning system improvements also reinforce biodiversity monitoring and inclusive participation goals.",
+        "clash": "Agricultural expansion targets for irrigation, fodder, and cash crops frequently compete for land and water with forest protection, wetland conservation, and urban greening objectives. Delivery friction also recurs where food processing infrastructure and fire prevention systems strain environmental monitoring or protected area management without explicit coordination.",
+        "coordination_hint": "Integrated spatial planning and water allocation frameworks could help reconcile agricultural productivity goals with nature-based risk management and ecosystem protection targets.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_8",
+      "category_name": "Nature-based carbon sequestration",
+      "aligned_count": 32,
+      "flagged_count": 2498,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 2893
+      },
+      "contradiction_types": {
+        "delivery_friction": 1773,
+        "resource_competition": 704,
+        "goal_conflict": 21
+      },
+      "synthesis": {
+        "storyline_name": "Forest expansion competes with agriculture and rangelands",
+        "reinforce": "Forest cover and biodiversity targets tend to align through shared reforestation, ecosystem protection, and knowledge-sharing actions, with multiple pairs reinforcing the goal of reaching 9% forest cover and integrating nature-based solutions.",
+        "clash": "Recurring friction arises from competition for finite land and water between forest expansion goals and agricultural, livestock, or rangeland restoration targets, often flagged as resource competition or delivery friction requiring spatial coordination.",
+        "coordination_hint": "Integrated land-use zoning and spatial planning could reconcile forest cover targets with competing agricultural and rangeland uses, though safeguards for valuation frameworks and subsidy reforms may need explicit design.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_9",
+      "category_name": "Urban settlements management",
+      "aligned_count": 17,
+      "flagged_count": 951,
+      "pool_composition": {
+        "primary_count": 373,
+        "relevant_only_count": 760
+      },
+      "contradiction_types": {
+        "delivery_friction": 789,
+        "resource_competition": 162
+      },
+      "synthesis": {
+        "storyline_name": "Integrating urban greening with competing land and resource demands",
+        "reinforce": "Targets that expand urban green and blue infrastructure, improve biodiversity knowledge access, and mainstream ecosystem service valuation tend to align through shared outreach, planning integration, and capacity building, which can jointly strengthen urban environmental governance.",
+        "clash": "Urban greening and ecosystem service valuation targets often face delivery friction or resource competition from agricultural intensification, rural relocation, and livestock expansion, which can divert land, water, and finance away from urban vegetation and ecosystem protection.",
+        "coordination_hint": "Coordinated spatial planning and integrated budget allocation could help balance urban greening with agricultural and rural development pressures, reducing competition for finite land and water resources.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_agriculture",
+      "category_name": "Agriculture",
+      "aligned_count": 41,
+      "flagged_count": 6808,
+      "pool_composition": {
+        "primary_count": 5768,
+        "relevant_only_count": 1993
+      },
+      "contradiction_types": {
+        "delivery_friction": 4627,
+        "resource_competition": 2165,
+        "goal_conflict": 16
+      },
+      "synthesis": {
+        "storyline_name": "Balancing agricultural productivity with land and water stewardship",
+        "reinforce": "Targets that promote sustainable agriculture, soil conservation, and modern irrigation tend to align with broader ecosystem restoration and climate adaptation goals, often through shared actions like cooperative pasture management and technology deployment.",
+        "clash": "Agricultural expansion and intensification targets frequently create delivery friction or resource competition with land restoration, biodiversity protection, and sustainable resource management goals, especially where crop or livestock production pressures overlap with conservation areas or water limits.",
+        "coordination_hint": "Integrated spatial planning and water allocation frameworks could help reconcile productivity aims with ecosystem commitments in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_energy",
+      "category_name": "Energy",
+      "aligned_count": 2,
+      "flagged_count": 567,
+      "pool_composition": {
+        "primary_count": 112,
+        "relevant_only_count": 507
+      },
+      "contradiction_types": {
+        "delivery_friction": 435,
+        "resource_competition": 131,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Managing land and subsidy tensions in energy-adjacent sectors",
+        "reinforce": "No reinforcing pairs in this sector.",
+        "clash": "Recurring friction tends to arise from agricultural expansion targets competing for land and water with conservation goals, and from subsidy reform efforts creating delivery tensions with sectoral development plans.",
+        "coordination_hint": "Integrated spatial planning and subsidy redesign that explicitly links energy, agriculture, and conservation objectives could help resolve these recurring tensions.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_ippu",
+      "category_name": "Industrial processes and product use",
+      "aligned_count": 1,
+      "flagged_count": 979,
+      "pool_composition": {
+        "primary_count": 554,
+        "relevant_only_count": 669
+      },
+      "contradiction_types": {
+        "delivery_friction": 670,
+        "resource_competition": 309
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural expansion pressures environmental and land goals",
+        "reinforce": "No reinforcing pairs in this sector.",
+        "clash": "Targets promoting domestic fertiliser production, food processing plants, and intensive livestock tend to create delivery friction and resource competition with environmental targets focused on pollution reduction, land degradation neutrality, and biodiversity protection. The recurring mechanism is that expanding agricultural output and infrastructure increases land-use change, water demand, and chemical inputs, which can undermine ecosystem safeguards unless explicit coordination is added.",
+        "coordination_hint": "Integrating spatial planning, sustainable sourcing safeguards, and environmental impact assessments into agricultural expansion targets could help reconcile production goals with pollution and land degradation commitments.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_lulucf",
+      "category_name": "Land use, land-use change and forestry (LULUCF)",
+      "aligned_count": 76,
+      "flagged_count": 7178,
+      "pool_composition": {
+        "primary_count": 5555,
+        "relevant_only_count": 2618
+      },
+      "contradiction_types": {
+        "delivery_friction": 5099,
+        "resource_competition": 2062,
+        "goal_conflict": 17
+      },
+      "synthesis": {
+        "storyline_name": "Land-use competition between production and protection goals",
+        "reinforce": "Afforestation, protected area expansion, and sustainable agriculture targets tend to align, with coordinated implementation amplifying forest cover, ecosystem restoration, and climate-smart farming outcomes.",
+        "clash": "Recurring friction arises where agricultural expansion, irrigation, or livestock intensification competes for land and water with forest cover, protected areas, and pasture sustainability goals, often flagged as resource competition or delivery friction.",
+        "coordination_hint": "Integrated land-use zoning and spatial planning could reconcile production and protection objectives across this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_other",
+      "category_name": "Other / Cross-cutting",
+      "aligned_count": 58,
+      "flagged_count": 5778,
+      "pool_composition": {
+        "primary_count": 4350,
+        "relevant_only_count": 2645
+      },
+      "contradiction_types": {
+        "delivery_friction": 4590,
+        "resource_competition": 1184,
+        "goal_conflict": 4
+      },
+      "synthesis": {
+        "storyline_name": "Cross-cutting policy integration and resource competition",
+        "reinforce": "Knowledge sharing, capacity building, and spatial planning targets tend to align across biodiversity, climate adaptation, and disaster risk reduction documents, creating opportunities for joint outreach and integrated land-use frameworks.",
+        "clash": "Agricultural expansion and food production targets frequently compete for land and water with ecosystem protection, restoration, and pollution reduction goals, while subsidy reforms and monitoring systems create delivery sequencing tensions.",
+        "coordination_hint": "Joint spatial planning, integrated resource allocation, and phased implementation of subsidy reforms could help reconcile production and conservation objectives in this sector.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_transport",
+      "category_name": "Transport",
+      "aligned_count": 2,
+      "flagged_count": 339,
+      "pool_composition": {
+        "primary_count": 111,
+        "relevant_only_count": 263
+      },
+      "contradiction_types": {
+        "delivery_friction": 320,
+        "resource_competition": 18,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Transport expansion strains environmental and subsidy reform goals",
+        "reinforce": "No reinforcing pairs in this sector.",
+        "clash": "Expanding specialised food-transport fleets and logistics infrastructure tends to create delivery friction with pollution reduction, protected area expansion, and urban green infrastructure targets, while subsidy reforms in agriculture and energy risk undermining land management and climate adaptation efforts that depend on those same financial flows.",
+        "coordination_hint": "Integrating low-emission fleet standards, spatial safeguards for transport corridors, and green criteria into subsidy repurposing could help reconcile transport and agricultural expansion with environmental commitments.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_waste",
+      "category_name": "Waste",
+      "aligned_count": 2,
+      "flagged_count": 231,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 264
+      },
+      "contradiction_types": {
+        "delivery_friction": 206,
+        "resource_competition": 24,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Waste reduction collides with production expansion",
+        "reinforce": "Public education and awareness targets for sustainable consumption and climate action tend to reinforce each other by building shared enabling conditions for behavioral change.",
+        "clash": "Targets to minimize overconsumption and waste frequently face delivery friction and resource competition from agricultural modernization, food supply incentives, and land/water expansion goals that risk increasing material throughput and pollution.",
+        "coordination_hint": "Integrating sustainable consumption criteria into agricultural and food-system incentives could help align production expansion with waste-minimisation goals.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    }
+  ],
+  "states": {
+    "": [
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "1",
+        "category_name": "Reduce impact and risk of climate change in the livestock sector, ensure sustain…",
+        "aligned_count": 18,
+        "flagged_count": 5022,
+        "pool_composition": {
+          "primary_count": 3008,
+          "relevant_only_count": 2641
+        },
+        "contradiction_types": {
+          "delivery_friction": 3520,
+          "resource_competition": 1489,
+          "goal_conflict": 13
+        },
+        "synthesis": {
+          "storyline_name": "Balancing livestock expansion with land and emissions goals",
+          "reinforce": "Protected-area expansion and sustainable pasture management targets tend to align, with coordinated implementation reinforcing shared goals around ecosystem representation and herder-group-based restoration. Climate-smart crop production and soil protection measures also recur as mutually supportive, often linking agricultural modernization with land degradation neutrality.",
+          "clash": "Livestock intensification and value-chain development targets frequently create delivery friction with emissions-reduction and land-degradation goals, as expanding animal farming tends to increase grazing pressure and CO2 output. Resource competition also recurs between agricultural expansion and rangeland or water conservation, often flagged for review where spatial planning is absent.",
+          "coordination_hint": "Integrating spatial safeguards, sustainable sourcing conditions, and emissions criteria into livestock investment and processing incentives could reduce recurring friction with climate and land targets.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "2",
+        "category_name": "Establish a sustainable supply chain mechanism of healthy food products, livesto…",
+        "aligned_count": 24,
+        "flagged_count": 6314,
+        "pool_composition": {
+          "primary_count": 4363,
+          "relevant_only_count": 2863
+        },
+        "contradiction_types": {
+          "delivery_friction": 4211,
+          "resource_competition": 2088,
+          "goal_conflict": 15
+        },
+        "synthesis": {
+          "storyline_name": "Land-use tensions between production expansion and ecosystem protection",
+          "reinforce": "Targets that promote soil conservation, anti-desertification, and sustainable pasture management tend to align with climate-smart agriculture and land degradation neutrality goals, reinforcing shared soil health and restoration outcomes.",
+          "clash": "Recurring delivery friction and resource competition arise when agricultural modernization, livestock intensification, or food processing expansion targets intersect with land restoration, protected area, or sustainable pasture management targets, often competing for the same land and water resources.",
+          "coordination_hint": "Spatial planning and integrated land-use zoning could help balance production goals with ecosystem protection in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "3",
+        "category_name": "Introducing optimal water consumption and build capacity to increase water reser…",
+        "aligned_count": 16,
+        "flagged_count": 2516,
+        "pool_composition": {
+          "primary_count": 763,
+          "relevant_only_count": 2015
+        },
+        "contradiction_types": {
+          "delivery_friction": 1480,
+          "resource_competition": 1031,
+          "goal_conflict": 5
+        },
+        "synthesis": {
+          "storyline_name": "Water and land competition under agricultural expansion",
+          "reinforce": "Modern irrigation and water monitoring targets tend to align with agricultural expansion and urban greening, reinforcing water-efficient infrastructure and technology deployment across crop, pasture, and urban systems.",
+          "clash": "Recurring resource competition and delivery friction often point to agricultural and irrigation expansion targets competing with pasture restoration, protected areas, and wetland conservation for the same finite land and water resources.",
+          "coordination_hint": "Integrated spatial planning and water-use zoning could help reconcile agricultural expansion with conservation and sustainable pasture management in shared landscapes.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "4",
+        "category_name": "Create forest ecosystems well adapted to climate change and enhance carbon seque…",
+        "aligned_count": 70,
+        "flagged_count": 5351,
+        "pool_composition": {
+          "primary_count": 2890,
+          "relevant_only_count": 3260
+        },
+        "contradiction_types": {
+          "delivery_friction": 3949,
+          "resource_competition": 1390,
+          "goal_conflict": 12
+        },
+        "synthesis": {
+          "storyline_name": "Forest expansion and protection align, but land-use competition recurs",
+          "reinforce": "Targets that expand protected areas, increase forest cover, and promote sustainable forest management tend to reinforce each other, often sharing the same ecosystems and operational actions like reforestation and monitoring. Urban greening and biodiversity mainstreaming also align by embedding green infrastructure and cross-sectoral safeguards into planning.",
+          "clash": "Recurring friction arises when agricultural intensification, infrastructure development, or resource use competes for land and water that forest and ecosystem targets seek to protect or restore. Delivery friction often stems from uncoordinated operational practices, such as pesticide use or fire management, that can undermine forest health and biodiversity goals.",
+          "coordination_hint": "Integrated land-use zoning and spatial planning that explicitly allocates areas for forest expansion, agriculture, and infrastructure tends to resolve competition and align operational practices.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "5",
+        "category_name": "Enable adaptation opportunities and adaptive capacities for vulnerable biodivers…",
+        "aligned_count": 70,
+        "flagged_count": 5572,
+        "pool_composition": {
+          "primary_count": 3330,
+          "relevant_only_count": 3097
+        },
+        "contradiction_types": {
+          "delivery_friction": 4120,
+          "resource_competition": 1440,
+          "goal_conflict": 12
+        },
+        "synthesis": {
+          "storyline_name": "Balancing land protection with production pressures",
+          "reinforce": "Protected area expansion and ecosystem restoration targets tend to align, with coordinated implementation amplifying outcomes for biodiversity connectivity and forest cover goals. Capacity building and sustainable agriculture targets also reinforce each other by pooling resources for training and technology deployment.",
+          "clash": "Agricultural expansion and food production targets frequently create delivery friction or resource competition with biodiversity conservation and land restoration goals, often competing for the same finite land and water base. Forest management and restoration targets also clash with other land uses like mining rehabilitation or afforestation expansion due to differing operational standards or spatial overlap.",
+          "coordination_hint": "Integrated spatial planning and safeguards that steer agricultural and infrastructure development away from ecologically sensitive zones could resolve many recurring land-use tensions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "6",
+        "category_name": "Build resilience to natural disasters by reducing the risks and adapting to impa…",
+        "aligned_count": 52,
+        "flagged_count": 3920,
+        "pool_composition": {
+          "primary_count": 1132,
+          "relevant_only_count": 3501
+        },
+        "contradiction_types": {
+          "delivery_friction": 2786,
+          "resource_competition": 1132,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Aligning ecosystem protection with productive land use",
+          "reinforce": "Targets that expand protected areas, restore forests, and enhance ecosystem monitoring tend to align directly, often reinforcing shared goals for biodiversity and climate resilience. Early warning systems and water monitoring also show strong operational overlap, amplifying disaster preparedness and resource management.",
+          "clash": "Agricultural expansion and intensification targets frequently create delivery friction or resource competition with ecosystem protection, forest restoration, and land degradation neutrality goals. This tension recurs where crop expansion, livestock intensification, or agroforestry projects may encroach on protected areas, increase water demand, or alter landscapes targeted for conservation.",
+          "coordination_hint": "Integrated spatial planning and safeguards that direct agricultural development away from priority conservation zones could resolve much of the recurring land-use tension.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "7",
+        "category_name": "Strengthening healthcare services and capacities for early warning of potential …",
+        "aligned_count": 12,
+        "flagged_count": 894,
+        "pool_composition": {
+          "primary_count": 461,
+          "relevant_only_count": 737
+        },
+        "contradiction_types": {
+          "delivery_friction": 806,
+          "resource_competition": 88
+        },
+        "synthesis": {
+          "storyline_name": "Early warning and health systems face delivery tensions",
+          "reinforce": "Disaster risk reduction and early warning targets consistently align with social protection and capacity building, reinforcing integrated climate adaptation and resilience for vulnerable groups. Health system strengthening for climate threats also aligns with broader disaster risk management, pointing to shared operational actions.",
+          "clash": "Early warning and public health infrastructure expansion tends to create delivery friction with land-based targets, including forest conservation, reforestation, and sustainable pasture management, often through spatial competition or indirect ecosystem disturbance. Food safety and agricultural intensification targets also recur as sources of tension, potentially increasing chemical use or grazing pressure that undermines pollution reduction and land degradation goals.",
+          "coordination_hint": "Spatial planning and integrated safeguards for infrastructure siting, chemical use, and stocking rates could help reconcile early warning and health system goals with land and pollution targets.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "8",
+        "category_name": "Establish a system providing social safeguard, insurance and prevention measures…",
+        "aligned_count": 17,
+        "flagged_count": 1388,
+        "pool_composition": {
+          "primary_count": 618,
+          "relevant_only_count": 1107
+        },
+        "contradiction_types": {
+          "delivery_friction": 1082,
+          "resource_competition": 305,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Social protection delivery competes with land and resource pressures",
+          "reinforce": "Social safety nets, insurance, and inclusive participation targets tend to align with disaster risk reduction and capacity building, reinforcing resilience for vulnerable groups. Early warning systems and climate adaptation knowledge also directly support social protection and livelihood diversification.",
+          "clash": "Expanding protected areas, agricultural intensification, and urban green infrastructure often create delivery friction or resource competition with social protection and livelihood targets, especially where land access is restricted or water demand increases. Gender and inclusion mandates can also add procedural friction to sectoral financing and reporting.",
+          "coordination_hint": "Integrating spatial planning, gender-responsive budgeting, and community safeguards into social protection and livelihood programmes could reduce tensions with land-use and resource targets.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_1",
+        "category_name": "Access and benefit sharing",
+        "aligned_count": 1,
+        "flagged_count": 111,
+        "pool_composition": {
+          "primary_count": 131,
+          "relevant_only_count": 0
+        },
+        "contradiction_types": {
+          "delivery_friction": 92,
+          "resource_competition": 19
+        },
+        "synthesis": {
+          "storyline_name": "Genetic resource governance lags behind sectoral expansion",
+          "reinforce": "No reinforcing pairs in this sector.",
+          "clash": "Delivery friction recurs where agricultural modernization, food system expansion, and land management targets outpace the legal and institutional frameworks for access and benefit sharing, risking unregulated use of genetic resources and traditional knowledge. Resource competition also appears between genetic conservation infrastructure and land or water demands from other sectors.",
+          "coordination_hint": "Sequencing benefit-sharing safeguards before or alongside sectoral investments in agriculture, food processing, and land restoration tends to reduce friction.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_2",
+        "category_name": "Biodiversity awareness and knowledge",
+        "aligned_count": 21,
+        "flagged_count": 1485,
+        "pool_composition": {
+          "primary_count": 727,
+          "relevant_only_count": 1164
+        },
+        "contradiction_types": {
+          "delivery_friction": 1261,
+          "resource_competition": 223,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Knowledge and awareness as enablers, production pressures as friction",
+          "reinforce": "Targets that build biodiversity knowledge, public awareness, and capacity for ecosystem service valuation tend to align, often reinforcing each other through shared training, outreach, and data-access activities. This pattern recurs across NBSAP, NAP, and NDC education targets, where coordinated implementation amplifies stakeholder engagement and mainstreaming.",
+          "clash": "Recurring delivery friction arises when agricultural production or food-sector expansion targets, such as establishing research institutes or expanding cash crops, risk undermining biodiversity awareness and sustainable-use goals by intensifying land and resource use. These tensions often involve competition for land, water, or policy attention, and are flagged for review where production-oriented research or subsidies may conflict with conservation-oriented knowledge and valuation efforts.",
+          "coordination_hint": "Integrating biodiversity awareness and ecosystem-service valuation criteria into agricultural research agendas and spatial planning could help manage tensions between production expansion and conservation knowledge goals.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_3",
+        "category_name": "Biosafety",
+        "aligned_count": 1,
+        "flagged_count": 212,
+        "pool_composition": {
+          "primary_count": 263,
+          "relevant_only_count": 0
+        },
+        "contradiction_types": {
+          "delivery_friction": 197,
+          "resource_competition": 15
+        },
+        "synthesis": {
+          "storyline_name": "Managing biosafety tensions in land-use expansion",
+          "reinforce": "Invasive alien species control tends to align with anti-desertification efforts, as both aim to protect ecosystem health and reduce land degradation.",
+          "clash": "Biosafety and invasive species targets often face delivery friction with agricultural expansion, infrastructure development, and resource mobilization, where new activities risk introducing or spreading harmful organisms or genetically modified organisms without adequate safeguards.",
+          "coordination_hint": "Integrating biosecurity protocols and risk assessments into sectoral plans for agriculture, transport, and land management could resolve most flagged tensions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_4",
+        "category_name": "Green economy",
+        "aligned_count": 14,
+        "flagged_count": 2060,
+        "pool_composition": {
+          "primary_count": 1078,
+          "relevant_only_count": 1285
+        },
+        "contradiction_types": {
+          "delivery_friction": 1483,
+          "resource_competition": 574,
+          "goal_conflict": 3
+        },
+        "synthesis": {
+          "storyline_name": "Balancing land and water use pressures",
+          "reinforce": "Targets that expand modern irrigation, water monitoring, and disaster risk reduction tend to align with nature-based solutions and ecosystem service valuation, reinforcing climate-resilient water and land management. Urban greening and spatial planning targets also directly support each other, amplifying green infrastructure outcomes.",
+          "clash": "Agricultural intensification and livestock expansion targets frequently create delivery friction or resource competition with land rehabilitation, biodiversity mainstreaming, and wetland conservation goals, often due to uncoordinated spatial planning and water use. Urban greening and food processing targets also tend to compete for finite water, land, and institutional resources with conservation and sustainable consumption objectives.",
+          "coordination_hint": "Integrating spatial planning, water allocation safeguards, and sustainability criteria into agricultural and urban development incentives could help reconcile production goals with green economy land and water commitments.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_5",
+        "category_name": "Biodiversity planning and finance",
+        "aligned_count": 58,
+        "flagged_count": 4620,
+        "pool_composition": {
+          "primary_count": 2782,
+          "relevant_only_count": 2642
+        },
+        "contradiction_types": {
+          "delivery_friction": 3583,
+          "resource_competition": 1024,
+          "goal_conflict": 13
+        },
+        "synthesis": {
+          "storyline_name": "Integrating conservation with productive land use",
+          "reinforce": "Targets that expand protected areas, sustainable forest management, and ecosystem service valuation tend to align, often reinforcing each other through shared spatial planning, monitoring, and awareness-raising actions.",
+          "clash": "Recurring friction arises when agricultural intensification, livestock expansion, or infrastructure development competes for land and water with biodiversity and ecosystem protection goals, or when procedural requirements like environmental assessments slow conservation delivery.",
+          "coordination_hint": "Integrated land-use planning and streamlined assessment procedures could help balance production targets with biodiversity safeguards in shared landscapes.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_6",
+        "category_name": "Pollution management",
+        "aligned_count": 27,
+        "flagged_count": 1943,
+        "pool_composition": {
+          "primary_count": 619,
+          "relevant_only_count": 1550
+        },
+        "contradiction_types": {
+          "delivery_friction": 1319,
+          "resource_competition": 612,
+          "goal_conflict": 12
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural intensification versus pollution and land protection",
+          "reinforce": "Targets that expand protected areas, reforestation, and soil conservation tend to align directly with national anti-desertification and climate resilience goals, often sharing quantitative forest cover or land restoration objectives.",
+          "clash": "Agricultural production targets, especially those promoting intensive crop and livestock farming, frequently create delivery friction or resource competition with pollution reduction, pesticide regulation, and ecosystem protection commitments.",
+          "coordination_hint": "Integrating spatial planning, input standards, and water allocation across agricultural and environmental frameworks could reduce recurring tensions in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_7",
+        "category_name": "Protected areas and other conservation measures",
+        "aligned_count": 37,
+        "flagged_count": 2198,
+        "pool_composition": {
+          "primary_count": 1272,
+          "relevant_only_count": 1173
+        },
+        "contradiction_types": {
+          "delivery_friction": 1563,
+          "resource_competition": 634,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Expanding protected areas while managing land-use tensions",
+          "reinforce": "Targets that expand protected area networks, strengthen ecological connectivity, and enhance ecosystem services tend to align directly, often sharing quantitative 30x30 goals and operational actions like legal framework updates and spatial planning. Forest management and biodiversity resilience targets also reinforce each other through shared monitoring, restoration, and nature-based solution approaches.",
+          "clash": "Agricultural intensification, livestock expansion, and infrastructure development targets frequently create delivery friction or resource competition with conservation goals, particularly over land and water in shared rangelands, forests, and watersheds. Spatial planning and biodiversity mainstreaming targets also face friction when sectoral development policies lack explicit integration with ecological safeguards.",
+          "coordination_hint": "Integrated land-use zoning and water allocation planning that explicitly link protected area expansion with agricultural and livestock development zones could resolve most flagged tensions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_8",
+        "category_name": "Restoration",
+        "aligned_count": 35,
+        "flagged_count": 2250,
+        "pool_composition": {
+          "primary_count": 1066,
+          "relevant_only_count": 1425
+        },
+        "contradiction_types": {
+          "delivery_friction": 1507,
+          "resource_competition": 731,
+          "goal_conflict": 12
+        },
+        "synthesis": {
+          "storyline_name": "Restoration competes with agriculture and infrastructure for land and water",
+          "reinforce": "Restoration targets tend to align strongly with forest protection, protected area expansion, and climate resilience goals, often sharing operational actions like reforestation, monitoring, and ecosystem-based adaptation. These synergies recur where both sides aim to increase forest cover, improve ecological connectivity, or enhance biodiversity resilience.",
+          "clash": "Flagged pairs frequently show delivery friction or resource competition between restoration and agricultural expansion, livestock management, or infrastructure development, often over finite land and water resources. Recurring tensions involve afforestation versus pasture restoration, protected area expansion versus agricultural land use, and water allocation between ecosystem restoration and food processing.",
+          "coordination_hint": "Integrated spatial planning and water allocation frameworks could help reconcile restoration objectives with agricultural and infrastructure demands, reducing land-use conflicts flagged in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_9",
+        "category_name": "Sustainable use",
+        "aligned_count": 39,
+        "flagged_count": 6398,
+        "pool_composition": {
+          "primary_count": 6477,
+          "relevant_only_count": 752
+        },
+        "contradiction_types": {
+          "delivery_friction": 4350,
+          "resource_competition": 2029,
+          "goal_conflict": 19
+        },
+        "synthesis": {
+          "storyline_name": "Land and water use tensions underpin sustainable use",
+          "reinforce": "Targets that expand protected areas, restore forests, and modernize irrigation tend to align directly, reinforcing shared goals for ecosystem protection and climate-resilient production. Sustainable agriculture and pasture management targets also frequently reinforce each other through coordinated cooperative and technological approaches.",
+          "clash": "Recurring friction tends to arise when agricultural expansion, livestock intensification, or infrastructure development competes for land and water with forest restoration, protected area expansion, or wetland conservation. Delivery friction also recurs where production-oriented subsidies or supply-chain investments risk undermining biodiversity, pollution reduction, or sustainable resource management goals.",
+          "coordination_hint": "Spatial planning, integrated land-use zoning, and safeguards that steer agricultural and infrastructure investments away from ecologically sensitive areas could resolve many flagged tensions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_0",
+        "category_name": "Protection, management, and restoration of marine and coastal habitats",
+        "aligned_count": 50,
+        "flagged_count": 2703,
+        "pool_composition": {
+          "primary_count": 660,
+          "relevant_only_count": 2529
+        },
+        "contradiction_types": {
+          "delivery_friction": 2205,
+          "resource_competition": 496,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Expanding protected areas while managing land-use pressures",
+          "reinforce": "Protected area expansion targets tend to align strongly with ecosystem restoration, biodiversity monitoring, and climate adaptation goals, often sharing spatial priorities and operational actions. Ecosystem service valuation and inclusive participation targets also reinforce each other by combining regulatory frameworks with on-the-ground capacity building.",
+          "clash": "Agricultural intensification, livestock expansion, and food processing targets frequently create delivery friction or resource competition with habitat protection and restoration, especially where land and water use overlap. Payment for ecosystem services and land-use planning targets also face recurring friction from sectoral development goals that do not explicitly incorporate conservation safeguards.",
+          "coordination_hint": "Integrated spatial planning and safeguards that align agricultural and infrastructure development with protected area and restoration priorities could reduce recurring friction in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_1",
+        "category_name": "Agriculture and livestock management",
+        "aligned_count": 62,
+        "flagged_count": 7367,
+        "pool_composition": {
+          "primary_count": 6458,
+          "relevant_only_count": 2044
+        },
+        "contradiction_types": {
+          "delivery_friction": 5155,
+          "resource_competition": 2195,
+          "goal_conflict": 17
+        },
+        "synthesis": {
+          "storyline_name": "Pasture and production pressures on land",
+          "reinforce": "Sustainable agriculture and pasture management targets tend to align through shared goals of soil conservation, ecosystem restoration, and cooperative management, often reinforcing each other when nature-based solutions and spatial planning are integrated.",
+          "clash": "Livestock intensification and fodder expansion targets frequently create delivery friction or resource competition with land restoration, biodiversity conservation, and pasture carrying capacity goals, especially where incentives for increased production are not explicitly linked to ecological limits.",
+          "coordination_hint": "Coordinating incentive design, spatial planning, and water infrastructure siting could help reconcile production ambitions with ecosystem and pasture resilience in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_2",
+        "category_name": "Water management",
+        "aligned_count": 60,
+        "flagged_count": 4446,
+        "pool_composition": {
+          "primary_count": 642,
+          "relevant_only_count": 4458
+        },
+        "contradiction_types": {
+          "delivery_friction": 3167,
+          "resource_competition": 1274,
+          "goal_conflict": 5
+        },
+        "synthesis": {
+          "storyline_name": "Water management tensions between production and protection",
+          "reinforce": "Targets that expand protected areas, restore ecosystems, and value ecosystem services tend to align with water management by safeguarding freshwater sources and promoting nature-based solutions. Capacity building and knowledge access targets also reinforce water-related goals through shared training and data infrastructure.",
+          "clash": "Agricultural intensification and irrigation expansion targets frequently create delivery friction or resource competition with water management, as they increase demand for finite water and land resources. Energy subsidies for food production and livestock development also risk undermining water ecosystem services and sustainable use goals.",
+          "coordination_hint": "Integrated land and water-use planning, paired with safeguards like ecological flow requirements and spatial zoning, could resolve recurring tensions between production-oriented targets and water management objectives.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_3",
+        "category_name": "Forest management, restoration, and protection",
+        "aligned_count": 63,
+        "flagged_count": 4175,
+        "pool_composition": {
+          "primary_count": 1856,
+          "relevant_only_count": 2961
+        },
+        "contradiction_types": {
+          "delivery_friction": 3161,
+          "resource_competition": 1002,
+          "goal_conflict": 12
+        },
+        "synthesis": {
+          "storyline_name": "Forest restoration and protection align, but land-use competition recurs",
+          "reinforce": "Forest cover expansion, reforestation, and sustainable forest management targets tend to align across NDCs, NBSAPs, and sectoral plans, often sharing quantitative goals like 9% forest cover or 30% protected areas. Ecosystem service valuation and inclusive participation measures also reinforce forest governance.",
+          "clash": "Agricultural expansion, livestock intensification, and energy subsidies for food production frequently compete with forest and protected area targets for land and water. Delivery friction also recurs where afforestation methods or restoration sequencing risk undermining ecological integrity or where subsidy reforms may inadvertently reduce forest-positive incentives.",
+          "coordination_hint": "Integrated spatial planning and safeguards on agricultural subsidies could help reconcile forest cover goals with food production and livestock pressures.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_4",
+        "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+        "aligned_count": 51,
+        "flagged_count": 2864,
+        "pool_composition": {
+          "primary_count": 377,
+          "relevant_only_count": 2935
+        },
+        "contradiction_types": {
+          "delivery_friction": 2220,
+          "resource_competition": 642,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Wetland protection competes with agricultural expansion",
+          "reinforce": "Wetland and freshwater restoration targets tend to align with protected area expansion, ecosystem service valuation, and inclusive governance frameworks, as seen in pairs linking NBSAP restoration goals to spatial planning and gender-responsive participation.",
+          "clash": "Recurring friction arises where agricultural intensification, irrigation expansion, and livestock support measures compete for land and water with wetland no-net-loss and restoration targets, flagged primarily as resource competition and delivery friction.",
+          "coordination_hint": "Integrated land-use zoning and water allocation planning could help reconcile agricultural development with wetland conservation goals.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_5",
+        "category_name": "Ecosystem protection and connectivity",
+        "aligned_count": 58,
+        "flagged_count": 4639,
+        "pool_composition": {
+          "primary_count": 2279,
+          "relevant_only_count": 3025
+        },
+        "contradiction_types": {
+          "delivery_friction": 3567,
+          "resource_competition": 1059,
+          "goal_conflict": 13
+        },
+        "synthesis": {
+          "storyline_name": "Balancing protection with production pressures",
+          "reinforce": "Forest and protected-area expansion targets consistently align with climate adaptation and ecosystem service valuation, creating a reinforcing loop where nature-based solutions, reforestation, and spatial protection mutually strengthen biodiversity and resilience outcomes.",
+          "clash": "Agricultural intensification, irrigation expansion, and livestock supply-chain development recurrently create delivery friction and resource competition with ecosystem protection, as cropland reclamation, water extraction, and infrastructure growth place direct pressure on the land, water, and connectivity goals of conservation targets.",
+          "coordination_hint": "Spatial planning and integrated land-use zoning tend to be the most referenced mechanism for reconciling production-oriented targets with ecosystem protection and connectivity objectives in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_6",
+        "category_name": "Soil fertility management and restoration",
+        "aligned_count": 38,
+        "flagged_count": 5428,
+        "pool_composition": {
+          "primary_count": 1133,
+          "relevant_only_count": 4931
+        },
+        "contradiction_types": {
+          "delivery_friction": 3697,
+          "resource_competition": 1718,
+          "goal_conflict": 13
+        },
+        "synthesis": {
+          "storyline_name": "Balancing agricultural expansion with land restoration goals",
+          "reinforce": "Targets that promote sustainable agriculture, agroforestry, and soil conservation tend to align with ecosystem restoration and biodiversity knowledge-sharing, often reinforcing each other through shared practices like shelterbelt development and climate-smart crop adoption.",
+          "clash": "Recurring friction arises where crop expansion, fodder intensification, or irrigated agriculture targets compete for land and water with forest protection, pasture restoration, and soil conservation goals, often flagged for delivery friction or resource competition in shared rural landscapes.",
+          "coordination_hint": "Integrated land-use zoning and water-allocation planning could help reconcile agricultural productivity targets with soil and ecosystem restoration commitments in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_7",
+        "category_name": "Nature-based risk management and disaster prevention",
+        "aligned_count": 44,
+        "flagged_count": 4422,
+        "pool_composition": {
+          "primary_count": 2406,
+          "relevant_only_count": 2961
+        },
+        "contradiction_types": {
+          "delivery_friction": 3419,
+          "resource_competition": 1001,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Integrating nature-based resilience with productive land use",
+          "reinforce": "Targets that expand urban green infrastructure, reforestation, and ecosystem service valuation tend to align with disaster risk reduction and climate adaptation frameworks, creating operational synergies for nature-based solutions. Capacity building and early warning system improvements also reinforce biodiversity monitoring and inclusive participation goals.",
+          "clash": "Agricultural expansion targets for irrigation, fodder, and cash crops frequently compete for land and water with forest protection, wetland conservation, and urban greening objectives. Delivery friction also recurs where food processing infrastructure and fire prevention systems strain environmental monitoring or protected area management without explicit coordination.",
+          "coordination_hint": "Integrated spatial planning and water allocation frameworks could help reconcile agricultural productivity goals with nature-based risk management and ecosystem protection targets.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_8",
+        "category_name": "Nature-based carbon sequestration",
+        "aligned_count": 32,
+        "flagged_count": 2498,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 2893
+        },
+        "contradiction_types": {
+          "delivery_friction": 1773,
+          "resource_competition": 704,
+          "goal_conflict": 21
+        },
+        "synthesis": {
+          "storyline_name": "Forest expansion competes with agriculture and rangelands",
+          "reinforce": "Forest cover and biodiversity targets tend to align through shared reforestation, ecosystem protection, and knowledge-sharing actions, with multiple pairs reinforcing the goal of reaching 9% forest cover and integrating nature-based solutions.",
+          "clash": "Recurring friction arises from competition for finite land and water between forest expansion goals and agricultural, livestock, or rangeland restoration targets, often flagged as resource competition or delivery friction requiring spatial coordination.",
+          "coordination_hint": "Integrated land-use zoning and spatial planning could reconcile forest cover targets with competing agricultural and rangeland uses, though safeguards for valuation frameworks and subsidy reforms may need explicit design.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_9",
+        "category_name": "Urban settlements management",
+        "aligned_count": 17,
+        "flagged_count": 951,
+        "pool_composition": {
+          "primary_count": 373,
+          "relevant_only_count": 760
+        },
+        "contradiction_types": {
+          "delivery_friction": 789,
+          "resource_competition": 162
+        },
+        "synthesis": {
+          "storyline_name": "Integrating urban greening with competing land and resource demands",
+          "reinforce": "Targets that expand urban green and blue infrastructure, improve biodiversity knowledge access, and mainstream ecosystem service valuation tend to align through shared outreach, planning integration, and capacity building, which can jointly strengthen urban environmental governance.",
+          "clash": "Urban greening and ecosystem service valuation targets often face delivery friction or resource competition from agricultural intensification, rural relocation, and livestock expansion, which can divert land, water, and finance away from urban vegetation and ecosystem protection.",
+          "coordination_hint": "Coordinated spatial planning and integrated budget allocation could help balance urban greening with agricultural and rural development pressures, reducing competition for finite land and water resources.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_agriculture",
+        "category_name": "Agriculture",
+        "aligned_count": 41,
+        "flagged_count": 6808,
+        "pool_composition": {
+          "primary_count": 5768,
+          "relevant_only_count": 1993
+        },
+        "contradiction_types": {
+          "delivery_friction": 4627,
+          "resource_competition": 2165,
+          "goal_conflict": 16
+        },
+        "synthesis": {
+          "storyline_name": "Balancing agricultural productivity with land and water stewardship",
+          "reinforce": "Targets that promote sustainable agriculture, soil conservation, and modern irrigation tend to align with broader ecosystem restoration and climate adaptation goals, often through shared actions like cooperative pasture management and technology deployment.",
+          "clash": "Agricultural expansion and intensification targets frequently create delivery friction or resource competition with land restoration, biodiversity protection, and sustainable resource management goals, especially where crop or livestock production pressures overlap with conservation areas or water limits.",
+          "coordination_hint": "Integrated spatial planning and water allocation frameworks could help reconcile productivity aims with ecosystem commitments in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_energy",
+        "category_name": "Energy",
+        "aligned_count": 2,
+        "flagged_count": 567,
+        "pool_composition": {
+          "primary_count": 112,
+          "relevant_only_count": 507
+        },
+        "contradiction_types": {
+          "delivery_friction": 435,
+          "resource_competition": 131,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Managing land and subsidy tensions in energy-adjacent sectors",
+          "reinforce": "No reinforcing pairs in this sector.",
+          "clash": "Recurring friction tends to arise from agricultural expansion targets competing for land and water with conservation goals, and from subsidy reform efforts creating delivery tensions with sectoral development plans.",
+          "coordination_hint": "Integrated spatial planning and subsidy redesign that explicitly links energy, agriculture, and conservation objectives could help resolve these recurring tensions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_ippu",
+        "category_name": "Industrial processes and product use",
+        "aligned_count": 1,
+        "flagged_count": 979,
+        "pool_composition": {
+          "primary_count": 554,
+          "relevant_only_count": 669
+        },
+        "contradiction_types": {
+          "delivery_friction": 670,
+          "resource_competition": 309
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural expansion pressures environmental and land goals",
+          "reinforce": "No reinforcing pairs in this sector.",
+          "clash": "Targets promoting domestic fertiliser production, food processing plants, and intensive livestock tend to create delivery friction and resource competition with environmental targets focused on pollution reduction, land degradation neutrality, and biodiversity protection. The recurring mechanism is that expanding agricultural output and infrastructure increases land-use change, water demand, and chemical inputs, which can undermine ecosystem safeguards unless explicit coordination is added.",
+          "coordination_hint": "Integrating spatial planning, sustainable sourcing safeguards, and environmental impact assessments into agricultural expansion targets could help reconcile production goals with pollution and land degradation commitments.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_lulucf",
+        "category_name": "Land use, land-use change and forestry (LULUCF)",
+        "aligned_count": 76,
+        "flagged_count": 7178,
+        "pool_composition": {
+          "primary_count": 5555,
+          "relevant_only_count": 2618
+        },
+        "contradiction_types": {
+          "delivery_friction": 5099,
+          "resource_competition": 2062,
+          "goal_conflict": 17
+        },
+        "synthesis": {
+          "storyline_name": "Land-use competition between production and protection goals",
+          "reinforce": "Afforestation, protected area expansion, and sustainable agriculture targets tend to align, with coordinated implementation amplifying forest cover, ecosystem restoration, and climate-smart farming outcomes.",
+          "clash": "Recurring friction arises where agricultural expansion, irrigation, or livestock intensification competes for land and water with forest cover, protected areas, and pasture sustainability goals, often flagged as resource competition or delivery friction.",
+          "coordination_hint": "Integrated land-use zoning and spatial planning could reconcile production and protection objectives across this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_other",
+        "category_name": "Other / Cross-cutting",
+        "aligned_count": 58,
+        "flagged_count": 5778,
+        "pool_composition": {
+          "primary_count": 4350,
+          "relevant_only_count": 2645
+        },
+        "contradiction_types": {
+          "delivery_friction": 4590,
+          "resource_competition": 1184,
+          "goal_conflict": 4
+        },
+        "synthesis": {
+          "storyline_name": "Cross-cutting policy integration and resource competition",
+          "reinforce": "Knowledge sharing, capacity building, and spatial planning targets tend to align across biodiversity, climate adaptation, and disaster risk reduction documents, creating opportunities for joint outreach and integrated land-use frameworks.",
+          "clash": "Agricultural expansion and food production targets frequently compete for land and water with ecosystem protection, restoration, and pollution reduction goals, while subsidy reforms and monitoring systems create delivery sequencing tensions.",
+          "coordination_hint": "Joint spatial planning, integrated resource allocation, and phased implementation of subsidy reforms could help reconcile production and conservation objectives in this sector.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_transport",
+        "category_name": "Transport",
+        "aligned_count": 2,
+        "flagged_count": 339,
+        "pool_composition": {
+          "primary_count": 111,
+          "relevant_only_count": 263
+        },
+        "contradiction_types": {
+          "delivery_friction": 320,
+          "resource_competition": 18,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Transport expansion strains environmental and subsidy reform goals",
+          "reinforce": "No reinforcing pairs in this sector.",
+          "clash": "Expanding specialised food-transport fleets and logistics infrastructure tends to create delivery friction with pollution reduction, protected area expansion, and urban green infrastructure targets, while subsidy reforms in agriculture and energy risk undermining land management and climate adaptation efforts that depend on those same financial flows.",
+          "coordination_hint": "Integrating low-emission fleet standards, spatial safeguards for transport corridors, and green criteria into subsidy repurposing could help reconcile transport and agricultural expansion with environmental commitments.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_waste",
+        "category_name": "Waste",
+        "aligned_count": 2,
+        "flagged_count": 231,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 264
+        },
+        "contradiction_types": {
+          "delivery_friction": 206,
+          "resource_competition": 24,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Waste reduction collides with production expansion",
+          "reinforce": "Public education and awareness targets for sustainable consumption and climate action tend to reinforce each other by building shared enabling conditions for behavioral change.",
+          "clash": "Targets to minimize overconsumption and waste frequently face delivery friction and resource competition from agricultural modernization, food supply incentives, and land/water expansion goals that risk increasing material throughput and pollution.",
+          "coordination_hint": "Integrating sustainable consumption criteria into agricultural and food-system incentives could help align production expansion with waste-minimisation goals.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      }
+    ]
+  }
+}
