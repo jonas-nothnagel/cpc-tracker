@@ -4,7 +4,7 @@
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5). This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
 
 ---
 
@@ -33,7 +33,8 @@ Input: Policy targets (text + source document type)
   │
   ├─ Step 2: Thematic Classification (LLM)
   │     ├─ NBS categories (10), IPCC sectors (7), GLOBE categories (9) + subcategories (49)
-  │     └─ Optional country adaptation goals; ranked dual-mode (primary + relevant)
+  │     ├─ GGA climate-resilience themes (7); optional country adaptation goals
+  │     └─ ranked dual-mode (primary + relevant)
   │
   ├─ Step 3: Cross-Document Pair Generation (computation)
   │     └─ All cross-document pairs (classification is for grouping only)
@@ -123,11 +124,15 @@ The GLOBE taxonomy (BIOFIN 2024) is the biodiversity-finance lens used to connec
 
 When a country supplies adaptation data (e.g. Mongolia's APNDC goals via `mongolia-btr-adaptation.json`), targets are additionally classified against those goals so the adaptation lens can group targets by national adaptation objective.
 
+### Climate resilience — Global Goal on Adaptation (GGA) (7)
+
+The seven thematic targets of the **UAE Framework for Global Climate Resilience** (UNFCCC decision 2/CMA.5, paragraph 9): Water; Agriculture and food; Health; Ecosystems and biodiversity; Infrastructure and human settlements; Livelihoods; Cultural heritage. Descriptions are verbatim from the decision text (the short labels are project-assigned, as the decision gives its sub-paragraphs no headers). Unlike the country-specific adaptation goals, this is a portable global adaptation/resilience lens, applied to every country's policy targets and, where present, to BTR measures and BER budget programmes.
+
 Which taxonomies (lenses) are available is a country-level, data-driven choice, not a fixed part of the methodology; users may also bring their own taxonomy.
 
 **Cost note:** This is the most API-intensive step. The ranked classifier scores all categories in a taxonomy per target, so cost scales with the number of targets and the breadth of the active taxonomies. Results are cached (per taxonomy namespace) to avoid duplicate calls across analyses.
 
-**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`nbs` / `sector` / `globe` / `adaptation_goal`), and a short `reasoning` for primary/relevant entries.
+**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`nbs` / `sector` / `globe` / `adaptation_goal` / `gga`), and a short `reasoning` for primary/relevant entries.
 
 ---
 

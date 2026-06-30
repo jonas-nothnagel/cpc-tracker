@@ -77,6 +77,7 @@ const baseArgs = {
   classifications: [],
   sectors: [],
   globeCategories: [],
+  ggaCategories: [],
   availableDocs: ["FSS", "NAP"] as PolicyDocumentType[],
   hiddenDocs: new Set<string>(),
 };

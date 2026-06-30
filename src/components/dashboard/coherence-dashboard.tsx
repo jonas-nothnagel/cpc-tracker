@@ -25,6 +25,7 @@ import type {
   NbsCategory,
   IpccSector,
   GlobeCategory,
+  GgaCategory,
   GlobeSubcategory,
   BtrData,
   BerData,
@@ -45,6 +46,7 @@ interface DashboardData {
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  ggaCategories: GgaCategory[];
   globeSubcategories: GlobeSubcategory[];
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
@@ -133,6 +135,7 @@ function normalize(raw: DashboardResponse, locale?: string): DashboardData {
     nbsCategories: (r.nbsCategories as NbsCategory[]) ?? [],
     sectors: ((r.sectors as Record<string, unknown>[]) ?? []).map(normalizeCategory),
     globeCategories: ((r.globeCategories as Record<string, unknown>[]) ?? []).map(normalizeCategory),
+    ggaCategories: ((r.ggaCategories as Record<string, unknown>[]) ?? []).map(normalizeCategory),
     globeSubcategories: (r.globeSubcategories as GlobeSubcategory[]) ?? [],
     classifications: (r.classifications as ThematicClassification[]) ?? [],
     alignment: (r.alignment as AlignmentResult[]) ?? [],
@@ -274,6 +277,7 @@ export function CoherenceDashboard({
         classifications={data.classifications}
         sectors={data.sectors}
         globeCategories={data.globeCategories}
+        ggaCategories={data.ggaCategories}
         nbsCategories={data.nbsCategories}
         countryConfig={data.countryConfig}
         docPairSyntheses={data.docPairSynthesis}

@@ -45,7 +45,7 @@ interface PrimaryAdaptation {
 }
 
 interface ChatContext {
-  mode: "document" | "globe" | "sector";
+  mode: "document" | "globe" | "sector" | "gga";
   filter: string;
   groups: { id: string; label: string }[];
   /** Subset of group ids the user currently has toggled on. The model
@@ -67,6 +67,7 @@ interface ChatContext {
     isTimeBound?: boolean;
     primaryGlobe?: PrimaryRef;
     primarySector?: PrimaryRef;
+    primaryGga?: PrimaryRef;
     primaryAdaptationGoal?: PrimaryAdaptation;
   }[];
   /** Taxonomy lists with descriptions so the model can resolve free-text
@@ -74,6 +75,7 @@ interface ChatContext {
   taxonomies?: {
     globe: { id: string; name: string; description?: string }[];
     sector: { id: string; name: string; description?: string }[];
+    gga: { id: string; name: string; description?: string }[];
     adaptation: { id: string; description: string }[];
   };
   /** AI-generated rationales for every non-"none" alignment pair. */
@@ -163,7 +165,7 @@ type ChatAction =
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
-  | { type: "set_mode"; mode: "document" | "globe" | "sector" }
+  | { type: "set_mode"; mode: "document" | "globe" | "sector" | "gga" }
   /** Unhide one or more docs so the next action's target is visible. */
   | { type: "show_docs"; ids: string[] }
   | { type: "noop" };
@@ -205,7 +207,7 @@ TOOLS
 - focus_category(categoryId): focus a group arc on the wheel
 - select_target(targetId): open the target detail panel
 - select_pair(targetAId, targetBId): open the pair compare view, best for "why X conflicts with Y" since the rationale renders automatically
-- set_mode(mode): document | globe | sector
+- set_mode(mode): document | globe | sector | gga
 - show_docs(ids): unhide a hidden document group; call BEFORE focus / select if your target's doc is currently hidden
 
 SCOPE OF THIS TURN
@@ -309,11 +311,11 @@ const TOOLS = [
     function: {
       name: "set_mode",
       description:
-        "Switch the wheel grouping mode. document = group arcs by source document. globe = group by biodiversity (GLOBE) category. sector = group by climate mitigation (IPCC) sector.",
+        "Switch the wheel grouping mode. document = group arcs by source document. globe = group by biodiversity (GLOBE) category. sector = group by climate mitigation (IPCC) sector. gga = group by climate resilience (Global Goal on Adaptation) theme.",
       parameters: {
         type: "object",
         properties: {
-          mode: { type: "string", enum: ["document", "globe", "sector"] },
+          mode: { type: "string", enum: ["document", "globe", "sector", "gga"] },
         },
         required: ["mode"],
         additionalProperties: false,
@@ -367,6 +369,7 @@ function buildUserMessage(
       const tags: string[] = [];
       if (t.primaryGlobe) tags.push(`globe=${t.primaryGlobe.id}:${t.primaryGlobe.name}`);
       if (t.primarySector) tags.push(`sector=${t.primarySector.id}:${t.primarySector.name}`);
+      if (t.primaryGga) tags.push(`gga=${t.primaryGga.id}:${t.primaryGga.name}`);
       if (t.primaryAdaptationGoal)
         tags.push(`adaptation=${t.primaryAdaptationGoal.id}:${t.primaryAdaptationGoal.description.slice(0, 80)}`);
       const tagStr = tags.length ? `\n  primary: ${tags.join(" | ")}` : "";
@@ -390,6 +393,14 @@ function buildUserMessage(
           : "",
         tax.sector.length
           ? `IPCC mitigation sectors (taxonomyType=sector):\n${tax.sector
+              .map(
+                (c) =>
+                  `${c.id} | ${c.name}${c.description ? ` — ${c.description.replace(/\s+/g, " ").slice(0, 200)}` : ""}`,
+              )
+              .join("\n")}`
+          : "",
+        tax.gga.length
+          ? `Global Goal on Adaptation climate-resilience themes (taxonomyType=gga):\n${tax.gga
               .map(
                 (c) =>
                   `${c.id} | ${c.name}${c.description ? ` — ${c.description.replace(/\s+/g, " ").slice(0, 200)}` : ""}`,
@@ -1193,7 +1204,12 @@ export async function POST(req: Request) {
       }
     } else if (fnName === "set_mode") {
       const mode = String(args.mode ?? "");
-      if (mode === "document" || mode === "globe" || mode === "sector") {
+      if (
+        mode === "document" ||
+        mode === "globe" ||
+        mode === "sector" ||
+        mode === "gga"
+      ) {
         actionByType.set("set_mode", { type: "set_mode", mode });
       }
     } else if (fnName === "show_docs") {

@@ -780,5 +780,170 @@
       "confidence": "low"
     },
     "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_agriculture_food",
+    "category_name": "Agriculture and food",
+    "aligned_count": 5248,
+    "flagged_count": 1109,
+    "pool_composition": {
+      "primary_count": 6661,
+      "relevant_only_count": 1081
+    },
+    "contradiction_types": {
+      "delivery_friction": 534,
+      "resource_competition": 557,
+      "goal_conflict": 18
+    },
+    "synthesis": {
+      "storyline_name": "Linking pasture governance with sustainable livestock systems",
+      "reinforce": "Reinforcing pairs often align around pasture carrying capacity, herd management, anti-desertification law, and land-degradation monitoring. This tends to point to complementary use of legal frameworks, monitoring systems, training, traceability, and value-chain measures to keep livestock production within ecological limits.",
+      "clash": "Possible misalignment recurs where agriculture and food targets expand intensive livestock, greenhouses, cropland, irrigation, fodder, or rural production support, while other targets seek protected areas, restoration, forest protection, grassland recovery, or subsidy reform. Friction is often about competition for land, water, energy, and public support instruments, or delivery choices that may pull implementation away from pasture-based, restoration, or biodiversity-sensitive approaches.",
+      "coordination_hint": "It may help to coordinate this sector through spatial zoning, carrying-capacity rules, water allocation, and greener subsidy or investment conditions, so production expansion can be screened against pasture, restoration, and biodiversity safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_cultural_heritage",
+    "category_name": "Cultural heritage",
+    "aligned_count": 551,
+    "flagged_count": 45,
+    "pool_composition": {
+      "primary_count": 237,
+      "relevant_only_count": 510
+    },
+    "contradiction_types": {
+      "delivery_friction": 20,
+      "resource_competition": 25
+    },
+    "synthesis": {
+      "storyline_name": "Linking nomadic heritage with sustainable land use",
+      "reinforce": "Cultural heritage targets often align where traditional knowledge, nomadic pasture practices, and traditional food technologies are used as enabling inputs for climate adaptation, sustainable pasture governance, and greener livestock systems. The sample also reinforces heritage-related governance through databases, legal frameworks, and research systems for traditional knowledge and genetic resources, which can support pastoral livelihoods and culturally rooted production systems.",
+      "clash": "Possible misalignment recurs where heritage-linked nomadic pasture use and traditional silvo-pastoral systems may face resource competition from protected-area expansion, cropland and irrigation growth, intensive livestock development, and competing water demands. Delivery friction is also flagged for review where production expansion, meat-supply targets, or conservation zoning could shift land access, investment, or management attention away from traditional rotational grazing and other heritage-based land-use systems.",
+      "coordination_hint": "It tends to help to coordinate this sector through spatial zoning, water allocation, and legal safeguards that keep room for traditional grazing routes, nomadic practices, and associated knowledge systems alongside conservation and agricultural intensification.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_ecosystems_biodiversity",
+    "category_name": "Ecosystems and biodiversity",
+    "aligned_count": 5666,
+    "flagged_count": 987,
+    "pool_composition": {
+      "primary_count": 6239,
+      "relevant_only_count": 1640
+    },
+    "contradiction_types": {
+      "delivery_friction": 496,
+      "resource_competition": 478,
+      "goal_conflict": 13
+    },
+    "synthesis": {
+      "storyline_name": "Integrating biodiversity safeguards into land-use planning",
+      "reinforce": "Alignment often appears where biodiversity, restoration, and protected-area goals are linked to spatial planning, reforestation standards, pasture governance, and mining mitigation. These pairs suggest the sector tends to reinforce cross-cutting planning, information access, participation, and finance mechanisms that help land and ecosystem measures work together.",
+      "clash": "Possible misalignment recurs when agricultural expansion, fodder production, livestock intensification, greenhouse development, or agro-processing support could compete with protected areas, wetlands, forests, headwaters, and land-degradation objectives for land and water. Friction is also flagged for review where subsidies, processing support, or production incentives may make biodiversity safeguards, ecosystem-service valuation, or carrying-capacity limits harder to deliver unless support is redesigned.",
+      "coordination_hint": "This sector would often benefit from coordinated zoning, suitability screening, water allocation rules, and biodiversity-linked subsidy and siting safeguards, especially where production expansion overlaps sensitive ecosystems.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_health",
+    "category_name": "Health",
+    "aligned_count": 738,
+    "flagged_count": 34,
+    "pool_composition": {
+      "primary_count": 262,
+      "relevant_only_count": 816
+    },
+    "contradiction_types": {
+      "delivery_friction": 23,
+      "resource_competition": 11
+    },
+    "synthesis": {
+      "storyline_name": "Linking health resilience with food and environment",
+      "reinforce": "Health-related targets often align through enabling links between climate-related public health preparedness, food safety controls, and broader pollution or ecosystem monitoring. The sample also points to reinforcement where stronger inspection, laboratory, early warning, and data systems can support both human health protection and safer food or environmental conditions.",
+      "clash": "Possible misalignment recurs where production expansion in food, livestock, irrigation, or crop systems could raise pollution, water-stress, or land-use pressures that public health and human-health-oriented pollution goals then need to manage. Several pairs are also flagged for review because health system investment and preparedness can compete with large agricultural infrastructure or production support for finite finance, water, or implementation attention.",
+      "coordination_hint": "It tends to help to connect health preparedness with agricultural permitting, pollution controls, water allocation, and food-safety monitoring so production growth is delivered with explicit health safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_infrastructure_settlements",
+    "category_name": "Infrastructure and human settlements",
+    "aligned_count": 1152,
+    "flagged_count": 211,
+    "pool_composition": {
+      "primary_count": 781,
+      "relevant_only_count": 1087
+    },
+    "contradiction_types": {
+      "delivery_friction": 123,
+      "resource_competition": 87,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Require spatial safeguards for productive infrastructure expansion",
+      "reinforce": "Within this sector, policy and information systems often align with resilience-oriented infrastructure, such as early warning, legal frameworks, data access, urban greening, and monitoring systems that reinforce storage, logistics, agroforestry, and other settlement or service functions. The recurring mechanism is enabling coordination, where governance, risk information, and planning capacity tend to support more resilient infrastructure and land management rather than direct joint delivery.",
+      "clash": "Possible misalignment is repeatedly flagged where food production, irrigation, greenhouse, transport, energy, livestock, or processing infrastructure could compete with protected areas, ecological corridors, forests, wetlands, grasslands, or soil protection objectives. The recurring friction is delivery and resource competition over land, water, siting, routing, and subsidy design, which often points to a need for zoning, watershed allocation, and environmental safeguards rather than a direct goal conflict.",
+      "coordination_hint": "This sector tends to benefit from early spatial planning, water allocation rules, and screening of infrastructure and production support against conservation and land-restoration priorities.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_livelihoods",
+    "category_name": "Livelihoods",
+    "aligned_count": 1770,
+    "flagged_count": 209,
+    "pool_composition": {
+      "primary_count": 745,
+      "relevant_only_count": 1474
+    },
+    "contradiction_types": {
+      "delivery_friction": 107,
+      "resource_competition": 99,
+      "goal_conflict": 3
+    },
+    "synthesis": {
+      "storyline_name": "Link livelihood resilience to sustainable livestock modernization",
+      "reinforce": "Livelihood-related targets often align where climate adaptation, social protection, insurance, and livestock management are paired with concrete measures such as pasture-capacity management, drought-resistant crops, traceability, logistics, and value-chain development. The sample also reinforces a pattern that enabling frameworks, legal systems, and finance can support more resilient rural incomes, especially for herders and agricultural producers.",
+      "clash": "Possible misalignment recurs when livelihood delivery is tied to agricultural expansion, livestock commercialization, relocation support, or farm intensification that may increase pressure on rangelands, restored land, protected areas, wetlands, or species habitats. Friction is usually flagged for review as delivery friction or resource competition, and often points to shared land, water, and incentive systems rather than direct goal conflict.",
+      "coordination_hint": "It tends to help to screen livelihood and livestock support through zoning, stocking and siting rules, and green finance or loan conditions, so resilience and income gains can align with restoration and biodiversity safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "taxonomy_type": "gga",
+    "category_id": "gga_water",
+    "category_name": "Water",
+    "aligned_count": 1026,
+    "flagged_count": 291,
+    "pool_composition": {
+      "primary_count": 509,
+      "relevant_only_count": 993
+    },
+    "contradiction_types": {
+      "resource_competition": 216,
+      "delivery_friction": 75
+    },
+    "synthesis": {
+      "storyline_name": "Link water resilience with land and pasture management",
+      "reinforce": "Water targets often align with pasture, crop, forest, wetland, and protected-area measures through watershed function, monitoring, restoration, and sustainable resource use. The sample repeatedly points to water monitoring, water ecosystem services, irrigation support, and freshwater-source protection reinforcing broader resilience in pastoral systems, agriculture, and biodiversity management.",
+      "clash": "Possible misalignment recurs where irrigation expansion, water-storage ponds, crop expansion, fodder production, and intensive livestock growth increase demand on finite water and connected land resources. Flagged pairs also point to delivery friction when irrigated agriculture or food-production expansion may raise erosion risk or complicate protection of wetlands, forests, species habitat, and freshwater source areas unless siting, zoning, and environmental-flow safeguards are applied.",
+      "coordination_hint": "This sector tends to benefit from basin-level water allocation, watershed planning, and spatial zoning that link irrigation and livestock growth to monitoring, efficiency standards, and ecosystem safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
   }
 ]

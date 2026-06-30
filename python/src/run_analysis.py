@@ -107,7 +107,7 @@ def write_status(
     (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))
 
 
-def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list, list, list]:
+def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list, list, list, list]:
     """Load targets and categories from JSON files."""
     targets = json.loads((DATA_DIR / targets_file).read_text())
     cats = json.loads((DATA_DIR / "categories.json").read_text())
@@ -115,12 +115,14 @@ def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, 
     sectors = cats["ipcc_sectors"]
     globe = cats.get("globe_categories", [])
     globe_sub = cats.get("globe_subcategories", [])
+    gga = cats.get("gga_categories", [])
     logger.info(
         f"Loaded {len(targets)} targets, "
         f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + "
-        f"{len(globe)} GLOBE categories ({len(globe_sub)} subcategories)"
+        f"{len(globe)} GLOBE categories ({len(globe_sub)} subcategories) + "
+        f"{len(gga)} GGA climate-resilience targets"
     )
-    return targets, nbs, sectors, globe, globe_sub
+    return targets, nbs, sectors, globe, globe_sub, gga
 
 
 def derive_country_file(targets_file: str, suffix: str) -> str:
@@ -220,7 +222,7 @@ async def main() -> None:
 
     try:
         # 1. Load data
-        targets, nbs_categories, sectors, globe_categories, globe_subcategories = load_input_data(args.targets_file)
+        targets, nbs_categories, sectors, globe_categories, globe_subcategories, gga_categories = load_input_data(args.targets_file)
 
         # Cache canary: expected hit rate on a decomposition sample. The
         # decompose prompts are upstream of everything, so 0 hits here means
@@ -354,11 +356,21 @@ async def main() -> None:
                 targets, globe_categories, "globe"
             )
 
+        # GGA climate-resilience lens: classify policy targets against the seven
+        # thematic targets of the UAE Framework for Global Climate Resilience
+        # (decision 2/CMA.5). A standard ranked taxonomy, like NBS/IPCC above.
+        gga_classifications = (
+            await rank_classification(targets, gga_categories, "gga")
+            if gga_categories
+            else []
+        )
+
         all_classifications = (
             nbs_classifications
             + sector_classifications
             + globe_classifications
             + globe_sub_classifications
+            + gga_classifications
         )
 
         # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
@@ -490,6 +502,11 @@ async def main() -> None:
                 # rule used for policy targets.
                 btr_nbs = await rank_classification(measure_pseudo_targets, nbs_categories, "nbs")
                 btr_sectors = await rank_classification(measure_pseudo_targets, sectors, "sector")
+                btr_gga = (
+                    await rank_classification(measure_pseudo_targets, gga_categories, "gga")
+                    if gga_categories
+                    else []
+                )
 
                 btr_globe_sub: list[dict] = []
                 if globe_subcategories and globe_few_shot_examples:
@@ -511,7 +528,7 @@ async def main() -> None:
                     )
 
                 all_classifications.extend(
-                    btr_nbs + btr_globe + btr_sectors + btr_globe_sub
+                    btr_nbs + btr_globe + btr_sectors + btr_globe_sub + btr_gga
                 )
 
                 # Write back the primary sector onto pseudo-targets and
@@ -563,7 +580,8 @@ async def main() -> None:
                 logger.info(
                     f"Updated classifications with BTR entries "
                     f"({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + "
-                    f"{len(btr_sectors)} sectors + {len(btr_globe_sub)} GLOBE subcategories)"
+                    f"{len(btr_sectors)} sectors + {len(btr_globe_sub)} GLOBE subcategories + "
+                    f"{len(btr_gga)} GGA)"
                 )
 
                 # Policy target × BTR action pairs (both mitigation and adaptation).
@@ -620,6 +638,11 @@ async def main() -> None:
                 # rule used elsewhere.
                 ber_nbs = await rank_classification(budget_pseudo_targets, nbs_categories, "nbs")
                 ber_sectors = await rank_classification(budget_pseudo_targets, sectors, "sector")
+                ber_gga = (
+                    await rank_classification(budget_pseudo_targets, gga_categories, "gga")
+                    if gga_categories
+                    else []
+                )
 
                 ber_globe_sub: list[dict] = []
                 if globe_subcategories and globe_few_shot_examples:
@@ -641,7 +664,7 @@ async def main() -> None:
                     )
 
                 all_classifications.extend(
-                    ber_nbs + ber_globe + ber_sectors + ber_globe_sub
+                    ber_nbs + ber_globe + ber_sectors + ber_globe_sub + ber_gga
                 )
 
                 # Re-save classifications with BER entries included
@@ -651,7 +674,8 @@ async def main() -> None:
                     f"Updated classifications with BER entries "
                     f"({len(ber_nbs)} NBS + {len(ber_globe)} GLOBE + "
                     f"{len(ber_sectors)} sectors + "
-                    f"{len(ber_globe_sub)} GLOBE subcategories)"
+                    f"{len(ber_globe_sub)} GLOBE subcategories + "
+                    f"{len(ber_gga)} GGA)"
                 )
 
                 b_pairs = generate_budget_pairs(targets, budget_pseudo_targets)

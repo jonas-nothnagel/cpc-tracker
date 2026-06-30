@@ -126,6 +126,7 @@ export interface DashboardResponse {
   sectors: unknown[];
   globeCategories: unknown[];
   globeSubcategories: unknown[];
+  ggaCategories: unknown[];
   classifications: unknown[];
   alignment: unknown[];
   btrData: Record<string, unknown> | null;
@@ -181,6 +182,7 @@ export function assembleDashboardData(
     ipcc_sectors?: unknown[];
     globe_categories?: unknown[];
     globe_subcategories?: unknown[];
+    gga_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
   const alignmentRaw = readJson<Record<string, unknown>[]>(join(outputDir, "alignment.json"));
@@ -440,6 +442,7 @@ export function assembleDashboardData(
       sectors: categories.ipcc_sectors ?? [],
       globeCategories: categories.globe_categories ?? [],
       globeSubcategories: categories.globe_subcategories ?? [],
+      ggaCategories: categories.gga_categories ?? [],
       classifications: finalClassifications,
       alignment: finalAlignment,
       btrData: btrData ?? null,

@@ -1,24 +1,25 @@
 "use client";
 
 /**
- * Sectors — answers "where does misalignment concentrate?" with a
- * comparative view across the top sectors under the active lens. The
- * lens switcher (GLOBE / IPCC / Country sectors) is the first-class
- * control on this slide, surfaced under the headline so a policymaker
- * can re-frame the concentration question by category system.
+ * Sectors — answers "where does policy ambition sit under this lens, and how
+ * flag-prone is each area?". Each row leads with the coverage magnitude (how many
+ * targets are primary-classified to the sector) and pairs it with a size-robust
+ * flagged share (the fraction of that sector's reviewed relationships that are a
+ * possible misalignment). The flagged share replaces the old raw aligned/misaligned
+ * pair counts, which scaled with sector size and were not comparable across rows.
  *
- * Row list caps to the top 8 by default; the rest hide behind a "Show
- * all" toggle. Each row pairs the alignment and tension density bars so
- * one sector's polarity reads at a glance; clicking opens the sector
- * drawer with the synthesis block and example pairs.
+ * The lens switcher (GLOBE / IPCC / Country sectors / GGA) is the first-class
+ * control, so a policymaker can re-frame coverage by category system. Row list caps
+ * to the top 8 by default; the rest hide behind a "Show all" toggle. Clicking a row
+ * opens the sector drawer with the synthesis block and example pairs.
  */
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import {
-  type ConcentrationStat,
-  type SectorAlignment,
+  type CoverageConcentrationStat,
+  type SectorCoherenceShareSummary,
   type SectorTension,
 } from "@/lib/coherence-briefing";
 import type { SectorSynthesis } from "@/types";
@@ -27,16 +28,25 @@ import type { WheelFilter } from "../centerpiece/wheel";
 
 export const SECTORS_SECTION_ID = "sectors";
 
-export type SectorSortMode = "tension" | "alignment";
+type SectorSortMode = "coverage" | "flagShare";
 
 const VISIBLE_ROWS_DEFAULT = 8;
 
+// Neutral slate for the coverage magnitude (a count, not a verdict); red for the
+// possible-misalignment share; light track behind both bars.
+const BAR_COVERAGE = "#4b5563";
+const BAR_FLAG = "#dc2626";
+const BAR_TRACK = "#e5e7eb";
+const MID_TICK = "#1f2937";
+
+const GRID = "grid grid-cols-[1fr_5rem_5rem] items-center gap-3";
+
 export function SectorsSection({
   sectorRows,
-  sectorAlignments,
+  sectorShares,
   sectorSyntheses,
   taxonomyType,
-  concentration,
+  coverageConcentration,
   lensLabel,
   availableLenses,
   activeLensId,
@@ -47,9 +57,9 @@ export function SectorsSection({
   onHoverSector,
 }: {
   sectorRows: SectorTension[];
-  sectorAlignments: SectorAlignment[];
+  sectorShares: SectorCoherenceShareSummary | null;
   sectorSyntheses: Map<string, SectorSynthesis>;
-  concentration: ConcentrationStat;
+  coverageConcentration: CoverageConcentrationStat;
   lensLabel: string | null;
   taxonomyType: string;
   availableLenses: LensOption[];
@@ -65,56 +75,42 @@ export function SectorsSection({
   onHoverSector?: (categoryId: string | null) => void;
 }) {
   const t = useTranslations("briefing.sectors");
-  const [sortMode, setSortMode] = useState<SectorSortMode>("tension");
+  const [sortMode, setSortMode] = useState<SectorSortMode>("coverage");
   const [showAll, setShowAll] = useState(false);
 
-  const alignmentByCategory = useMemo(
-    () => new Map(sectorAlignments.map((s) => [s.categoryId, s])),
-    [sectorAlignments],
-  );
+  const shareByCategory = sectorShares?.byCategory ?? null;
+  const maxShare = sectorShares?.maxShare ?? 0;
+  const midShare = sectorShares?.mid ?? 0;
 
   const mergedRows = useMemo<MergedSectorRow[]>(() => {
-    const rows: MergedSectorRow[] = sectorRows.map((tension) => {
-      const aligned = alignmentByCategory.get(tension.categoryId);
-      const synth = sectorSyntheses.get(
-        `${taxonomyType}:${tension.categoryId}`,
-      );
+    const rows: MergedSectorRow[] = sectorRows.map((row) => {
+      const share = shareByCategory?.get(row.categoryId) ?? null;
+      const synth = sectorSyntheses.get(`${taxonomyType}:${row.categoryId}`);
       const pool = synth?.pool_composition ?? null;
       return {
-        categoryId: tension.categoryId,
-        categoryName: tension.categoryName,
-        tensionCount: tension.tensionCount,
-        alignmentCount: aligned?.alignmentCount ?? 0,
-        targetCount: tension.targetCount,
+        categoryId: row.categoryId,
+        categoryName: row.categoryName,
+        targetCount: row.targetCount,
+        flaggedShare: share?.flaggedShare ?? null,
+        flaggedPairs: share?.flaggedPairs ?? 0,
+        reviewedPairs: share?.reviewedPairs ?? 0,
         relevantOnlyCount: pool?.relevant_only_count ?? null,
       };
     });
-    rows.sort((a, b) => {
-      if (sortMode === "tension") {
-        if (b.tensionCount !== a.tensionCount) {
-          return b.tensionCount - a.tensionCount;
-        }
-        return b.alignmentCount - a.alignmentCount;
-      }
-      if (b.alignmentCount !== a.alignmentCount) {
-        return b.alignmentCount - a.alignmentCount;
-      }
-      return b.tensionCount - a.tensionCount;
-    });
+    rows.sort((a, b) => sortRows(a, b, sortMode));
     return rows;
-  }, [sectorRows, alignmentByCategory, sectorSyntheses, taxonomyType, sortMode]);
+  }, [sectorRows, shareByCategory, sectorSyntheses, taxonomyType, sortMode]);
 
-  const sentence = composeConcentrationSentence({
-    concentration,
+  const sentence = composeCoverageSentence({
+    coverageConcentration,
+    mergedRows,
+    midShare,
     lensLabel,
+    taxonomyType,
     t,
   });
-  const maxTension = mergedRows.reduce(
-    (m, r) => (r.tensionCount > m ? r.tensionCount : m),
-    0,
-  );
-  const maxAlignment = mergedRows.reduce(
-    (m, r) => (r.alignmentCount > m ? r.alignmentCount : m),
+  const maxTargetCount = mergedRows.reduce(
+    (m, r) => (r.targetCount > m ? r.targetCount : m),
     0,
   );
   const visibleRows = showAll
@@ -153,8 +149,9 @@ export function SectorsSection({
                 <SectorRow
                   key={row.categoryId}
                   row={row}
-                  maxTension={maxTension}
-                  maxAlignment={maxAlignment}
+                  maxTargetCount={maxTargetCount}
+                  maxShare={maxShare}
+                  midShare={midShare}
                   onHover={onHoverSector}
                   onSelect={() =>
                     onOpenSector({
@@ -194,10 +191,32 @@ export function SectorsSection({
 interface MergedSectorRow {
   categoryId: string;
   categoryName: string;
-  tensionCount: number;
-  alignmentCount: number;
+  /** Coverage: targets primary-classified to this sector under the active lens. */
   targetCount: number;
+  /** flaggedPairs / reviewedPairs, or null when no reviewed pair touches the sector. */
+  flaggedShare: number | null;
+  flaggedPairs: number;
+  reviewedPairs: number;
   relevantOnlyCount: number | null;
+}
+
+/** Coverage-first by default; nulls (no reviewed pairs) always sort last on flag share. */
+function sortRows(
+  a: MergedSectorRow,
+  b: MergedSectorRow,
+  mode: SectorSortMode,
+): number {
+  if (mode === "flagShare") {
+    const sa = a.flaggedShare;
+    const sb = b.flaggedShare;
+    if (sa === null && sb === null) return b.targetCount - a.targetCount;
+    if (sa === null) return 1;
+    if (sb === null) return -1;
+    if (sb !== sa) return sb - sa;
+    return b.targetCount - a.targetCount;
+  }
+  if (b.targetCount !== a.targetCount) return b.targetCount - a.targetCount;
+  return (b.flaggedShare ?? -1) - (a.flaggedShare ?? -1);
 }
 
 function LensChipRow({
@@ -235,6 +254,7 @@ function LensChipRow({
                 type="button"
                 onClick={() => onLensChange(opt.id)}
                 aria-pressed={active}
+                title={opt.tooltip}
                 className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                   active
                     ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
@@ -283,112 +303,138 @@ function SectorColumnHeader({
 }) {
   const t = useTranslations("briefing.sectors");
   return (
-    <div className="grid grid-cols-[1fr_4.25rem_4.25rem] items-center gap-3 px-1 pb-1 mb-1 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+    <div
+      className={`${GRID} px-1 pb-1 mb-1 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]`}
+    >
       <span>{t("col.sector")}</span>
       <button
         type="button"
-        onClick={() => onSort("alignment")}
+        onClick={() => onSort("coverage")}
         className={`text-left ${
-          sortMode === "alignment"
+          sortMode === "coverage"
             ? "text-[var(--undp-black)] underline underline-offset-4"
             : "hover:text-[var(--undp-black)]"
         }`}
       >
-        {t("col.aligned")}
+        {t("col.targets")}
       </button>
       <button
         type="button"
-        onClick={() => onSort("tension")}
+        onClick={() => onSort("flagShare")}
         className={`text-left ${
-          sortMode === "tension"
+          sortMode === "flagShare"
             ? "text-[var(--undp-black)] underline underline-offset-4"
             : "hover:text-[var(--undp-black)]"
         }`}
       >
-        {t("col.misaligned")}
+        {t("col.flaggedShare")}
       </button>
     </div>
   );
 }
 
-interface ConcentrationSentence {
+interface CoverageSentence {
   headline: string;
   body: string;
 }
 
-function composeConcentrationSentence({
-  concentration,
+function composeCoverageSentence({
+  coverageConcentration,
+  mergedRows,
+  midShare,
   lensLabel,
+  taxonomyType,
   t,
 }: {
-  concentration: ConcentrationStat;
+  coverageConcentration: CoverageConcentrationStat;
+  mergedRows: MergedSectorRow[];
+  midShare: number;
   lensLabel: string | null;
+  taxonomyType: string;
   t: ReturnType<typeof useTranslations<"briefing.sectors">>;
-}): ConcentrationSentence {
-  const nounStyle = lensLabel === "GLOBE" ? "category" : "sector";
+}): CoverageSentence {
+  // GGA themes are not "sectors"; the globe lens reads "category". Anything else
+  // keeps the generic "sector" noun.
+  const nounStyle =
+    taxonomyType === "gga"
+      ? "theme"
+      : lensLabel === "GLOBE"
+        ? "category"
+        : "sector";
   const noun = t(`noun.${nounStyle}.singular`);
   const nounPlural = t(`noun.${nounStyle}.plural`);
-  const { populatedSectors, totalFlags, topNames, share } = concentration;
-  if (totalFlags === 0 || populatedSectors === 0) {
+  const { populatedSectors, totalTargets, topNames, share } =
+    coverageConcentration;
+
+  if (totalTargets === 0 || populatedSectors === 0) {
     return {
-      headline: t("concentration.emptyHeadline", { noun }),
-      body: t("concentration.emptyBody", { noun }),
+      headline: t("coverage.emptyHeadline", { noun }),
+      body: t("coverage.emptyBody", { noun }),
     };
   }
-  if (topNames.length === 0) {
-    return {
-      headline: t("concentration.spreadHeadline", {
-        sectors: populatedSectors,
-        nounPlural,
-      }),
-      body: t("concentration.spreadBody", {
-        total: totalFlags,
-        sectors: populatedSectors,
-        noun,
-        nounPlural,
-      }),
-    };
-  }
+
   const sharePct = Math.round(share * 100);
   const list = formatList(topNames, t);
+  let headline: string;
   if (topNames.length === 1) {
-    return {
-      headline: t("concentration.singleHeadline", {
-        name: topNames[0],
-        pct: sharePct,
-      }),
-      body: t("concentration.singleBody", {
-        total: totalFlags,
-        sectors: populatedSectors,
-        nounPlural,
-        name: topNames[0],
-        pct: sharePct,
-      }),
-    };
-  }
-  if (topNames.length === populatedSectors) {
-    return {
-      headline: t("concentration.everyHeadline", { noun }),
-      body: t("concentration.everyBody", {
-        total: totalFlags,
-        sectors: populatedSectors,
-        nounPlural,
-        list,
-      }),
-    };
-  }
-  return {
-    headline: t("concentration.topHeadline", {
-      count: topNames.length,
+    headline = t("coverage.singleHeadline", { name: topNames[0], pct: sharePct });
+  } else if (topNames.length >= populatedSectors) {
+    headline = t("coverage.everyHeadline", {
       sectors: populatedSectors,
       nounPlural,
-    }),
-    body: t("concentration.topBody", {
-      pct: sharePct,
-      total: totalFlags,
-      list,
-    }),
-  };
+      name: topNames[0],
+    });
+  } else {
+    headline = t("coverage.topHeadline", { list, pct: sharePct });
+  }
+
+  return { headline, body: composeFlagBody({ mergedRows, midShare, nounPlural, t }) };
+}
+
+/**
+ * Honest flag-share body: states the corpus range and only names a leading sector
+ * when its share sits materially above the corpus average; when shares cluster it
+ * reports them as broadly similar rather than forcing a "winner".
+ */
+function composeFlagBody({
+  mergedRows,
+  midShare,
+  nounPlural,
+  t,
+}: {
+  mergedRows: MergedSectorRow[];
+  midShare: number;
+  nounPlural: string;
+  t: ReturnType<typeof useTranslations<"briefing.sectors">>;
+}): string {
+  const shares = mergedRows
+    .map((r) => r.flaggedShare)
+    .filter((s): s is number => s !== null);
+  if (shares.length === 0) return t("flag.none");
+
+  const minPct = Math.round(Math.min(...shares) * 100);
+  const maxPct = Math.round(Math.max(...shares) * 100);
+  const midPct = Math.round(midShare * 100);
+
+  if (maxPct - minPct <= 2) {
+    return t("flag.uniform", { mid: midPct, nounPlural });
+  }
+
+  let peak: MergedSectorRow | null = null;
+  for (const r of mergedRows) {
+    if (r.flaggedShare === null) continue;
+    if (peak === null || r.flaggedShare > (peak.flaggedShare ?? 0)) peak = r;
+  }
+  if (peak && maxPct - midPct >= 5) {
+    return t("flag.rangeWithPeak", {
+      min: minPct,
+      max: maxPct,
+      mid: midPct,
+      nounPlural,
+      name: peak.categoryName,
+    });
+  }
+  return t("flag.range", { min: minPct, max: maxPct, mid: midPct, nounPlural });
 }
 
 function formatList(
@@ -404,26 +450,28 @@ function formatList(
   });
 }
 
-const DOT_TENSION = "#dc2626";
-const DOT_ALIGN = "#196127";
-const DOT_EMPTY = "#e5e7eb";
-
 function SectorRow({
   row,
-  maxTension,
-  maxAlignment,
+  maxTargetCount,
+  maxShare,
+  midShare,
   onHover,
   onSelect,
 }: {
   row: MergedSectorRow;
-  maxTension: number;
-  maxAlignment: number;
+  maxTargetCount: number;
+  maxShare: number;
+  midShare: number;
   onHover?: (categoryId: string | null) => void;
   onSelect: () => void;
 }) {
   const t = useTranslations("briefing.sectors");
-  const isMuted = row.tensionCount === 0 && row.alignmentCount === 0;
+  const isMuted = row.targetCount === 0;
   const hasPool = row.relevantOnlyCount !== null;
+  const sharePct =
+    row.flaggedShare !== null ? Math.round(row.flaggedShare * 100) : null;
+  const flagAria =
+    sharePct !== null ? t("flagAriaValue", { pct: sharePct }) : t("flagAriaNone");
   return (
     <li>
       <button
@@ -431,11 +479,11 @@ function SectorRow({
         onClick={onSelect}
         onMouseEnter={() => onHover?.(row.categoryId)}
         onFocus={() => onHover?.(row.categoryId)}
-        className="w-full text-left grid grid-cols-[1fr_4.25rem_4.25rem] items-center gap-3 px-1 py-2.5 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
+        className={`w-full text-left ${GRID} px-1 py-2.5 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors`}
         aria-label={t("rowAriaLabel", {
           name: row.categoryName,
-          flagged: row.tensionCount,
-          aligned: row.alignmentCount,
+          count: row.targetCount,
+          flag: flagAria,
         })}
       >
         <div className="min-w-0">
@@ -456,30 +504,15 @@ function SectorRow({
               : ""}
           </p>
         </div>
-        <SeverityBar
-          color={DOT_ALIGN}
-          count={row.alignmentCount}
-          max={maxAlignment}
-        />
-        <SeverityBar
-          color={DOT_TENSION}
-          count={row.tensionCount}
-          max={maxTension}
-        />
+        <CoverageBar count={row.targetCount} max={maxTargetCount} />
+        <FlagShareCell share={row.flaggedShare} maxShare={maxShare} mid={midShare} />
       </button>
     </li>
   );
 }
 
-function SeverityBar({
-  color,
-  count,
-  max,
-}: {
-  color: string;
-  count: number;
-  max: number;
-}) {
+/** Neutral magnitude bar for sector coverage (target count). */
+function CoverageBar({ count, max }: { count: number; max: number }) {
   const fillPct = max > 0 ? Math.min(100, (count / max) * 100) : 0;
   const displayPct = count > 0 ? Math.max(fillPct, 4) : 0;
   return (
@@ -487,24 +520,84 @@ function SeverityBar({
       <span
         aria-hidden="true"
         className="block h-1.5 w-full rounded-full overflow-hidden"
-        style={{ backgroundColor: DOT_EMPTY }}
+        style={{ backgroundColor: BAR_TRACK }}
       >
         <span
           className="block h-full rounded-full"
           style={{
             width: `${displayPct}%`,
-            backgroundColor: count > 0 ? color : "transparent",
+            backgroundColor: count > 0 ? BAR_COVERAGE : "transparent",
           }}
         />
       </span>
+      <span className="text-[11px] tabular-nums leading-none text-[var(--undp-black)] font-medium">
+        {count.toLocaleString()}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Size-robust flagged share, with a faint tick at the corpus average so a sector
+ * reads as above or below typical at a glance. "—" when the sector has no reviewed
+ * relationships (distinct from a genuine 0% rate).
+ */
+function FlagShareCell({
+  share,
+  maxShare,
+  mid,
+}: {
+  share: number | null;
+  maxShare: number;
+  mid: number;
+}) {
+  if (share === null) {
+    return (
+      <div className="flex flex-col items-start gap-1 w-full">
+        <span
+          aria-hidden="true"
+          className="block h-1.5 w-full rounded-full"
+          style={{ backgroundColor: BAR_TRACK }}
+        />
+        <span className="text-[11px] tabular-nums leading-none text-[var(--undp-gray)]/60">
+          —
+        </span>
+      </div>
+    );
+  }
+  const pct = Math.round(share * 100);
+  const fillPct = maxShare > 0 ? Math.min(100, (share / maxShare) * 100) : 0;
+  const displayPct = share > 0 ? Math.max(fillPct, 4) : 0;
+  const midPct = maxShare > 0 ? Math.min(100, (mid / maxShare) * 100) : 0;
+  return (
+    <div className="flex flex-col items-start gap-1 w-full">
+      <span
+        aria-hidden="true"
+        className="relative block h-1.5 w-full rounded-full overflow-hidden"
+        style={{ backgroundColor: BAR_TRACK }}
+      >
+        <span
+          className="block h-full rounded-full"
+          style={{
+            width: `${displayPct}%`,
+            backgroundColor: share > 0 ? BAR_FLAG : "transparent",
+          }}
+        />
+        {mid > 0 && maxShare > 0 && (
+          <span
+            className="absolute top-0 h-full"
+            style={{ left: `${midPct}%`, width: "1px", backgroundColor: MID_TICK }}
+          />
+        )}
+      </span>
       <span
         className={`text-[11px] tabular-nums leading-none ${
-          count === 0
-            ? "text-[var(--undp-gray)]/60"
-            : "text-[var(--undp-black)] font-medium"
+          share > 0
+            ? "text-[var(--undp-black)] font-medium"
+            : "text-[var(--undp-gray)]/60"
         }`}
       >
-        {count.toLocaleString()}
+        {pct}%
       </span>
     </div>
   );

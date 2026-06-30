@@ -34,6 +34,7 @@ import type {
   NbsCategory,
   IpccSector,
   GlobeCategory,
+  GgaCategory,
   GlobeSubcategory,
   BtrData,
   BerData,
@@ -47,6 +48,7 @@ interface DashboardData {
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  ggaCategories: GgaCategory[];
   globeSubcategories: GlobeSubcategory[];
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
@@ -103,6 +105,7 @@ function normalizeDashboardResponse(raw: DashboardResponse): DashboardData {
     nbsCategories: (raw.nbsCategories ?? []) as NbsCategory[],
     sectors: ((raw.sectors ?? []) as Record<string, unknown>[]).map(normalizeSector),
     globeCategories: ((raw.globeCategories ?? []) as Record<string, unknown>[]).map(normalizeSector),
+    ggaCategories: ((raw.ggaCategories ?? []) as Record<string, unknown>[]).map(normalizeSector),
     globeSubcategories: (raw.globeSubcategories ?? []) as GlobeSubcategory[],
     classifications: (raw.classifications ?? []) as ThematicClassification[],
     alignment: (raw.alignment ?? []) as AlignmentResult[],
@@ -509,6 +512,7 @@ export function DashboardClient({
           sectors={data.sectors}
           globeCategories={data.globeCategories}
           globeSubcategories={data.globeSubcategories}
+          ggaCategories={data.ggaCategories}
           classifications={data.classifications}
           nr7Data={data.nr7Data}
           btrData={data.btrData}
@@ -652,6 +656,7 @@ export function DashboardClient({
                       targets={targets}
                       sectors={data.sectors}
                       globeCategories={data.globeCategories}
+                      ggaCategories={data.ggaCategories}
                       classifications={data.classifications}
                       countryConfig={data.countryConfig}
                     />

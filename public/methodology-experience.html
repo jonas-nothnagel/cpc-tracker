@@ -536,7 +536,7 @@
     <div class="pstep" data-i="5">
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 06</span></p>
       <h2 class="p-title serif">Classify each target by category</h2>
-      <p class="p-say">Every target is scored against expert reference frameworks: <strong>nature-based solutions</strong>, the <strong><abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr> sectors</strong>, the <strong><abbr title="BIOFIN biodiversity-finance taxonomy">GLOBE</abbr> biodiversity taxonomy</strong>, and, where relevant, national adaptation goals. Each target keeps one <strong>primary</strong> category plus any others it clearly relates to. The lenses are interchangeable: on the dashboard the active lens can be <strong>switched with one click</strong>, and the same targets regroup under a different taxonomy while the classification itself does not re-run. Each country can also adjust the categories or add its own.</p>
+      <p class="p-say">Every target is scored against published reference frameworks: the <strong><abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr> greenhouse gas inventory sectors</strong>, the <strong><abbr title="Global Biodiversity Expenditure taxonomy (BIOFIN 2024)">GLOBE</abbr> taxonomy</strong>, and the <strong>climate-resilience targets of the UAE Framework for Global Climate Resilience</strong> (the <abbr title="Global Goal on Adaptation">GGA</abbr>). Each target keeps one <strong>primary</strong> category plus any others it clearly relates to. The lenses are interchangeable: on the dashboard the active lens can be <strong>switched with one click</strong>, and the same targets regroup under a different taxonomy while the classification itself does not re-run. Each country can also adjust the categories or add its own.</p>
       <div class="p-viz"><div style="width:100%"><div class="chip-grid">
         <span class="chip on">Agriculture &amp; livestock</span><span class="chip on">Forest &amp; land use</span>
         <span class="chip">Wetlands</span><span class="chip on">Grasslands &amp; soils</span>
@@ -546,6 +546,7 @@
       <div class="lens-row" style="margin-top:14px">
         <span class="lens-chip on">GLOBE</span>
         <span class="lens-chip">IPCC sectors</span>
+        <span class="lens-chip">Climate resilience</span>
         <span class="lens-chip">Country</span>
       </div>
       <p class="lens-cap"><span class="you-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4 13c0-2.3 1.8-3.8 4-3.8s4 1.5 4 3.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> User-selected lens</span> Switching regroups the whole view, with no re-analysis.</p>
@@ -557,10 +558,10 @@
         </div>
         <p class="exb" style="margin-top:9px">Switching to IPCC sectors or a country's own set regroups both targets, with no re-analysis.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A relevance score (0&ndash;1) for each <code>(target × category)</code>; the top-scoring category becomes <code>primary</code>, and any above the relevance threshold are tagged <code>relevant</code> (dual-mode). Taxonomies: nature-based solutions, IPCC sectors, the GLOBE taxonomy with sub-categories, and optional adaptation goals, all configurable per country. The most call-intensive step (<em>n × c</em> scores), so results are cached.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>primary + relevant</span><span>cached</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A relevance score (0&ndash;1) for each <code>(target × category)</code>; the top-scoring category becomes <code>primary</code>, and any above the relevance threshold are tagged <code>relevant</code> (dual-mode). Taxonomies: nature-based solutions, IPCC sectors, the GLOBE taxonomy with sub-categories, the seven GGA climate-resilience themes (UAE Framework for Global Climate Resilience, decision 2/CMA.5), and optional adaptation goals, all configurable per country. The most call-intensive step (<em>n × c</em> scores), so results are cached.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>GGA</span><span>primary + relevant</span><span>cached</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Policy specialist. Categories: <code>{NBS · IPCC sectors · GLOBE, or the country's own set}</code></div></div>
+          <div class="prow"><span class="role sys">System</span><div class="ptext">Policy specialist. Categories: <code>{NBS · IPCC sectors · GLOBE · GGA, or the country's own set}</code></div></div>
           <div class="prow"><span class="role usr">User</span><div class="ptext">Category: <code>{name}</code> &ndash; <code>{description}</code><br>Target: <code>{target text}</code><br>How relevant is the target to this category?</div></div>
           <div class="prow out"><span class="role out">Returns</span><div class="ptext">a relevance <b>score</b> (0&ndash;1) per category &ndash; the highest becomes <code>primary</code>, others above the threshold are tagged <code>relevant</code></div></div>
         </div>
@@ -761,7 +762,7 @@
     { i: 3,  ph: "ex", t: "Consolidate & verify",   b: "Merge \u00b7 claim check" },
     { i: 13, ph: "an", kind: "human", t: "Confirm the targets", b: "Keep · edit · add" },
     { i: 4,  ph: "an", t: "Measurable & timed",     b: "Quantitative \u00b7 time-bound" },
-    { i: 5,  ph: "an", t: "Classify by category",   b: "NBS \u00b7 IPCC \u00b7 GLOBE \u00b7 switchable" },
+    { i: 5,  ph: "an", t: "Classify by category",   b: "NBS \u00b7 IPCC \u00b7 GLOBE \u00b7 GGA \u00b7 switchable" },
     { i: 6,  ph: "an", t: "Compare across docs",    b: "Every cross-doc pair" },
     { i: 7,  ph: "an", t: "Decompose",              b: "5 structured fields", agent: "Agent 1" },
     { i: 8,  ph: "an", t: "Assess alignment",       b: "5 levels, or a flag", agent: "Agent 2" },

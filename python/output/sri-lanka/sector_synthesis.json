@@ -575,6 +575,157 @@
         "confidence": "high"
       },
       "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_agriculture_food",
+      "category_name": "Agriculture and food",
+      "aligned_count": 548,
+      "flagged_count": 6,
+      "pool_composition": {
+        "primary_count": 553,
+        "relevant_only_count": 159
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Link sustainable production with land stewardship",
+        "reinforce": "Agriculture and food targets often align with soil conservation, sustainable land use, and biodiversity-wise production, especially where erosion control, soil carbon, climate-resilient varieties, and efficient resource management are combined on working landscapes. The sample also reinforces enabling links through mapping, biosafety, data, and finance, which tend to support better targeting and implementation of agricultural adaptation and productivity measures.",
+        "clash": "Possible misalignment recurs where agricultural productivity growth could place pressure on the same land or water base needed for forest expansion, wetland protection, or area-based conservation. Some delivery friction is also flagged for review where irrigation upgrades could affect wetlands, or where higher dairy productivity may pull against sustainable consumption aims unless demand-side measures are paired with supply-side gains.",
+        "coordination_hint": "It may help to coordinate agricultural productivity measures with land-use zoning, wetland and forest safeguards, and consumption-side planning, so efficiency gains tend to reinforce conservation rather than depend on expansion.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_cultural_heritage",
+      "category_name": "Cultural heritage",
+      "aligned_count": 37,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 93
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Linking traditional knowledge governance to resilience actions",
+        "reinforce": "Across the sampled pairs, cultural-heritage relevance tends to appear through traditional knowledge and benefit-sharing arrangements that align with biodiversity, fisheries, agriculture, water, coastal, and forestry resilience actions. This often points to an enabling relationship, where governance of biological resources, digital sequence information, and associated knowledge reinforces conservation planning, research, restoration, and sectoral adaptation measures rather than sharing the same direct implementation steps.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "It may help to review where resilience measures in biodiversity and resource sectors rely on traditional knowledge or related biological-resource governance, so cultural-heritage considerations can be reflected through participation and benefit-sharing mechanisms.",
+        "confidence": "low"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_ecosystems_biodiversity",
+      "category_name": "Ecosystems and biodiversity",
+      "aligned_count": 1375,
+      "flagged_count": 9,
+      "pool_composition": {
+        "primary_count": 1652,
+        "relevant_only_count": 161
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 5
+      },
+      "synthesis": {
+        "storyline_name": "Using spatial planning to steer biodiversity outcomes",
+        "reinforce": "This sector often aligns with mapping, restoration, and planning measures that help direct land and coastal uses away from sensitive ecosystems, including wetlands, degraded lands, forests, and coastal areas. It also reinforces cross-sector resilience where biodiversity mainstreaming, restoration, pollution reduction, and sustainable use can support agriculture, fisheries, tourism, water, and business practices through better siting, governance, and risk management.",
+        "clash": "Possible misalignment recurs where biodiversity and land conservation targets, especially forest expansion, wetland protection, and area-based conservation, may compete with agriculture, livestock, irrigation, industrial parks, and energy infrastructure for the same land or water space. Delivery friction is also flagged for review where new power or industrial facilities, irrigation augmentation, or productivity-focused supply expansion could proceed without biodiversity-sensitive zoning, disclosure, safeguards, or hydrological management.",
+        "coordination_hint": "This sector tends to benefit from early spatial zoning, landscape-level planning, and project screening so that production, infrastructure, and restoration measures can be sited and managed in ways that align with biodiversity objectives.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_health",
+      "category_name": "Health",
+      "aligned_count": 134,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 80,
+        "relevant_only_count": 100
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Link biodiversity planning to climate health resilience",
+        "reinforce": "Health-related targets often align with biodiversity measures through enabling mechanisms, especially policy integration, nature-based spatial planning, ecosystem restoration, and implementation capacity. The sample repeatedly points to support for climate-resilient health systems, disease surveillance, malnutrition management, and emergency risk reduction, but mostly through indirect pathways rather than shared delivery actions.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "It may help to coordinate health resilience actions with biodiversity planning, restoration, and cross-sector financing where ecosystem condition, urban planning, or zoonotic and nutrition risks overlap.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_infrastructure_settlements",
+      "category_name": "Infrastructure and human settlements",
+      "aligned_count": 606,
+      "flagged_count": 4,
+      "pool_composition": {
+        "primary_count": 596,
+        "relevant_only_count": 293
+      },
+      "contradiction_types": {
+        "delivery_friction": 4
+      },
+      "synthesis": {
+        "storyline_name": "using planning and infrastructure safeguards to align delivery",
+        "reinforce": "Within infrastructure and human settlements, alignment often comes through enabling systems rather than shared projects. Spatial and urban planning, forecasting, risk frameworks, finance, cleaner production, energy efficiency, and water or tourism resilience measures tend to reinforce biodiversity, land, and restoration goals by improving siting, information, and lower-pollution delivery conditions.",
+        "clash": "Possible misalignment recurs where infrastructure expansion or upgrading could place pressure on sensitive land and biodiversity areas. Flagged for review are wetland conversion risks linked to eco-industrial parks and irrigation augmentation, and biodiversity-planning or business-risk expectations that may be strained by new or converted natural gas power infrastructure unless siting, screening, zoning, and hydrological safeguards are applied.",
+        "coordination_hint": "This sector often points to the value of early spatial planning, environmental screening, and landscape or hydrological safeguards so infrastructure and settlement investments can align with wetland, biodiversity, and land objectives.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_livelihoods",
+      "category_name": "Livelihoods",
+      "aligned_count": 203,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 140,
+        "relevant_only_count": 120
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Link livelihood resilience through enabling environmental governance",
+        "reinforce": "Within livelihoods, alignment often comes through enabling measures, where biodiversity data, participatory decision-making, forecasting, stocktaking, risk management, funding, and business disclosure frameworks reinforce livelihood-related actions in agriculture, fisheries, tourism, and alternative livelihoods. More direct reinforcement also recurs where sustainable biodiversity use supports tourism resilience, soil and land productivity support crop value chains, and alternative livelihoods tend to reduce pressure on wild species while strengthening climate resilience.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "It may help to coordinate livelihood actions with shared data systems, risk frameworks, and biodiversity-sensitive business and community planning, since these pairs often point to supportive but not tightly integrated implementation links.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_water",
+      "category_name": "Water",
+      "aligned_count": 282,
+      "flagged_count": 6,
+      "pool_composition": {
+        "primary_count": 180,
+        "relevant_only_count": 174
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Link watershed protection with resilient water delivery",
+        "reinforce": "Water-related adaptation tends to align with biodiversity restoration, catchment protection, forest cover, and broader conservation targets. The recurring mechanism is that ecosystem restoration, river-basin management, monitoring, and governance capacity can reinforce climate-resilient water supply, irrigation management, salinity control, and watershed function.",
+        "clash": "Possible misalignment recurs where wetland protection or wider land-and-water conservation is flagged for review against irrigation augmentation and production-oriented agriculture, livestock, or industrial expansion. The recurring mechanism is competition over shared land and hydrology, especially if irrigation works, siting, or sector expansion affect wetlands, conserved areas, or water-dependent landscapes.",
+        "coordination_hint": "This sector often points to value in spatial planning, basin-scale zoning, and hydrological safeguards so water infrastructure and productivity measures can align with wetland and catchment conservation.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
     }
   ],
   "states": {
@@ -1151,6 +1302,157 @@
           "reinforce": "Waste-related targets often align around a hierarchy in which sustainable consumption and circular economy measures reduce waste upstream, while composting, biological treatment, wastewater management, sanitary disposal, and energy recovery manage residuals downstream. This sample also tends to show waste actions reinforcing biodiversity, soil, and ecosystem goals by lowering pollution, reducing unmanaged dumping, and supporting cleaner water and land conditions.",
           "clash": "A possible misalignment is flagged for review where waste reduction and lower overconsumption objectives meet livestock productivity expansion, because higher dairy output could pull demand and consumption patterns in a different direction. The friction appears to be about delivery logic rather than a direct contradiction, and often points to the need to pair productivity gains with demand-side measures.",
           "coordination_hint": "It may help to sequence this sector around the waste hierarchy, so prevention, reuse, recycling, composting, and wastewater improvements guide when residual disposal or energy recovery is used.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_agriculture_food",
+        "category_name": "Agriculture and food",
+        "aligned_count": 548,
+        "flagged_count": 6,
+        "pool_composition": {
+          "primary_count": 553,
+          "relevant_only_count": 159
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Link sustainable production with land stewardship",
+          "reinforce": "Agriculture and food targets often align with soil conservation, sustainable land use, and biodiversity-wise production, especially where erosion control, soil carbon, climate-resilient varieties, and efficient resource management are combined on working landscapes. The sample also reinforces enabling links through mapping, biosafety, data, and finance, which tend to support better targeting and implementation of agricultural adaptation and productivity measures.",
+          "clash": "Possible misalignment recurs where agricultural productivity growth could place pressure on the same land or water base needed for forest expansion, wetland protection, or area-based conservation. Some delivery friction is also flagged for review where irrigation upgrades could affect wetlands, or where higher dairy productivity may pull against sustainable consumption aims unless demand-side measures are paired with supply-side gains.",
+          "coordination_hint": "It may help to coordinate agricultural productivity measures with land-use zoning, wetland and forest safeguards, and consumption-side planning, so efficiency gains tend to reinforce conservation rather than depend on expansion.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_cultural_heritage",
+        "category_name": "Cultural heritage",
+        "aligned_count": 37,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 93
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Linking traditional knowledge governance to resilience actions",
+          "reinforce": "Across the sampled pairs, cultural-heritage relevance tends to appear through traditional knowledge and benefit-sharing arrangements that align with biodiversity, fisheries, agriculture, water, coastal, and forestry resilience actions. This often points to an enabling relationship, where governance of biological resources, digital sequence information, and associated knowledge reinforces conservation planning, research, restoration, and sectoral adaptation measures rather than sharing the same direct implementation steps.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "It may help to review where resilience measures in biodiversity and resource sectors rely on traditional knowledge or related biological-resource governance, so cultural-heritage considerations can be reflected through participation and benefit-sharing mechanisms.",
+          "confidence": "low"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_ecosystems_biodiversity",
+        "category_name": "Ecosystems and biodiversity",
+        "aligned_count": 1375,
+        "flagged_count": 9,
+        "pool_composition": {
+          "primary_count": 1652,
+          "relevant_only_count": 161
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 5
+        },
+        "synthesis": {
+          "storyline_name": "Using spatial planning to steer biodiversity outcomes",
+          "reinforce": "This sector often aligns with mapping, restoration, and planning measures that help direct land and coastal uses away from sensitive ecosystems, including wetlands, degraded lands, forests, and coastal areas. It also reinforces cross-sector resilience where biodiversity mainstreaming, restoration, pollution reduction, and sustainable use can support agriculture, fisheries, tourism, water, and business practices through better siting, governance, and risk management.",
+          "clash": "Possible misalignment recurs where biodiversity and land conservation targets, especially forest expansion, wetland protection, and area-based conservation, may compete with agriculture, livestock, irrigation, industrial parks, and energy infrastructure for the same land or water space. Delivery friction is also flagged for review where new power or industrial facilities, irrigation augmentation, or productivity-focused supply expansion could proceed without biodiversity-sensitive zoning, disclosure, safeguards, or hydrological management.",
+          "coordination_hint": "This sector tends to benefit from early spatial zoning, landscape-level planning, and project screening so that production, infrastructure, and restoration measures can be sited and managed in ways that align with biodiversity objectives.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_health",
+        "category_name": "Health",
+        "aligned_count": 134,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 80,
+          "relevant_only_count": 100
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Link biodiversity planning to climate health resilience",
+          "reinforce": "Health-related targets often align with biodiversity measures through enabling mechanisms, especially policy integration, nature-based spatial planning, ecosystem restoration, and implementation capacity. The sample repeatedly points to support for climate-resilient health systems, disease surveillance, malnutrition management, and emergency risk reduction, but mostly through indirect pathways rather than shared delivery actions.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "It may help to coordinate health resilience actions with biodiversity planning, restoration, and cross-sector financing where ecosystem condition, urban planning, or zoonotic and nutrition risks overlap.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_infrastructure_settlements",
+        "category_name": "Infrastructure and human settlements",
+        "aligned_count": 606,
+        "flagged_count": 4,
+        "pool_composition": {
+          "primary_count": 596,
+          "relevant_only_count": 293
+        },
+        "contradiction_types": {
+          "delivery_friction": 4
+        },
+        "synthesis": {
+          "storyline_name": "using planning and infrastructure safeguards to align delivery",
+          "reinforce": "Within infrastructure and human settlements, alignment often comes through enabling systems rather than shared projects. Spatial and urban planning, forecasting, risk frameworks, finance, cleaner production, energy efficiency, and water or tourism resilience measures tend to reinforce biodiversity, land, and restoration goals by improving siting, information, and lower-pollution delivery conditions.",
+          "clash": "Possible misalignment recurs where infrastructure expansion or upgrading could place pressure on sensitive land and biodiversity areas. Flagged for review are wetland conversion risks linked to eco-industrial parks and irrigation augmentation, and biodiversity-planning or business-risk expectations that may be strained by new or converted natural gas power infrastructure unless siting, screening, zoning, and hydrological safeguards are applied.",
+          "coordination_hint": "This sector often points to the value of early spatial planning, environmental screening, and landscape or hydrological safeguards so infrastructure and settlement investments can align with wetland, biodiversity, and land objectives.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_livelihoods",
+        "category_name": "Livelihoods",
+        "aligned_count": 203,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 140,
+          "relevant_only_count": 120
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Link livelihood resilience through enabling environmental governance",
+          "reinforce": "Within livelihoods, alignment often comes through enabling measures, where biodiversity data, participatory decision-making, forecasting, stocktaking, risk management, funding, and business disclosure frameworks reinforce livelihood-related actions in agriculture, fisheries, tourism, and alternative livelihoods. More direct reinforcement also recurs where sustainable biodiversity use supports tourism resilience, soil and land productivity support crop value chains, and alternative livelihoods tend to reduce pressure on wild species while strengthening climate resilience.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "It may help to coordinate livelihood actions with shared data systems, risk frameworks, and biodiversity-sensitive business and community planning, since these pairs often point to supportive but not tightly integrated implementation links.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_water",
+        "category_name": "Water",
+        "aligned_count": 282,
+        "flagged_count": 6,
+        "pool_composition": {
+          "primary_count": 180,
+          "relevant_only_count": 174
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Link watershed protection with resilient water delivery",
+          "reinforce": "Water-related adaptation tends to align with biodiversity restoration, catchment protection, forest cover, and broader conservation targets. The recurring mechanism is that ecosystem restoration, river-basin management, monitoring, and governance capacity can reinforce climate-resilient water supply, irrigation management, salinity control, and watershed function.",
+          "clash": "Possible misalignment recurs where wetland protection or wider land-and-water conservation is flagged for review against irrigation augmentation and production-oriented agriculture, livestock, or industrial expansion. The recurring mechanism is competition over shared land and hydrology, especially if irrigation works, siting, or sector expansion affect wetlands, conserved areas, or water-dependent landscapes.",
+          "coordination_hint": "This sector often points to value in spatial planning, basin-scale zoning, and hydrological safeguards so water infrastructure and productivity measures can align with wetland and catchment conservation.",
           "confidence": "high"
         },
         "synthesis_error": null

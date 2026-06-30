@@ -78,11 +78,11 @@ import type { LensId, LensOption } from "./lens";
 import { getDocTypeOrder } from "@/lib/utils";
 import { PrototypeBadge } from "@/components/ui/prototype-badge";
 import {
-  buildSectorAlignmentDensity,
   buildSectorBriefing,
+  buildSectorCoherenceShare,
   buildSectorTensionDensity,
   canonicalHiddenKey,
-  computeConcentrationStat,
+  computeCoverageConcentration,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
   indexSectorSyntheses,
@@ -92,9 +92,10 @@ import {
   selectCorpusThemesForState,
   selectSectorSynthesesForState,
   type CorpusThemesPayload,
+  type CoverageConcentrationStat,
   type FaultLine,
-  type SectorAlignment,
   type SectorBriefing,
+  type SectorCoherenceShareSummary,
   type SectorSynthesisPayload,
   type SectorTension,
 } from "@/lib/coherence-briefing";
@@ -106,6 +107,7 @@ import {
 } from "@/lib/financing-coherence";
 import {
   computeBudgetByGlobeCategory,
+  computeBudgetByTaxonomy,
   computeOutcomeSubcategories,
   type CategoryBudgetSummary,
   type OutcomeSubcategory,
@@ -131,6 +133,7 @@ import type {
   CountryConfig,
   DocPairSynthesis,
   GlobeCategory,
+  GgaCategory,
   GlobeSubcategory,
   IpccSector,
   NbsCategory,
@@ -186,6 +189,19 @@ const SECTION_ORDER: SectionId[] = [
   EXPLORE_SECTION_ID,
 ];
 
+/** Distinct, semantically-evocative swatches for the seven GGA climate-resilience
+ *  themes (decision 2/CMA.5). Keyed by category id so the mapping is stable
+ *  regardless of array order. Colour is presentation only (no source claim). */
+const GGA_LENS_COLORS: Record<string, string> = {
+  gga_water: "#0468b1",
+  gga_agriculture_food: "#d97706",
+  gga_health: "#dc2626",
+  gga_ecosystems_biodiversity: "#059669",
+  gga_infrastructure_settlements: "#64748b",
+  gga_livelihoods: "#7c3aed",
+  gga_cultural_heritage: "#b45309",
+};
+
 interface CoherenceBriefingProps {
   countryName: string;
   countryId?: string;
@@ -194,6 +210,8 @@ interface CoherenceBriefingProps {
   classifications: ThematicClassification[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  /** GGA climate-resilience themes (decision 2/CMA.5), surfaced as a lens. */
+  ggaCategories?: GgaCategory[];
   nbsCategories: NbsCategory[];
   countryConfig: CountryConfig | null;
   docPairSyntheses?: DocPairSynthesis[];
@@ -223,6 +241,7 @@ export function CoherenceBriefing({
   classifications,
   sectors,
   globeCategories,
+  ggaCategories = [],
   countryConfig,
   docPairSyntheses = [],
   corpusThemes = null,
@@ -249,6 +268,7 @@ export function CoherenceBriefing({
       sectors,
       globeCategories,
       globeSubcategories,
+      ggaCategories,
       classifications,
       nr7Data,
       btrData,
@@ -261,6 +281,7 @@ export function CoherenceBriefing({
       sectors,
       globeCategories,
       globeSubcategories,
+      ggaCategories,
       classifications,
       nr7Data,
       btrData,
@@ -387,6 +408,29 @@ export function CoherenceBriefing({
       targets: visibleTargets,
     });
   }, [outcomeBudget, berData, globeSubcategories, classifications, visibleTargets]);
+
+  // GGA finance view: when the climate-resilience lens is active, regroup the
+  // reviewed BER spend by the seven GGA themes (single-level — no subcategory
+  // rollup). Computed unconditionally (cheap); null unless the country has BER
+  // data and GGA classifications, so non-BER countries are unaffected.
+  const outcomeBudgetGga = useMemo<CategoryBudgetSummary | null>(() => {
+    if (!financing || !berData || ggaCategories.length === 0) return null;
+    return computeBudgetByTaxonomy({
+      berData,
+      categories: ggaCategories,
+      primaryTaxonomyType: "gga",
+      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+    });
+  }, [
+    financing,
+    berData,
+    ggaCategories,
+    classifications,
+    visibleTargets,
+    visibleAlignment,
+  ]);
 
   // Softer, AI-estimated per-document budget reach for the left-column read.
   // Recomputes with the document toggle (visibleTargets). Null without budget
@@ -674,6 +718,22 @@ export function CoherenceBriefing({
         })),
       });
     }
+    // GGA climate-resilience lens (decision 2/CMA.5). Offered only when the
+    // pipeline has classified targets against it; the filter below also enforces
+    // at least one primary `gga` classification in the currently-visible set.
+    if (ggaCategories.length > 0) {
+      candidates.push({
+        id: "gga",
+        label: t("lens.gga"),
+        tooltip: t("lens.ggaTooltip"),
+        taxonomyType: "gga",
+        categories: ggaCategories.map((c) => ({
+          id: c.id,
+          name: c.name,
+          color: GGA_LENS_COLORS[c.id] ?? "#9ca3af",
+        })),
+      });
+    }
     return candidates.filter((opt) => {
       const idSet = new Set(opt.categories.map((c) => c.id));
       return visibleClassifications.some(
@@ -683,7 +743,7 @@ export function CoherenceBriefing({
           idSet.has(c.categoryId),
       );
     });
-  }, [t, globeCategories, sectors, countryConfig, visibleClassifications]);
+  }, [t, globeCategories, ggaCategories, sectors, countryConfig, visibleClassifications]);
 
   const [activeLensId, setActiveLensId] = useState<LensId | null>(null);
 
@@ -713,9 +773,9 @@ export function CoherenceBriefing({
     });
   }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
 
-  const sectorAlignments = useMemo<SectorAlignment[]>(() => {
-    if (!lens) return [];
-    return buildSectorAlignmentDensity({
+  const sectorShares = useMemo<SectorCoherenceShareSummary | null>(() => {
+    if (!lens) return null;
+    return buildSectorCoherenceShare({
       targets: visibleTargets,
       alignment: visibleAlignment,
       classifications: visibleClassifications,
@@ -735,8 +795,8 @@ export function CoherenceBriefing({
     () => sectorRows.find((s) => s.tensionCount > 0) ?? sectorRows[0] ?? null,
     [sectorRows],
   );
-  const concentration = useMemo(
-    () => computeConcentrationStat(sectorRows),
+  const coverageConcentration = useMemo<CoverageConcentrationStat>(
+    () => computeCoverageConcentration(sectorRows),
     [sectorRows],
   );
 
@@ -1331,9 +1391,9 @@ export function CoherenceBriefing({
             >
               <SectorsSection
                 sectorRows={sectorRows}
-                sectorAlignments={sectorAlignments}
+                sectorShares={sectorShares}
                 sectorSyntheses={sectorSynthesesIndex}
-                concentration={concentration}
+                coverageConcentration={coverageConcentration}
                 lensLabel={lens?.label ?? null}
                 taxonomyType={lensTaxonomyType}
                 availableLenses={availableLenses}
@@ -1420,8 +1480,12 @@ export function CoherenceBriefing({
               ) : activeSection === FINANCING_SECTION_ID && financing ? (
                 <FinancingCenterpiece
                   summary={financing}
-                  outcomeBudget={outcomeBudget}
-                  outcomeSubcategories={outcomeSubcategories}
+                  outcomeBudget={
+                    lens?.taxonomyType === "gga" ? outcomeBudgetGga : outcomeBudget
+                  }
+                  outcomeSubcategories={
+                    lens?.taxonomyType === "gga" ? null : outcomeSubcategories
+                  }
                   countryName={countryName}
                 />
               ) : activeSection === IMPLEMENTATION_SECTION_ID &&

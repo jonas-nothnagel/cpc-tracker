@@ -168,6 +168,19 @@ export interface GlobeCategory {
 }
 
 /**
+ * A Global Goal on Adaptation (GGA) thematic target — one of the seven
+ * climate-resilience themes of the UAE Framework for Global Climate Resilience
+ * (decision 2/CMA.5). Used as a selectable taxonomy lens.
+ */
+export interface GgaCategory {
+  id: string;
+  name: string;
+  description: string;
+  /** Primary source citation for the description. */
+  source?: string;
+}
+
+/**
  * A GLOBE subcategory (level 2) within a Primary Biodiversity Category.
  * These come directly from the BIOFIN GLOBE 2024 taxonomy and are used for
  * fine-grained BER classification.
@@ -208,8 +221,10 @@ export interface ThematicClassification {
    * - "globe_sub": GLOBE subcategories (BIOFIN, 48 fine-grained)
    * - "adaptation_goal": country-specific adaptation action plan goals
    *   (e.g. Mongolia APNDC's 8 goals from BTR1 Table III.9)
+   * - "gga": Global Goal on Adaptation thematic targets (UAE Framework for
+   *   Global Climate Resilience, decision 2/CMA.5; 7 climate-resilience themes)
    */
-  taxonomyType: "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal";
+  taxonomyType: "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal" | "gga";
   /** Whether the target pertains to this category (score >= relevance threshold) */
   isRelevant: boolean;
   /** True for the single highest-scoring category per (target, taxonomyType). Use this for single-label views. */

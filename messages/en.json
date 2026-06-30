@@ -130,7 +130,9 @@
     "lens": {
       "globe": "GLOBE",
       "ipcc": "IPCC sectors",
-      "country": "Country sectors"
+      "country": "Country sectors",
+      "gga": "Climate resilience (GGA)",
+      "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)"
     },
     "legend": {
       "aligned": "Aligned",
@@ -404,7 +406,7 @@
       }
     },
     "sectors": {
-      "eyebrow": "Where does misalignment concentrate?",
+      "eyebrow": "Where does policy ambition sit?",
       "noTaxonomy": "No sector taxonomy is available for this country.",
       "showAll": "Show all {count, number} sectors →",
       "collapseToTop": "Collapse to top {count, number}",
@@ -417,8 +419,8 @@
       },
       "col": {
         "sector": "Sector",
-        "aligned": "Aligned",
-        "misaligned": "Misaligned"
+        "targets": "Targets",
+        "flaggedShare": "Potential misalignment"
       },
       "noun": {
         "category": {
@@ -428,23 +430,30 @@
         "sector": {
           "singular": "sector",
           "plural": "sectors"
+        },
+        "theme": {
+          "singular": "theme",
+          "plural": "themes"
         }
       },
-      "concentration": {
-        "emptyHeadline": "No potentially misaligned pairs grouped by {noun} yet.",
-        "emptyBody": "Either the pipeline has not surfaced any potential misalignment touching a primary-classified {noun}, or the country has no {noun} taxonomy configured.",
-        "spreadHeadline": "Potentially misaligned pairs spread across {sectors, number} {nounPlural}.",
-        "spreadBody": "{total, number} potentially misaligned pairs land across {sectors, number} {nounPlural} with no single {noun} dominating.",
-        "singleHeadline": "{name} carries {pct}% of potentially misaligned pairs.",
-        "singleBody": "{total, number} potentially misaligned pairs land across {sectors, number} {nounPlural}; {name} alone holds {pct}%.",
-        "everyHeadline": "Potentially misaligned pairs touch every {noun}.",
-        "everyBody": "{total, number} potentially misaligned pairs spread across all {sectors, number} {nounPlural}; the heaviest are {list}.",
-        "topHeadline": "Misalignment concentrates in {count, number} of {sectors, number} {nounPlural}.",
-        "topBody": "{pct}% of the {total, number} potentially misaligned pairs land on {list}. Click a row for the underlying pairs."
+      "coverage": {
+        "emptyHeadline": "No {noun} carries a classified target yet.",
+        "emptyBody": "Either no target is primary-classified to a {noun} under this lens, or the country has no {noun} taxonomy configured.",
+        "singleHeadline": "{name} holds {pct}% of classified targets.",
+        "everyHeadline": "Classified targets span all {sectors, number} {nounPlural}, most in {name}.",
+        "topHeadline": "{list} hold {pct}% of classified targets."
+      },
+      "flag": {
+        "none": "No reviewed relationships under this lens yet.",
+        "uniform": "Potential misalignment is broadly similar across {nounPlural}, around {mid, number}% of reviewed relationships.",
+        "range": "Potential misalignment ranges from {min, number}% to {max, number}% of reviewed relationships (corpus average {mid, number}%).",
+        "rangeWithPeak": "Potential misalignment ranges from {min, number}% to {max, number}% of reviewed relationships (corpus average {mid, number}%), highest in {name}."
       },
       "listJoinTwo": "{a} and {b}",
       "listJoinMany": "{head}, and {last}",
-      "rowAriaLabel": "{name}: {flagged, number} potentially misaligned, {aligned, number} aligned",
+      "rowAriaLabel": "{name}: {count, number} primary targets. {flag}.",
+      "flagAriaValue": "{pct, number}% of reviewed relationships are a potential misalignment",
+      "flagAriaNone": "no reviewed relationships under this lens",
       "primaryCount": "{count, number} primary",
       "relevantCount": "{count, number} relevant"
     },
@@ -1166,7 +1175,9 @@
       "globeSingular": "biodiversity category",
       "globePlural": "biodiversity categories",
       "sectorSingular": "climate mitigation sector",
-      "sectorPlural": "climate mitigation sectors"
+      "sectorPlural": "climate mitigation sectors",
+      "ggaSingular": "climate-resilience theme",
+      "ggaPlural": "climate-resilience themes"
     },
     "summary": {
       "across": " across {count, number} {groupLabel}",
@@ -1183,7 +1194,7 @@
     },
     "controls": {
       "groupDocuments": "Documents",
-      "groupGlobe": "GLOBE",
+      "groupGlobe": "GLOBE biodiversity",
       "groupSectors": "IPCC sectors",
       "groupDocumentsTitle": "Group the wheel by source document",
       "groupGlobeTitle": "Group by biodiversity category (GLOBE taxonomy)",
@@ -1197,7 +1208,10 @@
       "filterHigh": "Strong alignment only",
       "filterContradictions": "Potential misalignment only",
       "atAGlance": "At a glance",
-      "atAGlanceTitle": "Show or hide the at-a-glance summary panel"
+      "atAGlanceTitle": "Show or hide the at-a-glance summary panel",
+      "groupGga": "GGA resilience",
+      "groupGgaTitle": "Group by climate-resilience theme (Global Goal on Adaptation, decision 2/CMA.5)",
+      "groupOptionGga": "By Climate Resilience"
     },
     "doc": {
       "mitigation": "Mitigation",
@@ -1232,7 +1246,8 @@
       "centerConnectionsPlural": "{count, number} connections",
       "centerTargetSingular": "{count, number} target",
       "centerTargetPlural": "{count, number} targets",
-      "centerSpendTagged": "biodiversity spend tagged"
+      "centerSpendTagged": "biodiversity spend tagged",
+      "legendResilience": "Climate Resilience"
     },
     "detailPanel": {
       "closeAria": "Close target detail",
@@ -1332,7 +1347,6 @@
       "viewCoherence": "Coherence",
       "viewFinance": "Finance · BER",
       "groupByLabel": "Group the arcs by",
-      "groupSectors": "Sectors",
       "showLabel": "Show",
       "answersHeading": "Answers",
       "documentsLabel": "Documents",
@@ -1728,7 +1742,12 @@
         "byNationalSector": "By National Sector Categories",
         "byIpccSector": "By IPCC Sector (standardised)",
         "default": "Default (Climate Mitigation + Adaptation Goals)",
-        "byBiodiversity": "By Biodiversity Taxonomy"
+        "byBiodiversity": "By Biodiversity Taxonomy",
+        "byGga": "By Climate resilience (Global Goal on Adaptation)"
+      },
+      "gga": {
+        "title": "All reported actions, by climate-resilience theme",
+        "sectionDesc": "Mitigation and adaptation actions grouped by Global Goal on Adaptation theme (UAE Framework for Global Climate Resilience)."
       },
       "status": {
         "active": {

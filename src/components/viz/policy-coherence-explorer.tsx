@@ -98,7 +98,7 @@ interface TaxCategory {
   description: string;
 }
 
-type GroupMode = "document" | "sector" | "globe";
+type GroupMode = "document" | "sector" | "globe" | "gga";
 type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
 type ActionTypeFilter = "all" | "mitigation" | "adaptation";
 
@@ -185,6 +185,7 @@ function buildGroups(
   mode: GroupMode,
   sectors: TaxCategory[],
   globeCategories: TaxCategory[],
+  ggaCategories: TaxCategory[],
   classifications: ThematicClassification[],
   countryConfig?: CountryConfig | null,
 ): Group[] {
@@ -203,6 +204,7 @@ function buildGroups(
     }));
   }
   if (mode === "sector") return buildGroupsByTaxonomy(targets, sectors, "sector", classifications);
+  if (mode === "gga") return buildGroupsByTaxonomy(targets, ggaCategories, "gga", classifications);
   return buildGroupsByTaxonomy(targets, globeCategories, "globe", classifications);
 }
 
@@ -1244,7 +1246,7 @@ function useTypedBody(text: string, charDelayMs = 10): string {
  */
 function revealDocsForFocalTaxonomyCategory(args: {
   focalCategoryId: string;
-  taxonomyType: "sector" | "globe";
+  taxonomyType: "sector" | "globe" | "gga";
   classifications: ThematicClassification[];
   targetMap: Map<string, Target>;
   docsToShow: Set<string>;
@@ -2782,6 +2784,9 @@ interface PolicyCoherenceExplorerProps {
   sectors: TaxCategory[];
   globeCategories: TaxCategory[];
   globeSubcategories?: GlobeSubcategory[];
+  /** Climate-resilience (GGA) taxonomy categories — decision 2/CMA.5 thematic
+   *  targets. Enables the fourth "Resilience" wheel grouping when present. */
+  ggaCategories?: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
   btrData?: BtrData | null;
@@ -2805,6 +2810,7 @@ export function PolicyCoherenceExplorer({
   sectors,
   globeCategories,
   globeSubcategories,
+  ggaCategories = [],
   classifications,
   nr7Data,
   btrData,
@@ -2990,6 +2996,15 @@ export function PolicyCoherenceExplorer({
     () => targets.some((t) => t.actionType === "adaptation"),
     [targets],
   );
+  // Whether any target carries a primary GGA (climate-resilience) classification.
+  // Gates the fourth "Resilience" group-by option so it only shows with content.
+  const hasGga = useMemo(
+    () =>
+      classifications.some(
+        (c) => c.taxonomyType === "gga" && c.isPrimary === true,
+      ),
+    [classifications],
+  );
   const visibleTargetIds = useMemo(
     () => new Set(visibleTargets.map((t) => t.id)),
     [visibleTargets],
@@ -3072,8 +3087,8 @@ export function PolicyCoherenceExplorer({
   const activeId = selectedId ?? hoveredId;
 
   const groups = useMemo(
-    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, classifications, countryConfig),
-    [visibleTargets, groupMode, sectors, globeCategories, classifications, countryConfig],
+    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig),
+    [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig],
   );
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
@@ -3403,6 +3418,7 @@ export function PolicyCoherenceExplorer({
           classifications,
           sectors,
           globeCategories,
+          ggaCategories,
           budgetSummary,
           btrData,
           availableDocs,
@@ -3492,6 +3508,7 @@ export function PolicyCoherenceExplorer({
       classifications,
       countryConfig,
       globeCategories,
+      ggaCategories,
       hiddenDocs,
       groupMode,
       filter,
@@ -3697,7 +3714,9 @@ export function PolicyCoherenceExplorer({
       if (
         hasFocusCategoryAction &&
         nextFocalGroupId &&
-        (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
+        (effectiveGroupMode === "sector" ||
+          effectiveGroupMode === "globe" ||
+          effectiveGroupMode === "gga")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -3826,7 +3845,9 @@ export function PolicyCoherenceExplorer({
       if (
         hasFocusCategoryAction &&
         nextFocalGroupId &&
-        (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
+        (effectiveGroupMode === "sector" ||
+          effectiveGroupMode === "globe" ||
+          effectiveGroupMode === "gga")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -4901,6 +4922,7 @@ export function PolicyCoherenceExplorer({
             hiddenDocs={hiddenDocs}
             onToggleDoc={toggleDoc}
             countryConfig={countryConfig}
+            hasGga={hasGga}
           />
         }
         answers={
@@ -4954,6 +4976,7 @@ export function PolicyCoherenceExplorer({
                 document: [t("groupLabel.documentSingular"), t("groupLabel.documentPlural")],
                 globe: [t("groupLabel.globeSingular"), t("groupLabel.globePlural")],
                 sector: [t("groupLabel.sectorSingular"), t("groupLabel.sectorPlural")],
+                gga: [t("groupLabel.ggaSingular"), t("groupLabel.ggaPlural")],
               } as Record<GroupMode, [string, string]>)[groupMode][
                 groups.length !== 1 ? 1 : 0
               ];
@@ -5049,6 +5072,9 @@ export function PolicyCoherenceExplorer({
                   ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
                   ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
                   ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
+                  ...(hasGga
+                    ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]]
+                    : []),
                 ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
                   <button
                     key={mode}
@@ -5075,6 +5101,9 @@ export function PolicyCoherenceExplorer({
                 <option value="document">{t("controls.groupOptionDocument")}</option>
                 <option value="globe">{t("controls.groupOptionGlobe")}</option>
                 <option value="sector">{t("controls.groupOptionSector")}</option>
+                {hasGga && (
+                  <option value="gga">{t("controls.groupOptionGga")}</option>
+                )}
               </select>
             )}
             <select
@@ -5338,7 +5367,7 @@ export function PolicyCoherenceExplorer({
               {/* Document column */}
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : t("wheel.legendSector")}
+                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : t("wheel.legendSector")}
                 </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (

@@ -666,6 +666,55 @@ export function computeConcentrationStat(
   };
 }
 
+export interface CoverageConcentrationStat {
+  /** Sectors with at least one primary-classified target. */
+  populatedSectors: number;
+  /** Total primary-classified targets across populated sectors. */
+  totalTargets: number;
+  /** Names of the fewest sectors that together hold >= `targetShare` of all targets. */
+  topNames: string[];
+  /** Share of all targets concentrated in `topNames` (0..1). */
+  share: number;
+}
+
+/**
+ * Coverage-side sibling of {@link computeConcentrationStat}: the smallest set of
+ * sectors whose primary-target counts together cover at least `targetShare` of all
+ * targets. Drives the Sectors headline "ambition concentrates in N of M themes".
+ * Unlike the flag-count version it ranks by `targetCount` (size-robust coverage),
+ * so naming the leading themes is honest rather than a largest-sector artifact.
+ */
+export function computeCoverageConcentration(
+  sectorRows: SectorTension[],
+  targetShare = 0.7,
+): CoverageConcentrationStat {
+  const populated = sectorRows.filter((r) => r.targetCount > 0);
+  const totalTargets = populated.reduce((s, r) => s + r.targetCount, 0);
+  if (totalTargets === 0) {
+    return {
+      populatedSectors: populated.length,
+      totalTargets: 0,
+      topNames: [],
+      share: 0,
+    };
+  }
+  const sorted = [...populated].sort((a, b) => b.targetCount - a.targetCount);
+  const topNames: string[] = [];
+  let running = 0;
+  for (const row of sorted) {
+    if (row.targetCount === 0) break;
+    topNames.push(row.categoryName);
+    running += row.targetCount;
+    if (running / totalTargets >= targetShare) break;
+  }
+  return {
+    populatedSectors: populated.length,
+    totalTargets,
+    topNames,
+    share: running / totalTargets,
+  };
+}
+
 // ─── Sector contradiction hub (Section 2 cards) ─────────────────────
 
 export interface SectorHub {
@@ -1066,6 +1115,121 @@ export function buildSectorAlignmentDensity(args: {
     alignmentCount: countByCat.get(cat.id) ?? 0,
     peakAlignmentLevel: peakByCat.get(cat.id) ?? null,
   }));
+}
+
+// ─── Sector flagged share (size-robust misalignment signal) ─────────
+
+export interface SectorCoherenceShare {
+  categoryId: string;
+  /** Aligned (high|medium) + flagged pairs touching this category's primary targets. */
+  reviewedPairs: number;
+  /** Flagged ("possible misalignment") pairs touching this category. */
+  flaggedPairs: number;
+  /** flaggedPairs / reviewedPairs, or null when no reviewed pair touches the category. */
+  flaggedShare: number | null;
+}
+
+export interface SectorCoherenceShareSummary {
+  byCategory: Map<string, SectorCoherenceShare>;
+  /** Corpus flagged share over DISTINCT lens-reviewed pairs (each pair counted once). */
+  mid: number;
+  /** Largest flaggedShare across categories with reviewed pairs; bar-normalisation denom. */
+  maxShare: number;
+}
+
+/**
+ * Size-robust per-sector misalignment signal. For each category, computes
+ * `flaggedShare = flagged / (alignedHighMed + flagged)` over the pairs that touch
+ * one of its primary-classified targets — so a large sector is not penalised for
+ * mechanically having more pairs (the failing of the raw counts from
+ * buildSectorTensionDensity / buildSectorAlignmentDensity).
+ *
+ * The `high+medium`-only aligned basis (low/Partial excluded) matches the corpus
+ * headline metric (buildDocCoherenceGraph `:877-878`, buildDocFrictionShares), so a
+ * sector's flagged share, the wheel rim warmth, and the headline all speak one number.
+ *
+ * `flaggedShare` is null when a category has fewer than SECTOR_SHARE_MIN_REVIEWED
+ * reviewed pairs, so the UI can distinguish "too few reviewed relationships to rate"
+ * (row shows "—") from a genuine 0% flagged rate, and a thin sector never dominates
+ * the bar scale or gets named as the corpus peak. `mid` is the corpus flag rate over
+ * distinct pairs (the "average" reference tick); `maxShare` anchors bar normalisation.
+ * Mirrors buildSectorTensionDensity's grouping/dedup.
+ */
+const SECTOR_SHARE_MIN_REVIEWED = 5;
+
+export function buildSectorCoherenceShare(args: {
+  targets: Target[];
+  alignment: AlignmentResult[];
+  classifications: Array<{
+    targetId: string;
+    categoryId: string;
+    taxonomyType: string;
+    isPrimary?: boolean;
+  }>;
+  categories: { id: string; name: string }[];
+  taxonomyType: string;
+}): SectorCoherenceShareSummary {
+  const { targets, alignment, classifications, categories, taxonomyType } = args;
+  const targetIds = new Set(targets.map((t) => t.id));
+  const primaryByTarget = new Map<string, string>();
+  for (const c of classifications) {
+    if (!c.isPrimary || c.taxonomyType !== taxonomyType) continue;
+    if (!targetIds.has(c.targetId)) continue;
+    primaryByTarget.set(c.targetId, c.categoryId);
+  }
+
+  const reviewedByCat = new Map<string, number>();
+  const flaggedByCat = new Map<string, number>();
+  for (const cat of categories) {
+    reviewedByCat.set(cat.id, 0);
+    flaggedByCat.set(cat.id, 0);
+  }
+
+  let corpusReviewed = 0;
+  let corpusFlagged = 0;
+  for (const a of alignment) {
+    const flagged = isContradiction(a.alignment);
+    const aligned = a.alignment === "high" || a.alignment === "medium";
+    if (!flagged && !aligned) continue; // low / none are not "reviewed" pairs here
+    const touched = new Set<string>();
+    const catA = primaryByTarget.get(a.targetAId);
+    const catB = primaryByTarget.get(a.targetBId);
+    if (catA) touched.add(catA);
+    if (catB) touched.add(catB);
+    if (touched.size === 0) continue; // pair sits outside the active lens
+    corpusReviewed += 1;
+    if (flagged) corpusFlagged += 1;
+    for (const c of touched) {
+      reviewedByCat.set(c, (reviewedByCat.get(c) ?? 0) + 1);
+      if (flagged) flaggedByCat.set(c, (flaggedByCat.get(c) ?? 0) + 1);
+    }
+  }
+
+  // A sector needs a minimum of reviewed relationships before its flagged share
+  // is meaningful: one flagged pair out of one reviewed reads as 100% and would
+  // both dominate the bar scale (maxShare) and get named as the corpus peak. Below
+  // the floor the share is left null, so the row shows "—" and the sector is
+  // excluded from maxShare, the corpus range, and the peak claim.
+  const byCategory = new Map<string, SectorCoherenceShare>();
+  let maxShare = 0;
+  for (const cat of categories) {
+    const reviewedPairs = reviewedByCat.get(cat.id) ?? 0;
+    const flaggedPairs = flaggedByCat.get(cat.id) ?? 0;
+    const flaggedShare =
+      reviewedPairs >= SECTOR_SHARE_MIN_REVIEWED
+        ? flaggedPairs / reviewedPairs
+        : null;
+    if (flaggedShare !== null && flaggedShare > maxShare) maxShare = flaggedShare;
+    byCategory.set(cat.id, {
+      categoryId: cat.id,
+      reviewedPairs,
+      flaggedPairs,
+      flaggedShare,
+    });
+  }
+
+  const mid = corpusReviewed > 0 ? corpusFlagged / corpusReviewed : 0;
+  return { byCategory, mid, maxShare };
 }
 
 // ─── Synthesis-layer helpers (doc-pair / corpus / sector) ───────────

@@ -23,9 +23,9 @@ import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import {
   useAlignmentLabels,
   useContradictionTypeLabels,
+  useManageabilityLabels,
 } from "@/lib/labels";
 import type { FaultLine, SectorBriefing } from "@/lib/coherence-briefing";
-import { SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentResult,
   CountryConfig,
@@ -439,11 +439,23 @@ function ExampleRow({
   onOpen?: () => void;
 }) {
   const alignmentLabels = useAlignmentLabels();
+  const mechanismLabels = useContradictionTypeLabels();
+  const manageabilityLabels = useManageabilityLabels();
   const { targetA, targetB, pair } = line;
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
   const isFlagged = pair.alignment === "flagged";
+  // Mechanism + manageability are facets OF the potential-misalignment
+  // classification, not sibling tags. The alignment label is the lead pill;
+  // these hang beneath it as subordinate sub-text so the hierarchy reads at a
+  // glance (rather than three equal pills in three competing colours).
+  const facets = isFlagged
+    ? [
+        pair.mechanism ? mechanismLabels[pair.mechanism] : null,
+        pair.manageability ? manageabilityLabels[pair.manageability] : null,
+      ].filter((v): v is string => Boolean(v))
+    : [];
   const Tag = onOpen ? "button" : "div";
   return (
     <li>
@@ -454,9 +466,9 @@ function ExampleRow({
           onOpen ? "hover:bg-gray-50 transition-colors" : ""
         } p-2`}
       >
-        <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+        <div className="mb-1">
           <span
-            className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="inline-block text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -465,11 +477,10 @@ function ExampleRow({
           >
             {alignmentLabels[pair.alignment]}
           </span>
-          {isFlagged && pair.mechanism && (
-            <SubFieldChip variant="mechanism" value={pair.mechanism} />
-          )}
-          {isFlagged && pair.manageability && (
-            <SubFieldChip variant="manageability" value={pair.manageability} />
+          {facets.length > 0 && (
+            <p className="mt-1 text-[10px] text-[var(--undp-gray)] leading-tight">
+              {facets.join(" · ")}
+            </p>
           )}
         </div>
         <p className="text-[10px] text-[var(--undp-gray)] mb-1">

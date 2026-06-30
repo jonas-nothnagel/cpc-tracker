@@ -23612,5 +23612,6380 @@
     "isRelevant": false,
     "isPrimary": false,
     "score": 0.0
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Increasing forest cover is directly about restoring and enhancing terrestrial ecosystems and biodiversity through nature-based action."
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "LDN_1",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "Wetlands are closely tied to water regulation, storage and resilience to water-related hazards."
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Preventing wetland conversion is directly about conserving and managing ecosystems and biodiversity."
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "LDN_2",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.89,
+    "reasoning": "Reducing soil degradation to improve land productivity directly supports climate-resilient agricultural production."
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.82,
+    "reasoning": "Soil degradation and Soil Organic Carbon are core ecosystem health issues tied to restoration and nature-based resilience."
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "LDN_3",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "The target directly concerns improving the resilience and sustainability of cultivated cropland used for agricultural production."
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Reducing soil erosion is a land and ecosystem management measure that helps conserve soil functions and terrestrial ecosystem health."
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "LDN_4",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly centers biodiversity considerations and nature-based approaches to prevent biodiversity loss."
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "It directly references spatial and urban planning, linking biodiversity integration to resilient human settlements."
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target explicitly focuses on restoring terrestrial, freshwater, marine and coastal ecosystems and their contributions to people and the planet."
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target is explicitly about conserving terrestrial, coastal, and marine areas and mainstreaming OECMs, which directly aligns with ecosystem and biodiversity protection."
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NBSAP_3",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.99,
+    "reasoning": "The target explicitly focuses on preventing species loss, conserving genetic diversity, and managing human-wildlife interactions, which are core biodiversity and ecosystem issues."
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_4",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Sustainable, safe, and legal management and trade of wild species is directly about conserving biodiversity and ecosystems while supporting nature-based stewardship."
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.46
+  },
+  {
+    "targetId": "NBSAP_5",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Preventing and controlling invasive alien species is directly about protecting ecosystems and biodiversity from a major ecological threat."
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.06
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NBSAP_6",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on reducing pollution to protect biodiversity and ecosystem functions and services."
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_7",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target explicitly focuses on minimizing climate change impacts on biodiversity and building resilience in ecosystems."
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_8",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.5,
+    "reasoning": "Reducing waste and overconsumption can lessen pressure on natural ecosystems and biodiversity through lower resource extraction and pollution."
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NBSAP_9",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.86,
+    "reasoning": "Agriculture, aquaculture, fisheries and forestry are named directly, making sustainable production systems a major theme."
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target explicitly centers on sustaining multiple sectors through the wise use of biodiversity."
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.48
+  },
+  {
+    "targetId": "NBSAP_10",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target is explicitly centered on biodiversity risk assessment, disclosure, mitigation, and incentives to support biodiversity."
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NBSAP_11",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.3,
+    "reasoning": "Biosafety is directly concerned with preventing biological risks that can affect human health, though climate resilience is not explicit here."
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_12",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.93,
+    "reasoning": "The target centers on biological resources and related knowledge, which directly aligns with biodiversity governance and conservation."
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NBSAP_13",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Traditional knowledge is an explicit element of the target, linking it strongly to protection and recognition of Indigenous and local knowledge systems."
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "The target explicitly focuses on biodiversity information, participation, and access to justice in biodiversity-related decision-making."
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_14",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.15
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "NBSAP and NBTs are biodiversity policy instruments, so the target is primarily about strengthening implementation for ecosystems and biodiversity outcomes."
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.15
+  },
+  {
+    "targetId": "NBSAP_15",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target explicitly focuses on biodiversity conservation, management and sustainable use, making this the primary category."
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_16",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.24
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on integrating climate change into agriculture, making agriculture and food the primary category."
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_1",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.46
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.41
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.72,
+    "reasoning": "A national weather and climate platform for early warning and risk management is strongly tied to protecting essential services, infrastructure and settlements from climate hazards."
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.29
+  },
+  {
+    "targetId": "NDC_2",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.38
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "An agro-ecological map is primarily an agricultural planning tool for climate-resilient crop and food production under current and future conditions."
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Agro-ecological zoning also reflects ecological conditions and land suitability, linking it to ecosystem management under climate change."
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.24
+  },
+  {
+    "targetId": "NDC_3",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "IPNS and IPM are core agricultural production practices directly aimed at improving crop system resilience and sustainability."
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.56,
+    "reasoning": "Integrated nutrient and pest management can reduce ecosystem damage and support biodiversity through more sustainable input and pest control practices."
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_4",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.92,
+    "reasoning": "Improved production and productivity through sustainable land use and resource management is primarily an agriculture and food objective."
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Sustainable land use strongly relates to managing ecosystems and biodiversity through conservation-oriented land practices."
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.38
+  },
+  {
+    "targetId": "NDC_5",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.96,
+    "reasoning": "The target directly focuses on climate-resilient crop systems, reducing post-harvest losses, and adding value within food and agricultural supply chains."
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "Reducing crop losses and promoting value addition can strengthen farmer incomes and resilience of livelihoods under climate change."
+  },
+  {
+    "targetId": "NDC_6",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Reducing post-harvest losses and increasing crop value addition directly strengthens agricultural production, food supply chains, and food security."
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Improving value addition of crops can raise farmer incomes and strengthen rural livelihoods affected by climate-related losses."
+  },
+  {
+    "targetId": "NDC_7",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.56,
+    "reasoning": "Efficient resource management can strongly include water-use efficiency, which is a common determinant of crop productivity."
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "The target is explicitly about increasing crop productivity and production, which directly centers on agriculture and food systems."
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_8",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "The target explicitly focuses on crop farming and processing, making agriculture the primary sector affected."
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "Renewable energy adoption for processing and farm operations relates to resilient energy and productive infrastructure."
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_9",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on vulnerable areas, habitat conservation, and restoration of degraded areas, which directly matches ecosystems and biodiversity adaptation."
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_10",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Landscape and seascape connectivity under climate-driven change is primarily about ecosystem adaptation, conservation, and biodiversity resilience."
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.15
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_11",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "Expanding protected areas to build climate resilience is directly about conserving and managing ecosystems and biodiversity as an adaptation measure."
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_12",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.05
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Ex-situ conservation of climate-vulnerable taxa directly targets biodiversity conservation and reducing climate impacts on species."
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_13",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.24
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Managing climate-favored invasive alien species is directly about protecting ecosystems and biodiversity from climate impacts."
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_14",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on biodiversity and natural resource policies and integrating climate adaptation into them."
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_15",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target explicitly focuses on financing for biodiversity, making ecosystems and biodiversity the primary theme."
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_16",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.74,
+    "reasoning": "Sea level rise data is highly relevant for managing and protecting vulnerable coastal and marine ecosystems."
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.82,
+    "reasoning": "Sea level rise forecasting directly supports adaptation planning for coastal infrastructure and human settlements exposed to inundation and erosion."
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_17",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Coastal hazard and vulnerability mapping is also clearly relevant to assessing risks to coastal and marine ecosystems."
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Mapping coastal hazards and vulnerability across the coastal belt is a core planning tool for protecting settlements and infrastructure from climate impacts."
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_18",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "Coastal zone management directly concerns the resilience and management of coastal and marine ecosystems under climate change."
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.7,
+    "reasoning": "Coastal zone management plans commonly address climate risks to coastal settlements, land use, and infrastructure."
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_19",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on identifying and managing climate-sensitive coastal and marine ecosystems to enhance resilience."
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_20",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.99,
+    "reasoning": "The target explicitly focuses on restoring coastal and marine ecosystems and conserving threatened species, which is central to ecosystems and biodiversity."
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_21",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Expanding electricity generation capacity from renewables relates to energy infrastructure and the continuity of essential services."
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_22",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Grid-integrated energy storage is an infrastructure measure that strengthens power system reliability and supports continuous essential energy services."
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_23",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Energy-efficient equipment and system improvements across buildings and sectors relate to improving the performance and resilience of infrastructure and essential services."
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_24",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.72,
+    "reasoning": "The target focuses on energy generation infrastructure changes to maintain and expand essential power services, making infrastructure the clearest fit."
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_25",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "The target focuses on grid-supporting infrastructure and readiness to deploy clean energy technologies, which directly relates to resilient infrastructure systems."
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_26",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Fisheries management is strongly linked to resilient food production and supply from aquatic resources."
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Ecosystem-based fisheries management in vulnerable marine areas is primarily about protecting and managing ecosystems to build climate resilience."
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.46
+  },
+  {
+    "targetId": "NDC_27",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Sustainable fisheries and aquaculture are directly framed as climate-related measures to improve food security."
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.78,
+    "reasoning": "Sustainable fisheries and aquaculture depend on managing and conserving marine and coastal ecosystems under climate change."
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_28",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on climate-resilient crop varieties and farming and breeding technologies, making agriculture the central theme."
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_29",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.89,
+    "reasoning": "Fisheries are a core food-production sector, and the target focuses on sustaining stable productivity under climate vulnerability."
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.82,
+    "reasoning": "Aquatic resources in climate-vulnerable lagoons are closely tied to the condition and resilience of coastal and marine ecosystems."
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.56,
+    "reasoning": "Sustaining fisheries productivity is directly relevant to the livelihoods of communities dependent on lagoon resources."
+  },
+  {
+    "targetId": "NDC_30",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.56,
+    "reasoning": "Fisheries contribute to food production and supply, so protecting coastal fisheries from extreme climate conditions supports food security."
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.24
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Weather prediction technologies and sea safety systems are resilience measures that support essential operational infrastructure in coastal areas."
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Coastal fisheries are a livelihood sector, and improving safety and climate prediction directly protects fishers' incomes and resilience."
+  },
+  {
+    "targetId": "NDC_31",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.89,
+    "reasoning": "Fisheries and aquatic production are core food-production sectors, and the target focuses on climate impacts affecting their output."
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Aquatic research on climate-driven impacts strongly relates to marine and inland water ecosystems that underpin fisheries."
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.38
+  },
+  {
+    "targetId": "NDC_32",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target explicitly focuses on alternative livelihoods and capacity development to reduce climate vulnerability."
+  },
+  {
+    "targetId": "NDC_33",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "Sustainable forest management and restoration of degraded lands directly center on ecosystem restoration, conservation, and nature-based resilience."
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_34",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.29
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Trees outside forests often support agroforestry, soil protection, and climate-resilient agricultural production systems."
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Expanding, restoring, and sustainably managing trees outside forests is directly an ecosystem restoration and nature-based adaptation measure."
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.41
+  },
+  {
+    "targetId": "NDC_35",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.88,
+    "reasoning": "Protecting river catchments directly supports water resilience by improving watershed function and reducing water-related risks."
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.94,
+    "reasoning": "Tree planting for catchment protection is a clear ecosystem-based adaptation and restoration measure for riverine and terrestrial ecosystems."
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_36",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.99,
+    "reasoning": "The target is explicitly about conserving and enhancing marine and coastal ecosystems as a nature-based climate solution."
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_37",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on enhancing climate resilience of the health sector across sectors."
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.11
+  },
+  {
+    "targetId": "NDC_38",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.99,
+    "reasoning": "The target is explicitly about strengthening capacity to manage climate-attributable health conditions and NCDs, directly matching climate-resilient health impacts and services."
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_39",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Malnutrition is directly about access to adequate food and nutrition, making this the primary category."
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.82,
+    "reasoning": "Malnutrition is also a major climate-related health impact affecting morbidity and vulnerability."
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.38
+  },
+  {
+    "targetId": "NDC_40",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target is explicitly about climate-sensitive diseases, surveillance, and management of health impacts."
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_41",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.99,
+    "reasoning": "The target explicitly focuses on reducing climate-related morbidity and mortality from extreme weather and climate emergencies, which is central to health resilience."
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_42",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Industrial energy efficiency concerns the performance and resilience of built industrial infrastructure and essential services."
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_43",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Industrial energy systems and heating electrification relate to infrastructure transformation and resilience of essential industrial systems."
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_44",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.11
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Industrial resource efficiency, cleaner production, and circular economy measures directly relate to improving the sustainability and resilience of industrial systems and infrastructure."
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.27
+  },
+  {
+    "targetId": "NDC_45",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.82,
+    "reasoning": "Eco-industrial parks and networks are primarily industrial infrastructure and spatial planning measures that can improve resilience and resource efficiency."
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_46",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.1,
+    "reasoning": "IPPU mitigation can indirectly involve industrial facilities and built systems, but the target is about emissions reduction rather than climate resilience of infrastructure."
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_47",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Refrigeration systems are part of commercial and industrial infrastructure, so converting them to alternative technology relates to infrastructure resilience and essential services."
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_48",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.5,
+    "reasoning": "Industrial decarbonization involves transforming industrial infrastructure and systems, which is moderately relevant to infrastructure."
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_49",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "Water is explicitly included as a sector, making water-related climate loss and damage a clear component."
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Agriculture, livestock and fisheries are explicitly named as sectors for loss and damage stocktaking."
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.63,
+    "reasoning": "Health is explicitly listed as a sector covered by the national loss and damage progress review."
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.69,
+    "reasoning": "Biodiversity, forestry, and coastal and marine areas are explicitly included in the review scope."
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "The target explicitly covers multiple infrastructure and settlement sectors such as power, telecom, housing, coastal infrastructure and transport in national loss and damage reviews."
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.76,
+    "reasoning": "It directly includes social protection, gender and child protection, and broad cross-sector loss and damage affecting livelihoods."
+  },
+  {
+    "targetId": "NDC_50",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.6,
+    "reasoning": "Weather and climate forecasting systems are core resilience infrastructure that support preparedness for extreme events affecting settlements and essential services."
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.5,
+    "reasoning": "Improved forecasting of extreme and slow onset events helps reduce economic and non-economic losses that directly affect livelihoods."
+  },
+  {
+    "targetId": "NDC_51",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.3
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.5,
+    "reasoning": "Loss and damage data with socio-economic information is moderately relevant to understanding impacts on livelihoods and poverty."
+  },
+  {
+    "targetId": "NDC_52",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.2,
+    "reasoning": "A coordinated loss-and-damage institutional mechanism can indirectly support social protection and livelihood responses to climate impacts."
+  },
+  {
+    "targetId": "NDC_53",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.46
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "Physical risks from climate change and extreme disasters are a clear component of resilience planning for infrastructure and human settlements."
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.72,
+    "reasoning": "The framework explicitly covers social and economic risks from climate and disaster events, which strongly relates to protecting livelihoods and reducing vulnerability."
+  },
+  {
+    "targetId": "NDC_54",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target is explicitly about improving dairy production through better animal husbandry, herd health, feed, and welfare in the agricultural sector."
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_55",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target is directly about improving livestock productivity through genetics, feed, health, and welfare within agricultural production."
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_56",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "The target directly concerns livestock and poultry production systems, making agriculture the primary focus."
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.48
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.32
+  },
+  {
+    "targetId": "NDC_57",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target is explicitly about climate adaptation in livestock production, a core agricultural system."
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.52,
+    "reasoning": "Disease surveillance in ruminant livestock relates to managing climate-sensitive animal health impacts."
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_58",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target directly focuses on climate resilience in poultry and swine farming through improved feeding and disease management."
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_59",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.2,
+    "reasoning": "Capacity building and adaptation research can indirectly support climate-resilient water management, but water is not explicitly mentioned."
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_60",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.39
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Risk preparedness in tourism destinations strongly relates to making settlements and destination infrastructure more climate resilient."
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Sustainable tourism directly concerns protecting and strengthening local livelihoods in climate-vulnerable destinations."
+  },
+  {
+    "targetId": "NDC_61",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.41
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Climate-induced disasters affecting tourism often involve damage to tourism infrastructure and related settlements, making resilience measures relevant."
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Tourism is a major source of income and jobs, so disaster risk reduction and transfer directly support climate-resilient livelihoods."
+  },
+  {
+    "targetId": "NDC_62",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.94,
+    "reasoning": "Green building design for new constructions and refurbishments is directly about making built infrastructure more climate resilient."
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Tourism is a major source of jobs and income, so improving its climate resilience helps protect livelihoods."
+  },
+  {
+    "targetId": "NDC_63",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.62,
+    "reasoning": "Tourism is a major source of jobs and income, so climate awareness and education in this sector supports livelihood resilience."
+  },
+  {
+    "targetId": "NDC_64",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Improving the transport sector is primarily about strengthening infrastructure systems and service continuity."
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_65",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Public passenger transport is a core component of infrastructure and urban settlements, making this the primary category."
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_66",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.72,
+    "reasoning": "Freight modal shift is primarily a transport infrastructure and logistics measure affecting the resilience and functioning of essential infrastructure systems."
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_67",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.72,
+    "reasoning": "Electric mobility primarily concerns transport systems and urban infrastructure, making it clearly relevant to infrastructure and human settlements."
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_68",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.6,
+    "reasoning": "Vehicle fleet efficiency relates to transport systems, which are part of infrastructure and service delivery in human settlements."
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_69",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "The target explicitly focuses on the built environment and transport systems, which are core elements of infrastructure and human settlements."
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_70",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.99,
+    "reasoning": "The target explicitly focuses on enhancing the resilience of human settlements and infrastructure through climate adaptation in physical planning."
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_71",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on integrating disaster risk reduction into urban and human settlement planning in climate-vulnerable areas."
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_72",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Urban heat islands are strongly linked to climate-related heat stress and health impacts in exposed populations."
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.41
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target explicitly focuses on coastal settlements and urban heat islands, both core human settlement and infrastructure adaptation issues."
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_73",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.11
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Circular economy practices in solid waste management are moderately relevant to resilient urban services and waste infrastructure within human settlements."
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_74",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.24
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Managing biodegradable solid waste is a core municipal service linked to resilient sanitation and settlement infrastructure."
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_75",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.3,
+    "reasoning": "Waste-to-energy systems can support resilient municipal waste and energy service infrastructure in human settlements."
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_76",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.58,
+    "reasoning": "Solid waste disposal through sanitary and engineered landfills is a core municipal infrastructure and settlement service."
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_77",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Wastewater management is directly about climate-resilient sanitation and water system management in both urban and rural areas."
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.39
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.78,
+    "reasoning": "Wastewater systems are essential infrastructure for human settlements and their resilience is a major aspect of the target."
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_78",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.3,
+    "reasoning": "Infectious and hazardous waste incineration has an indirect connection to public health through waste management and exposure control, though it is not framed around climate-related health resilience."
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_79",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.2,
+    "reasoning": "The target refers broadly to supportive interventions and broader goals, which weakly aligns with enabling progress on livelihoods and social protection."
+  },
+  {
+    "targetId": "NDC_80",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "Integrated river basin management is fundamentally about coordinated water resource management and resilience to water-related hazards."
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.41
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "River basin management commonly includes protection and restoration of inland water ecosystems and watershed biodiversity."
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_81",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "The target is explicitly about monitoring groundwater and surface water, assessing vulnerability in drought-prone areas, and implementing remedial water-related measures."
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_82",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target explicitly focuses on climate-resilient water supply and sanitation, which directly matches this category."
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.4
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.5,
+    "reasoning": "Water supply and sanitation are essential service infrastructure systems within human settlements."
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_83",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target is explicitly about water conservation, efficient water use, and wastewater reuse, making water the primary focus."
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.16
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.34
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_84",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.96,
+    "reasoning": "The target directly addresses protecting river water intakes from climate-induced salinity intrusion to maintain resilient water supply during drought."
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.62,
+    "reasoning": "Salinity barriers are water infrastructure measures that improve resilience of essential service systems to climate impacts."
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_85",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.9,
+    "reasoning": "The target explicitly includes capacity building for the water sector to build resilience to climate change."
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.9,
+    "reasoning": "The target explicitly includes capacity building for the health sector on climate resilience."
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.5,
+    "reasoning": "Educational and public-sector capacity building can support resilient essential services and institutions, though infrastructure is not directly named."
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_86",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.86,
+    "reasoning": "Restoring and augmenting irrigation systems strongly relates to managing water resources and improving resilience to water scarcity."
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Irrigation systems are directly tied to sustaining agricultural production and food security under climate stress."
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "Irrigation systems are critical water infrastructure whose rehabilitation increases resilience of essential service systems."
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NDC_87",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "Improving water management is explicitly about strengthening water resilience and supply in irrigation contexts."
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.82,
+    "reasoning": "Irrigation schemes are central to agricultural production, so better water management strongly supports climate-resilient farming and food systems."
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.38
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.24
+  },
+  {
+    "targetId": "NDC_88",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.97,
+    "reasoning": "River flood assessment, mitigation, and early warning systems directly address water-related hazards and water resilience."
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.28
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Flood mitigation and warning systems are major measures for protecting settlements, infrastructure, and essential services from flood impacts."
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.18
+  },
+  {
+    "targetId": "NDC_89",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": true,
+    "score": 0.1,
+    "reasoning": "An economy-wide GHG reduction target may indirectly involve infrastructure transitions, but adaptation of settlements is not its stated focus."
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_90",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.5,
+    "reasoning": "A high-renewables electricity target directly concerns energy infrastructure and the resilience and continuity of essential power services."
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NDC_91",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
   }
 ]

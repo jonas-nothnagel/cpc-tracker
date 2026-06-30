@@ -130,7 +130,9 @@
     "lens": {
       "globe": "GLOBE",
       "ipcc": "IPCC салбарууд",
-      "country": "Улсын салбарууд"
+      "country": "Улсын салбарууд",
+      "gga": "Уур амьсгалын тэсвэрлэлт (GGA)",
+      "ggaTooltip": "Дасан зохицох дэлхийн зорилго (GGA): Уур амьсгалын дэлхийн тэсвэрлэлтийн тухай 2/CMA.5 шийдвэрийн долоон сэдэвчилсэн зорилт"
     },
     "legend": {
       "aligned": "Уялдсан",
@@ -404,7 +406,7 @@
       }
     },
     "sectors": {
-      "eyebrow": "Үл нийцэл хаана төвлөрдөг вэ?",
+      "eyebrow": "Бодлогын зорилтууд хаана төвлөрдөг вэ?",
       "noTaxonomy": "Энэ улсад салбарын ангилал байхгүй байна.",
       "showAll": "Бүх {count, number} салбарыг харах →",
       "collapseToTop": "Эхний {count, number}-д хураах",
@@ -417,8 +419,8 @@
       },
       "col": {
         "sector": "Салбар",
-        "aligned": "Уялдсан",
-        "misaligned": "Үл нийцсэн"
+        "targets": "Зорилт",
+        "flaggedShare": "Болзошгүй үл нийцэл"
       },
       "noun": {
         "category": {
@@ -428,23 +430,30 @@
         "sector": {
           "singular": "салбар",
           "plural": "салбар"
+        },
+        "theme": {
+          "singular": "сэдэв",
+          "plural": "сэдэв"
         }
       },
-      "concentration": {
-        "emptyHeadline": "{noun}-аар бүлэглэсэн болзошгүй үл нийцсэн хос одоогоор байхгүй.",
-        "emptyBody": "Пайплайн үндсэн ангилалтай {noun}-д хүрсэн болзошгүй үл нийцлийг гаргаагүй, эсвэл тухайн улсад {noun} ангилал тохируулаагүй байна.",
-        "spreadHeadline": "Болзошгүй үл нийцсэн хосууд {sectors, number} {nounPlural}-аар тархсан.",
-        "spreadBody": "{total, number} болзошгүй үл нийцсэн хос ганц {noun} давамгайлахгүйгээр {sectors, number} {nounPlural}-д тархсан.",
-        "singleHeadline": "{name} болзошгүй үл нийцсэн хосуудын {pct}%-г эзэлнэ.",
-        "singleBody": "{total, number} болзошгүй үл нийцсэн хос {sectors, number} {nounPlural}-д тархсан; {name} дангаараа {pct}%-г эзэлнэ.",
-        "everyHeadline": "Болзошгүй үл нийцсэн хосууд {noun} бүрт хүрнэ.",
-        "everyBody": "{total, number} болзошгүй үл нийцсэн хос бүх {sectors, number} {nounPlural}-д тархсан; хамгийн хүнд нь {list}.",
-        "topHeadline": "Үл нийцэл {sectors, number} {nounPlural}-аас {count, number}-д төвлөрдөг.",
-        "topBody": "{total, number} болзошгүй үл нийцсэн хосын {pct}% нь {list}-д байна. Үндсэн хосуудыг харахын тулд мөр дээр дарна уу."
+      "coverage": {
+        "emptyHeadline": "Одоогоор ямар ч {noun}-д ангилагдсан зорилт алга.",
+        "emptyBody": "Энэ ангиллын хүрээнд ямар ч зорилт {noun}-д үндсэнээр ангилагдаагүй, эсвэл тухайн улсад {noun} ангилал тохируулаагүй байна.",
+        "singleHeadline": "{name} нь ангилагдсан зорилтуудын {pct}%-г эзэлнэ.",
+        "everyHeadline": "Ангилагдсан зорилтууд бүх {sectors, number} {nounPlural}-д тархсан, ихэнх нь {name}.",
+        "topHeadline": "{list} нь ангилагдсан зорилтуудын {pct}%-г эзэлнэ."
+      },
+      "flag": {
+        "none": "Энэ ангиллын хүрээнд хянагдсан хамаарал одоогоор алга.",
+        "uniform": "Болзошгүй үл нийцлийн хувь {nounPlural} даяар ойролцоо, хянагдсан хамаарлын {mid, number}% орчим.",
+        "range": "Болзошгүй үл нийцлийн хувь хянагдсан хамаарлын {min, number}%-аас {max, number}% хооронд (корпусын дундаж {mid, number}%).",
+        "rangeWithPeak": "Болзошгүй үл нийцлийн хувь хянагдсан хамаарлын {min, number}%-аас {max, number}% хооронд (корпусын дундаж {mid, number}%), хамгийн өндөр нь {name}."
       },
       "listJoinTwo": "{a} ба {b}",
       "listJoinMany": "{head}, болон {last}",
-      "rowAriaLabel": "{name}: {flagged, number} болзошгүй үл нийцсэн, {aligned, number} уялдсан",
+      "rowAriaLabel": "{name}: {count, number} үндсэн зорилт. {flag}.",
+      "flagAriaValue": "хянагдсан хамаарлын {pct, number}% нь болзошгүй үл нийцэл",
+      "flagAriaNone": "энэ ангиллын хүрээнд хянагдсан хамаарал алга",
       "primaryCount": "{count, number} үндсэн",
       "relevantCount": "{count, number} хамааралтай"
     },
@@ -1166,7 +1175,9 @@
       "globeSingular": "биологийн төрөл зүйлийн ангилал",
       "globePlural": "биологийн төрөл зүйлийн ангилал",
       "sectorSingular": "уур амьсгалын бууруулах салбар",
-      "sectorPlural": "уур амьсгалын бууруулах салбар"
+      "sectorPlural": "уур амьсгалын бууруулах салбар",
+      "ggaSingular": "уур амьсгалын тэсвэрлэлтийн сэдэв",
+      "ggaPlural": "уур амьсгалын тэсвэрлэлтийн сэдэв"
     },
     "summary": {
       "across": " {count, number} {groupLabel} даяар",
@@ -1183,7 +1194,7 @@
     },
     "controls": {
       "groupDocuments": "Баримт бичгүүд",
-      "groupGlobe": "GLOBE",
+      "groupGlobe": "GLOBE биологийн төрөл зүйл",
       "groupSectors": "IPCC салбарууд",
       "groupDocumentsTitle": "Хүрдийг эх баримт бичгээр бүлэглэх",
       "groupGlobeTitle": "Биологийн төрөл зүйлийн ангиллаар бүлэглэх (GLOBE ангилал)",
@@ -1197,7 +1208,10 @@
       "filterHigh": "Зөвхөн хүчтэй уялдаа",
       "filterContradictions": "Зөвхөн болзошгүй үл нийцэл",
       "atAGlance": "Нэг харцаар",
-      "atAGlanceTitle": "Нэг харцаар тоймын самбарыг харуулах эсвэл нуух"
+      "atAGlanceTitle": "Нэг харцаар тоймын самбарыг харуулах эсвэл нуух",
+      "groupGga": "GGA тэсвэрлэлт",
+      "groupGgaTitle": "Уур амьсгалын тэсвэрлэлтийн сэдвээр бүлэглэх (Дасан зохицох дэлхийн зорилго, 2/CMA.5 шийдвэр)",
+      "groupOptionGga": "Уур амьсгалын тэсвэрлэлтээр"
     },
     "doc": {
       "mitigation": "Бууруулалт",
@@ -1232,7 +1246,8 @@
       "centerConnectionsPlural": "{count, number} холбоос",
       "centerTargetSingular": "{count, number} зорилт",
       "centerTargetPlural": "{count, number} зорилт",
-      "centerSpendTagged": "тэмдэглэсэн биологийн төрөл зүйлийн зарлага"
+      "centerSpendTagged": "тэмдэглэсэн биологийн төрөл зүйлийн зарлага",
+      "legendResilience": "Уур амьсгалын тэсвэрлэлт"
     },
     "detailPanel": {
       "closeAria": "Зорилтын дэлгэрэнгүйг хаах",
@@ -1332,7 +1347,6 @@
       "viewCoherence": "Уялдаа",
       "viewFinance": "Санхүү · BER",
       "groupByLabel": "Нуман хаалтыг бүлэглэх",
-      "groupSectors": "Салбарууд",
       "showLabel": "Харуулах",
       "answersHeading": "Хариултууд",
       "documentsLabel": "Баримт бичгүүд",
@@ -1728,7 +1742,12 @@
         "byNationalSector": "Үндэсний салбарын ангиллаар",
         "byIpccSector": "IPCC салбараар (стандартчилсан)",
         "default": "Үндсэн (Уур амьсгалын бууруулалт + Дасан зохицлын зорилт)",
-        "byBiodiversity": "Биологийн төрөл зүйлийн ангиллаар"
+        "byBiodiversity": "Биологийн төрөл зүйлийн ангиллаар",
+        "byGga": "Уур амьсгалын тэсвэрлэлтээр (Дасан зохицох дэлхийн зорилго)"
+      },
+      "gga": {
+        "title": "Бүх тайлагнасан арга хэмжээ, уур амьсгалын тэсвэрлэлтийн сэдвээр",
+        "sectionDesc": "Сааруулах ба дасан зохицох арга хэмжээг Дасан зохицох дэлхийн зорилгын сэдвээр бүлэглэв."
       },
       "status": {
         "active": {

@@ -9,7 +9,7 @@ import {
 } from "@/lib/coherence-budget";
 import type { CountryConfig } from "@/types";
 
-type GroupMode = "document" | "sector" | "globe";
+type GroupMode = "document" | "sector" | "globe" | "gga";
 type AlignFilter =
   | "all"
   | "high_medium"
@@ -45,6 +45,7 @@ export function LensPane({
   hiddenDocs,
   onToggleDoc,
   countryConfig,
+  hasGga,
   targetSearch,
 }: {
   view: ViewMode;
@@ -61,6 +62,9 @@ export function LensPane({
   hiddenDocs: Set<string>;
   onToggleDoc: (doc: string) => void;
   countryConfig: CountryConfig | null | undefined;
+  /** Whether the data carries any primary GGA (climate-resilience) classification.
+   *  Gates the fourth group-by option so it only appears where it has content. */
+  hasGga?: boolean;
   targetSearch?: ReactNode;
 }) {
   const t = useTranslations("explorer");
@@ -108,23 +112,27 @@ export function LensPane({
 
       {/* Group by */}
       <div className={`${EYEBROW} mb-2`}>{t("workbench.groupByLabel")}</div>
-      <div className="mb-4 flex w-full gap-1 rounded-lg border border-gray-300 p-[2px]">
+      <div className="mb-4 grid grid-cols-2 gap-1.5">
         {(
           [
-            ["document", t("controls.groupDocuments")],
-            ["globe", t("controls.groupGlobe")],
-            ["sector", t("workbench.groupSectors")],
-          ] as [GroupMode, string][]
-        ).map(([mode, label]) => (
+            ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
+            ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
+            ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
+            ...(hasGga
+              ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]]
+              : []),
+          ] as [GroupMode, string, string][]
+        ).map(([mode, label, title]) => (
           <button
             key={mode}
             type="button"
             onClick={() => onGroupChange(mode)}
             aria-pressed={groupMode === mode}
-            className={`${seg} ${
+            title={title}
+            className={`rounded-lg border px-3 py-1.5 text-center text-[11.5px] font-medium leading-tight transition-colors ${
               groupMode === mode
-                ? "bg-[var(--undp-black)] text-white"
-                : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+                ? "border-[var(--undp-black)] bg-[var(--undp-black)] text-white"
+                : "border-gray-300 bg-white text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
             }`}
           >
             {label}

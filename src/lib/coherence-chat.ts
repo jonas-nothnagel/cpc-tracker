@@ -31,7 +31,7 @@ export type ChatAction =
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
-  | { type: "set_mode"; mode: "document" | "sector" | "globe" }
+  | { type: "set_mode"; mode: "document" | "sector" | "globe" | "gga" }
   /** Unhide one or more documents so the next action's target is visible.
    *  Emitted by the server when the answer touches a doc that isn't in the
    *  current visible-groups set. Applied client-side before any focus or
@@ -78,13 +78,14 @@ interface ChatRankings {
 
 interface BuildChatRequestArgs {
   query: string;
-  groupMode: "document" | "sector" | "globe";
+  groupMode: "document" | "sector" | "globe" | "gga";
   filter: string;
   targets: Target[];
   alignment: AlignmentResult[];
   classifications: ThematicClassification[];
   sectors: ChatTaxCategory[];
   globeCategories: ChatTaxCategory[];
+  ggaCategories: ChatTaxCategory[];
   btrData?: BtrData | null;
   availableDocs: PolicyDocumentType[];
   /** Docs the user currently has toggled off. Surfaced to the model as
@@ -126,6 +127,7 @@ export function buildChatRequest({
   classifications,
   sectors,
   globeCategories,
+  ggaCategories,
   btrData,
   availableDocs,
   hiddenDocs,
@@ -180,6 +182,7 @@ export function buildChatRequest({
     classifications,
     sectors,
     globeCategories,
+    ggaCategories,
     btrData,
   );
 
@@ -190,6 +193,11 @@ export function buildChatRequest({
       description: c.description,
     })),
     sector: sectors.map((c) => ({
+      id: c.id,
+      name: c.name,
+      description: c.description,
+    })),
+    gga: ggaCategories.map((c) => ({
       id: c.id,
       name: c.name,
       description: c.description,
@@ -258,6 +266,7 @@ export function buildChatRequest({
       isTimeBound: t.isTimeBound,
       primaryGlobe: primary?.globe,
       primarySector: primary?.sector,
+      primaryGga: primary?.gga,
       primaryAdaptationGoal: primary?.adaptation,
     };
   });
@@ -448,6 +457,7 @@ function computeRankings(
 interface PrimarySlot {
   globe?: { id: string; name: string };
   sector?: { id: string; name: string };
+  gga?: { id: string; name: string };
   adaptation?: { id: string; description: string };
 }
 
@@ -455,10 +465,12 @@ function buildPrimaryByTarget(
   classifications: ThematicClassification[],
   sectors: ChatTaxCategory[],
   globeCategories: ChatTaxCategory[],
+  ggaCategories: ChatTaxCategory[],
   btrData: BtrData | null | undefined,
 ): Map<string, PrimarySlot> {
   const globeById = new Map(globeCategories.map((c) => [c.id, c.name]));
   const sectorById = new Map(sectors.map((c) => [c.id, c.name]));
+  const ggaById = new Map(ggaCategories.map((c) => [c.id, c.name]));
   const adaptationById = new Map(
     (btrData?.adaptationGoals ?? []).map((g) => [g.id, g.description]),
   );
@@ -470,6 +482,8 @@ function buildPrimaryByTarget(
       slot.globe = { id: c.categoryId, name: globeById.get(c.categoryId)! };
     } else if (c.taxonomyType === "sector" && sectorById.has(c.categoryId)) {
       slot.sector = { id: c.categoryId, name: sectorById.get(c.categoryId)! };
+    } else if (c.taxonomyType === "gga" && ggaById.has(c.categoryId)) {
+      slot.gga = { id: c.categoryId, name: ggaById.get(c.categoryId)! };
     } else if (
       c.taxonomyType === "adaptation_goal" &&
       adaptationById.has(c.categoryId)

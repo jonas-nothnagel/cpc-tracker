@@ -130,7 +130,9 @@
     "lens": {
       "globe": "GLOBE",
       "ipcc": "Sectores IPCC",
-      "country": "Sectores del país"
+      "country": "Sectores del país",
+      "gga": "Resiliencia climática (GGA)",
+      "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)"
     },
     "legend": {
       "aligned": "Alineado",
@@ -404,7 +406,7 @@
       }
     },
     "sectors": {
-      "eyebrow": "¿Dónde se concentra la desalineación?",
+      "eyebrow": "¿Dónde se concentra la ambición de las políticas?",
       "noTaxonomy": "No hay taxonomía sectorial disponible para este país.",
       "showAll": "Mostrar los {count, number} sectores →",
       "collapseToTop": "Contraer a los {count, number} principales",
@@ -417,8 +419,8 @@
       },
       "col": {
         "sector": "Sector",
-        "aligned": "Alineados",
-        "misaligned": "Desalineados"
+        "targets": "Objetivos",
+        "flaggedShare": "Posible desalineación"
       },
       "noun": {
         "category": {
@@ -428,23 +430,30 @@
         "sector": {
           "singular": "sector",
           "plural": "sectores"
+        },
+        "theme": {
+          "singular": "tema",
+          "plural": "temas"
         }
       },
-      "concentration": {
-        "emptyHeadline": "Aún no hay pares posiblemente desalineados agrupados por {noun}.",
-        "emptyBody": "O la canalización aún no ha surgido posible desalineación que toque una {noun} clasificada como primaria, o el país no tiene una taxonomía de {noun} configurada.",
-        "spreadHeadline": "Los pares posiblemente desalineados se distribuyen en {sectors, number} {nounPlural}.",
-        "spreadBody": "{total, number} pares posiblemente desalineados se reparten en {sectors, number} {nounPlural} sin que un único {noun} domine.",
-        "singleHeadline": "{name} concentra el {pct}% de los pares posiblemente desalineados.",
-        "singleBody": "{total, number} pares posiblemente desalineados se reparten en {sectors, number} {nounPlural}; sólo {name} concentra el {pct}%.",
-        "everyHeadline": "Los pares posiblemente desalineados tocan cada {noun}.",
-        "everyBody": "{total, number} pares posiblemente desalineados se distribuyen en los {sectors, number} {nounPlural}; los más pesados son {list}.",
-        "topHeadline": "La desalineación se concentra en {count, number} de {sectors, number} {nounPlural}.",
-        "topBody": "El {pct}% de los {total, number} pares posiblemente desalineados recae en {list}. Pulse una fila para ver los pares subyacentes."
+      "coverage": {
+        "emptyHeadline": "Ninguna {noun} tiene aún un objetivo clasificado.",
+        "emptyBody": "O ningún objetivo está clasificado como primario en una {noun} bajo esta lente, o el país no tiene una taxonomía de {noun} configurada.",
+        "singleHeadline": "{name} concentra el {pct}% de los objetivos clasificados.",
+        "everyHeadline": "Los objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
+        "topHeadline": "{list} concentran el {pct}% de los objetivos clasificados."
+      },
+      "flag": {
+        "none": "Aún no hay relaciones revisadas bajo esta lente.",
+        "uniform": "La proporción de posible desalineación es similar entre {nounPlural}, en torno al {mid, number}% de las relaciones revisadas.",
+        "range": "La proporción de posible desalineación va del {min, number}% al {max, number}% de las relaciones revisadas (promedio del corpus {mid, number}%).",
+        "rangeWithPeak": "La proporción de posible desalineación va del {min, number}% al {max, number}% de las relaciones revisadas (promedio del corpus {mid, number}%), con el máximo en {name}."
       },
       "listJoinTwo": "{a} y {b}",
       "listJoinMany": "{head}, y {last}",
-      "rowAriaLabel": "{name}: {flagged, number} posiblemente desalineados, {aligned, number} alineados",
+      "rowAriaLabel": "{name}: {count, number} objetivos primarios. {flag}.",
+      "flagAriaValue": "{pct, number}% de las relaciones revisadas son una posible desalineación",
+      "flagAriaNone": "sin relaciones revisadas bajo esta lente",
       "primaryCount": "{count, number} primarios",
       "relevantCount": "{count, number} relevantes"
     },
@@ -1166,7 +1175,9 @@
       "globeSingular": "categoría de biodiversidad",
       "globePlural": "categorías de biodiversidad",
       "sectorSingular": "sector de mitigación climática",
-      "sectorPlural": "sectores de mitigación climática"
+      "sectorPlural": "sectores de mitigación climática",
+      "ggaSingular": "tema de resiliencia climática",
+      "ggaPlural": "temas de resiliencia climática"
     },
     "summary": {
       "across": " en {count, number} {groupLabel}",
@@ -1183,7 +1194,7 @@
     },
     "controls": {
       "groupDocuments": "Documentos",
-      "groupGlobe": "GLOBE",
+      "groupGlobe": "Biodiversidad GLOBE",
       "groupSectors": "Sectores IPCC",
       "groupDocumentsTitle": "Agrupar la rueda por documento de origen",
       "groupGlobeTitle": "Agrupar por categoría de biodiversidad (taxonomía GLOBE)",
@@ -1197,7 +1208,10 @@
       "filterHigh": "Sólo alineación fuerte",
       "filterContradictions": "Sólo posible desalineación",
       "atAGlance": "De un vistazo",
-      "atAGlanceTitle": "Mostrar u ocultar el panel resumen de un vistazo"
+      "atAGlanceTitle": "Mostrar u ocultar el panel resumen de un vistazo",
+      "groupGga": "Resiliencia GGA",
+      "groupGgaTitle": "Agrupar por tema de resiliencia climática (Objetivo Mundial de Adaptación, decisión 2/CMA.5)",
+      "groupOptionGga": "Por resiliencia climática"
     },
     "doc": {
       "mitigation": "Mitigación",
@@ -1232,7 +1246,8 @@
       "centerConnectionsPlural": "{count, number} conexiones",
       "centerTargetSingular": "{count, number} meta",
       "centerTargetPlural": "{count, number} metas",
-      "centerSpendTagged": "gasto en biodiversidad etiquetado"
+      "centerSpendTagged": "gasto en biodiversidad etiquetado",
+      "legendResilience": "Resiliencia climática"
     },
     "detailPanel": {
       "closeAria": "Cerrar detalle de la meta",
@@ -1332,7 +1347,6 @@
       "viewCoherence": "Coherencia",
       "viewFinance": "Finanzas · BER",
       "groupByLabel": "Agrupar los arcos por",
-      "groupSectors": "Sectores",
       "showLabel": "Mostrar",
       "answersHeading": "Respuestas",
       "documentsLabel": "Documentos",
@@ -1728,7 +1742,12 @@
         "byNationalSector": "Por categorías sectoriales nacionales",
         "byIpccSector": "Por sector del IPCC (estandarizado)",
         "default": "Predeterminado (Mitigación climática + Metas de adaptación)",
-        "byBiodiversity": "Por taxonomía de biodiversidad"
+        "byBiodiversity": "Por taxonomía de biodiversidad",
+        "byGga": "Por resiliencia climática (Objetivo Mundial de Adaptación)"
+      },
+      "gga": {
+        "title": "Todas las acciones reportadas, por tema de resiliencia climática",
+        "sectionDesc": "Acciones de mitigación y adaptación agrupadas por tema del Objetivo Mundial de Adaptación (Marco de los EAU para la Resiliencia Climática Mundial)."
       },
       "status": {
         "active": {

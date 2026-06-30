@@ -5,8 +5,10 @@ import {
   buildDocFocusFrictions,
   buildDocFrictionShares,
   buildFlagSubsetProfile,
+  buildSectorCoherenceShare,
   buildTargetFrictionTree,
   canonicalHiddenKey,
+  computeCoverageConcentration,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
   rankTargetsByFriction,
@@ -14,6 +16,7 @@ import {
   selectSectorSynthesesForState,
   type CorpusThemesPayload,
   type SectorSynthesisPayload,
+  type SectorTension,
 } from "./coherence-briefing";
 import type {
   AlignmentLevel,
@@ -787,5 +790,217 @@ describe("document-filter storyline state selection", () => {
     const sel = selectSectorSynthesesForState(arr, new Set());
     expect(sel.syntheses).toBe(arr);
     expect(sel.isExact).toBe(true);
+  });
+});
+
+describe("buildSectorCoherenceShare", () => {
+  // Two GGA themes with four targets each, and enough reviewed pairs per theme to
+  // clear the minimum-reviewed floor so the share is a real rate, not sampling noise.
+  const categories = [
+    { id: "catX", name: "Theme X" },
+    { id: "catY", name: "Theme Y" },
+  ];
+  const targets = [
+    makeTarget("X1", "NDC"),
+    makeTarget("X2", "NDC"),
+    makeTarget("X3", "NDC"),
+    makeTarget("X4", "NDC"),
+    makeTarget("Y1", "NAP"),
+    makeTarget("Y2", "NAP"),
+    makeTarget("Y3", "NAP"),
+    makeTarget("Y4", "NAP"),
+  ];
+  const classifications = [
+    makeClassification("X1", "catX", "gga"),
+    makeClassification("X2", "catX", "gga"),
+    makeClassification("X3", "catX", "gga"),
+    makeClassification("X4", "catX", "gga"),
+    makeClassification("Y1", "catY", "gga"),
+    makeClassification("Y2", "catY", "gga"),
+    makeClassification("Y3", "catY", "gga"),
+    makeClassification("Y4", "catY", "gga"),
+  ];
+  const alignment: AlignmentResult[] = [
+    makeAlignment("X1", "X2", "high"), // catX internal aligned
+    makeAlignment("X1", "X3", "high"),
+    makeAlignment("X2", "X4", "medium"),
+    makeAlignment("Y1", "Y2", "high"), // catY internal aligned
+    makeAlignment("Y1", "Y3", "high"),
+    makeAlignment("Y2", "Y4", "medium"),
+    makeAlignment("X1", "Y1", "flagged"), // cross catX<->catY flagged (both themes)
+    makeAlignment("X2", "Y2", "flagged"),
+    makeAlignment("X3", "Y3", "low"), // excluded: low is not "aligned"
+    makeAlignment("X4", "Y4", "none"), // excluded entirely
+  ];
+
+  const summary = buildSectorCoherenceShare({
+    targets,
+    alignment,
+    classifications,
+    categories,
+    taxonomyType: "gga",
+  });
+
+  it("counts high+medium aligned and flagged pairs touching a sector, excluding low/none", () => {
+    const x = summary.byCategory.get("catX")!;
+    expect(x.reviewedPairs).toBe(5); // 3 internal aligned + 2 cross flagged
+    expect(x.flaggedPairs).toBe(2); // X1-Y1, X2-Y2
+    expect(x.flaggedShare).toBeCloseTo(0.4);
+  });
+
+  it("credits a cross-sector flagged pair to both sectors", () => {
+    const y = summary.byCategory.get("catY")!;
+    expect(y.reviewedPairs).toBe(5); // 3 internal aligned + 2 cross flagged
+    expect(y.flaggedPairs).toBe(2); // X1-Y1, X2-Y2
+    expect(y.flaggedShare).toBeCloseTo(0.4);
+  });
+
+  it("returns null flaggedShare for a sector with no reviewed pairs", () => {
+    const withEmpty = [...categories, { id: "catZ", name: "Theme Z" }];
+    const s = buildSectorCoherenceShare({
+      targets,
+      alignment,
+      classifications,
+      categories: withEmpty,
+      taxonomyType: "gga",
+    });
+    const z = s.byCategory.get("catZ")!;
+    expect(z.reviewedPairs).toBe(0);
+    expect(z.flaggedPairs).toBe(0);
+    expect(z.flaggedShare).toBeNull();
+  });
+
+  it("computes corpus mid as the distinct-pair flag rate and maxShare across sectors", () => {
+    // distinct lens-reviewed pairs: 6 aligned + 2 flagged = 8; flagged = 2
+    expect(summary.mid).toBeCloseTo(2 / 8);
+    expect(summary.maxShare).toBeCloseTo(0.4);
+  });
+
+  it("counts a flagged pair whose endpoints share one sector only once", () => {
+    const t = [makeTarget("A1", "NDC"), makeTarget("A2", "NDC")];
+    const c = [
+      makeClassification("A1", "catX", "gga"),
+      makeClassification("A2", "catX", "gga"),
+    ];
+    const al = [makeAlignment("A1", "A2", "flagged")];
+    const s = buildSectorCoherenceShare({
+      targets: t,
+      alignment: al,
+      classifications: c,
+      categories,
+      taxonomyType: "gga",
+    });
+    const x = s.byCategory.get("catX")!;
+    expect(x.reviewedPairs).toBe(1); // counted once for the shared sector, not twice
+    expect(x.flaggedPairs).toBe(1);
+    expect(x.flaggedShare).toBeNull(); // one reviewed pair is below the floor
+  });
+
+  it("leaves flaggedShare null below the minimum reviewed-pairs floor and excludes it from maxShare", () => {
+    const cats = [
+      { id: "catBig", name: "Big" },
+      { id: "catThin", name: "Thin" },
+    ];
+    const t = [
+      ...["BG1", "BG2", "BG3", "BG4", "BG5", "BG6"].map((id) => makeTarget(id, "NDC")),
+      ...["TH1", "TH2", "TH3", "TH4", "TH5"].map((id) => makeTarget(id, "NAP")),
+    ];
+    const c = [
+      ...["BG1", "BG2", "BG3", "BG4", "BG5", "BG6"].map((id) =>
+        makeClassification(id, "catBig", "gga"),
+      ),
+      ...["TH1", "TH2", "TH3", "TH4", "TH5"].map((id) =>
+        makeClassification(id, "catThin", "gga"),
+      ),
+    ];
+    const al: AlignmentResult[] = [
+      // catBig: 5 reviewed (2 flagged + 3 aligned) -> share 0.4
+      makeAlignment("BG1", "BG2", "flagged"),
+      makeAlignment("BG1", "BG3", "flagged"),
+      makeAlignment("BG1", "BG4", "high"),
+      makeAlignment("BG1", "BG5", "high"),
+      makeAlignment("BG1", "BG6", "high"),
+      // catThin: 4 reviewed, all flagged -> would read 100%, but is below the floor
+      makeAlignment("TH1", "TH2", "flagged"),
+      makeAlignment("TH1", "TH3", "flagged"),
+      makeAlignment("TH1", "TH4", "flagged"),
+      makeAlignment("TH1", "TH5", "flagged"),
+    ];
+    const s = buildSectorCoherenceShare({
+      targets: t,
+      alignment: al,
+      classifications: c,
+      categories: cats,
+      taxonomyType: "gga",
+    });
+    const big = s.byCategory.get("catBig")!;
+    const thin = s.byCategory.get("catThin")!;
+    expect(big.flaggedShare).toBeCloseTo(0.4);
+    expect(thin.reviewedPairs).toBe(4);
+    expect(thin.flaggedShare).toBeNull(); // thin data, not a 100% hotspot
+    expect(s.maxShare).toBeCloseTo(0.4); // not 1.0 from the thin theme
+  });
+
+  it("ignores pairs whose targets are not primary-classified under the active taxonomy", () => {
+    const otherTax = [
+      makeClassification("X1", "catX", "sector"),
+      makeClassification("X2", "catX", "sector"),
+    ];
+    const s = buildSectorCoherenceShare({
+      targets,
+      alignment,
+      classifications: otherTax,
+      categories,
+      taxonomyType: "gga",
+    });
+    expect(s.byCategory.get("catX")!.reviewedPairs).toBe(0);
+    expect(s.mid).toBe(0);
+    expect(s.maxShare).toBe(0);
+  });
+});
+
+describe("computeCoverageConcentration", () => {
+  function row(
+    categoryId: string,
+    targetCount: number,
+    tensionCount = 0,
+  ): SectorTension {
+    return {
+      categoryId,
+      categoryName: categoryId.toUpperCase(),
+      targetCount,
+      tensionCount,
+      peakSeverity: null,
+    };
+  }
+
+  it("selects the fewest sectors covering >= targetShare of all primary targets", () => {
+    const stat = computeCoverageConcentration(
+      [row("a", 7), row("b", 2), row("c", 1)],
+      0.7,
+    );
+    expect(stat.populatedSectors).toBe(3);
+    expect(stat.totalTargets).toBe(10);
+    expect(stat.topNames).toEqual(["A"]); // a alone covers 70%
+    expect(stat.share).toBeCloseTo(0.7);
+  });
+
+  it("ranks by target count, not tension count", () => {
+    // b has far more tensions but fewer targets; coverage must rank by targets.
+    const stat = computeCoverageConcentration(
+      [row("b", 2, 999), row("a", 8, 0)],
+      0.7,
+    );
+    expect(stat.totalTargets).toBe(10);
+    expect(stat.topNames).toEqual(["A"]); // a alone covers 80%
+    expect(stat.share).toBeCloseTo(0.8);
+  });
+
+  it("returns an empty result when no sector has primary targets", () => {
+    const stat = computeCoverageConcentration([row("a", 0), row("b", 0)]);
+    expect(stat.populatedSectors).toBe(0);
+    expect(stat.totalTargets).toBe(0);
+    expect(stat.topNames).toEqual([]);
+    expect(stat.share).toBe(0);
   });
 });
