@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Header } from "@/components/ui/header";
 import { Link } from "@/i18n/navigation";
-import { listAvailableModels } from "@/lib/dashboard-data";
+import {
+  listAvailableModels,
+  loadModelComparison,
+} from "@/lib/dashboard-data";
+import { AnalysisSections } from "@/components/model-comparison/analysis-sections";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
@@ -115,14 +119,25 @@ export default async function MongoliaModelComparisonPage() {
   if (models.length === 0) notFound();
 
   const rows = models.map(loadRow);
+  // Analytic artifact is optional — when missing (fresh country, no
+  // analyzer run yet) the page still renders the summary table.
+  const report = loadModelComparison(COUNTRY);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#fbfaf7" }}>
       <Header subtitle="Mongolia · Model comparison" basePath="/mongolia" />
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
-        <h1 className="text-2xl font-medium text-[var(--undp-black)] mb-2">
-          Mongolia · model comparison
-        </h1>
+        <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
+          <h1 className="text-2xl font-medium text-[var(--undp-black)]">
+            Mongolia · model comparison
+          </h1>
+          <Link
+            href="/mongolia/model-evaluation"
+            className="text-sm text-[var(--undp-blue)] hover:underline"
+          >
+            Open manual evaluation tool →
+          </Link>
+        </div>
         <p className="text-sm text-[var(--undp-gray)] mb-6 max-w-3xl">
           The same Mongolia inputs (153 targets, 9,678 cross-document pairs) run
           through the pipeline on four different LLMs. AI-generated outputs;
@@ -207,6 +222,16 @@ export default async function MongoliaModelComparisonPage() {
           Click a model name to open the Mongolia dashboard with that model&apos;s
           outputs. {t("footer.text")}
         </p>
+
+        {report ? (
+          <AnalysisSections report={report} />
+        ) : (
+          <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">
+            Run <code className="font-mono text-[10px] px-1 bg-gray-100">uv run
+            python -m src.analyze_model_comparison --country {COUNTRY}</code> to
+            generate the detailed cross-model analysis sections.
+          </p>
+        )}
       </main>
     </div>
   );

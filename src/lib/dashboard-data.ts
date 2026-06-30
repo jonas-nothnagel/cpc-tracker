@@ -22,6 +22,11 @@ import { gzipSync } from "node:zlib";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
+import type {
+  ModelComparisonReport,
+  RatingsByCountry,
+  RatingsFile,
+} from "@/types";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
@@ -81,6 +86,36 @@ export function readJson<T>(filePath: string): T | null {
   } catch {
     return null;
   }
+}
+
+/** Cross-model comparison artifact, produced by
+ *  `python -m src.analyze_model_comparison --country <id>`. Returns null
+ *  when the artifact hasn't been generated yet (e.g. a fresh country with
+ *  only one model run); callers should treat that as "no analysis to show". */
+const modelComparisonCache = new Map<string, ModelComparisonReport | null>();
+export function loadModelComparison(country: string): ModelComparisonReport | null {
+  const id = country.toLowerCase();
+  // In dev, skip the cache so analyzer reruns are visible on next request.
+  // Prod (container lifetime cache) keeps the original optimization.
+  if (process.env.NODE_ENV !== "development" && modelComparisonCache.has(id)) {
+    return modelComparisonCache.get(id) ?? null;
+  }
+  const report = readJson<ModelComparisonReport>(
+    join(PYTHON_OUTPUT, id, "_model_comparison.json"),
+  );
+  modelComparisonCache.set(id, report);
+  return report;
+}
+
+/** Human ratings on individual flagged pairs, written by
+ *  `POST /api/ratings/[country]`. Intentionally NOT cached: ratings change at
+ *  runtime via the API, so each page render reads the current file. The file
+ *  is small (one record per rated pair); the read cost is trivial. */
+export function loadRatings(country: string): RatingsByCountry {
+  const file = readJson<RatingsFile>(
+    join(PYTHON_OUTPUT, country.toLowerCase(), "_ratings.json"),
+  );
+  return file?.ratings ?? {};
 }
 
 /**
