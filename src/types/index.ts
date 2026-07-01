@@ -94,6 +94,11 @@ export interface Target {
   /** ISO-639-1 language code of `textOriginal` (e.g. "es", "mn"). Optional —
    *  when missing, the renderer detects from `textOriginal` script. */
   language?: string;
+  /** Provenance of `textOriginal`: "source" = genuine original-language wording
+   *  ingested from the source document; "machine" = machine back-translation of
+   *  the English `text` (no original was available). Drives the machine-
+   *  translation caveat on the language chip. Undefined behaves as "source". */
+  textOriginalSource?: "source" | "machine";
   /**
    * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
@@ -571,6 +576,24 @@ export interface DocumentTypeEntry {
   fullLabel: string;
   /** Hex color for charts and chips. Must follow UNDP Data Viz guidelines. */
   color: string;
+  // The fields below are optional, display-only reference metadata shown in the
+  // doc-focus panel so users from other ministries can place a document they
+  // don't know. Every value MUST trace to a primary/official source (never
+  // LLM-drafted, per CLAUDE.md "No LLM-drafted content"); leave blank when not
+  // reliably sourceable. They are read only by the dashboard, never fed into a
+  // pipeline prompt.
+  /** What kind of document it is, e.g. "National pledge", "REDD+ strategy". */
+  docKind?: string;
+  /** When it was developed/issued, e.g. "November 2025", "2025", "2025-2029". */
+  published?: string;
+  /** Issuing body / author, e.g. "Government of Panama", "SENACYT". */
+  author?: string;
+  /** Main goal, verbatim or closely quoted from the source. Optional. */
+  objective?: string;
+  /** Public link to the document. Must resolve and match the named document. */
+  url?: string;
+  /** Provenance note for the metadata above (esp. `objective`). */
+  sourceNote?: string;
 }
 
 /**

@@ -417,6 +417,9 @@ export interface WheelCenterpieceProps {
   onArcClick?: (focus: WheelFocus) => void;
   /** Hover a rim arc or its label → host can set ephemeral focus. Pass null on leave. */
   onArcHover?: (focus: WheelFocus | null) => void;
+  /** Cap on the rendered SVG height in px. Default 620 (the sticky-column size);
+   *  the expand overlay passes a larger value so the wheel fills the dialog. */
+  maxHeightPx?: number;
 }
 
 // Stable empty default so callers that omit `sectorCategories` (e.g. the landing
@@ -437,6 +440,7 @@ export function WheelCenterpiece({
   onRibbonNavigate,
   onArcClick,
   onArcHover,
+  maxHeightPx = 620,
 }: WheelCenterpieceProps) {
   const t = useTranslations("briefing.wheel");
   const unclassifiedLabel = t("unclassified");
@@ -666,7 +670,7 @@ export function WheelCenterpiece({
       <svg
         viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
         className="w-full"
-        style={{ maxHeight: 620 }}
+        style={{ maxHeight: maxHeightPx }}
         role="img"
         aria-label={t("wheelAria")}
       >

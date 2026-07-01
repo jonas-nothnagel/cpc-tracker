@@ -46,8 +46,16 @@ export function LanguageSwitcher({ onDark = false }: { onDark?: boolean }) {
           value={locale}
           onChange={(e) => {
             const next = e.target.value as Locale;
+            // Preserve the query string (e.g. the dashboard's ?country=panama);
+            // `usePathname()` drops it, which otherwise sends the user to an
+            // empty dashboard that bounces to the landing page. Read
+            // window.location.search in the handler rather than via
+            // useSearchParams() during render, so this shared header component
+            // doesn't opt static pages out of prerendering.
+            const search =
+              typeof window !== "undefined" ? window.location.search : "";
             startTransition(() => {
-              router.replace(pathname, { locale: next });
+              router.replace(`${pathname}${search}`, { locale: next });
             });
           }}
           disabled={isPending}

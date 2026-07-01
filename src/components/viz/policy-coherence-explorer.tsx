@@ -1404,6 +1404,7 @@ function ChatOutput({
   hideInsights?: boolean;
 }) {
   const t = useTranslations("explorer.chat");
+  const ti = useTranslations("explorer.insights");
   const showInsight =
     !hideInsights &&
     !!currentInsight &&
@@ -1414,6 +1415,22 @@ function ChatOutput({
   const showError = !!chat.error && !chat.loading;
   const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
 
+  // Prefer the localized insight message (es/mn: explorer.insights.<pattern>.*)
+  // when it exists and the insight carries interpolation vars; otherwise fall
+  // back to the English callout/pathway composed in coherence-insights.ts.
+  const localizeInsight = (field: "callout" | "pathway"): string => {
+    if (!currentInsight) return "";
+    const tt = ti as unknown as {
+      has: (k: string) => boolean;
+      (k: string, v?: Record<string, string | number>): string;
+    };
+    const key = `${currentInsight.pattern}.${field}`;
+    if (currentInsight.vars && tt.has(key)) return tt(key, currentInsight.vars);
+    return (
+      (field === "callout" ? currentInsight.callout : currentInsight.pathway) ?? ""
+    );
+  };
+
   return (
     <>
       {showInsight && currentInsight && (
@@ -1422,7 +1439,7 @@ function ChatOutput({
             <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
               {t("insight")}
             </span>
-            <span className="flex-1">{currentInsight.callout}</span>
+            <span className="flex-1">{localizeInsight("callout")}</span>
           </p>
           {currentInsight.pathway && (
             <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
@@ -1432,7 +1449,7 @@ function ChatOutput({
               >
                 ↪
               </span>
-              {currentInsight.pathway}
+              {localizeInsight("pathway")}
             </p>
           )}
           {canShowMe && (

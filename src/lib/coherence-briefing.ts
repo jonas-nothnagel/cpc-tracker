@@ -280,8 +280,6 @@ export interface SectorBriefing {
   signalCount: number;
   /** Most-flagged target inside the sector, if any pair has 2+ flags. */
   recurringHub: SectorHub | null;
-  /** Pre-composed factual sentence summarising the sector for the drawer header. */
-  synthesisSentence: string;
 }
 
 /**
@@ -369,12 +367,9 @@ export function buildSectorBriefing(args: {
     targets,
   });
   const flaggedCount = tensions.length;
-  const synthesisSentence = composeSectorSynthesis({
-    categoryName,
-    targetCount: sectorTargetIds.size,
-    flaggedCount,
-    hub: recurringHub,
-  });
+  // The drawer header sentence is composed in the component via `t()` (see
+  // sector-drawer.tsx) from these fields, so it localizes; this builder stays
+  // language-free and returns data only.
   return {
     categoryId,
     categoryName,
@@ -384,32 +379,7 @@ export function buildSectorBriefing(args: {
     topAlignments: aligns.slice(0, cap),
     signalCount,
     recurringHub,
-    synthesisSentence,
   };
-}
-
-function composeSectorSynthesis({
-  categoryName,
-  targetCount,
-  flaggedCount,
-  hub,
-}: {
-  categoryName: string;
-  targetCount: number;
-  flaggedCount: number;
-  hub: SectorHub | null;
-}): string {
-  if (flaggedCount === 0) {
-    if (targetCount === 0) {
-      return `No targets primary-classified to ${categoryName} yet.`;
-    }
-    return `No possible misalignments touch ${categoryName} so far.`;
-  }
-  if (hub && hub.flaggedPairCount >= 2) {
-    const pct = Math.round((hub.flaggedPairCount / flaggedCount) * 100);
-    return `${flaggedCount} flagged pair${flaggedCount === 1 ? "" : "s"} touch ${categoryName}; ${hub.flaggedPairCount} of them (${pct}%) involve the same target.`;
-  }
-  return `${flaggedCount} flagged pair${flaggedCount === 1 ? "" : "s"} touch ${categoryName}, spread across different targets.`;
 }
 
 // ─── Pair fingerprint coordinates ───────────────────────────────────

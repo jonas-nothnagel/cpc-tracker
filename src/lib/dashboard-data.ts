@@ -21,6 +21,7 @@ import { join } from "path";
 import { gzipSync } from "node:zlib";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
+import { localizeCategories } from "@/data/category-translations";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
@@ -438,11 +439,28 @@ export function assembleDashboardData(
     kind: "ok",
     data: {
       targets: finalTargets,
-      nbsCategories: categories.nbs_categories,
-      sectors: categories.ipcc_sectors ?? [],
-      globeCategories: categories.globe_categories ?? [],
+      // Category display names are localized here (es/mn) by id; English is the
+      // fallback. The source-traced `categories.json` is never mutated — this
+      // only swaps the display `name`, so every render site (wheel, atlas,
+      // sector rows, drawer, GGA lens, financing) shows the localized label.
+      // Safe to do here because the country payload is cached per-locale.
+      nbsCategories: localizeCategories(
+        categories.nbs_categories as Record<string, unknown>[] | null,
+        locale,
+      ),
+      sectors: localizeCategories(
+        (categories.ipcc_sectors ?? []) as Record<string, unknown>[],
+        locale,
+      ),
+      globeCategories: localizeCategories(
+        (categories.globe_categories ?? []) as Record<string, unknown>[],
+        locale,
+      ),
       globeSubcategories: categories.globe_subcategories ?? [],
-      ggaCategories: categories.gga_categories ?? [],
+      ggaCategories: localizeCategories(
+        (categories.gga_categories ?? []) as Record<string, unknown>[],
+        locale,
+      ),
       classifications: finalClassifications,
       alignment: finalAlignment,
       btrData: btrData ?? null,

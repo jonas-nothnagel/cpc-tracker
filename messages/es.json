@@ -117,13 +117,13 @@
       "subtitle": "{count, plural, one {# documento} other {# documentos}} comparados por pares. Desplácese para ver los hallazgos o salte a una sección."
     },
     "sections": {
-      "direction": "Dirección",
-      "docFocus": "Documento en foco",
-      "docPairs": "Pares de documentos",
-      "frictionTypes": "Tipos de fricción",
+      "direction": "Alineación de políticas",
+      "docFocus": "Documentos analizados",
+      "docPairs": "Documentos comparados",
+      "frictionTypes": "Tipos de incoherencia",
       "sectors": "Sectores",
-      "whereToFocus": "Dónde enfocar",
-      "explore": "Explorar",
+      "whereToFocus": "Áreas prioritarias de acción",
+      "explore": "Explorar resultados",
       "financing": "Financiación",
       "implementation": "Implementación"
     },
@@ -138,7 +138,16 @@
       "aligned": "Alineado",
       "flagged": "Posible desalineación",
       "redShareHint": "rojo = proporción de cada vínculo que está posiblemente desalineada",
-      "warmerArcHint": "arco más cálido = documento con más posible desalineación"
+      "warmerArcHint": "arco más cálido = documento con más posible desalineación",
+      "groupColours": "Colores",
+      "groupRelations": "Relaciones",
+      "groupStrength": "Fuerza",
+      "ribbonMeaning": "cada cinta une dos documentos que comparten pares de objetivos evaluados",
+      "ribbonWidth": "ancho de la cinta = número de pares compartidos"
+    },
+    "expand": {
+      "button": "Ampliar",
+      "aria": "Ampliar el gráfico"
     },
     "explorer": {
       "title": "Explorar los datos completos",
@@ -179,7 +188,10 @@
       "cellTitle": "{a} ↔ {b}: {aligned, number} alineados · {flagged, number} marcados · pulse para ver las brechas",
       "aligned": "Alineado",
       "flagged": "Posible desalineación",
-      "legendHint": "color más intenso = más lejos del promedio · pulse una celda para ver las brechas"
+      "legendHint": "color más intenso = más lejos del nivel medio de alineación del corpus",
+      "groupColours": "Colores",
+      "groupIntensity": "Intensidad",
+      "clickHint": "pulse una celda para ver las brechas"
     },
     "chat": {
       "askCorpus": "Pregunte al corpus",
@@ -360,7 +372,13 @@
         "flaggedCount": "{count, number} posiblemente desalineados",
         "synthesisedFrom": "Sintetizado a partir de {count, plural, one {1 par} other {# pares}} · {primary, number} primarios + {relevant, number} relevantes",
         "misalignmentTypes": "Tipos de desalineación: {list}",
-        "aiDisclaimer": "Síntesis generada por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo."
+        "aiDisclaimer": "Síntesis generada por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+        "synthesis": {
+          "empty": "Aún no hay metas clasificadas como primarias en {categoryName}.",
+          "noFlags": "Por ahora, ninguna posible desalineación afecta a {categoryName}.",
+          "hub": "{count, plural, one {# par posiblemente desalineado afecta} other {# pares posiblemente desalineados afectan}} a {categoryName}; {hubCount} de ellos ({pct}%) involucran a la misma meta.",
+          "spread": "{count, plural, one {# par posiblemente desalineado afecta} other {# pares posiblemente desalineados afectan}} a {categoryName}, repartidos entre distintas metas."
+        }
       }
     },
     "explore": {
@@ -500,6 +518,9 @@
       "switcherAriaLabel": "Elija un documento para enfocar",
       "focusOn": "Enfocar en",
       "fullTitle": "Título completo",
+      "documentDetails": "Detalles del documento",
+      "viewDocument": "Ver documento",
+      "deadlineCoverage": "{timeBound} de {total, plural, one {# meta fija} other {# metas fijan}} un plazo explícito",
       "noMisalignment": "Ninguna posible desalineación enlaza a {label} con otros documentos.",
       "breakdownCaption": "Cómo se desglosa la posible desalineación de {label}",
       "whereShowsMisalignment": "Dónde {label} muestra posible desalineación",
@@ -728,6 +749,14 @@
       "empty": "No hay posible desalineación para desglosar.",
       "pairCount": "{countLabel} {count, plural, one {par posiblemente desalineado} other {pares posiblemente desalineados}}",
       "captionDefault": "En todos los documentos de política"
+    },
+    "centerpiece": {
+      "constellationAria": "Constelación de coherencia de políticas"
+    },
+    "storylineCaveat": {
+      "updating": "Actualizando las líneas narrativas para la selección actual…",
+      "corpusOffPath": "Las líneas narrativas reflejan todos los documentos de políticas; las cifras reflejan la selección actual.",
+      "sectorFallback": "Las líneas narrativas sectoriales reflejan todos los documentos de políticas; todo lo demás refleja la selección actual."
     }
   },
   "upload": {
@@ -1386,6 +1415,63 @@
         "underFunded": "¿Qué metas nacionales parecen estar infrafinanciadas?",
         "fundedCategories": "¿Qué categorías GLOBE concentran más gasto etiquetado?"
       }
+    },
+    "insights": {
+      "paradox": {
+        "callout": "{label} figura a la vez entre las metas con mayor posible desalineación y las de mayor alineación fuerte. Dos caras de la misma moneda, conviene examinarlo de cerca."
+      },
+      "tension_cluster": {
+        "callout": "{count} posibles desalineaciones convergen en {label}, más que en cualquier otra meta del conjunto de datos.",
+        "pathway": "Una revisión de los límites de esta meta podría ayudar a desbloquear la alineación con los documentos con los que presenta desalineación."
+      },
+      "zero_conflict_topic": {
+        "callout": "{category} no presenta ninguna posible desalineación en {size} metas, algo inusual cuando otros temas presentan {peak} o más."
+      },
+      "hub": {
+        "callout": "{label} se alinea fuertemente con {docs} documentos distintos, conectando de forma discreta planes que otros abordan por separado."
+      },
+      "orphan": {
+        "callout": "{label} {connections, plural, =0 {no tiene ninguna alineación ni posible desalineación con ninguna otra meta} other {tiene solo una conexión en todo el conjunto de datos}}, aislada del resto de la red."
+      },
+      "imbalance": {
+        "callout": "{labelA} y {labelB} presentan {contras} posibles desalineaciones frente a {aligns} alineaciones fuertes, el par más desequilibrado del conjunto de datos.",
+        "pathway": "Una revisión conjunta de ambos podría ayudar a identificar dónde divergen sus mandatos."
+      },
+      "implementation_contradiction": {
+        "callout": "La acción reportada {btrLabel} ({status}) {severity, select, likely_conflict {probablemente entra en conflicto con} possible_conflict {podría entrar en conflicto con} other {podría no estar alineada con}} la meta planificada {policyLabel}. Lo que se está haciendo frente a lo que se planificó.",
+        "pathway": "Conciliar ambos, o marcar el par para revisión humana, podría ayudar a cerrar la brecha entre el plan y la práctica."
+      },
+      "most_contested_topic": {
+        "callout": "{category} presenta {count} posibles desalineaciones en {size} metas, la mayor concentración del conjunto de datos."
+      },
+      "quantitative_gap": {
+        "callout": "{label} aparece en {count} posibles desalineaciones pero no cuenta con ningún indicador medible.",
+        "pathway": "Sin una cifra que ancle la meta, varias de estas podrían depender de la interpretación más que de un conflicto de políticas; conviene examinarlas antes de tratarlas como señales para la toma de decisiones."
+      },
+      "agreement_pair": {
+        "callout": "{labelA} y {labelB} comparten {aligns} alineaciones fuertes y {contras, plural, =0 {ninguna posible desalineación} other {solo # posibles desalineaciones}}, el par más cohesionado del conjunto de datos."
+      },
+      "most_aligned_target": {
+        "callout": "{label} ancla {count} alineaciones fuertes, el mayor conector del conjunto de datos."
+      },
+      "doc_most_tensions": {
+        "callout": "{docLabel} presenta {count} posibles desalineaciones, la mayor concentración en un solo documento."
+      },
+      "btr_status_mix": {
+        "callout": "{happening} de {total} acciones reportadas ya están Implementadas o En curso, {adopt} Adoptadas y {plan} Planificadas. La proporción de Implementadas y En curso es la señal más fuerte de lo que ya está ocurriendo sobre el terreno."
+      },
+      "quantitative_coverage": {
+        "callout": "Solo {quant} de {total} metas cuentan con un indicador medible. El resto son declaraciones de orientación, difíciles de seguir sin una cifra que las ancle.",
+        "pathway": "Muchos de los recuentos de alineación y posible desalineación aquí podrían tener más peso interpretativo que un conflicto sustantivo de políticas, dado cuántas metas son declaraciones de orientación."
+      },
+      "anchor_support_gap": {
+        "callout": "{pillarLabel} {count, plural, =0 {no tiene alineaciones fuertes de apoyo de otros planes} =1 {tiene solo una alineación fuerte de otros planes} other {tiene solo # alineaciones fuertes de otros planes}}, el pilar con menos apoyo en este conjunto de datos.",
+        "pathway": "Revisar si las metas existentes en otros planes podrían asociarse a este pilar podría revelar una alineación infrautilizada con el plan nacional."
+      },
+      "sector_coverage_gap": {
+        "callout": "El sector «{sector}» tiene {count} metas de política pero ninguna acción reportada en el BTR, la mayor brecha entre plan y práctica por sector en este conjunto de datos.",
+        "pathway": "Verificar si la brecha refleja una implementación faltante o una falta de información de transparencia podría ayudar a cerrar el ciclo."
+      }
     }
   },
   "metadata": {
@@ -1670,7 +1756,8 @@
       "lulucfExplainer": {
         "heading": "Acerca de los valores negativos de LULUCF:",
         "body": "El sector de Uso de la Tierra, Cambio de Uso de la Tierra y Silvicultura muestra números negativos porque los bosques y pastizales de Mongolia actualmente <strong>absorben más CO₂ del que emiten</strong>, lo que hace de este sector un sumidero neto de carbono. En la contabilidad internacional de GEI, las remociones de la atmósfera se reportan como valores negativos. Un valor que se vuelve <em>menos negativo</em> (acercándose a cero) significa que el sumidero se está debilitando y absorbe menos carbono con el tiempo, lo que es una señal de alerta para los objetivos climáticos."
-      }
+      },
+      "yAxisUnit": "kt CO₂ eq"
     },
     "financingCoherence": {
       "heading": "Coherencia de presupuesto y financiamiento",

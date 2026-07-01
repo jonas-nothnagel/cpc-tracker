@@ -76,6 +76,28 @@ export function SectorDrawer({
   }, [briefing]);
 
   if (!briefing) return null;
+
+  // Sector header sentence, localized (replaces the old lib-composed English).
+  const hub = briefing.recurringHub;
+  const synthesisSentence =
+    briefing.flaggedCount === 0
+      ? briefing.targetCount === 0
+        ? t("synthesis.empty", { categoryName: briefing.categoryName })
+        : t("synthesis.noFlags", { categoryName: briefing.categoryName })
+      : hub && hub.flaggedPairCount >= 2
+        ? t("synthesis.hub", {
+            count: briefing.flaggedCount,
+            categoryName: briefing.categoryName,
+            hubCount: hub.flaggedPairCount,
+            pct: Math.round(
+              (hub.flaggedPairCount / briefing.flaggedCount) * 100,
+            ),
+          })
+        : t("synthesis.spread", {
+            count: briefing.flaggedCount,
+            categoryName: briefing.categoryName,
+          });
+
   return (
     <div className="fixed inset-0 z-30 flex justify-end">
       <button
@@ -107,7 +129,7 @@ export function SectorDrawer({
                 {t("headerCounts", { targets: briefing.targetCount, pairs: briefing.signalCount })}
               </p>
               <p className="mt-3 text-[13px] leading-snug text-[var(--undp-black)]">
-                {briefing.synthesisSentence}
+                {synthesisSentence}
               </p>
               {briefing.recurringHub &&
                 briefing.recurringHub.flaggedPairCount >= 2 && (

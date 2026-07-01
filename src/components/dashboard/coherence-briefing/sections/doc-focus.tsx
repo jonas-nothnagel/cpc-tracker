@@ -33,6 +33,7 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
+import { DocInfoPopover } from "../doc-meta-card";
 import {
   buildAnchorHeadline,
   buildDocFocusFrictions,
@@ -42,8 +43,11 @@ import {
 } from "@/lib/coherence-briefing";
 import {
   MECHANISM_COLORS,
+  getDocColor,
   getDocFullLabel,
   getDocMediumLabel,
+  getDocMeta,
+  type DocMeta,
 } from "@/lib/utils";
 import { useContradictionTypeLabels } from "@/lib/labels";
 import type {
@@ -108,6 +112,16 @@ export function DocFocusSection({
     countryConfig,
     t,
   });
+  const meta = getDocMeta(countryConfig, focusedDoc);
+  // Re-surface the deadlines the pipeline already extracts (Target.isTimeBound)
+  // as a per-document coverage count. No new methodology: existing data only.
+  const deadlineCoverage = useMemo(() => {
+    const docTargets = targets.filter((tt) => tt.sourceDocument === focusedDoc);
+    return {
+      total: docTargets.length,
+      timeBound: docTargets.filter((tt) => tt.isTimeBound).length,
+    };
+  }, [targets, focusedDoc]);
 
   return (
     <SlideFrame
@@ -127,6 +141,8 @@ export function DocFocusSection({
         <DocFocusEvidence
           fullTitle={fullTitle}
           label={label}
+          meta={meta}
+          deadlineCoverage={deadlineCoverage}
           frictions={frictions}
           focusedDoc={focusedDoc}
           countryConfig={countryConfig}
@@ -243,6 +259,8 @@ function DocSwitcher({
 function DocFocusEvidence({
   fullTitle,
   label,
+  meta,
+  deadlineCoverage,
   frictions,
   focusedDoc,
   countryConfig,
@@ -251,6 +269,8 @@ function DocFocusEvidence({
 }: {
   fullTitle: string;
   label: string;
+  meta: DocMeta;
+  deadlineCoverage: { total: number; timeBound: number };
   frictions: DocFocusFrictions;
   focusedDoc: PolicyDocumentType;
   countryConfig: CountryConfig | null;
@@ -267,9 +287,15 @@ function DocFocusEvidence({
         <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
           {t("fullTitle")}
         </p>
-        <p className="text-[14px] text-[var(--undp-black)] leading-snug">
-          {fullTitle}
-        </p>
+        <DocInfoPopover
+          meta={meta}
+          color={getDocColor(countryConfig, focusedDoc)}
+          deadlineCoverage={deadlineCoverage}
+        >
+          <span className="text-[14px] text-[var(--undp-black)] leading-snug group-hover:underline underline-offset-2 decoration-1">
+            {fullTitle}
+          </span>
+        </DocInfoPopover>
       </div>
 
       {flaggedPairs.length === 0 ? (
@@ -382,3 +408,7 @@ function FlaggedPairRow({
     </li>
   );
 }
+
+/* Per-document reference metadata + deadline coverage now render via the shared
+ * DocMetaCard (see ../doc-meta-card), used here in the left column and as a
+ * hover card on the wheel's document legend. */

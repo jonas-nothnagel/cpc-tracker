@@ -5,62 +5,97 @@
   "_defaultHiddenDocTypesComment": "ENR (Estrategia Nacional REDD+) is a ~206-target REDD+ strategy, roughly half the Panama corpus. A reviewer flagged that it is not a policy document and skews every visual and insight, while the country office still wants it available. It is therefore HIDDEN BY DEFAULT (soft) but its data ships to the browser and can be toggled back on instantly via the briefing's document filter. Distinct from excludedDocTypes (hard strip). The synthesis pipeline precomputes storyline states for [full corpus] + [ENR hidden] so the toggle stays exact with no live LLM.",
   "defaultHiddenDocTypes": ["ENR"],
   "excludedDocTypes": ["CNR"],
+  "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel. URLs verified to resolve (HTTP 200/206) on 2026-06-30 against official domains; large PDF bodies were not all text-extracted, so 'match' rests on official domain + exact filename. Notes: NP is also mirrored on transparencia-climatica.miambiente.gob.pa; the PEG url is the Gaceta Oficial No. 30186-b (27 Dec 2024) that publishes the plan; PNSH uses the water-security PDF the CO originally mis-slotted under PNRF (confirmed = Plan Nacional de Seguridad Hidrica, NOT forest restoration). HR (Hoja de Ruta) has no standalone public PDF (it lives inside the Nature Pledge document + the online module), so no url; its year is the roadmap presentation (news-sourced). PNRF has no direct official PDF; the url is MiAMBIENTE's official FlipHTML5 flipbook of the full programme (the Gaceta No. 29294-A adoption decree is also at https://faolex.fao.org/docs/pdf/pan204044.pdf). Objectives for NP/ENR are concise factual summaries from the official MiAMBIENTE platform/launch pages; the PNRF objective is near-verbatim from the MiAMBIENTE press release. CNR is excluded from the product.",
   "documentTypes": [
     {
       "id": "NP",
       "shortLabel": "NP",
       "mediumLabel": "NP (Nature Pledge)",
       "fullLabel": "Pacto de Panamá con la Naturaleza (Nature Pledge)",
-      "color": "#0468b1"
+      "color": "#0468b1",
+      "docKind": "National pledge / unified commitment framework",
+      "published": "November 2025",
+      "author": "Government of Panama (MiAMBIENTE)",
+      "url": "https://unfccc.int/sites/default/files/2025-11/Pacto%20de%20Panam%C3%A1%20con%20la%20Naturaleza%20%28Nature%20Pledge%29.pdf",
+      "objective": "Unifies Panama's national climate, biodiversity and land-degradation commitments (the three Rio Conventions) in a single framework oriented to 2035."
     },
     {
       "id": "ENR",
       "shortLabel": "ENR",
       "mediumLabel": "ENR (REDD+ Strategy)",
       "fullLabel": "Estrategia Nacional REDD+",
-      "color": "#166534"
+      "color": "#166534",
+      "docKind": "REDD+ strategy",
+      "published": "2022",
+      "author": "Ministerio de Ambiente (MiAMBIENTE), with FAO and Green Climate Fund support",
+      "url": "https://transparencia-climatica.miambiente.gob.pa/wp-content/uploads/2022/10/Documento-ENREDD.pdf",
+      "objective": "Defines measures to reduce deforestation and forest degradation, implemented across 33 priority hydrographic basins."
     },
     {
       "id": "HR",
       "shortLabel": "HR",
       "mediumLabel": "HR (Nature Pledge Roadmap)",
       "fullLabel": "Hoja de Ruta del Nature Pledge",
-      "color": "#d97706"
+      "color": "#d97706",
+      "docKind": "Government roadmap (operationalises the Nature Pledge)",
+      "published": "2026",
+      "author": "Government of Panama (MiAMBIENTE)"
     },
     {
       "id": "PEG",
       "shortLabel": "PEG",
       "mediumLabel": "PEG (Gov't Strategic Plan)",
       "fullLabel": "Plan Estratégico de Gobierno 2025-2029",
-      "color": "#0d9488"
+      "color": "#0d9488",
+      "docKind": "Government strategic plan",
+      "published": "2025-2029 (published December 2024)",
+      "author": "Government of Panama (via Ministerio de Economía y Finanzas)",
+      "url": "https://www.mef.gob.pa/wp-content/uploads/2024/12/GacetaNo_30186b_20241227.pdf"
     },
     {
       "id": "PENCYT",
       "shortLabel": "PENCYT",
       "mediumLabel": "PENCYT (Science & Innovation Plan)",
       "fullLabel": "Plan Estratégico Nacional de Ciencia, Tecnología e Innovación 2025-2029",
-      "color": "#be185d"
+      "color": "#be185d",
+      "docKind": "National strategic plan (science, technology and innovation)",
+      "published": "2025-2029",
+      "author": "SENACYT (Secretaría Nacional de Ciencia, Tecnología e Innovación)",
+      "url": "https://www.senacyt.gob.pa/wp-content/uploads/2025/05/PENCYT-2025-2029.pdf"
     },
     {
       "id": "PIOTA",
       "shortLabel": "PIOTA",
       "mediumLabel": "PIOTA (Canal Watershed Plan)",
       "fullLabel": "Plan Indicativo de Ordenamiento Territorial Ambiental",
-      "color": "#6d28d9"
+      "color": "#6d28d9",
+      "docKind": "Territorial and environmental planning instrument",
+      "published": "2022",
+      "author": "Autoridad del Canal de Panamá (Panama Canal watershed)",
+      "url": "https://pancanal.com/wp-content/uploads/2022/08/01_Documento-PIOTA.pdf"
     },
     {
       "id": "PNRF",
       "shortLabel": "PNRF",
       "mediumLabel": "PNRF (Forest Restoration)",
       "fullLabel": "Programa Nacional de Restauración Forestal",
-      "color": "#15803d"
+      "color": "#15803d",
+      "docKind": "National programme (forest restoration)",
+      "published": "2021-2025 (adopted May 2021)",
+      "author": "Ministerio de Ambiente (MiAMBIENTE), Dirección Nacional Forestal",
+      "url": "https://online.fliphtml5.com/eebm/ofrr/",
+      "objective": "Reforestar en cinco años más de 50 mil hectáreas, con énfasis en la protección y conservación de cuencas prioritarias y productoras de agua."
     },
     {
       "id": "PNSH",
       "shortLabel": "PNSH",
       "mediumLabel": "PNSH (Water Security)",
       "fullLabel": "Plan Nacional de Seguridad Hídrica",
-      "color": "#0891b2"
+      "color": "#0891b2",
+      "docKind": "National plan (water security)",
+      "published": "2015-2050 (adopted 2016)",
+      "author": "Government of Panama (Consejo Nacional del Agua, CONAGUA)",
+      "url": "https://www.senacyt.gob.pa/wp-content/uploads/2018/12/3.-Plan-Nacional-de-Seguridad-Hidrica-2015-2050-Agua-para-Todos.pdf"
     },
     {
       "id": "CNR",

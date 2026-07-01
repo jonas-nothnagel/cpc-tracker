@@ -1,0 +1,551 @@
+{
+  "storylines": [
+    {
+      "name": "Vincular las salvaguardias y el seguimiento con la implementación",
+      "type": "reinforcement",
+      "description": "Se repite una narrativa sólida en torno a la combinación de la acción territorial con sistemas habilitadores como MRV, salvaguardas, trazabilidad, información pública, participación y seguimiento de las finanzas. Esto tiende a alinear los planes de REDD+, naturaleza, agua y cuencas hidrográficas mediante herramientas concretas, incluidos los sistemas de información sobre salvaguardas, el monitoreo de bosques y ecosistemas, los observatorios de riesgo climático y las plataformas de datos interoperables.",
+      "contributing_doc_pairs": [
+        "CNR<->ENR",
+        "ENR<->HR",
+        "ENR<->NP",
+        "ENR<->PNSH",
+        "HR<->NP",
+        "NP<->PIOTA"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 17715,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PIOTA",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Reforzar la restauración de cuencas hidrográficas con la gobernanza del agua",
+      "type": "reinforcement",
+      "description": "La restauración y la gestión de la tierra a escala de cuenca se alinean repetidamente con la seguridad hídrica y la planificación de cuencas, especialmente mediante la restauración ribereña, la protección de las zonas de recarga, la gestión del fuego y la conservación de las fuentes de agua. La evidencia apunta a un refuerzo práctico allí donde la cobertura forestal, la recuperación del suelo, los comités de cuenca y el monitoreo hidrológico respaldan la disponibilidad de agua, la prevención de riesgos y la resiliencia de los servicios.",
+      "contributing_doc_pairs": [
+        "CNR<->PNSH",
+        "CNR<->PIOTA",
+        "PNRF<->PNSH",
+        "PIOTA<->PNSH",
+        "NP<->PNSH",
+        "ENR<->PIOTA"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3349,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "NP",
+        "PIOTA",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Utilizar sistemas de STI para posibilitar la implementación",
+      "type": "reinforcement",
+      "description": "La ciencia, la digitalización, la infraestructura de investigación, los polos de innovación y la transferencia de conocimientos suelen reforzar la implementación en la gestión de los bosques, la biodiversidad, el agua y las cuencas hidrográficas. Esto se repite a través de funciones concretas de apoyo, como el monitoreo digital, los inventarios de GHG, la trazabilidad, la alerta temprana, la divulgación y la investigación aplicada para la restauración y la gestión de los recursos.",
+      "contributing_doc_pairs": [
+        "CNR<->PENCYT",
+        "ENR<->PENCYT",
+        "HR<->PENCYT",
+        "NP<->PENCYT",
+        "PENCYT<->PIOTA",
+        "PENCYT<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 4292,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PENCYT",
+        "PIOTA",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Alinear los incentivos con la restauración y los medios de vida",
+      "type": "reinforcement",
+      "description": "El uso de la tierra basado en incentivos, la financiación de la restauración, los pagos por servicios ecosistémicos y las medidas de medios de vida comunitarios refuerzan repetidamente los objetivos forestales y de biodiversidad. El patrón se repite cuando la expansión de PIEA, los programas de restauración, los viveros, la certificación y la participación comunitaria se alinean con las áreas protegidas, los corredores, la protección de cuencas hidrográficas y los medios de vida compatibles con los bosques.",
+      "contributing_doc_pairs": [
+        "CNR<->PNRF",
+        "CNR<->NP",
+        "CNR<->HR",
+        "ENR<->PNRF",
+        "NP<->PNRF",
+        "PIOTA<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3137,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PIOTA",
+        "PNRF"
+      ]
+    },
+    {
+      "name": "Revisar la ubicación de infraestructuras en paisajes sensibles",
+      "type": "friction",
+      "description": "Se señala para revisión una narrativa recurrente de fricción cuando las carreteras, los corredores logísticos, la vivienda, el turismo, las obras del Canal y la infraestructura energética pueden superponerse con cuencas hidrográficas, áreas protegidas, corredores biológicos, territorios indígenas y sitios de restauración. El mecanismo tiende a ser la presión de ejecución a través del trazado, la expansión del acceso, la fragmentación, los permisos y el cambio de uso del suelo en los mismos territorios destinados a la conservación o a medidas REDD+.",
+      "contributing_doc_pairs": [
+        "CNR<->PEG",
+        "ENR<->PEG",
+        "HR<->PEG",
+        "NP<->PEG",
+        "PEG<->PIOTA",
+        "PEG<->PNRF"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 697,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PIOTA",
+        "PNRF"
+      ]
+    },
+    {
+      "name": "Revisar la superposición entre embalses y obras hidráulicas",
+      "type": "friction",
+      "description": "Otra narrativa recurrente gira en torno a la expansión de embalses, las intervenciones en ríos y otras obras de disponibilidad hídrica que pueden cruzarse con la protección de los bosques, la restauración ribereña, los humedales, las áreas protegidas y las salvaguardias de la biodiversidad. Estos casos suelen señalarse para revisión como presiones relacionadas con la ubicación, el régimen hidrológico, los caudales ambientales y el uso del suelo en cuencas compartidas, más que como un conflicto de política ya establecido.",
+      "contributing_doc_pairs": [
+        "ENR<->PNSH",
+        "HR<->PNSH",
+        "NP<->PNSH",
+        "PNRF<->PNSH",
+        "PEG<->PNSH",
+        "PENCYT<->PNSH"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 53,
+      "spans_documents": [
+        "ENR",
+        "HR",
+        "NP",
+        "PEG",
+        "PENCYT",
+        "PNRF",
+        "PNSH"
+      ]
+    },
+    {
+      "name": "Revisar los modelos de producción en relación con la zonificación de conservación",
+      "type": "friction",
+      "description": "Se señala para revisión un patrón más acotado pero recurrente cuando la reforestación comercial, el apoyo a la industria forestal o la tecnificación agrícola pueden superponerse con corredores de restauración, áreas protegidas, zonas ribereñas y hábitats prioritarios. La evidencia tiende a apuntar a cuestiones relativas a la elección de especies, la ubicación de las plantaciones, el abastecimiento y la zonificación sensible a la biodiversidad, especialmente cuando especies exóticas o una modernización centrada en la productividad se incorporan en paisajes rurales compartidos.",
+      "contributing_doc_pairs": [
+        "CNR<->ENR",
+        "ENR<->HR",
+        "ENR<->PNRF",
+        "HR<->PNRF",
+        "ENR<->PENCYT",
+        "NP<->PENCYT"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 69,
+      "spans_documents": [
+        "CNR",
+        "ENR",
+        "HR",
+        "NP",
+        "PENCYT",
+        "PNRF"
+      ]
+    }
+  ],
+  "summary_paragraph": "En todos los pares de documentos, el patrón recurrente más sólido es el refuerzo entre la acción territorial y los sistemas habilitadores, como las salvaguardias, el monitoreo, la participación, el seguimiento de la financiación y las herramientas digitales. La restauración de cuencas hidrográficas, la protección de los bosques y la gestión de la tierra basada en incentivos también tienden a alinearse con la seguridad hídrica, la obtención de resultados en biodiversidad y las medidas relativas a los medios de vida de las comunidades, mientras que los instrumentos de STI aparecen repetidamente como habilitadores de la implementación más que como acciones sectoriales independientes. Al mismo tiempo, se señalan varias líneas de fricción para su revisión cuando la infraestructura, las obras de embalses, la reforestación comercial, el apoyo a la industria forestal o la modernización agrícola pueden operar en los mismos paisajes que las áreas protegidas, los corredores, las zonas ribereñas y los territorios indígenas o de cuencas hidrográficas. En conjunto, el grupo se inclina claramente hacia el refuerzo, con puntos recurrentes de revisión concentrados en la ubicación, la zonificación, la elección de especies y el uso compartido de la tierra y el agua.",
+  "doc_pair_count": 36,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Vincular las salvaguardias y el seguimiento con la implementación",
+          "type": "reinforcement",
+          "description": "Se repite una narrativa sólida en torno a la combinación de la acción territorial con sistemas habilitadores como MRV, salvaguardas, trazabilidad, información pública, participación y seguimiento de las finanzas. Esto tiende a alinear los planes de REDD+, naturaleza, agua y cuencas hidrográficas mediante herramientas concretas, incluidos los sistemas de información sobre salvaguardas, el monitoreo de bosques y ecosistemas, los observatorios de riesgo climático y las plataformas de datos interoperables.",
+          "contributing_doc_pairs": [
+            "CNR<->ENR",
+            "ENR<->HR",
+            "ENR<->NP",
+            "ENR<->PNSH",
+            "HR<->NP",
+            "NP<->PIOTA"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 17715,
+          "spans_documents": [
+            "CNR",
+            "ENR",
+            "HR",
+            "NP",
+            "PIOTA",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Reforzar la restauración de cuencas hidrográficas con la gobernanza del agua",
+          "type": "reinforcement",
+          "description": "La restauración y la gestión de la tierra a escala de cuenca se alinean repetidamente con la seguridad hídrica y la planificación de cuencas, especialmente mediante la restauración ribereña, la protección de las zonas de recarga, la gestión del fuego y la conservación de las fuentes de agua. La evidencia apunta a un refuerzo práctico allí donde la cobertura forestal, la recuperación del suelo, los comités de cuenca y el monitoreo hidrológico respaldan la disponibilidad de agua, la prevención de riesgos y la resiliencia de los servicios.",
+          "contributing_doc_pairs": [
+            "CNR<->PNSH",
+            "CNR<->PIOTA",
+            "PNRF<->PNSH",
+            "PIOTA<->PNSH",
+            "NP<->PNSH",
+            "ENR<->PIOTA"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3349,
+          "spans_documents": [
+            "CNR",
+            "ENR",
+            "NP",
+            "PIOTA",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Utilizar sistemas de STI para posibilitar la implementación",
+          "type": "reinforcement",
+          "description": "La ciencia, la digitalización, la infraestructura de investigación, los polos de innovación y la transferencia de conocimientos suelen reforzar la implementación en la gestión de los bosques, la biodiversidad, el agua y las cuencas hidrográficas. Esto se repite a través de funciones concretas de apoyo, como el monitoreo digital, los inventarios de GHG, la trazabilidad, la alerta temprana, la divulgación y la investigación aplicada para la restauración y la gestión de los recursos.",
+          "contributing_doc_pairs": [
+            "CNR<->PENCYT",
+            "ENR<->PENCYT",
+            "HR<->PENCYT",
+            "NP<->PENCYT",
+            "PENCYT<->PIOTA",
+            "PENCYT<->PNSH"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 4292,
+          "spans_documents": [
+            "CNR",
+            "ENR",
+            "HR",
+            "NP",
+            "PENCYT",
+            "PIOTA",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Alinear los incentivos con la restauración y los medios de vida",
+          "type": "reinforcement",
+          "description": "El uso de la tierra basado en incentivos, la financiación de la restauración, los pagos por servicios ecosistémicos y las medidas de medios de vida comunitarios refuerzan repetidamente los objetivos forestales y de biodiversidad. El patrón se repite cuando la expansión de PIEA, los programas de restauración, los viveros, la certificación y la participación comunitaria se alinean con las áreas protegidas, los corredores, la protección de cuencas hidrográficas y los medios de vida compatibles con los bosques.",
+          "contributing_doc_pairs": [
+            "CNR<->PNRF",
+            "CNR<->NP",
+            "CNR<->HR",
+            "ENR<->PNRF",
+            "NP<->PNRF",
+            "PIOTA<->PNRF"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3137,
+          "spans_documents": [
+            "CNR",
+            "ENR",
+            "HR",
+            "NP",
+            "PIOTA",
+            "PNRF"
+          ]
+        },
+        {
+          "name": "Revisar la ubicación de infraestructuras en paisajes sensibles",
+          "type": "friction",
+          "description": "Se señala para revisión una narrativa recurrente de fricción cuando las carreteras, los corredores logísticos, la vivienda, el turismo, las obras del Canal y la infraestructura energética pueden superponerse con cuencas hidrográficas, áreas protegidas, corredores biológicos, territorios indígenas y sitios de restauración. El mecanismo tiende a ser la presión de ejecución a través del trazado, la expansión del acceso, la fragmentación, los permisos y el cambio de uso del suelo en los mismos territorios destinados a la conservación o a medidas REDD+.",
+          "contributing_doc_pairs": [
+            "CNR<->PEG",
+            "ENR<->PEG",
+            "HR<->PEG",
+            "NP<->PEG",
+            "PEG<->PIOTA",
+            "PEG<->PNRF"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 697,
+          "spans_documents": [
+            "CNR",
+            "ENR",
+            "HR",
+            "NP",
+            "PEG",
+            "PIOTA",
+            "PNRF"
+          ]
+        },
+        {
+          "name": "Revisar la superposición entre embalses y obras hidráulicas",
+          "type": "friction",
+          "description": "Otra narrativa recurrente gira en torno a la expansión de embalses, las intervenciones en ríos y otras obras de disponibilidad hídrica que pueden cruzarse con la protección de los bosques, la restauración ribereña, los humedales, las áreas protegidas y las salvaguardias de la biodiversidad. Estos casos suelen señalarse para revisión como presiones relacionadas con la ubicación, el régimen hidrológico, los caudales ambientales y el uso del suelo en cuencas compartidas, más que como un conflicto de política ya establecido.",
+          "contributing_doc_pairs": [
+            "ENR<->PNSH",
+            "HR<->PNSH",
+            "NP<->PNSH",
+            "PNRF<->PNSH",
+            "PEG<->PNSH",
+            "PENCYT<->PNSH"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 53,
+          "spans_documents": [
+            "ENR",
+            "HR",
+            "NP",
+            "PEG",
+            "PENCYT",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Revisar los modelos de producción en relación con la zonificación de conservación",
+          "type": "friction",
+          "description": "Se señala para revisión un patrón más acotado pero recurrente cuando la reforestación comercial, el apoyo a la industria forestal o la tecnificación agrícola pueden superponerse con corredores de restauración, áreas protegidas, zonas ribereñas y hábitats prioritarios. La evidencia tiende a apuntar a cuestiones relativas a la elección de especies, la ubicación de las plantaciones, el abastecimiento y la zonificación sensible a la biodiversidad, especialmente cuando especies exóticas o una modernización centrada en la productividad se incorporan en paisajes rurales compartidos.",
+          "contributing_doc_pairs": [
+            "CNR<->ENR",
+            "ENR<->HR",
+            "ENR<->PNRF",
+            "HR<->PNRF",
+            "ENR<->PENCYT",
+            "NP<->PENCYT"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 69,
+          "spans_documents": [
+            "CNR",
+            "ENR",
+            "HR",
+            "NP",
+            "PENCYT",
+            "PNRF"
+          ]
+        }
+      ],
+      "summary_paragraph": "En todos los pares de documentos, el patrón recurrente más sólido es el refuerzo entre la acción territorial y los sistemas habilitadores, como las salvaguardias, el monitoreo, la participación, el seguimiento de la financiación y las herramientas digitales. La restauración de cuencas hidrográficas, la protección de los bosques y la gestión de la tierra basada en incentivos también tienden a alinearse con la seguridad hídrica, la obtención de resultados en biodiversidad y las medidas relativas a los medios de vida de las comunidades, mientras que los instrumentos de STI aparecen repetidamente como habilitadores de la implementación más que como acciones sectoriales independientes. Al mismo tiempo, se señalan varias líneas de fricción para su revisión cuando la infraestructura, las obras de embalses, la reforestación comercial, el apoyo a la industria forestal o la modernización agrícola pueden operar en los mismos paisajes que las áreas protegidas, los corredores, las zonas ribereñas y los territorios indígenas o de cuencas hidrográficas. En conjunto, el grupo se inclina claramente hacia el refuerzo, con puntos recurrentes de revisión concentrados en la ubicación, la zonificación, la elección de especies y el uso compartido de la tierra y el agua.",
+      "doc_pair_count": 36
+    },
+    "ENR": {
+      "storylines": [
+        {
+          "name": "Vincular la restauración y los incentivos a los resultados de las cuencas hidrográficas",
+          "type": "reinforcement",
+          "description": "Se repite un patrón sólido en el que los incentivos forestales, la restauración, la gestión de incendios y la protección de cuencas hidrográficas se alinean con los objetivos de seguridad hídrica, biodiversidad y ordenamiento territorial. El mecanismo tiende a operar mediante la expansión de PIEA, la restauración ribereña y de zonas de recarga, la gestión de áreas protegidas y corredores, y la planificación a nivel de cuenca que refuerza la regulación hidrológica y los resultados forestales en paisajes compartidos.",
+          "contributing_doc_pairs": [
+            "CNR<->HR",
+            "CNR<->NP",
+            "CNR<->PEG",
+            "CNR<->PIOTA",
+            "CNR<->PNRF",
+            "CNR<->PNSH",
+            "NP<->PNRF",
+            "PNRF<->PNSH",
+            "PIOTA<->PNRF"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1481,
+          "spans_documents": [
+            "CNR",
+            "HR",
+            "NP",
+            "PEG",
+            "PIOTA",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Utilizar la gobernanza y el seguimiento para posibilitar la implementación",
+          "type": "reinforcement",
+          "description": "En múltiples pares, las agendas de naturaleza, bosques y agua se alinean con los marcos jurídicos, el MRV, la trazabilidad, los datos abiertos, los observatorios y los sistemas de monitoreo interoperables. Esto apunta a un mecanismo habilitador recurrente en el que las herramientas nacionales de gobernanza y las plataformas de información refuerzan la implementación en áreas protegidas, cuencas hidrográficas, programas de restauración y la planificación de la adaptación.",
+          "contributing_doc_pairs": [
+            "HR<->NP",
+            "HR<->PEG",
+            "HR<->PIOTA",
+            "HR<->PNRF",
+            "HR<->PNSH",
+            "NP<->PEG",
+            "NP<->PIOTA",
+            "PEG<->PNRF",
+            "PEG<->PNSH"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 4568,
+          "spans_documents": [
+            "HR",
+            "NP",
+            "PEG",
+            "PIOTA",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Canalizar las capacidades de STI hacia la implementación ambiental",
+          "type": "reinforcement",
+          "description": "Una narrativa recurrente es que la ciencia, la innovación y la digitalización tienden a servir como sistemas facilitadores para REDD+, la biodiversidad, la restauración, la gestión de cuencas hidrográficas y la planificación hídrica, más que como mandatos ambientales independientes. Los mecanismos concretos incluyen infraestructura de investigación, centros regionales de innovación, transferencia de conocimientos, monitoreo digital, inventarios de GHG y adopción de tecnología que refuerzan la implementación sobre el terreno y la toma de decisiones.",
+          "contributing_doc_pairs": [
+            "CNR<->PENCYT",
+            "HR<->PENCYT",
+            "NP<->PENCYT",
+            "PEG<->PENCYT",
+            "PENCYT<->PIOTA",
+            "PENCYT<->PNRF",
+            "PENCYT<->PNSH"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2268,
+          "spans_documents": [
+            "CNR",
+            "HR",
+            "NP",
+            "PEG",
+            "PENCYT",
+            "PIOTA",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Alinear la participación y la planificación territorial en todos los paisajes",
+          "type": "reinforcement",
+          "description": "La gobernanza inclusiva y la planificación territorial se repiten como mecanismos de refuerzo en los documentos sobre naturaleza, bosques y agua, especialmente a través de los planes locales de adaptación, las instituciones de cuenca, las redes comunitarias y los marcos de participación. Esto se alinea con la implementación en distritos prioritarios, territorios de la cuenca del Canal, comunidades indígenas y afrodescendientes, y procesos locales de restauración o gestión del agua.",
+          "contributing_doc_pairs": [
+            "CNR<->NP",
+            "CNR<->PNSH",
+            "HR<->NP",
+            "HR<->PIOTA",
+            "NP<->PNSH",
+            "PIOTA<->PNSH",
+            "NP<->PNRF"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2878,
+          "spans_documents": [
+            "CNR",
+            "HR",
+            "NP",
+            "PIOTA",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Revisar la ubicación de infraestructuras en paisajes sensibles",
+          "type": "friction",
+          "description": "La posible desalineación en la ejecución reaparece cuando las carreteras, los corredores logísticos, la vivienda, el turismo, la transmisión de energía y las obras relacionadas con el Canal pueden superponerse con cuencas hidrográficas, zonas de amortiguamiento forestal, corredores ecológicos, áreas protegidas y sitios de restauración. El mecanismo señalado para revisión suele ser la superposición espacial que podría aumentar la fragmentación, la presión de acceso, el cambio de uso del suelo o el riesgo de incendios en los mismos territorios destinados a la conservación o la restauración.",
+          "contributing_doc_pairs": [
+            "CNR<->PEG",
+            "CNR<->PIOTA",
+            "HR<->PEG",
+            "HR<->PIOTA",
+            "NP<->PEG",
+            "NP<->PIOTA",
+            "PEG<->PIOTA",
+            "PEG<->PNRF",
+            "PIOTA<->PNRF"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 304,
+          "spans_documents": [
+            "CNR",
+            "HR",
+            "NP",
+            "PEG",
+            "PIOTA",
+            "PNRF"
+          ]
+        },
+        {
+          "name": "Revisar las presiones sobre el almacenamiento y la asignación del agua",
+          "type": "friction",
+          "description": "Otra cuestión recurrente señalada para revisión se refiere a los embalses, las intervenciones fluviales, la expansión del riego, la reutilización de agua tratada y las obras conexas de disponibilidad hídrica en cuencas que también contemplan objetivos de restauración, humedales, especies o áreas protegidas. La presión tiende a surgir a través de las decisiones de ubicación, los caudales ambientales, las reivindicaciones compartidas sobre la tierra y el agua, y la superposición entre la ampliación de los servicios y las salvaguardias de los ecosistemas.",
+          "contributing_doc_pairs": [
+            "HR<->PNSH",
+            "NP<->PNSH",
+            "PEG<->PNSH",
+            "PIOTA<->PNSH",
+            "PNRF<->PNSH",
+            "CNR<->PIOTA",
+            "HR<->PIOTA",
+            "NP<->PIOTA",
+            "PENCYT<->PNSH"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 81,
+          "spans_documents": [
+            "CNR",
+            "HR",
+            "NP",
+            "PEG",
+            "PENCYT",
+            "PIOTA",
+            "PNRF",
+            "PNSH"
+          ]
+        },
+        {
+          "name": "Revisar la modernización de la producción cerca de las zonas de conservación",
+          "type": "friction",
+          "description": "Un patrón más acotado pero recurrente apunta a una posible desalineación allí donde la tecnificación agrícola, el crecimiento agroexportador, la acuicultura o la expansión forestal-industrial coinciden con áreas protegidas, corredores, zonas ribereñas y la reforma de incentivos relacionados con la biodiversidad. Esto tiende a referirse a la zonificación, las salvaguardias para la vida silvestre, el diseño de subsidios y las decisiones sobre el uso de la tierra en los paisajes rurales, más que a la orientación general de la política.",
+          "contributing_doc_pairs": [
+            "CNR<->PENCYT",
+            "HR<->PENCYT",
+            "HR<->PNRF",
+            "NP<->PENCYT",
+            "NP<->PNRF",
+            "PENCYT<->PNRF",
+            "CNR<->PEG",
+            "NP<->PEG"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 129,
+          "spans_documents": [
+            "CNR",
+            "HR",
+            "NP",
+            "PEG",
+            "PENCYT",
+            "PNRF"
+          ]
+        }
+      ],
+      "summary_paragraph": "El panorama general se inclina claramente hacia el refuerzo, con una alineación recurrente en torno a la restauración de cuencas hidrográficas, los incentivos forestales, la gobernanza de la biodiversidad y la resiliencia hídrica, respaldada por el monitoreo, los marcos jurídicos, la participación y los sistemas digitales. Las capacidades de ciencia e innovación también aparecen de forma recurrente como facilitadores prácticos para la implementación en REDD+, la restauración, la gestión de la cuenca del Canal y la planificación hídrica. Al mismo tiempo, se señalan varias cuestiones transversales para revisión, en las que la expansión de la infraestructura, las obras de almacenamiento de agua y algunas agendas de modernización productiva pueden operar en los mismos paisajes que las áreas protegidas, los corredores, los humedales y las zonas de restauración. En conjunto, la evidencia apunta a una amplia alineación estratégica con un conjunto más reducido de presiones recurrentes sobre el espacio y el uso de los recursos en territorios compartidos.",
+      "doc_pair_count": 28
+    }
+  }
+}

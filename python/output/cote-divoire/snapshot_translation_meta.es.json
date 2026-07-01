@@ -1,0 +1,56 @@
+{
+  "country": "cote-divoire",
+  "locale": "es",
+  "targetLanguage": "Spanish",
+  "model": "gpt-5.4",
+  "temperature": 0.0,
+  "promptSystem": "You are a professional translator specialising in UN climate and biodiversity policy documents.\nTranslate the provided English text into Spanish, in a faithful, professional, institutional register suitable for policy makers.\n\nHard rules:\n- Preserve ALL numbers, percentages, and units exactly as written. Do not add, drop, or alter any number, and keep a percent sign attached to its number.\n- Preserve these acronyms VERBATIM, never translated, expanded, or re-cased: NDC, NBSAP, NAP, BTR, BER, LDN, ILDN, FSS, NRVTS, IPCC, GLOBE, GGA, NbS, REDD+, UNFCCC, CBD, SDG, NR7, CO₂, LULUCF, OECM.\n- Render \"possible misalignment\" or \"potential misalignment\" as \"posible desalineación\". Never use \"contradicción\", \"conflicto\", or \"tensión\".\n- Do not use em dashes.\n- Keep structural elements intact: line breaks, lists, and colons stay where they were.\n- Return only the Spanish translation. No commentary, no notes, no quotation marks wrapping the result.",
+  "promptUserTemplate": "Translate this text to {target}:\n\n{text}",
+  "acronymsPreserved": [
+    "NDC",
+    "NBSAP",
+    "NAP",
+    "BTR",
+    "BER",
+    "LDN",
+    "ILDN",
+    "FSS",
+    "NRVTS",
+    "IPCC",
+    "GLOBE",
+    "GGA",
+    "NbS",
+    "REDD+",
+    "UNFCCC",
+    "CBD",
+    "SDG",
+    "NR7",
+    "CO₂",
+    "LULUCF",
+    "OECM"
+  ],
+  "runDate": "2026-06-30T16:04:13.220796+00:00",
+  "cacheNamespace": "snapshot_translation_es",
+  "files": {
+    "corpus_themes.json": {
+      "items": 6,
+      "fieldsTranslated": 26,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    },
+    "doc_pair_synthesis.json": {
+      "items": 3,
+      "fieldsTranslated": 12,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    },
+    "sector_synthesis.json": {
+      "items": 33,
+      "fieldsTranslated": 264,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    }
+  },
+  "totalFieldsTranslated": 302,
+  "totalNumericDriftFlags": 0
+}

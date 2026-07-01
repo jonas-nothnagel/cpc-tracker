@@ -5,27 +5,40 @@
   "defaultHiddenDocTypes": [],
   "excludedDocTypes": [],
   "_documentTypesComment": "Sri Lanka's three source documents from data_sri_lanka_15Jun26.xlsx. shortLabel / fullLabel come verbatim from the xlsx Doc and Document columns; the mediumLabel parenthetical is the verbatim Convention column value (Climate Change / Nature / Land degradation) so a reader sees the convention domain at a glance. Colors from the UNDP-compatible Tailwind palette: blue=climate, green=nature, amber=land. Avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
+  "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel; urls verified to return HTTP 200 on 2026-06-30 by reading each document's front matter. NDC 3.0 and LDN are direct PDFs (UNFCCC / UNCCD) and their objectives are near-verbatim from each document's cover letter. NBSAP: the Kunming-Montreal-aligned update is still in preparation and no public draft PDF was found, so no url / date / objective is set (the 2016-2022 NBSAP and the 2024 National Policy on Biodiversity are different documents and were not substituted).",
   "documentTypes": [
     {
       "id": "NDC",
       "shortLabel": "NDC",
       "mediumLabel": "NDC (Climate Change)",
       "fullLabel": "Nationally Determined Contributions 3.0",
-      "color": "#0468b1"
+      "color": "#0468b1",
+      "docKind": "Nationally Determined Contribution (UNFCCC)",
+      "published": "September 2025",
+      "author": "Climate Change Secretariat, Ministry of Environment, Sri Lanka",
+      "url": "https://unfccc.int/sites/default/files/2025-09/Sri%20Lankas%20Nationally%20Determined%20Contributions%203.0%20(2026-2035)%20submitted%2022.09.2025%20(1).pdf",
+      "objective": "A low-carbon, climate-resilient future, aligned with the national target of carbon neutrality by 2050 (covering 2026-2035)."
     },
     {
       "id": "NBSAP",
       "shortLabel": "NBSAP",
       "mediumLabel": "NBSAP (Nature)",
       "fullLabel": "draft National Biodiversity Strategy and Action Plan",
-      "color": "#166534"
+      "color": "#166534",
+      "docKind": "National Biodiversity Strategy and Action Plan (CBD), in preparation",
+      "author": "Ministry of Environment, Sri Lanka (Biodiversity Secretariat)"
     },
     {
       "id": "LDN",
       "shortLabel": "LDN",
       "mediumLabel": "LDN (Land degradation)",
       "fullLabel": "Land Degradation Neutrality document",
-      "color": "#b45309"
+      "color": "#b45309",
+      "docKind": "UNCCD Land Degradation Neutrality country targets",
+      "published": "December 2017",
+      "author": "Ministry of Mahaweli Development and Environment, Sri Lanka (UNCCD LDN Target Setting Programme)",
+      "url": "https://www.unccd.int/sites/default/files/ldn_targets/Sri%20Lanka%20LDN%20Country%20Commitments.pdf",
+      "objective": "Reverse land degradation to assure the nation's ecosystem services and food security, achieving the LDN targets by 2030."
     }
   ],
   "_docProvenanceComment": "Primary-source citations per document. The xlsx Source column was empty for every row, so citations name the document and country only; no URLs, dates, or other details are invented.",

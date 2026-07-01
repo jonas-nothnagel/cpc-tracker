@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cómo funciona el análisis | Analizador de Coherencia de Políticas de Naturaleza y Clima</title>
+<style>
+  :root {
+    --blue: #0468b1; --blue-dark: #035293; --black: #232e3d; --gray: #55606e;
+    --paper: #faf8f4; --line: #e6e3dd;
+    --l1: #0468b1; --l2: #b45309; --l3: #7c3aed;
+    --ph-ex: #b45309; --ph-an: #0468b1; --ph-sy: #196127;
+    --a-high: #196127; --a-med: #7bc96f; --a-low: #c6e48b; --a-none: #d1d5db; --a-flag: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--black); background: #fff; line-height: 1.5; font-size: 10.5pt;
+  }
+  .page {
+    max-width: 820px; margin: 0 auto; padding: 28px 40px 40px;
+  }
+  .eyebrow {
+    font-size: 8.5pt; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--blue); font-weight: 700; margin: 0 0 6px;
+  }
+  h1 {
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+    font-size: 23pt; line-height: 1.1; margin: 0 0 8px; color: var(--black); font-weight: 700;
+  }
+  .standfirst { font-size: 11pt; color: var(--gray); margin: 0 0 4px; max-width: 66ch; }
+  h2 {
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+    font-size: 13.5pt; margin: 22px 0 8px; color: var(--blue-dark);
+    border-bottom: 2px solid var(--line); padding-bottom: 4px;
+  }
+  h3 { font-size: 10pt; margin: 0 0 3px; color: var(--black); }
+  p { margin: 0 0 8px; }
+  a { color: var(--blue); }
+  strong { color: var(--black); }
+  .lead-rule { height: 4px; background: var(--blue); width: 54px; border: 0; margin: 14px 0 18px; }
+  .section-intro { margin: 0 0 8px; }
+
+  /* three levels (scope band) */
+  .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 6px 0 4px; }
+  .level { border: 1px solid var(--line); border-top: 4px solid var(--lc); border-radius: 6px; padding: 10px 12px; background: var(--paper); }
+  .level .tag { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--lc); }
+  .level h3 { margin: 2px 0 4px; font-size: 10.5pt; }
+  .level p { font-size: 9pt; color: var(--gray); margin: 0; }
+  .level .badge { display: inline-block; margin-top: 6px; font-size: 7.5pt; color: var(--gray); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+
+  /* pipeline: three colour-coded phases */
+  .pipe { display: flex; align-items: stretch; gap: 0; margin: 10px 0 6px; }
+  .phase { flex: 1; border: 1px solid var(--line); border-top: 4px solid var(--pc); border-radius: 6px; padding: 9px 11px; background: #fff; }
+  .phase .pk { font-size: 7.5pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--pc); }
+  .phase .pt { font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif; font-size: 10.5pt; font-weight: 600; margin: 2px 0 4px; color: var(--black); }
+  .phase .pd { font-size: 8pt; color: var(--gray); line-height: 1.35; }
+  .arrow { display: flex; align-items: center; color: var(--line); font-size: 15pt; padding: 0 5px; font-weight: 700; }
+
+  /* alignment scale */
+  .scale { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); margin: 8px 0 4px; }
+  .scell { flex: 1; padding: 6px 4px; text-align: center; font-size: 7.6pt; font-weight: 600; }
+  .scale-note { font-size: 8pt; color: var(--gray); margin: 0 0 4px; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  ul { margin: 4px 0 8px; padding-left: 16px; }
+  li { margin: 0 0 4px; font-size: 9.5pt; }
+
+  /* worked example */
+  .example { border: 1px solid var(--line); border-left: 4px solid var(--ph-an); background: var(--paper); border-radius: 6px; padding: 11px 14px; margin: 12px 0 4px; }
+  .example .ek { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ph-an); margin: 0 0 5px; }
+  .example p { font-size: 9.5pt; color: var(--gray); margin: 0; }
+  .example strong { color: var(--black); }
+  .example .flag { color: var(--a-flag); font-weight: 700; }
+
+  /* safeguards */
+  .guards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin: 4px 0; }
+  .guard { font-size: 9pt; }
+  .guard b { color: var(--blue-dark); }
+
+  .footnote { margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 8pt; color: var(--gray); }
+
+  @page { size: A4; margin: 14mm; }
+  @media print {
+    .page { max-width: none; margin: 0; padding: 0; }
+    .page-break { page-break-before: always; }
+    h2 { break-after: avoid; }
+    .levels, .pipe, .guards, .example { break-inside: avoid; }
+    body { font-size: 10pt; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">Analizador de Coherencia de Políticas de Naturaleza y Clima &middot; Metodología</p>
+  <h1>Cómo funciona el análisis</h1>
+  <p class="standfirst">Convertir los datos de las políticas nacionales en información trazable y basada en evidencia sobre la coherencia de políticas: dónde los compromisos se refuerzan entre sí, dónde pueden competir y dónde persisten brechas de financiación e implementación.</p>
+  <hr class="lead-rule" />
+
+  <h2>Propósito</h2>
+  <p>En los Planes Nacionales de Desarrollo emergentes, las Contribuciones Determinadas a Nivel Nacional (NDC), las Estrategias y Planes de Acción Nacionales en materia de Biodiversidad (NBSAP), los Planes Nacionales de Adaptación (NAP) y las metas de Neutralidad en la Degradación de las Tierras (LDN), la ambición ha aumentado por el planeta y su población. Sin embargo, estos compromisos nacionales suelen crearse, implementarse y monitorearse en compartimentos estancos, sin claridad sobre cómo se relacionan entre sí. El análisis aporta evidencia basada en datos sobre las sinergias, las oportunidades y las brechas a partir de la información de política, financiación e implementación proporcionada. Es un <strong>sistema de apoyo a la toma de decisiones, no quien las toma</strong>: pone de relieve posibles patrones para que los expertos nacionales los revisen, pero la interpretación final corresponde a quienes formulan las políticas.</p>
+
+  <h2>Qué abarca el análisis</h2>
+  <p class="section-intro">El mismo método analítico se aplica en tres niveles, en la medida en que lo permiten los datos de cada país.</p>
+  <div class="levels">
+    <div class="level" style="--lc: var(--l1)">
+      <div class="tag">Nivel 1</div>
+      <h3>Coherencia de políticas</h3>
+      <p>Cómo las metas de los distintos documentos nacionales de política se alinean, se refuerzan entre sí o podrían competir.</p>
+      <span class="badge">Consolidado</span>
+    </div>
+    <div class="level" style="--lc: var(--l2)">
+      <div class="tag">Nivel 2</div>
+      <h3>Alineación financiera</h3>
+      <p>Dónde los programas presupuestarios del gobierno siguen la ambición de las políticas.</p>
+      <span class="badge">Donde existen datos presupuestarios</span>
+    </div>
+    <div class="level" style="--lc: var(--l3)">
+      <div class="tag">Nivel 3</div>
+      <h3>Avance de la implementación</h3>
+      <p>Si las medidas reportadas cumplen las metas planteadas.</p>
+      <span class="badge">Donde existen datos de reporte</span>
+    </div>
+  </div>
+
+  <h2>El método</h2>
+  <p class="section-intro">Cada resultado se produce mediante la misma secuencia transparente, organizada en tres fases. El análisis lee únicamente el texto de política que se le proporciona y nunca introduce contenido de política propio.</p>
+  <div class="pipe">
+    <div class="phase" style="--pc: var(--ph-ex)">
+      <div class="pk">Fase 1 &middot; Extracción</div>
+      <div class="pt">De los documentos a las metas</div>
+      <div class="pd">Cada página se lee íntegramente, se aparta el texto repetitivo y cada meta se extrae palabra por palabra junto con su fuente. Los duplicados se fusionan, y cada cifra, año y marco mencionado se verifica frente al documento original.</div>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="phase" style="--pc: var(--ph-an)">
+      <div class="pk">Fase 2 &middot; Análisis</div>
+      <div class="pt">De las metas a la coherencia</div>
+      <div class="pd">Cada meta se marca según sea medible y tenga un plazo definido, y se clasifica frente a marcos de referencia seleccionados. Luego se evalúa cada par entre documentos: un agente especializado descompone cada meta en sus partes, y un segundo juzga cómo se alinean ambas.</div>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="phase" style="--pc: var(--ph-sy)">
+      <div class="pk">Fase 3 &middot; Síntesis</div>
+      <div class="pt">De los pares a los patrones</div>
+      <div class="pd">Los juicios individuales se agregan en puntuaciones de coherencia y cobertura, se pone de relieve la posible desalineación recurrente, y el mismo método se extiende a la financiación y la implementación donde existen los datos.</div>
+    </div>
+  </div>
+  <p class="scale-note">Cada par se ubica en una escala de cinco estados. Cuatro niveles positivos describen con qué fuerza se alinean dos metas; un único estado de revisión, <strong>Posible desalineación</strong>, marca un par para examen experto en lugar de declarar un conflicto.</p>
+  <div class="scale">
+    <div class="scell" style="background: var(--a-flag); color:#fff">Posible desalineación</div>
+    <div class="scell" style="background: var(--a-none); color:#374151">Sin relación</div>
+    <div class="scell" style="background: var(--a-low); color:#374151">Parcial</div>
+    <div class="scell" style="background: var(--a-med); color:#14361f">Media</div>
+    <div class="scell" style="background: var(--a-high); color:#fff">Alta</div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>Dentro del análisis</h2>
+  <div class="two">
+    <div>
+      <h3>Clasificación frente a temas seleccionados</h3>
+      <p>Las metas se puntúan frente a marcos de referencia publicados: los sectores del inventario de gases de efecto invernadero del IPCC, la taxonomía de Gasto Global en Biodiversidad (GLOBE) y las siete metas de resiliencia climática del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (el Objetivo Mundial de Adaptación). Las categorías se remiten a sus fuentes y son configurables por país. Cada meta conserva una categoría primaria más cualquier otra con la que se relacione claramente, de modo que la misma evidencia puede leerse a través de distintas lentes sin volver a analizarla.</p>
+      <h3>Comparación en dos pasos</h3>
+      <p>La comparación se separa deliberadamente en dos etapas. Primero se descompone una meta en su objetivo, acción, ámbito, actores y resultado esperado; la alineación se evalúa después a partir de esa estructura. Esto mantiene los juicios consistentes entre países y marcos de política, y anclados en la sustancia de las políticas más que en palabras clave compartidas.</p>
+    </div>
+    <div>
+      <h3>Por qué &ldquo;posible desalineación&rdquo;, y no &ldquo;conflicto&rdquo;</h3>
+      <p>El lado negativo de la escala es deliberadamente prudente. Una posible desalineación es un aviso para revisión, nunca un veredicto: cada una registra de qué tipo es (objetivos que compiten, un recurso compartido o presión sobre la entrega), cuán manejable parece y con cuánta confianza se hace la lectura, de modo que quien revisa vea por qué se marcó un par.</p>
+      <h3>Síntesis y enfoque</h3>
+      <p>El análisis produce información factual breve y elementos visuales, no narrativas extensas redactadas por IA. Cuando se sugieren próximos pasos, se plantean como posibilidades a explorar (&ldquo;podría&rdquo;, &ldquo;puede&rdquo;), nunca como instrucciones.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <p class="ek">Ejemplo práctico &middot; Mongolia</p>
+    <p>La meta del NBSAP de incluir todo el territorio en el <strong>ordenamiento territorial</strong> se empareja con la meta de la NDC de asegurar la <strong>disponibilidad de agua</strong> mediante nueva infraestructura. Ambas atañen a la gobernanza de la tierra y el agua, pero la infraestructura podría presionar sobre los ecosistemas que protege la meta de ordenamiento territorial. El análisis registra el par como una <span class="flag">Posible desalineación</span> del tipo de entrega, evaluada como manejable y con confianza media, y señala que la coordinación mediante el ordenamiento territorial, la zonificación y las salvaguardas mantendría ambas alineadas. Es uno de <strong>46 pares marcados para revisión</strong> entre los <strong>540</strong> comparados entre los dos documentos, donde la coherencia general se sitúa en el <strong>66%</strong>.</p>
+  </div>
+
+  <h2>Qué produce el análisis</h2>
+  <ul>
+    <li><strong>Elementos visuales e información factual breve</strong> sobre la cobertura, los patrones de alineación y dónde podría reforzarse la coordinación, en lugar de un informe automatizado.</li>
+    <li><strong>Lentes intercambiables</strong>, bajo el control del usuario, de modo que el mismo análisis pueda reagruparse por tema, por sector (GLOBE, IPCC o el conjunto propio de un país), o mediante capas de financiación e implementación, sin volver a analizar.</li>
+    <li><strong>Un asistente fundamentado</strong> que responde preguntas utilizando únicamente la evidencia analizada.</li>
+  </ul>
+
+  <h2>Salvaguardas</h2>
+  <div class="guards">
+    <div class="guard"><b>Supervisión humana.</b> Las metas extraídas se confirman y editan antes de ejecutar cualquier análisis, y cualquier justificación de la IA puede valorarse para mejorar futuras ejecuciones. Los resultados son asistidos por IA y requieren validación por expertos antes de su uso en procesos de política.</div>
+    <div class="guard"><b>Fundamentado y trazable.</b> Solo se clasifican y comparan los datos proporcionados; cada resultado remite al texto fuente del que proviene, y no se afirma nada que no pueda verificarse.</div>
+    <div class="guard"><b>Soberanía de los datos.</b> El análisis es independiente del modelo: un país puede elegir qué modelo de IA utiliza la herramienta, manteniendo el control de dónde se procesan sus datos.</div>
+    <div class="guard"><b>IA frugal y justa.</b> Un diseño de baja huella cuyo costo ambiental se mide y se reporta de forma abierta.</div>
+  </div>
+  <p style="font-size:9pt; margin-top:6px;">El análisis se está construyendo como un <strong>Bien Público Digital</strong> de código abierto, para que los gobiernos nacionales puedan eventualmente ejecutarlo con sus propios datos e infraestructura.</p>
+
+  <p class="footnote">Análisis asistido por IA para apoyo a la toma de decisiones. Todos los resultados requieren validación por expertos antes de su uso en procesos de política. Este resumen refleja la canalización de análisis vigente en junio de 2026. &middot; Analizador de Coherencia de Políticas de Naturaleza y Clima del PNUD.</p>
+
+</div>
+</body>
+</html>

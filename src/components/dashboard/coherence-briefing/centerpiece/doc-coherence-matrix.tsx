@@ -211,25 +211,51 @@ export function DocCoherenceMatrix({
         </div>
       </div>
 
-      {/* Legend: two discrete colours, no gradient */}
-      <div className="flex items-center gap-4 mt-3 text-[10px] text-[var(--undp-gray)]">
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            className="inline-block w-3 h-3 rounded-sm"
-            style={{ backgroundColor: "rgba(25, 97, 39, 0.85)" }}
-          />
-          {t("aligned")}
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            className="inline-block w-3 h-3 rounded-sm"
-            style={{ backgroundColor: "rgba(220, 38, 38, 0.85)" }}
-          />
-          {t("flagged")}
-        </span>
-        <span className="text-[var(--undp-gray)]/70">
-          {t("legendHint")}
-        </span>
+      {/* Legend: grouped, quiet labels — colours (alignment meaning) and
+          intensity (distance from the corpus norm). No boxes. */}
+      <div className="mt-3 mx-auto max-w-[440px] text-[11px] text-[var(--undp-gray)]">
+        {/* 2-col grid: the label column auto-sizes to the widest label across
+            locales, so a longer label can't overflow into the text. */}
+        <div className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 gap-y-1.5">
+          <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+            {t("groupColours")}
+          </span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
+            <span className="inline-flex items-center gap-1.5">
+              <span
+                className="inline-block w-3 h-3 rounded-sm"
+                style={{ backgroundColor: "rgba(25, 97, 39, 0.85)" }}
+              />
+              {t("aligned")}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span
+                className="inline-block w-3 h-3 rounded-sm"
+                style={{ backgroundColor: "rgba(220, 38, 38, 0.85)" }}
+              />
+              {t("flagged")}
+            </span>
+          </div>
+          <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+            {t("groupIntensity")}
+          </span>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+            <span
+              aria-hidden="true"
+              className="inline-block h-3 w-8 rounded-sm shrink-0"
+              style={{
+                // Diverging intensity scale, mirroring cellColor(): deep green
+                // far below the norm, pale near it, deep red far above.
+                background:
+                  "linear-gradient(90deg, rgba(25,97,39,0.85), rgba(25,97,39,0.12) 45%, rgba(220,38,38,0.12) 55%, rgba(220,38,38,0.85))",
+              }}
+            />
+            <span className="text-[var(--undp-gray)]/80">{t("legendHint")}</span>
+          </div>
+        </div>
+        <p className="text-[10px] text-[var(--undp-gray)]/60 text-center mt-1">
+          ({t("clickHint")})
+        </p>
       </div>
     </div>
   );

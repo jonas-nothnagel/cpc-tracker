@@ -111,6 +111,29 @@ export function getDocFullLabel(
   return resolveDocEntry(countryConfig, docId)?.fullLabel ?? docId;
 }
 
+/** Optional reference metadata for a document, shown in the doc-focus panel. */
+export type DocMeta = Pick<
+  DocumentTypeEntry,
+  "docKind" | "published" | "author" | "objective" | "url" | "sourceNote"
+>;
+
+/**
+ * Optional reference metadata (kind, date, author, goal, link, provenance) for a
+ * document type. Returns an empty object when the id is unknown or carries no
+ * metadata, so callers can read fields without null checks. Every populated
+ * value traces to a primary source (see `DocumentTypeEntry`); the UI renders
+ * only the fields that are present.
+ */
+export function getDocMeta(
+  countryConfig: CountryConfig | null | undefined,
+  docId: string,
+): DocMeta {
+  const entry = resolveDocEntry(countryConfig, docId);
+  if (!entry) return {};
+  const { docKind, published, author, objective, url, sourceNote } = entry;
+  return { docKind, published, author, objective, url, sourceNote };
+}
+
 /**
  * Friendly name for a document type — the parenthetical inside `mediumLabel`,
  * e.g. "NP (Nature Pledge)" → "Nature Pledge". When `mediumLabel` has no

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How the CPC Analyzer works · Pipeline architecture</title>
+<style>
+  :root {
+    --undp-blue: #0468b1; --undp-blue-dark: #035293;
+    --undp-black: #232e3d; --undp-gray: #55606e;
+    --undp-light: #f7f7f7; --undp-paper: #faf8f4; --undp-white: #fff;
+    --border-100: #f3f4f6; --border-200: #e5e7eb; --border-300: #d1d5db;
+    --align-flagged: #dc2626; --align-medium: #7bc96f; --align-high: #196127;
+    --mech-goal: #b91c1c; --mech-resource: #ea580c; --mech-delivery: #d97706;
+    --doc-ndc: #0468b1; --doc-nbsap: #0d9488; --doc-nap: #b45309; --doc-ldn: #78716c; --doc-btr: #7c3aed;
+    --ex: #b45309; --an: #0468b1; --sy: #196127; --agent: #7c3aed;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-card: 0 1px 2px rgba(35,46,61,0.05);
+    --shadow-pop: 0 14px 34px -10px rgba(35,46,61,0.20), 0 4px 10px -6px rgba(35,46,61,0.1);
+    --ground: #f3efe7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: var(--font-sans); color: var(--undp-black); background: var(--undp-white);
+    overflow: hidden; height: 100vh; display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  h1, h2, h3, p { margin: 0; }
+  .serif { font-family: var(--font-serif); letter-spacing: -0.01em; }
+  abbr { text-decoration: none; border-bottom: 1px dotted currentColor; cursor: help; }
+
+  /* top bar */
+  .topbar { flex: none; z-index: 40; display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 12px 24px; background: #fff; border-bottom: 1px solid var(--border-200); }
+  .topbar .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+  .topbar img { height: 26px; width: auto; display: block; }
+  .topbar .div { width: 1px; height: 20px; background: var(--border-200); }
+  .topbar .ttl { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .topbar .ttl b { font-family: var(--font-serif); font-weight: 600; }
+  .topbar .ttl span { color: var(--undp-gray); font-weight: 400; }
+  .seg { display: inline-flex; background: var(--undp-light); border: 1px solid var(--border-200); border-radius: 999px; padding: 3px; gap: 2px; }
+  .seg button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 12px;
+    padding: 5px 14px; border-radius: 999px; color: var(--undp-gray); transition: all .2s var(--ease); }
+  .seg button[aria-pressed="true"] { background: var(--undp-black); color: #fff; }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .brief-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500;
+    color: var(--undp-blue); text-decoration: none; white-space: nowrap; transition: color .2s var(--ease); }
+  .brief-link:hover { color: var(--undp-blue-dark); text-decoration: underline; }
+  .brief-link svg { flex: none; }
+  @media (max-width: 820px) { .topbar .ttl span { display: none; } .brief-link { font-size: 11px; } }
+  @media (max-width: 640px) { .brief-link { display: none; } }
+
+  /* layout: map (left) + panel (right) */
+  .work { flex: 1; display: flex; min-height: 0; }
+  .mapwrap { position: relative; flex: 1; overflow: hidden; min-width: 0; background: var(--ground); }
+  .board { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+  .board.animating { transition: transform .8s var(--ease); }
+
+  .edges { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; z-index: 2; }
+  .edge { fill: none; stroke: #cbd3ce; stroke-width: 1.8; stroke-dasharray: 1; stroke-dashoffset: 1;
+    transition: stroke-dashoffset .7s var(--ease), opacity .4s; opacity: 0; }
+  .edge.drawn { stroke-dashoffset: 0; opacity: 1; }
+  .edge.feed.drawn { stroke: #ddd0b5; stroke-width: 1.4; stroke-dasharray: 6 5 !important; stroke-dashoffset: 0; opacity: 0.8; }
+  .elabel { display: none; position: absolute; z-index: 3; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    color: var(--undp-black); background: #fff; border: 1px solid var(--border-200); border-radius: 999px;
+    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); box-shadow: var(--shadow-card); white-space: nowrap; }
+  .elabel.shown { opacity: 1; }
+  .elabel .dt { color: var(--undp-gray); }
+
+  /* phase bands */
+  .band { position: absolute; border-radius: 16px; z-index: 0; border: 1px solid transparent;
+    opacity: 0; transition: opacity .6s var(--ease), border-color .4s, background .4s; }
+  .band.shown { opacity: 1; }
+  .band.ex, .band.an, .band.sy { background: rgba(255,255,255,0.45); }
+  .band.active.ex { border-color: rgba(180,83,9,0.22); background: rgba(180,83,9,0.05); }
+  .band.active.an { border-color: rgba(4,104,177,0.22); background: rgba(4,104,177,0.05); }
+  .band.active.sy { border-color: rgba(25,97,39,0.22); background: rgba(25,97,39,0.05); }
+  .band-label { position: absolute; z-index: 1; display: flex; flex-direction: column; gap: 2px; opacity: 0; transition: opacity .6s var(--ease); }
+  .band-label.shown { opacity: 1; }
+  .band-label .k { font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 0; margin-bottom: 5px; align-self: flex-start; }
+  .band-label .n { font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--undp-black); letter-spacing: -0.01em; }
+  .band-label.ex .k { color: var(--ex); } .band-label.an .k { color: var(--an); } .band-label.sy .k { color: var(--sy); }
+
+  /* map nodes */
+  .node { position: absolute; width: 178px; min-height: 62px; height: auto; z-index: 5; cursor: pointer;
+    background: #fff; border: 1px solid var(--border-200); border-radius: 8px; box-shadow: var(--shadow-card);
+    padding: 11px 14px 11px 30px; display: flex; align-items: center; gap: 10px;
+    opacity: 0; transform: translateY(10px) scale(0.97);
+    transition: opacity .5s var(--ease), transform .5s var(--ease), box-shadow .25s, border-color .25s; }
+  .node::before { content: ""; position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--an); }
+  .node.shown { opacity: 1; transform: none; }
+  .node .nnum { font-family: var(--font-serif); font-size: 15px; font-weight: 600; color: var(--undp-gray); flex: none; min-width: 18px; font-variant-numeric: tabular-nums; }
+  .node .ntext { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .node .nt { font-family: var(--font-serif); font-size: 13.5px; font-weight: 600; line-height: 1.18; letter-spacing: -0.01em; color: var(--undp-black); }
+  .node .nb { font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--undp-gray); line-height: 1.3; }
+  .node.active { border-color: var(--undp-black); box-shadow: 0 0 0 3px rgba(35,46,61,0.07), var(--shadow-pop); transform: scale(1.03); }
+  .node.agent::before { background: var(--agent); }
+  .node .atag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; background: #fff; border: 1px solid rgba(124,58,237,0.35); color: var(--agent); padding: 2px 7px; border-radius: 999px; }
+  .node .ltag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.06em;
+    background: #fff; border: 1px solid rgba(25,97,39,0.35); color: var(--sy); padding: 2px 7px; border-radius: 999px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .board.animating { transition: none; } .node { transition: opacity .2s; transform: none; } .edge, .elabel { transition: opacity .2s; }
+  }
+
+  /* controls */
+  .controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 30;
+    display: flex; align-items: center; gap: 8px; padding: 7px 11px; background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px); border: 1px solid var(--border-200); border-radius: 999px; box-shadow: var(--shadow-pop); }
+  .controls .sep { width: 1px; height: 20px; background: var(--border-200); }
+  .cbtn { border: 0; background: transparent; cursor: pointer; color: var(--undp-black); width: 32px; height: 32px;
+    border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; padding: 0; transition: background .2s; }
+  .cbtn:hover { background: var(--undp-light); }
+  .cbtn.primary { background: var(--undp-blue); color: #fff; width: 38px; height: 38px; }
+  .cbtn.primary:hover { background: var(--undp-blue-dark); }
+  .cbtn:disabled { opacity: 0.3; cursor: default; background: transparent; }
+  .cbtn .ico { width: 15px; height: 15px; display: block; }
+  .dots { display: flex; align-items: center; gap: 5px; padding: 0 3px; }
+  .dots button { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--border-300); background: #fff; padding: 0; cursor: pointer; transition: all .2s; }
+  .dots button[aria-current="true"] { background: var(--undp-blue); border-color: var(--undp-blue); transform: scale(1.35); }
+  .dots button.seen { border-color: var(--undp-blue); }
+  @media (max-width: 760px) { .dots { display: none; } }
+
+  /* detail panel */
+  .panel { flex: none; width: clamp(360px, 38%, 488px); background: #fff; border-left: 1px solid var(--border-200);
+    position: relative; overflow: hidden; }
+  .pstep { position: absolute; inset: 0; padding: 30px 30px 26px; overflow-y: auto;
+    opacity: 0; transform: translateY(10px); visibility: hidden; pointer-events: none;
+    transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s linear .45s; }
+  .pstep.on { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s; }
+  .p-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .p-eyebrow .pp { padding: 2px 9px; border-radius: 999px; color: #fff; }
+  .p-eyebrow.ex .pp { background: var(--ex); } .p-eyebrow.an .pp { background: var(--an); } .p-eyebrow.sy .pp { background: var(--sy); }
+  .p-eyebrow .ps { color: var(--undp-gray); font-weight: 600; }
+  .p-title { font-family: var(--font-serif); font-weight: 600; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.13; margin-bottom: 14px; }
+  .p-say { font-size: 15.5px; line-height: 1.62; color: #3c4654; }
+  .p-say strong { color: var(--undp-black); font-weight: 600; }
+  .p-viz { margin: 22px 0 4px; display: flex; justify-content: center; }
+  .p-viz > * { width: 100%; max-width: 400px; }
+  .p-note { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border-100); }
+  .p-note .nl { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--undp-gray); margin-bottom: 8px; }
+  .p-tech, .p-deep { display: none; }
+  body.show-deep .p-tech, body.show-deep .p-deep { display: block; }
+  .p-tech .tx { font-size: 13px; line-height: 1.6; color: var(--undp-gray); }
+  .p-tech .tx code { font-family: var(--font-mono); font-size: 0.88em; background: var(--undp-light); padding: 1px 5px; border-radius: 4px; color: var(--undp-black); }
+  .p-tech .specs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
+  .p-tech .specs span { font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border-200); border-radius: 4px; padding: 2px 8px; color: var(--undp-gray); }
+  .p-deep { margin-top: 16px; }
+
+  /* ===== worked-example overlay (orthogonal to depth) ===== */
+  .p-example { display: none; margin-top: 18px; }
+  body.show-example .p-example { display: block; }
+  .ex-card { border: 1px solid rgba(4,104,177,0.22); border-left: 3px solid var(--undp-blue);
+    background: var(--undp-paper); border-radius: 10px; padding: 12px 14px; }
+  .ex-card .exl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--undp-blue); margin-bottom: 9px; display: flex; align-items: center; gap: 7px; }
+  .ex-card .exl .dotm { width: 6px; height: 6px; border-radius: 50%; background: var(--undp-blue); flex: none; }
+  .ex-card .exb { font-size: 12.5px; line-height: 1.5; color: #3c4654; }
+  .ex-card .exb b { color: var(--undp-black); font-weight: 600; }
+  .ex-pair { display: flex; flex-direction: column; gap: 7px; margin: 10px 0 2px; }
+  .ex-t { border: 1px solid var(--border-200); border-radius: 7px; padding: 8px 10px; background: #fff; }
+  .ex-t .ex-doc { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: var(--undp-gray); }
+  .ex-t .ex-doc .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .ex-t .ex-txt { font-size: 11.5px; line-height: 1.4; color: var(--undp-black); }
+  .ex-verdict { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 11.5px; font-weight: 700; color: var(--align-flagged); }
+  .ex-verdict .o { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--align-flagged); flex: none; }
+  .ex-facets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+
+  /* example toggle in the top bar */
+  .ex-toggle { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border-300);
+    background: #fff; color: var(--undp-gray); border-radius: 999px; padding: 6px 13px; font: inherit;
+    font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s var(--ease); white-space: nowrap; }
+  .ex-toggle:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
+  .ex-toggle[aria-pressed="true"] { background: var(--undp-blue); border-color: var(--undp-blue); color: #fff; }
+  .ex-toggle svg { flex: none; }
+  @media (max-width: 720px) { .ex-toggle .lbl { display: none; } .ex-toggle { padding: 6px 9px; } }
+
+  /* ===== human-in-the-loop nodes ===== */
+  .node.human { background: #fff; border-color: var(--border-200); }
+  .node.human::before { background: #a87f4a; }
+  .node.human .htag { display: none; }
+  .node.human.active { border-color: var(--undp-black); box-shadow: 0 0 0 3px rgba(35,46,61,0.07), var(--shadow-pop); }
+  .node .glyph { width: 14px; height: 14px; flex: none; color: #a87f4a; }
+
+  /* feedback loop-back edge + its label */
+  .edge.fb { stroke: #c9b48d; stroke-width: 1.6; stroke-dasharray: 2 5; stroke-linecap: round; }
+  .edge.fb.drawn { opacity: 0.55; }
+  .fb-lab { display: none; position: absolute; z-index: 3; font-family: var(--font-sans); font-size: 9.5px; font-weight: 600;
+    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px;
+    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); white-space: nowrap; }
+  .fb-lab.shown { opacity: 1; }
+
+  /* node-kind legend */
+  .legend { position: absolute; right: 16px; top: 14px; z-index: 25; display: flex; flex-wrap: wrap; gap: 5px 14px;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border: 1px solid var(--border-200);
+    border-radius: 10px; padding: 8px 12px; box-shadow: var(--shadow-card); font-size: 10.5px; color: var(--undp-gray); }
+  .legend .li { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .legend .sw.ai { background: var(--an); }
+  .legend .sw.agent { background: var(--agent); }
+  .legend .sw.human { background: #a87f4a; }
+  @media (max-width: 820px) { .legend { display: none; } }
+
+  /* lens-switch visual (classify step) + inline human marker */
+  .lens-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center; }
+  .lens-chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-300); background: #fff; color: var(--undp-gray); }
+  .lens-chip.on { background: var(--undp-black); border-color: var(--undp-black); color: #fff; font-weight: 600; }
+  .lens-cap { font-size: 11px; color: var(--undp-gray); text-align: center; margin-top: 10px; }
+  .lens-cap b { color: var(--undp-black); font-weight: 600; }
+  .you-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
+    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px; padding: 3px 9px; }
+  .you-tag svg { width: 11px; height: 11px; }
+  .ex-label { display: inline-flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--undp-gray); margin-bottom: 9px; }
+  .ex-label .dotm { width: 6px; height: 6px; border-radius: 50%; background: var(--doc-nap); flex: none; }
+
+  /* clean prompt component (not raw code) */
+  .prompt { border: 1px solid var(--border-200); border-radius: 11px; overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
+  .prow { display: flex; gap: 11px; padding: 11px 13px; border-bottom: 1px solid var(--border-100); }
+  .prow:last-child { border-bottom: none; }
+  .prow.out { background: rgba(25,97,39,0.04); }
+  .role { flex: none; font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; height: fit-content; margin-top: 1px; }
+  .role.sys { background: rgba(4,104,177,0.12); color: var(--undp-blue); }
+  .role.usr { background: var(--undp-light); color: var(--undp-gray); }
+  .role.out { background: rgba(25,97,39,0.13); color: var(--align-high); }
+  .role.code { background: rgba(124,58,237,0.12); color: var(--agent); }
+  .ptext { font-size: 12.5px; line-height: 1.55; color: var(--undp-black); }
+  .ptext .lead { color: var(--undp-gray); }
+  .ptext ul { margin: 5px 0 0; padding-left: 16px; }
+  .ptext li { margin: 3px 0; color: var(--undp-gray); }
+  .ptext li b { color: var(--undp-black); font-weight: 600; }
+  .ptext code { font-family: var(--font-mono); font-size: 0.86em; background: var(--undp-light); padding: 1px 5px; border-radius: 4px; color: var(--undp-blue); }
+  .ptext .ret { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+  .ptext .ret span { font-family: var(--font-mono); font-size: 10.5px; background: rgba(25,97,39,0.08); color: var(--align-high); border-radius: 4px; padding: 1px 6px; }
+
+  /* intro */
+  .intro { position: absolute; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
+    background: rgba(243,239,231,0.88); backdrop-filter: blur(3px); transition: opacity .6s var(--ease); }
+  .intro.gone { opacity: 0; pointer-events: none; }
+  .intro .card { max-width: 540px; text-align: center; padding: 0 28px; }
+  .intro .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--undp-blue); }
+  .intro h1 { font-family: var(--font-serif); font-weight: 600; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.08; margin: 16px 0 14px; }
+  .intro p { font-size: 16px; line-height: 1.6; color: var(--undp-gray); max-width: 46ch; margin: 0 auto 26px; }
+  .intro .start { display: inline-flex; align-items: center; gap: 10px; background: var(--undp-blue); color: #fff;
+    border: 0; border-radius: 999px; padding: 13px 24px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-pop); transition: background .2s; }
+  .intro .start:hover { background: var(--undp-blue-dark); }
+  .intro .auto { display: block; margin-top: 14px; font-size: 12px; color: var(--undp-gray); }
+
+  @media (max-width: 820px) {
+    .work { flex-direction: column; }
+    .panel { width: auto; border-left: none; border-top: 1px solid var(--border-200); height: 46%; }
+    .mapwrap { height: 54%; }
+  }
+
+  /* ===== mini-visual atoms ===== */
+  .vstack { display: flex; flex-direction: column; gap: 11px; width: 100%; }
+  .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+  .doc-card { position: relative; border: 1px solid var(--border-200); border-radius: 8px; padding: 12px 13px; overflow: hidden; background: #fff; }
+  .doc-card .spine { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .doc-card .abbr { font-size: 15px; font-weight: 700; margin-top: 4px; }
+  .doc-card .full { font-size: 10.5px; color: var(--undp-gray); line-height: 1.3; margin-top: 4px; }
+  .doc-card .conv { margin-top: 11px; display: flex; align-items: center; gap: 7px; min-height: 17px; }
+  .doc-card .conv img { height: 17px; width: auto; }
+  .doc-card .conv .cnt { font-size: 10.5px; color: var(--undp-gray); font-family: var(--font-mono); }
+  .chunk { border: 1px solid var(--border-200); border-radius: 8px; padding: 11px 13px; background: #fff; }
+  .chunk .ch-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .chunk .pg { font-size: 10px; font-family: var(--font-mono); color: var(--undp-gray); }
+  .txt-line { height: 6px; border-radius: 3px; background: var(--border-100); margin: 5px 0; }
+  .tag-pill { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 999px; }
+  .tag-keep { background: rgba(25,97,39,0.12); color: var(--align-high); }
+  .tag-drop { background: var(--undp-light); color: var(--undp-gray); }
+  .chunk.dropped { opacity: 0.55; }
+  .src-quote { background: var(--undp-paper); border: 1px solid var(--border-200); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; line-height: 1.45; color: var(--undp-black); width: 100%; }
+  .src-quote .lab { font-family: var(--font-mono); font-size: 10px; color: var(--undp-gray); display: block; margin-bottom: 6px; }
+  .src-quote .hl { background: rgba(4,104,177,0.14); border-radius: 3px; padding: 0 2px; box-shadow: inset 0 -1px 0 rgba(4,104,177,0.4); }
+  .flow-arrow { color: var(--border-300); font-size: 17px; line-height: 1; margin: 3px 0; text-align: center; }
+  .target-card { border: 1px solid var(--border-200); border-radius: 8px; padding: 13px 14px; width: 100%; background: #fff; }
+  .target-card .tc-doc { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .target-card .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .target-card .tc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--undp-gray); }
+  .target-card .tc-text { font-size: 13px; line-height: 1.45; color: var(--undp-black); }
+  .prov { margin-top: 11px; padding-top: 9px; border-top: 1px solid var(--border-100); display: flex; align-items: center; gap: 8px; }
+  .prov .badge { font-size: 10px; font-weight: 700; font-family: var(--font-mono); padding: 2px 8px; border-radius: 4px; }
+  .prov .cleaned { background: rgba(180,83,9,0.12); color: var(--doc-nap); }
+  .prov small { font-size: 10.5px; color: var(--undp-gray); }
+  .claimchip { font-family: var(--font-mono); font-size: 11px; background: rgba(25,97,39,0.08); color: var(--align-high); border: 1px solid rgba(25,97,39,0.2); border-radius: 4px; padding: 1px 6px; }
+  .check-row { display: flex; align-items: center; gap: 9px; }
+  .check { width: 15px; height: 15px; border-radius: 50%; background: var(--align-high); color: #fff; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .stamp { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(25,97,39,0.3); background: rgba(25,97,39,0.06); color: var(--align-high); border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: 600; }
+  .detect-card { border: 1px solid var(--border-200); border-radius: 8px; padding: 14px 15px; width: 100%; background: #fff; }
+  .detect-card .dt-text { font-size: 14px; line-height: 1.55; color: var(--undp-black); }
+  .mark-num { background: rgba(4,104,177,0.14); box-shadow: inset 0 -1px 0 rgba(4,104,177,0.45); border-radius: 3px; padding: 0 3px; }
+  .mark-yr { background: rgba(180,83,9,0.16); box-shadow: inset 0 -1px 0 rgba(180,83,9,0.5); border-radius: 3px; padding: 0 3px; }
+  .flag-row { display: flex; gap: 9px; margin-top: 13px; flex-wrap: wrap; }
+  .flag { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .flag .d { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .flag.q { background: rgba(4,104,177,0.1); color: var(--undp-blue); }
+  .flag.t { background: rgba(180,83,9,0.12); color: var(--doc-nap); }
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+  .chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-200); background: #fff; color: var(--undp-gray); }
+  .chip.on { background: rgba(13,148,136,0.12); border-color: rgba(13,148,136,0.4); color: #0d7a70; font-weight: 600; }
+  .field-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border-100); width: 100%; }
+  .field-row:last-child { border-bottom: none; }
+  .field-row .fk { flex: none; width: 84px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--undp-blue); padding-top: 2px; }
+  .field-row .fv { font-size: 12px; line-height: 1.4; color: var(--undp-black); }
+  .scale { width: 100%; }
+  .scale-marker { position: relative; height: 0; }
+  .scale-marker .pin { position: absolute; transform: translateX(-50%); top: -2px; }
+  .scale-marker .pin .v { font-size: 11px; font-weight: 700; color: var(--undp-black); white-space: nowrap; background: #fff; border: 1px solid var(--border-300); border-radius: 999px; padding: 3px 10px; box-shadow: var(--shadow-card); }
+  .scale-marker .pin .tick { width: 2px; height: 9px; background: var(--undp-black); margin: 2px auto 0; }
+  .scale-track { display: flex; gap: 5px; width: 100%; margin-top: 0; }
+  .scale-cap { font-size: 11.5px; color: var(--undp-gray); margin-bottom: 9px; text-align: center; }
+  .scale-cap b { color: var(--undp-black); font-weight: 600; }
+  .scale-seg.sel { box-shadow: 0 0 0 2.5px var(--undp-black); position: relative; z-index: 2; }
+  .scale-seg { flex: 1; text-align: center; font-size: 11px; font-weight: 600; color: #fff; padding: 7px 3px; border-radius: 4px; }
+  .scale-divider { display: flex; align-items: center; gap: 9px; margin: 14px 0 10px; }
+  .scale-divider .ln { flex: 1; height: 1px; background: var(--border-200); }
+  .scale-divider .or { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--undp-gray); white-space: nowrap; }
+  .flagged-panel { border: 1px dashed var(--align-flagged); background: rgba(220,38,38,0.04); border-radius: 8px; padding: 11px 13px; width: 100%; }
+  .flagged-panel .fh { display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; color: var(--align-flagged); text-transform: uppercase; letter-spacing: 0.06em; }
+  .flagged-panel .fh .o { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--align-flagged); }
+  .facet-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+  .facet { font-size: 9.5px; font-weight: 700; border-radius: 4px; padding: 3px 8px; display: inline-flex; gap: 5px; align-items: center; }
+  .facet .fl { font-weight: 500; opacity: 0.7; }
+  .pair-cap { font-size: 11px; color: var(--undp-gray); margin-top: 8px; text-align: center; }
+  .pair-cap b { color: var(--undp-black); font-weight: 600; }
+  .gauge-row { display: flex; gap: 11px; width: 100%; }
+  .gauge { flex: 1; border: 1px solid var(--border-200); border-radius: 8px; padding: 11px; text-align: center; background: #fff; }
+  .gauge .gv { font-family: var(--font-serif); font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .gauge .gl { font-size: 10px; color: var(--undp-gray); margin-top: 2px; }
+  .wheel-legend { display: flex; flex-wrap: wrap; gap: 5px 14px; justify-content: center; font-size: 10.5px; color: var(--undp-gray); margin-top: 8px; }
+  .wheel-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .wheel-legend .ln { width: 16px; height: 3px; border-radius: 2px; }
+  .mini-lab { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--undp-gray); margin-bottom: 7px; }
+  .mini-cap { font-size: 11.5px; color: var(--undp-gray); margin-top: 7px; }
+  .mini-cap b { color: var(--undp-black); }
+  .conc-bar, .mech-bar { display: flex; gap: 3px; height: 15px; width: 100%; }
+  .conc-bar span, .mech-bar span { border-radius: 3px; }
+  .mech-leg { font-size: 10.5px; color: var(--undp-gray); margin-top: 7px; line-height: 1.5; }
+  .fin-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .fin-row { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
+  .fin-prog { flex: 1; text-align: right; color: var(--undp-black); }
+  .fin-tgt { flex: 1; color: var(--undp-black); }
+  .fin-link { font-family: var(--font-mono); font-size: 9px; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+  .fin-link.ok { background: rgba(25,97,39,0.1); color: var(--align-high); }
+  .fin-link.gap { background: rgba(220,38,38,0.08); color: var(--align-flagged); }
+  .fin-caveat { font-size: 10.5px; color: var(--undp-gray); margin-top: 11px; font-style: italic; line-height: 1.45; }
+  .impl-row { display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 0; border-bottom: 1px solid var(--border-100); font-size: 12px; color: var(--undp-black); }
+  .impl-row:last-child { border-bottom: none; }
+  .impl-status { margin-left: auto; font-size: 9px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+  .impl-status.way { background: rgba(25,97,39,0.12); color: var(--align-high); }
+  .impl-status.mis { background: rgba(220,38,38,0.1); color: var(--align-flagged); }
+</style>
+</head>
+<body class="show-example">
+
+<div class="topbar">
+  <div class="brand">
+    <a href="/" target="_top" aria-label="Back to the CPC Analyzer home"><img src="/undp-logo.png" alt="UNDP"></a>
+    <div class="div"></div>
+    <div class="ttl"><b>CPC Analyzer</b> <span>· How the analysis works</span></div>
+  </div>
+  <div class="topbar-right">
+    <a class="brief-link" href="/methodology-brief.mn.html" target="_blank" rel="noopener" title="Open the printable 2-page summary">
+      <svg viewbox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 1.5h6L13 4.5v10H4z M10 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+      2-page brief
+    </a>
+    <button id="exToggle" class="ex-toggle" type="button" aria-pressed="true" title="Follow one real example through every step"><svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"></path><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"></circle></svg>
+      <span class="lbl">Жишээг дагах</span></button>
+    <div class="seg" role="group" aria-label="Detail level">
+      <button id="depthPlain" aria-pressed="true">Энгийн</button>
+      <button id="depthDeep" aria-pressed="false">Гүнзгий судалгаа</button>
+    </div>
+  </div>
+</div>
+
+<div class="work">
+  <div class="mapwrap" id="mapwrap">
+    <div class="board" id="board">
+      <svg class="edges" id="edges"><defs>
+        <marker id="arrow" markerwidth="9" markerheight="9" refx="6.5" refy="4.5" orient="auto" markerunits="userSpaceOnUse">
+          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#cbd3ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </marker>
+        <marker id="arrowF" markerwidth="9" markerheight="9" refx="6.5" refy="4.5" orient="auto" markerunits="userSpaceOnUse">
+          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#ddd0b5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </marker>
+      </defs></svg>
+    </div>
+    <div class="intro" id="intro">
+      <div class="card">
+        <p class="eyebrow">Арга зүй · Хэрхэн ажилладаг вэ</p>
+        <h1 class="serif">Алхам алхмаар шинжилгээний дамжлага</h1>
+        <p>Үндэсний бодлогын баримт бичгүүдийн багцаас бодлогын уялдааны зураглал хүртэл: үе шат бүр, оролцогч бүр, мөн тэдгээр хэрхэн холбогдож буй нь. Диаграмм зүүн талаас бүрэлдэн бий болж, харин самбар алхам бүрийг энгийн хэлээр тайлбарлана.</p>
+        <button class="start" id="startBtn"><svg width="14" height="14" viewbox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"></path></svg>
+          Танилцуулгыг эхлүүлэх</button>
+        <span class="auto">It begins automatically in a moment.</span>
+        <span class="auto">A worked example is threaded through every step; it can be switched off with <b>Follow an example</b> in the top bar.</span>
+        <span class="auto"><a href="/methodology-brief.mn.html" target="_blank" rel="noopener" style="color:var(--undp-blue);text-decoration:none">A printable 2-page brief is also available</a></span>
+      </div>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span class="li"><span class="sw ai"></span> AI step</span>
+      <span class="li"><span class="sw agent"></span> Specialist agent</span>
+      <span class="li"><span class="sw human"></span> Human step</span>
+    </div>
+    <div class="controls">
+      <button class="cbtn" id="prev" aria-label="Previous" title="Previous (←)"><svg class="ico" viewbox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+      <button class="cbtn primary" id="play" aria-label="Play" title="Play / pause"><svg class="ico" id="playIco" viewbox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"></path></svg></button>
+      <button class="cbtn" id="next" aria-label="Next" title="Next (→)"><svg class="ico" viewbox="0 0 16 16"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+      <div class="sep"></div>
+      <div class="dots" id="dots"></div>
+      <div class="sep"></div>
+      <button class="cbtn" id="fit" aria-label="Fit whole diagram" title="Fit whole diagram"><svg class="ico" viewbox="0 0 16 16"><path d="M2 6 V2 H6 M10 2 H14 V6 M14 10 V14 H10 M6 14 H2 V10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+    </div>
+  </div>
+
+  <div class="panel" id="panel">
+
+    <div class="pstep" data-i="0">
+      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 01</span></p>
+      <h2 class="p-title serif">Бодлогын баримт бичгүүдийг байршуулах</h2>
+      <p class="p-say">Энэ арга нь <strong>зорилт тогтоосон үндэсний бодлогын баримт бичгийн ямар ч багцад</strong> ажиллана. Хэрэглэгч хоёр буюу түүнээс олон баримт бичгийг тус бүрийг нь <strong>PDF, Word эсвэл текст файл</strong> хэлбэрээр, төрлөөр нь шошголон өгнө. Түгээмэл жишээнд <abbr title="Nationally Determined Contribution">NDC</abbr>, <abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr>, <abbr title="National Adaptation Plan">NAP</abbr> эсвэл <abbr title="Land Degradation Neutrality target">LDN</abbr> зорилт, мөн салбарын стратегиуд орно.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="ex-label"><span class="dotm"></span> Example set · Mongolia</div>
+        <div class="doc-grid">
+        <div class="doc-card"><div class="spine" style="background:var(--doc-ndc)"></div><div class="abbr" style="color:var(--doc-ndc)">NDC</div><div class="full">Nationally Determined Contribution</div><div class="conv"><img src="/unfccc.png" alt="UNFCCC"><span class="cnt">27 targets</span></div></div>
+        <div class="doc-card"><div class="spine" style="background:var(--doc-nbsap)"></div><div class="abbr" style="color:var(--doc-nbsap)">NBSAP</div><div class="full">Biodiversity Strategy &amp; Action Plan</div><div class="conv"><img src="/cbd_logo.png" alt="CBD"><span class="cnt">20 targets</span></div></div>
+        <div class="doc-card"><div class="spine" style="background:var(--doc-nap)"></div><div class="abbr" style="color:var(--doc-nap)">NAP</div><div class="full">National Adaptation Plan</div><div class="conv"><span class="cnt">15 targets</span></div></div>
+        <div class="doc-card"><div class="spine" style="background:var(--doc-ldn)"></div><div class="abbr" style="color:var(--doc-ldn)">LDN +</div><div class="full">Land Degradation &amp; sectoral plans</div><div class="conv"><img src="/unccd.png" alt="UNCCD"><span class="cnt">optional</span></div></div>
+      </div></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">Энэхүү тайлбарчилсан танилцуулга нь Монгол Улсын хоёр баримт бичгийг дагаж мөрдөнө: түүний <b>NBSAP</b> (биологийн олон янз байдал) болон түүний <b>NDC</b> (уур амьсгал). Тус бүрээс нэг зорилтыг сонгон авч, дүгнэлт хүртэл мөрдөнө.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Баримт бичгүүд <code>POST /api/extract</code>-ээр орж ирдэг; баримт бичгийн төрлийг файл тус бүрээр бүртгэдэг. Ажилласан жишээнд Монгол Улсын бодит шинжилгээг ашигласан (NDC 27, NBSAP 20, NAP 15 зорилт).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
+    </div>
+
+    <div class="pstep" data-i="1">
+      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 02</span></p>
+      <h2 class="p-title serif">Бүх хуудсыг унш, чухлыг нь хадгал</h2>
+      <p class="p-say">Энэ хэрэгсэл нь хүснэгтүүдийг оролцуулан баримт бичиг бүрийг <strong>хуудас хуудас бүрээр</strong> уншиж, хэсэг бүр хаанаас авсныг бүртгэн хадгалдаг. Өмнөх үг, хавсралтууд болон хэвшмэл текстийг тусад нь ялгадаг тул нягт нямбай ажил нь үнэхээр амлалтуудыг агуулсан хэсгүүдэд төвлөрдөг.</p>
+      <div class="p-viz"><div class="vstack">
+        <div class="chunk"><div class="ch-head"><span class="pg">chunk 1 · pp. 1–4</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:92%"></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:74%"></div></div>
+        <div class="chunk"><div class="ch-head"><span class="pg">chunk 2 · pp. 5–9</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:84%"></div></div>
+        <div class="chunk dropped"><div class="ch-head"><span class="pg">chunk 3 · annex</span><span class="tag-pill tag-drop">Set aside</span></div><div class="txt-line" style="width:66%"></div></div>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Хуудас-мэдрэмжтэй парсерууд (<code>pymupdf</code>, <code>python-docx</code>) хуудасны хүрээг хадгалдаг; текстийг ~30k тэмдэгтээр 2k давхцалтайгаар хэсэгчлэн хуваадаг. Дараа нь хөнгөн жингийн хамааралтай байдлын шүүлтүүр хэсэг бүрийг хадгалах эсвэл хасах шийдвэр гаргадаг бөгөөд зориудаар болгоомжтой байдлаар тохируулсан байдаг.</p><div class="specs"><span>~30k chunks</span><span>2k overlap</span><span>keep-on-doubt</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+        <div class="prompt">
+          <div class="prow"><span class="role sys">System</span><div class="ptext">Sort one document chunk. Reply <code>KEEP</code> or <code>DROP</code>.</div></div>
+          <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">Does this passage contain concrete policy targets or commitments, or is it preface, boilerplate or annex?</span> <code>{chunk}</code></div></div>
+          <div class="prow out"><span class="role out">Rule</span><div class="ptext">Defaults to <b>KEEP</b> whenever unsure, the cost is lost efficiency, never a missed target.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="2">
+      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 03</span></p>
+      <h2 class="p-title serif">Зорилт бүрийг үгчлэн гаргаж авна уу</h2>
+      <p class="p-say">Холбогдох хэсгүүдээс <strong>бодлогын зорилт</strong> бүрийг авсан яг өгүүлбэрийнх нь хамт тэмдэглэдэг. Үг хэллэгийг бага зэрэг цэгцэлж болох ч (илүүдэл шошгыг хасах зэрэг) хэзээ ч өөрөөр найруулж, хураангуйлж эсвэл дэлгэрүүлдэггүй бөгөөд зорилт бүрийг хэрхэн тэмдэглэснийг харуулахын тулд шошголодог.</p>
+      <div class="p-viz"><div class="vstack" style="gap:6px">
+        <div class="src-quote"><span class="lab">SOURCE · NBSAP · Target 1</span>"<span class="hl">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</span>"</div>
+        <div class="flow-arrow">↓</div>
+        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</div><div class="prov"><span class="badge cleaned">verbatim</span><small>recorded word for word</small></div></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · хоёр дахь зорилт</p>
+        <div class="ex-pair">
+          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">"Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability."</div></div>
+        </div>
+        <p class="exb" style="margin-top:9px">Дээрх <b>NBSAP Зорилт 1</b>-тэй хамт энэ нь танилцуулгын явцад мөрдөн дагасан хос бөгөөд тус бүрийг үгчлэн тэмдэглэсэн.</p>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Хатуу <em>үгчлэн буулгах гэрээ</em>: <code>sourceText</code> нь тэмдэгт бүрээр нь яг хуулбарлагдсан; харагдах <code>text</code> нь зөвхөн детерминист цэвэрлэгээг зөвшөөрнө (тоон шошгыг хасах, тасарсан мөрүүдийг нэгтгэх). Зорилтот бүр эх сурвалжууд болон хуудасны дугаараа хадгална.</p><div class="specs"><span>verbatim contract</span><span>sources[]</span><span>verbatim · cleaned · synthesis</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+        <div class="prompt">
+          <div class="prow"><span class="role sys">System</span><div class="ptext">Extract policy targets. Rules:<ul><li><b>эх текст</b> = тэмдэгт бүрээр нь, яг хуулсан</li><li><b>текст</b> = зөвхөн хөнгөн цэвэрлэгээ, дахин найруулахгүй, хураангуйлахгүй</li><li>every number, %, year or scope must already appear in the source</li></ul></div></div>
+          <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">few-shot Mongolia examples</span> + <code>{chunk}</code></div></div>
+          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>text</span><span>sourceText</span><span>textCleanup</span><span>pageNumbers</span></span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="3">
+      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 04</span></p>
+      <h2 class="p-title serif">Нэгтгэнэ үү, дараа нь юу ч зохиогоогүй эсэхийг шалгана уу</h2>
+      <p class="p-say">Хэсгүүд давхцдаг тул ижил зорилтыг хоёр удаа авч болно. Давхардлуудыг <strong>нэг бичилт болгон нэгтгэдэг</strong> (эх сурвалжийн бүх эшлэлийг нь хадгалан), дараа нь тоо баримт, он, нэрлэсэн хүрээ бүрийг <strong>эх баримт бичигтэй тулган шалгадаг</strong>.</p>
+      <div class="p-viz"><div class="vstack" style="gap:9px">
+        <div class="target-card"><div class="tc-text">Restore <span class="claimchip">20,000 ha</span> of degraded pastureland <span class="claimchip">by 2030</span>.</div></div>
+        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"20,000 ha" found in source</span></div>
+        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"2030" found in source</span></div>
+        <div class="stamp">Every claim traced to the source</div>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Нэгтгэх нь эх сурвалж бүрийг хадгалсан хэвээр ойролцоо давхардлуудыг нэгтгэдэг; хоорондоо зөрчилдөх тоонууд тусдаа зорилтууд хэвээр үлдэнэ. Дараа нь <code>validate_claim_grounding</code> локал орчинд ажиллаж, таарахгүй тохиолдолд хяналтын самбарт шалгалтын тэмдэг болгон харуулдаг <code>_provenanceFlag</code>-ийг тэмдэглэнэ.</p><div class="specs"><span>merge, keep sources</span><span>local validator</span><span>provenance flags</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгийрүүлсэн шалгалт</p>
+        <div class="prompt">
+          <div class="prow"><span class="role sys">Consolidate (LLM)</span><div class="ptext">Merge duplicates, preserve every source; keep contradicting numbers as separate targets.</div></div>
+          <div class="prow out"><span class="role code">Validate (code)</span><div class="ptext">for every <code>%</code>, year, <code>ha</code>, <code>tCO2e</code>… in the text:<br>  if it appears in no source quote → flag for review</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="13">
+      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Хүний оролцоотой</span><span class="ps">Зорилтот хяналт</span></p>
+      <h2 class="p-title serif">Баталгаажуулах олборлосон зорилтууд</h2>
+      <p class="p-say">Аливаа шинжилгээ эхлэхээс өмнө, ялган авсан зорилтуудыг хэрэглэгчид хянан үзэхээр буцаан хүргэдэг. Тус бүрийг <strong>эх сурвалжтай нь тулган шалгадаг</strong> бөгөөд уншигч ямар нэг зүйлийг орхигдуулсан тохиолдолд хадгалж үлдээх, хасах, засварлах, эсвэл нөхөн нэмдэг. Хянагч уг багцыг баталгаажуулах хүртэл дараагийн үйл явц үргэлжлэхгүй тул шинжилгээ нь үргэлж баталгаажсан зорилтуудаас эхэлдэг.</p>
+      <div class="p-viz"><div class="vstack" style="gap:8px">
+        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span><span class="tag-pill tag-keep" style="margin-left:auto">Kept</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity…</div></div>
+        <div class="target-card" style="opacity:.55"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">NAP · foreword line</span><span class="tag-pill tag-drop" style="margin-left:auto">Removed</span></div><div class="tc-text">Not a target. Removed by the reviewer.</div></div>
+        <div class="check-row"><span class="check" style="background:#a87f4a">+</span><span style="font-size:12px;color:var(--undp-black)">Add a target the extraction missed</span></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">Монголын хянагч харьцуулалт эхлэхээс өмнө <b>NBSAP Target 1</b> болон <b>NDC Water resources 2</b>-ыг хадгалж, хоёуланг нь эх сурвалжийн хуудсуудтай нь тулган шалгадаг.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Энэ нь байршуулах шидтэний олборлолтыг хянах алхам юм: зорилтуудыг хадгалах, хасах, засварлах (текст болон хуудасны дугаар), эсвэл гараар нэмэх боломжтой. Татгалзсан зорилтууд pairing эсвэл alignment үе шатанд хэзээ ч ордоггүй.</p><div class="specs"><span>human review</span><span>keep · edit · add</span><span>gates analysis</span></div></div>
+    </div>
+
+    <div class="pstep" data-i="4">
+      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">Алхам 05</span></p>
+      <h2 class="p-title serif">Хэмжиж болохуйц бөгөөд хугацаатай зүйлийг тэмдэглэ</h2>
+      <p class="p-say">Зорилт бүрийн хувьд, тухайн зорилтод <strong>хэмжиж болохуйц үр дүн</strong> (тоо хэмжээ, хувь хэмжээ, талбай) агуулагдсан эсэх болон <strong>хугацаагаар хязгаарлагдсан</strong> (эцсийн хугацаатай) эсэхийг хэрэгсэл тэмдэглэдэг. Эдгээр нь амлалт хэрэгжилтэд хэр бэлэн байгааг илтгэх эрт үеийн үзүүлэлтүүд бөгөөд яг таг хэллэгүүдийг хэвээр хадгалдаг.</p>
+      <div class="p-viz"><div class="vstack">
+        <div class="detect-card"><span class="lab" style="font-family:var(--font-mono);font-size:10px;color:var(--undp-gray);display:block;margin-bottom:8px">NDC · pastureland target</span><div class="dt-text">Reduce overgrazing on <span class="mark-num">50%</span> of degraded pastures <span class="mark-yr">by 2030</span>.</div></div>
+        <div class="flag-row"><span class="flag q"><span class="d"></span> Measurable: "50%"</span><span class="flag t"><span class="d"></span> Time-bound: "by 2030"</span></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb"><b>NBSAP</b>-ын зорилт нь хугацаатай (<b>"2030 он гэхэд"</b>). <b>NDC</b>-ийн усны зорилт нь технологи болон үр дүнг нэрлэсэн боловч нэгтгэсэн гол тоон үзүүлэлтгүй тул энд чанарын шинжтэй гэж уншигдана.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Зорилтуудыг <code>isQuantitative</code> / <code>isTimeBound</code>-ийн хувьд 12-оор багцлан үнэлж, хэлцүүдийг буцаана. Захиргааны лавлагааг ("Article 2") хасна. Олон хэлтэй, нэмэлт NLP хамааралгүй.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · prompt</p>
+        <div class="prompt">
+          <div class="prow"><span class="role usr">User</span><div class="ptext">For each target, return:<ul><li><b>тоон үзүүлэлттэй юу?</b> тодорхой тоо / % / хэмжээ</li><li><b>хугацаагаар хязгаарлагдсан уу?</b> жил эсвэл хугацааны хүрээ</li><li>ignore <code>Article 2</code> / <code>Target 3</code> references; return the exact phrases</li></ul></div></div>
+          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>isQuantitative</span><span>isTimeBound</span><span>phrases[]</span></span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="5">
+      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">Алхам 06</span></p>
+      <h2 class="p-title serif">Зорилго бүрийг ангиллаар нь ангилна уу</h2>
+      <p class="p-say">Зорилт бүрийг нийтлэгдсэн лавлах хүрээнүүдийн дагуу үнэлдэг: <strong><abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr>-ийн хүлэмжийн хийн тооллогын салбарууд</strong>, <strong><abbr title="Global Biodiversity Expenditure taxonomy (BIOFIN 2024)">GLOBE</abbr> ангилал зүй</strong>, мөн <strong>Дэлхийн уур амьсгалын тэсвэржилтийн UAE хүрээний уур амьсгалын тэсвэржилтийн зорилтууд</strong> (<abbr title="Global Goal on Adaptation">GGA</abbr>). Зорилт бүр нэг <strong>үндсэн</strong> ангиллыг хадгалж, түүнчлэн тодорхой хамаарах бусад ангиллыг мөн агуулна. Эдгээр харах өнцгүүдийг харилцан сольж болно: хяналтын самбар дээр идэвхтэй харах өнцгийг <strong>нэг товшилтоор сольж</strong> болох бөгөөд ангиллыг өөрийг нь дахин ажиллуулахгүйгээр ижил зорилтууд өөр ангилал зүйн дагуу дахин бүлэглэгдэнэ. Мөн улс орон бүр ангиллуудыг тохируулах эсвэл өөрийн ангиллыг нэмэх боломжтой.</p>
+      <div class="p-viz"><div style="width:100%"><div class="chip-grid">
+        <span class="chip on">Agriculture &amp; livestock</span><span class="chip on">Forest &amp; land use</span>
+        <span class="chip">Wetlands</span><span class="chip on">Grasslands &amp; soils</span>
+        <span class="chip">Coastal &amp; marine</span><span class="chip on">Climate mitigation</span>
+        <span class="chip">Water resources</span><span class="chip">Adaptation</span>
+      </div>
+      <div class="lens-row" style="margin-top:14px">
+        <span class="lens-chip on">GLOBE</span>
+        <span class="lens-chip">IPCC sectors</span>
+        <span class="lens-chip">Climate resilience</span>
+        <span class="lens-chip">Country</span>
+      </div>
+      <p class="lens-cap"><span class="you-tag"><svg viewbox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M4 13c0-2.3 1.8-3.8 4-3.8s4 1.5 4 3.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg> Хэрэглэгчийн сонгосон харах өнцөг</span> Солиход бүх харагдац дахин бүлэглэгдэх бөгөөд дахин шинжилгээ хийхгүй.</p>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · GLOBE-ийн өнцгөөс</p>
+        <div class="ex-pair">
+          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-nbsap)"></span> NBSAP · Target 1</div><div class="ex-txt">Primary category: <b>Biodiversity planning and finance</b></div></div>
+          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">Primary category: <b>Sustainable use</b></div></div>
+        </div>
+        <p class="exb" style="margin-top:9px">IPCC салбарууд руу эсвэл тухайн улсын өөрийн тогтоосон ангилал руу шилжихэд хоёр зорилтыг хоёуланг нь дахин бүлэглэнэ, дахин шинжилгээ хийхгүй.</p>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Тус бүрийн <code>(зорилт × ангилал)</code>-д хамаарлын оноо (0–1); хамгийн өндөр оноотой ангилал нь <code>primary</code> болж, харин хамаарлын босгоос дээш бүх ангиллыг <code>relevant</code> гэж тэмдэглэнэ (хос горим). Таксономиуд: nature-based solutions, IPCC салбарууд, дэд ангиллуудтай GLOBE таксономи, GGA-ийн уур амьсгалын тэсвэржилтийн долоон сэдэв (Уур амьсгалын дэлхийн тэсвэржилтийн UAE хүрээ, 2/CMA.5 шийдвэр), мөн улс орон бүрээр тохируулах боломжтой дасан зохицох нэмэлт зорилтууд. Хамгийн их дуудлага шаарддаг алхам (<em>n × c</em> оноо) тул үр дүнг кэшлэнэ.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>GGA</span><span>primary + relevant</span><span>cached</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+        <div class="prompt">
+          <div class="prow"><span class="role sys">System</span><div class="ptext">Policy specialist. Categories: <code>{NBS · IPCC sectors · GLOBE · GGA, or the country's own set}</code></div></div>
+          <div class="prow"><span class="role usr">User</span><div class="ptext">Category: <code>{name}</code> – <code>{description}</code><br>Target: <code>{target text}</code><br>How relevant is the target to this category?</div></div>
+          <div class="prow out"><span class="role out">Returns</span><div class="ptext">a relevance <b>score</b> (0–1) per category – the highest becomes <code>primary</code>, others above the threshold are tagged <code>relevant</code></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="6">
+      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">Алхам 07</span></p>
+      <h2 class="p-title serif">Баримт бичгүүдийн бүх зорилтыг харьцуул</h2>
+      <p class="p-say">Бодлогын уялдаа нь <strong>өөр өөр</strong> баримт бичгүүд хоорондоо хэрхэн холбогдож байгаатай холбоотой тул зорилт бүрийг <strong>өөр</strong> баримт бичгийн зорилт бүртэй хослуулдаг бөгөөд хэзээ ч өөртэй нь өөрийг нь харьцуулдаггүй. Хос бүрийг шалган үздэг; урьдчилан юу ч шүүж хасдаггүй тул салбар хоорондын бодит уялдаа холбоог хэзээ ч орхигдуулдаггүй.</p>
+      <div class="p-viz"><svg id="pairSvg" viewbox="0 0 360 190" width="100%" role="img" aria-label="Targets in two documents linked by cross-document pairs" style="max-width:360px">
+        <text x="64" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0d7a70" font-weight="600">NBSAP</text>
+        <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
+        <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
+      </svg><p class="pair-cap"><b>1,245 хос</b> энэ жишээнд · тодруулсан = жишээ хос</p></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb"><b>NBSAP</b>-ын орон зайн төлөвлөлтийн зорилт болон <b>NDC</b>-ийн усны зорилт нь <b>1,245 хосын нэг</b> болдог. Дараа нь хэрэгсэл тэдгээр нь бие биеэ дэмжиж байгаа эсэх, эсвэл хоорондоо холдож байгаа эсэхийг шалгана.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Өөр өөр баримт бичгийн хослол бүрийн огтлолцсон үржвэр, давхардлыг арилгасан: 20×27 + 20×15 + 27×15 = 1,245. Урьдчилсан шүүлтүүр хэрэглэдэггүй тул үнэлгээ түүнийг авч үзэхээс өмнө салбар хоорондын жинхэнэ холбоос хэзээ ч шүүгдэн хасагдахгүй.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгийрүүлэн авч үзэх · логик</p>
+        <div class="prompt">
+          <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="7">
+      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">08-р алхам · Агент 1</span></p>
+      <h2 class="p-title serif">Зорилт бүрийг түүний бүрэлдэхүүн хэсгүүдэд хуваа</h2>
+      <p class="p-say">Хоёр зорилтыг харьцуулахаас өмнө эхний мэргэшсэн агент болох <strong>Зорилтын шинжээч</strong> нь тус бүрийг таван энгийн бүрэлдэхүүн хэсэгт хуваадаг: түүний зорилго, санал болгож буй арга хэмжээ, экосистем, хэн хариуцах, мөн хүлээгдэж буй үр дүн. Бүтэцчилсэн хэсгүүдийг харьцуулах нь уялдаа нь үг тааруулахад бус, бодлогын агуулгад тулгуурлахыг илэрхийлнэ.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="src-quote" style="background:#fff;margin-bottom:9px"><span class="lab">NDC · pastureland target</span>Establish collaborative management practices for pastures and expand pasture restoration.</div>
+        <div class="field-row"><span class="fk">Goal</span><span class="fv">Sustainable, collaborative pasture management</span></div>
+        <div class="field-row"><span class="fk">Action</span><span class="fv">Collaborative practices; expand restoration</span></div>
+        <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Pastures and grassland</span></div>
+        <div class="field-row"><span class="fk">Audience</span><span class="fv">Land managers, farmers</span></div>
+        <div class="field-row"><span class="fk">Outcome</span><span class="fv">More sustainable, more restored pasture</span></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · задлан ангилсан NDC зорилт</p>
+        <div style="margin-top:4px">
+          <div class="field-row"><span class="fk">Goal</span><span class="fv">Water-sector resilience and secure water availability</span></div>
+          <div class="field-row"><span class="fk">Action</span><span class="fv">Headwater protection and monitoring, plus water infrastructure: ponds, reservoirs, managed aquifer recharge, hydropower feasibility and flow transfer</span></div>
+          <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Rivers, groundwater, glaciers, lakes, wetlands, upstream basins</span></div>
+          <div class="field-row"><span class="fk">Audience</span><span class="fv">Local governments, private sector, industry; livestock and households</span></div>
+          <div class="field-row"><span class="fk">Outcome</span><span class="fv">More secure water; restored aquatic and wetland ecosystems</span></div>
+        </div>
+        <p class="exb" style="margin-top:9px">Action талбар дахь дэд бүтэц нь харьцуулалтыг NBSAP зорилтот түвшинтэй тулган үнэлэх үндэс болдог.</p>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Agent 1 таван талбарыг гарган авдаг бөгөөд зөвхөн бодит баримтад тулгуурлаж, зорилтот текстээс давсан ямар ч дүгнэлт хийдэггүй. Задлан ангилалт (Agent 1)-ыг үнэлгээ (Agent 2)-ээс тусгаарлах нь үнэлгээг улс орнууд болон хүрээнүүдийн хэмжээнд үндэслэлтэй, тогтвортой байлгадаг.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+        <div class="prompt">
+          <div class="prow"><span class="role sys">System</span><div class="ptext">Target Analyst. Extract, factually, no inference beyond what the target states.</div></div>
+          <div class="prow"><span class="role usr">User</span><div class="ptext">From <code>{target}</code>, extract:<ul><li><b>Зорилго / Зорилт</b></li><li><b>Үйл ажиллагаа / Интервенц</b></li><li><b>Экосистем / Талбай</b></li><li><b>Зорилтот бүлэг</b></li><li><b>Хүлээгдэж буй нөлөө / Үр дүн</b></li></ul></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="8">
+      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">09-р алхам · Агент 2</span></p>
+      <h2 class="p-title serif">Хос хэр зэрэг нийцэж байгааг үнэл</h2>
+      <p class="p-say">Хоёр дахь агент болох <strong>Уялдааны зөвлөх</strong> нь зөвхөн хоёр задаргааг хүлээн авч, тухайн хосыг <strong>таван түвшний шатлал</strong> дээр байршуулдаг, эсвэл зөвхөн бодит зөрчилдөөн биш, бодитоор нэрлэж болох үрэлт байгаа үед л нэг <strong>"Болзошгүй үл нийцэл"</strong> тэмдэглэгээг гаргадаг. Зөвхөн сул холбоосыг "Хэсэгчилсэн" хэвээр үлдээнэ. Үнэлгээ бүр богино үндэслэлтэй байна.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="scale">
+          <p class="scale-cap">Эерэг тал: <b>дөрвөн түвшин</b>, Үгүй-гээс Өндөр хүртэл</p>
+          <div class="scale-track">
+            <div class="scale-seg" style="background:var(--undp-gray)">No</div>
+            <div class="scale-seg" style="background:#9bbf6a">Partial</div>
+            <div class="scale-seg" style="background:var(--align-medium)">Medium</div>
+            <div class="scale-seg" style="background:var(--align-high)">High</div>
+          </div>
+        </div>
+        <div class="scale-divider"><span class="ln"></span><span class="or">or, when a friction is named</span><span class="ln"></span></div>
+        <div class="flagged-panel">
+          <div class="fh"><span class="o"></span> Potential misalignment</div>
+          <div class="facet-row">
+            <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
+            <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
+            <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
+          </div>
+        </div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · дүгнэлт</p>
+        <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
+        <div class="ex-facets">
+          <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
+          <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
+          <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
+        </div>
+        <p class="exb" style="margin-top:10px">Хоёр зорилт хоёулаа газар, усны засаглалыг хамардаг боловч NDC-ийн усны дэд бүтэц (усан сан, усжуулалт, удирдлагатай уст үеийн нөхөн цэнэглэлт) нь NBSAP зорилтын хамгаалдаг экосистемүүдэд дарамт учруулж болзошгүй. Орон зайн төлөвлөлт, бүсчлэл болон хамгаалалтын арга хэмжээгээр дамжуулан уялдуулснаар тэдгээрийг нийцтэй байлгаж чадна.</p>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx"><code>gpt-5.4</code> дээр ажилладаг (private Azure, давтагдахуйц үр дүнгийн тулд temperature 0). Түвшин нь none / low ("Хэсэгчилсэн") / medium / high / flagged бөгөөд <strong>"Болзошгүй үл нийцэл"</strong> гэж харагдана. Тэмдэглэгээ нь механизм, удирдах боломж, итгэлийн түвшнийг нэмдэг тул хянагч зөвхөн ноцтой байдлын тоо биш, харин яагаад хосыг тэмдэглэснийг <em>хардаг</em>.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+        <div class="prompt">
+          <div class="prow"><span class="role sys">System</span><div class="ptext">Compare two target decompositions. Choose a level: <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code>, or <code>flagged</code>.<ul><li>Тодорхой үрэлтийг нэрлэж болох үед <b>зөвхөн</b> тэмдэглэнэ үү (хамтын нөөц, ижил газар, нэг нь нөгөөгөө сулруулах)</li><li>зөвхөн сул холбоо → <b>бага</b>, тэмдэглээгүй</li></ul>If flagged, also return:<ul><li><b>механизм</b>: зорилгын үл нийцэл · нөөцийн өрсөлдөөн · хэрэгжилтийн саад</li><li><b>удирдах боломж</b>: удирдаж болохуйц · суурь</li><li><b>итгэлцүүр</b>: бага · дунд · өндөр</li></ul></div></div>
+          <div class="prow"><span class="role usr">User</span><div class="ptext">A: <code>{decomposition A}</code><br>B: <code>{decomposition B}</code></div></div>
+          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>alignment</span><span>mechanism</span><span>manageability</span><span>confidence</span><span>rationale</span></span><br><span class="lead" style="font-size:11px">shown to users as "Potential misalignment"</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="9">
+      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Нэгтгэл</span><span class="ps">10-р алхам</span></p>
+      <h2 class="p-title serif">Оноо өгч, бүх дүр зургийг зурагла</h2>
+      <p class="p-say">Эцэст нь, цаашид AI оролцуулахгүйгээр, хувь тус бүрийн үнэлгээнүүд нь баримт бичиг бүрийн хосын хоорондох <strong>уялдааны оноо</strong> болж нэгтгэгдэж, мөн илүү нарийвчлан авч үзэхээр <strong>тэмдэглэгдсэн хосын тоо хэд болохыг</strong> энгийнээр тоолдог. Эдгээр нь хяналтын самбарыг бүрдүүлдэг: уялдааны хүрд, нийцлийн дулааны зураглал болон сэдвийн задаргаа.</p>
+      <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
+        <div class="gauge-row"><div class="gauge"><div class="gv">66%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">46</div><div class="gl">pairs flagged (of 540)</div></div></div>
+        <svg id="wheelSvg" viewbox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
+        <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · хаана хамаарах нь</p><p class="exb">Жишээ хос нь NDC болон NBSAP хоорондын <b>тэмдэглэгдсэн 46-аас 1</b> юм. Бусад <b>540-өөс 494</b> хос нь эерэг шкал дээр байрлаж байна (тэдгээрийн 471 нь дунд эсвэл өндөр), тиймээс нэг тэмдэглэгээ <b>66%</b> оноонд бараг нөлөөлөхгүй, гэхдээ энэ нь одоо дугуй дээр харагдаж, хянан үзэхэд бэлэн болсон байна.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx"><code>Оноо = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. Монгол Улсын NDC болон NBSAP-ийн хувьд энэ нь 540 хосын хэмжээнд 66% бөгөөд үүнээс 46 нь хянан үзэхээр тэмдэглэгдсэн. Бүх уламжлагдсан хэмжүүрүүдийг дотоодод тооцоолдог, загварын дуудлага 0.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+    </div>
+
+    <div class="pstep" data-i="10">
+      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Нэгтгэл</span><span class="ps">11-р алхам</span></p>
+      <h2 class="p-title serif">Илэрч буй давтагдах хэв шинжүүдийг гаргаж ирнэ үү</h2>
+      <p class="p-say">Хос бүрийн хүрээнд, хэрэгсэл нь Болзошгүй үл нийцэл <strong>хэр их</strong> байгааг болон энэ нь <strong>ямар төрөл</strong> болохыг харуулдаг. Энэ нь юуг түрүүнд шалгаж үзэхийг заасан байдлаар хүрээлэгдсэн: дүгнэлт биш, харин хянан үзэхэд зориулсан сануулга. Үр дүн бүр <strong>AI-ийн тусламжтай бөгөөд эх сурвалжийн тексттэй мөрдөн холбогдох боломжтой</strong>, эцсийн тайлбар нь үндэсний шинжээчдийн мэдэлд байна.</p>
+      <div class="p-viz"><div style="width:100%">
+        <p class="mini-lab">Хэд нь тэмдэглэгдсэн бэ</p>
+        <div class="conc-bar"><span style="flex:.12;background:var(--align-flagged)"></span><span style="flex:.88;background:var(--border-200)"></span></div>
+        <p class="mini-cap">Ойролцоогоор <b>8 хос тутмын 1</b>-ыг хянан шалгахаар тэмдэглэсэн байна (9,678-аас 1,128). Ихэнх хосууд нийцэж байгаа тул анхаарлаа тэмдэглэсэн хэсгүүдэд төвлөрүүлэх хэрэгтэй.</p>
+        <p class="mini-lab" style="margin-top:16px">Энэ ямар төрөл вэ</p>
+        <div class="mech-bar"><span style="flex:.50;background:var(--mech-resource)"></span><span style="flex:.49;background:var(--mech-delivery)"></span><span style="flex:.02;background:var(--mech-goal)"></span></div>
+        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Өрсөлдөх нөөц 50%   <b style="color:var(--mech-delivery)">●</b> Хэрэгжилт 49%   <b style="color:var(--mech-goal)">●</b> Зөрчилтэй зорилгууд 2%</p>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">NDC болон NBSAP-ийн хослолд, <b>540-өөс 46</b> хосыг тэмдэглэсэн бөгөөд тэдгээрийн ихэнх нь <b>хэрэгжилтийн</b> төрөл бөгөөд жишээ хосын адил: усны дэд бүтцийг орон зайн төлөвлөлттэй уялдуулах нь үүнийг хөнгөвчлөх болно.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Нэгтгэлийн давхарга нь механизмын хослолыг уншиж, баримт бичгийн хосуудын хооронд давтагдан илэрч буй Болзошгүй үл нийцлийг, мөн харагдахуйц нотолгоонд тулгуурласан, хэзээ ч зааварчилсан бус, болгоомжтой томьёолсон замналын чиглүүлгүүдийн хамт ил гаргадаг. Монгол Улсын баримт бичгийн санд тэмдэглэгдсэн хувь хэмжээ ойролцоогоор 12% бөгөөд цөөн хэдэн зорилтод бус, олон зорилтын хүрээнд тархсан байна.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+    </div>
+
+    <div class="pstep" data-i="14">
+      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Хүний оролцоотой</span><span class="ps">Санал хүсэлт</span></p>
+      <h2 class="p-title serif">Ойлголтуудыг сайжруулахын тулд үнэлнэ үү</h2>
+      <p class="p-say">Хяналтын самбар дээрх AI-ийн дүгнэлт бүрийг үнэлэх боломжтой. Сонголтоор тэмдэглэл хавсаргах боломжтой <strong>эрхий хурууг дээш эсвэл доош</strong> гэсэн үнэлгээ нь уншлага хаана хэрэгтэй байсан, мөн хаана хангалтгүй байсныг бүртгэнэ. Санал хүсэлт нь нэргүйгээр хадгалагддаг бөгөөд энэ нь <strong>цаашдын ажиллуулалтад мэдээлэл өгдөг</strong> тул шинжилгээ цаг хугацааны явцад сайжирдаг.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets share land and water governance, but the NDC's water infrastructure could press on the ecosystems the NBSAP target protects…"</div>
+          <div class="prov" style="justify-content:space-between">
+            <span style="font-size:11.5px;color:var(--undp-gray)">Was this assessment helpful?</span>
+            <span style="display:inline-flex;gap:9px;align-items:center">
+              <svg width="15" height="15" viewbox="0 0 16 16" aria-hidden="true"><path d="M4 7h2v7H4z" fill="#196127"></path><path d="M6.5 7l2.3-3.6c.6-.1 1.2.4 1.2 1V6.4h2.7c.7 0 1.2.6 1 1.3l-.7 3.6c-.1.5-.6.9-1.1.9H6.5z" fill="#196127"></path></svg>
+              <svg width="15" height="15" viewbox="0 0 16 16" aria-hidden="true"><path d="M4 2h2v7H4z" fill="var(--align-flagged)"></path><path d="M6.5 9l2.3 3.6c.6.1 1.2-.4 1.2-1V9.6h2.7c.7 0 1.2-.6 1-1.3l-.7-3.6c-.1-.5-.6-.9-1.1-.9H6.5z" fill="var(--align-flagged)"></path></svg>
+              <span style="font-size:11px;color:var(--undp-blue)">Add a note</span>
+            </span>
+          </div>
+        </div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">Усны болон орон зайн төлөвлөлтийн зорилтууд хоорондоо зөрчилдөнө гэж санал нийлэхгүй байгаа хянагч <b>энэ үндэслэлийг доош үнэлж</b>, шалтгааныг тэмдэглэж болно. Хариу нь яг энэ текстийн дагуу бүртгэгдэж, дараагийн ажиллуулалтад мэдээлэл өгнө.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Санал хүсэлтийг зорилтот-хосын үндэслэлүүд болон баримт бичгийн-хосын нэгтгэлүүд дээр (<code>POST /api/feedback</code>) яг AI текстэд түлхүүрлэсэн зөвхөн нэмэгддэг бүртгэлд хадгалдаг тул дамжуулгыг дахин ажиллуулсны дараа ч үнэлгээ тайлбарлагдахуйц хэвээр байна.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
+    </div>
+
+    <div class="pstep" data-i="11">
+      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Хэрэгжилт</span><span class="ps">12-р алхам · 2-р түвшин</span></p>
+      <h2 class="p-title serif">Follow the finance</h2>
+      <p class="p-say">Ижил арга нь <strong>budget expenditure review</strong>-ийн хөтөлбөрүүдийг зорилтуудтай харьцуулан зураглаж, мөнгө хаана амбицийг дэмжиж байгааг, мөн амбицын ард төсөв байхгүй байгаа газрыг харуулдаг.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="fin-list">
+          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">funds →</span><span class="fin-tgt">Pasture restoration target</span></div>
+          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">funds →</span><span class="fin-tgt">Sustainable agriculture</span></div>
+          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">no budget →</span><span class="fin-tgt">Wetland restoration target</span></div>
+        </div>
+        <p class="fin-caveat">A <abbr title="budget expenditure review">BER</abbr> нь байршуулсан тоймд багтсан хөтөлбөрүүдийг л хамардаг бөгөөд энэ нь үндэсний зардлын нэг хэсэг юм.</p>
+      </div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">2-р түвшин, санхүү. <abbr title="budget expenditure review">BER</abbr> хөтөлбөрүүд нь псевдо-зорилтууд болж, ангилах → задлах → нийцүүлэх гэсэн ижил ажлын урсгалаар дамжина; санхүүжилтийн харагдац нь хөтөлбөрүүд болон тайлагнасан арга хэмжээнүүдийг нийтлэг ангиллаар холбодог. Монгол Улсад нэвтрүүлсэн; бусад улс орнууд хүлээгдэж байна.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia (BER)</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · дахин ашиглалт</p>
+        <div class="prompt">
+          <div class="prow"><span class="role code">Same workflow</span><div class="ptext">BER programme → <em>pseudo-target</em> → classify → Agent 1 decompose → Agent 2 align against each policy target.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pstep" data-i="12">
+      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Хэрэгжилт</span><span class="ps">13-р алхам · 3-р түвшин</span></p>
+      <h2 class="p-title serif">Хэрэгжилтийг хянах</h2>
+      <p class="p-say">Мөн энэ нь <strong>тайлагнасан арга хэмжээнүүдийг</strong> (ил тод байдлын тайлан болон үндэсний тайлангаас) амлалтуудтай харьцуулдаг: юу <strong>хэрэгжиж байгаа</strong> вэ, мөн тайлагнасан арга хэмжээ нь зорилгын эсрэг чиглэж буй газар хаана байна вэ.</p>
+      <div class="p-viz"><div style="width:100%">
+        <div class="target-card" style="margin-bottom:10px"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">Commitment · pasture restoration</span></div></div>
+        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Rotational grazing programme <span class="impl-status way">Under way</span></div>
+        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Community pasture agreements <span class="impl-status way">Under way</span></div>
+        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--align-flagged);flex:none"></span> Feed-import subsidy <span class="impl-status mis">Potential misalignment</span></div>
+      </div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · хураангуйгаар</p><p class="exb">Танилцуулга нь NBSAP-ийн орон зайн төлөвлөлтийн зорилт болон NDC-ийн усны зорилт гэсэн нэг хосыг байршуулахаас эхлээд хянан үзэхэд бэлэн, тэмдэглэгдсэн бодлогын уялдааны дүгнэлт хүртэл дагаж үзүүлэв. 2 ба 3-р түвшин нь тухайн өгөгдөл байгаа бүх тохиолдолд төсөв болон тайлагнасан арга хэмжээнүүдэд ижил алхмуудыг хэрэглэнэ.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">3-р түвшин, хүргэлт. Мэдээлсэн арга хэмжээнүүд (<abbr title="Biennial Transparency Report">BTR</abbr>, үндэсний тайлангууд) нь ижил хоёр-агентын ажлын урсгалаар дамжин псевдо-зорилтууд болдог; тохируулсан prompt нь арга хэмжээ бүр зорилт тус бүрийг "шууд хэрэгжүүлдэг, хэсэгчлэн дэмждэг, эсвэл ямар ч хамааралгүй" эсэхийг асуудаг. Хэрэгжиж байна.</p><div class="specs"><span>Level 3 · delivery</span><span>BTR · <abbr title="Seventh National Report to the CBD">NR7</abbr></span><span>in progress</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · асуулт</p>
+        <div class="prompt">
+          <div class="prow"><span class="role usr">Adapted Agent 2</span><div class="ptext">Does this reported measure <b>directly implement</b>, <b>partially support</b>, or have <b>no relationship to</b> the target?</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var DOCC = { ndc: "#0468b1", nbsap: "#0d9488", nap: "#b45309" };
+  // map nodes, one per panel step
+  var NODES = [
+    { i: 0,  ph: "ex", t: "Баримт бичиг байршуулах",       b: "Оролт · бодлогын баримт бичгүүд" },
+    { i: 1,  ph: "ex", t: "Бүх хуудсыг унших",        b: "Хуудас тус бүрээр унших" },
+    { i: 2,  ph: "ex", t: "Үгчлэн ялган авах",       b: "Үг үгээр" },
+    { i: 3,  ph: "ex", t: "Нэгтгэж баталгаажуулах",   b: "Нэгтгэх · нэхэмжлэлийн шалгалт" },
+    { i: 13, ph: "an", kind: "human", t: "Зорилтуудыг баталгаажуулах", b: "Хадгалах · засах · нэмэх" },
+    { i: 4,  ph: "an", t: "Хэмжигдэхүйц & хугацаатай",     b: "Тоо хэмжээнд суурилсан · хугацаатай" },
+    { i: 5,  ph: "an", t: "Ангиллаар ангилах",   b: "NbS · IPCC · GLOBE · GGA · шилжүүлж болох" },
+    { i: 6,  ph: "an", t: "Баримт бичгүүдийн хооронд харьцуулах",    b: "Баримт бичиг хоорондын бүх хослол" },
+    { i: 7,  ph: "an", t: "Задлах",              b: "5 бүтэцлэгдсэн талбар", agent: "Agent 1" },
+    { i: 8,  ph: "an", t: "Уялдааг үнэлэх",       b: "5 түвшин, эсвэл тэмдэглэгээ", agent: "Agent 2" },
+    { i: 9,  ph: "sy", t: "Оноо өгөх ба зураглах",            b: "Уялдаа · дугуй" },
+    { i: 10, ph: "sy", t: "Давтагдах хэв маяг",     b: "Концентраци ба төрөл" },
+    { i: 14, ph: "sy", kind: "human", t: "Ойлголтуудыг үнэлэх", b: "Эрхий хуруу · тэмдэглэл" },
+    { i: 11, ph: "sy", t: "Санхүүжилтийг дагах",     b: "Төсвийн хяналт (BER)", level: "L2" },
+    { i: 12, ph: "sy", t: "Хэрэгжилтийг хянах",   b: "BTR · NR7", level: "L3" }
+  ];
+  // lane layout. array order = visual order = play order; n.i is the stable id used by panels + edges.
+  var COL = 200, NW = 178, NH = 66;
+  var LANE = { ex: 40, an: 226, sy: 412 };
+  var IDX = { ex: 0, an: 0, sy: 0 };
+  NODES.forEach(function (n) { n.x = 30 + IDX[n.ph] * COL; n.y = LANE[n.ph]; IDX[n.ph]++; });
+  var byI = {}, AIDX = {}; NODES.forEach(function (n, k) { byI[n.i] = n; AIDX[n.i] = k; });
+
+  var EDGES = [
+    [0,1],[1,2],[2,3],[3,13,"cross","Targets","confirmed"],
+    [13,4],[4,5],[5,6],[6,7],[7,8],[8,9,"cross","Coherence","5-level + facets"],
+    [9,10],[10,14],[8,11,"feed"],[8,12,"feed"],[14,5,"fb","Feedback","improves future analysis"]
+  ];
+
+  var board = document.getElementById("board");
+  var edgesSvg = document.getElementById("edges");
+  var mapwrap = document.getElementById("mapwrap");
+  var dotsWrap = document.getElementById("dots");
+  var psteps = Array.prototype.slice.call(document.querySelectorAll(".pstep"));
+  var N = NODES.length;
+
+  // build node elements
+  NODES.forEach(function (n, k) {
+    var el = document.createElement("div");
+    el.className = "node " + n.ph + (n.agent ? " agent" : "") + (n.kind === "human" ? " human" : "");
+    el.style.left = n.x + "px"; el.style.top = n.y + "px";
+    var badge = n.kind === "human" ? '<span class="htag">Human</span>'
+      : (n.agent ? '<span class="atag">' + n.agent + "</span>" : (n.level ? '<span class="ltag">' + n.level + "</span>" : ""));
+    var num = n.kind === "human"
+      ? '<span class="nnum"><svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>'
+      : '<span class="nnum">' + ("0" + (n.i + 1)).slice(-2) + '</span>';
+    el.innerHTML = badge + num + '<span class="ntext"><span class="nt">' + n.t + '</span><span class="nb">' + n.b + "</span></span>";
+    el.addEventListener("click", function () { stop(); goTo(k, true); });
+    board.appendChild(el);
+    n.el = el;
+  });
+
+  // phase bands
+  var PH = { ex: "Олборлолт", an: "Шинжилгээ", sy: "Нэгтгэл ба хүргэлт" };
+  var PHK = { ex: "Баримт бичгүүд → зорилтууд", an: "Зорилтууд → Бодлогын уялдаа", sy: "Хэв маяг, санхүүжилт ба хэрэгжилт" };
+  var bands = {};
+  Object.keys(PH).forEach(function (ph) {
+    var ns = NODES.filter(function (n) { return n.ph === ph; });
+    var minX = Math.min.apply(null, ns.map(function (n) { return n.x; })) - 22;
+    var maxX = Math.max.apply(null, ns.map(function (n) { return n.x + NW; })) + 22;
+    var top = ns[0].y - 16, bot = ns[0].y + NH + 16;
+    var band = document.createElement("div");
+    band.className = "band " + ph;
+    band.style.left = minX + "px"; band.style.top = top + "px"; band.style.width = (maxX - minX) + "px"; band.style.height = (bot - top) + "px";
+    board.insertBefore(band, board.firstChild);
+    var label = document.createElement("div");
+    label.className = "band-label " + ph;
+    label.style.left = minX + "px"; label.style.top = (top - 44) + "px";
+    label.innerHTML = '<span class="k">' + PH[ph] + '</span><span class="n serif">' + PHK[ph] + "</span>";
+    board.appendChild(label);
+    bands[ph] = { band: band, label: label };
+  });
+
+  // edges + artifact labels
+  EDGES.forEach(function (e) {
+    var a = byI[e[0]], b = byI[e[1]], feed = e[2] === "feed", cross = e[2] === "cross", fb = e[2] === "fb";
+    var sx = a.x + NW, sy = a.y + NH / 2, tx = b.x, ty = b.y + NH / 2;
+    var mx = (sx + tx) / 2;
+    var d = "M " + sx + " " + sy + " C " + mx + " " + sy + " " + mx + " " + ty + " " + (tx - 8) + " " + ty;
+    var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", d); p.setAttribute("class", "edge" + (feed ? " feed" : "") + (fb ? " fb" : ""));
+    p.setAttribute("marker-end", "url(#" + (feed || fb ? "arrowF" : "arrow") + ")");
+    var len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+    p.dataset.stage = Math.max(AIDX[e[0]], AIDX[e[1]]);
+    edgesSvg.appendChild(p); e.el = p;
+    if ((cross || fb) && e[3]) {
+      var lab = document.createElement("div");
+      lab.className = fb ? "fb-lab" : "elabel";
+      lab.style.left = mx + "px"; lab.style.top = ((sy + ty) / 2) + "px";
+      lab.innerHTML = fb ? e[3] : (e[3] + ' <span class="dt">· ' + e[4] + "</span>");
+      board.appendChild(lab); e.lab = lab; e.labStage = Math.max(AIDX[e[0]], AIDX[e[1]]);
+    }
+  });
+
+  var bw = Math.max.apply(null, NODES.map(function (n) { return n.x + NW; })) + 40;
+  var bh = LANE.sy + NH + 40;
+  board.style.width = bw + "px"; board.style.height = bh + "px";
+  edgesSvg.setAttribute("width", bw); edgesSvg.setAttribute("height", bh);
+
+  // ---- transform ----
+  var view = { s: 1, tx: 0, ty: 0 };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function apply(animate) { board.classList.toggle("animating", !!animate && !reduce); board.style.transform = "translate(" + view.tx + "px," + view.ty + "px) scale(" + view.s + ")"; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function VW() { return mapwrap.clientWidth; } function VH() { return mapwrap.clientHeight; }
+  function fitNodes(list, animate) {
+    var x0 = Math.min.apply(null, list.map(function (n) { return n.x; })) - 34;
+    var x1 = Math.max.apply(null, list.map(function (n) { return n.x + NW; })) + 34;
+    var y0 = Math.min.apply(null, list.map(function (n) { return n.y; })) - 60;
+    var y1 = Math.max.apply(null, list.map(function (n) { return n.y + NH; })) + 30;
+    var s = clamp(Math.min((VW() - 80) / (x1 - x0), (VH() - 120) / (y1 - y0)), 0.25, 1.15);
+    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    view.s = s; view.tx = VW() / 2 - s * cx; view.ty = VH() / 2 - s * cy; apply(animate !== false);
+  }
+
+  // ---- state ----
+  var cur = 0;
+  function render() {
+    NODES.forEach(function (n, k) { n.el.classList.toggle("shown", k <= cur); n.el.classList.toggle("active", k === cur); });
+    EDGES.forEach(function (e) {
+      var on = parseInt(e.el.dataset.stage, 10) <= cur; e.el.classList.toggle("drawn", on);
+      if (e.lab) e.lab.classList.toggle("shown", e.labStage <= cur);
+    });
+    var actPh = NODES[cur].ph, shown = {}; NODES.forEach(function (n, k) { if (k <= cur) shown[n.ph] = 1; });
+    Object.keys(bands).forEach(function (ph) {
+      bands[ph].band.classList.toggle("shown", !!shown[ph]); bands[ph].label.classList.toggle("shown", !!shown[ph]);
+      bands[ph].band.classList.toggle("active", ph === actPh);
+    });
+    psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === NODES[cur].i); });
+    Array.prototype.forEach.call(dotsWrap.children, function (d, i) { d.setAttribute("aria-current", i === cur ? "true" : "false"); d.classList.toggle("seen", i <= cur); });
+    document.getElementById("prev").disabled = cur === 0;
+    try { localStorage.setItem("cpc_phases2_stage", String(cur)); } catch (e) {}
+  }
+  function goTo(i, animate) {
+    cur = clamp(i, 0, N - 1); render();
+    // keep every node up to the active one framed, so the build is visible
+    fitNodes(NODES.slice(0, cur + 1), animate);
+  }
+  function next() { if (cur < N - 1) goTo(cur + 1, true); else stop(); }
+  function prev() { if (cur > 0) goTo(cur - 1, true); }
+
+  // ---- play ----
+  var timer = null;
+  function playing() { return timer !== null; }
+  function start() { if (cur >= N - 1) goTo(0, true); document.getElementById("playIco").innerHTML = '<rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor"/><rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor"/>'; timer = setInterval(function () { if (cur >= N - 1) stop(); else next(); }, 3600); }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } document.getElementById("playIco").innerHTML = '<path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/>'; }
+
+  for (var k = 0; k < N; k++) { (function (j) { var b = document.createElement("button"); b.setAttribute("aria-label", "Step " + (j + 1)); b.addEventListener("click", function () { stop(); goTo(j, true); }); dotsWrap.appendChild(b); })(k); }
+
+  document.getElementById("next").addEventListener("click", function () { stop(); next(); });
+  document.getElementById("prev").addEventListener("click", function () { stop(); prev(); });
+  document.getElementById("play").addEventListener("click", function () { playing() ? stop() : start(); });
+  document.getElementById("fit").addEventListener("click", function () { stop(); cur = N - 1; render(); fitNodes(NODES, true); });
+  window.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { stop(); next(); } else if (e.key === "ArrowLeft") { stop(); prev(); } });
+
+  var dP = document.getElementById("depthPlain"), dD = document.getElementById("depthDeep");
+  function depth(m) { document.body.classList.toggle("show-deep", m === "deep"); dP.setAttribute("aria-pressed", String(m === "plain")); dD.setAttribute("aria-pressed", String(m === "deep")); }
+  dP.addEventListener("click", function () { depth("plain"); }); dD.addEventListener("click", function () { depth("deep"); });
+
+  var exT = document.getElementById("exToggle");
+  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); });
+
+  // ---- diagrams ----
+  function buildPairs() {
+    var L = document.getElementById("pairNodesL"), R = document.getElementById("pairNodesR"), G = document.getElementById("pairLines");
+    var lx = 64, rx = 296, top = 34, gap = 24, nL = 6, nR = 6;
+    function nd(x, y, c) { var e = document.createElementNS("http://www.w3.org/2000/svg", "circle"); e.setAttribute("cx", x); e.setAttribute("cy", y); e.setAttribute("r", 4.5); e.setAttribute("fill", "#fff"); e.setAttribute("stroke", c); e.setAttribute("stroke-width", 2); return e; }
+    var ly = [], ry = [];
+    for (var i = 0; i < nL; i++) { ly.push(top + i * gap); L.appendChild(nd(lx, top + i * gap, DOCC.nbsap)); }
+    for (var j = 0; j < nR; j++) { ry.push(top + j * gap); R.appendChild(nd(rx, top + j * gap, DOCC.ndc)); }
+    [[0,1],[0,3],[1,1],[2,4],[3,2],[3,5],[4,0],[5,3],[2,2],[1,4]].forEach(function (lk) {
+      var p = document.createElementNS("http://www.w3.org/2000/svg", "path"); var x1 = lx + 4.5, y1 = ly[lk[0]], x2 = rx - 4.5, y2 = ry[lk[1]], mx = (x1 + x2) / 2;
+      p.setAttribute("d", "M " + x1 + " " + y1 + " C " + mx + " " + y1 + " " + mx + " " + y2 + " " + x2 + " " + y2); p.setAttribute("fill", "none");
+      var hot = lk[0] === 1 && lk[1] === 1; p.setAttribute("stroke", hot ? DOCC.ndc : "#cbd5d1"); p.setAttribute("stroke-width", hot ? 2.2 : 1.1); p.setAttribute("opacity", hot ? 0.95 : 0.5); G.appendChild(p);
+    });
+  }
+  function buildWheel() {
+    var svg = document.getElementById("wheelSvg"); var NS = "http://www.w3.org/2000/svg";
+    var cx = 160, cy = 160, R = 124, band = 9, TAU = Math.PI * 2, gap = 6 * Math.PI / 180;
+    var docs = [{ id: "ndc", s: "NDC", c: DOCC.ndc, n: 7 }, { id: "nbsap", s: "NBSAP", c: DOCC.nbsap, n: 6 }, { id: "nap", s: "NAP", c: DOCC.nap, n: 5 }];
+    var tot = docs.reduce(function (a, d) { return a + d.n; }, 0), av = TAU - gap * docs.length, cur2 = -gap / 2, ang = {};
+    function pol(r, a) { var t = a - Math.PI / 2; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; }
+    function arc(r, a0, a1) { var p0 = pol(r, a0), p1 = pol(r, a1), lg = (a1 - a0) > Math.PI ? 1 : 0; return "M " + p0[0] + " " + p0[1] + " A " + r + " " + r + " 0 " + lg + " 1 " + p1[0] + " " + p1[1]; }
+    docs.forEach(function (d) {
+      var sp = av * (d.n / tot), a0 = cur2 + gap, a1 = a0 + sp, pd = sp * 0.14, i0 = a0 + pd, i1 = a1 - pd;
+      for (var i = 0; i < d.n; i++) { var f = d.n === 1 ? 0.5 : i / (d.n - 1); ang[d.id + i] = i0 + (i1 - i0) * f; }
+      var ap = document.createElementNS(NS, "path"); ap.setAttribute("d", arc(R - band / 2, a0, a1)); ap.setAttribute("fill", "none"); ap.setAttribute("stroke", d.c); ap.setAttribute("stroke-width", band); svg.appendChild(ap);
+      var md = (a0 + a1) / 2, lp = pol(R + 15, md), tx = document.createElementNS(NS, "text"); tx.setAttribute("x", lp[0]); tx.setAttribute("y", lp[1]);
+      var cv = Math.cos(md - Math.PI / 2); tx.setAttribute("text-anchor", cv > 0.1 ? "start" : cv < -0.1 ? "end" : "middle"); tx.setAttribute("dominant-baseline", "middle");
+      tx.setAttribute("font-size", "12"); tx.setAttribute("font-weight", "600"); tx.setAttribute("font-family", "var(--font-sans)"); tx.setAttribute("fill", d.c); tx.textContent = d.s; svg.appendChild(tx);
+      cur2 = a1;
+    });
+    var prs = [["ndc0","nbsap1","a"],["ndc2","nbsap3","a"],["ndc4","nap1","a"],["nbsap0","nap2","a"],["ndc1","nap0","a"],["ndc5","nbsap4","a"],["nbsap2","nap3","a"],["ndc3","nbsap5","f"],["ndc6","nap4","f"],["nbsap0","ndc4","a"]];
+    var rE = R - band - 6; prs.sort(function (p) { return p[2] === "f" ? 1 : -1; });
+    prs.forEach(function (pr) { var aA = ang[pr[0]], aB = ang[pr[1]]; if (aA == null || aB == null) return; var A = pol(rE, aA), B = pol(rE, aB), c1 = pol(rE * 0.16, aA), c2 = pol(rE * 0.16, aB); var p = document.createElementNS(NS, "path"); p.setAttribute("d", "M " + A[0] + " " + A[1] + " C " + c1[0] + " " + c1[1] + " " + c2[0] + " " + c2[1] + " " + B[0] + " " + B[1]); p.setAttribute("fill", "none"); p.setAttribute("stroke-linecap", "round"); var f = pr[2] === "f"; p.setAttribute("stroke", f ? "#dc2626" : "#196127"); p.setAttribute("stroke-width", f ? 1.6 : 2.2); if (f) p.setAttribute("stroke-dasharray", "5 4"); p.setAttribute("opacity", f ? 0.7 : 0.5); svg.insertBefore(p, svg.firstChild); });
+  }
+
+  // ---- intro / boot ----
+  var intro = document.getElementById("intro"), booted = false, autoTimer = null;
+  function boot() { if (booted) return; booted = true; if (autoTimer) clearTimeout(autoTimer); intro.classList.add("gone"); goTo(0, false); setTimeout(function () { start(); }, 650); }
+  document.getElementById("startBtn").addEventListener("click", boot);
+
+  function init() {
+    depth("plain");
+    buildPairs(); buildWheel();
+    cur = 0; render(); goTo(0, false);
+    autoTimer = setTimeout(boot, 2800);
+  }
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { fitNodes(NODES.slice(0, cur + 1), false); }, 130); });
+  if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
+})();
+</script>
+
+</body>
+</html>

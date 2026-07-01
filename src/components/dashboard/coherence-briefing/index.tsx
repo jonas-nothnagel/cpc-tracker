@@ -21,9 +21,17 @@
  * swaps to the doc-coherence matrix, synced with the ranked list on the left.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { Modal } from "@/components/ui/modal";
 import {
   SECTORS_SECTION_ID,
   SectorsSection,
@@ -485,6 +493,9 @@ export function CoherenceBriefing({
   const [implCenterView, setImplCenterView] = useState<"roster" | "flow">(
     "roster",
   );
+  // Pop the active centerpiece into a large overlay so relationships are
+  // explorable at size (the sticky column is only ~480px wide).
+  const [expanded, setExpanded] = useState(false);
 
   // Synthetic Target stand-ins for reported actions, so an action↔target row
   // in the Implementation drill-down opens the SAME PairDrawer as everywhere
@@ -630,11 +641,11 @@ export function CoherenceBriefing({
   const sectorIsFullSetFallback =
     hiddenDocs.size > 0 && !sectorSelection.isExact;
   const storylineCaveat: string | null = liveUpdating
-    ? "Updating storylines for your current selection…"
+    ? t("storylineCaveat.updating")
     : corpusIsOffPath && !liveCorpusForKey
-      ? "Storylines reflect all policy documents; the figures reflect your current selection."
+      ? t("storylineCaveat.corpusOffPath")
       : sectorIsFullSetFallback
-        ? "Sector storylines reflect all policy documents; everything else reflects your current selection."
+        ? t("storylineCaveat.sectorFallback")
         : null;
 
   const verdict = useMemo(
@@ -1270,6 +1281,112 @@ export function CoherenceBriefing({
     [],
   );
 
+  // The active section's sticky visual. Extracted so the same graphic + legend
+  // renders both inline (the ~480px column) and inside the expand overlay; the
+  // only difference is the wheel's height cap.
+  const renderActiveCenterpiece = (inModal: boolean) => {
+    if (activeSection === DOC_PAIRS_SECTION_ID) {
+      return (
+        <div className="flex justify-center">
+          <DocCoherenceMatrix
+            targets={visibleTargets}
+            alignment={visibleAlignment}
+            countryConfig={countryConfig}
+            onCellClick={openDocPairByDocs}
+            highlightedKey={hoveredDocPairKey}
+            onHoverPair={setHoveredDocPairKey}
+          />
+        </div>
+      );
+    }
+    if (activeSection === FINANCING_SECTION_ID && financing) {
+      return (
+        <FinancingCenterpiece
+          summary={financing}
+          outcomeBudget={
+            lens?.taxonomyType === "gga" ? outcomeBudgetGga : outcomeBudget
+          }
+          outcomeSubcategories={
+            lens?.taxonomyType === "gga" ? null : outcomeSubcategories
+          }
+          countryName={countryName}
+        />
+      );
+    }
+    if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
+      return (
+        <div>
+          {/* Toggle the reported-snapshot column between WHO delivers
+              (roster) and WHERE that effort lands in the plan (flow). */}
+          <div className="flex items-center gap-1.5 mb-3">
+            {(["roster", "flow"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setImplCenterView(v)}
+                aria-pressed={implCenterView === v}
+                className={`text-[11px] px-2.5 py-0.5 rounded-full border transition-colors ${
+                  implCenterView === v
+                    ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
+                    : "text-[var(--undp-gray)] border-gray-300 hover:text-[var(--undp-black)]"
+                }`}
+              >
+                {t(
+                  v === "roster"
+                    ? "implementationCenter.flow.toggleRoster"
+                    : "implementationCenter.flow.toggleFlow",
+                )}
+              </button>
+            ))}
+          </div>
+          {implCenterView === "flow" && institutionFlow ? (
+            <InstitutionFlow
+              model={institutionFlow}
+              countryConfig={countryConfig}
+              countryName={countryName}
+              onOpenActionPair={openActionPair}
+            />
+          ) : (
+            <DeliveryRoster roster={deliveryRoster} countryName={countryName} />
+          )}
+        </div>
+      );
+    }
+    return (
+      <>
+        <WheelCenterpiece
+          targets={visibleTargets}
+          alignments={visibleAlignment}
+          classifications={visibleClassifications}
+          countryConfig={countryConfig}
+          state={wheelState}
+          sectorCategories={sectorCategories}
+          sectorTaxonomyType={lensTaxonomyType}
+          maxHeightPx={inModal ? 680 : 620}
+          onArcClick={handleWheelArcClick}
+          onPairClick={
+            activeSection === DIRECTION_SECTION_ID ||
+            activeSection === DOC_FOCUS_SECTION_ID
+              ? undefined
+              : openPairById
+          }
+          onRibbonNavigate={
+            activeSection === DIRECTION_SECTION_ID
+              ? handleRibbonNavigate
+              : activeSection === DOC_FOCUS_SECTION_ID
+                ? (a, b) =>
+                    openDocPairByDocs(
+                      a as PolicyDocumentType,
+                      b as PolicyDocumentType,
+                    )
+                : undefined
+          }
+        />
+        <WheelLegend showArcNote={wheelState.frictionArcs === true} />
+      </>
+    );
+  };
+
   // ── Render ─────────────────────────────────────────────────────
   return (
     <main className="flex-1 w-full">
@@ -1463,103 +1580,36 @@ export function CoherenceBriefing({
                 countryConfig={countryConfig}
                 onToggle={toggleDoc}
               />
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2 text-center">
-                {sectionLabels[activeSection]}
-              </p>
-              {activeSection === DOC_PAIRS_SECTION_ID ? (
-                <div className="flex justify-center">
-                  <DocCoherenceMatrix
-                    targets={visibleTargets}
-                    alignment={visibleAlignment}
-                    countryConfig={countryConfig}
-                    onCellClick={openDocPairByDocs}
-                    highlightedKey={hoveredDocPairKey}
-                    onHoverPair={setHoveredDocPairKey}
-                  />
-                </div>
-              ) : activeSection === FINANCING_SECTION_ID && financing ? (
-                <FinancingCenterpiece
-                  summary={financing}
-                  outcomeBudget={
-                    lens?.taxonomyType === "gga" ? outcomeBudgetGga : outcomeBudget
-                  }
-                  outcomeSubcategories={
-                    lens?.taxonomyType === "gga" ? null : outcomeSubcategories
-                  }
-                  countryName={countryName}
-                />
-              ) : activeSection === IMPLEMENTATION_SECTION_ID &&
-                deliveryRoster ? (
-                <div>
-                  {/* Toggle the reported-snapshot column between WHO delivers
-                      (roster) and WHERE that effort lands in the plan (flow). */}
-                  <div className="flex items-center gap-1.5 mb-3">
-                    {(["roster", "flow"] as const).map((v) => (
-                      <button
-                        key={v}
-                        type="button"
-                        onClick={() => setImplCenterView(v)}
-                        aria-pressed={implCenterView === v}
-                        className={`text-[11px] px-2.5 py-0.5 rounded-full border transition-colors ${
-                          implCenterView === v
-                            ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
-                            : "text-[var(--undp-gray)] border-gray-300 hover:text-[var(--undp-black)]"
-                        }`}
-                      >
-                        {t(
-                          v === "roster"
-                            ? "implementationCenter.flow.toggleRoster"
-                            : "implementationCenter.flow.toggleFlow",
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  {implCenterView === "flow" && institutionFlow ? (
-                    <InstitutionFlow
-                      model={institutionFlow}
-                      countryConfig={countryConfig}
-                      countryName={countryName}
-                      onOpenActionPair={openActionPair}
+              <div className="relative mb-2">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] text-center">
+                  {sectionLabels[activeSection]}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setExpanded(true)}
+                  aria-label={t("expand.aria")}
+                  title={t("expand.aria")}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+                >
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 5V2h3M12 9v3h-3M9 2h3v3M5 12H2V9"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
-                  ) : (
-                    <DeliveryRoster
-                      roster={deliveryRoster}
-                      countryName={countryName}
-                    />
-                  )}
-                </div>
-              ) : (
-                <>
-                  <WheelCenterpiece
-                    targets={visibleTargets}
-                    alignments={visibleAlignment}
-                    classifications={visibleClassifications}
-                    countryConfig={countryConfig}
-                    state={wheelState}
-                    sectorCategories={sectorCategories}
-                    sectorTaxonomyType={lensTaxonomyType}
-                    onArcClick={handleWheelArcClick}
-                    onPairClick={
-                      activeSection === DIRECTION_SECTION_ID ||
-                      activeSection === DOC_FOCUS_SECTION_ID
-                        ? undefined
-                        : openPairById
-                    }
-                    onRibbonNavigate={
-                      activeSection === DIRECTION_SECTION_ID
-                        ? handleRibbonNavigate
-                        : activeSection === DOC_FOCUS_SECTION_ID
-                          ? (a, b) =>
-                              openDocPairByDocs(
-                                a as PolicyDocumentType,
-                                b as PolicyDocumentType,
-                              )
-                          : undefined
-                    }
-                  />
-                  <WheelLegend showArcNote={wheelState.frictionArcs === true} />
-                </>
-              )}
+                  </svg>
+                  <span>{t("expand.button")}</span>
+                </button>
+              </div>
+              {renderActiveCenterpiece(false)}
             </div>
           </aside>
             </div>
@@ -1639,6 +1689,18 @@ export function CoherenceBriefing({
         countryId={countryId}
         onClose={() => setPairData(null)}
       />
+      {/* Expand the active centerpiece to a large overlay so relationships are
+          explorable at size; the same graphic + legend renders bigger here. */}
+      <Modal
+        open={expanded}
+        onClose={() => setExpanded(false)}
+        title={sectionLabels[activeSection]}
+        maxWidth="max-w-5xl"
+      >
+        <div className="p-6 flex justify-center">
+          {expanded ? renderActiveCenterpiece(true) : null}
+        </div>
+      </Modal>
       <FooterLink countryId={countryId} />
     </main>
   );
@@ -1723,14 +1785,36 @@ function JumpNav({
 function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
   const t = useTranslations("briefing.legend");
   return (
-    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label={t("aligned")} />
-      <LegendDot color="#dc2626" label={t("flagged")} dashed />
-      <span className="text-[10px] text-[var(--undp-gray)]/70">
-        {t("redShareHint")}
-      </span>
-      {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
+    <div className="mt-3 mx-auto max-w-[440px] grid grid-cols-[auto_1fr] items-baseline gap-x-3 gap-y-1.5 text-[11px] text-[var(--undp-gray)]">
+      <LegendRow label={t("groupColours")}>
+        <LegendDot color="#196127" label={t("aligned")} />
+        <LegendDot color="#dc2626" label={t("flagged")} dashed />
+      </LegendRow>
+      <LegendRow label={t("groupRelations")}>
+        <span className="text-[var(--undp-gray)]/80">{t("ribbonMeaning")}</span>
+      </LegendRow>
+      <LegendRow label={t("groupStrength")}>
+        <span className="text-[var(--undp-gray)]/80">{t("ribbonWidth")}</span>
+        <span className="text-[var(--undp-gray)]/70">{t("redShareHint")}</span>
+        {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
+      </LegendRow>
     </div>
+  );
+}
+
+/** One legend group: a quiet uppercase label + its swatches/text. Emits two grid
+ *  items (label, content) so the shared parent grid auto-sizes the label column
+ *  to the widest label across locales (no fixed width to overflow). No boxes. */
+function LegendRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <>
+      <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+        {label}
+      </span>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
+        {children}
+      </div>
+    </>
   );
 }
 

@@ -76,9 +76,17 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
     // Translation originals pass through for countries whose source data is not
-    // in English (populated in PR2 for Panama). Undefined for Mongolia.
+    // in English (e.g. Panama). textOriginalSource distinguishes a genuine
+    // source-language original from a machine back-translation, so the
+    // verify-the-translation chip can suppress the latter (mirrors the live
+    // coherence-dashboard path; without it the /prototypes view would present
+    // machine output as an original to verify).
     textOriginal: t.textOriginal ? String(t.textOriginal) : undefined,
     sourceLabelOriginal: t.sourceLabelOriginal ? String(t.sourceLabelOriginal) : undefined,
+    textOriginalSource:
+      t.textOriginalSource === "machine" || t.textOriginalSource === "source"
+        ? t.textOriginalSource
+        : undefined,
     // BTR pseudo-targets carry actionType to distinguish reported mitigation
     // measures from adaptation actions; policy targets do not.
     actionType:

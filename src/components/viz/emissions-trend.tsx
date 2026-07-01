@@ -236,7 +236,7 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
             tick={{ fontSize: 11, fill: "#64748b" }}
             tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`}
             label={{
-              value: "kt CO₂ eq",
+              value: t("yAxisUnit"),
               angle: -90,
               position: "insideLeft",
               style: { fontSize: 10, fill: "#94a3b8" },

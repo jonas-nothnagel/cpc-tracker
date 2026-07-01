@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { existsSync } from "fs";
+import { join } from "path";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
@@ -34,9 +36,19 @@ export default async function MethodologyPage({
   setRequestLocale(locale);
   const t = await getTranslations("metadata.methodology");
 
+  // Serve the per-locale walkthrough when a translated copy exists, else fall
+  // back to the English original. (The brief it links to is resolved the same
+  // way inside each localized HTML file.)
+  const localizedFile = `methodology-experience.${locale}.html`;
+  const src =
+    locale !== "en" &&
+    existsSync(join(process.cwd(), "public", localizedFile))
+      ? `/${localizedFile}`
+      : "/methodology-experience.html";
+
   return (
     <iframe
-      src="/methodology-experience.html"
+      src={src}
       title={t("title")}
       style={{
         position: "fixed",
