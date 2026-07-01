@@ -1,35 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import { join } from "path";
-import type {
-  PairRating,
-  PairRatingValue,
-  RatingsFile,
-} from "@/types";
+import { appendFileSync, mkdirSync } from "fs";
+import { join, dirname } from "path";
+import type { PairRating, PairRatingValue } from "@/types";
 
 /**
  * POST /api/ratings/[country]
  *
- * Persists a human rating for one policy-pair to
- * `python/output/{country}/_ratings.json`. Reads-merges-writes the file
- * so a write is idempotent per pair (last write wins for the same pair
- * key). The file lives alongside the model outputs it describes — same
- * persistence model as `_model_comparison.json` and `alignment.json`.
+ * Appends one rating event to `python/output/ratings-ledger.jsonl`.
+ * Event shape:
+ *   { country, pairKey, rating, note, ts }
  *
- * Request body: { pairKey: string, rating: PairRating }
- * pairKey format: "{targetAId}::{targetBId}".
+ * Ledger over JSON-per-country: appends are atomic on POSIX for lines
+ * under PIPE_BUF (4KB), so concurrent reviewers can't tear each other's
+ * writes. Reads fold events → keep the latest per (country, pairKey) by
+ * `ts`. Every change is a line in the ledger → full audit trail.
  *
- * Deployment assumption: Azure App Service (persistent `/home` mount). The
- * same on-disk write pattern is used by `src/app/api/analyze/route.ts`. This
- * route is NOT compatible with serverless platforms (Vercel, AWS Lambda)
- * whose filesystems are ephemeral and read-only.
+ * Deploy: the ledger lives at the top of `python/output/`, so `start.sh`
+ * preserves it by default (per-country resync only touches subdirectories).
+ * A seed copy in the image is reconciled with the persistent-volume copy
+ * via `python/scripts/merge_ledger.py` (same call shape as
+ * `footprint-ledger.jsonl`) so live ratings survive image rebuilds.
+ *
+ * Deployment assumption: Azure App Service (persistent `/home` mount).
+ * Serverless platforms (Vercel, AWS Lambda) have ephemeral filesystems
+ * and are NOT compatible with this route.
  */
 
 const PROJECT_ROOT = process.cwd();
-const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
+const RATINGS_LEDGER = join(
+  PROJECT_ROOT,
+  "python",
+  "output",
+  "ratings-ledger.jsonl",
+);
 
-// Matches the slug shape used everywhere else in the codebase. Prevents
-// path traversal via the [country] URL segment.
 const COUNTRY_SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const PAIR_KEY_RE = /^[A-Za-z0-9_.-]+::[A-Za-z0-9_.-]+$/;
 
@@ -39,29 +43,6 @@ const VALID_RATINGS: ReadonlySet<PairRatingValue> = new Set([
   "skip",
 ]);
 
-function ratingsPath(country: string): string {
-  return join(PYTHON_OUTPUT, country, "_ratings.json");
-}
-
-function readRatingsFile(country: string): RatingsFile {
-  const path = ratingsPath(country);
-  if (!existsSync(path)) {
-    return { country, version: 1, ratings: {} };
-  }
-  try {
-    const parsed = JSON.parse(readFileSync(path, "utf-8")) as RatingsFile;
-    if (!parsed.ratings || typeof parsed.ratings !== "object") {
-      return { country, version: 1, ratings: {} };
-    }
-    return { country, version: 1, ratings: parsed.ratings };
-  } catch {
-    // Corrupt file = treat as empty, create fresh on next write. We don't
-    // overwrite immediately because the caller might want to inspect the
-    // corrupt file first.
-    return { country, version: 1, ratings: {} };
-  }
-}
-
 function validateRating(input: unknown): PairRating | null {
   if (!input || typeof input !== "object") return null;
   const r = input as Record<string, unknown>;
@@ -70,11 +51,7 @@ function validateRating(input: unknown): PairRating | null {
   }
   const note = typeof r.note === "string" ? r.note.slice(0, 2000) : "";
   const ts = typeof r.ts === "number" && Number.isFinite(r.ts) ? r.ts : Date.now();
-  return {
-    rating: r.rating as PairRatingValue,
-    note,
-    ts,
-  };
+  return { rating: r.rating as PairRatingValue, note, ts };
 }
 
 export async function POST(
@@ -86,13 +63,6 @@ export async function POST(
     return NextResponse.json(
       { error: "invalid country slug" },
       { status: 400 },
-    );
-  }
-  const countryDir = join(PYTHON_OUTPUT, country);
-  if (!existsSync(countryDir)) {
-    return NextResponse.json(
-      { error: `no output directory for country '${country}'` },
-      { status: 404 },
     );
   }
 
@@ -117,9 +87,11 @@ export async function POST(
     );
   }
 
-  const file = readRatingsFile(country);
-  file.ratings[pairKey] = rating;
-  writeFileSync(ratingsPath(country), JSON.stringify(file, null, 2));
+  // Ensure the output dir exists (fresh dev checkouts, first deploy). The
+  // ledger file itself is created lazily by appendFileSync on first append.
+  mkdirSync(dirname(RATINGS_LEDGER), { recursive: true });
+  const event = { country, pairKey, ...rating };
+  appendFileSync(RATINGS_LEDGER, JSON.stringify(event) + "\n");
 
   return NextResponse.json({ ok: true, rating });
 }

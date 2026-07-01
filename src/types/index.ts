@@ -517,10 +517,12 @@ export interface PairRating {
 /** Keyed by `${targetAId}::${targetBId}` (no canonical sorting — pair IDs come from the analyzer artifact and already match the source ordering). */
 export type RatingsByCountry = Record<string, PairRating>;
 
-export interface RatingsFile {
+/** One appended line in `python/output/ratings-ledger.jsonl`. The API route
+ *  writes these; `loadRatings` folds them into a `RatingsByCountry` map by
+ *  keeping the highest-`ts` event per `pairKey`. */
+export interface PairRatingEvent extends PairRating {
   country: string;
-  version: 1;
-  ratings: RatingsByCountry;
+  pairKey: string;
 }
 
 // ---------------------------------------------------------------------------

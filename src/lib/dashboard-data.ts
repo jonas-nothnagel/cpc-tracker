@@ -24,8 +24,9 @@ import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
 import type {
   ModelComparisonReport,
+  PairRating,
+  PairRatingValue,
   RatingsByCountry,
-  RatingsFile,
 } from "@/types";
 
 const PROJECT_ROOT = process.cwd();
@@ -107,15 +108,50 @@ export function loadModelComparison(country: string): ModelComparisonReport | nu
   return report;
 }
 
-/** Human ratings on individual flagged pairs, written by
- *  `POST /api/ratings/[country]`. Intentionally NOT cached: ratings change at
- *  runtime via the API, so each page render reads the current file. The file
- *  is small (one record per rated pair); the read cost is trivial. */
+/** Human ratings on individual flagged pairs. Streams the append-only
+ *  ledger at `python/output/ratings-ledger.jsonl` and folds events to
+ *  `{ pairKey → latest rating for this country }`. Intentionally NOT
+ *  cached: reviewer writes flip the file at runtime, so each page render
+ *  re-reads. Fold is O(events) — fast enough for anything short of
+ *  hundreds of thousands of ratings. */
+const RATING_VALUES: ReadonlySet<PairRatingValue> = new Set(["real", "thin", "skip"]);
+
 export function loadRatings(country: string): RatingsByCountry {
-  const file = readJson<RatingsFile>(
-    join(PYTHON_OUTPUT, country.toLowerCase(), "_ratings.json"),
-  );
-  return file?.ratings ?? {};
+  const path = join(PYTHON_OUTPUT, "ratings-ledger.jsonl");
+  if (!existsSync(path)) return {};
+  const id = country.toLowerCase();
+  const out: RatingsByCountry = {};
+  let raw: string;
+  try {
+    raw = readFileSync(path, "utf-8");
+  } catch {
+    return {};
+  }
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    let evt: unknown;
+    try {
+      evt = JSON.parse(trimmed);
+    } catch {
+      continue;
+    }
+    if (!evt || typeof evt !== "object") continue;
+    const e = evt as Record<string, unknown>;
+    if (typeof e.country !== "string" || e.country.toLowerCase() !== id) continue;
+    if (typeof e.pairKey !== "string") continue;
+    if (typeof e.rating !== "string" || !RATING_VALUES.has(e.rating as PairRatingValue)) continue;
+    const ts = typeof e.ts === "number" && Number.isFinite(e.ts) ? e.ts : 0;
+    const previous = out[e.pairKey];
+    if (previous && previous.ts >= ts) continue;
+    const rating: PairRating = {
+      rating: e.rating as PairRatingValue,
+      note: typeof e.note === "string" ? e.note : "",
+      ts,
+    };
+    out[e.pairKey] = rating;
+  }
+  return out;
 }
 
 /**

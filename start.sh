@@ -86,6 +86,22 @@ if [ -d /app/python/output ] && [ ! -L /app/python/output ]; then
                     "${PERSIST_ROOT}/output/footprint-ledger.jsonl" || true
         fi
     fi
+    # Same reconcile treatment for the ratings ledger. Live reviewer clicks
+    # append to /home/cpc/output/ratings-ledger.jsonl; the image's seed
+    # (committed rows) merges in without clobbering live events. Rows are
+    # deduped by canonical-JSON hash and sorted by ts.
+    if [ -f /app/python/output/ratings-ledger.jsonl ]; then
+        if python3 /app/python/scripts/merge_ledger.py \
+               /app/python/output/ratings-ledger.jsonl \
+               "${PERSIST_ROOT}/output/ratings-ledger.jsonl"; then
+            printf '[start.sh] merged ratings ledger into persistent volume\n'
+        else
+            printf '[start.sh] WARN: ratings ledger merge failed; falling back to copy-if-absent\n' >&2
+            [ -f "${PERSIST_ROOT}/output/ratings-ledger.jsonl" ] || \
+                cp -a /app/python/output/ratings-ledger.jsonl \
+                    "${PERSIST_ROOT}/output/ratings-ledger.jsonl" || true
+        fi
+    fi
     rm -rf /app/python/output
 fi
 ln -sfn "${PERSIST_ROOT}/output" /app/python/output
