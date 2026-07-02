@@ -4,6 +4,9 @@ node_modules
 .turbo
 .vercel
 
+# Agent scratch space (worktrees can be >1 GB of build output; never shipped)
+.claude
+
 # Python local state
 python/.venv
 python/__pycache__
