@@ -1,0 +1,341 @@
+[
+  {
+    "text": "Reduce deforestation and forest degradation to maintain the forest area and reach 9% of the total area by 2030 compared to 7.85% in 2015.",
+    "label": "Forest area 9%",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nmaintain a forest area to reach 9% of the total area;",
+        "section": "1.1"
+      },
+      {
+        "sourceText": "• Target 1: Reduce deforestation and forest degradation to maintain the forest area and reach 9% \nof the total area by 2030 compared to 7.85%7 in 2015.",
+        "section": "3.1"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "expand special protected areas to reach 30% of the total area;",
+    "label": "Protected areas 30%",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nexpand special protected areas to reach 30% of the total area;",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "bring under the protection about 60% of all headwaters;",
+    "label": "Protect headwaters",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nbring under the protection about 60% of all headwaters;",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "introduce no-till soil processing in arable land;",
+    "label": "No-till arable land",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nintroduce no-till soil processing in arable land;",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "improve water availability for arable land to increase the irrigated area to up to 120 thousand hectares;",
+    "label": "Irrigated area increase",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nimprove water availability for arable land to increase the irrigated area to up to 120 thousand \nhectares;",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "Promote sustainable grassland management and stop further grassland degradation.",
+    "label": "Grassland management",
+    "pageNumbers": [
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "• Target 2: Promote sustainable grassland management and stop further grassland degradation.",
+        "section": "3.1"
+      },
+      {
+        "sourceText": "• Mitigating land degradation in grassland",
+        "section": "National targets to achieve land degradation neutrality by 2030"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "regulate and manage animal numbers in alignment with pasture carrying capacity;",
+    "label": "Pasture carrying capacity",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nregulate and manage animal numbers in alignment with pasture carrying capacity;",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "Maintain the appropriate ratio between types of animals and herd composition;",
+    "label": "Herd composition ratio",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nMaintain the appropriate ratio between types of animals and herd composition;",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "Support green development and enhance the living standards of herders and agriculture workers.",
+    "label": "Green development support",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nSupport green development and enhance the living standards of herders and agriculture \nworkers.",
+        "section": "1.1"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per annum in 2015.",
+    "label": "Agricultural yields",
+    "pageNumbers": [
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "Target 3: Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per \nannum8 in 2015.",
+        "section": "3.1"
+      },
+      {
+        "sourceText": "• Improving agricultural land use to prevent land degradation.",
+        "section": "National targets to achieve land degradation neutrality by 2030"
+      },
+      {
+        "sourceText": "Target 3: Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per annum14 in 2015."
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NRVTS"
+  },
+  {
+    "text": "Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km).",
+    "label": "No net wetland loss",
+    "pageNumbers": [
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "Target 4: Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)9.",
+        "section": "3.1"
+      },
+      {
+        "sourceText": "• Restoring wetlands",
+        "section": "National targets to achieve land degradation neutrality by 2030"
+      },
+      {
+        "sourceText": "Target 4: Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)15."
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NRVTS"
+  }
+]

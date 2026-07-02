@@ -1,0 +1,265 @@
+[
+  {
+    "text": "Mongolia has committed to set a national voluntary LDN target, establish an LDN baseline, and formulate associated measures to achieve LDN.",
+    "label": "LDN commitment",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Mongolia has committed to set a national voluntary LDN target, establish an LDN\nbaseline, and formulate associated measures to achieve LDN.",
+        "section": "1. Quick Facts"
+      },
+      {
+        "sourceText": "Mongolia is among the countries that have committed to set a\nnational voluntary LDN target, establish an LDN baseline, and formulate associated measures.",
+        "section": "6. Opportunities- The Way Forward"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Reduce GHG emissions from deforestation and forest degradation by 2% by 2020 and 5% by 2030.",
+    "label": "AFOLU emissions reduction",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Agriculture, Forestry and Other\nLand\nUses (AFOLU) targets: Reduce\nGHG emissions from\ndeforestation and forest degradation by 2% by 2020 and 5% by 2030",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "A comprehensive plan for emission reductions in the livestock sub-sector for implementation between 2020 and 2030.",
+    "label": "Livestock emissions plan",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Agriculture:\nA comprehensive plan for emission reductions in the livestock sub-sector for\nimplementation between 2020 and 2030",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Make forests resilient to climate change by improving their productivity and changing their composition and structure.",
+    "label": "Forest resilience",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Sustainable Forest Management: To make forests resilient to climate change by improving their\nproductivity and changing their composition and structure",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Increase forest area to 9% by 2030 through reforestation activities; reduce forest degradation rate caused by human activities, fires, insects and diseases; and increase efficiency of reforestation actions.",
+    "label": "Reforestation expansion",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Reforestation: Forest area will be increased to 9% by 2030 through reforestation activities; To\nreduce forest degradation rate caused by human activities, fires, insects and diseases; To increase\nefficiency of reforestation actions; To reduce forest degradation rate",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Reduce bare fallow to 30%; introduce crop rotation system with 3-4 routes and 3-5 crops; and expand irrigated cropland by 2-2.5 times to reduce soil water loss and decrease soil carbon emissions.",
+    "label": "Land and soil management",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Land and Soil Management: To reduce bare fallow to 30% ; To introduce crop rotation system with\n3-4 routes and 3-5 crops; To expand irrigated cropland by 2- 2.5 times; To increase irrigated\ncropland, reduce soil water loss and decrease soil carbon emissions",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Reduce rate of pasture degradation; regulate headcounts and types of animals including wild animals to match with pasture carrying capacities; and implement sustainable pasture management.",
+    "label": "Pasture management",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Livestock: Reduce rate of pasture degradation; Regulate headcounts and types of animals including\nwild animals to match with pasture carrying capacities; To implement sustainable pasture\nmanagement",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Enhance and improve early warning and prevention systems for natural disasters.",
+    "label": "Disaster risk systems",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Disaster Risk Management: To enhance and improve early warning and prevention systems for\nnatural disasters",
+        "section": "Box. Highlights on Climate Change and Land from Mongolia's Nationally Determined Contributions"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Combat desertification, restore degraded land and soil, including land affected by desertification, drought and floods, and strive to achieve a land degradation-neutral world by 2030.",
+    "label": "Land degradation neutrality",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "particularly encourage countries to 'combat desertification, restore degraded land and soil, including land affected\nby desertification, drought and floods, and strive to achieve a land degradation-neutral world by 2030'.",
+        "section": "6. Opportunities- The Way Forward"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Restore 0.6 million hectares of degraded land under the Bonn Challenge.",
+    "label": "Bonn Challenge restoration",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "such as the restoration of 0.6 million hectares of degraded land under the Bonn Challenge.",
+        "section": "6. Opportunities- The Way Forward"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  }
+]
