@@ -162,8 +162,12 @@ so re-running the same document is free.
 
 This is the core LLM call. For each kept chunk, the prompt:
 
-- explains what a "policy target" is, with a few-shot block of human-curated
-  Mongolia examples spanning NDC / NBSAP / NAP;
+- explains what a "policy target" is, with a few-shot block drawn verbatim
+  from the human-curated corpora of several countries (Mongolia, Sri Lanka,
+  Côte d'Ivoire) spanning NDC / NBSAP / NAP genres and structurally distinct
+  patterns (sector-numbered short targets, Goal/Target/Benchmark tri-part
+  targets, 3-level resolution hierarchies). Documents whose curated targets
+  appear as examples are excluded from tier-1 eval gold (see the manifest);
 - enforces the **verbatim contract** (Rule 3): the `sourceText` field MUST be
   copied character-for-character from the chunk; the `text` field MAY be a
   light deterministic cleanup, but rewording / action-verb prefacing /

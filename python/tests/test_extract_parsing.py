@@ -117,6 +117,24 @@ class TestDocxParsing:
         assert "[TABLE]" in combined
         assert "Reforestation | 2030" in combined
 
+    def test_localized_heading_style_names_still_split(self, tmp_path):
+        # Word localizes style display names ("Título 1") but style_id
+        # ("Heading1") is invariant; section splitting must survive both.
+        docx = pytest.importorskip("docx")
+        doc = docx.Document()
+        doc.add_heading("Capítulo 1 Política hídrica", level=1)
+        doc.add_paragraph("Aumentar la capacidad de los embalses.")
+        doc.add_heading("Capítulo 2 Bosques", level=1)
+        doc.add_paragraph("Aumentar la superficie forestal al 9%.")
+        # Rename AFTER applying, as a localized Word build would present it;
+        # the style_id stays "Heading1".
+        doc.styles["Heading 1"].name = "Título 1"
+        path = tmp_path / "localized.docx"
+        doc.save(str(path))
+        spans = _extract_text_docx(path)
+        assert len(spans) == 2
+        assert spans[0].text.startswith("## Capítulo 1")
+
     def test_large_docx_parses_completely(self, tmp_path):
         docx = pytest.importorskip("docx")
         doc = docx.Document()

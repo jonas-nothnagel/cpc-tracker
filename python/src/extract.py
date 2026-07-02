@@ -66,7 +66,10 @@ PDF_PARTIAL_EMPTY_RATIO = 0.3
 RUN_META: dict[str, Any] = {}
 
 # ---------------------------------------------------------------------------
-# Expected target counts by document type (order of magnitude guidance)
+# Expected target counts by document type. WEAK, order-of-magnitude guidance
+# only, derived from the early Mongolia corpus; real corpora range far wider
+# (NDC: Mongolia 27, Sri Lanka 91, Côte d'Ivoire 181). The prompts present
+# these as calibration that must never cap coverage.
 # ---------------------------------------------------------------------------
 EXPECTED_COUNTS: dict[str, str] = {
     "NDC": "15-30",
@@ -77,11 +80,20 @@ EXPECTED_COUNTS: dict[str, str] = {
 }
 
 # ---------------------------------------------------------------------------
-# Few-shot examples (drawn from human-curated Mongolia targets)
+# Few-shot examples, drawn verbatim from the human-curated corpora of several
+# countries (Mongolia, Sri Lanka, Côte d'Ivoire) so the model calibrates on
+# LEVEL and STRUCTURE, not on one country's phrasing.
+#
+# CONTAMINATION RULE: any document whose curated targets appear here must not
+# serve as tier-1 gold in scripts/eval_manifest.json (currently excluded on
+# these grounds: Mongolia FSS, Sri Lanka NDC, Côte d'Ivoire NDC). Update the
+# manifest exclusion note when changing the examples.
 # ---------------------------------------------------------------------------
 FEW_SHOT_EXAMPLES = """\
-Here are examples of correctly extracted targets from real policy documents. \
-Use these as a reference for the level of abstraction and specificity expected.
+Here are examples of correctly extracted targets from real policy documents \
+of several countries. Use these as a reference for the level of abstraction \
+and specificity expected — document structures and phrasing vary widely by \
+country; the LEVEL is what generalises.
 
 NDC examples:
 - "Protect natural forests, improve forest health, and enhance forest regeneration capacity"
@@ -110,6 +122,22 @@ NAP examples:
 responses to extreme events."
 - "Sustainably develop high-yield crops through climate-adapted technologies and soil \
 conservation."
+
+Sector-numbered targets (labels like "Forestry 1", "Transport 4") — short \
+verbatim targets are valid, never pad them:
+- "Sustainable management of forests and the restoration of other degraded lands, \
+at least 32% by 2035"  (label: "Forestry 1")
+- "Promote electric mobility"  (label: "Transport 4")
+- "Promote a circular economy"  (label: "M24")
+
+Tri-part structured target (some NDCs state each target as Goal / Target / \
+Benchmark) — this is ONE target; keep the parts together, do not split them:
+- "Goal: Preserve marine biodiversity and resources to enhance the resilience of \
+coastal ecosystems against human and climate pressures.; Target: Achieve a \
+coverage rate of at least 30% of sensitive marine areas by functional and \
+sustainably managed Marine Protected Areas (MPAs) by 2035.; Benchmark: In 2020, \
+less than 10% of sensitive marine areas in Côte d'Ivoire are covered by \
+operational Marine Protected Areas (MPAs)."  (label: "A7.3")
 
 Resolution-style document with a 3-level hierarchy (Section → Measure → Action):
 Mongolia's Resolution 36 "Food Supply and Security Measures" has Section 2 broken \
@@ -181,8 +209,11 @@ RULES:
 4. Do NOT extract background descriptions, context, definitions, procedural \
    text, or stakeholder lists.
 5. If a section has no policy targets, return an empty array: []
-6. A typical {doc_type} document contains {expected_count} targets total. \
-   This section may contain 0-5. Be selective.
+6. As weak calibration only: a typical {doc_type} document contains \
+   {expected_count} targets in total, but real counts vary widely by country \
+   and document — some contain far more. Extract every DISTINCT policy target \
+   this section actually contains; be selective about the LEVEL (Rules 1-2), \
+   never about coverage.
 7. If the document explicitly labels targets (e.g. "Target 1", "Goal 2.3"), \
    use those exact names as the label — do not rephrase or replace them.
 8. Include all measurable details in the target text: percentages, quantities, \
@@ -551,10 +582,18 @@ def _extract_text_docx(path: Path) -> list[PageSpan]:
             text = (para.text if para is not None else element.text) or ""
             if not text.strip():
                 continue
-            style = ""
+            is_heading = False
             if para is not None and para.style is not None:
-                style = para.style.name or ""
-            if style.startswith("Heading"):
+                # style_id ("Heading1") is locale-invariant; the display name
+                # is not ("Heading 1" / "Título 1" / "Titre 1"), so a
+                # Spanish-authored DOCX would lose its sections on a
+                # name-only check.
+                style_id = getattr(para.style, "style_id", "") or ""
+                style_name = para.style.name or ""
+                is_heading = style_id.startswith("Heading") or style_name.startswith(
+                    "Heading"
+                )
+            if is_heading:
                 flush()
                 parts.append(f"## {text.strip()}")
             else:
@@ -992,6 +1031,7 @@ _CLAIM_PATTERNS: list[tuple[str, "re.Pattern[str]"]] = [
             r"hectares?|GW|MW|kWh|"
             r"hect[áa]reas?|millones\s+de\s+toneladas?|miles\s+de\s+toneladas?|"
             r"toneladas?|"
+            r"millions?\s+de\s+tonnes?|milliers?\s+de\s+tonnes?|"
             r"га|тонн|сая\s+тонн|мянган?\s+тонн)\b",
             re.IGNORECASE,
         ),
