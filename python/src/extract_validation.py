@@ -162,14 +162,22 @@ def text_similarity(a: str, b: str) -> float:
     ta, tb = set(na.split()), set(nb.split())
     token_jaccard = 0.0
     containment = 0.0
+    overlap = 0
     if ta and tb:
         overlap = len(ta & tb)
         token_jaccard = overlap / len(ta | tb)
-        containment = 0.9 * overlap / min(len(ta), len(tb))
-    sm = SequenceMatcher(None, na, nb)
+        # Containment needs a minimum absolute overlap: sharing 2 generic
+        # tokens must not read as "same target".
+        if overlap >= 3:
+            containment = 0.9 * overlap / min(len(ta), len(tb))
     ratio = 0.0
-    if sm.real_quick_ratio() >= 0.3 and sm.quick_ratio() >= 0.3:
-        ratio = sm.ratio()
+    # Character-level ratio is only trustworthy when the token sets already
+    # overlap somewhat: unrelated English sentences routinely reach ~0.5 char
+    # similarity, which would drown the token signals.
+    if token_jaccard >= 0.2:
+        sm = SequenceMatcher(None, na, nb)
+        if sm.real_quick_ratio() >= 0.3 and sm.quick_ratio() >= 0.3:
+            ratio = sm.ratio()
     return max(ratio, token_jaccard, containment)
 
 

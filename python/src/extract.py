@@ -28,6 +28,11 @@ from pathlib import Path
 from typing import Any
 
 from .config import LLM_MODEL
+from .extract_validation import (
+    MatchCorpus,
+    normalise_for_matching,
+    validate_quotes_in_document,
+)
 from .footprint import append_event, electricity_zone
 from .llm import call_llm, call_llm_batch, get_footprint_tracker, set_language
 
@@ -40,6 +45,25 @@ logger = logging.getLogger(__name__)
 MAX_CHUNK_CHARS = int(os.getenv("CPC_MAX_CHUNK_CHARS", "30000"))
 OVERLAP_CHARS = int(os.getenv("CPC_OVERLAP_CHARS", "2000"))
 MIN_TARGET_LENGTH = int(os.getenv("CPC_MIN_TARGET_LENGTH", "10"))
+
+# Consolidation runs over page-ordered windows of at most this many
+# candidates. One giant call re-emitting every candidate (PNSH: 79) blows
+# past the completion-token budget, truncates mid-JSON, and used to zero
+# the whole document.
+CONSOLIDATE_WINDOW = int(os.getenv("CPC_CONSOLIDATE_WINDOW", "24"))
+
+# A PDF page with fewer extractable characters than this is treated as
+# having no usable text layer (scanned/image page).
+PDF_EMPTY_PAGE_CHARS = 50
+# Above this fraction of empty pages the document warrants a partial-scan
+# warning surfaced to the reviewer.
+PDF_PARTIAL_EMPTY_RATIO = 0.3
+
+# Meta-information about the most recent extract_from_text run (parse
+# failures, consolidation fallbacks, document warnings). Reset per run and
+# written to the `<output>.meta.json` sidecar by the CLI so the API route
+# can surface warnings. Single-document-per-process usage only.
+RUN_META: dict[str, Any] = {}
 
 # ---------------------------------------------------------------------------
 # Expected target counts by document type (order of magnitude guidance)
@@ -414,6 +438,30 @@ def _table_to_text(table) -> str:
         return ""
 
 
+def pdf_text_layer_stats(path: Path) -> dict[str, Any]:
+    """Per-page extractable-text statistics for scanned-PDF detection.
+
+    A page with fewer than PDF_EMPTY_PAGE_CHARS extractable characters is
+    counted as empty (scanned/image-only). Callers decide policy: a fully
+    empty document is an error, a partially empty one a reviewer warning.
+    """
+    try:
+        import pymupdf
+    except ImportError:
+        import fitz as pymupdf  # type: ignore[no-redef]
+
+    with pymupdf.open(str(path)) as doc:
+        page_chars = [len((page.get_text("text") or "").strip()) for page in doc]
+    pages = len(page_chars)
+    empty = sum(1 for c in page_chars if c < PDF_EMPTY_PAGE_CHARS)
+    return {
+        "pages": pages,
+        "emptyPages": empty,
+        "emptyRatio": round(empty / pages, 3) if pages else 0.0,
+        "totalChars": sum(page_chars),
+    }
+
+
 def _extract_text_pdf(path: Path) -> list[PageSpan]:
     """Extract text from PDF with page-level tracking and table support."""
     try:
@@ -455,44 +503,60 @@ def _docx_table_to_text(table) -> str:
 
 
 def _extract_text_docx(path: Path) -> list[PageSpan]:
-    """Extract text from DOCX with table support.
+    """Extract text from DOCX with table support and heading-based sections.
 
-    DOCX does not have reliable page boundaries, so we return a single
-    PageSpan with page=0 (unknown).
+    DOCX has no reliable page boundaries, so every span carries page=0
+    (unknown). Instead, the document is split at Heading-style paragraphs:
+    each heading starts a new span with the heading kept as a "## " line, so
+    the extraction prompts see section context and can populate
+    sources[].section even without page numbers.
     """
     from docx import Document
 
     doc = Document(str(path))
+    # O(1) element -> object lookups (the previous per-element linear scans
+    # made large documents quadratic).
+    para_by_el = {id(p._element): p for p in doc.paragraphs}
+    table_by_el = {id(t._element): t for t in doc.tables}
+
+    spans: list[PageSpan] = []
     parts: list[str] = []
+
+    def flush() -> None:
+        if parts:
+            spans.append(PageSpan(page=0, text="\n\n".join(parts)))
+            parts.clear()
 
     for element in doc.element.body:
         tag = element.tag.split("}")[-1] if "}" in element.tag else element.tag
         if tag == "p":
-            # Paragraph
-            text = element.text or ""
-            # python-docx element.text only gets direct text; use the paragraph API
-            for para in doc.paragraphs:
-                if para._element is element:
-                    text = para.text
-                    break
-            if text.strip():
+            para = para_by_el.get(id(element))
+            text = (para.text if para is not None else element.text) or ""
+            if not text.strip():
+                continue
+            style = ""
+            if para is not None and para.style is not None:
+                style = para.style.name or ""
+            if style.startswith("Heading"):
+                flush()
+                parts.append(f"## {text.strip()}")
+            else:
                 parts.append(text.strip())
         elif tag == "tbl":
-            # Table
-            for table in doc.tables:
-                if table._element is element:
-                    table_text = _docx_table_to_text(table)
-                    if table_text:
-                        parts.append(f"[TABLE]\n{table_text}")
-                    break
+            table = table_by_el.get(id(element))
+            if table is not None:
+                table_text = _docx_table_to_text(table)
+                if table_text:
+                    parts.append(f"[TABLE]\n{table_text}")
+    flush()
 
-    full_text = "\n\n".join(parts)
-    if not full_text.strip():
+    if not spans:
         # Fallback: just paragraphs
         paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
         full_text = "\n\n".join(paragraphs)
+        return [PageSpan(page=0, text=full_text)] if full_text.strip() else []
 
-    return [PageSpan(page=0, text=full_text)] if full_text.strip() else []
+    return spans
 
 
 def extract_text(path: Path) -> DocumentText:
@@ -634,6 +698,20 @@ def _parse_json_array(
     min_length: int = MIN_TARGET_LENGTH,
 ) -> list[dict[str, Any]]:
     """Parse LLM JSON response, handling common formatting issues."""
+    return _parse_json_array_status(raw, min_length=min_length)[0]
+
+
+def _parse_json_array_status(
+    raw: str,
+    min_length: int = MIN_TARGET_LENGTH,
+) -> tuple[list[dict[str, Any]], bool]:
+    """Like _parse_json_array but also reports whether parsing SUCCEEDED.
+
+    A legitimately empty array ("[]") returns ([], True); a truncated or
+    malformed response returns ([], False). Callers that would otherwise
+    silently discard upstream work (consolidation) must check the flag and
+    fall back instead of treating garbage as "no targets".
+    """
     raw = raw.strip()
     if raw.startswith("```"):
         raw = re.sub(r"^```(?:json)?\s*", "", raw)
@@ -648,12 +726,16 @@ def _parse_json_array(
                 items = json.loads(match.group())
             except json.JSONDecodeError:
                 logger.warning("Could not parse extraction response as JSON")
-                return []
+                return [], False
         else:
-            return []
+            if raw:
+                logger.warning("Could not parse extraction response as JSON")
+            # Empty responses (e.g. content-filtered calls) are NOT a
+            # trustworthy "no targets" signal either.
+            return [], False
 
     if not isinstance(items, list):
-        return []
+        return [], False
 
     valid = []
     for item in items:
@@ -698,7 +780,99 @@ def _parse_json_array(
                 entry["textCleanup"] = "verbatim" if norm_text == norm_src else "cleaned"
 
             valid.append(entry)
-    return valid
+    return valid, True
+
+
+def _expected_count(source_document: str, doc_type: str) -> str:
+    """Typical-target-count guidance for the prompts.
+
+    source_document is the canonical type code (the wizard sends the same
+    value for both args); doc_type is only a prompt label and may be a
+    free-form override on the CLI, so it is the fallback, not the key.
+    """
+    return (
+        EXPECTED_COUNTS.get(source_document.upper())
+        or EXPECTED_COUNTS.get(doc_type.upper())
+        or "10-30"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Deterministic candidate dedup (chunk-overlap artifacts)
+# ---------------------------------------------------------------------------
+
+
+def _merge_candidate(kept: dict[str, Any], dup: dict[str, Any]) -> None:
+    """Fold a near-duplicate candidate into the kept one.
+
+    If the duplicate's text is longer (more complete), its payload wins;
+    sources and pageNumbers are unioned either way.
+    """
+    if len(str(dup.get("text", ""))) > len(str(kept.get("text", ""))):
+        for field_ in ("text", "label", "textCleanup", "text_eng", "label_eng",
+                       "textOriginal", "labelOriginal"):
+            if dup.get(field_):
+                kept[field_] = dup[field_]
+    seen_sources = {
+        (s.get("sourceText"), s.get("section")) for s in kept.get("sources") or []
+    }
+    for src in dup.get("sources") or []:
+        key = (src.get("sourceText"), src.get("section"))
+        if key not in seen_sources:
+            seen_sources.add(key)
+            kept.setdefault("sources", []).append(src)
+    pages = set(kept.get("pageNumbers") or []) | set(dup.get("pageNumbers") or [])
+    if pages:
+        kept["pageNumbers"] = sorted(pages)
+
+
+def dedupe_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Merge exact and near-duplicate candidates deterministically.
+
+    The 2000-char chunk overlap re-extracts targets that straddle a chunk
+    boundary, so the same target routinely appears twice with near-identical
+    wording. Near-dup = normalised texts are equal, one contains the other
+    at comparable length, or their sequence ratio is >= 0.92. Runs before
+    (and independently of) the LLM consolidation pass, so small documents
+    that skip consolidation still get deduplicated.
+    """
+    from difflib import SequenceMatcher
+
+    merged: list[dict[str, Any]] = []
+    norms: list[str] = []
+    for cand in candidates:
+        norm = normalise_for_matching(str(cand.get("text", "")))
+        hit_idx = None
+        for i, kept_norm in enumerate(norms):
+            if norm == kept_norm:
+                hit_idx = i
+                break
+            # Full containment of a long, specific policy string means the
+            # same commitment (one chunk simply saw more context); sources
+            # and pages are unioned, so nothing is lost by merging.
+            shorter, longer = sorted((norm, kept_norm), key=len)
+            if len(shorter) >= 40 and shorter in longer:
+                hit_idx = i
+                break
+            sm = SequenceMatcher(None, norm, kept_norm)
+            if (
+                sm.real_quick_ratio() >= 0.92
+                and sm.quick_ratio() >= 0.92
+                and sm.ratio() >= 0.92
+            ):
+                hit_idx = i
+                break
+        if hit_idx is None:
+            merged.append(cand)
+            norms.append(norm)
+        else:
+            _merge_candidate(merged[hit_idx], cand)
+            norms[hit_idx] = normalise_for_matching(str(merged[hit_idx].get("text", "")))
+    if len(merged) < len(candidates):
+        logger.info(
+            "Deterministic dedup: %d -> %d candidates", len(candidates), len(merged)
+        )
+    return merged
 
 
 # ---------------------------------------------------------------------------
@@ -972,6 +1146,8 @@ async def extract_from_text(
 
     Returns a list of dicts with keys: text, label, sourceDocument, pageNumbers.
     """
+    RUN_META.clear()
+
     # Normalize input
     if isinstance(text, str):
         doc = DocumentText(pages=[PageSpan(page=0, text=text)])
@@ -992,7 +1168,7 @@ async def extract_from_text(
 
     # Chunking
     chunks = chunk_text(doc, max_chars=max_chunk_chars, overlap_chars=overlap_chars)
-    expected = EXPECTED_COUNTS.get(source_document, "10-30")
+    expected = _expected_count(source_document, doc_type)
     logger.info(
         f"Extracting from {len(chunks)} chunks ({len(full_text)} chars, "
         f"language={lang_code})"
@@ -1067,8 +1243,11 @@ async def extract_from_text(
     )
 
     all_candidates: list[dict[str, Any]] = []
+    chunk_parse_failures = 0
     for chunk, raw in zip(chunks, raw_results):
-        items = _parse_json_array(raw, min_length=min_length)
+        items, parse_ok = _parse_json_array_status(raw, min_length=min_length)
+        if not parse_ok:
+            chunk_parse_failures += 1
         logger.info(f"  Chunk (pages {chunk.pages}): {len(items)} candidates")
 
         for item in items:
@@ -1079,62 +1258,42 @@ async def extract_from_text(
             all_candidates.append(item)
 
     logger.info(f"Phase 1 total: {len(all_candidates)} candidates")
+    if chunk_parse_failures:
+        RUN_META["chunkParseFailures"] = chunk_parse_failures
+        logger.warning(
+            "%d of %d chunk extraction responses could not be parsed — "
+            "targets on those pages may be missing",
+            chunk_parse_failures, len(chunks),
+        )
 
     if len(all_candidates) == 0:
         return []
 
-    # Phase 2: Consolidation (skip if very few candidates)
+    # Deterministic dedup of chunk-overlap duplicates — always on, so small
+    # documents that skip the LLM consolidation still get deduplicated.
+    all_candidates = dedupe_candidates(all_candidates)
+
+    # Phase 2: LLM consolidation in page-ordered windows (skipped only for
+    # tiny candidate sets, where there is nothing meaningful to merge).
     if len(all_candidates) <= 5:
-        logger.info("Skipping consolidation (<=5 candidates)")
-        _log_unsourced_claims(all_candidates)
-        return all_candidates
-
-    candidates_json = json.dumps(
-        [
-            {
-                "text": c["text"],
-                "label": c["label"],
-                "pageNumbers": c.get("pageNumbers", []),
-                "sources": c.get("sources", []),
-                "textCleanup": c.get("textCleanup", "verbatim"),
-            }
-            for c in all_candidates
-        ],
-        indent=2,
-        ensure_ascii=False,
-    )
-
-    consolidate_sys = CONSOLIDATE_SYSTEM.format(
-        doc_type=doc_type,
-        expected_count=expected,
-    )
-    consolidate_user = CONSOLIDATE_USER.format(
-        count=len(all_candidates),
-        doc_type=doc_type,
-        candidates_json=candidates_json,
-    )
-
-    raw_consolidated = await call_llm(
-        system=consolidate_sys,
-        user=consolidate_user,
-        cache_namespace="extract_consolidate",
-        max_tokens=8000,
-    )
-    final = _parse_json_array(raw_consolidated, min_length=min_length)
-    logger.info(
-        f"Phase 2 consolidation: {len(all_candidates)} -> {len(final)} targets"
-    )
+        logger.info("Skipping LLM consolidation (<=5 candidates)")
+        final = all_candidates
+    else:
+        final = await _consolidate_windows(
+            all_candidates, doc_type=doc_type, expected=expected,
+            min_length=min_length,
+        )
+        # Cross-window duplicates (same target surfacing in two windows)
+        # are merged deterministically instead of a second LLM pass.
+        final = dedupe_candidates(final)
 
     for item in final:
         item["sourceDocument"] = source_document
         if not is_english:
             item["language"] = lang_code
-        # Ensure pageNumbers survive consolidation
-        if "pageNumbers" not in item:
-            # Fallback: collect all pages from candidates
-            item["pageNumbers"] = sorted(
-                set(p for c in all_candidates for p in c.get("pageNumbers", []))
-            )
+        # NOTE: no pageNumbers fallback. Unioning ALL candidates' pages onto
+        # an item that lost its own would fabricate provenance; absent pages
+        # are more honest than wrong ones.
 
     # Validate that synthesised text is grounded in its sources before we move
     # on to activities extraction. Logs warnings and stamps `_provenanceFlag`
@@ -1142,10 +1301,102 @@ async def extract_from_text(
     # present in any source span.
     _log_unsourced_claims(final)
 
-    # Phase 3: Extract activities/sub-measures for each target
+    # Phase 3: Extract activities/sub-measures for each target (runs for the
+    # <=5-candidate path too; the old early return skipped it).
     if final:
         final = await _extract_activities(final, doc, chunks, is_english, lang_name)
 
+    # Quote-in-document validation: every claimed verbatim quote on targets
+    # and activities must be locatable in the parsed document text. Flags,
+    # never drops — the human reviewer decides.
+    quotes_missing = validate_quotes_in_document(final, MatchCorpus(full_text))
+    if quotes_missing:
+        RUN_META["quotesNotFound"] = quotes_missing
+        logger.warning(
+            "Quote validator: %d claimed quote(s) could not be located in the "
+            "document — flagged for review",
+            quotes_missing,
+        )
+
+    return final
+
+
+async def _consolidate_windows(
+    candidates: list[dict[str, Any]],
+    *,
+    doc_type: str,
+    expected: str,
+    min_length: int,
+) -> list[dict[str, Any]]:
+    """Run the LLM consolidation pass over windows of candidates.
+
+    One giant call must re-emit every candidate in a single response; past
+    ~25 candidates that reliably truncates mid-JSON at the completion-token
+    limit and the whole document silently extracts to zero (observed on
+    PNSH: 79 candidates -> 0). Windows are page-ordered, so near-duplicates
+    from chunk overlap sit in the same window.
+
+    A window whose response cannot be parsed KEEPS its un-consolidated
+    candidates: Phase 1 output is never discarded silently.
+    """
+    windows = [
+        candidates[i : i + CONSOLIDATE_WINDOW]
+        for i in range(0, len(candidates), CONSOLIDATE_WINDOW)
+    ]
+    consolidate_sys = CONSOLIDATE_SYSTEM.format(
+        doc_type=doc_type, expected_count=expected
+    )
+    calls = []
+    for window in windows:
+        candidates_json = json.dumps(
+            [
+                {
+                    "text": c["text"],
+                    "label": c["label"],
+                    "pageNumbers": c.get("pageNumbers", []),
+                    "sources": c.get("sources", []),
+                    "textCleanup": c.get("textCleanup", "verbatim"),
+                }
+                for c in window
+            ],
+            indent=2,
+            ensure_ascii=False,
+        )
+        calls.append({
+            "system": consolidate_sys,
+            "user": CONSOLIDATE_USER.format(
+                count=len(window),
+                doc_type=doc_type,
+                candidates_json=candidates_json,
+            ),
+            "max_tokens": 16000,
+        })
+
+    raw_results = await call_llm_batch(
+        calls, cache_namespace="extract_consolidate", desc="Consolidation"
+    )
+
+    final: list[dict[str, Any]] = []
+    fallbacks = 0
+    for window, raw in zip(windows, raw_results):
+        items, parse_ok = _parse_json_array_status(raw, min_length=min_length)
+        if not parse_ok:
+            fallbacks += 1
+            logger.warning(
+                "Consolidation response unparseable for a %d-candidate window "
+                "(likely truncated) — keeping the un-consolidated candidates",
+                len(window),
+            )
+            final.extend(window)
+        else:
+            final.extend(items)
+
+    if fallbacks:
+        RUN_META["consolidationFallbacks"] = fallbacks
+    logger.info(
+        f"Phase 2 consolidation: {len(candidates)} -> {len(final)} targets "
+        f"({len(windows)} window(s), {fallbacks} fallback(s))"
+    )
     return final
 
 
@@ -1209,13 +1460,47 @@ async def extract_from_file(
     )
 
 
-async def main_async(args: argparse.Namespace) -> None:
+def _emit_structured_error(code: str, detail: dict[str, Any]) -> None:
+    """Print a single machine-readable error line to stdout.
+
+    The /api/extract route parses this on a non-zero exit to surface a
+    human-readable message in the upload wizard.
+    """
+    print(json.dumps({"error": {"code": code, **detail}}))
+
+
+async def main_async(args: argparse.Namespace) -> int:
     file_path = Path(args.file)
     if not file_path.exists():
         logger.error(f"File not found: {file_path}")
-        return
+        _emit_structured_error("FILE_NOT_FOUND", {"file": str(file_path)})
+        return 2
 
     set_language(args.output_language)
+
+    document_warnings: list[dict[str, Any]] = []
+    if file_path.suffix.lower() == ".pdf":
+        stats = pdf_text_layer_stats(file_path)
+        no_text = stats["pages"] > 0 and (
+            stats["emptyPages"] == stats["pages"] or stats["totalChars"] < 200
+        )
+        if no_text:
+            logger.error(
+                "%s appears to be a scanned or image-based PDF: %d of %d pages "
+                "have no machine-readable text layer. OCR is not supported; "
+                "please provide a text-based version of the document.",
+                file_path.name, stats["emptyPages"], stats["pages"],
+            )
+            _emit_structured_error("NO_TEXT_LAYER", stats)
+            return 3
+        if stats["emptyRatio"] > PDF_PARTIAL_EMPTY_RATIO:
+            logger.warning(
+                "%s has a partial text layer: %d of %d pages have no "
+                "machine-readable text. Targets on those pages cannot be "
+                "extracted.",
+                file_path.name, stats["emptyPages"], stats["pages"],
+            )
+            document_warnings.append({"code": "PARTIAL_TEXT_LAYER", **stats})
 
     items = await extract_from_file(
         file_path,
@@ -1227,6 +1512,9 @@ async def main_async(args: argparse.Namespace) -> None:
         skip_relevance_filter=args.skip_relevance_filter,
         language=args.language,
     )
+    if args.country:
+        for item in items:
+            item["country"] = args.country
 
     if args.output:
         out = Path(args.output)
@@ -1235,6 +1523,15 @@ async def main_async(args: argparse.Namespace) -> None:
 
     out.write_text(json.dumps(items, indent=2, ensure_ascii=False))
     logger.info(f"Saved {len(items)} targets to {out}")
+
+    # Run metadata sidecar: document warnings (partial text layer) + pipeline
+    # self-reports (consolidation fallbacks, quotes not found). The API route
+    # forwards these so reviewers see them next to the extracted targets.
+    meta = {"documentWarnings": document_warnings, **RUN_META}
+    if document_warnings or RUN_META:
+        (out.parent / (out.name + ".meta.json")).write_text(
+            json.dumps(meta, indent=2)
+        )
 
     # Persist environmental footprint of the extraction run next to the output
     # so the API route can return it and the total can be threaded into the
@@ -1277,6 +1574,8 @@ async def main_async(args: argparse.Namespace) -> None:
             )
     except Exception as e:
         logger.warning(f"Could not append extraction footprint ledger row: {e}")
+
+    return 0
 
 
 def main() -> None:
@@ -1337,9 +1636,16 @@ def main() -> None:
         "set to match the user's UI locale when extracting through the upload "
         "wizard.",
     )
+    parser.add_argument(
+        "--country",
+        default=None,
+        help="Country name stamped on every extracted target (curated-corpus "
+        "shape), e.g. 'Panama'. Required for output that will be promoted "
+        "into a targets file.",
+    )
     args = parser.parse_args()
 
-    asyncio.run(main_async(args))
+    raise SystemExit(asyncio.run(main_async(args)))
 
 
 if __name__ == "__main__":
