@@ -69,6 +69,7 @@ import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
 import { InstitutionFlow } from "./centerpiece/institution-flow";
+import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
@@ -533,6 +534,28 @@ export function CoherenceBriefing({
     return map;
   }, [btrData, countryName]);
 
+  // Synthetic Target stand-ins for funded budget lines, so a budget↔commitment
+  // match on the Financing slide (non-Panama DocumentCoverage layout) opens the
+  // SAME PairDrawer (full rationale + both sides). sourceDocument "BER" uses
+  // the reserved doc token; sourceLabel carries the budget code.
+  const budgetPairTargets = useMemo(() => {
+    const map = new Map<string, Target>();
+    if (!berData?.programs?.length) return map;
+    for (const p of berData.programs) {
+      const id = `BER_${p.code}`;
+      map.set(id, {
+        id,
+        text: p.description ? `${p.name}. ${p.description}` : p.name,
+        sourceDocument: "BER",
+        sourceLabel: p.code,
+        country: countryName,
+        isQuantitative: false,
+        isTimeBound: false,
+      });
+    }
+    return map;
+  }, [berData, countryName]);
+
   // Jump-nav / slide order with the Financing and Implementation slides each
   // gated independently on their data.
   const visibleSectionOrder = useMemo(() => {
@@ -880,6 +903,33 @@ export function CoherenceBriefing({
       });
     },
     [targetMap, actionPairTargets, alignment],
+  );
+
+  // Financing drill-down (non-Panama DocumentCoverage layout): open a
+  // budget-line↔commitment match in the same PairDrawer. The pair lives in
+  // `budgetAlignment`; the budget side is a synthetic Target stand-in from
+  // `budgetPairTargets`.
+  const openBudgetPair = useCallback(
+    (programBerId: string, targetId: string) => {
+      const tTarget = targetMap.get(targetId);
+      const tBudget = budgetPairTargets.get(programBerId);
+      if (!tTarget || !tBudget || !budgetAlignment) return;
+      const conn = budgetAlignment.find(
+        (p) =>
+          (p.targetAId === programBerId && p.targetBId === targetId) ||
+          (p.targetAId === targetId && p.targetBId === programBerId),
+      );
+      if (!conn) return;
+      // Budget line first: the connector reads in funding direction ("budget
+      // line supports the policy commitment").
+      setPairData({
+        mode: "target-pair",
+        pair: conn,
+        targetA: tBudget,
+        targetB: tTarget,
+      });
+    },
+    [targetMap, budgetPairTargets, budgetAlignment],
   );
 
   const openDocPairDrawer = useCallback(
@@ -1264,12 +1314,24 @@ export function CoherenceBriefing({
       );
     }
     if (activeSection === FINANCING_SECTION_ID && financing) {
-      // Centerpiece dropped — the FundingTargetGrid in the left column already
-      // carries the per-target outlier view + a contributing-programmes panel,
-      // so the finance-outcome centerpiece was duplicative. The section
-      // visually breaks out across both columns via `lg:w-[calc(100%+520px)]`
-      // on the FinancingSection block and `lg:invisible` on this aside.
-      return null;
+      // Panama drops the centerpiece: its FundingTargetGrid stretches across
+      // both columns via `lg:w-[calc(100%+520px)]` + `lg:invisible` on the
+      // aside, so the finance-outcome centerpiece would be duplicative.
+      // Every other country keeps the centerpiece (the budget object itself:
+      // what it is, where money concentrates, unspent share).
+      if (countryId === "panama") return null;
+      return (
+        <FinancingCenterpiece
+          summary={financing}
+          outcomeBudget={
+            lens?.taxonomyType === "gga" ? outcomeBudgetGga : outcomeBudget
+          }
+          outcomeSubcategories={
+            lens?.taxonomyType === "gga" ? null : outcomeSubcategories
+          }
+          countryName={countryName}
+        />
+      );
     }
     if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
       return (
@@ -1484,14 +1546,16 @@ export function CoherenceBriefing({
               <div
                 ref={setSectionRef(FINANCING_SECTION_ID)}
                 data-section-id={FINANCING_SECTION_ID}
-                // The finding copy is brief; without a min-height this short
-                // section would win "active" while still low in the viewport.
-                // Width: this section has no sticky centerpiece (rendered as
-                // null above), so the FundingTargetGrid extends 520px to the
-                // right into the empty aside area (480px aside + 40px gap-x
-                // declared on the outer grid). The parent column has overflow
-                // visible by default, so the overflow paints cleanly.
-                className="lg:min-h-[80vh] lg:w-[calc(100%+520px)]"
+                // Panama has no sticky centerpiece (renderActiveCenterpiece
+                // returns null and the aside is invisible), so the
+                // FundingTargetGrid extends 520px to the right into the empty
+                // aside area (480px aside + 40px gap-x on the outer grid).
+                // Every other country keeps the normal column width with its
+                // FinancingCenterpiece on the right.
+                className={
+                  "lg:min-h-[80vh] " +
+                  (countryId === "panama" ? "lg:w-[calc(100%+520px)]" : "")
+                }
               >
                 <FinancingSection
                   summary={financing}
@@ -1503,6 +1567,7 @@ export function CoherenceBriefing({
                   targets={targets}
                   budgetAlignment={budgetAlignment}
                   berData={berData}
+                  onOpenBudgetPair={openBudgetPair}
                 />
               </div>
             )}
@@ -1530,14 +1595,15 @@ export function CoherenceBriefing({
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
               the coherence matrix (synced with the ranked list on the left);
               where-to-focus swaps in the concentration waffle; every other
-              slide shows the wheel. Financing hides the aside entirely so
-              the FundingTargetGrid block can stretch into this space — its
-              own dot grid already carries the doc filter implicitly via the
-              per-doc rows + outlier counts. */}
+              slide shows the wheel. On Panama the financing slide hides the
+              aside so the FundingTargetGrid can stretch into this space —
+              its per-doc dot rows already carry the doc filter implicitly. */}
           <aside
             className={
               "hidden lg:block " +
-              (activeSection === FINANCING_SECTION_ID ? "lg:invisible" : "")
+              (activeSection === FINANCING_SECTION_ID && countryId === "panama"
+                ? "lg:invisible"
+                : "")
             }
           >
             <div className="sticky top-[124px]">
