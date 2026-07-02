@@ -1,0 +1,1826 @@
+{
+  "meta": {
+    "label": "after-prompts",
+    "generatedAt": "2026-07-02T11:31:30+00:00",
+    "gitSha": "356c77d",
+    "model": "gpt-5.4",
+    "concurrency": 4,
+    "promptHash": "be58bec8117e",
+    "thresholds": {
+      "simAccept": 0.6,
+      "quoteAccept": 0.3,
+      "reachable": 0.5
+    }
+  },
+  "documents": [
+    {
+      "docCode": "PNSH",
+      "tier": 1,
+      "sourceDocument": "PNSH",
+      "language": "es",
+      "notes": "Strongest gold doc: 16/17 quotes reachable; 170 pages of Spanish; gold contains CO transcription typos, so matching must stay fuzzy. Also the runtime stress case.",
+      "parseStats": {
+        "pageCount": 170,
+        "pagesWithText": 167,
+        "chars": 798687,
+        "parseSeconds": 63.5
+      },
+      "gold": {
+        "n": 17,
+        "reachable": 14,
+        "reachability": [
+          {
+            "goldId": "panama_PNSH_1",
+            "containment": 0.687
+          },
+          {
+            "goldId": "panama_PNSH_2",
+            "containment": 0.682
+          },
+          {
+            "goldId": "panama_PNSH_3",
+            "containment": 0.766
+          },
+          {
+            "goldId": "panama_PNSH_4",
+            "containment": 0.918
+          },
+          {
+            "goldId": "panama_PNSH_5",
+            "containment": 0.732
+          },
+          {
+            "goldId": "panama_PNSH_6",
+            "containment": 0.538
+          },
+          {
+            "goldId": "panama_PNSH_7",
+            "containment": 0.588
+          },
+          {
+            "goldId": "panama_PNSH_8",
+            "containment": 0.663
+          },
+          {
+            "goldId": "panama_PNSH_9",
+            "containment": 0.65
+          },
+          {
+            "goldId": "panama_PNSH_10",
+            "containment": 0.75
+          },
+          {
+            "goldId": "panama_PNSH_11",
+            "containment": 0.486
+          },
+          {
+            "goldId": "panama_PNSH_12",
+            "containment": 0.362
+          },
+          {
+            "goldId": "panama_PNSH_13",
+            "containment": 0.624
+          },
+          {
+            "goldId": "panama_PNSH_14",
+            "containment": 0.735
+          },
+          {
+            "goldId": "panama_PNSH_15",
+            "containment": 0.789
+          },
+          {
+            "goldId": "panama_PNSH_16",
+            "containment": 0.373
+          },
+          {
+            "goldId": "panama_PNSH_17",
+            "containment": 0.674
+          }
+        ],
+        "lengths": {
+          "n": 17,
+          "p10": 402,
+          "median": 640,
+          "p90": 1022
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 44,
+        "seconds": 150.4,
+        "footprintDelta": {
+          "call_count": 92.0,
+          "cached_call_count": 69.0,
+          "energy_wh": 43.9076,
+          "co2_geq": 17.3616
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 44,
+          "p10": 24,
+          "median": 63,
+          "p90": 134
+        },
+        "textCleanup": {
+          "cleaned": 29,
+          "synthesis": 3,
+          "verbatim": 12
+        },
+        "provenanceFlags": 0,
+        "quotesTotal": 65,
+        "quoteMatchLevels": {
+          "exact": 60,
+          "normalized": 5,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 0.824,
+        "recallReachable": 0.786,
+        "extractionMatchedRatio": 0.318,
+        "granularityRatio": 2.59
+      },
+      "matchAudit": {
+        "matched": [
+          {
+            "goldId": "panama_PNSH_1",
+            "goldLabel": "Target 1",
+            "goldText": "Universal access to quality water and sanitation services. The purpose …",
+            "extractedIndex": 0,
+            "extractedLabel": "Universal water and sanitation",
+            "extractedText": "Universal access to quality water and sanitation services.",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_2",
+            "goldLabel": "Action 1.1",
+            "goldText": "Improvements to the efficiency of drinking water and sanitation service…",
+            "extractedIndex": 32,
+            "extractedLabel": "Water system improvements",
+            "extractedText": "Improvements to water and sanitation systems",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_5",
+            "goldLabel": "Action 1.4",
+            "goldText": "Planning for water and sanitation systems at the national level. The su…",
+            "extractedIndex": 35,
+            "extractedLabel": "National water planning",
+            "extractedText": "Planning for water and sanitation systems at the national level",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_7",
+            "goldLabel": "Action 2.1",
+            "goldText": "Management of water-resource availability. The projects proposed under …",
+            "extractedIndex": 36,
+            "extractedLabel": "Water availability management",
+            "extractedText": "Management of water resource availability.",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_9",
+            "goldLabel": "Action 2.3",
+            "goldText": "Increased availability of freshwater. The actions seek to increase the …",
+            "extractedIndex": 38,
+            "extractedLabel": "Increase water availability",
+            "extractedText": "Increase the availability of water resources.",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_10",
+            "goldLabel": "Target 3",
+            "goldText": "Preventive management of water-related risks. Climate-change prediction…",
+            "extractedIndex": 2,
+            "extractedLabel": "Water risk prevention",
+            "extractedText": "Preventive management of water-related risks.",
+            "textScore": 0.9,
+            "quoteScore": 0.027,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_11",
+            "goldLabel": "Action 4.1",
+            "goldText": "Preventive risk management. The PNSH's objective in risk management is …",
+            "extractedIndex": 39,
+            "extractedLabel": "Risk management",
+            "extractedText": "Risk management",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_12",
+            "goldLabel": "Action 4.2",
+            "goldText": "Risk monitoring and early warning. This line of action includes investm…",
+            "extractedIndex": 40,
+            "extractedLabel": "Early warning monitoring",
+            "extractedText": "Early warning monitoring",
+            "textScore": 0.9,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_4",
+            "goldLabel": "Action 1.3",
+            "goldText": "Increased sanitation services. The objective is to provide all househol…",
+            "extractedIndex": 31,
+            "extractedLabel": "Improve water services",
+            "extractedText": "Improvement of drinking water and sanitation services",
+            "textScore": 0.787,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_6",
+            "goldLabel": "Target 2",
+            "goldText": "Water for inclusive socio-economic growth. Having basic information abo…",
+            "extractedIndex": 1,
+            "extractedLabel": "Inclusive water growth",
+            "extractedText": "Water for inclusive socioeconomic growth.",
+            "textScore": 0.72,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_8",
+            "goldLabel": "Action 2.2",
+            "goldText": "Management of freshwater demand. This line of action is aimed at organi…",
+            "extractedIndex": 37,
+            "extractedLabel": "Water demand management",
+            "extractedText": "Demand management of water resources",
+            "textScore": 0.72,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_16",
+            "goldLabel": "Action 5.3",
+            "goldText": "Institutional strengthening. The institutional strengthening to impleme…",
+            "extractedIndex": 30,
+            "extractedLabel": "Water governance",
+            "extractedText": "Improved water governance.",
+            "textScore": 0.72,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_17",
+            "goldLabel": "Action 5.4",
+            "goldText": "Education and research on the sustainable use of water resources. This …",
+            "extractedIndex": 42,
+            "extractedLabel": "Watershed restoration",
+            "extractedText": "Watershed restoration and conservation of water resources",
+            "textScore": 0.675,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_PNSH_14",
+            "goldLabel": "Action 5.1",
+            "goldText": "Water consensus-building. The objective is to help resolve conflicts ov…",
+            "extractedIndex": 11,
+            "extractedLabel": "Local community participation",
+            "extractedText": "Support and strengthen the participation of local communities in improv…",
+            "textScore": 0.619,
+            "quoteScore": 0.0,
+            "channel": "text"
+          }
+        ],
+        "unmatchedGold": [
+          {
+            "goldId": "panama_PNSH_3",
+            "goldLabel": "Action 1.2",
+            "goldText": "Increased coverage of drinking water services. This action contemplates…",
+            "bestScore": 0.675,
+            "bestExtractedText": "Improvement of drinking water and sanitation services"
+          },
+          {
+            "goldId": "panama_PNSH_13",
+            "goldLabel": "Target 5",
+            "goldText": "Water sustainability. Guaranteeing water sustainability includes improv…",
+            "bestScore": 0.573,
+            "bestExtractedText": "Planning for water and sanitation systems at the national level"
+          },
+          {
+            "goldId": "panama_PNSH_15",
+            "goldLabel": "Action 5.2",
+            "goldText": "Updating of regulations. This will focus on updating certain regulation…",
+            "bestScore": 0.514,
+            "bestExtractedText": "Management of water resource availability."
+          }
+        ],
+        "unmatchedExtracted": [
+          {
+            "extractedIndex": 3,
+            "extractedLabel": "Healthy river basins",
+            "extractedText": "Healthy river basins.",
+            "bestScore": 0.022,
+            "bestGoldId": "panama_PNSH_12",
+            "bestAnywhereScore": 0.077,
+            "bestAnywhereGoldId": "panama_ENR_24"
+          },
+          {
+            "extractedIndex": 4,
+            "extractedLabel": "Water sustainability",
+            "extractedText": "Water sustainability.",
+            "bestScore": 0.053,
+            "bestGoldId": "panama_PNSH_5",
+            "bestAnywhereScore": 0.062,
+            "bestAnywhereGoldId": "panama_ENR_22"
+          },
+          {
+            "extractedIndex": 5,
+            "extractedLabel": "Sanitation and hygiene access",
+            "extractedText": "Achieve equitable access to adequate sanitation and hygiene services fo…",
+            "bestScore": 0.366,
+            "bestGoldId": "panama_PNSH_1",
+            "bestAnywhereScore": 0.394,
+            "bestAnywhereGoldId": "panama_HR_26"
+          },
+          {
+            "extractedIndex": 6,
+            "extractedLabel": "Improve water quality",
+            "extractedText": "Improve water quality by reducing pollution, eliminating dumping and mi…",
+            "bestScore": 0.25,
+            "bestGoldId": "panama_PNSH_2",
+            "bestAnywhereScore": 0.4,
+            "bestAnywhereGoldId": "panama_HR_7"
+          },
+          {
+            "extractedIndex": 7,
+            "extractedLabel": "Water-use efficiency",
+            "extractedText": "Substantially increase water-use efficiency across all sectors and ensu…",
+            "bestScore": 0.42,
+            "bestGoldId": "panama_PNSH_11",
+            "bestAnywhereScore": 0.48,
+            "bestAnywhereGoldId": "panama_PEG_2"
+          },
+          {
+            "extractedIndex": 8,
+            "extractedLabel": "Integrated water management",
+            "extractedText": "Implement integrated water resources management at all levels, includin…",
+            "bestScore": 0.426,
+            "bestGoldId": "panama_PNSH_11",
+            "bestAnywhereScore": 0.514,
+            "bestAnywhereGoldId": "panama_HR_22"
+          },
+          {
+            "extractedIndex": 9,
+            "extractedLabel": "Protect water ecosystems",
+            "extractedText": "By 2020, protect and restore water-related ecosystems, including forest…",
+            "bestScore": 0.426,
+            "bestGoldId": "panama_PNSH_9",
+            "bestAnywhereScore": 0.521,
+            "bestAnywhereGoldId": "panama_PEG_25"
+          },
+          {
+            "extractedIndex": 10,
+            "extractedLabel": "International cooperation support",
+            "extractedText": "Expand international cooperation and support to developing countries in…",
+            "bestScore": 0.332,
+            "bestGoldId": "panama_PNSH_8",
+            "bestAnywhereScore": 0.45,
+            "bestAnywhereGoldId": "panama_ENR_92"
+          },
+          {
+            "extractedIndex": 12,
+            "extractedLabel": "100% water coverage",
+            "extractedText": "Achieve 100% sustained coverage with quality water and basic services",
+            "bestScore": 0.72,
+            "bestGoldId": "panama_PNSH_1",
+            "bestAnywhereScore": 0.72,
+            "bestAnywhereGoldId": "panama_PNSH_1"
+          },
+          {
+            "extractedIndex": 13,
+            "extractedLabel": "Water availability growth",
+            "extractedText": "Guarantee water availability for inclusive socioeconomic growth in a ch…",
+            "bestScore": 0.655,
+            "bestGoldId": "panama_PNSH_9",
+            "bestAnywhereScore": 0.655,
+            "bestAnywhereGoldId": "panama_PNSH_9"
+          },
+          {
+            "extractedIndex": 14,
+            "extractedLabel": "Maintain water infrastructure",
+            "extractedText": "Maintain the growing national water and sanitation infrastructure in fu…",
+            "bestScore": 0.655,
+            "bestGoldId": "panama_PNSH_11",
+            "bestAnywhereScore": 0.675,
+            "bestAnywhereGoldId": "panama_PEG_2"
+          },
+          {
+            "extractedIndex": 15,
+            "extractedLabel": "Responsible water culture",
+            "extractedText": "Evolve toward a culture of responsible and shared water use",
+            "bestScore": 0.45,
+            "bestGoldId": "panama_PNSH_13",
+            "bestAnywhereScore": 0.54,
+            "bestAnywhereGoldId": "panama_HR_1"
+          },
+          {
+            "extractedIndex": 16,
+            "extractedLabel": "Drinking water access",
+            "extractedText": "Work together to achieve universal access and continuous and dignified …",
+            "bestScore": 0.45,
+            "bestGoldId": "panama_PNSH_1",
+            "bestAnywhereScore": 0.45,
+            "bestAnywhereGoldId": "panama_HR_27"
+          },
+          {
+            "extractedIndex": 17,
+            "extractedLabel": "Non-revenue water reduction",
+            "extractedText": "Reduce the level of non-revenue water and increase metering coverage",
+            "bestScore": 0.525,
+            "bestGoldId": "panama_PNSH_1",
+            "bestAnywhereScore": 0.6,
+            "bestAnywhereGoldId": "panama_PEG_11"
+          },
+          {
+            "extractedIndex": 18,
+            "extractedLabel": "Protect water sources",
+            "extractedText": "Protect, recover and conserve water sources to guarantee supply, taking…",
+            "bestScore": 0.54,
+            "bestGoldId": "panama_PNSH_9",
+            "bestAnywhereScore": 0.54,
+            "bestAnywhereGoldId": "panama_PEG_25"
+          },
+          {
+            "extractedIndex": 19,
+            "extractedLabel": "Develop water reserves",
+            "extractedText": "Develop water reserves to guarantee the continuity of the country's inc…",
+            "bestScore": 0.554,
+            "bestGoldId": "panama_PNSH_9",
+            "bestAnywhereScore": 0.554,
+            "bestAnywhereGoldId": "panama_PNSH_9"
+          },
+          {
+            "extractedIndex": 20,
+            "extractedLabel": "Restore basin forests",
+            "extractedText": "Restore the forest cover of river basins and contribute to revitalizing…",
+            "bestScore": 0.45,
+            "bestGoldId": "panama_PNSH_3",
+            "bestAnywhereScore": 0.585,
+            "bestAnywhereGoldId": "panama_PEG_25"
+          },
+          {
+            "extractedIndex": 21,
+            "extractedLabel": "Universal water and sanitation",
+            "extractedText": "Goal No. 1 Access universal to quality water and sanitation services.",
+            "bestScore": 0.75,
+            "bestGoldId": "panama_PNSH_1",
+            "bestAnywhereScore": 0.75,
+            "bestAnywhereGoldId": "panama_PNSH_1"
+          },
+          {
+            "extractedIndex": 22,
+            "extractedLabel": "Healthy river basins",
+            "extractedText": "Goal No. 4 Healthy river basins",
+            "bestScore": 0.022,
+            "bestGoldId": "panama_PNSH_12",
+            "bestAnywhereScore": 0.45,
+            "bestAnywhereGoldId": "panama_HR_7"
+          },
+          {
+            "extractedIndex": 23,
+            "extractedLabel": "Water sustainability",
+            "extractedText": "Goal No. 5 Water sustainability",
+            "bestScore": 0.049,
+            "bestGoldId": "panama_PNSH_5",
+            "bestAnywhereScore": 0.54,
+            "bestAnywhereGoldId": "panama_HR_12"
+          },
+          {
+            "extractedIndex": 24,
+            "extractedLabel": "Quality water services",
+            "extractedText": "Main urban and rural population centers have quality water and sanitati…",
+            "bestScore": 0.573,
+            "bestGoldId": "panama_PNSH_3",
+            "bestAnywhereScore": 0.573,
+            "bestAnywhereGoldId": "panama_PNSH_3"
+          },
+          {
+            "extractedIndex": 25,
+            "extractedLabel": "Multipurpose reservoirs",
+            "extractedText": "The country has new multipurpose reservoirs to increase water security …",
+            "bestScore": 0.72,
+            "bestGoldId": "panama_PNSH_9",
+            "bestAnywhereScore": 0.72,
+            "bestAnywhereGoldId": "panama_PNSH_9"
+          },
+          {
+            "extractedIndex": 26,
+            "extractedLabel": "Water information systems",
+            "extractedText": "The country has information on water resources for knowledge and decisi…",
+            "bestScore": 0.66,
+            "bestGoldId": "panama_PNSH_6",
+            "bestAnywhereScore": 0.66,
+            "bestAnywhereGoldId": "panama_PEG_2"
+          },
+          {
+            "extractedIndex": 27,
+            "extractedLabel": "Efficient agricultural water use",
+            "extractedText": "Efficient use of water resources in agriculture through supply systems …",
+            "bestScore": 0.514,
+            "bestGoldId": "panama_PNSH_2",
+            "bestAnywhereScore": 0.579,
+            "bestAnywhereGoldId": "panama_PEG_3"
+          },
+          {
+            "extractedIndex": 28,
+            "extractedLabel": "Extreme water events",
+            "extractedText": "Improved capacity for prevention of and response to extreme water-relat…",
+            "bestScore": 0.623,
+            "bestGoldId": "panama_PNSH_10",
+            "bestAnywhereScore": 0.623,
+            "bestAnywhereGoldId": "panama_HR_24"
+          },
+          {
+            "extractedIndex": 29,
+            "extractedLabel": "Water quality",
+            "extractedText": "Water quality in surface and groundwater sources.",
+            "bestScore": 0.514,
+            "bestGoldId": "panama_PNSH_1",
+            "bestAnywhereScore": 0.562,
+            "bestAnywhereGoldId": "panama_PEG_2"
+          },
+          {
+            "extractedIndex": 33,
+            "extractedLabel": "Metering systems",
+            "extractedText": "Establishment of micro- and macro-metering",
+            "bestScore": 0.75,
+            "bestGoldId": "panama_PNSH_2",
+            "bestAnywhereScore": 0.75,
+            "bestAnywhereGoldId": "panama_PNSH_2"
+          },
+          {
+            "extractedIndex": 34,
+            "extractedLabel": "Reduce unaccounted-for water",
+            "extractedText": "Reduction of Unaccounted-for Water to 30%",
+            "bestScore": 0.643,
+            "bestGoldId": "panama_PNSH_2",
+            "bestAnywhereScore": 0.643,
+            "bestAnywhereGoldId": "panama_HR_17"
+          },
+          {
+            "extractedIndex": 41,
+            "extractedLabel": "Integrated watershed management",
+            "extractedText": "Integrated watershed management",
+            "bestScore": 0.035,
+            "bestGoldId": "panama_PNSH_16",
+            "bestAnywhereScore": 0.9,
+            "bestAnywhereGoldId": "panama_CNR_5"
+          },
+          {
+            "extractedIndex": 43,
+            "extractedLabel": "Meta 4",
+            "extractedText": "Healthy watersheds",
+            "bestScore": 0.022,
+            "bestGoldId": "panama_PNSH_12",
+            "bestAnywhereScore": 0.54,
+            "bestAnywhereGoldId": "panama_HR_22"
+          }
+        ]
+      }
+    },
+    {
+      "docCode": "NRVTS",
+      "tier": 1,
+      "sourceDocument": "NRVTS",
+      "language": "en",
+      "notes": "21/27 gold quotes reachable; the gap is transcription drift from land_targets.xlsx, not extraction failure.",
+      "parseStats": {
+        "pageCount": 56,
+        "pagesWithText": 56,
+        "chars": 131018,
+        "parseSeconds": 5.0
+      },
+      "gold": {
+        "n": 27,
+        "reachable": 21,
+        "reachability": [
+          {
+            "goldId": "NRVTS_1",
+            "containment": 0.889
+          },
+          {
+            "goldId": "NRVTS_2",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_3",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_4",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_5",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_6",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_7",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_8",
+            "containment": 0.65
+          },
+          {
+            "goldId": "NRVTS_9",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_10",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_11",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_12",
+            "containment": 0.0
+          },
+          {
+            "goldId": "NRVTS_13",
+            "containment": 0.0
+          },
+          {
+            "goldId": "NRVTS_14",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_15",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_16",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_17",
+            "containment": 0.083
+          },
+          {
+            "goldId": "NRVTS_18",
+            "containment": 0.0
+          },
+          {
+            "goldId": "NRVTS_19",
+            "containment": 0.0
+          },
+          {
+            "goldId": "NRVTS_20",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_21",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_22",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_23",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_24",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_25",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NRVTS_26",
+            "containment": 0.0
+          },
+          {
+            "goldId": "NRVTS_27",
+            "containment": 1.0
+          }
+        ],
+        "lengths": {
+          "n": 27,
+          "p10": 29,
+          "median": 71,
+          "p90": 115
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 14,
+        "seconds": 25.0,
+        "footprintDelta": {
+          "call_count": 24.0,
+          "cached_call_count": 21.0,
+          "energy_wh": 5.4665,
+          "co2_geq": 2.1555
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 14,
+          "p10": 51,
+          "median": 98,
+          "p90": 137
+        },
+        "textCleanup": {
+          "synthesis": 4,
+          "cleaned": 10
+        },
+        "provenanceFlags": 0,
+        "quotesTotal": 25,
+        "quoteMatchLevels": {
+          "exact": 25,
+          "normalized": 0,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 0.148,
+        "recallReachable": 0.143,
+        "extractionMatchedRatio": 0.286,
+        "granularityRatio": 0.52
+      },
+      "matchAudit": {
+        "matched": [
+          {
+            "goldId": "NRVTS_1",
+            "goldLabel": "Target 1",
+            "goldText": "Reduce deforestation and forest degradation to maintain the forest area…",
+            "extractedIndex": 0,
+            "extractedLabel": "Forest area",
+            "extractedText": "Reduce deforestation and forest degradation to maintain the forest area…",
+            "textScore": 1.0,
+            "quoteScore": 0.696,
+            "channel": "text"
+          },
+          {
+            "goldId": "NRVTS_10",
+            "goldLabel": "Target 2",
+            "goldText": "Promote sustainable grassland management and stop further grassland deg…",
+            "extractedIndex": 7,
+            "extractedLabel": "Grassland management",
+            "extractedText": "Promote sustainable grassland management and stop further grassland deg…",
+            "textScore": 1.0,
+            "quoteScore": 0.5,
+            "channel": "text"
+          },
+          {
+            "goldId": "NRVTS_17",
+            "goldLabel": "Target 3",
+            "goldText": "Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to …",
+            "extractedIndex": 8,
+            "extractedLabel": "Agricultural yields",
+            "extractedText": "Increase agricultural yields to 2.5 t/ha per annum by 2030 compared to …",
+            "textScore": 1.0,
+            "quoteScore": 0.036,
+            "channel": "text"
+          },
+          {
+            "goldId": "NRVTS_23",
+            "goldLabel": "Target 4",
+            "goldText": "Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)",
+            "extractedIndex": 9,
+            "extractedLabel": "Wetlands no net loss",
+            "extractedText": "Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km).",
+            "textScore": 1.0,
+            "quoteScore": 0.727,
+            "channel": "text"
+          }
+        ],
+        "unmatchedGold": [
+          {
+            "goldId": "NRVTS_2",
+            "goldLabel": "Technical Measure 1.1",
+            "goldText": "Reforestation of land affected by forest fire, pest insect and deforest…",
+            "bestScore": 0.409,
+            "bestExtractedText": "Reduce deforestation and forest degradation to maintain the forest area…"
+          },
+          {
+            "goldId": "NRVTS_3",
+            "goldLabel": "Technical Measure 1.2",
+            "goldText": "Forest fire monitoring and prevention system",
+            "bestScore": 0.083,
+            "bestExtractedText": "Reduce deforestation and forest degradation to maintain the forest area…"
+          },
+          {
+            "goldId": "NRVTS_4",
+            "goldLabel": "Technical Measure 1.3",
+            "goldText": "Forest cleaning and weeding",
+            "bestScore": 0.091,
+            "bestExtractedText": "Reduce deforestation and forest degradation to maintain the forest area…"
+          },
+          {
+            "goldId": "NRVTS_5",
+            "goldLabel": "Technical Measure 1.4",
+            "goldText": "Promote urban greening",
+            "bestScore": 0.1,
+            "bestExtractedText": "Promote sustainable grassland management and stop further grassland deg…"
+          },
+          {
+            "goldId": "NRVTS_6",
+            "goldLabel": "Policy Action 1.1",
+            "goldText": "Amend, if necessary newly develop standards and norms for reforestation",
+            "bestScore": 0.059,
+            "bestExtractedText": "Promote sustainable grassland management and stop further grassland deg…"
+          },
+          {
+            "goldId": "NRVTS_7",
+            "goldLabel": "Policy Action 1.2",
+            "goldText": "Establishing a gene bank for major wood species",
+            "bestScore": 0.045,
+            "bestExtractedText": "Improve water availability for arable land to increase the irrigated ar…"
+          },
+          {
+            "goldId": "NRVTS_8",
+            "goldLabel": "Policy Action 1.3",
+            "goldText": "Amend current forest sector policy to oblige forest user groups to cond…",
+            "bestScore": 0.409,
+            "bestExtractedText": "Expand special protected areas to reach 30% of the total area."
+          },
+          {
+            "goldId": "NRVTS_9",
+            "goldLabel": "Policy Action 1.4",
+            "goldText": "Integrate greening programs into the urban development planning process",
+            "bestScore": 0.053,
+            "bestExtractedText": "Expand special protected areas to reach 30% of the total area."
+          },
+          {
+            "goldId": "NRVTS_11",
+            "goldLabel": "Technical Measure 2.1",
+            "goldText": "Recover the traditional seasonal rotational pasture system",
+            "bestScore": 0.059,
+            "bestExtractedText": "Expand special protected areas to reach 30% of the total area."
+          },
+          {
+            "goldId": "NRVTS_12",
+            "goldLabel": "Technical Measure 2.2",
+            "goldText": "Air seeding, sowing of perennial grasses in areas where gradual grassla…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Restore 30% of grassland currently transformed to other lands and impro…"
+          },
+          {
+            "goldId": "NRVTS_13",
+            "goldLabel": "Technical Measure 2.3",
+            "goldText": "Developing a system for silvo-pastoral animal husbandry in steppe and f…",
+            "bestScore": 0.245,
+            "bestExtractedText": "Regulate and manage animal numbers in alignment with pasture carrying c…"
+          },
+          {
+            "goldId": "NRVTS_14",
+            "goldLabel": "Policy Action 2.1",
+            "goldText": "Integrate grassland planning into the regional land use plans",
+            "bestScore": 0.091,
+            "bestExtractedText": "Improve water availability for arable land to increase the irrigated ar…"
+          },
+          {
+            "goldId": "NRVTS_15",
+            "goldLabel": "Policy Action 2.2",
+            "goldText": "Develop legal instruments and/or establish mechanism for sustainable pa…",
+            "bestScore": 0.118,
+            "bestExtractedText": "Promote sustainable grassland management and stop further grassland deg…"
+          },
+          {
+            "goldId": "NRVTS_16",
+            "goldLabel": "Policy Action 2.3",
+            "goldText": "Support researches towards development of adaptive silvo-pastoral syste…",
+            "bestScore": 0.043,
+            "bestExtractedText": "Bring under protection about 60% of all headwaters."
+          },
+          {
+            "goldId": "NRVTS_18",
+            "goldLabel": "Technical Measure 3.1",
+            "goldText": "Developing agroforestry including shelter belt system development",
+            "bestScore": 0.0,
+            "bestExtractedText": ""
+          },
+          {
+            "goldId": "NRVTS_19",
+            "goldLabel": "Technical Measure 3.2",
+            "goldText": "Decrease in use of pesticides",
+            "bestScore": 0.087,
+            "bestExtractedText": "Reduce deforestation and forest degradation to maintain the forest area…"
+          },
+          {
+            "goldId": "NRVTS_20",
+            "goldLabel": "Technical Measure 3.3",
+            "goldText": "Erosion prevention in agriculture",
+            "bestScore": 0.091,
+            "bestExtractedText": "Introduce no-till soil processing in arable land."
+          },
+          {
+            "goldId": "NRVTS_21",
+            "goldLabel": "Policy Action 3.1",
+            "goldText": "Amend soil protection and desertification prevention law to support the…",
+            "bestScore": 0.24,
+            "bestExtractedText": "Reduce deforestation and forest degradation to maintain the forest area…"
+          },
+          {
+            "goldId": "NRVTS_22",
+            "goldLabel": "Policy Action 3.2",
+            "goldText": "Revise current norms and standards on use of pesticides in agricultural…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Afforest 50% of forest transformed to grassland, increase forested area…"
+          },
+          {
+            "goldId": "NRVTS_24",
+            "goldLabel": "Technical Measure 4.1",
+            "goldText": "Expanding the national network of special protected areas",
+            "bestScore": 0.562,
+            "bestExtractedText": "Expand special protected areas to reach 30% of the total area."
+          },
+          {
+            "goldId": "NRVTS_25",
+            "goldLabel": "Technical Measure 4.2",
+            "goldText": "Promote sustainable use of wetland ecosystems",
+            "bestScore": 0.167,
+            "bestExtractedText": "Promote sustainable grassland management and stop further grassland deg…"
+          },
+          {
+            "goldId": "NRVTS_26",
+            "goldLabel": "Technical Measure 4.3",
+            "goldText": "Develop the suitable system on payment for ecosystem services in headwa…",
+            "bestScore": 0.208,
+            "bestExtractedText": "Reduce deforestation and forest degradation to maintain the forest area…"
+          },
+          {
+            "goldId": "NRVTS_27",
+            "goldLabel": "Policy Action 4.1",
+            "goldText": "Research and development of PES",
+            "bestScore": 0.143,
+            "bestExtractedText": "Maintain the appropriate ratio between types of animals and herd compos…"
+          }
+        ],
+        "unmatchedExtracted": [
+          {
+            "extractedIndex": 1,
+            "extractedLabel": "Protected areas",
+            "extractedText": "Expand special protected areas to reach 30% of the total area.",
+            "bestScore": 0.562,
+            "bestGoldId": "NRVTS_24",
+            "bestAnywhereScore": 0.573,
+            "bestAnywhereGoldId": "NBSAP_3"
+          },
+          {
+            "extractedIndex": 2,
+            "extractedLabel": "Headwaters protection",
+            "extractedText": "Bring under protection about 60% of all headwaters.",
+            "bestScore": 0.083,
+            "bestGoldId": "NRVTS_19",
+            "bestAnywhereScore": 0.338,
+            "bestAnywhereGoldId": "FSS_15"
+          },
+          {
+            "extractedIndex": 3,
+            "extractedLabel": "No-till arable land",
+            "extractedText": "Introduce no-till soil processing in arable land.",
+            "bestScore": 0.095,
+            "bestGoldId": "NRVTS_21",
+            "bestAnywhereScore": 0.338,
+            "bestAnywhereGoldId": "FSS_17"
+          },
+          {
+            "extractedIndex": 4,
+            "extractedLabel": "Irrigated area",
+            "extractedText": "Improve water availability for arable land to increase the irrigated ar…",
+            "bestScore": 0.18,
+            "bestGoldId": "NRVTS_1",
+            "bestAnywhereScore": 0.54,
+            "bestAnywhereGoldId": "FSS_15"
+          },
+          {
+            "extractedIndex": 5,
+            "extractedLabel": "Pasture carrying capacity",
+            "extractedText": "Regulate and manage animal numbers in alignment with pasture carrying c…",
+            "bestScore": 0.245,
+            "bestGoldId": "NRVTS_13",
+            "bestAnywhereScore": 0.491,
+            "bestAnywhereGoldId": "SECTORAL_5"
+          },
+          {
+            "extractedIndex": 6,
+            "extractedLabel": "Herd composition",
+            "extractedText": "Maintain the appropriate ratio between types of animals and herd compos…",
+            "bestScore": 0.327,
+            "bestGoldId": "NRVTS_1",
+            "bestAnywhereScore": 0.338,
+            "bestAnywhereGoldId": "NAP_3"
+          },
+          {
+            "extractedIndex": 10,
+            "extractedLabel": "Forest degradation reduction",
+            "extractedText": "Afforest 50% of forest transformed to grassland, increase forested area…",
+            "bestScore": 0.338,
+            "bestGoldId": "NRVTS_10",
+            "bestAnywhereScore": 0.491,
+            "bestAnywhereGoldId": "NBSAP_10"
+          },
+          {
+            "extractedIndex": 11,
+            "extractedLabel": "Grassland restoration",
+            "extractedText": "Restore 30% of grassland currently transformed to other lands and impro…",
+            "bestScore": 0.3,
+            "bestGoldId": "NRVTS_12",
+            "bestAnywhereScore": 0.338,
+            "bestAnywhereGoldId": "NAP_3"
+          },
+          {
+            "extractedIndex": 12,
+            "extractedLabel": "Cropland productivity",
+            "extractedText": "Increase productivity of 1260.5 sq. km of agricultural land (cropland) …",
+            "bestScore": 0.327,
+            "bestGoldId": "NRVTS_2",
+            "bestAnywhereScore": 0.405,
+            "bestAnywhereGoldId": "FSS_15"
+          },
+          {
+            "extractedIndex": 13,
+            "extractedLabel": "Wetland restoration",
+            "extractedText": "Improve wetland productivity by 30% and restore 30% of wetland currentl…",
+            "bestScore": 0.327,
+            "bestGoldId": "NRVTS_2",
+            "bestAnywhereScore": 0.36,
+            "bestAnywhereGoldId": "NBSAP_2"
+          }
+        ]
+      }
+    },
+    {
+      "docCode": "ILDN",
+      "tier": 1,
+      "sourceDocument": "ILDN",
+      "language": "en",
+      "notes": "8/8 gold quotes reachable. The ILDN gold does NOT come from the LDN TSP Country Report.",
+      "parseStats": {
+        "pageCount": 20,
+        "pagesWithText": 19,
+        "chars": 47067,
+        "parseSeconds": 3.8
+      },
+      "gold": {
+        "n": 8,
+        "reachable": 8,
+        "reachability": [
+          {
+            "goldId": "ILDN_1",
+            "containment": 0.841
+          },
+          {
+            "goldId": "ILDN_2",
+            "containment": 0.816
+          },
+          {
+            "goldId": "ILDN_3",
+            "containment": 1.0
+          },
+          {
+            "goldId": "ILDN_4",
+            "containment": 1.0
+          },
+          {
+            "goldId": "ILDN_5",
+            "containment": 1.0
+          },
+          {
+            "goldId": "ILDN_6",
+            "containment": 1.0
+          },
+          {
+            "goldId": "ILDN_7",
+            "containment": 1.0
+          },
+          {
+            "goldId": "ILDN_8",
+            "containment": 1.0
+          }
+        ],
+        "lengths": {
+          "n": 8,
+          "p10": 67,
+          "median": 196,
+          "p90": 314
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 9,
+        "seconds": 22.3,
+        "footprintDelta": {
+          "call_count": 14.0,
+          "cached_call_count": 10.0,
+          "energy_wh": 3.3762,
+          "co2_geq": 1.3398
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 9,
+          "p10": 79,
+          "median": 139,
+          "p90": 211
+        },
+        "textCleanup": {
+          "cleaned": 9
+        },
+        "provenanceFlags": 0,
+        "quotesTotal": 9,
+        "quoteMatchLevels": {
+          "exact": 9,
+          "normalized": 0,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 0.0,
+        "recallReachable": 0.0,
+        "extractionMatchedRatio": 0.0,
+        "granularityRatio": 1.12
+      },
+      "matchAudit": {
+        "matched": [],
+        "unmatchedGold": [
+          {
+            "goldId": "ILDN_1",
+            "goldLabel": "Land Degradation Offset and Mitigation in Western Mongolia",
+            "goldText": "The objective of this project is to reduce negative impacts of mining o…",
+            "bestScore": 0.346,
+            "bestExtractedText": "Reduce GHG emissions from deforestation and forest degradation by 2% by…"
+          },
+          {
+            "goldId": "ILDN_2",
+            "goldLabel": "Mainstreaming Biodiversity Conservation, Sustainable Forest Management and Carbon Sink Enhancement Into Mongolia's Productive Forest Landscapes.",
+            "goldText": "Sustainable forest management in Mongolia's forest landscape secures th…",
+            "bestScore": 0.315,
+            "bestExtractedText": "Reduce rate of pasture degradation; regulate headcounts and types of an…"
+          },
+          {
+            "goldId": "ILDN_3",
+            "goldLabel": "Network of Managed Resource Protected Areas",
+            "goldText": "The project aims to catalyze the strategic expansion of Mongolia's prot…",
+            "bestScore": 0.281,
+            "bestExtractedText": "A comprehensive plan for emission reductions in the livestock sub-secto…"
+          },
+          {
+            "goldId": "ILDN_4",
+            "goldLabel": "Element 1",
+            "goldText": "LDN targets: setting targets and establishing the level of ambition",
+            "bestScore": 0.087,
+            "bestExtractedText": "A comprehensive plan for emission reductions in the livestock sub-secto…"
+          },
+          {
+            "goldId": "ILDN_5",
+            "goldLabel": "Element 2",
+            "goldText": "Leverage and impact: catalyzing the multiple benefits that LDN provides…",
+            "bestScore": 0.257,
+            "bestExtractedText": "Make forests resilient to climate change by improving their productivit…"
+          },
+          {
+            "goldId": "ILDN_6",
+            "goldLabel": "Element 3",
+            "goldText": "Partnerships and resource mobilization: rationalizing engagement with p…",
+            "bestScore": 0.15,
+            "bestExtractedText": "Reduce rate of pasture degradation; regulate headcounts and types of an…"
+          },
+          {
+            "goldId": "ILDN_7",
+            "goldLabel": "Element 4",
+            "goldText": "Transformative action: designing and implementing bold LDN transformati…",
+            "bestScore": 0.071,
+            "bestExtractedText": "Mongolia has committed to set a national voluntary LDN target, establis…"
+          },
+          {
+            "goldId": "ILDN_8",
+            "goldLabel": "Element 5",
+            "goldText": "Monitoring and reporting: tracking progress towards achieving the LDN t…",
+            "bestScore": 0.083,
+            "bestExtractedText": "A comprehensive plan for emission reductions in the livestock sub-secto…"
+          }
+        ],
+        "unmatchedExtracted": [
+          {
+            "extractedIndex": 0,
+            "extractedLabel": "LDN commitment",
+            "extractedText": "Mongolia has committed to set a national voluntary LDN target, establis…",
+            "bestScore": 0.2,
+            "bestGoldId": "ILDN_3",
+            "bestAnywhereScore": 0.3,
+            "bestAnywhereGoldId": "FSS_31"
+          },
+          {
+            "extractedIndex": 1,
+            "extractedLabel": "Reduce forest emissions",
+            "extractedText": "Reduce GHG emissions from deforestation and forest degradation by 2% by…",
+            "bestScore": 0.346,
+            "bestGoldId": "ILDN_1",
+            "bestAnywhereScore": 0.538,
+            "bestAnywhereGoldId": "NRVTS_1"
+          },
+          {
+            "extractedIndex": 2,
+            "extractedLabel": "Livestock emissions plan",
+            "extractedText": "A comprehensive plan for emission reductions in the livestock sub-secto…",
+            "bestScore": 0.281,
+            "bestGoldId": "ILDN_3",
+            "bestAnywhereScore": 0.338,
+            "bestAnywhereGoldId": "NBSAP_11"
+          },
+          {
+            "extractedIndex": 3,
+            "extractedLabel": "Climate-resilient forests",
+            "extractedText": "Make forests resilient to climate change by improving their productivit…",
+            "bestScore": 0.257,
+            "bestGoldId": "ILDN_2",
+            "bestAnywhereScore": 0.321,
+            "bestAnywhereGoldId": "NDC_1"
+          },
+          {
+            "extractedIndex": 4,
+            "extractedLabel": "Reforestation expansion",
+            "extractedText": "Forest area will be increased to 9% by 2030 through reforestation activ…",
+            "bestScore": 0.216,
+            "bestGoldId": "ILDN_1",
+            "bestAnywhereScore": 0.491,
+            "bestAnywhereGoldId": "NBSAP_10"
+          },
+          {
+            "extractedIndex": 5,
+            "extractedLabel": "Land and soil management",
+            "extractedText": "Reduce bare fallow to 30%; introduce crop rotation system with 3-4 rout…",
+            "bestScore": 0.155,
+            "bestGoldId": "ILDN_1",
+            "bestAnywhereScore": 0.386,
+            "bestAnywhereGoldId": "NAP_4"
+          },
+          {
+            "extractedIndex": 6,
+            "extractedLabel": "Sustainable pasture management",
+            "extractedText": "Reduce rate of pasture degradation; regulate headcounts and types of an…",
+            "bestScore": 0.315,
+            "bestGoldId": "ILDN_2",
+            "bestAnywhereScore": 0.45,
+            "bestAnywhereGoldId": "NRVTS_10"
+          },
+          {
+            "extractedIndex": 7,
+            "extractedLabel": "Disaster risk systems",
+            "extractedText": "Enhance and improve early warning and prevention systems for natural di…",
+            "bestScore": 0.056,
+            "bestGoldId": "ILDN_4",
+            "bestAnywhereScore": 0.52,
+            "bestAnywhereGoldId": "NDC_9"
+          },
+          {
+            "extractedIndex": 8,
+            "extractedLabel": "Achieve LDN by 2030",
+            "extractedText": "Combat desertification, restore degraded land and soil, including land …",
+            "bestScore": 0.225,
+            "bestGoldId": "ILDN_1",
+            "bestAnywhereScore": 0.554,
+            "bestAnywhereGoldId": "SECTORAL_12"
+          }
+        ]
+      }
+    },
+    {
+      "docCode": "HR",
+      "tier": 2,
+      "sourceDocument": "HR",
+      "language": "es",
+      "notes": "Gold quotes are CO-composed (concatenated Excel action rows stamped textCleanup=verbatim by the ingest script); only ~13% of quote 4-grams appear contiguously in the PDF. Text-similarity matching only; never gates acceptance.",
+      "parseStats": {
+        "pageCount": 44,
+        "pagesWithText": 42,
+        "chars": 114044,
+        "parseSeconds": 2.6
+      },
+      "gold": {
+        "n": 30,
+        "reachable": 0,
+        "reachability": [
+          {
+            "goldId": "panama_HR_1",
+            "containment": 0.04
+          },
+          {
+            "goldId": "panama_HR_2",
+            "containment": 0.008
+          },
+          {
+            "goldId": "panama_HR_3",
+            "containment": 0.049
+          },
+          {
+            "goldId": "panama_HR_4",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_5",
+            "containment": 0.037
+          },
+          {
+            "goldId": "panama_HR_6",
+            "containment": 0.023
+          },
+          {
+            "goldId": "panama_HR_7",
+            "containment": 0.013
+          },
+          {
+            "goldId": "panama_HR_8",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_9",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_10",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_11",
+            "containment": 0.058
+          },
+          {
+            "goldId": "panama_HR_12",
+            "containment": 0.012
+          },
+          {
+            "goldId": "panama_HR_13",
+            "containment": 0.018
+          },
+          {
+            "goldId": "panama_HR_14",
+            "containment": 0.034
+          },
+          {
+            "goldId": "panama_HR_15",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_16",
+            "containment": 0.041
+          },
+          {
+            "goldId": "panama_HR_17",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_18",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_19",
+            "containment": 0.045
+          },
+          {
+            "goldId": "panama_HR_20",
+            "containment": 0.004
+          },
+          {
+            "goldId": "panama_HR_21",
+            "containment": 0.028
+          },
+          {
+            "goldId": "panama_HR_22",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_23",
+            "containment": 0.007
+          },
+          {
+            "goldId": "panama_HR_24",
+            "containment": 0.005
+          },
+          {
+            "goldId": "panama_HR_25",
+            "containment": 0.0
+          },
+          {
+            "goldId": "panama_HR_26",
+            "containment": 0.014
+          },
+          {
+            "goldId": "panama_HR_27",
+            "containment": 0.015
+          },
+          {
+            "goldId": "panama_HR_28",
+            "containment": 0.017
+          },
+          {
+            "goldId": "panama_HR_29",
+            "containment": 0.054
+          },
+          {
+            "goldId": "panama_HR_30",
+            "containment": 0.039
+          }
+        ],
+        "lengths": {
+          "n": 30,
+          "p10": 1343,
+          "median": 2183,
+          "p90": 3396
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 12,
+        "seconds": 18.6,
+        "footprintDelta": {
+          "call_count": 24.0,
+          "cached_call_count": 22.0,
+          "energy_wh": 5.8685,
+          "co2_geq": 2.319
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 12,
+          "p10": 179,
+          "median": 194,
+          "p90": 261
+        },
+        "textCleanup": {
+          "synthesis": 1,
+          "verbatim": 6,
+          "cleaned": 5
+        },
+        "provenanceFlags": 0,
+        "quotesTotal": 13,
+        "quoteMatchLevels": {
+          "exact": 13,
+          "normalized": 0,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 0.1,
+        "recallReachable": null,
+        "extractionMatchedRatio": 0.25,
+        "granularityRatio": 0.4
+      },
+      "matchAudit": {
+        "matched": [
+          {
+            "goldId": "panama_HR_2",
+            "goldLabel": "Actions for Target 2",
+            "goldText": "Update the National Forest Restoration Program. Validate a national bas…",
+            "extractedIndex": 6,
+            "extractedLabel": "Implementation continuity",
+            "extractedText": "Reorient management toward measurable results; strengthen the national …",
+            "textScore": 0.675,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_HR_3",
+            "goldLabel": "Actions for Target 3",
+            "goldText": "Review and update the regulatory, normative, and operational framework …",
+            "extractedIndex": 3,
+            "extractedLabel": "Financing and incentives",
+            "extractedText": "Develop innovative financial instruments; strengthen the Fondo Panamá N…",
+            "textScore": 0.66,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "panama_HR_28",
+            "goldLabel": "Actions for Target 28",
+            "goldText": "Formalize the financial architecture of the Nature Pledge, defining the…",
+            "extractedIndex": 11,
+            "extractedLabel": "Implementation next steps",
+            "extractedText": "Deepen the financial analysis of the prioritized targets; operationaliz…",
+            "textScore": 0.639,
+            "quoteScore": 0.0,
+            "channel": "text"
+          }
+        ],
+        "unmatchedGold": [
+          {
+            "goldId": "panama_HR_1",
+            "goldLabel": "Actions for Target 1",
+            "goldText": "Define a prioritized portfolio of policies and measures by sector, with…",
+            "bestScore": 0.573,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_4",
+            "goldLabel": "Actions for Target 4",
+            "goldText": "Update and validate a national list of priority native species for cons…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_5",
+            "goldLabel": "Actions for Target 5",
+            "goldText": "Identify and prioritize at least five regions of the country with a hig…",
+            "bestScore": 0.54,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_6",
+            "goldLabel": "Actions for Target 6",
+            "goldText": "Identify and prioritize, at the national level, the main pathways for t…",
+            "bestScore": 0.471,
+            "bestExtractedText": "Promote the adoption of emerging technologies (remote sensing, artifici…"
+          },
+          {
+            "goldId": "panama_HR_7",
+            "goldLabel": "Actions for Target 7",
+            "goldText": "By 2035, Panama will reduce pollution and its cumulative effects by red…",
+            "bestScore": 0.42,
+            "bestExtractedText": "Develop innovative financial instruments; strengthen the Fondo Panamá N…"
+          },
+          {
+            "goldId": "panama_HR_8",
+            "goldLabel": "Actions for Target 8",
+            "goldText": "Define technical, social, and territorial criteria for the national pri…",
+            "bestScore": 0.54,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_9",
+            "goldLabel": "Actions for Target 9",
+            "goldText": "Carry out a comparative legal analysis on frameworks for access to gene…",
+            "bestScore": 0.489,
+            "bestExtractedText": "Deepen the financial analysis of the prioritized targets; operationaliz…"
+          },
+          {
+            "goldId": "panama_HR_10",
+            "goldLabel": "Actions for Target 10",
+            "goldText": "Identify and prioritize productive sectors and consumption patterns wit…",
+            "bestScore": 0.54,
+            "bestExtractedText": "Develop innovative financial instruments; strengthen the Fondo Panamá N…"
+          },
+          {
+            "goldId": "panama_HR_11",
+            "goldLabel": "Actions for Target 11",
+            "goldText": "Design and validate a standardized national methodology for the charact…",
+            "bestScore": 0.413,
+            "bestExtractedText": "The PNTC will operate as the axis for integrating follow-up, monitoring…"
+          },
+          {
+            "goldId": "panama_HR_12",
+            "goldLabel": "Actions for Target 12",
+            "goldText": "By 2035, Panama will have reduced mismanaged plastic pollution by 50% t…",
+            "bestScore": 0.566,
+            "bestExtractedText": "Deepen the financial analysis of the prioritized targets; operationaliz…"
+          },
+          {
+            "goldId": "panama_HR_13",
+            "goldLabel": "Actions for Target 13",
+            "goldText": "Carry out an exhaustive mapping of competencies, current procedures, an…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_14",
+            "goldLabel": "Actions for Target 14",
+            "goldText": "Exhaustively review the analysis of incentives and subsidies (fiscal, f…",
+            "bestScore": 0.465,
+            "bestExtractedText": "Deepen the financial analysis of the prioritized targets; operationaliz…"
+          },
+          {
+            "goldId": "panama_HR_15",
+            "goldLabel": "Actions for Target 15",
+            "goldText": "Delimit and prioritize critical territories of illegal deforestation, u…",
+            "bestScore": 0.63,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_16",
+            "goldLabel": "Actions for Target 16",
+            "goldText": "Build and adopt a national operational definition of \"organic soils\" fo…",
+            "bestScore": 0.585,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_17",
+            "goldLabel": "Actions for Target 17",
+            "goldText": "Define technical and climate criteria for the selection of the 21 prior…",
+            "bestScore": 0.429,
+            "bestExtractedText": "Promote the adoption of emerging technologies (remote sensing, artifici…"
+          },
+          {
+            "goldId": "panama_HR_18",
+            "goldLabel": "Actions for Target 18",
+            "goldText": "Build a national baseline of urban green and blue spaces, establishing …",
+            "bestScore": 0.491,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_19",
+            "goldLabel": "Actions for Target 19",
+            "goldText": "Define the national framework of Multi-hazard Early Warning Systems, es…",
+            "bestScore": 0.386,
+            "bestExtractedText": "Promote the adoption of emerging technologies (remote sensing, artifici…"
+          },
+          {
+            "goldId": "panama_HR_20",
+            "goldLabel": "Actions for Target 20",
+            "goldText": "Finalize the Adaptation Plan for the Energy Sector and review the curre…",
+            "bestScore": 0.386,
+            "bestExtractedText": "Promote the adoption of emerging technologies (remote sensing, artifici…"
+          },
+          {
+            "goldId": "panama_HR_21",
+            "goldLabel": "Actions for Target 21",
+            "goldText": "Formalize the operational mandate of OSIGA (Integrated Agroclimatic Man…",
+            "bestScore": 0.495,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_22",
+            "goldLabel": "Actions for Target 22",
+            "goldText": "Define a standardized methodology for Local and Regional Adaptation Pla…",
+            "bestScore": 0.45,
+            "bestExtractedText": "The PNTC will operate as the axis for integrating follow-up, monitoring…"
+          },
+          {
+            "goldId": "panama_HR_23",
+            "goldLabel": "Actions for Target 23",
+            "goldText": "Publication of the Marine-Coastal Adaptation Plan. Articulate marine-co…",
+            "bestScore": 0.334,
+            "bestExtractedText": "Deepen the financial analysis of the prioritized targets; operationaliz…"
+          },
+          {
+            "goldId": "panama_HR_24",
+            "goldLabel": "Actions for Target 24",
+            "goldText": "Finalize the National Adaptation Plan for the Health Sector and precise…",
+            "bestScore": 0.525,
+            "bestExtractedText": "The PNTC will operate as the axis for integrating follow-up, monitoring…"
+          },
+          {
+            "goldId": "panama_HR_25",
+            "goldLabel": "Actions for Target 25",
+            "goldText": "Formalize institutional agreements on data flow per indicator (with lea…",
+            "bestScore": 0.415,
+            "bestExtractedText": "Develop a unified national MRV system, supported by the PNTC, that cent…"
+          },
+          {
+            "goldId": "panama_HR_26",
+            "goldLabel": "Actions for Target 26",
+            "goldText": "Formally constitute the National Integrated Marine-Coastal and Wetlands…",
+            "bestScore": 0.495,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_27",
+            "goldLabel": "Actions for Target 27",
+            "goldText": "Regulate and operationalize the Climate Risk Observatory at the nationa…",
+            "bestScore": 0.585,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_29",
+            "goldLabel": "Actions for Target 29",
+            "goldText": "Harmonize the national Roadmap for the implementation of the Escazú Agr…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Reorient management toward measurable results; strengthen the national …"
+          },
+          {
+            "goldId": "panama_HR_30",
+            "goldLabel": "Actions for Target 30",
+            "goldText": "Finalize the process of technical, inter-institutional, and participato…",
+            "bestScore": 0.525,
+            "bestExtractedText": "The PNTC will operate as the axis for integrating follow-up, monitoring…"
+          }
+        ],
+        "unmatchedExtracted": [
+          {
+            "extractedIndex": 0,
+            "extractedLabel": "Unified Nature Pledge target",
+            "extractedText": "Reduce its greenhouse gas emissions by 11% by 2035 relative to the refe…",
+            "bestScore": 0.386,
+            "bestGoldId": "panama_HR_3",
+            "bestAnywhereScore": 0.485,
+            "bestAnywhereGoldId": "panama_ENR_27"
+          },
+          {
+            "extractedIndex": 1,
+            "extractedLabel": "Human resources and technical",
+            "extractedText": "Implement permanent training and certification programs; promote techni…",
+            "bestScore": 0.45,
+            "bestGoldId": "panama_HR_4",
+            "bestAnywhereScore": 0.5,
+            "bestAnywhereGoldId": "panama_PEG_3"
+          },
+          {
+            "extractedIndex": 2,
+            "extractedLabel": "Normative framework and planning",
+            "extractedText": "Harmonize and update normative frameworks under a common vision, integr…",
+            "bestScore": 0.495,
+            "bestGoldId": "panama_HR_28",
+            "bestAnywhereScore": 0.495,
+            "bestAnywhereGoldId": "panama_HR_28"
+          },
+          {
+            "extractedIndex": 4,
+            "extractedLabel": "Information and MRV",
+            "extractedText": "Develop a unified national MRV system, supported by the PNTC, that cent…",
+            "bestScore": 0.485,
+            "bestGoldId": "panama_HR_16",
+            "bestAnywhereScore": 0.485,
+            "bestAnywhereGoldId": "panama_HR_16"
+          },
+          {
+            "extractedIndex": 5,
+            "extractedLabel": "Technology and infrastructure",
+            "extractedText": "Promote the adoption of emerging technologies (remote sensing, artifici…",
+            "bestScore": 0.514,
+            "bestGoldId": "panama_HR_27",
+            "bestAnywhereScore": 0.514,
+            "bestAnywhereGoldId": "panama_HR_27"
+          },
+          {
+            "extractedIndex": 7,
+            "extractedLabel": "Social participation and alliances",
+            "extractedText": "Strengthen participatory governance; establish conservation agreements …",
+            "bestScore": 0.532,
+            "bestGoldId": "panama_HR_28",
+            "bestAnywhereScore": 0.54,
+            "bestAnywhereGoldId": "panama_ENR_77"
+          },
+          {
+            "extractedIndex": 8,
+            "extractedLabel": "Nature Pledge reporting integration",
+            "extractedText": "Integrate the Nature Pledge into Panama’s regular national and internat…",
+            "bestScore": 0.576,
+            "bestGoldId": "panama_HR_28",
+            "bestAnywhereScore": 0.576,
+            "bestAnywhereGoldId": "panama_HR_28"
+          },
+          {
+            "extractedIndex": 9,
+            "extractedLabel": "National and international reporting",
+            "extractedText": "Consolidate nationally the information generated through the Roadmap’s …",
+            "bestScore": 0.428,
+            "bestGoldId": "panama_HR_3",
+            "bestAnywhereScore": 0.428,
+            "bestAnywhereGoldId": "panama_HR_3"
+          },
+          {
+            "extractedIndex": 10,
+            "extractedLabel": "PNTC as integration axis",
+            "extractedText": "The PNTC will operate as the axis for integrating follow-up, monitoring…",
+            "bestScore": 0.638,
+            "bestGoldId": "panama_HR_28",
+            "bestAnywhereScore": 0.638,
+            "bestAnywhereGoldId": "panama_HR_28"
+          }
+        ]
+      }
+    },
+    {
+      "docCode": "NP",
+      "tier": 3,
+      "sourceDocument": "NP",
+      "language": "es",
+      "notes": "Real-world partial-text-layer fixture (20/39 pages with <30 extractable chars). Excluded from recall; exercises the scanned-page detection. Gold recovery option: download the UNFCCC-published version referenced by the corpus sourceUrl and re-check reachability.",
+      "parseStats": {
+        "pageCount": 39,
+        "pagesWithText": 39,
+        "chars": 44633,
+        "parseSeconds": 8.3
+      }
+    }
+  ],
+  "aggregate": {
+    "tier1Docs": 3,
+    "meanRecallReachable": 0.31,
+    "totalGold": 52,
+    "totalReachable": 43,
+    "totalExtracted": 67,
+    "totalMatched": 18
+  }
+}
