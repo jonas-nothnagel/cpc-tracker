@@ -1,0 +1,220 @@
+{
+  "storylines": [
+    {
+      "name": "Conectar la restauración con las herramientas de implementación climática",
+      "type": "reinforcement",
+      "description": "Se observa un patrón sólido en torno a la restauración de ecosistemas, la rehabilitación de bosques y cuencas hidrográficas, y la recuperación costera, que se llevan adelante mediante sistemas de implementación climática como la gestión integrada de cuencas fluviales, el monitoreo y las herramientas de información climática. Esto tiende a alinear los objetivos de tierras y biodiversidad con la mitigación de inundaciones, la resiliencia y objetivos más amplios relacionados con las emisiones.",
+      "contributing_doc_pairs": [
+        "LDN<->NDC",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1348,
+      "spans_documents": [
+        "LDN",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Utilizar la planificación espacial para alinear los resultados relativos a la tierra",
+      "type": "reinforcement",
+      "description": "La planificación espacial y del uso de la tierra aparece de forma recurrente como un mecanismo compartido para prevenir la conversión de humedales, aumentar la cobertura forestal y orientar las medidas de restauración y conservación. La evidencia indica que las herramientas de planificación y zonificación ayudan a conectar las acciones de neutralidad de la degradación de las tierras con la implementación en materia de biodiversidad y la gestión del paisaje relacionada con el clima.",
+      "contributing_doc_pairs": [
+        "LDN<->NBSAP",
+        "LDN<->NDC",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1402,
+      "spans_documents": [
+        "LDN",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Reforzar conjuntamente los humedales, los suelos y los bosques",
+      "type": "reinforcement",
+      "description": "La protección de los humedales, el control de la erosión del suelo, la mejora del carbono orgánico del suelo y la restauración forestal se alinean repetidamente en todos los pares de documentos. Estas medidas tienden a reforzar los resultados en materia de biodiversidad, al tiempo que apoyan la salud de las cuencas hidrográficas, la gestión de las cuencas fluviales y la resiliencia climática.",
+      "contributing_doc_pairs": [
+        "LDN<->NBSAP",
+        "LDN<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 258,
+      "spans_documents": [
+        "LDN",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Vincular los instrumentos de conservación con los sistemas de implementación",
+      "type": "reinforcement",
+      "description": "La conservación basada en áreas, las OECM, el control de especies invasoras y los instrumentos de restauración se alinean con sistemas habilitadores como las finanzas, los datos, la participación, las herramientas relacionadas con el género, los marcos de riesgo y el monitoreo. Esto se repite como una vía práctica para traducir los objetivos de biodiversidad y de la tierra en procesos de implementación climática y de la tierra.",
+      "contributing_doc_pairs": [
+        "LDN<->NBSAP",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1198,
+      "spans_documents": [
+        "LDN",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Examinar la competencia por la tierra entre los usos de producción",
+      "type": "friction",
+      "description": "Se señalan varias parejas para revisión cuando los objetivos de cobertura forestal, la protección de los humedales o la conservación basada en áreas pueden competir con el crecimiento de la producción agrícola, la demanda de tierras relacionada con los productos lácteos o la expansión del riego en la misma base territorial. El patrón tiende a centrarse en paisajes compartidos y en la asignación de tierras y agua, más que en una posible desalineación consolidada.",
+      "contributing_doc_pairs": [
+        "LDN<->NDC",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "medium",
+      "unknown_doc_pairs": [],
+      "pair_count": 9,
+      "spans_documents": [
+        "LDN",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Revisar la ubicación de infraestructuras en paisajes sensibles",
+      "type": "friction",
+      "description": "Se señala para revisión una cuestión recurrente de menor entidad cuando la ubicación de infraestructuras industriales, de riego o de gas natural puede estar insuficientemente conectada con la planificación espacial sensible a la biodiversidad y la evaluación de riesgos empresariales. Esto apunta a una posible presión sobre los humedales, los paisajes agrícolas adyacentes y las áreas de restauración si la evaluación de proyectos y la gestión hidrológica no están bien alineadas.",
+      "contributing_doc_pairs": [
+        "LDN<->NDC",
+        "NBSAP<->NDC"
+      ],
+      "confidence": "medium",
+      "unknown_doc_pairs": [],
+      "pair_count": 9,
+      "spans_documents": [
+        "LDN",
+        "NBSAP",
+        "NDC"
+      ]
+    }
+  ],
+  "summary_paragraph": "En los tres pares de documentos, el refuerzo predomina claramente y se repite con mayor fuerza en torno a la restauración, la protección de humedales y bosques, la gestión del suelo y el uso de sistemas compartidos de planificación y seguimiento. La planificación espacial, la gestión de cuencas fluviales, la restauración y las herramientas facilitadoras como los datos, la financiación y los marcos de riesgo tienden a alinear de manera concreta los objetivos relativos a la tierra, la biodiversidad y el clima. Se señala para revisión un conjunto más reducido de cuestiones en las que puede pedirse a los mismos paisajes que sustenten simultáneamente la conservación, el crecimiento agrícola, el riego, la industria o la infraestructura energética. En general, la evidencia apunta a una amplia coherencia, con un número limitado de cuestiones relativas a la asignación de tierras y la ubicación de proyectos que se repiten en los distintos pares.",
+  "doc_pair_count": 3,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Conectar la restauración con las herramientas de implementación climática",
+          "type": "reinforcement",
+          "description": "Se observa un patrón sólido en torno a la restauración de ecosistemas, la rehabilitación de bosques y cuencas hidrográficas, y la recuperación costera, que se llevan adelante mediante sistemas de implementación climática como la gestión integrada de cuencas fluviales, el monitoreo y las herramientas de información climática. Esto tiende a alinear los objetivos de tierras y biodiversidad con la mitigación de inundaciones, la resiliencia y objetivos más amplios relacionados con las emisiones.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1348,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Utilizar la planificación espacial para alinear los resultados relativos a la tierra",
+          "type": "reinforcement",
+          "description": "La planificación espacial y del uso de la tierra aparece de forma recurrente como un mecanismo compartido para prevenir la conversión de humedales, aumentar la cobertura forestal y orientar las medidas de restauración y conservación. La evidencia indica que las herramientas de planificación y zonificación ayudan a conectar las acciones de neutralidad de la degradación de las tierras con la implementación en materia de biodiversidad y la gestión del paisaje relacionada con el clima.",
+          "contributing_doc_pairs": [
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1402,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Reforzar conjuntamente los humedales, los suelos y los bosques",
+          "type": "reinforcement",
+          "description": "La protección de los humedales, el control de la erosión del suelo, la mejora del carbono orgánico del suelo y la restauración forestal se alinean repetidamente en todos los pares de documentos. Estas medidas tienden a reforzar los resultados en materia de biodiversidad, al tiempo que apoyan la salud de las cuencas hidrográficas, la gestión de las cuencas fluviales y la resiliencia climática.",
+          "contributing_doc_pairs": [
+            "LDN<->NBSAP",
+            "LDN<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 258,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Vincular los instrumentos de conservación con los sistemas de implementación",
+          "type": "reinforcement",
+          "description": "La conservación basada en áreas, las OECM, el control de especies invasoras y los instrumentos de restauración se alinean con sistemas habilitadores como las finanzas, los datos, la participación, las herramientas relacionadas con el género, los marcos de riesgo y el monitoreo. Esto se repite como una vía práctica para traducir los objetivos de biodiversidad y de la tierra en procesos de implementación climática y de la tierra.",
+          "contributing_doc_pairs": [
+            "LDN<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1198,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Examinar la competencia por la tierra entre los usos de producción",
+          "type": "friction",
+          "description": "Se señalan varias parejas para revisión cuando los objetivos de cobertura forestal, la protección de los humedales o la conservación basada en áreas pueden competir con el crecimiento de la producción agrícola, la demanda de tierras relacionada con los productos lácteos o la expansión del riego en la misma base territorial. El patrón tiende a centrarse en paisajes compartidos y en la asignación de tierras y agua, más que en una posible desalineación consolidada.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 9,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Revisar la ubicación de infraestructuras en paisajes sensibles",
+          "type": "friction",
+          "description": "Se señala para revisión una cuestión recurrente de menor entidad cuando la ubicación de infraestructuras industriales, de riego o de gas natural puede estar insuficientemente conectada con la planificación espacial sensible a la biodiversidad y la evaluación de riesgos empresariales. Esto apunta a una posible presión sobre los humedales, los paisajes agrícolas adyacentes y las áreas de restauración si la evaluación de proyectos y la gestión hidrológica no están bien alineadas.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 9,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ]
+        }
+      ],
+      "summary_paragraph": "En los tres pares de documentos, el refuerzo predomina claramente y se repite con mayor fuerza en torno a la restauración, la protección de humedales y bosques, la gestión del suelo y el uso de sistemas compartidos de planificación y seguimiento. La planificación espacial, la gestión de cuencas fluviales, la restauración y las herramientas facilitadoras como los datos, la financiación y los marcos de riesgo tienden a alinear de manera concreta los objetivos relativos a la tierra, la biodiversidad y el clima. Se señala para revisión un conjunto más reducido de cuestiones en las que puede pedirse a los mismos paisajes que sustenten simultáneamente la conservación, el crecimiento agrícola, el riego, la industria o la infraestructura energética. En general, la evidencia apunta a una amplia coherencia, con un número limitado de cuestiones relativas a la asignación de tierras y la ubicación de proyectos que se repiten en los distintos pares.",
+      "doc_pair_count": 3
+    }
+  }
+}

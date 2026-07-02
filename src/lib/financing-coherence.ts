@@ -65,6 +65,9 @@ export interface BudgetCoverageLink {
   targetText: string;
   /** Funded budget line strongly aligned with it. */
   programName: string;
+  /** Pseudo-target id of the funded budget line ("BER_71401"), so the UI can
+   *  re-find the pair and open the shared drawer with the full rationale. */
+  programBerId: string;
   /** The AI's reasoning for the link (the evidence behind the number). */
   rationale: string;
 }
@@ -146,6 +149,7 @@ export function computeBudgetCoverage(
       targetLabel: target.sourceLabel ?? "",
       targetText: target.text,
       programName: nameByBerId.get(berId) ?? berId,
+      programBerId: berId,
       rationale: pair.description ?? "",
     });
   }

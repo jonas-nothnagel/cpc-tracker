@@ -1,0 +1,1465 @@
+[
+  {
+    "targetId": "NDC_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_2",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%; 2012; 21%; 1%",
+    "timeBoundDetails": "by 2035; In 2012"
+  },
+  {
+    "targetId": "NDC_3",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "25%; 2012; 1%",
+    "timeBoundDetails": "by 2035; In 2012"
+  },
+  {
+    "targetId": "NDC_4",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2025",
+    "timeBoundDetails": "by 2025"
+  },
+  {
+    "targetId": "NDC_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_6",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%; 2020; 70%; 2035",
+    "timeBoundDetails": "by 2035; In 2020"
+  },
+  {
+    "targetId": "NDC_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_8",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_10",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%; 2020",
+    "timeBoundDetails": "by 2035; In 2020"
+  },
+  {
+    "targetId": "NDC_11",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%; 2035; 2020",
+    "timeBoundDetails": "by 2035; In 2020"
+  },
+  {
+    "targetId": "NDC_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_13",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_14",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10 public administrative buildings; 10 public buildings",
+    "timeBoundDetails": "In 2020"
+  },
+  {
+    "targetId": "NDC_15",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "30%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_16",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "78%; 100%; 78%",
+    "timeBoundDetails": "by 2035; by 2035"
+  },
+  {
+    "targetId": "NDC_17",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 40",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_18",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_19",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%; less than 10%",
+    "timeBoundDetails": "by 2035; In 2023"
+  },
+  {
+    "targetId": "NDC_20",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "less than 30%",
+    "timeBoundDetails": "by 2035; In 2023"
+  },
+  {
+    "targetId": "NDC_21",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "20%; ISO 50001",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_22",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_23",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2023",
+    "timeBoundDetails": "As of 2023"
+  },
+  {
+    "targetId": "NDC_24",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_25",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_26",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_27",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 45%",
+    "timeBoundDetails": "by 2030"
+  },
+  {
+    "targetId": "NDC_28",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_29",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_30",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "46.3%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_31",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1074 Megawatts",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_32",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1299 Megawatts",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_33",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "1031 Megawatt",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_34",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "150 Megawatts",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_35",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "122 Megawatts; 122 Megawatts",
+    "timeBoundDetails": "by 2035; by 2035"
+  },
+  {
+    "targetId": "NDC_36",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "199 Megawatts",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_37",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1,818 Megawatts",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_38",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2.5 MWp",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_39",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_40",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_41",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1 operational line; 1 additional operational line",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NDC_42",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1 urban railway line",
+    "timeBoundDetails": "by 2030"
+  },
+  {
+    "targetId": "NDC_43",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_44",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_45",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_46",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_47",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "\u2264 50 ppm",
+    "timeBoundDetails": "by 2030"
+  },
+  {
+    "targetId": "NDC_48",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50,000 transport vehicles",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_49",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_50",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_51",
+    "isQuantitative": false,
+    "isTimeBound": true,
+    "quantitativeDetails": "",
+    "timeBoundDetails": "by the end of 2026"
+  },
+  {
+    "targetId": "NDC_52",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_53",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "0.5%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_54",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "100 charging stations",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_55",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2000 stations",
+    "timeBoundDetails": "(2035)"
+  },
+  {
+    "targetId": "NDC_56",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_57",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5080 EVs",
+    "timeBoundDetails": "by 2030"
+  },
+  {
+    "targetId": "NDC_58",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_59",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5%",
+    "timeBoundDetails": "(2030)"
+  },
+  {
+    "targetId": "NDC_60",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "25%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_61",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "1 Framework decree; 1 Specific decree",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_62",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_63",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2035",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_64",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5%; 2035; 2020",
+    "timeBoundDetails": "by 2035; In 2020"
+  },
+  {
+    "targetId": "NDC_65",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_66",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "30%; 2035",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_67",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "35%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_68",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_69",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "90%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_70",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_71",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2035; 50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_72",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_73",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_74",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_75",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_76",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_77",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "60%; In 2022, approximately 5%",
+    "timeBoundDetails": "by 2035; In 2022"
+  },
+  {
+    "targetId": "NDC_78",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_79",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_80",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "70%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_81",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_82",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "65%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_83",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_84",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_85",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_86",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_87",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_88",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_89",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_90",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "15 new",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_91",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 10,000,000 hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_92",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_93",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_94",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "50,000 hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_95",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_96",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "150,000 hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_97",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2,000 hectares",
+    "timeBoundDetails": "202..."
+  },
+  {
+    "targetId": "NDC_98",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_99",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_100",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_101",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_102",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "10 operational landfills; 500,000 t/year; +10 points (40% - 50%)",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_103",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "825,000 tons/year; 600,000 tons/year; 150,000 tons/year",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_104",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "3 additional CVETs; 400,000 t/year; +8 points (66.5% - 74.5%)",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_105",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_106",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_107",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_108",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_109",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "80%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_110",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_111",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5,000 operational biodigesters; 5%; 2023: <500 biodigesters",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_112",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2023",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_113",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_114",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%; 100 kilometers; 10 pumping stations; 2023: 40%; 2400 kilometers",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_115",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1 STEP Abidjan; 20%; 2023; 100 m\u00b3/day",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_116",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "36 operational STBVs; 70%; 2023: 6 STBVs + 14 under construction",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_117",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50,000 double-pit latrines; <1%; 2023: 800 latrines",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_118",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "150,000 family latrines; 20,000 prefabricated biodigesters; 2%; 2023: 800 double pit latrines",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_119",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "7,000 school latrines; 7,000 health center latrines; 20%",
+    "timeBoundDetails": "2023"
+  },
+  {
+    "targetId": "NDC_120",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_121",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_122",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "40%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_123",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "10%",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "NDC_124",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "75%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_125",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "By 2035, 50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_126",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "By 2035, 50%; In 2020",
+    "timeBoundDetails": "By 2035; In 2020"
+  },
+  {
+    "targetId": "NDC_127",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_128",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_129",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_130",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_131",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "80%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_132",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_133",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_134",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50,000 hectares",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_135",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_136",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_137",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": "by 2030; By 2025"
+  },
+  {
+    "targetId": "NDC_138",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_139",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_140",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_141",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_142",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_143",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_144",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_145",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "90%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_146",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_147",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "40%",
+    "timeBoundDetails": "In 2023"
+  },
+  {
+    "targetId": "NDC_148",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "50%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_149",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_150",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_151",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 25%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_152",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_153",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 30%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_154",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_155",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_156",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 50%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_157",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 80%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_158",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_159",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 90%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_160",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_161",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 30%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_162",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_163",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_164",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_165",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 70%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_166",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_167",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_168",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 60%",
+    "timeBoundDetails": "By 2035"
+  },
+  {
+    "targetId": "NDC_169",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "70%, 2023, less than 10%",
+    "timeBoundDetails": "By 2035, In 2023"
+  },
+  {
+    "targetId": "NDC_170",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 60%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_171",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "at least 80%",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NDC_172",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_173",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 75%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_174",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "90%, 2020, less than 10%",
+    "timeBoundDetails": "by 2030, In 2020"
+  },
+  {
+    "targetId": "NDC_175",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "100%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_176",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 75%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_177",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_178",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 600,000",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_179",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 200,000",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_180",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 500",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_181",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 100,000 young girls",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_1",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_2",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_3",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_5",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_6",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_7",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_8",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "10% of the national territory",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_9",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 10%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_10",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_11",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_12",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_16",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_17",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 5%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_18",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_19",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "at least 5%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_20",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NBT_21",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "LDN_1",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "100% of degraded lands; 5 million hectares",
+    "timeBoundDetails": "By 2030"
+  },
+  {
+    "targetId": "LDN_2",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "3 million hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "LDN_3",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "1%",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "LDN_4",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "2 million hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "LDN_5",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "800,000 hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "LDN_6",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "7200 hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "LDN_7",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "50,000 tons",
+    "timeBoundDetails": ""
+  }
+]

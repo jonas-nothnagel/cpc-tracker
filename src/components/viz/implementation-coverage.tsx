@@ -38,6 +38,7 @@ import type {
   BtrData,
   CountryConfig,
   GlobeCategory,
+  GgaCategory,
   IpccSector,
   MitigationMeasure,
   SupportProject,
@@ -350,7 +351,7 @@ function buildAdaptationRows(
 // Biodiversity row builder (grouped by GLOBE category)
 // ---------------------------------------------------------------------------
 
-type CoverageGroupMode = "default" | "biodiversity" | "country_sectors";
+type CoverageGroupMode = "default" | "biodiversity" | "country_sectors" | "gga";
 
 const BIODIVERSITY_PALETTE = [
   "#0d9488", "#7c3aed", "#0284c7", "#16a34a",
@@ -358,7 +359,7 @@ const BIODIVERSITY_PALETTE = [
 ];
 
 interface BiodiversityRow {
-  category: GlobeCategory;
+  category: GlobeCategory | GgaCategory;
   /** All BTR measures (mitigation + adaptation) classified under this category */
   measures: MitigationMeasure[];
   /** Policy targets (cross-document, excluding BTR) classified under this category */
@@ -369,9 +370,10 @@ interface BiodiversityRow {
 
 function buildBiodiversityRows(
   btrData: BtrData,
-  globeCategories: GlobeCategory[],
+  categories: (GlobeCategory | GgaCategory)[],
   targets: Target[],
   classifications: ThematicClassification[],
+  taxonomyType: string = "globe",
 ): { rows: BiodiversityRow[]; unclassified: MitigationMeasure[] } {
   const allMeasures = btrData.mitigationMeasures.filter((m) => m.status?.trim());
 
@@ -381,7 +383,7 @@ function buildBiodiversityRows(
   const btrTargets = targets.filter((t) => t.sourceDocument === "BTR");
   const globeClassForBtr = classifications.filter(
     (c) =>
-      c.taxonomyType === "globe" &&
+      c.taxonomyType === taxonomyType &&
       c.isPrimary === true &&
       btrTargets.some((t) => t.id === c.targetId),
   );
@@ -409,7 +411,7 @@ function buildBiodiversityRows(
   }
   const policyTargetsByCategory = new Map<string, Target[]>();
   for (const c of classifications) {
-    if (c.taxonomyType !== "globe" || c.isPrimary !== true) continue;
+    if (c.taxonomyType !== taxonomyType || c.isPrimary !== true) continue;
     const t = policyTargetById.get(c.targetId);
     if (!t) continue;
     if (!policyTargetsByCategory.has(c.categoryId)) policyTargetsByCategory.set(c.categoryId, []);
@@ -433,7 +435,7 @@ function buildBiodiversityRows(
   }
 
   const rows: BiodiversityRow[] = [];
-  for (const cat of globeCategories) {
+  for (const cat of categories) {
     const measures = measuresByCategory.get(cat.id) ?? [];
     const policyTargets = policyTargetsByCategory.get(cat.id) ?? [];
     rows.push({
@@ -1261,12 +1263,22 @@ function BiodiversityByGlobe({
   expandedCategory,
   onToggle,
   countryConfig,
+  title,
+  sectionDesc,
+  infoBox,
 }: {
   rows: BiodiversityRow[];
   unclassified: MitigationMeasure[];
   expandedCategory: string | null;
   onToggle: (id: string) => void;
   countryConfig?: CountryConfig | null;
+  /** Section heading. Defaults to the GLOBE/biodiversity copy; pass to reuse
+   *  this category-coverage table for another single-level taxonomy (e.g. GGA). */
+  title?: string;
+  sectionDesc?: string;
+  /** Heading info popover. Defaults to the biodiversity explainer; pass `null`
+   *  to omit it (the biodiversity-specific note does not fit other taxonomies). */
+  infoBox?: React.ReactNode;
 }) {
   const t = useTranslations("viz.implementationCoverage");
   if (rows.length === 0 && unclassified.length === 0) return null;
@@ -1275,15 +1287,19 @@ function BiodiversityByGlobe({
     <div className="border border-gray-100 rounded-lg overflow-hidden bg-white mb-6">
       <div className="px-5 py-3 border-b border-gray-100 bg-[var(--undp-light)]/30">
         <h3 className="text-sm font-semibold text-[var(--undp-black)]">
-          {t("biodiversity.title")}
-          <InfoBox>
-            {t.rich("biodiversity.infoBox", {
-              strong: (chunks) => <strong>{chunks}</strong>,
-            })}
-          </InfoBox>
+          {title ?? t("biodiversity.title")}
+          {infoBox === undefined ? (
+            <InfoBox>
+              {t.rich("biodiversity.infoBox", {
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
+            </InfoBox>
+          ) : (
+            infoBox
+          )}
         </h3>
         <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 italic">
-          {t("biodiversity.sectionDesc")}
+          {sectionDesc ?? t("biodiversity.sectionDesc")}
         </p>
       </div>
       {rows.map((row, idx) => {
@@ -1621,6 +1637,9 @@ interface ImplementationCoverageProps {
   targets: Target[];
   sectors: IpccSector[];
   globeCategories?: GlobeCategory[];
+  /** GGA climate-resilience themes (decision 2/CMA.5); enables a "By climate
+   *  resilience" grouping mode, single-level like the GLOBE biodiversity view. */
+  ggaCategories?: GgaCategory[];
   /**
    * Existing classifications from the pipeline. Filtered by `taxonomyType` —
    * `sector` for the mitigation table, `adaptation_goal` for the adaptation
@@ -1637,6 +1656,7 @@ export function ImplementationCoverage({
   targets,
   sectors,
   globeCategories,
+  ggaCategories,
   classifications,
   highlightSector,
   countryConfig,
@@ -1671,6 +1691,16 @@ export function ImplementationCoverage({
         ? buildBiodiversityRows(btrData, globeCategories, targets, classifications)
         : { rows: [], unclassified: [] },
     [btrData, globeCategories, targets, classifications],
+  );
+
+  // GGA climate-resilience grouping. Single-level taxonomy (no subcategories),
+  // so the GLOBE category-coverage builder is reused with taxonomyType "gga".
+  const ggaData = useMemo(
+    () =>
+      ggaCategories && ggaCategories.length > 0
+        ? buildBiodiversityRows(btrData, ggaCategories, targets, classifications, "gga")
+        : { rows: [], unclassified: [] },
+    [btrData, ggaCategories, targets, classifications],
   );
 
   const countrySectorRows = useMemo(
@@ -1811,10 +1841,11 @@ export function ImplementationCoverage({
 
   const hasBiodiversityData =
     globeCategories != null && globeCategories.length > 0;
+  const hasGgaData = ggaCategories != null && ggaCategories.length > 0;
 
   return (
     <div>
-      {(hasBiodiversityData || hasCountrySectors) && (
+      {(hasBiodiversityData || hasCountrySectors || hasGgaData) && (
         <div className="flex items-center gap-2 mb-4">
           <select
             value={groupMode}
@@ -1837,6 +1868,9 @@ export function ImplementationCoverage({
             )}
             {hasBiodiversityData && (
               <option value="biodiversity">{t("groupMode.byBiodiversity")}</option>
+            )}
+            {hasGgaData && (
+              <option value="gga">{t("groupMode.byGga")}</option>
             )}
           </select>
         </div>
@@ -1866,6 +1900,17 @@ export function ImplementationCoverage({
           expandedCategory={expandedBioCategory}
           onToggle={toggleBioCategory}
           countryConfig={countryConfig}
+        />
+      ) : groupMode === "gga" ? (
+        <BiodiversityByGlobe
+          rows={ggaData.rows}
+          unclassified={ggaData.unclassified}
+          expandedCategory={expandedBioCategory}
+          onToggle={toggleBioCategory}
+          countryConfig={countryConfig}
+          title={t("gga.title")}
+          sectionDesc={t("gga.sectionDesc")}
+          infoBox={null}
         />
       ) : (
         <>

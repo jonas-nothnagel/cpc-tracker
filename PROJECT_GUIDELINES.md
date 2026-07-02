@@ -1,4 +1,4 @@
-# CPC Tracker - Project Guidelines
+# CPC Analyzer - Project Guidelines
 
 > Nature-Climate Policy Coherence Progress Analysis Tool for UNDP
 
@@ -156,3 +156,9 @@ These items must be addressed before production deployment:
 - OECD data is the definitive source for agricultural subsidies; IMF for fossil fuel subsidies (already started in `python/src/data_sources/imf_subsidies.py`).
 - No existing UNDP approach links BIOFIN budget tagging with harmful subsidy identification — this is a novel contribution.
 - Needs a structured negative indicator taxonomy that maps budget line items to biodiversity/climate harm categories.
+
+---
+
+## 6. Documentation
+
+- **Keep the pipeline docs in sync.** When pipeline behaviour in `python/src/` changes (stages, the alignment scale or schema, taxonomies, classifier mode, models, or output files), update [`METHODOLOGY.md`](METHODOLOGY.md) and [`docs/PIPELINE_WALKTHROUGH.md`](docs/PIPELINE_WALKTHROUGH.md) **in the same PR**, and bump their "Last verified against the pipeline at commit `<sha>`" stamp. These docs are the handover reference for vendors; stale docs are worse than none. ([`docs/EXTRACTION_PIPELINE.md`](docs/EXTRACTION_PIPELINE.md) likewise tracks `extract.py`.)

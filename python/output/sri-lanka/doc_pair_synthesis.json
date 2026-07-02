@@ -1,0 +1,59 @@
+[
+  {
+    "doc_a": "LDN",
+    "doc_b": "NBSAP",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NBSAP (Nature)",
+    "aligned_count": 54,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Linking land protection with biodiversity planning tools",
+      "reinforce": "The two documents consistently align around land-use measures that support biodiversity outcomes, especially preventing wetland conversion, increasing forest cover, and reducing soil erosion or soil degradation. This often points to practical synergies through spatial and urban planning, area-based conservation and OECMs, ecosystem restoration, invasive species control, business risk disclosure, and data-, participation-, finance-, and gender-related implementation tools in the NBSAP.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Joint use of planning, restoration, and conservation instruments could help connect LDN actions on wetlands, forests, and soils with NBSAP implementation and monitoring pathways.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "LDN",
+    "doc_b": "NDC",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NDC (Climate Change)",
+    "aligned_count": 204,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "resource_competition": 3,
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Link land restoration with climate resilience planning",
+      "reinforce": "The documents often align through land-based resilience measures, especially wetland protection, soil erosion control, soil organic carbon improvement, and forest or catchment restoration that support river-basin management, flood mitigation, early warning, and broader GHG reduction goals. Reinforcement also recurs where NDC instruments such as integrated river basin management, biodiversity policy updates, coastal ecosystem restoration, tree planting, and climate information systems could enable LDN outcomes on wetlands, soils, and forest cover.",
+      "clash": "Possible misalignment is flagged mainly where land protection objectives, especially increasing forest cover and minimizing wetland conversion, may compete with agricultural production growth, dairy-related land demand, or the siting of industrial and irrigation infrastructure on the same land base. These cases often point to spatial planning and hydrological management questions, rather than a settled contradiction, particularly in wetlands and adjacent agricultural landscapes.",
+      "coordination_hint": "Joint land-use zoning, basin-level planning, and project siting review could help check where agriculture, irrigation, industry, and restoration measures overlap with forests and wetlands.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NDC",
+    "label_a": "NBSAP (Nature)",
+    "label_b": "NDC (Climate Change)",
+    "aligned_count": 1144,
+    "flagged_count": 4,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Link ecosystem restoration with climate delivery systems",
+      "reinforce": "The two documents strongly align around restoration and landscape management, especially where ecosystem restoration, forest and catchment rehabilitation, coastal ecosystem recovery, and integrated river basin management use overlapping land-use planning and monitoring mechanisms. Alignment also recurs through enabling measures, such as pollution reduction, circular economy practices, risk frameworks, financing, data, and planning tools that can reinforce biodiversity resilience while supporting sectoral climate actions.",
+      "clash": "A small number of pairs are flagged for review where delivery could become harder if biodiversity-sensitive spatial planning and business risk screening are not well connected to new natural gas infrastructure siting and expansion. One additional possible misalignment concerns land and water allocation, where area-based conservation through OECMs could compete with efforts to raise agricultural production in the same landscapes, and another concerns sustainable consumption aims alongside dairy productivity gains.",
+      "coordination_hint": "Joint spatial planning, land-use zoning, and project screening across restoration, agriculture, and energy investments could help keep the many reinforcing links while reviewing the few areas of possible misalignment.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

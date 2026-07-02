@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildChatRequest } from "./coherence-chat";
+import { buildChatRequest, pickExampleQueries } from "./coherence-chat";
 import type {
   AlignmentResult,
   CorpusThemes,
@@ -77,6 +77,7 @@ const baseArgs = {
   classifications: [],
   sectors: [],
   globeCategories: [],
+  ggaCategories: [],
   availableDocs: ["FSS", "NAP"] as PolicyDocumentType[],
   hiddenDocs: new Set<string>(),
 };
@@ -172,5 +173,73 @@ describe("buildChatRequest synthesis context", () => {
     });
     const syn = synthesisOf(body);
     expect(syn?.sectors.map((s) => s.category)).toEqual(["ok"]);
+  });
+});
+
+describe("pickExampleQueries gating", () => {
+  const none = {
+    globeCategoriesAvailable: false,
+    sectorsAvailable: false,
+    hasAdaptation: false,
+    hasTensions: false,
+    hasBtr: false,
+    hasBudget: false,
+  };
+
+  it("returns empty pools when the dataset can answer nothing", () => {
+    expect(pickExampleQueries(none)).toEqual({ coherence: [], finance: [] });
+  });
+
+  it("leads the coherence pool with reported-vs-planned when BTR data is present", () => {
+    const pools = pickExampleQueries({ ...none, hasBtr: true, hasTensions: true });
+    expect(pools.coherence[0]).toBe("reportedVsPlanned");
+  });
+
+  it("omits the BTR question and keeps the tension-gated ones without BTR", () => {
+    const pools = pickExampleQueries({ ...none, hasTensions: true });
+    expect(pools.coherence).not.toContain("reportedVsPlanned");
+    expect(pools.coherence).toEqual([
+      "ministryCoordination",
+      "tightenBoundary",
+      "missingIndicator",
+    ]);
+  });
+
+  it("unlocks theme concentration from either a GLOBE or a sector taxonomy", () => {
+    expect(
+      pickExampleQueries({ ...none, globeCategoriesAvailable: true }).coherence,
+    ).toContain("themeConcentration");
+    expect(
+      pickExampleQueries({ ...none, sectorsAvailable: true }).coherence,
+    ).toContain("themeConcentration");
+  });
+
+  it("unlocks the adaptation question only with adaptation data", () => {
+    expect(pickExampleQueries({ ...none, hasAdaptation: true }).coherence).toEqual([
+      "adaptationAlignment",
+    ]);
+  });
+
+  it("keeps the finance pool empty without tagged budget data", () => {
+    expect(pickExampleQueries({ ...none, hasTensions: true }).finance).toEqual([]);
+  });
+
+  it("builds the finance pool from budget, tensions and GLOBE availability", () => {
+    const pools = pickExampleQueries({
+      ...none,
+      hasBudget: true,
+      hasTensions: true,
+      globeCategoriesAvailable: true,
+    });
+    expect(pools.finance).toEqual([
+      "spendVsMisalignment",
+      "underFunded",
+      "fundedCategories",
+    ]);
+  });
+
+  it("drops the spend-vs-misalignment and GLOBE finance keys when their extra gate fails", () => {
+    const pools = pickExampleQueries({ ...none, hasBudget: true });
+    expect(pools.finance).toEqual(["underFunded"]);
   });
 });

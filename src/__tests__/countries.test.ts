@@ -33,6 +33,37 @@ describe("getCountry", () => {
     expect(p?.has.nr7).toBe(false);
   });
 
+  it("returns the Sri Lanka entry as visible, coherence-only", () => {
+    const s = getCountry("sri-lanka");
+    expect(s).toBeDefined();
+    expect(s?.name).toBe("Sri Lanka");
+    expect(s?.iso3).toBe("lka");
+    expect(s?.visible).toBe(true);
+    expect(s?.has.coherence).toBe(true);
+    expect(s?.has.btr.mitigation).toBe(false);
+    expect(s?.has.btr.adaptation).toBe(false);
+    expect(s?.has.nr7).toBe(false);
+    expect(s?.has.ber).toBe(false);
+  });
+
+  it("returns the Côte d'Ivoire entry as visible, coherence-only", () => {
+    const c = getCountry("cote-divoire");
+    expect(c).toBeDefined();
+    expect(c?.name).toBe("Côte d'Ivoire");
+    expect(c?.iso3).toBe("civ");
+    expect(c?.visible).toBe(true);
+    expect(c?.has.coherence).toBe(true);
+    expect(c?.has.btr.mitigation).toBe(false);
+    expect(c?.has.btr.adaptation).toBe(false);
+    expect(c?.has.nr7).toBe(false);
+    expect(c?.has.ber).toBe(false);
+  });
+
+  it("resolves Côte d'Ivoire spelling aliases to the canonical entry", () => {
+    expect(getCountry("cote-d-ivoire")?.id).toBe("cote-divoire");
+    expect(getCountry("cotedivoire")?.id).toBe("cote-divoire");
+  });
+
   it("lowercases before lookup", () => {
     expect(getCountry("MONGOLIA")?.id).toBe("mongolia");
     expect(getCountry("Mongolia")?.id).toBe("mongolia");

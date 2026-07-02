@@ -1,0 +1,56 @@
+{
+  "country": "mongolia",
+  "locale": "mn",
+  "targetLanguage": "Mongolian",
+  "model": "gpt-5.4",
+  "temperature": 0.0,
+  "promptSystem": "You are a professional translator specialising in UN climate and biodiversity policy documents.\nTranslate the provided English text into Mongolian using the Mongolian Cyrillic script, in a faithful, professional, institutional register suitable for policy makers.\n\nHard rules:\n- Preserve ALL numbers, percentages, and units exactly as written. Do not add, drop, or alter any number, and keep a percent sign attached to its number.\n- Preserve these acronyms VERBATIM, never translated, expanded, or re-cased: NDC, NBSAP, NAP, BTR, BER, LDN, ILDN, FSS, NRVTS, IPCC, GLOBE, GGA, NbS, REDD+, UNFCCC, CBD, SDG, NR7, CO₂, LULUCF, OECM.\n- Render \"possible misalignment\" or \"potential misalignment\" as \"болзошгүй үл нийцэл\". Never use \"зөрчил\" or \"зөрчилдөөн\".\n- Do not use em dashes.\n- Keep structural elements intact: line breaks, lists, and colons stay where they were.\n- Return only the Mongolian translation. No commentary, no notes, no quotation marks wrapping the result.",
+  "promptUserTemplate": "Translate this text to {target}:\n\n{text}",
+  "acronymsPreserved": [
+    "NDC",
+    "NBSAP",
+    "NAP",
+    "BTR",
+    "BER",
+    "LDN",
+    "ILDN",
+    "FSS",
+    "NRVTS",
+    "IPCC",
+    "GLOBE",
+    "GGA",
+    "NbS",
+    "REDD+",
+    "UNFCCC",
+    "CBD",
+    "SDG",
+    "NR7",
+    "CO₂",
+    "LULUCF",
+    "OECM"
+  ],
+  "runDate": "2026-06-30T16:07:14.570057+00:00",
+  "cacheNamespace": "snapshot_translation_mn",
+  "files": {
+    "corpus_themes.json": {
+      "items": 6,
+      "fieldsTranslated": 13,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    },
+    "doc_pair_synthesis.json": {
+      "items": 21,
+      "fieldsTranslated": 84,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    },
+    "sector_synthesis.json": {
+      "items": 40,
+      "fieldsTranslated": 160,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    }
+  },
+  "totalFieldsTranslated": 257,
+  "totalNumericDriftFlags": 0
+}

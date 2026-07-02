@@ -1,0 +1,226 @@
+{
+  "storylines": [
+    {
+      "name": "Vincular la restauración con la implementación de la biodiversidad y el clima",
+      "type": "reinforcement",
+      "description": "Se repite un patrón sólido en torno a la restauración de tierras degradadas, la ampliación o mejora de la cobertura forestal y el uso de la gestión sostenible de la tierra para reforzar tanto los resultados en materia de biodiversidad como la resiliencia climática. La restauración forestal, la reducción de la conversión y las ganancias de productividad basadas en los ecosistemas tienden a alinearse en los documentos sobre degradación de la tierra, naturaleza y clima.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 739,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Utilizar herramientas de gobernanza para reforzar la implementación",
+      "type": "reinforcement",
+      "description": "Las medidas facilitadoras, como la integración de políticas, la capacidad de las partes interesadas, los sistemas de datos, la tenencia de la tierra, la gobernanza del agua, el monitoreo hidroclimático y la gobernanza forestal, se repiten como mecanismos que podrían apoyar la implementación en todas las agendas. Esto indica que la coherencia de la implementación se ve reforzada no solo por objetivos compartidos, sino también por sistemas institucionales y de información compartidos.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3451,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Integrar las acciones climáticas en los marcos de la naturaleza",
+      "type": "reinforcement",
+      "description": "Las medidas climáticas sobre la gestión forestal, la alerta temprana de incendios, la agroforestería, el tratamiento de aguas residuales, la acuicultura y el control de la deforestación en áreas protegidas tienden a alinearse con marcos más amplios de naturaleza sobre los servicios ecosistémicos, la restauración, la gestión de áreas protegidas y la gestión sostenible de la tierra y el agua. Esto se repite como una vía práctica para que la implementación de la acción climática se lleve a cabo dentro de sistemas sensibles a la biodiversidad.",
+      "contributing_doc_pairs": [
+        "NBT<->NDC",
+        "LDN<->NDC",
+        "LDN<->NBT"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3451,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Aprovechar la planificación espacial para gestionar la superposición",
+      "type": "reinforcement",
+      "description": "La planificación espacial integrada, la zonificación y la evaluación preliminar reaparecen en todas las síntesis como mecanismos comunes para mantener alineadas la restauración, la agricultura, la conservación y las inversiones climáticas. El énfasis reiterado sugiere que estas herramientas son fundamentales para gestionar paisajes compartidos donde convergen múltiples objetivos.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3451,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Señalar las presiones de expansión e intensificación agrícolas",
+      "type": "friction",
+      "description": "La posible desalineación se señala repetidamente para revisión cuando la recuperación de tierras agrícolas degradadas, la conversión de tierras desnudas, el riego, las obras hidroagrícolas, el arroz, la ganadería u otras medidas de productividad aumentan la presión sobre la tierra o el agua. Estos casos tienden a señalar fricciones en la implementación cuando las mismas zonas también pueden ser priorizadas para la restauración, la recuperación de especies amenazadas, las áreas protegidas o la reforestación.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 128,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Señalar las presiones derivadas de la biomasa y la ubicación de infraestructuras",
+      "type": "friction",
+      "description": "Un ámbito de revisión recurrente se refiere a la energía de biomasa, las cadenas de suministro de carbón vegetal y leña, las plantaciones madereras o dendroenergéticas, y la ubicación de carreteras e infraestructuras solares y eólicas. Estos casos señalados suelen apuntar a competencia por los recursos o fricción basada en la ubicación en torno al abastecimiento de materia prima, la ocupación de tierras y la superposición con prioridades de restauración, áreas protegidas o servicios ecosistémicos.",
+      "contributing_doc_pairs": [
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 112,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    }
+  ],
+  "summary_paragraph": "En los tres pares de documentos, se repite un sólido patrón de refuerzo en torno a la restauración de tierras, la gestión forestal y el uso sostenible de la tierra, que respaldan tanto la implementación en materia de biodiversidad como de clima. Esto se ve reforzado por sistemas habilitadores compartidos, como la gobernanza, los datos, la tenencia, la gestión del agua y la planificación espacial integrada, que tienden a alinear las vías de implementación entre las agendas. Al mismo tiempo, se señalan varias áreas para revisión, especialmente cuando la recuperación o intensificación agrícola, el suministro de biomasa y la ubicación de infraestructuras pueden aumentar la presión sobre la tierra, el agua o las áreas de importancia ecológica. En general, la evidencia apunta a una amplia coherencia en la dirección declarada, y la fricción tiende a surgir más en torno a las opciones de implementación, el abastecimiento y la ubicación que en torno a los objetivos generales.",
+  "doc_pair_count": 3,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Vincular la restauración con la implementación de la biodiversidad y el clima",
+          "type": "reinforcement",
+          "description": "Se repite un patrón sólido en torno a la restauración de tierras degradadas, la ampliación o mejora de la cobertura forestal y el uso de la gestión sostenible de la tierra para reforzar tanto los resultados en materia de biodiversidad como la resiliencia climática. La restauración forestal, la reducción de la conversión y las ganancias de productividad basadas en los ecosistemas tienden a alinearse en los documentos sobre degradación de la tierra, naturaleza y clima.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 739,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Utilizar herramientas de gobernanza para reforzar la implementación",
+          "type": "reinforcement",
+          "description": "Las medidas facilitadoras, como la integración de políticas, la capacidad de las partes interesadas, los sistemas de datos, la tenencia de la tierra, la gobernanza del agua, el monitoreo hidroclimático y la gobernanza forestal, se repiten como mecanismos que podrían apoyar la implementación en todas las agendas. Esto indica que la coherencia de la implementación se ve reforzada no solo por objetivos compartidos, sino también por sistemas institucionales y de información compartidos.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3451,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Integrar las acciones climáticas en los marcos de la naturaleza",
+          "type": "reinforcement",
+          "description": "Las medidas climáticas sobre la gestión forestal, la alerta temprana de incendios, la agroforestería, el tratamiento de aguas residuales, la acuicultura y el control de la deforestación en áreas protegidas tienden a alinearse con marcos más amplios de naturaleza sobre los servicios ecosistémicos, la restauración, la gestión de áreas protegidas y la gestión sostenible de la tierra y el agua. Esto se repite como una vía práctica para que la implementación de la acción climática se lleve a cabo dentro de sistemas sensibles a la biodiversidad.",
+          "contributing_doc_pairs": [
+            "NBT<->NDC",
+            "LDN<->NDC",
+            "LDN<->NBT"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3451,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Aprovechar la planificación espacial para gestionar la superposición",
+          "type": "reinforcement",
+          "description": "La planificación espacial integrada, la zonificación y la evaluación preliminar reaparecen en todas las síntesis como mecanismos comunes para mantener alineadas la restauración, la agricultura, la conservación y las inversiones climáticas. El énfasis reiterado sugiere que estas herramientas son fundamentales para gestionar paisajes compartidos donde convergen múltiples objetivos.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3451,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Señalar las presiones de expansión e intensificación agrícolas",
+          "type": "friction",
+          "description": "La posible desalineación se señala repetidamente para revisión cuando la recuperación de tierras agrícolas degradadas, la conversión de tierras desnudas, el riego, las obras hidroagrícolas, el arroz, la ganadería u otras medidas de productividad aumentan la presión sobre la tierra o el agua. Estos casos tienden a señalar fricciones en la implementación cuando las mismas zonas también pueden ser priorizadas para la restauración, la recuperación de especies amenazadas, las áreas protegidas o la reforestación.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 128,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Señalar las presiones derivadas de la biomasa y la ubicación de infraestructuras",
+          "type": "friction",
+          "description": "Un ámbito de revisión recurrente se refiere a la energía de biomasa, las cadenas de suministro de carbón vegetal y leña, las plantaciones madereras o dendroenergéticas, y la ubicación de carreteras e infraestructuras solares y eólicas. Estos casos señalados suelen apuntar a competencia por los recursos o fricción basada en la ubicación en torno al abastecimiento de materia prima, la ocupación de tierras y la superposición con prioridades de restauración, áreas protegidas o servicios ecosistémicos.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 112,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        }
+      ],
+      "summary_paragraph": "En los tres pares de documentos, se repite un sólido patrón de refuerzo en torno a la restauración de tierras, la gestión forestal y el uso sostenible de la tierra, que respaldan tanto la implementación en materia de biodiversidad como de clima. Esto se ve reforzado por sistemas habilitadores compartidos, como la gobernanza, los datos, la tenencia, la gestión del agua y la planificación espacial integrada, que tienden a alinear las vías de implementación entre las agendas. Al mismo tiempo, se señalan varias áreas para revisión, especialmente cuando la recuperación o intensificación agrícola, el suministro de biomasa y la ubicación de infraestructuras pueden aumentar la presión sobre la tierra, el agua o las áreas de importancia ecológica. En general, la evidencia apunta a una amplia coherencia en la dirección declarada, y la fricción tiende a surgir más en torno a las opciones de implementación, el abastecimiento y la ubicación que en torno a los objetivos generales.",
+      "doc_pair_count": 3
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * Core data types for the CPC Tracker.
+ * Core data types for the CPC Analyzer.
  *
  * These types model the entities described in the Mongolia Target
  * Alignment Assessment methodology, generalised for any country.
@@ -94,6 +94,11 @@ export interface Target {
   /** ISO-639-1 language code of `textOriginal` (e.g. "es", "mn"). Optional —
    *  when missing, the renderer detects from `textOriginal` script. */
   language?: string;
+  /** Provenance of `textOriginal`: "source" = genuine original-language wording
+   *  ingested from the source document; "machine" = machine back-translation of
+   *  the English `text` (no original was available). Drives the machine-
+   *  translation caveat on the language chip. Undefined behaves as "source". */
+  textOriginalSource?: "source" | "machine";
   /**
    * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
@@ -168,6 +173,19 @@ export interface GlobeCategory {
 }
 
 /**
+ * A Global Goal on Adaptation (GGA) thematic target — one of the seven
+ * climate-resilience themes of the UAE Framework for Global Climate Resilience
+ * (decision 2/CMA.5). Used as a selectable taxonomy lens.
+ */
+export interface GgaCategory {
+  id: string;
+  name: string;
+  description: string;
+  /** Primary source citation for the description. */
+  source?: string;
+}
+
+/**
  * A GLOBE subcategory (level 2) within a Primary Biodiversity Category.
  * These come directly from the BIOFIN GLOBE 2024 taxonomy and are used for
  * fine-grained BER classification.
@@ -208,8 +226,10 @@ export interface ThematicClassification {
    * - "globe_sub": GLOBE subcategories (BIOFIN, 48 fine-grained)
    * - "adaptation_goal": country-specific adaptation action plan goals
    *   (e.g. Mongolia APNDC's 8 goals from BTR1 Table III.9)
+   * - "gga": Global Goal on Adaptation thematic targets (UAE Framework for
+   *   Global Climate Resilience, decision 2/CMA.5; 7 climate-resilience themes)
    */
-  taxonomyType: "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal";
+  taxonomyType: "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal" | "gga";
   /** Whether the target pertains to this category (score >= relevance threshold) */
   isRelevant: boolean;
   /** True for the single highest-scoring category per (target, taxonomyType). Use this for single-label views. */
@@ -556,6 +576,24 @@ export interface DocumentTypeEntry {
   fullLabel: string;
   /** Hex color for charts and chips. Must follow UNDP Data Viz guidelines. */
   color: string;
+  // The fields below are optional, display-only reference metadata shown in the
+  // doc-focus panel so users from other ministries can place a document they
+  // don't know. Every value MUST trace to a primary/official source (never
+  // LLM-drafted, per CLAUDE.md "No LLM-drafted content"); leave blank when not
+  // reliably sourceable. They are read only by the dashboard, never fed into a
+  // pipeline prompt.
+  /** What kind of document it is, e.g. "National pledge", "REDD+ strategy". */
+  docKind?: string;
+  /** When it was developed/issued, e.g. "November 2025", "2025", "2025-2029". */
+  published?: string;
+  /** Issuing body / author, e.g. "Government of Panama", "SENACYT". */
+  author?: string;
+  /** Main goal, verbatim or closely quoted from the source. Optional. */
+  objective?: string;
+  /** Public link to the document. Must resolve and match the named document. */
+  url?: string;
+  /** Provenance note for the metadata above (esp. `objective`). */
+  sourceNote?: string;
 }
 
 /**
@@ -591,6 +629,15 @@ export interface CountryConfig {
    * pairs, classifications, and config entries are never sent to the frontend.
    */
   excludedDocTypes?: string[];
+  /**
+   * Document-type ids hidden by default in the briefing's analytical views
+   * (the coherence wheel on every slide, the doc-pairs matrix, section counts)
+   * IN ADDITION to `defaultHiddenDocTypes`, so a country's strategic documents
+   * lead every view while its second-tier documents stay one click away. Unlike
+   * `defaultHiddenDocTypes` (hidden everywhere, including the Explore workbench),
+   * these remain visible in Explore. Defaults to an empty list.
+   */
+  secondaryDocTypes?: string[];
   /**
    * Which mitigation grouping the Implementation Coverage view should default to.
    * - `"ipcc"` (default): group by IPCC sector (Mongolia and most countries).

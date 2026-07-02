@@ -6,11 +6,14 @@
 
 import type { SectorCategoryRef } from "./centerpiece/wheel";
 
-export type LensId = "globe" | "ipcc" | "country";
+export type LensId = "globe" | "ipcc" | "country" | "gga";
 
 export interface LensOption {
   id: LensId;
   label: string;
+  /** Optional hover text, e.g. to expand an acronym in the lens label on
+   *  first use (abbreviation guardrail). */
+  tooltip?: string;
   taxonomyType: string;
   categories: SectorCategoryRef[];
 }

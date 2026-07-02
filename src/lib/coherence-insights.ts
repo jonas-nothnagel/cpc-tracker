@@ -49,7 +49,9 @@ type InsightPattern =
 
 export interface Insight {
   pattern: InsightPattern;
-  /** 1-2 sentence factual callout. No em dashes. */
+  /** 1-2 sentence factual callout. No em dashes. This is the English fallback;
+   *  the renderer prefers `explorer.insights.<pattern>.callout` with `vars`
+   *  when that message exists (es/mn localization), else shows this verbatim. */
   callout: string;
   /**
    * Optional hedged pathway hint shown as a quiet italic line beneath the
@@ -59,6 +61,11 @@ export interface Insight {
    * prescriptive or country-specific.
    */
   pathway?: string;
+  /** Interpolation values for the localized `explorer.insights.<pattern>.*`
+   *  messages (es/mn). When set and the message exists, the renderer shows the
+   *  localized string; otherwise it falls back to the English `callout`/`pathway`
+   *  above. Keys mirror the ICU placeholders (e.g. `{label}`, `{count}`). */
+  vars?: Record<string, string | number>;
   /** Action(s) to dispatch when the user clicks Show me. */
   actions: ChatAction[];
   /**
@@ -179,7 +186,8 @@ function detectParadox(args: DetectArgs): Insight | null {
   const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
   return {
     pattern: "paradox",
-    callout: `${label} sits in both the top-5 most contested and top-5 most aligned targets. Two sides of the same coin, worth a closer look.`,
+    vars: { label },
+    callout: `${label} sits among both the most potentially misaligned and the most strongly aligned targets. Two sides of the same coin, worth a closer look.`,
     actions: [{ type: "select_target", targetId: id }],
     filter: "high_contra",
   };
@@ -211,9 +219,10 @@ function detectTensionCluster(args: DetectArgs): Insight | null {
   const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
   return {
     pattern: "tension_cluster",
-    callout: `${n} contradictions converge on ${label}, the single biggest driver of tension in the dataset.`,
+    vars: { count: n, label },
+    callout: `${n} potential misalignments converge on ${label}, more than on any other target in the dataset.`,
     pathway:
-      "A boundary review on this target could potentially help unlock alignment with the conflicting documents.",
+      "A boundary review on this target could help unlock alignment with the documents it is misaligned with.",
     actions: [
       { type: "set_mode", mode: "document" },
       { type: "focus_category", categoryId: t.sourceDocument },
@@ -300,7 +309,8 @@ function detectZeroConflictTopic(args: DetectArgs): Insight | null {
       if (size >= 2 && conflicts === 0) {
         return {
           pattern: "zero_conflict_topic",
-          callout: `${cat.name} carries zero contradictions across ${size} targets, unusual when other topics carry ${peakConflict}+.`,
+          vars: { category: cat.name, size, peak: peakConflict },
+          callout: `${cat.name} carries zero potential misalignments across ${size} targets, unusual when other topics carry ${peakConflict}+.`,
           actions: [tax.mode, { type: "focus_category", categoryId: cat.id }],
           filter: "all",
         };
@@ -343,6 +353,7 @@ function detectHub(args: DetectArgs): Insight | null {
   const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
   return {
     pattern: "hub",
+    vars: { label, docs: docs.size },
     callout: `${label} aligns strongly with ${docs.size} different documents, quietly bridging plans others touch separately.`,
     actions: [{ type: "select_target", targetId: id }],
     filter: "high",
@@ -380,6 +391,7 @@ function detectOrphan(args: DetectArgs): Insight | null {
       : "only one connection across the whole dataset";
   return {
     pattern: "orphan",
+    vars: { label, connections: count },
     callout: `${label} has ${phrase}, isolated from the rest of the network.`,
     actions: [{ type: "select_target", targetId: id }],
     filter: "all",
@@ -426,7 +438,8 @@ function detectImbalance(args: DetectArgs): Insight | null {
   const labelB = getDocLabel(countryConfig ?? null, dB as PolicyDocumentType);
   return {
     pattern: "imbalance",
-    callout: `${labelA} and ${labelB} carry ${best.pair.contras} tensions versus ${best.pair.aligns} strong alignments, the most lopsided pair in the dataset.`,
+    vars: { labelA, labelB, contras: best.pair.contras, aligns: best.pair.aligns },
+    callout: `${labelA} and ${labelB} carry ${best.pair.contras} potential misalignments versus ${best.pair.aligns} strong alignments, the most lopsided pair in the dataset.`,
     pathway:
       "A joint review across these two may help surface where their mandates diverge.",
     actions: [
@@ -504,13 +517,14 @@ function detectImplementationContradiction(args: DetectArgs): Insight | null {
   const policyLabel = `${getDocLabel(countryConfig ?? null, best.policy.sourceDocument)} ${best.policy.sourceLabel}`;
   const severityWord =
     best.level === "likely_conflict"
-      ? "directly contradicts"
+      ? "is likely to conflict with"
       : best.level === "possible_conflict"
-        ? "conflicts with"
-        : "is in tension with";
+        ? "may conflict with"
+        : "may be misaligned with";
   return {
     pattern: "implementation_contradiction",
-    callout: `Reported action ${btrLabel} (${status.toLowerCase()}) ${severityWord} planned target ${policyLabel}. What's being done versus what's been planned.`,
+    vars: { btrLabel, status: status.toLowerCase(), severity: best.level, policyLabel },
+    callout: `Reported action ${btrLabel} (${status.toLowerCase()}) ${severityWord} planned target ${policyLabel}. What is being done versus what was planned.`,
     pathway:
       "Reconciling the two, or flagging the pair for human review, could potentially close the gap between plan and practice.",
     actions: [
@@ -609,7 +623,8 @@ function detectMostContestedTopic(args: DetectArgs): Insight | null {
   if (!best) return null;
   return {
     pattern: "most_contested_topic",
-    callout: `${best.catName} carries ${best.count} contradictions across ${best.size} targets, the heaviest topic load in the dataset.`,
+    vars: { category: best.catName, count: best.count, size: best.size },
+    callout: `${best.catName} carries ${best.count} potential misalignments across ${best.size} targets, the heaviest concentration in the dataset.`,
     actions: [best.mode, { type: "focus_category", categoryId: best.catId }],
     filter: "contradictions",
   };
@@ -638,9 +653,10 @@ function detectQuantitativeGap(args: DetectArgs): Insight | null {
     const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)} ${t.sourceLabel}`;
     return {
       pattern: "quantitative_gap",
-      callout: `${label} sits in ${n} contradictions but carries no measurable indicator.`,
+      vars: { label, count: n },
+      callout: `${label} sits in ${n} potential misalignments but carries no measurable indicator.`,
       pathway:
-        "Without a number to anchor the target, several of these tensions may rest on interpretation rather than policy conflict, worth a closer look before treating them as decision-grade signals.",
+        "Without a number to anchor the target, several of these may rest on interpretation rather than policy conflict, worth a closer look before treating them as decision-grade signals.",
       actions: [{ type: "select_target", targetId: id }],
       filter: "contradictions",
     };
@@ -687,10 +703,11 @@ function detectAgreementPair(args: DetectArgs): Insight | null {
   const labelB = getDocLabel(countryConfig ?? null, dB as PolicyDocumentType);
   const contraPhrase =
     best.pair.contras === 0
-      ? "zero contradictions"
-      : `only ${best.pair.contras} contradictions`;
+      ? "zero potential misalignments"
+      : `only ${best.pair.contras} potential misalignments`;
   return {
     pattern: "agreement_pair",
+    vars: { labelA, labelB, aligns: best.pair.aligns, contras: best.pair.contras },
     callout: `${labelA} and ${labelB} share ${best.pair.aligns} strong alignments and ${contraPhrase}, the most cohesive pair in the dataset.`,
     actions: [
       { type: "set_mode", mode: "document" },
@@ -723,6 +740,7 @@ function detectMostAlignedTarget(args: DetectArgs): Insight | null {
   const label = `${getDocLabel(countryConfig ?? null, t.sourceDocument)}: ${t.sourceLabel}`;
   return {
     pattern: "most_aligned_target",
+    vars: { label, count: n },
     callout: `${label} anchors ${n} strong alignments, the single biggest connector in the dataset.`,
     actions: [{ type: "select_target", targetId: id }],
     filter: "high",
@@ -759,7 +777,8 @@ function detectDocWithMostTensions(args: DetectArgs): Insight | null {
   );
   return {
     pattern: "doc_most_tensions",
-    callout: `${docLabel} carries ${n} tensions, the heaviest concentration of contradictions in any single document.`,
+    vars: { docLabel, count: n },
+    callout: `${docLabel} carries ${n} potential misalignments, the heaviest concentration in any single document.`,
     actions: [
       { type: "set_mode", mode: "document" },
       { type: "focus_category", categoryId: doc },
@@ -795,6 +814,7 @@ function detectBtrStatusMix(args: DetectArgs): Insight | null {
   const happening = impl + ong;
   return {
     pattern: "btr_status_mix",
+    vars: { happening, total, adopt, plan },
     callout: `${happening} of ${total} reported actions are already Implemented or Ongoing, ${adopt} Adopted and ${plan} Planned. The Implemented and Ongoing share is the strongest signal of what is already happening on the ground.`,
     actions: [
       { type: "set_mode", mode: "document" },
@@ -819,9 +839,10 @@ function detectQuantitativeCoverage(args: DetectArgs): Insight | null {
   if (quant / total >= 0.5) return null;
   return {
     pattern: "quantitative_coverage",
+    vars: { quant, total },
     callout: `Only ${quant} of ${total} targets carry a measurable indicator. The rest read as direction-of-travel statements, hard to track without a number to anchor them.`,
     pathway:
-      "Many of the alignment and contradiction counts here may carry more interpretive weight than substantive policy conflict, given how many targets are direction-of-travel statements.",
+      "Many of the alignment and potential-misalignment counts here may carry more interpretive weight than substantive policy conflict, given how many targets are direction-of-travel statements.",
     actions: [{ type: "set_mode", mode: "document" }],
     filter: "all",
   };
@@ -873,6 +894,7 @@ function detectAnchorSupportGap(args: DetectArgs): Insight | null {
         : `only ${n} strong alignments from other plans`;
   return {
     pattern: "anchor_support_gap",
+    vars: { pillarLabel, count: n },
     callout: `${pillarLabel} has ${supporters}, the least-supported pillar in this dataset.`,
     pathway:
       "Reviewing whether existing targets in other plans could be mapped to this pillar may surface under-claimed alignment with the national plan.",
@@ -922,6 +944,7 @@ function detectSectorCoverageGap(args: DetectArgs): Insight | null {
   if (!best) return null;
   return {
     pattern: "sector_coverage_gap",
+    vars: { sector: best.name, count: best.policy },
     callout: `Sector "${best.name}" carries ${best.policy} policy targets but no reported actions in BTR, the largest plan-vs-practice gap by sector in this dataset.`,
     pathway:
       "Cross-checking whether the gap reflects missing implementation or missing transparency reporting may help close the loop.",

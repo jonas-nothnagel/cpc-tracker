@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Шинжилгээ хэрхэн ажилладаг вэ | Байгаль-Уур амьсгалын бодлогын уялдааны шинжлэгч</title>
+<style>
+  :root {
+    --blue: #0468b1; --blue-dark: #035293; --black: #232e3d; --gray: #55606e;
+    --paper: #faf8f4; --line: #e6e3dd;
+    --l1: #0468b1; --l2: #b45309; --l3: #7c3aed;
+    --ph-ex: #b45309; --ph-an: #0468b1; --ph-sy: #196127;
+    --a-high: #196127; --a-med: #7bc96f; --a-low: #c6e48b; --a-none: #d1d5db; --a-flag: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--black); background: #fff; line-height: 1.5; font-size: 10.5pt;
+  }
+  .page {
+    max-width: 820px; margin: 0 auto; padding: 28px 40px 40px;
+  }
+  .eyebrow {
+    font-size: 8.5pt; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--blue); font-weight: 700; margin: 0 0 6px;
+  }
+  h1 {
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+    font-size: 23pt; line-height: 1.1; margin: 0 0 8px; color: var(--black); font-weight: 700;
+  }
+  .standfirst { font-size: 11pt; color: var(--gray); margin: 0 0 4px; max-width: 66ch; }
+  h2 {
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+    font-size: 13.5pt; margin: 22px 0 8px; color: var(--blue-dark);
+    border-bottom: 2px solid var(--line); padding-bottom: 4px;
+  }
+  h3 { font-size: 10pt; margin: 0 0 3px; color: var(--black); }
+  p { margin: 0 0 8px; }
+  a { color: var(--blue); }
+  strong { color: var(--black); }
+  .lead-rule { height: 4px; background: var(--blue); width: 54px; border: 0; margin: 14px 0 18px; }
+  .section-intro { margin: 0 0 8px; }
+
+  /* three levels (scope band) */
+  .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 6px 0 4px; }
+  .level { border: 1px solid var(--line); border-top: 4px solid var(--lc); border-radius: 6px; padding: 10px 12px; background: var(--paper); }
+  .level .tag { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--lc); }
+  .level h3 { margin: 2px 0 4px; font-size: 10.5pt; }
+  .level p { font-size: 9pt; color: var(--gray); margin: 0; }
+  .level .badge { display: inline-block; margin-top: 6px; font-size: 7.5pt; color: var(--gray); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+
+  /* pipeline: three colour-coded phases */
+  .pipe { display: flex; align-items: stretch; gap: 0; margin: 10px 0 6px; }
+  .phase { flex: 1; border: 1px solid var(--line); border-top: 4px solid var(--pc); border-radius: 6px; padding: 9px 11px; background: #fff; }
+  .phase .pk { font-size: 7.5pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--pc); }
+  .phase .pt { font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif; font-size: 10.5pt; font-weight: 600; margin: 2px 0 4px; color: var(--black); }
+  .phase .pd { font-size: 8pt; color: var(--gray); line-height: 1.35; }
+  .arrow { display: flex; align-items: center; color: var(--line); font-size: 15pt; padding: 0 5px; font-weight: 700; }
+
+  /* alignment scale */
+  .scale { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); margin: 8px 0 4px; }
+  .scell { flex: 1; padding: 6px 4px; text-align: center; font-size: 7.6pt; font-weight: 600; }
+  .scale-note { font-size: 8pt; color: var(--gray); margin: 0 0 4px; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  ul { margin: 4px 0 8px; padding-left: 16px; }
+  li { margin: 0 0 4px; font-size: 9.5pt; }
+
+  /* worked example */
+  .example { border: 1px solid var(--line); border-left: 4px solid var(--ph-an); background: var(--paper); border-radius: 6px; padding: 11px 14px; margin: 12px 0 4px; }
+  .example .ek { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ph-an); margin: 0 0 5px; }
+  .example p { font-size: 9.5pt; color: var(--gray); margin: 0; }
+  .example strong { color: var(--black); }
+  .example .flag { color: var(--a-flag); font-weight: 700; }
+
+  /* safeguards */
+  .guards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin: 4px 0; }
+  .guard { font-size: 9pt; }
+  .guard b { color: var(--blue-dark); }
+
+  .footnote { margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 8pt; color: var(--gray); }
+
+  @page { size: A4; margin: 14mm; }
+  @media print {
+    .page { max-width: none; margin: 0; padding: 0; }
+    .page-break { page-break-before: always; }
+    h2 { break-after: avoid; }
+    .levels, .pipe, .guards, .example { break-inside: avoid; }
+    body { font-size: 10pt; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">Байгаль-Уур амьсгалын бодлогын уялдааны шинжлэгч &middot; Арга зүй</p>
+  <h1>Шинжилгээ хэрхэн ажилладаг вэ</h1>
+  <p class="standfirst">Үндэсний бодлогын өгөгдлийг бодлогын уялдааны талаарх мөшгих боломжтой, нотолгоонд суурилсан дүгнэлт болгон хувиргах нь: үүрэг амлалтууд хаана бие биеэ бэхжүүлдэг, хаана өрсөлдөж болзошгүй, мөн санхүүжилт, хэрэгжилтийн ямар цоорхой үлдэж байгааг харуулна.</p>
+  <hr class="lead-rule" />
+
+  <h2>Зорилго</h2>
+  <p>Бий болж буй Үндэсний хөгжлийн төлөвлөгөө, Үндэсний хэмжээнд тодорхойлсон хувь нэмэр (NDC), Биологийн олон янз байдлын үндэсний стратеги, үйл ажиллагааны төлөвлөгөө (NBSAP), Дасан зохицох үндэсний төлөвлөгөө (NAP), Газрын доройтлыг саармагжуулах (LDN) зорилтуудын хүрээнд гариг дэлхий болон түүний хүн ардын төлөөх эрмэлзэл нэмэгджээ. Гэвч эдгээр үндэсний үүрэг амлалтыг ихэвчлэн салангид байдлаар боловсруулж, хэрэгжүүлж, хянадаг бөгөөд тэдгээр нь хоорондоо хэрхэн уялдаж буй нь тодорхой бус байдаг. Шинжилгээ нь өгсөн бодлого, санхүү, хэрэгжилтийн мэдээлэлд тулгуурлан хам үр нөлөө, боломж, цоорхойн талаар өгөгдөлд суурилсан нотолгоо гаргаж өгдөг. Энэ нь <strong>шийдвэр гаргахад дэмжлэг үзүүлэх систем болохоос шийдвэр гаргагч биш</strong> юм: үндэсний шинжээчдэд хянуулахаар болзошгүй хэв маягийг илрүүлдэг боловч эцсийн тайлбар нь бодлого боловсруулагчдын мэдэлд үлддэг.</p>
+
+  <h2>Шинжилгээ юуг хамардаг вэ</h2>
+  <p class="section-intro">Нэг ижил шинжилгээний аргыг улс бүрийн өгөгдөл боломжийн хэрээр гурван түвшинд хэрэглэдэг.</p>
+  <div class="levels">
+    <div class="level" style="--lc: var(--l1)">
+      <div class="tag">1-р түвшин</div>
+      <h3>Бодлогын уялдаа</h3>
+      <p>Үндэсний бодлогын баримт бичгүүдийн зорилтууд хэрхэн уялдаж, бие биеэ бэхжүүлж, эсвэл өрсөлдөж болохыг харуулна.</p>
+      <span class="badge">Төлөвшсөн</span>
+    </div>
+    <div class="level" style="--lc: var(--l2)">
+      <div class="tag">2-р түвшин</div>
+      <h3>Санхүүгийн уялдаа</h3>
+      <p>Засгийн газрын төсвийн хөтөлбөрүүд бодлогын эрмэлзлийг хаана дагаж буйг харуулна.</p>
+      <span class="badge">Төсвийн өгөгдөл байгаа тохиолдолд</span>
+    </div>
+    <div class="level" style="--lc: var(--l3)">
+      <div class="tag">3-р түвшин</div>
+      <h3>Хэрэгжилтийн явц</h3>
+      <p>Тайлагнасан арга хэмжээ нь тогтоосон зорилтуудыг биелүүлж байгаа эсэхийг харуулна.</p>
+      <span class="badge">Тайлагналын өгөгдөл байгаа тохиолдолд</span>
+    </div>
+  </div>
+
+  <h2>Арга барил</h2>
+  <p class="section-intro">Үр дүн бүрийг гурван үе шатад зохион байгуулагдсан нэг ижил, ил тод дараалалаар гаргадаг. Шинжилгээ нь зөвхөн өгсөн бодлогын бичвэрийг уншдаг бөгөөд өөрийн бодлогын агуулгыг хэзээ ч нэмдэггүй.</p>
+  <div class="pipe">
+    <div class="phase" style="--pc: var(--ph-ex)">
+      <div class="pk">1-р үе шат &middot; Ялган авах</div>
+      <div class="pt">Баримт бичгээс зорилт руу</div>
+      <div class="pd">Хуудас бүрийг бүрэн уншиж, давтагдах хэвшмэл текстийг хойш тавьж, зорилт бүрийг эх сурвалжийнх нь хамт үг үсгээр нь ялган авдаг. Давхардлыг нэгтгэж, тоо баримт, он, нэрлэсэн хүрээ бүрийг эх баримт бичигтэй тулган шалгадаг.</div>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="phase" style="--pc: var(--ph-an)">
+      <div class="pk">2-р үе шат &middot; Шинжилгээ</div>
+      <div class="pt">Зорилтоос уялдаа руу</div>
+      <div class="pd">Зорилт бүрийг хэмжигдэхүйц, хугацаатай эсэхээр нь тэмдэглэж, сонгосон лавлах хүрээтэй харьцуулан ангилдаг. Дараа нь баримт бичиг хоорондын хос бүрийг үнэлдэг: нэг мэргэшсэн агент зорилт бүрийг бүрэлдэхүүн хэсгүүдэд нь задалж, нөгөө нь тэр хоёр хэрхэн уялдаж буйг дүгнэдэг.</div>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="phase" style="--pc: var(--ph-sy)">
+      <div class="pk">3-р үе шат &middot; Нэгтгэл</div>
+      <div class="pt">Хосоос хэв маяг руу</div>
+      <div class="pd">Бие даасан дүгнэлтүүдийг уялдааны оноо болон хамрах хүрээнд нэгтгэж, давтагдан гарч буй болзошгүй үл нийцлийг илрүүлж, өгөгдөл байгаа тохиолдолд мөн ижил аргыг санхүү, хэрэгжилтэд өргөтгөн хэрэглэдэг.</div>
+    </div>
+  </div>
+  <p class="scale-note">Хос бүрийг таван төлөвт хуваарь дээр байрлуулна. Дөрвөн эерэг түвшин нь хоёр зорилт хэр хүчтэй уялдаж буйг илэрхийлдэг; <strong>Болзошгүй үл нийцэл</strong> гэсэн ганц хянан үзэх төлөв нь зөрчил байгааг тунхаглахын оронд хосыг мэргэжилтний нягталгаанд тэмдэглэдэг.</p>
+  <div class="scale">
+    <div class="scell" style="background: var(--a-flag); color:#fff">Болзошгүй үл нийцэл</div>
+    <div class="scell" style="background: var(--a-none); color:#374151">Холбоо байхгүй</div>
+    <div class="scell" style="background: var(--a-low); color:#374151">Хэсэгчилсэн</div>
+    <div class="scell" style="background: var(--a-med); color:#14361f">Дунд</div>
+    <div class="scell" style="background: var(--a-high); color:#fff">Өндөр уялдаа</div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>Шинжилгээний дотоод үйл явц</h2>
+  <div class="two">
+    <div>
+      <h3>Сонгосон сэдвээр ангилах</h3>
+      <p>Зорилтуудыг нийтлэгдсэн лавлах хүрээ болох IPCC-ийн хүлэмжийн хийн тооллогын салбарууд, Биологийн олон янз байдлын дэлхийн зардлын (GLOBE) ангилал зүй, болон АНЭУ-ын Дэлхийн уур амьсгалын тэсвэрлэх чадварын суурь баримт бичиг (Дасан зохицлын дэлхийн зорилго)-ийн уур амьсгалын тэсвэрлэх чадварын долоон зорилттой харьцуулан үнэлдэг. Ангиллууд нь өөрсдийн эх сурвалж руу мөшгигддөг бөгөөд улс бүрээр тохируулах боломжтой. Зорилт бүр нэг үндсэн ангилал, түүнчлэн тодорхой холбогдох бусад ангиллыг хадгалдаг тул нэг ижил нотолгоог дахин шинжилгээ хийлгүйгээр өөр өөр өнцгөөс харах боломжтой.</p>
+      <h3>Хоёр алхамт харьцуулалт</h3>
+      <p>Харьцуулалтыг санаатайгаар хоёр үе шатад хуваадаг. Эхлээд зорилтыг зорилго, үйл ажиллагаа, талбар, оролцогч талууд, хүлээгдэж буй үр дүн гэж задалдаг; дараа нь тэрхүү бүтцээс уялдааг үнэлдэг. Энэ нь дүгнэлтийг улс орон, бодлогын хүрээ бүрт нэгэн жигд байлгаж, нийтлэг түлхүүр үгсээс илүүтэй бодлогын агуулгад тулгуурлахад тусалдаг.</p>
+    </div>
+    <div>
+      <h3>Яагаад &ldquo;зөрчил&rdquo; биш, &ldquo;болзошгүй үл нийцэл&rdquo; гэдэг вэ</h3>
+      <p>Хуваарийн сөрөг тал нь санаатайгаар болгоомжтой ханддаг. Болзошгүй үл нийцэл нь хянан үзэх дохио болохоос хэзээ ч эцсийн дүгнэлт биш: тус бүр нь ямар төрлийнх болох (өрсөлдөх зорилго, дундын нөөц, эсвэл хэрэгжүүлэлтийн дарамт), хэр зохицуулах боломжтой харагдаж буй, мөн тайлал нь хэр итгэлтэй болохыг тэмдэглэдэг тул хянагч хос яагаад тэмдэглэгдсэнийг олж хардаг.</p>
+      <h3>Нэгтгэл ба томьёолол</h3>
+      <p>Шинжилгээ нь хиймэл оюунаар бичсэн дэлгэрэнгүй өгүүлэмж биш, харин богино, баримтад суурилсан дүгнэлт болон дүрслэл гаргадаг. Дараагийн алхмуудыг санал болгосон тохиолдолд тэдгээрийг заавар болгож биш, харин судлах боломж (&ldquo;болох&rdquo;, &ldquo;магадгүй&rdquo;) хэлбэрээр томьёолдог.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <p class="ek">Бодит жишээ &middot; Монгол Улс</p>
+    <p>Бүх нутаг дэвсгэрийг <strong>орон зайн төлөвлөлтөд</strong> хамруулах NBSAP-ийн зорилтыг шинэ дэд бүтцээр <strong>усны хүртээмжийг</strong> хангах NDC-ийн зорилттой хослуулжээ. Хоёулаа газар, усны засаглалтай холбоотой боловч дэд бүтэц нь орон зайн төлөвлөлтийн зорилтын хамгаалдаг экосистемд дарамт учруулж болзошгүй. Шинжилгээ нь уг хосыг хэрэгжүүлэлтийн төрлийн <span class="flag">Болзошгүй үл нийцэл</span> гэж бүртгэж, зохицуулах боломжтой, дунд зэргийн итгэлтэйгээр үнэлж, орон зайн төлөвлөлт, бүсчлэл, хамгаалах арга хэмжээгээр дамжуулан зохицуулбал тэр хоёрыг уялдаатай байлгана гэж тэмдэглэжээ. Энэ нь хоёр баримт бичгийн хооронд харьцуулсан <strong>540</strong> хосын дотроос хянан үзэхээр тэмдэглэсэн <strong>46 хосын нэг</strong> бөгөөд нийт уялдаа <strong>66%</strong>-д хүрчээ.</p>
+  </div>
+
+  <h2>Шинжилгээ юу гаргадаг вэ</h2>
+  <ul>
+    <li><strong>Дүрслэл болон богино, баримтад суурилсан дүгнэлт</strong> нь автоматжуулсан тайлан биш, харин хамрах хүрээ, уялдааны хэв маяг, мөн зохицуулалтыг хаана бэхжүүлж болохуйц талаар мэдээлдэг.</li>
+    <li><strong>Сэлгэн харах өнцгүүд</strong> нь хэрэглэгчийн удирдлага дор байх тул нэг ижил шинжилгээг дахин шинжилгээ хийлгүйгээр сэдвээр, салбараар (GLOBE, IPCC, эсвэл тухайн улсын өөрийн багц), эсвэл санхүү, хэрэгжилтийн давхаргаар дахин бүлэглэх боломжтой.</li>
+    <li><strong>Баримтад тулгуурласан туслах</strong> нь зөвхөн шинжилсэн нотолгоог ашиглан асуултад хариулдаг.</li>
+  </ul>
+
+  <h2>Хамгаалалт</h2>
+  <div class="guards">
+    <div class="guard"><b>Хүний оролцоо.</b> Ялган авсан зорилтуудыг ямар нэг шинжилгээ хийхээс өмнө баталгаажуулж, засдаг, мөн ирээдүйн ажиллагааг сайжруулахын тулд хиймэл оюуны аливаа үндэслэлийг үнэлж болно. Үр дүн нь хиймэл оюуны тусламжтай бөгөөд бодлогын үйл явцад ашиглахаас өмнө мэргэжилтний баталгаажуулалт шаардлагатай.</div>
+    <div class="guard"><b>Үндэслэлтэй ба мөшгих боломжтой.</b> Зөвхөн өгсөн өгөгдлийг ангилж, харьцуулдаг; үр дүн бүр гарал үүслийн эх бичвэр рүүгээ холбогддог бөгөөд шалгах боломжгүй ямар ч зүйлийг батлан хэлдэггүй.</div>
+    <div class="guard"><b>Өгөгдлийн бүрэн эрх.</b> Шинжилгээ нь загвараас үл хамаарна: улс орон уг хэрэгслийн ашиглах хиймэл оюуны загварыг сонгож, өгөгдлөө хаана боловсруулахыг хяналтдаа байлгах боломжтой.</div>
+    <div class="guard"><b>Хэмнэлттэй, шударга хиймэл оюун.</b> Байгаль орчинд үзүүлэх зардлыг нь хэмжиж, ил тод тайлагнадаг бага ул мөр бүхий загвар.</div>
+  </div>
+  <p style="font-size:9pt; margin-top:6px;">Шинжилгээг нээлттэй эх бүхий <strong>Дижитал нийтийн өмч</strong> болгон бүтээж байгаа бөгөөд ингэснээр үндэсний засгийн газрууд эцэстээ үүнийг өөрсдийн өгөгдөл, дэд бүтэц дээр ажиллуулах боломжтой болно.</p>
+
+  <p class="footnote">Шийдвэр гаргахад дэмжлэг үзүүлэх хиймэл оюуны тусламжтай шинжилгээ. Бүх үр дүнг бодлогын үйл явцад ашиглахаас өмнө мэргэжилтэн баталгаажуулах шаардлагатай. Энэхүү товч танилцуулга нь 2026 оны 6 сарын байдлаарх шинжилгээний үйл явцыг тусгасан болно. &middot; UNDP Байгаль-Уур амьсгалын бодлогын уялдааны шинжлэгч.</p>
+
+</div>
+</body>
+</html>

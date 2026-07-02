@@ -18,7 +18,7 @@ const LOCALE_LABELS: Record<string, string> = {
 // confidence. Remove a code here once a native speaker has reviewed it.
 const MACHINE_TRANSLATED = new Set(["es", "mn"]);
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ onDark = false }: { onDark?: boolean }) {
   const locale = useLocale();
   const t = useTranslations("common.languageSwitcher");
   const pathname = usePathname();
@@ -29,28 +29,66 @@ export function LanguageSwitcher() {
   // is added to `routing.locales`, the switcher appears automatically.
   if (routing.locales.length < 2) return null;
 
+  // `onDark` matches the white nav over the cinematic hero; the default light
+  // tone is used in the scrolled header and the shared in-app header.
+  const tone = onDark
+    ? "text-white border-white/40 hover:border-white/80 focus:border-white"
+    : "text-[var(--undp-gray)] border-gray-200 hover:text-[var(--undp-blue)] focus:border-[var(--undp-blue)]";
+
   return (
     <span className="inline-flex items-center gap-2">
-      <select
-        value={locale}
-        onChange={(e) => {
-          const next = e.target.value as Locale;
-          startTransition(() => {
-            router.replace(pathname, { locale: next });
-          });
-        }}
-        disabled={isPending}
-        aria-label={t("aria")}
-        className="text-xs text-[var(--undp-gray)] bg-transparent border border-gray-200 rounded px-2 py-1 cursor-pointer focus:outline-none hover:text-[var(--undp-blue)] focus:border-[var(--undp-blue)]"
+      <span
+        className={`relative inline-flex items-center ${
+          onDark ? "text-white" : "text-[var(--undp-gray)]"
+        }`}
       >
-        {routing.locales.map((l) => (
-          <option key={l} value={l}>
-            {LOCALE_LABELS[l] ?? l}
-          </option>
-        ))}
-      </select>
+        <select
+          value={locale}
+          onChange={(e) => {
+            const next = e.target.value as Locale;
+            // Preserve the query string (e.g. the dashboard's ?country=panama);
+            // `usePathname()` drops it, which otherwise sends the user to an
+            // empty dashboard that bounces to the landing page. Read
+            // window.location.search in the handler rather than via
+            // useSearchParams() during render, so this shared header component
+            // doesn't opt static pages out of prerendering.
+            const search =
+              typeof window !== "undefined" ? window.location.search : "";
+            startTransition(() => {
+              router.replace(`${pathname}${search}`, { locale: next });
+            });
+          }}
+          disabled={isPending}
+          aria-label={t("aria")}
+          className={`appearance-none cursor-pointer rounded border bg-transparent py-1 pl-2 pr-7 text-xs transition-colors focus:outline-none ${tone}`}
+        >
+          {routing.locales.map((l) => (
+            // Force readable option colours so the open menu stays dark-on-white
+            // even when the closed control shows white text over the hero.
+            <option key={l} value={l} style={{ color: "#232e3d", backgroundColor: "#fff" }}>
+              {LOCALE_LABELS[l] ?? l}
+            </option>
+          ))}
+        </select>
+        {/* Custom chevron: the native select arrow renders nearly invisible on
+            the dark hero, so draw our own in the current text colour. */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 16 16"
+          className="pointer-events-none absolute right-2 h-3 w-3"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        >
+          <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
       {MACHINE_TRANSLATED.has(locale) && (
-        <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]/70 whitespace-nowrap">
+        <span
+          className={`text-[10px] uppercase tracking-wider whitespace-nowrap ${
+            onDark ? "text-white/75" : "text-[var(--undp-gray)]/70"
+          }`}
+        >
           {t("machineTranslatedNote")}
         </span>
       )}

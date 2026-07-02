@@ -34,6 +34,7 @@ import type {
   NbsCategory,
   IpccSector,
   GlobeCategory,
+  GgaCategory,
   GlobeSubcategory,
   BtrData,
   BerData,
@@ -47,6 +48,7 @@ interface DashboardData {
   nbsCategories: NbsCategory[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  ggaCategories: GgaCategory[];
   globeSubcategories: GlobeSubcategory[];
   classifications: ThematicClassification[];
   alignment: AlignmentResult[];
@@ -74,9 +76,17 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
     // Translation originals pass through for countries whose source data is not
-    // in English (populated in PR2 for Panama). Undefined for Mongolia.
+    // in English (e.g. Panama). textOriginalSource distinguishes a genuine
+    // source-language original from a machine back-translation, so the
+    // verify-the-translation chip can suppress the latter (mirrors the live
+    // coherence-dashboard path; without it the /prototypes view would present
+    // machine output as an original to verify).
     textOriginal: t.textOriginal ? String(t.textOriginal) : undefined,
     sourceLabelOriginal: t.sourceLabelOriginal ? String(t.sourceLabelOriginal) : undefined,
+    textOriginalSource:
+      t.textOriginalSource === "machine" || t.textOriginalSource === "source"
+        ? t.textOriginalSource
+        : undefined,
     // BTR pseudo-targets carry actionType to distinguish reported mitigation
     // measures from adaptation actions; policy targets do not.
     actionType:
@@ -103,6 +113,7 @@ function normalizeDashboardResponse(raw: DashboardResponse): DashboardData {
     nbsCategories: (raw.nbsCategories ?? []) as NbsCategory[],
     sectors: ((raw.sectors ?? []) as Record<string, unknown>[]).map(normalizeSector),
     globeCategories: ((raw.globeCategories ?? []) as Record<string, unknown>[]).map(normalizeSector),
+    ggaCategories: ((raw.ggaCategories ?? []) as Record<string, unknown>[]).map(normalizeSector),
     globeSubcategories: (raw.globeSubcategories ?? []) as GlobeSubcategory[],
     classifications: (raw.classifications ?? []) as ThematicClassification[],
     alignment: (raw.alignment ?? []) as AlignmentResult[],
@@ -509,6 +520,7 @@ export function DashboardClient({
           sectors={data.sectors}
           globeCategories={data.globeCategories}
           globeSubcategories={data.globeSubcategories}
+          ggaCategories={data.ggaCategories}
           classifications={data.classifications}
           nr7Data={data.nr7Data}
           btrData={data.btrData}
@@ -652,6 +664,7 @@ export function DashboardClient({
                       targets={targets}
                       sectors={data.sectors}
                       globeCategories={data.globeCategories}
+                      ggaCategories={data.ggaCategories}
                       classifications={data.classifications}
                       countryConfig={data.countryConfig}
                     />
@@ -748,7 +761,7 @@ export function DashboardClient({
               </p>
             </div>
           )}
-          <div>United Nations Development Programme · CPC Tracker</div>
+          <div>United Nations Development Programme · CPC Analyzer</div>
         </div>
       </footer>
     </div>

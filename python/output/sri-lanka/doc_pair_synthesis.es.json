@@ -1,0 +1,59 @@
+[
+  {
+    "doc_a": "LDN",
+    "doc_b": "NBSAP",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NBSAP (Nature)",
+    "aligned_count": 54,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Vinculación de la protección de la tierra con las herramientas de planificación de la biodiversidad",
+      "reinforce": "Los dos documentos se alinean de manera consistente en torno a medidas de uso de la tierra que apoyan los resultados en materia de biodiversidad, especialmente la prevención de la conversión de humedales, el aumento de la cobertura forestal y la reducción de la erosión del suelo o la degradación del suelo. Esto a menudo apunta a sinergias prácticas mediante la planificación espacial y urbana, la conservación basada en áreas y las OECM, la restauración de ecosistemas, el control de especies invasoras, la divulgación de riesgos empresariales y las herramientas de implementación relacionadas con los datos, la participación, la financiación y el género en la NBSAP.",
+      "clash": "No se señaló ninguna fricción recurrente en este conjunto.",
+      "coordination_hint": "El uso conjunto de instrumentos de planificación, restauración y conservación podría ayudar a conectar las acciones de LDN sobre humedales, bosques y suelos con las vías de implementación y seguimiento de la NBSAP.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "LDN",
+    "doc_b": "NDC",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NDC (Climate Change)",
+    "aligned_count": 204,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "resource_competition": 3,
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Vincular la restauración de la tierra con la planificación de la resiliencia climática",
+      "reinforce": "Los documentos suelen alinearse mediante medidas de resiliencia basadas en la tierra, especialmente la protección de humedales, el control de la erosión del suelo, la mejora del carbono orgánico del suelo y la restauración de bosques o cuencas hidrográficas que apoyan la gestión de cuencas fluviales, la mitigación de inundaciones, la alerta temprana y objetivos más amplios de reducción de GEI. El refuerzo también es recurrente cuando instrumentos de la NDC como la gestión integrada de cuencas fluviales, las actualizaciones de políticas de biodiversidad, la restauración de ecosistemas costeros, la plantación de árboles y los sistemas de información climática podrían posibilitar resultados de LDN en humedales, suelos y cobertura forestal.",
+      "clash": "La posible desalineación se señala principalmente cuando los objetivos de protección de la tierra, especialmente el aumento de la cobertura forestal y la minimización de la conversión de humedales, pueden competir con el crecimiento de la producción agrícola, la demanda de tierras relacionada con la producción lechera o la ubicación de infraestructura industrial y de riego en la misma base territorial. Estos casos suelen apuntar a cuestiones de planificación espacial y gestión hidrológica, más que a una contradicción establecida, particularmente en los humedales y los paisajes agrícolas adyacentes.",
+      "coordination_hint": "La zonificación conjunta del uso de la tierra, la planificación a nivel de cuenca y la revisión de la ubicación de los proyectos podrían ayudar a verificar dónde la agricultura, el riego, la industria y las medidas de restauración se superponen con los bosques y los humedales.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NDC",
+    "label_a": "NBSAP (Nature)",
+    "label_b": "NDC (Climate Change)",
+    "aligned_count": 1144,
+    "flagged_count": 4,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Vincular la restauración de los ecosistemas con los sistemas de implementación climática",
+      "reinforce": "Los dos documentos se alinean firmemente en torno a la restauración y la gestión del paisaje, especialmente cuando la restauración de ecosistemas, la rehabilitación de bosques y cuencas hidrográficas, la recuperación de ecosistemas costeros y la gestión integrada de cuencas fluviales utilizan mecanismos superpuestos de planificación del uso de la tierra y de seguimiento. La alineación también se repite a través de medidas habilitadoras, como la reducción de la contaminación, las prácticas de economía circular, los marcos de riesgo, la financiación, los datos y las herramientas de planificación que pueden reforzar la resiliencia de la biodiversidad al tiempo que apoyan las acciones climáticas sectoriales.",
+      "clash": "Un pequeño número de pares se señalan para revisión cuando la implementación podría volverse más difícil si la planificación espacial sensible a la biodiversidad y la evaluación de riesgos empresariales no están bien conectadas con la ubicación y expansión de nueva infraestructura de gas natural. Una posible desalineación adicional se refiere a la asignación de tierras y agua, donde la conservación basada en áreas mediante OECM podría competir con los esfuerzos por aumentar la producción agrícola en los mismos paisajes, y otra se refiere a los objetivos de consumo sostenible junto con los aumentos de la productividad lechera.",
+      "coordination_hint": "La planificación espacial conjunta, la zonificación del uso de la tierra y la evaluación de proyectos en las inversiones en restauración, agricultura y energía podrían ayudar a mantener los numerosos vínculos de refuerzo, al tiempo que se revisan las pocas áreas de posible desalineación.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

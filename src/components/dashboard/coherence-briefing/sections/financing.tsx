@@ -18,9 +18,6 @@
  * targets; the per-target totals share that overcount basis, so ranking
  * across targets is honest while absolute amounts overstate exclusive flow.
  *
- * Right column (FinancingCenterpiece): the budget object itself. What it is,
- * where the money concentrates, and how much of the plan went unspent.
- *
  * NOTE: "reviewed biodiversity spending" is BER-specific (the only budget
  * wired today, and deliberately framed as a snapshot review, not the whole
  * budget). If a non-biodiversity budget is ever added, revisit the noun.

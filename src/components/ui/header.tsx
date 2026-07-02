@@ -34,10 +34,12 @@ export function Header({
   const navItems = basePath
     ? [
         { href: basePath, label: t("nav.home") },
+        { href: "/methodology", label: t("nav.howItWorks") },
         { href: `${basePath}/upload`, label: t("nav.uploadData") },
       ]
     : [
         { href: "/", label: t("nav.home") },
+        { href: "/methodology", label: t("nav.howItWorks") },
         { href: "/upload", label: t("nav.uploadData") },
       ];
 

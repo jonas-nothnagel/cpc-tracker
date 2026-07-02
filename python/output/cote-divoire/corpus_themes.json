@@ -1,0 +1,226 @@
+{
+  "storylines": [
+    {
+      "name": "Link restoration with biodiversity and climate delivery",
+      "type": "reinforcement",
+      "description": "A strong pattern recurs around restoring degraded land, expanding or improving forest cover, and using sustainable land management to reinforce both biodiversity outcomes and climate resilience. Forest restoration, reduced conversion, and ecosystem-based productivity gains tend to align across the land degradation, nature, and climate documents.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 739,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Use governance tools to reinforce implementation",
+      "type": "reinforcement",
+      "description": "Enabling measures such as policy integration, stakeholder capacity, data systems, land tenure, water governance, hydro-climatic monitoring, and forest governance recur as mechanisms that could support delivery across agendas. This points to implementation coherence being reinforced not only by shared goals but also by shared institutional and information systems.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3451,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Embed climate actions within nature frameworks",
+      "type": "reinforcement",
+      "description": "Climate measures on forest management, fire early warning, agroforestry, wastewater treatment, aquaculture, and protected-area deforestation control tend to align with broader nature frameworks on ecosystem services, restoration, protected-area management, and sustainable land and water management. This recurs as a practical pathway for climate delivery to be implemented within biodiversity-sensitive systems.",
+      "contributing_doc_pairs": [
+        "NBT<->NDC",
+        "LDN<->NDC",
+        "LDN<->NBT"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3451,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Rely on spatial planning to manage overlap",
+      "type": "reinforcement",
+      "description": "Integrated spatial planning, zoning, and screening recur across the syntheses as common mechanisms for keeping restoration, agriculture, conservation, and climate investments aligned. The repeated emphasis suggests these tools are central to managing shared landscapes where multiple objectives converge.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 3451,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Flag agricultural expansion and intensification pressures",
+      "type": "friction",
+      "description": "Possible misalignment is repeatedly flagged for review where degraded farmland recovery, bare-land conversion, irrigation, hydro-agricultural works, rice, livestock, or other productivity measures increase pressure on land or water. These cases tend to point to delivery friction when the same areas may also be prioritized for restoration, threatened species recovery, protected areas, or reforestation.",
+      "contributing_doc_pairs": [
+        "LDN<->NBT",
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 128,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Flag biomass and infrastructure siting pressures",
+      "type": "friction",
+      "description": "A recurring review area concerns biomass energy, charcoal and woodfuel supply chains, timber or wood-energy plantations, and the siting of roads, solar, and wind infrastructure. These flagged cases often point to resource competition or location-based friction around feedstock sourcing, land take, and overlap with restoration, protected-area, or ecosystem-service priorities.",
+      "contributing_doc_pairs": [
+        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 112,
+      "spans_documents": [
+        "LDN",
+        "NBT",
+        "NDC"
+      ]
+    }
+  ],
+  "summary_paragraph": "Across the three document pairs, a strong reinforcing pattern recurs around land restoration, forest management, and sustainable land use supporting both biodiversity and climate delivery. This is reinforced by shared enabling systems such as governance, data, tenure, water management, and integrated spatial planning, which tend to align implementation pathways across the agendas. At the same time, several areas are flagged for review, especially where agricultural recovery or intensification, biomass supply, and infrastructure siting may increase pressure on land, water, or ecologically important areas. Overall, the evidence points to broad coherence in stated direction, with friction tending to arise more around delivery choices, sourcing, and location than around headline objectives.",
+  "doc_pair_count": 3,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Link restoration with biodiversity and climate delivery",
+          "type": "reinforcement",
+          "description": "A strong pattern recurs around restoring degraded land, expanding or improving forest cover, and using sustainable land management to reinforce both biodiversity outcomes and climate resilience. Forest restoration, reduced conversion, and ecosystem-based productivity gains tend to align across the land degradation, nature, and climate documents.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 739,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Use governance tools to reinforce implementation",
+          "type": "reinforcement",
+          "description": "Enabling measures such as policy integration, stakeholder capacity, data systems, land tenure, water governance, hydro-climatic monitoring, and forest governance recur as mechanisms that could support delivery across agendas. This points to implementation coherence being reinforced not only by shared goals but also by shared institutional and information systems.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3451,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Embed climate actions within nature frameworks",
+          "type": "reinforcement",
+          "description": "Climate measures on forest management, fire early warning, agroforestry, wastewater treatment, aquaculture, and protected-area deforestation control tend to align with broader nature frameworks on ecosystem services, restoration, protected-area management, and sustainable land and water management. This recurs as a practical pathway for climate delivery to be implemented within biodiversity-sensitive systems.",
+          "contributing_doc_pairs": [
+            "NBT<->NDC",
+            "LDN<->NDC",
+            "LDN<->NBT"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3451,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Rely on spatial planning to manage overlap",
+          "type": "reinforcement",
+          "description": "Integrated spatial planning, zoning, and screening recur across the syntheses as common mechanisms for keeping restoration, agriculture, conservation, and climate investments aligned. The repeated emphasis suggests these tools are central to managing shared landscapes where multiple objectives converge.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3451,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Flag agricultural expansion and intensification pressures",
+          "type": "friction",
+          "description": "Possible misalignment is repeatedly flagged for review where degraded farmland recovery, bare-land conversion, irrigation, hydro-agricultural works, rice, livestock, or other productivity measures increase pressure on land or water. These cases tend to point to delivery friction when the same areas may also be prioritized for restoration, threatened species recovery, protected areas, or reforestation.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT",
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 128,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Flag biomass and infrastructure siting pressures",
+          "type": "friction",
+          "description": "A recurring review area concerns biomass energy, charcoal and woodfuel supply chains, timber or wood-energy plantations, and the siting of roads, solar, and wind infrastructure. These flagged cases often point to resource competition or location-based friction around feedstock sourcing, land take, and overlap with restoration, protected-area, or ecosystem-service priorities.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 112,
+          "spans_documents": [
+            "LDN",
+            "NBT",
+            "NDC"
+          ]
+        }
+      ],
+      "summary_paragraph": "Across the three document pairs, a strong reinforcing pattern recurs around land restoration, forest management, and sustainable land use supporting both biodiversity and climate delivery. This is reinforced by shared enabling systems such as governance, data, tenure, water management, and integrated spatial planning, which tend to align implementation pathways across the agendas. At the same time, several areas are flagged for review, especially where agricultural recovery or intensification, biomass supply, and infrastructure siting may increase pressure on land, water, or ecologically important areas. Overall, the evidence points to broad coherence in stated direction, with friction tending to arise more around delivery choices, sourcing, and location than around headline objectives.",
+      "doc_pair_count": 3
+    }
+  }
+}

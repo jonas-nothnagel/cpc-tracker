@@ -1,0 +1,163 @@
+{
+  "storylines": [
+    {
+      "name": "Vincular los sistemas de restauración en las agendas de la tierra",
+      "type": "reinforcement",
+      "description": "Se repite una narrativa sólida en torno a la restauración, la reforestación, la gestión sostenible de los pastizales y los bosques, y la implementación de áreas protegidas, reforzada por el monitoreo compartido, la financiación, los marcos jurídicos y el establecimiento de metas. Esto tiende a alinear la neutralidad de la degradación de las tierras, la biodiversidad, la adaptación, el clima y la planificación sectorial a largo plazo sobre la misma base territorial.",
+      "contributing_doc_pairs": [
+        "ILDN<->NBSAP",
+        "ILDN<->NDC",
+        "ILDN<->NRVTS",
+        "ILDN<->SECTORAL",
+        "NAP<->NRVTS",
+        "NBSAP<->NRVTS",
+        "NDC<->NRVTS",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2330,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Reforzar la agricultura mediante herramientas de resiliencia",
+      "type": "reinforcement",
+      "description": "Las medidas relativas a la alimentación y la producción rural suelen estar alineadas con la adaptación y la resiliencia climática mediante cultivos climáticamente inteligentes y la gestión de pastizales, la alerta temprana, el monitoreo del agua, los sistemas veterinarios y de bioseguridad, las normas, la trazabilidad y la capacitación. El mecanismo recurrente es que los sistemas facilitadores mejoran las condiciones para una producción, un procesamiento y unas cadenas de suministro más resilientes, en lugar de depender únicamente de la misma actividad en ambos documentos.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NDC",
+        "FSS<->SECTORAL",
+        "NAP<->NDC",
+        "NAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2455,
+      "spans_documents": [
+        "FSS",
+        "NAP",
+        "NDC",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Integrar la biodiversidad en los paisajes productivos",
+      "type": "reinforcement",
+      "description": "Otra narrativa recurrente es aquella en la que las salvaguardias de biodiversidad se incorporan a la agricultura y al uso de la tierra mediante la planificación espacial, normas, certificación, seguimiento, investigación, evaluación de subsidios y valoración de los servicios ecosistémicos. Esto alinea los objetivos de biodiversidad con la agroforestería, la protección del suelo, la rotación de cultivos, la restauración y otras prácticas basadas en la naturaleza en paisajes productivos.",
+      "contributing_doc_pairs": [
+        "FSS<->NBSAP",
+        "NAP<->NBSAP",
+        "NBSAP<->NDC",
+        "NBSAP<->NRVTS",
+        "NBSAP<->SECTORAL",
+        "ILDN<->NBSAP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2192,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Revisar la competencia por la tierra derivada de la expansión de la producción",
+      "type": "friction",
+      "description": "La posible desalineación se señala repetidamente para su revisión cuando la expansión de las tierras de cultivo, los cultivos comerciales de regadío, la producción de forraje, la intensificación ganadera, los sitios de procesamiento y la infraestructura conexa pueden competir con la restauración, las áreas protegidas, los bosques, los humedales y los corredores ecológicos. El mecanismo tiende a ser la competencia por la misma base territorial y las decisiones de ubicación en paisajes rurales compartidos, más que una divergencia amplia en la orientación de las políticas.",
+      "contributing_doc_pairs": [
+        "FSS<->ILDN",
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->NRVTS",
+        "FSS<->SECTORAL",
+        "NBSAP<->NDC",
+        "NDC<->NRVTS",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 924,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Revisar la asignación de agua en paisajes compartidos",
+      "type": "friction",
+      "description": "La presión relacionada con el agua reaparece en varias combinaciones, especialmente cuando la expansión del riego, los embalses, los puntos de agua, el apoyo hídrico para el ganado y la alteración hidrológica pueden competir con la conservación de humedales, la protección de cuencas hidrográficas, la gestión de pastizales y la resiliencia de los ecosistemas. Estos casos suelen plantearse como fricción en la implementación y competencia por los recursos, que se señalan para revisión en cuencas y pastizales superpuestos.",
+      "contributing_doc_pairs": [
+        "FSS<->NAP",
+        "FSS<->NBSAP",
+        "FSS<->NDC",
+        "FSS<->NRVTS",
+        "ILDN<->SECTORAL",
+        "NAP<->NDC",
+        "NAP<->NRVTS",
+        "NAP<->SECTORAL",
+        "NBSAP<->SECTORAL",
+        "NDC<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 764,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Señalar las trayectorias de crecimiento del ganado para su revisión",
+      "type": "friction",
+      "description": "Una narrativa más acotada pero recurrente señala que la expansión de la ganadería y del suministro de carne se identifica para revisión cuando puede aumentar la presión sobre el pastoreo, los piensos, la tierra o el agua y dificultar en la práctica la mitigación, la restauración o el logro de resultados en materia de biodiversidad. Esto reaparece con mayor claridad cuando la modernización de la ganadería se alinea en términos generales con los objetivos de resiliencia, pero determinadas trayectorias de crecimiento pueden requerir una alineación más estrecha con la capacidad de carga de los pastizales, las áreas protegidas y las normas de bajas emisiones.",
+      "contributing_doc_pairs": [
+        "FSS<->NDC",
+        "ILDN<->NDC",
+        "NAP<->NDC",
+        "NBSAP<->NDC",
+        "NDC<->NRVTS",
+        "NDC<->SECTORAL",
+        "FSS<->SECTORAL",
+        "NAP<->SECTORAL"
+      ],
+      "confidence": "medium",
+      "unknown_doc_pairs": [],
+      "pair_count": 519,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    }
+  ],
+  "summary_paragraph": "En el conjunto, el refuerzo parece más común que la fricción, con un patrón sólido que vincula la restauración, la gestión sostenible de la tierra, las salvaguardias de biodiversidad y la resiliencia climática mediante el seguimiento compartido, la financiación, los marcos jurídicos y las herramientas de planificación. Las agendas de los sistemas alimentarios y de la producción rural también tienden a alinearse con la adaptación y la modernización mediante prácticas climáticamente inteligentes, trazabilidad, normas y sistemas de servicios que fortalecen las condiciones de implementación. Al mismo tiempo, la posible desalineación reaparece cuando la expansión agrícola, el riego y algunas trayectorias de crecimiento ganadero se señalan para revisión frente a la restauración, las áreas protegidas, los límites de pastoreo y la disponibilidad de agua en los mismos paisajes. En general, la evidencia apunta a una amplia alineación estratégica con presiones recurrentes de implementación en torno a la tierra, el agua, la localización y el diseño de incentivos.",
+  "doc_pair_count": 21
+}

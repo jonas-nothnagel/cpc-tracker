@@ -3,7 +3,8 @@
     "ipcc_sectors": "IPCC 2006 Guidelines for National GHG Inventories (https://www.ipcc-nggip.iges.or.jp/public/2006gl/). Descriptions are verbatim quotes from the cited section of each volume. Per-entry citations are in the `source` field. NOTE: `sector_transport` is reported as 1A3 (sub of Energy) but tracked separately for policy purposes; `sector_agriculture` and `sector_lulucf` are presented separately to match legacy 1996 / CRT reporting (the 2006 Guidelines combine them as AFOLU, so descriptions for these two are extracted from AFOLU's enumerated components); `sector_other` is project-defined and is NOT an IPCC sector.",
     "nbs_categories": "Methodology development process for Git Hub.pdf, Table 2. Names and descriptions verbatim from the PDF. The PDF in turn cites IPCC Special Report on Climate Change and Land and Natural Climate Solutions (Griscom et al. 2017).",
     "globe_categories": "BIOFIN GLOBE 2024 taxonomy as curated by the team in dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx (sheet \"Globe Taxonomy\"). All descriptions are verbatim from column B. See per-entry `source` field.",
-    "globe_subcategories": "BIOFIN GLOBE 2024 taxonomy authoritative XLSX at dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx. Descriptions are verbatim from column D (\"Definitions / Examples\") of each subcategory row. For codes where BIOFIN has no description (currently only 4.07), text is verbatim from the corresponding bullet in the SharePoint Globe Taxonomy categories.xlsx — see per-entry `source` field. IDs match BIOFIN canonical numbering (no project renumbering)."
+    "globe_subcategories": "BIOFIN GLOBE 2024 taxonomy authoritative XLSX at dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx. Descriptions are verbatim from column D (\"Definitions / Examples\") of each subcategory row. For codes where BIOFIN has no description (currently only 4.07), text is verbatim from the corresponding bullet in the SharePoint Globe Taxonomy categories.xlsx — see per-entry `source` field. IDs match BIOFIN canonical numbering (no project renumbering).",
+    "gga_categories": "UNFCCC decision 2/CMA.5 'Global goal on adaptation' (FCCC/PA/CMA/2023/16/Add.1, 15 March 2024), paragraph 9(a)-(g): the seven thematic targets of the UAE Framework for Global Climate Resilience. Descriptions are verbatim from the decision text; the short `name` labels are project-assigned, since the decision assigns no headers to the sub-paragraphs. Official Spanish/French wording (where present) is verbatim from the S/F editions of the same decision."
   },
   "ipcc_sectors": [
     {
@@ -500,6 +501,64 @@
       "name": "Sustainable wildlife",
       "description": "Sustainable management of wildlife.\nWildlife refers to captive or living in the wild organisms that have not been subject to breeding. All uses - extractive* (fishing, gathering, logging and terrestrial animal harvesting) and non-extractive* - should be done within the ecological limits.",
       "source": "dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx, sheet \"9 Sustainable Use\" row 104 column D"
+    }
+  ],
+  "gga_categories": [
+    {
+      "id": "gga_water",
+      "name": "Water",
+      "description": "Significantly reducing climate-induced water scarcity and enhancing climate resilience to water-related hazards towards a climate-resilient water supply, climate-resilient sanitation and access to safe and affordable potable water for all",
+      "description_es": "Reducir considerablemente la escasez de agua debida al clima y mejorar la resiliencia climática frente a los peligros relacionados con el agua a fin de lograr un suministro de agua y un saneamiento resilientes al clima y garantizar el acceso a agua potable segura y asequible para todos",
+      "description_fr": "Réduire considérablement les pénuries d'eau d'origine climatique et renforcer la résilience climatique face aux risques liés à l'eau en vue de faire en sorte que l'approvisionnement en eau et l'assainissement soient résilients face aux changements climatiques et d'assurer l'accès à l'eau potable pour tous, à un prix abordable",
+      "source": "decision 2/CMA.5 para 9(a) - verbatim description; short label project-assigned"
+    },
+    {
+      "id": "gga_agriculture_food",
+      "name": "Agriculture and food",
+      "description": "Attaining climate-resilient food and agricultural production and supply and distribution of food, as well as increasing sustainable and regenerative production and equitable access to adequate food and nutrition for all",
+      "description_es": "Lograr la resiliencia climática de la producción alimentaria y agrícola y del suministro y distribución de alimentos, y aumentar la producción sostenible y regenerativa y el acceso equitativo a una alimentación y nutrición adecuadas para todos",
+      "description_fr": "Rendre la production alimentaire et agricole résiliente face aux changements climatiques, ainsi que l'approvisionnement alimentaire et la distribution des denrées alimentaires, et accroître la production durable et régénératrice et l'accès équitable à une alimentation et une nutrition adéquates pour tous",
+      "source": "decision 2/CMA.5 para 9(b) - verbatim description; short label project-assigned"
+    },
+    {
+      "id": "gga_health",
+      "name": "Health",
+      "description": "Attaining resilience against climate change related health impacts, promoting climate-resilient health services and significantly reducing climate-related morbidity and mortality, particularly in the most vulnerable communities",
+      "description_es": "Lograr la resiliencia frente a las consecuencias del cambio climático para la salud, promover la resiliencia climática de los servicios de salud y reducir significativamente la morbilidad y mortalidad relacionadas con el clima, especialmente en las comunidades más vulnerables",
+      "description_fr": "Assurer la résilience face aux effets que les changements climatiques ont sur la santé, promouvoir des services de santé climatorésilients et réduire de manière significative la morbidité et la mortalité liées aux changements climatiques, en particulier dans les communautés les plus vulnérables",
+      "source": "decision 2/CMA.5 para 9(c) - verbatim description; short label project-assigned"
+    },
+    {
+      "id": "gga_ecosystems_biodiversity",
+      "name": "Ecosystems and biodiversity",
+      "description": "Reducing climate impacts on ecosystems and biodiversity, and accelerating the use of ecosystem-based adaptation and nature-based solutions, including through their management, enhancement, restoration and conservation and the protection of terrestrial, inland water, mountain, marine and coastal ecosystems",
+      "description_es": "Reducir los efectos del clima en los ecosistemas y la biodiversidad, y acelerar el uso de la adaptación basada en los ecosistemas y de las soluciones basadas en la naturaleza, en particular mediante la gestión, la mejora, la restauración y la conservación de los ecosistemas y la biodiversidad, así como mediante la protección de los ecosistemas terrestres, de aguas interiores, de montaña, marinos y costeros",
+      "description_fr": "Réduire les incidences du climat sur les écosystèmes et la biodiversité et accélérer le recours à l'adaptation fondée sur les écosystèmes et aux solutions fondées sur la nature, notamment grâce à la gestion, l'amélioration, la restauration, la conservation et la protection des écosystèmes terrestres, aquatiques intérieurs, montagneux, marins et côtiers",
+      "source": "decision 2/CMA.5 para 9(d) - verbatim description; short label project-assigned"
+    },
+    {
+      "id": "gga_infrastructure_settlements",
+      "name": "Infrastructure and human settlements",
+      "description": "Increasing the resilience of infrastructure and human settlements to climate change impacts to ensure basic and continuous essential services for all, and minimizing climate-related impacts on infrastructure and human settlements",
+      "description_es": "Aumentar la resiliencia de las infraestructuras y los asentamientos humanos frente a los efectos del cambio climático con el fin de asegurar la prestación de servicios esenciales básicos e ininterrumpidos para todos, y reducir al mínimo los efectos relacionados con el clima en las infraestructuras y los asentamientos humanos",
+      "description_fr": "Accroître la résilience des infrastructures et des établissements humains face aux effets des changements climatiques afin de garantir la continuité des services essentiels de base pour tous, et réduire au minimum les effets de ces changements sur les infrastructures et les établissements humains",
+      "source": "decision 2/CMA.5 para 9(e) - verbatim description; short label project-assigned"
+    },
+    {
+      "id": "gga_livelihoods",
+      "name": "Livelihoods",
+      "description": "Substantially reducing the adverse effects of climate change on poverty eradication and livelihoods, in particular by promoting the use of adaptive social protection measures for all",
+      "description_es": "Reducir sustancialmente los efectos adversos del cambio climático en la erradicación de la pobreza y los medios de subsistencia, en particular promoviendo el uso de medidas de protección social adaptativas en beneficio de todos",
+      "description_fr": "Réduire considérablement les effets néfastes des changements climatiques sur la lutte contre la pauvreté et sur les moyens de subsistance, notamment en encourageant l'application de mesures de protection sociale adaptatives pour tous",
+      "source": "decision 2/CMA.5 para 9(f) - verbatim description; short label project-assigned"
+    },
+    {
+      "id": "gga_cultural_heritage",
+      "name": "Cultural heritage",
+      "description": "Protecting cultural heritage from the impacts of climate-related risks by developing adaptive strategies for preserving cultural practices and heritage sites and by designing climate-resilient infrastructure, guided by traditional knowledge, Indigenous Peoples' knowledge and local knowledge systems",
+      "description_es": "Proteger el patrimonio cultural frente a los efectos de los riesgos climáticos mediante la elaboración de estrategias de adaptación para preservar las prácticas culturales y los lugares de importancia patrimonial y mediante el diseño de infraestructuras resilientes al clima, tomando como guía los conocimientos tradicionales, los conocimientos de los Pueblos Indígenas y los sistemas de conocimientos locales",
+      "description_fr": "Protéger le patrimoine culturel des risques liés au climat en élaborant des stratégies d'adaptation visant à préserver les pratiques culturelles et les sites patrimoniaux et en concevant des infrastructures résilientes face aux changements climatiques, compte tenu des connaissances traditionnelles, du savoir des peuples autochtones et des systèmes de connaissances locaux",
+      "source": "decision 2/CMA.5 para 9(g) - verbatim description; short label project-assigned"
     }
   ]
 }

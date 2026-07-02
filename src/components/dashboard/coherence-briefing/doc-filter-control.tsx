@@ -24,8 +24,9 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { getDocColor, getDocMediumLabel } from "@/lib/utils";
+import { getDocColor, getDocMediumLabel, getDocMeta } from "@/lib/utils";
 import type { CountryConfig, PolicyDocumentType } from "@/types";
+import { DocHoverCard, DocMetaCard } from "./doc-meta-card";
 
 /** One document toggle: colour dot + label. Included reads solid; excluded
  *  reads dimmed with a hollow dot and a strikethrough, so it is obviously
@@ -35,21 +36,29 @@ function DocToggleItem({
   included,
   countryConfig,
   onToggle,
+  showDetails = false,
 }: {
   doc: PolicyDocumentType;
   included: boolean;
   countryConfig: CountryConfig | null;
   onToggle: (doc: PolicyDocumentType) => void;
+  /** When true, render the reference metadata inline (the add/remove overview);
+   *  otherwise the metadata appears in a hover card (the wheel legend). */
+  showDetails?: boolean;
 }) {
   const t = useTranslations("briefing.docFilter");
   const color = getDocColor(countryConfig, doc);
   const label = getDocMediumLabel(countryConfig, doc);
-  return (
+  const toggle = (
     <button
       type="button"
       onClick={() => onToggle(doc)}
       aria-pressed={included}
-      title={included ? t("removeDoc", { name: label }) : t("addDoc", { name: label })}
+      aria-label={
+        included
+          ? t("removeDoc", { name: label })
+          : t("addDoc", { name: label })
+      }
       className={`inline-flex items-center gap-1.5 transition-opacity ${
         included
           ? "opacity-100 hover:opacity-80"
@@ -75,6 +84,31 @@ function DocToggleItem({
         {label}
       </span>
     </button>
+  );
+  if (showDetails) {
+    const meta = getDocMeta(countryConfig, doc);
+    const hasMeta = Boolean(
+      meta.docKind ||
+        meta.published ||
+        meta.author ||
+        meta.objective ||
+        meta.url,
+    );
+    return (
+      <div className="flex flex-col gap-1 text-[13px]">
+        {toggle}
+        {hasMeta && (
+          <div className={`pl-3.5 ${included ? "" : "opacity-50"}`}>
+            <DocMetaCard meta={meta} color={color} hideDot />
+          </div>
+        )}
+      </div>
+    );
+  }
+  return (
+    <DocHoverCard doc={doc} countryConfig={countryConfig}>
+      {toggle}
+    </DocHoverCard>
   );
 }
 
@@ -147,21 +181,24 @@ export function DocFilterControl({
       </p>
 
       {expanded && (
-        <div className="mt-2.5 flex flex-col items-start gap-1.5 pl-0.5">
-          {allDocs.map((doc) => (
-            <DocToggleItem
-              key={doc}
-              doc={doc}
-              included={!hiddenDocs.has(doc)}
-              countryConfig={countryConfig}
-              onToggle={onToggle}
-            />
-          ))}
+        <div className="mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+            {allDocs.map((doc) => (
+              <DocToggleItem
+                key={doc}
+                doc={doc}
+                included={!hiddenDocs.has(doc)}
+                countryConfig={countryConfig}
+                onToggle={onToggle}
+                showDetails
+              />
+            ))}
+          </div>
           {!isDefault && (
             <button
               type="button"
               onClick={onReset}
-              className="mt-1 text-[11px] text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
+              className="mt-4 text-[11px] text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
             >
               {t("resetToDefault")}
             </button>

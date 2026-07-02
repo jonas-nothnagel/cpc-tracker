@@ -16,6 +16,7 @@
  */
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import {
   forceCenter,
   forceCollide,
@@ -133,6 +134,7 @@ export function ConstellationCenterpiece({
   countryConfig,
   state = { groupBy: "document", focus: null, filter: "all" },
 }: ConstellationCenterpieceProps) {
+  const t = useTranslations("briefing.centerpiece");
   const { positions, clusterCenters } = useMemo(
     () => buildLayout(targets),
     [targets],
@@ -165,7 +167,7 @@ export function ConstellationCenterpiece({
         className="w-full"
         style={{ maxHeight: 600 }}
         role="img"
-        aria-label="Policy coherence constellation"
+        aria-label={t("constellationAria")}
       >
         {/* Faint cluster halos */}
         {Array.from(clusterCenters.entries()).map(([doc, c]) => (

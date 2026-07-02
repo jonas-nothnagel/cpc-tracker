@@ -47,6 +47,8 @@ import {
   BTR_ADAPTATION_COLOR,
   OriginalLanguageChip,
 } from "./target-text";
+import { WorkbenchStage } from "./explorer-workbench/workbench-stage";
+import { LensPane } from "./explorer-workbench/lens-pane";
 import type {
   BerData,
   BtrData,
@@ -96,7 +98,7 @@ interface TaxCategory {
   description: string;
 }
 
-type GroupMode = "document" | "sector" | "globe";
+type GroupMode = "document" | "sector" | "globe" | "gga";
 type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
 type ActionTypeFilter = "all" | "mitigation" | "adaptation";
 
@@ -183,6 +185,7 @@ function buildGroups(
   mode: GroupMode,
   sectors: TaxCategory[],
   globeCategories: TaxCategory[],
+  ggaCategories: TaxCategory[],
   classifications: ThematicClassification[],
   countryConfig?: CountryConfig | null,
 ): Group[] {
@@ -201,13 +204,47 @@ function buildGroups(
     }));
   }
   if (mode === "sector") return buildGroupsByTaxonomy(targets, sectors, "sector", classifications);
+  if (mode === "gga") return buildGroupsByTaxonomy(targets, ggaCategories, "gga", classifications);
   return buildGroupsByTaxonomy(targets, globeCategories, "globe", classifications);
 }
 
-function computeLayout(groups: Group[], alignment: AlignmentResult[]) {
-  const total = groups.reduce((s, g) => s + g.targets.length, 0);
-  if (total === 0) return { nodes: [] as NodePos[], arcs: [] as GroupArc[] };
+/**
+ * Build the wheel's arcs and per-target nodes.
+ *
+ * By default each arc's angular span is proportional to its target count
+ * (breadth of policy ambition). When `opts.weightById` is supplied, the span is
+ * driven by that weight instead — the Finance view passes per-category tagged
+ * spend so the wheel can be read as "where does the money go". Zero-weight
+ * groups (e.g. GLOBE categories that carry targets but no tagged BER spend)
+ * keep a fixed minimum sliver so they stay visible and clickable; the remaining
+ * angle is split among weighted groups in exact proportion, so funded shares
+ * stay faithful. Group order is unchanged either way, so the two layouts can be
+ * interpolated arc-for-arc (the morph between the Targets and Spend scalings).
+ */
+function computeLayout(
+  groups: Group[],
+  alignment: AlignmentResult[],
+  opts?: { weightById?: Map<string, number>; minSpanFrac?: number },
+) {
+  const totalTargets = groups.reduce((s, g) => s + g.targets.length, 0);
+  if (totalTargets === 0) return { nodes: [] as NodePos[], arcs: [] as GroupArc[] };
   const avail = 2 * Math.PI - GAP * groups.length;
+
+  const wantsWeights = !!opts?.weightById;
+  const weights = groups.map((g) =>
+    wantsWeights ? Math.max(0, opts!.weightById!.get(g.id) ?? 0) : g.targets.length,
+  );
+  const totalWeight = weights.reduce((s, w) => s + w, 0);
+  // Fall back to target-count spans when a weight map was supplied but summed
+  // to zero (no funded category currently has a visible target — e.g. after
+  // doc-hiding). Without this every wedge would collapse to the min-span sliver
+  // and the wheel would look broken instead of showing the target-count layout.
+  const useWeights = wantsWeights && totalWeight > 0;
+  // Min sliver only applies in weighted mode; default mode is pixel-identical
+  // to before (every group has >= 1 target, so no zero spans arise).
+  const minSpan = useWeights ? (opts?.minSpanFrac ?? 0.012) * avail : 0;
+  const zeroCount = useWeights ? weights.filter((w) => w <= 0).length : 0;
+  const flexAvail = Math.max(0, avail - zeroCount * minSpan);
 
   const cc = new Map<string, number>();
   for (const a of alignment) {
@@ -220,8 +257,14 @@ function computeLayout(groups: Group[], alignment: AlignmentResult[]) {
   const arcs: GroupArc[] = [];
   let cur = 0;
 
-  for (const g of groups) {
-    const span = (g.targets.length / total) * avail;
+  for (let gi = 0; gi < groups.length; gi++) {
+    const g = groups[gi];
+    const w = weights[gi];
+    const span = useWeights
+      ? w > 0
+        ? (w / totalWeight) * flexAvail
+        : minSpan
+      : (g.targets.length / totalTargets) * avail;
     const start = cur;
     const end = cur + span;
     const mid = (start + end) / 2;
@@ -253,6 +296,31 @@ function computeLayout(groups: Group[], alignment: AlignmentResult[]) {
     }
     cur = end + GAP;
   }
+  return { nodes, arcs };
+}
+
+type WheelLayout = { nodes: NodePos[]; arcs: GroupArc[] };
+
+/**
+ * Interpolate two layouts arc-for-arc / node-for-node (both built from the same
+ * groups in the same order, so indices line up). Used to morph the wheel
+ * between the Targets and Spend scalings. `t` is clamped 0..1; the endpoints
+ * short-circuit so the common (not-animating) case returns the layout as-is.
+ */
+function lerpLayout(a: WheelLayout, b: WheelLayout, t: number): WheelLayout {
+  if (t <= 0) return a;
+  if (t >= 1) return b;
+  const arcs = a.arcs.map((arc, i) => {
+    const arcB = b.arcs[i] ?? arc;
+    const startAngle = arc.startAngle + (arcB.startAngle - arc.startAngle) * t;
+    const endAngle = arc.endAngle + (arcB.endAngle - arc.endAngle) * t;
+    return { ...arc, startAngle, endAngle, midAngle: (startAngle + endAngle) / 2 };
+  });
+  const nodes = a.nodes.map((node, i) => {
+    const nodeB = b.nodes[i] ?? node;
+    const angle = node.angle + (nodeB.angle - node.angle) * t;
+    return { ...node, angle, x: NODE_R * Math.sin(angle), y: -NODE_R * Math.cos(angle) };
+  });
   return { nodes, arcs };
 }
 
@@ -1178,7 +1246,7 @@ function useTypedBody(text: string, charDelayMs = 10): string {
  */
 function revealDocsForFocalTaxonomyCategory(args: {
   focalCategoryId: string;
-  taxonomyType: "sector" | "globe";
+  taxonomyType: "sector" | "globe" | "gga";
   classifications: ThematicClassification[];
   targetMap: Map<string, Target>;
   docsToShow: Set<string>;
@@ -1313,6 +1381,124 @@ function ReplyText({
   return <>{parts}</>;
 }
 
+/**
+ * The chat output bubbles (rotating insight, typed reply, error) plus the
+ * inline "Show me" affordance. Extracted from ChatBar so the Explorer B
+ * workbench can keep the chat INPUT in the bottom dock while the OUTPUT lands
+ * in the answers drawer. In the standalone variants ChatBar renders this inline
+ * exactly as before.
+ */
+function ChatOutput({
+  chat,
+  currentInsight,
+  canShowMe,
+  onApplyHook,
+  onSelectChatEntity,
+  hideInsights = false,
+}: {
+  chat: ChatStatus;
+  currentInsight: Insight | null;
+  canShowMe: boolean;
+  onApplyHook: () => void;
+  onSelectChatEntity: (targetId: string) => void;
+  hideInsights?: boolean;
+}) {
+  const t = useTranslations("explorer.chat");
+  const ti = useTranslations("explorer.insights");
+  const showInsight =
+    !hideInsights &&
+    !!currentInsight &&
+    !chat.reply &&
+    !chat.loading &&
+    !chat.error;
+  const showReply = !!chat.reply && !chat.loading;
+  const showError = !!chat.error && !chat.loading;
+  const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
+
+  // Prefer the localized insight message (es/mn: explorer.insights.<pattern>.*)
+  // when it exists and the insight carries interpolation vars; otherwise fall
+  // back to the English callout/pathway composed in coherence-insights.ts.
+  const localizeInsight = (field: "callout" | "pathway"): string => {
+    if (!currentInsight) return "";
+    const tt = ti as unknown as {
+      has: (k: string) => boolean;
+      (k: string, v?: Record<string, string | number>): string;
+    };
+    const key = `${currentInsight.pattern}.${field}`;
+    if (currentInsight.vars && tt.has(key)) return tt(key, currentInsight.vars);
+    return (
+      (field === "callout" ? currentInsight.callout : currentInsight.pathway) ?? ""
+    );
+  };
+
+  return (
+    <>
+      {showInsight && currentInsight && (
+        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
+          <p className="flex items-baseline gap-2">
+            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
+              {t("insight")}
+            </span>
+            <span className="flex-1">{localizeInsight("callout")}</span>
+          </p>
+          {currentInsight.pathway && (
+            <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
+              <span
+                aria-hidden="true"
+                className="mr-1.5 not-italic text-amber-700/70"
+              >
+                ↪
+              </span>
+              {localizeInsight("pathway")}
+            </p>
+          )}
+          {canShowMe && (
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                onClick={onApplyHook}
+                disabled={chat.loading}
+                className={SHOW_ME_LINK_AMBER}
+              >
+                {t("showMe")} <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {showReply && (
+        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
+          <div>
+            <ReplyText
+              typed={typedReply}
+              full={chat.reply}
+              entities={chat.replyEntities}
+              onSelectTarget={onSelectChatEntity}
+            />
+          </div>
+          {canShowMe && (
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                onClick={onApplyHook}
+                disabled={chat.loading}
+                className={SHOW_ME_LINK_BLUE}
+              >
+                {t("showMe")} <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {showError && (
+        <div className="text-[12px] text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
+          {chat.error}
+        </div>
+      )}
+    </>
+  );
+}
+
 function ChatBar({
   onAsk,
   chat,
@@ -1324,6 +1510,9 @@ function ChatBar({
   onSelectChatEntity,
   prominent = false,
   hideInsights = false,
+  hideReply = false,
+  surprisePool,
+  surpriseFills = false,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
@@ -1343,6 +1532,16 @@ function ChatBar({
   /** Suppress the rotating insight bubble + Surprise me (used in the expanded
    *  wheel view, where the user wants just the wheel and the chat). */
   hideInsights?: boolean;
+  /** Render the input + chips only, with the reply / insight / error bubbles
+   *  suppressed. The Explorer B dock sets this so the output lands in the
+   *  answers drawer instead. */
+  hideReply?: boolean;
+  /** Full pool of questions Surprise me draws from when surpriseFills is set
+   *  (wider than the few chips shown). */
+  surprisePool?: string[];
+  /** Explorer B behaviour: Surprise me fills the input with a random question
+   *  from surprisePool instead of rotating a data-derived insight. */
+  surpriseFills?: boolean;
 }) {
   const t = useTranslations("explorer.chat");
   const [query, setQuery] = useState("");
@@ -1356,17 +1555,10 @@ function ChatBar({
     setQuery("");
   };
 
-  // The visible message slot shows one of: the current insight bubble, the
-  // assistant's reply, or an error. They share the same bubble chrome so
-  // the UI doesn't shift between states.
-  const showInsight =
-    !hideInsights &&
-    !!currentInsight &&
-    !chat.reply &&
-    !chat.loading &&
-    !chat.error;
+  // showReply gates the server follow-up chips below. The reply / insight /
+  // error bubbles render via <ChatOutput> (suppressed when hideReply, e.g. the
+  // Explorer B dock, where the output moves to the answers drawer instead).
   const showReply = !!chat.reply && !chat.loading;
-  const showError = !!chat.error && !chat.loading;
   // Drop server-emitted "surprise" follow-ups because the always-visible
   // Surprise me chip below already covers that affordance.
   const visibleSuggestions = chat.suggestions.filter(
@@ -1374,18 +1566,18 @@ function ChatBar({
   );
   const showSuggestions = showReply && visibleSuggestions.length > 0;
 
-  // Only the reply types out. The insight bubble appears instantly because
-  // it's a pre-loaded hook the user didn't explicitly request; making it
-  // type would imply more thinking-in-progress than is actually happening.
-  const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
+  const onSurprise = () => {
+    if (surpriseFills) {
+      const pool = surprisePool ?? [];
+      if (pool.length === 0) return;
+      setQuery(pool[Math.floor(Math.random() * pool.length)]);
+      return;
+    }
+    onRotateInsight();
+  };
 
   return (
-    <div className={prominent ? "space-y-3" : "space-y-2.5"}>
-      {prominent && (
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
-          Ask the policies
-        </p>
-      )}
+    <div className="space-y-2.5">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -1393,20 +1585,28 @@ function ChatBar({
         }}
       >
         {prominent ? (
-          <div className="relative">
+          // Explorer B dock: a single embedded bar — lead label, search input,
+          // filled Ask button — so the chat reads as part of the canvas.
+          <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm">
+            <span className="hidden max-w-[54px] shrink-0 text-[10px] font-semibold uppercase leading-[1.15] tracking-wider text-[var(--undp-gray)] sm:block">
+              {t("askPoliciesLabel")}
+            </span>
+            <span aria-hidden="true" className="text-[15px] text-gray-300">
+              ⌕
+            </span>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               disabled={chat.loading}
-              className="w-full rounded-md border border-gray-300 bg-white px-4 py-3 pr-16 text-sm text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none focus:border-[var(--undp-black)] focus:ring-1 focus:ring-[var(--undp-black)] disabled:opacity-50"
+              className="min-w-0 flex-1 bg-transparent text-[13px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none disabled:opacity-50"
               aria-label={t("askAriaProminent")}
             />
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded text-xs font-medium text-white bg-[var(--undp-black)] disabled:bg-gray-300 transition-colors"
+              className="shrink-0 rounded-full bg-[var(--undp-blue)] px-5 py-2 text-[13px] font-semibold text-white transition-colors disabled:opacity-40"
             >
               {chat.loading ? t("loading") : t("askProminent")}
             </button>
@@ -1439,133 +1639,62 @@ function ChatBar({
         </div>
       )}
 
-      {showInsight && currentInsight && (
-        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
-          <p className="flex items-baseline gap-2">
-            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
-              {t("insight")}
-            </span>
-            <span className="flex-1">{currentInsight.callout}</span>
-          </p>
-          {/* Optional hedged pathway hint. Rendered as a quiet italic line
-           *  beneath the callout with a small ↪ marker, no chip / border,
-           *  so it reads as a secondary thought rather than a separate UI
-           *  block. Only some detectors emit a pathway; absence renders
-           *  exactly as before. */}
-          {currentInsight.pathway && (
-            <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
-              <span
-                aria-hidden="true"
-                className="mr-1.5 not-italic text-amber-700/70"
-              >
-                ↪
-              </span>
-              {currentInsight.pathway}
-            </p>
-          )}
-          {/* Show me lives inside the bubble at bottom-right as a text-link
-           *  with arrow. Picks up the bubble's amber accent so it reads as
-           *  the bubble's own action rather than a stacked extra chrome. */}
-          {canShowMe && (
-            <div className="flex justify-end mt-2">
-              <button
-                type="button"
-                onClick={onApplyHook}
-                disabled={chat.loading}
-                className={SHOW_ME_LINK_AMBER}
-              >
-                {t("showMe")} <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      {showReply && (
-        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
-          <div>
-            <ReplyText
-              typed={typedReply}
-              full={chat.reply}
-              entities={chat.replyEntities}
-              onSelectTarget={onSelectChatEntity}
-            />
-          </div>
-          {/* Reply-side Show me: matches the Ask button's blue text-link
-           *  styling so the two CTAs in the panel share a vocabulary. */}
-          {canShowMe && (
-            <div className="flex justify-end mt-2">
-              <button
-                type="button"
-                onClick={onApplyHook}
-                disabled={chat.loading}
-                className={SHOW_ME_LINK_BLUE}
-              >
-                {t("showMe")} <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      {showError && (
-        <div className="text-[12px] text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
-          {chat.error}
-        </div>
+      {!hideReply && (
+        <ChatOutput
+          chat={chat}
+          currentInsight={currentInsight}
+          canShowMe={canShowMe}
+          onApplyHook={onApplyHook}
+          onSelectChatEntity={onSelectChatEntity}
+          hideInsights={hideInsights}
+        />
       )}
 
-      {/* Surprise me sits where Show me used to be, right under the
-       *  bubble. It's always available so the user has a one-click route
-       *  to "give me something else interesting" without needing to clear
-       *  the chat first. Hidden in the expanded wheel view. */}
-      {!hideInsights && (
-        <div className="flex flex-wrap gap-1.5">
-          <button
-            type="button"
-            onClick={onRotateInsight}
-            disabled={chat.loading}
-            className={CHIP_SURPRISE}
-          >
-            {t("surpriseMe")}
-          </button>
-        </div>
-      )}
-
-      {/* Server-emitted follow-up chips after a reply. Filtered to drop
-       *  any kind:"surprise" suggestion so it doesn't double up with the
-       *  always-visible Surprise me chip above. Kept as pills because the
-       *  server labels are short ("Find similar tensions"). */}
-      {showSuggestions && (
-        <div className="flex flex-wrap gap-1.5">
-          {visibleSuggestions.map((s) => (
+      {/* Chips: Surprise me + server follow-ups + example questions. In the
+       *  prominent dock they all flow into one wrapping row under the bar
+       *  (`contents` lets each group join the same flex line); elsewhere they
+       *  stack as separate blocks. */}
+      <div className={prominent ? "flex flex-wrap items-center gap-2" : "space-y-2.5"}>
+        {!hideInsights && (
+          <div className={prominent ? "contents" : "flex flex-wrap gap-1.5"}>
             <button
-              key={s.query}
               type="button"
-              onClick={() => submit(s.query)}
+              onClick={onSurprise}
               disabled={chat.loading}
-              className={CHIP_SUGGESTION}
+              className={CHIP_SURPRISE}
             >
-              {s.label}
+              {t("surpriseMe")}
+            </button>
+          </div>
+        )}
+        {showSuggestions && (
+          <div className={prominent ? "contents" : "flex flex-wrap gap-1.5"}>
+            {visibleSuggestions.map((s) => (
+              <button
+                key={s.query}
+                type="button"
+                onClick={() => submit(s.query)}
+                disabled={chat.loading}
+                className={CHIP_SUGGESTION}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className={prominent ? "contents" : "flex flex-col gap-1.5"}>
+          {exampleQueries.map((q) => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => submit(q)}
+              disabled={chat.loading}
+              className={prominent ? EXAMPLE_CHIP : EXAMPLE_ROW}
+            >
+              {q}
             </button>
           ))}
         </div>
-      )}
-
-      {/* Persistent example questions. In the workbench they shrink to small
-       *  chips so the chat input stays the prominent action; elsewhere they
-       *  stack as full-width rows for uniform heights on long questions. */}
-      <div
-        className={prominent ? "flex flex-wrap gap-1.5" : "flex flex-col gap-1.5"}
-      >
-        {exampleQueries.map((q) => (
-          <button
-            key={q}
-            type="button"
-            onClick={() => submit(q)}
-            disabled={chat.loading}
-            className={prominent ? EXAMPLE_CHIP : EXAMPLE_ROW}
-          >
-            {q}
-          </button>
-        ))}
       </div>
     </div>
   );
@@ -2672,6 +2801,9 @@ interface PolicyCoherenceExplorerProps {
   sectors: TaxCategory[];
   globeCategories: TaxCategory[];
   globeSubcategories?: GlobeSubcategory[];
+  /** Climate-resilience (GGA) taxonomy categories — decision 2/CMA.5 thematic
+   *  targets. Enables the fourth "Resilience" wheel grouping when present. */
+  ggaCategories?: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
   btrData?: BtrData | null;
@@ -2695,6 +2827,7 @@ export function PolicyCoherenceExplorer({
   sectors,
   globeCategories,
   globeSubcategories,
+  ggaCategories = [],
   classifications,
   nr7Data,
   btrData,
@@ -2745,6 +2878,21 @@ export function PolicyCoherenceExplorer({
    * exists in v1) but the state survives so a return to GLOBE re-paints.
    */
   const [budgetOverlay, setBudgetOverlay] = useState(false);
+  /**
+   * Arc-scaling mode within the Finance view. "targets" (default) sizes each
+   * GLOBE wedge by its policy-target count and shades it by spend share — the
+   * original behaviour. "spend" re-sizes wedges by their share of tagged spend
+   * so the wheel reads as "where does the money go"; individual targets are
+   * then revealed on click rather than tiled along the rim. Only meaningful on
+   * the GLOBE lens with budget data, and reset to "targets" when the user
+   * leaves that context so the toggle never lingers where spend is undefined.
+   */
+  const [budgetScale, setBudgetScale] = useState<"targets" | "spend">("targets");
+  // Animated morph between the two scalings: 0 = targets, 1 = spend. Driven by
+  // a rAF tween (see effect below) so toggling visibly animates the wedge
+  // widths; snaps instantly under prefers-reduced-motion.
+  const [morph, setMorph] = useState(0);
+  const morphRef = useRef(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [comparedPair, setComparedPair] = useState<{
@@ -2765,6 +2913,13 @@ export function PolicyCoherenceExplorer({
   // off brings the chat + insights + at-a-glance panel in beside the wheel.
   const [wheelExpanded, setWheelExpanded] = useState(false);
 
+  // Explorer B answers drawer. Collapsed by default so the wheel reads as the
+  // clean hero; opens when a question is answered, a target / category is
+  // selected, or the user rotates an insight, so output is never hidden behind
+  // the bottom dock. answerCount badges the current thread on the handle.
+  const [answersCollapsed, setAnswersCollapsed] = useState(true);
+  const [answerCount, setAnswerCount] = useState(0);
+
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
   // wheel and the panel shows target detail; closing the target falls back to
@@ -2781,6 +2936,7 @@ export function PolicyCoherenceExplorer({
     if (focusTargetId) {
       setSelectedId(focusTargetId);
       setFilter("contradictions");
+      setAnswersCollapsed(false);
       const t = targets.find((tt) => tt.id === focusTargetId);
       if (t) {
         setHiddenDocs((prev) => {
@@ -2858,6 +3014,15 @@ export function PolicyCoherenceExplorer({
     () => targets.some((t) => t.actionType === "adaptation"),
     [targets],
   );
+  // Whether any target carries a primary GGA (climate-resilience) classification.
+  // Gates the fourth "Resilience" group-by option so it only shows with content.
+  const hasGga = useMemo(
+    () =>
+      classifications.some(
+        (c) => c.taxonomyType === "gga" && c.isPrimary === true,
+      ),
+    [classifications],
+  );
   const visibleTargetIds = useMemo(
     () => new Set(visibleTargets.map((t) => t.id)),
     [visibleTargets],
@@ -2933,19 +3098,81 @@ export function PolicyCoherenceExplorer({
   const budgetShadingActive =
     budgetOverlay && groupMode === "globe" && !!budgetSummary;
 
+  /** True iff arcs should be sized by spend right now (Finance + GLOBE + the
+   *  Spend scaling). Drives the layout morph and the hide-dots-until-click
+   *  behaviour. */
+  const spendScaleActive = budgetShadingActive && budgetScale === "spend";
+
   const activeId = selectedId ?? hoveredId;
 
   const groups = useMemo(
-    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, classifications, countryConfig),
-    [visibleTargets, groupMode, sectors, globeCategories, classifications, countryConfig],
+    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig),
+    [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig],
   );
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
 
-  const { nodes, arcs } = useMemo(
+  // Target-count layout (the default scaling) and, when on the GLOBE lens with
+  // budget data, a spend-weighted layout. The rendered layout interpolates
+  // between them by `morph` so switching scalings animates the wedge widths.
+  const layoutByTargets = useMemo(
     () => computeLayout(groups, filtered),
     [groups, filtered],
   );
+  // Per-category spend weights for the Spend scaling, derived from the same map
+  // that drives the arc shading so a wedge's width and its shade can never
+  // disagree about how much spend the category carries.
+  const budgetWeightMap = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const [id, e] of budgetByCategoryId) m.set(id, e.totalBudget);
+    return m;
+  }, [budgetByCategoryId]);
+  const layoutBySpend = useMemo<WheelLayout | null>(() => {
+    if (groupMode !== "globe" || !budgetSummary) return null;
+    return computeLayout(groups, filtered, {
+      weightById: budgetWeightMap,
+      minSpanFrac: 0.012,
+    });
+  }, [groupMode, budgetSummary, groups, filtered, budgetWeightMap]);
+
+  const { nodes, arcs } = useMemo(
+    () =>
+      layoutBySpend && morph > 0
+        ? lerpLayout(layoutByTargets, layoutBySpend, morph)
+        : layoutByTargets,
+    [layoutByTargets, layoutBySpend, morph],
+  );
+
+  // rAF tween of `morph` toward the active scaling. Cancels any in-flight tween
+  // on change/unmount; snaps under prefers-reduced-motion.
+  useEffect(() => {
+    const target = spendScaleActive ? 1 : 0;
+    if (morphRef.current === target) return;
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      morphRef.current = target;
+      setMorph(target);
+      return;
+    }
+    const from = morphRef.current;
+    const dur = 550;
+    let raf = 0;
+    let startTs = 0;
+    const tick = (ts: number) => {
+      if (!startTs) startTs = ts;
+      const p = Math.min(1, (ts - startTs) / dur);
+      // easeInOutQuad
+      const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const v = from + (target - from) * eased;
+      morphRef.current = v;
+      setMorph(v);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [spendScaleActive]);
 
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
   const groupColorMap = useMemo(() => new Map(arcs.map((a) => [a.id, a.color])), [arcs]);
@@ -3052,6 +3279,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory((prev) => (prev.length > 0 ? [] : prev));
+    setAnswerCount(0);
   }, []);
 
   // Returns the panel to the country's load-time defaults: clears any
@@ -3067,11 +3295,13 @@ export function PolicyCoherenceExplorer({
     setFocalGroupId(null);
     setHiddenDocs(new Set(countryConfig?.defaultHiddenDocTypes ?? []));
     clearChat();
+    setAnswersCollapsed(true);
   }, [countryConfig, clearChat]);
 
   const handleNodeClick = useCallback((id: string) => {
     setComparedPair(null);
     setSelectedId((prev) => (prev === id ? null : id));
+    setAnswersCollapsed(false);
     // Chat is NOT cleared on selection: in the workbench the chat is a
     // persistent rail header, so its reply must survive node clicks. (In the
     // standalone "dashboard" variant the chat lives in the idle EmptyPanel,
@@ -3097,6 +3327,7 @@ export function PolicyCoherenceExplorer({
       }
       setComparedPair(null);
       setSelectedId(targetId);
+      setAnswersCollapsed(false);
     },
     [targets, hiddenDocs],
   );
@@ -3111,6 +3342,9 @@ export function PolicyCoherenceExplorer({
       setSelectedId(null);
       setComparedPair(null);
       setFocalGroupId(null);
+      // Spend scaling only maps onto the GLOBE lens; drop it elsewhere so the
+      // wheel reverts to target-count widths.
+      if (m !== "globe") setBudgetScale("targets");
       clearChat();
     },
     [clearChat],
@@ -3125,6 +3359,7 @@ export function PolicyCoherenceExplorer({
       setComparedPair(null);
       setFocalGroupId((prev) => (prev === id ? null : id));
       clearChat();
+      setAnswersCollapsed(false);
     },
     [clearChat],
   );
@@ -3202,6 +3437,7 @@ export function PolicyCoherenceExplorer({
           classifications,
           sectors,
           globeCategories,
+          ggaCategories,
           budgetSummary,
           btrData,
           availableDocs,
@@ -3267,6 +3503,10 @@ export function PolicyCoherenceExplorer({
             { role: "assistant" as const, content: json.reply },
           ].slice(-6),
         );
+        // A fresh answer landed: badge it and make sure the answers drawer is
+        // open so the reply is visible (the chat input lives in the dock).
+        setAnswerCount((c) => c + 1);
+        setAnswersCollapsed(false);
       } catch (err) {
         setChat({
           loading: false,
@@ -3277,6 +3517,7 @@ export function PolicyCoherenceExplorer({
           pendingActions: null,
           replyEntities: [],
         });
+        setAnswersCollapsed(false);
       }
     },
     [
@@ -3286,6 +3527,7 @@ export function PolicyCoherenceExplorer({
       classifications,
       countryConfig,
       globeCategories,
+      ggaCategories,
       hiddenDocs,
       groupMode,
       filter,
@@ -3306,7 +3548,26 @@ export function PolicyCoherenceExplorer({
     () => availableDocs.filter((d) => !hiddenDocs.has(d)),
     [availableDocs, hiddenDocs],
   );
-  const exampleQueries = useMemo(
+  // Coherence / Finance view, derived from the budget overlay (no second
+  // source of truth). Selecting Finance also snaps the grouping to GLOBE so the
+  // spend shading lands somewhere the data maps — the same rule the legacy
+  // toggle used. Only offered when the country has tagged budget data.
+  const view: "coherence" | "finance" = budgetOverlay ? "finance" : "coherence";
+  const setView = useCallback(
+    (next: "coherence" | "finance") => {
+      const finance = next === "finance";
+      setBudgetOverlay(finance);
+      if (finance && groupMode !== "globe") setGroupMode("globe");
+      // Leaving Finance returns the wheel to the target-count scaling.
+      if (!finance) setBudgetScale("targets");
+    },
+    [groupMode],
+  );
+  // Example chips, split into coherence and finance pools. Keys come from
+  // pickExampleQueries (gated by the dataset); the labels live in the explorer
+  // i18n catalogue. The workbench dock shows up to three for the active view;
+  // the standalone EmptyPanel shows up to four across both pools.
+  const exampleKeys = useMemo(
     () =>
       pickExampleQueries({
         globeCategoriesAvailable: globeCategories.length > 0,
@@ -3328,6 +3589,24 @@ export function PolicyCoherenceExplorer({
       budgetSummary,
     ],
   );
+  const exampleQueries = useMemo(
+    () =>
+      [
+        ...exampleKeys.coherence.map((k) => t(`questions.coherence.${k}`)),
+        ...exampleKeys.finance.map((k) => t(`questions.finance.${k}`)),
+      ].slice(0, 4),
+    [exampleKeys, t],
+  );
+  // Full pool for the active view; Surprise me draws from all of it, the dock
+  // shows the first three as chips.
+  const surprisePool = useMemo(
+    () =>
+      view === "finance"
+        ? exampleKeys.finance.map((k) => t(`questions.finance.${k}`))
+        : exampleKeys.coherence.map((k) => t(`questions.coherence.${k}`)),
+    [exampleKeys, view, t],
+  );
+  const dockQuestions = surprisePool.slice(0, 3);
 
   // Compute all available insights once per data shift. The list is ordered
   // by interestingness; `insightIdx` rotates through it.
@@ -3386,6 +3665,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory([]);
+    setAnswersCollapsed(false);
   }, [insights.length]);
 
   // Apply an insight's action set to the wheel. Surfaces the callout as the
@@ -3453,7 +3733,9 @@ export function PolicyCoherenceExplorer({
       if (
         hasFocusCategoryAction &&
         nextFocalGroupId &&
-        (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
+        (effectiveGroupMode === "sector" ||
+          effectiveGroupMode === "globe" ||
+          effectiveGroupMode === "gga")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -3582,7 +3864,9 @@ export function PolicyCoherenceExplorer({
       if (
         hasFocusCategoryAction &&
         nextFocalGroupId &&
-        (effectiveGroupMode === "sector" || effectiveGroupMode === "globe")
+        (effectiveGroupMode === "sector" ||
+          effectiveGroupMode === "globe" ||
+          effectiveGroupMode === "gga")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -3755,11 +4039,15 @@ export function PolicyCoherenceExplorer({
 
   // The workbench chat, extracted so it can live either in the side rail
   // (default) or in a full-width bar on top (expanded wheel mode).
-  const workbenchChat = (hideInsights = false) => (
+  const workbenchChat = (
+    hideInsights = false,
+    hideReply = false,
+    surpriseFills = false,
+  ) => (
     <ChatBar
       onAsk={handleAsk}
       chat={chat}
-      exampleQueries={exampleQueries}
+      exampleQueries={dockQuestions}
       onRotateInsight={rotateInsight}
       currentInsight={currentInsight}
       onApplyHook={onApplyHook}
@@ -3767,8 +4055,922 @@ export function PolicyCoherenceExplorer({
       onSelectChatEntity={handleChatEntityClick}
       prominent
       hideInsights={hideInsights}
+      hideReply={hideReply}
+      surprisePool={surprisePool}
+      surpriseFills={surpriseFills}
     />
   );
+
+  // Hoisted so the legacy return and the Explorer B workbench stage render
+  // the exact same wheel and detail panels without duplicating their JSX.
+  const wheelSvg = (
+            <svg
+              viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
+              className="w-full"
+              style={{
+                maxHeight: isWorkbench
+                  ? "min(660px, 70vh)"
+                  : isEmbed
+                    ? "min(600px, 64vh)"
+                    : 620,
+              }}
+              onClick={handleBgClick}
+            >
+              {/* Guide circle */}
+              <circle cx={0} cy={0} r={NODE_R} fill="none" stroke="#f1f5f9" strokeWidth={1} strokeDasharray="4 4" />
+
+              {/* Biodiversity Budget wedges. Rendered before the rim arcs so
+                  the arcs (and everything that follows: ribbons, nodes,
+                  labels) layer on top. Each wedge fills the interior of one
+                  GLOBE category at a saturation proportional to its share of
+                  tagged BER spend. Hidden when the overlay is off so the
+                  regular wheel looks unchanged. */}
+              {budgetShadingActive && budgetSummary &&
+                arcs.map((arc) => {
+                  const d = wedgeGen({
+                    startAngle: arc.startAngle,
+                    endAngle: arc.endAngle,
+                  });
+                  if (!d) return null;
+                  const entry = budgetByCategoryId.get(arc.id);
+                  const share = entry?.shareOfTotalBudget ?? 0;
+                  // Single hue for funded wedges (BUDGET_WEDGE_COLOR), single
+                  // grey for unfunded ones. The angular span already encodes
+                  // the target-count grouping (Sustainable use takes nearly
+                  // half the wheel because it has 70 targets), so layering
+                  // the category hue on the wedge fill made budget hard to
+                  // read in isolation: a wide pale-blue wedge looked like
+                  // "lots of something" even though it's only 6.5% of tagged
+                  // spend. With one hue across all funded wedges, opacity is
+                  // the only varying dimension, and the rim arc continues
+                  // to carry category identity.
+                  const isUnfunded = !entry || entry.totalBudget <= 0;
+                  const wedgeColor = isUnfunded
+                    ? "#94a3b8"
+                    : BUDGET_WEDGE_COLOR;
+                  // Gradual saturation by spend share in BOTH scalings: the
+                  // most-funded category renders darkest, the rest fade down.
+                  // In the Spend scaling the wedge width also encodes spend, so
+                  // width and shade reinforce each other (the dominant category
+                  // is both widest and darkest).
+                  const fillAlpha = isUnfunded
+                    ? 0.08
+                    : alphaForBudgetShare(share, budgetSummary.maxShare);
+                  const angularSpan = arc.endAngle - arc.startAngle;
+                  // Only label wedges wider than ~14 degrees. Below that the
+                  // text overlaps the wedge boundary and reads as junk; the
+                  // rim label + hover tooltip still carry the info.
+                  // Also hide the inside % when a target is active or a
+                  // category is focal — the central callout and connection
+                  // lines draw across the wedge interior in those states, so
+                  // the inside label is unreadable. The category-name label
+                  // outside picks up the % in that case (see the leader-label
+                  // block below).
+                  // Inside-wedge % is suppressed when:
+                  //   - the wedge is too narrow to comfortably hold the
+                  //     glyphs (angular span <= ~14 deg),
+                  //   - a target or category is focal (the central callout
+                  //     overlays the wedge interior — the % moves outside
+                  //     into the leader label in that state),
+                  //   - or the category has zero tagged BER spend (showing
+                  //     "0%" is redundant once the wedge itself is greyed).
+                  // Suppression threshold: the resting Targets view keeps the
+                  // original ~14deg floor (below which the glyphs overlap the
+                  // wedge edge); the Spend scaling relaxes it toward ~11.5deg so
+                  // narrow-but-funded wedges (e.g. a 4-5% category) still show
+                  // their share. Interpolated by morph so the Targets view is
+                  // byte-for-byte unchanged at rest.
+                  const labelMinSpan = 0.244 - 0.044 * morph;
+                  const showLabel =
+                    angularSpan > labelMinSpan &&
+                    !activeId &&
+                    !isGroupFocus &&
+                    !isUnfunded;
+                  const labelR = 145;
+                  const sharePct = (share * 100).toFixed(
+                    share >= 0.1 ? 0 : 1,
+                  );
+                  const amountStr = entry
+                    ? formatBudgetValue(
+                        entry.totalBudget,
+                        budgetSummary.currency ?? "",
+                      )
+                    : "";
+                  const labelFill =
+                    fillAlpha > 0.55 ? "white" : "var(--undp-black)";
+                  return (
+                    <g key={`wedge-${arc.id}`}>
+                      <path
+                        d={d}
+                        fill={wedgeColor}
+                        fillOpacity={fillAlpha}
+                        stroke={wedgeColor}
+                        strokeOpacity={isUnfunded ? 0.2 : 0.35}
+                        strokeWidth={0.75}
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleArcClick(arc.id);
+                        }}
+                      >
+                        <title>
+                          {t("budget.wedgeTooltip", { label: arc.label, amount: amountStr, pct: sharePct, hasAmount: amountStr ? 1 : 0 })}
+                        </title>
+                      </path>
+                      {showLabel && (
+                        <text
+                          x={labelR * Math.sin(arc.midAngle)}
+                          y={-labelR * Math.cos(arc.midAngle)}
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          fontSize={14}
+                          fontWeight={isEmbed ? 500 : 600}
+                          fill={labelFill}
+                          className="pointer-events-none select-none tabular-nums"
+                          style={{ letterSpacing: "0.01em" }}
+                        >
+                          <tspan>{sharePct}</tspan>
+                          <tspan
+                            fontSize={9}
+                            fontWeight={500}
+                            dx="0.15em"
+                            fillOpacity={0.75}
+                          >
+                            %
+                          </tspan>
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
+
+              {/* Group arcs */}
+              {arcs.map((arc) => {
+                const d = arcGen({ startAngle: arc.startAngle, endAngle: arc.endAngle });
+                const hasActiveNode =
+                  !activeId ||
+                  nodes.some(
+                    (n) =>
+                      n.groupId === arc.id &&
+                      (n.id === activeId || connectedIds.has(n.id)),
+                  );
+                const isFocal = arc.id === focalGroupId;
+                const arcMidR = (INNER_R + arcOuterR) / 2;
+                const badgeX = arcMidR * Math.sin(arc.midAngle);
+                const badgeY = -arcMidR * Math.cos(arc.midAngle);
+                // Rim arc opacity. In budget mode we keep overview at 1.0 so
+                // the colored boundary at the rim stays crisp; the magnitude
+                // encoding is carried by the wedge fill layer below, not by
+                // modulating the 7-pixel rim band (v1 attempt, indiscernible).
+                const arcOpacity = activeId
+                  ? hasActiveNode
+                    ? 0.8
+                    : 0.12
+                  : isGroupFocus
+                    ? isFocal
+                      ? 1
+                      : 0.18
+                    : budgetShadingActive
+                      ? 1
+                      : 0.65;
+                const budgetEntry = budgetShadingActive
+                  ? budgetByCategoryId.get(arc.id)
+                  : undefined;
+                // In budget mode, zero-budget categories also grey their rim
+                // arc so the entire category (wedge + rim + leader + label)
+                // reads as a single "no tagged spend" visual class. Outside
+                // budget mode, the category hue is preserved.
+                const arcIsUnfunded =
+                  budgetShadingActive &&
+                  (!budgetEntry || budgetEntry.totalBudget <= 0);
+                const rimColor = arcIsUnfunded ? "#94a3b8" : arc.color;
+                return (
+                  <g key={arc.id}>
+                    <path
+                      d={d ?? ""}
+                      fill={rimColor}
+                      opacity={arcOpacity}
+                      stroke={isFocal && !activeId ? rimColor : "none"}
+                      strokeWidth={isFocal && !activeId ? 1.5 : 0}
+                      className="transition-opacity duration-200 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleArcClick(arc.id);
+                      }}
+                    >
+                      <title>
+                        {budgetShadingActive && budgetEntry
+                          ? t("budget.wedgeTooltip", {
+                              label: arc.label,
+                              amount: formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? ""),
+                              pct: (budgetEntry.shareOfTotalBudget * 100).toFixed(1),
+                              hasAmount: 1,
+                            })
+                          : arc.label}
+                      </title>
+                    </path>
+                    {/* Count badge on arc in overview mode */}
+                    {!activeId && !isGroupFocus && arc.count > 0 && (
+                      <text
+                        x={badgeX}
+                        y={badgeY}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontSize={9}
+                        fontWeight={600}
+                        fill="white"
+                        className="select-none pointer-events-none"
+                      >
+                        {arc.count}
+                      </text>
+                    )}
+                  </g>
+                );
+              })}
+
+              {/* Ambient connections — faint background web. Suppressed
+                  while the Biodiversity Budget overlay is shading: in budget
+                  mode the question is "where is the money", and the ambient
+                  ribbon noise competes with the wedge fill instead of adding
+                  signal. Selected-target connections (rendered separately
+                  below) still appear so click-through navigation works. */}
+              {!activeId && !budgetShadingActive &&
+                ambientConns.map((conn) => {
+                  const nA = nodeMap.get(conn.targetAId);
+                  const nB = nodeMap.get(conn.targetBId);
+                  if (!nA || !nB) return null;
+                  // When a category is focal, drop edges that don't touch any
+                  // of its targets so the wheel reads as "this slice's web".
+                  if (
+                    isGroupFocus &&
+                    focalGroupTargetIds &&
+                    !focalGroupTargetIds.has(conn.targetAId) &&
+                    !focalGroupTargetIds.has(conn.targetBId)
+                  ) {
+                    return null;
+                  }
+                  const key = `amb-${[conn.targetAId, conn.targetBId].sort().join("__")}`;
+                  const contra = isContradiction(conn.alignment);
+                  const isContraMode = filter === "contradictions";
+                  // In group focus mode, give the surviving edges a bit more
+                  // presence — the noise is gone so they can carry weight.
+                  const opacity = isGroupFocus
+                    ? contra
+                      ? 0.7
+                      : 0.55
+                    : isContraMode
+                      ? 0.55
+                      : ambientOpacity;
+                  const strokeWidth = isGroupFocus
+                    ? contra || conn.alignment === "high"
+                      ? 1.8
+                      : 1.2
+                    : isContraMode
+                      ? 2
+                      : 1;
+                  return (
+                    <path
+                      key={key}
+                      d={curvePath(nA.x, nA.y, nB.x, nB.y)}
+                      fill="none"
+                      stroke={ALIGNMENT_COLORS[conn.alignment]}
+                      strokeWidth={strokeWidth}
+                      strokeDasharray={contra ? "6 3" : "none"}
+                      opacity={opacity}
+                      strokeLinecap="round"
+                      style={{ pointerEvents: "none" }}
+                    />
+                  );
+                })}
+
+              {/* Active-node connections — prominent on hover/click */}
+              {activeId &&
+                activeConns.map((conn) => {
+                  const nA = nodeMap.get(activeId);
+                  const nB = nodeMap.get(conn.otherId);
+                  if (!nA || !nB) return null;
+                  const key = [conn.targetAId, conn.targetBId].sort().join("__");
+                  const contra = isContradiction(conn.alignment);
+                  return (
+                    <path
+                      key={key}
+                      d={curvePath(nA.x, nA.y, nB.x, nB.y)}
+                      fill="none"
+                      stroke={ALIGNMENT_COLORS[conn.alignment]}
+                      strokeWidth={
+                        conn.alignment === "high" || contra ? 2.5 : conn.alignment === "medium" ? 2 : 1.5
+                      }
+                      strokeDasharray={contra ? "6 3" : "none"}
+                      opacity={conn.alignment === "high" ? 0.85 : conn.alignment === "medium" ? 0.7 : 0.6}
+                      strokeLinecap="round"
+                      style={{ pointerEvents: "none" }}
+                    />
+                  );
+                })}
+
+              {/* Target nodes. Wrapped in a group with reduced opacity while
+                  the budget overlay is shading so the colourful node ring
+                  doesn't overpower the wedge fill underneath. Click and hover
+                  still work because the underlying nodes keep their full
+                  pointer surface. */}
+              <g
+                opacity={
+                  budgetShadingActive && !activeId && !isGroupFocus
+                    ? 0.2 * (1 - morph)
+                    : 1
+                }
+                style={
+                  // Gate interactivity on the same `morph` signal that drives
+                  // the fade (not the stepped spendScaleActive) so visibility
+                  // and clickability stay in sync across the tween — otherwise
+                  // toggling back to Targets restores clicks ~550ms before the
+                  // dots reappear, letting users hit invisible nodes.
+                  budgetShadingActive && !activeId && !isGroupFocus && morph > 0.5
+                    ? { pointerEvents: "none" }
+                    : undefined
+                }
+              >
+              {nodes.map((node) => {
+                const r = NODE_RADIUS;
+                const isActive = node.id === activeId;
+                const isConnected = connectedIds.has(node.id);
+                const isFocalGroupMember =
+                  !!focalGroupTargetIds && focalGroupTargetIds.has(node.id);
+                const isDimmed = activeId
+                  ? !isActive && !isConnected
+                  : isGroupFocus && !isFocalGroupMember;
+                const useGroupColor = groupMode !== "document";
+                const baseNodeColor = useGroupColor
+                  ? (groupColorMap.get(node.groupId) ?? getDocColor(countryConfig, node.target.sourceDocument))
+                  : getDocColor(countryConfig, node.target.sourceDocument);
+                // Override for BTR adaptation actions so they're visually distinct
+                // from BTR mitigation (purple) regardless of grouping mode.
+                const nodeColor =
+                  node.target.actionType === "adaptation"
+                    ? BTR_ADAPTATION_COLOR
+                    : baseNodeColor;
+                return (
+                  <g key={node.id}>
+                    {isActive && (
+                      <circle
+                        cx={node.x} cy={node.y} r={r + 5}
+                        fill="none"
+                        stroke={nodeColor}
+                        strokeWidth={2}
+                        opacity={0.4}
+                        style={{ pointerEvents: "none" }}
+                      />
+                    )}
+                    {isConnected && !isActive && (
+                      <circle
+                        cx={node.x} cy={node.y} r={r + 3}
+                        fill="none"
+                        stroke={nodeColor}
+                        strokeWidth={1.5}
+                        opacity={0.25}
+                        style={{ pointerEvents: "none" }}
+                      />
+                    )}
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={r}
+                      fill={nodeColor}
+                      stroke="white"
+                      strokeWidth={isEmbed ? 1 : 1.5}
+                      opacity={isDimmed ? 0.12 : isEmbed ? 0.8 : 1}
+                      className="transition-opacity duration-200 cursor-pointer"
+                      onMouseEnter={() => {
+                        if (!selectedId) setHoveredId(node.id);
+                      }}
+                      onMouseLeave={() => setHoveredId(null)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNodeClick(node.id);
+                      }}
+                    >
+                      <title>{t("wheel.nodeTooltip", { label: getDocMediumLabel(countryConfig, node.target.sourceDocument), source: node.target.sourceLabel })}</title>
+                    </circle>
+                    {/* Small doc-type indicator dot in non-document modes */}
+                    {useGroupColor && r >= 4 && !isDimmed && (
+                      <circle
+                        cx={node.x}
+                        cy={node.y}
+                        r={2.5}
+                        fill={getDocColor(countryConfig, node.target.sourceDocument)}
+                        stroke="white"
+                        strokeWidth={0.5}
+                        className="pointer-events-none"
+                      />
+                    )}
+                  </g>
+                );
+              })}
+              </g>
+
+              {/* Node labels — only when a node is active/hovered, with collision avoidance */}
+              {activeId && (() => {
+                // Collect connected nodes and sort by alignment strength
+                const labelNodes: { node: NodePos; isActive: boolean }[] = [];
+                for (const node of nodes) {
+                  if (node.id === activeId) labelNodes.push({ node, isActive: true });
+                  else if (connectedIds.has(node.id)) labelNodes.push({ node, isActive: false });
+                }
+                // Sort: active first, then by angle for spacing check
+                const sorted = labelNodes.sort((a, b) => {
+                  if (a.isActive) return -1;
+                  if (b.isActive) return 1;
+                  return a.node.angle - b.node.angle;
+                });
+                // Greedily filter: skip labels that would collide with an
+                // already-placed one. The required angular gap grows toward the
+                // top and bottom of the wheel, where labels run horizontally and
+                // a small angular step still overlaps a long neighbour; near the
+                // sides a small gap suffices because neighbours separate
+                // vertically. A highly-connected target therefore shows only a
+                // readable, spread-out subset on the wheel; the full list lives
+                // in the detail panel.
+                const gapFor = (angle: number) =>
+                  0.14 / Math.max(0.22, Math.abs(Math.sin(angle)));
+                const placed: number[] = [];
+                const visible: typeof sorted = [];
+                for (const entry of sorted) {
+                  const gap = gapFor(entry.node.angle);
+                  const tooClose = placed.some(
+                    (a) => Math.abs(entry.node.angle - a) < gap,
+                  );
+                  if (entry.isActive || !tooClose) {
+                    visible.push(entry);
+                    placed.push(entry.node.angle);
+                  }
+                }
+                const showDocCtx = groupMode !== "document";
+                return visible.map(({ node, isActive }) => {
+                  const lx = LABEL_R * Math.sin(node.angle);
+                  const ly = -LABEL_R * Math.cos(node.angle);
+                  const docColor = getDocColor(countryConfig, node.target.sourceDocument);
+                  return (
+                    <text
+                      key={`lbl-${node.id}`}
+                      x={lx}
+                      y={ly}
+                      textAnchor={anchorFor(node.angle)}
+                      dominantBaseline="middle"
+                      className="select-none pointer-events-none"
+                      fontSize={isActive ? 11 : 9}
+                      fontWeight={isActive ? 700 : 400}
+                      fill={
+                        showDocCtx
+                          ? docColor
+                          : "#334155"
+                      }
+                      style={{ transition: "fill 200ms, font-size 200ms" }}
+                    >
+                      {showDocCtx && (
+                        <tspan fontWeight={700} fontSize={isActive ? 9 : 7}>
+                          {getDocMediumLabel(countryConfig, node.target.sourceDocument)}{" "}
+                        </tspan>
+                      )}
+                      {node.target.sourceLabel}
+                    </text>
+                  );
+                });
+              })()}
+
+              {/* Group labels — positioned radially with collision avoidance */}
+              {(() => {
+                // Estimate label height in SVG units (~14px per label)
+                const LABEL_H = 14;
+                // Approximate character width at fontSize 11, fontWeight 600
+                const CHAR_W = 6.5;
+                // Labels wider than this in chars wrap to two lines so they
+                // don't extend past the viewBox edge.
+                const MAX_CHARS_PER_LINE = 24;
+
+                const entries = arcs.map((arc) => {
+                  const lines = wrapLabel(arc.label, MAX_CHARS_PER_LINE);
+                  const longest = lines.reduce(
+                    (m, l) => Math.max(m, l.length),
+                    0,
+                  );
+                  return {
+                    arc,
+                    lines,
+                    angle: arc.midAngle,
+                    // Angular span uses the longest wrapped line so collision
+                    // avoidance stays correct for multi-line labels.
+                    angularSpan: (longest * CHAR_W) / GRP_LABEL_R,
+                  };
+                });
+
+                // Sort by home angle so neighbours-in-the-circle are neighbours-in-the-array
+                const sorted = [...entries].sort((a, b) => a.arc.midAngle - b.arc.midAngle);
+
+                // Spring relaxation: each pass pulls every label toward its
+                // arc midpoint (home) and pushes overlapping neighbours apart
+                // symmetrically. Converges to the layout with minimum total
+                // displacement, so labels sit as close to their arcs as the
+                // overlap constraint allows.
+                const PADDING = LABEL_H / GRP_LABEL_R;
+                const HOME_PULL = 0.18;
+                const N = sorted.length;
+                for (let iter = 0; iter < 60; iter++) {
+                  for (const e of sorted) {
+                    e.angle += HOME_PULL * (e.arc.midAngle - e.angle);
+                  }
+                  // Circular de-collision: pair i with (i+1) AND the last with
+                  // the first across the 12 o'clock seam (gap measured with a
+                  // +2π offset). Without the wrap pair the two labels straddling
+                  // the top never de-collide — which is exactly where the Spend
+                  // scaling parks the shrunken lead category next to the
+                  // unfunded slivers, causing the overlap.
+                  for (let i = 0; i < N; i++) {
+                    const a = sorted[i];
+                    const b = sorted[(i + 1) % N];
+                    const wrap = i + 1 === N;
+                    const needed = (a.angularSpan + b.angularSpan) / 2 + PADDING;
+                    const gap = b.angle + (wrap ? 2 * Math.PI : 0) - a.angle;
+                    if (gap < needed) {
+                      const half = (needed - gap) / 2;
+                      a.angle -= half;
+                      b.angle += half;
+                    }
+                  }
+                }
+
+                return sorted.map(({ arc, angle, lines }) => {
+                  // Leader line: from arc outer edge (at original midAngle) to label position
+                  const arcX = (OUTER_R + 3) * Math.sin(arc.midAngle);
+                  const arcY = -(OUTER_R + 3) * Math.cos(arc.midAngle);
+                  const lx = GRP_LABEL_R * Math.sin(angle);
+                  const ly = -GRP_LABEL_R * Math.cos(angle);
+                  // Small elbow point just outside arc
+                  const elbowR = OUTER_R + 14;
+                  const elbowX = elbowR * Math.sin(angle);
+                  const elbowY = -elbowR * Math.cos(angle);
+                  const anchor = anchorFor(angle);
+                  // Nudge label slightly away from leader endpoint
+                  const nudge = anchor === "start" ? 3 : anchor === "end" ? -3 : 0;
+                  const isFocal = arc.id === focalGroupId;
+                  const labelDimmed =
+                    !!activeId || (isGroupFocus && !isFocal);
+                  const leaderOpacity = activeId
+                    ? 0.2
+                    : isGroupFocus
+                      ? isFocal
+                        ? 0.6
+                        : 0.12
+                      : 0.35;
+                  // labelFill: dim grey when another target/category has
+                  // focus; full category colour otherwise. In budget mode,
+                  // zero-budget categories also drop to grey so the rim arc
+                  // greying carries through to the leader line and label
+                  // and the whole category reads as a single "unfunded"
+                  // visual class.
+                  const arcIsUnfundedHere =
+                    budgetShadingActive &&
+                    (!budgetByCategoryId.get(arc.id) ||
+                      (budgetByCategoryId.get(arc.id)?.totalBudget ?? 0) <= 0);
+                  const labelFill = labelDimmed || arcIsUnfundedHere ? "#94a3b8" : arc.color;
+                  const leaderColor = arcIsUnfundedHere ? "#94a3b8" : arc.color;
+                  // In budget mode, surface the absolute amount as a second
+                  // sub-line under the category name. The wedge interior
+                  // carries the % in idle state; when a target is active or
+                  // a category is focal the inside % is hidden because the
+                  // central callout overlays the wedge interior, so we fold
+                  // the % into this outside label too ("58% · 520B MNT").
+                  const budgetEntry = budgetShadingActive
+                    ? budgetByCategoryId.get(arc.id)
+                    : undefined;
+                  const insideLabelHidden = !!activeId || isGroupFocus;
+                  // amountLine renders beneath the category name when the
+                  // budget overlay is active. The "Other" bucket has no
+                  // entry in the budget summary because it is not a real
+                  // GLOBE primary, so we fall through to a zero figure for
+                  // it — semantically correct (no BER spend is tagged to
+                  // unclassified targets) and visually consistent with the
+                  // other zero-budget categories that already say "0 MNT".
+                  const amountLine = (() => {
+                    if (!budgetShadingActive) return null;
+                    const totalBudget = budgetEntry?.totalBudget ?? 0;
+                    const shareOfTotal = budgetEntry?.shareOfTotalBudget ?? 0;
+                    const amount = formatBudgetValue(
+                      totalBudget,
+                      budgetSummary?.currency ?? "",
+                    );
+                    if (!insideLabelHidden) return amount;
+                    const sharePct = (shareOfTotal * 100).toFixed(
+                      shareOfTotal >= 0.1 ? 0 : 1,
+                    );
+                    return `${sharePct}% · ${amount}`;
+                  })();
+                  const totalLineCount = lines.length + (amountLine ? 1 : 0);
+                  // Center the multi-line block vertically around ly. For a
+                  // single line, dy=0 means baseline sits at ly (with
+                  // dominantBaseline="middle"). For N lines, offset the first
+                  // line up so the block straddles ly.
+                  const firstDy = -((totalLineCount - 1) * 0.55);
+                  return (
+                    <g key={`grp-${arc.id}`}>
+                      <path
+                        d={`M${arcX},${arcY} L${elbowX},${elbowY} L${lx},${ly}`}
+                        fill="none"
+                        stroke={leaderColor}
+                        strokeWidth={1}
+                        opacity={leaderOpacity}
+                        className="pointer-events-none"
+                      />
+                      <text
+                        x={lx + nudge}
+                        y={ly}
+                        textAnchor={anchor}
+                        dominantBaseline="middle"
+                        className="select-none cursor-pointer"
+                        fontSize={isFocal && !activeId ? 12 : 11}
+                        fontWeight={isFocal && !activeId ? 700 : isEmbed ? 500 : 600}
+                        fill={labelFill}
+                        style={{ letterSpacing: isEmbed ? "0.015em" : "0.04em", transition: "fill 200ms, font-size 200ms" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleArcClick(arc.id);
+                        }}
+                      >
+                        <title>{getDocFullLabel(countryConfig, arc.id)}</title>
+                        {lines.map((line, i) => (
+                          <tspan
+                            key={i}
+                            x={lx + nudge}
+                            dy={i === 0 ? `${firstDy}em` : "1.1em"}
+                          >
+                            {line}
+                          </tspan>
+                        ))}
+                        {amountLine && (
+                          <tspan
+                            x={lx + nudge}
+                            dy="1.25em"
+                            fontSize={10}
+                            fontWeight={500}
+                            fill="var(--undp-gray)"
+                            style={{ letterSpacing: "0.02em" }}
+                          >
+                            {amountLine}
+                          </tspan>
+                        )}
+                      </text>
+                    </g>
+                  );
+                });
+              })()}
+
+              {/* Center content. The country / target / focal-category name
+                  sits on top; the supporting counts stack below it on two
+                  short rows in idle state ("157 targets" / "7998 aligned")
+                  so the centre footprint stays narrow and the wedges can
+                  come closer in without crowding the text. Active and focal
+                  states only need a single count line, so they stay on one
+                  row beneath the title. */}
+              {/* Readable plate behind the title when a specific target or
+                  category is selected: its name can be long and would
+                  otherwise sit unreadable over the crossing ribbons. */}
+              {isEmbed && (activeId || focalGroup) && (() => {
+                const t = activeId
+                  ? targetMap.get(activeId)?.sourceLabel ?? ""
+                  : focalGroup?.label ?? "";
+                const w = Math.min(360, Math.max(110, t.length * 8.6 + 30));
+                return (
+                  <rect
+                    x={-w / 2}
+                    y={-30}
+                    width={w}
+                    height={52}
+                    rx={12}
+                    fill="white"
+                    opacity={0.86}
+                    className="pointer-events-none"
+                  />
+                );
+              })()}
+              <text
+                x={0} y={-14}
+                textAnchor="middle" dominantBaseline="middle"
+                fontSize={isEmbed ? 18 : 15} fontWeight={isEmbed ? 500 : 600}
+                fill={isEmbed ? "var(--undp-black)" : "#1e293b"}
+                style={
+                  isEmbed
+                    ? { fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif" }
+                    : undefined
+                }
+                className="select-none pointer-events-none"
+              >
+                {activeId
+                  ? targetMap.get(activeId)?.sourceLabel ?? ""
+                  : focalGroup
+                    ? focalGroup.label
+                    : targets[0]?.country ?? t("wheel.countryFallback")}
+              </text>
+              {activeId ? (
+                <text
+                  x={0} y={8}
+                  textAnchor="middle" dominantBaseline="middle"
+                  fontSize={10}
+                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
+                  className="select-none pointer-events-none"
+                >
+                  {activeConns.length === 1
+                    ? t("wheel.centerConnectionsSingular", { count: activeConns.length })
+                    : t("wheel.centerConnectionsPlural", { count: activeConns.length })}
+                </text>
+              ) : focalGroup ? (
+                <text
+                  x={0} y={8}
+                  textAnchor="middle" dominantBaseline="middle"
+                  fontSize={10}
+                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
+                  className="select-none pointer-events-none"
+                >
+                  {focalGroup.count === 1
+                    ? t("wheel.centerTargetSingular", { count: focalGroup.count })
+                    : t("wheel.centerTargetPlural", { count: focalGroup.count })}
+                </text>
+              ) : (
+                <>
+                  <text
+                    x={0} y={6}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fontSize={10}
+                    fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
+                    className="select-none pointer-events-none"
+                  >
+                    {t("wheel.centerTargets", { count: targets.length })}
+                  </text>
+                  <text
+                    x={0} y={22}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fontSize={10}
+                    fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
+                    className="select-none pointer-events-none"
+                  >
+                    {budgetShadingActive
+                      ? t("wheel.centerSpendTagged")
+                      : t("wheel.centerAligned", { count: totalAligned })}
+                  </text>
+                </>
+              )}
+            </svg>
+  );
+  const railPanel = (
+          selectedNode ? (
+              <DetailPanel
+                key={selectedNode.id}
+                node={selectedNode}
+                connections={selectedConns}
+                onClose={closeDetail}
+                onSelectPair={(r) => {
+                  const otherId =
+                    r.targetAId === selectedId ? r.targetBId : r.targetAId;
+                  const other = targetMap.get(otherId);
+                  if (other) setComparedPair({ result: r, other });
+                }}
+                nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
+                nr7ProgressMap={nr7ProgressMap}
+                countryConfig={countryConfig}
+              />
+            ) : focalGroup ? (
+              <CategoryPanel
+                key={focalGroup.id}
+                group={focalGroup}
+                nodes={nodes}
+                arcs={arcs}
+                alignment={filtered}
+                filter={filter}
+                onClose={closeCategory}
+                onSelectTarget={handleNodeClick}
+                onSelectPair={handleSelectPair}
+                onSelectCategory={handleArcClick}
+                onSetFilter={setFilter}
+                countryConfig={countryConfig}
+                budget={
+                  groupMode === "globe"
+                    ? budgetByCategoryId.get(focalGroup.id) ?? null
+                    : null
+                }
+                budgetCurrency={budgetSummary?.currency}
+                budgetPeriod={budgetSummary?.period}
+                programmes={
+                  groupMode === "globe"
+                    ? programmesByCategoryId.get(focalGroup.id) ?? []
+                    : []
+                }
+              />
+            ) : (
+              <EmptyPanel
+                targets={visibleTargets}
+                alignment={filtered}
+                filter={filter}
+                onSelectTarget={handleNodeClick}
+                onSelectPair={handleSelectPair}
+                onAsk={handleAsk}
+                chat={chat}
+                onSetFilter={setFilter}
+                countryConfig={countryConfig}
+                exampleQueries={exampleQueries}
+                onRotateInsight={rotateInsight}
+                currentInsight={currentInsight}
+                onApplyHook={onApplyHook}
+                canShowMe={canShowMe}
+                onSelectChatEntity={handleChatEntityClick}
+                showChat={showInternalChat}
+                embed={isEmbed}
+              />
+            )
+  );
+  // Explorer B: the live "Explore" workbench. A floating-canvas stage that
+  // reuses every piece of state and logic above, rearranged into a lens pane
+  // (left), the hero wheel (centre), a command dock (bottom) and an answers
+  // drawer (right). The standalone "dashboard" / "embed" variants fall through
+  // to the original layout below, so /prototypes is unchanged.
+  if (isWorkbench) {
+    const countryName = targets[0]?.country ?? t("wheel.countryFallback");
+    const strongCount = visibleAlignment.filter(
+      (a) => a.alignment === "high",
+    ).length;
+    const financeView = view === "finance";
+    const statLine = financeView
+      ? t("workbench.statFinance", {
+          country: countryName,
+          targets: targets.length,
+        })
+      : t("workbench.statCoherence", {
+          strong: strongCount,
+          potential: totalContra,
+          country: countryName,
+          targets: targets.length,
+        });
+    return (
+      <WorkbenchStage
+        statLine={statLine}
+        wheel={wheelSvg}
+        dock={workbenchChat(false, true, true)}
+        answersOpen={!answersCollapsed}
+        onToggleAnswers={() => setAnswersCollapsed((c) => !c)}
+        answersHandleLabel={t("workbench.answersHandle", { count: answerCount })}
+        answersHeading={t("workbench.answersHeading")}
+        answersToggleTitle={t("workbench.answersTitle")}
+        answersClose={t("workbench.answersClose")}
+        financeActive={financeView}
+        financeNote={t(
+          spendScaleActive
+            ? "workbench.finance.encodingSpend"
+            : "workbench.finance.helperNote",
+        )}
+        footerCaveat={t("workbench.footerCaveat")}
+        lensPane={
+          <LensPane
+            view={view}
+            onViewChange={setView}
+            showViewSwitch={!!budgetSummary}
+            groupMode={groupMode}
+            onGroupChange={handleGroupChange}
+            filter={filter}
+            onFilter={setFilter}
+            budgetSummary={budgetSummary}
+            budgetScale={budgetScale}
+            onBudgetScaleChange={setBudgetScale}
+            availableDocs={availableDocs}
+            hiddenDocs={hiddenDocs}
+            onToggleDoc={toggleDoc}
+            countryConfig={countryConfig}
+            hasGga={hasGga}
+          />
+        }
+        answers={
+          <div className="space-y-3">
+            {!answersCollapsed && (
+              <ChatOutput
+                chat={chat}
+                currentInsight={currentInsight}
+                canShowMe={canShowMe}
+                onApplyHook={onApplyHook}
+                onSelectChatEntity={handleChatEntityClick}
+                hideInsights
+              />
+            )}
+            {railPanel}
+          </div>
+        }
+        modal={
+          <PairDetailModal
+            open={comparedPair != null}
+            pair={comparedPair}
+            selectedTarget={selectedNode?.target ?? null}
+            countryConfig={countryConfig}
+            onClose={() => setComparedPair(null)}
+          />
+        }
+      />
+    );
+  }
 
   return (
     <section id={isEmbed ? undefined : "coherence-explorer"} className={isEmbed ? "" : "mb-10"}>
@@ -3793,6 +4995,7 @@ export function PolicyCoherenceExplorer({
                 document: [t("groupLabel.documentSingular"), t("groupLabel.documentPlural")],
                 globe: [t("groupLabel.globeSingular"), t("groupLabel.globePlural")],
                 sector: [t("groupLabel.sectorSingular"), t("groupLabel.sectorPlural")],
+                gga: [t("groupLabel.ggaSingular"), t("groupLabel.ggaPlural")],
               } as Record<GroupMode, [string, string]>)[groupMode][
                 groups.length !== 1 ? 1 : 0
               ];
@@ -3888,6 +5091,9 @@ export function PolicyCoherenceExplorer({
                   ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
                   ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
                   ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
+                  ...(hasGga
+                    ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]]
+                    : []),
                 ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
                   <button
                     key={mode}
@@ -3914,6 +5120,9 @@ export function PolicyCoherenceExplorer({
                 <option value="document">{t("controls.groupOptionDocument")}</option>
                 <option value="globe">{t("controls.groupOptionGlobe")}</option>
                 <option value="sector">{t("controls.groupOptionSector")}</option>
+                {hasGga && (
+                  <option value="gga">{t("controls.groupOptionGga")}</option>
+                )}
               </select>
             )}
             <select
@@ -4170,728 +5379,14 @@ export function PolicyCoherenceExplorer({
                 )}
               </div>
             )}
-            <svg
-              viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
-              className="w-full"
-              style={{
-                maxHeight:
-                  isWorkbench && wheelExpanded && !railVisible
-                    ? "min(820px, 82vh)"
-                    : isEmbed
-                      ? "min(600px, 64vh)"
-                      : 620,
-              }}
-              onClick={handleBgClick}
-            >
-              {/* Guide circle */}
-              <circle cx={0} cy={0} r={NODE_R} fill="none" stroke="#f1f5f9" strokeWidth={1} strokeDasharray="4 4" />
-
-              {/* Biodiversity Budget wedges. Rendered before the rim arcs so
-                  the arcs (and everything that follows: ribbons, nodes,
-                  labels) layer on top. Each wedge fills the interior of one
-                  GLOBE category at a saturation proportional to its share of
-                  tagged BER spend. Hidden when the overlay is off so the
-                  regular wheel looks unchanged. */}
-              {budgetShadingActive && budgetSummary &&
-                arcs.map((arc) => {
-                  const d = wedgeGen({
-                    startAngle: arc.startAngle,
-                    endAngle: arc.endAngle,
-                  });
-                  if (!d) return null;
-                  const entry = budgetByCategoryId.get(arc.id);
-                  const share = entry?.shareOfTotalBudget ?? 0;
-                  // Single hue for funded wedges (BUDGET_WEDGE_COLOR), single
-                  // grey for unfunded ones. The angular span already encodes
-                  // the target-count grouping (Sustainable use takes nearly
-                  // half the wheel because it has 70 targets), so layering
-                  // the category hue on the wedge fill made budget hard to
-                  // read in isolation: a wide pale-blue wedge looked like
-                  // "lots of something" even though it's only 6.5% of tagged
-                  // spend. With one hue across all funded wedges, opacity is
-                  // the only varying dimension, and the rim arc continues
-                  // to carry category identity.
-                  const isUnfunded = !entry || entry.totalBudget <= 0;
-                  const wedgeColor = isUnfunded
-                    ? "#94a3b8"
-                    : BUDGET_WEDGE_COLOR;
-                  const fillAlpha = isUnfunded
-                    ? 0.08
-                    : alphaForBudgetShare(share, budgetSummary.maxShare);
-                  const angularSpan = arc.endAngle - arc.startAngle;
-                  // Only label wedges wider than ~14 degrees. Below that the
-                  // text overlaps the wedge boundary and reads as junk; the
-                  // rim label + hover tooltip still carry the info.
-                  // Also hide the inside % when a target is active or a
-                  // category is focal — the central callout and connection
-                  // lines draw across the wedge interior in those states, so
-                  // the inside label is unreadable. The category-name label
-                  // outside picks up the % in that case (see the leader-label
-                  // block below).
-                  // Inside-wedge % is suppressed when:
-                  //   - the wedge is too narrow to comfortably hold the
-                  //     glyphs (angular span <= ~14 deg),
-                  //   - a target or category is focal (the central callout
-                  //     overlays the wedge interior — the % moves outside
-                  //     into the leader label in that state),
-                  //   - or the category has zero tagged BER spend (showing
-                  //     "0%" is redundant once the wedge itself is greyed).
-                  const showLabel =
-                    angularSpan > 0.244 &&
-                    !activeId &&
-                    !isGroupFocus &&
-                    !isUnfunded;
-                  const labelR = 145;
-                  const sharePct = (share * 100).toFixed(
-                    share >= 0.1 ? 0 : 1,
-                  );
-                  const amountStr = entry
-                    ? formatBudgetValue(
-                        entry.totalBudget,
-                        budgetSummary.currency ?? "",
-                      )
-                    : "";
-                  const labelFill =
-                    fillAlpha > 0.55 ? "white" : "var(--undp-black)";
-                  return (
-                    <g key={`wedge-${arc.id}`}>
-                      <path
-                        d={d}
-                        fill={wedgeColor}
-                        fillOpacity={fillAlpha}
-                        stroke={wedgeColor}
-                        strokeOpacity={isUnfunded ? 0.2 : 0.35}
-                        strokeWidth={0.75}
-                        className="cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleArcClick(arc.id);
-                        }}
-                      >
-                        <title>
-                          {t("budget.wedgeTooltip", { label: arc.label, amount: amountStr, pct: sharePct, hasAmount: amountStr ? 1 : 0 })}
-                        </title>
-                      </path>
-                      {showLabel && (
-                        <text
-                          x={labelR * Math.sin(arc.midAngle)}
-                          y={-labelR * Math.cos(arc.midAngle)}
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                          fontSize={14}
-                          fontWeight={isEmbed ? 500 : 600}
-                          fill={labelFill}
-                          className="pointer-events-none select-none tabular-nums"
-                          style={{ letterSpacing: "0.01em" }}
-                        >
-                          <tspan>{sharePct}</tspan>
-                          <tspan
-                            fontSize={9}
-                            fontWeight={500}
-                            dx="0.15em"
-                            fillOpacity={0.75}
-                          >
-                            %
-                          </tspan>
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-
-              {/* Group arcs */}
-              {arcs.map((arc) => {
-                const d = arcGen({ startAngle: arc.startAngle, endAngle: arc.endAngle });
-                const hasActiveNode =
-                  !activeId ||
-                  nodes.some(
-                    (n) =>
-                      n.groupId === arc.id &&
-                      (n.id === activeId || connectedIds.has(n.id)),
-                  );
-                const isFocal = arc.id === focalGroupId;
-                const arcMidR = (INNER_R + arcOuterR) / 2;
-                const badgeX = arcMidR * Math.sin(arc.midAngle);
-                const badgeY = -arcMidR * Math.cos(arc.midAngle);
-                // Rim arc opacity. In budget mode we keep overview at 1.0 so
-                // the colored boundary at the rim stays crisp; the magnitude
-                // encoding is carried by the wedge fill layer below, not by
-                // modulating the 7-pixel rim band (v1 attempt, indiscernible).
-                const arcOpacity = activeId
-                  ? hasActiveNode
-                    ? 0.8
-                    : 0.12
-                  : isGroupFocus
-                    ? isFocal
-                      ? 1
-                      : 0.18
-                    : budgetShadingActive
-                      ? 1
-                      : 0.65;
-                const budgetEntry = budgetShadingActive
-                  ? budgetByCategoryId.get(arc.id)
-                  : undefined;
-                // In budget mode, zero-budget categories also grey their rim
-                // arc so the entire category (wedge + rim + leader + label)
-                // reads as a single "no tagged spend" visual class. Outside
-                // budget mode, the category hue is preserved.
-                const arcIsUnfunded =
-                  budgetShadingActive &&
-                  (!budgetEntry || budgetEntry.totalBudget <= 0);
-                const rimColor = arcIsUnfunded ? "#94a3b8" : arc.color;
-                return (
-                  <g key={arc.id}>
-                    <path
-                      d={d ?? ""}
-                      fill={rimColor}
-                      opacity={arcOpacity}
-                      stroke={isFocal && !activeId ? rimColor : "none"}
-                      strokeWidth={isFocal && !activeId ? 1.5 : 0}
-                      className="transition-opacity duration-200 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleArcClick(arc.id);
-                      }}
-                    >
-                      <title>
-                        {budgetShadingActive && budgetEntry
-                          ? t("budget.wedgeTooltip", {
-                              label: arc.label,
-                              amount: formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? ""),
-                              pct: (budgetEntry.shareOfTotalBudget * 100).toFixed(1),
-                              hasAmount: 1,
-                            })
-                          : arc.label}
-                      </title>
-                    </path>
-                    {/* Count badge on arc in overview mode */}
-                    {!activeId && !isGroupFocus && arc.count > 0 && (
-                      <text
-                        x={badgeX}
-                        y={badgeY}
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        fontSize={9}
-                        fontWeight={600}
-                        fill="white"
-                        className="select-none pointer-events-none"
-                      >
-                        {arc.count}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
-
-              {/* Ambient connections — faint background web. Suppressed
-                  while the Biodiversity Budget overlay is shading: in budget
-                  mode the question is "where is the money", and the ambient
-                  ribbon noise competes with the wedge fill instead of adding
-                  signal. Selected-target connections (rendered separately
-                  below) still appear so click-through navigation works. */}
-              {!activeId && !budgetShadingActive &&
-                ambientConns.map((conn) => {
-                  const nA = nodeMap.get(conn.targetAId);
-                  const nB = nodeMap.get(conn.targetBId);
-                  if (!nA || !nB) return null;
-                  // When a category is focal, drop edges that don't touch any
-                  // of its targets so the wheel reads as "this slice's web".
-                  if (
-                    isGroupFocus &&
-                    focalGroupTargetIds &&
-                    !focalGroupTargetIds.has(conn.targetAId) &&
-                    !focalGroupTargetIds.has(conn.targetBId)
-                  ) {
-                    return null;
-                  }
-                  const key = `amb-${[conn.targetAId, conn.targetBId].sort().join("__")}`;
-                  const contra = isContradiction(conn.alignment);
-                  const isContraMode = filter === "contradictions";
-                  // In group focus mode, give the surviving edges a bit more
-                  // presence — the noise is gone so they can carry weight.
-                  const opacity = isGroupFocus
-                    ? contra
-                      ? 0.7
-                      : 0.55
-                    : isContraMode
-                      ? 0.55
-                      : ambientOpacity;
-                  const strokeWidth = isGroupFocus
-                    ? contra || conn.alignment === "high"
-                      ? 1.8
-                      : 1.2
-                    : isContraMode
-                      ? 2
-                      : 1;
-                  return (
-                    <path
-                      key={key}
-                      d={curvePath(nA.x, nA.y, nB.x, nB.y)}
-                      fill="none"
-                      stroke={ALIGNMENT_COLORS[conn.alignment]}
-                      strokeWidth={strokeWidth}
-                      strokeDasharray={contra ? "6 3" : "none"}
-                      opacity={opacity}
-                      strokeLinecap="round"
-                      style={{ pointerEvents: "none" }}
-                    />
-                  );
-                })}
-
-              {/* Active-node connections — prominent on hover/click */}
-              {activeId &&
-                activeConns.map((conn) => {
-                  const nA = nodeMap.get(activeId);
-                  const nB = nodeMap.get(conn.otherId);
-                  if (!nA || !nB) return null;
-                  const key = [conn.targetAId, conn.targetBId].sort().join("__");
-                  const contra = isContradiction(conn.alignment);
-                  return (
-                    <path
-                      key={key}
-                      d={curvePath(nA.x, nA.y, nB.x, nB.y)}
-                      fill="none"
-                      stroke={ALIGNMENT_COLORS[conn.alignment]}
-                      strokeWidth={
-                        conn.alignment === "high" || contra ? 2.5 : conn.alignment === "medium" ? 2 : 1.5
-                      }
-                      strokeDasharray={contra ? "6 3" : "none"}
-                      opacity={conn.alignment === "high" ? 0.85 : conn.alignment === "medium" ? 0.7 : 0.6}
-                      strokeLinecap="round"
-                      style={{ pointerEvents: "none" }}
-                    />
-                  );
-                })}
-
-              {/* Target nodes. Wrapped in a group with reduced opacity while
-                  the budget overlay is shading so the colourful node ring
-                  doesn't overpower the wedge fill underneath. Click and hover
-                  still work because the underlying nodes keep their full
-                  pointer surface. */}
-              <g opacity={budgetShadingActive && !activeId && !isGroupFocus ? 0.2 : 1}>
-              {nodes.map((node) => {
-                const r = NODE_RADIUS;
-                const isActive = node.id === activeId;
-                const isConnected = connectedIds.has(node.id);
-                const isFocalGroupMember =
-                  !!focalGroupTargetIds && focalGroupTargetIds.has(node.id);
-                const isDimmed = activeId
-                  ? !isActive && !isConnected
-                  : isGroupFocus && !isFocalGroupMember;
-                const useGroupColor = groupMode !== "document";
-                const baseNodeColor = useGroupColor
-                  ? (groupColorMap.get(node.groupId) ?? getDocColor(countryConfig, node.target.sourceDocument))
-                  : getDocColor(countryConfig, node.target.sourceDocument);
-                // Override for BTR adaptation actions so they're visually distinct
-                // from BTR mitigation (purple) regardless of grouping mode.
-                const nodeColor =
-                  node.target.actionType === "adaptation"
-                    ? BTR_ADAPTATION_COLOR
-                    : baseNodeColor;
-                return (
-                  <g key={node.id}>
-                    {isActive && (
-                      <circle
-                        cx={node.x} cy={node.y} r={r + 5}
-                        fill="none"
-                        stroke={nodeColor}
-                        strokeWidth={2}
-                        opacity={0.4}
-                        style={{ pointerEvents: "none" }}
-                      />
-                    )}
-                    {isConnected && !isActive && (
-                      <circle
-                        cx={node.x} cy={node.y} r={r + 3}
-                        fill="none"
-                        stroke={nodeColor}
-                        strokeWidth={1.5}
-                        opacity={0.25}
-                        style={{ pointerEvents: "none" }}
-                      />
-                    )}
-                    <circle
-                      cx={node.x}
-                      cy={node.y}
-                      r={r}
-                      fill={nodeColor}
-                      stroke="white"
-                      strokeWidth={isEmbed ? 1 : 1.5}
-                      opacity={isDimmed ? 0.12 : isEmbed ? 0.8 : 1}
-                      className="transition-opacity duration-200 cursor-pointer"
-                      onMouseEnter={() => {
-                        if (!selectedId) setHoveredId(node.id);
-                      }}
-                      onMouseLeave={() => setHoveredId(null)}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleNodeClick(node.id);
-                      }}
-                    >
-                      <title>{t("wheel.nodeTooltip", { label: getDocMediumLabel(countryConfig, node.target.sourceDocument), source: node.target.sourceLabel })}</title>
-                    </circle>
-                    {/* Small doc-type indicator dot in non-document modes */}
-                    {useGroupColor && r >= 4 && !isDimmed && (
-                      <circle
-                        cx={node.x}
-                        cy={node.y}
-                        r={2.5}
-                        fill={getDocColor(countryConfig, node.target.sourceDocument)}
-                        stroke="white"
-                        strokeWidth={0.5}
-                        className="pointer-events-none"
-                      />
-                    )}
-                  </g>
-                );
-              })}
-              </g>
-
-              {/* Node labels — only when a node is active/hovered, with collision avoidance */}
-              {activeId && (() => {
-                // Collect connected nodes and sort by alignment strength
-                const labelNodes: { node: NodePos; isActive: boolean }[] = [];
-                for (const node of nodes) {
-                  if (node.id === activeId) labelNodes.push({ node, isActive: true });
-                  else if (connectedIds.has(node.id)) labelNodes.push({ node, isActive: false });
-                }
-                // Sort: active first, then by angle for spacing check
-                const sorted = labelNodes.sort((a, b) => {
-                  if (a.isActive) return -1;
-                  if (b.isActive) return 1;
-                  return a.node.angle - b.node.angle;
-                });
-                // Greedily filter: skip labels that would collide with an
-                // already-placed one. The required angular gap grows toward the
-                // top and bottom of the wheel, where labels run horizontally and
-                // a small angular step still overlaps a long neighbour; near the
-                // sides a small gap suffices because neighbours separate
-                // vertically. A highly-connected target therefore shows only a
-                // readable, spread-out subset on the wheel; the full list lives
-                // in the detail panel.
-                const gapFor = (angle: number) =>
-                  0.14 / Math.max(0.22, Math.abs(Math.sin(angle)));
-                const placed: number[] = [];
-                const visible: typeof sorted = [];
-                for (const entry of sorted) {
-                  const gap = gapFor(entry.node.angle);
-                  const tooClose = placed.some(
-                    (a) => Math.abs(entry.node.angle - a) < gap,
-                  );
-                  if (entry.isActive || !tooClose) {
-                    visible.push(entry);
-                    placed.push(entry.node.angle);
-                  }
-                }
-                const showDocCtx = groupMode !== "document";
-                return visible.map(({ node, isActive }) => {
-                  const lx = LABEL_R * Math.sin(node.angle);
-                  const ly = -LABEL_R * Math.cos(node.angle);
-                  const docColor = getDocColor(countryConfig, node.target.sourceDocument);
-                  return (
-                    <text
-                      key={`lbl-${node.id}`}
-                      x={lx}
-                      y={ly}
-                      textAnchor={anchorFor(node.angle)}
-                      dominantBaseline="middle"
-                      className="select-none pointer-events-none"
-                      fontSize={isActive ? 11 : 9}
-                      fontWeight={isActive ? 700 : 400}
-                      fill={
-                        showDocCtx
-                          ? docColor
-                          : "#334155"
-                      }
-                      style={{ transition: "fill 200ms, font-size 200ms" }}
-                    >
-                      {showDocCtx && (
-                        <tspan fontWeight={700} fontSize={isActive ? 9 : 7}>
-                          {getDocMediumLabel(countryConfig, node.target.sourceDocument)}{" "}
-                        </tspan>
-                      )}
-                      {node.target.sourceLabel}
-                    </text>
-                  );
-                });
-              })()}
-
-              {/* Group labels — positioned radially with collision avoidance */}
-              {(() => {
-                // Estimate label height in SVG units (~14px per label)
-                const LABEL_H = 14;
-                // Approximate character width at fontSize 11, fontWeight 600
-                const CHAR_W = 6.5;
-                // Labels wider than this in chars wrap to two lines so they
-                // don't extend past the viewBox edge.
-                const MAX_CHARS_PER_LINE = 24;
-
-                const entries = arcs.map((arc) => {
-                  const lines = wrapLabel(arc.label, MAX_CHARS_PER_LINE);
-                  const longest = lines.reduce(
-                    (m, l) => Math.max(m, l.length),
-                    0,
-                  );
-                  return {
-                    arc,
-                    lines,
-                    angle: arc.midAngle,
-                    // Angular span uses the longest wrapped line so collision
-                    // avoidance stays correct for multi-line labels.
-                    angularSpan: (longest * CHAR_W) / GRP_LABEL_R,
-                  };
-                });
-
-                // Sort by home angle so neighbours-in-the-circle are neighbours-in-the-array
-                const sorted = [...entries].sort((a, b) => a.arc.midAngle - b.arc.midAngle);
-
-                // Spring relaxation: each pass pulls every label toward its
-                // arc midpoint (home) and pushes overlapping neighbours apart
-                // symmetrically. Converges to the layout with minimum total
-                // displacement, so labels sit as close to their arcs as the
-                // overlap constraint allows.
-                const PADDING = LABEL_H / GRP_LABEL_R;
-                const HOME_PULL = 0.18;
-                for (let iter = 0; iter < 60; iter++) {
-                  for (const e of sorted) {
-                    e.angle += HOME_PULL * (e.arc.midAngle - e.angle);
-                  }
-                  for (let i = 0; i < sorted.length - 1; i++) {
-                    const needed = (sorted[i].angularSpan + sorted[i + 1].angularSpan) / 2 + PADDING;
-                    const gap = sorted[i + 1].angle - sorted[i].angle;
-                    if (gap < needed) {
-                      const half = (needed - gap) / 2;
-                      sorted[i].angle -= half;
-                      sorted[i + 1].angle += half;
-                    }
-                  }
-                }
-
-                return sorted.map(({ arc, angle, lines }) => {
-                  // Leader line: from arc outer edge (at original midAngle) to label position
-                  const arcX = (OUTER_R + 3) * Math.sin(arc.midAngle);
-                  const arcY = -(OUTER_R + 3) * Math.cos(arc.midAngle);
-                  const lx = GRP_LABEL_R * Math.sin(angle);
-                  const ly = -GRP_LABEL_R * Math.cos(angle);
-                  // Small elbow point just outside arc
-                  const elbowR = OUTER_R + 14;
-                  const elbowX = elbowR * Math.sin(angle);
-                  const elbowY = -elbowR * Math.cos(angle);
-                  const anchor = anchorFor(angle);
-                  // Nudge label slightly away from leader endpoint
-                  const nudge = anchor === "start" ? 3 : anchor === "end" ? -3 : 0;
-                  const isFocal = arc.id === focalGroupId;
-                  const labelDimmed =
-                    !!activeId || (isGroupFocus && !isFocal);
-                  const leaderOpacity = activeId
-                    ? 0.2
-                    : isGroupFocus
-                      ? isFocal
-                        ? 0.6
-                        : 0.12
-                      : 0.35;
-                  // labelFill: dim grey when another target/category has
-                  // focus; full category colour otherwise. In budget mode,
-                  // zero-budget categories also drop to grey so the rim arc
-                  // greying carries through to the leader line and label
-                  // and the whole category reads as a single "unfunded"
-                  // visual class.
-                  const arcIsUnfundedHere =
-                    budgetShadingActive &&
-                    (!budgetByCategoryId.get(arc.id) ||
-                      (budgetByCategoryId.get(arc.id)?.totalBudget ?? 0) <= 0);
-                  const labelFill = labelDimmed || arcIsUnfundedHere ? "#94a3b8" : arc.color;
-                  const leaderColor = arcIsUnfundedHere ? "#94a3b8" : arc.color;
-                  // In budget mode, surface the absolute amount as a second
-                  // sub-line under the category name. The wedge interior
-                  // carries the % in idle state; when a target is active or
-                  // a category is focal the inside % is hidden because the
-                  // central callout overlays the wedge interior, so we fold
-                  // the % into this outside label too ("58% · 520B MNT").
-                  const budgetEntry = budgetShadingActive
-                    ? budgetByCategoryId.get(arc.id)
-                    : undefined;
-                  const insideLabelHidden = !!activeId || isGroupFocus;
-                  // amountLine renders beneath the category name when the
-                  // budget overlay is active. The "Other" bucket has no
-                  // entry in the budget summary because it is not a real
-                  // GLOBE primary, so we fall through to a zero figure for
-                  // it — semantically correct (no BER spend is tagged to
-                  // unclassified targets) and visually consistent with the
-                  // other zero-budget categories that already say "0 MNT".
-                  const amountLine = (() => {
-                    if (!budgetShadingActive) return null;
-                    const totalBudget = budgetEntry?.totalBudget ?? 0;
-                    const shareOfTotal = budgetEntry?.shareOfTotalBudget ?? 0;
-                    const amount = formatBudgetValue(
-                      totalBudget,
-                      budgetSummary?.currency ?? "",
-                    );
-                    if (!insideLabelHidden) return amount;
-                    const sharePct = (shareOfTotal * 100).toFixed(
-                      shareOfTotal >= 0.1 ? 0 : 1,
-                    );
-                    return `${sharePct}% · ${amount}`;
-                  })();
-                  const totalLineCount = lines.length + (amountLine ? 1 : 0);
-                  // Center the multi-line block vertically around ly. For a
-                  // single line, dy=0 means baseline sits at ly (with
-                  // dominantBaseline="middle"). For N lines, offset the first
-                  // line up so the block straddles ly.
-                  const firstDy = -((totalLineCount - 1) * 0.55);
-                  return (
-                    <g key={`grp-${arc.id}`}>
-                      <path
-                        d={`M${arcX},${arcY} L${elbowX},${elbowY} L${lx},${ly}`}
-                        fill="none"
-                        stroke={leaderColor}
-                        strokeWidth={1}
-                        opacity={leaderOpacity}
-                        className="pointer-events-none"
-                      />
-                      <text
-                        x={lx + nudge}
-                        y={ly}
-                        textAnchor={anchor}
-                        dominantBaseline="middle"
-                        className="select-none cursor-pointer"
-                        fontSize={isFocal && !activeId ? 12 : 11}
-                        fontWeight={isFocal && !activeId ? 700 : isEmbed ? 500 : 600}
-                        fill={labelFill}
-                        style={{ letterSpacing: isEmbed ? "0.015em" : "0.04em", transition: "fill 200ms, font-size 200ms" }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleArcClick(arc.id);
-                        }}
-                      >
-                        <title>{getDocFullLabel(countryConfig, arc.id)}</title>
-                        {lines.map((line, i) => (
-                          <tspan
-                            key={i}
-                            x={lx + nudge}
-                            dy={i === 0 ? `${firstDy}em` : "1.1em"}
-                          >
-                            {line}
-                          </tspan>
-                        ))}
-                        {amountLine && (
-                          <tspan
-                            x={lx + nudge}
-                            dy="1.25em"
-                            fontSize={10}
-                            fontWeight={500}
-                            fill="var(--undp-gray)"
-                            style={{ letterSpacing: "0.02em" }}
-                          >
-                            {amountLine}
-                          </tspan>
-                        )}
-                      </text>
-                    </g>
-                  );
-                });
-              })()}
-
-              {/* Center content. The country / target / focal-category name
-                  sits on top; the supporting counts stack below it on two
-                  short rows in idle state ("157 targets" / "7998 aligned")
-                  so the centre footprint stays narrow and the wedges can
-                  come closer in without crowding the text. Active and focal
-                  states only need a single count line, so they stay on one
-                  row beneath the title. */}
-              {/* Readable plate behind the title when a specific target or
-                  category is selected: its name can be long and would
-                  otherwise sit unreadable over the crossing ribbons. */}
-              {isEmbed && (activeId || focalGroup) && (() => {
-                const t = activeId
-                  ? targetMap.get(activeId)?.sourceLabel ?? ""
-                  : focalGroup?.label ?? "";
-                const w = Math.min(360, Math.max(110, t.length * 8.6 + 30));
-                return (
-                  <rect
-                    x={-w / 2}
-                    y={-30}
-                    width={w}
-                    height={52}
-                    rx={12}
-                    fill="white"
-                    opacity={0.86}
-                    className="pointer-events-none"
-                  />
-                );
-              })()}
-              <text
-                x={0} y={-14}
-                textAnchor="middle" dominantBaseline="middle"
-                fontSize={isEmbed ? 18 : 15} fontWeight={isEmbed ? 500 : 600}
-                fill={isEmbed ? "var(--undp-black)" : "#1e293b"}
-                style={
-                  isEmbed
-                    ? { fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif" }
-                    : undefined
-                }
-                className="select-none pointer-events-none"
-              >
-                {activeId
-                  ? targetMap.get(activeId)?.sourceLabel ?? ""
-                  : focalGroup
-                    ? focalGroup.label
-                    : targets[0]?.country ?? t("wheel.countryFallback")}
-              </text>
-              {activeId ? (
-                <text
-                  x={0} y={8}
-                  textAnchor="middle" dominantBaseline="middle"
-                  fontSize={10}
-                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
-                  className="select-none pointer-events-none"
-                >
-                  {activeConns.length === 1
-                    ? t("wheel.centerConnectionsSingular", { count: activeConns.length })
-                    : t("wheel.centerConnectionsPlural", { count: activeConns.length })}
-                </text>
-              ) : focalGroup ? (
-                <text
-                  x={0} y={8}
-                  textAnchor="middle" dominantBaseline="middle"
-                  fontSize={10}
-                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
-                  className="select-none pointer-events-none"
-                >
-                  {focalGroup.count === 1
-                    ? t("wheel.centerTargetSingular", { count: focalGroup.count })
-                    : t("wheel.centerTargetPlural", { count: focalGroup.count })}
-                </text>
-              ) : (
-                <>
-                  <text
-                    x={0} y={6}
-                    textAnchor="middle" dominantBaseline="middle"
-                    fontSize={10}
-                    fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
-                    className="select-none pointer-events-none"
-                  >
-                    {t("wheel.centerTargets", { count: targets.length })}
-                  </text>
-                  <text
-                    x={0} y={22}
-                    textAnchor="middle" dominantBaseline="middle"
-                    fontSize={10}
-                    fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
-                    className="select-none pointer-events-none"
-                  >
-                    {t("wheel.centerAligned", { count: totalAligned })}
-                  </text>
-                </>
-              )}
-            </svg>
+            {wheelSvg}
 
             {/* Legend — structured grid */}
             <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
               {/* Document column */}
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : t("wheel.legendSector")}
+                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : t("wheel.legendSector")}
                 </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (
@@ -4942,70 +5437,7 @@ export function PolicyCoherenceExplorer({
             </div>
           )}
           <div className="flex-1 min-h-0">
-          {selectedNode ? (
-              <DetailPanel
-                key={selectedNode.id}
-                node={selectedNode}
-                connections={selectedConns}
-                onClose={closeDetail}
-                onSelectPair={(r) => {
-                  const otherId =
-                    r.targetAId === selectedId ? r.targetBId : r.targetAId;
-                  const other = targetMap.get(otherId);
-                  if (other) setComparedPair({ result: r, other });
-                }}
-                nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
-                nr7ProgressMap={nr7ProgressMap}
-                countryConfig={countryConfig}
-              />
-            ) : focalGroup ? (
-              <CategoryPanel
-                key={focalGroup.id}
-                group={focalGroup}
-                nodes={nodes}
-                arcs={arcs}
-                alignment={filtered}
-                filter={filter}
-                onClose={closeCategory}
-                onSelectTarget={handleNodeClick}
-                onSelectPair={handleSelectPair}
-                onSelectCategory={handleArcClick}
-                onSetFilter={setFilter}
-                countryConfig={countryConfig}
-                budget={
-                  groupMode === "globe"
-                    ? budgetByCategoryId.get(focalGroup.id) ?? null
-                    : null
-                }
-                budgetCurrency={budgetSummary?.currency}
-                budgetPeriod={budgetSummary?.period}
-                programmes={
-                  groupMode === "globe"
-                    ? programmesByCategoryId.get(focalGroup.id) ?? []
-                    : []
-                }
-              />
-            ) : (
-              <EmptyPanel
-                targets={visibleTargets}
-                alignment={filtered}
-                filter={filter}
-                onSelectTarget={handleNodeClick}
-                onSelectPair={handleSelectPair}
-                onAsk={handleAsk}
-                chat={chat}
-                onSetFilter={setFilter}
-                countryConfig={countryConfig}
-                exampleQueries={exampleQueries}
-                onRotateInsight={rotateInsight}
-                currentInsight={currentInsight}
-                onApplyHook={onApplyHook}
-                canShowMe={canShowMe}
-                onSelectChatEntity={handleChatEntityClick}
-                showChat={showInternalChat}
-                embed={isEmbed}
-              />
-            )}
+          {railPanel}
           </div>
         </div>
         )}

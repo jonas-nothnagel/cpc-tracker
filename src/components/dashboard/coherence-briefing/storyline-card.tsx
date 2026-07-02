@@ -42,7 +42,7 @@ export function StorylineCard({
     <button
       type="button"
       onClick={onOpen}
-      className="w-full text-left rounded border border-gray-200 bg-white px-3 py-2.5 hover:border-gray-400 transition-colors"
+      className="flex h-full w-full flex-col text-left rounded border border-gray-200 bg-white px-3 py-2.5 hover:border-gray-400 transition-colors"
     >
       <p
         className="text-[9.5px] uppercase tracking-wider font-semibold mb-1.5 inline-flex items-center gap-1.5"

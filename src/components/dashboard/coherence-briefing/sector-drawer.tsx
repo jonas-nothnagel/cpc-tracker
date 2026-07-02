@@ -23,9 +23,9 @@ import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import {
   useAlignmentLabels,
   useContradictionTypeLabels,
+  useManageabilityLabels,
 } from "@/lib/labels";
 import type { FaultLine, SectorBriefing } from "@/lib/coherence-briefing";
-import { SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentResult,
   CountryConfig,
@@ -76,6 +76,28 @@ export function SectorDrawer({
   }, [briefing]);
 
   if (!briefing) return null;
+
+  // Sector header sentence, localized (replaces the old lib-composed English).
+  const hub = briefing.recurringHub;
+  const synthesisSentence =
+    briefing.flaggedCount === 0
+      ? briefing.targetCount === 0
+        ? t("synthesis.empty", { categoryName: briefing.categoryName })
+        : t("synthesis.noFlags", { categoryName: briefing.categoryName })
+      : hub && hub.flaggedPairCount >= 2
+        ? t("synthesis.hub", {
+            count: briefing.flaggedCount,
+            categoryName: briefing.categoryName,
+            hubCount: hub.flaggedPairCount,
+            pct: Math.round(
+              (hub.flaggedPairCount / briefing.flaggedCount) * 100,
+            ),
+          })
+        : t("synthesis.spread", {
+            count: briefing.flaggedCount,
+            categoryName: briefing.categoryName,
+          });
+
   return (
     <div className="fixed inset-0 z-30 flex justify-end">
       <button
@@ -107,7 +129,7 @@ export function SectorDrawer({
                 {t("headerCounts", { targets: briefing.targetCount, pairs: briefing.signalCount })}
               </p>
               <p className="mt-3 text-[13px] leading-snug text-[var(--undp-black)]">
-                {briefing.synthesisSentence}
+                {synthesisSentence}
               </p>
               {briefing.recurringHub &&
                 briefing.recurringHub.flaggedPairCount >= 2 && (
@@ -439,11 +461,23 @@ function ExampleRow({
   onOpen?: () => void;
 }) {
   const alignmentLabels = useAlignmentLabels();
+  const mechanismLabels = useContradictionTypeLabels();
+  const manageabilityLabels = useManageabilityLabels();
   const { targetA, targetB, pair } = line;
   const color = ALIGNMENT_COLORS[pair.alignment];
   const docA = getDocMediumLabel(countryConfig, targetA.sourceDocument);
   const docB = getDocMediumLabel(countryConfig, targetB.sourceDocument);
   const isFlagged = pair.alignment === "flagged";
+  // Mechanism + manageability are facets OF the potential-misalignment
+  // classification, not sibling tags. The alignment label is the lead pill;
+  // these hang beneath it as subordinate sub-text so the hierarchy reads at a
+  // glance (rather than three equal pills in three competing colours).
+  const facets = isFlagged
+    ? [
+        pair.mechanism ? mechanismLabels[pair.mechanism] : null,
+        pair.manageability ? manageabilityLabels[pair.manageability] : null,
+      ].filter((v): v is string => Boolean(v))
+    : [];
   const Tag = onOpen ? "button" : "div";
   return (
     <li>
@@ -454,9 +488,9 @@ function ExampleRow({
           onOpen ? "hover:bg-gray-50 transition-colors" : ""
         } p-2`}
       >
-        <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+        <div className="mb-1">
           <span
-            className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="inline-block text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -465,11 +499,10 @@ function ExampleRow({
           >
             {alignmentLabels[pair.alignment]}
           </span>
-          {isFlagged && pair.mechanism && (
-            <SubFieldChip variant="mechanism" value={pair.mechanism} />
-          )}
-          {isFlagged && pair.manageability && (
-            <SubFieldChip variant="manageability" value={pair.manageability} />
+          {facets.length > 0 && (
+            <p className="mt-1 text-[10px] text-[var(--undp-gray)] leading-tight">
+              {facets.join(" · ")}
+            </p>
           )}
         </div>
         <p className="text-[10px] text-[var(--undp-gray)] mb-1">

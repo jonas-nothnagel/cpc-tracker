@@ -1,0 +1,32 @@
+[
+  {
+    "id": "NDC_22",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Livestock mitigation",
+    "text": "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological carrying capacity of rangelands and improving livestock economic turnover through increasing export and meat supply to the domestic.",
+    "textOriginal": "Хөдөө аж ахуйн салбар нь бэлчээрийн экологийн даацыг мөрдөх (үндэсний мал сүргийн тоог 50 million толгойд хүргэх) болон экспортыг нэмэгдүүлж, дотоодын зах зээлд махны нийлүүлэлтийг өсгөх замаар мал аж ахуйн эдийн засгийн эргэлтийг сайжруулснаар 2030 он хүртэл 5.277 million тонн CO₂, 2035 он хүртэл 9.78 million тонн CO₂-ийг бууруулна.",
+    "reasons": [
+      "number '2' missing from translation"
+    ]
+  },
+  {
+    "id": "NDC_23",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Mitigation 1",
+    "text": "By improving the circulation of livestock and livestock raw materials and increasing exports, Livestock CO2 emissions shall be reduced by 4.15 million tons by 2030 and 7.48 million tons by 2035.",
+    "textOriginal": "Мал, малын гаралтай түүхий эдийн эргэлтийг сайжруулж, экспортыг нэмэгдүүлснээр Мал аж ахуйн CO₂ ялгарлыг 2030 он гэхэд 4.15 сая тонноор, 2035 он гэхэд 7.48 сая тонноор бууруулна.",
+    "reasons": [
+      "number '2' missing from translation"
+    ]
+  },
+  {
+    "id": "NDC_24",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Mitigation 2",
+    "text": "By increasing meat supply to the domestic market will reduce livestock CO2 emissions by 1.12 million tons by 2030 and by 2.29 million tons by 2035",
+    "textOriginal": "Дотоодын зах зээлд махны нийлүүлэлтийг нэмэгдүүлснээр 2030 он гэхэд мал аж ахуйн CO₂ ялгарлыг 1.12 сая тонноор, 2035 он гэхэд 2.29 сая тонноор бууруулна.",
+    "reasons": [
+      "number '2' missing from translation"
+    ]
+  }
+]

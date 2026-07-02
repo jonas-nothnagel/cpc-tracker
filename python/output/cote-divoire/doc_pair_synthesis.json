@@ -1,0 +1,62 @@
+[
+  {
+    "doc_a": "LDN",
+    "doc_b": "NBT",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NBT (Nature)",
+    "aligned_count": 127,
+    "flagged_count": 16,
+    "contradiction_types": {
+      "delivery_friction": 11,
+      "resource_competition": 5
+    },
+    "synthesis": {
+      "storyline_name": "Link restoration and forest management with biodiversity delivery",
+      "reinforce": "The two documents often align around restoring degraded land, expanding forest cover, improving forest condition, and using sustainable land management to reinforce biodiversity conservation and climate resilience. Nature-side measures on policy integration, stakeholder capacity, data, incentives, protected-area management, and sustainable production tend to provide enabling mechanisms that could support delivery of LDN forest restoration, reduced conversion, and ecosystem-based productivity gains.",
+      "clash": "Recurring possible misalignment is flagged mainly where LDN actions convert or intensify land for agriculture, especially the 800,000 hectares of degraded farmland and the 7,200 hectares of bare land targeted for production. These cases often point to delivery friction or resource competition when the same land could also be prioritized for threatened species recovery, ecologically important area restoration, protected areas, integrated spatial planning, biodiversity-positive incentives, or conservation finance.",
+      "coordination_hint": "Spatial screening, zoning, and biodiversity-sensitive design of agricultural recovery and productivity measures could help keep shared land areas compatible with species, protected-area, and restoration priorities.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "LDN",
+    "doc_b": "NDC",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 612,
+    "flagged_count": 41,
+    "contradiction_types": {
+      "resource_competition": 27,
+      "delivery_friction": 14
+    },
+    "synthesis": {
+      "storyline_name": "Link restoration with forest-smart land use",
+      "reinforce": "The two documents largely align around restoring degraded land, increasing forest cover, improving forest productivity, and reducing fire and fuelwood pressure through measures such as protected-forest management, early warning for fires, agroforestry, improved charcoal production, biodigesters, and hydro-agricultural support on existing farmland. A recurring pattern is that NDC governance and enabling instruments, including land tenure, water governance, hydro-climatic monitoring, and forest governance, tend to reinforce LDN delivery by supporting more sustainable management of agricultural and forest landscapes.",
+      "clash": "Possible misalignment is flagged mainly where LDN forest-conversion limits or agricultural land recovery could compete with NDC land demands for infrastructure, energy, biomass, rice, livestock, or forest expansion. The review flags recur around siting and sourcing, especially for roads, solar, wind, biomass and charcoal supply chains, timber or wood-energy plantations, new reserves, and cases where bare land targeted for agriculture could also be considered for reforestation or conservation.",
+      "coordination_hint": "Joint spatial planning, land-use zoning, and clear biomass and infrastructure siting safeguards could help keep restoration, agriculture, forest protection, and renewable energy measures aligned.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBT",
+    "doc_b": "NDC",
+    "label_a": "NBT (Nature)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 2712,
+    "flagged_count": 71,
+    "contradiction_types": {
+      "delivery_friction": 57,
+      "resource_competition": 14
+    },
+    "synthesis": {
+      "storyline_name": "Aligning biodiversity safeguards with climate delivery pathways",
+      "reinforce": "The two documents largely align through enabling measures that connect biodiversity governance with climate implementation, especially integrated spatial planning, protected-area management, ecosystem-based approaches, conservation finance, data systems, and sustainable land and water management. This often points to practical reinforcement where NDC actions on forest management, fire early warning, wastewater treatment, agroforestry, aquaculture, and protected-area deforestation control could be delivered within broader NBT frameworks on ecosystem services, restoration, policy integration, and stakeholder capacity.",
+      "clash": "Recurring possible misalignment is mostly flagged for review around land, biomass, and infrastructure delivery, rather than around stated goals. The flagged pairs often point to biomass energy, charcoal and woodfuel modernization, sustainable aviation fuel, irrigation and hydro-agricultural works, livestock intensification, and solar, wind, or road siting as areas where feedstock sourcing, land take, water use, or project location could create delivery friction or resource competition with restoration, threatened species recovery, protected areas, and ecosystem-service objectives.",
+      "coordination_hint": "Joint spatial planning, feedstock and sourcing rules, and biodiversity screening for energy, agriculture, forestry, and infrastructure investments could help keep the strong overall alignment while addressing the possible misalignment areas flagged for review.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

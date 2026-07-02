@@ -21,9 +21,17 @@
  * swaps to the doc-coherence matrix, synced with the ranked list on the left.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { Modal } from "@/components/ui/modal";
 import {
   SECTORS_SECTION_ID,
   SectorsSection,
@@ -59,8 +67,8 @@ import {
 } from "./sections/implementation";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
-import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
+import { InstitutionFlow } from "./centerpiece/institution-flow";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
@@ -77,11 +85,11 @@ import type { LensId, LensOption } from "./lens";
 import { getDocTypeOrder } from "@/lib/utils";
 import { PrototypeBadge } from "@/components/ui/prototype-badge";
 import {
-  buildSectorAlignmentDensity,
   buildSectorBriefing,
+  buildSectorCoherenceShare,
   buildSectorTensionDensity,
   canonicalHiddenKey,
-  computeConcentrationStat,
+  computeCoverageConcentration,
   computeTargetConcentration,
   frictionTypeTotalsFromAlignment,
   indexSectorSyntheses,
@@ -91,9 +99,10 @@ import {
   selectCorpusThemesForState,
   selectSectorSynthesesForState,
   type CorpusThemesPayload,
+  type CoverageConcentrationStat,
   type FaultLine,
-  type SectorAlignment,
   type SectorBriefing,
+  type SectorCoherenceShareSummary,
   type SectorSynthesisPayload,
   type SectorTension,
 } from "@/lib/coherence-briefing";
@@ -104,13 +113,22 @@ import {
   type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
 import {
+  computeBudgetByGlobeCategory,
+  computeBudgetByTaxonomy,
+  computeOutcomeSubcategories,
+  type CategoryBudgetSummary,
+  type OutcomeSubcategory,
+} from "@/lib/coherence-budget";
+import {
   buildActionMeta,
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
+  computeInstitutionFlow,
   type ActionPlanAlignmentSummary,
   type DeliveryRosterModel,
   type ImplementationCoverage,
+  type InstitutionFlowModel,
 } from "@/lib/implementation-coherence";
 import { orgAcronymsFor } from "@/data/org-acronyms";
 import type {
@@ -122,6 +140,7 @@ import type {
   CountryConfig,
   DocPairSynthesis,
   GlobeCategory,
+  GgaCategory,
   GlobeSubcategory,
   IpccSector,
   NbsCategory,
@@ -177,6 +196,19 @@ const SECTION_ORDER: SectionId[] = [
   EXPLORE_SECTION_ID,
 ];
 
+/** Distinct, semantically-evocative swatches for the seven GGA climate-resilience
+ *  themes (decision 2/CMA.5). Keyed by category id so the mapping is stable
+ *  regardless of array order. Colour is presentation only (no source claim). */
+const GGA_LENS_COLORS: Record<string, string> = {
+  gga_water: "#0468b1",
+  gga_agriculture_food: "#d97706",
+  gga_health: "#dc2626",
+  gga_ecosystems_biodiversity: "#059669",
+  gga_infrastructure_settlements: "#64748b",
+  gga_livelihoods: "#7c3aed",
+  gga_cultural_heritage: "#b45309",
+};
+
 interface CoherenceBriefingProps {
   countryName: string;
   countryId?: string;
@@ -185,6 +217,8 @@ interface CoherenceBriefingProps {
   classifications: ThematicClassification[];
   sectors: IpccSector[];
   globeCategories: GlobeCategory[];
+  /** GGA climate-resilience themes (decision 2/CMA.5), surfaced as a lens. */
+  ggaCategories?: GgaCategory[];
   nbsCategories: NbsCategory[];
   countryConfig: CountryConfig | null;
   docPairSyntheses?: DocPairSynthesis[];
@@ -214,6 +248,7 @@ export function CoherenceBriefing({
   classifications,
   sectors,
   globeCategories,
+  ggaCategories = [],
   countryConfig,
   docPairSyntheses = [],
   corpusThemes = null,
@@ -241,6 +276,7 @@ export function CoherenceBriefing({
       sectors,
       globeCategories,
       globeSubcategories,
+      ggaCategories,
       classifications,
       nr7Data,
       btrData,
@@ -253,6 +289,7 @@ export function CoherenceBriefing({
       sectors,
       globeCategories,
       globeSubcategories,
+      ggaCategories,
       classifications,
       nr7Data,
       btrData,
@@ -261,13 +298,25 @@ export function CoherenceBriefing({
     ],
   );
   // ── Document include/exclude filter ─────────────────────────────
-  // Soft-hidden docs (defaultHiddenDocTypes) ship to the browser but start
-  // hidden; users can toggle any document on/off. Every narrative number,
-  // wheel ribbon, and matrix cell below is derived from these visible arrays,
-  // so they all recompute live with no pipeline re-run. The Explore workbench
-  // (explorerProps above) owns its OWN hiddenDocs and keeps the full corpus.
+  // Soft-hidden docs ship to the browser but start hidden; users can toggle any
+  // document on/off. Every narrative number, wheel ribbon, and matrix cell below
+  // is derived from these visible arrays, so they all recompute live with no
+  // pipeline re-run. The Explore workbench (explorerProps above) owns its OWN
+  // hiddenDocs and keeps the full corpus.
+  //
+  // The briefing default-hidden set = docs hidden everywhere
+  // (`defaultHiddenDocTypes`) PLUS the country's second-tier docs
+  // (`secondaryDocTypes`), which are hidden from the briefing analytical views
+  // but stay visible in Explore. So every view here leads with the strategic
+  // documents while the second-tier ones are one click away.
   const defaultHiddenDocTypes = useMemo(
-    () => countryConfig?.defaultHiddenDocTypes ?? [],
+    () =>
+      Array.from(
+        new Set([
+          ...(countryConfig?.defaultHiddenDocTypes ?? []),
+          ...(countryConfig?.secondaryDocTypes ?? []),
+        ]),
+      ),
     [countryConfig],
   );
   const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(
@@ -339,6 +388,70 @@ export function CoherenceBriefing({
     return computeFinancingCoherence(berData, locale);
   }, [berData, locale]);
 
+  // Reviewed spending rolled up to the biodiversity-OUTCOME taxonomy (primary
+  // GLOBE), so the centerpiece can lead with where money concentrates AND which
+  // outcome areas carry policy targets but no classified budget — the signal the
+  // raw program-name view can't show (an absent budget line never appears).
+  // Pass the FULL classifications array: BER_* programme classifications are not
+  // document-scoped, so visibleClassifications (policy-target filtered) would
+  // strip them and zero the budget. Target counts are scoped via visibleTargets,
+  // so the gap list's counts track the document toggle while spend stays fixed.
+  // Null (no GLOBE-classified BER) → the centerpiece falls back to the raw view.
+  const outcomeBudget = useMemo<CategoryBudgetSummary | null>(() => {
+    if (!financing || !berData) return null;
+    return computeBudgetByGlobeCategory({
+      berData,
+      globeCategories,
+      globeSubcategories,
+      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+    });
+  }, [
+    financing,
+    berData,
+    globeCategories,
+    globeSubcategories,
+    classifications,
+    visibleTargets,
+    visibleAlignment,
+  ]);
+
+  // Per-outcome subcategory distribution (the rows a category expands into).
+  // Same FULL-classifications / visible-targets scoping as outcomeBudget.
+  const outcomeSubcategories = useMemo<Map<string, OutcomeSubcategory[]>>(() => {
+    if (!outcomeBudget || !berData) return new Map();
+    return computeOutcomeSubcategories({
+      berData,
+      globeSubcategories,
+      classifications,
+      targets: visibleTargets,
+    });
+  }, [outcomeBudget, berData, globeSubcategories, classifications, visibleTargets]);
+
+  // GGA finance view: when the climate-resilience lens is active, regroup the
+  // reviewed BER spend by the seven GGA themes (single-level — no subcategory
+  // rollup). Computed unconditionally (cheap); null unless the country has BER
+  // data and GGA classifications, so non-BER countries are unaffected.
+  const outcomeBudgetGga = useMemo<CategoryBudgetSummary | null>(() => {
+    if (!financing || !berData || ggaCategories.length === 0) return null;
+    return computeBudgetByTaxonomy({
+      berData,
+      categories: ggaCategories,
+      primaryTaxonomyType: "gga",
+      classifications,
+      targets: visibleTargets,
+      alignment: visibleAlignment,
+    });
+  }, [
+    financing,
+    berData,
+    ggaCategories,
+    classifications,
+    visibleTargets,
+    visibleAlignment,
+  ]);
+
   // Softer, AI-estimated per-document budget reach for the left-column read.
   // Recomputes with the document toggle (visibleTargets). Null without budget
   // alignment to draw on.
@@ -380,6 +493,21 @@ export function CoherenceBriefing({
     if (!btrData || !btrData.mitigationMeasures?.length) return null;
     return computeDeliveryRoster(btrData, orgMap);
   }, [btrData, orgMap]);
+
+  // Alternative right-column view: where each institution's reported actions
+  // land across the policy documents (entity→document flow). Same neutral
+  // involvement framing as the roster; gated on the BTR and the document
+  // toggle (visibleTargets).
+  const institutionFlow = useMemo<InstitutionFlowModel | null>(() => {
+    if (!btrData || !btrData.mitigationMeasures?.length) return null;
+    return computeInstitutionFlow(alignment, btrData, visibleTargets, orgMap);
+  }, [btrData, alignment, visibleTargets, orgMap]);
+  const [implCenterView, setImplCenterView] = useState<"roster" | "flow">(
+    "roster",
+  );
+  // Pop the active centerpiece into a large overlay so relationships are
+  // explorable at size (the sticky column is only ~480px wide).
+  const [expanded, setExpanded] = useState(false);
 
   // Synthetic Target stand-ins for reported actions, so an action↔target row
   // in the Implementation drill-down opens the SAME PairDrawer as everywhere
@@ -503,11 +631,11 @@ export function CoherenceBriefing({
   const sectorIsFullSetFallback =
     hiddenDocs.size > 0 && !sectorSelection.isExact;
   const storylineCaveat: string | null = liveUpdating
-    ? "Updating storylines for your current selection…"
+    ? t("storylineCaveat.updating")
     : corpusIsOffPath && !liveCorpusForKey
-      ? "Storylines reflect all policy documents; the figures reflect your current selection."
+      ? t("storylineCaveat.corpusOffPath")
       : sectorIsFullSetFallback
-        ? "Sector storylines reflect all policy documents; everything else reflects your current selection."
+        ? t("storylineCaveat.sectorFallback")
         : null;
 
   const verdict = useMemo(
@@ -591,6 +719,22 @@ export function CoherenceBriefing({
         })),
       });
     }
+    // GGA climate-resilience lens (decision 2/CMA.5). Offered only when the
+    // pipeline has classified targets against it; the filter below also enforces
+    // at least one primary `gga` classification in the currently-visible set.
+    if (ggaCategories.length > 0) {
+      candidates.push({
+        id: "gga",
+        label: t("lens.gga"),
+        tooltip: t("lens.ggaTooltip"),
+        taxonomyType: "gga",
+        categories: ggaCategories.map((c) => ({
+          id: c.id,
+          name: c.name,
+          color: GGA_LENS_COLORS[c.id] ?? "#9ca3af",
+        })),
+      });
+    }
     return candidates.filter((opt) => {
       const idSet = new Set(opt.categories.map((c) => c.id));
       return visibleClassifications.some(
@@ -600,7 +744,7 @@ export function CoherenceBriefing({
           idSet.has(c.categoryId),
       );
     });
-  }, [t, globeCategories, sectors, countryConfig, visibleClassifications]);
+  }, [t, globeCategories, ggaCategories, sectors, countryConfig, visibleClassifications]);
 
   const [activeLensId, setActiveLensId] = useState<LensId | null>(null);
 
@@ -630,9 +774,9 @@ export function CoherenceBriefing({
     });
   }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
 
-  const sectorAlignments = useMemo<SectorAlignment[]>(() => {
-    if (!lens) return [];
-    return buildSectorAlignmentDensity({
+  const sectorShares = useMemo<SectorCoherenceShareSummary | null>(() => {
+    if (!lens) return null;
+    return buildSectorCoherenceShare({
       targets: visibleTargets,
       alignment: visibleAlignment,
       classifications: visibleClassifications,
@@ -652,8 +796,8 @@ export function CoherenceBriefing({
     () => sectorRows.find((s) => s.tensionCount > 0) ?? sectorRows[0] ?? null,
     [sectorRows],
   );
-  const concentration = useMemo(
-    () => computeConcentrationStat(sectorRows),
+  const coverageConcentration = useMemo<CoverageConcentrationStat>(
+    () => computeCoverageConcentration(sectorRows),
     [sectorRows],
   );
 
@@ -1101,6 +1245,106 @@ export function CoherenceBriefing({
     [],
   );
 
+  // The active section's sticky visual. Extracted so the same graphic + legend
+  // renders both inline (the ~480px column) and inside the expand overlay; the
+  // only difference is the wheel's height cap.
+  const renderActiveCenterpiece = (inModal: boolean) => {
+    if (activeSection === DOC_PAIRS_SECTION_ID) {
+      return (
+        <div className="flex justify-center">
+          <DocCoherenceMatrix
+            targets={visibleTargets}
+            alignment={visibleAlignment}
+            countryConfig={countryConfig}
+            onCellClick={openDocPairByDocs}
+            highlightedKey={hoveredDocPairKey}
+            onHoverPair={setHoveredDocPairKey}
+          />
+        </div>
+      );
+    }
+    if (activeSection === FINANCING_SECTION_ID && financing) {
+      // Centerpiece dropped — the FundingTargetGrid in the left column already
+      // carries the per-target outlier view + a contributing-programmes panel,
+      // so the finance-outcome centerpiece was duplicative. The section
+      // visually breaks out across both columns via `lg:w-[calc(100%+520px)]`
+      // on the FinancingSection block and `lg:invisible` on this aside.
+      return null;
+    }
+    if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
+      return (
+        <div>
+          {/* Toggle the reported-snapshot column between WHO delivers
+              (roster) and WHERE that effort lands in the plan (flow). */}
+          <div className="flex items-center gap-1.5 mb-3">
+            {(["roster", "flow"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setImplCenterView(v)}
+                aria-pressed={implCenterView === v}
+                className={`text-[11px] px-2.5 py-0.5 rounded-full border transition-colors ${
+                  implCenterView === v
+                    ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
+                    : "text-[var(--undp-gray)] border-gray-300 hover:text-[var(--undp-black)]"
+                }`}
+              >
+                {t(
+                  v === "roster"
+                    ? "implementationCenter.flow.toggleRoster"
+                    : "implementationCenter.flow.toggleFlow",
+                )}
+              </button>
+            ))}
+          </div>
+          {implCenterView === "flow" && institutionFlow ? (
+            <InstitutionFlow
+              model={institutionFlow}
+              countryConfig={countryConfig}
+              countryName={countryName}
+              onOpenActionPair={openActionPair}
+            />
+          ) : (
+            <DeliveryRoster roster={deliveryRoster} countryName={countryName} />
+          )}
+        </div>
+      );
+    }
+    return (
+      <>
+        <WheelCenterpiece
+          targets={visibleTargets}
+          alignments={visibleAlignment}
+          classifications={visibleClassifications}
+          countryConfig={countryConfig}
+          state={wheelState}
+          sectorCategories={sectorCategories}
+          sectorTaxonomyType={lensTaxonomyType}
+          maxHeightPx={inModal ? 680 : 620}
+          onArcClick={handleWheelArcClick}
+          onPairClick={
+            activeSection === DIRECTION_SECTION_ID ||
+            activeSection === DOC_FOCUS_SECTION_ID
+              ? undefined
+              : openPairById
+          }
+          onRibbonNavigate={
+            activeSection === DIRECTION_SECTION_ID
+              ? handleRibbonNavigate
+              : activeSection === DOC_FOCUS_SECTION_ID
+                ? (a, b) =>
+                    openDocPairByDocs(
+                      a as PolicyDocumentType,
+                      b as PolicyDocumentType,
+                    )
+                : undefined
+          }
+        />
+        <WheelLegend showArcNote={wheelState.frictionArcs === true} />
+      </>
+    );
+  };
+
   // ── Render ─────────────────────────────────────────────────────
   return (
     <main className="flex-1 w-full">
@@ -1222,9 +1466,9 @@ export function CoherenceBriefing({
             >
               <SectorsSection
                 sectorRows={sectorRows}
-                sectorAlignments={sectorAlignments}
+                sectorShares={sectorShares}
                 sectorSyntheses={sectorSynthesesIndex}
-                concentration={concentration}
+                coverageConcentration={coverageConcentration}
                 lensLabel={lens?.label ?? null}
                 taxonomyType={lensTaxonomyType}
                 availableLenses={availableLenses}
@@ -1306,66 +1550,36 @@ export function CoherenceBriefing({
                 countryConfig={countryConfig}
                 onToggle={toggleDoc}
               />
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2 text-center">
-                {sectionLabels[activeSection]}
-              </p>
-              {activeSection === DOC_PAIRS_SECTION_ID ? (
-                <div className="flex justify-center">
-                  <DocCoherenceMatrix
-                    targets={visibleTargets}
-                    alignment={visibleAlignment}
-                    countryConfig={countryConfig}
-                    onCellClick={openDocPairByDocs}
-                    highlightedKey={hoveredDocPairKey}
-                    onHoverPair={setHoveredDocPairKey}
-                  />
-                </div>
-              ) : activeSection === FINANCING_SECTION_ID && financing ? (
-                // Centerpiece dropped — the FundingTargetGrid in the left
-                // column already carries the per-target outlier view + a
-                // contributing-programmes panel, so the BER concentration
-                // sankey was duplicative. Leaving null here so the section
-                // visually breaks out across both columns via the wrapper
-                // class on the FinancingSection block.
-                null
-              ) : activeSection === IMPLEMENTATION_SECTION_ID &&
-                deliveryRoster ? (
-                <DeliveryRoster
-                  roster={deliveryRoster}
-                  countryName={countryName}
-                />
-              ) : (
-                <>
-                  <WheelCenterpiece
-                    targets={visibleTargets}
-                    alignments={visibleAlignment}
-                    classifications={visibleClassifications}
-                    countryConfig={countryConfig}
-                    state={wheelState}
-                    sectorCategories={sectorCategories}
-                    sectorTaxonomyType={lensTaxonomyType}
-                    onArcClick={handleWheelArcClick}
-                    onPairClick={
-                      activeSection === DIRECTION_SECTION_ID ||
-                      activeSection === DOC_FOCUS_SECTION_ID
-                        ? undefined
-                        : openPairById
-                    }
-                    onRibbonNavigate={
-                      activeSection === DIRECTION_SECTION_ID
-                        ? handleRibbonNavigate
-                        : activeSection === DOC_FOCUS_SECTION_ID
-                          ? (a, b) =>
-                              openDocPairByDocs(
-                                a as PolicyDocumentType,
-                                b as PolicyDocumentType,
-                              )
-                          : undefined
-                    }
-                  />
-                  <WheelLegend showArcNote={wheelState.frictionArcs === true} />
-                </>
-              )}
+              <div className="relative mb-2">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] text-center">
+                  {sectionLabels[activeSection]}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setExpanded(true)}
+                  aria-label={t("expand.aria")}
+                  title={t("expand.aria")}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+                >
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 5V2h3M12 9v3h-3M9 2h3v3M5 12H2V9"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span>{t("expand.button")}</span>
+                </button>
+              </div>
+              {renderActiveCenterpiece(false)}
             </div>
           </aside>
             </div>
@@ -1434,7 +1648,6 @@ export function CoherenceBriefing({
         totalFlagged={frictionTotals.total}
         countryConfig={countryConfig}
         onClose={() => setFlagProfile(null)}
-        onOpenTarget={(target) => setFlagProfile({ kind: "target", target })}
         onOpenPair={(a, b) => {
           setFlagProfile(null);
           openPairById(a, b);
@@ -1446,6 +1659,18 @@ export function CoherenceBriefing({
         countryId={countryId}
         onClose={() => setPairData(null)}
       />
+      {/* Expand the active centerpiece to a large overlay so relationships are
+          explorable at size; the same graphic + legend renders bigger here. */}
+      <Modal
+        open={expanded}
+        onClose={() => setExpanded(false)}
+        title={sectionLabels[activeSection]}
+        maxWidth="max-w-5xl"
+      >
+        <div className="p-6 flex justify-center">
+          {expanded ? renderActiveCenterpiece(true) : null}
+        </div>
+      </Modal>
       <FooterLink countryId={countryId} />
     </main>
   );
@@ -1530,14 +1755,36 @@ function JumpNav({
 function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
   const t = useTranslations("briefing.legend");
   return (
-    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)]">
-      <LegendDot color="#196127" label={t("aligned")} />
-      <LegendDot color="#dc2626" label={t("flagged")} dashed />
-      <span className="text-[10px] text-[var(--undp-gray)]/70">
-        {t("redShareHint")}
-      </span>
-      {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
+    <div className="mt-3 mx-auto max-w-[440px] grid grid-cols-[auto_1fr] items-baseline gap-x-3 gap-y-1.5 text-[11px] text-[var(--undp-gray)]">
+      <LegendRow label={t("groupColours")}>
+        <LegendDot color="#196127" label={t("aligned")} />
+        <LegendDot color="#dc2626" label={t("flagged")} dashed />
+      </LegendRow>
+      <LegendRow label={t("groupRelations")}>
+        <span className="text-[var(--undp-gray)]/80">{t("ribbonMeaning")}</span>
+      </LegendRow>
+      <LegendRow label={t("groupStrength")}>
+        <span className="text-[var(--undp-gray)]/80">{t("ribbonWidth")}</span>
+        <span className="text-[var(--undp-gray)]/70">{t("redShareHint")}</span>
+        {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
+      </LegendRow>
     </div>
+  );
+}
+
+/** One legend group: a quiet uppercase label + its swatches/text. Emits two grid
+ *  items (label, content) so the shared parent grid auto-sizes the label column
+ *  to the widest label across locales (no fixed width to overflow). No boxes. */
+function LegendRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <>
+      <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+        {label}
+      </span>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
+        {children}
+      </div>
+    </>
   );
 }
 

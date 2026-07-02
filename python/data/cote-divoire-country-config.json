@@ -1,0 +1,49 @@
+{
+  "_comment": "Display config for Côte d'Ivoire. Coherence-only (Level 1): no BTR / BER / NR7 data, so no btrMitigationSourceRef, countrySectors, or mitigationTaxonomy. Document taxonomy and provenance drive the dashboard with no code changes (same shape as sri-lanka-country-config.json).",
+  "name": "Côte d'Ivoire",
+  "_anchorDocTypeComment": "Intentionally omitted. anchorDocType drives the Vision Anchor Coverage view, which treats one document as the country's north-star/long-term vision that every other doc operationalises (Mongolia: Vision 2050). Côte d'Ivoire's three documents (NDC, NBT, LDN) are parallel convention commitments (climate / nature / land), not a vision-and-derivatives hierarchy, so no anchor is set and that view stays off.",
+  "defaultHiddenDocTypes": [],
+  "excludedDocTypes": [],
+  "_documentTypesComment": "Côte d'Ivoire's three source documents from data_cote_divoire_19Jun26.xlsx. Codes come from the verbatim `Type` column (NDC / NBT / LDN); the mediumLabel parenthetical is the verbatim `Convention` column value (Climate / Nature / Land degradation). The `Doc` column was NOT used for codes because it mixes a version label (\"NDC 3.0\") and a source-tool name (\"ORT\" = the CBD Online Reporting Tool, which is the source, not the document). Colors from the UNDP-compatible Tailwind palette: blue=climate, green=nature, amber=land. Avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
+  "_documentMetaComment": "Reference metadata (docKind / published / author / url) for the doc-focus panel. Sourced from primary/official systems; every url verified to return HTTP 200 on 2026-06-30. NDC 3.0 = direct UNFCCC PDF (cover: 'CDN 3.0 / Republique de Cote d'Ivoire / Octobre 2025'); NBT = CBD Online Reporting Tool registry (Cote d'Ivoire's Kunming-Montreal national targets are also browsable on the national CHM ci.chm-cbd.net); LDN = UNCCD country commitments page (2018). NBT publication date omitted because the exact submission date was not verified. No objective strings set (the primaries' overall goal was not read verbatim).",
+  "documentTypes": [
+    {
+      "id": "NDC",
+      "shortLabel": "NDC",
+      "mediumLabel": "NDC (Climate)",
+      "fullLabel": "Nationally Determined Contributions 3.0",
+      "color": "#0468b1",
+      "docKind": "Nationally Determined Contribution (UNFCCC)",
+      "published": "October 2025",
+      "author": "Government of Côte d'Ivoire",
+      "url": "https://unfccc.int/sites/default/files/2025-10/CDN%203.0%20COTE%20D'IVOIRE.pdf"
+    },
+    {
+      "id": "NBT",
+      "shortLabel": "NBT",
+      "mediumLabel": "NBT (Nature)",
+      "fullLabel": "National Biodiversity Targets",
+      "color": "#166534",
+      "docKind": "National biodiversity targets (CBD, Kunming-Montreal Global Biodiversity Framework)",
+      "author": "Government of Côte d'Ivoire",
+      "url": "https://ort.cbd.int/national-targets"
+    },
+    {
+      "id": "LDN",
+      "shortLabel": "LDN",
+      "mediumLabel": "LDN (Land degradation)",
+      "fullLabel": "Land Degradation Neutrality targets",
+      "color": "#b45309",
+      "docKind": "UNCCD Land Degradation Neutrality country targets",
+      "published": "2018",
+      "author": "Government of Côte d'Ivoire (UNCCD LDN Target Setting Programme)",
+      "url": "https://www.unccd.int/commitment/ldn-country-commitments-5"
+    }
+  ],
+  "_docProvenanceComment": "Primary-source citations per document, with the verbatim Source-column URLs. The NDC text is from the UNFCCC NDC Registry; the NBT text was reported by Côte d'Ivoire via the CBD Online Reporting Tool (ORT); the LDN text is from the UNCCD country LDN targets and its English is a UNCCD-provided machine translation (noted for transparency).",
+  "docProvenance": {
+    "NDC": "Nationally Determined Contributions 3.0, Côte d'Ivoire. UNFCCC NDC Registry: https://unfccc.int/NDCREG",
+    "NBT": "National Biodiversity Targets, Côte d'Ivoire. Reported via the CBD Online Reporting Tool: https://ort.cbd.int/national-targets",
+    "LDN": "Land Degradation Neutrality targets, Côte d'Ivoire. UNCCD: https://data.unccd.int/country-ldntargets?country=CIV (English is a UNCCD-provided machine translation)"
+  }
+}

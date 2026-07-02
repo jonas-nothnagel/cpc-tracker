@@ -1,4 +1,4 @@
-# CPC Tracker
+# CPC Analyzer
 
 Nature-Climate Policy Coherence Progress Analysis Tool
 

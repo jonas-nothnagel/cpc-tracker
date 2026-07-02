@@ -181,7 +181,7 @@ function RecurringPatternsBlock({
       <RecurringPatternsLabel count={storylines.length} />
       <ul className="grid gap-2 sm:grid-cols-2">
         {ordered.map((s) => (
-          <li key={`${s.type}-${s.name}`}>
+          <li key={`${s.type}-${s.name}`} className="h-full">
             <StorylineCard
               storyline={s}
               countryConfig={countryConfig}

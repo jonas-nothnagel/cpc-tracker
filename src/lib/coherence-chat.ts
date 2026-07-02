@@ -31,7 +31,7 @@ export type ChatAction =
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
-  | { type: "set_mode"; mode: "document" | "sector" | "globe" }
+  | { type: "set_mode"; mode: "document" | "sector" | "globe" | "gga" }
   /** Unhide one or more documents so the next action's target is visible.
    *  Emitted by the server when the answer touches a doc that isn't in the
    *  current visible-groups set. Applied client-side before any focus or
@@ -78,13 +78,14 @@ interface ChatRankings {
 
 interface BuildChatRequestArgs {
   query: string;
-  groupMode: "document" | "sector" | "globe";
+  groupMode: "document" | "sector" | "globe" | "gga";
   filter: string;
   targets: Target[];
   alignment: AlignmentResult[];
   classifications: ThematicClassification[];
   sectors: ChatTaxCategory[];
   globeCategories: ChatTaxCategory[];
+  ggaCategories: ChatTaxCategory[];
   btrData?: BtrData | null;
   availableDocs: PolicyDocumentType[];
   /** Docs the user currently has toggled off. Surfaced to the model as
@@ -126,6 +127,7 @@ export function buildChatRequest({
   classifications,
   sectors,
   globeCategories,
+  ggaCategories,
   btrData,
   availableDocs,
   hiddenDocs,
@@ -180,6 +182,7 @@ export function buildChatRequest({
     classifications,
     sectors,
     globeCategories,
+    ggaCategories,
     btrData,
   );
 
@@ -190,6 +193,11 @@ export function buildChatRequest({
       description: c.description,
     })),
     sector: sectors.map((c) => ({
+      id: c.id,
+      name: c.name,
+      description: c.description,
+    })),
+    gga: ggaCategories.map((c) => ({
       id: c.id,
       name: c.name,
       description: c.description,
@@ -258,6 +266,7 @@ export function buildChatRequest({
       isTimeBound: t.isTimeBound,
       primaryGlobe: primary?.globe,
       primarySector: primary?.sector,
+      primaryGga: primary?.gga,
       primaryAdaptationGoal: primary?.adaptation,
     };
   });
@@ -448,6 +457,7 @@ function computeRankings(
 interface PrimarySlot {
   globe?: { id: string; name: string };
   sector?: { id: string; name: string };
+  gga?: { id: string; name: string };
   adaptation?: { id: string; description: string };
 }
 
@@ -455,10 +465,12 @@ function buildPrimaryByTarget(
   classifications: ThematicClassification[],
   sectors: ChatTaxCategory[],
   globeCategories: ChatTaxCategory[],
+  ggaCategories: ChatTaxCategory[],
   btrData: BtrData | null | undefined,
 ): Map<string, PrimarySlot> {
   const globeById = new Map(globeCategories.map((c) => [c.id, c.name]));
   const sectorById = new Map(sectors.map((c) => [c.id, c.name]));
+  const ggaById = new Map(ggaCategories.map((c) => [c.id, c.name]));
   const adaptationById = new Map(
     (btrData?.adaptationGoals ?? []).map((g) => [g.id, g.description]),
   );
@@ -470,6 +482,8 @@ function buildPrimaryByTarget(
       slot.globe = { id: c.categoryId, name: globeById.get(c.categoryId)! };
     } else if (c.taxonomyType === "sector" && sectorById.has(c.categoryId)) {
       slot.sector = { id: c.categoryId, name: sectorById.get(c.categoryId)! };
+    } else if (c.taxonomyType === "gga" && ggaById.has(c.categoryId)) {
+      slot.gga = { id: c.categoryId, name: ggaById.get(c.categoryId)! };
     } else if (
       c.taxonomyType === "adaptation_goal" &&
       adaptationById.has(c.categoryId)
@@ -501,22 +515,27 @@ interface PickExampleQueriesArgs {
 }
 
 /**
- * Pick up to 4 example chip questions tailored to the visible dataset.
- * Chips read like questions a policymaker would actually ask: clear, no
- * jargon (avoid acronyms like BER / BTR in the chip surface, expand them
- * in the chat answer instead), and each one untaps a different slice of
- * what the tool can surface (implementation reality, coordination
- * pathways, money flow, target quality, theme concentration).
+ * Stable keys for the example chip questions, split into a coherence pool
+ * and a finance pool. The explorer maps each key to a localized question
+ * string (`explorer.questions.<pool>.<key>`) and surfaces up to three for the
+ * active view, so the user-facing text lives in the i18n catalogue (en/es/mn)
+ * rather than hard-coded English and stays governed by the display-vocabulary
+ * guardrail ("potential misalignment", never "contradiction"/"tension").
  *
- * Each chip is gated by a precondition. When a dataset can't answer a
- * chip honestly, the chip is dropped silently. Order is priority: the
- * top-priority chips that match the dataset are the four that surface.
- *
- * The 4-chip cap pairs with the always-visible chip row in ChatBar:
- * more than four chips plus a Surprise me button risks pushing the
- * insight bubble below the fold on smaller viewports.
+ * Each key is gated by a precondition. When a dataset can't answer a question
+ * honestly, the key is dropped silently. Order within each pool is priority:
+ * the highest-priority keys that match the dataset are the ones that surface.
+ * The finance pool stays empty without tagged budget data, which is the same
+ * signal the explorer uses to decide whether to offer the finance view at all.
  */
-export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
+export interface ExampleQueryPools {
+  coherence: string[];
+  finance: string[];
+}
+
+export function pickExampleQueries(
+  args: PickExampleQueriesArgs,
+): ExampleQueryPools {
   const {
     hasAdaptation,
     hasTensions,
@@ -525,47 +544,30 @@ export function pickExampleQueries(args: PickExampleQueriesArgs): string[] {
     globeCategoriesAvailable,
     sectorsAvailable,
   } = args;
-  const candidates: Array<{ when: boolean; q: string }> = [
-    // Implementation reality is the sharpest signal a coherence dataset
-    // can carry: BTR records what is ALREADY happening on the ground, so
-    // a flagged conflict against a planned target reads as fact-versus-
-    // intent. Leads the list whenever BTR data is present.
-    {
-      when: hasBtr && hasTensions,
-      q: "Where do reported actions on the ground appear to contradict planned policy targets?",
-    },
-    // Pathway-shaped: invites the second-order question ("what could be
-    // done about it") rather than just locating the tension. Hedged
-    // language keeps the tool inside its decision-support frame.
-    {
-      when: hasTensions,
-      q: "Which contested target could potentially benefit from coordination across ministries?",
-    },
-    // Budget framing avoids the BER acronym; the chat answer qualifies
-    // the scope ("tagged biodiversity expenditure") once the user asks.
-    {
-      when: hasBudget && hasTensions,
-      q: "Where does biodiversity spending appear to flow, compared to where the tensions are?",
-    },
-    {
-      when: hasTensions,
-      q: "Where might tightening a target's boundary help unlock alignment with other plans?",
-    },
-    {
-      when: hasTensions,
-      q: "Which contested targets lack a measurable indicator to anchor them?",
-    },
+  // Coherence pool. Implementation reality (BTR reported actions read against
+  // planned targets) leads whenever BTR data is present: it is the sharpest
+  // signal a coherence dataset can carry. The rest are pathway-shaped or
+  // target-quality questions, each opening a different slice of the data.
+  const coherence: Array<{ when: boolean; key: string }> = [
+    { when: hasBtr && hasTensions, key: "reportedVsPlanned" },
+    { when: hasTensions, key: "ministryCoordination" },
+    { when: hasTensions, key: "tightenBoundary" },
+    { when: hasTensions, key: "missingIndicator" },
     {
       when: globeCategoriesAvailable || sectorsAvailable,
-      q: "Which policy themes appear to carry the heaviest concentration of tensions?",
+      key: "themeConcentration",
     },
-    {
-      when: hasAdaptation,
-      q: "How well do adaptation actions appear to align with national targets?",
-    },
+    { when: hasAdaptation, key: "adaptationAlignment" },
   ];
-  return candidates
-    .filter((c) => c.when)
-    .map((c) => c.q)
-    .slice(0, 4);
+  // Finance pool. Only meaningful when the dataset carries tagged budget data
+  // (BER classified to GLOBE); otherwise it stays empty.
+  const finance: Array<{ when: boolean; key: string }> = [
+    { when: hasBudget && hasTensions, key: "spendVsMisalignment" },
+    { when: hasBudget, key: "underFunded" },
+    { when: hasBudget && globeCategoriesAvailable, key: "fundedCategories" },
+  ];
+  return {
+    coherence: coherence.filter((c) => c.when).map((c) => c.key),
+    finance: finance.filter((c) => c.when).map((c) => c.key),
+  };
 }

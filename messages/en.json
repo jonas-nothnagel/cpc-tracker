@@ -1,7 +1,9 @@
 {
   "common": {
-    "appName": "Policy Coherence Tracker",
+    "appName": "Policy Coherence Analyzer",
     "close": "Close",
+    "back": "Back",
+    "backAria": "Go back",
     "infoBoxAria": "Show explanation",
     "provenance": {
       "ariaLabel": "Data provenance: {label}",
@@ -26,21 +28,24 @@
     }
   },
   "header": {
-    "brand": "Policy Coherence Tracker",
+    "brand": "Policy Coherence Analyzer",
     "nav": {
       "home": "Home",
       "uploadData": "Upload Data",
-      "prototypes": "prototypes"
+      "prototypes": "prototypes",
+      "howItWorks": "How it works"
     }
   },
   "footer": {},
   "landing": {
     "hero": {
       "eyebrow": "UNDP AI Sprint Initiative",
-      "title": "Nature-Climate Policy Coherence Tracker",
+      "title": "Nature-Climate Policy Coherence Analyzer",
       "subtitle": "See where your national climate, biodiversity, and land-use targets align, overlap, or may pull in different directions.",
-      "exploreCountry": "Explore {name}",
-      "analyseCta": "Analyse your policies"
+      "analyseCta": "Analyse your policies",
+      "exploreMenu": "Explore a pilot country",
+      "pilotCountriesHeader": "Pilot countries",
+      "comingSoonTag": "Soon"
     },
     "inside": {
       "eyebrow": "Inside the analysis",
@@ -103,7 +108,7 @@
       "backToHome": "Back to home"
     },
     "footer": {
-      "text": "United Nations Development Programme · CPC Tracker"
+      "text": "United Nations Development Programme · CPC Analyzer"
     }
   },
   "briefing": {
@@ -125,13 +130,24 @@
     "lens": {
       "globe": "GLOBE",
       "ipcc": "IPCC sectors",
-      "country": "Country sectors"
+      "country": "Country sectors",
+      "gga": "Climate resilience (GGA)",
+      "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)"
     },
     "legend": {
       "aligned": "Aligned",
       "flagged": "Potential misalignment",
       "redShareHint": "red = share of each link that is potentially misaligned",
-      "warmerArcHint": "warmer arc = document with more potential misalignment"
+      "warmerArcHint": "warmer arc = document with more potential misalignment",
+      "groupColours": "Colours",
+      "groupRelations": "Relationships",
+      "groupStrength": "Strength",
+      "ribbonMeaning": "each ribbon links two documents that share evaluated target pairs",
+      "ribbonWidth": "ribbon width = number of shared pairs"
+    },
+    "expand": {
+      "button": "Expand",
+      "aria": "Expand the graphic"
     },
     "explorer": {
       "title": "Explore the full data",
@@ -172,7 +188,10 @@
       "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} flagged · click for the gaps",
       "aligned": "Aligned",
       "flagged": "Potential misalignment",
-      "legendHint": "deeper colour = further from the average · click a cell for the gaps"
+      "legendHint": "deeper colour = further from the corpus's average alignment level",
+      "groupColours": "Colours",
+      "groupIntensity": "Intensity",
+      "clickHint": "click a cell for the gaps"
     },
     "chat": {
       "askCorpus": "Ask the corpus",
@@ -275,6 +294,7 @@
           "empty": "No target pairs to show."
         },
         "reportedActionTag": "Reported action (BTR)",
+        "budgetLineTag": "Budget line (BER)",
         "feedback": {
           "prompt": "Was this assessment useful?",
           "groupAria": "Feedback on this AI-generated assessment",
@@ -352,7 +372,13 @@
         "flaggedCount": "{count, number} potentially misaligned",
         "synthesisedFrom": "Synthesised from {count, plural, one {1 pair} other {# pairs}} · {primary, number} primary + {relevant, number} relevant",
         "misalignmentTypes": "Misalignment types: {list}",
-        "aiDisclaimer": "AI-generated synthesis. Treat as a prompt to review, not a settled finding."
+        "aiDisclaimer": "AI-generated synthesis. Treat as a prompt to review, not a settled finding.",
+        "synthesis": {
+          "empty": "No targets are primary-classified to {categoryName} yet.",
+          "noFlags": "No potential misalignments touch {categoryName} so far.",
+          "hub": "{count, plural, one {# potentially misaligned pair touches} other {# potentially misaligned pairs touch}} {categoryName}; {hubCount} of them ({pct}%) involve the same target.",
+          "spread": "{count, plural, one {# potentially misaligned pair touches} other {# potentially misaligned pairs touch}} {categoryName}, spread across different targets."
+        }
       }
     },
     "explore": {
@@ -398,7 +424,7 @@
       }
     },
     "sectors": {
-      "eyebrow": "Where does misalignment concentrate?",
+      "eyebrow": "Where does policy ambition sit?",
       "noTaxonomy": "No sector taxonomy is available for this country.",
       "showAll": "Show all {count, number} sectors →",
       "collapseToTop": "Collapse to top {count, number}",
@@ -411,8 +437,8 @@
       },
       "col": {
         "sector": "Sector",
-        "aligned": "Aligned",
-        "misaligned": "Misaligned"
+        "targets": "Targets",
+        "flaggedShare": "Potential misalignment"
       },
       "noun": {
         "category": {
@@ -422,23 +448,30 @@
         "sector": {
           "singular": "sector",
           "plural": "sectors"
+        },
+        "theme": {
+          "singular": "theme",
+          "plural": "themes"
         }
       },
-      "concentration": {
-        "emptyHeadline": "No potentially misaligned pairs grouped by {noun} yet.",
-        "emptyBody": "Either the pipeline has not surfaced any potential misalignment touching a primary-classified {noun}, or the country has no {noun} taxonomy configured.",
-        "spreadHeadline": "Potentially misaligned pairs spread across {sectors, number} {nounPlural}.",
-        "spreadBody": "{total, number} potentially misaligned pairs land across {sectors, number} {nounPlural} with no single {noun} dominating.",
-        "singleHeadline": "{name} carries {pct}% of potentially misaligned pairs.",
-        "singleBody": "{total, number} potentially misaligned pairs land across {sectors, number} {nounPlural}; {name} alone holds {pct}%.",
-        "everyHeadline": "Potentially misaligned pairs touch every {noun}.",
-        "everyBody": "{total, number} potentially misaligned pairs spread across all {sectors, number} {nounPlural}; the heaviest are {list}.",
-        "topHeadline": "Misalignment concentrates in {count, number} of {sectors, number} {nounPlural}.",
-        "topBody": "{pct}% of the {total, number} potentially misaligned pairs land on {list}. Click a row for the underlying pairs."
+      "coverage": {
+        "emptyHeadline": "No {noun} carries a classified target yet.",
+        "emptyBody": "Either no target is primary-classified to a {noun} under this lens, or the country has no {noun} taxonomy configured.",
+        "singleHeadline": "{name} holds {pct}% of classified targets.",
+        "everyHeadline": "Classified targets span all {sectors, number} {nounPlural}, most in {name}.",
+        "topHeadline": "{list} hold {pct}% of classified targets."
+      },
+      "flag": {
+        "none": "No reviewed relationships under this lens yet.",
+        "uniform": "Potential misalignment is broadly similar across {nounPlural}, around {mid, number}% of reviewed relationships.",
+        "range": "Potential misalignment ranges from {min, number}% to {max, number}% of reviewed relationships (corpus average {mid, number}%).",
+        "rangeWithPeak": "Potential misalignment ranges from {min, number}% to {max, number}% of reviewed relationships (corpus average {mid, number}%), highest in {name}."
       },
       "listJoinTwo": "{a} and {b}",
       "listJoinMany": "{head}, and {last}",
-      "rowAriaLabel": "{name}: {flagged, number} potentially misaligned, {aligned, number} aligned",
+      "rowAriaLabel": "{name}: {count, number} primary targets. {flag}.",
+      "flagAriaValue": "{pct, number}% of reviewed relationships are a potential misalignment",
+      "flagAriaNone": "no reviewed relationships under this lens",
       "primaryCount": "{count, number} primary",
       "relevantCount": "{count, number} relevant"
     },
@@ -485,6 +518,9 @@
       "switcherAriaLabel": "Pick a document to focus on",
       "focusOn": "Focus on",
       "fullTitle": "Full title",
+      "documentDetails": "Document details",
+      "viewDocument": "View document",
+      "deadlineCoverage": "{timeBound} of {total, plural, one {# target carries} other {# targets carry}} an explicit deadline",
       "noMisalignment": "No potential misalignment links {label} to other documents.",
       "breakdownCaption": "How {label}'s potential misalignment breaks down",
       "whereShowsMisalignment": "Where {label} shows potential misalignment",
@@ -615,6 +651,16 @@
         "everythingElseTitle": "Everything else: {pct}%",
         "everythingElse": "everything else"
       },
+      "outcome": {
+        "eyebrow": "Where the {amount} goes · by outcome",
+        "concentratesIn": "{pct}% of classified biodiversity spending concentrates in {category}.",
+        "largestShare": "The largest share of classified biodiversity spending, {pct}%, goes to {category}.",
+        "unfunded": "{count, plural, one {# outcome area with policy targets receives none} other {# outcome areas with policy targets receive none}}.",
+        "colShare": "Share of BER",
+        "colTargets": "Targets",
+        "noBudget": "no budget",
+        "shareCaveat": "Share of classified BER expenditure, not the country's full budget."
+      },
       "execution": {
         "eyebrow": "Planned vs spent · {period}",
         "eyebrowNamed": "{program} · {period}",
@@ -690,6 +736,19 @@
         "involvementNote": "An action naming several institutions counts once for each, so counts read as involvement, not shares of a whole.",
         "noInstitution": "{count, plural, one {# reported action names no institution.} other {# reported actions name no institution.}}",
         "moreInstitutions": "{count, plural, one {# more institution with fewer actions.} other {# more institutions with fewer actions.}}"
+      },
+      "flow": {
+        "toggleRoster": "Who delivers",
+        "toggleFlow": "Where it lands",
+        "title": "Where reported actions land in the plan",
+        "intro": "Each ribbon links an institution to a policy document its reported actions strongly align with. Thicker means more of the targets in that document.",
+        "other": "Other ({count, plural, one {# institution} other {# institutions}})",
+        "coordination": "{count, plural, one {# target is} other {# targets are}} supported by reported actions from two or more institutions.",
+        "selectHint": "Select a ribbon to list the targets it covers.",
+        "focusHint": "Hover an institution or document to trace its flows.",
+        "detailCount": "{count, plural, one {# target} other {# targets}}",
+        "caveat": "Involvement as named in the report (one self-reported lens); AI-estimated alignment. A target named by several institutions counts under each.",
+        "empty": "No strongly aligned reported actions to map for the current selection."
       }
     },
     "docFilter": {
@@ -719,6 +778,14 @@
       "empty": "No potential misalignment to break down.",
       "pairCount": "{countLabel} {count, plural, one {potentially misaligned pair} other {potentially misaligned pairs}}",
       "captionDefault": "Across all policy documents"
+    },
+    "centerpiece": {
+      "constellationAria": "Policy coherence constellation"
+    },
+    "storylineCaveat": {
+      "updating": "Updating storylines for your current selection…",
+      "corpusOffPath": "Storylines reflect all policy documents; the figures reflect your current selection.",
+      "sectorFallback": "Sector storylines reflect all policy documents; everything else reflects your current selection."
     }
   },
   "upload": {
@@ -775,7 +842,7 @@
       "headerSubtitle": "New Analysis",
       "title": "New Analysis",
       "subtitle": "Upload policy documents, review targets, configure categories, and run the coherence analysis pipeline.",
-      "footer": "United Nations Development Programme · CPC Tracker",
+      "footer": "United Nations Development Programme · CPC Analyzer",
       "autoLabel": "Target {n, number}",
       "unknownCountry": "Unknown",
       "errors": {
@@ -948,7 +1015,7 @@
     "errorHeading": "Error",
     "backToUpload": "Back to Upload",
     "loadingStatus": "Loading analysis status…",
-    "footer": "United Nations Development Programme · CPC Tracker",
+    "footer": "United Nations Development Programme · CPC Analyzer",
     "errors": {
       "notFound": "Analysis not found",
       "statusCheck": "Failed to check analysis status"
@@ -1166,7 +1233,9 @@
       "globeSingular": "biodiversity category",
       "globePlural": "biodiversity categories",
       "sectorSingular": "climate mitigation sector",
-      "sectorPlural": "climate mitigation sectors"
+      "sectorPlural": "climate mitigation sectors",
+      "ggaSingular": "climate-resilience theme",
+      "ggaPlural": "climate-resilience themes"
     },
     "summary": {
       "across": " across {count, number} {groupLabel}",
@@ -1183,7 +1252,7 @@
     },
     "controls": {
       "groupDocuments": "Documents",
-      "groupGlobe": "GLOBE",
+      "groupGlobe": "GLOBE biodiversity",
       "groupSectors": "IPCC sectors",
       "groupDocumentsTitle": "Group the wheel by source document",
       "groupGlobeTitle": "Group by biodiversity category (GLOBE taxonomy)",
@@ -1197,7 +1266,10 @@
       "filterHigh": "Strong alignment only",
       "filterContradictions": "Potential misalignment only",
       "atAGlance": "At a glance",
-      "atAGlanceTitle": "Show or hide the at-a-glance summary panel"
+      "atAGlanceTitle": "Show or hide the at-a-glance summary panel",
+      "groupGga": "GGA resilience",
+      "groupGgaTitle": "Group by climate-resilience theme (Global Goal on Adaptation, decision 2/CMA.5)",
+      "groupOptionGga": "By Climate Resilience"
     },
     "doc": {
       "mitigation": "Mitigation",
@@ -1231,7 +1303,9 @@
       "centerConnectionsSingular": "{count, number} connection",
       "centerConnectionsPlural": "{count, number} connections",
       "centerTargetSingular": "{count, number} target",
-      "centerTargetPlural": "{count, number} targets"
+      "centerTargetPlural": "{count, number} targets",
+      "centerSpendTagged": "biodiversity spend tagged",
+      "legendResilience": "Climate Resilience"
     },
     "detailPanel": {
       "closeAria": "Close target detail",
@@ -1323,27 +1397,134 @@
       "genericError": "Sorry, that didn't work.",
       "askPlaceholderProminent": "Ask anything about these policies…",
       "askAriaProminent": "Ask the assistant about the policy documents",
-      "askProminent": "Ask →"
+      "askProminent": "Ask →",
+      "askPoliciesLabel": "Ask the policies"
+    },
+    "workbench": {
+      "viewLabel": "View",
+      "viewCoherence": "Coherence",
+      "viewFinance": "Finance · BER",
+      "groupByLabel": "Group the arcs by",
+      "showLabel": "Show",
+      "answersHeading": "Answers",
+      "documentsLabel": "Documents",
+      "documentsShown": "{shown, number}/{total, number} shown",
+      "answersHandle": "{count, plural, =0 {Answers} other {Answers · #}}",
+      "answersTitle": "Show or hide answers and detail",
+      "answersClose": "Collapse",
+      "answersEmpty": "Ask a question, open a target, or try Surprise me. Answers and detail show up here.",
+      "statCoherence": "{strong, number} strong alignments · {potential, number} potential misalignments · {country}, {targets, number} targets",
+      "statFinance": "{country} · {targets, number} targets · biodiversity spend tagged across GLOBE categories",
+      "finance": {
+        "budgetLabel": "Budget",
+        "periodLabel": "BER {start, number}-{end, number}",
+        "tileTaggedSpend": "Tagged spend",
+        "tileFundedCategories": "Funded categories",
+        "tileFundedValue": "{funded, number}/{total, number}",
+        "scaleLabel": "Scale the arcs by",
+        "scaleByTargets": "Targets",
+        "scaleBySpend": "Spend",
+        "encodingSpend": "Wedge width shows each category's share of tagged spend. Select a wedge to see its policy targets and their connections.",
+        "helperNote": "Wedge depth shows each category's share of tagged biodiversity spend, read against where the potential misalignments sit.",
+        "scopeCaveat": "Share of reviewed biodiversity spending, not the country's full budget."
+      },
+      "footerCaveat": "AI-generated analysis. Treat as a prompt to review, not a settled finding."
+    },
+    "questions": {
+      "coherence": {
+        "reportedVsPlanned": "Where do reported actions diverge from planned targets?",
+        "ministryCoordination": "Which target could gain from coordination across ministries?",
+        "tightenBoundary": "Where could a tighter target boundary unlock alignment?",
+        "missingIndicator": "Which potential misalignments lack a measurable indicator?",
+        "themeConcentration": "Which themes carry the most potential misalignments?",
+        "adaptationAlignment": "How well do adaptation actions align with national targets?"
+      },
+      "finance": {
+        "spendVsMisalignment": "Where does biodiversity spend sit relative to potential misalignments?",
+        "underFunded": "Which national targets appear under-funded?",
+        "fundedCategories": "Which GLOBE categories carry the most tagged spend?"
+      }
+    },
+    "insights": {
+      "paradox": {
+        "callout": "{label} sits among both the most potentially misaligned and the most strongly aligned targets. Two sides of the same coin, worth a closer look."
+      },
+      "tension_cluster": {
+        "callout": "{count} potential misalignments converge on {label}, more than on any other target in the dataset.",
+        "pathway": "A boundary review on this target could help unlock alignment with the documents it is misaligned with."
+      },
+      "zero_conflict_topic": {
+        "callout": "{category} carries zero potential misalignments across {size} targets, unusual when other topics carry {peak}+."
+      },
+      "hub": {
+        "callout": "{label} aligns strongly with {docs} different documents, quietly bridging plans others touch separately."
+      },
+      "orphan": {
+        "callout": "{label} has {connections, plural, =0 {no alignments or potential misalignments with any other target} other {only one connection across the whole dataset}}, isolated from the rest of the network."
+      },
+      "imbalance": {
+        "callout": "{labelA} and {labelB} carry {contras} potential misalignments versus {aligns} strong alignments, the most lopsided pair in the dataset.",
+        "pathway": "A joint review across these two may help surface where their mandates diverge."
+      },
+      "implementation_contradiction": {
+        "callout": "Reported action {btrLabel} ({status}) {severity, select, likely_conflict {is likely to conflict with} possible_conflict {may conflict with} other {may be misaligned with}} planned target {policyLabel}. What is being done versus what was planned.",
+        "pathway": "Reconciling the two, or flagging the pair for human review, could potentially close the gap between plan and practice."
+      },
+      "most_contested_topic": {
+        "callout": "{category} carries {count} potential misalignments across {size} targets, the heaviest concentration in the dataset."
+      },
+      "quantitative_gap": {
+        "callout": "{label} sits in {count} potential misalignments but carries no measurable indicator.",
+        "pathway": "Without a number to anchor the target, several of these may rest on interpretation rather than policy conflict, worth a closer look before treating them as decision-grade signals."
+      },
+      "agreement_pair": {
+        "callout": "{labelA} and {labelB} share {aligns} strong alignments and {contras, plural, =0 {zero potential misalignments} other {only # potential misalignments}}, the most cohesive pair in the dataset."
+      },
+      "most_aligned_target": {
+        "callout": "{label} anchors {count} strong alignments, the single biggest connector in the dataset."
+      },
+      "doc_most_tensions": {
+        "callout": "{docLabel} carries {count} potential misalignments, the heaviest concentration in any single document."
+      },
+      "btr_status_mix": {
+        "callout": "{happening} of {total} reported actions are already Implemented or Ongoing, {adopt} Adopted and {plan} Planned. The Implemented and Ongoing share is the strongest signal of what is already happening on the ground."
+      },
+      "quantitative_coverage": {
+        "callout": "Only {quant} of {total} targets carry a measurable indicator. The rest read as direction-of-travel statements, hard to track without a number to anchor them.",
+        "pathway": "Many of the alignment and potential-misalignment counts here may carry more interpretive weight than substantive policy conflict, given how many targets are direction-of-travel statements."
+      },
+      "anchor_support_gap": {
+        "callout": "{pillarLabel} has {count, plural, =0 {no strong supporting alignments from other plans} =1 {only one strong alignment from other plans} other {only # strong alignments from other plans}}, the least-supported pillar in this dataset.",
+        "pathway": "Reviewing whether existing targets in other plans could be mapped to this pillar may surface under-claimed alignment with the national plan."
+      },
+      "sector_coverage_gap": {
+        "callout": "Sector \"{sector}\" carries {count} policy targets but no reported actions in BTR, the largest plan-vs-practice gap by sector in this dataset.",
+        "pathway": "Cross-checking whether the gap reflects missing implementation or missing transparency reporting may help close the loop."
+      }
     }
   },
   "metadata": {
     "root": {
-      "title": "CPC Tracker | Policy Coherence Analysis",
+      "title": "CPC Analyzer | Policy Coherence Analysis",
       "description": "AI-assisted tool for assessing coherence across nature-climate policies and tracking implementation progress."
     },
     "dashboard": {
-      "title": "Dashboard | CPC Tracker",
-      "countryTitle": "{name} Dashboard | CPC Tracker",
-      "analysisTitle": "Analysis {id} | CPC Tracker"
+      "title": "Dashboard | CPC Analyzer",
+      "countryTitle": "{name} Dashboard | CPC Analyzer",
+      "analysisTitle": "Analysis {id} | CPC Analyzer"
     },
     "prototypes": {
-      "title": "Prototypes | CPC Tracker",
-      "countryTitle": "{name} Prototypes | CPC Tracker",
-      "analysisTitle": "Prototypes · Analysis {id} | CPC Tracker"
+      "title": "Prototypes | CPC Analyzer",
+      "countryTitle": "{name} Prototypes | CPC Analyzer",
+      "analysisTitle": "Prototypes · Analysis {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "AI Sustainability Footprint | CPC Tracker",
-      "description": "Estimated environmental footprint of the AI computation behind the CPC Tracker, for transparency reporting."
+      "title": "AI Sustainability Footprint | CPC Analyzer",
+      "description": "Estimated environmental footprint of the AI computation behind the CPC Analyzer, for transparency reporting."
+    },
+    "methodology": {
+      "title": "How it works | CPC Analyzer",
+      "description": "How the Nature-Climate Policy Coherence Analyzer turns national policy documents into transparent, traceable insights for decision support."
     }
   },
   "viz": {
@@ -1604,7 +1785,8 @@
       "lulucfExplainer": {
         "heading": "About negative LULUCF values:",
         "body": "The Land Use, Land-Use Change and Forestry sector shows negative numbers because Mongolia's forests and grasslands currently <strong>absorb more CO₂ than they emit</strong>, making this sector a net carbon sink. In international GHG accounting, removals from the atmosphere are reported as negative values. A value becoming <em>less negative</em> (moving toward zero) means the sink is weakening and absorbing less carbon over time, which is a warning sign for climate goals."
-      }
+      },
+      "yAxisUnit": "kt CO₂ eq"
     },
     "financingCoherence": {
       "heading": "Budget & Financing Coherence",
@@ -1676,7 +1858,12 @@
         "byNationalSector": "By National Sector Categories",
         "byIpccSector": "By IPCC Sector (standardised)",
         "default": "Default (Climate Mitigation + Adaptation Goals)",
-        "byBiodiversity": "By Biodiversity Taxonomy"
+        "byBiodiversity": "By Biodiversity Taxonomy",
+        "byGga": "By Climate resilience (Global Goal on Adaptation)"
+      },
+      "gga": {
+        "title": "All reported actions, by climate-resilience theme",
+        "sectionDesc": "Mitigation and adaptation actions grouped by Global Goal on Adaptation theme (UAE Framework for Global Climate Resilience)."
       },
       "status": {
         "active": {

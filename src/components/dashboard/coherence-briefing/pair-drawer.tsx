@@ -14,7 +14,7 @@
  * Target-pair mode renders the existing two-target card view + AI rationale.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   ALIGNMENT_COLORS,
@@ -26,6 +26,8 @@ import {
   useAlignmentLabels,
   useContradictionTypeLabels,
 } from "@/lib/labels";
+import { useDrawerHistory } from "@/lib/use-drawer-history";
+import { DrawerBackButton } from "@/components/ui/drawer-back-button";
 import { isContradiction } from "@/types";
 import { FeedbackControl } from "./feedback-control";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
@@ -80,37 +82,33 @@ export function PairDrawer({
   onClose: () => void;
 }) {
   const t = useTranslations("briefing.drawer.pair");
-  // Nested mode state — when the user clicks a target-pair row inside a doc-
-  // pair view, we remount the body in target-pair mode but remember the
-  // doc-pair so a Back button can return without re-opening from the page.
-  const [nested, setNested] = useState<{
-    parent: Extract<PairDrawerData, { mode: "doc-pair" }>;
-    inner: Extract<PairDrawerData, { mode: "target-pair" }>;
-  } | null>(null);
-
-  // Reset nested state whenever the outer `data` reference changes. Using
-  // the React 19 "reset state when prop changes" idiom rather than useEffect
-  // to avoid cascading-render warnings.
-  const [prevData, setPrevData] = useState(data);
-  if (prevData !== data) {
-    setPrevData(data);
-    setNested(null);
-  }
+  // Drilling from a doc-pair into one of its target-pairs is owned by the
+  // drawer itself: pushSubject layers a target-pair on top, Back pops, and
+  // Esc prefers Back over Close. The hook resets the stack automatically
+  // when the parent hands us a different `data` reference.
+  const {
+    current: renderData,
+    previous,
+    push: pushSubject,
+    back: goBack,
+    canGoBack,
+  } = useDrawerHistory<PairDrawerData>(data);
+  const handleOpenTargetPair = useCallback(
+    (pair: AlignmentResult, targetA: Target, targetB: Target) =>
+      pushSubject({ mode: "target-pair", pair, targetA, targetB }),
+    [pushSubject],
+  );
 
   useEffect(() => {
     if (!data) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (nested) {
-          setNested(null);
-        } else {
-          onClose();
-        }
-      }
+      if (e.key !== "Escape") return;
+      if (canGoBack) goBack();
+      else onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [data, onClose, nested]);
+  }, [data, onClose, canGoBack, goBack]);
 
   useEffect(() => {
     if (!data) return;
@@ -121,11 +119,15 @@ export function PairDrawer({
     };
   }, [data]);
 
-  if (!data) return null;
+  if (!data || !renderData) return null;
 
-  // Resolve the body to render: outer doc-pair, an explicitly nested target-
-  // pair inside it, or a direct target-pair from a non-Section-3 caller.
-  const renderData: PairDrawerData = nested ? nested.inner : data;
+  const backLabel =
+    previous && previous.mode === "doc-pair"
+      ? t("backTo", {
+          a: getDocMediumLabel(countryConfig, previous.docPair.doc_a),
+          b: getDocMediumLabel(countryConfig, previous.docPair.doc_b),
+        })
+      : undefined;
 
   return (
     <div className="fixed inset-0 z-30 flex justify-end">
@@ -146,18 +148,7 @@ export function PairDrawer({
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
         style={{ backgroundColor: "#fbfaf7" }}
       >
-        {nested && (
-          <button
-            type="button"
-            onClick={() => setNested(null)}
-            className="sticky top-0 z-20 w-full text-left text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] px-6 py-2 bg-white/90 backdrop-blur border-b border-gray-200"
-          >
-            ← {t("backTo", {
-              a: getDocMediumLabel(countryConfig, nested.parent.docPair.doc_a),
-              b: getDocMediumLabel(countryConfig, nested.parent.docPair.doc_b),
-            })}
-          </button>
-        )}
+        {canGoBack && <DrawerBackButton onBack={goBack} label={backLabel} />}
         {renderData.mode === "target-pair" ? (
           <TargetPairBody
             pair={renderData.pair}
@@ -175,12 +166,7 @@ export function PairDrawer({
             countryConfig={countryConfig}
             countryId={countryId}
             onClose={onClose}
-            onOpenTargetPair={(pair, targetA, targetB) =>
-              setNested({
-                parent: renderData,
-                inner: { mode: "target-pair", pair, targetA, targetB },
-              })
-            }
+            onOpenTargetPair={handleOpenTargetPair}
           />
         )}
       </aside>

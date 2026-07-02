@@ -17,34 +17,52 @@
   "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity. Order: anchor (Vision 2050) first; BTR last among country-declared docs (OTHER catch-all comes after).",
   "anchorDocType": "SECTORAL",
   "defaultHiddenDocTypes": [],
+  "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel; every url verified to return HTTP 200 on 2026-06-30 by reading the document's cover/front matter. Sources: Vision 2050 on cabinet.gov.mn; NDC (v2, approved by Government Decree 407 of Nov 2019), NAP and BTR1 on unfccc.int; NBSAP (the 2015 National Biodiversity Program, CBD; English is an unofficial translation) on cbd.int; FSS = State Great Hural Resolution 36 of 17 Jun 2022 on legalinfo.mn (Mongolian only, no official English version); NRVTS and ILDN on unccd.int. Objectives for Vision 2050 and the NDC are verbatim from those documents. ILDN's cover carries no date (UNCCD repository folder dated Feb 2019) so its published is omitted. BER (internal expenditure review) and OTHER (catch-all) have no public single-document source, so no metadata is set. A newer Mongolia NDC 3.0 (2025) exists, but the analysed targets are from the 2019 NDC.",
   "documentTypes": [
     {
       "id": "SECTORAL",
       "shortLabel": "Vision 2050",
       "mediumLabel": "Vision 2050",
       "fullLabel": "Vision 2050 (Long-term Development Policy)",
-      "color": "#4f7942"
+      "color": "#4f7942",
+      "docKind": "Long-term national development vision",
+      "published": "May 2020",
+      "author": "State Great Hural (Parliament of Mongolia)",
+      "url": "https://cabinet.gov.mn/wp-content/uploads/2050_VISION_LONG-TERM-DEVELOPMENT-POLICY.pdf",
+      "objective": "By 2050 Mongolia shall become a leading Asian country in terms of its social development, economic growth and its citizens' quality of life."
     },
     {
       "id": "NDC",
       "shortLabel": "NDC",
       "mediumLabel": "NDC",
       "fullLabel": "Nationally Determined Contribution",
-      "color": "#0468b1"
+      "color": "#0468b1",
+      "docKind": "Nationally Determined Contribution (UNFCCC / Paris Agreement)",
+      "published": "November 2019",
+      "author": "Government of Mongolia",
+      "url": "https://unfccc.int/sites/default/files/NDC/2022-06/First%20Submission%20of%20Mongolia's%20NDC.pdf",
+      "objective": "Mongolia intends to mitigate its greenhouse gas emissions by 22.7 percent by 2030 compared to the business-as-usual scenario (excluding LULUCF)."
     },
     {
       "id": "NBSAP",
       "shortLabel": "NBSAP",
       "mediumLabel": "NBSAP",
       "fullLabel": "National Biodiversity Strategy & Action Plan",
-      "color": "#0d9488"
+      "color": "#0d9488",
+      "docKind": "National Biodiversity Strategy and Action Plan (CBD)",
+      "published": "2015",
+      "author": "Ministry of Environment, Green Development and Tourism (Government of Mongolia)"
     },
     {
       "id": "NAP",
       "shortLabel": "NAP",
       "mediumLabel": "NAP",
       "fullLabel": "National Adaptation Plan",
-      "color": "#b45309"
+      "color": "#b45309",
+      "docKind": "National Adaptation Plan (UNFCCC)",
+      "published": "March 2025",
+      "author": "Ministry of Environment and Climate Change (Government of Mongolia)",
+      "url": "https://unfccc.int/sites/default/files/resource/NAP_Mongolia_2025.pdf"
     },
     {
       "id": "BER",
@@ -58,28 +76,43 @@
       "shortLabel": "FSS",
       "mediumLabel": "FSS",
       "fullLabel": "Food Supply and Security Measures (Parliament Resolution 36, June 2022)",
-      "color": "#d97706"
+      "color": "#d97706",
+      "docKind": "Parliament resolution / sectoral measures (food and agriculture)",
+      "published": "June 2022",
+      "author": "State Great Hural (Parliament of Mongolia)",
+      "url": "https://legalinfo.mn/mn/detail?lawId=16530824651591"
     },
     {
       "id": "NRVTS",
       "shortLabel": "NRVTS",
       "mediumLabel": "LDN Targets",
       "fullLabel": "National Report on Voluntary Target Setting to Achieve Land Degradation Neutrality in Mongolia",
-      "color": "#6f4e37"
+      "color": "#6f4e37",
+      "docKind": "UNCCD Land Degradation Neutrality country report",
+      "published": "September 2018",
+      "author": "National Committee on Combating Desertification (NCCD), Ministry of Environment and Tourism (Mongolia)",
+      "url": "https://www.unccd.int/sites/default/files/ldn_targets/2019-08/Mongolia%20LDN%20TSP%20Country%20Report.pdf"
     },
     {
       "id": "ILDN",
       "shortLabel": "ILDN",
       "mediumLabel": "LDN Investment",
       "fullLabel": "Investing in Land Degradation Neutrality",
-      "color": "#a98467"
+      "color": "#a98467",
+      "docKind": "UNCCD Land Degradation Neutrality country profile",
+      "author": "The Global Mechanism of the UNCCD",
+      "url": "https://www.unccd.int/sites/default/files/ldn_targets/2019-02/Mongolia_3.pdf"
     },
     {
       "id": "BTR",
       "shortLabel": "BTR Action",
       "mediumLabel": "BTR",
       "fullLabel": "Biennial Transparency Report",
-      "color": "#7c3aed"
+      "color": "#7c3aed",
+      "docKind": "First Biennial Transparency Report (UNFCCC Enhanced Transparency Framework)",
+      "published": "December 2025",
+      "author": "Government of Mongolia (Ministry of Environment and Climate Change)",
+      "url": "https://unfccc.int/sites/default/files/resource/Mongolia%20FBT%20Report%20Dec%2031%202025.pdf"
     },
     {
       "id": "OTHER",

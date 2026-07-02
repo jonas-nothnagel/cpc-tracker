@@ -44,7 +44,15 @@ export function OriginalLanguageChip({
   languageCode,
   languageName,
 }: {
-  target: Pick<Target, "text" | "textOriginal" | "sourceLabel" | "sourceLabelOriginal" | "language">;
+  target: Pick<
+    Target,
+    | "text"
+    | "textOriginal"
+    | "sourceLabel"
+    | "sourceLabelOriginal"
+    | "language"
+    | "textOriginalSource"
+  >;
   languageCode?: string;
   languageName?: string;
 }) {
@@ -79,7 +87,15 @@ export function OriginalLanguageChip({
     return () => window.removeEventListener("keydown", handler);
   }, [open]);
 
-  if (!target.textOriginal) return null;
+  // No genuine original to inspect, or the "original" is itself a machine
+  // back-translation of the English (no real source-language text exists) —
+  // in which case the side-by-side "verify the translation" panel would be
+  // misleading, so we don't offer the chip. The machine Mongolian is surfaced
+  // only via the mn-locale text swap, under the global machine-translation
+  // caveat on the language switcher.
+  if (!target.textOriginal || target.textOriginalSource === "machine") {
+    return null;
+  }
 
   return (
     <span className="relative inline-block">

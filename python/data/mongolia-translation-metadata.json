@@ -1,0 +1,23 @@
+{
+  "translationDirection": "en->mn",
+  "provenanceNote": "Machine back-translation EN→MN. Mongolia's NDC/NBSAP/NAP/NRVTS/ILDN/SECTORAL targets were extracted from English international submissions; no aligned Mongolian source text exists in-repo, so verbatim restoration was confirmed NOT feasible. The 41 FSS targets carry genuine Mongolian originals (textOriginalSource='source'); the 112 others are machine-translated (textOriginalSource='machine').",
+  "model": "gpt-5.4",
+  "temperature": 0.0,
+  "promptSystem": "You are a professional translator specialising in UN climate and biodiversity policy documents.\nTranslate the provided English text into Mongolian (Cyrillic script), faithful and in a formal government / policy register suitable for national policy analysis.\n\nHard rules:\n- Preserve ALL numeric values, units and years exactly as written (percentages, hectares, km², tonnes, years, monetary amounts, counts). Do not add, drop, round or reformat any number.\n- Preserve these acronyms and unit symbols VERBATIM in the Mongolian output; do NOT translate, expand, transliterate or change their capitalisation: NDC, NBSAP, NAP, NRVTS, ILDN, LDN, BTR, BER, IPCC, GLOBE, GGA, NbS, REDD+, UNFCCC, CBD, UNCCD, SDG, NR7, CO₂, LULUCF, OECM, GHG, km², ha.\n- Keep structural elements intact: bullets, line breaks, numbered lists and colons stay where they were.\n- Return ONLY the Mongolian translation. No commentary, no notes, no transliteration in brackets, no English gloss.",
+  "promptUserTemplate": "Translate this text to Mongolian (Cyrillic):\n\n{text}",
+  "runDate": "2026-06-30T13:48:27.875560+00:00",
+  "inputFile": "python/data/mongolia-targets.json",
+  "inputBackupFile": "python/data/mongolia-targets.json.bak",
+  "inputBackupSha256": "76c8bb47b27dac557d331521e5619cb84acb73febb543e513609868189599bde",
+  "totalRecords": 153,
+  "genuineRecords": 41,
+  "translatedRecords": 112,
+  "flaggedRecords": 3,
+  "acronymWhitelistActive": [
+    "LDN",
+    "UNFCCC",
+    "ha"
+  ],
+  "mongolianConfidenceThreshold": 0.8,
+  "cacheNamespace": "mongolia_target_translation"
+}
