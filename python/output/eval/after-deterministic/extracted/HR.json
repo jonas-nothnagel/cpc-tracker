@@ -1,0 +1,278 @@
+[
+  {
+    "text": "Reducir sus emisiones de gases de efecto invernadero en un 11 % al año 2035 respecto al escenario de referencia; y Restaurar 100,000 hectáreas de ecosistemas críticos, fortaleciendo simultáneamente la gestión efectiva de áreas protegidas y otros espacios de alto valor ecológico.",
+    "label": "Metas climáticas y restauración",
+    "pageNumbers": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nReducir sus emisiones de gases de efecto invernadero en un 11 % al año 2035 respecto \nal escenario de referencia; y",
+        "section": "3.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• \nRestaurar 100,000 hectáreas de ecosistemas críticos, fortaleciendo simultáneamente la \ngestión efectiva de áreas protegidas y otros espacios de alto valor ecológico.",
+        "section": "3.3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Implementar programas permanentes de capacitación y certificación; promover cooperación técnica y Sur-Sur; crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+    "label": "Capacidades técnicas",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Implementar programas permanentes de capacitación y certificación; promover cooperación técnica y Sur-Sur; crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+        "section": "Recursos humanos y técnicos",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Armonizar y actualizar marcos normativos bajo una visión común, integrando los compromisos climáticos, de biodiversidad y de tierras y estableciendo instrumentos jurídicos más estables y vinculantes.",
+    "label": "Armonización normativa",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "El Nature Pledge permite armonizar y actualizar marcos normativos bajo una visión común, integrando los compromisos climáticos, de biodiversidad y de tierras y estableciendo instrumentos jurídicos más estables y vinculantes.",
+        "section": "Marco normativo y planificación",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Desarrollas instrumentos financieros innovadores; fortalecer el Fondo Panamá Natural; crear incentivos económicos para prácticas sostenibles.",
+    "label": "Financiamiento sostenible",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Desarrollas instrumentos financieros innovadores; fortalecer el Fondo Panamá Natural; crear incentivos económicos para prácticas sostenibles.",
+        "section": "Financiamiento e incentivos",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Desarrollar un sistema nacional unificado de MRV, apoyado en la PNTC, que centralice datos de clima, biodiversidad y tierras, permitiendo evaluar impactos y orientas decisiones basadas en evidencia; reorientar la gestión hacia resultados medibles; integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial.",
+    "label": "MRV y seguimiento",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Desarrollar un sistema nacional unificado de MRV, apoyado en la PNTC, que centralice datos de clima, biodiversidad y tierras, permitiendo evaluar impactos y orientas decisiones basadas en evidencia.",
+        "section": "Información y MRV",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Reorientar la gestión hacia resultados medibles; fortalecer el sistema nacional de MRV; integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial.",
+        "section": "Continuidad y enfoque en la implementación",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Impulsar la adopción de tecnologías emergentes (teledetección, inteligencia artificial, sistemas de alerta temprana) y SbN para fortalecer la resiliencia climática y el monitoreo ambiental.",
+    "label": "Tecnología y SbN",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Impulsar la adopción de tecnologías emergentes (teledetección, inteligencia artificial, sistemas de alerta temprana) y SbN para fortalecer la resiliencia climática y el monitoreo ambiental.",
+        "section": "Tecnología e infraestructura",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Fortalecer la gobernanza participativa; establecer acuerdos de conservación y pagos por servicios ecosistémicos; fomentar alianzas público-privadas y con la academia; promover plataformas de diálogo multiactor.",
+    "label": "Gobernanza participativa",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Fortalecer la gobernanza participativa; establecer acuerdos de conservación y pagos por servicios ecosistémicos; fomentar alianzas público-privadas y con la academia; promover plataformas de diálogo multiactor.",
+        "section": "Participación social y alianzas multisectoriales",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "El Nature Pledge se integrará a los ciclos regulares de reporte nacional e internacional de Panamá, utilizando los mecanismos institucionales y plataformas existentes, sin crear sistemas paralelos de reporte. La información generada a través del seguimiento y monitoreo de la Hoja de Ruta se consolidará a nivel nacional y se canalizará, según corresponda, a los instrumentos de reporte vinculados al Marco de Transparencia Reforzado del Acuerdo de París, al Marco Global de Biodiversidad Kunming–Montreal y a la CNULD, conforme a los calendarios y formatos establecidos en cada marco.",
+    "label": "Integración de reportes",
+    "pageNumbers": [
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "sources": [
+      {
+        "sourceText": "El Nature Pledge se integrará a los ciclos regulares de reporte nacional e internacional de \nPanamá, utilizando los mecanismos institucionales y plataformas existentes, sin crear sistemas \nparalelos de reporte.",
+        "section": "7.5.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "La información generada a través del seguimiento y monitoreo de la Hoja de Ruta se \nconsolidará a nivel nacional y se canalizará, según corresponda, a los instrumentos de reporte \nvinculados al Marco de Transparencia Reforzado del Acuerdo de París, al Marco Global de \nBiodiversidad Kunming–Montreal y a la CNULD, conforme a los calendarios y formatos \nestablecidos en cada marco.",
+        "section": "7.5.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "La PNTC operará como el eje de integración de la información de seguimiento, monitoreo y reporte, garantizando interoperabilidad entre sistemas sectoriales y coherencia entre los compromisos climáticos, de biodiversidad y de tierras.",
+    "label": "Integración de información PNTC",
+    "pageNumbers": [
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "sources": [
+      {
+        "sourceText": "La PNTC operará como el eje de integración de la información de seguimiento, monitoreo y \nreporte, garantizando interoperabilidad entre sistemas sectoriales y coherencia entre los \ncompromisos climáticos, de biodiversidad y de tierras.",
+        "section": "7.5.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "activities": "Fortalecer la interoperabilidad plena entre el Sistema M&E, el Observatorio de Riesgo Climático y otros sistemas sectoriales.",
+    "activitySources": [
+      {
+        "text": "Fortalecer la interoperabilidad plena entre el Sistema M&E, el Observatorio de Riesgo Climático y otros sistemas sectoriales.",
+        "sourceText": "• \nFortalecer la interoperabilidad plena entre el Sistema M&E, el \nObservatorio de Riesgo Climático y otros sistemas sectoriales.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Profundizar el análisis financiero de las metas priorizadas; operacionalizar los mecanismos de seguimiento, monitoreo y reporte definidos; fortalecer los arreglos institucionales para la implementación; y promover procesos periódicos de revisión de la Hoja de Ruta, alineados con los ciclos nacionales e internacionales de planificación y reporte.",
+    "label": "Implementación y revisión",
+    "pageNumbers": [
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "sources": [
+      {
+        "sourceText": "Como próximos pasos, se identifica la necesidad de: \n- \nprofundizar el análisis financiero de las metas priorizadas; \n- \noperacionalizar los mecanismos de seguimiento, monitoreo y reporte definidos; \n- \nfortalecer los arreglos institucionales para la implementación; \n- \ny promover procesos periódicos de revisión de la Hoja de Ruta, alineados con los \nciclos nacionales e internacionales de planificación y reporte.",
+        "section": "CAPITULO 8",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "activities": "Institucionalizar la revisión periódica de incentivos y subsidios dentro de los procesos regulares de planificación fiscal y presupuestaria.\nEvaluar periódicamente la efectividad y sostenibilidad del sistema financiero.",
+    "activitySources": [
+      {
+        "text": "Institucionalizar la revisión periódica de incentivos y subsidios dentro de los procesos regulares de planificación fiscal y presupuestaria.",
+        "sourceText": "• Institucionalizar la revisión periódica de incentivos y subsidios dentro de los procesos regulares de planificación fiscal y presupuestaria.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Evaluar periódicamente la efectividad y sostenibilidad del sistema financiero.",
+        "sourceText": "• Evaluar periódicamente la efectividad y sostenibilidad del sistema financiero.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  }
+]
