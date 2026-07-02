@@ -112,6 +112,25 @@ export async function POST(request: NextRequest) {
       child.on("close", (code) => {
         clearTimeout(timeout);
         if (code !== 0) {
+          // extract.py prints one machine-readable JSON line to stdout for
+          // known failure modes (scanned PDF, missing file); surface those
+          // as typed errors instead of a raw stderr tail.
+          const lastLine = stdout.trim().split("\n").filter(Boolean).pop();
+          if (lastLine) {
+            try {
+              const parsed = JSON.parse(lastLine);
+              if (parsed?.error?.code) {
+                reject(
+                  Object.assign(new Error(parsed.error.code), {
+                    structured: parsed.error,
+                  })
+                );
+                return;
+              }
+            } catch {
+              // not a structured error line; fall through
+            }
+          }
           reject(new Error(`Extraction failed (exit ${code}): ${stderr.slice(-500)}`));
         } else {
           resolve(stdout);
@@ -139,8 +158,35 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ items, fileName: file.name, footprint });
+    // Run-metadata sidecar: document warnings (e.g. partially scanned PDF)
+    // and pipeline self-reports, surfaced next to the extracted targets.
+    const metaPath = outputPath + ".meta.json";
+    let warnings: Record<string, unknown> | null = null;
+    if (existsSync(metaPath)) {
+      try {
+        warnings = JSON.parse(readFileSync(metaPath, "utf-8"));
+      } catch {
+        warnings = null;
+      }
+    }
+
+    return NextResponse.json({ items, fileName: file.name, footprint, warnings });
   } catch (err) {
+    const structured = (err as { structured?: Record<string, unknown> })?.structured;
+    if (structured && structured.code === "NO_TEXT_LAYER") {
+      const { code, ...detail } = structured;
+      return NextResponse.json(
+        {
+          error:
+            "No machine-readable text was found in this PDF. The file appears to " +
+            "be scanned or image-based; optical character recognition is not " +
+            "supported yet. A text-based version of the document is needed.",
+          errorCode: code,
+          detail,
+        },
+        { status: 422 }
+      );
+    }
     const message = err instanceof Error ? err.message : "Extraction failed";
     console.error("Extraction error:", message);
     return NextResponse.json({ error: message }, { status: 500 });
@@ -148,8 +194,10 @@ export async function POST(request: NextRequest) {
     try {
       if (existsSync(inputPath)) unlinkSync(inputPath);
       if (existsSync(outputPath)) unlinkSync(outputPath);
-      const footprintPath = outputPath + ".footprint.json";
-      if (existsSync(footprintPath)) unlinkSync(footprintPath);
+      for (const sidecar of [".footprint.json", ".meta.json"]) {
+        const p = outputPath + sidecar;
+        if (existsSync(p)) unlinkSync(p);
+      }
       if (existsSync(tmpRunDir)) {
         rmdirSync(tmpRunDir);
       }

@@ -1,0 +1,109 @@
+{
+  "_comment": [
+    "Evaluation set for the document → target extraction pipeline (scripts/eval_extraction.py).",
+    "docPath is relative to the repo root and points into the OneDrive-synced SharePoint mirror",
+    "(dev_data_scripts/sharepoint_sync), which is NOT committed: the harness fails with a clear",
+    "message when the symlink is unmounted.",
+    "Tiers: 1 = quote-anchored gold (curated sources[].sourceText reachable in the local PDF);",
+    "2 = text-similarity gold only (gold quotes were composed by the CO from Excel rows, not",
+    "copied from the document); 3 = parse-stats fixture only (no extraction, no gold).",
+    "Excluded from gold and why:",
+    " - Mongolia FSS, Mongolia NBSAP, Sri Lanka NDC, Côte d'Ivoire NDC: their curated targets are quoted in the",
+    "   extraction prompt's few-shot examples (contaminated). Keep this list in sync with",
+    "   FEW_SHOT_EXAMPLES in src/extract.py.",
+    " - Mongolia Vision 2050 (SECTORAL): the curated gold itself carries _provenanceFlag as paraphrased.",
+    " - Panama ENR: 263 MB REDD+ document, 206 gold targets; optional stress test, not part of the standard set.",
+    " - Panama NP against the local PDF: 0/36 gold quotes reachable (partial text layer; gold was",
+    "   transcribed from the UNFCCC-published version). Kept as the tier-3 partial-text-layer fixture."
+  ],
+  "documents": [
+    {
+      "docCode": "PNSH",
+      "country": "panama",
+      "tier": 1,
+      "goldFile": "python/data/panama-targets.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Panama/Panama Materials/Policy docs shared by CO April 2026/Plan Nacional de Seguridad Hídrica.pdf",
+      "docType": "SECTORAL",
+      "sourceDocument": "PNSH",
+      "language": "es",
+      "notes": "Strongest gold doc: 16/17 quotes reachable; 170 pages of Spanish; gold contains CO transcription typos, so matching must stay fuzzy. Also the runtime stress case."
+    },
+    {
+      "docCode": "NRVTS",
+      "country": "mongolia",
+      "tier": 1,
+      "goldFile": "python/data/mongolia-targets.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Mongolia/Mongolia materials/LDN targets/Mongolia LDN TSP Country Report.pdf",
+      "docType": "LDN",
+      "sourceDocument": "NRVTS",
+      "language": "en",
+      "notes": "21/27 gold quotes reachable; the gap is transcription drift from land_targets.xlsx, not extraction failure."
+    },
+    {
+      "docCode": "ILDN",
+      "country": "mongolia",
+      "tier": 1,
+      "goldFile": "python/data/mongolia-targets.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Mongolia/Mongolia materials/LDN targets/Mongolia_3.pdf",
+      "docType": "LDN",
+      "sourceDocument": "ILDN",
+      "language": "en",
+      "notes": "8/8 gold quotes reachable. The ILDN gold does NOT come from the LDN TSP Country Report."
+    },
+    {
+      "docCode": "HR",
+      "country": "panama",
+      "tier": 2,
+      "goldFile": "python/data/panama-targets.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Panama/Panama Materials/Additional information/Hoja de Ruta del Nature Pledge_070126.pdf",
+      "docType": "SECTORAL",
+      "sourceDocument": "HR",
+      "language": "es",
+      "notes": "Gold quotes are CO-composed (concatenated Excel action rows stamped textCleanup=verbatim by the ingest script); only ~13% of quote 4-grams appear contiguously in the PDF. Text-similarity matching only; never gates acceptance."
+    },
+    {
+      "docCode": "SL-PPPP",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/eval/sri-lanka-2jul26-expert.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Sri Lanka/Policies/National Physical Planning Policy and Plan.pdf",
+      "docType": "national physical planning policy",
+      "sourceDocument": "PPPP",
+      "language": "en",
+      "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx: 4 component-level rows. CONFIRMED SCAN: the local PDF is 2 pages with zero extractable text (the expert worked from a fuller/text version), so this doc behaves as a second real-world scanned fixture; the CLI/wizard reject it with NO_TEXT_LAYER."
+    },
+    {
+      "docCode": "SL-PPPP-TXT",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/eval/sri-lanka-2jul26-expert.json",
+      "docPath": "python/data/eval/sri-lanka-pppp-exec-summary.txt",
+      "docType": "national physical planning policy",
+      "sourceDocument": "PPPP",
+      "language": "en",
+      "notes": "Executive summary of the updated NPPP 2048, copy-pasted verbatim by the team on 2026-07-02 because the local PDF is a 2-page scan. Committed fixture, so this entry needs no OneDrive mount. The 4 expert component rows appear verbatim in this text."
+    },
+    {
+      "docCode": "SL-NAP",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/eval/sri-lanka-2jul26-expert.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Sri Lanka/Policies/National Agriculture Policy.pdf",
+      "docType": "national agriculture policy",
+      "sourceDocument": "NAP",
+      "language": "en",
+      "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx (fresh, uncontaminated): 192 rows across THREE levels (Goals, Statements, Actions X.Y — the Resolution-36 pattern). By the pipeline's granularity rules the Action rows belong in activities, not targets; read recall level-aware and check the goldCoveredByActivities metric. NAP here = National AGRICULTURAL Policy, not adaptation plan."
+    },
+    {
+      "docCode": "NP",
+      "country": "panama",
+      "tier": 3,
+      "goldFile": null,
+      "docPath": "dev_data_scripts/sharepoint_sync/Panama/Panama Materials/Policy docs shared by CO April 2026/Pacto-de-Panama-con-la-Naturaleza-Nature-Pledge.pdf",
+      "docType": "SECTORAL",
+      "sourceDocument": "NP",
+      "language": "es",
+      "notes": "Real-world partial-text-layer fixture (20/39 pages with <30 extractable chars). Excluded from recall; exercises the scanned-page detection. Gold recovery option: download the UNFCCC-published version referenced by the corpus sourceUrl and re-check reachability."
+    }
+  ]
+}

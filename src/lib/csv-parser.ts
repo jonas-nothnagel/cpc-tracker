@@ -1,4 +1,4 @@
-import type { PolicyDocumentType } from "@/types";
+import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -9,6 +9,17 @@ export interface TargetRow {
   source?: "extraction" | "manual" | "file";
   activities?: string;
   actions?: string;
+  // Provenance contract carried through from document extraction (matches the
+  // curated corpus schema in python/data/*-targets.json). All optional: rows
+  // from CSV upload or manual entry only fill the core fields above.
+  textOriginal?: string;
+  sourceLabelOriginal?: string;
+  language?: string;
+  textOriginalSource?: "source" | "machine";
+  sources?: TargetSource[];
+  textCleanup?: TextCleanup;
+  pageNumbers?: number[];
+  _provenanceFlag?: string;
 }
 
 interface ColumnMapping {

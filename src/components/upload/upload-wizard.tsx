@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Header } from "@/components/ui/header";
 import { useRouter } from "@/i18n/navigation";
 import type { PolicyDocumentType } from "@/types";
@@ -15,7 +15,10 @@ import {
   isBtrExcel,
   detectBtrType,
   mergeBtrData,
+  buildExtractionReviewEvent,
+  submitExtractionReview,
 } from "@/lib/upload-helpers";
+import { getFeedbackClientId } from "@/lib/feedback/client-id";
 import { useTargets } from "@/hooks/useTargets";
 import { useExtraction } from "@/hooks/useExtraction";
 import { useCategories } from "@/hooks/useCategories";
@@ -35,6 +38,7 @@ interface UploadWizardProps {
 export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
   const router = useRouter();
   const t = useTranslations("upload.wizard");
+  const locale = useLocale();
 
   // ─── Hooks ──────────────────────────────────────────────────────────────
   const {
@@ -265,7 +269,23 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
   }
 
   // ─── Extraction accept/restore ─────────────────────────────────────────
+  function recordExtractionReview(outcome: "accepted" | "discarded") {
+    // Reviewer corrections are supervised signal for the extractor;
+    // fire-and-forget into the extraction-review ledger.
+    submitExtractionReview(
+      buildExtractionReviewEvent(extraction.extractedItems, {
+        countryRaw: country,
+        fileName: extraction.extractFileName,
+        docType: extraction.extractDocType,
+        outcome,
+        clientId: getFeedbackClientId(),
+        locale,
+      })
+    );
+  }
+
   function handleAcceptExtraction() {
+    recordExtractionReview("accepted");
     addExtractedToTargets(
       extraction.extractedItems,
       extraction.extractFileName,
@@ -275,6 +295,13 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
     if (extraction.extractionQueue.length > 0) {
       extraction.processNextInQueue(extraction.extractDocType, extraction.extractDocType);
     }
+  }
+
+  function handleDiscardExtraction() {
+    if (extraction.extractedItems.length > 0) {
+      recordExtractionReview("discarded");
+    }
+    extraction.discardExtraction();
   }
 
   function handleRestoreExtractionReview() {
@@ -394,6 +421,8 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
             onDragLeave={() => setDragging(false)}
             extractionQueueLength={extraction.extractionQueue.length}
             extractError={extraction.extractError}
+            extractEmptyFile={extraction.extractEmptyFile}
+            extractWarnings={extraction.extractWarnings}
             extractedItems={extraction.extractedItems}
             onToggleItem={extraction.toggleItem}
             onKeepAll={extraction.keepAll}
@@ -401,7 +430,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
             onUpdateItem={extraction.updateItem}
             onAddManual={extraction.addManualExtractedItem}
             onAcceptExtraction={handleAcceptExtraction}
-            onDiscardExtraction={extraction.discardExtraction}
+            onDiscardExtraction={handleDiscardExtraction}
             manualLabel={extraction.extractManualLabel}
             onManualLabelChange={extraction.setExtractManualLabel}
             manualText={extraction.extractManualText}

@@ -91,3 +91,65 @@ export const FEEDBACK_COMMENT_MAX = 2000;
 
 /** Stored snapshot cap (chars); longer snapshots are truncated, not rejected. */
 export const FEEDBACK_SNAPSHOT_MAX = 2000;
+
+// ---------------------------------------------------------------------------
+// Extraction-review ledger (correction capture, not votes)
+// ---------------------------------------------------------------------------
+//
+// The upload wizard's review step is a human-in-the-loop gate: reviewers
+// keep, edit, remove, or add extracted targets before anything reaches the
+// analysis. Those corrections are supervised signal about the extractor
+// (removals expose precision problems, edits expose phrasing problems,
+// manual additions expose recall gaps), so they are appended to their own
+// ledger alongside the vote ledger. Append-only, analysis-only, never
+// surfaced in the UI; pseudonymous via the same per-browser clientId as
+// votes.
+
+export const EXTRACTION_REVIEW_SCHEMA = 1;
+
+/** Stored text snapshot cap per item (chars); truncated, not rejected. */
+export const EXTRACTION_REVIEW_TEXT_MAX = 600;
+
+export type ExtractionReviewAction = "kept" | "edited" | "removed" | "added";
+
+export interface ExtractionReviewItemOutcome {
+  action: ExtractionReviewAction;
+  label: string;
+  /** Extracted text as first shown to the reviewer; absent for "added". */
+  textBefore?: string;
+  /** Reviewer's final text; present for "edited" and "added". */
+  textAfter?: string;
+  textCleanup?: string;
+  /** Whether a validator had flagged this item (do flagged items get removed more often?). */
+  hadProvenanceFlag?: boolean;
+}
+
+export interface ExtractionReviewEvent {
+  schema: number;
+  /** "YYYY-MM-DDTHH:MM:SSZ" (same format as the other ledgers). */
+  ts: string;
+  /** Slugified country (path segment for the per-country ledger file). */
+  country: string;
+  /** Country as typed in the wizard, for human readers. */
+  countryRaw: string;
+  fileName: string;
+  docType: string;
+  /** "accepted" = reviewer confirmed the (possibly edited) set; "discarded" = whole extraction rejected. */
+  outcome: "accepted" | "discarded";
+  counts: {
+    extracted: number;
+    kept: number;
+    edited: number;
+    removed: number;
+    added: number;
+  };
+  items: ExtractionReviewItemOutcome[];
+  clientId: string;
+  locale: string;
+}
+
+/** POST /api/extraction-review body: the event minus server-stamped fields. */
+export type ExtractionReviewPostBody = Omit<
+  ExtractionReviewEvent,
+  "schema" | "ts" | "country"
+>;

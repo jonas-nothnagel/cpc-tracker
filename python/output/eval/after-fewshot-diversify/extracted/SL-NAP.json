@@ -1,0 +1,1314 @@
+[
+  {
+    "text": "Double the resource-productivity (compared to 2020 estimates) by adhering to sustainable and eco-friendly agriculture practices",
+    "label": "Resource productivity",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "1) Double the resource-productivity (compared to 2020 estimates) by adhering to sustainable and \neco-friendly agriculture practices",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Double the economic profitability of farmers/agri-producers (compared to estimates of 2020)",
+    "label": "Farmer profitability",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "2) Double the economic profitability of farmers/agri-producers (compared to estimates of 2020)",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Increase the contribution of the Agri-Food System upto 15% of the National Economy",
+    "label": "Agri-food GDP share",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "3) Increase the contribution of the Agri-Food System upto   15% of the National Economy",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Increase the adoption of technology developed locally along the agri-food value chain, by a minimum of 50% from the present status",
+    "label": "Local technology adoption",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "4) Increase the adoption of technology developed locally along the agri-food value chain, by a \nminimum of 50% from the present status",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Increase the high quality and high yielding seed and planting material production locally by 50% of the national requirement",
+    "label": "Seed production",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "5) Increase the  high quality and high yielding  seed and planting material production locally by 50% \nof the national requirement",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Increase the eco-friendly inputs application in crop production upto 100% of the requirement",
+    "label": "Eco-friendly inputs",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "6) Increase the eco - friendly  inputs application in crop production upto 100% of the requirement",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Supply safe and quality food and feed in compliance with food and feed control regulations of the country; improve access to safe and high-quality food and feed based on national and international standards to safeguard human and animal health",
+    "label": "Food and feed safety",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "sources": [
+      {
+        "sourceText": "7) Supply safe and quality food and feed in compliance with food and feed control regulations of the \ncountry",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "6. Improve access to safe and high-quality food and feed based on national and international \nstandards to safeguard human and animal health",
+        "section": "Thematic Area: Food Safety & Quality Management",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n6. \nImprove access to safe and high-quality food and feed based on national and \ninternational standards to safeguard human and animal health",
+        "section": "Policy Statement 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Establish a government-regulated food and feed control system supporting certification, standardization, and other logistics",
+    "label": "Food control system",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "8) Establish a government-regulated food and feed control system supporting certification, \nstandardization, and other logistics",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Establish farmer/agri-producer groups with Agri-entrepreneurship capacity, coupled with efficient market systems; foster strategic collaboration among the value chain actors, especially focusing on value added products, targeting domestic and international markets",
+    "label": "Producer groups and markets",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "sources": [
+      {
+        "sourceText": "9) Establish farmer/agri-producer groups with Agri-entrepreneurship capacity, coupled with efficient \nmarket systems",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "8. Foster strategic collaboration among the value chain actors, especially focusing on value \nadded products, targeting domestic and international markets",
+        "section": "Thematic Area: Agri-Entrepreneurship and Markets",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n8. \nFoster strategic collaboration among the value chain actors, especially focusing \non value added products, targeting domestic and International markets",
+        "section": "Policy Statement 8",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Establish a constituted role and mandatory participation of farmers/agri-producers in the process of decision-making",
+    "label": "Producer participation",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "10) Establish a constituted role and mandatory participation of farmers/agri-producers in the process \nof decision-making",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Build an agri-food system in Sri Lanka that is resilient to climatic and other disasters; promote adoption of appropriate adaptation and mitigation measures to increase climate-resilience of the agriculture systems",
+    "label": "Climate resilience",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sources": [
+      {
+        "sourceText": "11) Build an agri-food system in Sri Lanka that is resilient to climatic and other disasters",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "12. Promote adoption of appropriate adaptation and mitigation measures to increase climate-\nresilience of the agriculture systems",
+        "section": "Thematic Area: Climate resilience & other risk management",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement 12. \nPromote adoption of appropriate adaptation and mitigation measures to increase \nclimate-resilience of the agriculture systems",
+        "section": "Policy Statement 12",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Establish a system of transparent, accountable, responsible and participatory governance for decision making",
+    "label": "Governance system",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "12) Establish a system of transparent, accountable, responsible and participatory governance is \nestablished for decision making",
+        "section": "Policy Goals",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Improve production and productivity of food and feed crops through a well-organized agricultural production system while harnessing the agro-ecological potential and strengthening the food system",
+    "label": "Crop productivity",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "1. Improve production and productivity of food and feed crops through a well-organized \nagricultural production system while harnessing the agro-ecological potential and \nstrengthening the food system",
+        "section": "Thematic Area: Crop Production & Productivity",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Prepare, approve and adopt guidelines for Good Agricultural Practices (GAP) for all crops and farming systems, while identifying relevant indicators, for all crops and farming systems\nAdopt need-based Crop Prioritization (national and provincial needs, environmental concerns/agro-ecology, productivity, return to investment, export) and Crop Zoning\nIntroduce measures to minimize temporal variation in productivity with appropriate varieties, production technologies and Agro-met Advisories (AMAs) based on climate forecasting\nAdopt measures to produce more with less inputs (enhance input/land productivity) using appropriate technology provided at affordable prices\nAdopt Precision Agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test-based fertilizer application) to enhance productivity and minimize negative impacts to ecosystem\nSupport adoption of novel and appropriate technology/mechanization\nEncourage and strengthen Climate-Smart Agriculture (CSA) interventions focusing on the food systems\nFacilitate new technology generation and adoption (e.g., varieties, production packages, etc.)\nManage wildlife, based on the carrying capacity of ecosystems (sustainable management – minimizing impacts on agriculture and natural ecosystems), and minimize their impact through scientifically-valid population control of animals\nImprove productivity of existing farm units (with assured financial assistance to smallholders)\nIntroduce low-interest loan schemes (credit) to facilitate agricultural production and productivity",
+    "activitySources": [
+      {
+        "text": "Prepare, approve and adopt guidelines for Good Agricultural Practices (GAP) for all crops and farming systems, while identifying relevant indicators, for all crops and farming systems",
+        "sourceText": "1.1. \nPrepare, approve and adopt guidelines for Good Agricultural Practices (GAP) for all crops and farming \nsystems, while identifying relevant indicators, for all crops and farming systems",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt need-based Crop Prioritization (national and provincial needs, environmental concerns/agro-ecology, productivity, return to investment, export) and Crop Zoning",
+        "sourceText": "1.2. \nAdopt need-based Crop Prioritization (national and provincial needs, environmental concerns/agro-\necology, productivity, return to investment, export) and Crop Zoning",
+        "section": "1.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce measures to minimize temporal variation in productivity with appropriate varieties, production technologies and Agro-met Advisories (AMAs) based on climate forecasting",
+        "sourceText": "1.3. \nIntroduce measures to minimize temporal variation in productivity with appropriate varieties, production \ntechnologies and Agro-met Advisories (AMAs) based on climate forecasting",
+        "section": "1.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt measures to produce more with less inputs (enhance input/land productivity) using appropriate technology provided at affordable prices",
+        "sourceText": "1.4. \nAdopt measures to produce more with less inputs (enhance input/land productivity) using appropriate \ntechnology provided at affordable prices",
+        "section": "1.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt Precision Agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test-based fertilizer application) to enhance productivity and minimize negative impacts to ecosystem",
+        "sourceText": "1.5. \nAdopt Precision Agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test-\nbased fertilizer application) to enhance productivity and minimize negative impacts to ecosystem",
+        "section": "1.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Support adoption of novel and appropriate technology/mechanization",
+        "sourceText": "1.6. \nSupport adoption of novel and appropriate technology/mechanization",
+        "section": "1.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Encourage and strengthen Climate-Smart Agriculture (CSA) interventions focusing on the food systems",
+        "sourceText": "1.7. \nEncourage and strengthen Climate-Smart Agriculture (CSA) interventions focusing on the food systems",
+        "section": "1.7",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Facilitate new technology generation and adoption (e.g., varieties, production packages, etc.)",
+        "sourceText": "1.8. \nFacilitate new technology generation and adoption (e.g., varieties, production packages, etc.)",
+        "section": "1.8",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Manage wildlife, based on the carrying capacity of ecosystems (sustainable management – minimizing impacts on agriculture and natural ecosystems), and minimize their impact through scientifically-valid population control of animals",
+        "sourceText": "1.9. \nManage wildlife, based on the carrying capacity of ecosystems (sustainable management – minimizing \nimpacts on agriculture and natural ecosystems), and minimize their impact through scientifically-valid \npopulation control of animals",
+        "section": "1.9",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improve productivity of existing farm units (with assured financial assistance to smallholders)",
+        "sourceText": "1.10. \nImprove productivity of existing farm units (with assured financial assistance to smallholders)",
+        "section": "1.10",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce low-interest loan schemes (credit) to facilitate agricultural production and productivity",
+        "sourceText": "1.11. \nIntroduce low-interest loan schemes (credit) to facilitate agricultural production and productivity",
+        "section": "1.11",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Strengthen delivery and management operations of physical inputs for their judicious use",
+    "label": "Input management",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sources": [
+      {
+        "sourceText": "2. Strengthen delivery and management operations of physical inputs for their judicious use",
+        "section": "Thematic Area: Input Management",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP"
+  },
+  {
+    "text": "Improve productivity and sustainability of arable lands through optimum use of inputs and far-sighted management while safeguarding farming community and the environment",
+    "label": "Arable land sustainability",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "sources": [
+      {
+        "sourceText": "3. Improve productivity and sustainability of arable lands through optimum use of inputs and \nfar-sighted management while safeguarding farming community and the environment",
+        "section": "Thematic Area: Input Management",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement 3 \nImprove productivity and sustainability of arable Lands through optimum use of \ninputs and far-sighted management while safeguarding farming community and \nthe environment",
+        "section": "Policy Statement 3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Promote adoption of seeds and planting material of local origin\nAdopt measures to optimize the use of fertilizer with a view to obtain higher productivity\nIntroduce and adopt new and appropriate technologies for increase nutrient use efficiency (NUE) and fertilizer use efficiency (FUE)\nAdopt a productivity-based and priority-based incentive mechanism to support application of plant nutrients\nIntroduce incentive-based mechanism for gradual replacement of fertilizer subsidy from all sectors\nEnforce regulatory measures to safeguard ecosystem services\nAdopt a prescription-based sale and use of pesticides – with the involvement of Agrarian Service Centers and Farmer Cooperatives or establishment of Kiosks\nEstablish a system to promote integrated pest/weed management approaches to facilitate multiple use of plant protection technologies\nIntroduce and promote adoption of novel and appropriate eco-friendly pest/weed control techniques (including bio-pesticides/botanicals/predator mites, etc.)\nDevelop and implement plans to increase the extent of land with organic ameliorations by providing an appropriate incentive package\nIntroduce and increase the use of Precision agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test-based fertilizer application) to enhance productivity and minimize negative impacts to ecosystem\nConduct Continuing Professional Development (CPD) programs for agricultural extension officers and ARPAs on latest developments on use of eco-friendly agricultural production and management techniques\nAdopt measures to minimize abandoned lands from agricultural production\nImplement a social audit system as a mandatory activity in all incentive-based projects and programmes in agriculture\nEstablish agro-industrial zones using farmer cluster approach with agribusiness ventures and appropriate economic incentives\nProvide economic incentives based on cluster approach",
+    "activitySources": [
+      {
+        "text": "Promote adoption of seeds and planting material of local origin",
+        "sourceText": "3.1. \nPromote adoption of seeds and planting material of local origin",
+        "section": "3.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt measures to optimize the use of fertilizer with a view to obtain higher productivity",
+        "sourceText": "3.2. \nAdopt measures to optimize the use of fertilizer with a view to obtain higher productivity",
+        "section": "3.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce and adopt new and appropriate technologies for increase nutrient use efficiency (NUE) and fertilizer use efficiency (FUE)",
+        "sourceText": "3.3. \nIntroduce and adopt new and appropriate technologies for increase nutrient use efficiency (NUE) and \nfertilizer use efficiency (FUE)",
+        "section": "3.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt a productivity-based and priority-based incentive mechanism to support application of plant nutrients",
+        "sourceText": "3.4. \nAdopt a productivity-based and priority-based incentive mechanism to support application of plant \nnutrients",
+        "section": "3.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce incentive-based mechanism for gradual replacement of fertilizer subsidy from all sectors",
+        "sourceText": "3.5. \nIntroduce incentive-based mechanism for gradual replacement of fertilizer subsidy from all sectors",
+        "section": "3.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Enforce regulatory measures to safeguard ecosystem services",
+        "sourceText": "3.6. \nEnforce regulatory measures to safeguard ecosystem services",
+        "section": "3.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt a prescription-based sale and use of pesticides – with the involvement of Agrarian Service Centers and Farmer Cooperatives or establishment of Kiosks",
+        "sourceText": "3.7. \nAdopt a  prescription-based sale and use of pesticides – with the involvement of Agrarian Service \nCenters and Farmer Cooperatives or establishment of Kiosks",
+        "section": "3.7",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish a system to promote integrated pest/weed management approaches to facilitate multiple use of plant protection technologies",
+        "sourceText": "3.8. \nEstablish a system to promote integrated pest/weed management approaches to facilitate multiple use \nof plant protection technologies",
+        "section": "3.8",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce and promote adoption of novel and appropriate eco-friendly pest/weed control techniques (including bio-pesticides/botanicals/predator mites, etc.)",
+        "sourceText": "3.9. \nIntroduce and promote adoption of novel and appropriate eco-friendly pest/weed control techniques \n(including bio-pesticides/botanicals/predator mites, etc.)",
+        "section": "3.9",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Develop and implement plans to increase the extent of land with organic ameliorations by providing an appropriate incentive package",
+        "sourceText": "3.10. \nDevelop and implement plans to increase the extent of land with organic ameliorations by providing an \nappropriate incentive package",
+        "section": "3.10",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce and increase the use of Precision agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test-based fertilizer application) to enhance productivity and minimize negative impacts to ecosystem",
+        "sourceText": "3.11. \nIntroduce and increase the use of Precision agriculture systems (e.g., new technologies for higher \nfertilizer use efficiency, soil test-based fertilizer application) to enhance productivity and minimize \nnegative impacts to ecosystem",
+        "section": "3.11",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Conduct Continuing Professional Development (CPD) programs for agricultural extension officers and ARPAs on latest developments on use of eco-friendly agricultural production and management techniques",
+        "sourceText": "3.12. \nConduct Continuing Professional Development (CPD) programs for agricultural extension officers and \nARPAs on latest developments on use of eco-friendly agricultural production and management \ntechniques",
+        "section": "3.12",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt measures to minimize abandoned lands from agricultural production",
+        "sourceText": "3.13. \nAdopt measures to minimize abandoned lands from agricultural production",
+        "section": "3.13",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Implement a social audit system as a mandatory activity in all incentive-based projects and programmes in agriculture",
+        "sourceText": "3.14. \nImplement a social audit system as a mandatory activity in all incentive-based projects and \nprogrammes in agriculture",
+        "section": "3.14",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish agro-industrial zones using farmer cluster approach with agribusiness ventures and appropriate economic incentives",
+        "sourceText": "3.15. \nEstablish agro-industrial zones using farmer cluster approach with agribusiness ventures and \nappropriate economic incentives",
+        "section": "3.15",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Provide economic incentives based on cluster approach",
+        "sourceText": "3.16. \nProvide economic incentives based on cluster approach",
+        "section": "3.16",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Enhance rational use of irrigation water through participatory management to improve the irrigation water use efficiency",
+    "label": "Irrigation efficiency",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "sources": [
+      {
+        "sourceText": "4. Enhance rational use of irrigation water through participatory management to improve the \nirrigation water use efficiency",
+        "section": "Thematic Area: Input Management",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n4. \nEnhance rational use of irrigation water through participatory management to \nimprove the irrigation water use efficiency",
+        "section": "Policy Statement 4",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Take appropriate regulatory measures to avoid excessive use of ground water",
+    "activitySources": [
+      {
+        "text": "Take appropriate regulatory measures to avoid excessive use of ground water",
+        "sourceText": "4.1. Take appropriate regulatory measures to avoid excessive use of ground water",
+        "section": "4.1",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Encourage development and adoption of appropriate innovations and technologies during pre- and post-harvest management for sustainable agricultural production",
+    "label": "Pre/post-harvest technology",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "sources": [
+      {
+        "sourceText": "5. Encourage development and adoption of appropriate innovations and technologies during \npre- and post-harvest management for sustainable agricultural production",
+        "section": "Thematic Area: Advanced Technologies",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n5. \nEncourage development and adoption of appropriate innovations and \ntechnologies during pre- and post-harvest management for sustainable \nagricultural production",
+        "section": "Policy Statement 5",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Establish a formal and a well-coordinated mechanism to effectively engage all stakeholders for technology development\nProvide financial and institutional support to develop cost-effective technology using locally-available resources\nUpgrade the system of crop production forecasting with the support of national and international development partners\nPromote adoption of technologies targeting value addition for perishables\nAdopt correct harvest and pre-harvest technologies, including packaging, to improve postharvest quality\nStrengthen technology transfer mechanisms through appropriate mechanisms\nRe-visit and restructure existing authoritative body responsible for agriculture research to focus on establishing an Agriculture Research and Development/Extension Council",
+    "activitySources": [
+      {
+        "text": "Establish a formal and a well-coordinated mechanism to effectively engage all stakeholders for technology development",
+        "sourceText": "5.1. \nEstablish a formal and a well-coordinated mechanism to effectively engage all stakeholders for \ntechnology development",
+        "section": "5.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Provide financial and institutional support to develop cost-effective technology using locally-available resources",
+        "sourceText": "5.2. \nProvide financial and institutional support to develop cost-effective technology using locally-available \nresources",
+        "section": "5.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Upgrade the system of crop production forecasting with the support of national and international development partners",
+        "sourceText": "5.3. \nUpgrade the system of crop production forecasting with the support of national and international \ndevelopment partners",
+        "section": "5.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Promote adoption of technologies targeting value addition for perishables",
+        "sourceText": "5.4. \nPromote adoption of technologies targeting value addition for perishables",
+        "section": "5.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt correct harvest and pre-harvest technologies, including packaging, to improve postharvest quality",
+        "sourceText": "5.5. \nAdopt correct harvest and pre-harvest technologies, including packaging, to improve postharvest quality",
+        "section": "5.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Strengthen technology transfer mechanisms through appropriate mechanisms",
+        "sourceText": "5.6. \nStrengthen technology transfer mechanisms through appropriate mechanisms",
+        "section": "5.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Re-visit and restructure existing authoritative body responsible for agriculture research to focus on establishing an Agriculture Research and Development/Extension Council",
+        "sourceText": "5.7. \nRe-visit and restructure existing authoritative body responsible for agriculture research to focus on \nestablishing an Agriculture Research and Development/Extension Council",
+        "section": "5.7",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Support sustainability in agriculture development through conservation and utilization of natural resources while safeguarding ecosystem services",
+    "label": "Natural resource conservation",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "sources": [
+      {
+        "sourceText": "7. Support sustainability in agriculture development through conservation and utilization of \nnatural resources while safeguarding ecosystem services",
+        "section": "Thematic Area: Eco-friendly Operations",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement 7. Support sustainability in agriculture development through conservation and \nutilization of natural resources while safeguarding ecosystem services",
+        "section": "Policy Statement 7",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Introduce and adopt eco-friendly agricultural practices across agro-ecosystems to support environmental conservation\nEnsure availability of locally improved seed and planting material through the establishment of focused breeding programs using traditional germplasm\nEstablish village seeds banks for germplasm conservation and sustainable utilization of traditional germplasm especially focusing on organic agriculture\nIntroduce and adopt modern eco-friendly input management techniques (including soil-test based fertilizer application, organic matter application, use of bio-pesticides/botanicals/predators for pests and disease control) to enhance productivity of arable land and safeguard ecosystem services\nAdopt a mechanism to have a mandatory involvement of multinational agencies in promoting eco-friendly agricultural activities in Sri Lanka\nAdopt stringent measures of plant quarantine by strengthening facilities at the NPQS and enforcing related regulations\nAdopt a well-organized surveillance system for early-warning of new pest emergence and pest resurgence\nTake appropriate measures to increase the use of renewable energy in agriculture – e.g., financial incentives to access solar-energy and wind powered technology/battery-powered technology for irrigation, temperature and RH-controlled -storage systems) and use of biogas\nPromote farming systems with crop-animal integration where possible\nAdopt mechanisms to ensure conformity of agricultural practices to the environmental standards and safeguards, including conservation and sustainable utilization of biodiversity of the country",
+    "activitySources": [
+      {
+        "text": "Introduce and adopt eco-friendly agricultural practices across agro-ecosystems to support environmental conservation",
+        "sourceText": "7.1. \nIntroduce and adopt eco-friendly agricultural practices across agro-ecosystems to support \nenvironmental  conservation",
+        "section": "7.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Ensure availability of locally improved seed and planting material through the establishment of focused breeding programs using traditional germplasm",
+        "sourceText": "7.2. \nEnsure availability of locally improved seed and planting material through the establishment of  focused \nbreeding programs using traditional germplasm",
+        "section": "7.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish village seeds banks for germplasm conservation and sustainable utilization of traditional germplasm especially focusing on organic agriculture",
+        "sourceText": "7.3. \nEstablish village seeds banks for germplasm conservation and sustainable utilization of traditional \ngermplasm especially focusing on organic agriculture",
+        "section": "7.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce and adopt modern eco-friendly input management techniques (including soil-test based fertilizer application, organic matter application, use of bio-pesticides/botanicals/predators for pests and disease control) to enhance productivity of arable land and safeguard ecosystem services",
+        "sourceText": "7.4. \nIntroduce and adopt modern eco-friendly input management techniques (including soil-test based \nfertilizer application, organic matter application, use of bio-pesticides/botanicals/predators for pests and \ndisease control) to enhance productivity of arable land and safeguard ecosystem services",
+        "section": "7.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt a mechanism to have a mandatory involvement of multinational agencies in promoting eco-friendly agricultural activities in Sri Lanka",
+        "sourceText": "7.5. \nAdopt a mechanism to have a mandatory involvement of multinational agencies in promoting eco-\nfriendly agricultural activities in Sri Lanka",
+        "section": "7.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt stringent measures of plant quarantine by strengthening facilities at the NPQS and enforcing related regulations",
+        "sourceText": "7.6. \nAdopt stringent measures of plant quarantine by strengthening facilities at the NPQS and enforcing \nrelated regulations",
+        "section": "7.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt a well-organized surveillance system for early-warning of new pest emergence and pest resurgence",
+        "sourceText": "7.7. \nAdopt a well-organized surveillance system for early-warning of new pest emergence and pest \nresurgence",
+        "section": "7.7",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Take appropriate measures to increase the use of renewable energy in agriculture – e.g., financial incentives to access solar-energy and wind powered technology/battery-powered technology for irrigation, temperature and RH-controlled -storage systems) and use of biogas",
+        "sourceText": "7.8. \nTake appropriate measures to increase the use of renewable energy in agriculture – e.g., financial \nincentives to access solar-energy and wind  powered technology/battery-powered technology for \nirrigation, temperature and RH-controlled -storage systems) and use of biogas",
+        "section": "7.8",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Promote farming systems with crop-animal integration where possible",
+        "sourceText": "7.9. \nPromote farming systems with crop-animal integration where possible",
+        "section": "7.9",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt mechanisms to ensure conformity of agricultural practices to the environmental standards and safeguards, including conservation and sustainable utilization of biodiversity of the country",
+        "sourceText": "7.10. Adopt mechanisms to ensure conformity of agricultural practices to the environmental standards and \nsafeguards, including conservation and sustainable utilization of biodiversity of the country",
+        "section": "7.10",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Streamline and explore the domestic and international market systems with appropriate logistic services in compliance with national and international standards",
+    "label": "Market systems",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sources": [
+      {
+        "sourceText": "9. Streamline and explore the domestic and international market systems with appropriate \nlogistic services in compliance with national and international standards",
+        "section": "Thematic Area: Agri-Entrepreneurship and Markets",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement 9. \nStreamline and explore the domestic and international market systems with \nappropriate logistic services in compliance with national and international \nstandards",
+        "section": "Policy Statement 9",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Take appropriate measures to strengthen logistics management through PPP (e.g., product transport systems, product unloading systems, etc.)\nIntroduce and adopt mechanisms and technology for traceability (e.g., Blockchain systems)\nAdopt warehouse receipting system for durables (e.g., grain crops) by encouraging PPP,\nEstablish temperature- and RH-controlled storage and cold chain facilities for perishables through PPP\nAdopt systems to promote branding at farm-gate level to support marketing of agricultural produce and products",
+    "activitySources": [
+      {
+        "text": "Take appropriate measures to strengthen logistics management through PPP (e.g., product transport systems, product unloading systems, etc.)",
+        "sourceText": "9.1. \nTake appropriate measures to strengthen logistics management through PPP (e.g., product transport \nsystems, product unloading systems, etc.)",
+        "section": "9.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Introduce and adopt mechanisms and technology for traceability (e.g., Blockchain systems)",
+        "sourceText": "9.2. \nIntroduce and adopt mechanisms and technology for traceability (e.g., Blockchain systems)",
+        "section": "9.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt warehouse receipting system for durables (e.g., grain crops) by encouraging PPP,",
+        "sourceText": "9.3. \nAdopt warehouse receipting system for durables (e.g., grain crops) by encouraging PPP,",
+        "section": "9.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish temperature- and RH-controlled storage and cold chain facilities for perishables through PPP",
+        "sourceText": "9.4. \nEstablish temperature- and RH-controlled storage and cold chain facilities for perishables through PPP",
+        "section": "9.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt systems to promote branding at farm-gate level to support marketing of agricultural produce and products",
+        "sourceText": "9.5. \nAdopt systems to promote branding at farm-gate level to support marketing of agricultural produce and \nproducts",
+        "section": "9.5",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Strengthen partnerships and mentorship programmes for farming and rural community to acquire agricultural expertise and make appropriate decisions to become economically independent",
+    "label": "Mentorship programmes",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sources": [
+      {
+        "sourceText": "10. Strengthen partnerships and mentorship programmes for farming and rural community to \nacquire agricultural expertise and make appropriate decisions to become economically \nindependent",
+        "section": "Thematic Area: Producer Empowerment",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n10. \nStrengthen partnerships and mentorship programmes for farming and rural \ncommunity to acquire agricultural expertise and make appropriate decisions to \nbecome economically independent",
+        "section": "Policy Statement 10",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Establish farmer producer organizations leading to a farmer federation to build capacity on bargaining power, etc. and to transform such organizations as empowered social enterprises to handle agri-businesses.\nCreate awareness among farming community on cost: benefit, advantages/disadvantages of locally produced seeds and other inputs\nEstablish farmer-oriented banking system (e.g., Farmers’ Bank) for dedicated support for agricultural operations and ventures\nRe-orient and strengthen the development bank system to support and develop actors in the agriculture value chain\nEstablish a mechanism to register and recognize fulltime farmers as agri-entrepreneurs to support organized operations in agriculture\nEstablish a strong network of Agrarian Centers, Farmer Producer Organizations (FPOs), FOs, Cooperatives, Farmer Companies, etc.\nEstablish agro-industrial zones using farmer-cluster approach with agribusiness ventures through private-public-partnership (PPP)\nEstablish a mechanism to ensure farmers access new technology at affordable price to reduce cost of production and enhance resource productivity and profit\nEstablish an agricultural product procuring and distribution system (e.g., registered agents; auction system) through the engagement of FOs/FPOs to enhance marketability of farmer produce and increase farm-gate prices for fresh and value-added agricultural products",
+    "activitySources": [
+      {
+        "text": "Establish farmer producer organizations leading to a farmer federation to build capacity on bargaining power, etc. and to transform such organizations as empowered social enterprises to handle agri-businesses.",
+        "sourceText": "10.1. Establish farmer producer organizations leading to a farmer federation to build capacity on bargaining power, etc. and to transform such organizations as empowered social enterprises to handle agri-\nbusinesses.",
+        "section": "10.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Create awareness among farming community on cost: benefit, advantages/disadvantages of locally produced seeds and other inputs",
+        "sourceText": "10.2. Create awareness among farming community on cost: benefit, advantages/disadvantages of locally\nproduced seeds and other inputs",
+        "section": "10.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish farmer-oriented banking system (e.g., Farmers’ Bank) for dedicated support for agricultural operations and ventures",
+        "sourceText": "10.3. Establish farmer-oriented banking system (e.g., Farmers’ Bank) for dedicated support for agricultural\noperations and ventures",
+        "section": "10.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Re-orient and strengthen the development bank system to support and develop actors in the agriculture value chain",
+        "sourceText": "10.4. Re-orient and strengthen the development bank system to support and develop actors in the agriculture\nvalue chain",
+        "section": "10.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish a mechanism to register and recognize fulltime farmers as agri-entrepreneurs to support organized operations in agriculture",
+        "sourceText": "10.5. Establish a mechanism to register and recognize fulltime farmers as agri-entrepreneurs to support\norganized operations in agriculture",
+        "section": "10.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish a strong network of Agrarian Centers, Farmer Producer Organizations (FPOs), FOs, Cooperatives, Farmer Companies, etc.",
+        "sourceText": "10.6. Establish a strong network of Agrarian Centers, Farmer Producer Organizations (FPOs), FOs,\nCooperatives, Farmer Companies, etc.",
+        "section": "10.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish agro-industrial zones using farmer-cluster approach with agribusiness ventures through private-public-partnership (PPP)",
+        "sourceText": "10.7. Establish agro-industrial zones using farmer-cluster approach with agribusiness ventures through\nprivate-public-partnership (PPP)",
+        "section": "10.7",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish a mechanism to ensure farmers access new technology at affordable price to reduce cost of production and enhance resource productivity and profit",
+        "sourceText": "10.8. Establish a mechanism to ensure farmers access new technology at affordable price to reduce cost of\nproduction and enhance resource productivity and profit",
+        "section": "10.8",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish an agricultural product procuring and distribution system (e.g., registered agents; auction system) through the engagement of FOs/FPOs to enhance marketability of farmer produce and increase farm-gate prices for fresh and value-added agricultural products",
+        "sourceText": "10.9. Establish an agricultural product procuring and distribution system (e.g., registered agents; auction\nsystem) through the engagement of FOs/FPOs to enhance marketability of farmer produce and\nincrease farm-gate prices for fresh and value-added agricultural products",
+        "section": "10.9",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Empower youth and women in agriculture with support for mechanization, access to modern technologies, and productivity-based incentive systems",
+    "label": "Youth and women",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sources": [
+      {
+        "sourceText": "11. Empower youth and women in agriculture with support for mechanization, access to \nmodern technologies, and productivity-based incentive systems",
+        "section": "Thematic Area: Producer Empowerment",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement 11. \nEmpower youth and women in agriculture with support for mechanization, \naccess to modern technologies, and productivity-based incentive systems",
+        "section": "Policy Statement 11",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Support gender-based development in agriculture including capacity building for employment and change management\nTake appropriate measures to incentivize youth engagement in agriculture such as adoption of modern technologies and digitalization and access to finance\nLink to 1.5 above\nLink to 1.6 above\nLink to 1.8 above\nLink to 2.12 above\nLink to 5.2 above\nLink to 6.2 above\nLink to 7.4 above\nLink to 10.7 above",
+    "activitySources": [
+      {
+        "text": "Support gender-based development in agriculture including capacity building for employment and change management",
+        "sourceText": "11.1. Support gender-based development in agriculture including capacity building for employment and \nchange management",
+        "section": "11.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Take appropriate measures to incentivize youth engagement in agriculture such as adoption of modern technologies and digitalization and access to finance",
+        "sourceText": "11.2. Take appropriate measures to  incentivize youth engagement in agriculture such as adoption of modern \ntechnologies and digitalization and access to finance",
+        "section": "11.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 1.5 above",
+        "sourceText": "11.3. Link to 1.5 above",
+        "section": "11.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 1.6 above",
+        "sourceText": "11.4. Link to 1.6 above",
+        "section": "11.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 1.8 above",
+        "sourceText": "11.5. Link to 1.8 above",
+        "section": "11.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 2.12 above",
+        "sourceText": "11.6. Link to 2.12 above",
+        "section": "11.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 5.2 above",
+        "sourceText": "11.7. Link to 5.2 above",
+        "section": "11.7",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 6.2 above",
+        "sourceText": "11.8. Link to 6.2 above",
+        "section": "11.8",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 7.4 above",
+        "sourceText": "11.9. Link to 7.4 above",
+        "section": "11.9",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 10.7 above",
+        "sourceText": "11.10. Link to 10.7 above",
+        "section": "11.10",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Strengthen food systems by connecting urban and rural communities to tackle climate shocks and other disasters",
+    "label": "Urban-rural food systems resilience",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sources": [
+      {
+        "sourceText": "13. Strengthen food systems by connecting urban and rural communities to tackle climate \nshocks and other disasters",
+        "section": "Thematic Area: Climate resilience & other risk management",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n13. \nStrengthen food systems by connecting urban and rural communities to tackle \nclimate shocks and other disasters",
+        "section": "Policy Statement 13",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Adopt crisis management mechanisms to meet the food demand under special situations especially in city regions\nIdentify and strengthen critical nodes of the city region food system to strengthen the connectivity between the rural and urban communities\nEstablish an inter-ministerial core group including central, provincial and district level administration to support city region food systems\nLink to 12.1 above\nLink to 12.2 above\nLink to 12.3 above\nLink to 12.4 above",
+    "activitySources": [
+      {
+        "text": "Adopt crisis management mechanisms to meet the food demand under special situations especially in city regions",
+        "sourceText": "13.1. Adopt crisis management mechanisms to meet the food demand under special situations especially in \ncity regions",
+        "section": "13.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Identify and strengthen critical nodes of the city region food system to strengthen the connectivity between the rural and urban communities",
+        "sourceText": "13.2. Identify and strengthen critical nodes of the city region food system to strengthen the connectivity \nbetween the rural and urban communities",
+        "section": "13.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish an inter-ministerial core group including central, provincial and district level administration to support city region food systems",
+        "sourceText": "13.3. Establish an inter-ministerial core group including central, provincial and district level administration to \nsupport city region food systems",
+        "section": "13.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 12.1 above",
+        "sourceText": "13.4. Link to 12.1 above",
+        "section": "13.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 12.2 above",
+        "sourceText": "13.5. Link to 12.2 above",
+        "section": "13.5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 12.3 above",
+        "sourceText": "13.6. Link to 12.3 above",
+        "section": "13.6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Link to 12.4 above",
+        "sourceText": "13.7. Link to 12.4 above",
+        "section": "13.7",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Constitute a centrally-controlled information development and dissemination system to manage research, development and extension systems, and recruitment related to the agriculture sector",
+    "label": "Agricultural information system",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sources": [
+      {
+        "sourceText": "14. Constitute a centrally-controlled information development and dissemination system to \nmanage research, development and extension systems, and recruitment related to the \nagriculture sector",
+        "section": "Thematic Area: Knowledge Management and Agricultural Extension",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n14. \nConstitute a centrally-controlled information development and dissemination \nsystem to manage research, development and extension systems, and \nrecruitment related to the agriculture sector",
+        "section": "Policy Statement 14",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Establish a demand-driven agriculture research program in aching national development goals\nProvide appropriate incentives (financial & physical) to promote R&D for technology development\nInvest on research and development to produce hybrids and high yielding varieties of priority crops through private-public partnership\nFacilitate and strengthen agriculture education at primary, secondary and tertiary levels\nEstablish real-time agriculture data base with continuous updating and easy public access\nIncorporate agriculture progressively as a compulsory subject at least until GCE O/L examination (KSA)\nIncorporate more skills development in ancient agriculture technologies and modern on a need-based approach to the agriculture curricular in diploma and undergraduate levels\nAdopt a market oriented agricultural extension system\nStrengthen PPP to ensure effective information dissemination to the producers\nEstablish a centrally coordinated agriculture extension system with a stronger link between the DOA, PDOA, Mahaweli Authority of Sri Lanka and Private Sector extension setup\nRe-visit the grass root level extension modalities including the fresh recruitment of extension officers at grass root level/village level. With minimum qualification of NVQ level 4\nCreate awareness and promote adoption of novel technologies – use of mobile/data-tabs technologies for information dissemination and real-time feedback (For AIs, ARPAs, Presidents of Farmer Committees at ASCs)\nProvide advisory and advocacy to support evidence-based decision making of farmers",
+    "activitySources": [
+      {
+        "text": "Establish a demand-driven agriculture research program in aching national development goals",
+        "sourceText": "14.1. Establish a demand-driven agriculture research program in aching national development goals",
+        "section": "14.1.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Provide appropriate incentives (financial & physical) to promote R&D for technology development",
+        "sourceText": "14.2. Provide appropriate incentives (financial & physical) to promote R&D for technology development",
+        "section": "14.2.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Invest on research and development to produce hybrids and high yielding varieties of priority crops through private-public partnership",
+        "sourceText": "14.3. Invest on research and development to produce hybrids and high yielding varieties of priority crops\nthrough private-public partnership",
+        "section": "14.3.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Facilitate and strengthen agriculture education at primary, secondary and tertiary levels",
+        "sourceText": "14.4. Facilitate and strengthen agriculture education at primary, secondary and tertiary levels",
+        "section": "14.4.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish real-time agriculture data base with continuous updating and easy public access",
+        "sourceText": "14.5. Establish real-time agriculture data base with continuous updating and easy public access",
+        "section": "14.5.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Incorporate agriculture progressively as a compulsory subject at least until GCE O/L examination (KSA)",
+        "sourceText": "14.6. Incorporate agriculture progressively as a compulsory subject at least until GCE O/L examination (KSA)",
+        "section": "14.6.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Incorporate more skills development in ancient agriculture technologies and modern on a need-based approach to the agriculture curricular in diploma and undergraduate levels",
+        "sourceText": "14.7. Incorporate more skills development in ancient agriculture technologies and modern on a need-based\napproach to the agriculture curricular in diploma and undergraduate levels",
+        "section": "14.7.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt a market oriented agricultural extension system",
+        "sourceText": "14.8. Adopt a market oriented agricultural extension system",
+        "section": "14.8.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Strengthen PPP to ensure effective information dissemination to the producers",
+        "sourceText": "14.9. Strengthen PPP to ensure effective information dissemination to the producers",
+        "section": "14.9.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish a centrally coordinated agriculture extension system with a stronger link between the DOA, PDOA, Mahaweli Authority of Sri Lanka and Private Sector extension setup",
+        "sourceText": "14.10. Establish a centrally coordinated agriculture extension system with a stronger link between the DOA,\nPDOA, Mahaweli Authority of Sri Lanka and Private Sector extension setup",
+        "section": "14.10.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Re-visit the grass root level extension modalities including the fresh recruitment of extension officers at grass root level/village level. With minimum qualification of NVQ level 4",
+        "sourceText": "14.11. Re-visit the grass root level extension modalities including the fresh recruitment of extension officers at\ngrass root level/village level. With minimum qualification of NVQ level 4",
+        "section": "14.11.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Create awareness and promote adoption of novel technologies – use of mobile/data-tabs technologies for information dissemination and real-time feedback (For AIs, ARPAs, Presidents of Farmer Committees at ASCs)",
+        "sourceText": "14.12. Create awareness and promote adoption of novel technologies – use of mobile/data-tabs technologies\nfor information dissemination and real-time feedback (For AIs, ARPAs, Presidents of Farmer\nCommittees at ASCs)",
+        "section": "14.12.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Provide advisory and advocacy to support evidence-based decision making of farmers",
+        "sourceText": "14.13. Provide advisory and advocacy to support evidence-based decision making of farmers",
+        "section": "14.13.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Strengthen institutional coordination mechanism for project implementation, monitoring and evaluation at national and local government levels with wider stakeholder participation for sustainable agricultural development",
+    "label": "Institutional coordination for implementation",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "15. Strengthen institutional coordination mechanism for project implementation, monitoring \nand evaluation at national and local government levels with wider stakeholder participation \nfor sustainable agricultural development",
+        "section": "Thematic Area: Governance and Operations Management",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Policy Statement \n15. \nStrengthen institutional coordination mechanism for project implementation, \nmonitoring and evaluation at national and local government levels with wider \nstakeholder participation for sustainable agricultural development",
+        "section": "Policy Statement 15",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "15. Strengthen institutional coordination mechanism for project implementation,\nmonitoring and evaluation at national and local government levels with wider\nstakeholder participation for sustainable agricultural development",
+        "section": "15",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NAP",
+    "activities": "Establish a policy implementation, and monitoring and evaluation (M&E) committee/national policy management body (with a TOR) including linkages with provincial and local government set up\nEstablish an effective coordination mechanism among line agencies of Ministries to ensure compliance with the agriculture policy and enhance consumer and producer profitability\nAdopt a stable taxation and fiscal policy system to provide price support to the producers and consumers\nRegulate imports based on annual/seasonal production targets\nRe-define mandatory functions of line agencies to complement each other and to support implementation of the agriculture policy and rational decision making",
+    "activitySources": [
+      {
+        "text": "Establish a policy implementation, and monitoring and evaluation (M&E) committee/national policy management body (with a TOR) including linkages with provincial and local government set up",
+        "sourceText": "15.1. Establish a policy implementation, and monitoring and evaluation (M&E) committee/national policy management body (with a TOR) including linkages with provincial and local government set up",
+        "section": "15.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish an effective coordination mechanism among line agencies of Ministries to ensure compliance with the agriculture policy and enhance consumer and producer profitability",
+        "sourceText": "15.2. Establish an effective coordination mechanism among line agencies of Ministries to ensure compliance with the agriculture policy and enhance consumer and producer profitability",
+        "section": "15.2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adopt a stable taxation and fiscal policy system to provide price support to the producers and consumers",
+        "sourceText": "15.3. Adopt a stable taxation and fiscal policy system to provide price support to the producers and consumers",
+        "section": "15.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Regulate imports based on annual/seasonal production targets",
+        "sourceText": "15.4. Regulate imports based on annual/seasonal production targets",
+        "section": "15.4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Re-define mandatory functions of line agencies to complement each other and to support implementation of the agriculture policy and rational decision making",
+        "sourceText": "15.5. Re-define mandatory functions of line agencies to complement each other and to support implementation of the agriculture policy and rational decision making",
+        "section": "15.5",
+        "_quoteMatch": "exact"
+      }
+    ]
+  }
+]

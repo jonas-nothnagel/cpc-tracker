@@ -28,6 +28,11 @@ from pathlib import Path
 from typing import Any
 
 from .config import LLM_MODEL
+from .extract_validation import (
+    MatchCorpus,
+    normalise_for_matching,
+    validate_quotes_in_document,
+)
 from .footprint import append_event, electricity_zone
 from .llm import call_llm, call_llm_batch, get_footprint_tracker, set_language
 
@@ -41,8 +46,38 @@ MAX_CHUNK_CHARS = int(os.getenv("CPC_MAX_CHUNK_CHARS", "30000"))
 OVERLAP_CHARS = int(os.getenv("CPC_OVERLAP_CHARS", "2000"))
 MIN_TARGET_LENGTH = int(os.getenv("CPC_MIN_TARGET_LENGTH", "10"))
 
+# Consolidation runs over page-ordered windows of at most this many
+# candidates. One giant call re-emitting every candidate (PNSH: 79) blows
+# past the completion-token budget, truncates mid-JSON, and used to zero
+# the whole document.
+CONSOLIDATE_WINDOW = int(os.getenv("CPC_CONSOLIDATE_WINDOW", "24"))
+
+# Documents whose full text fits this budget get the WHOLE document as
+# activities-extraction context instead of quote-anchored windows. Why: the
+# Sri Lanka fisheries policy lists its objectives up front, and they do not
+# map 1-1 onto the action sections below; windows anchored on the objectives
+# list missed most of the numbered actions the expert reviewer expected
+# (2 Jul 2026 review). Windows remain for documents too large to pass whole.
+ACTIVITY_FULLDOC_CHARS = int(os.getenv("CPC_ACTIVITY_FULLDOC_CHARS", "30000"))
+
+# A PDF page with fewer extractable characters than this is treated as
+# having no usable text layer (scanned/image page).
+PDF_EMPTY_PAGE_CHARS = 50
+# Above this fraction of empty pages the document warrants a partial-scan
+# warning surfaced to the reviewer.
+PDF_PARTIAL_EMPTY_RATIO = 0.3
+
+# Meta-information about the most recent extract_from_text run (parse
+# failures, consolidation fallbacks, document warnings). Reset per run and
+# written to the `<output>.meta.json` sidecar by the CLI so the API route
+# can surface warnings. Single-document-per-process usage only.
+RUN_META: dict[str, Any] = {}
+
 # ---------------------------------------------------------------------------
-# Expected target counts by document type (order of magnitude guidance)
+# Expected target counts by document type. WEAK, order-of-magnitude guidance
+# only, derived from the early Mongolia corpus; real corpora range far wider
+# (NDC: Mongolia 27, Sri Lanka 91, Côte d'Ivoire 181). The prompts present
+# these as calibration that must never cap coverage.
 # ---------------------------------------------------------------------------
 EXPECTED_COUNTS: dict[str, str] = {
     "NDC": "15-30",
@@ -53,11 +88,20 @@ EXPECTED_COUNTS: dict[str, str] = {
 }
 
 # ---------------------------------------------------------------------------
-# Few-shot examples (drawn from human-curated Mongolia targets)
+# Few-shot examples, drawn verbatim from the human-curated corpora of several
+# countries (Mongolia, Sri Lanka, Côte d'Ivoire) so the model calibrates on
+# LEVEL and STRUCTURE, not on one country's phrasing.
+#
+# CONTAMINATION RULE: any document whose curated targets appear here must not
+# serve as tier-1 gold in scripts/eval_manifest.json (currently excluded on
+# these grounds: Mongolia FSS, Mongolia NBSAP, Sri Lanka NDC, Côte d'Ivoire NDC). Update the
+# manifest exclusion note when changing the examples.
 # ---------------------------------------------------------------------------
 FEW_SHOT_EXAMPLES = """\
-Here are examples of correctly extracted targets from real policy documents. \
-Use these as a reference for the level of abstraction and specificity expected.
+Here are examples of correctly extracted targets from real policy documents \
+of several countries. Use these as a reference for the level of abstraction \
+and specificity expected — document structures and phrasing vary widely by \
+country; the LEVEL is what generalises.
 
 NDC examples:
 - "Protect natural forests, improve forest health, and enhance forest regeneration capacity"
@@ -72,13 +116,12 @@ carrying capacity of rangelands and improving livestock economic turnover throug
 export and meat supply to the domestic."
 
 NBSAP examples:
-- "Restore at least 30 percent of degraded ecosystems and improve ecological integrity and \
-connectivity"
-- "Ensure that each representative type of the main ecosystems is included and that 30% of \
-the country's total land area is effectively conserved within the National Protected Area \
-Network, while strengthening ecological connectivity across the landscape."
-- "Redesign subsidies and incentives that negatively impact biodiversity to be environment \
-and biodiversity-friendly."
+- "By 2030, restore at least 30 percent of degraded ecosystems and improve ecological \
+integrity and connectivity."
+- "By 2030, 30% of the country's total area will be included in the special protected area \
+network, representing major ecosystem types and strengthening ecological connectivity."
+- "By 2030, reform subsidies and incentives that have negative impacts on biodiversity, \
+while increasing environmentally positive (green) incentives."
 
 NAP examples:
 - "Minimize risks from climate change induced disasters and improve resilience"
@@ -86,6 +129,22 @@ NAP examples:
 responses to extreme events."
 - "Sustainably develop high-yield crops through climate-adapted technologies and soil \
 conservation."
+
+Sector-numbered targets (labels like "Forestry 1", "Transport 4") — short \
+verbatim targets are valid, never pad them:
+- "Sustainable management of forests and the restoration of other degraded lands, \
+at least 32% by 2035"  (label: "Forestry 1")
+- "Promote electric mobility"  (label: "Transport 4")
+- "Promote a circular economy"  (label: "M24")
+
+Tri-part structured target (some NDCs state each target as Goal / Target / \
+Benchmark) — this is ONE target; keep the parts together, do not split them:
+- "Goal: Preserve marine biodiversity and resources to enhance the resilience of \
+coastal ecosystems against human and climate pressures.; Target: Achieve a \
+coverage rate of at least 30% of sensitive marine areas by functional and \
+sustainably managed Marine Protected Areas (MPAs) by 2035.; Benchmark: In 2020, \
+less than 10% of sensitive marine areas in Côte d'Ivoire are covered by \
+operational Marine Protected Areas (MPAs)."  (label: "A7.3")
 
 Resolution-style document with a 3-level hierarchy (Section → Measure → Action):
 Mongolia's Resolution 36 "Food Supply and Security Measures" has Section 2 broken \
@@ -157,8 +216,11 @@ RULES:
 4. Do NOT extract background descriptions, context, definitions, procedural \
    text, or stakeholder lists.
 5. If a section has no policy targets, return an empty array: []
-6. A typical {doc_type} document contains {expected_count} targets total. \
-   This section may contain 0-5. Be selective.
+6. As weak calibration only: a typical {doc_type} document contains \
+   {expected_count} targets in total, but real counts vary widely by country \
+   and document — some contain far more. Extract every DISTINCT policy target \
+   this section actually contains; be selective about the LEVEL (Rules 1-2), \
+   never about coverage.
 7. If the document explicitly labels targets (e.g. "Target 1", "Goal 2.3"), \
    use those exact names as the label — do not rephrase or replace them.
 8. Include all measurable details in the target text: percentages, quantities, \
@@ -244,9 +306,11 @@ contain policy targets:
 CONSOLIDATE_SYSTEM = """\
 You are a senior policy analyst finalising the target list for a national \
 policy coherence assessment. You have received candidate targets extracted \
-from different sections of a {doc_type} document.
+from ONE PORTION of a {doc_type} document (consolidation runs per portion; \
+other portions are handled separately).
 
-Your task is to produce the FINAL, CLEAN list of distinct policy targets by:
+Your task is to produce the CLEAN list of distinct policy targets for this \
+portion by:
 1. Removing duplicates or near-duplicates (keep the most complete version).
 2. Merging overlapping targets that clearly refer to the same objective. When \
    you merge, you MUST preserve every "sources" entry from the merged \
@@ -257,8 +321,12 @@ Your task is to produce the FINAL, CLEAN list of distinct policy targets by:
 4. Keeping the list at the right level of abstraction — each item should be \
    a distinct policy objective suitable for cross-document coherence analysis.
 
-A typical {doc_type} contains roughly {expected_count} targets. If you have \
-significantly more, you are likely including too many sub-measures or context.
+Do NOT compress the list toward a target count: merge only genuine \
+duplicates and overlapping statements of the same objective, and remove only \
+items that are clearly not policy targets. Distinct objectives stay separate \
+even when they are many. (For calibration only: a typical {doc_type} \
+contains roughly {expected_count} targets across the WHOLE document; this \
+portion may hold any share of that.)
 
 Each candidate includes a "pageNumbers" array showing which pages it was \
 found on. When merging candidates, combine their page numbers (union of all \
@@ -278,6 +346,10 @@ When merging:
 - "sources" = the union of all merged candidates' source entries (no \
   deduplication of sourceText required — repeated quotes are evidence of \
   recurrence across sections).
+- When candidates carry "textOriginal" / "labelOriginal" fields (non-English \
+  documents), every output object MUST carry them too: merge the \
+  original-language text under the same rules as "text", and never translate \
+  "sources[].sourceText".
 
 Return a JSON array. Each object must have:
 - "text": the policy target (display + pipeline input)
@@ -286,6 +358,9 @@ Return a JSON array. Each object must have:
 - "sources": array of {{ "sourceText": "...", "section": "..." }} entries — \
   preserved verbatim from input candidates, never invented
 - "textCleanup": "verbatim" | "cleaned" | "synthesis"
+- "textOriginal" and "labelOriginal": REQUIRED on every object whenever the \
+  input candidates carry them (non-English documents) — the original-language \
+  target text and label, merged under the same rules as "text"
 
 Output valid JSON only — no markdown fences, no explanation."""
 
@@ -347,10 +422,14 @@ Extract any explicitly listed sub-activities, measures, or actions for this targ
 MULTILANG_ADDENDUM = """\
 
 LANGUAGE NOTE: This document is written in {language_name} (not English).
-- Extract "text" and "label" in the document's original language.
-- Additionally provide:
-  - "text_eng": English translation of the target text
-  - "label_eng": English translation of the label
+- "sources[].sourceText" MUST remain the exact verbatim quote in the \
+document's original language — never translate it.
+- Return "text" and "label" as faithful ENGLISH translations of the target, \
+preserving every number, percentage, date, and scope qualifier exactly.
+- Additionally provide on each object:
+  - "textOriginal": the target text in the original language, derived from \
+the sources under the same verbatim/cleanup rules as "text"
+  - "labelOriginal": the label in the original language
 """
 
 # ---------------------------------------------------------------------------
@@ -414,6 +493,30 @@ def _table_to_text(table) -> str:
         return ""
 
 
+def pdf_text_layer_stats(path: Path) -> dict[str, Any]:
+    """Per-page extractable-text statistics for scanned-PDF detection.
+
+    A page with fewer than PDF_EMPTY_PAGE_CHARS extractable characters is
+    counted as empty (scanned/image-only). Callers decide policy: a fully
+    empty document is an error, a partially empty one a reviewer warning.
+    """
+    try:
+        import pymupdf
+    except ImportError:
+        import fitz as pymupdf  # type: ignore[no-redef]
+
+    with pymupdf.open(str(path)) as doc:
+        page_chars = [len((page.get_text("text") or "").strip()) for page in doc]
+    pages = len(page_chars)
+    empty = sum(1 for c in page_chars if c < PDF_EMPTY_PAGE_CHARS)
+    return {
+        "pages": pages,
+        "emptyPages": empty,
+        "emptyRatio": round(empty / pages, 3) if pages else 0.0,
+        "totalChars": sum(page_chars),
+    }
+
+
 def _extract_text_pdf(path: Path) -> list[PageSpan]:
     """Extract text from PDF with page-level tracking and table support."""
     try:
@@ -455,44 +558,68 @@ def _docx_table_to_text(table) -> str:
 
 
 def _extract_text_docx(path: Path) -> list[PageSpan]:
-    """Extract text from DOCX with table support.
+    """Extract text from DOCX with table support and heading-based sections.
 
-    DOCX does not have reliable page boundaries, so we return a single
-    PageSpan with page=0 (unknown).
+    DOCX has no reliable page boundaries, so every span carries page=0
+    (unknown). Instead, the document is split at Heading-style paragraphs:
+    each heading starts a new span with the heading kept as a "## " line, so
+    the extraction prompts see section context and can populate
+    sources[].section even without page numbers.
     """
     from docx import Document
 
     doc = Document(str(path))
+    # O(1) element -> object lookups (the previous per-element linear scans
+    # made large documents quadratic).
+    para_by_el = {id(p._element): p for p in doc.paragraphs}
+    table_by_el = {id(t._element): t for t in doc.tables}
+
+    spans: list[PageSpan] = []
     parts: list[str] = []
+
+    def flush() -> None:
+        if parts:
+            spans.append(PageSpan(page=0, text="\n\n".join(parts)))
+            parts.clear()
 
     for element in doc.element.body:
         tag = element.tag.split("}")[-1] if "}" in element.tag else element.tag
         if tag == "p":
-            # Paragraph
-            text = element.text or ""
-            # python-docx element.text only gets direct text; use the paragraph API
-            for para in doc.paragraphs:
-                if para._element is element:
-                    text = para.text
-                    break
-            if text.strip():
+            para = para_by_el.get(id(element))
+            text = (para.text if para is not None else element.text) or ""
+            if not text.strip():
+                continue
+            is_heading = False
+            if para is not None and para.style is not None:
+                # style_id ("Heading1") is locale-invariant; the display name
+                # is not ("Heading 1" / "Título 1" / "Titre 1"), so a
+                # Spanish-authored DOCX would lose its sections on a
+                # name-only check.
+                style_id = getattr(para.style, "style_id", "") or ""
+                style_name = para.style.name or ""
+                is_heading = style_id.startswith("Heading") or style_name.startswith(
+                    "Heading"
+                )
+            if is_heading:
+                flush()
+                parts.append(f"## {text.strip()}")
+            else:
                 parts.append(text.strip())
         elif tag == "tbl":
-            # Table
-            for table in doc.tables:
-                if table._element is element:
-                    table_text = _docx_table_to_text(table)
-                    if table_text:
-                        parts.append(f"[TABLE]\n{table_text}")
-                    break
+            table = table_by_el.get(id(element))
+            if table is not None:
+                table_text = _docx_table_to_text(table)
+                if table_text:
+                    parts.append(f"[TABLE]\n{table_text}")
+    flush()
 
-    full_text = "\n\n".join(parts)
-    if not full_text.strip():
+    if not spans:
         # Fallback: just paragraphs
         paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
         full_text = "\n\n".join(paragraphs)
+        return [PageSpan(page=0, text=full_text)] if full_text.strip() else []
 
-    return [PageSpan(page=0, text=full_text)] if full_text.strip() else []
+    return spans
 
 
 def extract_text(path: Path) -> DocumentText:
@@ -563,31 +690,92 @@ def chunk_text(
 # ---------------------------------------------------------------------------
 
 
+def _language_samples(text: str, size: int = 5000) -> list[str]:
+    """Head, middle, and tail samples for language detection.
+
+    A single head sample misdetects multi-language documents: Sri Lankan
+    policies open with Sinhala and Tamil sections before the English text,
+    and legacy-font-encoded scripts read as Latin gibberish that lingua maps
+    to arbitrary languages. Three positions give a majority vote a chance.
+    """
+    if len(text) <= size:
+        return [text]
+    mid_start = (len(text) - size) // 2
+    return [text[:size], text[mid_start : mid_start + size], text[-size:]]
+
+
+def _majority_language(codes: list[tuple[str, str]]) -> tuple[str, str, bool]:
+    """Majority vote over per-sample detections.
+
+    Returns (code, name, agreed). With no majority (all samples differ),
+    falls back to the head sample's detection and reports agreed=False so
+    the caller can warn: mixed-language documents deserve a human look and
+    an explicit --language override.
+    """
+    counts: dict[str, int] = {}
+    for code, _name in codes:
+        counts[code] = counts.get(code, 0) + 1
+    best_code = max(counts, key=lambda c: counts[c])
+    if counts[best_code] > 1:
+        name = next(name for code, name in codes if code == best_code)
+        return best_code, name, counts[best_code] == len(codes)
+    return codes[0][0], codes[0][1], False
+
+
 def detect_language(text: str) -> tuple[str, str]:
     """Detect language of text. Returns (iso_code, language_name).
 
-    Uses lingua-language-detector if available, falls back to langdetect,
-    and ultimately defaults to English.
+    Majority vote over head/middle/tail samples (multi-language documents);
+    uses lingua-language-detector if available, falls back to langdetect,
+    and ultimately defaults to English. Sample disagreement is logged and
+    recorded in RUN_META as a document warning.
     """
-    sample = text[:5000]  # Only need a sample for detection
+    samples = _language_samples(text)
+
+    def _finish(per_sample: list[tuple[str, str]]) -> tuple[str, str]:
+        code, name, agreed = _majority_language(per_sample)
+        if not agreed and len(per_sample) > 1:
+            detail = [c for c, _ in per_sample]
+            logger.warning(
+                "Language detection disagrees across document sections %s — "
+                "using %s. For multi-language documents pass --language "
+                "explicitly.",
+                detail, code,
+            )
+            RUN_META.setdefault("documentWarnings", []).append({
+                "code": "MIXED_LANGUAGE_DETECTION",
+                "samples": detail,
+                "chosen": code,
+            })
+        return code, name
 
     try:
         from lingua import Language, LanguageDetectorBuilder
         detector = LanguageDetectorBuilder.from_all_languages().build()
-        detected = detector.detect_language_of(sample)
-        if detected and detected != Language.ENGLISH:
-            return detected.iso_code_639_1.name.lower(), detected.name.title()
-        return "en", "English"
+        per_sample: list[tuple[str, str]] = []
+        for sample in samples:
+            detected = detector.detect_language_of(sample)
+            if detected and detected != Language.ENGLISH:
+                per_sample.append(
+                    (detected.iso_code_639_1.name.lower(), detected.name.title())
+                )
+            else:
+                per_sample.append(("en", "English"))
+        return _finish(per_sample)
     except ImportError:
         pass
 
     try:
         from langdetect import detect
-        code = detect(sample)
-        if code and code != "en":
-            # langdetect returns ISO 639-1 codes
-            return code, code.upper()
-        return "en", "English"
+        per_sample = []
+        for sample in samples:
+            code = detect(sample)
+            if code and code != "en":
+                # langdetect returns ISO 639-1 codes
+                per_sample.append((code, code.upper()))
+            else:
+                per_sample.append(("en", "English"))
+        return _finish(per_sample)
     except ImportError:
         pass
 
@@ -634,6 +822,20 @@ def _parse_json_array(
     min_length: int = MIN_TARGET_LENGTH,
 ) -> list[dict[str, Any]]:
     """Parse LLM JSON response, handling common formatting issues."""
+    return _parse_json_array_status(raw, min_length=min_length)[0]
+
+
+def _parse_json_array_status(
+    raw: str,
+    min_length: int = MIN_TARGET_LENGTH,
+) -> tuple[list[dict[str, Any]], bool]:
+    """Like _parse_json_array but also reports whether parsing SUCCEEDED.
+
+    A legitimately empty array ("[]") returns ([], True); a truncated or
+    malformed response returns ([], False). Callers that would otherwise
+    silently discard upstream work (consolidation) must check the flag and
+    fall back instead of treating garbage as "no targets".
+    """
     raw = raw.strip()
     if raw.startswith("```"):
         raw = re.sub(r"^```(?:json)?\s*", "", raw)
@@ -648,12 +850,16 @@ def _parse_json_array(
                 items = json.loads(match.group())
             except json.JSONDecodeError:
                 logger.warning("Could not parse extraction response as JSON")
-                return []
+                return [], False
         else:
-            return []
+            if raw:
+                logger.warning("Could not parse extraction response as JSON")
+            # Empty responses (e.g. content-filtered calls) are NOT a
+            # trustworthy "no targets" signal either.
+            return [], False
 
     if not isinstance(items, list):
-        return []
+        return [], False
 
     valid = []
     for item in items:
@@ -677,10 +883,19 @@ def _parse_json_array(
             if "pageNumbers" in item and isinstance(item["pageNumbers"], list):
                 entry["pageNumbers"] = item["pageNumbers"]
 
-            # Preserve translation fields if present
-            for tfield in ("text_eng", "label_eng"):
+            # Original-language fields (English-first schema): text/label are
+            # English; textOriginal/labelOriginal carry the source language.
+            for tfield in ("textOriginal", "labelOriginal"):
                 if tfield in item and item[tfield]:
                     entry[tfield] = str(item[tfield]).strip()
+            # Legacy schema (pre English-first cached responses): original in
+            # text, English in text_eng. Invert into the canonical shape.
+            if item.get("text_eng") and "textOriginal" not in entry:
+                entry["textOriginal"] = entry["text"]
+                entry["labelOriginal"] = entry["label"]
+                entry["text"] = str(item["text_eng"]).strip()
+                if item.get("label_eng"):
+                    entry["label"] = str(item["label_eng"]).strip()[:80]
 
             # Provenance: sources[] (verbatim quotes) + textCleanup
             sources = _parse_sources(item)
@@ -690,15 +905,110 @@ def _parse_json_array(
             if cleanup in _VALID_CLEANUPS:
                 entry["textCleanup"] = cleanup
             elif sources:
-                # Default: assume verbatim if a single source matches text after
-                # whitespace normalisation; otherwise default to "cleaned" so
-                # downstream consumers can still surface a provenance badge.
-                norm_text = re.sub(r"\s+", " ", text).strip()
+                # Default: assume verbatim if a single source matches the
+                # original-language text (fall back to `text` for English
+                # documents) after whitespace normalisation; otherwise default
+                # to "cleaned" so downstream consumers can still surface a
+                # provenance badge.
+                compare = entry.get("textOriginal") or entry["text"]
+                norm_text = re.sub(r"\s+", " ", compare).strip()
                 norm_src = re.sub(r"\s+", " ", sources[0]["sourceText"]).strip()
                 entry["textCleanup"] = "verbatim" if norm_text == norm_src else "cleaned"
 
             valid.append(entry)
-    return valid
+    return valid, True
+
+
+def _expected_count(source_document: str, doc_type: str) -> str:
+    """Typical-target-count guidance for the prompts.
+
+    source_document is the canonical type code (the wizard sends the same
+    value for both args); doc_type is only a prompt label and may be a
+    free-form override on the CLI, so it is the fallback, not the key.
+    """
+    return (
+        EXPECTED_COUNTS.get(source_document.upper())
+        or EXPECTED_COUNTS.get(doc_type.upper())
+        or "10-30"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Deterministic candidate dedup (chunk-overlap artifacts)
+# ---------------------------------------------------------------------------
+
+
+def _merge_candidate(kept: dict[str, Any], dup: dict[str, Any]) -> None:
+    """Fold a near-duplicate candidate into the kept one.
+
+    If the duplicate's text is longer (more complete), its payload wins;
+    sources and pageNumbers are unioned either way.
+    """
+    if len(str(dup.get("text", ""))) > len(str(kept.get("text", ""))):
+        for field_ in ("text", "label", "textCleanup", "text_eng", "label_eng",
+                       "textOriginal", "labelOriginal"):
+            if dup.get(field_):
+                kept[field_] = dup[field_]
+    seen_sources = {
+        (s.get("sourceText"), s.get("section")) for s in kept.get("sources") or []
+    }
+    for src in dup.get("sources") or []:
+        key = (src.get("sourceText"), src.get("section"))
+        if key not in seen_sources:
+            seen_sources.add(key)
+            kept.setdefault("sources", []).append(src)
+    pages = set(kept.get("pageNumbers") or []) | set(dup.get("pageNumbers") or [])
+    if pages:
+        kept["pageNumbers"] = sorted(pages)
+
+
+def dedupe_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Merge exact and near-duplicate candidates deterministically.
+
+    The 2000-char chunk overlap re-extracts targets that straddle a chunk
+    boundary, so the same target routinely appears twice with near-identical
+    wording. Near-dup = normalised texts are equal, one contains the other
+    at comparable length, or their sequence ratio is >= 0.92. Runs before
+    (and independently of) the LLM consolidation pass, so small documents
+    that skip consolidation still get deduplicated.
+    """
+    from difflib import SequenceMatcher
+
+    merged: list[dict[str, Any]] = []
+    norms: list[str] = []
+    for cand in candidates:
+        norm = normalise_for_matching(str(cand.get("text", "")))
+        hit_idx = None
+        for i, kept_norm in enumerate(norms):
+            if norm == kept_norm:
+                hit_idx = i
+                break
+            # Full containment of a long, specific policy string means the
+            # same commitment (one chunk simply saw more context); sources
+            # and pages are unioned, so nothing is lost by merging.
+            shorter, longer = sorted((norm, kept_norm), key=len)
+            if len(shorter) >= 40 and shorter in longer:
+                hit_idx = i
+                break
+            sm = SequenceMatcher(None, norm, kept_norm)
+            if (
+                sm.real_quick_ratio() >= 0.92
+                and sm.quick_ratio() >= 0.92
+                and sm.ratio() >= 0.92
+            ):
+                hit_idx = i
+                break
+        if hit_idx is None:
+            merged.append(cand)
+            norms.append(norm)
+        else:
+            _merge_candidate(merged[hit_idx], cand)
+            norms[hit_idx] = normalise_for_matching(str(merged[hit_idx].get("text", "")))
+    if len(merged) < len(candidates):
+        logger.info(
+            "Deterministic dedup: %d -> %d candidates", len(candidates), len(merged)
+        )
+    return merged
 
 
 # ---------------------------------------------------------------------------
@@ -715,13 +1025,21 @@ def _parse_json_array(
 _CLAIM_PATTERNS: list[tuple[str, "re.Pattern[str]"]] = [
     ("percent", re.compile(r"\b\d{1,3}(?:[.,]\d+)?\s?%")),
     ("year", re.compile(r"\b(?:19|20)\d{2}\b")),
-    # Quantities with units we care about in policy targets
+    # Quantities with units we care about in policy targets. English `text`
+    # is compared against original-language sources (es/mn/fr corpora), so
+    # the alternation carries the unit spellings observed in those corpora;
+    # _normalise_claim strips separators, so only the unit word must match a
+    # variant here.
     (
         "quantity",
         re.compile(
             r"\b\d[\d.,]*\s?(?:tCO2e|tCO2eq|tCO₂e|tCO₂eq|MtCO2|"
             r"million tons?|thousand tons?|tons?|tonnes?|ha|km2|km²|"
-            r"hectares?|GW|MW|kWh)\b",
+            r"hectares?|GW|MW|kWh|"
+            r"hect[áa]reas?|millones\s+de\s+toneladas?|miles\s+de\s+toneladas?|"
+            r"toneladas?|"
+            r"millions?\s+de\s+tonnes?|milliers?\s+de\s+tonnes?|"
+            r"га|тонн|сая\s+тонн|мянган?\s+тонн)\b",
             re.IGNORECASE,
         ),
     ),
@@ -755,12 +1073,41 @@ def _extract_claims(text: str) -> set[str]:
     return claims
 
 
-def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
-    """Return a list of unsourced claims found in target['text'].
+_NUM_PREFIX_RE = re.compile(r"^\d+")
 
-    Empty list means the target is well-grounded. Run on every extracted
-    target after consolidation; surface non-empty results as warnings so the
-    pipeline does not silently emit fabricated numbers.
+
+def _missing_claims(claims: set[str], src_claims: set[str]) -> list[str]:
+    """Claims not grounded in the source claims.
+
+    Exact set-membership first. For non-percent claims, a numeric-magnitude
+    fallback grounds e.g. "1500hectares" (English display text) against
+    "1500hectáreas" (Spanish source): unit words are language-specific, the
+    magnitude is not. Tradeoff, accepted: a same-magnitude unit swap
+    (tons vs hectares) passes the fallback; the quote-in-document validator
+    and the human review remain the backstop.
+    """
+    src_numeric = {
+        m.group() for c in src_claims if (m := _NUM_PREFIX_RE.match(c))
+    }
+    missing = []
+    for c in sorted(claims):
+        if c in src_claims:
+            continue
+        m = _NUM_PREFIX_RE.match(c)
+        if m and not c.endswith("%") and m.group() in src_numeric:
+            continue
+        missing.append(c)
+    return missing
+
+
+def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
+    """Return a list of unsourced claims found in the target's display text.
+
+    Empty list means the target is well-grounded. Checks the English `text`
+    and, when present, the original-language `textOriginal` against the
+    verbatim sources. Run on every extracted target after consolidation;
+    surface non-empty results as warnings so the pipeline does not silently
+    emit fabricated numbers.
     """
     text = str(target.get("text", ""))
     if not text:
@@ -774,10 +1121,34 @@ def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
         # only flags claims, not missing-sources policy.
         return []
 
-    text_claims = _extract_claims(text)
     src_claims = _extract_claims(src_blob)
-    missing = sorted(c for c in text_claims if c not in src_claims)
-    return missing
+    missing = set(_missing_claims(_extract_claims(text), src_claims))
+    if target.get("textOriginal"):
+        missing |= set(
+            _missing_claims(
+                _extract_claims(str(target["textOriginal"])), src_claims
+            )
+        )
+    return sorted(missing)
+
+
+def _relevance_sample(text: str, limit: int = 8000) -> str:
+    """Representative sample of a chunk for the relevance filter.
+
+    Judging only the head of a ~30k chunk misclassifies chunks whose
+    substantive content starts after boilerplate: the Sri Lanka NAP goals
+    sat on page 4 behind three pages of cover/foreword, and the whole
+    pages-1-8 chunk was dropped as irrelevant. Head + middle + tail slices
+    give the filter sight of the entire chunk at the same token budget.
+    """
+    if len(text) <= limit:
+        return text
+    head = text[: limit // 2]
+    quarter = limit // 4
+    mid_start = (len(text) - quarter) // 2
+    mid = text[mid_start : mid_start + quarter]
+    tail = text[-quarter:]
+    return f"{head}\n[...]\n{mid}\n[...]\n{tail}"
 
 
 def _parse_relevance(raw: str) -> bool:
@@ -801,6 +1172,84 @@ def _parse_relevance(raw: str) -> bool:
 # ---------------------------------------------------------------------------
 
 
+def _activity_context(
+    target: dict[str, Any],
+    doc: DocumentText,
+    norm_chunks: list[tuple["Chunk", str]],
+    page_to_chunks: dict[int, list[str]],
+) -> str:
+    """Assemble the source context for one target's activities call.
+
+    Whole document when it fits ACTIVITY_FULLDOC_CHARS; otherwise
+    quote-anchored windows; otherwise (quotes unlocatable) the chunks
+    covering the target's pages, truncated to the window budget.
+    """
+    full_text = doc.full_text
+    if len(full_text) <= ACTIVITY_FULLDOC_CHARS:
+        return full_text
+
+    context_parts = _quote_context_windows(target, norm_chunks)
+    if not context_parts:
+        seen: set[int] = set()
+        for page in target.get("pageNumbers", []):
+            for chunk_text in page_to_chunks.get(page, []):
+                h = hash(chunk_text)
+                if h not in seen:
+                    seen.add(h)
+                    context_parts.append(chunk_text)
+
+    context = "\n\n---\n\n".join(context_parts)
+    if len(context) > 12000:
+        context = context[:12000].rsplit("\n\n", 1)[0]  # truncate at paragraph boundary
+    return context
+
+
+def _quote_context_windows(
+    target: dict[str, Any],
+    norm_chunks: list[tuple["Chunk", str]],
+    *,
+    before: int = 1500,
+    after: int = 4500,
+    max_windows: int = 3,
+) -> list[str]:
+    """Context windows around the target's source-quote occurrences.
+
+    Policy documents elaborate a statement into its action list immediately
+    AFTER the statement text, so windows extend mostly forward. A target
+    whose sources were merged from a summary list AND a detailed section
+    gets one window per occurrence, so the detailed section is always in
+    context. Offsets are approximated by position ratio between normalised
+    and original chunk text (normalisation removes characters roughly
+    uniformly); a few hundred chars of drift is irrelevant at window size.
+    """
+    windows: list[str] = []
+    seen_spans: list[tuple[int, int]] = []
+    for src in target.get("sources") or []:
+        if len(windows) >= max_windows:
+            break
+        if not isinstance(src, dict):
+            continue
+        quote = str(src.get("sourceText", "")).strip()
+        if not quote:
+            continue
+        norm_quote = normalise_for_matching(quote)
+        if not norm_quote:
+            continue
+        for ci, (chunk, norm) in enumerate(norm_chunks):
+            pos = norm.find(norm_quote)
+            if pos < 0:
+                continue
+            center = int(len(chunk.text) * (pos / max(len(norm), 1)))
+            start = max(0, center - before)
+            end = min(len(chunk.text), center + after)
+            if any(c == ci and abs(start - s) < 1000 for c, s in seen_spans):
+                break  # near-duplicate of a window we already took
+            seen_spans.append((ci, start))
+            windows.append(chunk.text[start:end])
+            break
+    return windows
+
+
 async def _extract_activities(
     targets: list[dict[str, Any]],
     doc: DocumentText,
@@ -815,36 +1264,43 @@ async def _extract_activities(
         for page in chunk.pages:
             page_to_chunks.setdefault(page, []).append(chunk.text)
 
+    # Context selection, by document size:
+    # - documents that fit ACTIVITY_FULLDOC_CHARS whole: pass the ENTIRE
+    #   document. Objectives lists up front often do not map 1-1 onto the
+    #   action sections below, so any anchoring heuristic misses actions.
+    # - larger documents: windows anchored on each target's verbatim quote
+    #   occurrences. Page-chunk dumps failed two ways on real documents: a
+    #   consolidated target whose first quote sits in an early summary chunk
+    #   got 12k of front matter (truncation never reached the section that
+    #   lists its actions), and whole chunks exceed the 12k budget anyway.
+    norm_chunks = [(chunk, normalise_for_matching(chunk.text)) for chunk in chunks]
+
     activity_calls = []
     for target in targets:
         pages = target.get("pageNumbers", [])
-        # Gather context from chunks that cover this target's pages
-        context_parts: list[str] = []
-        seen: set[int] = set()
-        for page in pages:
-            for chunk_text in page_to_chunks.get(page, []):
-                h = hash(chunk_text)
-                if h not in seen:
-                    seen.add(h)
-                    context_parts.append(chunk_text)
-
-        context = "\n\n---\n\n".join(context_parts)
-        if len(context) > 12000:
-            context = context[:12000].rsplit("\n\n", 1)[0]  # truncate at paragraph boundary
+        context = _activity_context(target, doc, norm_chunks, page_to_chunks)
         pages_str = ", ".join(str(p) for p in pages) if pages else "unknown"
 
         system = ACTIVITIES_SYSTEM
         if not is_english:
-            system += f"\n\nThe source text is in {lang_name}."
+            system += (
+                f"\n\nThe source text is in {lang_name}. Return each "
+                'activity\'s "text" as a faithful ENGLISH translation '
+                "(preserve every number, percentage, and date exactly); "
+                '"sourceText" MUST remain the verbatim original-language '
+                "quote — never translate it."
+            )
 
         activity_calls.append({
             "system": system,
             "user": ACTIVITIES_USER.format(
-                target_text=target.get("text_eng", target["text"]),
+                target_text=target["text"],
                 pages=pages_str,
                 context=context,
             ),
-            "max_tokens": 2000,
+            # Reasoning models spend completion tokens on reasoning before
+            # output; 2000 starved long activity lists into empty responses.
+            "max_tokens": 6000,
         })
 
     raw_results = await call_llm_batch(
@@ -972,6 +1428,8 @@ async def extract_from_text(
 
     Returns a list of dicts with keys: text, label, sourceDocument, pageNumbers.
     """
+    RUN_META.clear()
+
     # Normalize input
     if isinstance(text, str):
         doc = DocumentText(pages=[PageSpan(page=0, text=text)])
@@ -992,7 +1450,7 @@ async def extract_from_text(
 
     # Chunking
     chunks = chunk_text(doc, max_chars=max_chunk_chars, overlap_chars=overlap_chars)
-    expected = EXPECTED_COUNTS.get(source_document, "10-30")
+    expected = _expected_count(source_document, doc_type)
     logger.info(
         f"Extracting from {len(chunks)} chunks ({len(full_text)} chars, "
         f"language={lang_code})"
@@ -1007,7 +1465,10 @@ async def extract_from_text(
                     "system": RELEVANCE_FILTER_SYSTEM,
                     "user": RELEVANCE_FILTER_USER.format(
                         doc_type=doc_type,
-                        text=chunk.text[:8000],  # limit filter input size
+                        # Head + middle + tail sample, NOT just the head: a
+                        # chunk that opens with boilerplate may still hold
+                        # the goals section further in.
+                        text=_relevance_sample(chunk.text),
                     ),
                     "max_tokens": 50,
                 }
@@ -1019,13 +1480,18 @@ async def extract_from_text(
                 desc="Relevance filter",
             )
             relevant_chunks = []
+            dropped_pages: list[int] = []
             for chunk, raw in zip(filterable, filter_results):
                 if _parse_relevance(raw):
                     relevant_chunks.append(chunk)
                 else:
+                    dropped_pages.extend(chunk.pages)
                     logger.info(
                         f"  Filtered out chunk (pages {chunk.pages}): irrelevant"
                     )
+            if dropped_pages:
+                # Reviewer transparency: which pages the filter skipped.
+                RUN_META["relevanceFilteredPages"] = sorted(set(dropped_pages))
 
             # Add back any very short chunks that were skipped
             short_chunks = [c for c in chunks if len(c.text.strip()) < 80]
@@ -1067,8 +1533,11 @@ async def extract_from_text(
     )
 
     all_candidates: list[dict[str, Any]] = []
+    chunk_parse_failures = 0
     for chunk, raw in zip(chunks, raw_results):
-        items = _parse_json_array(raw, min_length=min_length)
+        items, parse_ok = _parse_json_array_status(raw, min_length=min_length)
+        if not parse_ok:
+            chunk_parse_failures += 1
         logger.info(f"  Chunk (pages {chunk.pages}): {len(items)} candidates")
 
         for item in items:
@@ -1076,65 +1545,51 @@ async def extract_from_text(
             item["pageNumbers"] = chunk.pages
             if not is_english:
                 item["language"] = lang_code
+                if item.get("textOriginal"):
+                    # The original came verbatim from the document; the
+                    # English working text is machine-translated.
+                    item["textOriginalSource"] = "source"
             all_candidates.append(item)
 
     logger.info(f"Phase 1 total: {len(all_candidates)} candidates")
+    if chunk_parse_failures:
+        RUN_META["chunkParseFailures"] = chunk_parse_failures
+        logger.warning(
+            "%d of %d chunk extraction responses could not be parsed — "
+            "targets on those pages may be missing",
+            chunk_parse_failures, len(chunks),
+        )
 
     if len(all_candidates) == 0:
         return []
 
-    # Phase 2: Consolidation (skip if very few candidates)
+    # Deterministic dedup of chunk-overlap duplicates — always on, so small
+    # documents that skip the LLM consolidation still get deduplicated.
+    all_candidates = dedupe_candidates(all_candidates)
+
+    # Phase 2: LLM consolidation in page-ordered windows (skipped only for
+    # tiny candidate sets, where there is nothing meaningful to merge).
     if len(all_candidates) <= 5:
-        logger.info("Skipping consolidation (<=5 candidates)")
-        _log_unsourced_claims(all_candidates)
-        return all_candidates
-
-    candidates_json = json.dumps(
-        [
-            {
-                "text": c["text"],
-                "label": c["label"],
-                "pageNumbers": c.get("pageNumbers", []),
-                "sources": c.get("sources", []),
-                "textCleanup": c.get("textCleanup", "verbatim"),
-            }
-            for c in all_candidates
-        ],
-        indent=2,
-        ensure_ascii=False,
-    )
-
-    consolidate_sys = CONSOLIDATE_SYSTEM.format(
-        doc_type=doc_type,
-        expected_count=expected,
-    )
-    consolidate_user = CONSOLIDATE_USER.format(
-        count=len(all_candidates),
-        doc_type=doc_type,
-        candidates_json=candidates_json,
-    )
-
-    raw_consolidated = await call_llm(
-        system=consolidate_sys,
-        user=consolidate_user,
-        cache_namespace="extract_consolidate",
-        max_tokens=8000,
-    )
-    final = _parse_json_array(raw_consolidated, min_length=min_length)
-    logger.info(
-        f"Phase 2 consolidation: {len(all_candidates)} -> {len(final)} targets"
-    )
+        logger.info("Skipping LLM consolidation (<=5 candidates)")
+        final = all_candidates
+    else:
+        final = await _consolidate_windows(
+            all_candidates, doc_type=doc_type, expected=expected,
+            min_length=min_length,
+        )
+        # Cross-window duplicates (same target surfacing in two windows)
+        # are merged deterministically instead of a second LLM pass.
+        final = dedupe_candidates(final)
 
     for item in final:
         item["sourceDocument"] = source_document
         if not is_english:
             item["language"] = lang_code
-        # Ensure pageNumbers survive consolidation
-        if "pageNumbers" not in item:
-            # Fallback: collect all pages from candidates
-            item["pageNumbers"] = sorted(
-                set(p for c in all_candidates for p in c.get("pageNumbers", []))
-            )
+            if item.get("textOriginal"):
+                item["textOriginalSource"] = "source"
+        # NOTE: no pageNumbers fallback. Unioning ALL candidates' pages onto
+        # an item that lost its own would fabricate provenance; absent pages
+        # are more honest than wrong ones.
 
     # Validate that synthesised text is grounded in its sources before we move
     # on to activities extraction. Logs warnings and stamps `_provenanceFlag`
@@ -1142,10 +1597,160 @@ async def extract_from_text(
     # present in any source span.
     _log_unsourced_claims(final)
 
-    # Phase 3: Extract activities/sub-measures for each target
+    # Phase 3: Extract activities/sub-measures for each target (runs for the
+    # <=5-candidate path too; the old early return skipped it).
     if final:
         final = await _extract_activities(final, doc, chunks, is_english, lang_name)
 
+    # Quote-in-document validation: every claimed verbatim quote on targets
+    # and activities must be locatable in the parsed document text. Flags,
+    # never drops — the human reviewer decides.
+    quotes_missing = validate_quotes_in_document(final, MatchCorpus(full_text))
+    if quotes_missing:
+        RUN_META["quotesNotFound"] = quotes_missing
+        logger.warning(
+            "Quote validator: %d claimed quote(s) could not be located in the "
+            "document — flagged for review",
+            quotes_missing,
+        )
+
+    return final
+
+
+def _restore_original_text(
+    items: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+) -> None:
+    """Deterministically re-attach textOriginal lost in consolidation.
+
+    The consolidation prompt requires textOriginal/labelOriginal to be
+    preserved, but model compliance is not guaranteed (observed: one window
+    dropping the field on every output). When an output item lacks
+    textOriginal and its first source quote identifies exactly one input
+    candidate, that candidate's original-language fields are restored.
+    Synthesis items merging several candidates keep only what the model
+    returned: there is no verbatim original for merged text, the sources
+    array is its original-language provenance.
+    """
+    by_quote: dict[str, dict[str, Any]] = {}
+    for cand in candidates:
+        if not cand.get("textOriginal"):
+            continue
+        for src in cand.get("sources") or []:
+            key = normalise_for_matching(str(src.get("sourceText", "")))
+            if key:
+                # First writer wins; duplicate quotes across candidates are
+                # ambiguous and skipped at lookup time via sentinel.
+                by_quote[key] = cand if key not in by_quote else {}
+    restored = 0
+    for item in items:
+        if item.get("textOriginal"):
+            continue
+        sources = item.get("sources") or []
+        if not sources:
+            continue
+        key = normalise_for_matching(str(sources[0].get("sourceText", "")))
+        cand = by_quote.get(key)
+        if cand and cand.get("textOriginal") and item.get("textCleanup") != "synthesis":
+            item["textOriginal"] = cand["textOriginal"]
+            if cand.get("labelOriginal"):
+                item["labelOriginal"] = cand["labelOriginal"]
+            restored += 1
+    if restored:
+        logger.info(
+            "Restored textOriginal on %d consolidated target(s) from their "
+            "source candidates",
+            restored,
+        )
+
+
+async def _consolidate_windows(
+    candidates: list[dict[str, Any]],
+    *,
+    doc_type: str,
+    expected: str,
+    min_length: int,
+) -> list[dict[str, Any]]:
+    """Run the LLM consolidation pass over windows of candidates.
+
+    One giant call must re-emit every candidate in a single response; past
+    ~25 candidates that reliably truncates mid-JSON at the completion-token
+    limit and the whole document silently extracts to zero (observed on
+    PNSH: 79 candidates -> 0). Windows are page-ordered, so near-duplicates
+    from chunk overlap sit in the same window.
+
+    A window whose response cannot be parsed KEEPS its un-consolidated
+    candidates: Phase 1 output is never discarded silently.
+    """
+    windows = [
+        candidates[i : i + CONSOLIDATE_WINDOW]
+        for i in range(0, len(candidates), CONSOLIDATE_WINDOW)
+    ]
+    consolidate_sys = CONSOLIDATE_SYSTEM.format(
+        doc_type=doc_type, expected_count=expected
+    )
+    calls = []
+    for window in windows:
+        candidates_json = json.dumps(
+            [
+                {
+                    "text": c["text"],
+                    "label": c["label"],
+                    "pageNumbers": c.get("pageNumbers", []),
+                    "sources": c.get("sources", []),
+                    "textCleanup": c.get("textCleanup", "verbatim"),
+                    **(
+                        {"textOriginal": c["textOriginal"]}
+                        if c.get("textOriginal")
+                        else {}
+                    ),
+                    **(
+                        {"labelOriginal": c["labelOriginal"]}
+                        if c.get("labelOriginal")
+                        else {}
+                    ),
+                }
+                for c in window
+            ],
+            indent=2,
+            ensure_ascii=False,
+        )
+        calls.append({
+            "system": consolidate_sys,
+            "user": CONSOLIDATE_USER.format(
+                count=len(window),
+                doc_type=doc_type,
+                candidates_json=candidates_json,
+            ),
+            "max_tokens": 16000,
+        })
+
+    raw_results = await call_llm_batch(
+        calls, cache_namespace="extract_consolidate", desc="Consolidation"
+    )
+
+    final: list[dict[str, Any]] = []
+    fallbacks = 0
+    for window, raw in zip(windows, raw_results):
+        items, parse_ok = _parse_json_array_status(raw, min_length=min_length)
+        if not parse_ok:
+            fallbacks += 1
+            logger.warning(
+                "Consolidation response unparseable for a %d-candidate window "
+                "(likely truncated) — keeping the un-consolidated candidates",
+                len(window),
+            )
+            final.extend(window)
+        else:
+            _restore_original_text(items, window)
+            final.extend(items)
+
+    if fallbacks:
+        RUN_META["consolidationFallbacks"] = fallbacks
+    logger.info(
+        f"Phase 2 consolidation: {len(candidates)} -> {len(final)} targets "
+        f"({len(windows)} window(s), {fallbacks} fallback(s))"
+    )
     return final
 
 
@@ -1209,13 +1814,47 @@ async def extract_from_file(
     )
 
 
-async def main_async(args: argparse.Namespace) -> None:
+def _emit_structured_error(code: str, detail: dict[str, Any]) -> None:
+    """Print a single machine-readable error line to stdout.
+
+    The /api/extract route parses this on a non-zero exit to surface a
+    human-readable message in the upload wizard.
+    """
+    print(json.dumps({"error": {"code": code, **detail}}))
+
+
+async def main_async(args: argparse.Namespace) -> int:
     file_path = Path(args.file)
     if not file_path.exists():
         logger.error(f"File not found: {file_path}")
-        return
+        _emit_structured_error("FILE_NOT_FOUND", {"file": str(file_path)})
+        return 2
 
     set_language(args.output_language)
+
+    document_warnings: list[dict[str, Any]] = []
+    if file_path.suffix.lower() == ".pdf":
+        stats = pdf_text_layer_stats(file_path)
+        no_text = stats["pages"] > 0 and (
+            stats["emptyPages"] == stats["pages"] or stats["totalChars"] < 200
+        )
+        if no_text:
+            logger.error(
+                "%s appears to be a scanned or image-based PDF: %d of %d pages "
+                "have no machine-readable text layer. OCR is not supported; "
+                "please provide a text-based version of the document.",
+                file_path.name, stats["emptyPages"], stats["pages"],
+            )
+            _emit_structured_error("NO_TEXT_LAYER", stats)
+            return 3
+        if stats["emptyRatio"] > PDF_PARTIAL_EMPTY_RATIO:
+            logger.warning(
+                "%s has a partial text layer: %d of %d pages have no "
+                "machine-readable text. Targets on those pages cannot be "
+                "extracted.",
+                file_path.name, stats["emptyPages"], stats["pages"],
+            )
+            document_warnings.append({"code": "PARTIAL_TEXT_LAYER", **stats})
 
     items = await extract_from_file(
         file_path,
@@ -1227,6 +1866,9 @@ async def main_async(args: argparse.Namespace) -> None:
         skip_relevance_filter=args.skip_relevance_filter,
         language=args.language,
     )
+    if args.country:
+        for item in items:
+            item["country"] = args.country
 
     if args.output:
         out = Path(args.output)
@@ -1235,6 +1877,18 @@ async def main_async(args: argparse.Namespace) -> None:
 
     out.write_text(json.dumps(items, indent=2, ensure_ascii=False))
     logger.info(f"Saved {len(items)} targets to {out}")
+
+    # Run metadata sidecar: document warnings (partial text layer, mixed
+    # language detection) + pipeline self-reports (consolidation fallbacks,
+    # quotes not found). The API route forwards these so reviewers see them
+    # next to the extracted targets.
+    run_meta = dict(RUN_META)
+    document_warnings.extend(run_meta.pop("documentWarnings", []))
+    meta = {"documentWarnings": document_warnings, **run_meta}
+    if document_warnings or run_meta:
+        (out.parent / (out.name + ".meta.json")).write_text(
+            json.dumps(meta, indent=2)
+        )
 
     # Persist environmental footprint of the extraction run next to the output
     # so the API route can return it and the total can be threaded into the
@@ -1277,6 +1931,8 @@ async def main_async(args: argparse.Namespace) -> None:
             )
     except Exception as e:
         logger.warning(f"Could not append extraction footprint ledger row: {e}")
+
+    return 0
 
 
 def main() -> None:
@@ -1337,9 +1993,16 @@ def main() -> None:
         "set to match the user's UI locale when extracting through the upload "
         "wizard.",
     )
+    parser.add_argument(
+        "--country",
+        default=None,
+        help="Country name stamped on every extracted target (curated-corpus "
+        "shape), e.g. 'Panama'. Required for output that will be promoted "
+        "into a targets file.",
+    )
     args = parser.parse_args()
 
-    asyncio.run(main_async(args))
+    raise SystemExit(asyncio.run(main_async(args)))
 
 
 if __name__ == "__main__":

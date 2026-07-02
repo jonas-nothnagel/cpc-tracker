@@ -1,0 +1,2395 @@
+[
+  {
+    "text": "Universal access to quality water and sanitation services.",
+    "label": "Universal water and sanitation",
+    "pageNumbers": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115
+    ],
+    "textOriginal": "Acceso universal a agua de calidad y servicios de saneamiento.",
+    "labelOriginal": "Acceso universal agua y saneamiento",
+    "sources": [
+      {
+        "sourceText": "Meta No. 1: Acceso universal \na agua de calidad y servicios \nde saneamiento.",
+        "section": "Meta No. 1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 1\nAcceso universal \nal agua de calidad \ny servicios de \nsaneamiento",
+        "section": "4. METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 1: Acceso universal al agua de calidad y servicios de saneamiento",
+        "section": "Meta 1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Water for inclusive socioeconomic growth",
+    "label": "Inclusive water growth",
+    "pageNumbers": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Agua para el crecimiento socioeconómico inclusivo",
+    "labelOriginal": "Agua para crecimiento inclusivo",
+    "sources": [
+      {
+        "sourceText": "Meta No. 2: Agua para el \ncrecimiento socioeconómico \ninclusivo.",
+        "section": "Meta No. 2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta No. 2\nAgua para el crecimiento \nsocioeconómico inclusivo",
+        "section": "METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 2\nAgua para el \ncrecimiento \nsocioeconómico \ninclusivo",
+        "section": "4. METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 2: Agua para el crecimiento socioeconómico inclusivo",
+        "section": "Meta 2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Preventive management of water-related risks",
+    "label": "Water risk prevention",
+    "pageNumbers": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Gestión preventiva de riesgos relacionados con el agua",
+    "labelOriginal": "Gestión preventiva de riesgos",
+    "sources": [
+      {
+        "sourceText": "Meta No. 3: Gestión preven­tiva de los riesgos relacio­nados con el agua.",
+        "section": "Meta No. 3",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "sourceText": "Meta No. 3\nGestión preventiva de riesgos \nrelacionados con el agua",
+        "section": "METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 3\nGestión preventiva de \nriesgos relacionados \ncon el agua",
+        "section": "4. METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "4.3. META N° 3: Gestión preventiva de los riesgos \nrelacionados con el agua",
+        "section": "4.3. META N° 3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 3: Gestión preventiva de los riesgos relacionados con el agua",
+        "section": "Meta 3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Fortalecimiento de la red de estaciones hidrológicas y meteorológicas a nivel nacional.\nDiseño e implementación del Programa Nacional de Gestión de Extremos Hidrológicos (temporada seca y lluviosa) en cuencas prioritarias.",
+    "activitySources": [
+      {
+        "text": "Fortalecimiento de la red de estaciones hidrológicas y meteorológicas a nivel nacional.",
+        "sourceText": "1. Fortalecimiento de la red de estaciones hidrológicas y meteorológicas a nivel nacional.",
+        "section": "1.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Diseño e implementación del Programa Nacional de Gestión de Extremos Hidrológicos (temporada seca y lluviosa) en cuencas prioritarias.",
+        "sourceText": "2. Diseño e implementación del Programa Nacional de Gestión de Extremos Hidrológicos (temporada seca y lluviosa) en cuencas prioritarias.",
+        "section": "2.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Healthy river basins",
+    "label": "Healthy river basins",
+    "pageNumbers": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Cuencas hidrográficas saludables",
+    "labelOriginal": "Cuencas hidrográficas saludables",
+    "sources": [
+      {
+        "sourceText": "Meta No. 4: Cuencas hidro­gráficas saludables.",
+        "section": "Meta No. 4",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "sourceText": "Meta 4\nCuencas hidrográficas \nsaludables",
+        "section": "4. METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "4.4. META N° 4: Cuencas hidrográficas saludables",
+        "section": "4.4. META N° 4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Cuencas Hidrográficas Saludables",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 4: Cuencas hidrográficas saludables",
+        "section": "Meta 4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Reto N°3: \nRestaurar y mantener \nsaludables las 52 cuencas \nhidrográficas del país",
+        "section": "2.4. Retos a la seguridad hídrica de Panamá",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "2.4.3. Reto N°3: 52 cuencas hidrográficas saludables",
+        "section": "2.4.3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Water sustainability",
+    "label": "Water sustainability",
+    "pageNumbers": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138
+    ],
+    "textOriginal": "Sostenibilidad hídrica.",
+    "labelOriginal": "Sostenibilidad hídrica",
+    "sources": [
+      {
+        "sourceText": "Meta No. 5: Sostenibilidad \nhídrica.",
+        "section": "Meta No. 5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 5\nSostenibilidad hídrica",
+        "section": "4. METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "4.5. META N° 5: Sostenibilidad hídrica",
+        "section": "4.5. META N° 5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Meta 5: Sostenibilidad hídrica",
+        "section": "Meta 5",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Modernization of the regulatory and institutional framework\nOrdering of integrated water governance (regulation, planning, execution, operation, service provision).\nHydrological, Atmospheric, Geological and Oceanographic Information Service (SIHAGO).\nNew water legislation\nEducation and public awareness\nStrengthening of human resources in water (identification of technical degree programs, scholarship program, labor market insertion, etc.)\nAwareness/sensitization campaign",
+    "activitySources": [
+      {
+        "text": "Modernization of the regulatory and institutional framework",
+        "sourceText": "1. Modernización de marco normativo e institucional",
+        "section": "1.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Ordering of integrated water governance (regulation, planning, execution, operation, service provision).",
+        "sourceText": "a. Ordenamiento de la gobernanza integral del agua (regulación, planiﬁcación, ejecución, operación, prestación de servicios).",
+        "section": "a.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Hydrological, Atmospheric, Geological and Oceanographic Information Service (SIHAGO).",
+        "sourceText": "b. Servicio de Información Hidrológica, Atmosférica, Geológica y Oceanográﬁca (SIHAGO).",
+        "section": "b.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "New water legislation",
+        "sourceText": "c. Nueva legislación sobre agua",
+        "section": "c.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Education and public awareness",
+        "sourceText": "2. Educación y concienciación pública",
+        "section": "2.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Strengthening of human resources in water (identification of technical degree programs, scholarship program, labor market insertion, etc.)",
+        "sourceText": "a. Fortalecimiento de recurso humano en agua (identiﬁcación de carreras técnicas, programa de becas, inserción laboral, etc.)",
+        "section": "a.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Awareness/sensitization campaign",
+        "sourceText": "b. Campaña de consciencia/sensibilización",
+        "section": "b.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Achieve equitable access to adequate sanitation and hygiene services for all and end open defecation, paying special attention to the needs of women and girls and people in vulnerable situations",
+    "label": "Sanitation and hygiene access",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Lograr el acceso equitativo a servicios de saneamiento e higiene adecuados para todos y poner fin a la defecación al aire libre, prestando especial atención a las necesidades de las mujeres y las niñas y las personas en situaciones vulnerables",
+    "labelOriginal": "Acceso a saneamiento e higiene",
+    "sources": [
+      {
+        "sourceText": "6 Lograr el acceso equitativo a servicios de saneamiento e higiene \nadecuados para todos y poner fin a la defecación al aire libre, \nprestando especial atención a las necesidades de las mujeres y las \nniñas y las personas en situaciones vulnerables",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Improve water quality by reducing pollution, eliminating dumping and minimizing the release of hazardous materials and chemicals, halving the proportion of untreated wastewater and substantially increasing recycling and safe reuse globally",
+    "label": "Improve water quality",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Mejorar la calidad del agua mediante la reducción de la contaminación, la eliminación del vertimiento y la reducción al mínimo de la descarga de materiales y productos químicos peligrosos, la reducción a la mitad del porcentaje de aguas residuales sin tratar y un aumento sustancial del reciclado y la reutilización en condiciones de seguridad a nivel mundial",
+    "labelOriginal": "Mejorar la calidad del agua",
+    "sources": [
+      {
+        "sourceText": "6 Mejorar la calidad del agua mediante la reducción de la contami­\nnación, la eliminación del vertimiento y la reducción al mínimo \nde la descarga de materiales y productos químicos peligrosos, la \nreducción a la mitad del porcentaje de aguas residuales sin tratar \ny un aumento sustancial del reciclado y la reutilización en condi­\nciones de seguridad a nivel mundial",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Substantially increase water-use efficiency across all sectors and ensure the sustainability of freshwater withdrawals and supply to address water scarcity and substantially reduce the number of people suffering from water scarcity",
+    "label": "Water-use efficiency",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Aumentar sustancialmente la utilización eficiente de los recursos hídricos en todos los sectores y asegurar la sostenibilidad de la extracción y el abastecimiento de agua dulce para hacer frente a la escasez de agua y reducir sustancialmente el número de personas que sufren de escasez de agua",
+    "labelOriginal": "Utilización eficiente de recursos hídricos",
+    "sources": [
+      {
+        "sourceText": "6 Aumentar sustancialmente la utilización eficiente de los recursos \nhídricos en todos los sectores y asegurar la sostenibilidad de la \nextracción y el abastecimiento de agua dulce para hacer frente a la \nescasez de agua y reducir sustancialmente el número de personas \nque sufren de escasez de agua",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Implement integrated water resources management at all levels, including through transboundary cooperation, as appropriate",
+    "label": "Integrated water management",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Poner en práctica la gestión integrada de los recursos hídricos a todos los niveles, incluso mediante la cooperación transfronteriza, según proceda",
+    "labelOriginal": "Gestión integrada de recursos hídricos",
+    "sources": [
+      {
+        "sourceText": "6 Poner en práctica la gestión integrada de los recursos hídricos a \ntodos los niveles, incluso mediante la cooperación transfronteriza, \nsegún proceda",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "By 2020, protect and restore water-related ecosystems, including forests, mountains, wetlands, rivers, aquifers and lakes",
+    "label": "Protect water ecosystems",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Para 2020, Proteger y restablecer los ecosistemas relacionados con el agua, incluidos los bosques, las montañas, los humedales, los ríos, los acuíferos y los lagos",
+    "labelOriginal": "Proteger y restablecer ecosistemas",
+    "sources": [
+      {
+        "sourceText": "6 Para 2020, Proteger y restablecer los ecosistemas relacionados \ncon el agua, incluidos los bosques, las montañas, los humedales, \nlos ríos, los acuíferos y los lagos",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Expand international cooperation and support to developing countries in capacity-building for water- and sanitation-related activities and programmes, including water harvesting and storage, desalination, efficient water resource use, wastewater treatment, and recycling and reuse technologies",
+    "label": "International cooperation support",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Ampliar la cooperación internacional y el apoyo prestado a los países en desarrollo para la creación de capacidad en actividades y programas relativos al agua y el saneamiento, incluidos el acopio y almacenamiento de agua, la desalinización, el aprovechamiento eficiente de los recursos hídricos, el tratamiento de aguas residuales y las tecnologías de reciclaje y reutilización",
+    "labelOriginal": "Cooperación internacional y apoyo",
+    "sources": [
+      {
+        "sourceText": "6 Ampliar la cooperación internacional y el apoyo prestado a los \npaíses en desarrollo para la creación de capacidad en actividades \ny programas relativos al agua y el saneamiento, incluidos el acopio \ny almacenamiento de agua, la desalinización, el aprovechamiento \neficiente de los recursos hídricos, el tratamiento de aguas resi­\nduales y las tecnologías de reciclaje y reutilización",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Support and strengthen the participation of local communities in improving water and sanitation management",
+    "label": "Local community participation",
+    "pageNumbers": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "textOriginal": "Apoyar y fortalecer la participación de las comunidades locales en la mejora de la gestión del agua y el saneamiento",
+    "labelOriginal": "Participación de comunidades locales",
+    "sources": [
+      {
+        "sourceText": "6 Apoyar y fortalecer la participación de las comunidades locales en \nla mejora de la gestión del agua y el saneamiento",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Achieve 100% sustained coverage with quality water and basic services",
+    "label": "Full service coverage",
+    "pageNumbers": [
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ],
+    "textOriginal": "Alcanzar el 100% de cobertura sostenida con agua de calidad y servicios básicos",
+    "labelOriginal": "Cobertura total sostenida",
+    "sources": [
+      {
+        "sourceText": "Reto N°1:\nAlcanzar el 100% de cobertura \nsostenida con agua de calidad y \nservicios básicos",
+        "section": "2.4. Retos a la seguridad hídrica de Panamá",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Guarantee water availability for inclusive socioeconomic growth in a changing climate",
+    "label": "Water availability growth",
+    "pageNumbers": [
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ],
+    "textOriginal": "Garantizar disponibilidad hídrica para el crecimiento socioeconómico inclusivo en un clima cambiante",
+    "labelOriginal": "Disponibilidad hídrica inclusiva",
+    "sources": [
+      {
+        "sourceText": "Reto N°2: \nGarantizar disponibilidad hídrica \npara el crecimiento socioeconómico \ninclusivo en un clima cambiante",
+        "section": "2.4. Retos a la seguridad hídrica de Panamá",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Keep the growing national water and sanitation infrastructure in functional condition",
+    "label": "Maintain water infrastructure",
+    "pageNumbers": [
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66
+    ],
+    "textOriginal": "Mantener en condiciones funcionales la creciente infraestructura nacional de agua y saneamiento",
+    "labelOriginal": "Mantenimiento infraestructura agua",
+    "sources": [
+      {
+        "sourceText": "Reto N°4: \nMantener en condiciones \nfuncionales la creciente \ninfraestructura nacional de \nagua y saneamiento",
+        "section": "2.4. Retos a la seguridad hídrica de Panamá",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "2.4.4. Reto N°4: Mantenimiento de la creciente \ninfraestructura nacional de agua y saneamiento",
+        "section": "2.4.4",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Evolve toward a culture of responsible and shared water use",
+    "label": "Responsible water culture",
+    "pageNumbers": [
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66
+    ],
+    "textOriginal": "Evolucionar hacia una cultura de uso responsable y compartido del agua",
+    "labelOriginal": "Cultura de uso responsable",
+    "sources": [
+      {
+        "sourceText": "Reto N°5: \nEvolucionar hacia una \ncultura de uso responsable y \ncompartido del agua",
+        "section": "2.4. Retos a la seguridad hídrica de Panamá",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "2.4.5. Reto N°5: Evolucionar hacia una cultura de uso responsable y compartido del agua",
+        "section": "2.4.5",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Use rationed\nSaving\nReuse of water\nConflict management\nMechanisms for consultation, negotiation, information, education, training\nthe State will continue opening spaces for participation and consultation, as well as awareness-raising and education campaigns where civil society and communities participate and are multiplying agents",
+    "activitySources": [
+      {
+        "text": "Use rationed",
+        "sourceText": "Uso racionado",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Saving",
+        "sourceText": "Ahorro",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Reuse of water",
+        "sourceText": "Reutilización de agua",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Conflict management",
+        "sourceText": "Gestión de\nconﬂictos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Mechanisms for consultation, negotiation, information, education, training",
+        "sourceText": "Mecanismos de concertación, \nnegociación, información, \neducación, capacitación,",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "the State will continue opening spaces for participation and consultation, as well as awareness-raising and education campaigns where civil society and communities participate and are multiplying agents",
+        "sourceText": "el Estado continuará \nabriendo los espacios de parti­\ncipación y concertación, como \ntambién campañas de sensi­\nbilización y educación donde \nla sociedad civil y las comuni­\ndades participen y sean agentes \nmultiplicadores.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Work together to achieve universal access and continuous and dignified drinking water supply",
+    "label": "Drinking water access",
+    "pageNumbers": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "textOriginal": "Trabajamos en equipo para lograr acceso universal y suministro continuo y digno de agua potable",
+    "labelOriginal": "Acceso universal a agua potable",
+    "sources": [
+      {
+        "sourceText": "Trabajamos en equipo para lograr acceso universal y suministro continuo y digno de agua potable",
+        "section": "2.4.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Reduce the level of non-revenue water and increase metering coverage",
+    "label": "Reduce non-revenue water",
+    "pageNumbers": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "textOriginal": "Reducir el nivel de agua no facturada y aumentar la cobertura de micromedición",
+    "labelOriginal": "Agua no facturada y micromedición",
+    "sources": [
+      {
+        "sourceText": "Reducir el nivel de agua no facturada y aumentar la cobertura de micromedición",
+        "section": "2.4.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "The reduction of losses due to leaks in networks (40-48%), minimizes the operating costs of water production and facilitates compliance with coverage increase targets.\nLikewise, we need to increase micro-metering rates (44%) and macro-metering rates (37%).\nAdditionally, an adjustment in the tariffs of the national service provider (IDAAN), which date back 34 years, should be evaluated, considering measurement, billing and collection systems that make it possible to cover the operating and maintenance costs of the systems and infrastructures, including their renewal.\nIn parallel, it is necessary to promote a culture of efficient, responsible and shared use of water, and on the other hand to carry out cost evaluations of uninterrupted universal access to quality water and sanitation services.\nProtect, recover and conserve water sources to guarantee supply, taking into account climate changes and their impact on the production and quality of fresh water.",
+    "activitySources": [
+      {
+        "text": "The reduction of losses due to leaks in networks (40-48%), minimizes the operating costs of water production and facilitates compliance with coverage increase targets.",
+        "sourceText": "La reducción \nde pérdidas por fugas en redes \n(40-48 %),  minimiza los costos \noperativos de la producción de \nagua  y facilita el cumplimiento \nde metas de aumento de cober\ntura.",
+        "_quoteMatch": "fuzzy"
+      },
+      {
+        "text": "Likewise, we need to increase micro-metering rates (44%) and macro-metering rates (37%).",
+        "sourceText": "De igual manera, reque-\nrimos aumentar las tasas de \nmicromedición (44%) y de macro-\nmedición (37%).",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "text": "Additionally, an adjustment in the tariffs of the national service provider (IDAAN), which date back 34 years, should be evaluated, considering measurement, billing and collection systems that make it possible to cover the operating and maintenance costs of the systems and infrastructures, including their renewal.",
+        "sourceText": "Adicionalmente, se deberá \nevaluar un ajuste en las tarifas \ndel prestador de servicios a \nnivel nacional (IDAAN), las cuales \ndatan de hace 34 años, consi-\nderando sistemas de medición, \nfacturación y cobro que permitan \ncubrir los costos operativos y \nmantenimiento de los sistemas \ne infraestructuras, incluyendo la \nrenovación de las mismas.",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "text": "In parallel, it is necessary to promote a culture of efficient, responsible and shared use of water, and on the other hand to carry out cost evaluations of uninterrupted universal access to quality water and sanitation services.",
+        "sourceText": "Paralelamente, es necesario \nimpulsar una cultura de uso \neficiente, responsable y compar-\ntido del agua, y por otra parte \nrealizar evaluaciones de costos \nde acceso universal ininterrum-\npido de agua de calidad y servi-\ncios de saneamiento.",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "text": "Protect, recover and conserve water sources to guarantee supply, taking into account climate changes and their impact on the production and quality of fresh water.",
+        "sourceText": "Proteger, recuperar y conservar \nlas fuentes de agua para garan-\ntizar el aprovisionamiento, \ntomando en cuenta los cambios \ndel clima y su impacto en la \nproducción y calidad del agua \ndulce.",
+        "_quoteMatch": "normalized"
+      }
+    ]
+  },
+  {
+    "text": "Protect, recover and conserve water sources to guarantee supply, taking into account climate changes and their impact on the production and quality of freshwater.",
+    "label": "Protect water sources",
+    "pageNumbers": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "textOriginal": "Proteger, recuperar y conservar las fuentes de agua para garantizar el aprovisionamiento, tomando en cuenta los cambios del clima y su impacto en la producción y calidad del agua dulce.",
+    "labelOriginal": "Proteger fuentes de agua",
+    "sources": [
+      {
+        "sourceText": "Proteger, recuperar y conservar las fuentes de agua para garan­tizar el aprovisionamiento, tomando en cuenta los cambios del clima y su impacto en la producción y calidad del agua dulce.",
+        "section": "2.4.1",
+        "_quoteMatch": "normalized"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Develop water reserves to guarantee the continuity of the country's inclusive socioeconomic growth.",
+    "label": "Develop water reserves",
+    "pageNumbers": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "textOriginal": "necesitamos desarrollar las reservas hídricas para garantizar la continuidad del crecimiento socioeconómico inclusivo del país.",
+    "labelOriginal": "Desarrollar las reservas hídricas",
+    "sources": [
+      {
+        "sourceText": "necesitamos desarrollar las reservas hídricas para garantizar la conti­nuidad del crecimiento socioeconó­mico  inclusivo del país.",
+        "section": "2.4.2",
+        "_quoteMatch": "normalized"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Restore the forest cover of river basins and contribute to revitalizing the rural economy, conserving water resources, and ecotourism.",
+    "label": "Restore basin forests",
+    "pageNumbers": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66
+    ],
+    "textOriginal": "restaurar la cobertura forestal de las cuencas hidrográficas y coadyuvar en la dinamización de la economía rural, la conservación del recurso agua y el ecoturismo.",
+    "labelOriginal": "Restaurar cobertura forestal",
+    "sources": [
+      {
+        "sourceText": "cuya meta es restaurar la cobertura forestal de las cuencas hidrográficas y coad­yuvar en la dinamización de la economía rural, la conser­vación del recurso agua y el ecoturismo.",
+        "section": "2.4.3",
+        "_quoteMatch": "normalized"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Goal No. 1 Access universal to quality water and sanitation services.",
+    "label": "Meta No. 1",
+    "pageNumbers": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66
+    ],
+    "textOriginal": "Meta No. 1 Acceso universal al agua de calidad y servicios de saneamiento.",
+    "labelOriginal": "Meta No. 1",
+    "sources": [
+      {
+        "sourceText": "Meta No. 1\nAcceso universal al agua de calidad \ny servicios de saneamiento.",
+        "section": "METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Diagnosis of water and sanitation infrastructure, maintenance cost and sustainability.\nEvaluation of costs of uninterrupted universal access to quality water and sanitation services.\nEstablish supply efficiency, provision, loss reduction and recirculation programs.",
+    "activitySources": [
+      {
+        "text": "Diagnosis of water and sanitation infrastructure, maintenance cost and sustainability.",
+        "sourceText": "1. Diagnóstico de infraestructura de agua y saneamiento, costo de mantenimiento y sostenibilidad.",
+        "section": "1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Evaluation of costs of uninterrupted universal access to quality water and sanitation services.",
+        "sourceText": "2. Evaluación de costos del acceso universal ininterrumpido de agua de calidad y servicios de saneamiento.",
+        "section": "2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Establish supply efficiency, provision, loss reduction and recirculation programs.",
+        "sourceText": "3. Establecer programas de eficiencia de abastecimiento, suministro, reducción pérdida y recirculación.",
+        "section": "3",
+        "_quoteMatch": "normalized"
+      }
+    ]
+  },
+  {
+    "text": "Goal No. 4 Healthy river basins",
+    "label": "Meta No. 4",
+    "pageNumbers": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66
+    ],
+    "textOriginal": "Meta No. 4 Cuencas hidrográﬁcas saludables",
+    "labelOriginal": "Meta No. 4",
+    "sources": [
+      {
+        "sourceText": "Meta No. 4\nCuencas hidrográﬁcas \nsaludables",
+        "section": "METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Goal No. 5 Water sustainability",
+    "label": "Meta No. 5",
+    "pageNumbers": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66
+    ],
+    "textOriginal": "Meta No. 5 Sostenibilidad hídrica",
+    "labelOriginal": "Meta No. 5",
+    "sources": [
+      {
+        "sourceText": "Meta No. 5\nSostenibilidad hídrica",
+        "section": "METAS DEL PNSH",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Main urban and rural population centers have quality water and sanitation services.",
+    "label": "Water and sanitation services",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "Principales núcleos urbanos y rurales cuentan con servicios de agua y saneamiento de calidad.",
+    "labelOriginal": "Principales núcleos urbanos y rurales",
+    "sources": [
+      {
+        "sourceText": "Principales núcleos urbanos y rurales cuentan \ncon servicios de agua y saneamiento de \ncalidad.",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "The country has new multipurpose reservoirs to increase water security (multipurpose reservoirs).",
+    "label": "Multipurpose reservoirs",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "El país dispone de nuevos reservorios multipropósito para aumentar seguridad hídrica (reservorios multipropósito).",
+    "labelOriginal": "Reservorios multipropósito",
+    "sources": [
+      {
+        "sourceText": "El país dispone de nuevos reservorios \nmultipropósito  para aumentar seguridad hídrica \n(reservorios multipropósito).",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Pre-investment studies completed (social, economic, environmental studies and technical designs) for new multipurpose reservoirs (Indio, Santa María, Perales, Parita, Ocú and La Villa rivers).\nMultipurpose reservoirs on the Indio, Santa María, Perales, Parita, Ocú and La Villa rivers in operation.",
+    "activitySources": [
+      {
+        "text": "Pre-investment studies completed (social, economic, environmental studies and technical designs) for new multipurpose reservoirs (Indio, Santa María, Perales, Parita, Ocú and La Villa rivers).",
+        "sourceText": "Estudio de pre inversión concluidos (estudios \nsociales, económicos,  ambientales y diseños \ntécnicos) de nuevos reservorios multipropósito \n(ríos Indio, Santa María, Perales, río Parita y río Ocú \ny La Villa).",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Multipurpose reservoirs on the Indio, Santa María, Perales, Parita, Ocú and La Villa rivers in operation.",
+        "sourceText": "Reservorios multipropósito de los ríos Indio, \nSanta María, Perales, Parita, Ocú y La Villa en \noperación.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "The country has information on water resources for knowledge and decision-making.",
+    "label": "Water resources information",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "El país cuenta con información sobre recursos hídricos para el conocimiento y la toma de decisiones",
+    "labelOriginal": "Información sobre recursos hídricos",
+    "sources": [
+      {
+        "sourceText": "El país cuenta con información sobre recursos \nhídricos para el conocimiento y la toma de \ndecisiones",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Catastro de usuarios informales de recursos hídricos\nSistema de Concesiones de uso de agua en línea establecido\nSistema Nacional de Información de Recursos Hídricos establecido",
+    "activitySources": [
+      {
+        "text": "Catastro de usuarios informales de recursos hídricos",
+        "sourceText": "Catastro de usuarios informales de recursos \nhídricos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Sistema de Concesiones de uso de agua en línea establecido",
+        "sourceText": "Sistema de Concesiones de uso de agua en \nlínea establecido",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Sistema Nacional de Información de Recursos Hídricos establecido",
+        "sourceText": "Sistema Nacional de Información de Recursos \nHídricos establecido",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Efficient use of water resources in agriculture through supply systems and precision irrigation (drip).",
+    "label": "Efficient agricultural water use",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "Uso eficiente del recursos hídrico en la agricultura mediante Sistemas de abastecimiento y riego de precisión (goteo)",
+    "labelOriginal": "Uso eficiente del recursos hídrico",
+    "sources": [
+      {
+        "sourceText": "Uso eficiente del recursos hídrico en la agricultura \nmediante Sistemas de abastecimiento y  riego de \nprecisión (goteo)",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Improved capacity for prevention of and response to extreme water-related events.",
+    "label": "Extreme events response",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "Mejorada capacidad prevención y respuesta a los eventos extremos relacionados con el agua",
+    "labelOriginal": "Prevención y respuesta a eventos extremos",
+    "sources": [
+      {
+        "sourceText": "Mejorada capacidad prevención y respuesta a los \neventos extremos relacionados con el agua",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "263 hydrometeorological stations (165 meteorological and 67 hydrological).\nAcquisition of new automated equipment:\n100 meteorological stations and 70 hydrological stations nationwide\n10 meteorological stations for the agricultural sector.\nPrograma Nacional de Gestión de Extremos Hidrológicos established\nMeteorological radar network with 100% national coverage (3 radars), tide gauge network\nNational Early Warning System implemented and operating.\nInstallation of 2 meteorological radars (2035).",
+    "activitySources": [
+      {
+        "text": "263 hydrometeorological stations (165 meteorological and 67 hydrological).",
+        "sourceText": "263 estaciones hidrometereológicas (165 \nmeteorológicas y 67 hidrológicas).",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Acquisition of new automated equipment:",
+        "sourceText": "Adquisición de nuevos equipos \nautomatizados:",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "100 meteorological stations and 70 hydrological stations nationwide",
+        "sourceText": "100 estaciones meteorológicas y 70 \nhidrológicas a nivel nacional",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "10 meteorological stations for the agricultural sector.",
+        "sourceText": "10 Estaciones meteorológicas para el \nsector agropecuario.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Programa Nacional de Gestión de Extremos Hidrológicos established",
+        "sourceText": "Programa Nacional de Gestión de Extremos \nHidrológicos establecidos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Meteorological radar network with 100% national coverage (3 radars), tide gauge network",
+        "sourceText": "Red de radares meteorológicos con 100% \nde cobertura Nacional (3 radares), red de \nmareógrafos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "National Early Warning System implemented and operating.",
+        "sourceText": "Sistema Nacional de Alerta Temprana \nimplantado y operando.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Installation of 2 meteorological radars (2035).",
+        "sourceText": "Instalación  de 2 radares meteorológicos (2035).",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Water quality in surface and groundwater sources.",
+    "label": "Water quality",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "Calidad de agua en fuentes superficiales y subterráneas",
+    "labelOriginal": "Calidad de agua",
+    "sources": [
+      {
+        "sourceText": "Calidad de agua en fuentes superficiales y \nsubterráneas",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Improvement of the existing water quality laboratory in Panama and construction of a new one in Divisa\nConstruction of a water quality laboratory in Chiriquí.\nWater quality monitoring stations at the national level.\nWater quality monitoring stations at the national level.",
+    "activitySources": [
+      {
+        "text": "Improvement of the existing water quality laboratory in Panama and construction of a new one in Divisa",
+        "sourceText": "Mejora del laboratorio de calidad de agua \nexistente en Panamá y construcción de uno \nnuevo en Divisa",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Construction of a water quality laboratory in Chiriquí.",
+        "sourceText": "Construcción de un laboratorio de calidad de \nagua en Chiriquí.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Water quality monitoring stations at the national level.",
+        "sourceText": "Estaciones de monitoreo de calidad de agua a \nnivel nacional.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Water quality monitoring stations at the national level.",
+        "sourceText": "Estaciones de monitoreo de calidad de agua a \nnivel nacional.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Improved water governance.",
+    "label": "Water governance",
+    "pageNumbers": [
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "textOriginal": "Mejorada la gobernanza del agua.",
+    "labelOriginal": "Gobernanza del agua",
+    "sources": [
+      {
+        "sourceText": "Mejorada la gobernanza del agua.",
+        "section": "Cuadro 6",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Committee of High Level and Intergovernmental Technical Committee\n11 Basin Committees protected under Law 44 of 2006.\n5 Advisory Councils in the Panama Canal Basin\nNational Water Council and its Technical Secretariat established and operating.\nHydrological, Atmospheric, Geological and Oceanographic information service established and operating.\nOperational plans implemented.\nHydrographic Basin Committees established in 51 hydrographic basins and with annual operational plans adopted.",
+    "activitySources": [
+      {
+        "text": "Committee of High Level and Intergovernmental Technical Committee",
+        "sourceText": "Comité de Alto Nivel y Comité Técnico \nIntergubernamental",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "11 Basin Committees protected under Law 44 of 2006.",
+        "sourceText": "11 Comités de Cuenca amparado en Ley 44 \nde 2006.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "5 Advisory Councils in the Panama Canal Basin",
+        "sourceText": "5 Consejos Consultivos en la Cuenca del Canal \nde Panamá",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "National Water Council and its Technical Secretariat established and operating.",
+        "sourceText": "Consejo Nacional del Agua y su Secretaría \nTécnica establecido y operando.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Hydrological, Atmospheric, Geological and Oceanographic information service established and operating.",
+        "sourceText": "Servicio de información Hidrológica, \nAtmosférica, Geológica y Oceanográfica \nestablecido y operando.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Operational plans implemented.",
+        "sourceText": "Planes operativos implementados.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Hydrographic Basin Committees established in 51 hydrographic basins and with annual operational plans adopted.",
+        "sourceText": "Comités de Cuencas Hidrográficas \nestablecidos en 51 cuencas hidrográficas \ny con con Planes operativos anuales \nadoptados.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Improvement of drinking water and sanitation services",
+    "label": "Service improvement",
+    "pageNumbers": [
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119
+    ],
+    "textOriginal": "Mejora de los servicios de agua potable y saneamiento",
+    "labelOriginal": "Mejora de los servicios de agua potable y saneamiento",
+    "sources": [
+      {
+        "sourceText": "Mejora de los servicios de agua potable y saneamiento",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Improvement of drinking water and sanitation services\nIncrease in the coverage of drinking water services\nIncrease in sanitation services\nPlanning for water and sanitation systems at the national level",
+    "activitySources": [
+      {
+        "text": "Improvement of drinking water and sanitation services",
+        "sourceText": "Mejora de los servicios de agua potable y \nsaneamiento",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Increase in the coverage of drinking water services",
+        "sourceText": "Incremento de la cobertura de los \nservicios de agua potable",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Increase in sanitation services",
+        "sourceText": "Incremento de los servicios de \nsaneamiento",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Planning for water and sanitation systems at the national level",
+        "sourceText": "Planificación para los sistemas de agua y \nsaneamiento a nivel nacional",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Improvements to water and sanitation systems",
+    "label": "System improvements",
+    "pageNumbers": [
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119
+    ],
+    "textOriginal": "Mejoras a los sistemas de agua y saneamiento",
+    "labelOriginal": "A. Mejoras a los sistemas de agua y saneamiento",
+    "sources": [
+      {
+        "sourceText": "A. Mejoras a los \nsistemas de agua y \nsaneamiento",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "A. Mejoras a los \nsistemas de agua y \nsaneamiento",
+        "section": "A",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Colón - Improvement of drinking water and sanitation systems in the district (BM)\nSan Félix, Las Lajas, Remedios - Construction of improvements to the aqueduct\nTortí, Chepo y Alrededores - Construction of improvements to the drinking water system\nUrbanización Dos Mares - Improvement to the water supply\nSanta Cruz, La Primavera y Villalobos Final - Improvement to the aqueduct of the communities.\nLas Cumbres y Chivo Chivo - Improvement to the drinking water supply system.\nImprovement of complementary works of the distribution network - Metropolitan Area (Pacora - Tanara - Tataré Conduction Line) CAF\nConstruction of improvements to the distribution network of Chorrillo and Santa Ana - CAF\nImprovement to nodes in the network of Panama City - CAF\nImprovement to the aqueduct network in Betania - CAF\nImprovement to the Aqueduct network in San Francisco - CAF\nImprovement to the distribution network of Bella Vista (Vía Argentina and La Salle) CAF\nSantiago - Improvement to the aqueduct network.\nMontijo, Veraguas - Improvement to the aqueduct system.\nImprovement to existing networks - Nationwide.\nRehabilitation Amp. Of sources, potab., adduction, storage, cond. and distribution networks of 10 drinking water systems in provinces and Supervision and Inspection of the Project (BID). Potrerillos, Concepción, Volcán, David and supervision of all works",
+    "activitySources": [
+      {
+        "text": "Colón - Improvement of drinking water and sanitation systems in the district (BM)",
+        "sourceText": "Colón - Mejoramiento  de los sistemas  de agua potable \ny saneamiento en el distrito (BM)",
+        "section": "1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "San Félix, Las Lajas, Remedios - Construction of improvements to the aqueduct",
+        "sourceText": "San Félix, Las Lajas, Remedios - Construcción de \nmejoras al acueducto",
+        "section": "2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Tortí, Chepo y Alrededores - Construction of improvements to the drinking water system",
+        "sourceText": "Tortí, Chepo y Alrededores  -Construcción de las \nmejoras al sistema de agua potable",
+        "section": "3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Urbanización Dos Mares - Improvement to the water supply",
+        "sourceText": "Urbanización Dos Mares - Mejoramiento al suministro \nde agua",
+        "section": "4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Santa Cruz, La Primavera y Villalobos Final - Improvement to the aqueduct of the communities.",
+        "sourceText": "Santa Cruz, La Primavera y Villalobos Final - \nMejoramiento al acueducto de las comunidades.",
+        "section": "5",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Las Cumbres y Chivo Chivo - Improvement to the drinking water supply system.",
+        "sourceText": "Las Cumbres y Chivo Chivo - Mejoramiento al sistema \nde abastecimiento de agua potable.",
+        "section": "6",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improvement of complementary works of the distribution network - Metropolitan Area (Pacora - Tanara - Tataré Conduction Line) CAF",
+        "sourceText": "Mejoramiento obras complementarias red de \ndistribución - Area Metropolitana (Línea de Conducción \nPacora - Tanara - Tataré)    CAF",
+        "section": "7",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Construction of improvements to the distribution network of Chorrillo and Santa Ana - CAF",
+        "sourceText": "Construcción de mejoras a la red de distribución de \nChorrillo y Santa Ana - CAF",
+        "section": "8",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improvement to nodes in the network of Panama City - CAF",
+        "sourceText": "Mejoramiento a nodos en la red de la ciudad de \nPanamá  - CAF",
+        "section": "9",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improvement to the aqueduct network in Betania - CAF",
+        "sourceText": "Mejoramiento a la red del acueducto en Betania - CAF",
+        "section": "10",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improvement to the Aqueduct network in San Francisco - CAF",
+        "sourceText": "Mejoramiento  a la red del Acueducto en San Francisco  \n- CAF",
+        "section": "11",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improvement to the distribution network of Bella Vista (Vía Argentina and La Salle) CAF",
+        "sourceText": "Mejoramiento a red de distribución de Bella Vista (Vía \nArgentina y La Salle)         CAF",
+        "section": "12",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Santiago - Improvement to the aqueduct network.",
+        "sourceText": "Santiago - Mejoramiento a la red de acueducto.",
+        "section": "13",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Montijo, Veraguas - Improvement to the aqueduct system.",
+        "sourceText": "Montijo, Veraguas - Mejoramiento al sistema de \nacueducto.",
+        "section": "14",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improvement to existing networks - Nationwide.",
+        "sourceText": "Mejoramiento  a las redes existentes - A nivel nacional.",
+        "section": "15",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Rehabilitation Amp. Of sources, potab., adduction, storage, cond. and distribution networks of 10 drinking water systems in provinces and Supervision and Inspection of the Project (BID). Potrerillos, Concepción, Volcán, David and supervision of all works",
+        "sourceText": "Rehabilitación Amp.  De fuentes, potab., aducción, \nalmac., cond. y redes de dist. 10 sistemas de agua \npotable en provincias y Supervisión e Inspección del \nProyecto     (BID) . Potrerillos, Concepción, Volcán, David \ny supervisión de todas las obras",
+        "section": "16",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Establishment of micro- and macro-metering",
+    "label": "Metering establishment",
+    "pageNumbers": [
+      115,
+      116,
+      117,
+      118,
+      119
+    ],
+    "textOriginal": "Establecimiento de micro y macromedición",
+    "labelOriginal": "B. Establecimiento de micro y macromedición",
+    "sources": [
+      {
+        "sourceText": "B. Establecimiento de \nmicro y macromedición",
+        "section": "B",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Totalizadores de producción de pozos, con telemetría. Seguimiento a la producción de los cerca de 1000 pozos operativos que tiene el IDAAN en el pais. Implica transmision, colección y procesamiento de datos de produccion en línea.\nMejoramiento al sector de agua potable y saneamiento de la provincia de Panamá - Plan de Reducción de Agua No Contabilizada. CAF\nInstalación de macro y micro medición.\nDesarrollo de campaña de medición en la red metropolitana\nInstalación de medidores domiciliarias y actualización de catastro de clientes BM\nImplementación de un sistema integral de medición y control autónomo de agua potable\nServicio y operación de toma de datos y seguimiento a los sistemas de acueductos a nivel nacional por Telemetría\nProyecto de 100% Micromedición\nImplementación de tecnología apropiada para el suministro y control de agua en centros educativos abastecidos por MINSA/IDAAN\nImplementación y monitoreo de micromedidores en centros educativos\nOptimización en el consumo de agua en los centros educativos\nInstalación y mantenimiento de Macromedidores en todos los Sistemas IDAAN\nControl y optimización de la hidráulica de la red metropolitana. (Interinstitucional)/anillo hidráulico\nInversiones para mejorar la cobertura de micro-medición e todos los sectores a nivel nacional.",
+    "activitySources": [
+      {
+        "text": "Totalizadores de producción de pozos, con telemetría. Seguimiento a la producción de los cerca de 1000 pozos operativos que tiene el IDAAN en el pais. Implica transmision, colección y procesamiento de datos de produccion en línea.",
+        "sourceText": "Totalizadores de producción de pozos, con telemetría. \nSeguimiento a la producción de los cerca de 1000 \npozos operativos que tiene el IDAAN en el pais. Implica \ntransmision, colección y procesamiento de datos de \nproduccion en línea.",
+        "section": "155",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Mejoramiento al sector de agua potable y saneamiento de la provincia de Panamá - Plan de Reducción de Agua No Contabilizada. CAF",
+        "sourceText": "Mejoramiento al sector de agua potable y saneamiento \nde la provincia de Panamá  - Plan de Reducción de Agua \nNo Contabilizada.    CAF",
+        "section": "156",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Instalación de macro y micro medición.",
+        "sourceText": "Instalación de macro y micro medición.",
+        "section": "157",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Desarrollo de campaña de medición en la red metropolitana",
+        "sourceText": "Desarrollo de campaña de medición en la red \nmetropolitana",
+        "section": "158",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Instalación de medidores domiciliarias y actualización de catastro de clientes BM",
+        "sourceText": "Instalación de medidores domiciliarias y actualización \nde catastro de clientes BM",
+        "section": "159",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Implementación de un sistema integral de medición y control autónomo de agua potable",
+        "sourceText": "Implementación de un sistema integral de medición y \ncontrol autónomo de agua potable",
+        "section": "160",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Servicio y operación de toma de datos y seguimiento a los sistemas de acueductos a nivel nacional por Telemetría",
+        "sourceText": "Servicio y operación de toma de datos y seguimiento \na los sistemas de acueductos a nivel nacional por \nTelemetría",
+        "section": "161",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Proyecto de 100% Micromedición",
+        "sourceText": "Proyecto de 100% Micromedición",
+        "section": "162",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Implementación de tecnología apropiada para el suministro y control de agua en centros educativos abastecidos por MINSA/IDAAN",
+        "sourceText": "Implementación de tecnología apropiada para el \nsuministro y control de agua en centros educativos \nabastecidos por MINSA/IDAAN",
+        "section": "163",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Implementación y monitoreo de micromedidores en centros educativos",
+        "sourceText": "Implementación y monitoreo de micromedidores en \ncentros educativos",
+        "section": "164",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Optimización en el consumo de agua en los centros educativos",
+        "sourceText": "Optimización en el consumo de agua en los centros \neducativos",
+        "section": "165",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Instalación y mantenimiento de Macromedidores en todos los Sistemas IDAAN",
+        "sourceText": "Instalación  y mantenimiento de Macromedidores en \ntodos los Sistemas IDAAN",
+        "section": "166",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Control y optimización de la hidráulica de la red metropolitana. (Interinstitucional)/anillo hidráulico",
+        "sourceText": "Control y optimización de la hidráulica de la red \nmetropolitana. (Interinstitucional)/anillo hidráulico",
+        "section": "167",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Inversiones para mejorar la cobertura de micro-medición e todos los sectores a nivel nacional.",
+        "sourceText": "Inversiones para mejorar la cobertura de micro-\nmedición e todos los sectores a nivel nacional.",
+        "section": "168",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Reduction of Unaccounted-for Water to 30%",
+    "label": "Unaccounted-for water reduction",
+    "pageNumbers": [
+      119,
+      120,
+      121,
+      122,
+      123,
+      124
+    ],
+    "textOriginal": "Reducción de Agua No Contabilizada al 30%",
+    "labelOriginal": "Reducción de Agua No Contabilizada al 30%",
+    "sources": [
+      {
+        "sourceText": "Reducción de Agua No Contabilizada al 30%",
+        "section": "171",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Increase coverage of drinking water services",
+    "label": "Drinking water coverage",
+    "pageNumbers": [
+      124,
+      125,
+      126,
+      127,
+      128
+    ],
+    "textOriginal": "Incremento de la Cobertura de los Servicios de Agua Potable",
+    "labelOriginal": "Incremento de la Cobertura de los Servicios de Agua Potable",
+    "sources": [
+      {
+        "sourceText": "Incremento de la Cobertura de los Servicios de Agua Potable",
+        "section": "Programa",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Increase sanitation services",
+    "label": "Sanitation services increase",
+    "pageNumbers": [
+      124,
+      125,
+      126,
+      127,
+      128
+    ],
+    "textOriginal": "Incremento de los Servicios de Saneamiento",
+    "labelOriginal": "Incremento de los Servicios de Saneamiento",
+    "sources": [
+      {
+        "sourceText": "Incremento de los Servicios de Saneamiento",
+        "section": "Programa",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Mejora de los servicios de agua potable y saneamiento\nIncremento de la cobertura de los servicios de agua potable\nIncremento de los servicios de saneamiento\nPlanificación para los sistemas de agua y saneamiento a nivel nacional",
+    "activitySources": [
+      {
+        "text": "Mejora de los servicios de agua potable y saneamiento",
+        "sourceText": "Mejora de los servicios de agua potable y \nsaneamiento",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Incremento de la cobertura de los servicios de agua potable",
+        "sourceText": "Incremento de la cobertura de los \nservicios de agua potable",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Incremento de los servicios de saneamiento",
+        "sourceText": "Incremento de los servicios de \nsaneamiento",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Planificación para los sistemas de agua y saneamiento a nivel nacional",
+        "sourceText": "Planificación para los sistemas de agua y \nsaneamiento a nivel nacional",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Planning for water and sanitation systems at the national level",
+    "label": "National water planning",
+    "pageNumbers": [
+      124,
+      125,
+      126,
+      127,
+      128
+    ],
+    "textOriginal": "Planificación para los Sistema de Agua y Saneamiento a Nivel Nacional",
+    "labelOriginal": "Planificación para los Sistema de Agua y Saneamiento a Nivel Nacional",
+    "sources": [
+      {
+        "sourceText": "Planificación para los \nSistema de Agua y \nSaneamiento a Nivel \nNacional",
+        "section": "Programa",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Diagnoses of the water intakes of the JAARs\nPreparation of Terms of Reference for the Ailigandi Aqueduct\nDiagnosis of the real and current situation of water supply in educational centers\nColón - Pre-investment study of the sanitary and stormwater sewerage master plan BM\nStudy, design and supervision of projects of Phase II of the Master Plan - Panama BM\nLa Chorrera - Sanitary Sewerage Master Plan\nUpdate of the National Drinking Water and Sanitation Master Plan",
+    "activitySources": [
+      {
+        "text": "Diagnoses of the water intakes of the JAARs",
+        "sourceText": "Diagnósticos de las tomas de agua de las JAARs",
+        "section": "402",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Preparation of Terms of Reference for the Ailigandi Aqueduct",
+        "sourceText": "Levantamiento de Términos de Referencia para el Acueducto de Ailigandi",
+        "section": "403",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Diagnosis of the real and current situation of water supply in educational centers",
+        "sourceText": "Diagnóstico de la situación real y actual del abastecimiento del agua en centros educativos",
+        "section": "404",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Colón - Pre-investment study of the sanitary and stormwater sewerage master plan BM",
+        "sourceText": "Colón - Estudio de preinversión del plan maestro de alcantarillado sanitario y pluvial BM",
+        "section": "405",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Study, design and supervision of projects of Phase II of the Master Plan - Panama BM",
+        "sourceText": "Estudio, diseño y supervisión de proyectos de la Fase II del Plan Maestro - Panamá BM",
+        "section": "406",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "La Chorrera - Sanitary Sewerage Master Plan",
+        "sourceText": "La Chorrera - Plan Maestro de Alcantarillado sanitario",
+        "section": "407",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Update of the National Drinking Water and Sanitation Master Plan",
+        "sourceText": "Actualización del Plan Maestro de Agua Potable y Saneamiento a Nivel Nacional",
+        "section": "408",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Management of water resource availability.",
+    "label": "Water availability management",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Gestión de la disponibilidad del Recurso Hídrico.",
+    "labelOriginal": "Gestión de la disponibilidad del Recurso Hídrico",
+    "sources": [
+      {
+        "sourceText": "Gestión de la disponibilidad del Recurso Hídrico.",
+        "section": "Meta 2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Demand management of water resources",
+    "label": "Water demand management",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Gestión de la Demanda del Recurso Hídrico",
+    "labelOriginal": "Gestión de la Demanda del Recurso Hídrico",
+    "sources": [
+      {
+        "sourceText": "Gestión de la Demanda del Recurso Hídrico",
+        "section": "Meta 2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Increase the availability of water resources.",
+    "label": "Increase availability",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Aumento de la disponibilidad del recurso hídrico.",
+    "labelOriginal": "Aumento de la disponibilidad del recurso hídrico",
+    "sources": [
+      {
+        "sourceText": "Aumento de la disponibilidad del recurso hídrico.",
+        "section": "Meta 2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Increase in the availability of water resources.",
+    "activitySources": [
+      {
+        "text": "Increase in the availability of water resources.",
+        "sourceText": "Aumento de la disponibilidad del recurso \nhídrico.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Risk management",
+    "label": "Risk management",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Gestión del riesgo",
+    "labelOriginal": "Gestión del riesgo",
+    "sources": [
+      {
+        "sourceText": "Gestión del riesgo",
+        "section": "Meta 3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Risk management\nMonitoring and early warning",
+    "activitySources": [
+      {
+        "text": "Risk management",
+        "sourceText": "Gestión del riesgo",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Monitoring and early warning",
+        "sourceText": "Monitoreo y alerta temprana",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Early warning monitoring",
+    "label": "Early warning monitoring",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Monitoreo de alerta temprana",
+    "labelOriginal": "Monitoreo de alerta temprana",
+    "sources": [
+      {
+        "sourceText": "Monitoreo de alerta temprana",
+        "section": "Meta 3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Atención de desastres y eventos climáticos extremos\nSistema de alerta temprana ante inundaciones y deslizamiento en cuencas hidrográficas.\nDesarrollar un sistema agroclimático para el sector agropecuario.\nFortalecer la plataforma Desinventar de SINAPROC.\nInstalación de sistema de alerta temprana en escuelas.\nDeterminar índice de vulnerabilidad y definir umbrales de acción gubernamental para eventos extremos.\nCompra y operación de estaciones hidrometeorológicas para el sector agropecuario.\nContinuar operando el sistema de monitoreo de las mareas en SINAPROC\nInstalación de mareográfos\nInstalación de sensores para descargas eléctricas\nAdquisición de estación de recepción de imágenes satelitales.",
+    "activitySources": [
+      {
+        "text": "Atención de desastres y eventos climáticos extremos",
+        "sourceText": "Atención de desastres y \neventos climáticos extremos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Sistema de alerta temprana ante inundaciones y deslizamiento en cuencas hidrográficas.",
+        "sourceText": "Sistema de alerta temprana \nante inundaciones y desli-\nzamiento en cuencas \nhidrográficas.",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "text": "Desarrollar un sistema agroclimático para el sector agropecuario.",
+        "sourceText": "Desarrollar un sistema \nagroclimático para el sector \nagropecuario.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Fortalecer la plataforma Desinventar de SINAPROC.",
+        "sourceText": "Fortalecer la plataforma \nDesinventar de SINAPROC.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Instalación de sistema de alerta temprana en escuelas.",
+        "sourceText": "Instalación de sistema de \nalerta temprana en escuelas.",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Determinar índice de vulnerabilidad y definir umbrales de acción gubernamental para eventos extremos.",
+        "sourceText": "Determinar índice de vulnera-\nbilidad y definir umbrales de \nacción gubernamental para \neventos extremos.",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "text": "Compra y operación de estaciones hidrometeorológicas para el sector agropecuario.",
+        "sourceText": "Compra y operación de esta-\nciones hidrometeorológicas \npara el sector agropecuario.",
+        "_quoteMatch": "normalized"
+      },
+      {
+        "text": "Continuar operando el sistema de monitoreo de las mareas en SINAPROC",
+        "sourceText": "Continuar operando el \nsistema de monitoreo de las \nmareas en SINAPROC",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Instalación de mareográfos",
+        "sourceText": "Instalación de mareográfos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Instalación de sensores para descargas eléctricas",
+        "sourceText": "Instalación de sensores para \ndescargas eléctricas",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Adquisición de estación de recepción de imágenes satelitales.",
+        "sourceText": "Adquisición de estación \nde recepción de imágenes \nsatelitales.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Integrated watershed management",
+    "label": "Integrated watershed management",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Manejo integrado de cuencas",
+    "labelOriginal": "Manejo integrado de cuencas",
+    "sources": [
+      {
+        "sourceText": "Manejo integrado de cuencas",
+        "section": "Meta 4",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Manejo integrado de cuencas",
+    "activitySources": [
+      {
+        "text": "Manejo integrado de cuencas",
+        "sourceText": "Manejo integrado de cuencas",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Watershed restoration and conservation of water resources",
+    "label": "Watershed restoration",
+    "pageNumbers": [
+      128,
+      129,
+      130,
+      131,
+      132,
+      133
+    ],
+    "textOriginal": "Restauración de cuencas y conservación del recurso hídrico",
+    "labelOriginal": "Restauración de cuencas y conservación del recurso hídrico",
+    "sources": [
+      {
+        "sourceText": "Restauración de cuencas y conservación del recurso hídrico",
+        "section": "Meta 4",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Healthy watersheds",
+    "label": "Meta 4",
+    "pageNumbers": [
+      133,
+      134,
+      135,
+      136,
+      137,
+      138
+    ],
+    "textOriginal": "Meta 4: Cuencas hidrográficas saludables",
+    "labelOriginal": "Meta 4",
+    "sources": [
+      {
+        "sourceText": "Meta 4: Cuencas hidrográficas saludables",
+        "section": "Meta 4",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PNSH",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Strengthening program for watershed committees.\nUpdating and preparation of environmental land-use planning plans and management plans in priority watersheds.",
+    "activitySources": [
+      {
+        "text": "Strengthening program for watershed committees.",
+        "sourceText": "2. Programa de fortalecimiento de comités de cuencas.",
+        "section": "2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Updating and preparation of environmental land-use planning plans and management plans in priority watersheds.",
+        "sourceText": "3. Actualización y elaboración de planes de ordenamiento ambiental del territorio y planes de manejo en cuencas prioritarias.",
+        "section": "3",
+        "_quoteMatch": "exact"
+      }
+    ]
+  }
+]

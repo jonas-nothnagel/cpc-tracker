@@ -1,0 +1,472 @@
+[
+  {
+    "text": "Reducir sus emisiones de gases de efecto invernadero en un 11 % al año 2035 respecto al escenario de referencia; y Restaurar 100,000 hectáreas de ecosistemas críticos, fortaleciendo simultáneamente la gestión efectiva de áreas protegidas y otros espacios de alto valor ecológico.",
+    "label": "Nature Pledge central",
+    "pageNumbers": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "• \nReducir sus emisiones de gases de efecto invernadero en un 11 % al año 2035 respecto \nal escenario de referencia; y",
+        "section": "3.3"
+      },
+      {
+        "sourceText": "• \nRestaurar 100,000 hectáreas de ecosistemas críticos, fortaleciendo simultáneamente la \ngestión efectiva de áreas protegidas y otros espacios de alto valor ecológico.",
+        "section": "3.3"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Implementar programas permanentes de capacitación y certificación; promover cooperación técnica y Sur-Sur; crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+    "label": "Capacidades y talento",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Implementar programas permanentes de capacitación y certificación; promover cooperación técnica y Sur-Sur; crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+        "section": "Recursos humanos y técnicos"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Armonizar y actualizar marcos normativos bajo una visión común, integrando los compromisos climáticos, de biodiversidad y de tierras y estableciendo instrumentos jurídicos más estables y vinculantes; Ley Marco de Cambio Climático y Transición Verde y paquete normativo.",
+    "label": "Marco normativo integrado",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "El Nature Pledge permite armonizar y actualizar marcos normativos bajo una visión común, integrando los compromisos climáticos, de biodiversidad y de tierras y estableciendo instrumentos jurídicos más estables y vinculantes.",
+        "section": "Marco normativo y planificación"
+      },
+      {
+        "sourceText": "Meta 30: Ley Marco de Cambio Climático y Transición Verde y \npaquete normativo",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Desarrollas instrumentos financieros innovadores; fortalecer el Fondo Panamá Natural; crear incentivos económicos para prácticas sostenibles; Financiamiento; Rediseño de incentivos y subsidios.",
+    "label": "Financiamiento e incentivos",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Desarrollas instrumentos financieros innovadores; fortalecer el Fondo Panamá Natural; crear incentivos económicos para prácticas sostenibles.",
+        "section": "Financiamiento e incentivos"
+      },
+      {
+        "sourceText": "Meta 28: Financiamiento",
+        "section": "Tabla 5.2"
+      },
+      {
+        "sourceText": "Meta 14: Rediseño de incentivos y subsidios",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Desarrollar un sistema nacional unificado de MRV, apoyado en la PNTC, que centralice datos de clima, biodiversidad y tierras, permitiendo evaluar impactos y orientas decisiones basadas en evidencia; reorientar la gestión hacia resultados medibles; fortalecer el sistema nacional de MRV; integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial.",
+    "label": "MRV y seguimiento",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Desarrollar un sistema nacional unificado de MRV, apoyado en la PNTC, que centralice datos de clima, biodiversidad y tierras, permitiendo evaluar impactos y orientas decisiones basadas en evidencia.",
+        "section": "Información y MRV"
+      },
+      {
+        "sourceText": "Reorientar la gestión hacia resultados medibles; fortalecer el sistema nacional de MRV; integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial.",
+        "section": "Continuidad y enfoque en la implementación"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Impulsar la adopción de tecnologías emergentes (teledetección, inteligencia artificial, sistemas de alerta temprana) y SbN para fortalecer la resiliencia climática y el monitoreo ambiental.",
+    "label": "Tecnología y SbN",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Impulsar la adopción de tecnologías emergentes (teledetección, inteligencia artificial, sistemas de alerta temprana) y SbN para fortalecer la resiliencia climática y el monitoreo ambiental.",
+        "section": "Tecnología e infraestructura"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Fortalecer la gobernanza participativa; establecer acuerdos de conservación y pagos por servicios ecosistémicos; fomentar alianzas público-privadas y con la academia; promover plataformas de diálogo multiactor.",
+    "label": "Gobernanza participativa",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Fortalecer la gobernanza participativa; establecer acuerdos de conservación y pagos por servicios ecosistémicos; fomentar alianzas público-privadas y con la academia; promover plataformas de diálogo multiactor.",
+        "section": "Participación social y alianzas multisectoriales"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Planes locales y regionales de adaptación.",
+    "label": "Planes de adaptación",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 22: Planes locales y regionales de adaptación",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Observatorios de riesgo climático.",
+    "label": "Observatorios climáticos",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 27:  Observatorios de riesgo climático",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Sistema Nacional Integrado de Monitoreo Marino–Costero y de Humedales.",
+    "label": "Monitoreo marino-costero",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 26: Sistema Nacional Integrado de Monitoreo Marino–\nCostero y de Humedales",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Oficina del Sistema de Información Geoespacial Agropecuaria con datos agroclimáticos.",
+    "label": "Información agroclimática",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 21: Oficina del Sistema de Información Geoespacial \nAgropecuaria con datos agroclimáticos",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Sistemas de Alerta Temprana Multirriesgo.",
+    "label": "Alerta temprana",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 19: Sistemas de Alerta Temprana Multirriesgo",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Sistema Nacional de Monitoreo de Adaptación y Pérdidas y Daños.",
+    "label": "Monitoreo adaptación",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 25: Sistema Nacional de Monitoreo de Adaptación y \nPérdidas y Daños",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Información de recursos genéticos, distribución de beneficios; y consentimiento libre, previo e informado.",
+    "label": "Recursos genéticos",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 9: Información de recursos genéticos, distribución de \nbeneficios; y consentimiento libre, previo e informado",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Restauración y corredores biológicos.",
+    "label": "Restauración ecológica",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 2: Restauración y corredores biológicos",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Fortalecimiento del SINAP.",
+    "label": "Fortalecer SINAP",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 3: Fortalecimiento del SINAP.",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es"
+  },
+  {
+    "text": "Implementación de plan de adaptación marino – costero.",
+    "label": "Adaptación marino-costera",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "sources": [
+      {
+        "sourceText": "Meta 23: Implementación de plan de adaptación marino – costero",
+        "section": "Tabla 5.2"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es"
+  }
+]

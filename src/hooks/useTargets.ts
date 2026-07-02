@@ -2,7 +2,11 @@ import { useState, useMemo, useCallback } from "react";
 import type { PolicyDocumentType } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 import type { ExtractedItem } from "@/lib/upload-helpers";
-import { MAX_TARGETS, TARGETS_PREVIEW } from "@/lib/upload-helpers";
+import {
+  MAX_TARGETS,
+  TARGETS_PREVIEW,
+  extractedItemToTargetRow,
+} from "@/lib/upload-helpers";
 
 export function useTargets() {
   const [targets, setTargets] = useState<TargetRow[]>([]);
@@ -66,12 +70,15 @@ export function useTargets() {
     ) => {
       const accepted = extractedItems.filter((item) => item.accepted);
       const prefix = extractDocLabel.trim();
-      const newTargets: TargetRow[] = accepted.map((item, i) => ({
-        text: item.text,
-        sourceDocument: item.sourceDocument as PolicyDocumentType,
-        sourceLabel: prefix ? `${prefix} ${i + 1}` : item.label,
-        source: "extraction",
-      }));
+      // Document-provided labels (e.g. "Objetivo 3.2") are preserved verbatim;
+      // the doc-label prefix only names items whose extracted label is a
+      // generic placeholder like "Target 3".
+      const newTargets: TargetRow[] = accepted.map((item, i) =>
+        extractedItemToTargetRow(
+          item,
+          prefix ? `${prefix} ${i + 1}` : item.label || `Target ${i + 1}`
+        )
+      );
       setExtractionBackup({
         items: [...extractedItems],
         fileName: extractFileName,

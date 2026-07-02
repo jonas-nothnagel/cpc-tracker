@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import type { PolicyDocumentType } from "@/types";
 import type { UploadedDoc } from "@/lib/upload-helpers";
 import type { ExtractedItem } from "@/lib/upload-helpers";
+import type { DocumentWarning } from "@/hooks/useExtraction";
 import { DOCUMENT_TYPES } from "@/lib/upload-helpers";
 import { listVisibleCountries, normaliseCountry } from "@/config/countries";
 import { ExtractReviewPanel } from "./extract-review-panel";
@@ -33,6 +34,10 @@ interface StepCountryDocumentsProps {
   extractionQueueLength: number;
   // Extraction review
   extractError: string | null;
+  /** File name of a successful extraction that identified no targets. */
+  extractEmptyFile: string | null;
+  /** Document-level warnings from the extraction run (partial text layer etc). */
+  extractWarnings: DocumentWarning[];
   extractedItems: ExtractedItem[];
   onToggleItem: (idx: number) => void;
   onKeepAll: () => void;
@@ -81,6 +86,8 @@ export function StepCountryDocuments({
   onDragLeave,
   extractionQueueLength,
   extractError,
+  extractEmptyFile,
+  extractWarnings,
   extractedItems,
   onToggleItem,
   onKeepAll,
@@ -286,6 +293,38 @@ export function StepCountryDocuments({
         </div>
       )}
 
+      {/* Partial-scan notice when there is no review modal to carry it: e.g. a
+          partially-scanned document that yielded zero targets. Without this the
+          reviewer would only see the empty-outcome message and could wrongly
+          conclude the document holds no commitments, when most of it was simply
+          unreadable. */}
+      {!extracting &&
+        !extractError &&
+        !showExtractionModal &&
+        extractWarnings.some((w) => w.code === "PARTIAL_TEXT_LAYER") && (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+            {extractWarnings
+              .filter((w) => w.code === "PARTIAL_TEXT_LAYER")
+              .map((w, i) => (
+                <p key={i} className="text-sm text-amber-800">
+                  {t("partialTextLayer", {
+                    empty: w.emptyPages ?? 0,
+                    total: w.pages ?? 0,
+                  })}
+                </p>
+              ))}
+          </div>
+        )}
+
+      {/* Extraction succeeded but found nothing: a valid outcome, stated plainly */}
+      {!extracting && !extractError && extractEmptyFile && (
+        <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4">
+          <p className="text-sm text-[var(--undp-gray)]">
+            {t("extractEmpty", { name: extractEmptyFile })}
+          </p>
+        </div>
+      )}
+
       {/* Document pipeline (parsed files status) */}
       <DocumentPipeline uploadedDocs={uploadedDocs} onRemoveDoc={onRemoveDoc} />
 
@@ -360,6 +399,20 @@ export function StepCountryDocuments({
               </button>
             </div>
             <div className="p-5">
+              {extractWarnings.some((w) => w.code === "PARTIAL_TEXT_LAYER") && (
+                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                  {extractWarnings
+                    .filter((w) => w.code === "PARTIAL_TEXT_LAYER")
+                    .map((w, i) => (
+                      <p key={i} className="text-sm text-amber-800">
+                        {t("partialTextLayer", {
+                          empty: w.emptyPages ?? 0,
+                          total: w.pages ?? 0,
+                        })}
+                      </p>
+                    ))}
+                </div>
+              )}
               <ExtractReviewPanel
                 items={extractedItems}
                 fileName={extractFileName}

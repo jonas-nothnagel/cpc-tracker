@@ -6,7 +6,7 @@ to [`../METHODOLOGY.md`](../METHODOLOGY.md), which explains the "why". For the
 document → targets extraction phase that produces the input, see
 [`EXTRACTION_PIPELINE.md`](EXTRACTION_PIPELINE.md).
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5). Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched). Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
 
 The whole run is orchestrated by **`run_analysis.py`** as eight stages (`TOTAL_STEPS = 8`). Steps 6 and 7 run only when the relevant data exists. Every LLM call is cached on disk by a hash of `{system_prompt, user_prompt, model}`, namespaced per step, so re-running with the same inputs and model costs nothing.
 

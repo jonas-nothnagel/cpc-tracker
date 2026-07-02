@@ -1,0 +1,153 @@
+{
+  "meta": {
+    "label": "sl-pppp-txt",
+    "generatedAt": "2026-07-02T13:32:57+00:00",
+    "gitSha": "af5e7ed",
+    "model": "gpt-5.4",
+    "concurrency": 4,
+    "promptHash": "be58bec8117e",
+    "thresholds": {
+      "simAccept": 0.6,
+      "quoteAccept": 0.3,
+      "reachable": 0.5
+    }
+  },
+  "documents": [
+    {
+      "docCode": "SL-PPPP-TXT",
+      "tier": 1,
+      "sourceDocument": "PPPP",
+      "language": "en",
+      "notes": "Executive summary of the updated NPPP 2048, copy-pasted verbatim by the team on 2026-07-02 because the local PDF is a 2-page scan. Committed fixture, so this entry needs no OneDrive mount. The 4 expert component rows appear verbatim in this text.",
+      "parseStats": {
+        "pageCount": null,
+        "pagesWithText": 1,
+        "chars": 4178,
+        "parseSeconds": 0.0
+      },
+      "gold": {
+        "n": 4,
+        "reachable": 2,
+        "reachability": [
+          {
+            "goldId": "PPPP_1",
+            "containment": 1.0
+          },
+          {
+            "goldId": "PPPP_2",
+            "containment": 0.333
+          },
+          {
+            "goldId": "PPPP_3",
+            "containment": 0.242
+          },
+          {
+            "goldId": "PPPP_4",
+            "containment": 0.511
+          }
+        ],
+        "lengths": {
+          "n": 4,
+          "p10": 283,
+          "median": 330,
+          "p90": 330
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 4,
+        "seconds": 6.8,
+        "footprintDelta": {
+          "call_count": 5.0,
+          "cached_call_count": 0.0,
+          "energy_wh": 1.3774,
+          "co2_geq": 0.5544
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 4,
+          "p10": 283,
+          "median": 334,
+          "p90": 334
+        },
+        "textCleanup": {
+          "verbatim": 4
+        },
+        "provenanceFlags": 0,
+        "quotesTotal": 4,
+        "quoteMatchLevels": {
+          "exact": 4,
+          "normalized": 0,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 1.0,
+        "recallReachable": 1.0,
+        "extractionMatchedRatio": 1.0,
+        "granularityRatio": 1.0,
+        "goldCoveredByActivities": 0
+      },
+      "matchAudit": {
+        "matched": [
+          {
+            "goldId": "PPPP_1",
+            "goldLabel": "Component 1",
+            "goldText": "Conservation of the 'Critical' and the 'Unique': Adequate sensitivity t…",
+            "extractedIndex": 0,
+            "extractedLabel": "Conservation of the ‘Critical’ and the ‘Unique’",
+            "extractedText": "Conservation of the ‘Critical’ and the ‘Unique’: Adequate sensitivity t…",
+            "textScore": 1.0,
+            "quoteScore": 1.0,
+            "channel": "quote"
+          },
+          {
+            "goldId": "PPPP_4",
+            "goldLabel": "Component 4",
+            "goldText": "Exploration of the 'Potentials' and the 'Enhancement' of the use. Due c…",
+            "extractedIndex": 3,
+            "extractedLabel": "Exploration of the ‘Potentials’",
+            "extractedText": "Exploration of the ‘Potentials’ and the ‘Enhancement’ of the use. Due c…",
+            "textScore": 0.996,
+            "quoteScore": 0.329,
+            "channel": "text"
+          },
+          {
+            "goldId": "PPPP_3",
+            "goldLabel": "Component 3",
+            "goldText": "Optimization of the 'Utility' of the 'Available': More attention to opt…",
+            "extractedIndex": 2,
+            "extractedLabel": "Optimization of the ‘Utility’",
+            "extractedText": "Optimization of the ‘Utility’ of the ‘Available’: More attention to opt…",
+            "textScore": 0.972,
+            "quoteScore": 0.129,
+            "channel": "text"
+          },
+          {
+            "goldId": "PPPP_2",
+            "goldLabel": "Component 2",
+            "goldText": "Promotion of the 'Livability' for 'Human' and other living beings: Sele…",
+            "extractedIndex": 1,
+            "extractedLabel": "Promotion of the ‘Livability’",
+            "extractedText": "Promotion of the ‘Livability’ for ‘Human’ and other living beings: Sele…",
+            "textScore": 0.821,
+            "quoteScore": 0.19,
+            "channel": "text"
+          }
+        ],
+        "unmatchedGold": [],
+        "unmatchedExtracted": []
+      }
+    }
+  ],
+  "aggregate": {
+    "tier1Docs": 1,
+    "meanRecallReachable": 1.0,
+    "totalGold": 4,
+    "totalReachable": 2,
+    "totalExtracted": 4,
+    "totalMatched": 4
+  }
+}
