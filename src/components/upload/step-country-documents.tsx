@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import type { PolicyDocumentType } from "@/types";
 import type { UploadedDoc } from "@/lib/upload-helpers";
 import type { ExtractedItem } from "@/lib/upload-helpers";
+import type { DocumentWarning } from "@/hooks/useExtraction";
 import { DOCUMENT_TYPES } from "@/lib/upload-helpers";
 import { listVisibleCountries, normaliseCountry } from "@/config/countries";
 import { ExtractReviewPanel } from "./extract-review-panel";
@@ -35,6 +36,8 @@ interface StepCountryDocumentsProps {
   extractError: string | null;
   /** File name of a successful extraction that identified no targets. */
   extractEmptyFile: string | null;
+  /** Document-level warnings from the extraction run (partial text layer etc). */
+  extractWarnings: DocumentWarning[];
   extractedItems: ExtractedItem[];
   onToggleItem: (idx: number) => void;
   onKeepAll: () => void;
@@ -84,6 +87,7 @@ export function StepCountryDocuments({
   extractionQueueLength,
   extractError,
   extractEmptyFile,
+  extractWarnings,
   extractedItems,
   onToggleItem,
   onKeepAll,
@@ -372,6 +376,20 @@ export function StepCountryDocuments({
               </button>
             </div>
             <div className="p-5">
+              {extractWarnings.some((w) => w.code === "PARTIAL_TEXT_LAYER") && (
+                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                  {extractWarnings
+                    .filter((w) => w.code === "PARTIAL_TEXT_LAYER")
+                    .map((w, i) => (
+                      <p key={i} className="text-sm text-amber-800">
+                        {t("partialTextLayer", {
+                          empty: w.emptyPages ?? 0,
+                          total: w.pages ?? 0,
+                        })}
+                      </p>
+                    ))}
+                </div>
+              )}
               <ExtractReviewPanel
                 items={extractedItems}
                 fileName={extractFileName}

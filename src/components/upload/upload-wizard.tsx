@@ -395,6 +395,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
             extractionQueueLength={extraction.extractionQueue.length}
             extractError={extraction.extractError}
             extractEmptyFile={extraction.extractEmptyFile}
+            extractWarnings={extraction.extractWarnings}
             extractedItems={extraction.extractedItems}
             onToggleItem={extraction.toggleItem}
             onKeepAll={extraction.keepAll}

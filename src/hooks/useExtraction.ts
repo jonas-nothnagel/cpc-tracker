@@ -1,7 +1,14 @@
 import { useState, useCallback } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { PolicyDocumentType } from "@/types";
 import type { ExtractedItem } from "@/lib/upload-helpers";
+
+export interface DocumentWarning {
+  code: string;
+  pages?: number;
+  emptyPages?: number;
+  emptyRatio?: number;
+}
 
 /** Raw item shape from /api/extract: canonical fields plus the legacy
  *  pre-English-first translation fields (`text_eng`/`label_eng`). */
@@ -32,6 +39,7 @@ const EMPTY_FOOTPRINT: ExtractionFootprint = {
 
 export function useExtraction() {
   const locale = useLocale();
+  const tErrors = useTranslations("upload.wizard.errors");
   const [extracting, setExtracting] = useState(false);
   const [extractedItems, setExtractedItems] = useState<ExtractedItem[]>([]);
   const [extractFileName, setExtractFileName] = useState("");
@@ -41,6 +49,9 @@ export function useExtraction() {
   // Set when extraction succeeded but identified no targets: a valid outcome
   // that the UI must state explicitly instead of silently showing nothing.
   const [extractEmptyFile, setExtractEmptyFile] = useState<string | null>(null);
+  // Document-level warnings from the extraction run (e.g. a partially
+  // scanned PDF whose empty pages could not be read).
+  const [extractWarnings, setExtractWarnings] = useState<DocumentWarning[]>([]);
   const [extractManualLabel, setExtractManualLabel] = useState("");
   const [extractManualText, setExtractManualText] = useState("");
 
@@ -58,6 +69,7 @@ export function useExtraction() {
       setExtracting(true);
       setExtractError(null);
       setExtractEmptyFile(null);
+      setExtractWarnings([]);
       setExtractedItems([]);
       setExtractFileName(file.name);
 
@@ -71,9 +83,16 @@ export function useExtraction() {
         const res = await fetch("/api/extract", { method: "POST", body: form });
         if (!res.ok) {
           const body = await res.json();
+          if (body.errorCode === "NO_TEXT_LAYER") {
+            throw new Error(tErrors("noTextLayer", { name: file.name }));
+          }
           throw new Error(body.error || "Extraction failed");
         }
         const data = await res.json();
+        const documentWarnings = data.warnings?.documentWarnings;
+        if (Array.isArray(documentWarnings) && documentWarnings.length > 0) {
+          setExtractWarnings(documentWarnings as DocumentWarning[]);
+        }
         // Accumulate extraction footprint from this run into the session total
         if (data.footprint && typeof data.footprint === "object") {
           const fp = data.footprint as Partial<ExtractionFootprint>;
@@ -124,7 +143,7 @@ export function useExtraction() {
         setExtracting(false);
       }
     },
-    [locale]
+    [locale, tErrors]
   );
 
   const queueFilesForExtraction = useCallback(
@@ -218,6 +237,7 @@ export function useExtraction() {
     setExtractDocLabel,
     extractError,
     extractEmptyFile,
+    extractWarnings,
     extractManualLabel,
     setExtractManualLabel,
     extractManualText,
