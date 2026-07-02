@@ -60,6 +60,28 @@
       "notes": "Gold quotes are CO-composed (concatenated Excel action rows stamped textCleanup=verbatim by the ingest script); only ~13% of quote 4-grams appear contiguously in the PDF. Text-similarity matching only; never gates acceptance."
     },
     {
+      "docCode": "SL-PPPP",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/eval/sri-lanka-2jul26-expert.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Sri Lanka/Policies/National Physical Planning Policy and Plan.pdf",
+      "docType": "national physical planning policy",
+      "sourceDocument": "PPPP",
+      "language": "en",
+      "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx: 4 component-level rows. CONFIRMED SCAN: the local PDF is 2 pages with zero extractable text (the expert worked from a fuller/text version), so this doc behaves as a second real-world scanned fixture; the CLI/wizard reject it with NO_TEXT_LAYER."
+    },
+    {
+      "docCode": "SL-NAP",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/eval/sri-lanka-2jul26-expert.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Sri Lanka/Policies/National Agriculture Policy.pdf",
+      "docType": "national agriculture policy",
+      "sourceDocument": "NAP",
+      "language": "en",
+      "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx (fresh, uncontaminated): 192 rows across THREE levels (Goals, Statements, Actions X.Y — the Resolution-36 pattern). By the pipeline's granularity rules the Action rows belong in activities, not targets; read recall level-aware and check the goldCoveredByActivities metric. NAP here = National AGRICULTURAL Policy, not adaptation plan."
+    },
+    {
       "docCode": "NP",
       "country": "panama",
       "tier": 3,

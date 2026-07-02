@@ -1,0 +1,2585 @@
+{
+  "meta": {
+    "label": "sri-lanka-2jul26",
+    "generatedAt": "2026-07-02T12:11:30+00:00",
+    "gitSha": "0e42c54",
+    "model": "gpt-5.4",
+    "concurrency": 4,
+    "promptHash": "be58bec8117e",
+    "thresholds": {
+      "simAccept": 0.6,
+      "quoteAccept": 0.3,
+      "reachable": 0.5
+    }
+  },
+  "documents": [
+    {
+      "docCode": "SL-PPPP",
+      "tier": 1,
+      "sourceDocument": "PPPP",
+      "language": "en",
+      "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx (fresh, uncontaminated): only 4 rows at component level (very coarse curation). Gold sourceText is the curated text itself, so reachability measures whether the expert text is verbatim-findable.",
+      "parseStats": {
+        "pageCount": 2,
+        "pagesWithText": 0,
+        "chars": 0,
+        "parseSeconds": 0.1
+      },
+      "gold": {
+        "n": 4,
+        "reachable": 0,
+        "reachability": [
+          {
+            "goldId": "PPPP_1",
+            "containment": 0.0
+          },
+          {
+            "goldId": "PPPP_2",
+            "containment": 0.0
+          },
+          {
+            "goldId": "PPPP_3",
+            "containment": 0.0
+          },
+          {
+            "goldId": "PPPP_4",
+            "containment": 0.0
+          }
+        ],
+        "lengths": {
+          "n": 4,
+          "p10": 283,
+          "median": 330,
+          "p90": 330
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 0,
+        "seconds": 0.0,
+        "footprintDelta": {
+          "call_count": 0.0,
+          "cached_call_count": 0.0,
+          "energy_wh": 0.0,
+          "co2_geq": 0.0
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 0,
+          "p10": 0,
+          "median": 0,
+          "p90": 0
+        },
+        "textCleanup": {},
+        "provenanceFlags": 0,
+        "quotesTotal": 0,
+        "quoteMatchLevels": {
+          "exact": 0,
+          "normalized": 0,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 0.0,
+        "recallReachable": null,
+        "extractionMatchedRatio": null,
+        "granularityRatio": 0.0,
+        "goldCoveredByActivities": 0
+      },
+      "matchAudit": {
+        "matched": [],
+        "unmatchedGold": [
+          {
+            "goldId": "PPPP_1",
+            "goldLabel": "Component 1",
+            "goldText": "Conservation of the 'Critical' and the 'Unique': Adequate sensitivity t…",
+            "bestScore": 0.0,
+            "bestExtractedText": "",
+            "activityScore": 0.0
+          },
+          {
+            "goldId": "PPPP_2",
+            "goldLabel": "Component 2",
+            "goldText": "Promotion of the 'Livability' for 'Human' and other living beings: Sele…",
+            "bestScore": 0.0,
+            "bestExtractedText": "",
+            "activityScore": 0.0
+          },
+          {
+            "goldId": "PPPP_3",
+            "goldLabel": "Component 3",
+            "goldText": "Optimization of the 'Utility' of the 'Available': More attention to opt…",
+            "bestScore": 0.0,
+            "bestExtractedText": "",
+            "activityScore": 0.0
+          },
+          {
+            "goldId": "PPPP_4",
+            "goldLabel": "Component 4",
+            "goldText": "Exploration of the 'Potentials' and the 'Enhancement' of the use. Due c…",
+            "bestScore": 0.0,
+            "bestExtractedText": "",
+            "activityScore": 0.0
+          }
+        ],
+        "unmatchedExtracted": []
+      }
+    },
+    {
+      "docCode": "SL-NAP",
+      "tier": 1,
+      "sourceDocument": "NAP",
+      "language": "en",
+      "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx (fresh, uncontaminated): 192 rows across THREE levels (Goals, Statements, Actions X.Y — the Resolution-36 pattern). By the pipeline's granularity rules the Action rows belong in activities, not targets; read recall level-aware and check the goldCoveredByActivities metric. NAP here = National AGRICULTURAL Policy, not adaptation plan.",
+      "parseStats": {
+        "pageCount": 20,
+        "pagesWithText": 20,
+        "chars": 88169,
+        "parseSeconds": 2.1
+      },
+      "gold": {
+        "n": 192,
+        "reachable": 188,
+        "reachability": [
+          {
+            "goldId": "NAP_1",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_2",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_3",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_4",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_5",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_6",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_7",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_8",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_9",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_10",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_11",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_12",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_13",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_14",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_15",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_16",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_17",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_18",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_19",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_20",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_21",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_22",
+            "containment": 0.619
+          },
+          {
+            "goldId": "NAP_23",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_24",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_25",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_26",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_27",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_28",
+            "containment": 0.526
+          },
+          {
+            "goldId": "NAP_29",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_30",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_31",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_32",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_33",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_34",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_35",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_36",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_37",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_38",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_39",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_40",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_41",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_42",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_43",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_44",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_45",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_46",
+            "containment": 0.867
+          },
+          {
+            "goldId": "NAP_47",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_48",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_49",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_50",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_51",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_52",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_53",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_54",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_55",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_56",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_57",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_58",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_59",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_60",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_61",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_62",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_63",
+            "containment": 0.25
+          },
+          {
+            "goldId": "NAP_64",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_65",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_66",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_67",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_68",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_69",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_70",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_71",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_72",
+            "containment": 0.818
+          },
+          {
+            "goldId": "NAP_73",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_74",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_75",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_76",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_77",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_78",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_79",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_80",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_81",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_82",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_83",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_84",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_85",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_86",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_87",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_88",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_89",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_90",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_91",
+            "containment": 0.0
+          },
+          {
+            "goldId": "NAP_92",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_93",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_94",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_95",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_96",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_97",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_98",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_99",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_100",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_101",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_102",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_103",
+            "containment": 0.636
+          },
+          {
+            "goldId": "NAP_104",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_105",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_106",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_107",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_108",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_109",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_110",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_111",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_112",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_113",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_114",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_115",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_116",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_117",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_118",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_119",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_120",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_121",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_122",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_123",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_124",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_125",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_126",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_127",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_128",
+            "containment": 0.786
+          },
+          {
+            "goldId": "NAP_129",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_130",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_131",
+            "containment": 0.667
+          },
+          {
+            "goldId": "NAP_132",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_133",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_134",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_135",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_136",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_137",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_138",
+            "containment": 0.8
+          },
+          {
+            "goldId": "NAP_139",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_140",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_141",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_142",
+            "containment": 0.25
+          },
+          {
+            "goldId": "NAP_143",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_144",
+            "containment": 0.704
+          },
+          {
+            "goldId": "NAP_145",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_146",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_147",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_148",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_149",
+            "containment": 0.375
+          },
+          {
+            "goldId": "NAP_150",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_151",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_152",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_153",
+            "containment": 0.6
+          },
+          {
+            "goldId": "NAP_154",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_155",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_156",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_157",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_158",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_159",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_160",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_161",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_162",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_163",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_164",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_165",
+            "containment": 0.864
+          },
+          {
+            "goldId": "NAP_166",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_167",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_168",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_169",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_170",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_171",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_172",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_173",
+            "containment": 0.875
+          },
+          {
+            "goldId": "NAP_174",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_175",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_176",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_177",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_178",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_179",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_180",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_181",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_182",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_183",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_184",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_185",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_186",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_187",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_188",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_189",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_190",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_191",
+            "containment": 1.0
+          },
+          {
+            "goldId": "NAP_192",
+            "containment": 1.0
+          }
+        ],
+        "lengths": {
+          "n": 192,
+          "p10": 71,
+          "median": 116,
+          "p90": 186
+        }
+      },
+      "extractionSource": "fresh run",
+      "extraction": {
+        "n": 24,
+        "seconds": 19.1,
+        "footprintDelta": {
+          "call_count": 34.0,
+          "cached_call_count": 10.0,
+          "energy_wh": 10.6533,
+          "co2_geq": 4.2416
+        },
+        "contentFilterWarnings": 0,
+        "parseFailureWarnings": 0,
+        "lengths": {
+          "n": 24,
+          "p10": 91,
+          "median": 142,
+          "p90": 214
+        },
+        "textCleanup": {
+          "cleaned": 21,
+          "synthesis": 3
+        },
+        "provenanceFlags": 0,
+        "quotesTotal": 40,
+        "quoteMatchLevels": {
+          "exact": 40,
+          "normalized": 0,
+          "fuzzy": 0,
+          "not_found": 0
+        }
+      },
+      "metrics": {
+        "recallRaw": 0.125,
+        "recallReachable": 0.112,
+        "extractionMatchedRatio": 1.0,
+        "granularityRatio": 0.12,
+        "goldCoveredByActivities": 81
+      },
+      "matchAudit": {
+        "matched": [
+          {
+            "goldId": "NAP_1",
+            "goldLabel": "Goal 1",
+            "goldText": "Double the resource-productivity (compared to 2020 estimates) by adheri…",
+            "extractedIndex": 0,
+            "extractedLabel": "Resource productivity",
+            "extractedText": "Double the resource-productivity (compared to 2020 estimates) by adheri…",
+            "textScore": 1.0,
+            "quoteScore": 0.909,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_2",
+            "goldLabel": "Goal 2",
+            "goldText": "Double the economic profitability of farmers/agri-producers (compared t…",
+            "extractedIndex": 1,
+            "extractedLabel": "Farmer profitability",
+            "extractedText": "Double the economic profitability of farmers/agri-producers (compared t…",
+            "textScore": 1.0,
+            "quoteScore": 0.857,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_3",
+            "goldLabel": "Goal 3",
+            "goldText": "Increase the contribution of the Agri-Food System upto 15% of the Natio…",
+            "extractedIndex": 2,
+            "extractedLabel": "Agri-food GDP share",
+            "extractedText": "Increase the contribution of the Agri-Food System upto 15% of the Natio…",
+            "textScore": 1.0,
+            "quoteScore": 0.875,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_4",
+            "goldLabel": "Goal 4",
+            "goldText": "Increase the adoption of technology developed locally along the agri-fo…",
+            "extractedIndex": 3,
+            "extractedLabel": "Local technology adoption",
+            "extractedText": "Increase the adoption of technology developed locally along the agri-fo…",
+            "textScore": 1.0,
+            "quoteScore": 0.938,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_5",
+            "goldLabel": "Goal 5",
+            "goldText": "Increase the high quality and high yielding seed and planting material …",
+            "extractedIndex": 4,
+            "extractedLabel": "Seed production",
+            "extractedText": "Increase the high quality and high yielding seed and planting material …",
+            "textScore": 1.0,
+            "quoteScore": 0.923,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_6",
+            "goldLabel": "Goal 6",
+            "goldText": "Increase the eco - friendly inputs application in crop production upto …",
+            "extractedIndex": 5,
+            "extractedLabel": "Eco-friendly inputs",
+            "extractedText": "Increase the eco-friendly inputs application in crop production upto 10…",
+            "textScore": 1.0,
+            "quoteScore": 0.875,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_8",
+            "goldLabel": "Goal 8",
+            "goldText": "Establish a government-regulated food and feed control system supportin…",
+            "extractedIndex": 7,
+            "extractedLabel": "Food control system",
+            "extractedText": "Establish a government-regulated food and feed control system supportin…",
+            "textScore": 1.0,
+            "quoteScore": 0.889,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_10",
+            "goldLabel": "Goal 10",
+            "goldText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "extractedIndex": 9,
+            "extractedLabel": "Producer participation",
+            "extractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "textScore": 1.0,
+            "quoteScore": 0.909,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_13",
+            "goldLabel": "Statement 1",
+            "goldText": "Improve production and productivity of food and feed crops through a we…",
+            "extractedIndex": 12,
+            "extractedLabel": "Crop productivity",
+            "extractedText": "Improve production and productivity of food and feed crops through a we…",
+            "textScore": 1.0,
+            "quoteScore": 0.952,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_30",
+            "goldLabel": "Statement 2",
+            "goldText": "Strengthen delivery and management operations of physical inputs for th…",
+            "extractedIndex": 13,
+            "extractedLabel": "Input management",
+            "extractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "textScore": 1.0,
+            "quoteScore": 0.833,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_121",
+            "goldLabel": "Statement 9",
+            "goldText": "Streamline and explore the domestic and international market systems wi…",
+            "extractedIndex": 18,
+            "extractedLabel": "Market systems",
+            "extractedText": "Streamline and explore the domestic and international market systems wi…",
+            "textScore": 1.0,
+            "quoteScore": 0.929,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_139",
+            "goldLabel": "Statement 11",
+            "goldText": "Empower youth and women in agriculture with support for mechanization,a…",
+            "extractedIndex": 20,
+            "extractedLabel": "Youth and women",
+            "extractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "textScore": 1.0,
+            "quoteScore": 0.923,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_177",
+            "goldLabel": "Statement 15",
+            "goldText": "Strengthen institutional coordination mechanism for project implementat…",
+            "extractedIndex": 23,
+            "extractedLabel": "Institutional coordination mechanism",
+            "extractedText": "Strengthen institutional coordination mechanism for project implementat…",
+            "textScore": 1.0,
+            "quoteScore": 0.944,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_153",
+            "goldLabel": "Statement 14",
+            "goldText": "Constitute a centrally-controlled information development and dissemina…",
+            "extractedIndex": 22,
+            "extractedLabel": "Agriculture information system",
+            "extractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "textScore": 0.997,
+            "quoteScore": 0.391,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_128",
+            "goldLabel": "Statement 10",
+            "goldText": "Strengthen partnerships and mentorship programmes for farming and rural…",
+            "extractedIndex": 19,
+            "extractedLabel": "Mentorship programmes",
+            "extractedText": "Strengthen partnerships and mentorship programmes for farming and rural…",
+            "textScore": 0.997,
+            "quoteScore": 0.579,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_46",
+            "goldLabel": "Statement 3",
+            "goldText": "Improve productivity and sustainability of arable Lands through optimum…",
+            "extractedIndex": 14,
+            "extractedLabel": "Arable land sustainability",
+            "extractedText": "Improve productivity and sustainability of arable lands through optimum…",
+            "textScore": 0.997,
+            "quoteScore": 0.684,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_72",
+            "goldLabel": "Statement 5",
+            "goldText": "Encourage development and adoption of appropriate innovations and techn…",
+            "extractedIndex": 16,
+            "extractedLabel": "Pre/post-harvest technology",
+            "extractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "textScore": 0.997,
+            "quoteScore": 0.6,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_91",
+            "goldLabel": "Statement 7",
+            "goldText": "Support sustainability in agriculture development through conservation …",
+            "extractedIndex": 17,
+            "extractedLabel": "Natural resource conservation",
+            "extractedText": "Support sustainability in agriculture development through conservation …",
+            "textScore": 0.997,
+            "quoteScore": 0.0,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_63",
+            "goldLabel": "Statement 4",
+            "goldText": "Enhance rational use of irrigation water through participatory manageme…",
+            "extractedIndex": 15,
+            "extractedLabel": "Irrigation efficiency",
+            "extractedText": "Enhance rational use of irrigation water through participatory manageme…",
+            "textScore": 0.996,
+            "quoteScore": 0.125,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_149",
+            "goldLabel": "Statement 13",
+            "goldText": "Strengthen food systems by connecting urban and rural communities to ta…",
+            "extractedIndex": 21,
+            "extractedLabel": "Urban-rural food systems",
+            "extractedText": "Strengthen food systems by connecting urban and rural communities to ta…",
+            "textScore": 0.995,
+            "quoteScore": 0.2,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_82",
+            "goldLabel": "Statement 6",
+            "goldText": "Improve access to safe and high-quality food and feed based on national…",
+            "extractedIndex": 6,
+            "extractedLabel": "Food and feed safety",
+            "extractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "textScore": 0.9,
+            "quoteScore": 0.938,
+            "channel": "quote"
+          },
+          {
+            "goldId": "NAP_12",
+            "goldLabel": "Goal 12",
+            "goldText": "Establish a system of transparent, accountable, responsible and partici…",
+            "extractedIndex": 11,
+            "extractedLabel": "Governance system",
+            "extractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "textScore": 0.934,
+            "quoteScore": 0.889,
+            "channel": "text"
+          },
+          {
+            "goldId": "NAP_102",
+            "goldLabel": "Statement 8",
+            "goldText": "Foster strategic collaboration among the value chain actors, especially…",
+            "extractedIndex": 8,
+            "extractedLabel": "Producer groups and markets",
+            "extractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "textScore": 0.9,
+            "quoteScore": 0.923,
+            "channel": "quote"
+          },
+          {
+            "goldId": "NAP_11",
+            "goldLabel": "Goal 11",
+            "goldText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "extractedIndex": 10,
+            "extractedLabel": "Climate resilience",
+            "extractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "textScore": 0.9,
+            "quoteScore": 0.9,
+            "channel": "quote"
+          }
+        ],
+        "unmatchedGold": [
+          {
+            "goldId": "NAP_7",
+            "goldLabel": "Goal 7",
+            "goldText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "bestScore": 0.917,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.257
+          },
+          {
+            "goldId": "NAP_9",
+            "goldLabel": "Goal 9",
+            "goldText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "bestScore": 0.9,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 0.375
+          },
+          {
+            "goldId": "NAP_14",
+            "goldLabel": "Action 1.1",
+            "goldText": "Prepare, approve and adopt guidelines for Good Agricultural Practices (…",
+            "bestScore": 0.2,
+            "bestExtractedText": "Improve production and productivity of food and feed crops through a we…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_15",
+            "goldLabel": "Action 1.2",
+            "goldText": "Adopt need-based Crop Prioritization (national and provincial needs, en…",
+            "bestScore": 0.2,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_16",
+            "goldLabel": "Action 1.3",
+            "goldText": "Introduce measures to minimize temporal variation in productivity with …",
+            "bestScore": 0.35,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_17",
+            "goldLabel": "Action 1.4",
+            "goldText": "Adopt measures to produce more with less inputs (enhance input/land pro…",
+            "bestScore": 0.15,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_18",
+            "goldLabel": "Action 1.5",
+            "goldText": "Adopt Precision Agriculture systems (e.g., new technologies for higher …",
+            "bestScore": 0.431,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_19",
+            "goldLabel": "Action 1.6",
+            "goldText": "Support adoption of novel and appropriate technology/mechanization",
+            "bestScore": 0.45,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_20",
+            "goldLabel": "Action 1.7",
+            "goldText": "Encourage and strengthen Climate-Smart Agriculture (CSA) interventions …",
+            "bestScore": 0.415,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_21",
+            "goldLabel": "Action 1.8",
+            "goldText": "Facilitate new technology generation and adoption (e.g., varieties, pro…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_22",
+            "goldLabel": "Action 1.9",
+            "goldText": "Manage wildlife, based on the carrying capacity of ecosystems (sustaina…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 0.998
+          },
+          {
+            "goldId": "NAP_23",
+            "goldLabel": "Action 1.10",
+            "goldText": "Improve productivity of existing farm units (with assured financial ass…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_24",
+            "goldLabel": "Action 1.11",
+            "goldText": "Introduce low-interest loan schemes (credit) to facilitate agricultural…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Improve production and productivity of food and feed crops through a we…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_25",
+            "goldLabel": "Action 1.12",
+            "goldText": "Establish private-public-producer partnerships (PPPP) for machinery use",
+            "bestScore": 0.105,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_26",
+            "goldLabel": "Action 1.13",
+            "goldText": "Promote cropping systems and cropping patterns that provide higher retu…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.375
+          },
+          {
+            "goldId": "NAP_27",
+            "goldLabel": "Action 1.14",
+            "goldText": "Promote and support systematic home gardening",
+            "bestScore": 0.1,
+            "bestExtractedText": "Support sustainability in agriculture development through conservation …",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_28",
+            "goldLabel": "Action 1.15",
+            "goldText": "Promote different production technologies (e.g., vertical farming, fami…",
+            "bestScore": 0.24,
+            "bestExtractedText": "Strengthen food systems by connecting urban and rural communities to ta…",
+            "activityScore": 0.415
+          },
+          {
+            "goldId": "NAP_29",
+            "goldLabel": "Action 1.16",
+            "goldText": "Develop and implement a national cropping plan for priority crops in co…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_31",
+            "goldLabel": "Action 2.1",
+            "goldText": "Allocation of an adequate budget to carry out operations of seed certif…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.225
+          },
+          {
+            "goldId": "NAP_32",
+            "goldLabel": "Action 2.2",
+            "goldText": "Timely supply and/or production of quality inputs including seeds and p…",
+            "bestScore": 0.468,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 0.537
+          },
+          {
+            "goldId": "NAP_33",
+            "goldLabel": "Action 2.3",
+            "goldText": "Establish a mechanism through PPP to ensure availability of quality see…",
+            "bestScore": 0.455,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 0.479
+          },
+          {
+            "goldId": "NAP_34",
+            "goldLabel": "Action 2.4",
+            "goldText": "Decentralize and strengthen seed certification process at provincial le…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Strengthen institutional coordination mechanism for project implementat…",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_35",
+            "goldLabel": "Action 2.5",
+            "goldText": "Establish regional level supply/service/renting machinery centers throu…",
+            "bestScore": 0.045,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.27
+          },
+          {
+            "goldId": "NAP_36",
+            "goldLabel": "Action 2.6",
+            "goldText": "Establish village seed banks for conservation and sustainable utilizati…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.825
+          },
+          {
+            "goldId": "NAP_37",
+            "goldLabel": "Action 2.7",
+            "goldText": "Promote private sector investment for local production of agricultural …",
+            "bestScore": 0.318,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.4
+          },
+          {
+            "goldId": "NAP_38",
+            "goldLabel": "Action 2.8",
+            "goldText": "Establish a mechanism to certify machinery and other agricultural input…",
+            "bestScore": 0.286,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.472
+          },
+          {
+            "goldId": "NAP_39",
+            "goldLabel": "Action 2.9",
+            "goldText": "Establish a mechanism/system for production of fertilizer, stimulants, …",
+            "bestScore": 0.415,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.431
+          },
+          {
+            "goldId": "NAP_40",
+            "goldLabel": "Action 2.10",
+            "goldText": "Take periodic measures to establish, re-visit, assess and recommend mea…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.338
+          },
+          {
+            "goldId": "NAP_41",
+            "goldLabel": "Action 2.11",
+            "goldText": "Enforce a regulatory framework for organic/bio fertilizer production",
+            "bestScore": 0.1,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.4
+          },
+          {
+            "goldId": "NAP_42",
+            "goldLabel": "Action 2.12",
+            "goldText": "Provide authority to FOs, FPOs and FPCs to initiate actions for access …",
+            "bestScore": 0.3,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 0.451
+          },
+          {
+            "goldId": "NAP_43",
+            "goldLabel": "Action 2.13",
+            "goldText": "Strengthen the mechanism involved in fertilizer import/production and d…",
+            "bestScore": 0.425,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 0.257
+          },
+          {
+            "goldId": "NAP_44",
+            "goldLabel": "Action 2.14",
+            "goldText": "Establish a mechanism to provide organized skilled-labour supply and co…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_45",
+            "goldLabel": "Action 2.15",
+            "goldText": "Enforce regulations strictly in import, production and use of agricultu…",
+            "bestScore": 0.386,
+            "bestExtractedText": "Increase the eco-friendly inputs application in crop production upto 10…",
+            "activityScore": 0.409
+          },
+          {
+            "goldId": "NAP_47",
+            "goldLabel": "Action 3.1",
+            "goldText": "Promote adoption of seeds and planting material of local origin",
+            "bestScore": 0.4,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_48",
+            "goldLabel": "Action 3.2",
+            "goldText": "Adopt measures to optimize the use of fertilizer with a view to obtain …",
+            "bestScore": 0.277,
+            "bestExtractedText": "Enhance rational use of irrigation water through participatory manageme…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_49",
+            "goldLabel": "Action 3.3",
+            "goldText": "Introduce and adopt new and appropriate technologies for increase nutri…",
+            "bestScore": 0.257,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_50",
+            "goldLabel": "Action 3.4",
+            "goldText": "Adopt a productivity-based and priority-based incentive mechanism to su…",
+            "bestScore": 0.386,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_51",
+            "goldLabel": "Action 3.5",
+            "goldText": "Introduce incentive-based mechanism for gradual replacement of fertiliz…",
+            "bestScore": 0.208,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_52",
+            "goldLabel": "Action 3.6",
+            "goldText": "Enforce regulatory measures to safeguard ecosystem services",
+            "bestScore": 0.095,
+            "bestExtractedText": "Support sustainability in agriculture development through conservation …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_53",
+            "goldLabel": "Action 3.7",
+            "goldText": "Adopt a prescription-based sale and use of pesticides – with the involv…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_54",
+            "goldLabel": "Action 3.8",
+            "goldText": "Establish a system to promote integrated pest/weed management approache…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_55",
+            "goldLabel": "Action 3.9",
+            "goldText": "Introduce and promote adoption of novel and appropriate eco-friendly pe…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_56",
+            "goldLabel": "Action 3.10",
+            "goldText": "Develop and implement plans to increase the extent of land with organic…",
+            "bestScore": 0.332,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_57",
+            "goldLabel": "Action 3.11",
+            "goldText": "Introduce and increase the use of Precision agriculture systems (e.g., …",
+            "bestScore": 0.415,
+            "bestExtractedText": "Enhance rational use of irrigation water through participatory manageme…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_58",
+            "goldLabel": "Action 3.12",
+            "goldText": "Conduct Continuing Professional Development (CPD) programs for agricult…",
+            "bestScore": 0.423,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_59",
+            "goldLabel": "Action 3.13",
+            "goldText": "Adopt measures to minimize abandoned lands from agricultural production",
+            "bestScore": 0.083,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_60",
+            "goldLabel": "Action 3.14",
+            "goldText": "Implement a social audit system as a mandatory activity in all incentiv…",
+            "bestScore": 0.281,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_61",
+            "goldLabel": "Action 3.15",
+            "goldText": "Establish agro-industrial zones using farmer cluster approach with agri…",
+            "bestScore": 0.24,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_62",
+            "goldLabel": "Action 3.16",
+            "goldText": "Provide economic incentives based on cluster approach",
+            "bestScore": 0.062,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_64",
+            "goldLabel": "Action 4.1",
+            "goldText": "Take appropriate regulatory measures to avoid excessive use of ground w…",
+            "bestScore": 0.327,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_65",
+            "goldLabel": "Action 4.2",
+            "goldText": "Promote rainwater harvesting for agricultural purposes",
+            "bestScore": 0.095,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 0.154
+          },
+          {
+            "goldId": "NAP_66",
+            "goldLabel": "Action 4.3",
+            "goldText": "Adopt water-saving technologies such as drip-irrigation, to enhance irr…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Enhance rational use of irrigation water through participatory manageme…",
+            "activityScore": 0.281
+          },
+          {
+            "goldId": "NAP_67",
+            "goldLabel": "Action 4.4",
+            "goldText": "Adopt soil and water conservations measures to control soil erosion and…",
+            "bestScore": 0.245,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.491
+          },
+          {
+            "goldId": "NAP_68",
+            "goldLabel": "Action 4.5",
+            "goldText": "Adopt catchment management practices by an effective implementation of …",
+            "bestScore": 0.208,
+            "bestExtractedText": "Double the resource-productivity (compared to 2020 estimates) by adheri…",
+            "activityScore": 0.346
+          },
+          {
+            "goldId": "NAP_69",
+            "goldLabel": "Action 4.6",
+            "goldText": "Adopt third season cultivation in paddy fields using residual moisture",
+            "bestScore": 0.045,
+            "bestExtractedText": "Increase the eco-friendly inputs application in crop production upto 10…",
+            "activityScore": 0.083
+          },
+          {
+            "goldId": "NAP_70",
+            "goldLabel": "Action 4.7",
+            "goldText": "Rehabilitate reservoirs and irrigation systems with the support of line…",
+            "bestScore": 0.346,
+            "bestExtractedText": "Enhance rational use of irrigation water through participatory manageme…",
+            "activityScore": 0.362
+          },
+          {
+            "goldId": "NAP_71",
+            "goldLabel": "Action 4.8",
+            "goldText": "Integrate activities to ensure fish farming in reservoirs take place in…",
+            "bestScore": 0.189,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_73",
+            "goldLabel": "Action 5.1",
+            "goldText": "Establish a formal and a well-coordinated mechanism to effectively enga…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_74",
+            "goldLabel": "Action 5.2",
+            "goldText": "Provide financial and institutional support to develop cost-effective t…",
+            "bestScore": 0.193,
+            "bestExtractedText": "Support sustainability in agriculture development through conservation …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_75",
+            "goldLabel": "Action 5.3",
+            "goldText": "Upgrade the system of crop production forecasting with the support of n…",
+            "bestScore": 0.4,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_76",
+            "goldLabel": "Action 5.4",
+            "goldText": "Promote adoption of technologies targeting value addition for perishabl…",
+            "bestScore": 0.4,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_77",
+            "goldLabel": "Action 5.5",
+            "goldText": "Adopt correct harvest and pre-harvest technologies, including packaging…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_78",
+            "goldLabel": "Action 5.6",
+            "goldText": "Strengthen technology transfer mechanisms through appropriate mechanisms",
+            "bestScore": 0.087,
+            "bestExtractedText": "Strengthen partnerships and mentorship programmes for farming and rural…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_79",
+            "goldLabel": "Action 5.7",
+            "goldText": "Re-visit and restructure existing authoritative body responsible for ag…",
+            "bestScore": 0.284,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_80",
+            "goldLabel": "Action 5.8",
+            "goldText": "Adopt mechanisms to promote use of ICT-based agriculture",
+            "bestScore": 0.4,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.5
+          },
+          {
+            "goldId": "NAP_81",
+            "goldLabel": "Action 5.9",
+            "goldText": "Introduce proven and appropriate technology into the sector through fie…",
+            "bestScore": 0.245,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_83",
+            "goldLabel": "Action 6.1",
+            "goldText": "Develop and adopt regulations to ensure food and feed safety in both lo…",
+            "bestScore": 0.409,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.321
+          },
+          {
+            "goldId": "NAP_84",
+            "goldLabel": "Action 6.2",
+            "goldText": "Incentivize adoption of GAP/Organic agriculture /Ecological agriculture",
+            "bestScore": 0.386,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.514
+          },
+          {
+            "goldId": "NAP_85",
+            "goldLabel": "Action 6.3",
+            "goldText": "Establish state of the art laboratories to monitor food and feed standa…",
+            "bestScore": 0.5,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.277
+          },
+          {
+            "goldId": "NAP_86",
+            "goldLabel": "Action 6.4",
+            "goldText": "Develop and strictly adopt food safety standards (with the support of t…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.452
+          },
+          {
+            "goldId": "NAP_87",
+            "goldLabel": "Action 6.5",
+            "goldText": "Adopt standard process control measures for food product quality (with …",
+            "bestScore": 0.327,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_88",
+            "goldLabel": "Action 6.6",
+            "goldText": "Adopt a stringent labeling system for food products, especially focusin…",
+            "bestScore": 0.332,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 0.386
+          },
+          {
+            "goldId": "NAP_89",
+            "goldLabel": "Action 6.7",
+            "goldText": "Revisit village fair/farmers market system while promoting smallholder …",
+            "bestScore": 0.277,
+            "bestExtractedText": "Increase the eco-friendly inputs application in crop production upto 10…",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_90",
+            "goldLabel": "Action 6.8",
+            "goldText": "Encourage the use of non-traditional food resources",
+            "bestScore": 0.338,
+            "bestExtractedText": "Increase the contribution of the Agri-Food System upto 15% of the Natio…",
+            "activityScore": 0.338
+          },
+          {
+            "goldId": "NAP_92",
+            "goldLabel": "Action 7.1",
+            "goldText": "Introduce and adopt eco-friendly agricultural practices across agro-eco…",
+            "bestScore": 0.373,
+            "bestExtractedText": "Double the resource-productivity (compared to 2020 estimates) by adheri…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_93",
+            "goldLabel": "Action 7.2",
+            "goldText": "Ensure availability of locally improved seed and planting material thro…",
+            "bestScore": 0.441,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_94",
+            "goldLabel": "Action 7.3",
+            "goldText": "Establish village seeds banks for germplasm conservation and sustainabl…",
+            "bestScore": 0.281,
+            "bestExtractedText": "Support sustainability in agriculture development through conservation …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_95",
+            "goldLabel": "Action 7.4",
+            "goldText": "Introduce and adopt modern eco-friendly input management techniques (in…",
+            "bestScore": 0.375,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_96",
+            "goldLabel": "Action 7.5",
+            "goldText": "Adopt a mechanism to have a mandatory involvement of multinational agen…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Increase the eco-friendly inputs application in crop production upto 10…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_97",
+            "goldLabel": "Action 7.6",
+            "goldText": "Adopt stringent measures of plant quarantine by strengthening facilitie…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Increase the high quality and high yielding seed and planting material …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_98",
+            "goldLabel": "Action 7.7",
+            "goldText": "Adopt a well-organized surveillance system for early-warning of new pes…",
+            "bestScore": 0.36,
+            "bestExtractedText": "Improve production and productivity of food and feed crops through a we…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_99",
+            "goldLabel": "Action 7.8",
+            "goldText": "Take appropriate measures to increase the use of renewable energy in ag…",
+            "bestScore": 0.35,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_100",
+            "goldLabel": "Action 7.9",
+            "goldText": "Promote farming systems with crop-animal integration where possible",
+            "bestScore": 0.087,
+            "bestExtractedText": "Streamline and explore the domestic and international market systems wi…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_101",
+            "goldLabel": "Action 7.10",
+            "goldText": "Adopt mechanisms to ensure conformity of agricultural practices to the …",
+            "bestScore": 0.284,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_103",
+            "goldLabel": "Action 8.1",
+            "goldText": "Establish an effective Agriculture Enterprise Resource Planning (ERP) –…",
+            "bestScore": 0.237,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.277
+          },
+          {
+            "goldId": "NAP_104",
+            "goldLabel": "Action 8.2",
+            "goldText": "Establish a market-oriented production system",
+            "bestScore": 0.45,
+            "bestExtractedText": "Establish a government-regulated food and feed control system supportin…",
+            "activityScore": 0.673
+          },
+          {
+            "goldId": "NAP_105",
+            "goldLabel": "Action 8.3",
+            "goldText": "Establish a marketing network through the Agrarian Service Centers and …",
+            "bestScore": 0.327,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 0.525
+          },
+          {
+            "goldId": "NAP_106",
+            "goldLabel": "Action 8.4",
+            "goldText": "Establish a market mechanism to ensure higher returns and profits to pr…",
+            "bestScore": 0.257,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 0.438
+          },
+          {
+            "goldId": "NAP_107",
+            "goldLabel": "Action 8.5",
+            "goldText": "Adopt a minimum price for staple crop products",
+            "bestScore": 0.105,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.338
+          },
+          {
+            "goldId": "NAP_108",
+            "goldLabel": "Action 8.6",
+            "goldText": "Provide seed-funds and enhance management capacity of farmer producer o…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Enhance rational use of irrigation water through participatory manageme…",
+            "activityScore": 0.321
+          },
+          {
+            "goldId": "NAP_109",
+            "goldLabel": "Action 8.7",
+            "goldText": "Identify niche markets to promote products originated from traditional …",
+            "bestScore": 0.054,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.27
+          },
+          {
+            "goldId": "NAP_110",
+            "goldLabel": "Action 8.8",
+            "goldText": "Build capacity of the FOs/FPOs, SMEs and existing market players on val…",
+            "bestScore": 0.368,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_111",
+            "goldLabel": "Action 8.9",
+            "goldText": "Create and strengthen value chains of priority crops to connect farmers…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Double the economic profitability of farmers/agri-producers (compared t…",
+            "activityScore": 0.421
+          },
+          {
+            "goldId": "NAP_112",
+            "goldLabel": "Action 8.10",
+            "goldText": "Establish a target-based supply chain management system for registered …",
+            "bestScore": 0.3,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.386
+          },
+          {
+            "goldId": "NAP_113",
+            "goldLabel": "Action 8.11",
+            "goldText": "Develop and adopt regulatory measures to implement standards for fresh …",
+            "bestScore": 0.277,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 0.485
+          },
+          {
+            "goldId": "NAP_114",
+            "goldLabel": "Action 8.12",
+            "goldText": "Introduce and adopt appropriate and modern technologies to develop comp…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 0.519
+          },
+          {
+            "goldId": "NAP_115",
+            "goldLabel": "Action 8.13",
+            "goldText": "Provide support to strengthen infrastructure for value addition of agri…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_116",
+            "goldLabel": "Action 8.14",
+            "goldText": "Adopt a well-planned demand-oriented cultivation system targeting the m…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Improve production and productivity of food and feed crops through a we…",
+            "activityScore": 0.514
+          },
+          {
+            "goldId": "NAP_117",
+            "goldLabel": "Action 8.15",
+            "goldText": "Introduce and adopt measures to strengthen inter-institutional linkages…",
+            "bestScore": 0.18,
+            "bestExtractedText": "Strengthen food systems by connecting urban and rural communities to ta…",
+            "activityScore": 0.321
+          },
+          {
+            "goldId": "NAP_118",
+            "goldLabel": "Action 8.16",
+            "goldText": "Ensure availability of credit facilities for agricultural produce acros…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Increase the adoption of technology developed locally along the agri-fo…",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_119",
+            "goldLabel": "Action 8.17",
+            "goldText": "Strengthen processing ventures through Farmer Producer Organizations, F…",
+            "bestScore": 0.27,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 0.36
+          },
+          {
+            "goldId": "NAP_120",
+            "goldLabel": "Action 8.18",
+            "goldText": "Establish regional-level common processing facilities",
+            "bestScore": 0.056,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.118
+          },
+          {
+            "goldId": "NAP_122",
+            "goldLabel": "Action 9.1",
+            "goldText": "Take appropriate measures to strengthen logistics management through PP…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_123",
+            "goldLabel": "Action 9.2",
+            "goldText": "Introduce and adopt mechanisms and technology for traceability (e.g., B…",
+            "bestScore": 0.245,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_124",
+            "goldLabel": "Action 9.3",
+            "goldText": "Adopt warehouse receipting system for durables (e.g., grain crops) by e…",
+            "bestScore": 0.083,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_125",
+            "goldLabel": "Action 9.4",
+            "goldText": "Establish temperature- and RH-controlled storage and cold chain facilit…",
+            "bestScore": 0.208,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_126",
+            "goldLabel": "Action 9.5",
+            "goldText": "Adopt systems to promote branding at farm-gate level to support marketi…",
+            "bestScore": 0.281,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_127",
+            "goldLabel": "Action 9.6",
+            "goldText": "Strengthen District Economic Centers (DECs) as regulated market-oriente…",
+            "bestScore": 0.08,
+            "bestExtractedText": "Establish a government-regulated food and feed control system supportin…",
+            "activityScore": 0.111
+          },
+          {
+            "goldId": "NAP_129",
+            "goldLabel": "Action 10.1",
+            "goldText": "Establish farmer producer organizations leading to a farmer federation …",
+            "bestScore": 0.263,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_130",
+            "goldLabel": "Action 10.2",
+            "goldText": "Create awareness among farming community on cost: benefit, advantages/d…",
+            "bestScore": 0.265,
+            "bestExtractedText": "Improve productivity and sustainability of arable lands through optimum…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_131",
+            "goldLabel": "Action 10.3",
+            "goldText": "Establish farmer-oriented banking system (e.g., Farmers’ Bank) for dedi…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 0.996
+          },
+          {
+            "goldId": "NAP_132",
+            "goldLabel": "Action 10.4",
+            "goldText": "Re-orient and strengthen the development bank system to support and dev…",
+            "bestScore": 0.477,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_133",
+            "goldLabel": "Action 10.5",
+            "goldText": "Establish a mechanism to register and recognize fulltime farmers as agr…",
+            "bestScore": 0.41,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_134",
+            "goldLabel": "Action 10.6",
+            "goldText": "Establish a strong network of Agrarian Centers, Farmer Producer Organiz…",
+            "bestScore": 0.208,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_135",
+            "goldLabel": "Action 10.7",
+            "goldText": "Establish agro-industrial zones using farmer-cluster approach with agri…",
+            "bestScore": 0.169,
+            "bestExtractedText": "Establish farmer/agri-producer groups with Agri-entrepreneurship capaci…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_136",
+            "goldLabel": "Action 10.8",
+            "goldText": "Establish a mechanism to ensure farmers access new technology at afford…",
+            "bestScore": 0.281,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_137",
+            "goldLabel": "Action 10.9",
+            "goldText": "Establish an agricultural product procuring and distribution system (e.…",
+            "bestScore": 0.346,
+            "bestExtractedText": "Establish a system of transparent, accountable, responsible and partici…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_138",
+            "goldLabel": "Action 10.10",
+            "goldText": "Establish a mechanism to fully utilize agriculture diploma holders and …",
+            "bestScore": 0.45,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 0.476
+          },
+          {
+            "goldId": "NAP_140",
+            "goldLabel": "Action 11.1",
+            "goldText": "Support gender-based development in agriculture including capacity buil…",
+            "bestScore": 0.397,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_141",
+            "goldLabel": "Action 11.2",
+            "goldText": "Take appropriate measures to incentivize youth engagement in agricultur…",
+            "bestScore": 0.532,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_142",
+            "goldLabel": "Statement 12",
+            "goldText": "Promote adoption of appropriate adaptation and mitigation measures to i…",
+            "bestScore": 0.836,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.514
+          },
+          {
+            "goldId": "NAP_143",
+            "goldLabel": "Action 12.1",
+            "goldText": "Design and adopt weather index-based climate risk management tools",
+            "bestScore": 0.1,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 0.36
+          },
+          {
+            "goldId": "NAP_144",
+            "goldLabel": "Action 12.2",
+            "goldText": "Establish a seasonal Agro-met Advisory (AMA) issuing mechanism with a m…",
+            "bestScore": 0.338,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 0.277
+          },
+          {
+            "goldId": "NAP_145",
+            "goldLabel": "Action 12.3",
+            "goldText": "Adhere to the actions related to agriculture identified in the National…",
+            "bestScore": 0.315,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.321
+          },
+          {
+            "goldId": "NAP_146",
+            "goldLabel": "Action 12.4",
+            "goldText": "Continue and further strengthen breeding programmes and technological d…",
+            "bestScore": 0.265,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.487
+          },
+          {
+            "goldId": "NAP_147",
+            "goldLabel": "Action 12.5",
+            "goldText": "Propose and adopt financial incentives to use renewable energy in agric…",
+            "bestScore": 0.327,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.736
+          },
+          {
+            "goldId": "NAP_148",
+            "goldLabel": "Action 12.6",
+            "goldText": "Take measures to discourage burning of crop biomass and encourage trans…",
+            "bestScore": 0.257,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.327
+          },
+          {
+            "goldId": "NAP_150",
+            "goldLabel": "Action 13.1",
+            "goldText": "Adopt crisis management mechanisms to meet the food demand under specia…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_151",
+            "goldLabel": "Action 13.2",
+            "goldText": "Identify and strengthen critical nodes of the city region food system t…",
+            "bestScore": 0.432,
+            "bestExtractedText": "Strengthen food systems by connecting urban and rural communities to ta…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_152",
+            "goldLabel": "Action 13.3",
+            "goldText": "Establish an inter-ministerial core group including central, provincial…",
+            "bestScore": 0.24,
+            "bestExtractedText": "Strengthen food systems by connecting urban and rural communities to ta…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_154",
+            "goldLabel": "Action 14.1",
+            "goldText": "Establish a demand-driven agriculture research program in aching nation…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_155",
+            "goldLabel": "Action 14.2",
+            "goldText": "Provide appropriate incentives (financial & physical) to promote R&D fo…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_156",
+            "goldLabel": "Action 14.3",
+            "goldText": "Invest on research and development to produce hybrids and high yielding…",
+            "bestScore": 0.25,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_157",
+            "goldLabel": "Action 14.4",
+            "goldText": "Facilitate and strengthen agriculture education at primary, secondary a…",
+            "bestScore": 0.36,
+            "bestExtractedText": "Strengthen institutional coordination mechanism for project implementat…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_158",
+            "goldLabel": "Action 14.5",
+            "goldText": "Establish real-time agriculture data base with continuous updating and …",
+            "bestScore": 0.277,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_159",
+            "goldLabel": "Action 14.6",
+            "goldText": "Incorporate agriculture progressively as a compulsory subject at least …",
+            "bestScore": 0.062,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_160",
+            "goldLabel": "Action 14.7",
+            "goldText": "Incorporate more skills development in ancient agriculture technologies…",
+            "bestScore": 0.371,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_161",
+            "goldLabel": "Action 14.8",
+            "goldText": "Adopt a market oriented agricultural extension system",
+            "bestScore": 0.386,
+            "bestExtractedText": "Improve production and productivity of food and feed crops through a we…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_162",
+            "goldLabel": "Action 14.9",
+            "goldText": "Strengthen PPP to ensure effective information dissemination to the pro…",
+            "bestScore": 0.4,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_163",
+            "goldLabel": "Action 14.10",
+            "goldText": "Establish a centrally coordinated agriculture extension system with a s…",
+            "bestScore": 0.388,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_164",
+            "goldLabel": "Action 14.11",
+            "goldText": "Re-visit the grass root level extension modalities including the fresh …",
+            "bestScore": 0.142,
+            "bestExtractedText": "Increase the adoption of technology developed locally along the agri-fo…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_165",
+            "goldLabel": "Action 14.12",
+            "goldText": "Create awareness and promote adoption of novel technologies – use of mo…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 0.909
+          },
+          {
+            "goldId": "NAP_166",
+            "goldLabel": "Action 14.13",
+            "goldText": "Provide advisory and advocacy to support evidence-based decision making…",
+            "bestScore": 0.375,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 1.0
+          },
+          {
+            "goldId": "NAP_167",
+            "goldLabel": "Action 14.14",
+            "goldText": "Institute a market-oriented agriculture extension system (involvement o…",
+            "bestScore": 0.327,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.712
+          },
+          {
+            "goldId": "NAP_168",
+            "goldLabel": "Action 14.15",
+            "goldText": "Adopt an efficient system for dissemination of market information",
+            "bestScore": 0.3,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.455
+          },
+          {
+            "goldId": "NAP_169",
+            "goldLabel": "Action 14.16",
+            "goldText": "Build knowledge on judicious use of fertilizer and pesticides",
+            "bestScore": 0.4,
+            "bestExtractedText": "Strengthen delivery and management operations of physical inputs for th…",
+            "activityScore": 0.5
+          },
+          {
+            "goldId": "NAP_170",
+            "goldLabel": "Action 14.17",
+            "goldText": "Conduct knowledge building programs targeting of officers in the extens…",
+            "bestScore": 0.327,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.409
+          },
+          {
+            "goldId": "NAP_171",
+            "goldLabel": "Action 14.18",
+            "goldText": "Develop and adopt recruitment criteria to agriculture related employmen…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.321
+          },
+          {
+            "goldId": "NAP_172",
+            "goldLabel": "Action 14.19",
+            "goldText": "Develop and establish a mechanism to increase the involvement of skille…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.516
+          },
+          {
+            "goldId": "NAP_173",
+            "goldLabel": "Action 14.20",
+            "goldText": "Conduct outreach programs with a view to build knowledge among producer…",
+            "bestScore": 0.24,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_174",
+            "goldLabel": "Action 14.21",
+            "goldText": "Develop a mechanism for progressive allocation of finances for agricult…",
+            "bestScore": 0.257,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.277
+          },
+          {
+            "goldId": "NAP_175",
+            "goldLabel": "Action 14.22",
+            "goldText": "Develop and implement training programs to minimize occupational hazard…",
+            "bestScore": 0.277,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 0.346
+          },
+          {
+            "goldId": "NAP_176",
+            "goldLabel": "Action 14.23",
+            "goldText": "Adopt farmer field schools (FFS) approach as a means of effective infor…",
+            "bestScore": 0.208,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_178",
+            "goldLabel": "Action 15.1",
+            "goldText": "Establish a policy implementation, and monitoring and evaluation (M&E) …",
+            "bestScore": 0.327,
+            "bestExtractedText": "Strengthen institutional coordination mechanism for project implementat…",
+            "activityScore": 0.225
+          },
+          {
+            "goldId": "NAP_179",
+            "goldLabel": "Action 15.2",
+            "goldText": "Establish an effective coordination mechanism among line agencies of Mi…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Double the economic profitability of farmers/agri-producers (compared t…",
+            "activityScore": 0.4
+          },
+          {
+            "goldId": "NAP_180",
+            "goldLabel": "Action 15.3",
+            "goldText": "Adopt a stable taxation and fiscal policy system to provide price suppo…",
+            "bestScore": 0.3,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.386
+          },
+          {
+            "goldId": "NAP_181",
+            "goldLabel": "Action 15.4",
+            "goldText": "Regulate imports based on annual/seasonal production targets",
+            "bestScore": 0.061,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.338
+          },
+          {
+            "goldId": "NAP_182",
+            "goldLabel": "Action 15.5",
+            "goldText": "Re-define mandatory functions of line agencies to complement each other…",
+            "bestScore": 0.441,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_183",
+            "goldLabel": "Action 15.6",
+            "goldText": "Adopt a mechanism for policy integration through the intervention of th…",
+            "bestScore": 0.245,
+            "bestExtractedText": "Increase the contribution of the Agri-Food System upto 15% of the Natio…",
+            "activityScore": 0.321
+          },
+          {
+            "goldId": "NAP_184",
+            "goldLabel": "Action 15.7",
+            "goldText": "Adopt a performance-based work evaluation of the state involvement in t…",
+            "bestScore": 0.434,
+            "bestExtractedText": "Increase the contribution of the Agri-Food System upto 15% of the Natio…",
+            "activityScore": 0.479
+          },
+          {
+            "goldId": "NAP_185",
+            "goldLabel": "Action 15.8",
+            "goldText": "Update/develop and implement relevant Acts/ordinances and regulations, …",
+            "bestScore": 0.25,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.25
+          },
+          {
+            "goldId": "NAP_186",
+            "goldLabel": "Action 15.9",
+            "goldText": "Adopt participatory approaches involving engagement of farmers, scienti…",
+            "bestScore": 0.45,
+            "bestExtractedText": "Establish a constituted role and mandatory participation of farmers/agr…",
+            "activityScore": 0.45
+          },
+          {
+            "goldId": "NAP_187",
+            "goldLabel": "Action 15.10",
+            "goldText": "Impose regulations including punitive actions for violation of laws rel…",
+            "bestScore": 0.225,
+            "bestExtractedText": "Supply safe and quality food and feed in compliance with food and feed …",
+            "activityScore": 0.3
+          },
+          {
+            "goldId": "NAP_188",
+            "goldLabel": "Action 15.11",
+            "goldText": "Constitute the involvement of private sector and development partners i…",
+            "bestScore": 0.486,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.42
+          },
+          {
+            "goldId": "NAP_189",
+            "goldLabel": "Action 15.12",
+            "goldText": "Adopt a mechanism to implement professional development of the private …",
+            "bestScore": 0.444,
+            "bestExtractedText": "Constitute a centrally-controlled information development and dissemina…",
+            "activityScore": 0.544
+          },
+          {
+            "goldId": "NAP_190",
+            "goldLabel": "Action 15.13",
+            "goldText": "Institute a performance-based reward system in agriculture across sub-s…",
+            "bestScore": 0.245,
+            "bestExtractedText": "Build an agri-food system in Sri Lanka that is resilient to climatic an…",
+            "activityScore": 0.412
+          },
+          {
+            "goldId": "NAP_191",
+            "goldLabel": "Action 15.14",
+            "goldText": "Take measures to remove financial and regulatory constraints that hampe…",
+            "bestScore": 0.265,
+            "bestExtractedText": "Encourage development and adoption of appropriate innovations and techn…",
+            "activityScore": 0.491
+          },
+          {
+            "goldId": "NAP_192",
+            "goldLabel": "Action 15.15",
+            "goldText": "Harmonize with agriculture related acts and other policies for effectiv…",
+            "bestScore": 0.327,
+            "bestExtractedText": "Empower youth and women in agriculture with support for mechanization, …",
+            "activityScore": 0.245
+          }
+        ],
+        "unmatchedExtracted": []
+      }
+    }
+  ],
+  "aggregate": {
+    "tier1Docs": 2,
+    "meanRecallReachable": 0.112,
+    "totalGold": 196,
+    "totalReachable": 188,
+    "totalExtracted": 24,
+    "totalMatched": 24
+  }
+}

@@ -1024,6 +1024,25 @@ def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
     return sorted(missing)
 
 
+def _relevance_sample(text: str, limit: int = 8000) -> str:
+    """Representative sample of a chunk for the relevance filter.
+
+    Judging only the head of a ~30k chunk misclassifies chunks whose
+    substantive content starts after boilerplate: the Sri Lanka NAP goals
+    sat on page 4 behind three pages of cover/foreword, and the whole
+    pages-1-8 chunk was dropped as irrelevant. Head + middle + tail slices
+    give the filter sight of the entire chunk at the same token budget.
+    """
+    if len(text) <= limit:
+        return text
+    head = text[: limit // 2]
+    quarter = limit // 4
+    mid_start = (len(text) - quarter) // 2
+    mid = text[mid_start : mid_start + quarter]
+    tail = text[-quarter:]
+    return f"{head}\n[...]\n{mid}\n[...]\n{tail}"
+
+
 def _parse_relevance(raw: str) -> bool:
     """Parse relevance filter response. Defaults to True (conservative)."""
     raw = raw.strip()
@@ -1045,6 +1064,52 @@ def _parse_relevance(raw: str) -> bool:
 # ---------------------------------------------------------------------------
 
 
+def _quote_context_windows(
+    target: dict[str, Any],
+    norm_chunks: list[tuple["Chunk", str]],
+    *,
+    before: int = 1500,
+    after: int = 4500,
+    max_windows: int = 3,
+) -> list[str]:
+    """Context windows around the target's source-quote occurrences.
+
+    Policy documents elaborate a statement into its action list immediately
+    AFTER the statement text, so windows extend mostly forward. A target
+    whose sources were merged from a summary list AND a detailed section
+    gets one window per occurrence, so the detailed section is always in
+    context. Offsets are approximated by position ratio between normalised
+    and original chunk text (normalisation removes characters roughly
+    uniformly); a few hundred chars of drift is irrelevant at window size.
+    """
+    windows: list[str] = []
+    seen_spans: list[tuple[int, int]] = []
+    for src in target.get("sources") or []:
+        if len(windows) >= max_windows:
+            break
+        if not isinstance(src, dict):
+            continue
+        quote = str(src.get("sourceText", "")).strip()
+        if not quote:
+            continue
+        norm_quote = normalise_for_matching(quote)
+        if not norm_quote:
+            continue
+        for ci, (chunk, norm) in enumerate(norm_chunks):
+            pos = norm.find(norm_quote)
+            if pos < 0:
+                continue
+            center = int(len(chunk.text) * (pos / max(len(norm), 1)))
+            start = max(0, center - before)
+            end = min(len(chunk.text), center + after)
+            if any(c == ci and abs(start - s) < 1000 for c, s in seen_spans):
+                break  # near-duplicate of a window we already took
+            seen_spans.append((ci, start))
+            windows.append(chunk.text[start:end])
+            break
+    return windows
+
+
 async def _extract_activities(
     targets: list[dict[str, Any]],
     doc: DocumentText,
@@ -1059,18 +1124,27 @@ async def _extract_activities(
         for page in chunk.pages:
             page_to_chunks.setdefault(page, []).append(chunk.text)
 
+    # Context windows anchored on each target's verbatim quote occurrences.
+    # Page-chunk dumps failed two ways on real documents: a consolidated
+    # target whose first quote sits in an early summary chunk got 12k of
+    # front matter (truncation never reached the detailed section that lists
+    # its actions), and whole chunks are bigger than the 12k budget anyway.
+    norm_chunks = [(chunk, normalise_for_matching(chunk.text)) for chunk in chunks]
+
     activity_calls = []
     for target in targets:
         pages = target.get("pageNumbers", [])
-        # Gather context from chunks that cover this target's pages
-        context_parts: list[str] = []
-        seen: set[int] = set()
-        for page in pages:
-            for chunk_text in page_to_chunks.get(page, []):
-                h = hash(chunk_text)
-                if h not in seen:
-                    seen.add(h)
-                    context_parts.append(chunk_text)
+        context_parts = _quote_context_windows(target, norm_chunks)
+        if not context_parts:
+            # Fallback: chunks covering the target's pages (pre-window
+            # behaviour) for targets whose quotes cannot be located.
+            seen: set[int] = set()
+            for page in pages:
+                for chunk_text in page_to_chunks.get(page, []):
+                    h = hash(chunk_text)
+                    if h not in seen:
+                        seen.add(h)
+                        context_parts.append(chunk_text)
 
         context = "\n\n---\n\n".join(context_parts)
         if len(context) > 12000:
@@ -1094,7 +1168,9 @@ async def _extract_activities(
                 pages=pages_str,
                 context=context,
             ),
-            "max_tokens": 2000,
+            # Reasoning models spend completion tokens on reasoning before
+            # output; 2000 starved long activity lists into empty responses.
+            "max_tokens": 6000,
         })
 
     raw_results = await call_llm_batch(
@@ -1259,7 +1335,10 @@ async def extract_from_text(
                     "system": RELEVANCE_FILTER_SYSTEM,
                     "user": RELEVANCE_FILTER_USER.format(
                         doc_type=doc_type,
-                        text=chunk.text[:8000],  # limit filter input size
+                        # Head + middle + tail sample, NOT just the head: a
+                        # chunk that opens with boilerplate may still hold
+                        # the goals section further in.
+                        text=_relevance_sample(chunk.text),
                     ),
                     "max_tokens": 50,
                 }
@@ -1271,13 +1350,18 @@ async def extract_from_text(
                 desc="Relevance filter",
             )
             relevant_chunks = []
+            dropped_pages: list[int] = []
             for chunk, raw in zip(filterable, filter_results):
                 if _parse_relevance(raw):
                     relevant_chunks.append(chunk)
                 else:
+                    dropped_pages.extend(chunk.pages)
                     logger.info(
                         f"  Filtered out chunk (pages {chunk.pages}): irrelevant"
                     )
+            if dropped_pages:
+                # Reviewer transparency: which pages the filter skipped.
+                RUN_META["relevanceFilteredPages"] = sorted(set(dropped_pages))
 
             # Add back any very short chunks that were skipped
             short_chunks = [c for c in chunks if len(c.text.strip()) < 80]

@@ -16,6 +16,7 @@ from src.extract import (
     _extract_text_docx,
     _extract_text_pdf,
     _parse_json_array_status,
+    _relevance_sample,
     _restore_original_text,
     dedupe_candidates,
     pdf_text_layer_stats,
@@ -214,6 +215,61 @@ class TestParseJsonArrayStatus:
         items, ok = _parse_json_array_status('```json\n[{"text": "A long enough target"}]\n```')
         assert ok is True
         assert len(items) == 1
+
+
+class TestQuoteContextWindows:
+    def _chunks(self):
+        from src.extract import Chunk
+        summary = "Front matter and summary list. Improve irrigation efficiency. " + "x " * 200
+        detail = (
+            "Section 4. Improve irrigation efficiency.\n"
+            "4.1. Rehabilitate canal networks.\n4.2. Promote drip irrigation.\n" + "y " * 3000
+        )
+        return [Chunk(text=summary, pages=[1]), Chunk(text=detail, pages=[9])]
+
+    def test_window_per_quote_occurrence_includes_detail_section(self):
+        from src.extract import _quote_context_windows
+        from src.extract_validation import normalise_for_matching
+        chunks = self._chunks()
+        norm_chunks = [(c, normalise_for_matching(c.text)) for c in chunks]
+        target = {
+            "text": "Improve irrigation efficiency",
+            "sources": [
+                {"sourceText": "Improve irrigation efficiency."},          # summary hit (chunk 0)
+                {"sourceText": "Section 4. Improve irrigation efficiency."},  # detail hit (chunk 1)
+            ],
+        }
+        windows = _quote_context_windows(target, norm_chunks)
+        joined = "\n".join(windows)
+        assert "4.1. Rehabilitate canal networks" in joined  # detail actions reached
+        assert len(windows) == 2
+
+    def test_unlocatable_quote_yields_no_windows(self):
+        from src.extract import _quote_context_windows
+        from src.extract_validation import normalise_for_matching
+        chunks = self._chunks()
+        norm_chunks = [(c, normalise_for_matching(c.text)) for c in chunks]
+        target = {"text": "z", "sources": [{"sourceText": "not present anywhere at all"}]}
+        assert _quote_context_windows(target, norm_chunks) == []
+
+
+class TestRelevanceSample:
+    def test_short_chunk_passes_through(self):
+        assert _relevance_sample("short text", 8000) == "short text"
+
+    def test_long_chunk_samples_head_middle_tail(self):
+        # A goals list buried mid-chunk behind boilerplate must reach the
+        # filter (the Sri Lanka NAP failure mode: goals on page 4 behind
+        # three pages of front matter, whole chunk dropped).
+        head_boiler = "c" * 8000
+        goals = " GOALS: double resource productivity by 2030 "
+        tail_boiler = "b" * 8000
+        text = head_boiler + goals + tail_boiler
+        sample = _relevance_sample(text, 2000)
+        assert len(sample) < 2200
+        assert sample.startswith("c")
+        assert "resource productivity" in sample
+        assert sample.rstrip().endswith("b")
 
 
 # ---------------------------------------------------------------------------

@@ -156,6 +156,30 @@ def _candidate_texts(item: dict[str, Any]) -> list[str]:
     ]
 
 
+def _activity_texts(extracted: list[dict[str, Any]]) -> list[str]:
+    """Every activity-level text carried by the extracted targets.
+
+    Expert curations sometimes keep measure/action rows as standalone
+    targets; the pipeline deliberately files those under activities. This
+    collects both display lines and verbatim activity sources so the eval
+    can report gold rows that were captured at the activity level instead
+    of counting them as plain misses.
+    """
+    texts: list[str] = []
+    for e in extracted:
+        for line in str(e.get("activities") or "").split("\n"):
+            if line.strip():
+                texts.append(line.strip())
+        for a in e.get("activitySources") or []:
+            if not isinstance(a, dict):
+                continue
+            for key in ("text", "sourceText"):
+                v = str(a.get(key) or "").strip()
+                if v:
+                    texts.append(v)
+    return texts
+
+
 def _pdf_page_count(path: Path) -> int | None:
     if path.suffix.lower() != ".pdf":
         return None
@@ -427,6 +451,21 @@ async def evaluate_document(
         "quotesTotal": quotes_total,
         "quoteMatchLevels": quote_levels,
     }
+    # Unmatched gold may still be captured at the ACTIVITY level (the
+    # pipeline files measure/action rows under their parent target).
+    activity_texts = _activity_texts(extracted)
+    gold_by_id = {g.get("id"): g for g in gold}
+    covered_by_activities = 0
+    for u in match.unmatched_gold:
+        g = gold_by_id.get(u["goldId"]) or {}
+        best = max(
+            (text_similarity(str(g.get("text", "")), t) for t in activity_texts),
+            default=0.0,
+        )
+        u["activityScore"] = round(best, 3)
+        if best >= SIM_ACCEPT:
+            covered_by_activities += 1
+
     result["metrics"] = {
         "recallRaw": round(len(matched_gold_ids) / len(gold), 3) if gold else None,
         "recallReachable": (
@@ -436,6 +475,7 @@ async def evaluate_document(
             round(len(match.matched) / len(extracted), 3) if extracted else None
         ),
         "granularityRatio": round(len(extracted) / len(gold), 2) if gold else None,
+        "goldCoveredByActivities": covered_by_activities if gold else None,
     }
     result["matchAudit"] = {
         "matched": match.matched,
@@ -533,18 +573,33 @@ def render_markdown(report: dict[str, Any]) -> str:
                 f"| `{_snippet(mrow['extractedText'], 48)}` "
                 f"| {mrow['textScore']} | {mrow['quoteScore']} | {mrow['channel']} |"
             )
-        lines += ["", "### Unmatched gold", ""]
+        covered = d["metrics"].get("goldCoveredByActivities")
+        lines += [
+            "",
+            "### Unmatched gold"
+            + (
+                f" ({covered} of these captured at activity level)"
+                if covered
+                else ""
+            ),
+            "",
+        ]
         if d["matchAudit"]["unmatchedGold"]:
-            lines += ["| gold | best score | closest extracted |", "|---|---|---|"]
+            lines += [
+                "| gold | best score | in activities | closest extracted |",
+                "|---|---|---|---|",
+            ]
             for u in d["matchAudit"]["unmatchedGold"]:
                 reach = next(
                     (r["containment"] for r in g["reachability"] if r["goldId"] == u["goldId"]),
                     None,
                 )
                 reach_note = "" if reach is None or reach >= REACHABLE_THRESHOLD else " (unreachable)"
+                act = u.get("activityScore", 0.0)
+                act_cell = f"**{act}**" if act >= SIM_ACCEPT else f"{act}"
                 lines.append(
                     f"| {u['goldId']}{reach_note} `{_snippet(u['goldText'], 56)}` "
-                    f"| {u['bestScore']} | `{_snippet(u['bestExtractedText'], 48)}` |"
+                    f"| {u['bestScore']} | {act_cell} | `{_snippet(u['bestExtractedText'], 48)}` |"
                 )
         else:
             lines.append("None.")

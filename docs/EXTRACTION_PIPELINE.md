@@ -147,7 +147,13 @@ double-newlines (paragraph boundaries) into chunks of ≤ 30 k characters with
 For documents large enough to span multiple chunks, every chunk is classified
 by a small LLM call into "likely contains policy targets" vs. "boilerplate /
 context / annex". The filter is conservative — it defaults to *keep* on
-uncertainty, so the cost is missed efficiency, not missed targets.
+uncertainty, so the cost is missed efficiency, not missed targets. The filter
+judges a head + middle + tail sample of the chunk, not just its head: a chunk
+that opens with cover pages and a table of contents may still hold the goals
+section further in (observed on the Sri Lanka National Agriculture Policy,
+whose 12 goals sat on page 4 behind three pages of front matter). Pages
+dropped by the filter are recorded in the run's `.meta.json` sidecar
+(`relevanceFilteredPages`) so reviewers can see what was skipped.
 
 This phase is cached by chunk content (`cache_namespace="relevance_filter"`),
 so re-running the same document is free.
@@ -243,13 +249,18 @@ silently) are not.
 ### 7. Phase 3 — Activities extraction + quote-in-document validation
 
 For each consolidated target, an additional LLM call extracts explicitly
-listed sub-activities / sub-measures from the surrounding chunk context. Same
-verbatim contract as Phase 1: each activity carries its own `sourceText`
-(original language) and optional `section` numbering; for non-English
-documents the activity `text` is an English translation. If the source has no
-explicit sub-activities, the activity list is empty — the LLM is told not to
-invent. This phase runs for small documents too (an earlier version skipped
-it below 6 candidates).
+listed sub-activities / sub-measures from context windows anchored on the
+target's own verbatim quote occurrences (a window per source quote, extending
+mostly forward, because policy layouts elaborate a statement into its action
+list immediately after it). Page-chunk dumps are only the fallback for
+targets whose quotes cannot be located: they fed the call front matter when a
+consolidated target's pages began in an early summary section. Same verbatim
+contract as Phase 1: each activity carries its own `sourceText` (original
+language) and optional `section` numbering; for non-English documents the
+activity `text` is an English translation. If the source has no explicit
+sub-activities, the activity list is empty — the LLM is told not to invent.
+This phase runs for small documents too (an earlier version skipped it below
+6 candidates).
 
 Finally, the **quote-in-document validator** checks every claimed verbatim
 quote — target sources and activity sources — against the parsed document
