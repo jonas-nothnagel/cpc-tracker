@@ -1254,6 +1254,7 @@ export function CoherenceBriefing({
                   commitmentCount={visibleTargets.length}
                   coverage={budgetCoverage}
                   countryConfig={countryConfig}
+                  countryId={countryId}
                   countryName={countryName}
                   targets={targets}
                   budgetAlignment={budgetAlignment}

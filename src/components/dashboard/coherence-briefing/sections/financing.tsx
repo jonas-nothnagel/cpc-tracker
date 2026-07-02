@@ -51,6 +51,7 @@ export function FinancingSection({
   commitmentCount,
   coverage,
   countryConfig,
+  countryId,
   countryName,
   targets,
   budgetAlignment,
@@ -60,6 +61,7 @@ export function FinancingSection({
   commitmentCount: number;
   coverage: BudgetCoverage | null;
   countryConfig: CountryConfig | null;
+  countryId?: string;
   countryName: string;
   targets: Target[];
   budgetAlignment: AlignmentResult[] | null;
@@ -112,6 +114,7 @@ export function FinancingSection({
             unit={berData?.unit ?? "million"}
             currency={berData?.currency ?? ""}
             totals={grid.totals}
+            mode={countryId === "panama" ? "drawer" : "docked"}
           />
         ) : undefined
       }

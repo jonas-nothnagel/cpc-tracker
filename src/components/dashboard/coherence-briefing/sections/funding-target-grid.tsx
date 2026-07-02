@@ -13,7 +13,7 @@
  * semantic coherence — not traced material flow.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type {
   FundingTargetContributor,
@@ -190,6 +190,9 @@ function DetailPanel({
   t: ReturnType<typeof useTranslations<"briefing.financing.targetGrid">>;
 }) {
   const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    setExpanded(false);
+  }, [row?.targetId]);
   if (!row) {
     return (
       <div className="bg-[var(--undp-paper)] border border-gray-100 rounded-lg p-4 text-[12px] leading-relaxed text-[var(--undp-gray)]">
@@ -288,6 +291,141 @@ function DetailPanel({
   );
 }
 
+function DetailDrawer({
+  row,
+  onClose,
+  fmt,
+  tierLabel,
+  t,
+}: {
+  row: FundingTargetRow;
+  onClose: () => void;
+  fmt: (v: number) => string;
+  tierLabel: (t: FundingTier) => string;
+  t: ReturnType<typeof useTranslations<"briefing.financing.targetGrid">>;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [row.targetId]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const top = row.contributors.slice(0, 5);
+  const rest = row.contributors.length - top.length;
+  const needsTruncation = row.text.length > TEXT_PREVIEW_LEN;
+  const displayedText = expanded || !needsTruncation
+    ? row.text
+    : row.text.slice(0, TEXT_PREVIEW_LEN).trimEnd() + "…";
+
+  return (
+    <div className="fixed inset-0 z-40 flex justify-end">
+      <button
+        type="button"
+        aria-label={t("detail.close")}
+        onClick={onClose}
+        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
+      />
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label={row.targetId}
+        className="relative h-full w-full sm:w-[420px] md:w-[480px] shadow-2xl overflow-y-auto bg-white"
+      >
+        <header className="sticky top-0 z-10 px-5 py-4 border-b border-gray-100 flex items-start justify-between gap-3 bg-white/95 backdrop-blur">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="font-mono text-[10px] text-[var(--undp-gray)]">
+                {row.targetId.replace(/^panama_|^mongolia_/, "")}
+              </span>
+              <span className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] truncate">
+                {row.docLabel}
+              </span>
+            </div>
+            <span
+              className="inline-block text-[10px] uppercase tracking-wide font-medium px-1.5 py-0.5 rounded"
+              style={{ backgroundColor: TIER_COLOR[row.tier] + "1f", color: TIER_COLOR[row.tier] }}
+            >
+              {tierLabel(row.tier)}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={t("detail.close")}
+            className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-lg leading-none px-1 shrink-0"
+          >
+            ✕
+          </button>
+        </header>
+        <div className="px-5 py-4">
+          <p className="text-[13px] leading-relaxed text-[var(--undp-black)]">{displayedText}</p>
+          {needsTruncation && (
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className="mt-1 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
+            >
+              {expanded ? t("detail.showLess") : t("detail.readMore")}
+            </button>
+          )}
+          <div className="mt-4 border-t border-gray-100 pt-3 text-[12px]">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-[var(--undp-gray)]">{t("detail.alignedSpend")}</span>
+              <span className="tabular-nums font-medium text-[var(--undp-black)]">
+                {fmt(row.alignedSpend)}
+              </span>
+            </div>
+            <div className="flex items-baseline justify-between mb-2.5">
+              <span className="text-[var(--undp-gray)]">{t("detail.alignedProgrammes")}</span>
+              <span className="tabular-nums font-medium text-[var(--undp-black)]">
+                {row.alignedProgrammeCount}
+              </span>
+            </div>
+            <YearlySpark series={row.yearlySpend} fmt={fmt} label={t("detail.spendPerYear")} />
+            {top.length > 0 ? (
+              <div className="mt-4">
+                <p className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                  {t("detail.topContributing")}
+                </p>
+                <ul className="space-y-1.5">
+                  {top.map((c: FundingTargetContributor) => (
+                    <li key={c.code} className="flex items-start gap-2 text-[11px]">
+                      <span
+                        className="inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
+                        style={{ backgroundColor: LEVEL_COLOR[c.level] }}
+                        title={c.level}
+                      />
+                      <span className="flex-1 text-[var(--undp-black)] leading-snug">{c.name}</span>
+                      <span className="tabular-nums text-[var(--undp-gray)] shrink-0">{fmt(c.spend)}</span>
+                    </li>
+                  ))}
+                </ul>
+                {rest > 0 && (
+                  <p className="mt-1.5 text-[10px] text-[var(--undp-gray)]">
+                    {t("detail.moreProgrammes", { count: rest })}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="mt-2 text-[11px] italic text-[var(--undp-gray)]">
+                {t("detail.noContributors")}
+              </p>
+            )}
+          </div>
+        </div>
+      </aside>
+    </div>
+  );
+}
+
 function ColorLegend({
   tierLabel,
 }: {
@@ -321,6 +459,7 @@ export function FundingTargetGrid({
   unit,
   currency,
   totals,
+  mode = "docked",
 }: {
   docs: { docId: string; docLabel: string; rows: FundingTargetRow[] }[];
   unit: string;
@@ -331,6 +470,13 @@ export function FundingTargetGrid({
     underFunded: number;
     unfunded: number;
   };
+  /**
+   * "docked": always-visible detail panel in a right-side column (default).
+   * "drawer": panel pops open as a fixed right-edge dialog on click. Used on
+   * Panama where the widened financing block gives the dot grid full horizontal
+   * room and the drawer overlays only when needed.
+   */
+  mode?: "docked" | "drawer";
 }) {
   const t = useTranslations("briefing.financing.targetGrid");
   const [selected, setSelected] = useState<FundingTargetRow | null>(null);
@@ -377,7 +523,7 @@ export function FundingTargetGrid({
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 items-start">
+      {mode === "drawer" ? (
         <div>
           <div className="px-1">
             {docs.map((d) => (
@@ -393,17 +539,45 @@ export function FundingTargetGrid({
             ))}
           </div>
           <ColorLegend tierLabel={tierLabel} />
+          {selected && (
+            <DetailDrawer
+              row={selected}
+              onClose={() => setSelected(null)}
+              fmt={fmt}
+              tierLabel={tierLabel}
+              t={t}
+            />
+          )}
         </div>
-        <aside className="lg:sticky lg:top-4">
-          <DetailPanel
-            row={selected}
-            onClose={() => setSelected(null)}
-            fmt={fmt}
-            tierLabel={tierLabel}
-            t={t}
-          />
-        </aside>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 items-start">
+          <div>
+            <div className="px-1">
+              {docs.map((d) => (
+                <DocRow
+                  key={d.docId}
+                  docLabel={d.docLabel}
+                  rows={d.rows}
+                  selectedId={selected?.targetId ?? null}
+                  onSelect={setSelected}
+                  fmt={fmt}
+                  tierLabel={tierLabel}
+                />
+              ))}
+            </div>
+            <ColorLegend tierLabel={tierLabel} />
+          </div>
+          <aside className="lg:sticky lg:top-4">
+            <DetailPanel
+              row={selected}
+              onClose={() => setSelected(null)}
+              fmt={fmt}
+              tierLabel={tierLabel}
+              t={t}
+            />
+          </aside>
+        </div>
+      )}
     </div>
   );
 }
