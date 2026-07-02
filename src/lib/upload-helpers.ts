@@ -1,4 +1,5 @@
-import type { PolicyDocumentType } from "@/types";
+import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
+import type { TargetRow } from "@/lib/csv-parser";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -29,15 +30,72 @@ export interface UploadedDoc {
   btrSummary?: BtrSummary;
 }
 
+export interface ExtractedActivity {
+  text: string;
+  sourceText?: string;
+  section?: string;
+  _quoteMatch?: TargetSource["_quoteMatch"];
+}
+
+/**
+ * One target as returned by `/api/extract`, normalised to the canonical
+ * corpus shape: `text` is the ENGLISH working text (machine-translated when
+ * the source document is not English), `textOriginal` carries the verbatim
+ * original-language wording. Provenance fields (`sources`, `textCleanup`,
+ * `_provenanceFlag`) travel with the item all the way into the analysis.
+ */
 export interface ExtractedItem {
   text: string;
   label: string;
   sourceDocument: string;
   accepted: boolean;
   pageNumbers?: number[];
+  /** ISO-639-1 code of the source document language; absent for English documents. */
   language?: string;
-  text_eng?: string;
-  label_eng?: string;
+  textOriginal?: string;
+  labelOriginal?: string;
+  textOriginalSource?: "source" | "machine";
+  sources?: TargetSource[];
+  textCleanup?: TextCleanup;
+  activities?: string;
+  activitySources?: ExtractedActivity[];
+  /** Validator note (unsourced claims or quotes not found in the document). */
+  _provenanceFlag?: string;
+}
+
+/** True for auto-generated labels like "Target 3" that carry no document numbering. */
+export function isGenericLabel(label: string | undefined): boolean {
+  return !label || /^target\s+\d+$/i.test(label.trim());
+}
+
+/**
+ * Map an accepted extraction item to the target-table row shape, carrying
+ * the full provenance contract. Document-provided labels are preserved
+ * verbatim; the fallback label is used only when the extractor produced a
+ * generic placeholder.
+ */
+export function extractedItemToTargetRow(
+  item: ExtractedItem,
+  fallbackLabel: string
+): TargetRow {
+  const label = isGenericLabel(item.label) ? fallbackLabel : item.label.trim();
+  return {
+    text: item.text,
+    sourceDocument: item.sourceDocument as PolicyDocumentType,
+    sourceLabel: label,
+    source: "extraction",
+    ...(item.activities ? { activities: item.activities } : {}),
+    ...(item.textOriginal ? { textOriginal: item.textOriginal } : {}),
+    ...(item.labelOriginal ? { sourceLabelOriginal: item.labelOriginal } : {}),
+    ...(item.language ? { language: item.language } : {}),
+    ...(item.textOriginalSource
+      ? { textOriginalSource: item.textOriginalSource }
+      : {}),
+    ...(item.sources?.length ? { sources: item.sources } : {}),
+    ...(item.textCleanup ? { textCleanup: item.textCleanup } : {}),
+    ...(item.pageNumbers?.length ? { pageNumbers: item.pageNumbers } : {}),
+    ...(item._provenanceFlag ? { _provenanceFlag: item._provenanceFlag } : {}),
+  };
 }
 
 export type BtrData = Record<string, unknown>;

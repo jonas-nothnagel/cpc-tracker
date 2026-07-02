@@ -3,7 +3,7 @@ import { randomUUID } from "crypto";
 import { spawn } from "child_process";
 import { writeFileSync, mkdirSync, copyFileSync, readFileSync } from "fs";
 import { join } from "path";
-import type { PolicyDocumentType } from "@/types";
+import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
 
 /**
  * POST /api/analyze
@@ -26,6 +26,17 @@ interface AnalyzeRequest {
     sourceLabel: string;
     activities?: string;
     actions?: string;
+    // Provenance contract from document extraction (curated-corpus shape);
+    // passed through into targets.json so the dashboard can render the
+    // original-language text and the verbatim audit trail for uploads too.
+    textOriginal?: string;
+    sourceLabelOriginal?: string;
+    language?: string;
+    textOriginalSource?: "source" | "machine";
+    sources?: TargetSource[];
+    textCleanup?: TextCleanup;
+    pageNumbers?: number[];
+    _provenanceFlag?: string;
   }[];
   nbsCategories?: { id: string; name: string; description: string }[];
   sectors?: { id: string; name: string; description: string }[];
@@ -104,6 +115,18 @@ export async function POST(request: NextRequest) {
         country: body.country || "Unknown",
         ...(t.activities ? { activities: t.activities } : {}),
         ...(t.actions ? { actions: t.actions } : {}),
+        ...(t.textOriginal ? { textOriginal: t.textOriginal } : {}),
+        ...(t.sourceLabelOriginal
+          ? { sourceLabelOriginal: t.sourceLabelOriginal }
+          : {}),
+        ...(t.language ? { language: t.language } : {}),
+        ...(t.textOriginalSource
+          ? { textOriginalSource: t.textOriginalSource }
+          : {}),
+        ...(t.sources?.length ? { sources: t.sources } : {}),
+        ...(t.textCleanup ? { textCleanup: t.textCleanup } : {}),
+        ...(t.pageNumbers?.length ? { pageNumbers: t.pageNumbers } : {}),
+        ...(t._provenanceFlag ? { _provenanceFlag: t._provenanceFlag } : {}),
       };
     });
 

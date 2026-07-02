@@ -36,6 +36,13 @@ export function ExtractReviewPanel({
 }: ExtractReviewPanelProps) {
   const t = useTranslations("upload.review");
   const keptCount = items.filter((i) => i.accepted).length;
+  const hasTranslations = items.some(
+    (i) => i.language && i.language !== "en" && i.textOriginal
+  );
+
+  const needsReview = (item: (typeof items)[number]) =>
+    !!item._provenanceFlag ||
+    (item.sources ?? []).some((s) => s._quoteMatch === "not_found");
 
   return (
     <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
@@ -48,6 +55,11 @@ export function ExtractReviewPanel({
           <p className="text-xs text-[var(--undp-gray)] mt-0.5">
             {t("subtitle", { kept: keptCount, total: items.length, file: fileName })}
           </p>
+          {hasTranslations && (
+            <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+              {t("machineTranslationNote")}
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -104,6 +116,11 @@ export function ExtractReviewPanel({
                       : "line-through text-gray-400"
                   }`}
                 />
+                {item.textCleanup === "synthesis" && (
+                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] font-medium">
+                    {t("aiSummarised")}
+                  </span>
+                )}
                 {item.pageNumbers && item.pageNumbers.length > 0 && item.pageNumbers[0] !== 0 && (
                   <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] font-medium">
                     {t("pagePrefix")}{" "}
@@ -124,10 +141,16 @@ export function ExtractReviewPanel({
                     : "line-through text-gray-400"
                 }`}
               />
-              {item.text_eng && item.language && item.language !== "en" && (
-                <p className="mt-1 text-xs text-blue-600/70 italic">
-                  {t("englishTranslation", { text: item.text_eng })}
+              {item.textOriginal && item.language && item.language !== "en" && (
+                <p className="mt-1 text-xs text-[var(--undp-gray)]/80 italic">
+                  {t("originalText", {
+                    lang: item.language.toUpperCase(),
+                    text: item.textOriginal,
+                  })}
                 </p>
+              )}
+              {needsReview(item) && (
+                <p className="mt-1 text-xs text-amber-700">{t("needsReview")}</p>
               )}
             </div>
 

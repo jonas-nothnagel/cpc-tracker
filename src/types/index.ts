@@ -35,14 +35,14 @@ export type PolicyDocumentType = string;
  *                  grounded in at least one source span. The post-extraction validator enforces
  *                  this. Surfaces in the UI as an "AI-summarised" badge.
  */
-type TextCleanup = "verbatim" | "cleaned" | "synthesis";
+export type TextCleanup = "verbatim" | "cleaned" | "synthesis";
 
 /**
  * A verbatim source span backing a display `text` field. Every Target / Activity / Measure
  * carries an array of these so the dashboard can always show the original wording on demand
  * and stakeholders can audit what the LLM produced.
  */
-interface TargetSource {
+export interface TargetSource {
   /** Verbatim quote from the source document. */
   sourceText: string;
   /** Page numbers in the source document where this quote appears. May be multiple if the
@@ -56,6 +56,10 @@ interface TargetSource {
   document?: string;
   /** Optional URL pointing at the canonical online source (e.g. CBD national targets portal). */
   url?: string;
+  /** Result of the quote-in-document check run at extraction time: how strongly this
+   *  claimed verbatim quote could be located in the parsed document text. "not_found"
+   *  marks a quote the validator could not locate — surfaced as a review prompt. */
+  _quoteMatch?: "exact" | "normalized" | "fuzzy" | "not_found";
 }
 
 /** A single policy target entered by a user. */

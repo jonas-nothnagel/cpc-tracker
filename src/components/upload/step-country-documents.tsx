@@ -33,6 +33,8 @@ interface StepCountryDocumentsProps {
   extractionQueueLength: number;
   // Extraction review
   extractError: string | null;
+  /** File name of a successful extraction that identified no targets. */
+  extractEmptyFile: string | null;
   extractedItems: ExtractedItem[];
   onToggleItem: (idx: number) => void;
   onKeepAll: () => void;
@@ -81,6 +83,7 @@ export function StepCountryDocuments({
   onDragLeave,
   extractionQueueLength,
   extractError,
+  extractEmptyFile,
   extractedItems,
   onToggleItem,
   onKeepAll,
@@ -283,6 +286,15 @@ export function StepCountryDocuments({
       {extractError && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-xl mb-4">
           <p className="text-sm text-red-700">{extractError}</p>
+        </div>
+      )}
+
+      {/* Extraction succeeded but found nothing: a valid outcome, stated plainly */}
+      {!extracting && !extractError && extractEmptyFile && (
+        <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4">
+          <p className="text-sm text-[var(--undp-gray)]">
+            {t("extractEmpty", { name: extractEmptyFile })}
+          </p>
         </div>
       )}
 
