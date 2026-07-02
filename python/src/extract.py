@@ -52,6 +52,14 @@ MIN_TARGET_LENGTH = int(os.getenv("CPC_MIN_TARGET_LENGTH", "10"))
 # the whole document.
 CONSOLIDATE_WINDOW = int(os.getenv("CPC_CONSOLIDATE_WINDOW", "24"))
 
+# Documents whose full text fits this budget get the WHOLE document as
+# activities-extraction context instead of quote-anchored windows. Why: the
+# Sri Lanka fisheries policy lists its objectives up front, and they do not
+# map 1-1 onto the action sections below; windows anchored on the objectives
+# list missed most of the numbered actions the expert reviewer expected
+# (2 Jul 2026 review). Windows remain for documents too large to pass whole.
+ACTIVITY_FULLDOC_CHARS = int(os.getenv("CPC_ACTIVITY_FULLDOC_CHARS", "30000"))
+
 # A PDF page with fewer extractable characters than this is treated as
 # having no usable text layer (scanned/image page).
 PDF_EMPTY_PAGE_CHARS = 50
@@ -1165,6 +1173,38 @@ def _parse_relevance(raw: str) -> bool:
 # ---------------------------------------------------------------------------
 
 
+def _activity_context(
+    target: dict[str, Any],
+    doc: DocumentText,
+    norm_chunks: list[tuple["Chunk", str]],
+    page_to_chunks: dict[int, list[str]],
+) -> str:
+    """Assemble the source context for one target's activities call.
+
+    Whole document when it fits ACTIVITY_FULLDOC_CHARS; otherwise
+    quote-anchored windows; otherwise (quotes unlocatable) the chunks
+    covering the target's pages, truncated to the window budget.
+    """
+    full_text = doc.full_text
+    if len(full_text) <= ACTIVITY_FULLDOC_CHARS:
+        return full_text
+
+    context_parts = _quote_context_windows(target, norm_chunks)
+    if not context_parts:
+        seen: set[int] = set()
+        for page in target.get("pageNumbers", []):
+            for chunk_text in page_to_chunks.get(page, []):
+                h = hash(chunk_text)
+                if h not in seen:
+                    seen.add(h)
+                    context_parts.append(chunk_text)
+
+    context = "\n\n---\n\n".join(context_parts)
+    if len(context) > 12000:
+        context = context[:12000].rsplit("\n\n", 1)[0]  # truncate at paragraph boundary
+    return context
+
+
 def _quote_context_windows(
     target: dict[str, Any],
     norm_chunks: list[tuple["Chunk", str]],
@@ -1225,31 +1265,21 @@ async def _extract_activities(
         for page in chunk.pages:
             page_to_chunks.setdefault(page, []).append(chunk.text)
 
-    # Context windows anchored on each target's verbatim quote occurrences.
-    # Page-chunk dumps failed two ways on real documents: a consolidated
-    # target whose first quote sits in an early summary chunk got 12k of
-    # front matter (truncation never reached the detailed section that lists
-    # its actions), and whole chunks are bigger than the 12k budget anyway.
+    # Context selection, by document size:
+    # - documents that fit ACTIVITY_FULLDOC_CHARS whole: pass the ENTIRE
+    #   document. Objectives lists up front often do not map 1-1 onto the
+    #   action sections below, so any anchoring heuristic misses actions.
+    # - larger documents: windows anchored on each target's verbatim quote
+    #   occurrences. Page-chunk dumps failed two ways on real documents: a
+    #   consolidated target whose first quote sits in an early summary chunk
+    #   got 12k of front matter (truncation never reached the section that
+    #   lists its actions), and whole chunks exceed the 12k budget anyway.
     norm_chunks = [(chunk, normalise_for_matching(chunk.text)) for chunk in chunks]
 
     activity_calls = []
     for target in targets:
         pages = target.get("pageNumbers", [])
-        context_parts = _quote_context_windows(target, norm_chunks)
-        if not context_parts:
-            # Fallback: chunks covering the target's pages (pre-window
-            # behaviour) for targets whose quotes cannot be located.
-            seen: set[int] = set()
-            for page in pages:
-                for chunk_text in page_to_chunks.get(page, []):
-                    h = hash(chunk_text)
-                    if h not in seen:
-                        seen.add(h)
-                        context_parts.append(chunk_text)
-
-        context = "\n\n---\n\n".join(context_parts)
-        if len(context) > 12000:
-            context = context[:12000].rsplit("\n\n", 1)[0]  # truncate at paragraph boundary
+        context = _activity_context(target, doc, norm_chunks, page_to_chunks)
         pages_str = ", ".join(str(p) for p in pages) if pages else "unknown"
 
         system = ACTIVITIES_SYSTEM

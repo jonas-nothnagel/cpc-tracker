@@ -301,6 +301,34 @@ class TestLanguageMajority:
         assert _language_samples("short", 5000) == ["short"]
 
 
+class TestActivityContext:
+    def test_small_document_gets_whole_text(self):
+        from src.extract import DocumentText, PageSpan, _activity_context
+        doc = DocumentText(pages=[
+            PageSpan(page=1, text="Objectives: 1. Increase aquaculture production."),
+            PageSpan(page=5, text="4.2 Aquaculture actions\n4.2.14. Develop fisheries in inland waters."),
+        ])
+        target = {"text": "Increase aquaculture production", "pageNumbers": [1],
+                  "sources": [{"sourceText": "Increase aquaculture production."}]}
+        ctx = _activity_context(target, doc, [], {})
+        assert "4.2.14. Develop fisheries in inland waters" in ctx  # far section included
+
+    def test_large_document_uses_windows(self, monkeypatch):
+        from src import extract as ex
+        from src.extract import Chunk, DocumentText, PageSpan, _activity_context
+        from src.extract_validation import normalise_for_matching
+        monkeypatch.setattr(ex, "ACTIVITY_FULLDOC_CHARS", 100)
+        big = "filler " * 2000 + "The quoted target sentence here." + " trailer " * 2000
+        doc = DocumentText(pages=[PageSpan(page=1, text=big)])
+        chunks = [Chunk(text=big, pages=[1])]
+        norm_chunks = [(c, normalise_for_matching(c.text)) for c in chunks]
+        target = {"text": "t", "pageNumbers": [1],
+                  "sources": [{"sourceText": "The quoted target sentence here."}]}
+        ctx = _activity_context(target, doc, norm_chunks, {1: [big]})
+        assert "The quoted target sentence here." in ctx
+        assert len(ctx) < len(big)  # windowed, not the whole document
+
+
 class TestRelevanceSample:
     def test_short_chunk_passes_through(self):
         assert _relevance_sample("short text", 8000) == "short text"

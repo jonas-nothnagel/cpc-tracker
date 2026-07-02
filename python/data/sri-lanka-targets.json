@@ -4323,7 +4323,72 @@
       9,
       10
     ],
-    "activities": "Ensure sustainable management of the living marine resources based on the best available evidence from social, economic and ecological sciences.\nApply ecosystem and precautionary approaches to promote responsible fisheries management.\nEnhance the stocks of endangered, threatened and protected species.\nEnhance fish stocks in the territorial sea and the exclusive economic zone (EEZ) by ranching and habitat enhancement.\nPrevent overcapacity of the fishing fleet.\nDivert marine fishing efforts from over-exploited areas to unexploited or under- exploited areas.\nPromote the use of fishing practices and equipment that cause comparatively low adverse impacts on the environment.\nMaintain the ban of fishing in Sri Lanka waters by foreign fishing vessels except for research and development purposes.\nPromote responsible fisheries in compliance with requirements stipulated in international treaties concerning management of fisheries.\nLimit the new access to high seas fishing only to fishing vessels equipped with state- of-the-art technology for fish detection, on-board fish quality maintenance, etc."
+    "activities": "Ensure sustainable management of the living marine resources based on the best available evidence from social, economic and ecological sciences.\nApply ecosystem and precautionary approaches to promote responsible fisheries management.\nEnhance the stocks of endangered, threatened and protected species.\nEnhance fish stocks in the territorial sea and the exclusive economic zone (EEZ) by ranching and habitat enhancement.\nPrevent overcapacity of the fishing fleet.\nDivert marine fishing efforts from over-exploited areas to unexploited or under- exploited areas.\nPromote the use of fishing practices and equipment that cause comparatively low adverse impacts on the environment.\nMaintain the ban of fishing in Sri Lanka waters by foreign fishing vessels except for research and development purposes.\nPromote responsible fisheries in compliance with requirements stipulated in international treaties concerning management of fisheries.\nLimit the new access to high seas fishing only to fishing vessels equipped with state- of-the-art technology for fish detection, on-board fish quality maintenance, etc.\nApply ecosystem approach to management of fisheries in inland waters.\nEnsure conservation of aquatic biodiversity in inland waters.\nRegulate the length and engine capacity of fishing vessel fishing in lagoons and estuaries.\nNot allow the use of motorized boats for fishing in reservoirs.\nApply temporal and spatial planning in development of aquaculture.\nAllocate land and water resources for aquaculture projects only after environmental, socio-economic and cultural impact assessments.\nEnsure that aquaculture projects are implemented in strict compliance with conditions of approval.\nStrengthen the aquaculture-animal healthcare activities.\nPromote the use of best management practices (BMPs) in aquaculture.",
+    "activitySources": [
+      {
+        "text": "Apply ecosystem approach to management of fisheries in inland waters.",
+        "sourceText": "4.2.1. Apply ecosystem approach to management of fisheries in inland waters.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.1"
+      },
+      {
+        "text": "Ensure conservation of aquatic biodiversity in inland waters.",
+        "sourceText": "4.2.2. Ensure conservation of aquatic biodiversity in inland waters.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.2"
+      },
+      {
+        "text": "Regulate the length and engine capacity of fishing vessel fishing in lagoons and estuaries.",
+        "sourceText": "4.2.3. Regulate the length and engine capacity of fishing vessel fishing in lagoons and estuaries.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.3"
+      },
+      {
+        "text": "Not allow the use of motorized boats for fishing in reservoirs.",
+        "sourceText": "4.2.4. Not allow the use of motorized boats for fishing in reservoirs.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.4"
+      },
+      {
+        "text": "Apply temporal and spatial planning in development of aquaculture.",
+        "sourceText": "4.2.5. Apply temporal and spatial planning in development of aquaculture.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.5"
+      },
+      {
+        "text": "Allocate land and water resources for aquaculture projects only after environmental, socio-economic and cultural impact assessments.",
+        "sourceText": "4.2.6. Allocate land and water resources for aquaculture projects only after environmental, socio-economic and cultural impact assessments.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.6"
+      },
+      {
+        "text": "Ensure that aquaculture projects are implemented in strict compliance with conditions of approval.",
+        "sourceText": "4.2.7. Ensure that aquaculture projects are implemented in strict compliance with conditions of approval.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.7"
+      },
+      {
+        "text": "Strengthen the aquaculture-animal healthcare activities.",
+        "sourceText": "4.2.8. Strengthen the aquaculture-animal healthcare activities.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.8"
+      },
+      {
+        "text": "Promote the use of best management practices (BMPs) in aquaculture.",
+        "sourceText": "4.2.9. Promote the use of best management practices (BMPs) in aquaculture.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.9"
+      }
+    ]
   },
   {
     "id": "NFAP_2",
@@ -4406,6 +4471,44 @@
       8,
       9,
       10
+    ],
+    "activities": "Develop fisheries and aquaculture as appropriate in inland waters.\nPromote fishing for under-exploited and unexploited fish resources in inland waters.\nExpand and intensify aquaculture through environmentally friendly approaches.\nPromote the culture of indigenous species, and new exotic species in compliance with the Food and Agriculture Organization (FAO) Code of Practice for the Introduction of Aquatic Species.\nGenetically improve the performance of fish species used for aquaculture with the application of the precautionary principle.",
+    "activitySources": [
+      {
+        "text": "Develop fisheries and aquaculture as appropriate in inland waters.",
+        "sourceText": "4.2.14. Develop fisheries and aquaculture as appropriate in inland waters.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.14"
+      },
+      {
+        "text": "Promote fishing for under-exploited and unexploited fish resources in inland waters.",
+        "sourceText": "4.2.15. Promote fishing for under-exploited and unexploited fish resources in inland waters.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.15"
+      },
+      {
+        "text": "Expand and intensify aquaculture through environmentally friendly approaches.",
+        "sourceText": "4.2.16. Expand and intensify aquaculture through environmentally friendly approaches.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.16"
+      },
+      {
+        "text": "Promote the culture of indigenous species, and new exotic species in compliance with the Food and Agriculture Organization (FAO) Code of Practice for the Introduction of Aquatic Species.",
+        "sourceText": "4.2.17. Promote the culture of indigenous species, and new exotic species in compliance with the Food and Agriculture Organization (FAO) Code of Practice for the Introduction of Aquatic Species.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.17"
+      },
+      {
+        "text": "Genetically improve the performance of fish species used for aquaculture with the application of the precautionary principle.",
+        "sourceText": "4.2.18. Genetically improve the performance of fish species used for aquaculture with the application of the precautionary principle.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.18"
+      }
     ]
   },
   {
@@ -4433,6 +4536,23 @@
       8,
       9,
       10
+    ],
+    "activities": "Improve quality infrastructure facilities in the production and supply chain.\nDevelop awareness on best fish handling practices.",
+    "activitySources": [
+      {
+        "text": "Improve quality infrastructure facilities in the production and supply chain.",
+        "sourceText": "4.3.6. Improve quality infrastructure facilities in the production and supply chain.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.6"
+      },
+      {
+        "text": "Develop awareness on best fish handling practices.",
+        "sourceText": "4.3.7. Develop awareness on best fish handling practices.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.7"
+      }
     ]
   },
   {
@@ -4460,6 +4580,44 @@
       8,
       9,
       10
+    ],
+    "activities": "Create employment with adequate income levels in the sector to ensure food security of more people.\nEnsure quality and food safety of locally marketed fish and fishery products.\nPromote consumption of sufficient fish for meeting nutritional requirements.\nStock fish as buffer stocks during gluts to ensure the availability of fish at reasonable prices during lean periods.\nEnsure the traceability and transparency at all stages of the value chain process.",
+    "activitySources": [
+      {
+        "text": "Create employment with adequate income levels in the sector to ensure food security of more people.",
+        "sourceText": "4.3.1. Create employment with adequate income levels in the sector to ensure food security of more people.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.1"
+      },
+      {
+        "text": "Ensure quality and food safety of locally marketed fish and fishery products.",
+        "sourceText": "4.3.2. Ensure quality and food safety of locally marketed fish and fishery products.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.2"
+      },
+      {
+        "text": "Promote consumption of sufficient fish for meeting nutritional requirements.",
+        "sourceText": "4.3.3. Promote consumption of sufficient fish for meeting nutritional requirements.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.3"
+      },
+      {
+        "text": "Stock fish as buffer stocks during gluts to ensure the availability of fish at reasonable prices during lean periods.",
+        "sourceText": "4.3.4. Stock fish as buffer stocks during gluts to ensure the availability of fish at reasonable prices during lean periods.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.4"
+      },
+      {
+        "text": "Ensure the traceability and transparency at all stages of the value chain process.",
+        "sourceText": "4.3.5. Ensure the traceability and transparency at all stages of the value chain process.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.5"
+      }
     ]
   },
   {
@@ -4487,6 +4645,72 @@
       8,
       9,
       10
+    ],
+    "activities": "Promote investments in export-oriented fisheries and aquaculture projects.\nPromote the production of fish and fishery products meeting the food safety and quality standards acceptable in the international market, and ensure an efficient supply chain management.\nPromote the import and culture of new exotic species that have the potential for export.\nPromote the production and export of live ornamental fish and aquatic ornamental plants.\nPromote a market driven production of fisheries and aquaculture products including innovative products.\nPromote the eco-friendly or organic production of fisheries and aquaculture products, which fetch comparatively higher prices in the international market.\nProvide assistance for branding of Sri Lankan products.\nPromote the construction of fishing vessels, recreational vessels and other vessels for export.\nWork for trade agreements that will improve the access to all export products including fisheries and aquaculture products in identified or prioritized international markets.",
+    "activitySources": [
+      {
+        "text": "Promote investments in export-oriented fisheries and aquaculture projects.",
+        "sourceText": "4.3.8. Promote investments in export-oriented fisheries and aquaculture projects.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.8"
+      },
+      {
+        "text": "Promote the production of fish and fishery products meeting the food safety and quality standards acceptable in the international market, and ensure an efficient supply chain management.",
+        "sourceText": "4.3.9. Promote the production of fish and fishery products meeting the food safety and quality standards acceptable in the international market, and ensure an efficient supply chain management.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.9"
+      },
+      {
+        "text": "Promote the import and culture of new exotic species that have the potential for export.",
+        "sourceText": "4.3.10. Promote the import and culture of new exotic species that have the potential for export.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.10"
+      },
+      {
+        "text": "Promote the production and export of live ornamental fish and aquatic ornamental plants.",
+        "sourceText": "4.3.11. Promote the production and export of live ornamental fish and aquatic ornamental plants.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.11"
+      },
+      {
+        "text": "Promote a market driven production of fisheries and aquaculture products including innovative products.",
+        "sourceText": "4.3.12. Promote a market driven production of fisheries and aquaculture products including innovative products.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.12"
+      },
+      {
+        "text": "Promote the eco-friendly or organic production of fisheries and aquaculture products, which fetch comparatively higher prices in the international market.",
+        "sourceText": "4.3.13. Promote the eco-friendly or organic production of fisheries and aquaculture products, which fetch comparatively higher prices in the international market.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.13"
+      },
+      {
+        "text": "Provide assistance for branding of Sri Lankan products.",
+        "sourceText": "4.3.14. Provide assistance for branding of Sri Lankan products.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.14"
+      },
+      {
+        "text": "Promote the construction of fishing vessels, recreational vessels and other vessels for export.",
+        "sourceText": "4.3.15. Promote the construction of fishing vessels, recreational vessels and other vessels for export.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.15"
+      },
+      {
+        "text": "Work for trade agreements that will improve the access to all export products including fisheries and aquaculture products in identified or prioritized international markets.",
+        "sourceText": "4.3.16. Work for trade agreements that will improve the access to all export products including fisheries and aquaculture products in identified or prioritized international markets.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.3.16"
+      }
     ]
   },
   {
@@ -4514,6 +4738,65 @@
       8,
       9,
       10
+    ],
+    "activities": "Work for generation of more employment opportunities in the sector where possible.\nAssist women in the fisher communities to set up micro-business enterprises with special attention to widows.\nProvide training and capacity building programs to assist women and marginalized groups to take up supplementary income generation activities.\nEncourage communities to commence business activities including integrated sustainable tourism.\nMotivate communities to commence aquaculture or culture-based fisheries as income activities in wetland areas associated with their villages.\nTrain school leavers in advanced technology related to fisheries, aquaculture and new marine industries targeting employment.\nTrain skippers and crew members for foreign employment.\nContinue to implement the poverty alleviation programmes that provides sustainable livelihoods.",
+    "activitySources": [
+      {
+        "text": "Work for generation of more employment opportunities in the sector where possible.",
+        "sourceText": "4.5.1. Work for generation of more employment opportunities in the sector where possible.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.1"
+      },
+      {
+        "text": "Assist women in the fisher communities to set up micro-business enterprises with special attention to widows.",
+        "sourceText": "4.5.2. Assist women in the fisher communities to set up micro-business enterprises with special attention to widows.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.2"
+      },
+      {
+        "text": "Provide training and capacity building programs to assist women and marginalized groups to take up supplementary income generation activities.",
+        "sourceText": "4.5.3. Provide training and capacity building programs to assist women and marginalized groups to take up supplementary income generation activities.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.3"
+      },
+      {
+        "text": "Encourage communities to commence business activities including integrated sustainable tourism.",
+        "sourceText": "4.5.4. Encourage communities to commence business activities including integrated sustainable tourism.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.4"
+      },
+      {
+        "text": "Motivate communities to commence aquaculture or culture-based fisheries as income activities in wetland areas associated with their villages.",
+        "sourceText": "4.5.5. Motivate communities to commence aquaculture or culture-based fisheries as income activities in wetland areas associated with their villages.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.5"
+      },
+      {
+        "text": "Train school leavers in advanced technology related to fisheries, aquaculture and new marine industries targeting employment.",
+        "sourceText": "4.5.6. Train school leavers in advanced technology related to fisheries, aquaculture and new marine industries targeting employment.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.6"
+      },
+      {
+        "text": "Train skippers and crew members for foreign employment.",
+        "sourceText": "4.5.7. Train skippers and crew members for foreign employment.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.7"
+      },
+      {
+        "text": "Continue to implement the poverty alleviation programmes that provides sustainable livelihoods.",
+        "sourceText": "4.5.8. Continue to implement the poverty alleviation programmes that provides sustainable livelihoods.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.8"
+      }
     ]
   },
   {
@@ -4541,6 +4824,79 @@
       8,
       9,
       10
+    ],
+    "activities": "Take measures to prevent alcoholism in fishing communities.\nEnsure that adequate compensation is provided to fisher communities who will be affected by development activities in the respective areas.\nImprove the social safety net and social security protection for the fishers and fish workers including women.\nRespect the tenure rights of the traditional, migrant, subsistence and artisanal fishing communities to land, waters and fish resources.\nMake right holders responsible for sustainable use of the resources.\nEnsure safe, healthy and fair working conditions at sea, inland waters and on land.\nInvolve fishing communities in designing, planning and implementation of fisheries management measures.\nBuild the capacity of fishers and ensure their effective participation in fisheries management.\nPromote investment in human resource development such as health, education, literacy and digital inclusion in fishing communities.\nProgressively realize rights of the small scale fishers and fishworkers to an adequate standard of living in accordance with the national and international human right standards.",
+    "activitySources": [
+      {
+        "text": "Take measures to prevent alcoholism in fishing communities.",
+        "sourceText": "4.5.19. Take measures to prevent alcoholism in fishing communities.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.19"
+      },
+      {
+        "text": "Ensure that adequate compensation is provided to fisher communities who will be affected by development activities in the respective areas.",
+        "sourceText": "4.5.20. Ensure that adequate compensation is provided to fisher communities who will be affected by development activities in the respective areas.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.20"
+      },
+      {
+        "text": "Improve the social safety net and social security protection for the fishers and fish workers including women.",
+        "sourceText": "4.5.21. Improve the social safety net and social security protection for the fishers and fish workers including women.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.21"
+      },
+      {
+        "text": "Respect the tenure rights of the traditional, migrant, subsistence and artisanal fishing communities to land, waters and fish resources.",
+        "sourceText": "4.5.22. Respect the tenure rights of the traditional, migrant, subsistence and artisanal fishing communities to land, waters and fish resources.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.22"
+      },
+      {
+        "text": "Make right holders responsible for sustainable use of the resources.",
+        "sourceText": "4.5.23. Make right holders responsible for sustainable use of the resources.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.23"
+      },
+      {
+        "text": "Ensure safe, healthy and fair working conditions at sea, inland waters and on land.",
+        "sourceText": "4.5.24. Ensure safe, healthy and fair working conditions at sea, inland waters and on land.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.24"
+      },
+      {
+        "text": "Involve fishing communities in designing, planning and implementation of fisheries management measures.",
+        "sourceText": "4.5.25. Involve fishing communities in designing, planning and implementation of fisheries management measures.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.25"
+      },
+      {
+        "text": "Build the capacity of fishers and ensure their effective participation in fisheries management.",
+        "sourceText": "4.5.26. Build the capacity of fishers and ensure their effective participation in fisheries management.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.26"
+      },
+      {
+        "text": "Promote investment in human resource development such as health, education, literacy and digital inclusion in fishing communities.",
+        "sourceText": "4.5.27. Promote investment in human resource development such as health, education, literacy and digital inclusion in fishing communities.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.27"
+      },
+      {
+        "text": "Progressively realize rights of the small scale fishers and fishworkers to an adequate standard of living in accordance with the national and international human right standards.",
+        "sourceText": "4.5.28. Progressively realize rights of the small scale fishers and fishworkers to an adequate standard of living in accordance with the national and international human right standards.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.28"
+      }
     ]
   },
   {
