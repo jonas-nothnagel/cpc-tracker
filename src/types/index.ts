@@ -630,6 +630,15 @@ export interface CountryConfig {
    */
   excludedDocTypes?: string[];
   /**
+   * Document-type ids hidden by default in the briefing's analytical views
+   * (the coherence wheel on every slide, the doc-pairs matrix, section counts)
+   * IN ADDITION to `defaultHiddenDocTypes`, so a country's strategic documents
+   * lead every view while its second-tier documents stay one click away. Unlike
+   * `defaultHiddenDocTypes` (hidden everywhere, including the Explore workbench),
+   * these remain visible in Explore. Defaults to an empty list.
+   */
+  secondaryDocTypes?: string[];
+  /**
    * Which mitigation grouping the Implementation Coverage view should default to.
    * - `"ipcc"` (default): group by IPCC sector (Mongolia and most countries).
    * - `"country_sectors"`: group by the country's own sector taxonomy from

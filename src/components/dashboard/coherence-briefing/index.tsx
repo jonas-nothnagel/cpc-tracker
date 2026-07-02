@@ -298,13 +298,25 @@ export function CoherenceBriefing({
     ],
   );
   // ── Document include/exclude filter ─────────────────────────────
-  // Soft-hidden docs (defaultHiddenDocTypes) ship to the browser but start
-  // hidden; users can toggle any document on/off. Every narrative number,
-  // wheel ribbon, and matrix cell below is derived from these visible arrays,
-  // so they all recompute live with no pipeline re-run. The Explore workbench
-  // (explorerProps above) owns its OWN hiddenDocs and keeps the full corpus.
+  // Soft-hidden docs ship to the browser but start hidden; users can toggle any
+  // document on/off. Every narrative number, wheel ribbon, and matrix cell below
+  // is derived from these visible arrays, so they all recompute live with no
+  // pipeline re-run. The Explore workbench (explorerProps above) owns its OWN
+  // hiddenDocs and keeps the full corpus.
+  //
+  // The briefing default-hidden set = docs hidden everywhere
+  // (`defaultHiddenDocTypes`) PLUS the country's second-tier docs
+  // (`secondaryDocTypes`), which are hidden from the briefing analytical views
+  // but stay visible in Explore. So every view here leads with the strategic
+  // documents while the second-tier ones are one click away.
   const defaultHiddenDocTypes = useMemo(
-    () => countryConfig?.defaultHiddenDocTypes ?? [],
+    () =>
+      Array.from(
+        new Set([
+          ...(countryConfig?.defaultHiddenDocTypes ?? []),
+          ...(countryConfig?.secondaryDocTypes ?? []),
+        ]),
+      ),
     [countryConfig],
   );
   const [hiddenDocs, setHiddenDocs] = useState<Set<string>>(
