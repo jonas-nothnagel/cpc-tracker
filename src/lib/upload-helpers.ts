@@ -1,5 +1,9 @@
 import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
+import type {
+  ExtractionReviewItemOutcome,
+  ExtractionReviewPostBody,
+} from "@/lib/feedback/types";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -61,6 +65,14 @@ export interface ExtractedItem {
   activitySources?: ExtractedActivity[];
   /** Validator note (unsourced claims or quotes not found in the document). */
   _provenanceFlag?: string;
+  // Review-diff bookkeeping (extraction-review ledger only; never sent to
+  // the analysis — extractedItemToTargetRow ignores these).
+  /** Text as first shown to the reviewer, to detect edits. */
+  initialText?: string;
+  /** Label as first shown to the reviewer. */
+  initialLabel?: string;
+  /** True for targets the reviewer typed in by hand (recall-gap signal). */
+  manuallyAdded?: boolean;
 }
 
 /** True for auto-generated labels like "Target 3" that carry no document numbering. */
@@ -117,6 +129,80 @@ export const DOCUMENT_TYPES: { value: PolicyDocumentType; label: string; hint?: 
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/**
+ * Build the extraction-review ledger event from the reviewer's final item
+ * states. Pure so it is unit-testable; the wizard POSTs the result to
+ * /api/extraction-review fire-and-forget. Reviewer corrections are the
+ * production learning signal: removals expose precision problems, edits
+ * expose phrasing problems, manual additions expose recall gaps.
+ */
+export function buildExtractionReviewEvent(
+  items: ExtractedItem[],
+  meta: {
+    countryRaw: string;
+    fileName: string;
+    docType: string;
+    outcome: "accepted" | "discarded";
+    clientId: string;
+    locale: string;
+  }
+): ExtractionReviewPostBody {
+  const outcomes: ExtractionReviewItemOutcome[] = [];
+  const counts = { extracted: 0, kept: 0, edited: 0, removed: 0, added: 0 };
+  for (const item of items) {
+    if (!item.manuallyAdded) counts.extracted += 1;
+    if (item.manuallyAdded) {
+      // Added-then-unchecked items are noise, not signal.
+      if (!item.accepted) continue;
+      counts.added += 1;
+      outcomes.push({
+        action: "added",
+        label: item.label,
+        textAfter: item.text,
+      });
+      continue;
+    }
+    const base = {
+      label: item.initialLabel ?? item.label,
+      textBefore: item.initialText ?? item.text,
+      ...(item.textCleanup ? { textCleanup: item.textCleanup } : {}),
+      ...(item._provenanceFlag ? { hadProvenanceFlag: true } : {}),
+    };
+    if (!item.accepted || meta.outcome === "discarded") {
+      counts.removed += 1;
+      outcomes.push({ action: "removed", ...base });
+    } else if (
+      item.text !== (item.initialText ?? item.text) ||
+      item.label !== (item.initialLabel ?? item.label)
+    ) {
+      counts.edited += 1;
+      outcomes.push({ action: "edited", ...base, textAfter: item.text });
+    } else {
+      counts.kept += 1;
+      outcomes.push({ action: "kept", ...base });
+    }
+  }
+  return {
+    countryRaw: meta.countryRaw,
+    fileName: meta.fileName,
+    docType: meta.docType,
+    outcome: meta.outcome,
+    counts,
+    items: outcomes,
+    clientId: meta.clientId,
+    locale: meta.locale,
+  };
+}
+
+/** POST the review event; failures only log (never block the review flow). */
+export function submitExtractionReview(body: ExtractionReviewPostBody): void {
+  fetch("/api/extraction-review", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  }).catch((err) => console.warn("extraction-review submit failed:", err));
+}
 
 /** Check if an Excel file looks like a BTR/CTF file based on its name. */
 export function isBtrExcel(fileName: string): boolean {

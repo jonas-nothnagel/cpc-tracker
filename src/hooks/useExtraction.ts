@@ -116,9 +116,14 @@ export function useExtraction() {
           // Invert them into the canonical shape: text = English working
           // text, textOriginal = verbatim original.
           const legacy = !!item.language && !!item.text_eng && !item.textOriginal;
+          const text = legacy ? item.text_eng! : item.text;
+          const label = legacy ? item.label_eng || item.label : item.label;
           return {
-            text: legacy ? item.text_eng! : item.text,
-            label: legacy ? item.label_eng || item.label : item.label,
+            text,
+            label,
+            // Review-diff bookkeeping: what the reviewer first saw.
+            initialText: text,
+            initialLabel: label,
             sourceDocument: item.sourceDocument,
             accepted: true,
             pageNumbers: item.pageNumbers,
@@ -203,6 +208,7 @@ export function useExtraction() {
         label: extractManualLabel.trim() || `Target ${acceptedCount + 1}`,
         sourceDocument: extractDocType,
         accepted: true,
+        manuallyAdded: true,
       },
     ]);
     setExtractManualLabel("");
