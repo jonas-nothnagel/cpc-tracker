@@ -94,7 +94,7 @@ EXPECTED_COUNTS: dict[str, str] = {
 #
 # CONTAMINATION RULE: any document whose curated targets appear here must not
 # serve as tier-1 gold in scripts/eval_manifest.json (currently excluded on
-# these grounds: Mongolia FSS, Sri Lanka NDC, Côte d'Ivoire NDC). Update the
+# these grounds: Mongolia FSS, Mongolia NBSAP, Sri Lanka NDC, Côte d'Ivoire NDC). Update the
 # manifest exclusion note when changing the examples.
 # ---------------------------------------------------------------------------
 FEW_SHOT_EXAMPLES = """\
@@ -116,13 +116,12 @@ carrying capacity of rangelands and improving livestock economic turnover throug
 export and meat supply to the domestic."
 
 NBSAP examples:
-- "Restore at least 30 percent of degraded ecosystems and improve ecological integrity and \
-connectivity"
-- "Ensure that each representative type of the main ecosystems is included and that 30% of \
-the country's total land area is effectively conserved within the National Protected Area \
-Network, while strengthening ecological connectivity across the landscape."
-- "Redesign subsidies and incentives that negatively impact biodiversity to be environment \
-and biodiversity-friendly."
+- "By 2030, restore at least 30 percent of degraded ecosystems and improve ecological \
+integrity and connectivity."
+- "By 2030, 30% of the country's total area will be included in the special protected area \
+network, representing major ecosystem types and strengthening ecological connectivity."
+- "By 2030, reform subsidies and incentives that have negative impacts on biodiversity, \
+while increasing environmentally positive (green) incentives."
 
 NAP examples:
 - "Minimize risks from climate change induced disasters and improve resilience"

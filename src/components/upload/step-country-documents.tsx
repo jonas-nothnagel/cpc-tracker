@@ -293,6 +293,29 @@ export function StepCountryDocuments({
         </div>
       )}
 
+      {/* Partial-scan notice when there is no review modal to carry it: e.g. a
+          partially-scanned document that yielded zero targets. Without this the
+          reviewer would only see the empty-outcome message and could wrongly
+          conclude the document holds no commitments, when most of it was simply
+          unreadable. */}
+      {!extracting &&
+        !extractError &&
+        !showExtractionModal &&
+        extractWarnings.some((w) => w.code === "PARTIAL_TEXT_LAYER") && (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+            {extractWarnings
+              .filter((w) => w.code === "PARTIAL_TEXT_LAYER")
+              .map((w, i) => (
+                <p key={i} className="text-sm text-amber-800">
+                  {t("partialTextLayer", {
+                    empty: w.emptyPages ?? 0,
+                    total: w.pages ?? 0,
+                  })}
+                </p>
+              ))}
+          </div>
+        )}
+
       {/* Extraction succeeded but found nothing: a valid outcome, stated plainly */}
       {!extracting && !extractError && extractEmptyFile && (
         <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4">
