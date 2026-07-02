@@ -71,6 +71,17 @@
       "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx: 4 component-level rows. CONFIRMED SCAN: the local PDF is 2 pages with zero extractable text (the expert worked from a fuller/text version), so this doc behaves as a second real-world scanned fixture; the CLI/wizard reject it with NO_TEXT_LAYER."
     },
     {
+      "docCode": "SL-PPPP-TXT",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/eval/sri-lanka-2jul26-expert.json",
+      "docPath": "python/data/eval/sri-lanka-pppp-exec-summary.txt",
+      "docType": "national physical planning policy",
+      "sourceDocument": "PPPP",
+      "language": "en",
+      "notes": "Executive summary of the updated NPPP 2048, copy-pasted verbatim by the team on 2026-07-02 because the local PDF is a 2-page scan. Committed fixture, so this entry needs no OneDrive mount. The 4 expert component rows appear verbatim in this text."
+    },
+    {
       "docCode": "SL-NAP",
       "country": "sri-lanka",
       "tier": 1,
