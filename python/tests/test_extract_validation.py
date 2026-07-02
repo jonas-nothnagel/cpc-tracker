@@ -54,6 +54,12 @@ class TestNormalisation:
     def test_dehyphenation_of_line_breaks(self):
         assert "reforestation" in normalise_for_matching("re-\nforestation")
 
+    def test_soft_hyphen_joins_words(self):
+        # PDF text layers break justified words with soft hyphen + newline;
+        # both sides must normalise to the joined word.
+        assert normalise_for_matching("preven­\ntiva") == "preventiva"
+        assert normalise_for_matching("preven­tiva") == "preventiva"
+
 
 class TestNgrams:
     def test_short_text_yields_whole_phrase(self):

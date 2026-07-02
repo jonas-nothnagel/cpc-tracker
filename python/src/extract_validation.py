@@ -47,6 +47,12 @@ _CHAR_MAP = str.maketrans({
     " ": " ",  # no-break space
 })
 
+# A soft hyphen (U+00AD) marks a discretionary line break inside a word;
+# whatever whitespace follows it is layout. Must run BEFORE whitespace
+# folding, or "preven\xad\ntiva" becomes "preven tiva" instead of
+# "preventiva" (observed in the PNSH PDF text layer).
+_SOFT_HYPHEN_RE = re.compile("­\\s*")
+
 # "restora-\ntion" -> "restoration" (hyphenation at a line break is a PDF
 # layout artifact).
 _DEHYPHENATE_RE = re.compile(r"(\w)-\s*\n\s*(\w)")
@@ -69,6 +75,7 @@ def normalise_for_matching(text: str) -> str:
     casefolds, and folds punctuation runs to single spaces. NOT for display;
     matching only.
     """
+    text = _SOFT_HYPHEN_RE.sub("", text)
     text = text.translate(_CHAR_MAP)
     text = _DEHYPHENATE_RE.sub(r"\1\2", text)
     text = unicodedata.normalize("NFKD", text)

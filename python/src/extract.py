@@ -268,9 +268,11 @@ contain policy targets:
 CONSOLIDATE_SYSTEM = """\
 You are a senior policy analyst finalising the target list for a national \
 policy coherence assessment. You have received candidate targets extracted \
-from different sections of a {doc_type} document.
+from ONE PORTION of a {doc_type} document (consolidation runs per portion; \
+other portions are handled separately).
 
-Your task is to produce the FINAL, CLEAN list of distinct policy targets by:
+Your task is to produce the CLEAN list of distinct policy targets for this \
+portion by:
 1. Removing duplicates or near-duplicates (keep the most complete version).
 2. Merging overlapping targets that clearly refer to the same objective. When \
    you merge, you MUST preserve every "sources" entry from the merged \
@@ -281,8 +283,12 @@ Your task is to produce the FINAL, CLEAN list of distinct policy targets by:
 4. Keeping the list at the right level of abstraction — each item should be \
    a distinct policy objective suitable for cross-document coherence analysis.
 
-A typical {doc_type} contains roughly {expected_count} targets. If you have \
-significantly more, you are likely including too many sub-measures or context.
+Do NOT compress the list toward a target count: merge only genuine \
+duplicates and overlapping statements of the same objective, and remove only \
+items that are clearly not policy targets. Distinct objectives stay separate \
+even when they are many. (For calibration only: a typical {doc_type} \
+contains roughly {expected_count} targets across the WHOLE document; this \
+portion may hold any share of that.)
 
 Each candidate includes a "pageNumbers" array showing which pages it was \
 found on. When merging candidates, combine their page numbers (union of all \
@@ -302,6 +308,10 @@ When merging:
 - "sources" = the union of all merged candidates' source entries (no \
   deduplication of sourceText required — repeated quotes are evidence of \
   recurrence across sections).
+- When candidates carry "textOriginal" / "labelOriginal" fields (non-English \
+  documents), every output object MUST carry them too: merge the \
+  original-language text under the same rules as "text", and never translate \
+  "sources[].sourceText".
 
 Return a JSON array. Each object must have:
 - "text": the policy target (display + pipeline input)
@@ -310,6 +320,9 @@ Return a JSON array. Each object must have:
 - "sources": array of {{ "sourceText": "...", "section": "..." }} entries — \
   preserved verbatim from input candidates, never invented
 - "textCleanup": "verbatim" | "cleaned" | "synthesis"
+- "textOriginal" and "labelOriginal": REQUIRED on every object whenever the \
+  input candidates carry them (non-English documents) — the original-language \
+  target text and label, merged under the same rules as "text"
 
 Output valid JSON only — no markdown fences, no explanation."""
 
@@ -371,10 +384,14 @@ Extract any explicitly listed sub-activities, measures, or actions for this targ
 MULTILANG_ADDENDUM = """\
 
 LANGUAGE NOTE: This document is written in {language_name} (not English).
-- Extract "text" and "label" in the document's original language.
-- Additionally provide:
-  - "text_eng": English translation of the target text
-  - "label_eng": English translation of the label
+- "sources[].sourceText" MUST remain the exact verbatim quote in the \
+document's original language — never translate it.
+- Return "text" and "label" as faithful ENGLISH translations of the target, \
+preserving every number, percentage, date, and scope qualifier exactly.
+- Additionally provide on each object:
+  - "textOriginal": the target text in the original language, derived from \
+the sources under the same verbatim/cleanup rules as "text"
+  - "labelOriginal": the label in the original language
 """
 
 # ---------------------------------------------------------------------------
@@ -759,10 +776,19 @@ def _parse_json_array_status(
             if "pageNumbers" in item and isinstance(item["pageNumbers"], list):
                 entry["pageNumbers"] = item["pageNumbers"]
 
-            # Preserve translation fields if present
-            for tfield in ("text_eng", "label_eng"):
+            # Original-language fields (English-first schema): text/label are
+            # English; textOriginal/labelOriginal carry the source language.
+            for tfield in ("textOriginal", "labelOriginal"):
                 if tfield in item and item[tfield]:
                     entry[tfield] = str(item[tfield]).strip()
+            # Legacy schema (pre English-first cached responses): original in
+            # text, English in text_eng. Invert into the canonical shape.
+            if item.get("text_eng") and "textOriginal" not in entry:
+                entry["textOriginal"] = entry["text"]
+                entry["labelOriginal"] = entry["label"]
+                entry["text"] = str(item["text_eng"]).strip()
+                if item.get("label_eng"):
+                    entry["label"] = str(item["label_eng"]).strip()[:80]
 
             # Provenance: sources[] (verbatim quotes) + textCleanup
             sources = _parse_sources(item)
@@ -772,10 +798,13 @@ def _parse_json_array_status(
             if cleanup in _VALID_CLEANUPS:
                 entry["textCleanup"] = cleanup
             elif sources:
-                # Default: assume verbatim if a single source matches text after
-                # whitespace normalisation; otherwise default to "cleaned" so
-                # downstream consumers can still surface a provenance badge.
-                norm_text = re.sub(r"\s+", " ", text).strip()
+                # Default: assume verbatim if a single source matches the
+                # original-language text (fall back to `text` for English
+                # documents) after whitespace normalisation; otherwise default
+                # to "cleaned" so downstream consumers can still surface a
+                # provenance badge.
+                compare = entry.get("textOriginal") or entry["text"]
+                norm_text = re.sub(r"\s+", " ", compare).strip()
                 norm_src = re.sub(r"\s+", " ", sources[0]["sourceText"]).strip()
                 entry["textCleanup"] = "verbatim" if norm_text == norm_src else "cleaned"
 
@@ -889,13 +918,20 @@ def dedupe_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
 _CLAIM_PATTERNS: list[tuple[str, "re.Pattern[str]"]] = [
     ("percent", re.compile(r"\b\d{1,3}(?:[.,]\d+)?\s?%")),
     ("year", re.compile(r"\b(?:19|20)\d{2}\b")),
-    # Quantities with units we care about in policy targets
+    # Quantities with units we care about in policy targets. English `text`
+    # is compared against original-language sources (es/mn/fr corpora), so
+    # the alternation carries the unit spellings observed in those corpora;
+    # _normalise_claim strips separators, so only the unit word must match a
+    # variant here.
     (
         "quantity",
         re.compile(
             r"\b\d[\d.,]*\s?(?:tCO2e|tCO2eq|tCO₂e|tCO₂eq|MtCO2|"
             r"million tons?|thousand tons?|tons?|tonnes?|ha|km2|km²|"
-            r"hectares?|GW|MW|kWh)\b",
+            r"hectares?|GW|MW|kWh|"
+            r"hect[áa]reas?|millones\s+de\s+toneladas?|miles\s+de\s+toneladas?|"
+            r"toneladas?|"
+            r"га|тонн|сая\s+тонн|мянган?\s+тонн)\b",
             re.IGNORECASE,
         ),
     ),
@@ -929,12 +965,41 @@ def _extract_claims(text: str) -> set[str]:
     return claims
 
 
-def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
-    """Return a list of unsourced claims found in target['text'].
+_NUM_PREFIX_RE = re.compile(r"^\d+")
 
-    Empty list means the target is well-grounded. Run on every extracted
-    target after consolidation; surface non-empty results as warnings so the
-    pipeline does not silently emit fabricated numbers.
+
+def _missing_claims(claims: set[str], src_claims: set[str]) -> list[str]:
+    """Claims not grounded in the source claims.
+
+    Exact set-membership first. For non-percent claims, a numeric-magnitude
+    fallback grounds e.g. "1500hectares" (English display text) against
+    "1500hectáreas" (Spanish source): unit words are language-specific, the
+    magnitude is not. Tradeoff, accepted: a same-magnitude unit swap
+    (tons vs hectares) passes the fallback; the quote-in-document validator
+    and the human review remain the backstop.
+    """
+    src_numeric = {
+        m.group() for c in src_claims if (m := _NUM_PREFIX_RE.match(c))
+    }
+    missing = []
+    for c in sorted(claims):
+        if c in src_claims:
+            continue
+        m = _NUM_PREFIX_RE.match(c)
+        if m and not c.endswith("%") and m.group() in src_numeric:
+            continue
+        missing.append(c)
+    return missing
+
+
+def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
+    """Return a list of unsourced claims found in the target's display text.
+
+    Empty list means the target is well-grounded. Checks the English `text`
+    and, when present, the original-language `textOriginal` against the
+    verbatim sources. Run on every extracted target after consolidation;
+    surface non-empty results as warnings so the pipeline does not silently
+    emit fabricated numbers.
     """
     text = str(target.get("text", ""))
     if not text:
@@ -948,10 +1013,15 @@ def validate_claim_grounding(target: dict[str, Any]) -> list[str]:
         # only flags claims, not missing-sources policy.
         return []
 
-    text_claims = _extract_claims(text)
     src_claims = _extract_claims(src_blob)
-    missing = sorted(c for c in text_claims if c not in src_claims)
-    return missing
+    missing = set(_missing_claims(_extract_claims(text), src_claims))
+    if target.get("textOriginal"):
+        missing |= set(
+            _missing_claims(
+                _extract_claims(str(target["textOriginal"])), src_claims
+            )
+        )
+    return sorted(missing)
 
 
 def _parse_relevance(raw: str) -> bool:
@@ -1009,12 +1079,18 @@ async def _extract_activities(
 
         system = ACTIVITIES_SYSTEM
         if not is_english:
-            system += f"\n\nThe source text is in {lang_name}."
+            system += (
+                f"\n\nThe source text is in {lang_name}. Return each "
+                'activity\'s "text" as a faithful ENGLISH translation '
+                "(preserve every number, percentage, and date exactly); "
+                '"sourceText" MUST remain the verbatim original-language '
+                "quote — never translate it."
+            )
 
         activity_calls.append({
             "system": system,
             "user": ACTIVITIES_USER.format(
-                target_text=target.get("text_eng", target["text"]),
+                target_text=target["text"],
                 pages=pages_str,
                 context=context,
             ),
@@ -1255,6 +1331,10 @@ async def extract_from_text(
             item["pageNumbers"] = chunk.pages
             if not is_english:
                 item["language"] = lang_code
+                if item.get("textOriginal"):
+                    # The original came verbatim from the document; the
+                    # English working text is machine-translated.
+                    item["textOriginalSource"] = "source"
             all_candidates.append(item)
 
     logger.info(f"Phase 1 total: {len(all_candidates)} candidates")
@@ -1291,6 +1371,8 @@ async def extract_from_text(
         item["sourceDocument"] = source_document
         if not is_english:
             item["language"] = lang_code
+            if item.get("textOriginal"):
+                item["textOriginalSource"] = "source"
         # NOTE: no pageNumbers fallback. Unioning ALL candidates' pages onto
         # an item that lost its own would fabricate provenance; absent pages
         # are more honest than wrong ones.
@@ -1319,6 +1401,53 @@ async def extract_from_text(
         )
 
     return final
+
+
+def _restore_original_text(
+    items: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+) -> None:
+    """Deterministically re-attach textOriginal lost in consolidation.
+
+    The consolidation prompt requires textOriginal/labelOriginal to be
+    preserved, but model compliance is not guaranteed (observed: one window
+    dropping the field on every output). When an output item lacks
+    textOriginal and its first source quote identifies exactly one input
+    candidate, that candidate's original-language fields are restored.
+    Synthesis items merging several candidates keep only what the model
+    returned: there is no verbatim original for merged text, the sources
+    array is its original-language provenance.
+    """
+    by_quote: dict[str, dict[str, Any]] = {}
+    for cand in candidates:
+        if not cand.get("textOriginal"):
+            continue
+        for src in cand.get("sources") or []:
+            key = normalise_for_matching(str(src.get("sourceText", "")))
+            if key:
+                # First writer wins; duplicate quotes across candidates are
+                # ambiguous and skipped at lookup time via sentinel.
+                by_quote[key] = cand if key not in by_quote else {}
+    restored = 0
+    for item in items:
+        if item.get("textOriginal"):
+            continue
+        sources = item.get("sources") or []
+        if not sources:
+            continue
+        key = normalise_for_matching(str(sources[0].get("sourceText", "")))
+        cand = by_quote.get(key)
+        if cand and cand.get("textOriginal") and item.get("textCleanup") != "synthesis":
+            item["textOriginal"] = cand["textOriginal"]
+            if cand.get("labelOriginal"):
+                item["labelOriginal"] = cand["labelOriginal"]
+            restored += 1
+    if restored:
+        logger.info(
+            "Restored textOriginal on %d consolidated target(s) from their "
+            "source candidates",
+            restored,
+        )
 
 
 async def _consolidate_windows(
@@ -1356,6 +1485,16 @@ async def _consolidate_windows(
                     "pageNumbers": c.get("pageNumbers", []),
                     "sources": c.get("sources", []),
                     "textCleanup": c.get("textCleanup", "verbatim"),
+                    **(
+                        {"textOriginal": c["textOriginal"]}
+                        if c.get("textOriginal")
+                        else {}
+                    ),
+                    **(
+                        {"labelOriginal": c["labelOriginal"]}
+                        if c.get("labelOriginal")
+                        else {}
+                    ),
                 }
                 for c in window
             ],
@@ -1389,6 +1528,7 @@ async def _consolidate_windows(
             )
             final.extend(window)
         else:
+            _restore_original_text(items, window)
             final.extend(items)
 
     if fallbacks:

@@ -16,8 +16,10 @@ from src.extract import (
     _extract_text_docx,
     _extract_text_pdf,
     _parse_json_array_status,
+    _restore_original_text,
     dedupe_candidates,
     pdf_text_layer_stats,
+    validate_claim_grounding,
 )
 
 
@@ -212,6 +214,123 @@ class TestParseJsonArrayStatus:
         items, ok = _parse_json_array_status('```json\n[{"text": "A long enough target"}]\n```')
         assert ok is True
         assert len(items) == 1
+
+
+# ---------------------------------------------------------------------------
+# English-first multilingual schema
+# ---------------------------------------------------------------------------
+
+
+class TestEnglishFirstParsing:
+    def test_new_schema_passthrough(self):
+        raw = (
+            '[{"text": "Restore 1,500 hectares of forest by 2030", '
+            '"label": "Objective 3.2", '
+            '"textOriginal": "Restaurar 1.500 hectáreas de bosque para 2030", '
+            '"labelOriginal": "Objetivo 3.2", '
+            '"sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}]}]'
+        )
+        items, ok = _parse_json_array_status(raw)
+        assert ok
+        item = items[0]
+        assert item["text"].startswith("Restore")
+        assert item["textOriginal"].startswith("Restaurar")
+        assert item["labelOriginal"] == "Objetivo 3.2"
+        # textCleanup default compares the ORIGINAL against the source
+        assert item["textCleanup"] == "verbatim"
+
+    def test_legacy_text_eng_schema_inverts(self):
+        raw = (
+            '[{"text": "Restaurar 1.500 hectáreas de bosque", '
+            '"label": "Objetivo 3.2", '
+            '"text_eng": "Restore 1,500 hectares of forest", '
+            '"label_eng": "Objective 3.2"}]'
+        )
+        items, ok = _parse_json_array_status(raw)
+        assert ok
+        item = items[0]
+        assert item["text"] == "Restore 1,500 hectares of forest"
+        assert item["label"] == "Objective 3.2"
+        assert item["textOriginal"] == "Restaurar 1.500 hectáreas de bosque"
+        assert item["labelOriginal"] == "Objetivo 3.2"
+
+
+class TestCrossLanguageClaimGrounding:
+    def test_translated_units_ground_via_numeric_fallback(self):
+        target = {
+            "text": "Restore 1,500 hectares of degraded forest by 2030",
+            "textOriginal": "Restaurar 1.500 hectáreas de bosque degradado para 2030",
+            "sources": [
+                {"sourceText": "Restaurar 1.500 hectáreas de bosque degradado para 2030"}
+            ],
+        }
+        assert validate_claim_grounding(target) == []
+
+    def test_fabricated_number_still_flags(self):
+        target = {
+            "text": "Restore 9,999 hectares of degraded forest by 2030",
+            "sources": [
+                {"sourceText": "Restaurar 1.500 hectáreas de bosque degradado para 2030"}
+            ],
+        }
+        missing = validate_claim_grounding(target)
+        assert any("9999" in c for c in missing)
+
+    def test_fabricated_number_in_original_flags(self):
+        target = {
+            "text": "Restore forest areas",
+            "textOriginal": "Restaurar 7.777 hectáreas de bosque",
+            "sources": [{"sourceText": "Restaurar zonas de bosque"}],
+        }
+        missing = validate_claim_grounding(target)
+        assert any("7777" in c for c in missing)
+
+
+class TestRestoreOriginalText:
+    CAND = {
+        "text": "Restore 1,500 hectares of forest",
+        "textOriginal": "Restaurar 1.500 hectáreas de bosque",
+        "labelOriginal": "Objetivo 3.2",
+        "sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}],
+    }
+
+    def test_restores_from_unique_candidate(self):
+        item = {
+            "text": "Restore 1,500 hectares of forest",
+            "textCleanup": "verbatim",
+            "sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}],
+        }
+        _restore_original_text([item], [dict(self.CAND)])
+        assert item["textOriginal"] == self.CAND["textOriginal"]
+        assert item["labelOriginal"] == "Objetivo 3.2"
+
+    def test_synthesis_items_not_restored(self):
+        item = {
+            "text": "Merged synthesis",
+            "textCleanup": "synthesis",
+            "sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}],
+        }
+        _restore_original_text([item], [dict(self.CAND)])
+        assert "textOriginal" not in item
+
+    def test_ambiguous_quote_not_restored(self):
+        cand2 = dict(self.CAND, textOriginal="Otra meta distinta")
+        item = {
+            "text": "x" * 20,
+            "textCleanup": "cleaned",
+            "sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}],
+        }
+        _restore_original_text([item], [dict(self.CAND), cand2])
+        assert "textOriginal" not in item
+
+    def test_model_provided_original_untouched(self):
+        item = {
+            "text": "Restore forests",
+            "textOriginal": "Model kept this",
+            "sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}],
+        }
+        _restore_original_text([item], [dict(self.CAND)])
+        assert item["textOriginal"] == "Model kept this"
 
 
 # ---------------------------------------------------------------------------
