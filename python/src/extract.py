@@ -644,31 +644,92 @@ def chunk_text(
 # ---------------------------------------------------------------------------
 
 
+def _language_samples(text: str, size: int = 5000) -> list[str]:
+    """Head, middle, and tail samples for language detection.
+
+    A single head sample misdetects multi-language documents: Sri Lankan
+    policies open with Sinhala and Tamil sections before the English text,
+    and legacy-font-encoded scripts read as Latin gibberish that lingua maps
+    to arbitrary languages. Three positions give a majority vote a chance.
+    """
+    if len(text) <= size:
+        return [text]
+    mid_start = (len(text) - size) // 2
+    return [text[:size], text[mid_start : mid_start + size], text[-size:]]
+
+
+def _majority_language(codes: list[tuple[str, str]]) -> tuple[str, str, bool]:
+    """Majority vote over per-sample detections.
+
+    Returns (code, name, agreed). With no majority (all samples differ),
+    falls back to the head sample's detection and reports agreed=False so
+    the caller can warn: mixed-language documents deserve a human look and
+    an explicit --language override.
+    """
+    counts: dict[str, int] = {}
+    for code, _name in codes:
+        counts[code] = counts.get(code, 0) + 1
+    best_code = max(counts, key=lambda c: counts[c])
+    if counts[best_code] > 1:
+        name = next(name for code, name in codes if code == best_code)
+        return best_code, name, counts[best_code] == len(codes)
+    return codes[0][0], codes[0][1], False
+
+
 def detect_language(text: str) -> tuple[str, str]:
     """Detect language of text. Returns (iso_code, language_name).
 
-    Uses lingua-language-detector if available, falls back to langdetect,
-    and ultimately defaults to English.
+    Majority vote over head/middle/tail samples (multi-language documents);
+    uses lingua-language-detector if available, falls back to langdetect,
+    and ultimately defaults to English. Sample disagreement is logged and
+    recorded in RUN_META as a document warning.
     """
-    sample = text[:5000]  # Only need a sample for detection
+    samples = _language_samples(text)
+
+    def _finish(per_sample: list[tuple[str, str]]) -> tuple[str, str]:
+        code, name, agreed = _majority_language(per_sample)
+        if not agreed and len(per_sample) > 1:
+            detail = [c for c, _ in per_sample]
+            logger.warning(
+                "Language detection disagrees across document sections %s — "
+                "using %s. For multi-language documents pass --language "
+                "explicitly.",
+                detail, code,
+            )
+            RUN_META.setdefault("documentWarnings", []).append({
+                "code": "MIXED_LANGUAGE_DETECTION",
+                "samples": detail,
+                "chosen": code,
+            })
+        return code, name
 
     try:
         from lingua import Language, LanguageDetectorBuilder
         detector = LanguageDetectorBuilder.from_all_languages().build()
-        detected = detector.detect_language_of(sample)
-        if detected and detected != Language.ENGLISH:
-            return detected.iso_code_639_1.name.lower(), detected.name.title()
-        return "en", "English"
+        per_sample: list[tuple[str, str]] = []
+        for sample in samples:
+            detected = detector.detect_language_of(sample)
+            if detected and detected != Language.ENGLISH:
+                per_sample.append(
+                    (detected.iso_code_639_1.name.lower(), detected.name.title())
+                )
+            else:
+                per_sample.append(("en", "English"))
+        return _finish(per_sample)
     except ImportError:
         pass
 
     try:
         from langdetect import detect
-        code = detect(sample)
-        if code and code != "en":
-            # langdetect returns ISO 639-1 codes
-            return code, code.upper()
-        return "en", "English"
+        per_sample = []
+        for sample in samples:
+            code = detect(sample)
+            if code and code != "en":
+                # langdetect returns ISO 639-1 codes
+                per_sample.append((code, code.upper()))
+            else:
+                per_sample.append(("en", "English"))
+        return _finish(per_sample)
     except ImportError:
         pass
 
@@ -1748,11 +1809,14 @@ async def main_async(args: argparse.Namespace) -> int:
     out.write_text(json.dumps(items, indent=2, ensure_ascii=False))
     logger.info(f"Saved {len(items)} targets to {out}")
 
-    # Run metadata sidecar: document warnings (partial text layer) + pipeline
-    # self-reports (consolidation fallbacks, quotes not found). The API route
-    # forwards these so reviewers see them next to the extracted targets.
-    meta = {"documentWarnings": document_warnings, **RUN_META}
-    if document_warnings or RUN_META:
+    # Run metadata sidecar: document warnings (partial text layer, mixed
+    # language detection) + pipeline self-reports (consolidation fallbacks,
+    # quotes not found). The API route forwards these so reviewers see them
+    # next to the extracted targets.
+    run_meta = dict(RUN_META)
+    document_warnings.extend(run_meta.pop("documentWarnings", []))
+    meta = {"documentWarnings": document_warnings, **run_meta}
+    if document_warnings or run_meta:
         (out.parent / (out.name + ".meta.json")).write_text(
             json.dumps(meta, indent=2)
         )

@@ -253,6 +253,36 @@ class TestQuoteContextWindows:
         assert _quote_context_windows(target, norm_chunks) == []
 
 
+class TestLanguageMajority:
+    def test_majority_wins(self):
+        from src.extract import _majority_language
+        code, name, agreed = _majority_language(
+            [("si", "Sinhala"), ("en", "English"), ("en", "English")]
+        )
+        assert (code, agreed) == ("en", False)
+        assert name == "English"
+
+    def test_unanimous(self):
+        from src.extract import _majority_language
+        code, _, agreed = _majority_language([("es", "Spanish")] * 3)
+        assert (code, agreed) == ("es", True)
+
+    def test_full_disagreement_falls_back_to_head(self):
+        from src.extract import _majority_language
+        code, _, agreed = _majority_language(
+            [("tn", "Tswana"), ("ta", "Tamil"), ("en", "English")]
+        )
+        assert (code, agreed) == ("tn", False)
+
+    def test_samples_cover_three_positions(self):
+        from src.extract import _language_samples
+        text = "A" * 6000 + "B" * 6000 + "C" * 6000
+        samples = _language_samples(text, 5000)
+        assert len(samples) == 3
+        assert samples[0][0] == "A" and samples[1][2500] == "B" and samples[2][-1] == "C"
+        assert _language_samples("short", 5000) == ["short"]
+
+
 class TestRelevanceSample:
     def test_short_chunk_passes_through(self):
         assert _relevance_sample("short text", 8000) == "short text"
