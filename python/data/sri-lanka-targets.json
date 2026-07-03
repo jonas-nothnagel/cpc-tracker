@@ -6622,5 +6622,775 @@
       90,
       91
     ]
+  },
+  {
+    "id": "NMP_1",
+    "text": "Construct a constantly updated national inventory of mineral resources.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 01",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Construct a constantly updated national inventory of mineral resources.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_2",
+    "text": "Assure sustainable utilization of mineral resources.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 02",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Assure sustainable utilization of mineral resources.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_3",
+    "text": "Encourage value-added exports and mineral-based product development with optimal benefits to the nation",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 03",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Encourage value-added exports and mineral-based product development with optimal benefits to the nation",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_4",
+    "text": "Ensure the balance between environmental conservation and the sustainable use of mineral resources for economic development.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 04",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensure the balance between environmental conservation and the sustainable use of mineral resources for economic development.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_5",
+    "text": "Inspire research and development.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 05",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Inspire research and development.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_6",
+    "text": "Promote mineral investment by providing a conducive regulatory framework and adopting good governance in the mineral sector.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 06",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote mineral investment by providing a conducive regulatory framework and adopting good governance in the mineral sector.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_7",
+    "text": "Facilitate to resolve land related matters in Mineral Industry",
+    "sourceDocument": "NMP",
+    "sourceLabel": "Goal 07",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Facilitate to resolve land related matters in Mineral Industry",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_8",
+    "text": "A national inventory of the mineral resources of the country, includingbasic geological data, will be made available with regular updates:I. Mineral-based data and information gathered and scattered among bothprivate and public entities will be integrated to formulate a detaileddatabase and updated information system.II. The knowledge gained from research activities on mineral resources willbe shared to update the mineral-based information system and createknowledge and enhancing the economy of the country.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "1 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "A national inventory of the mineral resources of the country, includingbasic geological data, will be made available with regular updates:I. Mineral-based data and information gathered and scattered among bothprivate and public entities will be integrated to formulate a detaileddatabase and updated information system.II. The knowledge gained from research activities on mineral resources willbe shared to update the mineral-based information system and createknowledge and enhancing the economy of the country.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_9",
+    "text": "A suitable institutional monitoring system will be developed tocontinually evaluate the current status of the mineral resources andpossible mineable quantities and report the development of thoseresources.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "1 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "A suitable institutional monitoring system will be developed tocontinually evaluate the current status of the mineral resources andpossible mineable quantities and report the development of thoseresources.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_10",
+    "text": "The entire jurisdiction's approach of exploring minerals to evaluate thenation’s mineral wealth will be effectively changed, and the state willsupport and get involved in systematic mineral exploration within thestate’s jurisdiction.I. The government authorities shall be authorized for scientific study ofminerals within the state’s jurisdiction.II. Mineral exploration conducted by third parties will be re-evaluated toobtain the data, information and inputs on mineral resources requiredby the State.III. Even if generating data about minerals isn’t a survey’s primaryobjective, any mineral-related information that comes out of such aprocess or activity as secondary data must be shared with the relevantauthorities.IV. The potential of offshore mineral resources and their economicextraction will be assessed regularly, and the necessary procedures,equipment, and knowledge required for exploration and mining of theminerals from the sea floor will be developed.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "1 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The entire jurisdiction's approach of exploring minerals to evaluate thenation’s mineral wealth will be effectively changed, and the state willsupport and get involved in systematic mineral exploration within thestate’s jurisdiction.I. The government authorities shall be authorized for scientific study ofminerals within the state’s jurisdiction.II. Mineral exploration conducted by third parties will be re-evaluated toobtain the data, information and inputs on mineral resources requiredby the State.III. Even if generating data about minerals isn’t a survey’s primaryobjective, any mineral-related information that comes out of such aprocess or activity as secondary data must be shared with the relevantauthorities.IV. The potential of offshore mineral resources and their economicextraction will be assessed regularly, and the necessary procedures,equipment, and knowledge required for exploration and mining of theminerals from the sea floor will be developed.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_11",
+    "text": "Sharing data generated, related to mineral exploration or miningbeyond national jurisdictions will be promoted ensuring compliancewith international obligations, transparency, and effective participationin global ocean governance.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "1 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Sharing data generated, related to mineral exploration or miningbeyond national jurisdictions will be promoted ensuring compliancewith international obligations, transparency, and effective participationin global ocean governance.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_12",
+    "text": "Mining of minerals will be permitted if minerals are utilizedappropriately, preventing any potential underuse that could degrade thevalue of the minerals.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "2 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Mining of minerals will be permitted if minerals are utilizedappropriately, preventing any potential underuse that could degrade thevalue of the minerals.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_13",
+    "text": "The entities that utilize minerals in a way that will be most beneficialfor the nation will be given mining preference.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "2 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The entities that utilize minerals in a way that will be most beneficialfor the nation will be given mining preference.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_14",
+    "text": "The regulatory authorities, with the participation of all stakeholders inthe industry, will evaluate the activities of existing entities, includingprivate companies and State-Owned Enterprises (SOEs), to ensure thegeneration of maximum benefits.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "2 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The regulatory authorities, with the participation of all stakeholders inthe industry, will evaluate the activities of existing entities, includingprivate companies and State-Owned Enterprises (SOEs), to ensure thegeneration of maximum benefits.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_15",
+    "text": "The areas with a high mineral potential should be identified and zonedfor future utilization.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "2 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The areas with a high mineral potential should be identified and zonedfor future utilization.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_16",
+    "text": "By the relevant rules and regulations, good health of the mines shouldbe maintained with minimal negative impact on the surroundingenvironment.I. Before the start of any mineral mining, necessary base data(environmental, geological, etc.) will be collected to quantify thepotential impact of such mineral extraction.II. In the event of a negative impact is caused by mining and mining-related activities, the authorized institutions related to mining shall assess such damages with the asistance of relevant government agencies, and the \"miner\" shall be obligated to compensate the afflicted parties and entitiesIII. Employee health and occupational safety precautions will be ensured by adopting standardsIV. When a mine's lifespan expires, appropriate measures will be takenunder \"Mine Closure\" to secure the mined area with preciserehabilitation norms.V. The zero-waste policy is encouraged at the mining stage and will becontinued until the processing and marketing stages.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "2 e)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "By the relevant rules and regulations, good health of the mines shouldbe maintained with minimal negative impact on the surroundingenvironment.I. Before the start of any mineral mining, necessary base data(environmental, geological, etc.) will be collected to quantify thepotential impact of such mineral extraction.II. In the event of a negative impact is caused by mining and mining-related activities, the authorized institutions related to mining shall assess such damages with the asistance of relevant government agencies, and the \"miner\" shall be obligated to compensate the afflicted parties and entitiesIII. Employee health and occupational safety precautions will be ensured by adopting standardsIV. When a mine's lifespan expires, appropriate measures will be takenunder \"Mine Closure\" to secure the mined area with preciserehabilitation norms.V. The zero-waste policy is encouraged at the mining stage and will becontinued until the processing and marketing stages.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_17",
+    "text": "To develop infrastructure facilities in remote rural areas where large orsmall-scale mining operations have been established in order to helpthe economic upliftment of the local population.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "2 f)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "To develop infrastructure facilities in remote rural areas where large orsmall-scale mining operations have been established in order to helpthe economic upliftment of the local population.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_18",
+    "text": "The intrinsic quality of local minerals will be assessed to maximizeeconomic benefits.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The intrinsic quality of local minerals will be assessed to maximizeeconomic benefits.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_19",
+    "text": "Market opportunities and market intelligence will be gathered to ensurethat appropriate international market-based export values are obtainedfrom the export of minerals in value-added form.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Market opportunities and market intelligence will be gathered to ensurethat appropriate international market-based export values are obtainedfrom the export of minerals in value-added form.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_20",
+    "text": "Recycling of mineral wastes is encouraged as a key conservationtechnique, and upgrades of low-grade mineral raw materials, mineralwastes, and rejects will be taken into consideration where possible.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Recycling of mineral wastes is encouraged as a key conservationtechnique, and upgrades of low-grade mineral raw materials, mineralwastes, and rejects will be taken into consideration where possible.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_21",
+    "text": "Opportunities to utilize quality mineral reserves will be made availableon a competitive basis following a careful analysis of the benefits to thecountry.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Opportunities to utilize quality mineral reserves will be made availableon a competitive basis following a careful analysis of the benefits to thecountry.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_22",
+    "text": "Processing and value-addition norms will be promoted by creating acompetitive base for investors.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 e)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Processing and value-addition norms will be promoted by creating acompetitive base for investors.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_23",
+    "text": "Considering the overall gain to the state from mineral exports, theminerals may be imported and re-exported depending on their significantvalue addition.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 f)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Considering the overall gain to the state from mineral exports, theminerals may be imported and re-exported depending on their significantvalue addition.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_24",
+    "text": "The fact that the minerals are non-renewable resources and that everymine eventually runs dry or becomes unprofitable should be taken intoconsideration in the mineral export policy. Therefore, export policyshould consider the nation’s long-term requirements and prohibit theexport of minerals in a minimal or non-value-added form that will in anyway adversely impact the sustenance and growth of the local value-addedindustry.I. Small-scale entrepreneurs in the mineral sector will be promoted withadequate access to technological, financial, managerial, and tradingsupport. Existing mineral-based industries will be strengthened anddiversified to increase their competitive edge, export potential, andemployment creation capacity.II. If the survival of a local mineral-based industry is threatened by ashortage or non-availability of local minerals, mineral imports will bepermitted, after being subjected to a careful analysis of the overallbenefits from such imports.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "3 g)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The fact that the minerals are non-renewable resources and that everymine eventually runs dry or becomes unprofitable should be taken intoconsideration in the mineral export policy. Therefore, export policyshould consider the nation’s long-term requirements and prohibit theexport of minerals in a minimal or non-value-added form that will in anyway adversely impact the sustenance and growth of the local value-addedindustry.I. Small-scale entrepreneurs in the mineral sector will be promoted withadequate access to technological, financial, managerial, and tradingsupport. Existing mineral-based industries will be strengthened anddiversified to increase their competitive edge, export potential, andemployment creation capacity.II. If the survival of a local mineral-based industry is threatened by ashortage or non-availability of local minerals, mineral imports will bepermitted, after being subjected to a careful analysis of the overallbenefits from such imports.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_25",
+    "text": "All necessary measures relating to mineral-based activities will betaken to protect and minimize adverse impacts on the environment andsociety and will equally apply to both private enterprises and SOEsengaged in the mineral sector.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "All necessary measures relating to mineral-based activities will betaken to protect and minimize adverse impacts on the environment andsociety and will equally apply to both private enterprises and SOEsengaged in the mineral sector.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_26",
+    "text": "Mining of minerals is only permitted in restricted areas under strictpreservative norms, following a comprehensive evaluation of itseconomic viability and potential environmental impacts, and is subjectto close monitoring.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Mining of minerals is only permitted in restricted areas under strictpreservative norms, following a comprehensive evaluation of itseconomic viability and potential environmental impacts, and is subjectto close monitoring.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_27",
+    "text": "The establishment or enhancement of environmental regulationsrelated to mining activities is promoted.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The establishment or enhancement of environmental regulationsrelated to mining activities is promoted.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_28",
+    "text": "Prior approval will be obtained to operate mineral-based industries,including mining, in environmentally sensitive areas.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Prior approval will be obtained to operate mineral-based industries,including mining, in environmentally sensitive areas.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_29",
+    "text": "To sustainably manage the coastal resources within the Coastal Zone,and maintain the stability of the coastal ecosystem.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 e)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "To sustainably manage the coastal resources within the Coastal Zone,and maintain the stability of the coastal ecosystem.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_30",
+    "text": "It will be encouraged to use contemporary technology and efficientmining techniques that address environmental issues and maintain thequality of raw materials.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 f)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "It will be encouraged to use contemporary technology and efficientmining techniques that address environmental issues and maintain thequality of raw materials.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_31",
+    "text": "Necessary human resources development and training will bepromoted to adopt available and advanced technologies to evolve acompetitive edge in the mineral industry.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 g)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Necessary human resources development and training will bepromoted to adopt available and advanced technologies to evolve acompetitive edge in the mineral industry.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_32",
+    "text": "Restoration and rehabilitation will be essential components of themining plan, which will be closely monitored and evaluated by therelevant authorities.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 h)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Restoration and rehabilitation will be essential components of themining plan, which will be closely monitored and evaluated by therelevant authorities.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_33",
+    "text": "Standard operating procedures will be developed to prevent mineralcontamination and infestation with unknown invasive species, harmful toxic chemicals, and radioactive or other biological, physical, orchemical means.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "4 i)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Standard operating procedures will be developed to prevent mineralcontamination and infestation with unknown invasive species, harmful toxic chemicals, and radioactive or other biological, physical, orchemical means.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_34",
+    "text": "The requirement for R&D activities will be identified to be alignedwith the national mineral policy's policy grounds, goals, andobjectives, and facilitate the allocation of dedicated funding andresources.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The requirement for R&D activities will be identified to be alignedwith the national mineral policy's policy grounds, goals, andobjectives, and facilitate the allocation of dedicated funding andresources.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_35",
+    "text": "Periodic assessments will be conducted to identify priority areas forresearch in the dynamics of the mineral industry.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Periodic assessments will be conducted to identify priority areas forresearch in the dynamics of the mineral industry.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_36",
+    "text": "The research will concentrate on the development of viable andaffordable processing techniques and mineral value addition underlocal conditions.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The research will concentrate on the development of viable andaffordable processing techniques and mineral value addition underlocal conditions.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_37",
+    "text": "Collaboration and partnerships between government agencies,research institutions, industries, and other stakeholders will befacilitated and promoted.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Collaboration and partnerships between government agencies,research institutions, industries, and other stakeholders will befacilitated and promoted.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_38",
+    "text": "Research will be developed to share expertise, information, andfacilities among the relevant entities.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 e)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Research will be developed to share expertise, information, andfacilities among the relevant entities.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_39",
+    "text": "f) International collaboration in R&D activities related to mineralresources including minerals beyond national jurisdiction will bepromoted.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 f)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "f) International collaboration in R&D activities related to mineralresources including minerals beyond national jurisdiction will bepromoted.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_40",
+    "text": "Appropriate mechanisms will be developed to disseminate the researchand development information and data among stakeholders.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 g)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Appropriate mechanisms will be developed to disseminate the researchand development information and data among stakeholders.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_41",
+    "text": "Responsible public-private partnerships and linkages, joint ventureswith both local and foreign investors, are promoted for industrialinvestments, giving preference to advanced technologies and valueaddition processes.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "5 h)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Responsible public-private partnerships and linkages, joint ventureswith both local and foreign investors, are promoted for industrialinvestments, giving preference to advanced technologies and valueaddition processes.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_42",
+    "text": "Existing Acts, regulations, guidelines, administrative frameworks, andfiscal norms shall be examined to align such tools with policyprinciples and goals.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Existing Acts, regulations, guidelines, administrative frameworks, andfiscal norms shall be examined to align such tools with policyprinciples and goals.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_43",
+    "text": "The Regulatory Institutional Framework system of the mineral sectoris strengthened to facilitate the exploration, mining, and efficientsupply of minerals for industries.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The Regulatory Institutional Framework system of the mineral sectoris strengthened to facilitate the exploration, mining, and efficientsupply of minerals for industries.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_44",
+    "text": "Fiscal policies will be strengthened with the assistance of relevantauthorities in a manner to acquire due remittance to the State.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Fiscal policies will be strengthened with the assistance of relevantauthorities in a manner to acquire due remittance to the State.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_45",
+    "text": "Good governance in the mineral sector will be ensured through theimplementation of necessary legal and administrative norms thatpromote transparency, accountability, participation, inclusivity, andenvironmental and social responsibility.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Good governance in the mineral sector will be ensured through theimplementation of necessary legal and administrative norms thatpromote transparency, accountability, participation, inclusivity, andenvironmental and social responsibility.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_46",
+    "text": "The provisions of the Act and Regulations will be reviewedperiodically and harmonized with the relevant policies governingindustrial activity.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 e)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The provisions of the Act and Regulations will be reviewedperiodically and harmonized with the relevant policies governingindustrial activity.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_47",
+    "text": "Market-based instruments (i.e. Polluter Pay System) are enforced toensure the sustainability of the mineral sector.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 f)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Market-based instruments (i.e. Polluter Pay System) are enforced toensure the sustainability of the mineral sector.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_48",
+    "text": "Development activities shall be limited to the lands with high mineralpotential, enabling the mining of those mineral resources when andwhere needed.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 g)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Development activities shall be limited to the lands with high mineralpotential, enabling the mining of those mineral resources when andwhere needed.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_49",
+    "text": "The need for capacity-building initiatives will be recognized tostrengthen the implementation and enforcement of legislative andfiscal norms.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 h)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The need for capacity-building initiatives will be recognized tostrengthen the implementation and enforcement of legislative andfiscal norms.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_50",
+    "text": "The recognition and protection of indigenous rights and the principleof free, prior, and informed consent (FPIC) are emphasized.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "6 i)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "The recognition and protection of indigenous rights and the principleof free, prior, and informed consent (FPIC) are emphasized.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_51",
+    "text": "Identification of spatial distribution of economically viable mineraloccurrences within Sri Lankan jurisdiction.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "7 a)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identification of spatial distribution of economically viable mineraloccurrences within Sri Lankan jurisdiction.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_52",
+    "text": "Establish mechanism for strategic assessment of optimum land usewith the consultation of relevant stakeholders. In this contextconsidering the non-renewable nature of mineral resources, utilize ofminerals in certain area will be prioritized over other land uses.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "7 b)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Establish mechanism for strategic assessment of optimum land usewith the consultation of relevant stakeholders. In this contextconsidering the non-renewable nature of mineral resources, utilize ofminerals in certain area will be prioritized over other land uses.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_53",
+    "text": "Ensuring the availability of lands for future mineral investmentprojects.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "7 c)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensuring the availability of lands for future mineral investmentprojects.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_54",
+    "text": "Declaring cleared ready-to-investment mineral deposits by gazettes",
+    "sourceDocument": "NMP",
+    "sourceLabel": "7 d)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Declaring cleared ready-to-investment mineral deposits by gazettes",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NMP_55",
+    "text": "Ensuring the healthy mine closure and effective rehabilitation foreffective land use.",
+    "sourceDocument": "NMP",
+    "sourceLabel": "7 e)",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensuring the healthy mine closure and effective rehabilitation foreffective land use.",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
   }
 ]
