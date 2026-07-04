@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { GLOBE_CATEGORIES_COUNT } from "@/lib/upload-helpers";
+import { GGA_CATEGORY_COUNT } from "@/data/active-taxonomies";
 
 interface AnalysisEstimateProps {
   targetCount: number;
@@ -28,7 +29,10 @@ export function AnalysisEstimate({
   onRunAnalysis,
 }: AnalysisEstimateProps) {
   const t = useTranslations("upload.estimate");
-  const classCalls = targetCount * (activeNbsCount + activeSectorsCount + GLOBE_CATEGORIES_COUNT);
+  // Matches the pipeline's actual call plan: active taxonomies only (a paused
+  // taxonomy contributes 0 via its empty group) plus the fixed GGA lens.
+  const classCalls =
+    targetCount * (activeNbsCount + activeSectorsCount + GLOBE_CATEGORIES_COUNT + GGA_CATEGORY_COUNT);
 
   return (
     <div className="bg-[var(--undp-light)] rounded-lg p-5 mb-8">

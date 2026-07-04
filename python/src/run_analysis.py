@@ -30,7 +30,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import CACHE_DIR, DATA_DIR, LLM_MODEL, OUTPUT_DIR
+from .config import ACTIVE_TAXONOMIES, CACHE_DIR, DATA_DIR, LLM_MODEL, OUTPUT_DIR
 from .classify import rank_classification
 from .classify_globe import (
     classify_globe_subcategories,
@@ -79,6 +79,54 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 TOTAL_STEPS = 8
+
+
+async def classify_active_taxonomies(
+    items: list[dict],
+    *,
+    nbs_categories: list[dict],
+    sectors: list[dict],
+    globe_categories: list[dict],
+    globe_subcategories: list[dict],
+    globe_few_shot_examples: list[dict],
+    gga_categories: list[dict],
+    cache_suffix: str,
+) -> dict[str, list[dict]]:
+    """Ranked classification of items (targets or BTR/BER pseudo-targets)
+    against the active taxonomies (config.ACTIVE_TAXONOMIES). Single source
+    of truth for the gating so the three call sites cannot drift; paused
+    taxonomies return empty lists and downstream consumers degrade to empty.
+
+    GLOBE prefers the fine-grained subcategory classifier (calibrated on
+    BIOFIN expert examples) when available; top-level `globe` records are
+    derived from the subcategory output so the same primary assignment flows
+    through every visualization. Without few-shot examples (e.g. Panama) it
+    falls back to the generic ranked classifier on the 9 top-level categories.
+    """
+    out: dict[str, list[dict]] = {"nbs": [], "sector": [], "globe": [], "globe_sub": [], "gga": []}
+    if "nbs" in ACTIVE_TAXONOMIES:
+        out["nbs"] = await rank_classification(items, nbs_categories, "nbs")
+    if "sector" in ACTIVE_TAXONOMIES:
+        out["sector"] = await rank_classification(items, sectors, "sector")
+    if "globe" in ACTIVE_TAXONOMIES:
+        if globe_subcategories and globe_few_shot_examples:
+            out["globe_sub"] = await classify_globe_subcategories(
+                items,
+                globe_subcategories,
+                globe_categories,
+                globe_few_shot_examples,
+                cache_suffix=cache_suffix,
+            )
+            out["globe"] = derive_globe_top_level_classifications(
+                out["globe_sub"],
+                globe_subcategories,
+                globe_categories,
+            )
+        else:
+            out["globe"] = await rank_classification(items, globe_categories, "globe")
+    if gga_categories and "gga" in ACTIVE_TAXONOMIES:
+        out["gga"] = await rank_classification(items, gga_categories, "gga")
+    return out
 
 
 def write_status(
@@ -318,8 +366,9 @@ async def main() -> None:
         t_count = sum(1 for q in quant_flags if q.get("isTimeBound"))
         logger.info(f"Saved quantitative flags: {q_count} quantitative, {t_count} time-bound")
 
-        # 3. Thematic classification (NBS + IPCC sectors)
-        write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against NBS categories, IPCC sectors, and GLOBE biodiversity categories", started_at=started_at)
+        # 3. Thematic classification against the active taxonomies
+        # (config.ACTIVE_TAXONOMIES; today IPCC sectors, GLOBE, GGA).
+        write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against thematic taxonomies", started_at=started_at)
         logger.info("")
         logger.info("STEP 2: Thematic classification")
         logger.info("-" * 40)
@@ -328,42 +377,21 @@ async def main() -> None:
         # categories. The top-ranked entry per (target, taxonomy) becomes the
         # primary (single-label); lower-scored entries above the relevance
         # threshold are also kept as multi-label data.
-        nbs_classifications = await rank_classification(targets, nbs_categories, "nbs")
-        sector_classifications = await rank_classification(targets, sectors, "sector")
-
-        # GLOBE: prefer the fine-grained subcategory classifier (calibrated
-        # on BIOFIN expert examples) when available. Top-level `globe`
-        # records are derived from the subcategory output so the same
-        # primary assignment flows through every visualization. When no
-        # few-shot examples exist (e.g. Panama today), fall back to the
-        # generic ranked classifier on the 9 top-level categories.
-        globe_sub_classifications: list[dict] = []
-        if globe_subcategories and globe_few_shot_examples:
-            globe_sub_classifications = await classify_globe_subcategories(
-                targets,
-                globe_subcategories,
-                globe_categories,
-                globe_few_shot_examples,
-                cache_suffix="targets",
-            )
-            globe_classifications = derive_globe_top_level_classifications(
-                globe_sub_classifications,
-                globe_subcategories,
-                globe_categories,
-            )
-        else:
-            globe_classifications = await rank_classification(
-                targets, globe_categories, "globe"
-            )
-
-        # GGA climate-resilience lens: classify policy targets against the seven
-        # thematic targets of the UAE Framework for Global Climate Resilience
-        # (decision 2/CMA.5). A standard ranked taxonomy, like NBS/IPCC above.
-        gga_classifications = (
-            await rank_classification(targets, gga_categories, "gga")
-            if gga_categories
-            else []
+        target_cls = await classify_active_taxonomies(
+            targets,
+            nbs_categories=nbs_categories,
+            sectors=sectors,
+            globe_categories=globe_categories,
+            globe_subcategories=globe_subcategories,
+            globe_few_shot_examples=globe_few_shot_examples,
+            gga_categories=gga_categories,
+            cache_suffix="targets",
         )
+        nbs_classifications = target_cls["nbs"]
+        sector_classifications = target_cls["sector"]
+        globe_classifications = target_cls["globe"]
+        globe_sub_classifications = target_cls["globe_sub"]
+        gga_classifications = target_cls["gga"]
 
         all_classifications = (
             nbs_classifications
@@ -497,35 +525,26 @@ async def main() -> None:
             measure_pseudo_targets = mit_pseudo_targets + adp_pseudo_targets
 
             if measure_pseudo_targets:
-                # Ranked classification of BTR actions against NBS and IPCC
-                # sectors. GLOBE follows the same primary-from-subcategory
-                # rule used for policy targets.
-                btr_nbs = await rank_classification(measure_pseudo_targets, nbs_categories, "nbs")
-                btr_sectors = await rank_classification(measure_pseudo_targets, sectors, "sector")
-                btr_gga = (
-                    await rank_classification(measure_pseudo_targets, gga_categories, "gga")
-                    if gga_categories
-                    else []
+                # Ranked classification of BTR actions against the active
+                # taxonomies (shared helper; see classify_active_taxonomies).
+                # If `sector` is ever paused, the sector write-back and
+                # measure grouping below degrade to empty rather than diverge
+                # from the policy-target and BER sites.
+                btr_cls = await classify_active_taxonomies(
+                    measure_pseudo_targets,
+                    nbs_categories=nbs_categories,
+                    sectors=sectors,
+                    globe_categories=globe_categories,
+                    globe_subcategories=globe_subcategories,
+                    globe_few_shot_examples=globe_few_shot_examples,
+                    gga_categories=gga_categories,
+                    cache_suffix="btr",
                 )
-
-                btr_globe_sub: list[dict] = []
-                if globe_subcategories and globe_few_shot_examples:
-                    btr_globe_sub = await classify_globe_subcategories(
-                        measure_pseudo_targets,
-                        globe_subcategories,
-                        globe_categories,
-                        globe_few_shot_examples,
-                        cache_suffix="btr",
-                    )
-                    btr_globe = derive_globe_top_level_classifications(
-                        btr_globe_sub,
-                        globe_subcategories,
-                        globe_categories,
-                    )
-                else:
-                    btr_globe = await rank_classification(
-                        measure_pseudo_targets, globe_categories, "globe"
-                    )
+                btr_nbs = btr_cls["nbs"]
+                btr_sectors = btr_cls["sector"]
+                btr_globe = btr_cls["globe"]
+                btr_globe_sub = btr_cls["globe_sub"]
+                btr_gga = btr_cls["gga"]
 
                 all_classifications.extend(
                     btr_nbs + btr_globe + btr_sectors + btr_globe_sub + btr_gga
@@ -633,35 +652,23 @@ async def main() -> None:
             logger.info(f"  {len(raw_programs)} raw programs -> {len(budget_pseudo_targets)} valid pseudo-targets")
 
             if budget_pseudo_targets:
-                # Ranked classification of BER programs against NBS and IPCC
-                # sectors. GLOBE follows the same primary-from-subcategory
-                # rule used elsewhere.
-                ber_nbs = await rank_classification(budget_pseudo_targets, nbs_categories, "nbs")
-                ber_sectors = await rank_classification(budget_pseudo_targets, sectors, "sector")
-                ber_gga = (
-                    await rank_classification(budget_pseudo_targets, gga_categories, "gga")
-                    if gga_categories
-                    else []
+                # Ranked classification of BER programs against the active
+                # taxonomies (shared helper; see classify_active_taxonomies).
+                ber_cls = await classify_active_taxonomies(
+                    budget_pseudo_targets,
+                    nbs_categories=nbs_categories,
+                    sectors=sectors,
+                    globe_categories=globe_categories,
+                    globe_subcategories=globe_subcategories,
+                    globe_few_shot_examples=globe_few_shot_examples,
+                    gga_categories=gga_categories,
+                    cache_suffix="ber",
                 )
-
-                ber_globe_sub: list[dict] = []
-                if globe_subcategories and globe_few_shot_examples:
-                    ber_globe_sub = await classify_globe_subcategories(
-                        budget_pseudo_targets,
-                        globe_subcategories,
-                        globe_categories,
-                        globe_few_shot_examples,
-                        cache_suffix="ber",
-                    )
-                    ber_globe = derive_globe_top_level_classifications(
-                        ber_globe_sub,
-                        globe_subcategories,
-                        globe_categories,
-                    )
-                else:
-                    ber_globe = await rank_classification(
-                        budget_pseudo_targets, globe_categories, "globe"
-                    )
+                ber_nbs = ber_cls["nbs"]
+                ber_sectors = ber_cls["sector"]
+                ber_globe = ber_cls["globe"]
+                ber_globe_sub = ber_cls["globe_sub"]
+                ber_gga = ber_cls["gga"]
 
                 all_classifications.extend(
                     ber_nbs + ber_globe + ber_sectors + ber_globe_sub + ber_gga

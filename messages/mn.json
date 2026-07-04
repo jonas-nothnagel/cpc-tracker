@@ -1031,7 +1031,7 @@
     "pipeline": {
       "input": {
         "policyTargets": "Таны бодлогын зорилтууд",
-        "taxonomy": "NBS ангилал ба IPCC салбарууд"
+        "taxonomy": "IPCC салбарууд, GLOBE ба GGA ангилал"
       },
       "step1": {
         "title": "Тоон илрүүлэлт",

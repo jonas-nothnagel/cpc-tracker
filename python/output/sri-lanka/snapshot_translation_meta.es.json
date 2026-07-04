@@ -29,7 +29,7 @@
     "LULUCF",
     "OECM"
   ],
-  "runDate": "2026-06-30T16:04:13.895853+00:00",
+  "runDate": "2026-07-04T11:21:49.793603+00:00",
   "cacheNamespace": "snapshot_translation_es",
   "files": {
     "corpus_themes.json": {
@@ -39,18 +39,18 @@
       "numericDriftFlags": []
     },
     "doc_pair_synthesis.json": {
-      "items": 3,
-      "fieldsTranslated": 12,
+      "items": 28,
+      "fieldsTranslated": 112,
       "emptyFallbacks": 0,
       "numericDriftFlags": []
     },
     "sector_synthesis.json": {
-      "items": 33,
-      "fieldsTranslated": 264,
+      "items": 16,
+      "fieldsTranslated": 128,
       "emptyFallbacks": 0,
       "numericDriftFlags": []
     }
   },
-  "totalFieldsTranslated": 302,
+  "totalFieldsTranslated": 266,
   "totalNumericDriftFlags": 0
 }

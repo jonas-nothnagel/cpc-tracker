@@ -27,6 +27,17 @@ LLM_CONCURRENCY: int = int(os.getenv("LLM_CONCURRENCY", "20"))
 LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0"))
 
 # ---------------------------------------------------------------------------
+# Active classification taxonomies
+# ---------------------------------------------------------------------------
+
+# Which ranked taxonomies STEP 2 (and BTR/BER pseudo-target classification)
+# actually runs. Project decision 2026-07-03: IPCC sectors, GLOBE, and GGA
+# only; NBS is paused until the taxonomy strategy is revisited. Category files
+# still load (synthesis display names, parser aliases), but no new NBS
+# classifications are produced. Restore by adding "nbs" back here.
+ACTIVE_TAXONOMIES: frozenset[str] = frozenset({"sector", "globe", "gga"})
+
+# ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 

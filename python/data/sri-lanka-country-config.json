@@ -4,7 +4,7 @@
   "_anchorDocTypeComment": "Intentionally omitted. anchorDocType drives the Vision Anchor Coverage view, which treats one document as the country's north-star/long-term vision that every other doc operationalises (Mongolia: Vision 2050 = SECTORAL). Sri Lanka's three documents (NDC, NBSAP, LDN) are parallel convention commitments (climate / nature / land), not a vision-and-derivatives hierarchy, so no anchor is set and that view stays off.",
   "defaultHiddenDocTypes": [],
   "excludedDocTypes": [],
-  "_documentTypesComment": "Sri Lanka's three source documents from data_sri_lanka_15Jun26.xlsx. shortLabel / fullLabel come verbatim from the xlsx Doc and Document columns; the mediumLabel parenthetical is the verbatim Convention column value (Climate Change / Nature / Land degradation) so a reader sees the convention domain at a glance. Colors from the UNDP-compatible Tailwind palette: blue=climate, green=nature, amber=land. Avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
+  "_documentTypesComment": "Sri Lanka's eight source documents. NDC/NBSAP/LDN from data_sri_lanka_15Jun26.xlsx: shortLabel / fullLabel verbatim from the xlsx Doc and Document columns, mediumLabel parenthetical = verbatim Convention column value. NAP/PPPP/NMP/NWRP are expert-curated from data_sri_lanka_2Jul26.xlsx (NMP/NWRP from its 2 Jul evening extension); NFAP is pipeline-extracted and expert-approved: fullLabel verbatim from the xlsx Document column / the document's own front matter, parenthetical = the sector domain. NMP objective is the policy's Vision (p.3) verbatim; NMP states no issuing author in its front matter (inquiries contact only), so author is omitted. Colors from the UNDP-compatible Tailwind palette; avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
   "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel; urls verified to return HTTP 200 on 2026-06-30 by reading each document's front matter. NDC 3.0 and LDN are direct PDFs (UNFCCC / UNCCD) and their objectives are near-verbatim from each document's cover letter. NBSAP: the Kunming-Montreal-aligned update is still in preparation and no public draft PDF was found, so no url / date / objective is set (the 2016-2022 NBSAP and the 2024 National Policy on Biodiversity are different documents and were not substituted).",
   "documentTypes": [
     {
@@ -76,10 +76,20 @@
       "docKind": "National sectoral policy (fisheries and aquaculture)",
       "published": "2018",
       "author": "Ministry of Fisheries and Aquatic Resources Development, Sri Lanka"
+    },
+    {
+      "id": "NMP",
+      "shortLabel": "NMP",
+      "mediumLabel": "NMP (Minerals)",
+      "fullLabel": "National Mineral Policy",
+      "color": "#db2777",
+      "docKind": "National sectoral policy (minerals)",
+      "published": "2026",
+      "objective": "Managing national mineral wealth for the optimal benefit of the nation."
     }
   ],
-  "_docProvenanceComment": "Primary-source citations per document. The 15 Jun xlsx Source column was empty for every row, so citations name the document and country only; no URLs, dates, or other details are invented. NAP/PPPP/NWRP/NFAP details (titles, years, ministries) are verbatim from each document's own front matter or executive summary; fields that the documents do not state are omitted.",
-  "_targetProvenanceComment": "Target curation provenance: NDC/NBSAP/LDN and NAP/PPPP rows are expert-curated (data_sri_lanka_15Jun26.xlsx, data_sri_lanka_2Jul26.xlsx). NWRP and NFAP rows were extracted by the document-extraction pipeline (python/src/extract.py, gpt-5.4) on 2026-07-02 and human-reviewed for provenance (one NWRP item removed because its claimed quote could not be located in the document). NFAP was additionally reviewed by a CO expert on 2026-07-02 (sri_lanka_NWRP_NFAP_for_review_2Jul26.xlsx): all 9 targets approved at target level, and 48 action lines she listed were added to activities (marked addedByReviewer, each verified verbatim against the document). NWRP remains pipeline evidence pending expert validation.",
+  "_docProvenanceComment": "Primary-source citations per document. The 15 Jun xlsx Source column was empty for every row, so citations name the document and country only; no URLs, dates, or other details are invented. NAP/PPPP/NWRP/NFAP details (titles, years, ministries) are verbatim from each document's own front matter or executive summary; NMP details are verbatim from the document cover ('National Mineral Policy', 'Sri Lanka', '2026') and its 'Policy Name / Effective Date' page (effective 01.06.2026); its front matter names no issuing author (inquiries contact only), so author is omitted. Fields that the documents do not state are omitted.",
+  "_targetProvenanceComment": "Target curation provenance: NDC/NBSAP/LDN and NAP/PPPP rows are expert-curated (data_sri_lanka_15Jun26.xlsx, data_sri_lanka_2Jul26.xlsx). NFAP rows were extracted by the document-extraction pipeline (python/src/extract.py, gpt-5.4) on 2026-07-02, human-reviewed for provenance, and approved by a CO expert reviewer the same day: all 9 targets approved at target level with zero text corrections, and the 48 action lines she listed were added to activities (marked addedByReviewer in activitySources, each verified verbatim against the document; see commit 21672bc). NMP and NWRP rows are expert-curated from the CO colleague's 2 Jul 2026 17:03 extension of data_sri_lanka_2Jul26.xlsx (SharePoint version history): 55 NMP rows ingested 2026-07-03 (ingest_sri_lanka_nmp_3jul26.py), and 33 expert NWRP rows replaced the 46 pipeline-extracted NWRP rows, which were never expert-validated, on 2026-07-03 (ingest_sri_lanka_nwrp_swap_3jul26.py). The colleague's clause-level NFAP rows (118) from the same extension are deliberately NOT ingested: the reviewer-approved 9-target + activities structure stands, and 47 of her 48 action lines appear verbatim among those clauses (verified 2026-07-03) — same source material at a different granularity, no conflict.",
   "docProvenance": {
     "NDC": "Nationally Determined Contributions 3.0, Sri Lanka",
     "NBSAP": "Draft National Biodiversity Strategy and Action Plan, Sri Lanka",
@@ -87,6 +97,7 @@
     "NAP": "National Agriculture Policy, Sri Lanka",
     "PPPP": "Physical Planning Policy & Plan - 2048, National Physical Planning Department, Sri Lanka",
     "NWRP": "National Water Resources Policy of Sri Lanka (2023)",
-    "NFAP": "The National Fisheries and Aquaculture Policy, Ministry of Fisheries and Aquatic Resources Development, Sri Lanka (2018)"
+    "NFAP": "The National Fisheries and Aquaculture Policy, Ministry of Fisheries and Aquatic Resources Development, Sri Lanka (2018)",
+    "NMP": "National Mineral Policy, Sri Lanka (2026)"
   }
 }

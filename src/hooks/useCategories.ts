@@ -3,6 +3,7 @@ import type { CategoryItem } from "@/lib/upload-helpers";
 import { NBS_CATEGORIES } from "@/data/nbs-categories";
 import { IPCC_SECTORS } from "@/data/sectors";
 import { GLOBE_CATEGORIES } from "@/data/globe-categories";
+import { isTaxonomyActive } from "@/data/active-taxonomies";
 
 export interface TaxonomyGroup {
   id: string;
@@ -14,44 +15,50 @@ export interface TaxonomyGroup {
 }
 
 export function useCategories() {
-  const [groups, setGroups] = useState<TaxonomyGroup[]>([
-    {
-      id: "nbs",
-      name: "Nature-Based Solutions",
-      description: "Classify targets against NBS intervention types (forests, wetlands, agriculture, etc.)",
-      color: "blue",
-      items: NBS_CATEGORIES.map((c) => ({ ...c, enabled: true, isCustom: false })),
-      isCustomGroup: false,
-    },
-    {
-      id: "sector",
-      name: "Climate Mitigation Taxonomy",
-      description: "Match targets to IPCC emissions sectors (energy, transport, agriculture, etc.)",
-      color: "amber",
-      items: IPCC_SECTORS.map((s) => ({ ...s, enabled: true, isCustom: false })),
-      isCustomGroup: false,
-    },
-    {
-      id: "globe",
-      name: "Biodiversity Taxonomy",
-      description: "BIOFIN's GLOBE Biodiversity Expenditure Taxonomy for cross-level analysis",
-      color: "emerald",
-      items: GLOBE_CATEGORIES.map((c) => ({ ...c, enabled: true, isCustom: false })),
-      isCustomGroup: false,
-    },
-  ]);
+  // Seed only the taxonomies the pipeline actually classifies against
+  // (@/data/active-taxonomies mirrors python/src/config.py); a paused
+  // taxonomy (NBS since 2026-07-03) must not be offered for curation.
+  const [groups, setGroups] = useState<TaxonomyGroup[]>(() =>
+    [
+      {
+        id: "nbs",
+        name: "Nature-Based Solutions",
+        description: "Classify targets against NBS intervention types (forests, wetlands, agriculture, etc.)",
+        color: "blue" as const,
+        items: NBS_CATEGORIES.map((c) => ({ ...c, enabled: true, isCustom: false })),
+        isCustomGroup: false,
+      },
+      {
+        id: "sector",
+        name: "Climate Mitigation Taxonomy",
+        description: "Match targets to IPCC emissions sectors (energy, transport, agriculture, etc.)",
+        color: "amber" as const,
+        items: IPCC_SECTORS.map((s) => ({ ...s, enabled: true, isCustom: false })),
+        isCustomGroup: false,
+      },
+      {
+        id: "globe",
+        name: "Biodiversity Taxonomy",
+        description: "BIOFIN's GLOBE Biodiversity Expenditure Taxonomy for cross-level analysis",
+        color: "emerald" as const,
+        items: GLOBE_CATEGORIES.map((c) => ({ ...c, enabled: true, isCustom: false })),
+        isCustomGroup: false,
+      },
+    ].filter((g) => isTaxonomyActive(g.id))
+  );
 
   const [showCategories, setShowCategories] = useState(true);
   const [newCatName, setNewCatName] = useState("");
   const [newCatDesc, setNewCatDesc] = useState("");
   const [addingTo, setAddingTo] = useState<string | null>(null);
 
-  // Derived — keep backward-compatible accessors
-  const nbsGroup = groups.find((g) => g.id === "nbs")!;
-  const sectorGroup = groups.find((g) => g.id === "sector")!;
+  // Derived — keep backward-compatible accessors; a paused taxonomy's group
+  // is absent, so its category list is simply empty.
+  const nbsGroup = groups.find((g) => g.id === "nbs");
+  const sectorGroup = groups.find((g) => g.id === "sector");
 
-  const nbsCategories = nbsGroup.items;
-  const sectors = sectorGroup.items;
+  const nbsCategories = nbsGroup?.items ?? [];
+  const sectors = sectorGroup?.items ?? [];
   const activeNbs = useMemo(() => nbsCategories.filter((c) => c.enabled), [nbsCategories]);
   const activeSectors = useMemo(() => sectors.filter((s) => s.enabled), [sectors]);
 

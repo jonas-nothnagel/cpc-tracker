@@ -1,220 +1,308 @@
 {
   "storylines": [
     {
-      "name": "Connect restoration with climate delivery tools",
+      "name": "Link catchment restoration with water resilience",
       "type": "reinforcement",
-      "description": "A strong pattern recurs around ecosystem restoration, forest and catchment rehabilitation, and coastal recovery being carried through climate delivery systems such as integrated river basin management, monitoring, and climate information tools. This tends to align land and biodiversity objectives with flood mitigation, resilience, and broader emissions-related goals.",
+      "description": "A strong pattern recurs around forests, wetlands, erosion control, aquifer protection, and river basin planning reinforcing both land and biodiversity outcomes while also supporting climate resilience and water quality. This tends to work through basin plans, watershed guidelines, recharge protection, monitoring, and participatory water governance that align land and water management in the same landscapes.",
       "contributing_doc_pairs": [
+        "LDN<->NWRP",
+        "NBSAP<->NWRP",
+        "NDC<->NWRP",
         "LDN<->NDC",
-        "NBSAP<->NDC"
+        "LDN<->NFAP",
+        "NFAP<->NWRP"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 1348,
+      "pair_count": 3568,
       "spans_documents": [
         "LDN",
         "NBSAP",
-        "NDC"
+        "NDC",
+        "NFAP",
+        "NWRP"
       ]
     },
     {
-      "name": "Use spatial planning to align land outcomes",
+      "name": "Embed biodiversity and climate safeguards in agriculture",
       "type": "reinforcement",
-      "description": "Spatial and land-use planning recurs as a shared mechanism for preventing wetland conversion, increasing forest cover, and guiding restoration and conservation measures. The evidence points to planning and zoning tools helping connect land degradation neutrality actions with biodiversity implementation and climate-related landscape management.",
+      "description": "Agricultural modernization often aligns with biodiversity, climate, land, and water goals when carried through extension, research, farmer education, regulation, nutrient-use efficiency, agro-meteorological services, and climate-smart production practices. The evidence points to governance and delivery systems in agriculture acting as channels for soil protection, pollution reduction, resilience, and more careful resource use.",
       "contributing_doc_pairs": [
-        "LDN<->NBSAP",
-        "LDN<->NDC",
-        "NBSAP<->NDC"
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "LDN<->NAP",
+        "NAP<->NWRP",
+        "NAP<->PPPP"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 1402,
+      "pair_count": 17883,
       "spans_documents": [
         "LDN",
+        "NAP",
         "NBSAP",
-        "NDC"
+        "NDC",
+        "NWRP",
+        "PPPP"
       ]
     },
     {
-      "name": "Reinforce wetlands soils and forests together",
+      "name": "Use spatial planning to steer sensitive siting",
       "type": "reinforcement",
-      "description": "Protection of wetlands, control of soil erosion, improvement of soil organic carbon, and forest restoration repeatedly align across the document pairs. These measures tend to reinforce biodiversity outcomes while also supporting catchment health, river-basin management, and climate resilience.",
+      "description": "Spatial planning repeatedly aligns with conservation, climate, land, fisheries, and water objectives where zoning, environmentally sensitive siting, and use of existing infrastructure help limit conversion and reduce pressure on vulnerable areas. This reinforces implementation when development choices are guided by catchment conditions, ecosystem sensitivity, and existing service footprints.",
       "contributing_doc_pairs": [
-        "LDN<->NBSAP",
-        "LDN<->NDC"
+        "LDN<->PPPP",
+        "NBSAP<->PPPP",
+        "NDC<->PPPP",
+        "NFAP<->PPPP",
+        "NWRP<->PPPP",
+        "NAP<->PPPP"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 258,
+      "pair_count": 1055,
       "spans_documents": [
         "LDN",
+        "NAP",
         "NBSAP",
-        "NDC"
+        "NDC",
+        "NFAP",
+        "NWRP",
+        "PPPP"
       ]
     },
     {
-      "name": "Link conservation instruments with implementation systems",
-      "type": "reinforcement",
-      "description": "Area-based conservation, OECMs, invasive species control, and restoration instruments align with enabling systems such as finance, data, participation, gender-related tools, risk frameworks, and monitoring. This recurs as a practical pathway for translating biodiversity and land objectives into climate and land implementation processes.",
-      "contributing_doc_pairs": [
-        "LDN<->NBSAP",
-        "NBSAP<->NDC"
-      ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 1198,
-      "spans_documents": [
-        "LDN",
-        "NBSAP",
-        "NDC"
-      ]
-    },
-    {
-      "name": "Review land competition across production uses",
+      "name": "Review land competition from expansion incentives",
       "type": "friction",
-      "description": "Several pairs are flagged for review where forest cover goals, wetland protection, or area-based conservation may compete with agricultural production growth, dairy-related land demand, or irrigation expansion on the same land base. The pattern tends to center on shared landscapes and land and water allocation rather than a settled contradiction.",
+      "description": "A recurring issue flagged for review is that incentives for agricultural growth, fisheries enterprise expansion, mineral investment, and location-based development could increase pressure on the same forests, wetlands, cropland, reserves, and restoration areas targeted by land, biodiversity, climate, and planning frameworks. The mechanism tends to be overlap in zoning, siting, finance, or investment promotion rather than stated opposition in goals.",
       "contributing_doc_pairs": [
-        "LDN<->NDC",
-        "NBSAP<->NDC"
+        "LDN<->NAP",
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NBSAP<->NFAP",
+        "LDN<->NMP",
+        "NBSAP<->NMP",
+        "NMP<->PPPP"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 9,
+      "pair_count": 549,
       "spans_documents": [
         "LDN",
+        "NAP",
         "NBSAP",
-        "NDC"
+        "NDC",
+        "NFAP",
+        "NMP",
+        "PPPP"
       ]
     },
     {
-      "name": "Review infrastructure siting in sensitive landscapes",
+      "name": "Review water demand from productive expansion",
       "type": "friction",
-      "description": "A smaller recurring issue is flagged for review where industrial, irrigation, or natural gas infrastructure siting may be insufficiently connected to biodiversity-sensitive spatial planning and business risk screening. This points to possible pressure on wetlands, adjacent agricultural landscapes, and restoration areas if project screening and hydrological management are not well aligned.",
+      "description": "Another storyline recurs where agricultural intensification, aquaculture growth, mineral processing, and some energy or industrial measures may add demand to finite surface water, groundwater, aquifers, and shared basins already governed by allocation and conservation rules. This is often flagged for review through third-season cultivation, agro-industrial clustering, aquaculture siting, processing demand, and infrastructure that may complicate recharge protection, water quality, and basin allocation.",
       "contributing_doc_pairs": [
-        "LDN<->NDC",
-        "NBSAP<->NDC"
+        "NAP<->NWRP",
+        "NFAP<->NWRP",
+        "NMP<->NWRP",
+        "NDC<->NWRP",
+        "NAP<->NFAP",
+        "NDC<->NFAP"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 9,
+      "pair_count": 445,
+      "spans_documents": [
+        "NAP",
+        "NDC",
+        "NFAP",
+        "NMP",
+        "NWRP"
+      ]
+    },
+    {
+      "name": "Rely on safeguards in minerals governance",
+      "type": "reinforcement",
+      "description": "Minerals policy often aligns with land, biodiversity, climate, fisheries, water, and planning agendas through environmental permitting, prior approval in sensitive areas, contamination prevention, rehabilitation, mine closure, baseline assessment, and data sharing. These safeguards tend to reinforce broader restoration, pollution control, watershed protection, and evidence-based planning objectives even where delivery systems remain sector-specific.",
+      "contributing_doc_pairs": [
+        "LDN<->NMP",
+        "NBSAP<->NMP",
+        "NDC<->NMP",
+        "NFAP<->NMP",
+        "NMP<->NWRP",
+        "NMP<->PPPP",
+        "NAP<->NMP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 5023,
       "spans_documents": [
         "LDN",
+        "NAP",
         "NBSAP",
-        "NDC"
+        "NDC",
+        "NFAP",
+        "NMP",
+        "NWRP",
+        "PPPP"
       ]
     }
   ],
-  "summary_paragraph": "Across the three document pairs, reinforcement clearly dominates and recurs most strongly around restoration, wetland and forest protection, soil management, and the use of shared planning and monitoring systems. Spatial planning, river-basin management, restoration, and enabling tools such as data, finance, and risk frameworks tend to align land, biodiversity, and climate objectives in concrete ways. A smaller set of issues is flagged for review where the same landscapes may be asked to support conservation, agricultural growth, irrigation, industry, or energy infrastructure at once. Overall, the evidence points to broad coherence with a limited number of land allocation and project siting questions that recur across pairs.",
-  "doc_pair_count": 3,
+  "summary_paragraph": "Across the Sri Lanka document set, reinforcement appears to recur most strongly around catchment and basin governance, restoration of forests and wetlands, and the use of planning, regulation, and monitoring to connect land, water, biodiversity, climate, agriculture, fisheries, and minerals agendas. Agriculture and minerals stand out as sectors where enabling systems such as extension, research, permitting, rehabilitation, and standards often align with wider environmental objectives. At the same time, several cross-cutting issues are repeatedly flagged for review where production growth, mineral investment, aquaculture expansion, or location-based development may converge on the same land, coastal, wetland, or water systems. Overall, the evidence points to a policy landscape with substantial reinforcing architecture, alongside recurring implementation frictions around siting, allocation, and safeguards in shared spaces.",
+  "doc_pair_count": 28,
   "states": {
     "": {
       "storylines": [
         {
-          "name": "Connect restoration with climate delivery tools",
+          "name": "Link catchment restoration with water resilience",
           "type": "reinforcement",
-          "description": "A strong pattern recurs around ecosystem restoration, forest and catchment rehabilitation, and coastal recovery being carried through climate delivery systems such as integrated river basin management, monitoring, and climate information tools. This tends to align land and biodiversity objectives with flood mitigation, resilience, and broader emissions-related goals.",
+          "description": "A strong pattern recurs around forests, wetlands, erosion control, aquifer protection, and river basin planning reinforcing both land and biodiversity outcomes while also supporting climate resilience and water quality. This tends to work through basin plans, watershed guidelines, recharge protection, monitoring, and participatory water governance that align land and water management in the same landscapes.",
           "contributing_doc_pairs": [
+            "LDN<->NWRP",
+            "NBSAP<->NWRP",
+            "NDC<->NWRP",
             "LDN<->NDC",
-            "NBSAP<->NDC"
+            "LDN<->NFAP",
+            "NFAP<->NWRP"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 1348,
+          "pair_count": 3568,
           "spans_documents": [
             "LDN",
             "NBSAP",
-            "NDC"
+            "NDC",
+            "NFAP",
+            "NWRP"
           ]
         },
         {
-          "name": "Use spatial planning to align land outcomes",
+          "name": "Embed biodiversity and climate safeguards in agriculture",
           "type": "reinforcement",
-          "description": "Spatial and land-use planning recurs as a shared mechanism for preventing wetland conversion, increasing forest cover, and guiding restoration and conservation measures. The evidence points to planning and zoning tools helping connect land degradation neutrality actions with biodiversity implementation and climate-related landscape management.",
+          "description": "Agricultural modernization often aligns with biodiversity, climate, land, and water goals when carried through extension, research, farmer education, regulation, nutrient-use efficiency, agro-meteorological services, and climate-smart production practices. The evidence points to governance and delivery systems in agriculture acting as channels for soil protection, pollution reduction, resilience, and more careful resource use.",
           "contributing_doc_pairs": [
-            "LDN<->NBSAP",
-            "LDN<->NDC",
-            "NBSAP<->NDC"
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "LDN<->NAP",
+            "NAP<->NWRP",
+            "NAP<->PPPP"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 1402,
+          "pair_count": 17883,
           "spans_documents": [
             "LDN",
+            "NAP",
             "NBSAP",
-            "NDC"
+            "NDC",
+            "NWRP",
+            "PPPP"
           ]
         },
         {
-          "name": "Reinforce wetlands soils and forests together",
+          "name": "Use spatial planning to steer sensitive siting",
           "type": "reinforcement",
-          "description": "Protection of wetlands, control of soil erosion, improvement of soil organic carbon, and forest restoration repeatedly align across the document pairs. These measures tend to reinforce biodiversity outcomes while also supporting catchment health, river-basin management, and climate resilience.",
+          "description": "Spatial planning repeatedly aligns with conservation, climate, land, fisheries, and water objectives where zoning, environmentally sensitive siting, and use of existing infrastructure help limit conversion and reduce pressure on vulnerable areas. This reinforces implementation when development choices are guided by catchment conditions, ecosystem sensitivity, and existing service footprints.",
           "contributing_doc_pairs": [
-            "LDN<->NBSAP",
-            "LDN<->NDC"
+            "LDN<->PPPP",
+            "NBSAP<->PPPP",
+            "NDC<->PPPP",
+            "NFAP<->PPPP",
+            "NWRP<->PPPP",
+            "NAP<->PPPP"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 258,
+          "pair_count": 1055,
           "spans_documents": [
             "LDN",
+            "NAP",
             "NBSAP",
-            "NDC"
+            "NDC",
+            "NFAP",
+            "NWRP",
+            "PPPP"
           ]
         },
         {
-          "name": "Link conservation instruments with implementation systems",
-          "type": "reinforcement",
-          "description": "Area-based conservation, OECMs, invasive species control, and restoration instruments align with enabling systems such as finance, data, participation, gender-related tools, risk frameworks, and monitoring. This recurs as a practical pathway for translating biodiversity and land objectives into climate and land implementation processes.",
-          "contributing_doc_pairs": [
-            "LDN<->NBSAP",
-            "NBSAP<->NDC"
-          ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 1198,
-          "spans_documents": [
-            "LDN",
-            "NBSAP",
-            "NDC"
-          ]
-        },
-        {
-          "name": "Review land competition across production uses",
+          "name": "Review land competition from expansion incentives",
           "type": "friction",
-          "description": "Several pairs are flagged for review where forest cover goals, wetland protection, or area-based conservation may compete with agricultural production growth, dairy-related land demand, or irrigation expansion on the same land base. The pattern tends to center on shared landscapes and land and water allocation rather than a settled contradiction.",
+          "description": "A recurring issue flagged for review is that incentives for agricultural growth, fisheries enterprise expansion, mineral investment, and location-based development could increase pressure on the same forests, wetlands, cropland, reserves, and restoration areas targeted by land, biodiversity, climate, and planning frameworks. The mechanism tends to be overlap in zoning, siting, finance, or investment promotion rather than stated opposition in goals.",
           "contributing_doc_pairs": [
-            "LDN<->NDC",
-            "NBSAP<->NDC"
+            "LDN<->NAP",
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "NBSAP<->NFAP",
+            "LDN<->NMP",
+            "NBSAP<->NMP",
+            "NMP<->PPPP"
           ],
-          "confidence": "medium",
+          "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 9,
+          "pair_count": 549,
           "spans_documents": [
             "LDN",
+            "NAP",
             "NBSAP",
-            "NDC"
+            "NDC",
+            "NFAP",
+            "NMP",
+            "PPPP"
           ]
         },
         {
-          "name": "Review infrastructure siting in sensitive landscapes",
+          "name": "Review water demand from productive expansion",
           "type": "friction",
-          "description": "A smaller recurring issue is flagged for review where industrial, irrigation, or natural gas infrastructure siting may be insufficiently connected to biodiversity-sensitive spatial planning and business risk screening. This points to possible pressure on wetlands, adjacent agricultural landscapes, and restoration areas if project screening and hydrological management are not well aligned.",
+          "description": "Another storyline recurs where agricultural intensification, aquaculture growth, mineral processing, and some energy or industrial measures may add demand to finite surface water, groundwater, aquifers, and shared basins already governed by allocation and conservation rules. This is often flagged for review through third-season cultivation, agro-industrial clustering, aquaculture siting, processing demand, and infrastructure that may complicate recharge protection, water quality, and basin allocation.",
           "contributing_doc_pairs": [
-            "LDN<->NDC",
-            "NBSAP<->NDC"
+            "NAP<->NWRP",
+            "NFAP<->NWRP",
+            "NMP<->NWRP",
+            "NDC<->NWRP",
+            "NAP<->NFAP",
+            "NDC<->NFAP"
           ],
-          "confidence": "medium",
+          "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 9,
+          "pair_count": 445,
+          "spans_documents": [
+            "NAP",
+            "NDC",
+            "NFAP",
+            "NMP",
+            "NWRP"
+          ]
+        },
+        {
+          "name": "Rely on safeguards in minerals governance",
+          "type": "reinforcement",
+          "description": "Minerals policy often aligns with land, biodiversity, climate, fisheries, water, and planning agendas through environmental permitting, prior approval in sensitive areas, contamination prevention, rehabilitation, mine closure, baseline assessment, and data sharing. These safeguards tend to reinforce broader restoration, pollution control, watershed protection, and evidence-based planning objectives even where delivery systems remain sector-specific.",
+          "contributing_doc_pairs": [
+            "LDN<->NMP",
+            "NBSAP<->NMP",
+            "NDC<->NMP",
+            "NFAP<->NMP",
+            "NMP<->NWRP",
+            "NMP<->PPPP",
+            "NAP<->NMP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 5023,
           "spans_documents": [
             "LDN",
+            "NAP",
             "NBSAP",
-            "NDC"
+            "NDC",
+            "NFAP",
+            "NMP",
+            "NWRP",
+            "PPPP"
           ]
         }
       ],
-      "summary_paragraph": "Across the three document pairs, reinforcement clearly dominates and recurs most strongly around restoration, wetland and forest protection, soil management, and the use of shared planning and monitoring systems. Spatial planning, river-basin management, restoration, and enabling tools such as data, finance, and risk frameworks tend to align land, biodiversity, and climate objectives in concrete ways. A smaller set of issues is flagged for review where the same landscapes may be asked to support conservation, agricultural growth, irrigation, industry, or energy infrastructure at once. Overall, the evidence points to broad coherence with a limited number of land allocation and project siting questions that recur across pairs.",
-      "doc_pair_count": 3
+      "summary_paragraph": "Across the Sri Lanka document set, reinforcement appears to recur most strongly around catchment and basin governance, restoration of forests and wetlands, and the use of planning, regulation, and monitoring to connect land, water, biodiversity, climate, agriculture, fisheries, and minerals agendas. Agriculture and minerals stand out as sectors where enabling systems such as extension, research, permitting, rehabilitation, and standards often align with wider environmental objectives. At the same time, several cross-cutting issues are repeatedly flagged for review where production growth, mineral investment, aquaculture expansion, or location-based development may converge on the same land, coastal, wetland, or water systems. Overall, the evidence points to a policy landscape with substantial reinforcing architecture, alongside recurring implementation frictions around siting, allocation, and safeguards in shared spaces.",
+      "doc_pair_count": 28
     }
   }
 }

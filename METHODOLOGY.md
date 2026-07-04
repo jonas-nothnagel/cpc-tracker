@@ -4,7 +4,7 @@
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged). This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
 
 ---
 
@@ -32,9 +32,9 @@ Input: Policy targets (text + source document type)
   │     └─ Are there numbers, percentages, deadlines?
   │
   ├─ Step 2: Thematic Classification (LLM)
-  │     ├─ NBS categories (10), IPCC sectors (7), GLOBE categories (9) + subcategories (49)
+  │     ├─ IPCC sectors (7), GLOBE categories (9) + subcategories (49)
   │     ├─ GGA climate-resilience themes (7); optional country adaptation goals
-  │     └─ ranked dual-mode (primary + relevant)
+  │     └─ ranked dual-mode (primary + relevant); active set: config.ACTIVE_TAXONOMIES
   │
   ├─ Step 3: Cross-Document Pair Generation (computation)
   │     └─ All cross-document pairs (classification is for grouping only)
@@ -93,11 +93,11 @@ Administrative references (e.g., "Article 2", "Target 3") are explicitly exclude
 
 Dashboard surfaces choose a mode intentionally: **primary** for ranking ("what is this target mainly about?") and **relevant** for breadth ("everything this target touches"). The two modes are never mixed in a single view, because relevant tags carry different scores.
 
-**Categories are pre-defined by experts and traced to a primary source, never LLM-drafted.** The active taxonomies are:
+**Categories are pre-defined by experts and traced to a primary source, never LLM-drafted.** The set of taxonomies the pipeline classifies against is `ACTIVE_TAXONOMIES` in `python/src/config.py` — since 2026-07-03: **IPCC sectors, GLOBE, and GGA** (plus optional country-specific adaptation goals). The taxonomies:
 
-### Nature-Based Solutions Categories (10)
+### Nature-Based Solutions Categories (10) — paused since 2026-07-03
 
-Derived from the IPCC Special Report on Climate Change and Land and Griscom et al. (Natural Climate Solutions):
+Not classified in new runs (removed from `ACTIVE_TAXONOMIES` until the taxonomy strategy is revisited); outputs produced before that date still contain `nbs` records. Retained here for reference. Derived from the IPCC Special Report on Climate Change and Land and Griscom et al. (Natural Climate Solutions):
 
 | Category | Examples |
 |----------|----------|
@@ -132,7 +132,7 @@ Which taxonomies (lenses) are available is a country-level, data-driven choice, 
 
 **Cost note:** This is the most API-intensive step. The ranked classifier scores all categories in a taxonomy per target, so cost scales with the number of targets and the breadth of the active taxonomies. Results are cached (per taxonomy namespace) to avoid duplicate calls across analyses.
 
-**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`nbs` / `sector` / `globe` / `adaptation_goal` / `gga`), and a short `reasoning` for primary/relevant entries.
+**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`sector` / `globe` / `adaptation_goal` / `gga`; `nbs` only in outputs from before 2026-07-03), and a short `reasoning` for primary/relevant entries.
 
 ---
 
@@ -228,7 +228,7 @@ Nothing is invented or inferred from the mechanism label. Running this as a sepa
 
 **Method:** BTR mitigation measures and (where available) adaptation actions are converted to pseudo-targets and processed through the same two-agent workflow:
 
-1. **Classification:** Measures are LLM-classified against the same taxonomies (NBS, GLOBE). IPCC sector tags from government reporting are used as ground truth (not LLM-classified).
+1. **Classification:** Measures are LLM-classified against the active taxonomies (IPCC sectors, GLOBE, GGA), and measure grouping in the implementation view uses the LLM's primary sector. The `sector` field written back into `btr_data.json` is the one place government-reported or curated tags take precedence: existing values are preserved and the LLM fills only missing ones.
 2. **Pairing:** Every measure is paired with every policy target (no pre-filtering). When both mitigation measures and adaptation actions exist, mitigation×adaptation cross-pairs are also assessed.
 3. **Decomposition + Alignment:** Agent 1 decomposes measures, then an adapted Agent 2 assesses implementation coherence using the **same v2.1 five-state scale**.
 
