@@ -539,7 +539,13 @@ def _programme_name_en(p: ProgrammePseudo) -> str:
 
 
 def assemble_ber_payload(pseudos: list[ProgrammePseudo]) -> dict[str, Any]:
-    """Assemble final BER JSON payload (Mongolia-shape)."""
+    """Assemble final BER JSON payload (Mongolia-shape).
+
+    Emits institution (Spanish source-of-record, SHOUTY per Tablas) and
+    institutionEn (curated English) as first-class fields. These do NOT
+    feed the alignment LLM prompt — that stays keyed on description* —
+    so adding them is safe under the budget_alignment cache-key
+    guardrail in CLAUDE.md."""
     programs: list[dict[str, Any]] = []
     expenditure: list[dict[str, Any]] = []
     for p in pseudos:
@@ -547,10 +553,14 @@ def assemble_ber_payload(pseudos: list[ProgrammePseudo]) -> dict[str, Any]:
             code = f"BER_PA_{p.institution_idx:02d}_OVERHEAD"
         else:
             code = f"BER_PA_{p.institution_idx:02d}_{p.programme_idx:02d}"
+        institution_es = _institution_name_short(p.institution_name)
+        institution_en = _institution_name_en(p.institution_name)
         programs.append({
             "code": code,
             "name": p.programme_name,
             "nameEn": _programme_name_en(p),
+            "institution": institution_es,
+            "institutionEn": institution_en,
             "description": _render_description(p),
             "descriptionEs": _render_description_es(p),
             "descriptionEn": _render_description_en(p),
@@ -560,6 +570,8 @@ def assemble_ber_payload(pseudos: list[ProgrammePseudo]) -> dict[str, Any]:
             "code": code,
             "name": p.programme_name,
             "nameEn": _programme_name_en(p),
+            "institution": institution_es,
+            "institutionEn": institution_en,
             "values": _to_year_dict(p.values),
         })
     return {

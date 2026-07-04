@@ -634,7 +634,16 @@
           "spendPerYear": "Gasto por año",
           "topContributing": "Principales programas que contribuyen",
           "moreProgrammes": "+ {count, plural, one {# programa alineado más} other {# programas alineados más}}",
-          "noContributors": "No hay programas de alineación alta o media para esta meta."
+          "noContributors": "No hay programas de alineación alta o media para esta meta.",
+          "showAllProgrammes": "Ver los {count, plural, one {# programa} other {# programas}}, agrupados por institución",
+          "showTopProgrammes": "Ver principales contribuyentes",
+          "programmeCode": "Código",
+          "programmeInstitution": "Institución",
+          "programmeAlignment": "Alineación",
+          "programmeDescription": "Descripción",
+          "programmeYearlySpend": "Gasto anual del programa",
+          "otherInstitution": "Otras",
+          "institutionSubtotal": "{count, plural, one {# programa} other {# programas}} · {money}"
         }
       }
     },

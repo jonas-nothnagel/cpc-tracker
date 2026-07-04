@@ -634,7 +634,16 @@
           "spendPerYear": "Spend per year",
           "topContributing": "Top contributing programmes",
           "moreProgrammes": "+ {count, plural, one {# more aligned programme} other {# more aligned programmes}}",
-          "noContributors": "No high or medium-aligned programmes for this target."
+          "noContributors": "No high or medium-aligned programmes for this target.",
+          "showAllProgrammes": "Show all {count, plural, one {# programme} other {# programmes}}, grouped by institution",
+          "showTopProgrammes": "Show top contributors",
+          "programmeCode": "Code",
+          "programmeInstitution": "Institution",
+          "programmeAlignment": "Alignment",
+          "programmeDescription": "Description",
+          "programmeYearlySpend": "Programme spend per year",
+          "otherInstitution": "Other",
+          "institutionSubtotal": "{count, plural, one {# programme} other {# programmes}} · {money}"
         }
       }
     },

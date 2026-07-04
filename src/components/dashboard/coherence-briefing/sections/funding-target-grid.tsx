@@ -291,6 +291,116 @@ function DetailPanel({
   );
 }
 
+/** Group contributors by locale-picked institution; sort groups by
+ *  aggregate spend descending, and programmes within each group by spend
+ *  descending. Contributors with an empty institution collapse into a
+ *  single fallback bucket. */
+function groupContributorsByInstitution(
+  contribs: FundingTargetContributor[],
+  otherLabel: string,
+): { institution: string; subtotal: number; programmes: FundingTargetContributor[] }[] {
+  const byInst = new Map<string, FundingTargetContributor[]>();
+  for (const c of contribs) {
+    const key = c.institution && c.institution.length > 0 ? c.institution : otherLabel;
+    const list = byInst.get(key) ?? [];
+    list.push(c);
+    byInst.set(key, list);
+  }
+  return [...byInst.entries()]
+    .map(([institution, programmes]) => {
+      const sorted = [...programmes].sort((a, b) => b.spend - a.spend);
+      const subtotal = sorted.reduce((s, p) => s + p.spend, 0);
+      return { institution, subtotal, programmes: sorted };
+    })
+    .sort((a, b) => b.subtotal - a.subtotal || a.institution.localeCompare(b.institution));
+}
+
+function ContributorRow({
+  c,
+  fmt,
+  expanded,
+  onToggle,
+  t,
+}: {
+  c: FundingTargetContributor;
+  fmt: (v: number) => string;
+  expanded: boolean;
+  onToggle: () => void;
+  t: ReturnType<typeof useTranslations<"briefing.financing.targetGrid">>;
+}) {
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={expanded}
+        aria-controls={`prog-${c.code}-detail`}
+        className={
+          "w-full flex items-start gap-2 text-left text-[11px] py-1 rounded transition-colors " +
+          (expanded
+            ? "bg-[var(--undp-paper)]"
+            : "hover:bg-[var(--undp-paper)]/60 focus:bg-[var(--undp-paper)]/60")
+        }
+      >
+        <span
+          className="inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
+          style={{ backgroundColor: LEVEL_COLOR[c.level] }}
+          title={c.level}
+        />
+        <span className="flex-1 text-[var(--undp-black)] leading-snug">{c.name}</span>
+        <span className="tabular-nums text-[var(--undp-gray)] shrink-0">{fmt(c.spend)}</span>
+        <span
+          aria-hidden="true"
+          className={
+            "text-[var(--undp-gray)] shrink-0 transition-transform " +
+            (expanded ? "rotate-90" : "")
+          }
+        >
+          ›
+        </span>
+      </button>
+      {expanded && (
+        <div
+          id={`prog-${c.code}-detail`}
+          className="mt-1 mb-2 ml-3.5 pl-2 border-l-2 border-gray-100 text-[11px] leading-relaxed text-[var(--undp-black)] space-y-1.5"
+        >
+          <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px]">
+            <span className="text-[var(--undp-gray)]">
+              {t("detail.programmeCode")}:{" "}
+              <span className="font-mono text-[var(--undp-black)]">{c.code}</span>
+            </span>
+            <span className="text-[var(--undp-gray)]">
+              {t("detail.programmeAlignment")}:{" "}
+              <span
+                className="inline-block px-1 rounded uppercase font-medium"
+                style={{ backgroundColor: LEVEL_COLOR[c.level] + "1f", color: LEVEL_COLOR[c.level] }}
+              >
+                {c.level}
+              </span>
+            </span>
+          </div>
+          {c.institution && (
+            <div className="text-[10px]">
+              <span className="text-[var(--undp-gray)]">{t("detail.programmeInstitution")}: </span>
+              <span className="text-[var(--undp-black)]">{c.institution}</span>
+            </div>
+          )}
+          {c.description && (
+            <p className="text-[11px] text-[var(--undp-black)]">{c.description}</p>
+          )}
+          {c.yearlySpend && c.yearlySpend.length > 0 && (
+            <YearlySpark
+              series={c.yearlySpend}
+              fmt={fmt}
+              label={t("detail.programmeYearlySpend")}
+            />
+          )}
+        </div>
+      )}
+    </li>
+  );
+}
+
 function DetailDrawer({
   row,
   onClose,
@@ -304,11 +414,12 @@ function DetailDrawer({
   tierLabel: (t: FundingTier) => string;
   t: ReturnType<typeof useTranslations<"briefing.financing.targetGrid">>;
 }) {
+  // Per-row transient UI state (read-more, show-all, per-programme expanded).
+  // Reset naturally by keying <DetailDrawer key={row.targetId} .../> at the
+  // call site — cheaper than a syncing useEffect and lint-clean.
   const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    setExpanded(false);
-  }, [row.targetId]);
+  const [showAllContribs, setShowAllContribs] = useState(false);
+  const [expandedProgrammeCode, setExpandedProgrammeCode] = useState<string | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -324,6 +435,14 @@ function DetailDrawer({
   const displayedText = expanded || !needsTruncation
     ? row.text
     : row.text.slice(0, TEXT_PREVIEW_LEN).trimEnd() + "…";
+
+  const otherLabel = t("detail.otherInstitution");
+  const groups = showAllContribs
+    ? groupContributorsByInstitution(row.contributors, otherLabel)
+    : [];
+
+  const toggleProgramme = (code: string) =>
+    setExpandedProgrammeCode((cur) => (cur === code ? null : code));
 
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
@@ -390,28 +509,80 @@ function DetailDrawer({
               </span>
             </div>
             <YearlySpark series={row.yearlySpend} fmt={fmt} label={t("detail.spendPerYear")} />
-            {top.length > 0 ? (
+            {row.contributors.length > 0 ? (
               <div className="mt-4">
                 <p className="text-[10px] uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
                   {t("detail.topContributing")}
                 </p>
-                <ul className="space-y-1.5">
-                  {top.map((c: FundingTargetContributor) => (
-                    <li key={c.code} className="flex items-start gap-2 text-[11px]">
-                      <span
-                        className="inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
-                        style={{ backgroundColor: LEVEL_COLOR[c.level] }}
-                        title={c.level}
-                      />
-                      <span className="flex-1 text-[var(--undp-black)] leading-snug">{c.name}</span>
-                      <span className="tabular-nums text-[var(--undp-gray)] shrink-0">{fmt(c.spend)}</span>
-                    </li>
-                  ))}
-                </ul>
-                {rest > 0 && (
-                  <p className="mt-1.5 text-[10px] text-[var(--undp-gray)]">
-                    {t("detail.moreProgrammes", { count: rest })}
-                  </p>
+                {!showAllContribs ? (
+                  <>
+                    <ul className="space-y-0.5">
+                      {top.map((c: FundingTargetContributor) => (
+                        <ContributorRow
+                          key={c.code}
+                          c={c}
+                          fmt={fmt}
+                          expanded={expandedProgrammeCode === c.code}
+                          onToggle={() => toggleProgramme(c.code)}
+                          t={t}
+                        />
+                      ))}
+                    </ul>
+                    {rest > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowAllContribs(true);
+                          setExpandedProgrammeCode(null);
+                        }}
+                        className="mt-2 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline text-left"
+                      >
+                        {t("detail.showAllProgrammes", { count: row.contributors.length })}
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="space-y-3">
+                      {groups.map((g) => (
+                        <div key={g.institution}>
+                          <div className="flex items-baseline justify-between gap-2 border-b border-gray-100 pb-1 mb-1">
+                            <p className="text-[11px] font-medium text-[var(--undp-black)] leading-snug">
+                              {g.institution}
+                            </p>
+                            <p className="text-[10px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                              {t("detail.institutionSubtotal", {
+                                count: g.programmes.length,
+                                money: fmt(g.subtotal),
+                              })}
+                            </p>
+                          </div>
+                          <ul className="space-y-0.5">
+                            {g.programmes.map((c) => (
+                              <ContributorRow
+                                key={c.code}
+                                c={c}
+                                fmt={fmt}
+                                expanded={expandedProgrammeCode === c.code}
+                                onToggle={() => toggleProgramme(c.code)}
+                                t={t}
+                              />
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAllContribs(false);
+                        setExpandedProgrammeCode(null);
+                      }}
+                      className="mt-3 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline text-left"
+                    >
+                      {t("detail.showTopProgrammes")}
+                    </button>
+                  </>
                 )}
               </div>
             ) : (
@@ -541,6 +712,7 @@ export function FundingTargetGrid({
           <ColorLegend tierLabel={tierLabel} />
           {selected && (
             <DetailDrawer
+              key={selected.targetId}
               row={selected}
               onClose={() => setSelected(null)}
               fmt={fmt}

@@ -634,7 +634,16 @@
           "spendPerYear": "Жил тутмын зарцуулалт",
           "topContributing": "Гол хувь нэмэр оруулсан хөтөлбөрүүд",
           "moreProgrammes": "+ {count, plural, one {# тохирох хөтөлбөр} other {# тохирох хөтөлбөр}}",
-          "noContributors": "Энэ зорилттой холбоотой өндөр болон дунд зэрэгцэлтэй хөтөлбөр алга."
+          "noContributors": "Энэ зорилттой холбоотой өндөр болон дунд зэрэгцэлтэй хөтөлбөр алга.",
+          "showAllProgrammes": "Бүх {count, plural, one {# хөтөлбөр} other {# хөтөлбөр}}-г байгууллагаар нь бүлэглэж харах",
+          "showTopProgrammes": "Гол хувь нэмэр оруулсныг харах",
+          "programmeCode": "Код",
+          "programmeInstitution": "Байгууллага",
+          "programmeAlignment": "Зэрэгцээ",
+          "programmeDescription": "Тодорхойлолт",
+          "programmeYearlySpend": "Хөтөлбөрийн жилийн зарцуулалт",
+          "otherInstitution": "Бусад",
+          "institutionSubtotal": "{count, plural, one {# хөтөлбөр} other {# хөтөлбөр}} · {money}"
         }
       }
     },

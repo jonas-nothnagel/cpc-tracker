@@ -27,7 +27,6 @@ import type {
   AlignmentResult,
   BerBudgetProgram,
   BerData,
-  BerExpenditureSeries,
   CountryConfig,
   Target,
 } from "@/types";
@@ -54,6 +53,16 @@ export function pickBerDescription(
   if (locale === "en" && program.descriptionEn) return program.descriptionEn;
   if (locale === "es" && program.descriptionEs) return program.descriptionEs;
   return program.description;
+}
+
+/** Pick the locale-appropriate owning institution for a BER programme.
+ *  Empty string when the programme carries no institution (Mongolia). */
+export function pickBerInstitution(
+  item: { institution?: string; institutionEn?: string },
+  locale: string,
+): string {
+  if (locale === "en" && item.institutionEn) return item.institutionEn;
+  return item.institution ?? "";
 }
 
 /** A strong (high-confidence) budget↔commitment link, with the AI's reasoning. */
@@ -340,6 +349,17 @@ export interface FundingTargetContributor {
   name: string;
   spend: number;
   level: AlignmentLevel;
+  /** Locale-picked owning institution. Empty when the programme's BER data
+   *  carries no institution (Mongolia). Panama populates this for every
+   *  contributor via parse_panama_ber.py. */
+  institution?: string;
+  /** Locale-picked UI description of the programme, for the click-to-expand
+   *  detail row in the drawer. Distinct from the LLM-input `description`
+   *  narrative. Empty when the programme carries no locale-specific description. */
+  description?: string;
+  /** Per-year executed spend for THIS programme (not the target's aligned
+   *  sum). Years ascending, matches the BER expenditure years. */
+  yearlySpend?: { year: string; value: number }[];
 }
 
 /** One row in the funding-target grid: a policy target with its aligned-spend
@@ -396,9 +416,9 @@ export function computeFundingTargetRows(args: {
     ? Object.keys(berData.expenditure[0].values).sort()
     : [];
 
-  const nameByCode = new Map<string, string>();
+  const programByCode = new Map<string, BerBudgetProgram>();
   for (const p of berData.programs) {
-    nameByCode.set(p.code, pickBerName(p, locale));
+    programByCode.set(p.code, p);
   }
 
   // Per policy target: collect (programme, level) pairs from any high/medium
@@ -424,12 +444,17 @@ export function computeFundingTargetRows(args: {
     // only "matches" are all zero-spend programmes correctly stays in the
     // "no aligned spend" tier.
     if (programmeSpend <= 0) continue;
+    const program = programByCode.get(code);
+    const programmeYearly = yearlyByCode.get(code) ?? {};
     const list = contribByPolicy.get(policyId) ?? [];
     list.push({
       code,
-      name: nameByCode.get(code) ?? code,
+      name: program ? pickBerName(program, locale) : code,
       spend: programmeSpend,
       level: lvl,
+      institution: program ? pickBerInstitution(program, locale) : "",
+      description: program ? pickBerDescription(program, locale) : "",
+      yearlySpend: allYears.map((y) => ({ year: y, value: programmeYearly[y] ?? 0 })),
     });
     contribByPolicy.set(policyId, list);
   }
