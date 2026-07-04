@@ -1031,7 +1031,7 @@
     "pipeline": {
       "input": {
         "policyTargets": "Your policy targets",
-        "taxonomy": "NBS categories & IPCC sectors"
+        "taxonomy": "IPCC sectors, GLOBE & GGA taxonomies"
       },
       "step1": {
         "title": "Quantitative detection",

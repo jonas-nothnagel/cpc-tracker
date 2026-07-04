@@ -228,7 +228,7 @@ Nothing is invented or inferred from the mechanism label. Running this as a sepa
 
 **Method:** BTR mitigation measures and (where available) adaptation actions are converted to pseudo-targets and processed through the same two-agent workflow:
 
-1. **Classification:** Measures are LLM-classified against the same active taxonomies (GLOBE, GGA). IPCC sector tags from government reporting are used as ground truth where present; the LLM fills only missing sector tags.
+1. **Classification:** Measures are LLM-classified against the active taxonomies (IPCC sectors, GLOBE, GGA), and measure grouping in the implementation view uses the LLM's primary sector. The `sector` field written back into `btr_data.json` is the one place government-reported or curated tags take precedence: existing values are preserved and the LLM fills only missing ones.
 2. **Pairing:** Every measure is paired with every policy target (no pre-filtering). When both mitigation measures and adaptation actions exist, mitigation×adaptation cross-pairs are also assessed.
 3. **Decomposition + Alignment:** Agent 1 decomposes measures, then an adapted Agent 2 assesses implementation coherence using the **same v2.1 five-state scale**.
 
