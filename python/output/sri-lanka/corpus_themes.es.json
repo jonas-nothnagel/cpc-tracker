@@ -1,307 +1,307 @@
 {
   "storylines": [
     {
-      "name": "Utilizar la planificación espacial para orientar paisajes compartidos",
+      "name": "Vincular la restauración de cuencas hidrográficas con la resiliencia hídrica",
       "type": "reinforcement",
-      "description": "Se repite un patrón sólido en el que la zonificación del uso del suelo, los controles de emplazamiento, la planificación de cuencas y el uso de la infraestructura existente se alinean con los objetivos de conservación, clima, agua, agricultura, pesca y minerales. Esto tiende a funcionar mediante la evaluación práctica de áreas sensibles como humedales, cuencas altas, reservas, áreas escénicas y tierras cultivadas antes de que avance el desarrollo o la expansión sectorial.",
-      "contributing_doc_pairs": [
-        "LDN<->NDC",
-        "LDN<->PPPP",
-        "NAP<->PPPP",
-        "NBSAP<->PPPP",
-        "NDC<->PPPP",
-        "NWRP<->PPPP",
-        "NMP<->PPPP"
-      ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 1368,
-      "spans_documents": [
-        "LDN",
-        "NAP",
-        "NBSAP",
-        "NDC",
-        "NMP",
-        "NWRP",
-        "PPPP"
-      ]
-    },
-    {
-      "name": "Reforzar la gestión de las cuencas hidrográficas en los ámbitos terrestre y acuático",
-      "type": "reinforcement",
-      "description": "La gestión responsable de las cuencas de captación y las cuencas hidrográficas reaparece como un mecanismo compartido de implementación que vincula la protección del suelo, el control de la erosión, la conservación de los humedales, la protección de los acuíferos, la planificación de cuencas fluviales y la gestión de la calidad del agua. La evidencia indica que la restauración de la tierra y la gobernanza del agua se refuerzan mutuamente mediante la reducción de sedimentos, la infiltración, la protección de la recarga y la resiliencia en las cuencas altas y los sistemas fluviales.",
+      "description": "Se repite un patrón sólido en torno a los bosques, los humedales, el control de la erosión, la protección de los acuíferos y la planificación de cuencas fluviales, que refuerza tanto los resultados en materia de tierras como de biodiversidad, al tiempo que también apoya la resiliencia climática y la calidad del agua. Esto tiende a funcionar mediante planes de cuenca, directrices para cuencas hidrográficas, protección de la recarga, monitoreo y gobernanza participativa del agua que alinean la gestión de la tierra y del agua en los mismos paisajes.",
       "contributing_doc_pairs": [
         "LDN<->NWRP",
-        "LDN<->NFAP",
         "NBSAP<->NWRP",
         "NDC<->NWRP",
-        "NFAP<->NWRP",
-        "NMP<->NWRP"
-      ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 4490,
-      "spans_documents": [
-        "LDN",
-        "NBSAP",
-        "NDC",
-        "NFAP",
-        "NMP",
-        "NWRP"
-      ]
-    },
-    {
-      "name": "Incorporar salvaguardias ambientales en la modernización sectorial",
-      "type": "reinforcement",
-      "description": "En varias combinaciones, las medidas de modernización como la extensión, las normas, la trazabilidad, el monitoreo, la regulación, la rehabilitación y el intercambio de datos se alinean con los objetivos de biodiversidad, clima, tierra y agua. Esto se repite en la agricultura, la pesca y los minerales, donde las herramientas de gobernanza y los sistemas de cumplimiento proporcionan vías para la producción ecológica, el control de la contaminación, la restauración y la gestión de riesgos.",
-      "contributing_doc_pairs": [
-        "NAP<->NBSAP",
-        "NAP<->NDC",
-        "NAP<->NWRP",
-        "NBSAP<->NFAP",
-        "NBSAP<->NMP",
-        "NDC<->NMP",
-        "NFAP<->NMP"
-      ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 19007,
-      "spans_documents": [
-        "NAP",
-        "NBSAP",
-        "NDC",
-        "NFAP",
-        "NMP",
-        "NWRP"
-      ]
-    },
-    {
-      "name": "Revisar la competencia por la tierra derivada de las medidas de expansión",
-      "type": "friction",
-      "description": "Se señala para revisión una fricción recurrente cuando el crecimiento agrícola, la zonificación minera, la infraestructura, la expansión de los asentamientos o el desarrollo de ubicaciones de alto potencial pueden recurrir a la misma base territorial prevista para bosques, humedales, restauración, protección de tierras cultivadas o cobertura de biodiversidad. El mecanismo suele ser la superposición espacial en áreas sensibles o de uso múltiple, más que un conflicto de objetivos establecido.",
-      "contributing_doc_pairs": [
-        "LDN<->NAP",
-        "LDN<->NMP",
-        "NAP<->NMP",
-        "NAP<->PPPP",
-        "NBSAP<->NMP",
-        "NBSAP<->PPPP",
-        "NDC<->PPPP"
-      ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 1054,
-      "spans_documents": [
-        "LDN",
-        "NAP",
-        "NBSAP",
-        "NDC",
-        "NMP",
-        "PPPP"
-      ]
-    },
-    {
-      "name": "Revisar la demanda de agua derivada del crecimiento de la producción",
-      "type": "friction",
-      "description": "La posible desalineación se repite cuando la expansión de los cultivos, la rehabilitación del riego, el crecimiento de la acuicultura, la actividad agroindustrial, la minería o la ubicación de instalaciones energéticas e industriales podrían aumentar la presión sobre las aguas superficiales finitas, las aguas subterráneas, los humedales y los sistemas de asignación de cuencas. La evidencia tiende a señalar preocupaciones compartidas en torno a la cantidad de agua, la calidad del agua, las zonas de recarga y los usuarios competidores en las mismas cuencas.",
-      "contributing_doc_pairs": [
-        "NAP<->NWRP",
-        "NAP<->NFAP",
-        "NDC<->NWRP",
-        "NFAP<->NWRP",
-        "NMP<->NWRP",
-        "NWRP<->PPPP"
-      ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 420,
-      "spans_documents": [
-        "NAP",
-        "NDC",
-        "NFAP",
-        "NMP",
-        "NWRP",
-        "PPPP"
-      ]
-    },
-    {
-      "name": "Revisar las presiones sobre los ecosistemas derivadas de la expansión de la pesca",
-      "type": "friction",
-      "description": "Otra narrativa recurrente se refiere a que el crecimiento de la pesca y la acuicultura se señala para revisión cuando la producción orientada a la exportación, la ubicación de estanques, la expansión marina o la introducción de especies exóticas pueden afectar a los humedales, las aguas continentales, los hábitats costeros, las salvaguardias de la biodiversidad o las zonas acuáticas sensibles al clima. La fricción tiende a surgir en espacios acuáticos compartidos a través de vías relacionadas con la ubicación, la presión sobre los hábitats, la bioseguridad y la calidad del agua.",
-      "contributing_doc_pairs": [
+        "LDN<->NDC",
         "LDN<->NFAP",
-        "NBSAP<->NFAP",
-        "NDC<->NFAP",
-        "NFAP<->PPPP",
         "NFAP<->NWRP"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 131,
+      "pair_count": 3568,
       "spans_documents": [
         "LDN",
         "NBSAP",
         "NDC",
         "NFAP",
+        "NWRP"
+      ]
+    },
+    {
+      "name": "Integrar salvaguardias de biodiversidad y clima en la agricultura",
+      "type": "reinforcement",
+      "description": "La modernización agrícola suele estar alineada con los objetivos de biodiversidad, clima, tierra y agua cuando se lleva a cabo mediante extensión, investigación, educación de los agricultores, regulación, eficiencia en el uso de nutrientes, servicios agrometeorológicos y prácticas de producción climáticamente inteligentes. La evidencia indica que los sistemas de gobernanza y prestación en la agricultura actúan como canales para la protección del suelo, la reducción de la contaminación, la resiliencia y un uso más cuidadoso de los recursos.",
+      "contributing_doc_pairs": [
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "LDN<->NAP",
+        "NAP<->NWRP",
+        "NAP<->PPPP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 17883,
+      "spans_documents": [
+        "LDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NWRP",
+        "PPPP"
+      ]
+    },
+    {
+      "name": "Utilizar la planificación espacial para orientar la ubicación en zonas sensibles",
+      "type": "reinforcement",
+      "description": "La planificación espacial se alinea repetidamente con los objetivos de conservación, clima, tierra, pesca y agua cuando la zonificación, la ubicación ambientalmente sensible y el uso de la infraestructura existente ayudan a limitar la conversión y a reducir la presión sobre las áreas vulnerables. Esto refuerza la implementación cuando las decisiones de desarrollo están guiadas por las condiciones de la cuenca, la sensibilidad de los ecosistemas y la huella de los servicios existentes.",
+      "contributing_doc_pairs": [
+        "LDN<->PPPP",
+        "NBSAP<->PPPP",
+        "NDC<->PPPP",
+        "NFAP<->PPPP",
+        "NWRP<->PPPP",
+        "NAP<->PPPP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 1055,
+      "spans_documents": [
+        "LDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NFAP",
+        "NWRP",
+        "PPPP"
+      ]
+    },
+    {
+      "name": "Revisar la competencia por la tierra derivada de los incentivos a la expansión",
+      "type": "friction",
+      "description": "Una cuestión recurrente señalada para revisión es que los incentivos para el crecimiento agrícola, la expansión de las empresas pesqueras, la inversión minera y el desarrollo basado en la ubicación podrían aumentar la presión sobre los mismos bosques, humedales, tierras de cultivo, reservas y áreas de restauración contemplados por los marcos de tierras, biodiversidad, clima y planificación. El mecanismo tiende a ser la superposición en la zonificación, la localización, la financiación o la promoción de inversiones, más que una oposición declarada en los objetivos.",
+      "contributing_doc_pairs": [
+        "LDN<->NAP",
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NBSAP<->NFAP",
+        "LDN<->NMP",
+        "NBSAP<->NMP",
+        "NMP<->PPPP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 549,
+      "spans_documents": [
+        "LDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NFAP",
+        "NMP",
+        "PPPP"
+      ]
+    },
+    {
+      "name": "Revisar la demanda de agua derivada de la expansión productiva",
+      "type": "friction",
+      "description": "Otra narrativa recurrente es aquella en la que la intensificación agrícola, el crecimiento de la acuicultura, el procesamiento de minerales y algunas medidas energéticas o industriales pueden añadir demanda a las aguas superficiales finitas, las aguas subterráneas, los acuíferos y las cuencas compartidas ya regidos por normas de asignación y conservación. Esto suele señalarse para revisión mediante el cultivo de tercera temporada, la concentración agroindustrial, la ubicación de la acuicultura, la demanda de procesamiento y la infraestructura que puede complicar la protección de la recarga, la calidad del agua y la asignación en las cuencas.",
+      "contributing_doc_pairs": [
+        "NAP<->NWRP",
+        "NFAP<->NWRP",
+        "NMP<->NWRP",
+        "NDC<->NWRP",
+        "NAP<->NFAP",
+        "NDC<->NFAP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 445,
+      "spans_documents": [
+        "NAP",
+        "NDC",
+        "NFAP",
+        "NMP",
+        "NWRP"
+      ]
+    },
+    {
+      "name": "Basarse en salvaguardias en la gobernanza de los minerales",
+      "type": "reinforcement",
+      "description": "La política sobre minerales suele alinearse con las agendas de tierras, biodiversidad, clima, pesca, agua y ordenación mediante la autorización ambiental, la aprobación previa en áreas sensibles, la prevención de la contaminación, la rehabilitación, el cierre de minas, la evaluación de referencia y el intercambio de datos. Estas salvaguardias tienden a reforzar objetivos más amplios de restauración, control de la contaminación, protección de cuencas hidrográficas y planificación basada en la evidencia, incluso cuando los sistemas de implementación siguen siendo específicos de cada sector.",
+      "contributing_doc_pairs": [
+        "LDN<->NMP",
+        "NBSAP<->NMP",
+        "NDC<->NMP",
+        "NFAP<->NMP",
+        "NMP<->NWRP",
+        "NMP<->PPPP",
+        "NAP<->NMP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 5023,
+      "spans_documents": [
+        "LDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NFAP",
+        "NMP",
         "NWRP",
         "PPPP"
       ]
     }
   ],
-  "summary_paragraph": "En el conjunto de políticas de Sri Lanka, el refuerzo parece ser más prevalente que la fricción, con una alineación recurrente en torno a la planificación espacial, la gestión de cuencas y herramientas de gobernanza como normas, seguimiento, regulación e intercambio de datos. Estos mecanismos suelen alinear la restauración de tierras, la protección de la biodiversidad, la acción climática, la gobernanza del agua y la ejecución sectorial en la agricultura, la pesca, los minerales y la planificación física. Al mismo tiempo, se señalan varias fricciones transversales para su revisión cuando la expansión de la producción, la minería, la infraestructura o el desarrollo basado en la ubicación pueden aumentar la presión sobre los sistemas compartidos de tierra y agua. El panorama general apunta a una amplia alineación estratégica, junto con sensibilidades recurrentes de implementación en humedales, cuencas hidrográficas, zonas costeras y otros paisajes de usos múltiples.",
+  "summary_paragraph": "En el conjunto de documentos de Sri Lanka, el refuerzo parece repetirse con mayor fuerza en torno a la gobernanza de cuencas hidrográficas y cuencas, la restauración de bosques y humedales, y el uso de la planificación, la regulación y el seguimiento para conectar las agendas de tierra, agua, biodiversidad, clima, agricultura, pesca y minerales. La agricultura y los minerales destacan como sectores en los que los sistemas facilitadores, como la extensión, la investigación, los permisos, la rehabilitación y las normas, suelen alinearse con objetivos ambientales más amplios. Al mismo tiempo, varias cuestiones transversales se señalan repetidamente para revisión cuando el crecimiento de la producción, la inversión minera, la expansión de la acuicultura o el desarrollo basado en la ubicación pueden converger en los mismos sistemas de tierra, costeros, de humedales o de agua. En general, la evidencia apunta a un panorama de políticas con una arquitectura de refuerzo sustancial, junto con fricciones recurrentes de implementación en torno a la ubicación, la asignación y las salvaguardias en espacios compartidos.",
   "doc_pair_count": 28,
   "states": {
     "": {
       "storylines": [
         {
-          "name": "Utilizar la planificación espacial para orientar paisajes compartidos",
+          "name": "Vincular la restauración de cuencas hidrográficas con la resiliencia hídrica",
           "type": "reinforcement",
-          "description": "Se repite un patrón sólido en el que la zonificación del uso del suelo, los controles de emplazamiento, la planificación de cuencas y el uso de la infraestructura existente se alinean con los objetivos de conservación, clima, agua, agricultura, pesca y minerales. Esto tiende a funcionar mediante la evaluación práctica de áreas sensibles como humedales, cuencas altas, reservas, áreas escénicas y tierras cultivadas antes de que prosiga el desarrollo o la expansión sectorial.",
-          "contributing_doc_pairs": [
-            "LDN<->NDC",
-            "LDN<->PPPP",
-            "NAP<->PPPP",
-            "NBSAP<->PPPP",
-            "NDC<->PPPP",
-            "NWRP<->PPPP",
-            "NMP<->PPPP"
-          ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 1368,
-          "spans_documents": [
-            "LDN",
-            "NAP",
-            "NBSAP",
-            "NDC",
-            "NMP",
-            "NWRP",
-            "PPPP"
-          ]
-        },
-        {
-          "name": "Reforzar la gestión de las cuencas hidrográficas en los ámbitos terrestre y acuático",
-          "type": "reinforcement",
-          "description": "La gestión responsable de las cuencas de captación y las cuencas hidrográficas reaparece como un mecanismo compartido de implementación que vincula la protección del suelo, el control de la erosión, la conservación de los humedales, la protección de los acuíferos, la planificación de las cuencas fluviales y la gestión de la calidad del agua. La evidencia indica que la restauración de la tierra y la gobernanza del agua se refuerzan mutuamente mediante la reducción de sedimentos, la infiltración, la protección de la recarga y la resiliencia en las cuencas altas y los sistemas fluviales.",
+          "description": "Se repite un patrón sólido en torno a los bosques, los humedales, el control de la erosión, la protección de los acuíferos y la planificación de cuencas fluviales, que refuerza tanto los resultados en materia de tierras como de biodiversidad, al tiempo que también apoya la resiliencia climática y la calidad del agua. Esto tiende a funcionar mediante planes de cuenca, directrices para cuencas hidrográficas, protección de la recarga, monitoreo y gobernanza participativa del agua que alinean la gestión de la tierra y del agua en los mismos paisajes.",
           "contributing_doc_pairs": [
             "LDN<->NWRP",
-            "LDN<->NFAP",
             "NBSAP<->NWRP",
             "NDC<->NWRP",
-            "NFAP<->NWRP",
-            "NMP<->NWRP"
-          ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 4490,
-          "spans_documents": [
-            "LDN",
-            "NBSAP",
-            "NDC",
-            "NFAP",
-            "NMP",
-            "NWRP"
-          ]
-        },
-        {
-          "name": "Incorporar salvaguardias ambientales en la modernización sectorial",
-          "type": "reinforcement",
-          "description": "En varios emparejamientos, las medidas de modernización como la extensión, las normas, la trazabilidad, el monitoreo, la regulación, la rehabilitación y el intercambio de datos se alinean con los objetivos de biodiversidad, clima, tierra y agua. Esto se repite en la agricultura, la pesca y los minerales, donde las herramientas de gobernanza y los sistemas de cumplimiento proporcionan canales para la producción ecológica, el control de la contaminación, la restauración y la gestión de riesgos.",
-          "contributing_doc_pairs": [
-            "NAP<->NBSAP",
-            "NAP<->NDC",
-            "NAP<->NWRP",
-            "NBSAP<->NFAP",
-            "NBSAP<->NMP",
-            "NDC<->NMP",
-            "NFAP<->NMP"
-          ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 19007,
-          "spans_documents": [
-            "NAP",
-            "NBSAP",
-            "NDC",
-            "NFAP",
-            "NMP",
-            "NWRP"
-          ]
-        },
-        {
-          "name": "Revisar la competencia por la tierra derivada de las medidas de expansión",
-          "type": "friction",
-          "description": "Se señala para revisión una fricción recurrente cuando el crecimiento agrícola, la zonificación minera, la infraestructura, la expansión de los asentamientos o el desarrollo de ubicaciones de alto potencial pueden recurrir a la misma base territorial prevista para bosques, humedales, restauración, protección de tierras cultivadas o cobertura de biodiversidad. El mecanismo suele ser la superposición espacial en áreas sensibles o de uso múltiple, más que un conflicto de objetivos establecido.",
-          "contributing_doc_pairs": [
-            "LDN<->NAP",
-            "LDN<->NMP",
-            "NAP<->NMP",
-            "NAP<->PPPP",
-            "NBSAP<->NMP",
-            "NBSAP<->PPPP",
-            "NDC<->PPPP"
-          ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 1054,
-          "spans_documents": [
-            "LDN",
-            "NAP",
-            "NBSAP",
-            "NDC",
-            "NMP",
-            "PPPP"
-          ]
-        },
-        {
-          "name": "Revisar la demanda de agua derivada del crecimiento de la producción",
-          "type": "friction",
-          "description": "La posible desalineación reaparece cuando la expansión de los cultivos, la rehabilitación del riego, el crecimiento de la acuicultura, la actividad agroindustrial, la minería o la ubicación de instalaciones energéticas e industriales podrían aumentar la presión sobre las aguas superficiales finitas, las aguas subterráneas, los humedales y los sistemas de asignación de cuencas. La evidencia tiende a señalar preocupaciones compartidas en torno a la cantidad y la calidad del agua, las zonas de recarga y los usuarios competidores en las mismas cuencas.",
-          "contributing_doc_pairs": [
-            "NAP<->NWRP",
-            "NAP<->NFAP",
-            "NDC<->NWRP",
-            "NFAP<->NWRP",
-            "NMP<->NWRP",
-            "NWRP<->PPPP"
-          ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 420,
-          "spans_documents": [
-            "NAP",
-            "NDC",
-            "NFAP",
-            "NMP",
-            "NWRP",
-            "PPPP"
-          ]
-        },
-        {
-          "name": "Revisar las presiones sobre los ecosistemas derivadas de la expansión de la pesca",
-          "type": "friction",
-          "description": "Otra narrativa recurrente se refiere a que el crecimiento de la pesca y la acuicultura se señala para revisión cuando la producción orientada a la exportación, la ubicación de estanques, la expansión marina o la introducción de especies exóticas pueden afectar a los humedales, las aguas continentales, los hábitats costeros, las salvaguardias de la biodiversidad o las zonas acuáticas sensibles al clima. La fricción tiende a surgir en espacios acuáticos compartidos a través de vías relacionadas con la ubicación, la presión sobre los hábitats, la bioseguridad y la calidad del agua.",
-          "contributing_doc_pairs": [
+            "LDN<->NDC",
             "LDN<->NFAP",
-            "NBSAP<->NFAP",
-            "NDC<->NFAP",
-            "NFAP<->PPPP",
             "NFAP<->NWRP"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 131,
+          "pair_count": 3568,
           "spans_documents": [
             "LDN",
             "NBSAP",
             "NDC",
             "NFAP",
+            "NWRP"
+          ]
+        },
+        {
+          "name": "Integrar salvaguardias de biodiversidad y clima en la agricultura",
+          "type": "reinforcement",
+          "description": "La modernización agrícola suele estar alineada con los objetivos de biodiversidad, clima, tierra y agua cuando se lleva a cabo mediante extensión, investigación, educación de los agricultores, regulación, eficiencia en el uso de nutrientes, servicios agrometeorológicos y prácticas de producción climáticamente inteligentes. La evidencia indica que los sistemas de gobernanza y prestación en la agricultura actúan como canales para la protección del suelo, la reducción de la contaminación, la resiliencia y un uso más cuidadoso de los recursos.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "LDN<->NAP",
+            "NAP<->NWRP",
+            "NAP<->PPPP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 17883,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NWRP",
+            "PPPP"
+          ]
+        },
+        {
+          "name": "Utilizar la planificación espacial para orientar la ubicación en zonas sensibles",
+          "type": "reinforcement",
+          "description": "La planificación espacial se alinea repetidamente con los objetivos de conservación, clima, tierra, pesca y agua cuando la zonificación, la ubicación ambientalmente sensible y el uso de la infraestructura existente ayudan a limitar la conversión y a reducir la presión sobre las zonas vulnerables. Esto refuerza la implementación cuando las decisiones de desarrollo están guiadas por las condiciones de las cuencas, la sensibilidad de los ecosistemas y la huella de los servicios existentes.",
+          "contributing_doc_pairs": [
+            "LDN<->PPPP",
+            "NBSAP<->PPPP",
+            "NDC<->PPPP",
+            "NFAP<->PPPP",
+            "NWRP<->PPPP",
+            "NAP<->PPPP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1055,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NFAP",
+            "NWRP",
+            "PPPP"
+          ]
+        },
+        {
+          "name": "Revisar la competencia por la tierra derivada de los incentivos a la expansión",
+          "type": "friction",
+          "description": "Una cuestión recurrente señalada para revisión es que los incentivos para el crecimiento agrícola, la expansión de las empresas pesqueras, la inversión minera y el desarrollo basado en la ubicación podrían aumentar la presión sobre los mismos bosques, humedales, tierras de cultivo, reservas y áreas de restauración contemplados por los marcos de tierra, biodiversidad, clima y planificación. El mecanismo tiende a ser la superposición en la zonificación, el emplazamiento, la financiación o la promoción de inversiones, más que una oposición declarada en los objetivos.",
+          "contributing_doc_pairs": [
+            "LDN<->NAP",
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "NBSAP<->NFAP",
+            "LDN<->NMP",
+            "NBSAP<->NMP",
+            "NMP<->PPPP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 549,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NFAP",
+            "NMP",
+            "PPPP"
+          ]
+        },
+        {
+          "name": "Revisar la demanda de agua derivada de la expansión productiva",
+          "type": "friction",
+          "description": "Otra narrativa recurrente es aquella en la que la intensificación agrícola, el crecimiento de la acuicultura, el procesamiento de minerales y algunas medidas energéticas o industriales pueden añadir demanda a las aguas superficiales finitas, las aguas subterráneas, los acuíferos y las cuencas compartidas ya regidos por normas de asignación y conservación. Esto suele señalarse para revisión mediante el cultivo de tercera temporada, la concentración agroindustrial, la ubicación de la acuicultura, la demanda de procesamiento y la infraestructura que puede complicar la protección de la recarga, la calidad del agua y la asignación de cuencas.",
+          "contributing_doc_pairs": [
+            "NAP<->NWRP",
+            "NFAP<->NWRP",
+            "NMP<->NWRP",
+            "NDC<->NWRP",
+            "NAP<->NFAP",
+            "NDC<->NFAP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 445,
+          "spans_documents": [
+            "NAP",
+            "NDC",
+            "NFAP",
+            "NMP",
+            "NWRP"
+          ]
+        },
+        {
+          "name": "Apoyarse en salvaguardias en la gobernanza de los minerales",
+          "type": "reinforcement",
+          "description": "La política sobre minerales suele alinearse con las agendas de tierras, biodiversidad, clima, pesca, agua y ordenación mediante la concesión de permisos ambientales, la aprobación previa en zonas sensibles, la prevención de la contaminación, la rehabilitación, el cierre de minas, la evaluación de referencia y el intercambio de datos. Estas salvaguardias tienden a reforzar objetivos más amplios de restauración, control de la contaminación, protección de cuencas hidrográficas y planificación basada en la evidencia, incluso cuando los sistemas de implementación siguen siendo específicos de cada sector.",
+          "contributing_doc_pairs": [
+            "LDN<->NMP",
+            "NBSAP<->NMP",
+            "NDC<->NMP",
+            "NFAP<->NMP",
+            "NMP<->NWRP",
+            "NMP<->PPPP",
+            "NAP<->NMP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 5023,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NFAP",
+            "NMP",
             "NWRP",
             "PPPP"
           ]
         }
       ],
-      "summary_paragraph": "En el conjunto de políticas de Sri Lanka, el refuerzo parece ser más prevalente que la fricción, con una alineación recurrente en torno a la planificación espacial, la gestión de cuencas y herramientas de gobernanza como normas, seguimiento, regulación e intercambio de datos. Estos mecanismos suelen alinear la restauración de tierras, la protección de la biodiversidad, la acción climática, la gobernanza del agua y la ejecución sectorial en la agricultura, la pesca, los minerales y la planificación física. Al mismo tiempo, se señalan varias fricciones transversales para su revisión cuando la expansión de la producción, la minería, la infraestructura o el desarrollo basado en la ubicación pueden aumentar la presión sobre los sistemas compartidos de tierra y agua. El panorama general apunta a una amplia alineación estratégica, junto con sensibilidades recurrentes de implementación en humedales, cuencas hidrográficas, zonas costeras y otros paisajes de usos múltiples.",
+      "summary_paragraph": "En el conjunto de documentos de Sri Lanka, el refuerzo parece repetirse con mayor intensidad en torno a la gobernanza de cuencas hidrográficas y cuencas, la restauración de bosques y humedales, y el uso de la planificación, la regulación y el seguimiento para conectar las agendas de tierra, agua, biodiversidad, clima, agricultura, pesca y minerales. La agricultura y los minerales destacan como sectores en los que los sistemas facilitadores, como la extensión, la investigación, los permisos, la rehabilitación y las normas, suelen alinearse con objetivos ambientales más amplios. Al mismo tiempo, varias cuestiones transversales se señalan repetidamente para revisión cuando el crecimiento de la producción, la inversión minera, la expansión de la acuicultura o el desarrollo basado en la ubicación pueden converger en los mismos sistemas de tierra, costeros, de humedales o de agua. En general, la evidencia apunta a un panorama de políticas con una arquitectura de refuerzo sustancial, junto con fricciones recurrentes de implementación en torno al emplazamiento, la asignación y las salvaguardias en espacios compartidos.",
       "doc_pair_count": 28
     }
   }

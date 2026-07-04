@@ -4,7 +4,7 @@
       "taxonomy_type": "globe",
       "category_id": "globe_1",
       "category_name": "Access and benefit sharing",
-      "aligned_count": 176,
+      "aligned_count": 174,
       "flagged_count": 7,
       "pool_composition": {
         "primary_count": 386,
@@ -15,10 +15,10 @@
         "resource_competition": 2
       },
       "synthesis": {
-        "storyline_name": "Integrar normas de distribución de beneficios en toda la gobernanza de los recursos",
-        "reinforce": "El acceso y la participación en los beneficios a menudo se alinean con medidas de gobernanza intersectorial, incluida la integración de políticas, las actualizaciones jurídicas y reglamentarias, la coordinación de las partes interesadas, la transparencia y la adopción de normas internacionales. También tiende a reforzar las acciones en materia de biodiversidad, agricultura, pesca y agua cuando la innovación, la conservación, los medios de vida o la gestión de los recursos se basan en recursos biológicos, información digital sobre secuencias o conocimientos tradicionales y, por lo tanto, se benefician de arreglos justos de acceso y participación en los beneficios.",
-        "clash": "La posible desalineación reaparece cuando las medidas de exploración minera, zonificación, reserva de tierras y preparación para la inversión pueden afectar los mismos paisajes, recursos biológicos o sistemas de conocimientos que el acceso y la participación en los beneficios buscan regular de manera equitativa. Estos casos se señalan para revisión principalmente como fricción en la implementación y competencia por los recursos, y a menudo apuntan a la necesidad de una zonificación coordinada, procesos de consentimiento, salvaguardias y normas de participación en los beneficios, más que a una contradicción directa de política.",
-        "coordination_hint": "Puede ser útil integrar salvaguardias de acceso y participación en los beneficios en la planificación del uso de la tierra, la concesión de licencias mineras y decisiones más amplias sobre el desarrollo de recursos cuando los recursos biológicos o los conocimientos asociados puedan verse afectados.",
+        "storyline_name": "Utilizar la gobernanza y los derechos para posibilitar la distribución de beneficios",
+        "reinforce": "El acceso y la participación en los beneficios a menudo se alinean con medidas de gobernanza intersectorial como la trazabilidad, los órganos de seguimiento, la toma de decisiones transparente y participativa, el apoyo financiero y de mercado, y el cumplimiento normativo, porque estas pueden ayudar a rastrear el uso de los recursos y estructurar una distribución justa de los beneficios derivados de los recursos biológicos, la información digital sobre secuencias y los conocimientos tradicionales. También refuerza firmemente las disposiciones basadas en derechos, especialmente los derechos indígenas y el consentimiento libre, previo e informado, y tiende a apoyar los resultados de conservación y gestión sostenible en los bosques, la pesca, las zonas costeras y los ecosistemas de carbono azul mediante mejores incentivos y participación.",
+        "clash": "La posible desalineación reaparece cuando la exploración minera, la zonificación, la reserva de tierras y las medidas de preparación para la inversión se superponen con áreas que contienen recursos biológicos o conocimientos tradicionales, porque las vías de acceso, asignación de tierras y extracción pueden complicar los arreglos de distribución equitativa de beneficios. Estos pares se señalan para revisión más que como contradicción directa, y a menudo apuntan a fricciones en la implementación o competencia por los recursos en paisajes compartidos, incluidas algunas áreas marinas o de reserva.",
+        "coordination_hint": "A menudo sería útil vincular las normas de acceso y participación en los beneficios con la planificación espacial, los procedimientos de consentimiento, la trazabilidad y las salvaguardias en las decisiones sobre minería y desarrollo territorial en las que puedan verse afectados los mismos recursos biológicos o los mismos titulares de conocimientos.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -27,21 +27,21 @@
       "taxonomy_type": "globe",
       "category_id": "globe_2",
       "category_name": "Biodiversity awareness and knowledge",
-      "aligned_count": 5045,
-      "flagged_count": 101,
+      "aligned_count": 5337,
+      "flagged_count": 103,
       "pool_composition": {
-        "primary_count": 2734,
-        "relevant_only_count": 7510
+        "primary_count": 2735,
+        "relevant_only_count": 8212
       },
       "contradiction_types": {
-        "resource_competition": 47,
-        "delivery_friction": 54
+        "resource_competition": 51,
+        "delivery_friction": 52
       },
       "synthesis": {
-        "storyline_name": "Desarrollar sistemas de sensibilización para apoyar decisiones fundamentadas en la biodiversidad",
-        "reinforce": "Los pares de refuerzo suelen indicar que la sensibilización y el conocimiento sobre biodiversidad actúan como una capa habilitadora para la toma de decisiones basada en evidencia, mediante capacitación, reforma curricular, servicios de asesoramiento, herramientas digitales de información, investigación, gestión de datos y acceso participativo a la información. En toda la muestra, esto tiende a alinearse con la implementación en la agricultura, la pesca, el agua, los residuos y la gobernanza empresarial, al mejorar la manera en que los actores comprenden los riesgos, utilizan los datos y adoptan prácticas más favorables para la biodiversidad o más sensibles al uso de los recursos.",
-        "clash": "Los pares señalados recurrentes se concentran en fricciones de implementación y cierta competencia por recursos, en los casos en que la toma de decisiones participativa e informada por la biodiversidad, la investigación acuática, o los conocimientos tradicionales y la participación en los beneficios pueden necesitar operar junto con la zonificación minera, la reserva de tierras, la exploración o la facilitación de la minería. El mecanismo recurrente es el posible solapamiento en zonas terrestres, costeras, marinas o vinculadas al agua, donde la planificación extractiva podría restringir el acceso, la participación, la gestión sensible a los ecosistemas o el espacio necesario para los procesos de conocimiento y gobernanza relacionados con la biodiversidad, por lo que estos casos se señalan para revisión en lugar de tratarse como contradicciones directas.",
-        "coordination_hint": "Este sector a menudo se beneficiaría de una planificación espacial temprana, mecanismos de divulgación, consulta e intercambio de datos, de modo que los sistemas de conocimiento y participación sobre biodiversidad puedan orientar la ubicación y las salvaguardias antes de que las decisiones sobre minerales u otros usos del suelo queden consolidadas.",
+        "storyline_name": "desarrollar la sensibilización y los sistemas de datos para una gestión sensible a la biodiversidad",
+        "reinforce": "Este sector suele alinearse mediante medidas facilitadoras que amplían la investigación, la educación, la sensibilización, la vigilancia, la extensión y los sistemas de datos, y luego aplican ese conocimiento a una gestión sensible a la biodiversidad en la agricultura, la pesca, la silvicultura, el agua y las prácticas empresariales. Un patrón de refuerzo más sólido aparece cuando el uso sostenible respetuoso de la biodiversidad se vincula con una gestión pesquera concreta basada en los ecosistemas, y cuando los canales de educación o extensión podrían transmitir conocimientos pertinentes para la biodiversidad a las decisiones sobre agricultura y uso de los recursos.",
+        "clash": "La posible desalineación reaparece allí donde los esfuerzos de conocimiento, sensibilización o gestión para la agricultura y la pesca se encuentran con la asignación de tierras para minerales, un desarrollo más amplio basado en la ubicación, o la expansión de la producción en zonas acuáticas sensibles. Estos pares suelen señalarse para revisión porque la implementación puede volverse más difícil cuando la zonificación, la minería, el turismo o el crecimiento de la acuicultura, y la gestión sensible a la biodiversidad compiten en los mismos espacios terrestres, costeros, lagunares o de aguas continentales.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la zonificación y las salvaguardias que conectan los esfuerzos de sensibilización, investigación y extensión con las decisiones sobre el uso de la tierra y el agua en áreas relevantes para la biodiversidad.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -50,21 +50,21 @@
       "taxonomy_type": "globe",
       "category_id": "globe_3",
       "category_name": "Biosafety",
-      "aligned_count": 837,
-      "flagged_count": 24,
+      "aligned_count": 859,
+      "flagged_count": 25,
       "pool_composition": {
-        "primary_count": 1629,
-        "relevant_only_count": 0
+        "primary_count": 1284,
+        "relevant_only_count": 343
       },
       "contradiction_types": {
-        "resource_competition": 5,
-        "delivery_friction": 19
+        "resource_competition": 7,
+        "delivery_friction": 18
       },
       "synthesis": {
-        "storyline_name": "Integración de controles de bioseguridad en todos los sistemas de producción",
-        "reinforce": "Los objetivos de bioseguridad suelen alinearse con las medidas relativas a la agricultura, la biodiversidad, el agua y la pesca cuando esas medidas crean canales para la cuarentena, la prevención de especies exóticas invasoras, una gestión más segura de las semillas y del germoplasma, el monitoreo, la extensión, la investigación y la armonización de políticas. El patrón recurrente es de habilitación más que de ejecución estrictamente conjunta, en el que objetivos más amplios de bioseguridad y de IAS refuerzan la planificación de cultivos, el fitomejoramiento, la conservación ex situ, la protección de cuencas y aguas subterráneas, y los sistemas locales de extensión o de productores.",
-        "clash": "La posible desalineación se señala repetidamente cuando la expansión minera, la asignación de tierras para la minería y la infraestructura o exploración asociadas podrían aumentar la perturbación, el acceso y las vías de movimiento que complican la prevención de especies exóticas invasoras y la aplicación de la cuarentena vegetal. También se señala fricción para revisión en la acuicultura y las pesquerías orientadas a la exportación, donde la expansión o introducción de especies acuáticas exóticas podría superar la capacidad de evaluación, contención, cuarentena y seguimiento necesarios para la bioseguridad y el control de IAS.",
-        "coordination_hint": "Suele ser útil integrar la evaluación de bioseguridad, la cuarentena, los controles de movimiento y el monitoreo a nivel de sitio en las decisiones sobre el uso de la tierra, las operaciones mineras y las vías de expansión de la acuicultura que afectan a este sector.",
+        "storyline_name": "Fortalecer la bioseguridad mediante controles intersectoriales",
+        "reinforce": "Las metas de bioseguridad suelen alinearse con medidas regulatorias, de laboratorio, cuarentena, extensión y planificación en la agricultura, el agua, los residuos y los minerales, porque el control de la contaminación, la prevención de especies invasoras y el uso más seguro de la biotecnología refuerzan sistemas más amplios de gestión del riesgo. La muestra señala repetidamente vínculos facilitadores más que una implementación compartida, especialmente cuando la bioseguridad respalda sistemas de semillas más seguros, normas para alimentos y piensos, la gestión del riego y de las cuencas hidrográficas, y la extensión local para la sensibilización y el control de IAS.",
+        "clash": "La posible desalineación reaparece cuando la acuicultura orientada a la exportación, la introducción de especies acuáticas exóticas y la ampliación de la exploración mineral o la minería podrían complicar el cumplimiento de los objetivos de bioseguridad y control de IAS. La fricción suele señalarse para revisión mediante dos mecanismos, la competencia por el uso de la tierra con áreas prioritarias para minerales y las vías operativas para la propagación de especies invasoras a través de perturbaciones, transporte, equipos, movimiento de embarcaciones y desarrollo en áreas sensibles o remotas.",
+        "coordination_hint": "Este sector tiende a beneficiarse de que las disposiciones tempranas de zonificación, cuarentena, cribado, control de movimientos y seguimiento se incorporen en las decisiones sobre minería, acuicultura, exportación e infraestructura local.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -73,22 +73,22 @@
       "taxonomy_type": "globe",
       "category_id": "globe_4",
       "category_name": "Green economy",
-      "aligned_count": 16583,
-      "flagged_count": 1983,
+      "aligned_count": 16660,
+      "flagged_count": 2011,
       "pool_composition": {
-        "primary_count": 21771,
-        "relevant_only_count": 13882
+        "primary_count": 21775,
+        "relevant_only_count": 14107
       },
       "contradiction_types": {
-        "resource_competition": 947,
-        "delivery_friction": 1034,
-        "goal_conflict": 2
+        "resource_competition": 962,
+        "delivery_friction": 1048,
+        "goal_conflict": 1
       },
       "synthesis": {
-        "storyline_name": "Vinculación de la transición ecológica mediante sistemas facilitadores",
-        "reinforce": "El refuerzo suele producirse mediante medidas facilitadoras que conectan una producción más ecológica, la resiliencia y la eficiencia en el uso de los recursos en la agricultura, el agua, la energía, el turismo, la pesca y la planificación. La muestra muestra repetidamente alineación cuando las instituciones, las redes de productores, los incentivos de I+D, los marcos de riesgo, la conservación del agua y la adopción de energías renovables crean canales prácticos para una actividad económica más sostenible, incluso cuando los sistemas de implementación solo se comparten parcialmente.",
-        "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua cuando la exploración mineral, la zonificación, el procesamiento o la expansión minera se cruzan con la protección de cuencas hidrográficas, el riego, el uso de la biodiversidad, la agricultura, la pesca, el turismo o las áreas protegidas. También se señala fricción en la implementación para su revisión cuando el desarrollo relacionado con la minería en cuencas hidrográficas, cuencas fluviales, zonas propensas a la sequía o espacios costeros y marinos podría complicar la conservación, la gestión del agua y otras vías de implementación de la economía verde, a menos que las salvaguardias y la ubicación se coordinen.",
-        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial integrada, las normas de asignación de agua y la armonización de permisos, especialmente cuando las actividades de economía verde y el desarrollo minero o de infraestructura pueden recurrir al mismo suelo, agua o espacio costero.",
+        "storyline_name": "Vinculación de la producción verde con la gestión responsable de los recursos",
+        "reinforce": "Los pares que se refuerzan mutuamente suelen alinear las acciones de economía verde con medidas de eficiencia, resiliencia y gobernanza, especialmente cuando la gestión de aguas residuales, la conservación del agua, la agricultura climáticamente inteligente, la tecnología asequible y las organizaciones de agricultores proporcionan canales de implementación para una producción con menores insumos y más sostenible. La muestra también señala vínculos facilitadores entre el valor añadido, la eficiencia energética, los requisitos de restauración y la planificación integrada, lo que tiende a reforzar una actividad económica más ecológica cuando las salvaguardias de los recursos se incorporan en la implementación.",
+        "clash": "Los pares señalados se repiten en torno a la competencia por la tierra y el agua, en particular cuando la asignación de tierras para minerales, los yacimientos listos para la inversión, las zonas agroindustriales, la expansión de la acuicultura o una ubicación más amplia del desarrollo pueden superponerse con cuencas hidrográficas, humedales, bosques, áreas sensibles para la biodiversidad, sistemas de riego o necesidades de tierra de los sistemas alimentarios. La fricción suele señalarse para revisión como fricción en la implementación o competencia por los recursos, más que como un conflicto directo de objetivos, y a menudo apunta a presión sobre paisajes compartidos, requerimientos de agua y procesos de planificación espacial.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la zonificación coordinada del uso de la tierra, la planificación de cuencas y subcuencas, y la evaluación de inversiones para que la expansión de la economía verde se alinee con las salvaguardias relativas al agua, la biodiversidad, los bosques y los sistemas alimentarios.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -97,22 +97,21 @@
       "taxonomy_type": "globe",
       "category_id": "globe_5",
       "category_name": "Biodiversity planning and finance",
-      "aligned_count": 22704,
-      "flagged_count": 2053,
+      "aligned_count": 22605,
+      "flagged_count": 2064,
       "pool_composition": {
-        "primary_count": 21137,
-        "relevant_only_count": 20546
+        "primary_count": 21457,
+        "relevant_only_count": 20104
       },
       "contradiction_types": {
-        "resource_competition": 989,
-        "delivery_friction": 1063,
-        "goal_conflict": 1
+        "resource_competition": 1000,
+        "delivery_friction": 1064
       },
       "synthesis": {
-        "storyline_name": "Vinculación de los resultados en materia de biodiversidad con la planificación hídrica y territorial",
-        "reinforce": "La planificación y la financiación de la biodiversidad suelen alinearse con la planificación de cuencas fluviales, la protección de cuencas hidrográficas, la reducción de la contaminación y una armonización más amplia de las políticas. La muestra señala repetidamente vínculos facilitadores en los que los objetivos de biodiversidad se ven reforzados por la gobernanza del agua, la planificación espacial, la agricultura respetuosa con el medio ambiente, la restauración y los sistemas de seguimiento, en lugar de por acciones de implementación idénticas.",
-        "clash": "La posible desalineación se repite allí donde las tierras y aguas necesarias para la protección de la biodiversidad, la gestión de cuencas, la expansión de la cobertura forestal o arbórea y las áreas protegidas también están siendo reservadas o habilitadas para la minería, el desarrollo agroindustrial o un crecimiento más amplio. También se señala para revisión la fricción en la implementación cuando la producción de fertilizantes e insumos, la promoción de la inversión en minerales o la zonificación minera podrían complicar el control de efluentes, la protección de la recarga de aguas subterráneas, las normas de calidad del agua y la planificación espacial sensible a la biodiversidad.",
-        "coordination_hint": "Este sector tiende a beneficiarse de la planificación integrada del uso de la tierra y de cuencas, con zonificación, normas de exclusión y salvaguardias para la calidad del agua y las aguas subterráneas utilizadas desde una etapa temprana para que las prioridades de biodiversidad puedan alinearse con las decisiones sobre agricultura, minería e infraestructura.",
+        "storyline_name": "Fortalecimiento de la gobernanza de la biodiversidad y de las salvaguardias espaciales",
+        "reinforce": "Los pares de refuerzo suelen señalar beneficios para la planificación de la biodiversidad cuando las decisiones utilizan mejores datos, procesos participativos, divulgación por parte de las empresas y coordinación intersectorial. Estos mecanismos tienden a alinear la restauración de la biodiversidad, la gestión de las áreas protegidas, la conservación de los humedales, el control de las especies invasoras y un desarrollo o una gestión del agua más eficientes en el uso de los recursos.",
+        "clash": "La posible desalineación se repite allí donde la protección de la biodiversidad, la restauración, la conservación de cuencas hidrográficas o acuíferos, y la gestión sostenible de especies silvestres coinciden con la preferencia por la minería, la reserva de tierras para minerales o una expansión más amplia del desarrollo en áreas sensibles. Los pares señalados también apuntan a la competencia por tierras y agua finitas, especialmente allí donde las prioridades de agricultura, acuicultura, protección de cuencas hidrográficas y restauración se superponen con usos extractivos o orientados a la producción.",
+        "coordination_hint": "Este sector a menudo se beneficiaría de una planificación espacial más sólida, zonificación, normas de asignación de agua y salvaguardias de biodiversidad más robustas, de modo que la restauración, las áreas protegidas y las medidas financieras o empresariales sensibles a la biodiversidad puedan aplicarse junto con otros usos de la tierra y los recursos.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -121,22 +120,22 @@
       "taxonomy_type": "globe",
       "category_id": "globe_6",
       "category_name": "Pollution management",
-      "aligned_count": 7597,
-      "flagged_count": 308,
+      "aligned_count": 7637,
+      "flagged_count": 317,
       "pool_composition": {
-        "primary_count": 4711,
+        "primary_count": 4706,
         "relevant_only_count": 8373
       },
       "contradiction_types": {
-        "delivery_friction": 220,
-        "resource_competition": 87,
+        "delivery_friction": 232,
+        "resource_competition": 84,
         "goal_conflict": 1
       },
       "synthesis": {
-        "storyline_name": "Vincular los controles de la contaminación con la gobernanza del agua y de los insumos",
-        "reinforce": "La gestión de la contaminación suele estar alineada con las medidas relativas a la calidad del agua, las cuencas fluviales, las aguas subterráneas, las aguas residuales y las cuencas hidrográficas, en las que las normas, el monitoreo, la planificación de cuencas, el control de la salinidad y los sistemas de aguas residuales refuerzan unas condiciones acuáticas más limpias. También tiende a estar alineada con medidas para una agricultura y una industria más limpias, como la estandarización de fertilizantes, el control ecológico de plagas, la regulación de insumos orgánicos, la producción más limpia y los procedimientos de prevención de la contaminación, porque estas pueden reducir las cargas contaminantes en su origen.",
-        "clash": "La posible desalineación se repite cuando la exploración de minerales, la facilitación de la minería o la priorización de tierras para minerales se señalan para revisión frente a la reducción de la contaminación, la protección de la calidad del agua, la gestión de cuencas hidrográficas y la gobernanza integrada de cuencas fluviales, porque la extracción y la ubicación asociada pueden aumentar el riesgo de contaminación y complicar el control de efluentes. También se señala para revisión la fricción cuando la expansión de la producción de fertilizantes o insumos, una presión más amplia del desarrollo o el crecimiento de la producción en la pesca y la acuicultura podrían añadir escorrentía, aguas residuales o presión sobre la tierra y el agua que dificulte el logro de los objetivos de contaminación.",
-        "coordination_hint": "Este sector suele apuntar a la coordinación de las decisiones sobre el uso de la tierra, la planificación de cuencas y subcuencas, la regulación de vertidos y las medidas de control en origen, de modo que las acciones en materia de minería, agricultura, residuos y agua puedan alinearse en torno a la prevención de la contaminación.",
+        "storyline_name": "Vincular los controles de la contaminación con la gestión del agua y de los ecosistemas",
+        "reinforce": "La gestión de la contaminación suele alinearse con las normas de calidad del agua, la planificación de cuencas fluviales, las orientaciones sobre cuencas hidrográficas y los objetivos de biodiversidad o restauración costera. La muestra señala repetidamente vínculos de refuerzo en los que el tratamiento de residuos, la reducción de la contaminación y las medidas de rehabilitación apoyan cuencas más saludables, sistemas acuáticos y la recuperación de los ecosistemas.",
+        "clash": "La posible desalineación reaparece cuando la expansión minera, la zonificación mineral, la ubicación de parques ecoindustriales o una promoción más amplia del desarrollo podrían aumentar la presión de la contaminación sobre los ríos, los humedales, los sistemas costeros y las metas de biodiversidad. Los pares señalados a menudo apuntan a fricciones en la implementación en geografías compartidas, especialmente cuando la regulación de la calidad del agua, la IRBM, la protección de cuencas o los objetivos de contaminación no perjudicial requerirían salvaguardias más sólidas para mantenerse durante la implementación.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial basada en cuencas, los permisos de calidad del agua, los controles de efluentes y la evaluación del uso del suelo, de modo que los objetivos de contaminación puedan alinearse con las medidas de desarrollo minero, industrial, agrícola y orientado a la exportación.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -145,21 +144,21 @@
       "taxonomy_type": "globe",
       "category_id": "globe_7",
       "category_name": "Protected areas and other conservation measures",
-      "aligned_count": 4269,
-      "flagged_count": 534,
+      "aligned_count": 5251,
+      "flagged_count": 608,
       "pool_composition": {
-        "primary_count": 3459,
-        "relevant_only_count": 3670
+        "primary_count": 3096,
+        "relevant_only_count": 5390
       },
       "contradiction_types": {
-        "resource_competition": 160,
-        "delivery_friction": 374
+        "resource_competition": 199,
+        "delivery_friction": 409
       },
       "synthesis": {
-        "storyline_name": "Vinculación de la ejecución de la conservación con sistemas más amplios de uso de la tierra",
-        "reinforce": "Las áreas protegidas y las medidas de conservación conexas suelen estar alineadas con acciones facilitadoras en la agricultura, el agua, la planificación y la gobernanza que pueden reducir indirectamente la presión sobre los hábitats o apoyar la resiliencia, como la integración de políticas, la conservación de cuencas hidrográficas, la captación de agua de lluvia, la extensión y la conectividad del paisaje. La muestra también refuerza que la protección de humedales, la conservación de especies, la conservación del carbono azul y la expansión de las áreas protegidas pueden verse respaldadas por salvaguardias más amplias en la planificación, los requisitos de restauración y la gestión de recursos sensible a las cuencas.",
-        "clash": "La posible desalineación se repite allí donde la expansión de las áreas de conservación, la protección de los humedales, el aumento de la superficie forestal, la protección de las especies y la conservación del carbono azul coinciden con la expansión de la minería, la reserva de tierras para minerales o las autorizaciones para la extracción en áreas sensibles, con fricción en torno a la tierra compartida y al espacio costero-marino. También se señala fricción para revisión cuando la financiación agrícola, el apoyo a la producción, la adopción de tecnología, la expansión de la acuicultura o la infraestructura rural podrían intensificar el uso en paisajes, humedales, aguas continentales o zonas costeras que las medidas de conservación buscan proteger.",
-        "coordination_hint": "Este sector tiende a beneficiarse de la zonificación espacial, las zonas de exclusión, las condiciones de salvaguardia y las normas de financiación y producción sensibles a la conservación, especialmente cuando las áreas protegidas, las OECM, los humedales, los bosques, las aguas continentales y los ecosistemas de carbono azul se superponen con la actividad minera o la producción agrícola.",
+        "storyline_name": "Vincular los resultados de conservación mediante salvaguardias espaciales y de cuencas hidrográficas",
+        "reinforce": "La expansión de las áreas protegidas, la conservación al estilo OECM, la restauración costera y del carbono azul, y medidas más amplias de resiliencia de la biodiversidad suelen alinearse con la conservación del agua y de las cuencas hidrográficas, la reducción de la contaminación y la planificación física sensible a la conservación. La muestra también señala una alineación facilitadora cuando la cartografía del riesgo climático, la integración de políticas y las medidas agrícolas o de gestión de la tierra pueden reforzar la conservación al reducir la presión sobre las áreas protegidas y otras áreas conservadas.",
+        "clash": "La posible desalineación reaparece cuando la promoción de la minería, la inversión en minerales, la expansión agrícola, la zonificación agroindustrial, el crecimiento de la producción pesquera o el desarrollo de infraestructura pueden superponerse con paisajes protegidos, restaurados, de humedales, costeros, de cuencas hidrográficas o sensibles para las especies. Los pares señalados a menudo apuntan a fricciones en la implementación y a cierta competencia por los recursos de tierra y agua, lo que sugiere la necesidad de revisión en torno a la ubicación, el acceso y la intensidad de uso, más que una contradicción directa de objetivos.",
+        "coordination_hint": "Este sector tiende a beneficiarse de una zonificación espacial coordinada, salvaguardias de cuencas hidrográficas y costeras, y exclusiones o condiciones específicas de uso para que las medidas de conservación puedan coexistir con la agricultura, la pesca y el desarrollo mineral allí donde las geografías se superponen.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -168,21 +167,21 @@
       "taxonomy_type": "globe",
       "category_id": "globe_8",
       "category_name": "Restoration",
-      "aligned_count": 4368,
-      "flagged_count": 324,
+      "aligned_count": 3988,
+      "flagged_count": 312,
       "pool_composition": {
         "primary_count": 3228,
-        "relevant_only_count": 3210
+        "relevant_only_count": 2856
       },
       "contradiction_types": {
-        "resource_competition": 100,
-        "delivery_friction": 224
+        "resource_competition": 103,
+        "delivery_friction": 209
       },
       "synthesis": {
-        "storyline_name": "Vincular la restauración con la planificación de cuencas hidrográficas y biodiversidad",
-        "reinforce": "Las metas de restauración suelen alinearse con las medidas relativas al agua y la biodiversidad mediante la protección de cuencas hidrográficas, la gestión de cuencas fluviales, la recuperación de áreas degradadas y la mejora de los bosques o de la cobertura arbórea. La muestra también refuerza la restauración cuando la política minera incluye requisitos de rehabilitación, y cuando los mecanismos de financiación, capacidad o planificación local pueden apoyar la ejecución de la restauración sobre el terreno.",
-        "clash": "La posible desalineación se repite cuando la expansión minera, la zonificación minera o la infraestructura vinculada a la minería podrían superponerse con cuencas hidrográficas, bosques, ecosistemas costeros u otras áreas destinadas a la restauración, creando fricciones en la ejecución o competencia por la tierra. Los indicadores de revisión también señalan que la expansión agrícola, la rehabilitación del riego y la intensificación habilitada por la tecnología podrían competir con la conservación de cuencas hidrográficas o la restauración de ecosistemas, a menos que se coordinen la asignación de agua, la ubicación y las salvaguardias.",
-        "coordination_hint": "Suele ser útil utilizar la zonificación espacial, la planificación de cuencas o subcuencas, y condiciones de autorización vinculadas a la restauración para que los objetivos de restauración puedan alcanzarse junto con las decisiones sobre minería, agricultura y gestión del agua.",
+        "storyline_name": "Vincular la restauración con la planificación del uso de la tierra y del agua",
+        "reinforce": "La restauración en este sector suele estar alineada con la reducción de la degradación de la tierra, la protección de las cuencas hidrográficas, la conservación de los acuíferos, la rehabilitación del riego y un monitoreo más amplio del agua dulce. El mecanismo recurrente es la planificación coordinada del uso de la tierra y de las cuencas hidrográficas, en la que la protección del suelo, la plantación de árboles y la recuperación de los ecosistemas refuerzan la seguridad hídrica y los resultados en materia de resiliencia.",
+        "clash": "La posible desalineación se repite cuando las áreas de restauración pueden enfrentar demandas de uso del suelo contrapuestas derivadas de la minería, la expansión agroindustrial, la modernización agrícola y el desarrollo costero orientado a la exportación. Estos pares suelen señalarse para revisión porque la ubicación, la zonificación y la expansión de la infraestructura o de los insumos podrían alterar los suelos, los bosques, las cuencas, los sistemas de carbono azul u otras áreas destinadas a la restauración.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial, la zonificación de la restauración y las salvaguardias que conectan las prioridades de restauración con las decisiones sobre minería, agricultura, agua y desarrollo costero.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -191,22 +190,22 @@
       "taxonomy_type": "globe",
       "category_id": "globe_9",
       "category_name": "Sustainable use",
-      "aligned_count": 25604,
-      "flagged_count": 1667,
+      "aligned_count": 25481,
+      "flagged_count": 1657,
       "pool_composition": {
-        "primary_count": 39209,
-        "relevant_only_count": 7760
+        "primary_count": 39439,
+        "relevant_only_count": 7417
       },
       "contradiction_types": {
-        "resource_competition": 900,
-        "delivery_friction": 766,
+        "resource_competition": 903,
+        "delivery_friction": 753,
         "goal_conflict": 1
       },
       "synthesis": {
-        "storyline_name": "Vinculación del uso productivo con salvaguardias relativas al agua y la tierra",
-        "reinforce": "El refuerzo suele provenir de combinar una producción agrícola más eficiente o mejor organizada con medidas de gestión responsable de los recursos, especialmente la gestión del agua, la protección de las cuencas hidrográficas, el control de la calidad de los insumos y la gestión basada en la ciencia. La muestra también señala vínculos facilitadores en los que la planificación, la capacitación, la certificación, los sistemas de información y las salvaguardias de biodiversidad o ambientales pueden respaldar un uso más sostenible sin requerir la misma acción inmediata.",
-        "clash": "La posible desalineación reaparece cuando la expansión de la producción, el desarrollo agroindustrial, el crecimiento de la producción pesquera o el desarrollo mineral incrementan la presión sobre recursos finitos de tierra y agua que otras metas buscan conservar, asignar o proteger. La fricción se señala con mayor frecuencia para revisión como competencia por los recursos o fricción en la implementación, con mecanismos concretos que incluyen la demanda de aguas subterráneas, la superposición entre la agricultura o la minería y las cuencas hidrográficas o las áreas de carbono azul, y la tierra reservada para bosques, biodiversidad o uso mineral futuro.",
-        "coordination_hint": "Este sector tiende a beneficiarse de una planificación espacial coordinada, normas de asignación de agua y salvaguardias de permisos o zonificación, de modo que las metas de uso productivo puedan alinearse con la conservación y la gestión sostenible de los recursos en los mismos paisajes y cuencas hidrográficas.",
+        "storyline_name": "Vincular el crecimiento de la producción con la gestión responsable del agua y la tierra",
+        "reinforce": "El refuerzo suele provenir de combinar medidas de desarrollo agrícola, pesquero, ganadero e industrial con la conservación del agua, la planificación de cuencas, el monitoreo de aguas subterráneas, la protección de cuencas hidrográficas y la gobernanza participativa de los recursos. Estas combinaciones tienden a alinearse cuando el uso sostenible se logra mediante la eficiencia, el monitoreo, la participación local, las salvaguardias ambientales y mejores sistemas de información, en lugar de únicamente mediante la expansión directa.",
+        "clash": "La posible desalineación reaparece cuando el crecimiento agroindustrial, la producción de insumos, la acuicultura, la minería y la ubicación de desarrollos más amplios imponen demandas adicionales sobre tierras finitas, acuíferos, cuencas hidrográficas, humedales o ecosistemas costeros sensibles. La fricción se señala con mayor frecuencia para revisión como competencia por los recursos o fricción en la ejecución, especialmente cuando un desarrollo agrícola o mineral más rápido puede requerir zonificación, asignación de agua, controles de vertido, salvaguardias de restauración o evaluación de biodiversidad para seguir siendo compatible.",
+        "coordination_hint": "Este sector suele señalar la coordinación de la zonificación espacial, la planificación de cuencas y acuíferos, y los permisos ambientales para que las metas de uso productivo puedan alinearse con las salvaguardias relativas al agua, los humedales, las cuencas hidrográficas y la biodiversidad.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -215,22 +214,22 @@
       "taxonomy_type": "sector",
       "category_id": "sector_agriculture",
       "category_name": "Agriculture",
-      "aligned_count": 20057,
-      "flagged_count": 1143,
+      "aligned_count": 20337,
+      "flagged_count": 1159,
       "pool_composition": {
-        "primary_count": 32131,
-        "relevant_only_count": 6260
+        "primary_count": 32154,
+        "relevant_only_count": 6641
       },
       "contradiction_types": {
-        "resource_competition": 744,
-        "delivery_friction": 398,
+        "resource_competition": 762,
+        "delivery_friction": 396,
         "goal_conflict": 1
       },
       "synthesis": {
-        "storyline_name": "Vincular la modernización agrícola con salvaguardias para la tierra y el agua",
-        "reinforce": "La política agrícola a menudo se alinea con los instrumentos de biodiversidad, agua y planificación cuando la modernización se enmarca mediante tecnología eficiente, bioseguridad, biosafety, gestión de cuencas y prácticas respetuosas con el medio ambiente. La muestra también señala vínculos facilitadores entre la productividad agrícola, la extensión, las TIC, la agroindustria y medidas más amplias de gobernanza o de paisaje, pero estos vínculos tienden a ser de apoyo más que a implementarse de manera estrechamente coordinada.",
-        "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua, especialmente entre la expansión o intensificación agrícola y la asignación de tierras para minerales, las áreas protegidas, los humedales, la conservación de acuíferos y las prioridades hídricas a nivel de cuenca. También se señala fricción en la implementación para su revisión cuando una mayor producción de cultivos, la rehabilitación del riego, el crecimiento de la acuicultura o una intensificación agrícola más amplia podrían aumentar la contaminación, alterar los humedales o ejercer presión sobre ecosistemas sensibles para la biodiversidad, a menos que se apliquen salvaguardias.",
-        "coordination_hint": "La implementación en la agricultura a menudo se beneficiaría de la zonificación espacial, las normas de asignación de agua y las salvaguardias sensibles a la biodiversidad, de modo que las medidas de productividad puedan alinearse con las decisiones sobre la tierra, los humedales, los acuíferos y la minería.",
+        "storyline_name": "Vinculación de la adaptación agrícola con la gestión responsable del agua",
+        "reinforce": "Las metas agrícolas suelen alinearse con la conservación del agua, la eficiencia del riego, la gestión participativa del agua y los marcos de derechos o asignación del agua. Esto se repite mediante la captación de agua de lluvia, el riego por goteo, la conservación del suelo y del agua, la rehabilitación del riego y las medidas de resiliencia poscosecha que se ven reforzadas por una gobernanza más amplia del agua y la participación de las partes interesadas.",
+        "clash": "La posible desalineación se señala con frecuencia cuando la expansión agrícola, el crédito, la concentración agroindustrial o la producción de insumos podrían aumentar la presión sobre recursos hídricos finitos o afectar cuencas hidrográficas, humedales y sistemas fluviales. El mecanismo recurrente es la competencia por los recursos hídricos de cuencas y acuíferos, o la fricción en la prestación cuando los insumos agrícolas y la intensificación de la producción pueden menoscabar la protección de las fuentes de agua, a menos que se apliquen salvaguardias.",
+        "coordination_hint": "Suele ser útil vincular la financiación agrícola, la adopción de tecnología y la planificación agroindustrial con la asignación de agua a nivel de cuenca, la protección de las cuencas hidrográficas y la gobernanza participativa del riego.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -239,21 +238,21 @@
       "taxonomy_type": "sector",
       "category_id": "sector_energy",
       "category_name": "Energy",
-      "aligned_count": 2411,
-      "flagged_count": 54,
+      "aligned_count": 2318,
+      "flagged_count": 57,
       "pool_composition": {
-        "primary_count": 2692,
-        "relevant_only_count": 2667
+        "primary_count": 2693,
+        "relevant_only_count": 2348
       },
       "contradiction_types": {
-        "resource_competition": 33,
-        "delivery_friction": 21
+        "resource_competition": 32,
+        "delivery_friction": 25
       },
       "synthesis": {
-        "storyline_name": "Vincular el despliegue energético con la tierra y la planificación",
-        "reinforce": "Las metas energéticas suelen alinearse con medidas facilitadoras en agricultura, agua, minerales y planificación, especialmente cuando los sistemas de información, los incentivos, la I+D, la coordinación de las partes interesadas y la preparación de la infraestructura pueden respaldar la adopción de energías renovables, la eficiencia energética o la preparación de la red. La muestra también refuerza transiciones más amplias hacia bajas emisiones, por ejemplo la electricidad renovable, la eficiencia industrial y la energía renovable en la agricultura, pero por lo general mediante vínculos indirectos de implementación en lugar de mecanismos de ejecución estrechamente compartidos.",
-        "clash": "La posible desalineación reaparece en torno a la asignación y localización del suelo, donde la generación renovable, el almacenamiento, la infraestructura de gas y la descarbonización industrial relacionada con la energía pueden competir con tierras reservadas para la inversión minera o para usos prioritarios de la minería. También se señala para revisión la fricción en la implementación cuando nuevas plantas de gas, infraestructura de red o la expansión de la actividad extractiva podrían complicar la planificación espacial sensible a la biodiversidad, las salvaguardias de conservación o el seguimiento intersectorial de pérdidas y daños.",
-        "coordination_hint": "Este sector tiende a beneficiarse de una zonificación espacial temprana, una secuenciación del uso del suelo y permisos basados en salvaguardias, de modo que el despliegue energético pueda alinearse con las prioridades minerales, la planificación de la biodiversidad y los requisitos de seguimiento intersectorial.",
+        "storyline_name": "Ampliación de la energía mediante facilitadores intersectoriales y coordinación de la ubicación",
+        "reinforce": "Las metas energéticas suelen alinearse con medidas facilitadoras más amplias, como la reforma fiscal y regulatoria, el apoyo a la I+D, la coordinación de las partes interesadas y los incentivos centrados en la agricultura para la adopción de energías renovables y la eficiencia. La muestra también refuerza los vínculos prácticos entre las metas nacionales de eficiencia energética o de energías renovables y las aplicaciones sectoriales, como la agricultura impulsada por energías renovables, la movilidad eléctrica y los procesos industriales más limpios.",
+        "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua para el suministro de energía, especialmente cuando la generación renovable, la infraestructura de generación eléctrica a gas o la electrificación del transporte se cruzan con la reserva de tierras para minerales, la zonificación prioritaria para minerales, la protección de cuencas hidrográficas, la planificación sensible a la biodiversidad o las prioridades de asignación de agua. Se señalan varios pares para revisión porque la fricción tiende a surgir a través de la ubicación, la zonificación y el emplazamiento de infraestructuras, más que por una contradicción directa de políticas.",
+        "coordination_hint": "Este sector suele señalar la necesidad de una planificación espacial coordinada, la asignación de agua y la concesión de permisos para que la expansión energética pueda avanzar junto con las prioridades en materia de minerales, agua y biodiversidad.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -262,22 +261,21 @@
       "taxonomy_type": "sector",
       "category_id": "sector_ippu",
       "category_name": "Industrial processes and product use",
-      "aligned_count": 3597,
-      "flagged_count": 1183,
+      "aligned_count": 3496,
+      "flagged_count": 891,
       "pool_composition": {
-        "primary_count": 7405,
-        "relevant_only_count": 4522
+        "primary_count": 5713,
+        "relevant_only_count": 6226
       },
       "contradiction_types": {
-        "delivery_friction": 453,
-        "resource_competition": 729,
-        "goal_conflict": 1
+        "delivery_friction": 408,
+        "resource_competition": 483
       },
       "synthesis": {
-        "storyline_name": "Coordinar la ubicación de instalaciones mineras e industriales con la planificación del agua y del territorio",
-        "reinforce": "La alineación suele observarse cuando la descarbonización industrial, los parques ecoindustriales, el cierre de minas y la gobernanza del sector mineral se ven habilitados por instrumentos de planificación más amplios, especialmente la gobernanza del agua, la alineación regulatoria, la adopción de tecnología y los permisos ambientales. Estos pares tienden a reforzar el sector cuando las actividades industriales o minerales están vinculadas a comités de partes interesadas, la planificación de cuencas, los controles de la contaminación, la rehabilitación y la inversión en tecnologías más limpias.",
-        "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua, especialmente cuando las áreas prioritarias para minerales, las tierras destinadas a futuras inversiones minerales o la expansión del procesamiento de minerales podrían limitar la agricultura, la biodiversidad, los humedales, la planificación costera, la ubicación de parques ecoindustriales o la protección de las aguas subterráneas y las cuencas hidrográficas. Varias combinaciones también se señalan para revisión porque el acceso minero o la expansión del sector mineral podrían complicar la conectividad de los hábitats, la restauración y la planificación espacial sensible al clima, a menos que se apliquen zonificación, exclusiones y salvaguardias.",
-        "coordination_hint": "Este sector a menudo se beneficiaría de una planificación espacial integrada, normas de asignación de agua y condiciones de autorización que secuencien el desarrollo mineral e industrial con las prioridades relativas a los acuíferos, las cuencas hidrográficas, la biodiversidad, las zonas costeras y la agricultura.",
+        "storyline_name": "Reforzar las salvaguardias y la coordinación de la industria minera",
+        "reinforce": "Dentro de este sector, la alineación suele provenir de medidas facilitadoras en torno a la regulación de los minerales, las salvaguardias ambientales, la investigación, el seguimiento y unas prácticas industriales más limpias. Los pares sugieren repetidamente que una regulación minera más sólida, la recuperación de residuos, la eficiencia energética, la adopción de tecnologías y la armonización de políticas pueden reforzar objetivos más amplios de calidad del agua, biodiversidad, rehabilitación de tierras y descarbonización industrial.",
+        "clash": "La posible desalineación se repite cuando la inversión minera, la reserva de tierras o el desarrollo centrado en la minería en tierras con alto potencial mineral se cruza con usos competidores de la tierra y el agua. Los pares señalados para revisión a menudo apuntan a fricciones en la implementación o a competencia por los recursos con áreas protegidas, restauración, bosques, vida silvestre, agricultura, acuicultura y asignación de agua, especialmente cuando el emplazamiento, la zonificación y el acceso a tierras o agua finitas son compartidos.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la zonificación espacial, las salvaguardias en materia de permisos, los requisitos de rehabilitación y la asignación coordinada de tierras y agua, de modo que el desarrollo mineral pueda secuenciarse junto con los objetivos de conservación, agricultura y transición industrial.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -286,22 +284,21 @@
       "taxonomy_type": "sector",
       "category_id": "sector_lulucf",
       "category_name": "Land use, land-use change and forestry (LULUCF)",
-      "aligned_count": 11813,
-      "flagged_count": 1345,
+      "aligned_count": 11798,
+      "flagged_count": 1641,
       "pool_composition": {
-        "primary_count": 11588,
-        "relevant_only_count": 6977
+        "primary_count": 12223,
+        "relevant_only_count": 6637
       },
       "contradiction_types": {
-        "resource_competition": 538,
-        "delivery_friction": 806,
-        "goal_conflict": 1
+        "resource_competition": 825,
+        "delivery_friction": 816
       },
       "synthesis": {
-        "storyline_name": "Coordinar la asignación de tierras entre la restauración, la agricultura y la minería",
-        "reinforce": "Dentro de los pares vinculados a LULUCF, la alineación suele provenir de medidas facilitadoras que apoyan la gestión sostenible de la tierra, la restauración y los resultados relacionados con los bosques o la cobertura arbórea, como incentivos para el uso sostenible de las tierras agrícolas, la conservación de cuencas y suelos, la gobernanza, los datos y los sistemas de planificación. Estos pares tienden a reforzarse cuando instituciones transversales, sistemas de mercado o herramientas de información ayudan a implementar la restauración de tierras degradadas, la gestión sostenible de los bosques y de los árboles fuera de los bosques, y decisiones sobre la tierra sensibles a la biodiversidad.",
-        "clash": "La posible desalineación reaparece en torno a la competencia por la tierra finita entre los objetivos de conservación o restauración, la expansión o intensificación agrícola, y la zonificación minera o la futura inversión minera. También se señala reiteradamente fricción en la implementación para su revisión cuando la protección de humedales, la restauración de suelos, la restauración de ecosistemas, o metas amplias de conservación podrían ser más difíciles de implementar si la agricultura, el desarrollo agroindustrial, el crecimiento empresarial vinculado a la pesca, o la minería avanzan en los mismos paisajes sin zonificación, exclusiones y salvaguardias.",
-        "coordination_hint": "Este sector suele señalar la necesidad de una planificación espacial integrada que tiende a secuenciar la restauración, la protección de los humedales, la agricultura y la ubicación de minerales mediante la zonificación, la consulta con las partes interesadas y las salvaguardias para la tierra y el agua.",
+        "storyline_name": "Utilizar la planificación del uso de la tierra para equilibrar la restauración y la extracción",
+        "reinforce": "Los pares de refuerzo suelen señalar a LULUCF como un espacio facilitador de planificación y gobernanza, donde la restauración de ecosistemas, la conservación de cuencas hidrográficas y áreas de captación, las áreas protegidas, la cartografía agroecológica y los sistemas de información sobre biodiversidad se alinean con objetivos más amplios en materia de clima, agua, agricultura, zonas costeras y minerales. El mecanismo recurrente es el apoyo indirecto, mejores datos, la planificación participativa, los requisitos de restauración y la toma de decisiones sensibles a la tierra o al agua tienden a reforzar la gestión sostenible de la tierra en lugar de crear una implementación estrechamente compartida.",
+        "clash": "La posible desalineación se repite allí donde la tierra está siendo reservada, zonificada o priorizada para la minería o la infraestructura energética, mientras que los bosques, humedales, cuencas hidrográficas, hábitats costeros, tierras agrícolas y otras tierras degradadas también son objeto de protección, restauración o resiliencia climática. Se señalan para revisión tanto la competencia por los recursos sobre la misma base finita de tierras como la fricción en la implementación, cuando la expansión de la minería, la acuicultura o la agricultura podría complicar la resiliencia de la biodiversidad, la protección de los humedales, la conservación de las cuencas y la restauración forestal, a menos que se apliquen salvaguardias y exclusiones.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la zonificación espacial integrada, la evaluación preliminar y la secuenciación que vinculan las decisiones sobre minerales, agricultura, agua, silvicultura, humedales y zonas costeras con criterios compartidos de aptitud del suelo y sensibilidad de los ecosistemas.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -310,22 +307,22 @@
       "taxonomy_type": "sector",
       "category_id": "sector_other",
       "category_name": "Other / Cross-cutting",
-      "aligned_count": 26020,
-      "flagged_count": 1644,
+      "aligned_count": 26006,
+      "flagged_count": 1897,
       "pool_composition": {
-        "primary_count": 40062,
-        "relevant_only_count": 6915
+        "primary_count": 40747,
+        "relevant_only_count": 7045
       },
       "contradiction_types": {
-        "resource_competition": 582,
-        "delivery_friction": 1060,
-        "goal_conflict": 2
+        "resource_competition": 793,
+        "delivery_friction": 1103,
+        "goal_conflict": 1
       },
       "synthesis": {
-        "storyline_name": "Facilitar la coordinación intersectorial y evaluar las compensaciones recíprocas",
-        "reinforce": "Este sector suele alinearse mediante mecanismos facilitadores, integración de políticas, comités de partes interesadas, sistemas de datos, normas y principios de planificación que apoyan la implementación en la agricultura, el agua, la biodiversidad, la energía, los residuos y la planificación de los asentamientos. El refuerzo también se repite cuando las medidas transversales mejoran indirectamente el desempeño ambiental, como la agricultura de precisión que refuerza los objetivos de calidad del agua, la gestión de aguas residuales que refuerza el desarrollo sensible a los ecosistemas y los sistemas de información climática que refuerzan la planificación física basada en el riesgo.",
-        "clash": "La posible desalineación se señala principalmente cuando medidas amplias de desarrollo, minería, expansión agroindustrial o producción de insumos generan fricciones en la implementación o competencia por los recursos con la protección de la biodiversidad, la conservación de humedales y cuencas hidrográficas, la protección de acuíferos, la zonificación de la resiliencia costera y la asignación de agua. El mecanismo recurrente no es un conflicto directo de objetivos, sino la presión sobre tierras, agua, hábitats, infraestructura o atención regulatoria compartidos, lo que a menudo apunta a la necesidad de evaluación espacial, zonas de exclusión, secuenciación y salvaguardias.",
-        "coordination_hint": "Este sector tiende a beneficiarse de una planificación espacial intersectorial temprana, sistemas de información compartidos y mecanismos de consulta, especialmente cuando las demandas de tierra, agua, hábitat e infraestructura pueden superponerse.",
+        "storyline_name": "Vinculación de datos, capacidades y gobernanza intersectoriales",
+        "reinforce": "Este sector suele alinearse en torno a medidas facilitadoras, plataformas de datos, previsión, coordinación de las partes interesadas, actualizaciones jurídicas y desarrollo de capacidades que apoyan la ejecución en otros sectores como el agua, la industria, la pesca, la biodiversidad, la salud y la resiliencia climática. La muestra señala repetidamente un refuerzo indirecto mediante sistemas compartidos de apoyo a la toma de decisiones, creación de capacidades, logística y mecanismos de gobernanza, en lugar de acciones de implementación estrechamente compartidas.",
+        "clash": "La posible desalineación reaparece cuando medidas amplias de desarrollo, producción, minería, acuicultura o expansión agrícola se encuentran con recursos finitos de tierra y agua, la protección de acuíferos, la conservación de cuencas hidrográficas, la restauración de ecosistemas o la planificación espacial sensible a la biodiversidad. La fricción suele señalarse para revisión como fricción en la implementación o competencia por los recursos, y tiende a centrarse en la ubicación, la zonificación, las salvaguardias de las aguas subterráneas, los impactos acumulativos y las normas de asignación intersectorial más que en un conflicto directo de objetivos.",
+        "coordination_hint": "Una respuesta práctica en este sector consistiría a menudo en conectar las herramientas transversales de financiación, regulación, datos y planificación con la evaluación a nivel de cuenca y del uso de la tierra, de modo que las medidas facilitadoras refuercen, en lugar de superar, las salvaguardias relativas al agua, la biodiversidad y la ordenación territorial.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -334,21 +331,21 @@
       "taxonomy_type": "sector",
       "category_id": "sector_transport",
       "category_name": "Transport",
-      "aligned_count": 799,
-      "flagged_count": 20,
+      "aligned_count": 772,
+      "flagged_count": 14,
       "pool_composition": {
         "primary_count": 2165,
         "relevant_only_count": 311
       },
       "contradiction_types": {
-        "resource_competition": 12,
-        "delivery_friction": 8
+        "resource_competition": 9,
+        "delivery_friction": 5
       },
       "synthesis": {
-        "storyline_name": "Coordinar la ubicación del transporte con sistemas más amplios de uso del suelo",
-        "reinforce": "Las metas de transporte suelen alinearse con medidas más amplias de planificación, logística y gobernanza que pueden permitir un transporte de carga más eficiente, la conectividad rural-urbana y mejoras del entorno construido relacionadas con el transporte. En estos pares, el refuerzo suele ser indirecto, cuando la planificación hídrica, la planificación de asentamientos, la logística agrícola, los sistemas de datos, o los marcos de bioseguridad y normas refuerzan las condiciones de implementación del transporte en lugar de compartir la misma acción directa.",
-        "clash": "La posible desalineación reaparece en torno a la asignación y localización del suelo, especialmente cuando la mejora del sistema de transporte, el transporte público, la movilidad eléctrica, la eficiencia de las flotas o los entornos construidos relacionados con el transporte pueden requerir corredores, terminales, depósitos u otra infraestructura en terrenos que también se están reservando o priorizando para el desarrollo mineral. Algunos objetivos de revisión intersectorial también se señalan para revisión porque la expansión de la minería o de la actividad de desarrollo podría complicar las condiciones de ejecución y seguimiento pertinentes para la planificación climática y de infraestructura vinculada al transporte.",
-        "coordination_hint": "La ejecución del transporte a menudo se beneficiaría de una zonificación espacial temprana, la planificación de corredores y una evaluación preliminar compartida con las autoridades de planificación minera y física, de modo que la reserva de tierras y la ubicación de la infraestructura puedan secuenciarse de manera más coherente.",
+        "storyline_name": "Vincular la ejecución del transporte con la planificación intersectorial del uso de la tierra",
+        "reinforce": "Las metas de transporte suelen alinearse con la logística, el acceso a los mercados y la planificación más amplia de la infraestructura, especialmente cuando la eficiencia del transporte de carga, la gestión logística, las cadenas de frío y las instalaciones de transporte energéticamente eficientes refuerzan el movimiento de bienes y la coordinación del sistema. Los pares de refuerzo también apuntan a vínculos facilitadores con la planificación hídrica y ambiental, donde la mejora del sistema de transporte tiende a encajar mejor cuando la ubicación de la infraestructura, las normas y la gestión de los recursos se coordinan.",
+        "clash": "La posible desalineación reaparece en torno a la asignación de tierras y las necesidades de corredores, donde el transporte público, la movilidad eléctrica, la expansión logística y los entornos construidos relacionados con el transporte pueden competir con las tierras reservadas o priorizadas para la inversión mineral. Algunos pares también se señalan para revisión porque la descarbonización del transporte, especialmente la movilidad eléctrica, puede aumentar la presión de implementación sobre la extracción mineral y la zonificación relacionada, lo que puede generar fricciones en la ejecución a menos que la secuenciación y las salvaguardias sean claras.",
+        "coordination_hint": "A menudo sería útil integrar la planificación de corredores de transporte, la ubicación de la logística y el despliegue de la movilidad eléctrica con la zonificación estratégica del uso del suelo, las decisiones de asignación de minerales y los procesos compartidos de evaluación.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -357,22 +354,22 @@
       "taxonomy_type": "sector",
       "category_id": "sector_waste",
       "category_name": "Waste",
-      "aligned_count": 2252,
-      "flagged_count": 60,
+      "aligned_count": 2439,
+      "flagged_count": 77,
       "pool_composition": {
-        "primary_count": 1695,
-        "relevant_only_count": 2263
+        "primary_count": 1692,
+        "relevant_only_count": 2600
       },
       "contradiction_types": {
-        "resource_competition": 17,
-        "delivery_friction": 42,
+        "delivery_friction": 56,
+        "resource_competition": 20,
         "goal_conflict": 1
       },
       "synthesis": {
-        "storyline_name": "Vincular las medidas sobre residuos con los sistemas circulares y del agua",
-        "reinforce": "Las metas relativas a los residuos suelen estar alineadas con la economía circular, la reutilización de aguas residuales, el compostaje y medidas más amplias de gestión del agua. La muestra señala repetidamente un refuerzo cuando las acciones sobre residuos se combinan con la adopción de tecnologías, la I+D, la coordinación entre las partes interesadas, la regulación de los fertilizantes orgánicos y los vínculos entre los sistemas alimentarios urbanos y rurales que pueden apoyar la reutilización, el tratamiento y la recuperación de recursos.",
-        "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua con el desarrollo minero y la protección de cuencas. Los pares señalados suelen apuntar a que los vertederos, el tratamiento biológico, la infraestructura de aguas residuales o la implementación de la economía circular requieren tierra, emplazamiento y controles de vertido que pueden enfrentar fricciones cuando se aplican la zonificación minera, la reserva de tierras para inversión o la protección de cuencas.",
-        "coordination_hint": "Puede ser útil coordinar la ubicación de la infraestructura de residuos, las inversiones en economía circular y la planificación de las aguas residuales con las salvaguardias hídricas a nivel de cuenca y la zonificación del uso del suelo para minerales desde las primeras etapas del diseño del proyecto.",
+        "storyline_name": "Vinculación de la reducción de residuos con salvaguardias para el agua y la tierra",
+        "reinforce": "Las metas relacionadas con los residuos suelen alinearse con los objetivos de calidad del agua, saneamiento y eficiencia más amplia en el uso de los recursos. La muestra señala repetidamente que la economía circular, el consumo sostenible, la gestión de las aguas residuales y los controles de los vertederos refuerzan la reducción de la contaminación, la disminución de las pérdidas de materiales y unos sistemas de planificación y producción más sensibles al medio ambiente.",
+        "clash": "La posible desalineación se repite allí donde los residuos y las acciones conexas de gestión de recursos se encuentran con usos competitivos de la tierra y el agua. Los pares señalados apuntan especialmente a la ubicación de vertederos frente a las prioridades de desarrollo espacial, la economía circular frente a la tierra reservada para futuros proyectos mineros, y los objetivos de aguas residuales o de protección del agua sometidos a presión por la minería, la agricultura, la acuicultura y otros desarrollos a nivel de cuenca.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la zonificación temprana, la planificación de cuencas y las normas de vertido o reutilización, de modo que la infraestructura de residuos y las medidas de economía circular puedan alinearse con la protección del agua y las decisiones de asignación de tierras.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -384,7 +381,7 @@
         "taxonomy_type": "globe",
         "category_id": "globe_1",
         "category_name": "Access and benefit sharing",
-        "aligned_count": 176,
+        "aligned_count": 174,
         "flagged_count": 7,
         "pool_composition": {
           "primary_count": 386,
@@ -395,10 +392,10 @@
           "resource_competition": 2
         },
         "synthesis": {
-          "storyline_name": "Integrar normas de distribución de beneficios en toda la gobernanza de los recursos",
-          "reinforce": "El acceso y la participación en los beneficios a menudo se alinean con medidas de gobernanza intersectorial, incluida la integración de políticas, las actualizaciones jurídicas y reglamentarias, la coordinación de las partes interesadas, la transparencia y la adopción de normas internacionales. También tienden a reforzar las acciones en materia de biodiversidad, agricultura, pesca y agua cuando la innovación, la conservación, los medios de vida o la gestión de los recursos se basan en recursos biológicos, información digital sobre secuencias o conocimientos tradicionales y, por lo tanto, se benefician de arreglos justos de acceso y participación en los beneficios.",
-          "clash": "La posible desalineación reaparece cuando las medidas de exploración minera, zonificación, reserva de tierras y preparación para la inversión pueden afectar los mismos paisajes, recursos biológicos o sistemas de conocimientos que el acceso y la participación en los beneficios buscan gobernar de manera equitativa. Estos casos se señalan para revisión principalmente como fricción en la implementación y competencia por los recursos, y a menudo apuntan a la necesidad de una zonificación coordinada, procesos de consentimiento, salvaguardias y normas de participación en los beneficios, más que a una contradicción directa de política.",
-          "coordination_hint": "Puede ser útil integrar salvaguardias de acceso y participación en los beneficios en la planificación del uso de la tierra, la concesión de licencias mineras y decisiones más amplias sobre el desarrollo de recursos cuando los recursos biológicos o los conocimientos asociados puedan verse afectados.",
+          "storyline_name": "Utilizar la gobernanza y los derechos para posibilitar la distribución de beneficios",
+          "reinforce": "El acceso y la participación en los beneficios a menudo se alinean con medidas de gobernanza intersectorial como la trazabilidad, los órganos de seguimiento, la toma de decisiones transparente y participativa, el apoyo financiero y de mercado, y el cumplimiento normativo, porque estas pueden ayudar a rastrear el uso de los recursos y estructurar una distribución justa de los beneficios derivados de los recursos biológicos, la información digital sobre secuencias y los conocimientos tradicionales. También refuerza firmemente las disposiciones basadas en derechos, especialmente los derechos indígenas y el consentimiento libre, previo e informado, y tiende a apoyar los resultados de conservación y gestión sostenible en los bosques, la pesca, las zonas costeras y los ecosistemas de carbono azul mediante mejores incentivos y participación.",
+          "clash": "La posible desalineación se repite cuando la exploración minera, la zonificación, la reserva de tierras y las medidas de preparación para la inversión se superponen con áreas que contienen recursos biológicos o conocimientos tradicionales, porque las vías de acceso, asignación de tierras y extracción pueden complicar los arreglos de distribución equitativa de beneficios. Estos pares se señalan para revisión más que como contradicción directa, y a menudo apuntan a fricciones en la implementación o competencia por los recursos en paisajes compartidos, incluidas algunas áreas marinas o de reserva.",
+          "coordination_hint": "A menudo sería útil vincular las normas de acceso y participación en los beneficios con la planificación espacial, los procedimientos de consentimiento, la trazabilidad y las salvaguardias en las decisiones sobre minería y desarrollo territorial en las que puedan verse afectados los mismos recursos biológicos o los mismos titulares de conocimientos.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -407,21 +404,21 @@
         "taxonomy_type": "globe",
         "category_id": "globe_2",
         "category_name": "Biodiversity awareness and knowledge",
-        "aligned_count": 5045,
-        "flagged_count": 101,
+        "aligned_count": 5337,
+        "flagged_count": 103,
         "pool_composition": {
-          "primary_count": 2734,
-          "relevant_only_count": 7510
+          "primary_count": 2735,
+          "relevant_only_count": 8212
         },
         "contradiction_types": {
-          "resource_competition": 47,
-          "delivery_friction": 54
+          "resource_competition": 51,
+          "delivery_friction": 52
         },
         "synthesis": {
-          "storyline_name": "Desarrollar sistemas de sensibilización para respaldar decisiones fundamentadas en la biodiversidad",
-          "reinforce": "Los pares de refuerzo suelen indicar que la sensibilización y el conocimiento sobre la biodiversidad actúan como una capa habilitadora para la toma de decisiones basada en la evidencia, mediante la capacitación, la reforma curricular, los servicios de asesoramiento, las herramientas digitales de información, la investigación, la gestión de datos y el acceso participativo a la información. En toda la muestra, esto tiende a alinearse con la implementación en la agricultura, la pesca, el agua, los residuos y la gobernanza empresarial al mejorar la manera en que los actores comprenden los riesgos, utilizan los datos y adoptan prácticas más favorables para la biodiversidad o más sensibles al uso de los recursos.",
-          "clash": "Los pares señalados se repiten en torno a fricciones en la implementación y cierta competencia por los recursos, cuando la toma de decisiones participativa e informada por la biodiversidad, la investigación acuática, o los conocimientos tradicionales y la participación en los beneficios pueden necesitar operar junto con la zonificación minera, la reserva de tierras, la exploración o la facilitación de la minería. El mecanismo recurrente es el posible solapamiento en zonas terrestres, costeras, marinas o vinculadas al agua, donde la planificación extractiva podría restringir el acceso, la participación, la gestión sensible a los ecosistemas o el espacio necesario para los procesos de conocimiento y gobernanza relacionados con la biodiversidad, por lo que estos casos se señalan para revisión en lugar de tratarse como contradicciones directas.",
-          "coordination_hint": "Este sector a menudo se beneficiaría de una planificación espacial temprana, mecanismos de divulgación, consulta e intercambio de datos, de modo que los sistemas de conocimiento y participación sobre biodiversidad puedan orientar la ubicación y las salvaguardias antes de que las decisiones sobre minerales u otros usos del suelo queden consolidadas.",
+          "storyline_name": "desarrollar la sensibilización y los sistemas de datos para una gestión sensible a la biodiversidad",
+          "reinforce": "Este sector suele alinearse mediante medidas facilitadoras que amplían la investigación, la educación, la sensibilización, la vigilancia, la extensión y los sistemas de datos, y luego aplican ese conocimiento a una gestión sensible a la biodiversidad en la agricultura, la pesca, la silvicultura, el agua y las prácticas empresariales. Un patrón de refuerzo más sólido aparece cuando el uso sostenible respetuoso de la biodiversidad se vincula con una gestión pesquera concreta basada en los ecosistemas, y cuando los canales de educación o extensión podrían transmitir conocimientos pertinentes para la biodiversidad a las decisiones sobre agricultura y uso de los recursos.",
+          "clash": "La posible desalineación reaparece cuando los esfuerzos de conocimiento, sensibilización o gestión para la agricultura y la pesca se encuentran con la asignación de tierras para minerales, un desarrollo más amplio basado en la ubicación o la expansión de la producción en zonas acuáticas sensibles. Estos pares suelen señalarse para revisión porque la implementación puede volverse más difícil cuando la zonificación, la minería, el turismo o el crecimiento de la acuicultura, y la gestión sensible a la biodiversidad compiten en los mismos espacios terrestres, costeros, lagunares o de aguas continentales.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la zonificación y las salvaguardias que conectan la sensibilización, la investigación y los esfuerzos de extensión con las decisiones sobre el uso de la tierra y del agua en áreas relevantes para la biodiversidad.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -430,21 +427,21 @@
         "taxonomy_type": "globe",
         "category_id": "globe_3",
         "category_name": "Biosafety",
-        "aligned_count": 837,
-        "flagged_count": 24,
+        "aligned_count": 859,
+        "flagged_count": 25,
         "pool_composition": {
-          "primary_count": 1629,
-          "relevant_only_count": 0
+          "primary_count": 1284,
+          "relevant_only_count": 343
         },
         "contradiction_types": {
-          "resource_competition": 5,
-          "delivery_friction": 19
+          "resource_competition": 7,
+          "delivery_friction": 18
         },
         "synthesis": {
-          "storyline_name": "Integración de controles de bioseguridad en todos los sistemas de producción",
-          "reinforce": "Los objetivos de bioseguridad suelen alinearse con las medidas relativas a la agricultura, la biodiversidad, el agua y la pesca cuando esas medidas crean canales para la cuarentena, la prevención de especies exóticas invasoras, una gestión más segura de las semillas y del germoplasma, el monitoreo, la extensión, la investigación y la armonización de políticas. El patrón recurrente es de habilitación más que de ejecución estrictamente conjunta, en el que objetivos más amplios de bioseguridad y de IAS refuerzan la planificación de cultivos, el mejoramiento, la conservación ex situ, la protección de cuencas y aguas subterráneas, y los sistemas locales de extensión o de productores.",
-          "clash": "La posible desalineación se señala repetidamente cuando la expansión minera, la asignación de tierras para la minería y la infraestructura o exploración asociadas podrían aumentar la perturbación, el acceso y las vías de movimiento que complican la prevención de especies exóticas invasoras y la aplicación de la cuarentena vegetal. También se señala fricción para revisión en la acuicultura y las pesquerías orientadas a la exportación, donde la expansión o introducción de especies acuáticas exóticas podría superar la capacidad de evaluación, contención, cuarentena y seguimiento necesarios para la bioseguridad y el control de IAS.",
-          "coordination_hint": "Suele ser útil integrar la evaluación de bioseguridad, la cuarentena, los controles de movimiento y el monitoreo a nivel de sitio en las decisiones sobre el uso de la tierra, las operaciones mineras y las vías de expansión de la acuicultura que afectan a este sector.",
+          "storyline_name": "Fortalecer la bioseguridad mediante controles intersectoriales",
+          "reinforce": "Las metas de bioseguridad suelen alinearse con medidas regulatorias, de laboratorio, cuarentena, extensión y planificación en la agricultura, el agua, los residuos y los minerales, porque el control de la contaminación, la prevención de especies invasoras y el uso más seguro de la biotecnología refuerzan sistemas más amplios de gestión del riesgo. La muestra señala repetidamente vínculos facilitadores más que una implementación compartida, especialmente cuando la bioseguridad respalda sistemas de semillas más seguros, normas para alimentos y piensos, la gestión del riego y de las cuencas hidrográficas, y la extensión local para la sensibilización y el control de IAS.",
+          "clash": "La posible desalineación reaparece cuando la acuicultura orientada a la exportación, la introducción de especies acuáticas exóticas y la ampliación de la exploración mineral o la minería podrían complicar el cumplimiento de los objetivos de bioseguridad y control de IAS. La fricción suele señalarse para revisión a través de dos mecanismos, la competencia por el uso de la tierra con áreas prioritarias para minerales y las vías operativas para la propagación de especies invasoras mediante perturbación, transporte, equipos, movimiento de embarcaciones y desarrollo en áreas sensibles o remotas.",
+          "coordination_hint": "Este sector tiende a beneficiarse de que las disposiciones de zonificación temprana, cuarentena, inspección, control de movimientos y seguimiento se incorporen en las decisiones sobre minería, acuicultura, exportación e infraestructura local.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -453,22 +450,22 @@
         "taxonomy_type": "globe",
         "category_id": "globe_4",
         "category_name": "Green economy",
-        "aligned_count": 16583,
-        "flagged_count": 1983,
+        "aligned_count": 16660,
+        "flagged_count": 2011,
         "pool_composition": {
-          "primary_count": 21771,
-          "relevant_only_count": 13882
+          "primary_count": 21775,
+          "relevant_only_count": 14107
         },
         "contradiction_types": {
-          "resource_competition": 947,
-          "delivery_friction": 1034,
-          "goal_conflict": 2
+          "resource_competition": 962,
+          "delivery_friction": 1048,
+          "goal_conflict": 1
         },
         "synthesis": {
-          "storyline_name": "Vincular la transición verde mediante sistemas facilitadores",
-          "reinforce": "El refuerzo suele producirse mediante medidas facilitadoras que conectan una producción más ecológica, la resiliencia y la eficiencia en el uso de los recursos en la agricultura, el agua, la energía, el turismo, la pesca y la planificación. La muestra muestra repetidamente alineación allí donde las instituciones, las redes de productores, los incentivos de I+D, los marcos de riesgo, la conservación del agua y la adopción de energías renovables crean canales prácticos para una actividad económica más sostenible, incluso cuando los sistemas de implementación solo se comparten parcialmente.",
-          "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua cuando la exploración mineral, la zonificación, el procesamiento o la expansión minera se cruzan con la protección de cuencas hidrográficas, el riego, el uso de la biodiversidad, la agricultura, la pesca, el turismo o las áreas protegidas. También se señala la fricción en la implementación para su revisión cuando el desarrollo relacionado con la minería en cuencas hidrográficas, cuencas fluviales, zonas propensas a la sequía o espacios costeros y marinos podría complicar la conservación, la gestión del agua y otras vías de implementación de la economía verde, a menos que las salvaguardias y la ubicación se coordinen.",
-          "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial integrada, las normas de asignación de agua y la armonización de permisos, especialmente cuando las actividades de economía verde y el desarrollo minero o de infraestructura pueden recurrir al mismo suelo, agua o espacio costero.",
+          "storyline_name": "Vinculación de la producción verde con la gestión responsable de los recursos",
+          "reinforce": "Los pares de refuerzo suelen alinear las acciones de economía verde con medidas de eficiencia, resiliencia y gobernanza, especialmente cuando la gestión de aguas residuales, la conservación del agua, la agricultura climáticamente inteligente, la tecnología asequible y las organizaciones de agricultores proporcionan canales de implementación para una producción con menores insumos y más sostenible. La muestra también señala vínculos facilitadores entre el valor añadido, la eficiencia energética, los requisitos de restauración y la planificación integrada, lo que tiende a reforzar una actividad económica más ecológica cuando las salvaguardias de los recursos se incorporan en la implementación.",
+          "clash": "Los pares señalados recurrentes se concentran en torno a la competencia por la tierra y el agua, en particular cuando la asignación de tierras para minerales, los yacimientos listos para invertir, las zonas agroindustriales, la expansión de la acuicultura o la ubicación más amplia del desarrollo pueden superponerse con cuencas hidrográficas, humedales, bosques, áreas sensibles para la biodiversidad, sistemas de riego o necesidades de tierra de los sistemas alimentarios. La fricción suele señalarse para revisión como fricción de implementación o competencia por los recursos, más que como un conflicto directo de objetivos, y a menudo apunta a presión sobre paisajes compartidos, requerimientos de agua y procesos de ordenamiento territorial.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la zonificación coordinada del uso de la tierra, la planificación de cuencas y subcuencas, y la evaluación de inversiones para que la expansión de la economía verde se alinee con las salvaguardias relativas al agua, la biodiversidad, los bosques y los sistemas alimentarios.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -477,22 +474,21 @@
         "taxonomy_type": "globe",
         "category_id": "globe_5",
         "category_name": "Biodiversity planning and finance",
-        "aligned_count": 22704,
-        "flagged_count": 2053,
+        "aligned_count": 22605,
+        "flagged_count": 2064,
         "pool_composition": {
-          "primary_count": 21137,
-          "relevant_only_count": 20546
+          "primary_count": 21457,
+          "relevant_only_count": 20104
         },
         "contradiction_types": {
-          "resource_competition": 989,
-          "delivery_friction": 1063,
-          "goal_conflict": 1
+          "resource_competition": 1000,
+          "delivery_friction": 1064
         },
         "synthesis": {
-          "storyline_name": "Vinculación de los resultados en materia de biodiversidad con la planificación hídrica y territorial",
-          "reinforce": "La planificación y la financiación de la biodiversidad a menudo se alinean con la planificación de cuencas fluviales, la protección de cuencas hidrográficas, la reducción de la contaminación y una armonización más amplia de las políticas. La muestra señala repetidamente vínculos facilitadores en los que los objetivos de biodiversidad se ven reforzados por la gobernanza del agua, la planificación espacial, la agricultura respetuosa con el medio ambiente, la restauración y los sistemas de seguimiento, en lugar de por acciones de ejecución idénticas.",
-          "clash": "La posible desalineación reaparece cuando las tierras y aguas necesarias para la protección de la biodiversidad, la gestión de cuencas, la expansión de la cobertura forestal o arbórea y las áreas protegidas también se están reservando o habilitando para la minería, el desarrollo agroindustrial o un crecimiento más amplio. También se señala para revisión la fricción en la implementación cuando la producción de fertilizantes e insumos, la promoción de inversiones minerales o la zonificación minera podrían complicar el control de efluentes, la protección de la recarga de aguas subterráneas, las normas de calidad del agua y la planificación espacial sensible a la biodiversidad.",
-          "coordination_hint": "Este sector tiende a beneficiarse de la planificación integrada del uso de la tierra y de cuencas, con zonificación, normas de exclusión y salvaguardias para la calidad del agua y las aguas subterráneas utilizadas desde una etapa temprana para que las prioridades de biodiversidad puedan alinearse con las decisiones sobre agricultura, minería e infraestructura.",
+          "storyline_name": "Fortalecimiento de la gobernanza de la biodiversidad y de las salvaguardias espaciales",
+          "reinforce": "Los pares de refuerzo suelen señalar beneficios para la planificación de la biodiversidad cuando las decisiones utilizan mejores datos, procesos participativos, divulgación por parte de las empresas y coordinación intersectorial. Estos mecanismos tienden a alinear la restauración de la biodiversidad, la gestión de las áreas protegidas, la conservación de los humedales, el control de las especies invasoras y un desarrollo o una gestión del agua más eficientes en el uso de los recursos.",
+          "clash": "La posible desalineación se repite allí donde la protección de la biodiversidad, la restauración, la conservación de cuencas hidrográficas o acuíferos y la gestión sostenible de especies silvestres coinciden con la preferencia por la minería, la reserva de tierras para minerales o una expansión más amplia del desarrollo en zonas sensibles. Los pares señalados también apuntan a la competencia por tierras y agua finitas, especialmente allí donde las prioridades de agricultura, acuicultura, protección de cuencas hidrográficas y restauración se superponen con usos extractivos o orientados a la producción.",
+          "coordination_hint": "Este sector a menudo se beneficiaría de una planificación espacial más sólida, zonificación, normas de asignación de agua y salvaguardias de biodiversidad más robustas, de modo que la restauración, las áreas protegidas y las medidas financieras o empresariales sensibles a la biodiversidad puedan implementarse junto con otros usos de la tierra y los recursos.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -501,22 +497,22 @@
         "taxonomy_type": "globe",
         "category_id": "globe_6",
         "category_name": "Pollution management",
-        "aligned_count": 7597,
-        "flagged_count": 308,
+        "aligned_count": 7637,
+        "flagged_count": 317,
         "pool_composition": {
-          "primary_count": 4711,
+          "primary_count": 4706,
           "relevant_only_count": 8373
         },
         "contradiction_types": {
-          "delivery_friction": 220,
-          "resource_competition": 87,
+          "delivery_friction": 232,
+          "resource_competition": 84,
           "goal_conflict": 1
         },
         "synthesis": {
-          "storyline_name": "Vincular los controles de la contaminación con la gobernanza del agua y de los insumos",
-          "reinforce": "La gestión de la contaminación suele estar alineada con las medidas relativas a la calidad del agua, las cuencas fluviales, las aguas subterráneas, las aguas residuales y las cuencas hidrográficas, en las que las normas, el monitoreo, la planificación de cuencas, el control de la salinidad y los sistemas de aguas residuales refuerzan condiciones acuáticas más limpias. También tiende a alinearse con medidas para una agricultura y una industria más limpias, como la estandarización de fertilizantes, el control ecológico de plagas, la regulación de insumos orgánicos, la producción más limpia y los procedimientos de prevención de la contaminación, porque estas pueden reducir las cargas contaminantes en su origen.",
-          "clash": "La posible desalineación reaparece cuando la exploración de minerales, la facilitación de la minería o la priorización de tierras para minerales se señalan para revisión frente a la reducción de la contaminación, la protección de la calidad del agua, la gestión de cuencas hidrográficas y la gobernanza integrada de cuencas fluviales, porque la extracción y la ubicación asociada pueden aumentar el riesgo de contaminación y complicar el control de efluentes. También se señala para revisión la fricción cuando la expansión de la producción de fertilizantes o insumos, una presión más amplia del desarrollo, o el crecimiento de la producción en la pesca y la acuicultura podrían añadir escorrentía, aguas residuales o presión sobre la tierra y el agua que dificulte el logro de los objetivos de contaminación.",
-          "coordination_hint": "Este sector suele apuntar a la coordinación de las decisiones sobre el uso de la tierra, la planificación de cuencas y subcuencas, la regulación de vertidos y las medidas de control en origen, de modo que las acciones en materia de minería, agricultura, residuos y agua puedan alinearse en torno a la prevención de la contaminación.",
+          "storyline_name": "Vincular los controles de la contaminación con la gestión del agua y de los ecosistemas",
+          "reinforce": "La gestión de la contaminación suele alinearse con las normas de calidad del agua, la planificación de cuencas fluviales, las orientaciones sobre cuencas hidrográficas y los objetivos de biodiversidad o de restauración costera. La muestra señala repetidamente vínculos de refuerzo en los que el tratamiento de residuos, la reducción de la contaminación y las medidas de rehabilitación apoyan cuencas más saludables, sistemas acuáticos y la recuperación de los ecosistemas.",
+          "clash": "La posible desalineación se repite cuando la expansión minera, la zonificación mineral, la ubicación de parques ecoindustriales o una promoción más amplia del desarrollo podrían aumentar la presión de la contaminación sobre los ríos, los humedales, los sistemas costeros y las metas de biodiversidad. Los pares señalados a menudo apuntan a fricciones en la implementación en geografías compartidas, especialmente cuando la regulación de la calidad del agua, la IRBM, la protección de cuencas o los objetivos de contaminación no perjudicial requerirían salvaguardias más sólidas para mantenerse durante la implementación.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial basada en cuencas, los permisos de calidad del agua, los controles de efluentes y la evaluación del uso del suelo, de modo que los objetivos de contaminación puedan alinearse con las medidas de desarrollo minero, industrial, agrícola y orientadas a la exportación.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -525,21 +521,21 @@
         "taxonomy_type": "globe",
         "category_id": "globe_7",
         "category_name": "Protected areas and other conservation measures",
-        "aligned_count": 4269,
-        "flagged_count": 534,
+        "aligned_count": 5251,
+        "flagged_count": 608,
         "pool_composition": {
-          "primary_count": 3459,
-          "relevant_only_count": 3670
+          "primary_count": 3096,
+          "relevant_only_count": 5390
         },
         "contradiction_types": {
-          "resource_competition": 160,
-          "delivery_friction": 374
+          "resource_competition": 199,
+          "delivery_friction": 409
         },
         "synthesis": {
-          "storyline_name": "Vincular la implementación de la conservación con sistemas más amplios de uso de la tierra",
-          "reinforce": "Las áreas protegidas y las medidas de conservación conexas suelen estar alineadas con acciones facilitadoras en la agricultura, el agua, la planificación y la gobernanza que pueden reducir indirectamente la presión sobre los hábitats o apoyar la resiliencia, como la integración de políticas, la conservación de cuencas hidrográficas, la captación de agua de lluvia, la extensión y la conectividad del paisaje. La muestra también refuerza que la protección de los humedales, la conservación de las especies, la conservación del carbono azul y la expansión de las áreas protegidas pueden verse respaldadas por salvaguardias más amplias en la planificación, los requisitos de restauración y la gestión de los recursos con sensibilidad a las cuencas.",
-          "clash": "La posible desalineación se repite allí donde la expansión de las áreas de conservación, la protección de los humedales, el aumento de la superficie forestal, la protección de las especies y la conservación del carbono azul coinciden con la expansión de la minería, la reserva de tierras para minerales o las autorizaciones para la extracción en zonas sensibles, con fricción en torno al uso compartido de la tierra y del espacio costero-marino. También se señala fricción para revisión allí donde la financiación agrícola, el apoyo a la producción, la adopción de tecnología, la expansión de la acuicultura o la infraestructura rural podrían intensificar el uso en paisajes, humedales, aguas continentales o zonas costeras que las medidas de conservación buscan proteger.",
-          "coordination_hint": "Este sector tiende a beneficiarse de la zonificación espacial, las áreas de exclusión, las condiciones de salvaguardia y las normas de financiación y producción sensibles a la conservación, especialmente cuando las áreas protegidas, las OECM, los humedales, los bosques, las aguas continentales y los ecosistemas de carbono azul se superponen con la actividad minera o la producción agrícola.",
+          "storyline_name": "Vincular los resultados de conservación mediante salvaguardias espaciales y de cuencas hidrográficas",
+          "reinforce": "La expansión de las áreas protegidas, la conservación al estilo OECM, la restauración costera y del carbono azul, y medidas más amplias de resiliencia de la biodiversidad suelen estar alineadas con la conservación del agua y de las cuencas hidrográficas, la reducción de la contaminación y la planificación física sensible a la conservación. La muestra también señala una alineación facilitadora cuando la cartografía del riesgo climático, la integración de políticas y las medidas agrícolas o de gestión de la tierra pueden reforzar la conservación al reducir la presión sobre las áreas protegidas y otras áreas conservadas.",
+          "clash": "La posible desalineación se repite cuando la promoción de la minería, la inversión en minerales, la expansión agrícola, la zonificación agroindustrial, el crecimiento de la producción pesquera o el desarrollo de infraestructura pueden superponerse con paisajes protegidos, restaurados, de humedales, costeros, de cuencas hidrográficas o sensibles para las especies. Los pares señalados a menudo apuntan a fricciones en la implementación y a cierta competencia por los recursos de tierra y agua, lo que sugiere necesidades de revisión en torno a la ubicación, el acceso y la intensidad del uso, más que una contradicción directa de objetivos.",
+          "coordination_hint": "Este sector tiende a beneficiarse de una zonificación espacial coordinada, salvaguardias de cuencas hidrográficas y costeras, y exclusiones o condiciones específicas de uso para que las medidas de conservación puedan coexistir con la agricultura, la pesca y el desarrollo mineral allí donde las geografías se superponen.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -548,21 +544,21 @@
         "taxonomy_type": "globe",
         "category_id": "globe_8",
         "category_name": "Restoration",
-        "aligned_count": 4368,
-        "flagged_count": 324,
+        "aligned_count": 3988,
+        "flagged_count": 312,
         "pool_composition": {
           "primary_count": 3228,
-          "relevant_only_count": 3210
+          "relevant_only_count": 2856
         },
         "contradiction_types": {
-          "resource_competition": 100,
-          "delivery_friction": 224
+          "resource_competition": 103,
+          "delivery_friction": 209
         },
         "synthesis": {
-          "storyline_name": "Vincular la restauración con la planificación de cuencas hidrográficas y biodiversidad",
-          "reinforce": "Las metas de restauración suelen alinearse con las medidas relativas al agua y la biodiversidad mediante la protección de cuencas hidrográficas, la gestión de cuencas fluviales, la recuperación de áreas degradadas y la mejora de los bosques o de la cobertura arbórea. La muestra también refuerza la restauración cuando la política minera incluye requisitos de rehabilitación, y cuando los mecanismos de financiación, capacidad o planificación local pueden apoyar la ejecución de la restauración sobre el terreno.",
-          "clash": "La posible desalineación se repite cuando la expansión minera, la zonificación minera o la infraestructura vinculada a la minería podrían superponerse con cuencas hidrográficas, bosques, ecosistemas costeros u otras áreas destinadas a la restauración, creando fricciones en la implementación o competencia por la tierra. Los indicadores de revisión también señalan que la expansión agrícola, la rehabilitación del riego y la intensificación habilitada por la tecnología podrían competir con la conservación de cuencas hidrográficas o la restauración de ecosistemas, a menos que se coordinen la asignación de agua, la ubicación y las salvaguardias.",
-          "coordination_hint": "Suele ser útil utilizar la zonificación espacial, la planificación de cuencas o subcuencas, y condiciones de autorización vinculadas a la restauración para que los objetivos de restauración puedan alcanzarse junto con las decisiones sobre minería, agricultura y gestión del agua.",
+          "storyline_name": "Vincular la restauración con la planificación del uso de la tierra y del agua",
+          "reinforce": "La restauración en este sector suele estar alineada con la reducción de la degradación de la tierra, la protección de las cuencas hidrográficas, la conservación de los acuíferos, la rehabilitación del riego y un monitoreo más amplio del agua dulce. El mecanismo recurrente es la planificación coordinada del uso de la tierra y de las cuencas hidrográficas, en la que la protección del suelo, la plantación de árboles y la recuperación de los ecosistemas refuerzan la seguridad hídrica y los resultados en materia de resiliencia.",
+          "clash": "La posible desalineación se repite cuando las áreas de restauración pueden enfrentar demandas de uso de la tierra contrapuestas derivadas de la minería, la expansión agroindustrial, la modernización agrícola y el desarrollo costero orientado a la exportación. Estos pares suelen señalarse para revisión porque la ubicación, la zonificación y la expansión de la infraestructura o de los insumos podrían alterar los suelos, los bosques, las cuencas hidrográficas, los sistemas de carbono azul u otras áreas destinadas a la restauración.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial, la zonificación de la restauración y las salvaguardias que conectan las prioridades de restauración con las decisiones sobre minería, agricultura, agua y desarrollo costero.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -571,22 +567,22 @@
         "taxonomy_type": "globe",
         "category_id": "globe_9",
         "category_name": "Sustainable use",
-        "aligned_count": 25604,
-        "flagged_count": 1667,
+        "aligned_count": 25481,
+        "flagged_count": 1657,
         "pool_composition": {
-          "primary_count": 39209,
-          "relevant_only_count": 7760
+          "primary_count": 39439,
+          "relevant_only_count": 7417
         },
         "contradiction_types": {
-          "resource_competition": 900,
-          "delivery_friction": 766,
+          "resource_competition": 903,
+          "delivery_friction": 753,
           "goal_conflict": 1
         },
         "synthesis": {
-          "storyline_name": "Vinculación del uso productivo con salvaguardias relativas al agua y la tierra",
-          "reinforce": "El refuerzo suele provenir de combinar una producción agrícola más eficiente o mejor organizada con medidas de gestión responsable de los recursos, especialmente la gestión del agua, la protección de las cuencas hidrográficas, el control de la calidad de los insumos y la gestión basada en la ciencia. La muestra también señala vínculos facilitadores en los que la planificación, la capacitación, la certificación, los sistemas de información y las salvaguardias de biodiversidad o ambientales pueden respaldar un uso más sostenible sin requerir la misma acción inmediata.",
-          "clash": "La posible desalineación reaparece cuando la expansión de la producción, el desarrollo agroindustrial, el crecimiento de la producción pesquera o el desarrollo minero incrementan la presión sobre recursos finitos de tierra y agua que otras metas buscan conservar, asignar o proteger. La fricción se señala con mayor frecuencia para revisión como competencia por los recursos o fricción en la implementación, con mecanismos concretos que incluyen la demanda de aguas subterráneas, la superposición entre la agricultura o la minería y las cuencas hidrográficas o las áreas de carbono azul, y la tierra reservada para bosques, biodiversidad o uso minero futuro.",
-          "coordination_hint": "Este sector tiende a beneficiarse de una planificación espacial coordinada, normas de asignación de agua y salvaguardias de permisos o zonificación, de modo que las metas de uso productivo puedan alinearse con la conservación y la gestión sostenible de los recursos en los mismos paisajes y cuencas hidrográficas.",
+          "storyline_name": "Vincular el crecimiento de la producción con la gestión responsable del agua y la tierra",
+          "reinforce": "El refuerzo suele provenir de combinar medidas de desarrollo agrícola, pesquero, ganadero e industrial con la conservación del agua, la planificación de cuencas, el monitoreo de aguas subterráneas, la protección de cuencas hidrográficas y la gobernanza participativa de los recursos. Estas combinaciones tienden a alinearse cuando el uso sostenible se logra mediante la eficiencia, el monitoreo, la participación local, las salvaguardias ambientales y mejores sistemas de información, en lugar de únicamente mediante la expansión directa.",
+          "clash": "La posible desalineación reaparece cuando el crecimiento agroindustrial, la producción de insumos, la acuicultura, la minería y la ubicación de desarrollos más amplios imponen demandas adicionales sobre tierras finitas, acuíferos, cuencas hidrográficas, humedales o ecosistemas costeros sensibles. La fricción se señala con mayor frecuencia para revisión como competencia por los recursos o fricción en la implementación, especialmente cuando un desarrollo agrícola o mineral más rápido puede requerir zonificación, asignación de agua, controles de vertido, salvaguardias de restauración o evaluación de biodiversidad para seguir siendo compatible.",
+          "coordination_hint": "Este sector suele señalar la coordinación de la zonificación espacial, la planificación de cuencas y acuíferos, y los permisos ambientales para que las metas de uso productivo puedan alinearse con las salvaguardias relativas al agua, los humedales, las cuencas hidrográficas y la biodiversidad.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -595,22 +591,22 @@
         "taxonomy_type": "sector",
         "category_id": "sector_agriculture",
         "category_name": "Agriculture",
-        "aligned_count": 20057,
-        "flagged_count": 1143,
+        "aligned_count": 20337,
+        "flagged_count": 1159,
         "pool_composition": {
-          "primary_count": 32131,
-          "relevant_only_count": 6260
+          "primary_count": 32154,
+          "relevant_only_count": 6641
         },
         "contradiction_types": {
-          "resource_competition": 744,
-          "delivery_friction": 398,
+          "resource_competition": 762,
+          "delivery_friction": 396,
           "goal_conflict": 1
         },
         "synthesis": {
-          "storyline_name": "Vincular la modernización agrícola con salvaguardias para la tierra y el agua",
-          "reinforce": "La política agrícola suele alinearse con los instrumentos de biodiversidad, agua y planificación cuando la modernización se enmarca mediante tecnología eficiente, bioseguridad, biosafety, gestión de cuencas hidrográficas y prácticas respetuosas con el medio ambiente. La muestra también señala vínculos facilitadores entre la productividad agrícola, la extensión, las TIC, la agroindustria y medidas más amplias de gobernanza o de paisaje, pero estos vínculos tienden a ser de apoyo más que a aplicarse de manera estrechamente coordinada.",
-          "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua, especialmente entre la expansión o intensificación agrícola y la asignación de tierras para minerales, las áreas protegidas, los humedales, la conservación de acuíferos y las prioridades hídricas a nivel de cuenca. También se señala para revisión la fricción en la implementación cuando una mayor producción de cultivos, la rehabilitación del riego, el crecimiento de la acuicultura o una intensificación agrícola más amplia podrían aumentar la contaminación, alterar los humedales o ejercer presión sobre ecosistemas sensibles para la biodiversidad, a menos que se apliquen salvaguardias.",
-          "coordination_hint": "La implementación en la agricultura a menudo se beneficiaría de la zonificación espacial, las normas de asignación de agua y las salvaguardias sensibles a la biodiversidad, de modo que las medidas de productividad puedan alinearse con las decisiones sobre la tierra, los humedales, los acuíferos y la minería.",
+          "storyline_name": "Vinculación de la adaptación agrícola con la gestión responsable del agua",
+          "reinforce": "Las metas agrícolas suelen estar alineadas con la conservación del agua, la eficiencia del riego, la gestión participativa del agua y los marcos de derechos o asignación del agua. Esto se repite mediante la captación de agua de lluvia, el riego por goteo, la conservación del suelo y del agua, la rehabilitación del riego y las medidas de resiliencia poscosecha que se ven reforzadas por una gobernanza más amplia del agua y la participación de las partes interesadas.",
+          "clash": "La posible desalineación se señala con frecuencia cuando la expansión agrícola, el crédito, la concentración agroindustrial o la producción de insumos podrían aumentar la presión sobre los recursos hídricos finitos o afectar a las cuencas hidrográficas, los humedales y los sistemas fluviales. El mecanismo recurrente es la competencia por los recursos hídricos de cuencas y acuíferos, o las fricciones en la implementación cuando los insumos agrícolas y la intensificación de la producción pueden menoscabar la protección de las fuentes de agua, a menos que se apliquen salvaguardias.",
+          "coordination_hint": "Suele ser útil vincular la financiación agrícola, la adopción de tecnología y la planificación agroindustrial con la asignación de agua a nivel de cuenca, la protección de las cuencas hidrográficas y la gobernanza participativa del riego.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -619,21 +615,21 @@
         "taxonomy_type": "sector",
         "category_id": "sector_energy",
         "category_name": "Energy",
-        "aligned_count": 2411,
-        "flagged_count": 54,
+        "aligned_count": 2318,
+        "flagged_count": 57,
         "pool_composition": {
-          "primary_count": 2692,
-          "relevant_only_count": 2667
+          "primary_count": 2693,
+          "relevant_only_count": 2348
         },
         "contradiction_types": {
-          "resource_competition": 33,
-          "delivery_friction": 21
+          "resource_competition": 32,
+          "delivery_friction": 25
         },
         "synthesis": {
-          "storyline_name": "Vincular el despliegue energético con la tierra y la planificación",
-          "reinforce": "Las metas energéticas suelen alinearse con medidas facilitadoras en la agricultura, el agua, los minerales y la planificación, especialmente cuando los sistemas de información, los incentivos, la I+D, la coordinación de las partes interesadas y la preparación de la infraestructura pueden respaldar la adopción de energías renovables, la eficiencia energética o la preparación de la red. La muestra también refuerza transiciones más amplias hacia bajas emisiones, por ejemplo la electricidad renovable, la eficiencia industrial y la energía renovable en la agricultura, pero por lo general mediante vínculos indirectos de implementación en lugar de mecanismos de ejecución estrechamente compartidos.",
-          "clash": "La posible desalineación reaparece en torno a la asignación y localización del uso del suelo, donde la generación renovable, el almacenamiento, la infraestructura de gas y la descarbonización industrial relacionada con la energía pueden competir con tierras reservadas para la inversión minera o para usos prioritarios de la minería. También se señala para revisión la fricción en la implementación cuando nuevas plantas de gas, infraestructura de red o la expansión de la actividad extractiva podrían complicar la planificación espacial sensible a la biodiversidad, las salvaguardias de conservación o el seguimiento intersectorial de pérdidas y daños.",
-          "coordination_hint": "Este sector tiende a beneficiarse de una zonificación espacial temprana, una secuenciación del uso del suelo y permisos basados en salvaguardias, de modo que el despliegue energético pueda alinearse con las prioridades minerales, la planificación de la biodiversidad y los requisitos de seguimiento intersectorial.",
+          "storyline_name": "Ampliación de la energía mediante facilitadores intersectoriales y coordinación de la ubicación",
+          "reinforce": "Las metas energéticas suelen alinearse con medidas facilitadoras más amplias, como la reforma fiscal y regulatoria, el apoyo a la I+D, la coordinación de las partes interesadas y los incentivos centrados en la agricultura para la adopción de energías renovables y la eficiencia. La muestra también refuerza los vínculos prácticos entre los objetivos nacionales de eficiencia energética o energías renovables y las aplicaciones sectoriales, como la agricultura impulsada por energías renovables, la movilidad eléctrica y los procesos industriales más limpios.",
+          "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua para el suministro de energía, especialmente cuando la generación renovable, la infraestructura de generación eléctrica a gas o la electrificación del transporte se cruzan con la reserva de tierras para minerales, la zonificación prioritaria para minerales, la protección de cuencas, la planificación sensible a la biodiversidad o las prioridades de asignación de agua. Se señalan varios pares para revisión porque la fricción tiende a surgir a través de la ubicación, la zonificación y el emplazamiento de infraestructuras, más que por una contradicción directa de políticas.",
+          "coordination_hint": "Este sector suele señalar la necesidad de una planificación espacial coordinada, la asignación de agua y la concesión de permisos para que la expansión energética pueda avanzar junto con las prioridades relativas a los minerales, el agua y la biodiversidad.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -642,22 +638,21 @@
         "taxonomy_type": "sector",
         "category_id": "sector_ippu",
         "category_name": "Industrial processes and product use",
-        "aligned_count": 3597,
-        "flagged_count": 1183,
+        "aligned_count": 3496,
+        "flagged_count": 891,
         "pool_composition": {
-          "primary_count": 7405,
-          "relevant_only_count": 4522
+          "primary_count": 5713,
+          "relevant_only_count": 6226
         },
         "contradiction_types": {
-          "delivery_friction": 453,
-          "resource_competition": 729,
-          "goal_conflict": 1
+          "delivery_friction": 408,
+          "resource_competition": 483
         },
         "synthesis": {
-          "storyline_name": "Coordinar la ubicación de actividades mineras e industriales con la planificación del agua y del territorio",
-          "reinforce": "La alineación suele observarse cuando la descarbonización industrial, los parques ecoindustriales, el cierre de minas y la gobernanza del sector de los minerales se ven habilitados por herramientas de planificación más amplias, especialmente la gobernanza del agua, la alineación regulatoria, la adopción de tecnología y los permisos ambientales. Estos pares tienden a reforzar el sector cuando las actividades industriales o mineras están vinculadas a comités de partes interesadas, la planificación de cuencas, los controles de la contaminación, la rehabilitación y la inversión en tecnologías más limpias.",
-          "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua, especialmente cuando las áreas prioritarias para minerales, las tierras destinadas a futuras inversiones en minerales o la expansión del procesamiento de minerales podrían limitar la agricultura, la biodiversidad, los humedales, la planificación costera, la ubicación de parques ecoindustriales o la protección de las aguas subterráneas y las cuencas hidrográficas. También se señalan varios pares para revisión porque el acceso minero o la expansión del sector de los minerales podrían complicar la conectividad de los hábitats, la restauración y la planificación espacial sensible al clima, a menos que se apliquen zonificación, exclusiones y salvaguardias.",
-          "coordination_hint": "Este sector a menudo se beneficiaría de una planificación espacial integrada, normas de asignación de agua y condiciones de autorización que secuencien el desarrollo mineral e industrial con las prioridades relativas a los acuíferos, las cuencas hidrográficas, la biodiversidad, las zonas costeras y la agricultura.",
+          "storyline_name": "Reforzar las salvaguardias y la coordinación de la industria minera",
+          "reinforce": "Dentro de este sector, la alineación suele provenir de medidas facilitadoras en torno a la regulación de los minerales, las salvaguardias ambientales, la investigación, el seguimiento y unas prácticas industriales más limpias. Los pares sugieren repetidamente que una regulación minera más sólida, la recuperación de residuos, la eficiencia energética, la adopción de tecnologías y la armonización de políticas pueden reforzar objetivos más amplios de calidad del agua, biodiversidad, rehabilitación de tierras y descarbonización industrial.",
+          "clash": "La posible desalineación se repite cuando la inversión en minerales, la reserva de tierras o el desarrollo centrado en la minería en tierras con alto potencial mineral se cruza con usos competidores de la tierra y el agua. Los pares señalados para revisión suelen apuntar a fricciones en la implementación o a competencia por los recursos con áreas protegidas, restauración, bosques, vida silvestre, agricultura, acuicultura y asignación de agua, especialmente cuando el emplazamiento, la zonificación y el acceso a tierras o agua finitas son compartidos.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la zonificación espacial, las salvaguardias en materia de permisos, los requisitos de rehabilitación y la asignación coordinada de tierras y agua, de modo que el desarrollo mineral pueda secuenciarse junto con los objetivos de conservación, agricultura y transición industrial.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -666,22 +661,21 @@
         "taxonomy_type": "sector",
         "category_id": "sector_lulucf",
         "category_name": "Land use, land-use change and forestry (LULUCF)",
-        "aligned_count": 11813,
-        "flagged_count": 1345,
+        "aligned_count": 11798,
+        "flagged_count": 1641,
         "pool_composition": {
-          "primary_count": 11588,
-          "relevant_only_count": 6977
+          "primary_count": 12223,
+          "relevant_only_count": 6637
         },
         "contradiction_types": {
-          "resource_competition": 538,
-          "delivery_friction": 806,
-          "goal_conflict": 1
+          "resource_competition": 825,
+          "delivery_friction": 816
         },
         "synthesis": {
-          "storyline_name": "Coordinar la asignación de tierras entre la restauración, la agricultura y la minería",
-          "reinforce": "Dentro de los pares vinculados a LULUCF, la alineación suele provenir de medidas habilitadoras que apoyan la gestión sostenible de la tierra, la restauración y los resultados relativos a los bosques o la cobertura arbórea, como incentivos para el uso sostenible de las tierras agrícolas, la conservación de cuencas y suelos, la gobernanza, los datos y los sistemas de planificación. Estos pares tienden a reforzarse cuando instituciones transversales, sistemas de mercado o herramientas de información ayudan a implementar la restauración de tierras degradadas, la gestión sostenible de los bosques y de los árboles fuera de los bosques, y decisiones sobre la tierra sensibles a la biodiversidad.",
-          "clash": "La posible desalineación reaparece en torno a la competencia por la tierra finita entre los objetivos de conservación o restauración, la expansión o intensificación agrícola, y la zonificación minera o la futura inversión minera. También se señala repetidamente la fricción en la implementación para su revisión cuando la protección de los humedales, la restauración de los suelos, la restauración de los ecosistemas o las metas amplias de conservación podrían ser más difíciles de implementar si la agricultura, el desarrollo agroindustrial, el crecimiento empresarial vinculado a la pesca o la minería avanzan en los mismos paisajes sin zonificación, exclusiones y salvaguardias.",
-          "coordination_hint": "Este sector suele señalar la necesidad de una planificación espacial integrada que tiende a secuenciar la restauración, la protección de los humedales, la agricultura y la ubicación de minerales mediante la zonificación, la consulta con las partes interesadas y las salvaguardias para la tierra y el agua.",
+          "storyline_name": "Utilizar la planificación del uso de la tierra para equilibrar la restauración y la extracción",
+          "reinforce": "Los pares de refuerzo suelen señalar a LULUCF como un espacio facilitador de planificación y gobernanza, donde la restauración de ecosistemas, la conservación de cuencas hidrográficas y áreas de captación, las áreas protegidas, la cartografía agroecológica y los sistemas de información sobre biodiversidad se alinean con objetivos más amplios en materia de clima, agua, agricultura, zonas costeras y minerales. El mecanismo recurrente es el apoyo indirecto, mejores datos, la planificación participativa, los requisitos de restauración y la toma de decisiones sensibles al uso de la tierra o del agua tienden a reforzar la gestión sostenible de la tierra en lugar de crear una implementación estrechamente compartida.",
+          "clash": "La posible desalineación reaparece allí donde la tierra está siendo reservada, zonificada o priorizada para la minería o la infraestructura energética, mientras que los bosques, humedales, cuencas hidrográficas, hábitats costeros, tierras agrícolas y otras tierras degradadas también son objeto de protección, restauración o resiliencia climática. Se señalan para revisión tanto la competencia por los recursos sobre la misma base finita de tierra como la fricción en la implementación, cuando la expansión de la minería, la acuicultura o la agricultura podría complicar la resiliencia de la biodiversidad, la protección de los humedales, la conservación de las cuencas y la restauración forestal, a menos que se apliquen salvaguardias y exclusiones.",
+          "coordination_hint": "Este sector tiende a beneficiarse de una zonificación espacial integrada, evaluación previa y secuenciación que vincula las decisiones sobre minerales, agricultura, agua, silvicultura, humedales y zonas costeras con criterios compartidos de aptitud del suelo y sensibilidad de los ecosistemas.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -690,22 +684,22 @@
         "taxonomy_type": "sector",
         "category_id": "sector_other",
         "category_name": "Other / Cross-cutting",
-        "aligned_count": 26020,
-        "flagged_count": 1644,
+        "aligned_count": 26006,
+        "flagged_count": 1897,
         "pool_composition": {
-          "primary_count": 40062,
-          "relevant_only_count": 6915
+          "primary_count": 40747,
+          "relevant_only_count": 7045
         },
         "contradiction_types": {
-          "resource_competition": 582,
-          "delivery_friction": 1060,
-          "goal_conflict": 2
+          "resource_competition": 793,
+          "delivery_friction": 1103,
+          "goal_conflict": 1
         },
         "synthesis": {
-          "storyline_name": "Facilitar la coordinación intersectorial y evaluar las compensaciones recíprocas",
-          "reinforce": "Este sector suele alinearse mediante mecanismos facilitadores, integración de políticas, comités de partes interesadas, sistemas de datos, normas y principios de planificación que apoyan la implementación en la agricultura, el agua, la biodiversidad, la energía, los residuos y la planificación de asentamientos. El refuerzo también se repite cuando las medidas transversales mejoran indirectamente el desempeño ambiental, como la agricultura de precisión que refuerza los objetivos de calidad del agua, la gestión de aguas residuales que refuerza el desarrollo sensible a los ecosistemas y los sistemas de información climática que refuerzan la planificación física basada en el riesgo.",
-          "clash": "La posible desalineación se señala principalmente cuando medidas amplias de desarrollo, minería, expansión agroindustrial o producción de insumos generan fricciones en la implementación o competencia por los recursos con la protección de la biodiversidad, la conservación de humedales y cuencas, la protección de acuíferos, la zonificación de la resiliencia costera y la asignación de agua. El mecanismo recurrente no es un conflicto directo de objetivos, sino la presión sobre tierras, agua, hábitats, infraestructura o atención regulatoria compartidos, lo que a menudo apunta a la necesidad de evaluación espacial, zonas de exclusión, secuenciación y salvaguardias.",
-          "coordination_hint": "Este sector tiende a beneficiarse de una planificación espacial intersectorial temprana, sistemas de información compartidos y mecanismos de consulta, especialmente cuando las demandas de tierra, agua, hábitat e infraestructura pueden superponerse.",
+          "storyline_name": "Vinculación de datos, capacidades y gobernanza intersectoriales",
+          "reinforce": "Este sector suele alinearse en torno a medidas facilitadoras, plataformas de datos, previsión, coordinación de las partes interesadas, actualizaciones jurídicas y desarrollo de capacidades que apoyan la ejecución en otros sectores como el agua, la industria, la pesca, la biodiversidad, la salud y la resiliencia climática. La muestra señala repetidamente un refuerzo indirecto mediante sistemas compartidos de apoyo a la toma de decisiones, desarrollo de capacidades, logística y mecanismos de gobernanza, más que mediante acciones de implementación estrechamente compartidas.",
+          "clash": "La posible desalineación reaparece cuando medidas amplias de desarrollo, producción, minería, acuicultura o expansión agrícola se encuentran con recursos finitos de tierra y agua, la protección de acuíferos, la conservación de cuencas hidrográficas, la restauración de ecosistemas o la planificación espacial sensible a la biodiversidad. La fricción suele señalarse para revisión como fricción en la implementación o competencia por los recursos, y tiende a centrarse en la ubicación, la zonificación, las salvaguardias de las aguas subterráneas, los impactos acumulativos y las normas de asignación intersectorial más que en un conflicto directo de objetivos.",
+          "coordination_hint": "Una respuesta práctica en este sector consistiría a menudo en conectar las herramientas transversales de financiación, regulación, datos y planificación con la evaluación a nivel de cuenca y del uso de la tierra, de modo que las medidas facilitadoras refuercen, en lugar de superar, las salvaguardias relativas al agua, la biodiversidad y la ordenación territorial.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -714,21 +708,21 @@
         "taxonomy_type": "sector",
         "category_id": "sector_transport",
         "category_name": "Transport",
-        "aligned_count": 799,
-        "flagged_count": 20,
+        "aligned_count": 772,
+        "flagged_count": 14,
         "pool_composition": {
           "primary_count": 2165,
           "relevant_only_count": 311
         },
         "contradiction_types": {
-          "resource_competition": 12,
-          "delivery_friction": 8
+          "resource_competition": 9,
+          "delivery_friction": 5
         },
         "synthesis": {
-          "storyline_name": "Coordinar la ubicación del transporte con sistemas más amplios de uso del suelo",
-          "reinforce": "Las metas de transporte suelen alinearse con medidas más amplias de planificación, logística y gobernanza que pueden permitir un transporte de carga más eficiente, la conectividad rural-urbana y mejoras en el entorno construido relacionadas con el transporte. En estos pares, el refuerzo suele ser indirecto, cuando la planificación hídrica, la planificación de asentamientos, la logística agrícola, los sistemas de datos o los marcos de bioseguridad y normas refuerzan las condiciones de implementación del transporte en lugar de compartir la misma acción directa.",
-          "clash": "La posible desalineación reaparece en torno a la asignación y localización del uso del suelo, especialmente cuando la mejora del sistema de transporte, el transporte público, la movilidad eléctrica, la eficiencia de las flotas o los entornos construidos relacionados con el transporte pueden requerir corredores, terminales, depósitos u otra infraestructura en tierras que también se están reservando o priorizando para el desarrollo mineral. Algunos objetivos de revisión intersectorial también se señalan para revisión porque la expansión de la minería o de la actividad de desarrollo podría complicar las condiciones de ejecución y seguimiento pertinentes para la planificación climática y de infraestructura vinculada al transporte.",
-          "coordination_hint": "La ejecución del transporte a menudo se beneficiaría de una zonificación espacial temprana, la planificación de corredores y una evaluación preliminar compartida con las autoridades de planificación minera y física, de modo que la reserva de tierras y la ubicación de la infraestructura puedan secuenciarse de manera más coherente.",
+          "storyline_name": "Vincular la ejecución del transporte con la planificación territorial intersectorial",
+          "reinforce": "Las metas de transporte suelen alinearse con la logística, el acceso a los mercados y la planificación más amplia de la infraestructura, especialmente cuando la eficiencia del transporte de carga, la gestión logística, las cadenas de frío y las instalaciones de transporte energéticamente eficientes refuerzan el movimiento de bienes y la coordinación del sistema. Los pares de refuerzo también apuntan a vínculos facilitadores con la planificación hídrica y ambiental, donde la mejora del sistema de transporte tiende a encajar mejor cuando la ubicación de la infraestructura, las normas y la gestión de los recursos se coordinan.",
+          "clash": "La posible desalineación reaparece en torno a la asignación de tierras y las necesidades de corredores, donde el transporte público, la movilidad eléctrica, la expansión logística y los entornos construidos relacionados con el transporte pueden competir con las tierras reservadas o priorizadas para la inversión en minerales. Algunos pares también se señalan para revisión porque la descarbonización del transporte, especialmente la movilidad eléctrica, puede aumentar la presión de implementación sobre la extracción de minerales y la zonificación relacionada, lo que puede generar fricciones en la ejecución a menos que la secuenciación y las salvaguardias sean claras.",
+          "coordination_hint": "A menudo sería útil integrar la planificación de corredores de transporte, la ubicación de la logística y el despliegue de la movilidad eléctrica con la zonificación estratégica del uso del suelo, las decisiones de asignación de minerales y los procesos compartidos de evaluación.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -737,22 +731,22 @@
         "taxonomy_type": "sector",
         "category_id": "sector_waste",
         "category_name": "Waste",
-        "aligned_count": 2252,
-        "flagged_count": 60,
+        "aligned_count": 2439,
+        "flagged_count": 77,
         "pool_composition": {
-          "primary_count": 1695,
-          "relevant_only_count": 2263
+          "primary_count": 1692,
+          "relevant_only_count": 2600
         },
         "contradiction_types": {
-          "resource_competition": 17,
-          "delivery_friction": 42,
+          "delivery_friction": 56,
+          "resource_competition": 20,
           "goal_conflict": 1
         },
         "synthesis": {
-          "storyline_name": "Vincular las medidas sobre residuos con los sistemas circulares y de agua",
-          "reinforce": "Las metas relativas a los residuos suelen estar alineadas con la economía circular, la reutilización de aguas residuales, el compostaje y medidas más amplias de gestión del agua. La muestra señala repetidamente un refuerzo cuando las acciones en materia de residuos se combinan con la adopción de tecnologías, la I+D, la coordinación entre las partes interesadas, la regulación de los fertilizantes orgánicos y los vínculos entre los sistemas alimentarios urbanos y rurales que pueden apoyar la reutilización, el tratamiento y la recuperación de recursos.",
-          "clash": "La posible desalineación reaparece en torno a la competencia por la tierra y el agua con el desarrollo mineral y la protección de cuencas. Los pares señalados suelen apuntar a que los vertederos, el tratamiento biológico, la infraestructura de aguas residuales o la implementación de la economía circular requieren tierra, emplazamiento y controles de vertido que pueden enfrentar fricciones cuando se aplican la zonificación minera, la reserva de tierras para inversión o la protección de cuencas.",
-          "coordination_hint": "Puede ser útil coordinar la ubicación de la infraestructura de residuos, las inversiones en economía circular y la planificación de las aguas residuales con las salvaguardias hídricas a nivel de cuenca y la zonificación del uso del suelo para minerales desde las primeras etapas del diseño del proyecto.",
+          "storyline_name": "Vinculación de la reducción de residuos con las salvaguardias relativas al agua y la tierra",
+          "reinforce": "Las metas relacionadas con los residuos suelen alinearse con los objetivos de calidad del agua, saneamiento y eficiencia más amplia en el uso de los recursos. La muestra señala repetidamente que la economía circular, el consumo sostenible, la gestión de las aguas residuales y los controles de los vertederos refuerzan la reducción de la contaminación, la disminución de las pérdidas de materiales y unos sistemas de planificación y producción más sensibles desde el punto de vista ambiental.",
+          "clash": "La posible desalineación se repite allí donde los residuos y las acciones conexas de gestión de recursos se encuentran con usos competitivos de la tierra y el agua. Los pares señalados apuntan especialmente a la ubicación de vertederos frente a las prioridades de desarrollo espacial, la economía circular frente a la tierra reservada para futuros proyectos mineros, y los objetivos relativos a las aguas residuales o a la protección del agua sometidos a presión por la minería, la agricultura, la acuicultura y otros desarrollos a nivel de cuenca.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la zonificación temprana, la planificación de cuencas y las normas de vertido o reutilización, de modo que la infraestructura de residuos y las medidas de economía circular puedan alinearse con la protección del agua y las decisiones de asignación de tierras.",
           "confidence": "high"
         },
         "synthesis_error": null
