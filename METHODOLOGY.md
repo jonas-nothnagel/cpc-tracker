@@ -4,7 +4,7 @@
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
 
 ---
 

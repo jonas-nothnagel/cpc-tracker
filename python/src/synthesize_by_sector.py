@@ -48,11 +48,17 @@ MAX_SAMPLES_PER_SIDE = 20  # slightly tighter than doc-pair, since prompts inclu
 
 CACHE_NAMESPACE = "sector_synthesis"
 
-# Default taxonomy allowlist for sector-level synthesis. globe_sub is excluded
-# by default because 49 subcategories produce too many thin pools to be useful
-# at the section-2 sector-card level; the subcategory drilldown belongs in a
-# different surface. Override via the function arg if you want them in.
-DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "country", "adaptation_goal")
+# Explicit taxonomy allowlist for sector-level synthesis. It must list every
+# taxonomy whose sector cards should appear: the active ranked lenses (`sector`,
+# `globe`, `gga`) plus the country-specific and paused lenses (`country`,
+# `adaptation_goal`, `nbs`) that may still carry classifications in a given
+# country's output. `globe_sub` is deliberately absent: 49 subcategories produce
+# too many thin pools to be useful at the section-2 sector-card level, and that
+# drilldown belongs on a different surface. Keep this in sync with
+# `config.ACTIVE_TAXONOMIES` whenever a ranked lens is added or paused (adding a
+# lens also needs a name entry in run_analysis.py's `sector_category_names`).
+# Override via the function arg for a different set.
+DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "gga", "country", "adaptation_goal")
 
 
 SYSTEM_PROMPT = (

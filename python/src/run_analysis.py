@@ -739,6 +739,8 @@ async def main() -> None:
             sector_category_names[("sector", cat["id"])] = cat.get("name", cat["id"])
         for cat in globe_categories:
             sector_category_names[("globe", cat["id"])] = cat.get("name", cat["id"])
+        for cat in gga_categories:
+            sector_category_names[("gga", cat["id"])] = cat.get("name", cat["id"])
         if config_path.exists():
             cfg = json.loads(config_path.read_text())
             for cat in cfg.get("countrySectors", []):
