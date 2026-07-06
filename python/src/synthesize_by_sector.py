@@ -31,7 +31,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .config import ACTIVE_TAXONOMIES, DATA_DIR, OUTPUT_DIR
+from .config import DATA_DIR, OUTPUT_DIR
 from .llm import call_llm_batch
 
 logger = logging.getLogger(__name__)
@@ -48,19 +48,17 @@ MAX_SAMPLES_PER_SIDE = 20  # slightly tighter than doc-pair, since prompts inclu
 
 CACHE_NAMESPACE = "sector_synthesis"
 
-# Default taxonomy allowlist for sector-level synthesis: every active
-# classification taxonomy (config.ACTIVE_TAXONOMIES) UNION the legacy / country
-# lenses whose classifications may still be present in older committed outputs.
-# Sourcing the active set from config keeps this in lock-step with what STEP 2
-# classifies, so adding a taxonomy to ACTIVE_TAXONOMIES (e.g. gga on 2026-07-03)
-# never again silently skips its sector synthesis. globe_sub stays excluded: 49
-# subcategories produce too many thin pools to be useful at the section-2
-# sector-card level; that drilldown belongs on a different surface. Override via
-# the function arg if you want a different set.
-_LEGACY_SYNTHESIS_TAXONOMIES = ("nbs", "country", "adaptation_goal")
-DEFAULT_TAXONOMY_ALLOWLIST = tuple(
-    dict.fromkeys((*sorted(ACTIVE_TAXONOMIES), *_LEGACY_SYNTHESIS_TAXONOMIES))
-)
+# Explicit taxonomy allowlist for sector-level synthesis. It must list every
+# taxonomy whose sector cards should appear: the active ranked lenses (`sector`,
+# `globe`, `gga`) plus the country-specific and paused lenses (`country`,
+# `adaptation_goal`, `nbs`) that may still carry classifications in a given
+# country's output. `globe_sub` is deliberately absent: 49 subcategories produce
+# too many thin pools to be useful at the section-2 sector-card level, and that
+# drilldown belongs on a different surface. Keep this in sync with
+# `config.ACTIVE_TAXONOMIES` whenever a ranked lens is added or paused (adding a
+# lens also needs a name entry in run_analysis.py's `sector_category_names`).
+# Override via the function arg for a different set.
+DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "gga", "country", "adaptation_goal")
 
 
 SYSTEM_PROMPT = (
