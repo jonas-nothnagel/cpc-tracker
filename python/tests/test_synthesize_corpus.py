@@ -371,6 +371,25 @@ class TestEnforceCorpusRules:
         assert parsed["storylines"][1]["anchor_target_ids"] == ["NAP_1"]
         assert any("dropped anchor targets" in w for w in warnings)
 
+    def test_anchor_normalization_recovers_decorated_ids(
+        self, targets, alignment, doc_pair_records
+    ):
+        """Models copy the whole evidence-table line; the leading bare id is
+        deterministically recoverable and must survive without a warning."""
+        ev = build_evidence_tables(targets, alignment, doc_pair_records)
+        parsed = json.loads(json.dumps(GOOD_RESPONSE))
+        parsed["storylines"][0]["anchor_target_ids"] = [
+            "NMP_1 (Mineral expansion target)",
+            'NMP_1 (Mineral expansion target): 3 pairs. "Verbatim..."',
+            "NMP_2:",
+        ]
+        # Decorated forms raise no validation violation...
+        assert validate_corpus(parsed, ev, doc_pair_records) == []
+        warnings = enforce_corpus_rules(parsed, ev, doc_pair_records)
+        # ...and normalize to deduped bare ids with no drop warning.
+        assert parsed["storylines"][0]["anchor_target_ids"] == ["NMP_1", "NMP_2"]
+        assert warnings == []
+
     def test_sanitizes_prose(self, targets, alignment, doc_pair_records):
         ev = build_evidence_tables(targets, alignment, doc_pair_records)
         parsed = json.loads(json.dumps(BAD_RESPONSE))

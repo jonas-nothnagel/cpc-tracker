@@ -519,6 +519,28 @@ def _build_cite_resolver(
 # ---------------------------------------------------------------------------
 
 
+def _normalize_anchor(anchor: Any, allowed: set[str]) -> str | None:
+    """Resolve an anchor cite to a bare allowed target id, or None.
+
+    The evidence tables render ids with decoration ("NMP_52 (7 b)): 315
+    pairs. ..."), and models tend to copy the whole visual line despite the
+    verbatim-id instruction. The id is deterministically recoverable (ids are
+    whitespace-free tokens), so accept it instead of burning a retry or
+    dropping the anchor.
+    """
+    if not isinstance(anchor, str):
+        return None
+    stripped = anchor.strip()
+    if stripped in allowed:
+        return stripped
+    tokens = stripped.split()
+    if tokens:
+        first = tokens[0].rstrip(":,;")
+        if first in allowed:
+            return first
+    return None
+
+
 def validate_corpus(
     parsed: dict[str, Any],
     evidence: dict[str, Any] | None,
@@ -576,11 +598,12 @@ def validate_corpus(
                 else evidence["allowed_reinforcement_anchors"]
             )
             anchors = s.get("anchor_target_ids") or []
-            bad = [a for a in anchors if a not in allowed]
+            bad = [a for a in anchors if _normalize_anchor(a, allowed) is None]
             if bad:
                 violations.append(
-                    f"{label}: anchor_target_ids must be copied verbatim from the "
-                    f"polarity-matched evidence tables; not allowed: {bad}"
+                    f"{label}: anchor_target_ids must be bare target ids (for "
+                    f"example the id before the parenthesis in the tables) from "
+                    f"the polarity-matched evidence tables; not allowed: {bad}"
                 )
             if len(anchors) > MAX_ANCHOR_TARGETS:
                 violations.append(
@@ -661,9 +684,15 @@ def enforce_corpus_rules(
                 if theme_type == "friction"
                 else evidence["allowed_reinforcement_anchors"]
             )
-            anchors = [a for a in s.get("anchor_target_ids") or [] if isinstance(a, str)]
-            filtered = [a for a in anchors if a in allowed]
-            dropped = [a for a in anchors if a not in allowed]
+            anchors = s.get("anchor_target_ids") or []
+            filtered: list[str] = []
+            dropped: list[Any] = []
+            for a in anchors:
+                normalized = _normalize_anchor(a, allowed)
+                if normalized is None:
+                    dropped.append(a)
+                elif normalized not in filtered:
+                    filtered.append(normalized)
             if dropped:
                 warnings.append(
                     f'theme "{name}": dropped anchor targets outside the allowed '
