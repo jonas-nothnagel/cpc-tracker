@@ -121,8 +121,9 @@ if [ -n "${DEPLOYED_SHA}" ] && git cat-file -e "${DEPLOYED_SHA}" 2>/dev/null; th
       echo "      Deployed: $(git log -1 --format='%h %s' "${DEPLOYED_SHA}")"
     else
       echo "  ${NEW_COMMIT_COUNT} new commit(s) since the live deploy:"
-      git log --oneline --no-decorate "${DEPLOYED_SHA}..HEAD" \
-        | head -20 \
+      # -n 20 (not | head -20): under `set -o pipefail`, closing head early
+      # would SIGPIPE git log and abort the script via `set -e`.
+      git log -n 20 --oneline --no-decorate "${DEPLOYED_SHA}..HEAD" \
         | sed 's/^/    /'
       [ "${NEW_COMMIT_COUNT}" -gt 20 ] && echo "    … and $((NEW_COMMIT_COUNT - 20)) more"
       # Compact file-change summary across the whole range.

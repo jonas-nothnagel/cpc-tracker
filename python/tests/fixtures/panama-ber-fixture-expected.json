@@ -1,0 +1,142 @@
+{
+  "programs": [
+    {
+      "code": "BER_PA_01_01",
+      "name": "Rehabil. y Mantenim. Aeroportuario",
+      "nameEn": "Rehabil. y Mantenim. Aeroportuario",
+      "description": "Programme \"Rehabil. y Mantenim. Aeroportuario\" under the AUTORIDAD AERONÁUTICA CIVIL. Line associated with airport management. Executed expenditure 2015–2024: 1.5M PAB total (avg 0.1M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Rehabil. y Mantenim. Aeroportuario» en Autoridad Aeronáutica Civil. Línea asociada a gestión aeroportuaria.",
+      "descriptionEn": "Programme \"Rehabil. y Mantenim. Aeroportuario\" under the Civil Aviation Authority. Line associated with airport management.",
+      "type": "environmental"
+    },
+    {
+      "code": "BER_PA_02_01",
+      "name": "Admón. de los Recursos Acuáticos",
+      "nameEn": "Admón. de los Recursos Acuáticos",
+      "description": "Programme \"Admón. de los Recursos Acuáticos\" under the AUTORIDAD DE LOS RECURSOS ACUÁTICOS DE PANAMÁ. Line linked to administration of aquatic resources. Executed expenditure 2015–2024: 3.0M PAB total (avg 0.3M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Admón. de los Recursos Acuáticos» en Autoridad De Los Recursos Acuáticos De Panamá. Línea vinculada a la administración de recursos acuáticos.",
+      "descriptionEn": "Programme \"Admón. de los Recursos Acuáticos\" under the Aquatic Resources Authority of Panama. Line linked to administration of aquatic resources.",
+      "type": "environmental"
+    },
+    {
+      "code": "BER_PA_02_02",
+      "name": "Desarr. y Conserv. Rec. Acuáticos",
+      "nameEn": "Desarr. y Conserv. Rec. Acuáticos",
+      "description": "Programme \"Desarr. y Conserv. Rec. Acuáticos\" under the AUTORIDAD DE LOS RECURSOS ACUÁTICOS DE PANAMÁ. Line linked to development and conservation of aquatic resources. Executed expenditure 2015–2024: 4.0M PAB total (avg 0.4M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Desarr. y Conserv. Rec. Acuáticos» en Autoridad De Los Recursos Acuáticos De Panamá. Línea vinculada al desarrollo y conservación de recursos acuáticos.",
+      "descriptionEn": "Programme \"Desarr. y Conserv. Rec. Acuáticos\" under the Aquatic Resources Authority of Panama. Line linked to development and conservation of aquatic resources.",
+      "type": "environmental"
+    },
+    {
+      "code": "BER_PA_03_01",
+      "name": "Áreas Protegidas y Biodiversidad",
+      "nameEn": "Áreas Protegidas y Biodiversidad",
+      "description": "Programme \"Áreas Protegidas y Biodiversidad\" under the MINISTERIO DE AMBIENTE. Line linked to biodiversity conservation. Executed expenditure 2015–2024: 3.0M PAB total (avg 0.3M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Áreas Protegidas y Biodiversidad» en Ministerio De Ambiente. Línea vinculada a la conservación de la biodiversidad.",
+      "descriptionEn": "Programme \"Áreas Protegidas y Biodiversidad\" under the Ministry of Environment. Line linked to biodiversity conservation.",
+      "type": "environmental"
+    },
+    {
+      "code": "BER_PA_03_OVERHEAD",
+      "name": "Apoyo institucional — Ministerio De Ambiente",
+      "nameEn": "Institutional support — Ministry of Environment",
+      "description": "Cross-cutting institutional support and general administration at the MINISTERIO DE AMBIENTE. Institutional direction line. Executed expenditure 2015–2024: 2.0M PAB total (avg 0.2M/year). Descriptions sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Apoyo institucional transversal y administración general en Ministerio De Ambiente. Línea de dirección institucional.",
+      "descriptionEn": "Cross-cutting institutional support and general administration at the Ministry of Environment. Institutional direction line.",
+      "type": "environmental"
+    }
+  ],
+  "expenditure": [
+    {
+      "code": "BER_PA_01_01",
+      "name": "Rehabil. y Mantenim. Aeroportuario",
+      "nameEn": "Rehabil. y Mantenim. Aeroportuario",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.5,
+        "2021": 0.5,
+        "2022": 0.5,
+        "2023": 0.0,
+        "2024": 0.0
+      }
+    },
+    {
+      "code": "BER_PA_02_01",
+      "name": "Admón. de los Recursos Acuáticos",
+      "nameEn": "Admón. de los Recursos Acuáticos",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 3.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      }
+    },
+    {
+      "code": "BER_PA_02_02",
+      "name": "Desarr. y Conserv. Rec. Acuáticos",
+      "nameEn": "Desarr. y Conserv. Rec. Acuáticos",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 4.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      }
+    },
+    {
+      "code": "BER_PA_03_01",
+      "name": "Áreas Protegidas y Biodiversidad",
+      "nameEn": "Áreas Protegidas y Biodiversidad",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 3.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      }
+    },
+    {
+      "code": "BER_PA_03_OVERHEAD",
+      "name": "Apoyo institucional — Ministerio De Ambiente",
+      "nameEn": "Institutional support — Ministry of Environment",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 2.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      }
+    }
+  ],
+  "currency": "PAB",
+  "unit": "million",
+  "period": {
+    "start": 2015,
+    "end": 2024
+  }
+}

@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAlignmentLabels } from "@/lib/labels";
+import { pickBerDescription, pickBerName } from "@/lib/financing-coherence";
 import type {
   AlignmentResult,
   BerBudgetProgram,
@@ -472,6 +473,7 @@ function ProgramRowView({
   targetById: Map<string, Target>;
 }) {
   const t = useTranslations("viz.programDetailTable");
+  const locale = useLocale();
   const typeBadgeClass =
     row.program.type === "environmental"
       ? "bg-emerald-50 text-emerald-800 border-emerald-200"
@@ -491,7 +493,7 @@ function ProgramRowView({
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="text-[var(--undp-black)] font-medium">
-                  {row.program.name}
+                  {pickBerName(row.program, locale)}
                 </span>
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full border ${typeBadgeClass}`}
@@ -623,6 +625,7 @@ function ProgramExpand({
   targetById: Map<string, Target>;
 }) {
   const t = useTranslations("viz.programDetailTable");
+  const locale = useLocale();
   const alignmentLabels = useAlignmentLabels();
   const topAligned = row.topAligned.slice(0, 3);
   const fallbackToLow = row.alignedHighMedium.length === 0 && row.alignedLow.length > 0;
@@ -633,7 +636,9 @@ function ProgramExpand({
         <h4 className="uppercase tracking-wide text-[var(--undp-gray)] text-[10px]">
           {t("expand.description")}
         </h4>
-        <p className="text-[var(--undp-black)] mt-1">{row.program.description}</p>
+        <p className="text-[var(--undp-black)] mt-1">
+          {pickBerDescription(row.program, locale)}
+        </p>
 
         {row.globeSubPrimaries.length > 0 && (
           <div className="mt-4">

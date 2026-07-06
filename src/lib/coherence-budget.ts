@@ -20,6 +20,7 @@ import type {
   ThematicClassification,
 } from "@/types";
 import { isContradiction } from "@/types";
+import { pickBerName } from "@/lib/financing-coherence";
 
 /**
  * Pseudo-target id prefix used to mark BER programme classifications in the
@@ -319,19 +320,21 @@ export function computeProgrammesByCategory(args: {
   berData: BerData | null;
   globeSubcategories: GlobeSubcategory[];
   classifications: ThematicClassification[];
+  locale?: string;
 }): Map<string, CategoryProgramme[]> {
-  const { berData, globeSubcategories, classifications } = args;
+  const { berData, globeSubcategories, classifications, locale = "en" } = args;
   const result = new Map<string, CategoryProgramme[]>();
   if (!berData || globeSubcategories.length === 0) return result;
 
   // Programme code -> { name, totalBudget } for fast lookup. We sum the
-  // yearly expenditure here once and never again.
+  // yearly expenditure here once and never again. Name picks the
+  // locale-appropriate display variant (nameEn on EN, name otherwise).
   const programmeIndex = new Map<
     string,
     { name: string; totalBudget: number }
   >();
   for (const p of berData.programs) {
-    programmeIndex.set(p.code, { name: p.name, totalBudget: 0 });
+    programmeIndex.set(p.code, { name: pickBerName(p, locale), totalBudget: 0 });
   }
   for (const e of berData.expenditure) {
     const total = totalExpenditure(e);
@@ -341,7 +344,7 @@ export function computeProgrammesByCategory(args: {
     } else {
       // Expenditure entry without a matching programme record. Keep its name
       // so the row still makes sense in the panel.
-      programmeIndex.set(e.code, { name: e.name, totalBudget: total });
+      programmeIndex.set(e.code, { name: pickBerName(e, locale), totalBudget: total });
     }
   }
 
