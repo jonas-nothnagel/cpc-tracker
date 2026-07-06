@@ -373,6 +373,169 @@
         "confidence": "high"
       },
       "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_agriculture_food",
+      "category_name": "Agriculture and food",
+      "aligned_count": 21326,
+      "flagged_count": 1208,
+      "pool_composition": {
+        "primary_count": 38958,
+        "relevant_only_count": 2806
+      },
+      "contradiction_types": {
+        "resource_competition": 771,
+        "delivery_friction": 436,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Link farm productivity to resource-smart delivery",
+        "reinforce": "Reinforcing pairs often align around raising agricultural productivity, profitability, resilience, and value addition through climate-smart practices, locally developed technology, post-harvest solutions, extension, and forecasting. A second recurring pattern is that agriculture measures tend to reinforce water, soil, and broader land stewardship when delivery channels such as extension, farmer organizations, and sustainable farming practices are used to improve efficiency and reduce erosion or waste.",
+        "clash": "Flagged pairs recur most often around competition for land and water, especially where agricultural expansion, intensification, or profitability measures may press against forest cover, protected areas, wetlands, basin water allocation, or land reserved for mining. Possible misalignment is also flagged for review where input expansion, irrigation augmentation, or rural development infrastructure could complicate biodiversity-sensitive farming, wetland protection, or other conservation-oriented delivery conditions.",
+        "coordination_hint": "This sector would often benefit from joint land and water planning, with zoning, basin allocation rules, and biodiversity or wetland safeguards used to keep agricultural growth measures compatible with conservation and competing land uses.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_cultural_heritage",
+      "category_name": "Cultural heritage",
+      "aligned_count": 1135,
+      "flagged_count": 60,
+      "pool_composition": {
+        "primary_count": 719,
+        "relevant_only_count": 1149
+      },
+      "contradiction_types": {
+        "delivery_friction": 53,
+        "resource_competition": 7
+      },
+      "synthesis": {
+        "storyline_name": "Embedding cultural landscapes and customary rights in planning",
+        "reinforce": "Reinforcing pairs often point to cultural heritage being supported through planning and governance measures that recognize traditions, customs, indigenous rights, FPIC, traditional knowledge, and cultural landscapes. This tends to align with participatory water planning, benefit-sharing arrangements, and conservation-sensitive development, where local knowledge and culturally informed consultation can shape implementation.",
+        "clash": "Possible misalignment recurs where expansion of mining, energy, agriculture, aquaculture, or industrial infrastructure is flagged for review against planning provisions that safeguard cultural landscapes and other sensitive areas. Friction often appears as siting, zoning, land allocation, or deregulation pressures that could weaken culturally sensitive planning or constrain benefit sharing and customary-use considerations unless safeguards are applied.",
+        "coordination_hint": "This sector often points to the need for early spatial screening, culturally informed consultation, and consistent safeguards so development proposals can be tested against cultural landscape, traditional knowledge, and rights-based requirements.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_ecosystems_biodiversity",
+      "category_name": "Ecosystems and biodiversity",
+      "aligned_count": 15708,
+      "flagged_count": 1443,
+      "pool_composition": {
+        "primary_count": 16602,
+        "relevant_only_count": 9070
+      },
+      "contradiction_types": {
+        "resource_competition": 561,
+        "delivery_friction": 881,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Linking land and water management to biodiversity",
+        "reinforce": "Reinforcing pairs often align where catchment management, river basin planning, water standards, coastal restoration, and development planning help conserve habitats, water-dependent ecosystems, and wildlife needs. A second recurring pattern is governance alignment, where stronger environmental regulation, rehabilitation requirements, policy updates, and coordination mechanisms tend to reinforce biodiversity outcomes indirectly across mining, agriculture, and water management.",
+        "clash": "Possible misalignment recurs where agricultural expansion, input incentives, fertilizer and plant protection systems, fisheries production growth, or mining land allocation could increase pressure on ecosystems that biodiversity targets seek to restore, connect, or protect. Flagged pairs often point to delivery friction or resource competition over shared land, wetlands, catchments, coastal habitats, and pollution-sensitive ecosystems, especially where mineral-use prioritisation or production incentives are not clearly bounded by ecological safeguards.",
+        "coordination_hint": "This sector often points to the value of spatial planning, basin and coastal zoning, pollution and restoration safeguards, and finance or permitting conditions that help production, mining, and conservation measures align in the same landscapes and seascapes.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_health",
+      "category_name": "Health",
+      "aligned_count": 2427,
+      "flagged_count": 43,
+      "pool_composition": {
+        "primary_count": 1538,
+        "relevant_only_count": 3253
+      },
+      "contradiction_types": {
+        "delivery_friction": 19,
+        "resource_competition": 24
+      },
+      "synthesis": {
+        "storyline_name": "Link food security measures to health resilience",
+        "reinforce": "Health-related targets often align with agriculture and food-system actions that stabilize production, improve food and feed safety, and strengthen crisis supply arrangements. In these pairs, managing climate-related malnutrition and broader health resilience tends to be reinforced indirectly through resilient farming practices, safe food standards, and cross-sector capacity building rather than shared delivery mechanisms.",
+        "clash": "Possible misalignment recurs where mineral land allocation or exploration could compete with the land base, environmental conditions, or local food systems that health outcomes depend on. Flagged for review are indirect delivery frictions around malnutrition, disease surveillance, and health-sector resilience, often pointing to the need for land-use safeguards, pollution controls, and coordination between mining, food systems, and health planning.",
+        "coordination_hint": "It may help to connect health resilience planning with food-system safeguards and land-use decisions, especially where mining siting, agricultural supply, and climate-sensitive health risks intersect.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_infrastructure_settlements",
+      "category_name": "Infrastructure and human settlements",
+      "aligned_count": 7768,
+      "flagged_count": 248,
+      "pool_composition": {
+        "primary_count": 10701,
+        "relevant_only_count": 5121
+      },
+      "contradiction_types": {
+        "delivery_friction": 156,
+        "resource_competition": 92
+      },
+      "synthesis": {
+        "storyline_name": "Integrate land and infrastructure planning with safeguards",
+        "reinforce": "Infrastructure and settlement targets often align with broader resilience, water, biodiversity, and resource-efficiency measures when they are used as enabling planning systems. The sample repeatedly points to mainstreaming adaptation, DRR, water and sanitation resilience, and spatial planning as mechanisms that reinforce safer land use, service delivery, and rehabilitation of settlement-related areas.",
+        "clash": "Possible misalignment recurs where land for settlements, transport, wastewater, water systems, or other infrastructure may compete with land reserved or prioritized for mineral investment. Delivery friction is also flagged for review where mining-linked infrastructure expansion in rural areas could place pressure on catchments, groundwater, irrigation, flood management, biodiversity-sensitive planning, or ecosystem services unless siting and safeguards are coordinated.",
+        "coordination_hint": "This sector tends to benefit from early spatial zoning, basin and catchment screening, and biodiversity and water safeguards so that settlement and infrastructure delivery can proceed alongside mineral and other land-intensive uses.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_livelihoods",
+      "category_name": "Livelihoods",
+      "aligned_count": 8585,
+      "flagged_count": 669,
+      "pool_composition": {
+        "primary_count": 4763,
+        "relevant_only_count": 13432
+      },
+      "contradiction_types": {
+        "resource_competition": 308,
+        "delivery_friction": 361
+      },
+      "synthesis": {
+        "storyline_name": "Linking livelihood support to resource-sensitive delivery",
+        "reinforce": "Livelihood-oriented measures in this sector often align when they strengthen producer organizations, finance, market information, value addition, labour supply, or extension, and these in turn reinforce climate resilience and income opportunities in agriculture and fisheries. The sample also points to enabling links with water governance, forecasting, health, and planning systems, where better standards, data, and infrastructure tend to support more resilient livelihood delivery.",
+        "clash": "Possible misalignment recurs where livelihood expansion, agro-industrial development, aquaculture, or fisheries growth may compete for land, water, wetlands, or coastal space with mining, irrigation, protected areas, and wetland conservation. Delivery friction is also flagged for review where livelihood growth could increase pressure on biodiversity, ecosystem services, pollution control, catchments, or vulnerable areas unless siting, zoning, and safeguards are applied.",
+        "coordination_hint": "This sector often points to a need for integrated land and water allocation, spatial screening, and ecosystem safeguards so livelihood investments can proceed without undermining conservation, water management, or other place-based priorities.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "gga",
+      "category_id": "gga_water",
+      "category_name": "Water",
+      "aligned_count": 13072,
+      "flagged_count": 680,
+      "pool_composition": {
+        "primary_count": 13982,
+        "relevant_only_count": 3460
+      },
+      "contradiction_types": {
+        "delivery_friction": 370,
+        "resource_competition": 310
+      },
+      "synthesis": {
+        "storyline_name": "Link water governance with land and production planning",
+        "reinforce": "Water targets often align with cross-sector capacity building, participatory governance, basin and aquifer planning, and irrigation efficiency measures. The sample also points to reinforcement where agricultural production, processing, information systems, and precision practices are coordinated with water allocation, water quality, watershed protection, and river basin management.",
+        "clash": "Possible misalignment recurs where irrigation rehabilitation, irrigation expansion, mining development, agro-industrial zoning, or other land-intensive investments compete with wetlands, reservoirs, aquifers, catchments, and finite basin water. Flagged pairs often point to delivery friction in shared landscapes, especially where mineral land prioritisation or industrial expansion may constrain aquifer conservation, watershed protection, irrigation management, or wetland retention, and to resource competition over reservoir and freshwater use between irrigation, fisheries, ecosystems, and other users.",
+        "coordination_hint": "This sector tends to benefit from basin-level and land-use coordination, with zoning, water allocation rules, effluent and groundwater safeguards, and wetland or catchment protections used to keep irrigation, industry, mining, and ecosystem objectives aligned.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
     }
   ],
   "states": {
@@ -747,6 +910,169 @@
           "reinforce": "Waste-related targets often align with water quality, sanitation, and broader resource-efficiency aims. The sample repeatedly points to circular economy, sustainable consumption, wastewater management, and landfill controls reinforcing pollution reduction, lower material losses, and more environmentally sensitive planning and production systems.",
           "clash": "Possible misalignment recurs where waste and related resource-management actions meet competing land and water uses. Flagged pairs point especially to landfill siting versus spatial development priorities, circular economy versus land reserved for future mineral projects, and wastewater or water-protection objectives facing pressure from mining, agriculture, aquaculture, and other basin-level development.",
           "coordination_hint": "This sector tends to benefit from early zoning, basin planning, and discharge or reuse standards so waste infrastructure and circular-economy measures can align with water protection and land allocation decisions.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_agriculture_food",
+        "category_name": "Agriculture and food",
+        "aligned_count": 21326,
+        "flagged_count": 1208,
+        "pool_composition": {
+          "primary_count": 38958,
+          "relevant_only_count": 2806
+        },
+        "contradiction_types": {
+          "resource_competition": 771,
+          "delivery_friction": 436,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Link farm productivity to resource-smart delivery",
+          "reinforce": "Reinforcing pairs often align around raising agricultural productivity, profitability, resilience, and value addition through climate-smart practices, locally developed technology, post-harvest solutions, extension, and forecasting. A second recurring pattern is that agriculture measures tend to reinforce water, soil, and broader land stewardship when delivery channels such as extension, farmer organizations, and sustainable farming practices are used to improve efficiency and reduce erosion or waste.",
+          "clash": "Flagged pairs recur most often around competition for land and water, especially where agricultural expansion, intensification, or profitability measures may press against forest cover, protected areas, wetlands, basin water allocation, or land reserved for mining. Possible misalignment is also flagged for review where input expansion, irrigation augmentation, or rural development infrastructure could complicate biodiversity-sensitive farming, wetland protection, or other conservation-oriented delivery conditions.",
+          "coordination_hint": "This sector would often benefit from joint land and water planning, with zoning, basin allocation rules, and biodiversity or wetland safeguards used to keep agricultural growth measures compatible with conservation and competing land uses.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_cultural_heritage",
+        "category_name": "Cultural heritage",
+        "aligned_count": 1135,
+        "flagged_count": 60,
+        "pool_composition": {
+          "primary_count": 719,
+          "relevant_only_count": 1149
+        },
+        "contradiction_types": {
+          "delivery_friction": 53,
+          "resource_competition": 7
+        },
+        "synthesis": {
+          "storyline_name": "Embedding cultural landscapes and customary rights in planning",
+          "reinforce": "Reinforcing pairs often point to cultural heritage being supported through planning and governance measures that recognize traditions, customs, indigenous rights, FPIC, traditional knowledge, and cultural landscapes. This tends to align with participatory water planning, benefit-sharing arrangements, and conservation-sensitive development, where local knowledge and culturally informed consultation can shape implementation.",
+          "clash": "Possible misalignment recurs where expansion of mining, energy, agriculture, aquaculture, or industrial infrastructure is flagged for review against planning provisions that safeguard cultural landscapes and other sensitive areas. Friction often appears as siting, zoning, land allocation, or deregulation pressures that could weaken culturally sensitive planning or constrain benefit sharing and customary-use considerations unless safeguards are applied.",
+          "coordination_hint": "This sector often points to the need for early spatial screening, culturally informed consultation, and consistent safeguards so development proposals can be tested against cultural landscape, traditional knowledge, and rights-based requirements.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_ecosystems_biodiversity",
+        "category_name": "Ecosystems and biodiversity",
+        "aligned_count": 15708,
+        "flagged_count": 1443,
+        "pool_composition": {
+          "primary_count": 16602,
+          "relevant_only_count": 9070
+        },
+        "contradiction_types": {
+          "resource_competition": 561,
+          "delivery_friction": 881,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Linking land and water management to biodiversity",
+          "reinforce": "Reinforcing pairs often align where catchment management, river basin planning, water standards, coastal restoration, and development planning help conserve habitats, water-dependent ecosystems, and wildlife needs. A second recurring pattern is governance alignment, where stronger environmental regulation, rehabilitation requirements, policy updates, and coordination mechanisms tend to reinforce biodiversity outcomes indirectly across mining, agriculture, and water management.",
+          "clash": "Possible misalignment recurs where agricultural expansion, input incentives, fertilizer and plant protection systems, fisheries production growth, or mining land allocation could increase pressure on ecosystems that biodiversity targets seek to restore, connect, or protect. Flagged pairs often point to delivery friction or resource competition over shared land, wetlands, catchments, coastal habitats, and pollution-sensitive ecosystems, especially where mineral-use prioritisation or production incentives are not clearly bounded by ecological safeguards.",
+          "coordination_hint": "This sector often points to the value of spatial planning, basin and coastal zoning, pollution and restoration safeguards, and finance or permitting conditions that help production, mining, and conservation measures align in the same landscapes and seascapes.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_health",
+        "category_name": "Health",
+        "aligned_count": 2427,
+        "flagged_count": 43,
+        "pool_composition": {
+          "primary_count": 1538,
+          "relevant_only_count": 3253
+        },
+        "contradiction_types": {
+          "delivery_friction": 19,
+          "resource_competition": 24
+        },
+        "synthesis": {
+          "storyline_name": "Link food security measures to health resilience",
+          "reinforce": "Health-related targets often align with agriculture and food-system actions that stabilize production, improve food and feed safety, and strengthen crisis supply arrangements. In these pairs, managing climate-related malnutrition and broader health resilience tends to be reinforced indirectly through resilient farming practices, safe food standards, and cross-sector capacity building rather than shared delivery mechanisms.",
+          "clash": "Possible misalignment recurs where mineral land allocation or exploration could compete with the land base, environmental conditions, or local food systems that health outcomes depend on. Flagged for review are indirect delivery frictions around malnutrition, disease surveillance, and health-sector resilience, often pointing to the need for land-use safeguards, pollution controls, and coordination between mining, food systems, and health planning.",
+          "coordination_hint": "It may help to connect health resilience planning with food-system safeguards and land-use decisions, especially where mining siting, agricultural supply, and climate-sensitive health risks intersect.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_infrastructure_settlements",
+        "category_name": "Infrastructure and human settlements",
+        "aligned_count": 7768,
+        "flagged_count": 248,
+        "pool_composition": {
+          "primary_count": 10701,
+          "relevant_only_count": 5121
+        },
+        "contradiction_types": {
+          "delivery_friction": 156,
+          "resource_competition": 92
+        },
+        "synthesis": {
+          "storyline_name": "Integrate land and infrastructure planning with safeguards",
+          "reinforce": "Infrastructure and settlement targets often align with broader resilience, water, biodiversity, and resource-efficiency measures when they are used as enabling planning systems. The sample repeatedly points to mainstreaming adaptation, DRR, water and sanitation resilience, and spatial planning as mechanisms that reinforce safer land use, service delivery, and rehabilitation of settlement-related areas.",
+          "clash": "Possible misalignment recurs where land for settlements, transport, wastewater, water systems, or other infrastructure may compete with land reserved or prioritized for mineral investment. Delivery friction is also flagged for review where mining-linked infrastructure expansion in rural areas could place pressure on catchments, groundwater, irrigation, flood management, biodiversity-sensitive planning, or ecosystem services unless siting and safeguards are coordinated.",
+          "coordination_hint": "This sector tends to benefit from early spatial zoning, basin and catchment screening, and biodiversity and water safeguards so that settlement and infrastructure delivery can proceed alongside mineral and other land-intensive uses.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_livelihoods",
+        "category_name": "Livelihoods",
+        "aligned_count": 8585,
+        "flagged_count": 669,
+        "pool_composition": {
+          "primary_count": 4763,
+          "relevant_only_count": 13432
+        },
+        "contradiction_types": {
+          "resource_competition": 308,
+          "delivery_friction": 361
+        },
+        "synthesis": {
+          "storyline_name": "Linking livelihood support to resource-sensitive delivery",
+          "reinforce": "Livelihood-oriented measures in this sector often align when they strengthen producer organizations, finance, market information, value addition, labour supply, or extension, and these in turn reinforce climate resilience and income opportunities in agriculture and fisheries. The sample also points to enabling links with water governance, forecasting, health, and planning systems, where better standards, data, and infrastructure tend to support more resilient livelihood delivery.",
+          "clash": "Possible misalignment recurs where livelihood expansion, agro-industrial development, aquaculture, or fisheries growth may compete for land, water, wetlands, or coastal space with mining, irrigation, protected areas, and wetland conservation. Delivery friction is also flagged for review where livelihood growth could increase pressure on biodiversity, ecosystem services, pollution control, catchments, or vulnerable areas unless siting, zoning, and safeguards are applied.",
+          "coordination_hint": "This sector often points to a need for integrated land and water allocation, spatial screening, and ecosystem safeguards so livelihood investments can proceed without undermining conservation, water management, or other place-based priorities.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "gga",
+        "category_id": "gga_water",
+        "category_name": "Water",
+        "aligned_count": 13072,
+        "flagged_count": 680,
+        "pool_composition": {
+          "primary_count": 13982,
+          "relevant_only_count": 3460
+        },
+        "contradiction_types": {
+          "delivery_friction": 370,
+          "resource_competition": 310
+        },
+        "synthesis": {
+          "storyline_name": "Link water governance with land and production planning",
+          "reinforce": "Water targets often align with cross-sector capacity building, participatory governance, basin and aquifer planning, and irrigation efficiency measures. The sample also points to reinforcement where agricultural production, processing, information systems, and precision practices are coordinated with water allocation, water quality, watershed protection, and river basin management.",
+          "clash": "Possible misalignment recurs where irrigation rehabilitation, irrigation expansion, mining development, agro-industrial zoning, or other land-intensive investments compete with wetlands, reservoirs, aquifers, catchments, and finite basin water. Flagged pairs often point to delivery friction in shared landscapes, especially where mineral land prioritisation or industrial expansion may constrain aquifer conservation, watershed protection, irrigation management, or wetland retention, and to resource competition over reservoir and freshwater use between irrigation, fisheries, ecosystems, and other users.",
+          "coordination_hint": "This sector tends to benefit from basin-level and land-use coordination, with zoning, water allocation rules, effluent and groundwater safeguards, and wetland or catchment protections used to keep irrigation, industry, mining, and ecosystem objectives aligned.",
           "confidence": "high"
         },
         "synthesis_error": null

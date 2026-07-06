@@ -31,7 +31,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .config import DATA_DIR, OUTPUT_DIR
+from .config import ACTIVE_TAXONOMIES, DATA_DIR, OUTPUT_DIR
 from .llm import call_llm_batch
 
 logger = logging.getLogger(__name__)
@@ -48,11 +48,19 @@ MAX_SAMPLES_PER_SIDE = 20  # slightly tighter than doc-pair, since prompts inclu
 
 CACHE_NAMESPACE = "sector_synthesis"
 
-# Default taxonomy allowlist for sector-level synthesis. globe_sub is excluded
-# by default because 49 subcategories produce too many thin pools to be useful
-# at the section-2 sector-card level; the subcategory drilldown belongs in a
-# different surface. Override via the function arg if you want them in.
-DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "country", "adaptation_goal")
+# Default taxonomy allowlist for sector-level synthesis: every active
+# classification taxonomy (config.ACTIVE_TAXONOMIES) UNION the legacy / country
+# lenses whose classifications may still be present in older committed outputs.
+# Sourcing the active set from config keeps this in lock-step with what STEP 2
+# classifies, so adding a taxonomy to ACTIVE_TAXONOMIES (e.g. gga on 2026-07-03)
+# never again silently skips its sector synthesis. globe_sub stays excluded: 49
+# subcategories produce too many thin pools to be useful at the section-2
+# sector-card level; that drilldown belongs on a different surface. Override via
+# the function arg if you want a different set.
+_LEGACY_SYNTHESIS_TAXONOMIES = ("nbs", "country", "adaptation_goal")
+DEFAULT_TAXONOMY_ALLOWLIST = tuple(
+    dict.fromkeys((*sorted(ACTIVE_TAXONOMIES), *_LEGACY_SYNTHESIS_TAXONOMIES))
+)
 
 
 SYSTEM_PROMPT = (

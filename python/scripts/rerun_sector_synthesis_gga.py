@@ -1,9 +1,11 @@
 """Surgically add GGA sector synthesis to committed sector_synthesis.json files
 WITHOUT recomputing the globe / nbs / sector / adaptation lenses.
 
-The GGA lens shipped as classifications-only (scripts/classify_gga.py), so the
-sector-synthesis step never ran for it: `synthesize_by_sector` excludes `gga`
-via DEFAULT_TAXONOMY_ALLOWLIST. This script calls it with
+As of 2026-07-06 `synthesize_by_sector` derives DEFAULT_TAXONOMY_ALLOWLIST from
+`config.ACTIVE_TAXONOMIES`, so a full `run_analysis` emits GGA sector synthesis
+natively. This script remains the way to backfill GGA into already-committed
+outputs WITHOUT a full re-run (e.g. after a corpus repair re-ran STEP 8 before
+this fix landed, as happened to Sri Lanka). It calls `synthesize_by_sector` with
 `taxonomy_allowlist=("gga",)` over the committed targets / alignment /
 classifications, for each visibility state the document toggle can reach
 (exactly mirroring run_analysis.py STEP 8), then merges the new gga records into
