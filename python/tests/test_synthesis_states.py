@@ -45,13 +45,45 @@ class TestPrecomputeHiddenStates:
 
     def test_capped(self):
         states = precompute_hidden_states([f"D{i}" for i in range(10)])
-        # full + MAX_PRECOMPUTE_DOCS singles + one combined
-        assert len(states) <= 1 + MAX_PRECOMPUTE_DOCS + 1
+        # full + MAX_PRECOMPUTE_DOCS singles + one combined + the (uncapped,
+        # single) briefing-default combo state
+        assert len(states) <= 1 + MAX_PRECOMPUTE_DOCS + 1 + 1
 
     def test_keys_unique(self):
         states = precompute_hidden_states(["ENR", "HR"])
         keys = [canonical_hidden_key(s) for s in states]
         assert len(keys) == len(set(keys))
+
+    def test_single_doc_states_for_small_corpus(self):
+        docs = ["NDC", "NAP", "NMP"]
+        states = precompute_hidden_states([], all_doc_types=docs)
+        assert states == [[], ["NDC"], ["NAP"], ["NMP"]]
+
+    def test_no_single_doc_states_above_bound(self):
+        docs = [f"D{i}" for i in range(11)]
+        states = precompute_hidden_states([], all_doc_types=docs)
+        assert states == [[]]
+
+    def test_briefing_default_combo(self):
+        # Panama: defaultHidden=[ENR], secondary=[HR, PIOTA, PNRF]. The
+        # briefing lands on the union, which must have an exact state.
+        states = precompute_hidden_states(
+            ["ENR"],
+            all_doc_types=["NDC", "ENR", "HR", "PIOTA", "PNRF"],
+            secondary_doc_types=["HR", "PIOTA", "PNRF"],
+        )
+        keys = {canonical_hidden_key(s) for s in states}
+        assert "" in keys
+        assert "ENR" in keys  # legacy default-hidden single
+        assert "ENR+HR+PIOTA+PNRF" in keys  # briefing-default combo
+        for doc in ["NDC", "HR", "PIOTA", "PNRF"]:
+            assert doc in keys  # every single-doc state
+
+    def test_combo_dedupes_against_single(self):
+        # With no secondary docs the combo collapses into the existing single.
+        states = precompute_hidden_states(["ENR"], all_doc_types=["NDC", "ENR"])
+        keys = [canonical_hidden_key(s) for s in states]
+        assert keys == ["", "ENR", "NDC"]
 
 
 class TestFilterDocPairRecords:

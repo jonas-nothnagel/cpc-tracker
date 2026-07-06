@@ -1448,6 +1448,8 @@ export function CoherenceBriefing({
                 primer={primer}
                 countryConfig={countryConfig}
                 corpusThemes={visibleCorpusThemes}
+                alignment={policyAlignment}
+                targets={visibleTargets}
                 onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
                 onHighlightPair={setPrimerHighlight}
@@ -1665,6 +1667,10 @@ export function CoherenceBriefing({
         alignment={visibleAlignment}
         targetsById={targetMap}
         countryConfig={countryConfig}
+        classifications={visibleClassifications}
+        categories={sectorCategories}
+        taxonomyType={lensTaxonomyType}
+        totalDocCount={documentCount}
         countryId={countryId}
         onClose={closeThemeDrawer}
         onOpenSingleTheme={openThemeDrawer}
@@ -1677,6 +1683,11 @@ export function CoherenceBriefing({
             targetA: tA,
             targetB: tB,
           });
+        }}
+        onOpenTargetProfile={(target) => {
+          setActiveTheme(null);
+          setShowAllStorylines(false);
+          setFlagProfile({ kind: "target", target });
         }}
       />
       <FlagProfileDrawer

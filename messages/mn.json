@@ -161,9 +161,8 @@
         "reinforce": "Давтагдах уялдаа",
         "friction": "Давтагдах болзошгүй үл нийцэл"
       },
-      "spansAll": "Бүх {count, number} баримт бичгийг хамарна",
-      "across": "Хамрах",
-      "pairCount": "{count, plural, one {1 хос} other {# хос}}"
+      "metaFriction": "болзошгүй үл нийцэлтэй {count, plural, one {1 хос} other {# хос}}, гол нь {docs}",
+      "metaReinforce": "{total, number} баримтаас {docs, number}-г хамарна, эдгээр холбоосод {count, plural, one {1 уялдсан хос} other {# уялдсан хос}}"
     },
     "primerCard": {
       "alignedRelation": "ХҮЧТЭЙ УЯЛДСАН",
@@ -322,8 +321,8 @@
           "friction": "Давтагдах болзошгүй үл нийцэл"
         },
         "summary": {
-          "reinforce": "{docs, plural, one {1 баримт} other {# баримт}}-д давтагдана · {pairs, plural, one {1 хос} other {# хос}} · доор {records, number} уялдсан {records, plural, one {бичлэг} other {бичлэг}}",
-          "friction": "{docs, plural, one {1 баримт} other {# баримт}}-д давтагдана · {pairs, plural, one {1 хос} other {# хос}} · доор {records, number} үл нийцсэн {records, plural, one {бичлэг} other {бичлэг}}"
+          "reinforce": "{docs, plural, one {1 баримт} other {# баримт}}-д давтагдана · доор {records, number} уялдсан {records, plural, one {хос} other {хос}}",
+          "friction": "{docs, plural, one {1 баримт} other {# баримт}}-д давтагдана · доор {records, number} болзошгүй үл нийцэлтэй {records, plural, one {хос} other {хос}}"
         },
         "pairsInTheme": "Энэ сэдэв дэх зорилтын хосууд",
         "noConcretePairs": "Сэдэв нь хувь нэмэр оруулсан баримтын хосуудыг нэрлэдэг боловч тэдгээр баримтын хосуудад сэдвийн туйлшралд тохирох тодорхой зорилтын хос байхгүй.",
@@ -338,7 +337,13 @@
           "heading": "{count, plural, one {Олон баримт бичгийг хамарсан 1 сэдэв} other {Олон баримт бичгийг хамарсан # сэдэв}}",
           "subtitle": "{aligned, number} уялдсан · {flagged, number} болзошгүй үл нийцсэн. Үндсэн зорилтын хосуудыг харахын тулд аль нэг сэдэв дээр дарна уу."
         },
-        "storylineMeta": "{docs, plural, one {1 баримт} other {# баримт}}-г хамарна · {pairs, plural, one {1 хос} other {# хос}}{lowConf, select, 1 { · бага итгэлцэл} other {}}"
+        "storylineMeta": "{docs, plural, one {1 баримт} other {# баримт}}-г хамарна · {pairs, plural, one {1 хос} other {# хос}}{lowConf, select, 1 { · бага итгэлцэл} other {}}",
+        "drivingDocs": "Гол нөлөөтэй баримт бичгүүд ({total, number}-аас {docs, number})",
+        "topTargets": "Хамгийн олон оролцсон зорилтууд",
+        "topTargetCount": "{count, plural, one {1 хос} other {# хос}}",
+        "sectorsTouched": "Хамрагдсан салбарууд",
+        "pathwayHeading": "AI-аас санал болгосон эхлэлийн цэг",
+        "pathwayCaveat": "Дээрх хосуудад тулгуурласан AI-аар үүсгэсэн санал. Хяналт хийх боломжит эхлэлийн цэг бөгөөд заавар биш."
       },
       "sector": {
         "eyebrow": "Салбарын харагдац",
@@ -551,8 +556,8 @@
       "reach": "хүрнэ",
       "strongAlignment": "хүчтэй уялдаа",
       "potentialMisalignment": "болзошгүй үл нийцэл",
-      "anchoredBy": ", дараахаар тогтоосон",
-      "mostProminentlyAround": ", хамгийн тод нь дараахын эргэн тойронд",
+      "anchoredBy": ", дараах сэдвээр тогтоосон",
+      "mostProminentlyAround": ", хамгийн тод нь дараах сэдвийн эргэн тойронд",
       "pairsShow": "{count, plural, one {хос харуулна} other {хос харуулна}}",
       "pairsParen": "хос",
       "alignedDefinition": "Нэг чиглэлд татах хоёр зорилт: нэг нь нөгөөг дэмжих эсвэл ахиулна. Энэ багцаас бодит оноологдсон хос:",
@@ -560,7 +565,6 @@
       "popoverAriaLabel": "{term}-н жишээг харуулах",
       "clickToOpenPair": "Энэ хосыг нээхийн тулд нэр томьёо дээр дарна уу",
       "storylineOpenTitle": "“{name}” сэдвийг нээх",
-      "recurringPatterns": "Давтагдах хэв маяг",
       "howPipelineBuilt": "Пайплайн энэ харагдацыг хэрхэн бүтээсэн",
       "onePairFromEnd": "Спектрийн төгсгөл бүрээс нэг оноологдсон хос.",
       "notEnoughPairs": "Үндсэн жишээ харуулахад хангалттай оноологдсон хос байхгүй.",
@@ -570,6 +574,16 @@
         "mostly_aligned": "Бодлогууд хоорондоо ихээхэн уялдаатай байна.",
         "mixed": "Бодлогын багц даяар уялдаа холимог байна.",
         "lots_of_misalignment": "Бодлогын багц даяар нэлээд их болзошгүй үл нийцэл."
+      },
+      "focusConcentratedWithDoc": "ихэнх нь ({pct}%) ердөө {count, plural, one {1 зорилт} other {# зорилт}} руу буцдаг бөгөөд {docCount, plural, one {1 нь} other {# нь}} {docName}-д байна",
+      "derivationNote": "Сэдвүүд нь оноологдсон зорилтын хосуудын AI-аар бичсэн нэгтгэл юм. Энэ хуудасны тоо бүрийг одоогийн баримт бичгийн сонголтод тохируулан тэдгээр хосоос хөтчид тооцоолдог бөгөөд болзошгүй үл нийцэлтэй хос бүрийг зөвхөн нэг сэдэвт тоолно.",
+      "groups": {
+        "aligns": "Тогтмол уялдаж буй зүйлс",
+        "review": "Нягтлах шаардлагатай байж болзошгүй зүйлс",
+        "showMore": "{count, plural, one {+1 сэдэв} other {+# сэдэв}}",
+        "showFewer": "Цөөнийг харуулах",
+        "emptyReview": "Эдгээр баримт бичгүүдийн хооронд давтагдах болзошгүй үл нийцэл илрээгүй.",
+        "hiddenForSelection": "{count, plural, one {Одоогийн баримт бичгийн сонголтод 1 сэдэв харагдахгүй.} other {Одоогийн баримт бичгийн сонголтод # сэдэв харагдахгүй.}}"
       }
     },
     "emptyState": {

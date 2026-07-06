@@ -14,14 +14,18 @@ byte-for-byte.
 
 Translated prose fields (whitelist — nothing else is touched):
   - corpus_themes.json:      storylines[].name, storylines[].description,
-                             and the top-level summary_paragraph.
-                             (a `states` map, if present, is left untouched)
+                             storylines[].pathway, and the top-level
+                             summary_paragraph.
   - doc_pair_synthesis.json: each item's synthesis.{storyline_name, reinforce,
                              clash, coordination_hint}
   - sector_synthesis.json:   list form, OR {synthesis:[...], states:{...}} object
                              form. For each item in the synthesis list,
                              synthesis.{storyline_name, reinforce, clash,
-                             coordination_hint}. A `states` map is left untouched.
+                             coordination_hint}.
+A `states` map (corpus_themes + sector_synthesis) holds one same-shaped
+payload per document-visibility selection; its prose is translated with the
+same whitelist so non-default selections render localized too. Ids, counts,
+aggregates, and every number copy through byte-for-byte.
 
 Items whose `synthesis` is null or carry a `synthesis_error` are copied through
 unchanged.
@@ -207,7 +211,7 @@ def _collect_corpus_themes(data: Any) -> list[tuple[dict, str, str]]:
     for i, story in enumerate(storylines):
         if not isinstance(story, dict):
             continue
-        for key in ("name", "description"):
+        for key in ("name", "description", "pathway"):
             val = story.get(key)
             if isinstance(val, str) and val.strip():
                 refs.append((story, key, f"storylines[{i}].{key}"))

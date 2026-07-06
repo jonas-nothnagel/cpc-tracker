@@ -33,8 +33,11 @@ import {
   useManageabilityLabels,
 } from "@/lib/labels";
 import {
+  buildStorylineProfile,
+  computeStorylineLiveStats,
   getDocPairKey,
   parseContributingDocPair,
+  type StorylineProfile,
 } from "@/lib/coherence-briefing";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { FeedbackControl } from "./feedback-control";
@@ -47,6 +50,7 @@ import type {
   CorpusStoryline,
   CountryConfig,
   Target,
+  ThematicClassification,
 } from "@/types";
 
 const HEADLINE_SERIF =
@@ -84,6 +88,13 @@ export interface ThemeDrawerProps {
   alignment: AlignmentResult[];
   targetsById: Map<string, Target>;
   countryConfig: CountryConfig | null;
+  /** Visible classifications; drive the "sectors touched" chips. */
+  classifications: ThematicClassification[];
+  /** Categories of the active taxonomy lens (localized names). */
+  categories: { id: string; name: string }[];
+  taxonomyType: string;
+  /** Visible document count, for the driving-documents context line. */
+  totalDocCount: number;
   /** Canonical country slug; enables the feedback control when present. */
   countryId?: string;
   onClose: () => void;
@@ -99,6 +110,8 @@ export interface ThemeDrawerProps {
     targetA: Target,
     targetB: Target,
   ) => void;
+  /** Drill from a recurring target into its flag profile. */
+  onOpenTargetProfile?: (target: Target) => void;
 }
 
 export function ThemeDrawer({
@@ -107,10 +120,15 @@ export function ThemeDrawer({
   alignment,
   targetsById,
   countryConfig,
+  classifications,
+  categories,
+  taxonomyType,
+  totalDocCount,
   countryId,
   onClose,
   onOpenSingleTheme,
   onOpenTargetPair,
+  onOpenTargetProfile,
 }: ThemeDrawerProps) {
   const t = useTranslations("briefing.drawer.theme");
   const isOpen = theme !== null || allStorylines !== null;
@@ -180,17 +198,34 @@ export function ThemeDrawer({
     return out;
   }, [theme, alignment, targetsById]);
 
+  // Live drill-down profile: driving documents, recurring targets
+  // (anchor-pinned), sector chips. Everything recomputes from the visible
+  // alignment, so counts track the document toggle exactly.
+  const profile = useMemo<StorylineProfile | null>(() => {
+    if (!theme) return null;
+    return buildStorylineProfile({
+      storyline: theme,
+      alignment,
+      targets: [...targetsById.values()],
+      classifications,
+      categories,
+      taxonomyType,
+    });
+  }, [theme, alignment, targetsById, classifications, categories, taxonomyType]);
+
   if (!theme && allStorylines) {
     return (
       <AllStorylinesView
         storylines={allStorylines}
+        alignment={alignment}
+        targetsById={targetsById}
         onPick={(s) => onOpenSingleTheme?.(s)}
         onClose={onClose}
       />
     );
   }
 
-  if (!theme) return null;
+  if (!theme || !profile) return null;
 
   const isReinforce = theme.type === "reinforcement";
   const dotColor = isReinforce ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
@@ -238,9 +273,8 @@ export function ThemeDrawer({
             </h3>
             <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
               {t(isReinforce ? "summary.reinforce" : "summary.friction", {
-                docs: theme.spans_documents.length,
-                pairs: theme.pair_count,
-                records: totalRecords,
+                docs: profile.byDoc.length,
+                records: profile.liveCount,
               })}
             </p>
           </div>
@@ -258,6 +292,117 @@ export function ThemeDrawer({
           <p className="text-[14px] text-[var(--undp-black)] leading-relaxed">
             {theme.description}
           </p>
+
+          {profile.byDoc.length > 0 && (
+            <section>
+              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+                {t("drivingDocs", {
+                  docs: profile.byDoc.length,
+                  total: totalDocCount,
+                })}
+              </p>
+              <ul className="space-y-1.5">
+                {profile.byDoc.map((d) => (
+                  <li key={d.doc}>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span
+                        className="text-[11.5px] text-[var(--undp-black)] truncate"
+                        title={getDocFullLabel(countryConfig, d.doc)}
+                      >
+                        {getDocMediumLabel(countryConfig, d.doc)}
+                      </span>
+                      <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                        {d.count.toLocaleString()} ({Math.round(d.share * 100)}%)
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      className="mt-0.5 block h-1 w-full rounded-full bg-gray-200"
+                    >
+                      <span
+                        className="block h-full rounded-full"
+                        style={{
+                          width: `${Math.max(6, d.share * 100)}%`,
+                          backgroundColor: "#94a3b8",
+                        }}
+                      />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {profile.topTargets.length > 0 && (
+            <section>
+              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+                {t("topTargets")}
+              </p>
+              <ol className="divide-y divide-gray-200 border-y border-gray-200">
+                {profile.topTargets.map(({ target, count }) => {
+                  const inner = (
+                    <>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-[11px] text-[var(--undp-gray)]">
+                          {getDocMediumLabel(countryConfig, target.sourceDocument)}{" "}
+                          {target.sourceLabel}
+                        </span>
+                        <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                          {t("topTargetCount", { count })}
+                        </span>
+                      </div>
+                      <p
+                        className="text-[12px] text-[var(--undp-black)] leading-snug overflow-hidden"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {target.text}
+                      </p>
+                    </>
+                  );
+                  return (
+                    <li key={target.id}>
+                      {onOpenTargetProfile ? (
+                        <button
+                          type="button"
+                          onClick={() => onOpenTargetProfile(target)}
+                          className="w-full text-left py-2 px-1 hover:bg-gray-50 rounded transition-colors"
+                        >
+                          {inner}
+                        </button>
+                      ) : (
+                        <div className="py-2 px-1">{inner}</div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          )}
+
+          {profile.byTheme.length > 0 && (
+            <section>
+              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+                {t("sectorsTouched")}
+              </p>
+              <ul className="flex flex-wrap gap-1.5">
+                {profile.byTheme.map((c) => (
+                  <li
+                    key={c.categoryId}
+                    className="text-[10.5px] px-2 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] tabular-nums"
+                  >
+                    {c.categoryName}{" "}
+                    <span className="text-[var(--undp-gray)]/70">
+                      {c.count.toLocaleString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <section>
             <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
@@ -281,6 +426,20 @@ export function ThemeDrawer({
               </div>
             )}
           </section>
+
+          {theme.pathway && (
+            <section className="border-t border-gray-200 pt-4">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+                {t("pathwayHeading")}
+              </p>
+              <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
+                {theme.pathway}
+              </p>
+              <p className="mt-1.5 text-[10px] text-[var(--undp-gray)] leading-relaxed">
+                {t("pathwayCaveat")}
+              </p>
+            </section>
+          )}
 
           <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
             {t("aiDisclaimer")}
@@ -595,14 +754,29 @@ function compareAlignedByStrength(
 
 function AllStorylinesView({
   storylines,
+  alignment,
+  targetsById,
   onPick,
   onClose,
 }: {
   storylines: CorpusStoryline[];
+  alignment: AlignmentResult[];
+  targetsById: Map<string, Target>;
   onPick: (s: CorpusStoryline) => void;
   onClose: () => void;
 }) {
   const t = useTranslations("briefing.drawer.theme");
+  const liveStats = useMemo(
+    () =>
+      computeStorylineLiveStats(
+        storylines,
+        alignment,
+        [...targetsById.values()],
+      ),
+    [storylines, alignment, targetsById],
+  );
+  const liveCountOf = (s: CorpusStoryline) =>
+    liveStats.get(s)?.liveCount ?? 0;
   const reinforce = storylines.filter((s) => s.type === "reinforcement");
   const friction = storylines.filter((s) => s.type === "friction");
   return (
@@ -654,6 +828,7 @@ function AllStorylinesView({
               label={t("eyebrow.reinforce")}
               tone="reinforce"
               storylines={reinforce}
+              liveCountOf={liveCountOf}
               onPick={onPick}
             />
           )}
@@ -662,6 +837,7 @@ function AllStorylinesView({
               label={t("eyebrow.friction")}
               tone="friction"
               storylines={friction}
+              liveCountOf={liveCountOf}
               onPick={onPick}
             />
           )}
@@ -678,11 +854,13 @@ function StorylineGroup({
   label,
   tone,
   storylines,
+  liveCountOf,
   onPick,
 }: {
   label: string;
   tone: "reinforce" | "friction";
   storylines: CorpusStoryline[];
+  liveCountOf: (s: CorpusStoryline) => number;
   onPick: (s: CorpusStoryline) => void;
 }) {
   const t = useTranslations("briefing.drawer.theme");
@@ -691,7 +869,7 @@ function StorylineGroup({
     const aRank = CONFIDENCE_RANK[a.confidence] ?? 3;
     const bRank = CONFIDENCE_RANK[b.confidence] ?? 3;
     if (aRank !== bRank) return aRank - bRank;
-    return b.pair_count - a.pair_count;
+    return liveCountOf(b) - liveCountOf(a);
   });
   return (
     <section>
@@ -726,7 +904,7 @@ function StorylineGroup({
                   <p className="mt-1 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
                     {t("storylineMeta", {
                       docs: s.spans_documents.length,
-                      pairs: s.pair_count,
+                      pairs: liveCountOf(s),
                       lowConf: s.confidence === "low" ? 1 : 0,
                     })}
                   </p>

@@ -1,19 +1,22 @@
 "use client";
 
 /**
- * StorylineCard — one corpus storyline ("theme") rendered as a clickable
- * card: polarity chip (Recurring alignment / Recurring potential
- * misalignment), the
- * storyline name, the documents it spans, and its pair count. Clicking opens
- * the ThemeDrawer.
+ * StorylineRow — one corpus theme rendered as a plain-typography list row:
+ * polarity dot + eyebrow, the noun-phrase theme name, a one-line clamped
+ * description, and a live-computed meta line. Clicking opens the ThemeDrawer.
  *
- * Shared by the Direction slide's recurring-patterns block (the single
- * home for themes). Kept in one place so the theme presentation stays
- * consistent wherever a storyline is surfaced.
+ * Counts come from the caller's live stats (recomputed from the visible
+ * alignment), never from the persisted pair_count, so the row stays exact
+ * under document toggling and honest on old-format payloads.
+ *
+ * Replaces the former StorylineCard grid card (rows in labeled groups beat
+ * 5-7 equal cards for prioritization; plain typography per the minimal
+ * panel-chrome guideline).
  */
 
 import { useTranslations } from "next-intl";
-import { getDocFullLabel, getDocLabel } from "@/lib/utils";
+import { getDocLabel } from "@/lib/utils";
+import type { StorylineLiveStats } from "@/lib/coherence-briefing";
 import type { CorpusStoryline, CountryConfig } from "@/types";
 
 const HEADLINE_SERIF =
@@ -21,13 +24,15 @@ const HEADLINE_SERIF =
 const ALIGNED_DOT_COLOR = "#196127";
 const FRICTION_DOT_COLOR = "#dc2626";
 
-export function StorylineCard({
+export function StorylineRow({
   storyline,
+  stats,
   countryConfig,
   totalAvailableDocs,
   onOpen,
 }: {
   storyline: CorpusStoryline;
+  stats: StorylineLiveStats;
   countryConfig: CountryConfig | null;
   totalAvailableDocs: number;
   onOpen: () => void;
@@ -35,17 +40,19 @@ export function StorylineCard({
   const t = useTranslations("briefing.storylineCard");
   const isReinforce = storyline.type === "reinforcement";
   const dotColor = isReinforce ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
-  const uniqueDocs = Array.from(new Set(storyline.spans_documents));
-  const spansAll =
-    totalAvailableDocs > 0 && uniqueDocs.length >= totalAvailableDocs;
+  const topDocs = [...stats.docCounts.entries()]
+    .sort((x, y) => (y[1] !== x[1] ? y[1] - x[1] : x[0].localeCompare(y[0])))
+    .slice(0, 2)
+    .map(([doc]) => getDocLabel(countryConfig, doc))
+    .join(", ");
   return (
     <button
       type="button"
       onClick={onOpen}
-      className="flex h-full w-full flex-col text-left rounded border border-gray-200 bg-white px-3 py-2.5 hover:border-gray-400 transition-colors"
+      className="w-full text-left py-2.5 px-1 rounded hover:bg-gray-50 transition-colors"
     >
       <p
-        className="text-[9.5px] uppercase tracking-wider font-semibold mb-1.5 inline-flex items-center gap-1.5"
+        className="text-[9.5px] uppercase tracking-wider font-semibold mb-1 inline-flex items-center gap-1.5"
         style={{ color: dotColor }}
       >
         <span
@@ -60,35 +67,29 @@ export function StorylineCard({
         {isReinforce ? t("eyebrow.reinforce") : t("eyebrow.friction")}
       </p>
       <p
-        className="text-[13.5px] text-[var(--undp-black)] leading-snug mb-2"
+        className="text-[13.5px] text-[var(--undp-black)] leading-snug"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
         {storyline.name}
       </p>
-      <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
-        {spansAll ? (
-          t("spansAll", { count: totalAvailableDocs })
-        ) : (
-          <>
-            <span className="uppercase tracking-wider text-[9.5px] mr-1">
-              {t("across")}
-            </span>
-            {uniqueDocs.map((d, i) => (
-              <span key={d}>
-                <span
-                  className="border-b border-dotted border-[var(--undp-gray)]/50"
-                  title={getDocFullLabel(countryConfig, d)}
-                >
-                  {getDocLabel(countryConfig, d)}
-                </span>
-                {i < uniqueDocs.length - 1 ? ", " : ""}
-              </span>
-            ))}
-          </>
-        )}
+      <p
+        className="mt-0.5 text-[11.5px] text-[var(--undp-gray)] leading-snug overflow-hidden"
+        style={{
+          display: "-webkit-box",
+          WebkitLineClamp: 1,
+          WebkitBoxOrient: "vertical",
+        }}
+      >
+        {storyline.description}
       </p>
       <p className="mt-1 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
-        {t("pairCount", { count: storyline.pair_count })}
+        {isReinforce
+          ? t("metaReinforce", {
+              docs: stats.docCounts.size,
+              total: totalAvailableDocs,
+              count: stats.liveCount,
+            })
+          : t("metaFriction", { count: stats.liveCount, docs: topDocs })}
       </p>
     </button>
   );

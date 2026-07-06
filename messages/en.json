@@ -161,9 +161,8 @@
         "reinforce": "Recurring alignment",
         "friction": "Recurring potential misalignment"
       },
-      "spansAll": "Spans all {count, number} documents",
-      "across": "Across",
-      "pairCount": "{count, plural, one {1 pair} other {# pairs}}"
+      "metaFriction": "{count, plural, one {1 pair} other {# pairs}} showing potential misalignment, mainly {docs}",
+      "metaReinforce": "Spans {docs, number} of {total, number} documents, {count, plural, one {1 aligned pair} other {# aligned pairs}} in these links"
     },
     "primerCard": {
       "alignedRelation": "STRONGLY ALIGNED WITH",
@@ -322,8 +321,8 @@
           "friction": "Recurring potential misalignment"
         },
         "summary": {
-          "reinforce": "Recurs across {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}} · {records, number} aligned {records, plural, one {record} other {records}} below",
-          "friction": "Recurs across {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}} · {records, number} misaligned {records, plural, one {record} other {records}} below"
+          "reinforce": "Recurs across {docs, plural, one {1 document} other {# documents}} · {records, number} aligned {records, plural, one {pair} other {pairs}} below",
+          "friction": "Recurs across {docs, plural, one {1 document} other {# documents}} · {records, number} {records, plural, one {pair} other {pairs}} showing potential misalignment below"
         },
         "pairsInTheme": "Target pairs in this theme",
         "noConcretePairs": "The theme names contributing doc-pairs but no concrete target pairs in those doc-pairs match the theme polarity.",
@@ -338,7 +337,13 @@
           "heading": "{count, plural, one {1 theme that spans multiple documents} other {# themes that span multiple documents}}",
           "subtitle": "{aligned, number} aligned · {flagged, number} potentially misaligned. Click any theme for the underlying target pairs."
         },
-        "storylineMeta": "Spans {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}}{lowConf, select, 1 { · low confidence} other {}}"
+        "storylineMeta": "Spans {docs, plural, one {1 doc} other {# docs}} · {pairs, plural, one {1 pair} other {# pairs}}{lowConf, select, 1 { · low confidence} other {}}",
+        "drivingDocs": "Driving documents ({docs, number} of {total, number})",
+        "topTargets": "Targets involved most often",
+        "topTargetCount": "{count, plural, one {1 pair} other {# pairs}}",
+        "sectorsTouched": "Sectors touched",
+        "pathwayHeading": "AI-suggested starting point",
+        "pathwayCaveat": "An AI-generated suggestion anchored to the pairs above. A possible starting point for review, not a directive."
       },
       "sector": {
         "eyebrow": "Sector view",
@@ -551,8 +556,8 @@
       "reach": "reach",
       "strongAlignment": "strong alignment",
       "potentialMisalignment": "potential misalignment",
-      "anchoredBy": ", anchored by",
-      "mostProminentlyAround": ", most prominently around",
+      "anchoredBy": ", anchored by the theme",
+      "mostProminentlyAround": ", most prominently around the theme",
       "pairsShow": "{count, plural, one {pair shows} other {pairs show}}",
       "pairsParen": "pairs",
       "alignedDefinition": "Two targets that pull in the same direction: one supports or advances the other. A real scored pair from this set:",
@@ -560,7 +565,6 @@
       "popoverAriaLabel": "Show an example of {term}",
       "clickToOpenPair": "Click the term to open this pair",
       "storylineOpenTitle": "Open the “{name}” theme",
-      "recurringPatterns": "Recurring patterns",
       "howPipelineBuilt": "How the pipeline built this view",
       "onePairFromEnd": "One scored pair from each end of the spectrum.",
       "notEnoughPairs": "Not enough scored pairs to show an underlying example.",
@@ -570,6 +574,16 @@
         "mostly_aligned": "Policies are largely coherent with one another.",
         "mixed": "Coherence is mixed across the policy set.",
         "lots_of_misalignment": "Substantial potential misalignment across the policy set."
+      },
+      "focusConcentratedWithDoc": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}, {docCount, plural, one {1 of them} other {# of them}} in {docName}",
+      "derivationNote": "Themes are AI-written summaries of the scored target pairs. Every count on this page is computed in the browser from those pairs for the current document selection, and each pair showing potential misalignment is counted under one theme only.",
+      "groups": {
+        "aligns": "What consistently aligns",
+        "review": "What may need review",
+        "showMore": "{count, plural, one {+1 more theme} other {+# more themes}}",
+        "showFewer": "Show fewer",
+        "emptyReview": "No recurring potential misalignment identified across these documents.",
+        "hiddenForSelection": "{count, plural, one {1 theme is not shown for the current document selection.} other {# themes are not shown for the current document selection.}}"
       }
     },
     "emptyState": {

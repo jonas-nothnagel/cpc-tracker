@@ -322,6 +322,10 @@ async def main() -> None:
         # precompute states (full corpus + each contested doc removed) so the
         # client's document toggle stays exact with no live LLM call.
         default_hidden_doc_types: list[str] = []
+        # Documents demoted to secondary in briefing views. Together with the
+        # default-hidden set they form the briefing-default selection, which
+        # gets its own precomputed storyline state.
+        secondary_doc_types: list[str] = []
         if config_path.exists():
             country_config = json.loads(config_path.read_text())
             doc_type_labels = {
@@ -330,6 +334,9 @@ async def main() -> None:
             }
             default_hidden_doc_types = list(
                 country_config.get("defaultHiddenDocTypes", []) or []
+            )
+            secondary_doc_types = list(
+                country_config.get("secondaryDocTypes", []) or []
             )
             logger.info(
                 f"Loaded doc-type labels from {config_filename}: "
@@ -757,14 +764,20 @@ async def main() -> None:
                 sector_category_names[("adaptation_goal", gid)] = short
 
         # Precompute the corpus + sector storylines for each toggle state the
-        # document filter can reach: the full corpus ("") plus each contested
-        # (default-hidden) document removed. Deterministic (temperature=0), so
-        # the full-corpus calls hit the disk cache on re-run and only the
-        # hidden-state corpus call + changed-prompt sector calls cost new LLM.
-        # This keeps the toggle exact with NO live LLM at view time, and it runs
-        # on every pipeline invocation so adding a document recomputes the
-        # required states automatically.
-        precompute_states = precompute_hidden_states(default_hidden_doc_types)
+        # document filter can reach: the full corpus (""), every single-doc-
+        # hidden state (bounded), each contested (default-hidden) document
+        # removed, and the briefing-default combo. Deterministic
+        # (temperature=0), so unchanged-prompt calls hit the disk cache on
+        # re-run and only new states cost LLM. This keeps the common toggle
+        # gestures exact with NO live LLM at view time, and it runs on every
+        # pipeline invocation so adding a document recomputes the required
+        # states automatically.
+        all_doc_types = sorted({t["sourceDocument"] for t in targets})
+        precompute_states = precompute_hidden_states(
+            default_hidden_doc_types,
+            all_doc_types=all_doc_types,
+            secondary_doc_types=secondary_doc_types,
+        )
         logger.info(
             f"  Precomputing storyline states for hidden-doc sets: "
             f"{[canonical_hidden_key(s) or '(full)' for s in precompute_states]}"
@@ -777,13 +790,17 @@ async def main() -> None:
             key = canonical_hidden_key(state)
             label = key or "full corpus"
 
-            state_doc_pairs = filter_doc_pair_records(doc_pair_records, hidden)
-            corpus_state = await synthesize_corpus(state_doc_pairs, country_name)
-            corpus_states[key] = corpus_state
-
             state_targets, state_alignment = filter_targets_alignment(
                 targets, alignment_results, hidden
             )
+            state_doc_pairs = filter_doc_pair_records(doc_pair_records, hidden)
+            corpus_state = await synthesize_corpus(
+                state_doc_pairs, country_name,
+                targets=state_targets, alignment=state_alignment,
+                classifications=all_classifications,
+            )
+            corpus_states[key] = corpus_state
+
             sector_state = await synthesize_by_sector(
                 state_targets, state_alignment, all_classifications,
                 category_names=sector_category_names,

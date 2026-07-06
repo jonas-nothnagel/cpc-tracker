@@ -161,9 +161,8 @@
         "reinforce": "Alineación recurrente",
         "friction": "Posible desalineación recurrente"
       },
-      "spansAll": "Abarca los {count, number} documentos",
-      "across": "A través de",
-      "pairCount": "{count, plural, one {1 par} other {# pares}}"
+      "metaFriction": "{count, plural, one {1 par} other {# pares}} con posible desalineación, principalmente {docs}",
+      "metaReinforce": "Abarca {docs, number} de {total, number} documentos, {count, plural, one {1 par alineado} other {# pares alineados}} en estos vínculos"
     },
     "primerCard": {
       "alignedRelation": "FUERTEMENTE ALINEADO CON",
@@ -322,8 +321,8 @@
           "friction": "Posible desalineación recurrente"
         },
         "summary": {
-          "reinforce": "Recurre en {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}} · {records, number} {records, plural, one {registro alineado} other {registros alineados}} abajo",
-          "friction": "Recurre en {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}} · {records, number} {records, plural, one {registro desalineado} other {registros desalineados}} abajo"
+          "reinforce": "Recurre en {docs, plural, one {1 documento} other {# documentos}} · {records, number} {records, plural, one {par alineado} other {pares alineados}} abajo",
+          "friction": "Recurre en {docs, plural, one {1 documento} other {# documentos}} · {records, number} {records, plural, one {par con posible desalineación} other {pares con posible desalineación}} abajo"
         },
         "pairsInTheme": "Pares de metas en este tema",
         "noConcretePairs": "El tema nombra pares de documentos contribuyentes pero ningún par concreto de metas en esos pares de documentos coincide con la polaridad del tema.",
@@ -338,7 +337,13 @@
           "heading": "{count, plural, one {1 tema que abarca varios documentos} other {# temas que abarcan varios documentos}}",
           "subtitle": "{aligned, number} alineados · {flagged, number} posiblemente desalineados. Pulse cualquier tema para ver los pares de metas subyacentes."
         },
-        "storylineMeta": "Abarca {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}}{lowConf, select, 1 { · baja confianza} other {}}"
+        "storylineMeta": "Abarca {docs, plural, one {1 documento} other {# documentos}} · {pairs, plural, one {1 par} other {# pares}}{lowConf, select, 1 { · baja confianza} other {}}",
+        "drivingDocs": "Documentos que lo impulsan ({docs, number} de {total, number})",
+        "topTargets": "Metas implicadas con más frecuencia",
+        "topTargetCount": "{count, plural, one {1 par} other {# pares}}",
+        "sectorsTouched": "Sectores implicados",
+        "pathwayHeading": "Punto de partida sugerido por IA",
+        "pathwayCaveat": "Una sugerencia generada por IA, anclada en los pares anteriores. Un posible punto de partida para la revisión, no una directriz."
       },
       "sector": {
         "eyebrow": "Vista de sector",
@@ -551,8 +556,8 @@
       "reach": "alcanzan",
       "strongAlignment": "alineación fuerte",
       "potentialMisalignment": "posible desalineación",
-      "anchoredBy": ", ancladas en",
-      "mostProminentlyAround": ", de forma más prominente en torno a",
+      "anchoredBy": ", ancladas en el tema",
+      "mostProminentlyAround": ", de forma más prominente en torno al tema",
       "pairsShow": "{count, plural, one {par muestra} other {pares muestran}}",
       "pairsParen": "pares",
       "alignedDefinition": "Dos metas que tiran en la misma dirección: una respalda o impulsa a la otra. Un par real evaluado de este conjunto:",
@@ -560,7 +565,6 @@
       "popoverAriaLabel": "Mostrar un ejemplo de {term}",
       "clickToOpenPair": "Pulse el término para abrir este par",
       "storylineOpenTitle": "Abrir el tema «{name}»",
-      "recurringPatterns": "Patrones recurrentes",
       "howPipelineBuilt": "Cómo la canalización construyó esta vista",
       "onePairFromEnd": "Un par evaluado de cada extremo del espectro.",
       "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",
@@ -570,6 +574,16 @@
         "mostly_aligned": "Las políticas son en gran medida coherentes entre sí.",
         "mixed": "La coherencia es dispar en el conjunto de políticas.",
         "lots_of_misalignment": "Considerable posible desalineación en el conjunto de políticas."
+      },
+      "focusConcentratedWithDoc": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}, {docCount, plural, one {1 de ellas} other {# de ellas}} en {docName}",
+      "derivationNote": "Los temas son resúmenes escritos por IA de los pares de metas evaluados. Cada cifra de esta página se calcula en el navegador a partir de esos pares para la selección actual de documentos, y cada par con posible desalineación se cuenta bajo un solo tema.",
+      "groups": {
+        "aligns": "Lo que se alinea de forma consistente",
+        "review": "Lo que puede requerir revisión",
+        "showMore": "{count, plural, one {+1 tema más} other {+# temas más}}",
+        "showFewer": "Mostrar menos",
+        "emptyReview": "No se identificó ninguna posible desalineación recurrente entre estos documentos.",
+        "hiddenForSelection": "{count, plural, one {1 tema no se muestra para la selección actual de documentos.} other {# temas no se muestran para la selección actual de documentos.}}"
       }
     },
     "emptyState": {

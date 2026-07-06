@@ -6,11 +6,15 @@ import {
   buildDocFrictionShares,
   buildFlagSubsetProfile,
   buildSectorCoherenceShare,
+  buildStorylineProfile,
   buildTargetFrictionTree,
   canonicalHiddenKey,
   computeCoverageConcentration,
+  computeStorylineLiveStats,
   computeTargetConcentration,
+  concentrationDocAttribution,
   frictionTypeTotalsFromAlignment,
+  pickTopStorylines,
   rankTargetsByFriction,
   selectCorpusThemesForState,
   selectSectorSynthesesForState,
@@ -1002,5 +1006,235 @@ describe("computeCoverageConcentration", () => {
     expect(stat.totalTargets).toBe(0);
     expect(stat.topNames).toEqual([]);
     expect(stat.share).toBe(0);
+  });
+});
+
+// ─── Storyline live profiles ─────────────────────────────────────────
+
+function makeStoryline(
+  overrides: Partial<import("@/types").CorpusStoryline> & {
+    type: "reinforcement" | "friction";
+  },
+): import("@/types").CorpusStoryline {
+  return {
+    name: "Land requirements of expansion incentives",
+    description: "desc",
+    contributing_doc_pairs: [],
+    confidence: "medium",
+    pair_count: 0,
+    spans_documents: [],
+    ...overrides,
+  };
+}
+
+describe("storyline live profiles", () => {
+  // NMP (2 targets), NDC (2), NAP (1).
+  const targets = [
+    makeTarget("NMP_1", "NMP"),
+    makeTarget("NMP_2", "NMP"),
+    makeTarget("NDC_1", "NDC"),
+    makeTarget("NDC_2", "NDC"),
+    makeTarget("NAP_1", "NAP"),
+  ];
+  const alignment: AlignmentResult[] = [
+    makeFlagged("NMP_1", "NDC_1", "resource_competition"),
+    makeFlagged("NMP_1", "NDC_2", "resource_competition"),
+    makeFlagged("NMP_2", "NAP_1", "delivery_friction"),
+    makeAlignment("NMP_1", "NDC_1", "high"), // same doc pair, aligned polarity
+    makeAlignment("NDC_1", "NAP_1", "medium"),
+    makeAlignment("NDC_2", "NAP_1", "low"), // low never counts
+    makeAlignment("NDC_1", "NDC_2", "high"), // same-document, ignored
+    makeAlignment("NMP_2", "NDC_1", "none"),
+  ];
+  const classifications = [
+    makeClassification("NMP_1", "G1", "globe"),
+    makeClassification("NDC_1", "G2", "globe"),
+  ];
+  const categories = [
+    { id: "G1", name: "Extractives" },
+    { id: "G2", name: "Climate" },
+  ];
+
+  const friction = makeStoryline({
+    type: "friction",
+    contributing_doc_pairs: ["NDC<->NMP", "NAP<->NMP"],
+    anchor_target_ids: ["NMP_1"],
+    pair_count: 999, // display must never trust this
+  });
+  const reinforcement = makeStoryline({
+    name: "Shared monitoring frameworks across climate plans",
+    type: "reinforcement",
+    contributing_doc_pairs: ["NAP<->NDC"],
+    pair_count: 999,
+  });
+
+  it("buildStorylineProfile counts only polarity-matched cross-doc pairs (ThemeDrawer parity)", () => {
+    const p = buildStorylineProfile({
+      storyline: friction,
+      alignment,
+      targets,
+      classifications,
+      categories,
+      taxonomyType: "globe",
+    });
+    // 3 flagged pairs; the high/low/none/same-doc records never count.
+    expect(p.liveCount).toBe(3);
+    const r = buildStorylineProfile({
+      storyline: reinforcement,
+      alignment,
+      targets,
+      classifications,
+      categories,
+      taxonomyType: "globe",
+    });
+    // Only NDC_1<->NAP_1 medium counts; low is excluded.
+    expect(r.liveCount).toBe(1);
+  });
+
+  it("byDoc carries counts and shares of liveCount", () => {
+    const p = buildStorylineProfile({
+      storyline: friction,
+      alignment,
+      targets,
+      classifications,
+      categories,
+      taxonomyType: "globe",
+    });
+    const byDoc = new Map(p.byDoc.map((d) => [d.doc, d]));
+    expect(byDoc.get("NMP")!.count).toBe(3);
+    expect(byDoc.get("NMP")!.share).toBeCloseTo(1.0);
+    expect(byDoc.get("NDC")!.count).toBe(2);
+    expect(byDoc.get("NDC")!.share).toBeCloseTo(2 / 3);
+    expect(p.byDoc[0].doc).toBe("NMP"); // sorted by count desc
+  });
+
+  it("pins resolvable anchors first and drops unresolvable/zero-count anchors", () => {
+    const themed = makeStoryline({
+      type: "friction",
+      contributing_doc_pairs: ["NDC<->NMP", "NAP<->NMP"],
+      // NMP_2 has 1 live pair (less than NMP_1/NDC_*); GHOST_1 does not
+      // resolve; NDC_9 resolves nowhere.
+      anchor_target_ids: ["NMP_2", "GHOST_1"],
+    });
+    const p = buildStorylineProfile({
+      storyline: themed,
+      alignment,
+      targets,
+      classifications,
+      categories,
+      taxonomyType: "globe",
+    });
+    expect(p.topTargets[0].target.id).toBe("NMP_2");
+    expect(p.topTargets[0].isAnchor).toBe(true);
+    expect(p.topTargets.map((t) => t.target.id)).not.toContain("GHOST_1");
+    // Non-anchors follow by count desc (NMP_1 has 2).
+    expect(p.topTargets[1].target.id).toBe("NMP_1");
+    expect(p.topTargets[1].isAnchor).toBe(false);
+  });
+
+  it("stays exact under document filtering", () => {
+    // Hide NDC: its targets and pairs disappear from the visible arrays.
+    const visTargets = targets.filter((t) => t.sourceDocument !== "NDC");
+    const visIds = new Set(visTargets.map((t) => t.id));
+    const visAlignment = alignment.filter(
+      (a) => visIds.has(a.targetAId) && visIds.has(a.targetBId),
+    );
+    const p = buildStorylineProfile({
+      storyline: friction,
+      alignment: visAlignment,
+      targets: visTargets,
+      classifications,
+      categories,
+      taxonomyType: "globe",
+    });
+    expect(p.liveCount).toBe(1); // only NMP_2<->NAP_1 survives
+    expect(p.byDoc.map((d) => d.doc).sort()).toEqual(["NAP", "NMP"]);
+    // The NMP_1 anchor has no live pairs left -> dropped silently.
+    expect(p.topTargets.every((t) => t.target.id !== "NMP_1")).toBe(true);
+  });
+
+  it("computeStorylineLiveStats matches buildStorylineProfile", () => {
+    const stats = computeStorylineLiveStats(
+      [friction, reinforcement],
+      alignment,
+      targets,
+    );
+    expect(stats.get(friction)!.liveCount).toBe(3);
+    expect(stats.get(friction)!.docCounts.get("NMP")).toBe(3);
+    expect(stats.get(reinforcement)!.liveCount).toBe(1);
+  });
+});
+
+describe("pickTopStorylines", () => {
+  const mk = (
+    name: string,
+    type: "reinforcement" | "friction",
+    confidence: "high" | "medium" | "low",
+    pairCount: number,
+  ) =>
+    makeStoryline({ name, type, confidence, pair_count: pairCount });
+
+  it("ranks by confidence, then live count, filtered to the polarity", () => {
+    const s1 = mk("Alpha pattern of shared delivery", "friction", "medium", 50);
+    const s2 = mk("Beta pattern of shared delivery", "friction", "high", 10);
+    const s3 = mk("Gamma pattern of shared delivery", "friction", "medium", 80);
+    const s4 = mk("Delta pattern of shared delivery", "reinforcement", "high", 99);
+    const top = pickTopStorylines([s1, s2, s3, s4], "friction", 2);
+    expect(top.map((s) => s.name)).toEqual([
+      "Beta pattern of shared delivery",
+      "Gamma pattern of shared delivery",
+    ]);
+  });
+
+  it("prefers a supplied live counter over persisted pair_count", () => {
+    const s1 = mk("Alpha pattern of shared delivery", "friction", "medium", 999);
+    const s2 = mk("Beta pattern of shared delivery", "friction", "medium", 1);
+    const live = new Map([
+      [s1, 2],
+      [s2, 40],
+    ]);
+    const top = pickTopStorylines([s1, s2], "friction", 1, (s) =>
+      live.get(s) ?? 0,
+    );
+    expect(top[0].name).toBe("Beta pattern of shared delivery");
+  });
+});
+
+describe("concentrationDocAttribution", () => {
+  const conc = (docs: string[]): Parameters<
+    typeof concentrationDocAttribution
+  >[0] => ({
+    contestedTargetCount: docs.length,
+    totalFlaggedPairs: 100,
+    topTargets: docs.map((d, i) => ({
+      target: makeTarget(`${d}_${i}`, d),
+      flaggedPairCount: 10,
+      marginalPairCount: 10,
+    })),
+    topCount: docs.length,
+    coveredPairShare: 0.6,
+  });
+
+  it("returns the dominant document at or above half the set", () => {
+    const a = concentrationDocAttribution(
+      conc(["NMP", "NMP", "NMP", "NMP", "NMP", "PPPP"]),
+    );
+    expect(a).toEqual({ doc: "NMP", count: 5, total: 6 });
+  });
+
+  it("returns exactly-half only when no other doc ties it", () => {
+    expect(
+      concentrationDocAttribution(conc(["NMP", "NMP", "NDC", "NAP"])),
+    ).toEqual({ doc: "NMP", count: 2, total: 4 });
+    expect(
+      concentrationDocAttribution(conc(["NMP", "NMP", "NDC", "NDC"])),
+    ).toBeNull();
+  });
+
+  it("returns null below the threshold or for an empty set", () => {
+    expect(
+      concentrationDocAttribution(conc(["NMP", "NDC", "NAP"])),
+    ).toBeNull();
+    expect(concentrationDocAttribution(conc([]))).toBeNull();
   });
 });

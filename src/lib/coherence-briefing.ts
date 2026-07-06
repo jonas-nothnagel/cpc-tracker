@@ -1983,3 +1983,280 @@ export function buildFlagSubsetProfile(args: {
     manageability,
   };
 }
+
+// ─── Storyline live profiles (Direction rows + ThemeDrawer) ─────────
+// Display principle: the UI never trusts a storyline's persisted `pair_count`
+// for on-page counts. Everything below recomputes from the visible alignment,
+// so counts stay exact under document toggling and stay honest for old-format
+// payloads whose persisted counts over-counted.
+
+const STORYLINE_CONFIDENCE_RANK: Record<string, number> = {
+  high: 0,
+  medium: 1,
+  low: 2,
+};
+
+/**
+ * Polarity rule shared with the ThemeDrawer: friction themes own flagged
+ * pairs; reinforcement themes own medium/high aligned pairs (low is too weak
+ * to read as "reinforcing"; matches the verdict computation).
+ */
+function storylinePolarityMatches(
+  storyline: CorpusStoryline,
+  level: AlignmentLevel,
+): boolean {
+  return storyline.type === "friction"
+    ? level === "flagged"
+    : level === "medium" || level === "high";
+}
+
+export interface StorylineLiveStats {
+  /** Polarity-matched cross-doc pairs inside the theme's doc pairs. */
+  liveCount: number;
+  /** Pairs touching each document (a pair counts under both its docs). */
+  docCounts: Map<string, number>;
+}
+
+/**
+ * One pass over the visible alignment computing every storyline's live count
+ * and per-document pair counts. Cheap enough to re-run on each document
+ * toggle (|alignment| × matching storylines).
+ */
+export function computeStorylineLiveStats(
+  storylines: CorpusStoryline[],
+  alignment: AlignmentResult[],
+  targets: Target[],
+): Map<CorpusStoryline, StorylineLiveStats> {
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const stats = new Map<CorpusStoryline, StorylineLiveStats>();
+  const byDocKey = new Map<string, CorpusStoryline[]>();
+  for (const s of storylines) {
+    stats.set(s, { liveCount: 0, docCounts: new Map() });
+    for (const key of getStorylineDocPairKeys(s)) {
+      const arr = byDocKey.get(key) ?? [];
+      arr.push(s);
+      byDocKey.set(key, arr);
+    }
+  }
+  for (const r of alignment) {
+    if (r.alignment === "none" || r.alignment === "low") continue;
+    const tA = targetMap.get(r.targetAId);
+    const tB = targetMap.get(r.targetBId);
+    if (!tA || !tB) continue;
+    if (tA.sourceDocument === tB.sourceDocument) continue;
+    const members = byDocKey.get(
+      getDocPairKey(tA.sourceDocument, tB.sourceDocument),
+    );
+    if (!members) continue;
+    for (const s of members) {
+      if (!storylinePolarityMatches(s, r.alignment)) continue;
+      const st = stats.get(s)!;
+      st.liveCount += 1;
+      for (const d of [tA.sourceDocument, tB.sourceDocument]) {
+        st.docCounts.set(d, (st.docCounts.get(d) ?? 0) + 1);
+      }
+    }
+  }
+  return stats;
+}
+
+export interface StorylineProfile {
+  /** Polarity-matched cross-doc pairs inside the theme's doc pairs. */
+  liveCount: number;
+  /** Documents the live pairs touch; share is of liveCount (max 1 per doc). */
+  byDoc: { doc: string; count: number; share: number }[];
+  /** Top document pairs (from buildFlagSubsetProfile). */
+  byDocPair: { a: string; b: string; count: number }[];
+  /** Targets recurring most, resolvable anchors pinned first. */
+  topTargets: { target: Target; count: number; isAnchor: boolean }[];
+  /** Sector chips under the active taxonomy (from buildFlagSubsetProfile). */
+  byTheme: { categoryId: string; categoryName: string; count: number }[];
+}
+
+/**
+ * Full live drill-down for one storyline: which documents drive it, which
+ * document pairs, which targets recur (the pipeline's anchor targets pinned
+ * first; anchors from hidden documents or with no live pairs drop silently),
+ * and which sectors it touches under the active taxonomy lens.
+ */
+export function buildStorylineProfile(args: {
+  storyline: CorpusStoryline;
+  alignment: AlignmentResult[];
+  targets: Target[];
+  classifications: Array<{
+    targetId: string;
+    categoryId: string;
+    taxonomyType: string;
+    isPrimary?: boolean;
+  }>;
+  categories: { id: string; name: string }[];
+  taxonomyType: string;
+  cap?: number;
+}): StorylineProfile {
+  const {
+    storyline,
+    alignment,
+    targets,
+    classifications,
+    categories,
+    taxonomyType,
+    cap = 5,
+  } = args;
+  const targetMap = new Map(targets.map((t) => [t.id, t]));
+  const memberKeys = getStorylineDocPairKeys(storyline);
+  const memberPairs: AlignmentResult[] = [];
+  for (const r of alignment) {
+    if (!storylinePolarityMatches(storyline, r.alignment)) continue;
+    const tA = targetMap.get(r.targetAId);
+    const tB = targetMap.get(r.targetBId);
+    if (!tA || !tB) continue;
+    if (tA.sourceDocument === tB.sourceDocument) continue;
+    if (!memberKeys.has(getDocPairKey(tA.sourceDocument, tB.sourceDocument))) {
+      continue;
+    }
+    memberPairs.push(r);
+  }
+
+  const sub = buildFlagSubsetProfile({
+    pairs: memberPairs,
+    targets,
+    classifications,
+    categories,
+    taxonomyType,
+    cap,
+  });
+
+  const liveCount = memberPairs.length;
+  const docCounts = new Map<string, number>();
+  const targetCounts = new Map<string, number>();
+  for (const p of memberPairs) {
+    const tA = targetMap.get(p.targetAId)!;
+    const tB = targetMap.get(p.targetBId)!;
+    for (const d of [tA.sourceDocument, tB.sourceDocument]) {
+      docCounts.set(d, (docCounts.get(d) ?? 0) + 1);
+    }
+    for (const tid of [p.targetAId, p.targetBId]) {
+      targetCounts.set(tid, (targetCounts.get(tid) ?? 0) + 1);
+    }
+  }
+  const byDoc = [...docCounts.entries()]
+    .map(([doc, count]) => ({
+      doc,
+      count,
+      share: liveCount > 0 ? count / liveCount : 0,
+    }))
+    .sort((x, y) =>
+      y.count !== x.count ? y.count - x.count : x.doc.localeCompare(y.doc),
+    );
+
+  const anchorIds = (storyline.anchor_target_ids ?? []).filter(
+    (id) => targetMap.has(id) && (targetCounts.get(id) ?? 0) > 0,
+  );
+  const anchorSet = new Set(anchorIds);
+  const anchors = anchorIds
+    .map((id) => ({
+      target: targetMap.get(id)!,
+      count: targetCounts.get(id) ?? 0,
+      isAnchor: true,
+    }))
+    .sort((x, y) =>
+      y.count !== x.count
+        ? y.count - x.count
+        : x.target.id.localeCompare(y.target.id),
+    );
+  const rest = [...targetCounts.entries()]
+    .filter(([tid]) => !anchorSet.has(tid))
+    .map(([tid, count]) => ({
+      target: targetMap.get(tid)!,
+      count,
+      isAnchor: false,
+    }))
+    .sort((x, y) =>
+      y.count !== x.count
+        ? y.count - x.count
+        : x.target.id.localeCompare(y.target.id),
+    );
+  const topTargets = [...anchors, ...rest].slice(0, cap);
+
+  return {
+    liveCount,
+    byDoc,
+    byDocPair: sub.byDocPair,
+    topTargets,
+    byTheme: sub.byTheme,
+  };
+}
+
+/**
+ * Storylines of one polarity, most decision-relevant first: confidence rank,
+ * then live count (persisted pair_count only as fallback when no live counter
+ * is supplied), then name for a stable order.
+ */
+export function rankStorylines(
+  storylines: CorpusStoryline[],
+  type: "reinforcement" | "friction",
+  liveCountOf?: (s: CorpusStoryline) => number,
+): CorpusStoryline[] {
+  const countOf = liveCountOf ?? ((s: CorpusStoryline) => s.pair_count);
+  return storylines
+    .filter((s) => s.type === type)
+    .sort((a, b) => {
+      const dC =
+        (STORYLINE_CONFIDENCE_RANK[a.confidence] ?? 3) -
+        (STORYLINE_CONFIDENCE_RANK[b.confidence] ?? 3);
+      if (dC !== 0) return dC;
+      const dN = countOf(b) - countOf(a);
+      if (dN !== 0) return dN;
+      return a.name.localeCompare(b.name);
+    });
+}
+
+/** Top-N storylines of one polarity (see rankStorylines for the order). */
+export function pickTopStorylines(
+  storylines: CorpusStoryline[],
+  type: "reinforcement" | "friction",
+  n = 3,
+  liveCountOf?: (s: CorpusStoryline) => number,
+): CorpusStoryline[] {
+  return rankStorylines(storylines, type, liveCountOf).slice(0, n);
+}
+
+export interface ConcentrationDocAttribution {
+  doc: PolicyDocumentType;
+  /** How many of the concentration set's targets sit in `doc`. */
+  count: number;
+  /** Size of the concentration set. */
+  total: number;
+}
+
+/**
+ * Dominant source document of the target-concentration set: returned when at
+ * least half of the greedy top targets share one document and no other
+ * document ties it. Drives the doc-attributed focus clause ("5 of them in
+ * the National Mineral Policy"). Documents only, never ministries.
+ */
+export function concentrationDocAttribution(
+  c: TargetConcentration,
+): ConcentrationDocAttribution | null {
+  const total = c.topTargets.length;
+  if (total === 0) return null;
+  const counts = new Map<string, number>();
+  for (const e of c.topTargets) {
+    counts.set(
+      e.target.sourceDocument,
+      (counts.get(e.target.sourceDocument) ?? 0) + 1,
+    );
+  }
+  let best: { doc: string; count: number } | null = null;
+  let tied = false;
+  for (const [doc, count] of counts.entries()) {
+    if (!best || count > best.count) {
+      best = { doc, count };
+      tied = false;
+    } else if (count === best.count) {
+      tied = true;
+    }
+  }
+  if (!best || tied || best.count / total < 0.5) return null;
+  return { doc: best.doc as PolicyDocumentType, count: best.count, total };
+}
