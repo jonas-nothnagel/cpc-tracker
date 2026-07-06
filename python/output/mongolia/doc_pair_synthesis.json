@@ -12,10 +12,10 @@
       "goal_conflict": 2
     },
     "synthesis": {
-      "storyline_name": "Linking food-system expansion with land stewardship",
-      "reinforce": "The two documents often align through enabling links between food-system measures and land stewardship, especially where FSS actions on soil-friendly crop technology, locally adapted seeds, traceability, legislation, monitoring, and rural supply chains could reinforce ILDN goals on sustainable land management, forest management, protected areas, and LDN monitoring. The recurring pattern is mostly indirect, with governance tools, data systems, finance mobilization, and sustainable production practices tending to support resilience and ecosystem-service outcomes rather than joint delivery of the same activity.",
-      "clash": "Possible misalignment recurs where FSS expansion measures, new cropland, irrigated cash crops, fodder production, livestock intensification, rural relocation, processing capacity, and energy or fertiliser support, could compete with ILDN priorities for protected areas, forest landscapes, rangeland mitigation, and LDN target achievement. Most flagged cases point to delivery friction or resource competition over land, water, siting, and sourcing, while goal conflict appears limited in this set.",
-      "coordination_hint": "Spatial zoning, land and water suitability screening, and linking agricultural finance or expansion support to LDN safeguards and monitoring could help both documents align more consistently in shared rural landscapes.",
+      "storyline_name": "Land stewardship links with food-system expansion",
+      "reinforce": "The documents often align around land-sensitive agriculture, especially soil protection, crop rotation, pasture carrying-capacity management, and agroforestry, which support LDN target-setting, monitoring, and broader transformative action. Alignment also recurs through enabling instruments such as traceability, legislation, training, partnerships, and finance mobilization, which could support implementation of land degradation neutrality measures in food and agriculture systems.",
+      "clash": "Possible misalignment recurs where FSS expansion measures, such as new cropland, irrigation, cash crops, livestock growth, greenhouse development, and rural relocation for farming, may compete with protected areas, forest landscapes, or the same land and water base targeted by LDN investments. Another recurring pattern is implementation complexity, where energy support, fertiliser expansion, and production intensification could make LDN monitoring, target-setting, or multiple-benefit outcomes harder to maintain unless land-use safeguards are linked to delivery.",
+      "coordination_hint": "Spatial zoning, watershed planning, and linking agricultural finance and expansion measures to LDN monitoring and land-suitability safeguards could help the two documents pull in the same direction more consistently.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -33,10 +33,10 @@
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Linking food production growth with climate resilience",
-      "reinforce": "The two documents often align around making agri-food systems more resilient through complementary instruments, such as climate-smart crop and pasture management, early warning systems, water conservation, veterinary services, food safety monitoring, and support for processing and value chains. This recurs most clearly where NAP measures strengthen upstream conditions, soil fertility, water availability, pasture resilience, disaster preparedness, and adaptation capacity, that could reinforce FSS goals on domestic processing, livestock health, irrigation, reserves, and export readiness.",
-      "clash": "Possible misalignment is most often flagged where FSS expansion measures, new cropland, irrigated cash crops, fodder production, intensive livestock and farm support, could compete with NAP priorities for water ecosystem services, pasture management, soil protection, forests, and biodiversity in the same landscapes. A second recurring pattern is delivery friction, where production growth, energy support, or livestock expansion may need closer siting, zoning, and resource management review to stay aligned with adaptation objectives on grazing pressure, habitat protection, land restoration, and water monitoring.",
-      "coordination_hint": "Joint land and water planning, especially around irrigation, pasture boundaries, livestock siting, and restoration or forest areas, could help keep the reinforcing resilience agenda while addressing possible misalignment flagged for review.",
+      "storyline_name": "Food system expansion with adaptation safeguards",
+      "reinforce": "Across many aligned pairs, the two documents align with each other through enabling measures for climate-resilient food systems, especially legal frameworks, research and training, traceability and monitoring, and risk information. This often points to practical links between NAP adaptation capacities, such as soil, water, pasture, disaster risk, and livelihood measures, and FSS actions on reserves, irrigation, livestock quality, standards, logistics, and agroforestry.",
+      "clash": "Recurring possible misalignment centers on expansion of cropland, greenhouses, livestock, fodder, and processing capacity where the same land, water, pasture, forest, or biodiversity areas are also targeted for protection, restoration, or careful allocation under the NAP. The review cases often point to competition over irrigation water, overlap between agricultural siting and sensitive ecosystems, and pressure on pasture or degraded land where adaptation measures depend on zoning, watershed management, and ecosystem safeguards.",
+      "coordination_hint": "Joint spatial planning, water allocation, and siting safeguards could help both documents pull in the same direction, especially where production expansion overlaps pasture, forest, water, or biodiversity priorities.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -54,10 +54,10 @@
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Linking food-system modernization with biodiversity safeguards",
-      "reinforce": "The two documents often align through enabling instruments such as standards, certification, laboratory and monitoring systems, legal and governance upgrades, research and technology transfer, and biodiversity mainstreaming into agriculture and food businesses. A more direct reinforcing pattern also recurs around agroforestry, soil protection, crop rotation, restoration, pollinator-supportive landscapes, and other nature-based practices that could support both food production and biodiversity resilience.",
-      "clash": "Possible misalignment is flagged mainly where FSS expansion measures, new cropland, irrigation, fodder and cash-crop growth, intensive livestock, processing plants, energy support, and rural production expansion, meet NBSAP priorities on spatial planning, protected areas, species conservation, ecosystem services, climate resilience, and subsidy or finance reform. The recurring mechanism is delivery friction over siting, land conversion, water allocation, habitat connectivity, and biodiversity-sensitive conditions on incentives, with some resource competition for land, water, and public finance, while goal conflict appears rare in this set.",
-      "coordination_hint": "Joint spatial screening, water and land-use planning, and biodiversity criteria for agricultural incentives and infrastructure could help keep the recurring synergies while reviewing areas flagged for possible misalignment.",
+      "storyline_name": "Agricultural expansion within biodiversity planning systems",
+      "reinforce": "The documents often align through cross-sector planning, monitoring, and technical systems that connect food production with biodiversity management, including biodiversity mainstreaming in agriculture, pollution and residue monitoring, traceability, laboratories, and science capacity. Alignment also recurs where sustainable production practices, crop rotation, pasture-capacity management, agroforestry, storage, and waste reduction pull in the same direction as biodiversity-sensitive agriculture and sustainable consumption.",
+      "clash": "Possible misalignment recurs mainly where FSS measures expand cropland, irrigation, livestock, processing plants, or rural agricultural activity in landscapes and watersheds that NBSAP also targets for spatial planning, protected areas, land restoration, species conservation, and ecosystem services. A second recurring pattern concerns incentives and finance, where support for livestock or production growth could compete with biodiversity-oriented subsidy reform, restoration finance, or green conditionality.",
+      "coordination_hint": "Joint land-use zoning, watershed planning, and biodiversity screening of agricultural finance, siting, and infrastructure could help these documents pull in the same direction more consistently.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -75,10 +75,10 @@
       "goal_conflict": 4
     },
     "synthesis": {
-      "storyline_name": "link livestock modernization with climate resilience",
-      "reinforce": "The two documents often align around livestock and agricultural modernization, especially where pasture-carrying-capacity management, smart livestock technologies, feed and water management, biosecurity, traceability, standards, and food-safety oversight reinforce climate resilience and lower-emission production pathways. A second recurring alignment is through enabling systems, such as vocational training, research, regulation, reserves, and climate education, which could support uptake of resilient crop varieties, sustainable pasture management, and broader food-system adaptation.",
-      "clash": "Possible misalignment is flagged most often where FSS production expansion, processing incentives, intensive livestock development, cropland and cash-crop expansion, irrigation, and fertiliser production could compete with NDC priorities for water allocation, protected land, ecological corridors, afforestation, and ecosystem restoration. A further recurring friction concerns delivery pathways, where measures to expand meat supply, livestock markets, school meal demand, or energy support for production could make NDC livestock mitigation harder to deliver unless low-emission practices and land-use safeguards are built in.",
-      "coordination_hint": "Joint land, water, and livestock planning, linked with traceability, sourcing safeguards, and low-emission production standards, could help keep food-system expansion aligned with biodiversity, water, and mitigation objectives.",
+      "storyline_name": "Climate-smart food production and land use",
+      "reinforce": "The two documents often pull in the same direction on climate-resilient agriculture through smart technologies, irrigation upgrades, traceability systems, research capacity, and better pasture and herd management. Alignment recurs where FSS production, storage, processing, and digital food-system measures support NDC aims on efficient water use, lower-emission livestock systems, resilient crop production, and broader inclusion in implementation.",
+      "clash": "Possible misalignment recurs mainly around competition for land and water, especially where cropland expansion, intensive livestock, fodder production, processing plants, irrigation, or transport infrastructure may overlap with protected areas, pasture restoration, forest restoration, or water-conservation priorities. A second recurring pattern is delivery-side misalignment, where incentives for livestock output, meat supply, dairy processing, reserves, or energy support could make NDC emissions and rangeland-restoration pathways harder to deliver unless growth comes from productivity and lower-emission practices rather than larger resource use.",
+      "coordination_hint": "Joint land and water planning, together with shared criteria for siting, sourcing, and low-emission production, could help keep food-system expansion aligned with biodiversity, pasture, forest, and water objectives.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -96,10 +96,10 @@
       "goal_conflict": 5
     },
     "synthesis": {
-      "storyline_name": "Linking food production expansion with land stewardship",
-      "reinforce": "The two documents often align where FSS production and food-system measures reinforce NRVTS land productivity and stewardship tools, especially through seed systems, storage and reserves, food safety standards, traceability, and legal or regulatory updates. This recurs most clearly where locally adapted seeds and certified production support yield gains, and where broader food and agriculture legislation or standards can align with soil protection, pesticide norms, pasture governance, and other land management measures.",
-      "clash": "Possible misalignment is most often flagged for review around land and water allocation, where cropland expansion, greenhouse development, intensive livestock, fodder production, irrigation, and cash-crop growth could compete with grassland planning, rotational pasture recovery, reforestation, protected areas, wetlands, and headwater stewardship. Delivery friction also recurs where production intensification, energy support, fertiliser use, or crop expansion may make it harder in practice to deliver pesticide reduction, erosion prevention, sustainable pasture use, or PES-related ecosystem safeguards unless implementation is coordinated.",
-      "coordination_hint": "Joint spatial planning, water allocation review, and alignment of agricultural support measures with pasture, wetland, forest, and pesticide-management safeguards could help keep the two agendas mutually reinforcing.",
+      "storyline_name": "Agricultural expansion alongside land stewardship measures",
+      "reinforce": "The two documents often pull in the same direction on more sustainable production landscapes, especially where FSS measures on crop rotation, soil degradation reduction, pasture-carrying-capacity management, and agroforestry align with NRVTS actions on erosion prevention, shelter belts, silvo-pastoral systems, and forest or grassland restoration. A recurring positive pattern is that FSS provides production, storage, standards, traceability, and training instruments, while NRVTS provides land-use, restoration, and legal measures that support more resilient agriculture and tree-based systems.",
+      "clash": "Possible misalignment recurs where FSS measures expand cropland, fodder, cash crops, greenhouses, irrigation, livestock production, or rural agricultural settlement, and NRVTS measures seek to protect or restore forests, grasslands, wetlands, silvo-pastoral areas, or protected areas on the same land and water base. Most review cases point to implementation-side overlap in siting, zoning, water use, and land allocation, with a smaller number pointing to more direct competition between new cropland and forest-area objectives.",
+      "coordination_hint": "Joint spatial planning, siting screens, and land and water allocation rules could help keep food-production expansion compatible with grassland, forest, wetland, and protected-area objectives.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -117,10 +117,10 @@
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Expanding agriculture while managing land and water",
-      "reinforce": "The two documents often align on modernising agriculture through irrigation expansion, cropland improvement, seed systems, fodder supply, livestock productivity, traceability, food safety, processing, storage, transport, and cooperative value chains. This recurring pattern suggests Vision 2050's climate-resilient, smart, and green agriculture agenda tends to reinforce FSS measures that raise domestic production, processing quality, and supply-chain capability.",
-      "clash": "Possible misalignment recurs where FSS expansion measures, new cropland, irrigated cash crops, fodder cultivation, intensive livestock, processing plants, and relocation-linked farming, are flagged for review against Vision 2050 land rehabilitation, anti-desertification, protected areas, forest expansion, pasture carrying-capacity limits, ecosystem-service valuation, and subsidy reform. The friction often points to competition over land and water, or to delivery choices where production incentives and siting could need stronger screening, zoning, and environmental safeguards to stay aligned with restoration and conservation aims.",
-      "coordination_hint": "Joint land-use and watershed planning, linked to subsidy screening and siting safeguards, could help keep agricultural expansion aligned with restoration, pasture, forest, and protected-area objectives.",
+      "storyline_name": "Agricultural modernization within ecological resource limits",
+      "reinforce": "The two documents often pull in the same direction on modernising agriculture through concrete tools such as food safety standards, accredited certification, laboratory systems, irrigation upgrades, research capacity, training reform, and climate adaptation measures. Across many pairs, FSS production, storage, and livestock quality measures align with Vision 2050 aims for climate-resilient, sustainable, and more productive agriculture, especially where better pasture management, safer food chains, and improved post-harvest systems are involved.",
+      "clash": "A recurring possible misalignment concerns expansion-oriented delivery measures, such as new cropland, irrigated rice and sugar beet, greenhouse growth, intensive livestock and processing support, meeting Vision 2050 limits on pasture carrying capacity, protected areas, forest cover, anti-desertification, and reduced harmful subsidies. The review records often point to competition for land and water, or to subsidy and export incentives that could pull implementation toward higher-input production unless ecological zoning, eligibility rules, and watershed planning are closely aligned.",
+      "coordination_hint": "Joint land and water planning, linked with subsidy design and agricultural siting criteria, could help keep production expansion and ecological safeguards pulling in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -136,10 +136,10 @@
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Linking land investment with adaptation delivery",
-      "reinforce": "The two documents largely align through enabling mechanisms that connect LDN finance, target-setting, monitoring, and transformative projects with NAP adaptation actions on soil protection, forests, ecosystems, pasture and farm management. This pattern often points to practical reinforcement through shared policy and legal frameworks, coordinated resource mobilization, protected-area and restoration measures, and data systems that could support implementation and reporting across land, biodiversity, and resilience agendas.",
-      "clash": "One possible misalignment is flagged for review where expansion of managed resource protected areas and climate-resilient pasture management may compete over the same pasture landscapes. The friction appears delivery-related rather than strategic, especially around herder access to winter-spring pastures and siting of wells, ponds, and other water points within protected-area design.",
-      "coordination_hint": "Joint zoning, co-management, and shared planning between protected-area expansion and pasture-water infrastructure could help maintain alignment while accommodating regulated pastoral use.",
+      "storyline_name": "Shared land resilience through enabling systems",
+      "reinforce": "The two documents often pull in the same direction through enabling mechanisms, especially policy and legal frameworks, partnerships and finance, monitoring and reporting, and capacity development that can support LDN target setting and implementation. Alignment also recurs in concrete land-use areas such as sustainable forest management, soil protection, climate-smart crop and soil practices, and broader livelihood resilience linked to degraded land, rangelands, and protected landscapes.",
+      "clash": "Possible misalignment appears only once in this set, around delivery on the same pasture landscapes. Expanding managed resource protected areas could limit where winter-spring grazing and new wells or water points are located under climate-resilient pasture management, depending on zoning and site design.",
+      "coordination_hint": "Joint spatial planning, zoning, and shared use rules for pasture and protected-area landscapes could help align conservation objectives with pastoral water and grazing access.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -153,10 +153,10 @@
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Linking land restoration with biodiversity delivery systems",
-      "reinforce": "The documents consistently align around land-based biodiversity action, especially protected area expansion, restoration of degraded ecosystems, sustainable agriculture and forestry, and management of rangelands and productive forest landscapes. They also reinforce each other through enabling systems, including monitoring and reporting, biodiversity finance, cross-sector mainstreaming, knowledge access, innovation and capacity building, which could support implementation of LDN investments and NBSAP targets on the same land base.",
-      "clash": "No recurring friction flagged in this set.",
-      "coordination_hint": "Joint use of spatial planning, restoration monitoring, and finance coordination mechanisms could help connect LDN investment pipelines with NBSAP protected area, restoration, and sustainable land-use actions.",
+      "storyline_name": "Shared land restoration and biodiversity governance tools",
+      "reinforce": "The documents often align through spatial planning, protected-area expansion, land restoration, sustainable forest management, and mining mitigation and offsets, all linked to improving ecosystem condition and connectivity. A second recurring pattern is shared enabling machinery, including monitoring and reporting systems, biodiversity data access, partnership platforms, finance mobilization, and business disclosure, which tends to support implementation across both land degradation neutrality and biodiversity goals.",
+      "clash": "No recurring possible misalignment in this set.",
+      "coordination_hint": "Linking LDN project pipelines and monitoring systems with NBSAP spatial planning, restoration priorities, biodiversity information platforms, and finance mechanisms could help both documents pull in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -174,10 +174,10 @@
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Linking land restoration with climate delivery systems",
-      "reinforce": "The two documents largely align around land-based climate action, especially through pasture restoration, sustainable forest management, afforestation, biodiversity protection, and restoration of degraded rangelands. A recurring pattern is that ILDN's cross-cutting instruments, financing and partnerships, monitoring and reporting, and transformative project design, reinforce NDC sector measures by providing coordination, finance, indicators, and implementation support.",
-      "clash": "Possible misalignment is flagged mainly where NDC livestock mitigation pathways, especially increasing domestic meat supply and related production changes, could raise grazing, feed, or land-use pressure in areas relevant to LDN targets. Friction also recurs around protected areas or mining-affected rangelands where crop intensification, irrigation, livestock infrastructure, or export-oriented livestock measures could compete for land and water or complicate zoning and landscape management.",
-      "coordination_hint": "Joint land-use zoning, water allocation review, and shared monitoring of grazing, restoration, and agricultural expansion could help both documents align implementation in overlapping rangeland, forest, and protected-area landscapes.",
+      "storyline_name": "Shared land stewardship with livestock pressure",
+      "reinforce": "The two documents often pull in the same direction on land-based climate and biodiversity action, especially through rangeland restoration, pasture management, protected-area expansion, sustainable forest management, and ecological monitoring. Alignment also recurs through enabling measures such as LDN target-setting, monitoring and reporting, partnerships, climate finance, and inclusive or gender-responsive governance that could support delivery of NDC actions.",
+      "clash": "Possible misalignment recurs where NDC delivery pathways linked to increasing meat supply, livestock production, or crop intensification could add grazing, feed, land, or water pressure in landscapes that ILDN aims to protect, restore, or manage through offsets and protected areas. This appears most often around managed resource protected areas and western rangelands, where zoning, siting, stocking, sourcing, and water allocation choices could shape whether the measures remain compatible.",
+      "coordination_hint": "Joint land-use and watershed planning, linked with protected-area zoning and LDN monitoring, could help identify where livestock, crop, mining-offset, and conservation measures may be sequenced or bounded to support both agendas.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -193,10 +193,10 @@
       "resource_competition": 2
     },
     "synthesis": {
-      "storyline_name": "Linking LDN enablers to land restoration actions",
-      "reinforce": "The two documents largely align through a recurring pattern where ILDN's enabling instruments, monitoring and reporting, partnerships and resource mobilization, target setting, and transformative projects, reinforce NRVTS actions on reforestation, sustainable grassland and pasture management, forest fire prevention, erosion control, agroforestry, and protected areas. Reinforcement also recurs where ecosystem-specific ILDN projects, especially sustainable forest management, managed resource protected areas, and mining-impact mitigation on rangelands, align with NRVTS measures in the same landscapes through legal instruments, standards, and on-the-ground management actions such as forest cleaning and weeding.",
-      "clash": "A limited possible misalignment is flagged for review around resource competition with NRVTS Target 3 on raising agricultural yields. In the flagged pairs, higher-yield agriculture could compete with forest management and expansion of managed resource protected areas where land, water, or management attention overlap, especially at forest-agriculture or conservation-production interfaces.",
-      "coordination_hint": "Spatial planning and shared monitoring between agricultural intensification, forest management, and protected-area expansion could help keep these objectives aligned where the same landscapes are involved.",
+      "storyline_name": "Cross-cutting LDN investment support for targets",
+      "reinforce": "The two documents largely align through an enabling-to-implementation pattern, where ILDN financing, partnerships, monitoring, target-setting, and transformative project elements support NRVTS measures such as reforestation, rotational pasture recovery, grassland planning, agroforestry, wetland and headwater payment for ecosystem services, and urban greening. A second recurring pattern is direct overlap on conservation and restoration pathways, especially protected-area expansion, forest management, reduced deforestation, and other land restoration actions that pull in the same direction for LDN outcomes and ecosystem-service benefits.",
+      "clash": "The recurring possible misalignment is limited and centers on resource competition around NRVTS agricultural yield increases. In the reviewed pairs, higher-yield efforts could compete with sustainable forest management or expansion of managed resource protected areas where land, water, or management attention overlap, particularly at forest-agriculture or conservation-production interfaces.",
+      "coordination_hint": "Spatial planning, financing coordination, and shared monitoring may help keep agricultural productivity efforts compatible with forest and protected-area objectives while preserving the broader LDN results both documents support.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -213,10 +213,10 @@
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Mobilizing land finance for restoration delivery",
-      "reinforce": "The two documents often align through enabling mechanisms that connect LDN finance, partner coordination, target setting, monitoring, and transformative projects with Vision 2050 measures on forest restoration, protected areas, anti-desertification, pasture management, and subsidy reform. A recurring pattern is that climate finance, coordinated partner engagement, ecosystem-service valuation, and shared monitoring systems could reinforce on-the-ground rehabilitation, conservation, and sustainable agriculture actions.",
-      "clash": "Possible misalignment is flagged mainly around irrigated agriculture expansion, and more occasionally around smart agriculture or livestock development, where expanded cultivation, irrigation infrastructure, or siting of production activities could compete with LDN-related restoration, protected areas, forest management, and rangeland safeguards for land and especially water. This recurs as resource competition, with one delivery-friction case around protected-area expansion and livestock development in shared rangeland landscapes.",
-      "coordination_hint": "Landscape zoning, watershed-level water allocation, and shared safeguards for siting agriculture, irrigation, restoration, and protected areas could help keep these agendas aligned in overlapping territories.",
+      "storyline_name": "Shared land stewardship through LDN instruments",
+      "reinforce": "The documents often pull in the same direction on land degradation reduction, especially through pasture carrying-capacity rules, anti-desertification programmes, land rehabilitation, and ecosystem-service valuation. A recurring alignment is that ILDN target-setting, monitoring, partnerships, and transformative-project financing support Vision 2050 delivery in rangelands, soils, forests, and degraded-land restoration.",
+      "clash": "The main possible misalignment recurs around irrigated agriculture expansion, which could compete with LDN-related restoration, target-setting, and monitoring over finite land and especially water resources. A smaller pattern also appears where protected-area expansion or forest management could overlap spatially with crop expansion or livestock development, pointing to possible misalignment in land allocation and site selection.",
+      "coordination_hint": "Shared land-use zoning, watershed allocation, and common safeguards and indicators could help these agendas coexist more smoothly where irrigation, conservation, restoration, and pasture management meet in the same landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -233,10 +233,10 @@
       "resource_competition": 2
     },
     "synthesis": {
-      "storyline_name": "Link adaptation delivery with biodiversity land governance",
-      "reinforce": "The two documents largely align through shared land and ecosystem mechanisms, especially restoration of degraded forests, wetlands, rivers and agricultural landscapes, climate-smart agriculture and pasture management, and urban green and blue infrastructure. Alignment also recurs through enabling instruments such as legal and institutional frameworks, capacity development, biodiversity data access, inclusive participation, and subsidy reform, which tend to reinforce adaptation planning and biodiversity mainstreaming across sectors.",
-      "clash": "A smaller set of pairs is flagged for review where livestock, pasture, crop intensification, water points, or irrigation-related development could create possible misalignment with protected area expansion, ecological connectivity, and biodiversity-sensitive spatial planning. The recurring issue is not overall policy direction, but delivery friction and resource competition in shared steppe and agricultural landscapes where zoning, grazing routes, and land allocation may intersect.",
-      "coordination_hint": "Joint spatial planning, protected-area zoning, and shared rules for grazing, water infrastructure, and working-land conservation could help manage these overlaps while preserving the broader alignment between adaptation and biodiversity goals.",
+      "storyline_name": "Landscape planning for adaptation and biodiversity outcomes",
+      "reinforce": "The two documents largely align around land and ecosystem management, where adaptation measures such as soil protection, pasture management, forest and water ecosystem actions often pull in the same direction as restoration, protected areas, spatial planning, nature-based solutions, and urban green and blue infrastructure. A second recurring pattern is that NAP enabling measures, legal frameworks, capacity development, early warning, and monitoring, support NBSAP delivery by providing cross-sector governance, information, and implementation conditions.",
+      "clash": "The recurring possible misalignment is around shared land use in pasture, farming, and steppe landscapes, especially where livestock development, grazing infrastructure, crop production, or irrigation-related works overlap with protected-area expansion, ecological corridors, or biodiversity-oriented spatial planning. These review cases often point to delivery challenges or resource competition over the same land, and in some places possibly water, rather than disagreement in overall objectives.",
+      "coordination_hint": "Joint zoning, site selection, and landscape-level planning across grazing, farming, protected areas, and corridor design could help manage overlaps while keeping adaptation and biodiversity actions aligned.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -254,10 +254,10 @@
       "resource_competition": 8
     },
     "synthesis": {
-      "storyline_name": "reinforcing resilience systems while competing over land and water",
-      "reinforce": "The two documents largely align around climate resilience through shared enabling systems, legal and institutional frameworks, capacity building, early warning, monitoring, and social protection. Reinforcing links also recur in practical land and water management, where climate-smart agriculture, pasture restoration, forest restoration, water monitoring, and health preparedness often point to complementary use of data systems, training, and coordinated planning.",
-      "clash": "Possible misalignment is flagged mainly where adaptation, biodiversity, pasture, crop, forest, and water actions could converge in the same landscapes and watersheds, creating delivery friction or resource competition over water points, irrigation, reservoirs, afforestation, protected areas, corridors, and grazing access. A second recurring issue flagged for review is the NDC livestock mitigation formulation tied to increasing meat supply, which appears in several pairs as a potentially difficult delivery pathway alongside NAP goals on ecosystems, soils, pasture management, public health, and adaptation capacity.",
-      "coordination_hint": "Joint spatial planning, watershed allocation, and safeguards for protected ecosystems and grazing areas could help these documents reinforce each other while managing possible misalignment in shared rural landscapes.",
+      "storyline_name": "Climate-resilient land and water management linkages",
+      "reinforce": "The two documents often pull in the same direction on climate-resilient management of agriculture, forests, water, biodiversity, and disasters, especially through early warning systems, monitoring, restoration, afforestation, soil conservation, and climate-smart farming technologies. A recurring pattern is that NAP capacity building, social protection, and ecosystem measures align with NDC delivery channels such as forest restoration, protected areas, water resilience actions, gender-responsive implementation, and disaster risk information systems.",
+      "clash": "Possible misalignment recurs where implementation draws on the same land and water resources, especially across pasture water points, irrigation expansion, afforestation, protected areas, ecological corridors, and habitat-sensitive water infrastructure. It also often points to uncertainty around livestock mitigation pathways tied to increased meat supply, which could complicate biodiversity protection, forest restoration, soil and pasture management, water allocation, and some public health and adaptation objectives.",
+      "coordination_hint": "Joint spatial planning, watershed allocation, and ecosystem-sensitive safeguards could help these documents support each other more consistently in shared rural landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -274,10 +274,10 @@
       "resource_competition": 11
     },
     "synthesis": {
-      "storyline_name": "Link climate adaptation with land restoration measures",
-      "reinforce": "The two documents largely align around land-based resilience, especially through soil protection, erosion prevention, reforestation, wetland conservation, and climate-smart crop and pasture management. Reinforcing links often run through concrete mechanisms such as reforestation obligations, erosion control in agriculture, silvo-pastoral systems, protected areas, water monitoring, and restoration-oriented standards or policy actions.",
-      "clash": "Possible misalignment is flagged mainly where adaptation delivery and LDN measures could compete for the same land or water resources, especially among pasture management, crop and irrigation infrastructure, forest expansion, wetlands, and protected-area expansion. A smaller recurring friction also appears where biodiversity protection or protected-area management could overlap spatially with livestock-based land use or yield-focused agricultural expansion, and these cases are flagged for review rather than treated as settled conflicts.",
-      "coordination_hint": "Spatial zoning, shared land and water planning, and hydrology-sensitive siting of pasture, irrigation, reforestation, wetland, and protected-area measures could help manage overlaps while preserving the broader alignment.",
+      "storyline_name": "Landscape restoration and land-water use coordination",
+      "reinforce": "The two documents often pull in the same direction on restoring and managing forests, soils, and agricultural landscapes, especially through reforestation, agroforestry, soil protection, and broader legal or capacity measures that support adaptation and land degradation neutrality. A recurring enabling link is that NAP systems for early warning, water monitoring, and capacity development can support NRVTS actions on grasslands, wetlands, protected areas, and agricultural productivity, even where implementation pathways differ.",
+      "clash": "Possible misalignment recurs mainly around competition for the same land and water resources. Review pairs often point to pasture expansion or water-point development, crop intensification and irrigation storage, and some reforestation or silvo-pastoral measures overlapping with wetlands, protected areas, forests, or biodiversity protection areas, especially where zoning, hydrology, and access rules are not clearly coordinated.",
+      "coordination_hint": "Joint spatial planning, with shared zoning, hydrological siting, and grazing or access rules, could help align restoration, production, wetland protection, and protected-area expansion in the same landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -294,10 +294,10 @@
       "delivery_friction": 3
     },
     "synthesis": {
-      "storyline_name": "Align land resilience, while reviewing water and land competition",
-      "reinforce": "The two documents often align on climate-resilient land and rural resource management, especially through pasture carrying-capacity rules, anti-desertification programmes, soil conservation, forest and ecosystem restoration, protected areas, and agricultural adaptation and insurance measures. Vision 2050 sectoral programmes tend to provide concrete delivery mechanisms, such as pasture governance, livestock limits, protected-area expansion, and smart agriculture tools, while the NAP reinforces them with adaptation governance, early warning, water monitoring, disaster risk reduction, and social protection instruments.",
-      "clash": "Possible misalignment recurs mainly around resource competition, especially where irrigated agriculture expansion, export-oriented crop growth, livestock development, forest expansion, and protected-area growth may draw on the same finite water, pasture, or land base. A smaller set of pairs is flagged for review on delivery friction where agricultural zoning, cooperative investment, or intensified livestock activity could overlap with ecosystems and habitats targeted for special protection or tighter management.",
-      "coordination_hint": "Integrated land-use zoning, watershed water allocation, and protected-area and pasture planning could help keep irrigation, crop, livestock, forest, and biodiversity measures aligned in shared landscapes.",
+      "storyline_name": "Shared land and water resilience agenda",
+      "reinforce": "The two documents often pull in the same direction on climate-resilient land management, especially around pasture management, anti-desertification, soil fertility, forest restoration, protected freshwater source areas, and agricultural risk reduction. Alignment also recurs where Vision 2050 provides enabling instruments such as subsidy reform, protected-area expansion, and sectoral adaptation measures that support NAP actions on ecosystems, water monitoring, disaster risk reduction, and community resilience.",
+      "clash": "Possible misalignment recurs mainly around resource competition, especially where irrigated agriculture expansion, export-oriented crop growth, protected-area expansion, afforestation, and pasture or livestock measures draw on the same finite land and water resources. A smaller set of cases points to potential misalignment in delivery where agricultural investment, cooperative activity, or livestock intensification could overlap with ecosystems the NAP seeks to protect or manage more carefully.",
+      "coordination_hint": "Integrated land-use zoning, watershed allocation, and siting of irrigation, grazing, restoration, and protected-area measures could help keep these agendas aligned in shared landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -314,10 +314,10 @@
       "resource_competition": 9
     },
     "synthesis": {
-      "storyline_name": "Aligning biodiversity safeguards with climate land use",
-      "reinforce": "The two documents largely align around land restoration, sustainable agriculture, species and ecosystem conservation, and enabling systems such as biodiversity mainstreaming, finance, knowledge access, participation, and innovation. Recurring links often point to shared mechanisms including spatial planning, ecological monitoring, restoration of degraded rangelands and forests, smart pasture and crop practices, and capacity building that reinforces climate resilience while supporting biodiversity outcomes.",
-      "clash": "Possible misalignment is most often flagged where NDC livestock, crop, and water measures could increase pressure on the same land, water, habitats, and corridors that the NBSAP seeks to protect, restore, or place under protected-area and spatial-planning rules. Friction also recurs around subsidy reform and production incentives, and around water and pasture infrastructure, where financing, siting, grazing intensity, irrigation, or hydrological alteration may need review to keep biodiversity safeguards aligned with climate delivery.",
-      "coordination_hint": "Joint spatial planning, basin and pasture zoning, and green incentive screening could help keep restoration, protected areas, livestock modernization, crop intensification, and water investments aligned in shared landscapes.",
+      "storyline_name": "Shared land-use governance across climate and biodiversity",
+      "reinforce": "The two documents often pull in the same direction in forests, pastures, water-linked landscapes, and cross-sector planning. Recurring aligned pairs link biodiversity mainstreaming, nature-based approaches, participation, knowledge systems, and finance with NDC actions on forest protection and restoration, pasture management, water adaptation, education, and disaster-risk governance.",
+      "clash": "Possible misalignment recurs where NDC delivery pathways for livestock expansion or intensification, water infrastructure, and climate-smart crop production overlap with NBSAP aims on protected areas, species connectivity, restoration, spatial planning, and pollution control. The review pairs often point to shared pressure on land and water, plus implementation details such as siting of wells, reservoirs, canals, hydropower studies, irrigation, herbicide use, plastic mulching, and livestock infrastructure.",
+      "coordination_hint": "Joint spatial planning, basin-level allocation, and biodiversity safeguards in agriculture, livestock, and water investments could help keep the strongest overlaps while managing areas of possible misalignment.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -334,10 +334,10 @@
       "resource_competition": 4
     },
     "synthesis": {
-      "storyline_name": "Aligning land restoration with biodiversity-sensitive land use",
-      "reinforce": "The two documents largely align around ecosystem-based land management, especially forest restoration, reforestation, grassland management, wetland use, fire prevention, agroforestry, and urban greening as practical pathways that reinforce biodiversity resilience and land degradation neutrality. A recurring pattern is that the NBSAP provides cross-cutting instruments such as spatial planning, biodiversity mainstreaming, knowledge access, participation, science cooperation, and business reporting, while the NRVTS adds concrete delivery measures in forests, grasslands, croplands, wetlands, and pasture systems.",
-      "clash": "Possible misalignment is flagged mainly where NRVTS Target 3 on raising agricultural yields intersects with NBSAP goals on spatial planning, restoration, protected areas, species conservation, pollution reduction, nature-based solutions, subsidy reform, and biodiversity finance. These flagged cases often point to delivery friction or resource competition over the same land base, agricultural inputs, and public incentives, particularly if yield gains, restoration, forest expansion, habitat connectivity, or protected-area designation are pursued in the same landscapes without coordination.",
-      "coordination_hint": "Joint land-use zoning, biodiversity safeguards for agricultural intensification, and targeting finance and incentives toward productivity gains on existing farmland could help these agendas align more consistently.",
+      "storyline_name": "Land-use coordination across restoration and production",
+      "reinforce": "The two documents largely align around land stewardship, with shared support for grassland management, urban greening, wetland use, reduced pesticide pressure, and research or data systems that enable restoration and biodiversity-sensitive land management. A recurring pattern is that NBSAP financing, science, participation, and mainstreaming measures support more specific LDN actions such as silvo-pastoral research, pasture governance, reforestation standards, and urban greening in planning.",
+      "clash": "Possible misalignment recurs mainly around NRVTS Target 3 on agricultural yield increases, which often overlaps with NBSAP spatial planning, restoration, protected areas, species conservation, pollution reduction, climate resilience, subsidy reform, and biodiversity finance in the same land base. A smaller recurring pattern concerns steppe and forest-steppe areas, where protected-area expansion or species safeguards could compete spatially or operationally with silvo-pastoral livestock system development.",
+      "coordination_hint": "Joint land-use zoning, biodiversity safeguards for agricultural intensification, and shared planning for steppe, pasture, and restoration areas could help both documents pull in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -354,10 +354,10 @@
       "resource_competition": 24
     },
     "synthesis": {
-      "storyline_name": "Aligning land and water planning tools",
-      "reinforce": "The two documents often align around land stewardship instruments, including spatial planning, ecosystem-service valuation, land rehabilitation, pasture carrying-capacity rules, protected-area expansion, and forest restoration. Vision 2050 measures on land payments, rehabilitation projects, smart agriculture, and ecosystem valuation tend to reinforce NBSAP goals on restoration, sustainable agriculture, biodiversity finance, subsidy reform, and urban green and blue infrastructure.",
-      "clash": "Possible misalignment recurs where agricultural expansion, especially irrigated cultivation and export-oriented crop growth, could compete with NBSAP goals for restoration, protected areas, ecosystem services, and water security. Friction is also flagged for review where delivery pathways may intensify land use, agrochemical use, or infrastructure in ways that could complicate pollution control, invasive-species management, biodiversity finance, and conservation-oriented spatial planning.",
-      "coordination_hint": "Joint spatial zoning, watershed allocation, and biodiversity safeguards for irrigation and agricultural investment could help keep the recurring land and water pressures manageable while preserving the strong areas of alignment.",
+      "storyline_name": "Land use planning across biodiversity and agriculture",
+      "reinforce": "The documents often pull in the same direction where biodiversity mainstreaming, subsidy reform, biodiversity finance, protected-area expansion, and forest restoration support pasture carrying-capacity rules, anti-desertification measures, greener agricultural initiatives, and forest-cover goals. A recurring positive pattern is that NBSAP governance tools, such as spatial planning, knowledge access, participation, and science and finance systems, align with Vision 2050 sector measures by shaping how land, pasture, forests, and agricultural support are managed.",
+      "clash": "Possible misalignment recurs around agricultural expansion, especially irrigated cultivation, smart crop production, and some livestock development, where the same land and water resources may also be needed for species conservation, protected areas, ecological connectivity, restoration, and pollution control. Another recurring pattern is delivery-related possible misalignment, where subsidy reform, biodiversity disclosure, invasive-species control, and pollution reduction could complicate implementation pathways if agricultural growth relies on chemical inputs, new infrastructure, or cultivation in biodiversity-relevant areas.",
+      "coordination_hint": "Joint spatial zoning, water allocation, and biodiversity safeguard design could help these agendas proceed together, especially for irrigation, crop expansion, pasture management, and protected-area planning.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -374,10 +374,10 @@
       "delivery_friction": 14
     },
     "synthesis": {
-      "storyline_name": "Linking climate-smart production with land restoration",
-      "reinforce": "The two documents largely align around sustainable land management in agriculture, pasture, forests, and water-linked ecosystems. Recurring links include drought-resistant crop varieties supporting yield gains, reduced pasture pressure reinforcing grassland management, forest governance and reforestation measures reinforcing restoration, and water-policy reforms supporting wetland retention and erosion control.",
-      "clash": "Possible misalignment is most often flagged where production expansion or infrastructure could compete with protected areas, ecological corridors, forests, grasslands, or wetlands for land and water. Review points also recur around delivery friction, especially where higher meat supply could increase pressure on grassland, forest, or wetland objectives, and where zero tillage support involving herbicides may sit uneasily with targets to decrease pesticide use.",
-      "coordination_hint": "Spatial zoning, watershed planning, and integrated grazing and crop-management safeguards could help these documents reinforce each other while addressing the land, water, and input-use issues flagged for review.",
+      "storyline_name": "Landscape governance across forests, grasslands, and water",
+      "reinforce": "The two documents often pull in the same direction through land-based governance tools, especially sustainable forest management laws, reforestation standards, pastureland legal mechanisms, and regional planning for grasslands, headwaters, and wetlands. Alignment also recurs where the NDC's climate-smart livestock, water resilience, biodiversity monitoring, and inclusion measures support LDN actions such as silvo-pastoral systems, grassland restoration, payment for ecosystem services, and reduced pesticide use.",
+      "clash": "Possible misalignment recurs around competition for shared land and water resources, especially between afforestation or protected-area expansion and pasture recovery, silvo-pastoral development, crop production, or livestock support infrastructure. A second recurring pattern is delivery-side pressure from the NDC target to increase domestic meat supply, which could complicate grassland management, wetland protection, reforestation, agroforestry, erosion control, and rotational grazing unless implementation is carefully sequenced and spatially managed.",
+      "coordination_hint": "Joint land-use zoning, watershed planning, and ecosystem-specific siting rules could help these documents align in overlapping forest, pasture, agricultural, and wetland landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -395,10 +395,10 @@
       "goal_conflict": 2
     },
     "synthesis": {
-      "storyline_name": "linking land restoration with climate-resilient production",
-      "reinforce": "The two documents often align on restoring degraded rangelands, managing pasture carrying capacity, combating desertification, and improving forest and water governance, with Vision 2050 measures such as pasture laws, carrying-capacity limits, anti-desertification programmes, and forest-cover targets reinforcing NDC restoration and adaptation actions. They also tend to reinforce climate-resilient agriculture through smart crop technologies, agricultural adaptation support, insurance, early warning, and governance tools that could support implementation across the same rural landscapes.",
-      "clash": "Recurring possible misalignment is mostly flagged for review around competition for land and water, especially where irrigated agriculture expansion, export-oriented crop production, livestock water and feed support, meat-supply growth, afforestation, protected-area expansion, and ecosystem restoration may draw on the same finite resources. A second pattern is delivery friction in shared landscapes, where agricultural investment, livestock intensification, subsidy design, or infrastructure siting could complicate protected areas, ecological corridors, forest recovery, ecosystem valuation, or heritage protection unless spatial safeguards are clear.",
-      "coordination_hint": "Integrated land-use and basin planning, with zoning, water-allocation rules, and screening of agriculture, livestock, forest, and conservation investments, could help keep these agendas aligned in overlapping landscapes.",
+      "storyline_name": "Integrated land and water management pathways",
+      "reinforce": "The two documents often pull in the same direction on climate-resilient land stewardship, especially through pasture carrying-capacity rules, anti-desertification programmes, forest protection and regeneration, and climate-smart livestock and crop practices. Alignment also recurs where Vision 2050 provides legal frameworks, zoning, cooperative arrangements, or broader sector transformation goals, and the NDC adds concrete delivery tools such as zero tillage, resilient crop varieties, smart pasture technologies, ecological monitoring, and herd management linked to carrying capacity.",
+      "clash": "Possible misalignment most often points to competition over finite land, water, and public investment, especially where irrigated agriculture expansion, crop export growth, livestock production, forest expansion, protected areas, and water infrastructure could converge in the same landscapes or basins. A second recurring pattern is delivery-side complexity around the NDC target that links lower livestock emissions with higher meat supply, which could be harder to align with carrying-capacity limits, ecosystem valuation, subsidy reform, rehabilitation, and broader sustainable agriculture objectives unless implementation choices are closely coordinated.",
+      "coordination_hint": "Joint land-use and basin planning, linked with livestock, crop, forest, and conservation zoning plus coordinated subsidy and investment screening, could help keep these shared objectives pulling in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -415,10 +415,10 @@
       "delivery_friction": 11
     },
     "synthesis": {
-      "storyline_name": "Aligning land restoration with sustainable rural production",
-      "reinforce": "The two documents often align on land restoration and sustainable land management, especially through rotational pasture recovery, pasture-use legal frameworks, anti-desertification programmes, reforestation, agroforestry, and ecosystem-services valuation or PES mechanisms. This recurs as Vision 2050 provides broader programmes, legal frameworks, and investment directions that could reinforce NRVTS measures on grasslands, forests, wetlands, cropland erosion control, and rehabilitation of degraded land.",
-      "clash": "Possible misalignment is flagged mainly around competition for land and water between NRVTS pasture, wetland, forest, and protected-area measures, and Vision 2050 priorities for irrigated agriculture, export-oriented crop expansion, forest-cover expansion, and some livestock intensification near urban areas. A smaller recurring pattern is delivery friction where protected areas, wetland retention, pesticide reduction, or urban greening may need to be sequenced carefully with agricultural investment, irrigation rollout, and peri-urban farming siting.",
-      "coordination_hint": "Integrated land-use zoning, water allocation, and ecosystem-specific safeguards could help keep pasture mobility, wetland retention, protected-area expansion, and agricultural modernization aligned in the same landscapes.",
+      "storyline_name": "Land-use planning across pasture, forest, and cropland",
+      "reinforce": "The two documents often pull in the same direction on land restoration and sustainable production, especially through agroforestry, erosion prevention, silvo-pastoral systems, reforestation, and Green Belt rehabilitation. Alignment also recurs where Vision 2050 provides enabling platforms for LDN outcomes, such as livestock carrying-capacity measures, climate adaptation support, protected-area planning, and ecosystem-service valuation.",
+      "clash": "Possible misalignment recurs mainly around competition for the same land and water base, particularly between pasture or wetland protection measures and irrigated agriculture expansion, smart crop production, forest-cover expansion, or protected-area growth. A smaller recurring pattern points to delivery choices, where export-oriented or intensified agriculture and livestock development could make it harder to reduce pesticide use, maintain no net wetland loss, or align silvo-pastoral use with carrying-capacity limits and subsidy reform.",
+      "coordination_hint": "Integrated land-use zoning, watershed planning, and area-specific rules for grazing, irrigation, reforestation, and protection could help these agendas support each other in shared landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
