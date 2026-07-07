@@ -157,12 +157,9 @@
       "fullExplorer": "Explorador completo de coherencia"
     },
     "storylineCard": {
-      "eyebrow": {
-        "reinforce": "Alineación recurrente",
-        "friction": "Posible desalineación recurrente"
-      },
-      "metaFriction": "{count, plural, one {1 par} other {# pares}} con posible desalineación, principalmente {docs}",
-      "metaReinforce": "Abarca {docs, number} de {total, number} documentos, {count, plural, one {1 par alineado} other {# pares alineados}} en estos vínculos"
+      "boxAligned": "{count, plural, one {1 par alineado} other {# pares alineados}}",
+      "boxMisaligned": "{count, plural, one {1 par} other {# pares}} con posible desalineación",
+      "boxMoreDocs": "+{count}"
     },
     "primerCard": {
       "alignedRelation": "FUERTEMENTE ALINEADO CON",
@@ -578,12 +575,13 @@
       "focusConcentratedWithDoc": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}, {docCount, plural, one {1 de ellas} other {# de ellas}} en {docName}",
       "derivationNote": "Los temas son resúmenes escritos por IA de los pares de metas evaluados. Cada cifra de esta página se calcula en el navegador a partir de esos pares para la selección actual de documentos, y cada par con posible desalineación se cuenta bajo un solo tema.",
       "groups": {
-        "aligns": "Lo que se alinea de forma consistente",
-        "review": "Lo que puede requerir revisión",
         "showMore": "{count, plural, one {+1 tema más} other {+# temas más}}",
         "showFewer": "Mostrar menos",
         "emptyReview": "No se identificó ninguna posible desalineación recurrente entre estos documentos.",
-        "hiddenForSelection": "{count, plural, one {1 tema no se muestra para la selección actual de documentos.} other {# temas no se muestran para la selección actual de documentos.}}"
+        "hiddenForSelection": "{count, plural, one {1 tema no se muestra para la selección actual de documentos.} other {# temas no se muestran para la selección actual de documentos.}}",
+        "alignsTop": "{count, plural, =0 {Temas coherentes} one {Tema coherente principal} other {Los # temas coherentes principales}}",
+        "reviewTop": "{count, plural, =0 {Temas con posible desalineación} one {Tema principal con posible desalineación} other {Los # temas principales con posible desalineación}}",
+        "emptyAligns": "No se identificaron temas coherentes entre documentos para la selección actual."
       }
     },
     "emptyState": {

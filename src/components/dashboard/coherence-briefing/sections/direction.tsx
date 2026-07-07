@@ -12,14 +12,18 @@
  * SlideFrame body, with the two leading theme names embedded as
  * inline-clickable buttons.
  *
- * Per the theme-synthesis rework (July 2026): the flat storyline-card
- * grid became two labeled groups ("What consistently aligns" / "What
- * may need review"), each capped at three rows with an inline
- * expander, so the reader gets prioritization instead of 5-7 equal
- * cards. Every count shown here is live-computed from the visible
- * alignment (computeStorylineLiveStats); the persisted pair_count is
- * never displayed. Themes with no live pairs under the current
- * document selection drop out with a quiet note.
+ * Per the theme-synthesis rework (July 2026, iterated on first
+ * feedback): themes render as two side-by-side columns — top coherent
+ * themes left, top potentially misaligned themes right — of compact
+ * boxes (name, document-composition strip in wheel-matching colors,
+ * live count), capped at three per column with an inline expander, so
+ * the reader gets the contrast and prioritization instead of 5-7
+ * equal text blocks. Hovering a box fades the adjacent wheel to that
+ * theme's documents and its polarity's ribbons. Every count shown
+ * here is live-computed from the visible alignment
+ * (computeStorylineLiveStats); the persisted pair_count is never
+ * displayed. Themes with no live pairs under the current document
+ * selection drop out with a quiet note.
  *
  * Numbers in the body are deterministic from the alignment data; the
  * theme names are LLM-derived (`corpus_themes.json`) and refresh when
@@ -36,7 +40,7 @@ import {
   PrimerCardBody,
   type PrimerHighlightPair,
 } from "../primer-card";
-import { StorylineRow } from "../storyline-card";
+import { ThemeBox, type ThemeSpotlight } from "../storyline-card";
 import { ALIGNMENT_COLORS, getDocFullLabel } from "@/lib/utils";
 import {
   computeStorylineLiveStats,
@@ -59,7 +63,9 @@ import type {
 export const DIRECTION_SECTION_ID = "direction";
 
 const PRIMER_STORAGE_KEY = "cpc.briefing.primer-collapsed";
-const ROWS_PER_GROUP = 3;
+const BOXES_PER_COLUMN = 3;
+const ALIGNED_HEADER_COLOR = "#196127";
+const FRICTION_HEADER_COLOR = "#dc2626";
 
 export function DirectionSection({
   countryName,
@@ -74,6 +80,7 @@ export function DirectionSection({
   onOpenStoryline,
   onOpenPair,
   onHighlightPair,
+  onSpotlightTheme,
 }: {
   countryName: string;
   documentCount: number;
@@ -89,6 +96,8 @@ export function DirectionSection({
   onOpenStoryline: (s: CorpusStoryline) => void;
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
+  /** Hovering a theme box fades the wheel to that theme's documents. */
+  onSpotlightTheme?: (spotlight: ThemeSpotlight | null) => void;
 }) {
   const t = useTranslations("briefing.direction");
   const storylines = useMemo(
@@ -142,8 +151,8 @@ export function DirectionSection({
             hiddenThemeCount={hiddenThemeCount}
             liveStats={liveStats}
             countryConfig={countryConfig}
-            totalAvailableDocs={documentCount}
             onOpenStoryline={onOpenStoryline}
+            onSpotlightTheme={onSpotlightTheme}
           />
         ) : null
       }
@@ -160,52 +169,52 @@ export function DirectionSection({
 }
 
 /**
- * The single on-page home for themes: two labeled groups ("What consistently
- * aligns" / "What may need review"), each up to three rows ranked by
- * confidence then live count, with a per-group "+N more" expander for
- * payloads that carry more themes (legacy 5-7-storyline data). Clicking a
- * row opens that theme's drawer.
+ * The single on-page home for themes: two side-by-side columns — the top
+ * coherent themes on the left, the top potentially misaligned themes on the
+ * right — each up to three boxes ranked by confidence then live count, with
+ * a per-column "+N more" expander for payloads that carry more themes
+ * (legacy 5-7-storyline data). Clicking a box opens that theme's drawer;
+ * hovering fades the wheel to the theme's documents.
  */
 function RecurringThemesBlock({
   visibleStorylines,
   hiddenThemeCount,
   liveStats,
   countryConfig,
-  totalAvailableDocs,
   onOpenStoryline,
+  onSpotlightTheme,
 }: {
   visibleStorylines: CorpusStoryline[];
   hiddenThemeCount: number;
   liveStats: Map<CorpusStoryline, StorylineLiveStats>;
   countryConfig: CountryConfig | null;
-  totalAvailableDocs: number;
   onOpenStoryline: (s: CorpusStoryline) => void;
+  onSpotlightTheme?: (spotlight: ThemeSpotlight | null) => void;
 }) {
   const t = useTranslations("briefing.direction");
   const liveCountOf = (s: CorpusStoryline) => liveStats.get(s)?.liveCount ?? 0;
   const aligns = rankStorylines(visibleStorylines, "reinforcement", liveCountOf);
   const review = rankStorylines(visibleStorylines, "friction", liveCountOf);
   return (
-    <div className="space-y-5">
-      {aligns.length > 0 && (
-        <ThemeGroup
-          label={t("groups.aligns")}
+    <div className="space-y-3">
+      <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
+        <ThemeColumn
+          tone="aligns"
           storylines={aligns}
           liveStats={liveStats}
           countryConfig={countryConfig}
-          totalAvailableDocs={totalAvailableDocs}
           onOpenStoryline={onOpenStoryline}
+          onSpotlightTheme={onSpotlightTheme}
         />
-      )}
-      <ThemeGroup
-        label={t("groups.review")}
-        storylines={review}
-        emptyText={t("groups.emptyReview")}
-        liveStats={liveStats}
-        countryConfig={countryConfig}
-        totalAvailableDocs={totalAvailableDocs}
-        onOpenStoryline={onOpenStoryline}
-      />
+        <ThemeColumn
+          tone="review"
+          storylines={review}
+          liveStats={liveStats}
+          countryConfig={countryConfig}
+          onOpenStoryline={onOpenStoryline}
+          onSpotlightTheme={onSpotlightTheme}
+        />
+      </div>
       {hiddenThemeCount > 0 && (
         <p className="text-[10.5px] italic text-[var(--undp-gray)]">
           {t("groups.hiddenForSelection", { count: hiddenThemeCount })}
@@ -215,49 +224,65 @@ function RecurringThemesBlock({
   );
 }
 
-function ThemeGroup({
-  label,
+function ThemeColumn({
+  tone,
   storylines,
-  emptyText,
   liveStats,
   countryConfig,
-  totalAvailableDocs,
   onOpenStoryline,
+  onSpotlightTheme,
 }: {
-  label: string;
+  tone: "aligns" | "review";
   storylines: CorpusStoryline[];
-  emptyText?: string;
   liveStats: Map<CorpusStoryline, StorylineLiveStats>;
   countryConfig: CountryConfig | null;
-  totalAvailableDocs: number;
   onOpenStoryline: (s: CorpusStoryline) => void;
+  onSpotlightTheme?: (spotlight: ThemeSpotlight | null) => void;
 }) {
   const t = useTranslations("briefing.direction");
   const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? storylines : storylines.slice(0, ROWS_PER_GROUP);
-  const overflow = storylines.length - ROWS_PER_GROUP;
+  const isAligns = tone === "aligns";
+  const headerColor = isAligns ? ALIGNED_HEADER_COLOR : FRICTION_HEADER_COLOR;
+  const visible = expanded
+    ? storylines
+    : storylines.slice(0, BOXES_PER_COLUMN);
+  const overflow = storylines.length - BOXES_PER_COLUMN;
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-        {label}
+      <p
+        className="mb-2 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] font-semibold"
+        style={{ color: headerColor }}
+      >
+        <span
+          aria-hidden="true"
+          className="block h-2 w-2 rounded-full"
+          style={
+            isAligns
+              ? { backgroundColor: headerColor }
+              : { boxShadow: `inset 0 0 0 1px ${headerColor}` }
+          }
+        />
+        {t(isAligns ? "groups.alignsTop" : "groups.reviewTop", {
+          count: Math.min(BOXES_PER_COLUMN, storylines.length),
+        })}
       </p>
       {storylines.length === 0 ? (
         <p className="text-[11.5px] italic text-[var(--undp-gray)]">
-          {emptyText}
+          {t(isAligns ? "groups.emptyAligns" : "groups.emptyReview")}
         </p>
       ) : (
         <>
-          <ul className="divide-y divide-gray-200 border-y border-gray-200">
+          <ul className="space-y-2">
             {visible.map((s) => (
               <li key={`${s.type}-${s.name}`}>
-                <StorylineRow
+                <ThemeBox
                   storyline={s}
                   stats={
                     liveStats.get(s) ?? { liveCount: 0, docCounts: new Map() }
                   }
                   countryConfig={countryConfig}
-                  totalAvailableDocs={totalAvailableDocs}
                   onOpen={() => onOpenStoryline(s)}
+                  onSpotlight={onSpotlightTheme}
                 />
               </li>
             ))}

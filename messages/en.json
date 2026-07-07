@@ -157,12 +157,9 @@
       "fullExplorer": "Full coherence explorer"
     },
     "storylineCard": {
-      "eyebrow": {
-        "reinforce": "Recurring alignment",
-        "friction": "Recurring potential misalignment"
-      },
-      "metaFriction": "{count, plural, one {1 pair} other {# pairs}} showing potential misalignment, mainly {docs}",
-      "metaReinforce": "Spans {docs, number} of {total, number} documents, {count, plural, one {1 aligned pair} other {# aligned pairs}} in these links"
+      "boxAligned": "{count, plural, one {1 aligned pair} other {# aligned pairs}}",
+      "boxMisaligned": "{count, plural, one {1 pair} other {# pairs}} showing potential misalignment",
+      "boxMoreDocs": "+{count}"
     },
     "primerCard": {
       "alignedRelation": "STRONGLY ALIGNED WITH",
@@ -578,12 +575,13 @@
       "focusConcentratedWithDoc": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}, {docCount, plural, one {1 of them} other {# of them}} in {docName}",
       "derivationNote": "Themes are AI-written summaries of the scored target pairs. Every count on this page is computed in the browser from those pairs for the current document selection, and each pair showing potential misalignment is counted under one theme only.",
       "groups": {
-        "aligns": "What consistently aligns",
-        "review": "What may need review",
         "showMore": "{count, plural, one {+1 more theme} other {+# more themes}}",
         "showFewer": "Show fewer",
         "emptyReview": "No recurring potential misalignment identified across these documents.",
-        "hiddenForSelection": "{count, plural, one {1 theme is not shown for the current document selection.} other {# themes are not shown for the current document selection.}}"
+        "hiddenForSelection": "{count, plural, one {1 theme is not shown for the current document selection.} other {# themes are not shown for the current document selection.}}",
+        "alignsTop": "{count, plural, =0 {Coherent themes} one {Top coherent theme} other {Top # coherent themes}}",
+        "reviewTop": "{count, plural, =0 {Potentially misaligned themes} one {Top potentially misaligned theme} other {Top # potentially misaligned themes}}",
+        "emptyAligns": "No coherent cross-document themes identified for the current selection."
       }
     },
     "emptyState": {

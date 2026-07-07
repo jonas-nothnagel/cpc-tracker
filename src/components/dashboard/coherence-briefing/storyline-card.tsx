@@ -1,95 +1,128 @@
 "use client";
 
 /**
- * StorylineRow — one corpus theme rendered as a plain-typography list row:
- * polarity dot + eyebrow, the noun-phrase theme name, a one-line clamped
- * description, and a live-computed meta line. Clicking opens the ThemeDrawer.
+ * ThemeBox — one corpus theme as a compact box in the Direction section's
+ * side-by-side columns (coherent themes left, potentially misaligned themes
+ * right). Leads with the noun-phrase theme name, then a slim segmented strip
+ * showing WHICH documents drive the theme (same document colors as the
+ * wheel), then the live pair count. Clicking opens the ThemeDrawer; hovering
+ * spotlights the theme's documents on the adjacent wheel.
  *
- * Counts come from the caller's live stats (recomputed from the visible
- * alignment), never from the persisted pair_count, so the row stays exact
- * under document toggling and honest on old-format payloads.
- *
- * Replaces the former StorylineCard grid card (rows in labeled groups beat
- * 5-7 equal cards for prioritization; plain typography per the minimal
- * panel-chrome guideline).
+ * Counts and document shares come from the caller's live stats (recomputed
+ * from the visible alignment), never from the persisted pair_count, so the
+ * box stays exact under document toggling and honest on old-format payloads.
+ * The description intentionally stays off the box face (it lives in the
+ * drawer): the landing boxes state what recurs, where, and how much.
  */
 
 import { useTranslations } from "next-intl";
-import { getDocLabel } from "@/lib/utils";
+import { getDocColor, getDocFullLabel, getDocLabel } from "@/lib/utils";
 import type { StorylineLiveStats } from "@/lib/coherence-briefing";
 import type { CorpusStoryline, CountryConfig } from "@/types";
 
 const HEADLINE_SERIF =
   "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const ALIGNED_DOT_COLOR = "#196127";
-const FRICTION_DOT_COLOR = "#dc2626";
 
-export function StorylineRow({
+const LEGEND_DOCS = 3;
+
+/** Hover payload for the wheel spotlight (live docs + polarity). */
+export interface ThemeSpotlight {
+  docs: string[];
+  polarity: "reinforcement" | "friction";
+}
+
+export function ThemeBox({
   storyline,
   stats,
   countryConfig,
-  totalAvailableDocs,
   onOpen,
+  onSpotlight,
 }: {
   storyline: CorpusStoryline;
   stats: StorylineLiveStats;
   countryConfig: CountryConfig | null;
-  totalAvailableDocs: number;
   onOpen: () => void;
+  onSpotlight?: (spotlight: ThemeSpotlight | null) => void;
 }) {
   const t = useTranslations("briefing.storylineCard");
   const isReinforce = storyline.type === "reinforcement";
-  const dotColor = isReinforce ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
-  const topDocs = [...stats.docCounts.entries()]
+  const segments = [...stats.docCounts.entries()]
     .sort((x, y) => (y[1] !== x[1] ? y[1] - x[1] : x[0].localeCompare(y[0])))
-    .slice(0, 2)
-    .map(([doc]) => getDocLabel(countryConfig, doc))
-    .join(", ");
+    .map(([doc, count]) => ({ doc, count }));
+  const segmentTotal = segments.reduce((s, seg) => s + seg.count, 0);
+  const legendDocs = segments.slice(0, LEGEND_DOCS);
+  const legendRest = segments.length - legendDocs.length;
+
+  const spotlight: ThemeSpotlight | null =
+    segments.length > 0
+      ? { docs: segments.map((s) => s.doc), polarity: storyline.type }
+      : null;
+  const show = () => onSpotlight?.(spotlight);
+  const hide = () => onSpotlight?.(null);
+
   return (
     <button
       type="button"
-      onClick={onOpen}
-      className="w-full text-left py-2.5 px-1 rounded hover:bg-gray-50 transition-colors"
+      onClick={() => {
+        hide();
+        onOpen();
+      }}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
+      className="flex h-full w-full flex-col text-left rounded border border-gray-200 bg-white px-3.5 py-3 hover:border-gray-400 transition-colors"
     >
-      <p
-        className="text-[9.5px] uppercase tracking-wider font-semibold mb-1 inline-flex items-center gap-1.5"
-        style={{ color: dotColor }}
-      >
-        <span
-          aria-hidden="true"
-          className="block h-2 w-2 rounded-full"
-          style={
-            isReinforce
-              ? { backgroundColor: dotColor }
-              : { boxShadow: `inset 0 0 0 1px ${dotColor}` }
-          }
-        />
-        {isReinforce ? t("eyebrow.reinforce") : t("eyebrow.friction")}
-      </p>
       <p
         className="text-[13.5px] text-[var(--undp-black)] leading-snug"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
         {storyline.name}
       </p>
-      <p
-        className="mt-0.5 text-[11.5px] text-[var(--undp-gray)] leading-snug overflow-hidden"
-        style={{
-          display: "-webkit-box",
-          WebkitLineClamp: 1,
-          WebkitBoxOrient: "vertical",
-        }}
-      >
-        {storyline.description}
-      </p>
-      <p className="mt-1 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
+
+      {segmentTotal > 0 && (
+        <>
+          <span
+            aria-hidden="true"
+            className="mt-2.5 flex h-1.5 w-full gap-px overflow-hidden rounded-full"
+          >
+            {segments.map((s) => (
+              <span
+                key={s.doc}
+                className="block h-full"
+                style={{
+                  width: `${(s.count / segmentTotal) * 100}%`,
+                  minWidth: 3,
+                  backgroundColor: getDocColor(countryConfig, s.doc),
+                }}
+                title={getDocFullLabel(countryConfig, s.doc)}
+              />
+            ))}
+          </span>
+          <span className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-[var(--undp-gray)]">
+            {legendDocs.map((s) => (
+              <span
+                key={s.doc}
+                className="inline-flex items-center gap-1"
+                title={getDocFullLabel(countryConfig, s.doc)}
+              >
+                <span
+                  aria-hidden="true"
+                  className="block h-1.5 w-1.5 rounded-full"
+                  style={{ backgroundColor: getDocColor(countryConfig, s.doc) }}
+                />
+                {getDocLabel(countryConfig, s.doc)}
+              </span>
+            ))}
+            {legendRest > 0 && <span>{t("boxMoreDocs", { count: legendRest })}</span>}
+          </span>
+        </>
+      )}
+
+      <p className="mt-2 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
         {isReinforce
-          ? t("metaReinforce", {
-              docs: stats.docCounts.size,
-              total: totalAvailableDocs,
-              count: stats.liveCount,
-            })
-          : t("metaFriction", { count: stats.liveCount, docs: topDocs })}
+          ? t("boxAligned", { count: stats.liveCount })
+          : t("boxMisaligned", { count: stats.liveCount })}
       </p>
     </button>
   );

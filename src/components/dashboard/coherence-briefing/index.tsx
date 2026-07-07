@@ -40,6 +40,7 @@ import {
   DIRECTION_SECTION_ID,
   DirectionSection,
 } from "./sections/direction";
+import type { ThemeSpotlight } from "./storyline-card";
 import {
   DOC_FOCUS_SECTION_ID,
   DocFocusSection,
@@ -1035,6 +1036,11 @@ export function CoherenceBriefing({
   // Primer-card hover spotlight (lives in the Direction section).
   const [primerHighlight, setPrimerHighlight] =
     useState<PrimerHighlightPair | null>(null);
+  // Theme-box hover spotlight: fades the wheel to the hovered theme's
+  // documents and filters its ribbons to the theme's polarity.
+  const [themeSpotlight, setThemeSpotlight] = useState<ThemeSpotlight | null>(
+    null,
+  );
   // Sectors row hover → wheel sector focus preview.
   const [sectorHoverId, setSectorHoverId] = useState<string | null>(null);
   // Doc-in-Focus slide: the currently selected document. Null until the user
@@ -1091,15 +1097,21 @@ export function CoherenceBriefing({
     const sectionFocusOverride = focusBySection[activeSection];
     switch (activeSection) {
       case DIRECTION_SECTION_ID: {
-        // Corpus-level backdrop. No focus, no hover state — the per-doc
-        // exploration lives on the Doc-in-Focus slide. Primer-card hover
-        // still spotlights a single pair in red.
+        // Corpus-level backdrop. No focus — the per-doc exploration lives on
+        // the Doc-in-Focus slide. Primer-card hover spotlights a single pair
+        // in red; theme-box hover fades the wheel to the theme's documents
+        // and shows only its polarity's ribbons.
         return {
           groupBy: "document",
           focus: null,
-          filter: "all",
+          filter: themeSpotlight
+            ? themeSpotlight.polarity === "friction"
+              ? "tensions"
+              : "alignments"
+            : "all",
           frictionArcs: true,
           highlightPair: primerHighlight ?? undefined,
+          ghostExceptDocs: themeSpotlight?.docs,
         };
       }
       case DOC_FOCUS_SECTION_ID: {
@@ -1181,6 +1193,7 @@ export function CoherenceBriefing({
     topTensionSector,
     lensTaxonomyType,
     primerHighlight,
+    themeSpotlight,
     sectorHoverId,
     sectorFilter,
     focusedDoc,
@@ -1453,6 +1466,7 @@ export function CoherenceBriefing({
                 onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
                 onHighlightPair={setPrimerHighlight}
+                onSpotlightTheme={setThemeSpotlight}
               />
             </div>
             {focusedDoc && (
