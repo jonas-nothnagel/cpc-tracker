@@ -46,7 +46,6 @@ import { ALIGNMENT_COLORS, getDocFullLabel } from "@/lib/utils";
 import {
   computeStorylineLiveStats,
   concentrationDocAttribution,
-  rankStorylines,
   type FaultLine,
   type HeadlineVerdict,
   type PrimerExamples,
@@ -161,10 +160,11 @@ export function DirectionSection({
 /**
  * The single on-page home for themes: two side-by-side columns — the top
  * coherent themes on the left, the top potentially misaligned themes on the
- * right — each up to three boxes ranked by confidence then live count, with
- * a per-column "+N more" expander for payloads that carry more themes
- * (legacy 5-7-storyline data). Clicking a box opens that theme's drawer;
- * hovering fades the wheel to the theme's documents.
+ * right — each up to three fixed-height boxes ranked purely by live count
+ * (the score each box displays), with a per-column "+N more" expander for
+ * payloads that carry more themes (legacy 5-7-storyline data). Clicking a
+ * box opens that theme's drawer; hovering fades the wheel to the theme's
+ * documents.
  */
 function RecurringThemesBlock({
   visibleStorylines,
@@ -180,9 +180,18 @@ function RecurringThemesBlock({
   onSpotlightTheme?: (spotlight: ThemeSpotlight | null) => void;
 }) {
   const t = useTranslations("briefing.direction");
+  // Boxes are ranked purely by live count, descending: the count is rendered
+  // as the visible score in each box, so the order and the number agree.
   const liveCountOf = (s: CorpusStoryline) => liveStats.get(s)?.liveCount ?? 0;
-  const aligns = rankStorylines(visibleStorylines, "reinforcement", liveCountOf);
-  const review = rankStorylines(visibleStorylines, "friction", liveCountOf);
+  const byCount = (type: CorpusStoryline["type"]) =>
+    visibleStorylines
+      .filter((s) => s.type === type)
+      .sort(
+        (a, b) =>
+          liveCountOf(b) - liveCountOf(a) || a.name.localeCompare(b.name),
+      );
+  const aligns = byCount("reinforcement");
+  const review = byCount("friction");
   return (
     <div className="space-y-3">
       <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
@@ -231,6 +240,10 @@ function ThemeColumn({
     ? storylines
     : storylines.slice(0, BOXES_PER_COLUMN);
   const overflow = storylines.length - BOXES_PER_COLUMN;
+  const maxCount = storylines.reduce(
+    (max, s) => Math.max(max, liveStats.get(s)?.liveCount ?? 0),
+    0,
+  );
   return (
     <div>
       <p
@@ -264,6 +277,7 @@ function ThemeColumn({
                   stats={
                     liveStats.get(s) ?? { liveCount: 0, docCounts: new Map() }
                   }
+                  maxCount={maxCount}
                   onOpen={() => onOpenStoryline(s)}
                   onSpotlight={onSpotlightTheme}
                 />

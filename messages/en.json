@@ -157,8 +157,8 @@
       "fullExplorer": "Full coherence explorer"
     },
     "storylineCard": {
-      "boxAligned": "{count, plural, one {1 aligned pair} other {# aligned pairs}} across the documents this theme connects",
-      "boxMisaligned": "{count, plural, one {1 pair} other {# pairs}} showing potential misalignment grouped under this theme"
+      "boxAlignedLabel": "{count, plural, one {aligned pair across these documents} other {aligned pairs across these documents}}",
+      "boxMisalignedLabel": "{count, plural, one {potentially misaligned pair grouped under this theme} other {potentially misaligned pairs grouped under this theme}}"
     },
     "primerCard": {
       "alignedRelation": "STRONGLY ALIGNED WITH",

@@ -157,8 +157,8 @@
       "fullExplorer": "Explorador completo de coherencia"
     },
     "storylineCard": {
-      "boxAligned": "{count, plural, one {1 par alineado} other {# pares alineados}} entre los documentos que conecta este tema",
-      "boxMisaligned": "{count, plural, one {1 par} other {# pares}} con posible desalineación agrupados bajo este tema"
+      "boxAlignedLabel": "{count, plural, one {par alineado entre estos documentos} other {pares alineados entre estos documentos}}",
+      "boxMisalignedLabel": "{count, plural, one {par potencialmente desalineado de este tema} other {pares potencialmente desalineados de este tema}}"
     },
     "primerCard": {
       "alignedRelation": "FUERTEMENTE ALINEADO CON",

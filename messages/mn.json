@@ -157,8 +157,8 @@
       "fullExplorer": "Бүрэн уялдаа судлагч"
     },
     "storylineCard": {
-      "boxAligned": "Энэ сэдвийн холбосон баримт бичгүүд дэх {count, plural, one {1 уялдсан хос} other {# уялдсан хос}}",
-      "boxMisaligned": "Энэ сэдэвт багтсан болзошгүй үл нийцэлтэй {count, plural, one {1 хос} other {# хос}}"
+      "boxAlignedLabel": "{count, plural, other {эдгээр баримт бичгүүд дэх уялдсан хос}}",
+      "boxMisalignedLabel": "{count, plural, other {энэ сэдэвт багтсан болзошгүй үл нийцэлтэй хос}}"
     },
     "primerCard": {
       "alignedRelation": "ХҮЧТЭЙ УЯЛДСАН",
