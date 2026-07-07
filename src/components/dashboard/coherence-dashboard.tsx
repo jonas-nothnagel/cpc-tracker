@@ -300,6 +300,9 @@ export function CoherenceDashboard({
         availableModels={data.availableModels}
         selectedModel={data.model}
         onChange={handleModelChange}
+        // The comparison page is a Mongolia-only route for now (the only
+        // country with multiple per-model runs on disk).
+        comparisonHref={country === "mongolia" ? "/mongolia/model-comparison" : undefined}
       />
 
       <CoherenceBriefing

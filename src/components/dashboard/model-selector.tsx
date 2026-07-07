@@ -15,6 +15,7 @@
  */
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const DEFAULT_LABEL_BY_SLUG: Record<string, { label: string; tier: string }> = {
   "gpt-5-4": { label: "GPT-5.4", tier: "flagship proprietary" },
@@ -41,10 +42,14 @@ export function ModelSelector({
   availableModels,
   selectedModel,
   onChange,
+  comparisonHref,
 }: {
   availableModels: string[];
   selectedModel: string | null;
   onChange: (next: string) => void;
+  /** Locale-aware href of the side-by-side comparison page, when one exists
+   *  for this country (today only Mongolia). Omit to hide the link. */
+  comparisonHref?: string;
 }) {
   const t = useTranslations("dashboard.modelSelector");
   if (availableModels.length < 2) return null;
@@ -77,6 +82,14 @@ export function ModelSelector({
       <span className="text-xs text-[var(--undp-gray)] italic">
         {t("caveat", { model: activeLabel.label })}
       </span>
+      {comparisonHref && (
+        <Link
+          href={comparisonHref}
+          className="ml-auto text-xs text-[var(--undp-blue)] hover:underline whitespace-nowrap"
+        >
+          {t("compareLink")}
+        </Link>
+      )}
     </div>
   );
 }

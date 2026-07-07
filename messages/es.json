@@ -112,7 +112,8 @@
     },
     "modelSelector": {
       "label": "Modelo",
-      "caveat": "Generado por IA con {model} — ejecución de comparación, no el resultado de producción"
+      "caveat": "Generado por IA con {model} — ejecución de comparación, no el resultado de producción",
+      "compareLink": "Ver la comparación de modelos →"
     }
   },
   "briefing": {
