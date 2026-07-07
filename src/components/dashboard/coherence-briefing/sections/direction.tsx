@@ -210,6 +210,9 @@ function RecurringThemesBlock({
           onSpotlightTheme={onSpotlightTheme}
         />
       </div>
+      <p className="text-[10.5px] text-[var(--undp-gray)] leading-relaxed">
+        {t("groups.countsLegend")}
+      </p>
       {hiddenThemeCount > 0 && (
         <p className="text-[10.5px] italic text-[var(--undp-gray)]">
           {t("groups.hiddenForSelection", { count: hiddenThemeCount })}

@@ -157,8 +157,8 @@
       "fullExplorer": "Explorador completo de coherencia"
     },
     "storylineCard": {
-      "boxAlignedLabel": "{count, plural, one {par alineado entre estos documentos} other {pares alineados entre estos documentos}}",
-      "boxMisalignedLabel": "{count, plural, one {par potencialmente desalineado de este tema} other {pares potencialmente desalineados de este tema}}"
+      "boxAlignedLabel": "{count, plural, one {par alineado} other {pares alineados}}",
+      "boxMisalignedLabel": "{count, plural, one {par potencialmente desalineado} other {pares potencialmente desalineados}}"
     },
     "primerCard": {
       "alignedRelation": "FUERTEMENTE ALINEADO CON",
@@ -576,7 +576,8 @@
         "hiddenForSelection": "{count, plural, one {1 tema no se muestra para la selección actual de documentos.} other {# temas no se muestran para la selección actual de documentos.}}",
         "alignsTop": "{count, plural, =0 {Temas coherentes} one {Tema coherente principal} other {Los # temas coherentes principales}}",
         "reviewTop": "{count, plural, =0 {Temas con posible desalineación} one {Tema principal con posible desalineación} other {Los # temas principales con posible desalineación}}",
-        "emptyAligns": "No se identificaron temas coherentes entre documentos para la selección actual."
+        "emptyAligns": "No se identificaron temas coherentes entre documentos para la selección actual.",
+        "countsLegend": "Los recuentos son pares de metas entre los documentos que abarca cada tema, según la selección actual de documentos; cada par potencialmente desalineado se cuenta en un solo tema. Las barras comparan los temas dentro de una columna."
       }
     },
     "emptyState": {

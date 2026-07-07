@@ -157,8 +157,8 @@
       "fullExplorer": "Full coherence explorer"
     },
     "storylineCard": {
-      "boxAlignedLabel": "{count, plural, one {aligned pair across these documents} other {aligned pairs across these documents}}",
-      "boxMisalignedLabel": "{count, plural, one {potentially misaligned pair grouped under this theme} other {potentially misaligned pairs grouped under this theme}}"
+      "boxAlignedLabel": "{count, plural, one {aligned pair} other {aligned pairs}}",
+      "boxMisalignedLabel": "{count, plural, one {potentially misaligned pair} other {potentially misaligned pairs}}"
     },
     "primerCard": {
       "alignedRelation": "STRONGLY ALIGNED WITH",
@@ -576,7 +576,8 @@
         "hiddenForSelection": "{count, plural, one {1 theme is not shown for the current document selection.} other {# themes are not shown for the current document selection.}}",
         "alignsTop": "{count, plural, =0 {Coherent themes} one {Top coherent theme} other {Top # coherent themes}}",
         "reviewTop": "{count, plural, =0 {Potentially misaligned themes} one {Top potentially misaligned theme} other {Top # potentially misaligned themes}}",
-        "emptyAligns": "No coherent cross-document themes identified for the current selection."
+        "emptyAligns": "No coherent cross-document themes identified for the current selection.",
+        "countsLegend": "Counts are target pairs between the documents each theme spans, for the current document selection; each potentially misaligned pair is counted under one theme only. Bars compare themes within a column."
       }
     },
     "emptyState": {
