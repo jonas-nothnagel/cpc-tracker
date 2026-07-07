@@ -196,3 +196,21 @@ class TestSanitizeName:
         assert sanitize_name("Review land competition from expansion incentives") == (
             "Review land competition from expansion incentives"
         )
+
+    def test_noun_phrase_with_preposition_not_mangled(self):
+        # "balance"/"link" are blocklisted verbs but here open a noun phrase;
+        # stripping the first word would leave a title starting on a
+        # preposition, so the sanitizer must keep the name intact.
+        assert sanitize_name("Balance between conservation and extraction goals") == (
+            "Balance between conservation and extraction goals"
+        )
+        assert sanitize_name("Link across land and water sector targets") == (
+            "Link across land and water sector targets"
+        )
+
+    def test_true_imperative_still_stripped(self):
+        # A genuine imperative (verb followed by a content word) is still
+        # repaired to a noun phrase.
+        assert sanitize_name("Strengthen coordination between land agencies") == (
+            "Coordination between land agencies"
+        )

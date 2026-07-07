@@ -42,6 +42,18 @@ IMPERATIVE_BLOCKLIST = frozenset({
 
 _NAME_SECOND_WORD_ALLOWED = {"of", "and"}
 
+# As the SECOND token of a name, these signal the first word is a noun
+# ("Balance between ...", "Link across ...") rather than an imperative verb.
+# The last-resort sanitizer consults this before stripping a leading verb, so
+# it never leaves a title that opens on a preposition ("Between conservation
+# and ..."). Superset of _NAME_SECOND_WORD_ALLOWED (of/and never reach the
+# sanitizer's strip branch, but listing them keeps the intent self-contained).
+_NOUN_SIGNAL_NEXT_WORD = frozenset({
+    "of", "and", "between", "across", "among", "amongst", "with", "for",
+    "in", "on", "to", "from", "over", "under", "within", "against", "into",
+    "versus", "vs", "or", "toward", "towards",
+})
+
 NAME_MIN_WORDS = 4
 NAME_MAX_WORDS = 10
 
@@ -215,8 +227,15 @@ def sanitize_name(name: str) -> str:
         return name
     out = sanitize_prose(name).strip().rstrip(".")
     if lexical_checks_enabled() and _starts_with_imperative(out):
-        words = _words(out)[1:]
-        if words:
-            words[0] = words[0][:1].upper() + words[0][1:]
-            out = " ".join(words)
+        words = _words(out)
+        # Strip the leading verb only when the remainder still opens on a
+        # content word. If the next token is a preposition/conjunction, the
+        # first word was a noun ("Balance between ...") and stripping would
+        # leave a broken title; keep the name and let the logged style
+        # warning stand instead of shipping a mangled one.
+        nxt = words[1].strip(",.;:").casefold() if len(words) >= 2 else ""
+        if nxt and nxt not in _NOUN_SIGNAL_NEXT_WORD:
+            rest = words[1:]
+            rest[0] = rest[0][:1].upper() + rest[0][1:]
+            out = " ".join(rest)
     return out

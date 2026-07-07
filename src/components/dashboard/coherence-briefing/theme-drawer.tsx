@@ -37,6 +37,7 @@ import {
   computeStorylineLiveStats,
   getDocPairKey,
   parseContributingDocPair,
+  rankStorylines,
   type StorylineProfile,
 } from "@/lib/coherence-briefing";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
@@ -873,12 +874,12 @@ function StorylineGroup({
 }) {
   const t = useTranslations("briefing.drawer.theme");
   const dotColor = tone === "reinforce" ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
-  const sorted = [...storylines].sort((a, b) => {
-    const aRank = CONFIDENCE_RANK[a.confidence] ?? 3;
-    const bRank = CONFIDENCE_RANK[b.confidence] ?? 3;
-    if (aRank !== bRank) return aRank - bRank;
-    return liveCountOf(b) - liveCountOf(a);
-  });
+  // Shared ordering source: confidence rank, then live count, then name.
+  const sorted = rankStorylines(
+    storylines,
+    tone === "reinforce" ? "reinforcement" : "friction",
+    liveCountOf,
+  );
   return (
     <section>
       <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">

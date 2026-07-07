@@ -14,7 +14,7 @@ import {
   computeTargetConcentration,
   concentrationDocAttribution,
   frictionTypeTotalsFromAlignment,
-  pickTopStorylines,
+  rankStorylines,
   rankTargetsByFriction,
   selectCorpusThemesForState,
   selectSectorSynthesesForState,
@@ -1165,7 +1165,7 @@ describe("storyline live profiles", () => {
   });
 });
 
-describe("pickTopStorylines", () => {
+describe("rankStorylines", () => {
   const mk = (
     name: string,
     type: "reinforcement" | "friction",
@@ -1174,15 +1174,16 @@ describe("pickTopStorylines", () => {
   ) =>
     makeStoryline({ name, type, confidence, pair_count: pairCount });
 
-  it("ranks by confidence, then live count, filtered to the polarity", () => {
+  it("orders by confidence, then live count, filtered to the polarity", () => {
     const s1 = mk("Alpha pattern of shared delivery", "friction", "medium", 50);
     const s2 = mk("Beta pattern of shared delivery", "friction", "high", 10);
     const s3 = mk("Gamma pattern of shared delivery", "friction", "medium", 80);
     const s4 = mk("Delta pattern of shared delivery", "reinforcement", "high", 99);
-    const top = pickTopStorylines([s1, s2, s3, s4], "friction", 2);
-    expect(top.map((s) => s.name)).toEqual([
+    const ranked = rankStorylines([s1, s2, s3, s4], "friction");
+    expect(ranked.map((s) => s.name)).toEqual([
       "Beta pattern of shared delivery",
       "Gamma pattern of shared delivery",
+      "Alpha pattern of shared delivery",
     ]);
   });
 
@@ -1193,10 +1194,18 @@ describe("pickTopStorylines", () => {
       [s1, 2],
       [s2, 40],
     ]);
-    const top = pickTopStorylines([s1, s2], "friction", 1, (s) =>
-      live.get(s) ?? 0,
-    );
-    expect(top[0].name).toBe("Beta pattern of shared delivery");
+    const ranked = rankStorylines([s1, s2], "friction", (s) => live.get(s) ?? 0);
+    expect(ranked[0].name).toBe("Beta pattern of shared delivery");
+  });
+
+  it("breaks confidence and count ties by name for a stable order", () => {
+    const s1 = mk("Zulu pattern of shared delivery", "friction", "medium", 20);
+    const s2 = mk("Alpha pattern of shared delivery", "friction", "medium", 20);
+    const ranked = rankStorylines([s1, s2], "friction");
+    expect(ranked.map((s) => s.name)).toEqual([
+      "Alpha pattern of shared delivery",
+      "Zulu pattern of shared delivery",
+    ]);
   });
 });
 

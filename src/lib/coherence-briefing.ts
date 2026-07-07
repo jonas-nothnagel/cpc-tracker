@@ -2211,16 +2211,6 @@ export function rankStorylines(
     });
 }
 
-/** Top-N storylines of one polarity (see rankStorylines for the order). */
-export function pickTopStorylines(
-  storylines: CorpusStoryline[],
-  type: "reinforcement" | "friction",
-  n = 3,
-  liveCountOf?: (s: CorpusStoryline) => number,
-): CorpusStoryline[] {
-  return rankStorylines(storylines, type, liveCountOf).slice(0, n);
-}
-
 export interface ConcentrationDocAttribution {
   doc: PolicyDocumentType;
   /** How many of the concentration set's targets sit in `doc`. */
