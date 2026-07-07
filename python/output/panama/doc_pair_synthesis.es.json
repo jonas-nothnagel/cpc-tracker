@@ -4,16 +4,14 @@
     "doc_b": "ENR",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "ENR (REDD+ Strategy)",
-    "aligned_count": 1427,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
+    "aligned_count": 1433,
+    "flagged_count": 0,
+    "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Vinculación de la implementación de REDD+ con las salvaguardias y la medición",
-      "reinforce": "Los dos documentos presentan una fuerte alineación en torno a la implementación de REDD+ que combina medidas sobre el terreno, como la restauración, la gestión de incendios y los incentivos comunitarios, con sistemas habilitadores para salvaguardias, FPIC, participación, seguimiento financiero y medición para los Pagos Basados en Resultados. Este patrón se repite mediante mecanismos concretos, entre ellos el Sistema de Información sobre Salvaguardias, las plataformas de seguimiento de pagos de REDD+, los procedimientos de aprobación y MRV, los órganos locales de coordinación, las herramientas de divulgación y los canales de participación comunitaria para los pueblos indígenas, las comunidades afrodescendientes y los pequeños productores.",
-      "clash": "Se señaló para revisión una posible desalineación en torno a los modelos de reforestación. El CNR tiende a hacer hincapié en la restauración ecológica, la regeneración nativa y la conectividad en paisajes protegidos y prioritarios, mientras que la línea ENR sobre reforestación comercial permite enfoques de plantación, incluidas especies exóticas, lo que podría generar fricciones en la implementación si la ubicación o la elección de especies se superponen con los objetivos de restauración o de corredores.",
-      "coordination_hint": "La zonificación a escala del paisaje, la evaluación de salvaguardias y los criterios compartidos sobre la elección de especies y las áreas elegibles podrían ayudar a mantener la compatibilidad de la reforestación comercial con la restauración, la conectividad y los objetivos de carbono de REDD+.",
+      "storyline_name": "Implementación compartida de REDD+ y arquitectura de salvaguardias",
+      "reinforce": "Los dos documentos se alinean en gran medida en torno a la implementación de REDD+, combinando los instrumentos sobre el terreno de CNR, como la ampliación de PIEA, el aumento del carbono forestal, la gestión de incendios y los programas de incentivos inclusivos, con las medidas habilitadoras de ENR en materia de salvaguardias, distribución de beneficios, arreglos jurídicos, financiación, MRV, comunicación y evaluación. Este patrón también se repite en los mecanismos centrados en las comunidades, donde la capacitación, la participación, la sensibilización, el ecoturismo y las acciones de gestión de recursos indígenas de ENR respaldan las mismas intervenciones forestales y de uso de la tierra a las que se dirige CNR.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "Una coordinación más estrecha entre las medidas de implementación de CNR y las disposiciones de salvaguardias, MRV, financiación y participación de ENR podría ayudar a conectar la ejecución sobre el terreno con el sistema más amplio de gobernanza de REDD+.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -23,14 +21,14 @@
     "doc_b": "HR",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "HR (Nature Pledge Roadmap)",
-    "aligned_count": 201,
+    "aligned_count": 207,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Vinculación de los incentivos para el uso de la tierra con la gobernanza nacional de la naturaleza",
-      "reinforce": "Los dos documentos presentan una fuerte alineación en torno al uso sostenible de la tierra basado en incentivos, la restauración forestal, la gestión de incendios forestales y los sistemas institucionales necesarios para respaldarlos, incluidos los marcos jurídicos, el monitoreo, la trazabilidad y la coordinación interinstitucional. Esto se repite con mayor claridad allí donde la ampliación del PIEA, la financiación de la restauración y las brigadas contra incendios de la Nota Conceptual de REDD+ se conectan con la ley marco, el programa de restauración, la reforma de subsidios, la reducción de la contaminación en las cuencas hidrográficas y la planificación de la adaptación territorial de la Hoja de Ruta.",
-      "clash": "No se señaló ninguna fricción recurrente en este conjunto.",
-      "coordination_hint": "La coordinación podría ayudar a conectar la implementación de PIEA, las acciones de restauración y gestión de incendios con los instrumentos de gobernanza, revisión de subsidios y seguimiento de la Hoja de Ruta, especialmente en cuencas hidrográficas y territorios prioritarios de uso de la tierra.",
+      "storyline_name": "Gobernanza forestal compartida y sistemas de incentivos territoriales",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante la restauración forestal, la gestión de áreas protegidas y de cuencas hidrográficas, la prevención de incendios y esquemas de incentivos como PIEA y el apoyo centrado en la comunidad para los Pueblos Indígenas, los afrodescendientes y los pequeños productores. La alineación también se repite en los sistemas habilitadores, incluida la coordinación interinstitucional, el monitoreo y la alerta temprana, la arquitectura de financiamiento, las salvaguardas y los marcos jurídicos o de políticas que respaldan REDD+ y el Nature Pledge.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "La coordinación podría ayudar a vincular los incentivos territoriales y las acciones de restauración y gestión de incendios con los mecanismos del Nature Pledge relativos a las áreas protegidas, la adaptación, la financiación y los sistemas de información en paisajes compartidos.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -40,14 +38,14 @@
     "doc_b": "NP",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "NP (Nature Pledge)",
-    "aligned_count": 232,
+    "aligned_count": 246,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Vinculación de los incentivos para el uso de la tierra con la obtención de resultados en materia de biodiversidad",
-      "reinforce": "Estos documentos se alinean sistemáticamente en torno al uso sostenible de la tierra basado en incentivos, la protección de los bosques y la restauración, especialmente mediante la expansión de PIEA, los programas de incentivos comunitarios, la gestión de incendios forestales y el aumento del carbono forestal. El Nature Pledge a menudo refuerza estos mecanismos mediante la reforma de subsidios, la gobernanza participativa, el monitoreo del riesgo climático, la planificación de áreas protegidas y cuencas hidrográficas, y los instrumentos de financiación como el Panama Natural Fund y el Reforestation Fund.",
-      "clash": "No se señaló ninguna fricción recurrente en este conjunto.",
-      "coordination_hint": "La coordinación podría centrarse en utilizar los mecanismos de financiación, participación, seguimiento y planificación territorial del Nature Pledge para apoyar la implementación de incentivos REDD+ y la gestión forestal en paisajes compartidos de cuencas hidrográficas y bosques.",
+      "storyline_name": "Incentivos integrados para el uso de la tierra que apoyan los objetivos nacionales en materia de naturaleza",
+      "reinforce": "Los documentos suelen alinearse mediante instrumentos de uso de la tierra de REDD+, especialmente la expansión de PIEA, el aumento del carbono forestal, la restauración, la gestión de incendios y el marco de políticas y monitoreo de REDD+, que respaldan los objetivos del NP sobre reducción de emisiones, incentivos positivos para la biodiversidad, sistemas agroalimentarios sostenibles, carbono del suelo y participación comunitaria. Un patrón recurrente es que el CNR proporciona mecanismos de implementación territorial en cuencas hidrográficas y paisajes forestales, mientras que el NP proporciona metas nacionales y principios transversales sobre biodiversidad, resiliencia climática, gobernanza inclusiva y reforma de incentivos que avanzan en la misma dirección.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "La vinculación del seguimiento de NP, la reforma de incentivos, la participación y los sistemas de riesgo climático con las plataformas de implementación de cuencas hidrográficas y bosques de CNR podría ayudar a traducir las metas nacionales de naturaleza en una ejecución territorial coordinada.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -57,619 +55,620 @@
     "doc_b": "PEG",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 131,
-    "flagged_count": 24,
-    "contradiction_types": {
-      "delivery_friction": 23,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Vinculación de la restauración de cuencas hidrográficas con la gobernanza verde nacional",
-      "reinforce": "Los dos documentos suelen estar alineados en materia de restauración, protección de cuencas hidrográficas, monitoreo forestal y gestión de la tierra basada en incentivos, especialmente mediante la expansión de PIEA, el Plan Nacional de Restauración Forestal, la gestión de incendios forestales y las medidas PEG sobre seguridad hídrica, áreas protegidas y la transición verde. El refuerzo también se repite a través de sistemas habilitadores como MRV, trazabilidad, herramientas digitales, datos abiertos, capacidad de los servicios públicos y redes comunitarias que podrían apoyar la implementación de REDD+.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando la infraestructura PEG, la logística, la expansión agrícola, los corredores energéticos, el desarrollo turístico o el crecimiento de la vivienda pueden intersectar las mismas cuencas hidrográficas, zonas de amortiguamiento forestal y paisajes rurales objeto de la restauración y los incentivos de CNR. El mecanismo suele ser una fricción en la implementación en torno a la ubicación, el trazado, la presión por el cambio de uso del suelo y la expansión del acceso, con un caso adicional de posible competencia por recursos sobre la tierra para vivienda frente a las prioridades de restauración.",
-      "coordination_hint": "La planificación espacial conjunta, la zonificación de cuencas hidrográficas y las salvaguardias compartidas pueden ayudar a que estas agendas se alineen cuando las inversiones en infraestructura o productivas se superponen con los paisajes prioritarios de REDD+.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PENCYT",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 95,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
-    "synthesis": {
-      "storyline_name": "Vincular los facilitadores de STI con las herramientas de implementación de REDD+",
-      "reinforce": "Los dos documentos se alinean en gran medida y, a menudo, refuerzan una relación habilitadora en la que el ecosistema de CTI de PENCYT, la I+D, la digitalización, los polos territoriales de innovación y los mecanismos de transferencia de conocimiento podrían apoyar la ejecución por parte de CNR de los incentivos de PIEA, el monitoreo forestal, la restauración y la gestión de incendios. Esto se repite en las medidas de CNR dentro y fuera de la cuenca del Canal, así como en los programas inclusivos de incentivos para los Pueblos Indígenas, los Afrodescendientes y los pequeños productores, donde la ciencia, la coordinación y la tecnología se consideran mecanismos de apoyo más que instrumentos compartidos de implementación.",
-      "clash": "Se señala para revisión una posible desalineación en torno a los incentivos inclusivos compatibles con los bosques de CNR y la agenda de tecnificación del sector alimentario de PENCYT. En las zonas rurales compartidas, una modernización centrada en la productividad podría generar fricciones en la implementación con la zonificación de las áreas protegidas y los modelos de medios de vida de bajo impacto, a menos que las vías de innovación se orienten hacia la agroforestería, los productos forestales no maderables y otros sistemas de bajo impacto.",
-      "coordination_hint": "La coordinación puede ayudar cuando las inversiones en STI, las herramientas digitales y las iniciativas de modernización rural están vinculadas a la zonificación de REDD+, las salvaguardias y el diseño de incentivos en los mismos territorios.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PIOTA",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 78,
-    "flagged_count": 7,
-    "contradiction_types": {
-      "delivery_friction": 5,
-      "resource_competition": 2
-    },
-    "synthesis": {
-      "storyline_name": "Vinculación de los incentivos para las cuencas hidrográficas con el seguimiento y la protección",
-      "reinforce": "Los documentos suelen alinearse en torno a la gestión del uso de la tierra basada en cuencas hidrográficas en la cuenca hidrográfica del Canal de Panamá, especialmente cuando los incentivos de CNR, la restauración, el carbono forestal y la gestión de incendios se conectan con el monitoreo de ecosistemas de PIOTA, los inventarios de GEI, los corredores ecológicos, la gestión de áreas protegidas y la educación comunitaria. Un patrón recurrente es que los instrumentos de planificación y monitoreo de PIOTA refuerzan la implementación de CNR al ayudar a focalizar los sitios, hacer seguimiento de las emisiones y los sumideros, apoyar la participación local y sostener los resultados de conservación y restauración.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando la construcción de carreteras y las obras de movilidad de PIOTA se cruzan con las actividades de conservación, restauración y gestión de incendios de CNR en la misma cuenca hidrográfica, porque la ampliación del acceso podría aumentar la fragmentación, la presión sobre el uso del suelo o el riesgo de ignición, a menos que las salvaguardias espaciales estén bien coordinadas. Un patrón menor señalado para revisión se refiere a la infraestructura de riego y agrícola, que podría competir con las medidas de restauración y de carbono forestal de CNR por la tierra y el agua en zonas superpuestas de la cuenca hidrográfica.",
-      "coordination_hint": "La planificación espacial conjunta, mediante el uso de zonificación, mapas de corredores, monitoreo de cuencas hidrográficas e información sobre asignación de agua, podría ayudar a alinear las acciones de transporte, riego y REDD+ allí donde se superponen.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PNRF",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 77,
-    "flagged_count": 0,
-    "contradiction_types": {},
-    "synthesis": {
-      "storyline_name": "Vinculación de los incentivos de REDD+ con la ejecución de la restauración forestal",
-      "reinforce": "Estos documentos se alinean firmemente en torno a la restauración y salvaguardia de los paisajes forestales mediante mecanismos concretos como la ampliación de incentivos PIEA, el apoyo al Programa Nacional de Restauración, la regeneración nativa y la reforestación, la gestión de incendios forestales y la gestión forestal sostenible. La alineación suele señalar espacios de implementación compartidos en cuencas hidrográficas, áreas protegidas, zonas de amortiguamiento, zonas ribereñas y corredores biológicos, y el CNR añade incentivos comunitarios, monitoreo, certificación y apoyo normativo que refuerzan los objetivos del PNRF sobre servicios ecosistémicos, materia prima certificada, investigación y medios de vida forestales.",
-      "clash": "No se señaló ninguna fricción recurrente en este conjunto.",
-      "coordination_hint": "La coordinación podría ayudar a conectar los incentivos de CNR, la restauración, la gestión de incendios y los instrumentos de política con las prioridades espaciales de PNRF y los objetivos del sector forestal, especialmente donde las cuencas hidrográficas y los paisajes forestales protegidos se superponen.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PNSH",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 119,
-    "flagged_count": 0,
-    "contradiction_types": {},
-    "synthesis": {
-      "storyline_name": "Vinculación de la gestión de las tierras de las cuencas hidrográficas con la seguridad hídrica",
-      "reinforce": "Los dos documentos suelen alinearse mediante la planificación a escala de cuenca, donde los instrumentos de CNR, como la ampliación de PIEA, la restauración y la gestión de incendios forestales, refuerzan las acciones del PNSH sobre disponibilidad de agua, gestión de la demanda, prevención del riesgo y sostenibilidad de los servicios. Un segundo patrón recurrente es la gobernanza habilitadora, con el fortalecimiento institucional de REDD+, los mecanismos de participación y los incentivos para los Pueblos Indígenas, los afrodescendientes y los pequeños productores alineándose con las medidas del PNSH sobre fortalecimiento institucional, actualizaciones regulatorias y creación de consensos en materia de agua.",
-      "clash": "No se señaló ninguna fricción recurrente en este conjunto.",
-      "coordination_hint": "La planificación conjunta a nivel de cuenca y el intercambio de información entre PIEA, la restauración y los sistemas de monitoreo del agua podrían ayudar a traducir estos vínculos de refuerzo en una implementación más coordinada en las cuencas hidrográficas compartidas.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "HR",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "HR (Nature Pledge Roadmap)",
-    "aligned_count": 5509,
-    "flagged_count": 7,
-    "contradiction_types": {
-      "resource_competition": 2,
-      "delivery_friction": 5
-    },
-    "synthesis": {
-      "storyline_name": "Alinear las salvaguardas forestales, el monitoreo y la acción territorial",
-      "reinforce": "Los dos documentos presentan una fuerte alineación en torno a la gobernanza forestal y de la biodiversidad, especialmente mediante salvaguardas, coordinación interinstitucional, sistemas de monitoreo y reporte, priorización territorial de la deforestación ilegal, y marcos financieros o jurídicos que pueden respaldar la implementación de REDD+. Esto se repite en los vínculos entre la capacidad de salvaguardas de REDD+, el monitoreo forestal, la participación indígena y comunitaria, la gobernanza relacionada con Escazú, y la arquitectura más amplia de clima, conservación y datos del Nature Pledge.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando la reforestación comercial o nuevas zonas turísticas podrían superponerse con las prioridades de conservación en la misma base territorial. Los casos señalados a menudo apuntan a fricciones en la implementación o competencia por los recursos en torno a la ubicación de plantaciones, el uso de especies exóticas, las áreas protegidas, los hábitats de especies prioritarias, los suelos orgánicos y las zonas turísticas sensibles para la vida silvestre, donde la zonificación, las salvaguardias y los criterios de selección de especies pueden requerir una alineación más estrecha.",
-      "coordination_hint": "La evaluación territorial conjunta, utilizando capas de áreas protegidas, suelos orgánicos, especies prioritarias y monitoreo de la deforestación, podría ayudar a alinear las decisiones sobre plantaciones, restauración y turismo con criterios compartidos de salvaguardias y biodiversidad.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "NP",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "NP (Nature Pledge)",
-    "aligned_count": 6417,
-    "flagged_count": 5,
-    "contradiction_types": {
-      "delivery_friction": 5
-    },
-    "synthesis": {
-      "storyline_name": "Reforzar los mecanismos inclusivos de gobernanza de la tierra y los bosques",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante mecanismos habilitadores para la acción en materia de naturaleza y clima, especialmente la coordinación interinstitucional, la gobernanza participativa, las salvaguardias, la información pública, el seguimiento y la participación culturalmente adaptada de los pueblos indígenas, las mujeres, la juventud y las comunidades locales. Esto a menudo apunta a un refuerzo práctico entre instrumentos de REDD+ como la agroforestería, la agricultura orgánica, la restauración, las reglas de MRV y del mercado de carbono, y los objetivos del NP sobre deforestación ilegal cero, uso agroecológico de la tierra, corredores biológicos, gestión de áreas protegidas, adaptación costera y enfoques de bioeconomía vinculados a la biodiversidad.",
-      "clash": "Un conjunto más reducido de pares se señala para revisión en torno a la fricción en la implementación en paisajes compartidos, en particular cuando la reforestación comercial, la producción forestal o nuevos senderos turísticos podrían superponerse con la expansión de áreas protegidas, la conectividad ecológica, la conservación de especies nativas o la prevención de especies invasoras. La cuestión recurrente suele ser la selección del sitio, la zonificación y la elección de especies, incluido el uso de especies exóticas de plantación y el acceso de visitantes en áreas con objetivos de conservación más estrictos.",
-      "coordination_hint": "La zonificación conjunta del uso de la tierra, la evaluación de especies y las comprobaciones de compatibilidad con las áreas protegidas podrían ayudar a alinear la implementación de plantaciones, restauración y turismo con las salvaguardias de conservación y de especies invasoras cuando estén involucrados los mismos territorios.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PEG",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 3814,
-    "flagged_count": 448,
-    "contradiction_types": {
-      "delivery_friction": 428,
-      "resource_competition": 20
-    },
-    "synthesis": {
-      "storyline_name": "Vinculación de las salvaguardias forestales con la implementación del crecimiento verde",
-      "reinforce": "Los dos documentos suelen estar alineados mediante sistemas facilitadores para la acción climática y de la naturaleza, incluidos los pagos por servicios ecosistémicos, las normas sobre mercados de carbono y MRV, el monitoreo forestal, la restauración de áreas protegidas y las redes comunitarias de restauración. También refuerzan medidas orientadas a los medios de vida, como la gestión forestal sostenible, los viveros, la certificación, los proyectos piloto de biocomercio o bioprospección, y la inclusión de las mujeres, la juventud y los pueblos indígenas mediante financiamiento, capacitación y órganos de gobernanza participativa.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando la protección forestal de REDD+, el monitoreo comunitario, los corredores biológicos, la demarcación de áreas protegidas y los pagos por servicios ecosistémicos pueden cruzarse con la ejecución por parte del PEG de corredores logísticos, obras del Canal y de embalses, vivienda, infraestructura energética, expansión del turismo y crecimiento agroindustrial. El patrón tiende a ser de fricción en la ejecución en paisajes compartidos, especialmente territorios indígenas, cuencas hidrográficas, áreas protegidas y zonas rurales de frontera, donde las presiones relacionadas con la localización, el acceso, el cambio de uso del suelo o los permisos podrían complicar las salvaguardas de REDD+ y los objetivos de conservación.",
-      "coordination_hint": "La planificación espacial conjunta, la evaluación de cuencas hidrográficas y de la tenencia de la tierra, y el uso temprano de los mecanismos de salvaguardias y participación de REDD+ podrían ayudar a que ambas agendas se alineen allí donde las inversiones en infraestructura, agricultura, turismo o energía se superponen con los bosques y los territorios indígenas.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PENCYT",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 2654,
+    "aligned_count": 132,
     "flagged_count": 31,
     "contradiction_types": {
-      "resource_competition": 2,
-      "delivery_friction": 29
+      "delivery_friction": 28,
+      "resource_competition": 3
     },
     "synthesis": {
-      "storyline_name": "Vinculación de las herramientas de STI con la implementación de la gobernanza forestal",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante vínculos habilitadores, en los que las medidas de PENCYT sobre ciencia, digitalización, ecosistema de innovación y cultura científica podrían reforzar las herramientas de implementación de REDD+, como los sistemas de mercado de carbono, el seguimiento y la evaluación, la trazabilidad, la divulgación y la gestión baja en carbono. La alineación también se repite en torno a los mecanismos de inclusión, incluida la participación de las mujeres, la juventud, los pueblos indígenas y las comunidades, donde la divulgación de STI y la apropiación social del conocimiento podrían apoyar las salvaguardas de REDD+, el monitoreo comunitario y los procesos de distribución de beneficios.",
-      "clash": "La posible desalineación recurrente se señala principalmente allí donde el vector de Alimentos de PENCYT, centrado en tecnificar y aumentar la productividad en la agricultura, los sistemas agroalimentarios y la piscicultura, se superpone con las medidas de REDD+ para la conservación de los bosques, la gestión de áreas protegidas, los territorios indígenas, los corredores biológicos, los manglares y la restauración de cuencas hidrográficas. La fricción suele apuntar a presiones de implementación en paisajes rurales compartidos y, en un número menor de casos, a una posible competencia por la tierra y la atención de la inversión entre la reforestación comercial o las actividades de eliminación de carbono y la modernización agrícola.",
-      "coordination_hint": "La coordinación puede ayudar cuando el apoyo de STI a la productividad rural está vinculado con la zonificación del uso de la tierra, la evaluación territorial, las salvaguardias ribereñas y forestales, y el monitoreo digital, de modo que los beneficios de la innovación se alineen con las áreas protegidas, los territorios indígenas y los espacios de implementación de REDD+.",
+      "storyline_name": "Incentivos para el uso de la tierra junto con una expansión más amplia del desarrollo",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de restauración forestal, incentivos para el uso sostenible de la tierra, gestión de incendios, protección de cuencas hidrográficas y acción rural de base comunitaria, especialmente a través de PIEA, el Plan Nacional de Restauración Forestal, las redes de actores locales y los sistemas de monitoreo y salvaguardas de REDD+. La alineación también se repite mediante instrumentos habilitadores como los datos abiertos, los sistemas digitales, la capacidad de investigación, la planificación fiscal y los marcos de política climática que podrían apoyar la implementación de medidas sobre uso de la tierra y bosques.",
+      "clash": "La posible desalineación reaparece cuando la infraestructura PEG, la logística, el turismo, la vivienda, la energía, los embalses, la expansión industrial o agroindustrial podrían superponerse con bosques, zonas de amortiguamiento, territorios indígenas o áreas de la cuenca del Canal de Panamá objeto de incentivos del CNR, restauración y prevención de incendios. Los casos examinados suelen señalar problemas del lado de la implementación en torno a la ubicación, el trazado, la zonificación, las salvaguardias y el uso de la tierra y el agua a nivel de cuenca, con un patrón menor de posible desalineación en torno a la competencia por tierras y agua finitas en áreas de cuenca vinculadas al Canal.",
+      "coordination_hint": "La planificación espacial conjunta, la gobernanza de cuencas hidrográficas y el uso temprano de la zonificación, el trazado de rutas, la trazabilidad y las salvaguardias ambientales podrían ayudar a que estas agendas se apoyen mutuamente cuando estén involucrados los mismos territorios.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "ENR",
-    "doc_b": "PIOTA",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 2155,
-    "flagged_count": 132,
-    "contradiction_types": {
-      "delivery_friction": 121,
-      "resource_competition": 11
-    },
-    "synthesis": {
-      "storyline_name": "Vincular las salvaguardias forestales con el uso del suelo en las cuencas hidrográficas",
-      "reinforce": "Los dos documentos suelen estar alineados cuando la planificación de cuencas hidrográficas, los corredores ecológicos, la cobertura vegetal protectora y los planes locales de uso del suelo pueden reforzar la gestión forestal de REDD+, la restauración ribereña y de cabeceras, y la gestión de áreas protegidas. La alineación también se repite en torno a instrumentos facilitadores, como los sistemas de monitoreo, la divulgación comunitaria, la participación inclusiva, los centros de capacitación y el apoyo a medios de vida compatibles con los bosques, incluidos el ecoturismo, el biocomercio y la producción sostenible.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión en torno a la construcción y rehabilitación de carreteras de PIOTA en la cuenca del Canal, lo que podría complicar las salvaguardias de REDD+, el monitoreo forestal, la verificación de los límites de las áreas protegidas, la restauración y la gobernanza forestal indígena en las zonas superpuestas. Un patrón menor señalado para revisión se refiere a la competencia por los recursos, donde la reforestación comercial o la rehabilitación forestal podrían competir con el riego, la infraestructura agrícola y la asignación de agua en los mismos paisajes de cuencas hidrográficas.",
-      "coordination_hint": "La planificación espacial, el trazado de rutas, la zonificación y el uso de salvaguardias e información de seguimiento podrían ayudar a mantener alineadas las acciones de transporte, riego y forestales allí donde se superponen en la cuenca hidrográfica.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PNRF",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 2161,
-    "flagged_count": 23,
-    "contradiction_types": {
-      "delivery_friction": 22,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Vincular los incentivos de REDD+ con la ejecución de la restauración forestal",
-      "reinforce": "Los dos documentos se alinean en gran medida en torno a la restauración y salvaguardia de los bosques mediante mecanismos complementarios como los planes de gestión de áreas protegidas, los corredores biológicos, la restauración ribereña y de cuencas hidrográficas, el monitoreo comunitario, la información y participación públicas, y la educación ambiental. El ENR también tiende a reforzar la ejecución del PNRF mediante herramientas de financiación e implementación, incluidos los pagos por resultados, la valoración de los servicios ecosistémicos, el mercado nacional de carbono, los viveros y las restricciones legales a la minería en territorios REDD+.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando la conservación de ENR, las salvaguardias, la gestión de áreas protegidas, el monitoreo indígena y las medidas contra la deforestación coinciden con el Objetivo 9 del PNRF sobre el desarrollo de la pequeña y mediana industria forestal, porque la implementación podría generar presión sobre los mismos paisajes forestales a menos que el abastecimiento, la zonificación y las salvaguardias sean claros. También se señala una cuestión adicional menor en torno a la reforestación comercial de ENR, incluidas las especies exóticas, que podría generar fricciones en la ejecución con la protección de los bosques naturales y puede competir por la tierra con la restauración de zonas ribereñas, zonas de amortiguamiento, áreas de recarga y corredores biológicos.",
-      "coordination_hint": "Una zonificación clara del uso de la tierra, las exclusiones relativas a las áreas protegidas y las zonas ribereñas, y la alineación entre el apoyo a la industria forestal, la ubicación de las plantaciones y las normas de salvaguardias y contabilidad del carbono de REDD+ podrían ayudar a mantener las fuertes sinergias de restauración, al tiempo que se abordan las áreas señaladas para revisión.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PNSH",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 2899,
-    "flagged_count": 19,
-    "contradiction_types": {
-      "delivery_friction": 19
-    },
-    "synthesis": {
-      "storyline_name": "reforzar el seguimiento y la presión en torno a la infraestructura hídrica",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante medidas habilitadoras sobre la coordinación interinstitucional, los sistemas de seguimiento, la comunicación con las partes interesadas y la capacidad técnica, especialmente cuando la información sobre bosques y cuencas hidrográficas puede compartirse entre REDD+ y la gobernanza del agua. Esto a menudo apunta a un refuerzo práctico mediante el monitoreo forestal, los estudios de recursos hídricos, los datos de alerta temprana, los procesos participativos y la planificación relacionada con las cuencas hidrográficas.",
-      "clash": "Se señala para revisión una posible desalineación recurrente en torno a la Acción 2.3 del PNSH sobre embalses y otras obras de disponibilidad hídrica, que podría generar fricciones en la implementación con las medidas de REDD+ para la conservación de los bosques, la gestión de áreas protegidas, la restauración ribereña y de cabeceras, los pagos por servicios ecosistémicos y la supervisión comunitaria. El mecanismo reaparece como presiones de localización, uso del suelo, régimen hidrológico y salvaguardas en cuencas fluviales compartidas, paisajes protegidos o territorios indígenas, más que como un conflicto de objetivos ya establecido.",
-      "coordination_hint": "La planificación espacial a nivel de cuenca, la revisión compartida de salvaguardias y la coordinación temprana sobre la ubicación de infraestructuras y la gestión de cuencas hidrográficas podrían ayudar a mantener las inversiones en disponibilidad de agua alineadas con las medidas forestales y territoriales de REDD+.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "NP",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "NP (Nature Pledge)",
-    "aligned_count": 1035,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Alinear la gobernanza, la planificación y el seguimiento para la naturaleza",
-      "reinforce": "Los dos documentos presentan una fuerte alineación mediante herramientas compartidas de gobernanza e implementación, especialmente la planificación territorial, la gestión de áreas protegidas, el monitoreo forestal, la reforma de subsidios e incentivos y los sistemas de monitoreo interoperables. Esto se repite en los vínculos entre los planes locales y regionales de adaptación, el fortalecimiento del SINAP, las acciones de deforestación ilegal cero, los observatorios de riesgo climático, los mecanismos de transparencia relacionados con Escazú y los sistemas de información marino-costeros o de biodiversidad, donde la Hoja de Ruta a menudo aporta pasos operativos que refuerzan las metas más amplias del Compromiso con la Naturaleza.",
-      "clash": "Se señala para revisión una posible desalineación en torno al uso del suelo y el espacio de planificación en territorios donde la transformación del sistema agroalimentario en 21 distritos prioritarios puede superponerse con áreas protegidas ampliadas o gestionadas de manera más estricta en el marco del SINAP. La cuestión parece ser una competencia por los recursos sobre la misma base territorial, más que un patrón general en el par de documentos.",
-      "coordination_hint": "La zonificación territorial conjunta, la secuenciación y los criterios compartidos para la selección de distritos y la planificación de áreas protegidas podrían ayudar a gestionar la superposición, preservando al mismo tiempo los vínculos de refuerzo entre la conservación, la adaptación y las acciones en paisajes productivos.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "PEG",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 605,
-    "flagged_count": 83,
-    "contradiction_types": {
-      "delivery_friction": 73,
-      "resource_competition": 10
-    },
-    "synthesis": {
-      "storyline_name": "Alinear la gobernanza de la naturaleza con la implementación del desarrollo territorial",
-      "reinforce": "Los dos documentos suelen estar alineados mediante sistemas habilitadores compartidos, especialmente leyes sobre clima y biodiversidad, plataformas de seguimiento, sistemas de alerta temprana y observatorios de riesgo, arquitectura de financiamiento y planificación interinstitucional que pueden respaldar las áreas protegidas, la restauración, la reducción de plásticos, la gestión responsable del agua y la transición energética. También se repiten pares de refuerzo cuando las acciones de implementación de PEG, como la protección de cuencas hidrográficas, los servicios de gestión de residuos, el gobierno digital y la energía renovable, podrían utilizar herramientas de HR como la priorización territorial, el MRV, la planificación de la adaptación y las normas de conservación.",
-      "clash": "La posible desalineación se señala principalmente cuando las acciones de infraestructura PEG, logística, turismo, vivienda, industria y agroexportación pueden operar en los mismos espacios terrestres, de cuenca, costeros o urbanos que HR prioriza para áreas protegidas, control forestal, restauración, reducción de la contaminación, suelos orgánicos, controles de vida silvestre y planificación de la adaptación local. Un problema recurrente menor es la competencia por recursos en torno a las inversiones en la cuenca del Canal y del Río Indio, donde las reclamaciones sobre embalses, tierra, agua y financiamiento podrían superponerse con los instrumentos de HR para la adaptación, el riesgo climático y el financiamiento de la naturaleza.",
-      "coordination_hint": "La planificación espacial compartida, la zonificación de cuencas hidrográficas, las salvaguardias y el uso de sistemas de seguimiento de HR y de información sobre riesgos en el diseño de proyectos PEG podrían ayudar a mantener las inversiones superpuestas alineadas con los objetivos de conservación y resiliencia.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
+    "doc_a": "CNR",
     "doc_b": "PENCYT",
-    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 467,
-    "flagged_count": 3,
-    "contradiction_types": {
-      "delivery_friction": 3
-    },
+    "aligned_count": 108,
+    "flagged_count": 0,
+    "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Vincular la implementación de la naturaleza con los sistemas facilitadores de STI",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante funciones habilitadoras más que a través de mandatos sectoriales compartidos. Los vínculos recurrentes incluyen la digitalización, el MRV y las plataformas de datos como OSIGA, la investigación y la transferencia de tecnología, las capacidades regionales de STI, los incentivos a la innovación y la divulgación científica que podrían reforzar la restauración, la vigilancia de especies invasoras, la gestión de residuos y plásticos, las líneas de base de los espacios verdes urbanos y los sistemas de alerta temprana.",
-      "clash": "Se señala para revisión una posible desalineación principalmente allí donde la agenda de modernización alimentaria de PENCYT converge con las medidas de HR sobre áreas protegidas, especies prioritarias y la reforma de incentivos relacionados con la biodiversidad. Los puntos recurrentes de fricción apuntan a presiones de implementación en torno a la zonificación del uso de la tierra, la gestión de cuencas hidrográficas, la coexistencia con la vida silvestre y el rediseño de subsidios en paisajes rurales y de piscicultura, a menos que se coordinen las salvaguardias espaciales y los enfoques de producción positivos para la biodiversidad.",
-      "coordination_hint": "La coordinación puede ayudar cuando el apoyo de STI para la modernización del sector alimentario está vinculado a la planificación espacial, las salvaguardias de biodiversidad y los sistemas compartidos de seguimiento, de modo que las trayectorias de innovación también se alineen con los objetivos de conservación y de las cuencas hidrográficas.",
+      "storyline_name": "Apoyo de STI para los sistemas de implementación de REDD+",
+      "reinforce": "En todos los pares alineados, las medidas REDD+ del CNR suelen alinearse con PENCYT como una plataforma habilitadora para la implementación, especialmente mediante la capacidad de investigación, la digitalización, la transferencia de conocimientos y la coordinación del ecosistema de innovación. Esto se repite en torno a funciones concretas como el monitoreo forestal, los sistemas de información sobre salvaguardas, la trazabilidad, la certificación, la detección y gestión de incendios, y el diseño y la ampliación de PIEA y de programas de incentivos inclusivos en la cuenca del Canal y otras cuencas.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "Una coordinación ligera entre los equipos de implementación de REDD+ y los actores de STI podría ayudar a traducir herramientas amplias de PENCYT, como los sistemas digitales, la infraestructura de investigación y los centros territoriales de innovación, en apoyo para instrumentos específicos de uso de la tierra y gestión forestal en el marco del CNR.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "HR",
+    "doc_a": "CNR",
     "doc_b": "PIOTA",
-    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 325,
-    "flagged_count": 20,
-    "contradiction_types": {
-      "delivery_friction": 18,
-      "resource_competition": 2
-    },
-    "synthesis": {
-      "storyline_name": "Vinculación de la planificación de cuencas hidrográficas con herramientas de gobernanza de la naturaleza",
-      "reinforce": "Los dos documentos suelen estar alineados mediante mecanismos de planificación territorial, seguimiento y gobernanza, especialmente cuando HR proporciona metodologías nacionales, arquitectura financiera, planificación de la adaptación, contabilidad de GEI y marcos de participación que PIOTA puede aplicar en la cuenca del Canal. El refuerzo de los vínculos se repite en torno a los planes locales de adaptación, la vegetación protectora y los corredores ecológicos, el seguimiento de los ecosistemas, los instrumentos municipales de uso del suelo y vivienda, y los órganos de participación inclusiva.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión en torno a la construcción y rehabilitación de carreteras de PIOTA en el CHCP, lo que podría generar fricciones en la implementación con medidas de HR sobre mitigación, restauración, áreas protegidas, conservación de especies, control de la deforestación, suelos orgánicos, espacios verdes-azules urbanos, planificación de la adaptación, información sobre riesgos climáticos, financiación de la conservación y salvaguardias de participación relacionadas con Escazú. También aparece un patrón menor de posible competencia por recursos cuando el riego, la reutilización de agua tratada y la expansión productiva en paisajes de cuencas compartidas pueden competir con las prioridades de restauración y conservación por la tierra, el agua y el espacio acuático.",
-      "coordination_hint": "La evaluación espacial conjunta, utilizando criterios de adaptación, conservación, riesgo y participación desde las primeras etapas de las decisiones sobre transporte e irrigación en cuencas hidrográficas, podría ayudar a mantener las dos agendas alineadas entre sí.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "PNRF",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 283,
-    "flagged_count": 3,
-    "contradiction_types": {
-      "delivery_friction": 3
-    },
-    "synthesis": {
-      "storyline_name": "Vincular la restauración forestal con las herramientas de gobernanza de la naturaleza",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante mecanismos de gobernanza de la tierra y la biodiversidad que apoyan la restauración, especialmente el monitoreo forestal, la priorización territorial, los observatorios climáticos y agroclimáticos, la protección de cuencas hidrográficas y corredores, y la restauración de áreas degradadas y deforestadas. Esto a menudo indica que HR proporciona instrumentos habilitadores como marcos jurídicos, sistemas de datos, normas para áreas protegidas y criterios de planificación que refuerzan los objetivos del PNRF en materia de reforestación, restauración ribereña y de zonas de recarga, reconocimiento de los servicios ecosistémicos e investigación forestal.",
-      "clash": "Se señala para revisión una posible desalineación recurrente en torno al Objetivo 9 del PNRF sobre el desarrollo de la industria forestal pequeña y mediana, donde los incentivos a la expansión, el acceso por carretera, el aprovechamiento o la ubicación podrían generar fricciones en la implementación con las medidas de HR sobre la gestión de áreas protegidas, la conservación de especies prioritarias y la reforma de incentivos relacionados con la biodiversidad. El patrón no se plantea como un conflicto directo, pero tiende a repetirse en paisajes forestales donde la zonificación, las salvaguardias para la fauna silvestre y la evaluación de la biodiversidad de las medidas de apoyo determinarían la compatibilidad.",
-      "coordination_hint": "La revisión conjunta del apoyo a la industria forestal, la zonificación de la conservación y los criterios de salvaguardia de la biodiversidad podría ayudar a mantener alineados la restauración y el desarrollo empresarial en los mismos territorios forestales.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "PNSH",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 490,
+    "aligned_count": 82,
     "flagged_count": 6,
     "contradiction_types": {
-      "delivery_friction": 6
-    },
-    "synthesis": {
-      "storyline_name": "Vincular la gobernanza del clima y del agua al revisar la prestación de los embalses",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante sistemas facilitadores para la gobernanza del clima y del agua, incluida la planificación de la adaptación, la alerta temprana y el seguimiento del riesgo, el fortalecimiento institucional, las plataformas de datos y la arquitectura jurídica o de financiación nacional. Esto suele indicar un apoyo compartido a la planificación de cuencas hidrográficas, la prevención del riesgo hídrico, la resiliencia de los servicios y la coordinación participativa, incluso cuando HR se centra en la gobernanza transversal y los ecosistemas y PNSH se centra en la provisión de seguridad hídrica.",
-      "clash": "Se señala para revisión una posible desalineación recurrente en torno a la Acción 2.3 del PNSH sobre embalses, reservas de agua, intervenciones fluviales y siembra de nubes, cuando estas medidas pueden cruzarse con áreas protegidas, especies prioritarias, humedales, suelos orgánicos, ecosistemas costeros aguas abajo y prioridades de adaptación lideradas localmente. La fricción tiende a referirse al emplazamiento, los caudales ambientales, los cambios en los hábitats y en la hidrología, y a la forma en que se aplican las salvaguardias relacionadas con la biodiversidad o las reformas de incentivos en cuencas compartidas.",
-      "coordination_hint": "La planificación conjunta a nivel de cuenca, utilizando de manera conjunta planes de adaptación, zonificación de la conservación y sistemas de seguimiento, podría ayudar a revisar dónde las inversiones en almacenamiento de agua y las salvaguardias de los ecosistemas necesitan una alineación más estrecha.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NP",
-    "doc_b": "PEG",
-    "label_a": "NP (Nature Pledge)",
-    "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 789,
-    "flagged_count": 86,
-    "contradiction_types": {
-      "delivery_friction": 81,
-      "resource_competition": 5
-    },
-    "synthesis": {
-      "storyline_name": "Vinculación de la gobernanza de la naturaleza con la ejecución de infraestructuras",
-      "reinforce": "Los dos documentos suelen alinearse mediante marcos habilitadores, en los que el paquete regulatorio, los sistemas de seguimiento, los planes de adaptación, los controles de la contaminación y las medidas relativas a las áreas protegidas y marino-costeras del Nature Pledge refuerzan las acciones del PEG sobre energía renovable, agua y saneamiento, restauración comunitaria, regulación ambiental y el compromiso internacional unificado de Panamá en materia de naturaleza. Un mecanismo recurrente es que el NP proporciona gobernanza, financiación, datos y salvaguardias, mientras que el PEG aporta plataformas sectoriales de implementación, como medidas de transición energética, restauración costera, sistemas de residuos y saneamiento, redes de actores locales y herramientas regulatorias para el carbono, los créditos de biodiversidad y los servicios ambientales.",
-      "clash": "La fricción recurrente se señala principalmente en torno a la implementación, especialmente cuando la logística de PEG, el Canal, el turismo, la vivienda, la energía y la expansión agroindustrial podrían superponerse con los objetivos del NP sobre la gestión de especies, las áreas protegidas, los corredores biológicos, los humedales y los suelos orgánicos, el control de especies invasoras, la reducción de plásticos, la bioseguridad y la reforma de los subsidios relacionados con la biodiversidad. Un patrón menor de posible competencia por recursos aparece cuando el Canal y la expansión agrícola pueden recurrir a la misma tierra, agua, espacio de cuenca hidrográfica o atención de financiamiento que los instrumentos de adaptación y financiamiento para la naturaleza del NP buscan dirigir hacia resultados de biodiversidad, restauración y resiliencia.",
-      "coordination_hint": "La planificación espacial conjunta, la evaluación a nivel de cuenca hidrográfica y el uso temprano de instrumentos de seguimiento, divulgación, consulta y salvaguardias de NP en la infraestructura PEG y las inversiones productivas podrían ayudar a gestionar la posible desalineación, preservando al mismo tiempo los beneficios compartidos para el clima y la naturaleza.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NP",
-    "doc_b": "PENCYT",
-    "label_a": "NP (Nature Pledge)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 584,
-    "flagged_count": 4,
-    "contradiction_types": {
-      "delivery_friction": 4
-    },
-    "synthesis": {
-      "storyline_name": "Permitir la implementación de la biodiversidad mediante sistemas de STI",
-      "reinforce": "Los documentos se alinean en gran medida entre sí al vincular las acciones en materia de biodiversidad y clima con habilitadores de CTI como la infraestructura de investigación, los sistemas de monitoreo, la digitalización, los polos regionales de innovación, la transferencia de conocimientos y la gobernanza de la bioseguridad. Esto se repite en ámbitos como el monitoreo marino y de humedales, la vigilancia de especies invasoras, la gestión de áreas protegidas, los observatorios de riesgo climático, la vigilancia epidemiológica y las prácticas agroalimentarias sostenibles, donde PENCYT tiende a aportar capacidades, herramientas de datos y mecanismos de coordinación que podrían respaldar la implementación de NP.",
-      "clash": "La posible desalineación recurrente se concentra de manera limitada en el vector de desarrollo alimentario de PENCYT, que se señala para revisión cuando la tecnificación agrícola, la competitividad, la acuicultura o la expansión de la cadena de valor podrían generar fricciones en la implementación con los corredores de restauración, las áreas protegidas, la reforma de subsidios y los objetivos de cero deforestación ilegal. La fricción a menudo apunta a superposiciones en las decisiones de uso del suelo rural, especialmente cuando las medidas de productividad pueden interactuar con las presiones de conversión del suelo o con las reformas de incentivos relacionadas con la biodiversidad.",
-      "coordination_hint": "La coordinación puede ayudar cuando el apoyo de STI a la modernización del sistema alimentario está vinculado a la zonificación del uso de la tierra, las salvaguardias de corredores y bosques, los límites de las áreas protegidas y el diseño de incentivos favorables para la biodiversidad.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NP",
-    "doc_b": "PIOTA",
-    "label_a": "NP (Nature Pledge)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 428,
-    "flagged_count": 18,
-    "contradiction_types": {
-      "delivery_friction": 17,
+      "delivery_friction": 5,
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Vinculación de la planificación de cuencas hidrográficas con los sistemas nacionales de naturaleza",
-      "reinforce": "Los dos documentos se alinean en gran medida mediante herramientas facilitadoras, especialmente sistemas de seguimiento, plataformas geoespaciales y agroclimáticas, planificación de la adaptación, mecanismos de financiación y medidas de gobernanza inclusiva. Esto a menudo apunta a que los inventarios CHCP de PIOTA, el seguimiento de los ecosistemas, las acciones de riego y medios de vida, y las estructuras de participación refuerzan las metas nacionales de NP sobre restauración, resiliencia, producción favorable a la biodiversidad y justicia ambiental.",
-      "clash": "La posible desalineación recurrente se concentra en el Pilar 1.2 del PIOTA sobre movilidad, construcción de carreteras y rehabilitación en la cuenca del Canal, que se señala repetidamente para revisión frente a las metas del NP sobre restauración, áreas protegidas, especies, especies invasoras, reducción de la contaminación, bosques, suelos, adaptación y salvaguardias para defensores. Una cuestión adicional menor se señala para revisión en torno a la asignación de agua y la intensidad de uso, donde los objetivos de cuencas hidrográficas protegidas y aguas continentales podrían competir con el riego, la reutilización de agua tratada y el apoyo a la producción en el marco del Pilar 2.2 del PIOTA.",
-      "coordination_hint": "La planificación espacial conjunta, la revisión del trazado y la zonificación, vinculadas con salvaguardias de cuencas hidrográficas, la evaluación de la biodiversidad y el monitoreo compartido, podrían ayudar a mantener las infraestructuras y las medidas de producción del CHCP alineadas con los objetivos nacionales en materia de naturaleza y adaptación.",
+      "storyline_name": "Alineación de los incentivos para cuencas hidrográficas y la protección de la vegetación",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección en la cuenca hidrográfica del Canal de Panamá mediante el uso sostenible de la tierra basado en incentivos, enfoques de tipo pago por servicios ambientales, restauración, gestión de incendios y protección de corredores ecológicos y de la cobertura vegetal. Un patrón recurrente es que CNR proporciona incentivos comunitarios, restauración, monitoreo y herramientas de gestión forestal que se alinean con las medidas de PIOTA sobre conservación de cuencas hidrográficas, monitoreo de ecosistemas, planificación de la gestión y participación local inclusiva.",
+      "clash": "La principal posible desalineación se repite en torno a la construcción o rehabilitación de carreteras PIOTA en el CHCP, lo que podría aumentar el acceso, la perturbación o la fragmentación en zonas forestales donde el CNR está promoviendo la restauración, la prevención de incendios y los incentivos para el uso sostenible de la tierra. Una segunda posible desalineación, menos frecuente, aparece cuando la infraestructura de riego y producción agrícola podría competir con los objetivos de restauración y conectividad por la tierra o el agua en áreas de cuencas hidrográficas superpuestas.",
+      "coordination_hint": "La planificación espacial conjunta, mediante el uso de trazado de rutas, zonificación, salvaguardias de cuencas hidrográficas y cartografía de corredores, podría ayudar a que las medidas de movilidad, riego y conservación sigan siendo mutuamente complementarias en las áreas de CHCP superpuestas.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "NP",
+    "doc_a": "CNR",
     "doc_b": "PNRF",
-    "label_a": "NP (Nature Pledge)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 347,
-    "flagged_count": 7,
+    "aligned_count": 76,
+    "flagged_count": 1,
     "contradiction_types": {
-      "delivery_friction": 7
+      "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Vincular la restauración y la protección mediante la planificación espacial",
-      "reinforce": "Los documentos suelen alinearse en torno a la restauración forestal, las áreas protegidas, las cuencas hidrográficas, las zonas ribereñas, las zonas de amortiguamiento y los corredores biológicos, y la planificación de la conservación basada en áreas y de la adaptación del NP refuerza los objetivos de restauración y de servicios ecosistémicos del PNRF. Los vínculos recurrentes también apuntan a mecanismos facilitadores como la planificación participativa del uso de la tierra, los planes de gestión de cuencas hidrográficas, la certificación, la información sobre riesgos climáticos y la inclusión de las comunidades locales e indígenas en la restauración y la gobernanza forestal.",
-      "clash": "Se señala una fricción recurrente cuando la expansión de las áreas protegidas por parte de NP, la conservación de especies y la reforma de incentivos seguros para la biodiversidad podrían coincidir con los objetivos de PNRF de ampliar el suministro certificado de materias primas o desarrollar la industria forestal pequeña y mediana en algunos de los mismos paisajes forestales y de cuencas hidrográficas. Los puntos de revisión tienden a centrarse en las decisiones de implementación, especialmente la zonificación entre áreas de conservación y producción, las salvaguardias para los bosques naturales y las especies prioritarias, y la manera en que se estructuran los incentivos forestales.",
-      "coordination_hint": "La planificación espacial compartida, la zonificación y el diseño de incentivos en las áreas protegidas, las cuencas hidrográficas, los sitios de restauración y las cadenas de suministro forestales podrían ayudar a mantener alineadas en la práctica las medidas de conservación y de desarrollo forestal.",
+      "storyline_name": "Incentivos compartidos para la restauración y herramientas de gobernanza forestal",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en la restauración y protección de los bosques mediante mecanismos concretos como los incentivos PIEA, la financiación del Programa Nacional de Restauración, la regeneración nativa y la reforestación, y la prevención y el control de incendios forestales. La alineación también se repite en torno a herramientas facilitadoras, entre ellas el monitoreo, las salvaguardias, la trazabilidad, la certificación y la investigación aplicada, que respaldan los objetivos del PNRF de reducir la deforestación, salvaguardar los bosques naturales, proteger las zonas ribereñas y de amortiguamiento, y mejorar los resultados del sector forestal.",
+      "clash": "Una posible desalineación aparece en una ocasión en torno a la restauración ecológica de CNR y el aumento de las reservas de carbono en áreas protegidas, de amortiguamiento y de conectividad, frente al objetivo de PNRF de desarrollar la industria forestal pequeña y mediana. La nota de revisión sugiere que la compatibilidad podría volverse más difícil de mantener si las actividades orientadas a la producción, el aprovechamiento o la infraestructura conexa se expanden cerca de paisajes de restauración sin una zonificación clara, salvaguardias y normas de gestión forestal sostenible.",
+      "coordination_hint": "La coordinación sobre la zonificación del paisaje, la selección de sitios de restauración, la gestión de incendios y el uso de sistemas de trazabilidad y salvaguardias podría ayudar a mantener alineados los objetivos de restauración, conservación e industria forestal en áreas forestales compartidas.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "NP",
+    "doc_a": "CNR",
     "doc_b": "PNSH",
-    "label_a": "NP (Nature Pledge)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PNSH (Water Security)",
-    "aligned_count": 593,
-    "flagged_count": 11,
+    "aligned_count": 118,
+    "flagged_count": 1,
     "contradiction_types": {
-      "delivery_friction": 10,
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Vincular la gobernanza del paisaje con la planificación de la resiliencia hídrica",
-      "reinforce": "Los dos documentos suelen alinearse mediante la planificación del riesgo climático, la gobernanza de cuencas y los mecanismos de participación, donde las medidas del NP sobre coordinación territorial, participación comunitaria, restauración, alerta temprana y sistemas agroalimentarios sostenibles refuerzan las acciones del PNSH sobre gestión preventiva del riesgo hídrico, sostenibilidad del agua, monitoreo y resiliencia de los servicios. Esto se repite con mayor claridad allí donde las tierras restauradas, los humedales, los suelos y las instituciones de cuenca inclusivas podrían mejorar la regulación hidrológica, respaldar las decisiones sobre el agua y fortalecer la resiliencia del agua y de la infraestructura relacionada.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión en torno a la Acción 2.3 del PNSH sobre embalses, intervenciones fluviales, reservas hídricas agrícolas y obras conexas de disponibilidad de agua, que podrían generar fricciones en la ejecución con las metas del NP sobre áreas protegidas, corredores de restauración, conservación de especies, control de especies invasoras, bosques, humedales e incentivos favorables a la biodiversidad. Un par también señala una posible competencia por los recursos, en la que la expansión de embalses y del suministro de agua podría competir por la tierra y el agua necesarias para la restauración y la conservación en cuencas compartidas.",
-      "coordination_hint": "La planificación a nivel de cuenca, la revisión del emplazamiento, las salvaguardias ambientales y el uso de sistemas de seguimiento de la biodiversidad y de los humedales podrían ayudar a mantener las inversiones en almacenamiento de agua alineadas con los objetivos de restauración y conservación.",
+      "storyline_name": "Gobernanza de cuencas hidrográficas que vincula los bosques y la seguridad hídrica",
+      "reinforce": "En los pares alineados, ambos documentos suelen avanzar en la misma dirección mediante la planificación basada en cuencas hidrográficas, incentivos para el uso de la tierra como PIEA, la restauración forestal y la gestión de incendios, y herramientas de gobernanza del agua como el monitoreo, la actualización de la normativa, la alerta temprana y la coordinación interinstitucional. Esto se repite con mayor claridad allí donde el uso sostenible de la tierra en la cuenca hidrográfica del Canal de Panamá y otras cuencas respalda la sostenibilidad del agua, la prevención del riesgo y una mejor información para gestionar la oferta, la demanda y las necesidades de los ecosistemas.",
+      "clash": "La única posible desalineación identificada en este conjunto se refiere a la competencia por los recursos entre las medidas de uso de la tierra y forestales de REDD+ y las inversiones del PNSH para aumentar la disponibilidad de agua dulce mediante embalses y obras de almacenamiento conexas. Esto apunta a una cuestión local de ubicación y asignación de agua en cuencas compartidas, donde la huella de la infraestructura podría superponerse con áreas destinadas a la conservación, la restauración o la gestión de la tierra basada en incentivos.",
+      "coordination_hint": "La planificación conjunta a nivel de cuenca, utilizando zonificación compartida, información hidrológica y mecanismos de consulta, podría ayudar a alinear las decisiones sobre embalses con las áreas de incentivos para bosques y cuencas hidrográficas.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "PEG",
-    "doc_b": "PENCYT",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 471,
-    "flagged_count": 5,
-    "contradiction_types": {
-      "delivery_friction": 3,
-      "resource_competition": 2
-    },
-    "synthesis": {
-      "storyline_name": "Vincular las capacidades de STI con la modernización de toda la economía",
-      "reinforce": "Los dos documentos se alinean firmemente en torno al fortalecimiento del ecosistema nacional de CTI, incluida la infraestructura de investigación, el capital humano, la transferencia de tecnología y la colaboración entre entidades públicas, empresas, universidades y centros de investigación. Este patrón de refuerzo a menudo se extiende a la digitalización, la innovación en salud, la transformación productiva y los polos regionales de innovación, donde las medidas de implementación del PEG y el marco de CTI del PENCYT podrían reforzar mecanismos compartidos de ejecución.",
-      "clash": "Se señala para revisión un conjunto más reducido de pares en los que la implementación podría generar presión entre la infraestructura o la expansión productiva y los objetivos ambientales o de restauración, especialmente en torno a los corredores logísticos, las obras de agua e infraestructura relacionadas con el Canal y la tecnificación agrícola en paisajes rurales. La competencia por los recursos también reaparece cuando la consolidación fiscal del PEG y un control más estricto del gasto o de los gastos tributarios pueden competir con el impulso de PENCYT a una mayor inversión pública en I+D y a incentivos para la innovación.",
-      "coordination_hint": "Los procesos integrados de presupuestación, planificación del uso de la tierra y salvaguardias ambientales podrían ayudar a vincular las inversiones compartidas en STI con las decisiones sobre infraestructura, agricultura y política fiscal, al tiempo que gestionan la posible desalineación señalada para su revisión.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PEG",
-    "doc_b": "PIOTA",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 291,
-    "flagged_count": 25,
-    "contradiction_types": {
-      "delivery_friction": 24,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Vincular los facilitadores nacionales con la implementación a nivel de cuenca hidrográfica",
-      "reinforce": "Los documentos suelen estar alineados cuando PEG proporciona herramientas nacionales habilitadoras y PIOTA las aplica en la cuenca del Canal, incluida la regulación ambiental, los pagos por servicios ambientales, los datos abiertos, los sistemas digitales, la financiación, las capacidades y la ciencia y la innovación. El refuerzo también se repite en torno a la planificación del uso del suelo para escuelas e instalaciones de salud, la restauración comunitaria, la cobertura vegetal de protección, la movilidad sostenible y medidas de energía o transporte más limpios.",
-      "clash": "La posible desalineación se señala principalmente en torno a fricciones de implementación cuando la infraestructura y las medidas de expansión del PEG, especialmente los corredores logísticos, las obras de fiabilidad del Canal, las carreteras, la vivienda, la energía, el turismo y otras inversiones en el entorno construido, se cruzan con los controles de uso del suelo del PIOTA, los corredores ecológicos, las áreas protegidas, la cobertura vegetal, la protección de cuencas hidrográficas y el monitoreo ambiental en el CHCP. También se señala para revisión una cuestión de competencia por recursos en torno al uso compartido del agua, donde la infraestructura de seguridad hídrica del Canal y el riego agrícola o los usos hidrogeológicos podrían recurrir a los mismos recursos finitos de la cuenca hidrográfica.",
-      "coordination_hint": "La planificación espacial conjunta, el trazado de rutas, la asignación de agua y la concesión gradual de permisos entre los programas nacionales de infraestructura y los instrumentos de uso del suelo y de ecosistemas del CHCP podrían ayudar a preservar los vínculos de refuerzo, al tiempo que se gestionan las presiones de ejecución señaladas.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PEG",
-    "doc_b": "PNRF",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 184,
-    "flagged_count": 31,
-    "contradiction_types": {
-      "delivery_friction": 30,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Vincular la restauración forestal con la gobernanza de las cuencas hidrográficas",
-      "reinforce": "Los documentos suelen estar alineados en torno a la protección de cuencas hidrográficas, la reforestación y la conservación de los bosques naturales, especialmente cuando las acciones de PEG sobre la salvaguardia del agua, las áreas protegidas, la regulación verde, la transición climática y la restauración comunitaria refuerzan los objetivos del PNRF en cuencas productoras de agua, zonas ribereñas, áreas de recarga y tierras degradadas. Un patrón habilitador recurrente es que los datos abiertos de PEG, la modernización de permisos, la administración de tierras, las herramientas de supervisión, los pagos por servicios ambientales y la contabilidad del capital natural podrían respaldar la ejecución, el seguimiento y la financiación de la restauración en el marco del PNRF.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando las medidas PEG relativas a corredores logísticos, expansión agroindustrial, desarrollo turístico, construcción de vivienda y transporte, transmisión de energía, emplazamiento industrial e infraestructura relacionada con el Canal podrían superponerse espacialmente con bosques, tierras degradadas, cuencas hidrográficas, zonas ribereñas, zonas de amortiguamiento y corredores biológicos contemplados por el PNRF. Un patrón adicional es la competencia por los recursos, señalada una vez, en la que la expansión agrícola y la restauración forestal pueden competir por las mismas tierras rurales y recursos de cuencas hidrográficas.",
-      "coordination_hint": "La planificación espacial conjunta, el trazado de corredores, la revisión de la ubicación y las salvaguardias para cuencas hidrográficas y bosques podrían ayudar a mantener la infraestructura PEG y la ejecución del sector productivo alineadas con las áreas de restauración del PNRF.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PEG",
-    "doc_b": "PNSH",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 429,
-    "flagged_count": 14,
+    "doc_a": "ENR",
+    "doc_b": "HR",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "HR (Nature Pledge Roadmap)",
+    "aligned_count": 5743,
+    "flagged_count": 6,
     "contradiction_types": {
       "delivery_friction": 5,
-      "resource_competition": 9
-    },
-    "synthesis": {
-      "storyline_name": "Vinculación de la seguridad hídrica con la ejecución de infraestructuras intersectoriales",
-      "reinforce": "Los dos documentos suelen estar alineados cuando las agendas de infraestructura y servicios del PEG, especialmente agua potable, saneamiento, establecimientos de salud, acceso logístico y modernización del sector público, refuerzan las acciones del PNSH en materia de cobertura de agua, actualización regulatoria, planificación, seguimiento y gestión del riesgo. Un mecanismo recurrente es que el PEG proporciona plataformas de prestación, instituciones, sistemas de datos y canales de inversión, mientras que el PNSH proporciona las normas, estudios, seguimiento e instrumentos de ampliación de servicios específicos del agua que respaldan la implementación.",
-      "clash": "La posible desalineación se señala principalmente allí donde la logística de PEG, la fiabilidad del Canal, la expansión agrícola y algunas acciones ambientales o costeras podrían competir con la asignación de agua dulce, la ubicación de embalses y los objetivos de servicio universal de PNSH en cuencas compartidas y zonas de crecimiento. La fricción en la implementación también se repite en torno a grandes obras de transporte o almacenamiento de agua que pueden cruzarse con el monitoreo hidrológico, las áreas protegidas, las zonas de restauración, los permisos ambientales y las necesidades de caudal aguas abajo.",
-      "coordination_hint": "La planificación integrada de cuencas y espacial, con datos compartidos sobre asignación de agua, revisión de permisos y secuenciación entre las decisiones sobre infraestructura y cuencas hidrográficas, podría ayudar a mantener estas agendas alineadas en los territorios superpuestos.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PENCYT",
-    "doc_b": "PIOTA",
-    "label_a": "PENCYT (Science & Innovation Plan)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 207,
-    "flagged_count": 3,
-    "contradiction_types": {
-      "delivery_friction": 3
-    },
-    "synthesis": {
-      "storyline_name": "Permitir la ejecución a nivel de cuenca hidrográfica mediante herramientas de STI",
-      "reinforce": "Los dos documentos suelen estar alineados, ya que las acciones territoriales de PIOTA se ven reforzadas por los instrumentos transversales de CTI de PENCYT, especialmente la digitalización, la capacidad de investigación, los polos de innovación, la transferencia de conocimiento y la colaboración público-privada. Esto se repite en torno al monitoreo de cuencas hidrográficas, los inventarios de GEI, la planificación del agua y el saneamiento, la edificación y la vivienda sostenibles, la divulgación sobre eficiencia energética, las finanzas para la conservación y la cobertura vegetal, y el riego tecnificado o la reutilización de agua tratada.",
-      "clash": "La posible desalineación recurrente es limitada y se señala para revisión principalmente cuando la construcción o rehabilitación de carreteras de PIOTA en la cuenca hidrográfica podría generar presión ambiental en relación con los principios de sostenibilidad y biodiversidad de PENCYT. Un segundo punto de fricción aparece cuando las medidas de tecnificación agrícola y productividad podrían superponerse con sitios protegidos o corredores ecológicos, planteando cuestiones de coordinación del uso de la tierra.",
-      "coordination_hint": "La planificación espacial, las salvaguardias ambientales y el seguimiento basado en STI podrían ayudar a alinear las decisiones sobre carreteras, agricultura y conservación allí donde las medidas territoriales de PIOTA se cruzan con los objetivos de sostenibilidad de PENCYT.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PENCYT",
-    "doc_b": "PNRF",
-    "label_a": "PENCYT (Science & Innovation Plan)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 159,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
-    "synthesis": {
-      "storyline_name": "Permitir la restauración forestal mediante herramientas de STI",
-      "reinforce": "Los documentos suelen estar alineados con PENCYT al proporcionar instrumentos habilitadores para PNRF, entre ellos la inversión en I+D, la infraestructura de investigación, la transferencia de conocimiento y tecnología, la digitalización y los incentivos a la innovación público-privada que podrían apoyar la reforestación, el monitoreo forestal, la recuperación de suelos y las cadenas de valor forestales. Un vínculo recurrente más sólido aparece cuando PNRF solicita educación forestal, innovación, investigación aplicada y desarrollo de las PYME, lo que refuerza la misión de PENCYT de articular el ecosistema nacional de CTI y transferir la investigación a los sectores productivos.",
-      "clash": "Se señala para revisión una posible desalineación entre la agenda de tecnificación de los sistemas alimentarios rurales de PENCYT y la protección y restauración por parte de PNRF de las zonas ribereñas, las áreas de recarga hídrica, las zonas de amortiguamiento y los corredores biológicos. La fricción parece referirse a la implementación, ya que la intensificación agrícola, los nuevos cultivos o la infraestructura conexa cerca de áreas sensibles podrían complicar la restauración, a menos que las salvaguardias de uso del suelo y la zonificación se coordinen.",
-      "coordination_hint": "La planificación conjunta sobre las prioridades de investigación forestal, el monitoreo digital y las salvaguardias para el uso rural de la tierra podría ayudar a alinear los esfuerzos de innovación agrícola con la restauración en zonas sensibles de cuencas hidrográficas y corredores.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PENCYT",
-    "doc_b": "PNSH",
-    "label_a": "PENCYT (Science & Innovation Plan)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 285,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
-    "synthesis": {
-      "storyline_name": "Integrar las herramientas de STI en la planificación del agua",
-      "reinforce": "Los documentos suelen alinearse mediante mecanismos facilitadores; la financiación de I+D de PENCYT, la infraestructura de investigación, la transferencia de conocimientos y la educación científica pueden apoyar los estudios del PNSH, los proyectos piloto, los sistemas de monitoreo, la alerta temprana y las mejoras de eficiencia en los servicios de agua y saneamiento. Un patrón recurrente es que las capacidades de STI refuerzan la gobernanza del agua y las decisiones sectoriales al mejorar los datos hidrológicos, el análisis de la demanda y de los ecosistemas, la adopción de tecnologías y la capacitación sobre el uso sostenible del agua.",
-      "clash": "Se señaló para revisión una posible desalineación en torno a las medidas de disponibilidad de agua dulce, en las que la expansión de embalses, la conversión de embalses energéticos, la siembra de nubes y los proyectos de almacenamiento a nivel de cuenca podrían generar fricciones en la ejecución con el objetivo ambiental de PENCYT de prevenir el deterioro de la biodiversidad y los recursos naturales. La cuestión parece manejable más que fundamental, y apunta a presiones que pueden surgir durante el diseño de proyectos y la implementación a nivel de cuenca, más que en el plano de la intención general de la política.",
-      "coordination_hint": "Los estudios conjuntos a nivel de cuenca, las salvaguardias ambientales y la planificación compartida de la investigación podrían ayudar a conectar el apoyo a la STI con la infraestructura hídrica y las inversiones en gestión del riesgo, al tiempo que se revisan las medidas de abastecimiento de agua dulce sensibles a la biodiversidad.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PIOTA",
-    "doc_b": "PNRF",
-    "label_a": "PIOTA (Canal Watershed Plan)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 119,
-    "flagged_count": 10,
-    "contradiction_types": {
-      "delivery_friction": 9,
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "reforzando la restauración de cuencas hidrográficas mediante protección e incentivos",
-      "reinforce": "Los dos documentos se alinean en gran medida en torno a la conservación y restauración de la cobertura forestal en paisajes de cuencas hidrográficas, especialmente mediante medidas del PIOTA sobre cobertura vegetal protectora, corredores ecológicos, reglamentaciones de sitios protegidos, monitoreo de ecosistemas y pago por servicios ambientales. Esto a menudo refuerza los objetivos del PNRF sobre reforestación, reducción de la deforestación y la degradación del suelo, protección de los bosques naturales y reconocimiento de los servicios ecosistémicos forestales, con algunos vínculos facilitadores adicionales a través de la gobernanza local, la capacitación y actividades de medios de vida sostenibles como el ecoturismo.",
-      "clash": "La posible desalineación recurrente se señala principalmente para revisión cuando las acciones de movilidad de PIOTA incluyen la construcción o rehabilitación de carreteras en la cuenca del Canal, lo que podría generar fricción en la implementación con los objetivos del PNRF de restauración, protección de los bosques, protección de las zonas ribereñas y corredores biológicos si las rutas se superponen con áreas sensibles o restaurables. También se señala un patrón menor en torno a las medidas de PIOTA sobre riego y uso agrícola del agua que podrían competir por las mismas áreas de recarga, zonas ribereñas y paisajes vinculados a embalses que el PNRF busca proteger y restaurar, así como en torno a la expansión de la industria forestal en interacción con sitios prioritarios protegidos en el CHCP.",
-      "coordination_hint": "La planificación espacial, la zonificación y las salvaguardias en carreteras, zonas de riego, corredores ecológicos y sitios de restauración podrían ayudar a que estos documentos se alineen de manera más coherente allí donde operan en los mismos paisajes de cuencas hidrográficas.",
+      "storyline_name": "Gobernanza territorial compartida para los bosques y las comunidades",
+      "reinforce": "Los dos documentos se alinean en gran medida mediante herramientas de gobernanza territorial, incluidas la reforma jurídica, la arquitectura financiera, los sistemas de seguimiento, la información pública y los mecanismos participativos que involucran a los pueblos indígenas y las comunidades locales. Esto se repite en los vínculos entre las salvaguardas de REDD+, el FPIC, las líneas de base de restauración, la gestión de las áreas protegidas y de los bosques, y las acciones del Nature Pledge sobre incentivos, planificación de la adaptación, gobernanza del Escazú y financiación de largo plazo para la conservación.",
+      "clash": "La recurrente posible desalineación se concentra en un pequeño conjunto de superposiciones de implementación en torno a la reforestación comercial y la expansión del turismo en paisajes sensibles. Estos casos suelen señalar la interacción entre la ubicación de las plantaciones, la elección de especies y el acceso de visitantes, con las prioridades de biodiversidad, el control de la deforestación ilegal o la protección de los suelos orgánicos y los humedales en los mismos territorios.",
+      "coordination_hint": "La zonificación territorial conjunta, los criterios compartidos de biodiversidad y salvaguardias, y el seguimiento vinculado en la reforestación, el turismo, la restauración y las áreas prioritarias para las especies podrían ayudar a mantener la implementación avanzando en la misma dirección.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "PIOTA",
-    "doc_b": "PNSH",
-    "label_a": "PIOTA (Canal Watershed Plan)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 227,
+    "doc_a": "ENR",
+    "doc_b": "NP",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "NP (Nature Pledge)",
+    "aligned_count": 6721,
     "flagged_count": 2,
     "contradiction_types": {
       "resource_competition": 1,
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Alinear la planificación de cuencas hidrográficas con la ampliación de los servicios de agua",
-      "reinforce": "Los dos documentos se alinean en gran medida en torno a la ampliación de los servicios de agua potable y saneamiento, y las mejoras del suministro de agua del CHCP de PIOTA, el Plan Integrado de Saneamiento, la planificación del uso del suelo y la zonificación del riesgo refuerzan las acciones del PNSH sobre la ampliación de la cobertura, las redes de alcantarillado, las plantas de tratamiento y la eficiencia de los servicios. Un segundo patrón recurrente es que las medidas de conservación de cuencas hidrográficas, monitoreo de ecosistemas, comités locales y eficiencia del riego de PIOTA a menudo respaldan la gobernanza del agua, la gestión de la demanda, el monitoreo del riesgo y la creación de consensos del PNSH al mejorar la protección de las fuentes, la participación y los insumos para la planificación.",
-      "clash": "Solo se señala para revisión una posible desalineación limitada. Un caso apunta a competencia por los recursos, donde la expansión del riego y el uso hidrogeológico en la cuenca hidrográfica podrían competir con la cobertura de agua potable por la capacidad finita de la cuenca o del acuífero, y otro apunta a fricción en la implementación, donde la ubicación de embalses e infraestructura hídrica podría superponerse con sitios protegidos o con la planificación de corredores ecológicos.",
-      "coordination_hint": "La planificación espacial conjunta a nivel de cuenca y la revisión de la asignación de agua podrían ayudar a alinear la ampliación de los servicios, la reutilización para riego y las salvaguardias de conservación cuando estén implicadas las mismas fuentes o los mismos sitios.",
+      "storyline_name": "Dependencia compartida de los sistemas de gobernanza ambiental",
+      "reinforce": "Los dos documentos se alinean en gran medida mediante sistemas habilitadores para la implementación ambiental, especialmente el monitoreo, la presentación de informes sobre salvaguardas, la coordinación interinstitucional y la gobernanza participativa. Esto se repite en los vínculos entre el monitoreo forestal de REDD+, las disposiciones sobre salvaguardas y comunicación, y la gestión de áreas protegidas, la restauración, el monitoreo del clima y la biodiversidad, la participación inclusiva y las acciones de bioeconomía sostenible del Nature Pledge.",
+      "clash": "La posible desalineación aparece en un ámbito limitado en torno a la reforestación comercial con especies exóticas. Los casos examinados apuntan a una superposición con la expansión de las áreas protegidas y la prevención de especies invasoras, donde la ubicación de las plantaciones, la elección de especies, la zonificación y las medidas de bioseguridad podrían orientarse en direcciones diferentes si se aplican en los mismos lugares.",
+      "coordination_hint": "La evaluación conjunta del uso de la tierra, la revisión del riesgo para las especies y la alineación entre la planificación de las plantaciones forestales, la zonificación de las áreas protegidas y los controles de especies invasoras podrían ayudar a que estas agendas avancen de manera compatible.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PEG",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PEG (Gov't Strategic Plan)",
+    "aligned_count": 4110,
+    "flagged_count": 517,
+    "contradiction_types": {
+      "delivery_friction": 480,
+      "resource_competition": 37
+    },
+    "synthesis": {
+      "storyline_name": "Gobernanza ambiental que permite la implementación forestal",
+      "reinforce": "En muchos pares alineados, los dos documentos tienden a avanzar en la misma dirección mediante sistemas habilitadores, como el seguimiento y la presentación de informes sobre salvaguardas, los sistemas de información ambiental, la modernización regulatoria, la capacidad de los servicios públicos y los mecanismos de participación comunitaria. Esto a menudo apunta a un apoyo práctico para la implementación de REDD+ mediante medidas PEG sobre la gestión de áreas protegidas, la regulación verde, las redes de actores locales y herramientas más amplias de transparencia y supervisión del sector público.",
+      "clash": "La posible desalineación recurrente se sitúa principalmente en la interfaz entre el uso de la tierra y la infraestructura, donde los corredores logísticos, las inversiones en el Canal y en embalses, la expansión de la vivienda, el desarrollo turístico o el crecimiento agroindustrial podrían superponerse con bosques, manglares, territorios indígenas o paisajes productivos pertinentes para REDD+. Los registros de revisión también señalan, con menor frecuencia, una posible competencia por recursos finitos de tierra y agua, especialmente cuando la infraestructura hídrica de gran escala y los modelos de agricultura orgánica a pequeña escala pueden depender de la misma base de recursos rurales.",
+      "coordination_hint": "La planificación espacial conjunta, el trazado de rutas, la zonificación, la aplicación de salvaguardias y el uso de sistemas de reclamación y seguimiento podrían ayudar a que estas agendas avancen en paralelo allí donde afectan a los mismos territorios.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PENCYT",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 2902,
+    "flagged_count": 15,
+    "contradiction_types": {
+      "resource_competition": 1,
+      "delivery_friction": 14
+    },
+    "synthesis": {
+      "storyline_name": "Apoyo a la innovación para las transiciones rurales basadas en los bosques",
+      "reinforce": "En muchos pares alineados, los dos documentos se alinean entre sí mediante vínculos habilitadores entre la implementación de REDD+ y las herramientas de ciencia, tecnología e innovación, especialmente la transferencia de conocimientos, la inversión en I+D, la digitalización, la trazabilidad y el fortalecimiento de capacidades. Esto suele indicar que los sistemas de CTI apoyan el biocomercio, la bioprospección, el turismo comunitario, la comunicación de salvaguardas, el monitoreo forestal y el fortalecimiento institucional en territorios rurales e indígenas.",
+      "clash": "La posible desalineación recurrente se concentra en torno al vector de Alimentos de PENCYT y las medidas de REDD+ para la protección de los bosques, la gestión de las áreas protegidas, la regulación de los manglares, el monitoreo de los territorios indígenas, la demarcación de tierras y la eliminación de incentivos vinculados a la deforestación. Estos pares suelen señalar geografías rurales y costeras compartidas donde la tecnificación agrícola, la piscicultura o las medidas de productividad podrían competir con los objetivos de conservación forestal o complicar su implementación, a menos que las normas de uso de la tierra y las salvaguardias estén estrechamente alineadas.",
+      "coordination_hint": "El uso conjunto de la zonificación territorial, la evaluación de salvaguardias y la planificación de la innovación sensible a los bosques podría ayudar a que las dos agendas avancen en la misma dirección en las zonas rurales, indígenas y costeras.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PIOTA",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 2332,
+    "flagged_count": 173,
+    "contradiction_types": {
+      "delivery_friction": 164,
+      "resource_competition": 9
+    },
+    "synthesis": {
+      "storyline_name": "Coordinación del uso del suelo en cuencas hidrográficas en torno a los medios de vida basados en los bosques",
+      "reinforce": "Los dos documentos suelen estar alineados en torno a los medios de vida verdes de base comunitaria y la conservación de cuencas hidrográficas, especialmente cuando la capacitación en ENR sobre ecoturismo, agricultura orgánica, biocomercio, monitoreo forestal y mecanismos de pago por servicios ecosistémicos respalda los planes de ecoturismo de PIOTA, la cobertura vegetal protectora, los corredores ecológicos y la planificación local del uso de la tierra en la cuenca del Canal. Un patrón positivo recurrente es que las herramientas de gobernanza de REDD+, como las salvaguardias, la participación de las partes interesadas, la gestión forestal responsable, el MRV de las absorciones y los marcos de financiación relacionados con PES, podrían respaldar las medidas de conservación territorial y producción sostenible de PIOTA.",
+      "clash": "La posible desalineación se repite principalmente en torno a la construcción de carreteras de PIOTA y a la expansión más amplia de la infraestructura en la cuenca del Canal, lo que podría aumentar el acceso, el cambio de uso del suelo o la fragmentación en zonas donde ENR procura la restauración forestal, los corredores biológicos, la gestión de áreas protegidas, las salvaguardias, la contabilidad del carbono y la seguridad territorial indígena. Un patrón recurrente menor se refiere a la expansión del riego y de la producción, donde la competencia por los recursos de tierra o agua podría complicar los objetivos de ENR de conservar los bosques naturales amenazados, a menos que la zonificación y la asignación en la cuenca hidrográfica se mantengan estrechamente alineadas.",
+      "coordination_hint": "La planificación espacial conjunta y la evaluación de salvaguardias para carreteras, la ampliación de servicios, las zonas de restauración y los proyectos comunitarios de medios de vida podrían ayudar a mantener las inversiones en cuencas hidrográficas y la implementación de REDD+ avanzando en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PNRF",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 2187,
+    "flagged_count": 31,
+    "contradiction_types": {
+      "delivery_friction": 31
+    },
+    "synthesis": {
+      "storyline_name": "Incentivos para la conservación de los bosques y ejecución de la restauración",
+      "reinforce": "Los dos documentos se alinean en gran medida en torno a la conservación, restauración y gestión sostenible de los bosques, y los instrumentos de REDD+, como los pagos basados en resultados, los pagos por servicios ecosistémicos, las normas sobre derechos de carbono, los sistemas de contabilidad y registro, y las medidas de participación de las partes interesadas, respaldan los objetivos del PNRF relativos a la protección de los bosques naturales, la restauración de cuencas hidrográficas, los corredores biológicos y la silvicultura sostenible certificada. Un patrón recurrente es que la ENR proporciona mecanismos de gobernanza, financiación, seguimiento e inclusión, mientras que el PNRF proporciona las prioridades paisajísticas y las acciones de restauración y gestión forestal sobre el terreno que esos mecanismos podrían respaldar.",
+      "clash": "La posible desalineación recurrente gira en torno a las opciones de implementación para la expansión de la silvicultura comercial, especialmente la reforestación comercial, las plantaciones incluidas las de especies exóticas, y el desarrollo más amplio de la industria forestal pequeña y mediana, cuando estas se superponen con áreas protegidas, zonas ribereñas y de cabecera, corredores biológicos, manglares, bosques naturales, territorios REDD+, o territorios indígenas. Los pares examinados suelen señalar la ubicación, el abastecimiento, las salvaguardias, el FPIC y la claridad de los límites como los mecanismos concretos a través de los cuales las acciones REDD+ orientadas a la conservación y las actividades forestales orientadas a la producción podrían volverse más difíciles de implementar conjuntamente.",
+      "coordination_hint": "Los arreglos compartidos de zonificación, abastecimiento, salvaguardias y planificación territorial podrían ayudar a mantener las medidas de producción forestal alineadas con las disposiciones de conservación, restauración y participación indígena de REDD+.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PNSH",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 3158,
+    "flagged_count": 14,
+    "contradiction_types": {
+      "delivery_friction": 14
+    },
+    "synthesis": {
+      "storyline_name": "Interacción entre la gobernanza de cuencas hidrográficas y la ubicación de infraestructuras",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de sostenibilidad hídrica mediante la restauración de cuencas hidrográficas, la protección de las zonas de servidumbre hídrica, los planes de gestión de áreas protegidas y un fortalecimiento de la gobernanza y la participación interinstitucionales. La alineación también se repite mediante herramientas facilitadoras como el pago por servicios ecosistémicos, los sistemas de salvaguardias, el monitoreo, la investigación y la participación comunitaria, que pueden respaldar tanto la conservación de los bosques como la gestión de los recursos hídricos.",
+      "clash": "La posible desalineación recurrente se concentra en la Acción 2.3 del PNSH sobre embalses e infraestructura conexa de almacenamiento de agua, que podría superponerse con las prioridades de REDD+ para conservar los bosques naturales, restaurar las zonas ribereñas y los corredores biológicos, y mantener las reservas de carbono forestal. Un segundo patrón recurrente apunta a decisiones de ubicación y ejecución en cuencas fluviales que pueden complicar los límites de las áreas protegidas, la seguridad territorial indígena, la gestión del régimen hidrológico y las restricciones legales en las áreas REDD+ a menos que estas se coordinen desde una etapa temprana.",
+      "coordination_hint": "La planificación espacial conjunta a nivel de cuenca, con salvaguardias, consideraciones sobre los caudales ambientales y consulta temprana sobre territorios protegidos e indígenas, podría ayudar a alinear la ejecución de embalses con los objetivos forestales y de cuencas hidrográficas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "NP",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "NP (Nature Pledge)",
+    "aligned_count": 1055,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Arquitectura nacional compartida de adaptación y seguimiento",
+      "reinforce": "Los dos documentos suelen alinearse mediante sistemas nacionales comunes para la planificación de la adaptación, la observación del riesgo climático y el seguimiento, incluidos los Planes de Adaptación Locales y Regionales, el Sistema Nacional de Monitoreo de la Adaptación y las Pérdidas y Daños, el Observatorio de Riesgo Climático y los mecanismos sectoriales de flujo de datos. La alineación también se repite en torno a herramientas de gobernanza territorial, como las actualizaciones del SINAP, la planificación marino-costera, los sistemas de alerta temprana, las plataformas de transparencia y los marcos financieros o jurídicos que apoyan la implementación del Compromiso con la Naturaleza.",
+      "clash": "Una sola posible desalineación aparece en torno al uso de la tierra en distritos prioritarios, donde la transformación del sistema agroalimentario y la expansión de las áreas protegidas podrían superponerse en los mismos paisajes terrestres, cuencas hidrográficas o zonas de conectividad ecológica. La nota de revisión señala necesidades de coordinación del lado de la implementación en materia de zonificación, salvaguardias y planificación territorial, más que una diferencia directa en los objetivos generales.",
+      "coordination_hint": "La planificación territorial conjunta, las normas compartidas de seguimiento y la alineación temprana de los criterios de zonificación y salvaguardias podrían ayudar a que estos instrumentos avancen en la misma dirección en los paisajes de adaptación, conservación y agroalimentarios.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PEG",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PEG (Gov't Strategic Plan)",
+    "aligned_count": 633,
+    "flagged_count": 87,
+    "contradiction_types": {
+      "delivery_friction": 71,
+      "resource_competition": 16
+    },
+    "synthesis": {
+      "storyline_name": "Sistemas facilitadores intergubernamentales para una implementación ecológica",
+      "reinforce": "En muchos pares alineados, los dos documentos avanzan en la misma dirección mediante sistemas facilitadores, plataformas de datos, marcos jurídicos, capacidad del sector público y mecanismos de financiación y seguimiento. Esto se repite en los vínculos entre el MRV del Nature Pledge, los observatorios, la planificación de la adaptación, la gobernanza de la restauración y la arquitectura de la legislación climática, y la agenda de ciencia e innovación del plan estratégico, la profesionalización del servicio civil, la gestión fiscal, los datos abiertos, la gobernanza del agua y la planificación de la transición verde.",
+      "clash": "La posible desalineación apunta con mayor frecuencia a presiones de implementación en las que la expansión de la infraestructura, la vivienda, la logística, el turismo, la energía o la industria podría superponerse con áreas priorizadas para la restauración, la protección de especies, la adaptación costera, el control forestal, los humedales o los suelos orgánicos. Un segundo patrón recurrente es la competencia por la tierra o el agua en lugares donde las áreas protegidas, los corredores de restauración, los sistemas marino-costeros o la conservación de cuencas hidrográficas pueden cruzarse con la expansión agroindustrial o con la infraestructura hídrica principal vinculada al Canal.",
+      "coordination_hint": "La planificación espacial conjunta, los datos ambientales compartidos y el uso temprano de procedimientos de consentimiento, zonificación y salvaguardias podrían ayudar a que estas agendas avancen de manera conjunta, especialmente en zonas costeras, paisajes forestales, territorios indígenas y cuencas hidrográficas estratégicas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PENCYT",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 486,
+    "flagged_count": 2,
+    "contradiction_types": {
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Los sistemas de innovación como apoyo facilitador para la implementación de la naturaleza",
+      "reinforce": "En todos los pares alineados, el PENCYT suele alinearse con el HR al proporcionar herramientas habilitadoras en lugar de mandatos compartidos de implementación, especialmente mediante la inversión en I+D, la digitalización, la transferencia de conocimientos y vínculos más sólidos entre entidades públicas, empresas, universidades y centros de investigación. Esto se repite en torno a las necesidades del HR de sistemas de monitoreo, observatorios, MRV, alerta temprana, vigilancia epidemiológica, ordenamiento territorial y arreglos de financiamiento y gobernanza para la biodiversidad, la adaptación y la producción sostenible.",
+      "clash": "El reducido número de posible desalineación se repite en torno al vector de desarrollo alimentario, donde la modernización agrícola y de la piscicultura puede superponerse con áreas protegidas, cuencas hidrográficas estratégicas o la reforma de incentivos y subsidios orientada a la biodiversidad. La cuestión parece ser una superposición en el plano de la implementación en espacios rurales y acuáticos compartidos, donde las medidas de productividad y los criterios de conservación o de evaluación de la biodiversidad podrían apuntar en distintas direcciones operativas si no se coordinan.",
+      "coordination_hint": "La evaluación conjunta de las agendas de innovación del sector alimentario, la zonificación y el diseño de incentivos en función de criterios de conservación de HR, cuencas hidrográficas y biodiversidad podría ayudar a mantener la implementación avanzando en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PIOTA",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 337,
+    "flagged_count": 28,
+    "contradiction_types": {
+      "delivery_friction": 26,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "La planificación de cuencas hidrográficas posibilitada por marcos nacionales",
+      "reinforce": "En muchos pares alineados, HR tiende a proporcionar instrumentos nacionales de gobernanza, datos, riesgo y conservación que apoyan la ejecución de PIOTA en la cuenca del Canal, incluido el Observatorio de Riesgo Climático, metodologías de planes de adaptación, acuerdos de flujo de datos, mecanismos de participación relacionados con Escazú y criterios de conservación para bosques, suelos orgánicos, humedales y especies prioritarias. PIOTA a menudo se alinea con estos al traducirlos en planificación del uso del suelo basada en el territorio, monitoreo de ecosistemas, corredores ecológicos, cobertura vegetal, planificación del agua y el saneamiento, y medidas locales de medios de vida o fortalecimiento de capacidades en el CHCP.",
+      "clash": "La posible desalineación recurrente se concentra en el Pilar 1.2 del PIOTA sobre movilidad sostenible y construcción o rehabilitación de carreteras en el CHCP, lo que podría complicar los objetivos de HR sobre planificación informada por el riesgo, protección de hábitats y especies, control de la deforestación, reducción de la contaminación, gestión de especies invasoras y gobernanza ambiental participativa en el mismo territorio amplio. También aparece un patrón menor en torno al riego y al uso productivo del agua en el Pilar 2.2 del PIOTA, que podría competir con los objetivos de conservación y de gestión estratégica de cuencas hidrográficas de HR por el agua y el espacio de gestión.",
+      "coordination_hint": "El uso de cribado espacial compartido, zonificación de cuencas hidrográficas, datos de observatorios y de alerta temprana, y procesos de participación temprana podría ayudar a mantener las medidas de transporte, riego, conservación y adaptación orientadas en la misma dirección en las áreas CHCP superpuestas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PNRF",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 287,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 5
+    },
+    "synthesis": {
+      "storyline_name": "Restauración forestal mediante planificación territorial compartida",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando HR proporciona herramientas concretas de planificación y gobernanza, como la actualización del Programa Nacional de Restauración Forestal, métodos de planificación de la adaptación a nivel local y regional, gestión de áreas protegidas y corredores, y disposiciones de datos y seguimiento, mientras que PNRF establece objetivos de restauración, conservación, cuencas hidrográficas y del sector forestal en esos mismos paisajes. Un patrón recurrente es que HR aporta zonificación, líneas de base, indicadores, coordinación jurídica o institucional y priorización territorial que podrían ayudar a operacionalizar los objetivos de PNRF para zonas ribereñas, áreas de recarga, corredores biológicos, tierras degradadas y bosques naturales.",
+      "clash": "La posible desalineación se repite principalmente en torno al Objetivo 9 del PNRF sobre la industria forestal pequeña y mediana, donde la expansión forestal o las medidas de apoyo podrían coincidir con las disposiciones del HR sobre áreas protegidas, especies nativas prioritarias, reforma de incentivos positiva para la biodiversidad y protección de suelos orgánicos. Los casos examinados suelen señalar cuestiones de implementación relativas al emplazamiento, la zonificación, las salvaguardias, el abastecimiento y la gestión sensible a las especies en paisajes compartidos de bosques y cuencas hidrográficas, más que una división fundamental de políticas.",
+      "coordination_hint": "La zonificación conjunta, los criterios de salvaguardia y la alineación de indicadores entre las medidas de restauración, conservación y silvicultura-industria podrían ayudar a mantener una implementación coherente en las áreas protegidas, los corredores, las cuencas hidrográficas y los paisajes de suelos con alto contenido de carbono.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PNSH",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 498,
+    "flagged_count": 6,
+    "contradiction_types": {
+      "delivery_friction": 6
+    },
+    "synthesis": {
+      "storyline_name": "Gobernanza compartida de cuencas hidrográficas y planificación de infraestructuras",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante la planificación a escala de cuenca hidrográfica, la información sobre riesgos climáticos, el monitoreo de los recursos hídricos, las actualizaciones regulatorias y el fortalecimiento institucional. La alineación también se repite cuando la reducción de la contaminación, la gestión de áreas protegidas o de cuencas hidrográficas, y la planificación de la adaptación respaldan la sostenibilidad del agua, la prevención de riesgos y decisiones más informadas sobre infraestructura y servicios.",
+      "clash": "La posible desalineación recurrente se concentra en torno a la Acción 2.3 del PNSH sobre el aumento de la disponibilidad de agua dulce mediante embalses e infraestructura conexa de abastecimiento. En varios pares, estas opciones de implementación podrían cruzarse de manera problemática con las prioridades de HR relativas a la planificación sectorial de bajas emisiones, las áreas protegidas y las cuencas hidrográficas estratégicas, las especies prioritarias, los suelos orgánicos y los humedales, los incentivos sensibles a la biodiversidad y la financiación de la conservación en las mismas cuencas o paisajes.",
+      "coordination_hint": "La planificación a nivel de cuenca, las evaluaciones compartidas de viabilidad y emplazamiento, y las salvaguardias comunes en materia ambiental y de emisiones podrían ayudar a alinear estas agendas allí donde la infraestructura de almacenamiento de agua se superpone con las prioridades de conservación, mitigación o restauración.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PEG",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PEG (Gov't Strategic Plan)",
+    "aligned_count": 807,
+    "flagged_count": 87,
+    "contradiction_types": {
+      "delivery_friction": 75,
+      "resource_competition": 12
+    },
+    "synthesis": {
+      "storyline_name": "Gobernanza ambiental intersectorial y uso de la tierra",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante instrumentos de gobernanza facilitadores, entre ellos la regulación de la transición ecológica, los sistemas de datos abiertos y seguimiento, la participación comunitaria, la financiación ambiental y la gestión de residuos y cuencas hidrográficas. En todos los pares alineados, las metas del NP sobre conservación de especies, restauración, adaptación, reducción de residuos y uso sostenible se alinean con las medidas del PEG sobre gestión de áreas protegidas, programas de restauración, servicios hídricos y modernización regulatoria.",
+      "clash": "La posible desalineación se repite cuando las inversiones en infraestructura PEG, logística, vivienda, turismo, energía, expansión agrícola y abastecimiento de agua del Canal pueden superponerse con los objetivos del NP relativos a las áreas protegidas, la restauración costera y de humedales, los hábitats de las especies, la protección de los bosques y la reforma de subsidios compatible con la biodiversidad. Un segundo patrón recurrente es la competencia por los recursos compartidos de tierra, agua y cuencas hidrográficas, especialmente en torno a las obras relacionadas con el Canal, como el probable embalse de Río Indio, y en paisajes priorizados para la adaptación, la conservación o las transiciones agroalimentarias sostenibles.",
+      "coordination_hint": "La planificación espacial conjunta, la revisión a nivel de cuenca hidrográfica y el uso de instrumentos de seguimiento, participación y salvaguardias de NP en el diseño de proyectos PEG podrían ayudar a mantener las inversiones superpuestas y las medidas de conservación como mutuamente complementarias.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PENCYT",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 593,
+    "flagged_count": 2,
+    "contradiction_types": {
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "La ciencia y la innovación como facilitadores ambientales",
+      "reinforce": "En todos los pares alineados, PENCYT a menudo respalda a NP mediante facilitadores de alcance sistémico, como la inversión en I+D, la transferencia de conocimientos y tecnología, la digitalización y la integración del ecosistema de CTI. Esto tiende a vincularse con las necesidades de implementación de NP en materia de sistemas de monitoreo, plataformas de transparencia, regulación de la bioseguridad, observatorios de riesgo climático, soluciones de economía circular y gestión sostenible de especies, residuos y áreas protegidas.",
+      "clash": "La posible desalineación recurrente aparece en la producción rural y la modernización del sistema alimentario, donde las medidas de productividad, tecnificación y competitividad de PENCYT pueden superponerse espacialmente con los objetivos de NP sobre la expansión de las áreas protegidas y la deforestación ilegal cero. Los casos examinados señalan riesgos de implementación en torno a la planificación del uso de la tierra, la localización, la gestión de cuencas hidrográficas y zonas de pesca, y las salvaguardias forestales, más que diferencias en los objetivos nacionales declarados.",
+      "coordination_hint": "La planificación conjunta del uso de la tierra y la innovación, vinculando el apoyo a la STI con la zonificación de las áreas protegidas, las salvaguardias forestales y los criterios de sostenibilidad, podría ayudar a que estas agendas avancen en la misma dirección durante la implementación.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PIOTA",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 432,
+    "flagged_count": 26,
+    "contradiction_types": {
+      "delivery_friction": 25,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Planificación de cuencas hidrográficas vinculada a la gobernanza de la naturaleza",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante la planificación, el seguimiento y la financiación que conectan los objetivos nacionales de naturaleza con la acción en la Cuenca del Canal, por ejemplo el seguimiento de los ecosistemas, los corredores ecológicos, la planificación de la adaptación, los sistemas de información sobre riesgos climáticos y la financiación para la restauración y la protección. La alineación también se repite cuando las medidas de PIOTA sobre regulación municipal, saneamiento, eficiencia energética y producción sostenible pueden apoyar los objetivos del NP en materia de reducción de la contaminación, resiliencia y gestión de la tierra sensible a la biodiversidad.",
+      "clash": "La posible desalineación se repite principalmente en torno al Pilar 1.2 del PIOTA sobre movilidad y construcción de carreteras en la Cuenca del Canal, donde el trazado y la ocupación de tierras podrían cruzarse con los objetivos del NP en materia de restauración, áreas protegidas, corredores biológicos, humedales, bosques, control de especies invasoras, participación comunitaria y planificación de la adaptación. Una cuestión recurrente menor se refiere a las medidas de riego y producción del PIOTA en la cuenca, que podrían crear posible desalineación con la ampliación de áreas protegidas y la zonificación para la conservación del NP allí donde se superpongan los usos del suelo o del agua.",
+      "coordination_hint": "La planificación espacial conjunta para la cuenca del Canal, utilizando sistemas de seguimiento de NP, zonificación de la conservación, procesos de consulta y normas de salvaguardia en el diseño del transporte y el riego de PIOTA, podría ayudar a mantener la implementación avanzando en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PNRF",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 355,
+    "flagged_count": 4,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Gobernanza compartida de la restauración y conservación de los bosques",
+      "reinforce": "Los dos documentos se alinean en gran medida en torno a la restauración de tierras degradadas, la conservación de los bosques naturales, la protección de las zonas ribereñas, las zonas de amortiguamiento y los corredores biológicos, y la mejora de la gestión de los paisajes protegidos. Este patrón a menudo también apunta a mecanismos habilitadores compartidos, incluida la coordinación interinstitucional, los marcos jurídicos y regulatorios, la inclusión y las salvaguardias para las comunidades, el control de especies invasoras y la investigación y la educación que apoyan la restauración de bosques y cuencas hidrográficas.",
+      "clash": "Una posible desalineación recurrente aparece allí donde la expansión de las áreas protegidas del NP y la reforma de los incentivos para la biodiversidad coinciden con los objetivos del PNRF de ampliar el suministro de materias primas forestales y la actividad de la industria forestal pequeña y mediana. En paisajes forestales, cuencas hidrográficas o áreas de alto valor ecológico superpuestos, la zonificación del uso de la tierra, el acceso para la gestión y el diseño de subsidios y de la restauración orientada a la producción podrían requerir una coordinación cuidadosa.",
+      "coordination_hint": "La zonificación espacial compartida, la separación clara entre las áreas de protección estricta y las áreas de producción, y la alineación de los incentivos forestales con criterios de biodiversidad podrían ayudar a que estas agendas avancen en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PNSH",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 596,
+    "flagged_count": 11,
+    "contradiction_types": {
+      "delivery_friction": 10,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Dependencia compartida de la información sobre el agua y el clima",
+      "reinforce": "Los documentos suelen estar alineados mediante herramientas de seguimiento, datos y planificación, incluidas plataformas agroclimáticas y geoespaciales, sistemas de seguimiento de la adaptación, sistemas de alerta temprana y estudios sobre recursos hídricos. También avanzan en la misma dirección cuando los planes de adaptación basados en cuencas hidrográficas, los caudales ambientales, la educación y las medidas de gobernanza apoyan la seguridad hídrica y los resultados para la naturaleza en los mismos territorios.",
+      "clash": "Una posible desalineación recurrente se centra en la Acción 2.3 del PNSH, donde los embalses, las intervenciones fluviales, la siembra de nubes y la ampliación del almacenamiento de agua podrían superponerse con áreas protegidas, corredores ecológicos, humedales, bosques, hábitats de especies nativas y sistemas costeros-humedales aguas abajo. Un par también señala una posible competencia por la tierra y los recursos de agua dulce en cuencas compartidas donde la restauración y la conservación de corredores coinciden con nueva infraestructura hídrica.",
+      "coordination_hint": "La planificación a nivel de cuenca, los criterios compartidos para la ubicación y la gestión de caudales, y la vinculación del monitoreo de la biodiversidad con el diseño de la infraestructura hídrica podrían ayudar a que estas agendas se apoyen mutuamente de manera más coherente.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PENCYT",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 476,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Modernización impulsada por la innovación en toda la infraestructura y los servicios",
+      "reinforce": "En los pares alineados, PEG suele alinearse con PENCYT mediante un patrón habilitador recurrente: PEG crea plataformas concretas de implementación en digitalización, energía, agua, logística, agricultura, educación y gestión ambiental, mientras que PENCYT aporta instrumentos de CTI como inversión en I+D, vínculos con el ecosistema de innovación, transformación digital, capacidad de investigación y cultura científica. Esto se repite con mayor claridad allí donde ambos documentos avanzan en la misma dirección en materia de digitalización de toda la economía, colaboración entre productores y universidades en la innovación agroempresarial, y el uso de datos, sensores, modelización y capacidad técnica para apoyar las acciones en agua, energía, logística y conservación.",
+      "clash": "Los registros de posible desalineación son pocos, pero se agrupan en torno a dos mecanismos. Un patrón apunta a que las opciones de implementación para la logística, el Canal, los embalses y la infraestructura conexa podrían no encajar plenamente con los objetivos de sostenibilidad ambiental y gobernanza de los recursos naturales de PENCYT, y otro apunta a la competencia por recursos compartidos, especialmente el espacio presupuestario público para un mayor gasto en I+D y la asignación de agua vinculada a las operaciones del Canal y a la modernización agroalimentaria.",
+      "coordination_hint": "La planificación conjunta en torno al diseño de infraestructuras, la asignación de cuencas hidrográficas, las salvaguardias ambientales y la presupuestación a medio plazo podría ayudar a mantener la agenda compartida de modernización alineada con la STI, la sostenibilidad y las limitaciones de recursos.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PIOTA",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 295,
+    "flagged_count": 40,
+    "contradiction_types": {
+      "delivery_friction": 36,
+      "resource_competition": 4
+    },
+    "synthesis": {
+      "storyline_name": "Infraestructura de la cuenca del canal y gestión ambiental",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando las herramientas nacionales habilitadoras apoyan la implementación a nivel de cuenca, especialmente la regulación ambiental, los pagos por servicios ambientales, los datos abiertos, la planificación fiscal, el desarrollo de capacidades y la adopción de tecnología. Un vínculo recurrente claro es que los instrumentos nacionales de PEG sobre financiación para la conservación, restauración, gobernanza digital, energía y capacitación se alinean con las acciones de CHCP de PIOTA sobre cobertura vegetal protectora, monitoreo de ecosistemas, producción sostenible, vivienda y medios de vida locales.",
+      "clash": "La posible desalineación reaparece cuando la expansión de infraestructura respaldada por PEG, incluidos corredores logísticos, carreteras, vivienda, redes energéticas, instalaciones turísticas e inversiones en agua del Canal, se superpone con los controles de uso del suelo de PIOTA, los corredores ecológicos, las áreas protegidas, el monitoreo de ecosistemas y las medidas de eficiencia hídrica en el CHCP. Un patrón menor pero repetido también apunta a una posible desalineación en torno a demandas compartidas sobre el agua finita de la cuenca hidrográfica y la capacidad de planificación, particularmente entre las inversiones en abastecimiento del Canal y las acciones de PIOTA sobre riego, agua potable, control de descargas y uso productivo de embalses.",
+      "coordination_hint": "La planificación integrada de cuencas y del uso de la tierra, con coordinación temprana del trazado, la ubicación, la asignación de agua y la revisión ambiental, podría ayudar a que ambos documentos apoyen la implementación en los mismos espacios de la cuenca del Canal.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PNRF",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 205,
+    "flagged_count": 33,
+    "contradiction_types": {
+      "delivery_friction": 31,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Restauración de cuencas hidrográficas posibilitada por la gobernanza verde",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando PEG proporciona instrumentos facilitadores para PNRF, especialmente leyes de transición verde, herramientas de gestión ambiental, sistemas de supervisión y verificación, normas sobre créditos de carbono y biodiversidad, pagos por servicios ambientales, y capacidad en ciencia, tecnología e innovación. La alineación también se repite en torno a la restauración de cuencas hidrográficas, los servicios ecosistémicos forestales, la restauración basada en la comunidad y el desarrollo del sector forestal, donde la financiación, la investigación, las herramientas digitales y la capacidad del sector público de PEG pueden respaldar los objetivos de recuperación forestal y de suelos sobre el terreno de PNRF.",
+      "clash": "La posible desalineación se repite principalmente en la implementación, donde la infraestructura PEG y las medidas de uso del suelo para corredores logísticos, obras hídricas del Canal y el embalse de Río Indio, expansión de la vivienda y del transporte, desarrollo turístico, transmisión de energía y localización industrial podrían superponerse con bosques, suelos degradados, zonas ribereñas, áreas de recarga, zonas de amortiguamiento de áreas protegidas y corredores biológicos contemplados por el PNRF. Un patrón menor de posible desalineación aparece en torno a la competencia por los recursos, donde la expansión agrícola o el crecimiento de la vivienda podrían competir con la reforestación, la conservación forestal y la restauración por tierras y agua finitas en los mismos territorios.",
+      "coordination_hint": "La planificación espacial conjunta a nivel de cuenca hidrográfica y de corredor, con criterios compartidos de ubicación y salvaguardias ambientales, podría ayudar a que las inversiones PEG y la restauración del PNRF avancen en los mismos paisajes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PNSH",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 443,
+    "flagged_count": 16,
+    "contradiction_types": {
+      "resource_competition": 8,
+      "delivery_friction": 8
+    },
+    "synthesis": {
+      "storyline_name": "Gobernanza integrada del agua para el crecimiento y la resiliencia",
+      "reinforce": "Los documentos suelen alinearse en torno a la seguridad hídrica como un sistema habilitador para la adaptación al clima, los servicios domésticos y la actividad productiva, utilizando mecanismos compartidos como la protección de cuencas hidrográficas, el monitoreo hidrometeorológico, la gestión de la demanda, las actualizaciones regulatorias y el fortalecimiento institucional. Esto se repite con mayor claridad allí donde las acciones de PEG en materia de clima, gobernanza ambiental, vivienda y salvaguardias del agua respaldan las medidas de PNSH sobre disponibilidad de agua dulce, expansión del saneamiento, gestión del riesgo y sostenibilidad hídrica.",
+      "clash": "La posible desalineación se repite allí donde las acciones logísticas, del Canal, agrícolas y de conservación del PEG se cruzan con la agenda de abastecimiento de agua y embalses del PNSH, especialmente por la competencia por el agua finita de la cuenca, la capacidad de la infraestructura o los sitios adecuados. Un segundo patrón recurrente apunta a complicaciones de ejecución cuando los corredores de transporte, los embalses, las áreas protegidas, las zonas de restauración y un otorgamiento más estricto de permisos ambientales operan en las mismas cuencas hidrográficas o zonas de amortiguamiento.",
+      "coordination_hint": "La planificación conjunta a nivel de cuenca sobre la asignación del agua, la ubicación de la infraestructura, las salvaguardias ambientales y la secuenciación de las principales inversiones podría ayudar a que ambos documentos avancen en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PENCYT",
+    "doc_b": "PIOTA",
+    "label_a": "PENCYT (Science & Innovation Plan)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 218,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Apoyo de STI para la ejecución de la gestión de cuencas hidrográficas",
+      "reinforce": "En todos los pares alineados, PENCYT suele alinearse con PIOTA al proporcionar herramientas de ciencia, innovación, capacidad de investigación y participación ciudadana que pueden respaldar acciones en cuencas hidrográficas como el monitoreo de ecosistemas, los planes de gestión, la educación ambiental, los inventarios de GHG, el análisis del riego y las campañas de eficiencia energética. Un segundo patrón recurrente es que la agenda de desarrollo inclusivo e innovación sectorial de PENCYT tiende a avanzar en la misma dirección que las inversiones territoriales de PIOTA en planificación del uso del suelo, servicios básicos, movilidad, centros de formación y producción sostenible, principalmente mediante sistemas de datos, capacidad técnica y adopción del conocimiento.",
+      "clash": "Una posible desalineación aparece en el conjunto de revisión, en torno a la construcción y rehabilitación de carreteras de PIOTA en la Cuenca del Canal junto con el énfasis de PENCYT en prevenir el deterioro de la biodiversidad y de los recursos naturales. Esto apunta a un riesgo del lado de la implementación, en el que las obras de transporte en una cuenca hidrográfica sensible podrían debilitar los objetivos ambientales, a menos que la planificación espacial, las salvaguardias y el diseño eficiente en el uso de los recursos estén estrechamente conectados.",
+      "coordination_hint": "La coordinación podría ayudar cuando las capacidades de investigación, seguimiento y divulgación científica de PENCYT se vinculen desde una etapa temprana con la infraestructura de PIOTA, la conservación y los instrumentos de planificación local, especialmente en áreas ambientalmente sensibles.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PENCYT",
+    "doc_b": "PNRF",
+    "label_a": "PENCYT (Science & Innovation Plan)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 175,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Apoyo de STI para la ejecución de la restauración forestal",
+      "reinforce": "El patrón recurrente es que los instrumentos de CTI de PENCYT, especialmente la infraestructura de investigación, el desarrollo del capital humano, la transferencia de conocimiento y tecnología, la digitalización y los polos regionales de innovación, se alinean con los objetivos de restauración forestal y gestión forestal sostenible del PNRF. Esto a menudo apunta a un apoyo práctico para la reforestación, la recuperación de suelos degradados, la restauración de cuencas hidrográficas y zonas ribereñas, el suministro forestal certificado y la investigación forestal aplicada mediante herramientas de monitoreo, sistemas de trazabilidad y la transferencia de la investigación hacia el uso productivo.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "La coordinación podría ayudar a conectar los mecanismos intersectoriales de investigación y transferencia de tecnología de PENCYT con las necesidades de implementación específicas del sector forestal del PNRF, especialmente en lo que respecta a la investigación aplicada, el despliegue regional y los sistemas de certificación o monitoreo.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PENCYT",
+    "doc_b": "PNSH",
+    "label_a": "PENCYT (Science & Innovation Plan)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 286,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Sistemas de innovación que apoyan la prestación de la seguridad hídrica",
+      "reinforce": "En muchos pares, el PENCYT se alinea con el PNSH al proporcionar instrumentos habilitadores para la seguridad hídrica, especialmente inversión en I+D, transferencia de conocimiento y tecnología, digitalización y agendas de innovación sectorial que podrían mejorar el monitoreo, la planificación, la eficiencia del tratamiento, los servicios de saneamiento y la gestión del riesgo. Un segundo vínculo recurrente se da a través de la salud pública, la sostenibilidad y la capacidad institucional, donde la investigación orientada a la CTI, la divulgación y la modernización intersectorial apoyan la gobernanza del agua, la ampliación de los servicios y la toma de decisiones basada en evidencia.",
+      "clash": "La única posible desalineación identificada en este conjunto se relaciona con la infraestructura de disponibilidad de agua dulce en el marco del PNSH, en particular los embalses, las intervenciones fluviales y la siembra de nubes, junto con el vector ambiental de PENCYT centrado en la protección de la biodiversidad y los recursos naturales. Esto a menudo apunta a una cuestión a nivel de implementación en torno a cómo se ubica y gestiona la expansión del suministro de agua en ecosistemas que también son prioridades para el trabajo de CTI orientado a la conservación.",
+      "coordination_hint": "La planificación conjunta sobre las prioridades de innovación en materia de agua, las salvaguardias ambientales y el intercambio de datos para la ubicación de infraestructuras y el seguimiento de los recursos podría ayudar a que estos documentos avancen de manera más coherente en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PIOTA",
+    "doc_b": "PNRF",
+    "label_a": "PIOTA (Canal Watershed Plan)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 129,
+    "flagged_count": 11,
+    "contradiction_types": {
+      "delivery_friction": 10,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Restauración de cuencas hidrográficas mediante la gestión forestal y de la tierra",
+      "reinforce": "Los dos documentos se alinean en gran medida en torno a la protección y restauración de los paisajes de cuencas hidrográficas mediante la cobertura vegetal, la reforestación, los corredores ecológicos, las zonas ribereñas y de recarga, y la gestión de áreas protegidas. Un mecanismo recurrente es que PIOTA proporciona herramientas territorializadas como el pago por servicios ambientales, el monitoreo de ecosistemas, los planes de gestión, la capacitación comunitaria y las regulaciones de protección, mientras que PNRF proporciona los objetivos nacionales de restauración y conservación forestal que esas herramientas pueden respaldar.",
+      "clash": "La principal posible desalineación recurrente se refiere a las acciones de movilidad del PIOTA, especialmente la construcción y rehabilitación de carreteras en la cuenca del Canal, que se cruzan con los objetivos del PNRF de restauración forestal, conservación de bosques naturales, corredores biológicos y cuencas productoras de agua. Un problema recurrente menor aparece cuando la protección de corredores ecológicos del PIOTA podría superponerse con el apoyo del PNRF a la pequeña y mediana industria forestal, particularmente si la tierra, el suministro de biomasa o la infraestructura de acceso se impulsan en los mismos paisajes.",
+      "coordination_hint": "La planificación espacial, las decisiones sobre trazado y las salvaguardias compartidas para las carreteras, las áreas de corredores y las zonas de uso forestal podrían ayudar a que estos documentos avancen en la misma dirección allí donde coinciden la restauración y la infraestructura o la actividad forestal.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PIOTA",
+    "doc_b": "PNSH",
+    "label_a": "PIOTA (Canal Watershed Plan)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 226,
+    "flagged_count": 7,
+    "contradiction_types": {
+      "delivery_friction": 6,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Servicios integrados de cuencas hidrográficas y gestión del riesgo",
+      "reinforce": "Los documentos se alinean en gran medida en torno a la ampliación de los servicios de agua, el saneamiento, la eficiencia y la resiliencia de las cuencas hidrográficas en la cuenca del Canal, utilizando instrumentos concretos como la modernización de los sistemas de agua potable, la planificación del saneamiento, la reducción de fugas, el control de vertidos, el monitoreo de los ecosistemas y los sistemas de alerta temprana. Un patrón recurrente es que las medidas territoriales de uso del suelo, conservación e infraestructura de PIOTA respaldan los objetivos nacionales de seguridad hídrica de PNSH al mejorar la protección de las fuentes, la gestión del riesgo, la gobernanza participativa y la base de información para la asignación del agua y la prestación de servicios.",
+      "clash": "La posible desalineación se repite principalmente allí donde las obras viales y de movilidad de PIOTA en la cuenca del Canal podrían complicar los objetivos hídricos del PNSH mediante su ubicación, la escorrentía, la alteración del suelo, los efectos sobre el drenaje y la presión adicional sobre la protección de las fuentes o la gestión del agua dulce. Un problema recurrente de menor magnitud se refiere a la competencia por el mismo recurso hídrico finito, donde el riego, la reutilización de agua tratada y la ampliación de la cobertura de agua potable pueden depender de suministros e infraestructura superpuestos en la misma cuenca hidrográfica.",
+      "coordination_hint": "La planificación espacial conjunta, los datos compartidos sobre cuencas hidrográficas y la coordinación temprana entre las inversiones en transporte, conservación, riego y servicios de agua podrían ayudar a gestionar las superposiciones en zonas sensibles.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -679,16 +678,16 @@
     "doc_b": "PNSH",
     "label_a": "PNRF (Forest Restoration)",
     "label_b": "PNSH (Water Security)",
-    "aligned_count": 177,
+    "aligned_count": 178,
     "flagged_count": 2,
     "contradiction_types": {
       "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Vinculación de la restauración forestal con la seguridad hídrica de las cuencas hidrográficas",
-      "reinforce": "Los dos documentos se alinean en gran medida en torno a la protección de cuencas hidrográficas, especialmente cuando la restauración del PNRF de zonas ribereñas, áreas de recarga, suelos degradados y cuencas productoras de agua refuerza las acciones del PNSH sobre disponibilidad de agua, agua potable, saneamiento, monitoreo y sostenibilidad hídrica. Un mecanismo recurrente es que la cobertura forestal, la recuperación de suelos y la protección de los bosques naturales tienden a apoyar la infiltración, el control de la erosión, la calidad del agua en las fuentes, la regulación de caudales y la base empírica para la planificación hídrica y la gestión hidrometeorológica.",
-      "clash": "Se señala para revisión una posible desalineación limitada en torno a la Acción 2.3 del PNSH sobre embalses y otras infraestructuras de almacenamiento de agua. En las cuencas hidrográficas superpuestas, la ubicación de embalses y las obras conexas podrían generar fricciones en la ejecución con los objetivos del PNRF de salvaguardar los bosques naturales y proteger las zonas ribereñas y de recarga, especialmente cuando están involucrados paisajes fluviales o protegidos.",
-      "coordination_hint": "La planificación conjunta de cuencas hidrográficas, incluida la revisión compartida del emplazamiento, los estudios de recursos hídricos y las salvaguardias forestales y ribereñas, podría ayudar a mantener los vínculos de refuerzo al tiempo que se gestiona la fricción de implementación señalada en torno a la infraestructura de almacenamiento.",
+      "storyline_name": "Complementariedad entre la restauración de cuencas hidrográficas y la seguridad hídrica",
+      "reinforce": "El patrón recurrente es que la restauración forestal, la conservación de los bosques naturales y la protección de las zonas ribereñas y de recarga se alinean con las acciones de seguridad hídrica al respaldar la función de las cuencas, la regulación del agua, la calidad del agua, el control de la erosión y la reducción del riesgo climático. Esto a menudo apunta a una complementariedad entre la gestión de cuencas hidrográficas basada en la naturaleza en los instrumentos PNRF y PNSH, tales como los estudios de disponibilidad de agua, la gestión de la demanda, la ampliación del saneamiento, el monitoreo del riesgo, el fortalecimiento institucional y las actualizaciones regulatorias.",
+      "clash": "Una posible desalineación recurrente más acotada aparece en torno a la Acción 2.3 del PNSH, donde los embalses y otras infraestructuras de abastecimiento de agua en cuencas fluviales podrían superponerse con bosques naturales, zonas ribereñas, áreas de recarga y corredores biológicos que el PNRF procura salvaguardar o restaurar. La cuestión tiende a estar relacionada con la implementación más que con los objetivos, especialmente cuando la ubicación, el cambio de uso del suelo o las obras a nivel de cuenca pueden afectar las mismas áreas de la cuenca hidrográfica.",
+      "coordination_hint": "La planificación conjunta a nivel de cuenca sobre la ubicación de infraestructuras, los estudios hidrológicos y las salvaguardias ambientales podría ayudar a armonizar el desarrollo de embalses con las prioridades de restauración forestal y ribereña.",
       "confidence": "high"
     },
     "synthesis_error": null
