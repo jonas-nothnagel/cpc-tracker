@@ -6,7 +6,7 @@ to [`../METHODOLOGY.md`](../METHODOLOGY.md), which explains the "why". For the
 document → targets extraction phase that produces the input, see
 [`EXTRACTION_PIPELINE.md`](EXTRACTION_PIPELINE.md).
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched); updated 2026-07-03: active taxonomy set (`config.ACTIVE_TAXONOMIES`) reduced to IPCC sectors, GLOBE, and GGA — NBS paused; updated 2026-07-06: sector synthesis now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched); updated 2026-07-03: active taxonomy set (`config.ACTIVE_TAXONOMIES`) reduced to IPCC sectors, GLOBE, and GGA — NBS paused; updated 2026-07-06: sector synthesis now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis reworked — evidence tables, 3+3 noun-phrase themes with pathways and anchors, disjoint friction counts, per-theme aggregates, shared style validator (`synthesis_style.py`), expanded precompute states, and `scripts/rerun_synthesis.py` for surgical re-runs. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
 
 The whole run is orchestrated by **`run_analysis.py`** as eight stages (`TOTAL_STEPS = 8`). Steps 6 and 7 run only when the relevant data exists. Every LLM call is cached on disk by a hash of `{system_prompt, user_prompt, model}`, namespaced per step, so re-running with the same inputs and model costs nothing.
 
@@ -132,10 +132,16 @@ Budget programmes (name, description, multi-year expenditure) become pseudo-targ
 
 ## Step 8: Synthesis Layer
 
-- **Scripts:** `synthesize_doc_pairs.py`, `synthesize_corpus.py`, `synthesize_by_sector.py`, states by `synthesis_states.py`
-- **Writes:** `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` (+ `.{lang}.json` variants)
+- **Scripts:** `synthesize_doc_pairs.py`, `synthesize_corpus.py`, `synthesize_by_sector.py`, states by `synthesis_states.py`, shared style rules in `synthesis_style.py`
+- **Writes:** `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` (+ `.{lang}.json` variants via `scripts/translate_snapshots.py`)
 
-Three LLM passes turn the pairwise verdicts into short, hedged storylines: per document-pair, country-wide (corpus), and per sector within each lens. Coordination hints are process pointers only and always hedged. Syntheses are pre-computed for every document include/exclude state the dashboard filter can reach, so nothing runs at view time.
+Three LLM passes turn the pairwise verdicts into short, hedged themes: per document-pair, country-wide (corpus), and per sector within each lens. Theme and storyline names are 5–9 word noun phrases (they name a recurring pattern, never an action to take).
+
+The corpus pass receives deterministic **evidence tables** computed from the scored pairs before the LLM call (per-document misalignment shares, top document pairs and targets, the greedy ≥50 %-cover target set matching the frontend's `computeTargetConcentration`, contested resources) and returns at most 3 alignment + 3 potential-misalignment themes, each with a one-sentence hedged `pathway` and `anchor_target_ids` copied verbatim from the tables. Potential-misalignment themes claim **disjoint** doc pairs, so their `pair_count` is exact and non-overlapping (each flagged link counted once under its dominant theme); alignment-theme counts remain coverage. Each theme carries bounded `aggregates` (doc shares, top targets, contested resources, mechanisms, primary sector tags); the payload carries `schema_version: 2` and `validation_warnings`.
+
+`synthesis_style.py` enforces the vocabulary guardrails on all synthesis prose (no tension/contradiction/friction/conflict, no should/must, no em dashes, no imperative-verb names): one corrective retry per violating response, then deterministic sanitization — style never crashes a run. Coordination hints and pathways are process pointers only, always hedged, and may name documents but never ministries, agencies, or individual actors.
+
+Precomputed states now cover the full corpus, every single-document-hidden state (corpora ≤ 10 documents), the default-hidden states, and the briefing-default combination (defaultHidden ∪ secondary doc types); other subsets regenerate lazily via `/api/storyline-state`. The dashboard live-recomputes all displayed theme counts from the visible pairs and never shows the persisted `pair_count`. `scripts/rerun_synthesis.py` re-runs this step surgically (doc-pair + corpus with states) without touching extraction, classification, alignment, or sector synthesis.
 
 ---
 

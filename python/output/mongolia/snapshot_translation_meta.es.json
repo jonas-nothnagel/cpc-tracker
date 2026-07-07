@@ -29,12 +29,12 @@
     "LULUCF",
     "OECM"
   ],
-  "runDate": "2026-06-30T16:04:12.277296+00:00",
+  "runDate": "2026-07-06T14:38:12.982284+00:00",
   "cacheNamespace": "snapshot_translation_es",
   "files": {
     "corpus_themes.json": {
       "items": 6,
-      "fieldsTranslated": 13,
+      "fieldsTranslated": 165,
       "emptyFallbacks": 0,
       "numericDriftFlags": []
     },
@@ -51,6 +51,6 @@
       "numericDriftFlags": []
     }
   },
-  "totalFieldsTranslated": 257,
+  "totalFieldsTranslated": 409,
   "totalNumericDriftFlags": 0
 }

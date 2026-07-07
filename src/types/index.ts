@@ -372,19 +372,46 @@ export interface DocPairSynthesis {
   synthesis_error: string | null;
 }
 
-/** One storyline in the corpus-level briefing. */
+/** Bounded deterministic per-theme breakdowns (schema v2). Persisted for
+ *  pipeline/chat/diagnostics; display surfaces live-recompute instead. */
+export interface CorpusStorylineAggregates {
+  /** Polarity-matched cross-doc pairs inside the theme's doc pairs. */
+  pair_total: number;
+  doc_shares: { doc: string; count: number; share: number }[];
+  top_targets: { id: string; count: number }[];
+  sector_tags: { taxonomy: string; category_id: string; count: number }[];
+  /** Friction themes only. */
+  contested_resources?: { resource: string; count: number }[];
+  /** Friction themes only. */
+  mechanisms?: Record<string, number>;
+}
+
+/** One theme ("storyline") in the corpus-level briefing. */
 export interface CorpusStoryline {
   name: string;
   type: "reinforcement" | "friction";
   description: string;
+  /** One hedged process-pointer sentence for the drill-down drawer (schema v2). */
+  pathway?: string;
   /** Canonical "DocA<->DocB" strings; the corpus augmenter resolves human labels back to doc-ids. */
   contributing_doc_pairs: string[];
   confidence: "high" | "medium" | "low";
   unknown_doc_pairs?: string[];
-  /** Deterministic: sum of aligned + flagged counts across contributing doc-pairs. */
+  /**
+   * Deterministic, from the pipeline run's document set. Friction (schema v2):
+   * flagged pairs across the theme's disjoint doc pairs, exact and
+   * non-overlapping. Reinforcement: aligned pairs across the cited doc pairs
+   * (coverage; doc pairs may repeat across reinforcement themes). Display
+   * surfaces never trust this for counts: they live-recompute from the
+   * visible alignment so document toggling stays exact.
+   */
   pair_count: number;
   /** Deterministic: sorted unique doc-ids the storyline spans. */
   spans_documents: string[];
+  /** Target ids copied verbatim from the evidence tables (schema v2); the
+   *  drawer pins them in its target list. */
+  anchor_target_ids?: string[];
+  aggregates?: CorpusStorylineAggregates;
 }
 
 /** Corpus-level briefing: a few high-level storylines + a 3-4 sentence summary. */
@@ -392,6 +419,9 @@ export interface CorpusThemes {
   storylines: CorpusStoryline[];
   summary_paragraph: string;
   doc_pair_count: number;
+  /** 2 = theme synthesis rework (noun-phrase names, pathway, anchors, aggregates). */
+  schema_version?: number;
+  validation_warnings?: string[];
 }
 
 /** One synthesis per (taxonomy_type, category_id) with sufficient signal. */

@@ -4,7 +4,7 @@
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis produces up to 3+3 noun-phrase themes grounded in deterministic evidence tables, with disjoint counting for potential-misalignment themes, per-theme aggregates, a style validator with corrective retry, and expanded precomputed visibility states — see the Step 8 section. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
 
 ---
 
@@ -250,17 +250,21 @@ The adapted prompt frames the comparison as policy-target vs. reported-measure (
 
 ## Step 8: Synthesis Layer
 
-**Purpose:** Turn the pairwise verdicts into short, hedged storylines a non-technical reader can grasp, without writing extended AI narrative.
+**Purpose:** Turn the pairwise verdicts into short, hedged themes a non-technical reader can grasp, without writing extended AI narrative.
 
 **Method:** Three LLM passes summarise the alignment results:
 
-- **Document-pair synthesis** (`synthesize_doc_pairs.py`) — for each pair of document types with enough signal, a one-line storyline plus brief reinforce / clash / coordination-hint text.
-- **Corpus synthesis** (`synthesize_corpus.py`) — country-level cross-cutting storylines and a short summary paragraph.
+- **Document-pair synthesis** (`synthesize_doc_pairs.py`) — for each pair of document types with enough signal, a noun-phrase storyline name plus brief alignment / possible-misalignment / coordination-hint text.
+- **Corpus theme synthesis** (`synthesize_corpus.py`) — up to three themes where documents consistently align and up to three themes of potential misalignment, each a 5–9 word noun phrase (naming a recurring pattern, never an instruction) with a one-sentence hedged pathway and anchor targets, plus a short summary paragraph. Before the LLM call the step computes deterministic **evidence tables** directly from the scored pairs — per-document misalignment shares, the most-affected document pairs and targets, the smallest target set covering ≥50 % of pairs identified for review, and a contested-resource histogram — and the model must trace every theme (and copy its anchor targets verbatim) from those tables and the doc-pair syntheses. Fewer themes than three per side is a valid outcome; the model is told never to pad.
 - **Sector synthesis** (`synthesize_by_sector.py`) — per-category storylines within each taxonomy lens.
 
-Coordination hints are process pointers only and are always hedged ("could", "may"); they never prescribe ministry- or sector-specific action. Syntheses for each document include/exclude combination the dashboard filter can reach are pre-computed (`synthesis_states.py`) so no LLM runs at view time.
+**Counts and validation.** Themes of potential misalignment claim **disjoint** document pairs, so each flagged link is counted once under the theme that best explains it; alignment-theme counts are coverage (their cited document pairs may overlap). Each theme also carries bounded deterministic aggregates (per-document shares, top targets, contested resources, mechanisms, primary-classification sector tags). A style validator enforces the vocabulary guardrails (no "tension"/"contradiction"/"friction"/"conflict", no "should"/"must", no em dashes, no imperative-verb theme names); violations trigger one corrective retry and then deterministic sanitization, recorded in `validation_warnings`. Corpus payloads carry `schema_version: 2`.
 
-**Output:** `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` (with `.{lang}.json` variants when a non-English `--language` is used).
+Pathways and coordination hints are process pointers only and are always hedged ("could", "may"); they may name documents but never ministries, agencies, or individual actors. Syntheses for the document include/exclude states users actually reach — the full corpus, every single-document-removed state (for corpora of up to 10 documents), the default-hidden states, and the briefing-default combination — are pre-computed (`synthesis_states.py`) so no LLM runs at view time; other subsets regenerate lazily via `/api/storyline-state`.
+
+**On-page counts are browser-computed.** The dashboard never displays a theme's persisted `pair_count`; every count shown is recomputed live from the scored pairs under the current document selection, so removing a document immediately shrinks every number it touched.
+
+**Output:** `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` (with `.{lang}.json` variants generated by `scripts/translate_snapshots.py`).
 
 ---
 
@@ -306,7 +310,7 @@ The dashboard computes several aggregate views from the raw data:
 | Synthesis | a small fixed number of passes per document-set state |
 | Derived metrics | 0 (computed locally in the frontend) |
 
-The two dominant costs are classification (targets × taxonomy breadth) and alignment (cross-document pairs), both of which grow with the target count. Per-analysis cost therefore depends on the model and the breadth of the active taxonomies; with `gpt-4o-mini` in development it is on the order of a few US dollars.
+The two dominant costs are classification (targets × taxonomy breadth) and alignment (cross-document pairs), both of which grow with the target count. Per-analysis cost therefore depends on the model and the breadth of the active taxonomies: indicatively a few US dollars per country on a small development model (e.g. `gpt-4o-mini`), and tens of US dollars on the production model (Azure `gpt-5.4`), where a full single-country run is dominated by the alignment pass.
 
 **Caching:** All LLM calls are cached by a hash of `{system_prompt, user_prompt, model}`, namespaced per step (and per `--language`). Re-running with the same inputs and model uses cached results with zero API calls; a cold-run canary warns when the cache will recompute at full cost.
 

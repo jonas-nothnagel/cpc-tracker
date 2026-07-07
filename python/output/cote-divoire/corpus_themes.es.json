@@ -1,12 +1,20 @@
 {
   "storylines": [
     {
-      "name": "Vincular la restauración con la implementación de la biodiversidad y el clima",
+      "name": "Sistemas integrados de planificación del uso de la tierra y restauración",
       "type": "reinforcement",
-      "description": "Se repite un patrón sólido en torno a la restauración de tierras degradadas, la ampliación o mejora de la cobertura forestal y el uso de la gestión sostenible de la tierra para reforzar tanto los resultados en materia de biodiversidad como la resiliencia climática. La restauración forestal, la reducción de la conversión y las ganancias de productividad basadas en los ecosistemas tienden a alinearse en los documentos sobre degradación de la tierra, naturaleza y clima.",
+      "description": "En LDN<->NBT y LDN<->NDC, los documentos a menudo avanzan en la misma dirección mediante la restauración de tierras degradadas, la expansión de la cobertura forestal, la agroforestería y los controles del uso de la tierra que conectan los resultados de la restauración con los objetivos climáticos y de biodiversidad. El patrón está respaldado por la planificación espacial, los enfoques basados en ecosistemas y las metas de restauración que vinculan la gestión del paisaje con el secuestro de carbono y los resultados en materia de biodiversidad.",
+      "pathway": "La alineación de indicadores y el cribado espacial compartido en LDN, NBT y NDC podrían ayudar a mantener una visión común de dónde están teniendo lugar la restauración, la expansión forestal y la gestión de las tierras agrícolas.",
       "contributing_doc_pairs": [
         "LDN<->NBT",
         "LDN<->NDC"
+      ],
+      "anchor_target_ids": [
+        "LDN_1",
+        "LDN_7",
+        "NBT_8",
+        "NBT_11",
+        "NBT_19"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
@@ -15,110 +23,739 @@
         "LDN",
         "NBT",
         "NDC"
-      ]
+      ],
+      "aggregates": {
+        "pair_total": 739,
+        "doc_shares": [
+          {
+            "doc": "LDN",
+            "count": 739,
+            "share": 1.0
+          },
+          {
+            "doc": "NDC",
+            "count": 612,
+            "share": 0.8281
+          },
+          {
+            "doc": "NBT",
+            "count": 127,
+            "share": 0.1719
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "LDN_7",
+            "count": 150
+          },
+          {
+            "id": "LDN_1",
+            "count": 148
+          },
+          {
+            "id": "LDN_3",
+            "count": 107
+          },
+          {
+            "id": "LDN_2",
+            "count": 96
+          },
+          {
+            "id": "LDN_4",
+            "count": 94
+          },
+          {
+            "id": "LDN_5",
+            "count": 90
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 72
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 57
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 32
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 69
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 44
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_6",
+            "count": 24
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 42
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_energy",
+            "count": 41
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 41
+          }
+        ]
+      }
     },
     {
-      "name": "Utilizar herramientas de gobernanza para reforzar la implementación",
+      "name": "Integración de la biodiversidad mediante la gobernanza y los incentivos",
       "type": "reinforcement",
-      "description": "Las medidas facilitadoras, como la integración de políticas, la capacidad de las partes interesadas, los sistemas de datos, la tenencia de la tierra, la gobernanza del agua, el monitoreo hidroclimático y la gobernanza forestal, se repiten como mecanismos que podrían apoyar la implementación en todas las agendas. Esto indica que la coherencia de la implementación se ve reforzada no solo por objetivos compartidos, sino también por sistemas institucionales y de información compartidos.",
+      "description": "Un patrón recurrente de alineación vincula la integración de la biodiversidad en las políticas y los planes con los incentivos, la participación del sector privado, la financiación y herramientas de gobernanza más amplias. Esto se observa con mayor fuerza cuando los instrumentos NBT respaldan vías de implementación que también sirven a la restauración de la tierra y a la acción climática, incluida la incorporación transversal, los incentivos positivos y los mecanismos de financiación.",
+      "pathway": "Una correspondencia de las medidas de gobernanza, incentivos y financiación en NBT, LDN y NDC podría ayudar a mantener las herramientas de implementación orientadas en la misma dirección en todos los sectores.",
       "contributing_doc_pairs": [
         "LDN<->NBT",
-        "LDN<->NDC",
         "NBT<->NDC"
+      ],
+      "anchor_target_ids": [
+        "NBT_5",
+        "NBT_16",
+        "NBT_18",
+        "NBT_21",
+        "NBT_12"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 3451,
+      "pair_count": 2839,
       "spans_documents": [
         "LDN",
         "NBT",
         "NDC"
-      ]
+      ],
+      "aggregates": {
+        "pair_total": 2839,
+        "doc_shares": [
+          {
+            "doc": "NBT",
+            "count": 2839,
+            "share": 1.0
+          },
+          {
+            "doc": "NDC",
+            "count": 2712,
+            "share": 0.9553
+          },
+          {
+            "doc": "LDN",
+            "count": 127,
+            "share": 0.0447
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NBT_9",
+            "count": 182
+          },
+          {
+            "id": "NBT_5",
+            "count": 181
+          },
+          {
+            "id": "NBT_15",
+            "count": 179
+          },
+          {
+            "id": "NBT_7",
+            "count": 166
+          },
+          {
+            "id": "NBT_16",
+            "count": 163
+          },
+          {
+            "id": "NBT_18",
+            "count": 163
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 80
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 59
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 34
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 80
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 47
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_6",
+            "count": 31
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 49
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_energy",
+            "count": 44
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 42
+          }
+        ]
+      }
     },
     {
-      "name": "Integrar las acciones climáticas en los marcos de la naturaleza",
+      "name": "Reducción de la contaminación y gestión resiliente de los ecosistemas",
       "type": "reinforcement",
-      "description": "Las medidas climáticas sobre la gestión forestal, la alerta temprana de incendios, la agroforestería, el tratamiento de aguas residuales, la acuicultura y el control de la deforestación en áreas protegidas tienden a alinearse con marcos más amplios de naturaleza sobre los servicios ecosistémicos, la restauración, la gestión de áreas protegidas y la gestión sostenible de la tierra y el agua. Esto se repite como una vía práctica para que la implementación de la acción climática se lleve a cabo dentro de sistemas sensibles a la biodiversidad.",
+      "description": "NBT<->NDC muestra un patrón amplio en el que las inversiones relacionadas con el clima y las medidas de gestión ambiental apoyan el estado de los ecosistemas mediante el tratamiento de aguas residuales, la gestión sostenible de la pesca, la alerta temprana de incendios y enfoques orientados a la resiliencia. La misma dirección también aparece a través de las NbS, la producción y el consumo sostenibles, y medidas que reducen las presiones sobre los ecosistemas y la salud humana.",
+      "pathway": "El seguimiento conjunto del estado de los ecosistemas, los indicadores de contaminación y los resultados de resiliencia en el marco de NBT y NDC puede proporcionar un punto de partida práctico para rastrear los efectos compartidos de la implementación.",
       "contributing_doc_pairs": [
-        "NBT<->NDC",
-        "LDN<->NDC",
+        "NBT<->NDC"
+      ],
+      "anchor_target_ids": [
+        "NBT_9",
+        "NBT_14",
+        "NBT_15",
+        "NBT_11",
+        "NBT_7"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 2712,
+      "spans_documents": [
+        "NBT",
+        "NDC"
+      ],
+      "aggregates": {
+        "pair_total": 2712,
+        "doc_shares": [
+          {
+            "doc": "NBT",
+            "count": 2712,
+            "share": 1.0
+          },
+          {
+            "doc": "NDC",
+            "count": 2712,
+            "share": 1.0
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NBT_5",
+            "count": 175
+          },
+          {
+            "id": "NBT_9",
+            "count": 175
+          },
+          {
+            "id": "NBT_15",
+            "count": 172
+          },
+          {
+            "id": "NBT_7",
+            "count": 160
+          },
+          {
+            "id": "NBT_16",
+            "count": 157
+          },
+          {
+            "id": "NBT_18",
+            "count": 157
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 80
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 54
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 32
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 80
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 44
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_6",
+            "count": 30
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 49
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_energy",
+            "count": 44
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 35
+          }
+        ]
+      }
+    },
+    {
+      "name": "Recuperación de tierras agrícolas y áreas de biodiversidad",
+      "type": "friction",
+      "description": "La posible desalineación más recurrente se refiere a la recuperación de tierras desnudas para la producción agrícola y a los aumentos de la productividad agrícola, cuando la misma base territorial también puede ser importante para áreas de importancia ecológica, hábitats de especies amenazadas, áreas protegidas o prioridades de espacios verdes urbanos. La evidencia apunta principalmente a decisiones de ubicación, zonificación y salvaguardias, más que a objetivos incompatibles en principio.",
+      "pathway": "La revisión conjunta de límites y la zonificación sensible a la biodiversidad entre LDN y NBT podrían ayudar a aclarar dónde las vías de recuperación agrícola pueden superponerse con áreas ecológicamente importantes.",
+      "contributing_doc_pairs": [
         "LDN<->NBT"
       ],
-      "confidence": "high",
-      "unknown_doc_pairs": [],
-      "pair_count": 3451,
-      "spans_documents": [
-        "LDN",
-        "NBT",
-        "NDC"
-      ]
-    },
-    {
-      "name": "Aprovechar la planificación espacial para gestionar la superposición",
-      "type": "reinforcement",
-      "description": "La planificación espacial integrada, la zonificación y la evaluación preliminar reaparecen en todas las síntesis como mecanismos comunes para mantener alineadas la restauración, la agricultura, la conservación y las inversiones climáticas. El énfasis reiterado sugiere que estas herramientas son fundamentales para gestionar paisajes compartidos donde convergen múltiples objetivos.",
-      "contributing_doc_pairs": [
-        "LDN<->NBT",
-        "LDN<->NDC",
-        "NBT<->NDC"
+      "anchor_target_ids": [
+        "LDN_6",
+        "NBT_19",
+        "NBT_6",
+        "NBT_13",
+        "NBT_8"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 3451,
+      "pair_count": 16,
       "spans_documents": [
         "LDN",
-        "NBT",
-        "NDC"
-      ]
+        "NBT"
+      ],
+      "aggregates": {
+        "pair_total": 16,
+        "doc_shares": [
+          {
+            "doc": "NBT",
+            "count": 16,
+            "share": 1.0
+          },
+          {
+            "doc": "LDN",
+            "count": 16,
+            "share": 1.0
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "LDN_6",
+            "count": 13
+          },
+          {
+            "id": "LDN_5",
+            "count": 3
+          },
+          {
+            "id": "NBT_6",
+            "count": 2
+          },
+          {
+            "id": "NBT_13",
+            "count": 2
+          },
+          {
+            "id": "NBT_19",
+            "count": 2
+          },
+          {
+            "id": "NBT_4",
+            "count": 1
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 13
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 2
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_5",
+            "count": 4
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_8",
+            "count": 3
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 3
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 9
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 6
+          }
+        ],
+        "contested_resources": [
+          {
+            "resource": "land",
+            "count": 15
+          },
+          {
+            "resource": "space",
+            "count": 1
+          }
+        ],
+        "mechanisms": {
+          "delivery_friction": 11,
+          "resource_competition": 5
+        }
+      }
     },
     {
-      "name": "Señalar las presiones de expansión e intensificación agrícolas",
+      "name": "Reclamaciones contrapuestas sobre las tierras rurales en los bosques",
       "type": "friction",
-      "description": "La posible desalineación se señala repetidamente para revisión cuando la recuperación de tierras agrícolas degradadas, la conversión de tierras desnudas, el riego, las obras hidroagrícolas, el arroz, la ganadería u otras medidas de productividad aumentan la presión sobre la tierra o el agua. Estos casos tienden a señalar fricciones en la implementación cuando las mismas zonas también pueden ser priorizadas para la restauración, la recuperación de especies amenazadas, las áreas protegidas o la reforestación.",
+      "description": "Una segunda posible desalineación recurrente se refiere a la competencia por la tierra rural entre las medidas de recuperación o productividad agrícola y la expansión forestal, las reservas, las áreas de restauración o los límites a la conversión forestal. Este patrón es prominente en LDN<->NDC y es coherente con la evidencia de que la tierra es el recurso objeto de disputa con mayor frecuencia, y de que los bosques también reaparecen como un punto de presión compartido.",
+      "pathway": "La clasificación compartida de la tierra y la zonificación espacial en LDN y NDC podrían ayudar a distinguir las áreas destinadas a la mejora agrícola, la restauración forestal y las medidas forestales orientadas a la conservación.",
       "contributing_doc_pairs": [
-        "LDN<->NBT",
-        "LDN<->NDC",
-        "NBT<->NDC"
+        "LDN<->NDC"
+      ],
+      "anchor_target_ids": [
+        "LDN_6",
+        "LDN_3",
+        "LDN_5",
+        "LDN_2",
+        "NDC_124"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 128,
+      "pair_count": 41,
       "spans_documents": [
         "LDN",
-        "NBT",
         "NDC"
-      ]
+      ],
+      "aggregates": {
+        "pair_total": 41,
+        "doc_shares": [
+          {
+            "doc": "LDN",
+            "count": 41,
+            "share": 1.0
+          },
+          {
+            "doc": "NDC",
+            "count": 41,
+            "share": 1.0
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "LDN_3",
+            "count": 20
+          },
+          {
+            "id": "LDN_6",
+            "count": 15
+          },
+          {
+            "id": "LDN_2",
+            "count": 4
+          },
+          {
+            "id": "NDC_35",
+            "count": 3
+          },
+          {
+            "id": "NDC_75",
+            "count": 2
+          },
+          {
+            "id": "NDC_124",
+            "count": 2
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 19
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 12
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 9
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 15
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 12
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_8",
+            "count": 7
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 20
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_energy",
+            "count": 10
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_agriculture",
+            "count": 6
+          }
+        ],
+        "contested_resources": [
+          {
+            "resource": "land",
+            "count": 39
+          },
+          {
+            "resource": "forest",
+            "count": 8
+          },
+          {
+            "resource": "water",
+            "count": 1
+          }
+        ],
+        "mechanisms": {
+          "resource_competition": 27,
+          "delivery_friction": 14
+        }
+      }
     },
     {
-      "name": "Señalar las presiones derivadas de la biomasa y la ubicación de infraestructuras",
+      "name": "Ubicación de la biomasa y de las infraestructuras en zonas sensibles",
       "type": "friction",
-      "description": "Un ámbito de revisión recurrente se refiere a la energía de biomasa, las cadenas de suministro de carbón vegetal y leña, las plantaciones madereras o dendroenergéticas, y la ubicación de carreteras e infraestructuras solares y eólicas. Estos casos señalados suelen apuntar a competencia por los recursos o fricción basada en la ubicación en torno al abastecimiento de materia prima, la ocupación de tierras y la superposición con prioridades de restauración, áreas protegidas o servicios ecosistémicos.",
+      "description": "NBT<->NDC indica posible desalineación en torno a la energía de biomasa, la modernización del carbón vegetal, la ubicación de instalaciones solares, las carreteras en zonas sensibles, las plantaciones madereras y la intensificación ganadera, cuando las opciones de implementación pueden aumentar la presión sobre los hábitats, los bosques o las materias primas biológicas. El mecanismo parece operar a través de la localización del uso de la tierra, la fragmentación de hábitats y las normas de abastecimiento de biomasa, y la biomasa figura repetidamente entre los recursos controvertidos.",
+      "pathway": "La planificación espacial y la revisión del abastecimiento de materia prima en el marco de NBT y NDC podrían merecer un examen más detenido para las medidas relativas a la biomasa, las plantaciones, el transporte y otras infraestructuras en zonas sensibles.",
       "contributing_doc_pairs": [
-        "LDN<->NDC",
         "NBT<->NDC"
+      ],
+      "anchor_target_ids": [
+        "NDC_35",
+        "NDC_36",
+        "NDC_93",
+        "NDC_74",
+        "NBT_19",
+        "NBT_16"
       ],
       "confidence": "high",
       "unknown_doc_pairs": [],
-      "pair_count": 112,
+      "pair_count": 71,
       "spans_documents": [
-        "LDN",
         "NBT",
         "NDC"
-      ]
+      ],
+      "aggregates": {
+        "pair_total": 71,
+        "doc_shares": [
+          {
+            "doc": "NBT",
+            "count": 71,
+            "share": 1.0
+          },
+          {
+            "doc": "NDC",
+            "count": 71,
+            "share": 1.0
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NBT_19",
+            "count": 18
+          },
+          {
+            "id": "NBT_6",
+            "count": 16
+          },
+          {
+            "id": "NDC_35",
+            "count": 12
+          },
+          {
+            "id": "NBT_13",
+            "count": 9
+          },
+          {
+            "id": "NDC_93",
+            "count": 8
+          },
+          {
+            "id": "NDC_74",
+            "count": 7
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 16
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 11
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 6
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 14
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 11
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_5",
+            "count": 4
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_energy",
+            "count": 11
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 9
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 7
+          }
+        ],
+        "contested_resources": [
+          {
+            "resource": "land",
+            "count": 20
+          },
+          {
+            "resource": "habitat",
+            "count": 15
+          },
+          {
+            "resource": "forest",
+            "count": 9
+          },
+          {
+            "resource": "biomass",
+            "count": 9
+          },
+          {
+            "resource": "area",
+            "count": 5
+          },
+          {
+            "resource": "water",
+            "count": 4
+          }
+        ],
+        "mechanisms": {
+          "delivery_friction": 57,
+          "resource_competition": 14
+        }
+      }
     }
   ],
-  "summary_paragraph": "En los tres pares de documentos, se repite un sólido patrón de refuerzo en torno a la restauración de tierras, la gestión forestal y el uso sostenible de la tierra, que respaldan tanto la implementación en materia de biodiversidad como de clima. Esto se ve reforzado por sistemas habilitadores compartidos, como la gobernanza, los datos, la tenencia, la gestión del agua y la planificación espacial integrada, que tienden a alinear las vías de implementación entre las agendas. Al mismo tiempo, se señalan varias áreas para revisión, especialmente cuando la recuperación o intensificación agrícola, el suministro de biomasa y la ubicación de infraestructuras pueden aumentar la presión sobre la tierra, el agua o las áreas de importancia ecológica. En general, la evidencia apunta a una amplia coherencia en la dirección declarada, y la fricción tiende a surgir más en torno a las opciones de implementación, el abastecimiento y la ubicación que en torno a los objetivos generales.",
+  "summary_paragraph": "En los tres pares de documentos, la alineación recurrente más sólida aparece en torno a la planificación integrada del uso de la tierra, la restauración y los instrumentos de gobernanza que apoyan los objetivos climáticos, de biodiversidad y de degradación de la tierra en los mismos paisajes. La transversalización de la biodiversidad, los incentivos, la financiación, los sistemas de datos y la gestión de ecosistemas orientada a la resiliencia también parecen avanzar en la misma dirección en un gran número de pares alineados. Al mismo tiempo, la evidencia sugiere varias áreas de posible desalineación vinculadas principalmente a decisiones de implementación, especialmente la recuperación de tierras agrícolas en áreas ecológicamente importantes, las reivindicaciones rurales de tierras en competencia entre bosques y áreas de restauración, y la ubicación de biomasa o infraestructura en lugares sensibles. Estos patrones parecen concentrarse en torno a presiones compartidas sobre la tierra, los bosques, los hábitats y la biomasa, y podrían justificar un examen más detenido mediante procesos de coordinación espaciales y basados en indicadores.",
   "doc_pair_count": 3,
+  "schema_version": 2,
+  "validation_warnings": [],
   "states": {
     "": {
       "storylines": [
         {
-          "name": "Vincular la restauración con la implementación de la biodiversidad y el clima",
+          "name": "Sistemas integrados de planificación del uso de la tierra y restauración",
           "type": "reinforcement",
-          "description": "Se repite un patrón sólido en torno a la restauración de tierras degradadas, la ampliación o mejora de la cobertura forestal y el uso de la gestión sostenible de la tierra para reforzar tanto los resultados en materia de biodiversidad como la resiliencia climática. La restauración forestal, la reducción de la conversión y las ganancias de productividad basadas en los ecosistemas tienden a alinearse en los documentos sobre degradación de la tierra, naturaleza y clima.",
+          "description": "En LDN<->NBT y LDN<->NDC, los documentos a menudo avanzan en la misma dirección mediante la restauración de tierras degradadas, la expansión de la cobertura forestal, la agroforestería y los controles del uso de la tierra que conectan los resultados de la restauración con los objetivos climáticos y de biodiversidad. El patrón está respaldado por la planificación espacial, los enfoques basados en los ecosistemas y las metas de restauración que vinculan la gestión del paisaje con el secuestro de carbono y los resultados en materia de biodiversidad.",
+          "pathway": "La alineación de indicadores y el cribado espacial compartido en LDN, NBT y NDC podrían ayudar a mantener una visión común de dónde están teniendo lugar la restauración, la expansión forestal y la gestión de las tierras agrícolas.",
           "contributing_doc_pairs": [
             "LDN<->NBT",
             "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_1",
+            "LDN_7",
+            "NBT_8",
+            "NBT_11",
+            "NBT_19"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
@@ -127,100 +764,2093 @@
             "LDN",
             "NBT",
             "NDC"
-          ]
+          ],
+          "aggregates": {
+            "pair_total": 739,
+            "doc_shares": [
+              {
+                "doc": "LDN",
+                "count": 739,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 612,
+                "share": 0.8281
+              },
+              {
+                "doc": "NBT",
+                "count": 127,
+                "share": 0.1719
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_7",
+                "count": 150
+              },
+              {
+                "id": "LDN_1",
+                "count": 148
+              },
+              {
+                "id": "LDN_3",
+                "count": 107
+              },
+              {
+                "id": "LDN_2",
+                "count": 96
+              },
+              {
+                "id": "LDN_4",
+                "count": 94
+              },
+              {
+                "id": "LDN_5",
+                "count": 90
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 72
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 57
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 32
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 69
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 44
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 24
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 42
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 41
+              }
+            ]
+          }
         },
         {
-          "name": "Utilizar herramientas de gobernanza para reforzar la implementación",
+          "name": "Integración de la biodiversidad mediante la gobernanza y los incentivos",
           "type": "reinforcement",
-          "description": "Las medidas facilitadoras, como la integración de políticas, la capacidad de las partes interesadas, los sistemas de datos, la tenencia de la tierra, la gobernanza del agua, el monitoreo hidroclimático y la gobernanza forestal, se repiten como mecanismos que podrían apoyar la implementación en todas las agendas. Esto indica que la coherencia de la implementación se ve reforzada no solo por objetivos compartidos, sino también por sistemas institucionales y de información compartidos.",
+          "description": "Un patrón recurrente de alineación vincula la integración de la biodiversidad en las políticas y los planes con los incentivos, la participación del sector privado, la financiación y herramientas de gobernanza más amplias. Esto se observa con mayor fuerza cuando los instrumentos NBT respaldan vías de implementación que también sirven a la restauración de la tierra y a la acción climática, incluida la transversalización, los incentivos positivos y los mecanismos de financiación.",
+          "pathway": "Una correspondencia de las medidas de gobernanza, incentivos y financiación en NBT, LDN y NDC podría ayudar a mantener las herramientas de implementación orientadas en la misma dirección en todos los sectores.",
           "contributing_doc_pairs": [
             "LDN<->NBT",
-            "LDN<->NDC",
             "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBT_5",
+            "NBT_16",
+            "NBT_18",
+            "NBT_21",
+            "NBT_12"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 3451,
+          "pair_count": 2839,
           "spans_documents": [
             "LDN",
             "NBT",
             "NDC"
-          ]
+          ],
+          "aggregates": {
+            "pair_total": 2839,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 2839,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 2712,
+                "share": 0.9553
+              },
+              {
+                "doc": "LDN",
+                "count": 127,
+                "share": 0.0447
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_9",
+                "count": 182
+              },
+              {
+                "id": "NBT_5",
+                "count": 181
+              },
+              {
+                "id": "NBT_15",
+                "count": 179
+              },
+              {
+                "id": "NBT_7",
+                "count": 166
+              },
+              {
+                "id": "NBT_16",
+                "count": 163
+              },
+              {
+                "id": "NBT_18",
+                "count": 163
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 80
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 59
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 34
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 80
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 47
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 31
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 49
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 44
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 42
+              }
+            ]
+          }
         },
         {
-          "name": "Integrar las acciones climáticas en los marcos de la naturaleza",
+          "name": "Reducción de la contaminación y gestión resiliente de los ecosistemas",
           "type": "reinforcement",
-          "description": "Las medidas climáticas sobre la gestión forestal, la alerta temprana de incendios, la agroforestería, el tratamiento de aguas residuales, la acuicultura y el control de la deforestación en áreas protegidas tienden a alinearse con marcos más amplios de naturaleza sobre los servicios ecosistémicos, la restauración, la gestión de áreas protegidas y la gestión sostenible de la tierra y el agua. Esto se repite como una vía práctica para que la implementación de la acción climática se lleve a cabo dentro de sistemas sensibles a la biodiversidad.",
+          "description": "NBT<->NDC muestra un patrón amplio en el que las inversiones relacionadas con el clima y las medidas de gestión ambiental apoyan el estado de los ecosistemas mediante el tratamiento de aguas residuales, la gestión sostenible de la pesca, la alerta temprana de incendios y enfoques orientados a la resiliencia. La misma dirección también aparece a través de las NbS, la producción y el consumo sostenibles, y medidas que reducen las presiones sobre los ecosistemas y la salud humana.",
+          "pathway": "El seguimiento conjunto del estado de los ecosistemas, los indicadores de contaminación y los resultados de resiliencia en el marco de NBT y NDC puede proporcionar un punto de partida práctico para rastrear los efectos compartidos de la implementación.",
           "contributing_doc_pairs": [
-            "NBT<->NDC",
-            "LDN<->NDC",
+            "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBT_9",
+            "NBT_14",
+            "NBT_15",
+            "NBT_11",
+            "NBT_7"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2712,
+          "spans_documents": [
+            "NBT",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 2712,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 2712,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 2712,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_5",
+                "count": 175
+              },
+              {
+                "id": "NBT_9",
+                "count": 175
+              },
+              {
+                "id": "NBT_15",
+                "count": 172
+              },
+              {
+                "id": "NBT_7",
+                "count": 160
+              },
+              {
+                "id": "NBT_16",
+                "count": 157
+              },
+              {
+                "id": "NBT_18",
+                "count": 157
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 80
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 54
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 32
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 80
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 44
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 30
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 49
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 44
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 35
+              }
+            ]
+          }
+        },
+        {
+          "name": "Recuperación de tierras agrícolas y áreas de biodiversidad",
+          "type": "friction",
+          "description": "La posible desalineación más recurrente se refiere a la recuperación de tierras desnudas para la producción agrícola y a los aumentos de la productividad agrícola, cuando la misma base territorial también puede ser importante para áreas de importancia ecológica, hábitats de especies amenazadas, áreas protegidas o prioridades de espacios verdes urbanos. La evidencia apunta principalmente a decisiones de ubicación, zonificación y salvaguardias, más que a objetivos incompatibles en principio.",
+          "pathway": "La revisión conjunta de límites y la zonificación sensible a la biodiversidad entre LDN y NBT podrían ayudar a aclarar dónde las vías de recuperación agrícola pueden superponerse con áreas ecológicamente importantes.",
+          "contributing_doc_pairs": [
             "LDN<->NBT"
           ],
-          "confidence": "high",
-          "unknown_doc_pairs": [],
-          "pair_count": 3451,
-          "spans_documents": [
-            "LDN",
-            "NBT",
-            "NDC"
-          ]
-        },
-        {
-          "name": "Aprovechar la planificación espacial para gestionar la superposición",
-          "type": "reinforcement",
-          "description": "La planificación espacial integrada, la zonificación y la evaluación preliminar reaparecen en todas las síntesis como mecanismos comunes para mantener alineadas la restauración, la agricultura, la conservación y las inversiones climáticas. El énfasis reiterado sugiere que estas herramientas son fundamentales para gestionar paisajes compartidos donde convergen múltiples objetivos.",
-          "contributing_doc_pairs": [
-            "LDN<->NBT",
-            "LDN<->NDC",
-            "NBT<->NDC"
+          "anchor_target_ids": [
+            "LDN_6",
+            "NBT_19",
+            "NBT_6",
+            "NBT_13",
+            "NBT_8"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 3451,
+          "pair_count": 16,
           "spans_documents": [
             "LDN",
-            "NBT",
-            "NDC"
-          ]
+            "NBT"
+          ],
+          "aggregates": {
+            "pair_total": 16,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 16,
+                "share": 1.0
+              },
+              {
+                "doc": "LDN",
+                "count": 16,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_6",
+                "count": 13
+              },
+              {
+                "id": "LDN_5",
+                "count": 3
+              },
+              {
+                "id": "NBT_6",
+                "count": 2
+              },
+              {
+                "id": "NBT_13",
+                "count": 2
+              },
+              {
+                "id": "NBT_19",
+                "count": 2
+              },
+              {
+                "id": "NBT_4",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 13
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 4
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 9
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 6
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "land",
+                "count": 15
+              },
+              {
+                "resource": "space",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 11,
+              "resource_competition": 5
+            }
+          }
         },
         {
-          "name": "Señalar las presiones de expansión e intensificación agrícolas",
+          "name": "Reclamaciones contrapuestas sobre las tierras rurales en los bosques",
           "type": "friction",
-          "description": "La posible desalineación se señala repetidamente para revisión cuando la recuperación de tierras agrícolas degradadas, la conversión de tierras desnudas, el riego, las obras hidroagrícolas, el arroz, la ganadería u otras medidas de productividad aumentan la presión sobre la tierra o el agua. Estos casos tienden a señalar fricciones en la implementación cuando las mismas zonas también pueden ser priorizadas para la restauración, la recuperación de especies amenazadas, las áreas protegidas o la reforestación.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la competencia por la tierra rural entre las medidas de recuperación o productividad agrícola y la expansión forestal, las reservas, las áreas de restauración o los límites a la conversión forestal. Este patrón es prominente en LDN<->NDC y es coherente con la evidencia de que la tierra es el recurso objeto de disputa con mayor frecuencia, y de que los bosques también reaparecen como un punto de presión compartido.",
+          "pathway": "La clasificación compartida de la tierra y la zonificación espacial en LDN y NDC podrían ayudar a distinguir las áreas destinadas a la mejora agrícola, la restauración forestal y las medidas forestales orientadas a la conservación.",
           "contributing_doc_pairs": [
-            "LDN<->NBT",
-            "LDN<->NDC",
-            "NBT<->NDC"
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_6",
+            "LDN_3",
+            "LDN_5",
+            "LDN_2",
+            "NDC_124"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 128,
+          "pair_count": 41,
           "spans_documents": [
             "LDN",
-            "NBT",
             "NDC"
-          ]
+          ],
+          "aggregates": {
+            "pair_total": 41,
+            "doc_shares": [
+              {
+                "doc": "LDN",
+                "count": 41,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 41,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_3",
+                "count": 20
+              },
+              {
+                "id": "LDN_6",
+                "count": 15
+              },
+              {
+                "id": "LDN_2",
+                "count": 4
+              },
+              {
+                "id": "NDC_35",
+                "count": 3
+              },
+              {
+                "id": "NDC_75",
+                "count": 2
+              },
+              {
+                "id": "NDC_124",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 19
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 12
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 9
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 15
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 12
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 7
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 20
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 10
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 6
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "land",
+                "count": 39
+              },
+              {
+                "resource": "forest",
+                "count": 8
+              },
+              {
+                "resource": "water",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 27,
+              "delivery_friction": 14
+            }
+          }
         },
         {
-          "name": "Señalar las presiones derivadas de la biomasa y la ubicación de infraestructuras",
+          "name": "Ubicación de la biomasa y de las infraestructuras en zonas sensibles",
           "type": "friction",
-          "description": "Un ámbito de revisión recurrente se refiere a la energía de biomasa, las cadenas de suministro de carbón vegetal y leña, las plantaciones madereras o dendroenergéticas, y la ubicación de carreteras e infraestructuras solares y eólicas. Estos casos señalados suelen apuntar a competencia por los recursos o fricción basada en la ubicación en torno al abastecimiento de materia prima, la ocupación de tierras y la superposición con prioridades de restauración, áreas protegidas o servicios ecosistémicos.",
+          "description": "NBT<->NDC indica posible desalineación en torno a la energía de biomasa, la modernización del carbón vegetal, la ubicación de instalaciones solares, las carreteras en zonas sensibles, las plantaciones madereras y la intensificación ganadera, cuando las opciones de implementación pueden aumentar la presión sobre los hábitats, los bosques o las materias primas biológicas. El mecanismo parece operar a través de la ubicación del uso del suelo, la fragmentación de hábitats y las normas de abastecimiento de biomasa, y la biomasa figura repetidamente entre los recursos objeto de controversia.",
+          "pathway": "La planificación espacial y la revisión del abastecimiento de materia prima en el marco de NBT y NDC pueden merecer un examen más detenido para las medidas relativas a la biomasa, las plantaciones, el transporte y otras infraestructuras en zonas sensibles.",
           "contributing_doc_pairs": [
-            "LDN<->NDC",
             "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NDC_35",
+            "NDC_36",
+            "NDC_93",
+            "NDC_74",
+            "NBT_19",
+            "NBT_16"
           ],
           "confidence": "high",
           "unknown_doc_pairs": [],
-          "pair_count": 112,
+          "pair_count": 71,
           "spans_documents": [
-            "LDN",
             "NBT",
             "NDC"
-          ]
+          ],
+          "aggregates": {
+            "pair_total": 71,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 71,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 71,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_19",
+                "count": 18
+              },
+              {
+                "id": "NBT_6",
+                "count": 16
+              },
+              {
+                "id": "NDC_35",
+                "count": 12
+              },
+              {
+                "id": "NBT_13",
+                "count": 9
+              },
+              {
+                "id": "NDC_93",
+                "count": 8
+              },
+              {
+                "id": "NDC_74",
+                "count": 7
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 16
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 11
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 14
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 11
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 4
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 11
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 9
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 7
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "land",
+                "count": 20
+              },
+              {
+                "resource": "habitat",
+                "count": 15
+              },
+              {
+                "resource": "forest",
+                "count": 9
+              },
+              {
+                "resource": "biomass",
+                "count": 9
+              },
+              {
+                "resource": "area",
+                "count": 5
+              },
+              {
+                "resource": "water",
+                "count": 4
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 57,
+              "resource_competition": 14
+            }
+          }
         }
       ],
-      "summary_paragraph": "En los tres pares de documentos, se repite un sólido patrón de refuerzo en torno a la restauración de tierras, la gestión forestal y el uso sostenible de la tierra, que respaldan tanto la implementación en materia de biodiversidad como de clima. Esto se ve reforzado por sistemas habilitadores compartidos, como la gobernanza, los datos, la tenencia, la gestión del agua y la planificación espacial integrada, que tienden a alinear las vías de implementación entre las agendas. Al mismo tiempo, se señalan varias áreas para revisión, especialmente cuando la recuperación o intensificación agrícola, el suministro de biomasa y la ubicación de infraestructuras pueden aumentar la presión sobre la tierra, el agua o las áreas de importancia ecológica. En general, la evidencia apunta a una amplia coherencia en la dirección declarada, y la fricción tiende a surgir más en torno a las opciones de implementación, el abastecimiento y la ubicación que en torno a los objetivos generales.",
-      "doc_pair_count": 3
+      "summary_paragraph": "En los tres pares de documentos, la alineación recurrente más sólida aparece en torno a la planificación integrada del uso de la tierra, la restauración y los instrumentos de gobernanza que apoyan los objetivos climáticos, de biodiversidad y de degradación de la tierra en los mismos paisajes. La transversalización de la biodiversidad, los incentivos, la financiación, los sistemas de datos y la gestión de ecosistemas orientada a la resiliencia también parecen avanzar en la misma dirección en un gran número de pares alineados. Al mismo tiempo, la evidencia sugiere varias áreas de posible desalineación vinculadas principalmente a decisiones de implementación, especialmente la recuperación de tierras agrícolas en áreas ecológicamente importantes, las reivindicaciones rurales de tierras en competencia entre bosques y áreas de restauración, y la ubicación de biomasa o infraestructura en lugares sensibles. Estos patrones parecen concentrarse en torno a presiones compartidas sobre la tierra, los bosques, los hábitats y la biomasa, y podrían justificar un examen más detenido mediante procesos de coordinación espaciales y basados en indicadores.",
+      "doc_pair_count": 3,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "LDN": {
+      "storylines": [
+        {
+          "name": "Herramientas de integración de la acción climática y la biodiversidad en todos los sectores",
+          "type": "reinforcement",
+          "description": "El NBT y la NDC suelen alinearse mediante herramientas de gobernanza transversales que integran la biodiversidad en las políticas, los incentivos, las prácticas del sector privado, los sistemas de datos y los mecanismos de participación. Este patrón es visible allí donde la acción climática se vincula con la transversalización de la biodiversidad, el acceso a la tecnología, la toma de decisiones inclusiva y los mecanismos de financiación que apoyan la implementación en paisajes terrestres y marinos.",
+          "pathway": "La alineación de indicadores conjuntos entre el NBT y la NDC podría ayudar a hacer un seguimiento de cómo las medidas de integración, los incentivos y la participación están apoyando tanto los resultados climáticos como los de biodiversidad.",
+          "contributing_doc_pairs": [
+            "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBT_5",
+            "NBT_16",
+            "NBT_18",
+            "NBT_12",
+            "NBT_21",
+            "NBT_2"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2712,
+          "spans_documents": [
+            "NBT",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 2712,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 2712,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 2712,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_5",
+                "count": 175
+              },
+              {
+                "id": "NBT_9",
+                "count": 175
+              },
+              {
+                "id": "NBT_15",
+                "count": 172
+              },
+              {
+                "id": "NBT_7",
+                "count": 160
+              },
+              {
+                "id": "NBT_16",
+                "count": 157
+              },
+              {
+                "id": "NBT_18",
+                "count": 157
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 80
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 54
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 32
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 80
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 44
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 30
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 49
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 44
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 35
+              }
+            ]
+          }
+        },
+        {
+          "name": "Medidas de reducción de la contaminación y resiliencia de los ecosistemas",
+          "type": "reinforcement",
+          "description": "Los documentos avanzan en la misma dirección cuando las inversiones climáticas reducen las cargas de contaminación y mejoran el estado de los ecosistemas, incluido el tratamiento de aguas residuales y las medidas conexas de gestión ambiental. También se alinean en torno a enfoques basados en la naturaleza y en los ecosistemas que respaldan los servicios ecosistémicos y fortalecen la resiliencia de la biodiversidad y de las comunidades.",
+          "pathway": "Podría valer la pena examinar más de cerca un enfoque de seguimiento compartido para la contaminación, el estado de los ecosistemas y los resultados en materia de resiliencia en el marco del NBT y la NDC.",
+          "contributing_doc_pairs": [
+            "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBT_9",
+            "NBT_11",
+            "NBT_14",
+            "NBT_19"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2712,
+          "spans_documents": [
+            "NBT",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 2712,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 2712,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 2712,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_5",
+                "count": 175
+              },
+              {
+                "id": "NBT_9",
+                "count": 175
+              },
+              {
+                "id": "NBT_15",
+                "count": 172
+              },
+              {
+                "id": "NBT_7",
+                "count": 160
+              },
+              {
+                "id": "NBT_16",
+                "count": 157
+              },
+              {
+                "id": "NBT_18",
+                "count": 157
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 80
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 54
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 32
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 80
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 44
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 30
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 49
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 44
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 35
+              }
+            ]
+          }
+        },
+        {
+          "name": "Producción sostenible en tierras y paisajes marinos gestionados",
+          "type": "reinforcement",
+          "description": "La alineación se repite cuando las acciones climáticas apoyan la gestión sostenible de la pesca, la agroforestería y prácticas más amplias de producción y consumo sostenibles en paisajes productivos. El mecanismo suele ser facilitador, ya que las medidas climáticas mejoran la resiliencia y las condiciones de gestión en los sistemas agrícolas, forestales, pesqueros y urbanos que son importantes para la biodiversidad.",
+          "pathway": "Los límites comunes de presentación de informes para las medidas de producción sostenible en el NBT y la NDC podrían ayudar a aclarar en qué ámbitos la implementación avanza en la misma dirección.",
+          "contributing_doc_pairs": [
+            "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBT_15",
+            "NBT_20",
+            "NBT_7",
+            "NBT_8"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 2712,
+          "spans_documents": [
+            "NBT",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 2712,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 2712,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 2712,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_5",
+                "count": 175
+              },
+              {
+                "id": "NBT_9",
+                "count": 175
+              },
+              {
+                "id": "NBT_15",
+                "count": 172
+              },
+              {
+                "id": "NBT_7",
+                "count": 160
+              },
+              {
+                "id": "NBT_16",
+                "count": 157
+              },
+              {
+                "id": "NBT_18",
+                "count": 157
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 80
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 54
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 32
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 80
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 44
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 30
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 49
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 44
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 35
+              }
+            ]
+          }
+        },
+        {
+          "name": "Ubicación territorial de la biomasa y objetivos de restauración",
+          "type": "friction",
+          "description": "La posible desalineación aparece en torno a la expansión de la electricidad a partir de biomasa y al enfoque de la energía de biomasa, donde las demandas de tierra, hábitat, bosques y biomasa pueden superponerse con la restauración de áreas ecológicamente importantes y la recuperación de especies amenazadas. El mecanismo recurrente es la competencia por la ubicación y el abastecimiento, especialmente cuando las cadenas de suministro de materia prima o la infraestructura asociada podrían afectar a áreas sensibles.",
+          "pathway": "La planificación espacial y la revisión de los límites de las materias primas entre el NBT y la NDC podrían ayudar a aclarar dónde los objetivos de despliegue de biomasa y restauración de la biodiversidad podrían requerir una alineación más estrecha.",
+          "contributing_doc_pairs": [
+            "NBT<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBT_19",
+            "NBT_6",
+            "NDC_35",
+            "NDC_36",
+            "NDC_4"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 71,
+          "spans_documents": [
+            "NBT",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 71,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 71,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 71,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBT_19",
+                "count": 18
+              },
+              {
+                "id": "NBT_6",
+                "count": 16
+              },
+              {
+                "id": "NDC_35",
+                "count": 12
+              },
+              {
+                "id": "NBT_13",
+                "count": 9
+              },
+              {
+                "id": "NDC_93",
+                "count": 8
+              },
+              {
+                "id": "NDC_74",
+                "count": 7
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 16
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 11
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 14
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 11
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 4
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 11
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 9
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 7
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "land",
+                "count": 20
+              },
+              {
+                "resource": "habitat",
+                "count": 15
+              },
+              {
+                "resource": "forest",
+                "count": 9
+              },
+              {
+                "resource": "biomass",
+                "count": 9
+              },
+              {
+                "resource": "area",
+                "count": 5
+              },
+              {
+                "resource": "water",
+                "count": 4
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 57,
+              "resource_competition": 14
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "La evidencia sugiere que el NBT y la NDC de Côte d'Ivoire están en gran medida alineados, con solo 1.9% de los pares entre documentos puntuados identificados para revisión y un conjunto mucho mayor de pares alineados. Los patrones comunes más sólidos se relacionan con herramientas de gobernanza e integración transversal, medidas de reducción de la contaminación y resiliencia de los ecosistemas, y enfoques de producción sostenible en paisajes terrestres y marinos gestionados. Un ámbito más limitado pero recurrente de posible desalineación se refiere a la expansión de la energía de biomasa, donde la ubicación del uso del suelo y el abastecimiento de materia prima pueden cruzarse con los objetivos de restauración y gestión de especies. En general, el patrón parece ampliamente coherente, con un pequeño número de decisiones de implementación que merecen un examen más detenido mediante la planificación espacial y mecanismos compartidos de seguimiento.",
+      "doc_pair_count": 1,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "NBT": {
+      "storylines": [
+        {
+          "name": "Vías de secuestro de carbono basadas en la agroforestería y la restauración",
+          "type": "reinforcement",
+          "description": "Los documentos de LDN y NDC suelen alinearse en la acción climática basada en la tierra mediante la agroforestería, la restauración de tierras degradadas y el aumento de la cobertura arbórea, vinculando la resiliencia de las explotaciones agrícolas con los resultados de secuestro de carbono. Este patrón es visible allí donde la restauración, la expansión de la cobertura forestal y la integración de árboles en los sistemas de producción apoyan tanto la recuperación de la tierra como los objetivos climáticos.",
+          "pathway": "La alineación conjunta de indicadores entre LDN y NDC sobre la superficie restaurada, la cobertura arbórea y los resultados en materia de carbono podría proporcionar un punto de partida práctico para una coordinación continua.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_7",
+            "LDN_1",
+            "LDN_2",
+            "NDC_100",
+            "NDC_121",
+            "NDC_122"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 612,
+          "spans_documents": [
+            "LDN",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 612,
+            "doc_shares": [
+              {
+                "doc": "LDN",
+                "count": 612,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 612,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_7",
+                "count": 131
+              },
+              {
+                "id": "LDN_1",
+                "count": 127
+              },
+              {
+                "id": "LDN_3",
+                "count": 86
+              },
+              {
+                "id": "LDN_2",
+                "count": 76
+              },
+              {
+                "id": "LDN_4",
+                "count": 73
+              },
+              {
+                "id": "LDN_5",
+                "count": 72
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 72
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 37
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 31
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 66
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 41
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 23
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 28
+              }
+            ]
+          }
+        },
+        {
+          "name": "Gobernanza forestal y sistemas de monitoreo de la deforestación",
+          "type": "reinforcement",
+          "description": "Una segunda área que avanza en la misma dirección es el uso de herramientas de gobernanza y monitoreo forestal para proteger los recursos forestales, al tiempo que se apoyan los objetivos de restauración y clima. La síntesis señala la planificación comunitaria, las medidas de legalidad y gobernanza, y el monitoreo de la deforestación en todo el territorio como mecanismos prácticos que conectan ambos documentos.",
+          "pathway": "Una revisión compartida de los límites de monitoreo y de los indicadores de gobernanza forestal en LDN y NDC puede ayudar a mantener comparables los supuestos de implementación.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_3",
+            "LDN_4",
+            "NDC_137"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 612,
+          "spans_documents": [
+            "LDN",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 612,
+            "doc_shares": [
+              {
+                "doc": "LDN",
+                "count": 612,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 612,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_7",
+                "count": 131
+              },
+              {
+                "id": "LDN_1",
+                "count": 127
+              },
+              {
+                "id": "LDN_3",
+                "count": 86
+              },
+              {
+                "id": "LDN_2",
+                "count": 76
+              },
+              {
+                "id": "LDN_4",
+                "count": 73
+              },
+              {
+                "id": "LDN_5",
+                "count": 72
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 72
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 37
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 31
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 66
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 41
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 23
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 28
+              }
+            ]
+          }
+        },
+        {
+          "name": "Medidas de biomasa circular y productividad del suelo",
+          "type": "reinforcement",
+          "description": "Los documentos también respaldan enfoques similares en los que el uso de residuos, el compostaje, el biogás y las medidas de fertilidad específicas del suelo mejoran la productividad de la tierra al tiempo que reducen la presión sobre los bosques. Estos mecanismos vinculan la restauración y la productividad agrícola con una menor dependencia de la energía de la madera y una mejor gestión ecológica de los residuos.",
+          "pathway": "Un marco común de resultados para el abastecimiento de biomasa, el uso de compost y las métricas de productividad del suelo en LDN y NDC podría merecer un examen más detenido.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_5",
+            "LDN_6",
+            "NDC_108",
+            "NDC_111",
+            "NDC_126"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 612,
+          "spans_documents": [
+            "LDN",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 612,
+            "doc_shares": [
+              {
+                "doc": "LDN",
+                "count": 612,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 612,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_7",
+                "count": 131
+              },
+              {
+                "id": "LDN_1",
+                "count": 127
+              },
+              {
+                "id": "LDN_3",
+                "count": 86
+              },
+              {
+                "id": "LDN_2",
+                "count": 76
+              },
+              {
+                "id": "LDN_4",
+                "count": 73
+              },
+              {
+                "id": "LDN_5",
+                "count": 72
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 72
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 37
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 31
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 66
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 41
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 23
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 28
+              }
+            ]
+          }
+        },
+        {
+          "name": "Competencia por la misma base de tierras rurales",
+          "type": "friction",
+          "description": "La mayoría de los pares identificados para revisión parecen referirse a reivindicaciones contrapuestas sobre la tierra entre la recuperación agrícola o los aumentos de productividad y los límites a la conversión de bosques o la expansión de las áreas forestales. La evidencia se concentra en torno a metas sobre la limitación de la conversión de bosques y la recuperación de tierras desnudas para la agricultura, y la tierra se menciona como el recurso en disputa en casi todos los pares revisados.",
+          "pathway": "La zonificación espacial conjunta y la clasificación de tierras entre LDN y NDC podrían ayudar a aclarar dónde se espera que tengan lugar la recuperación agrícola y la expansión forestal.",
+          "contributing_doc_pairs": [
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_3",
+            "LDN_6",
+            "LDN_2",
+            "LDN_1"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 41,
+          "spans_documents": [
+            "LDN",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 41,
+            "doc_shares": [
+              {
+                "doc": "LDN",
+                "count": 41,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 41,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_3",
+                "count": 20
+              },
+              {
+                "id": "LDN_6",
+                "count": 15
+              },
+              {
+                "id": "LDN_2",
+                "count": 4
+              },
+              {
+                "id": "NDC_35",
+                "count": 3
+              },
+              {
+                "id": "NDC_75",
+                "count": 2
+              },
+              {
+                "id": "NDC_124",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 19
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 12
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 9
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 15
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 12
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 7
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 20
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_energy",
+                "count": 10
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 6
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "land",
+                "count": 39
+              },
+              {
+                "resource": "forest",
+                "count": 8
+              },
+              {
+                "resource": "water",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 27,
+              "delivery_friction": 14
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "La evidencia sugiere una sólida alineación general entre los documentos LDN y NDC, y muchos pares puntuados respaldan vías comunes en torno a la agroforestería, la restauración, el secuestro de carbono, la gobernanza forestal y las medidas de productividad de la tierra. Estos patrones parecen conectar herramientas prácticas de implementación, incluidos los sistemas de seguimiento, el uso circular de la biomasa y la gestión de la tierra climáticamente inteligente. Al mismo tiempo, una posible desalineación más acotada pero recurrente se refiere a la competencia por la misma base de tierras rurales, en particular cuando la recuperación agrícola, la expansión forestal y las medidas orientadas a la conservación pueden depender de áreas superpuestas. Este patrón puede justificar un examen más detenido mediante una revisión espacial y a nivel de indicadores, dado que la mayoría de los pares identificados para revisión se concentran en un pequeño conjunto de metas relacionadas con la tierra.",
+      "doc_pair_count": 1,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "NDC": {
+      "storylines": [
+        {
+          "name": "Restauración forestal y expansión de la cobertura forestal",
+          "type": "reinforcement",
+          "description": "Los documentos de LDN y NBT muestran una fuerte alineación en torno a la restauración de tierras degradadas, la expansión de la cobertura forestal, la limitación de la conversión de bosques y la mejora de la productividad forestal dentro de los paisajes forestales existentes. Este patrón se vincula en la síntesis con la planificación de áreas protegidas, la restauración basada en ecosistemas y los controles del uso de la tierra sensibles a la biodiversidad que operan en los mismos paisajes.",
+          "pathway": "El seguimiento conjunto entre LDN y NBT sobre la ubicación de la restauración, el cambio en la cobertura forestal y los criterios sensibles a la biodiversidad podría ayudar a mantener la visibilidad sobre dónde la implementación sigue avanzando en la misma dirección.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT"
+          ],
+          "anchor_target_ids": [
+            "LDN_1",
+            "LDN_2",
+            "LDN_3",
+            "LDN_4"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 127,
+          "spans_documents": [
+            "LDN",
+            "NBT"
+          ],
+          "aggregates": {
+            "pair_total": 127,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 127,
+                "share": 1.0
+              },
+              {
+                "doc": "LDN",
+                "count": 127,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_1",
+                "count": 21
+              },
+              {
+                "id": "LDN_3",
+                "count": 21
+              },
+              {
+                "id": "LDN_4",
+                "count": 21
+              },
+              {
+                "id": "LDN_2",
+                "count": 20
+              },
+              {
+                "id": "LDN_7",
+                "count": 19
+              },
+              {
+                "id": "LDN_5",
+                "count": 18
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 25
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 15
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 13
+              }
+            ]
+          }
+        },
+        {
+          "name": "Gestión de la tierra basada en la naturaleza y servicios ecosistémicos",
+          "type": "reinforcement",
+          "description": "La síntesis indica una alineación coherente allí donde la restauración de tierras está vinculada con enfoques basados en la naturaleza y la gestión de los servicios ecosistémicos. Esto incluye medidas de restauración y uso de la tierra que apoyan los resultados en materia de biodiversidad y que también contribuyen al secuestro de carbono y a la gestión sostenible del paisaje.",
+          "pathway": "La alineación de indicadores entre LDN y NBT para los servicios ecosistémicos, los resultados de la restauración y las medidas de la tierra relacionadas con el carbono puede proporcionar una base práctica para una coordinación continua.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT"
+          ],
+          "anchor_target_ids": [
+            "LDN_7",
+            "NBT_11",
+            "NBT_15",
+            "NBT_20"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 127,
+          "spans_documents": [
+            "LDN",
+            "NBT"
+          ],
+          "aggregates": {
+            "pair_total": 127,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 127,
+                "share": 1.0
+              },
+              {
+                "doc": "LDN",
+                "count": 127,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_1",
+                "count": 21
+              },
+              {
+                "id": "LDN_3",
+                "count": 21
+              },
+              {
+                "id": "LDN_4",
+                "count": 21
+              },
+              {
+                "id": "LDN_2",
+                "count": 20
+              },
+              {
+                "id": "LDN_7",
+                "count": 19
+              },
+              {
+                "id": "LDN_5",
+                "count": 18
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 25
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 15
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 13
+              }
+            ]
+          }
+        },
+        {
+          "name": "Datos y sistemas de implementación para una gobernanza inclusiva",
+          "type": "reinforcement",
+          "description": "Un mecanismo alineado recurrente es el uso de una gobernanza inclusiva, capacidades, sistemas de datos, incentivos y participación del sector privado para apoyar la restauración y la gestión de la tierra sensibles a la biodiversidad. La síntesis señala estos instrumentos facilitadores como canales compartidos de implementación en ambos documentos.",
+          "pathway": "Una revisión compartida de la implementación entre LDN y NBT, centrada en la gobernanza, los datos y los instrumentos de incentivos, podría ayudar a hacer seguimiento de si los sistemas comunes de ejecución siguen apoyando ambas agendas.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT"
+          ],
+          "anchor_target_ids": [
+            "NBT_2",
+            "NBT_3",
+            "NBT_17",
+            "NBT_10"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 127,
+          "spans_documents": [
+            "LDN",
+            "NBT"
+          ],
+          "aggregates": {
+            "pair_total": 127,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 127,
+                "share": 1.0
+              },
+              {
+                "doc": "LDN",
+                "count": 127,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_1",
+                "count": 21
+              },
+              {
+                "id": "LDN_3",
+                "count": 21
+              },
+              {
+                "id": "LDN_4",
+                "count": 21
+              },
+              {
+                "id": "LDN_2",
+                "count": 20
+              },
+              {
+                "id": "LDN_7",
+                "count": 19
+              },
+              {
+                "id": "LDN_5",
+                "count": 18
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 25
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 6
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 15
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 13
+              }
+            ]
+          }
+        },
+        {
+          "name": "Recuperación de tierras agrícolas en zonas sensibles para la biodiversidad",
+          "type": "friction",
+          "description": "La posible desalineación se concentra en la recuperación de tierras desnudas para la producción agrícola, que aparece en la mayoría de los casos examinados y puede superponerse con áreas protegidas, áreas ecológicamente importantes y hábitats de especies amenazadas. La evidencia indica que el principal recurso en disputa es la tierra, lo que sugiere que las decisiones de ubicación y zonificación son fundamentales para determinar si la implementación sigue siendo compatible con las prioridades de biodiversidad.",
+          "pathway": "La evaluación espacial conjunta de las metas de LDN y NBT, utilizando datos compartidos de zonificación y hábitat, podría ser un punto de partida útil para revisar dónde la recuperación de tierras agrícolas puede coincidir con las prioridades de conservación.",
+          "contributing_doc_pairs": [
+            "LDN<->NBT"
+          ],
+          "anchor_target_ids": [
+            "LDN_6",
+            "NBT_13",
+            "NBT_19",
+            "NBT_6",
+            "NBT_8"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 16,
+          "spans_documents": [
+            "LDN",
+            "NBT"
+          ],
+          "aggregates": {
+            "pair_total": 16,
+            "doc_shares": [
+              {
+                "doc": "NBT",
+                "count": 16,
+                "share": 1.0
+              },
+              {
+                "doc": "LDN",
+                "count": 16,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_6",
+                "count": 13
+              },
+              {
+                "id": "LDN_5",
+                "count": 3
+              },
+              {
+                "id": "NBT_6",
+                "count": 2
+              },
+              {
+                "id": "NBT_13",
+                "count": 2
+              },
+              {
+                "id": "NBT_19",
+                "count": 2
+              },
+              {
+                "id": "NBT_4",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 13
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 4
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 9
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 6
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "land",
+                "count": 15
+              },
+              {
+                "resource": "space",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 11,
+              "resource_competition": 5
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "La evidencia para Côte d'Ivoire apunta a un sólido patrón general de alineación entre los documentos sobre degradación de la tierra y naturaleza, con la mayoría de los pares evaluados orientados en la misma dirección. El terreno común más claro se refiere a la restauración forestal, la expansión de la cobertura forestal, el uso de la tierra sensible a la biodiversidad y el uso de enfoques basados en ecosistemas, arreglos de gobernanza y sistemas de datos para apoyar la implementación. Al mismo tiempo, un área más concentrada de posible desalineación aparece en torno a la recuperación de tierras desnudas para la producción agrícola, particularmente cuando la misma base territorial también puede ser importante para áreas protegidas, áreas ecológicamente importantes, hábitat de especies o prioridades de planificación espacial. Esto sugiere una amplia coherencia en general, junto con una cuestión más acotada de asignación de tierras que podría valer la pena examinar más de cerca durante la implementación.",
+      "doc_pair_count": 1,
+      "schema_version": 2,
+      "validation_warnings": []
     }
   }
 }

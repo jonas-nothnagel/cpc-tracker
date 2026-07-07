@@ -747,10 +747,13 @@ export function WheelCenterpiece({
           if (agg.total === 0) return null;
           const baseWidth = ribbonBaseWidth(agg.total, widthScale);
           const coreWidth = ribbonCoreWidth(baseWidth, agg.flaggedShare);
-          const showAlign =
-            state.filter !== "tensions" && agg.alignmentCount > 0;
-          const showTension =
-            state.filter !== "alignments" && agg.tensionCount > 0;
+          // Filtered-out polarities fade to opacity 0 instead of unmounting,
+          // so a filter switch (e.g. hovering a theme box) animates smoothly
+          // rather than popping a wall of the other colour for a frame.
+          const showAlign = agg.alignmentCount > 0;
+          const showTension = agg.tensionCount > 0;
+          const alignFilteredOut = state.filter === "tensions";
+          const tensionFilteredOut = state.filter === "alignments";
           const touchesFocus =
             focusArcId === null ||
             agg.aId === focusArcId ||
@@ -786,20 +789,25 @@ export function WheelCenterpiece({
                   stroke={ALIGNMENT_COLORS.high}
                   strokeWidth={baseWidth}
                   strokeOpacity={
-                    ghosted
-                      ? docFocusActive
-                        ? 0
-                        : 0.06
-                      : isHover
-                        ? 0.9
-                        : docFocusActive
-                          ? 0.7
-                          : busyWheel
-                            ? 0.4
-                            : 0.55
+                    alignFilteredOut
+                      ? 0
+                      : ghosted
+                        ? docFocusActive
+                          ? 0
+                          : 0.06
+                        : isHover
+                          ? 0.9
+                          : docFocusActive
+                            ? 0.7
+                            : busyWheel
+                              ? 0.4
+                              : 0.55
                   }
                   strokeLinecap="round"
-                  style={{ transition: "stroke-opacity 220ms" }}
+                  style={{
+                    transition: "stroke-opacity 220ms",
+                    pointerEvents: alignFilteredOut ? "none" : undefined,
+                  }}
                 />
               )}
               {showTension && (
@@ -809,21 +817,26 @@ export function WheelCenterpiece({
                   stroke={ALIGNMENT_COLORS.flagged}
                   strokeWidth={coreWidth}
                   strokeOpacity={
-                    ghosted
-                      ? docFocusActive
-                        ? 0
-                        : 0.08
-                      : isHover
-                        ? 0.9
-                        : docFocusActive
-                          ? 0.85
-                          : busyWheel
-                            ? 0.55
-                            : 0.7
+                    tensionFilteredOut
+                      ? 0
+                      : ghosted
+                        ? docFocusActive
+                          ? 0
+                          : 0.08
+                        : isHover
+                          ? 0.9
+                          : docFocusActive
+                            ? 0.85
+                            : busyWheel
+                              ? 0.55
+                              : 0.7
                   }
                   strokeDasharray="5 3"
                   strokeLinecap="round"
-                  style={{ transition: "stroke-opacity 220ms" }}
+                  style={{
+                    transition: "stroke-opacity 220ms",
+                    pointerEvents: tensionFilteredOut ? "none" : undefined,
+                  }}
                 />
               )}
             </g>

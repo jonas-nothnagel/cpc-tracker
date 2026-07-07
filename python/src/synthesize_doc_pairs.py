@@ -3,10 +3,13 @@ Doc-pair synthesis: compress per-pair alignment records into recurring
 storylines between each pair of documents.
 
 For each cross-document pair with total signal (aligned medium/high + flagged)
-of at least 3 records, one LLM call produces a JSON synthesis with both a
-reinforcement story and a friction story. Output is consumed by the
-findings-home frontend (Section 3 ranking + doc-pair drawer) and by the
-corpus-level synthesis step.
+of at least 3 records, one LLM call produces a JSON synthesis with an
+alignment story and a possible-misalignment story (JSON keys `reinforce` /
+`clash` are kept stable for consumers; the prose inside follows the
+guardrailed vocabulary). Output is consumed by the findings-home frontend
+(Section 3 ranking + doc-pair drawer) and by the corpus-level synthesis step.
+Style violations trigger one corrective retry, then deterministic
+sanitization; style problems never crash a run.
 
 Module entrypoint: `synthesize_doc_pairs(targets, alignment, doc_type_labels=None)`
 returns a list of synthesis records, ready to JSON-dump.
@@ -19,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import json
 import logging
 import random
@@ -29,6 +33,13 @@ from typing import Any
 
 from .config import DATA_DIR, OUTPUT_DIR
 from .llm import call_llm_batch
+from .synthesis_style import (
+    check_prose,
+    check_theme_name,
+    corrections_block,
+    sanitize_name,
+    sanitize_prose,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,18 +70,22 @@ SYSTEM_PROMPT = (
     "is failing, lagging, or causing harm.\n"
     "- NO em dashes. Use commas or full stops.\n"
     "- Do not invent facts. Every storyline must trace to the supplied pairs.\n"
-    "- Use 'possible misalignment', 'flagged for review', 'reinforces', "
-    "'aligns with'. Avoid 'contradiction' as a settled term.\n"
+    "- Negative-side vocabulary: say 'possible misalignment' or 'potential "
+    "misalignment'. NEVER use the words 'tension', 'contradiction', 'friction', "
+    "'conflict', or the phrase 'flagged for review' in any output text.\n"
+    "- Positive-side vocabulary: say 'aligns with', 'pulls in the same "
+    "direction', 'supports'. Do not use the word 'reinforces' in prose.\n"
+    "- Never use 'should' or 'must'. For suggestions use 'could' or 'may'.\n"
     "- 1-2 sentences per field. Concrete mechanisms, not abstract categories.\n"
-    "- If one side (reinforce or clash) has no records, say so honestly. Do not "
-    "fabricate friction when only alignment exists, or vice versa.\n"
+    "- If one side (alignment or possible misalignment) has no records, say so "
+    "honestly. Do not fabricate a pattern the records do not show.\n"
     "- coordination_hint stays hedged ('could', 'may help'). Never prescriptive."
 )
 
 
 def _format_pair_block(rec: dict[str, Any], idx: int) -> str:
     return (
-        f"[{idx}] level={rec['level']} ctype={rec['ctype']}\n"
+        f"[{idx}] level={rec['level']} mechanism={rec['ctype']}\n"
         f"    {rec['a_doc']} {rec['a_label']}: {rec['a_text'][:240]}\n"
         f"    {rec['b_doc']} {rec['b_label']}: {rec['b_text'][:240]}\n"
         f"    REASONING: {rec['reason']}"
@@ -87,7 +102,7 @@ def build_user_prompt(
     rng: random.Random,
 ) -> str:
     aligned_sample = (
-        random.sample(aligned, MAX_SAMPLES_PER_SIDE)
+        rng.sample(aligned, MAX_SAMPLES_PER_SIDE)
         if len(aligned) > MAX_SAMPLES_PER_SIDE
         else list(aligned)
     )
@@ -103,25 +118,29 @@ def build_user_prompt(
         _format_pair_block(r, i + 1) for i, r in enumerate(flagged_sample)
     )
 
-    ctype_summary = Counter(r["ctype"] for r in flagged if r["ctype"])
-    ctype_str = ", ".join(f"{k}={v}" for k, v in ctype_summary.items()) or "none"
+    mechanism_summary = Counter(r["ctype"] for r in flagged if r["ctype"])
+    mechanism_str = ", ".join(f"{k}={v}" for k, v in mechanism_summary.items()) or "none"
 
     return (
         f"DOCUMENT PAIR: {label_a} ({doc_a}) vs {label_b} ({doc_b})\n"
         f"Counts in this country: {len(aligned)} pairs at medium/high alignment, "
-        f"{len(flagged)} flagged for review.\n"
-        f"Flagged breakdown by contradictionType: {ctype_str}\n\n"
-        f"--- REINFORCING PAIRS (sample of {len(aligned_sample)} of {len(aligned)}) ---\n"
+        f"{len(flagged)} identified for review.\n"
+        f"Breakdown of pairs identified for review, by mechanism: {mechanism_str}\n\n"
+        f"--- ALIGNED PAIRS (sample of {len(aligned_sample)} of {len(aligned)}) ---\n"
         f"{aligned_blocks or '(none in this pair)'}\n\n"
-        f"--- FLAGGED PAIRS (sample of {len(flagged_sample)} of {len(flagged)}) ---\n"
+        f"--- PAIRS IDENTIFIED FOR REVIEW (sample of {len(flagged_sample)} of {len(flagged)}) ---\n"
         f"{flagged_blocks or '(none in this pair)'}\n\n"
         "Produce a JSON object with these fields:\n"
-        "  storyline_name: 5-10 word verb-phrase capturing the dominant pattern\n"
-        "  reinforce: 1-2 sentences naming what these docs share or reinforce, "
-        "concretely (named mechanisms or instruments). If no reinforcing pairs, "
-        "say 'No reinforcing pairs in this set.'\n"
-        "  clash: 1-2 sentences naming where they recur in friction, concretely. "
-        "If no flagged pairs, say 'No recurring friction flagged in this set.'\n"
+        "  storyline_name: noun phrase of 5 to 9 words naming the dominant "
+        "pattern, for example 'Shared reliance on protected-area management "
+        "plans'. Never an imperative verb phrase: it names what recurs, not an "
+        "action to take.\n"
+        "  reinforce: 1-2 sentences naming what these docs share or where they "
+        "pull in the same direction, concretely (named mechanisms or "
+        "instruments). If no aligned pairs, say 'No aligned pairs in this set.'\n"
+        "  clash: 1-2 sentences naming where possible misalignments recur, "
+        "concretely. If no pairs were identified for review, say 'No recurring "
+        "possible misalignment in this set.'\n"
         "  coordination_hint: 1 sentence pointing at coordination that could "
         "help, hedged ('could', 'may'). One sentence only.\n"
         "  confidence: low|medium|high. low if total records < 6, medium if "
@@ -211,12 +230,27 @@ def parse_synthesis(raw: str) -> dict[str, Any] | None:
             f"synthesize_doc_pairs: missing fields in response: "
             f"{set(REQUIRED_FIELDS) - set(data.keys())}"
         )
-    # Voice spot-check: drop em dashes if any slipped through. We refuse to ship
-    # an em dash to the UI even at the cost of a tiny grammar adjustment.
-    for k in ("reinforce", "clash", "coordination_hint", "storyline_name"):
-        if isinstance(data.get(k), str):
-            data[k] = data[k].replace("—", ",").replace("–", ",")
     return data
+
+
+PROSE_FIELDS = ("storyline_name", "reinforce", "clash", "coordination_hint")
+
+
+def check_synthesis_style(parsed: dict[str, Any]) -> list[str]:
+    """Shared style rules applied to one doc-pair synthesis."""
+    violations = check_theme_name(parsed.get("storyline_name"), field="storyline_name")
+    for field in PROSE_FIELDS:
+        violations += check_prose(parsed.get(field), field)
+    return violations
+
+
+def _sanitize_synthesis(parsed: dict[str, Any]) -> None:
+    """Last-resort in-place repair after the corrective retry."""
+    if isinstance(parsed.get("storyline_name"), str):
+        parsed["storyline_name"] = sanitize_name(parsed["storyline_name"])
+    for field in ("reinforce", "clash", "coordination_hint"):
+        if isinstance(parsed.get(field), str):
+            parsed[field] = sanitize_prose(parsed[field])
 
 
 # ---------------------------------------------------------------------------
@@ -274,7 +308,10 @@ async def synthesize_doc_pairs(
         doc_a, doc_b = key
         label_a = doc_type_labels.get(doc_a, doc_a)
         label_b = doc_type_labels.get(doc_b, doc_b)
-        seed = hash(f"{doc_a}__{doc_b}") & 0xFFFFFFFF
+        # Stable across processes (unlike builtin hash(), which is randomized
+        # per interpreter run), so oversized pools sample the same examples on
+        # every run and the disk cache actually hits.
+        seed = int(hashlib.sha256(f"{doc_a}__{doc_b}".encode()).hexdigest()[:8], 16)
         rng = random.Random(seed)
         # Pre-sample aligned with the same RNG so the prompt stays deterministic.
         # We mutate `pool` in-place for sampling visibility, but only the prompt
@@ -294,11 +331,49 @@ async def synthesize_doc_pairs(
         cache_namespace=CACHE_NAMESPACE,
         desc="doc-pair synthesis",
     )
+    parsed_list = [parse_synthesis(raw) for raw in raws]
+
+    # One corrective retry for responses that violate the style rules; the
+    # appended corrections change the cache key, so the retry never re-reads
+    # the cached bad answer. Keep the retry only if it did not get worse.
+    retry_indices: list[int] = []
+    retry_calls: list[dict[str, Any]] = []
+    for i, parsed in enumerate(parsed_list):
+        if parsed is None:
+            continue
+        violations = check_synthesis_style(parsed)
+        if violations:
+            retry_indices.append(i)
+            retry_calls.append({
+                "system": SYSTEM_PROMPT,
+                "user": calls[i]["user"] + corrections_block(violations),
+            })
+    if retry_calls:
+        logger.info(
+            f"synthesize_doc_pairs: {len(retry_calls)} corrective retr"
+            f"{'y' if len(retry_calls) == 1 else 'ies'} for style violations"
+        )
+        retry_raws = await call_llm_batch(
+            retry_calls,
+            cache_namespace=CACHE_NAMESPACE,
+            desc="doc-pair synthesis style retries",
+        )
+        for i, raw in zip(retry_indices, retry_raws):
+            reparsed = parse_synthesis(raw)
+            if reparsed is None:
+                continue
+            before = parsed_list[i]
+            if len(check_synthesis_style(reparsed)) <= len(check_synthesis_style(before)):
+                parsed_list[i] = reparsed
+
+    # Deterministic last resort: banned vocabulary and dashes never ship.
+    for parsed in parsed_list:
+        if parsed is not None:
+            _sanitize_synthesis(parsed)
 
     results: list[dict[str, Any]] = []
-    for (key, pool), raw in zip(qualifying, raws):
+    for (key, pool), parsed in zip(qualifying, parsed_list):
         doc_a, doc_b = key
-        parsed = parse_synthesis(raw)
         record = {
             "doc_a": doc_a,
             "doc_b": doc_b,
