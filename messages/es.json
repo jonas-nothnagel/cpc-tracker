@@ -577,7 +577,7 @@
         "alignsTop": "{count, plural, =0 {Temas coherentes} one {Tema coherente principal} other {Los # temas coherentes principales}}",
         "reviewTop": "{count, plural, =0 {Temas con posible desalineación} one {Tema principal con posible desalineación} other {Los # temas principales con posible desalineación}}",
         "emptyAligns": "No se identificaron temas coherentes entre documentos para la selección actual.",
-        "countsLegend": "Cada cifra cuenta los pares de metas detrás de un tema, según los documentos mostrados; los pares potencialmente desalineados nunca se cuentan dos veces. Las barras comparan el tamaño de los temas en cada columna."
+        "countsLegend": "Cada cifra cuenta los pares de metas detrás de su tema, según los documentos mostrados."
       }
     },
     "emptyState": {
