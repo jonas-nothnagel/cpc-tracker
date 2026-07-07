@@ -29,7 +29,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Modal } from "@/components/ui/modal";
 import {
@@ -68,9 +68,9 @@ import {
 } from "./sections/implementation";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
-import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
 import { InstitutionFlow } from "./centerpiece/institution-flow";
+import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
 import type {
   WheelFilter,
@@ -263,6 +263,7 @@ export function CoherenceBriefing({
   globeSubcategories = [],
 }: CoherenceBriefingProps) {
   const t = useTranslations("briefing");
+  const locale = useLocale();
   const sectionLabels = useSectionLabels();
   // ── Derived data ────────────────────────────────────────────────
   // The re-hosted explorer needs the FULL corpus (incl. BTR + BER) so BTR
@@ -386,8 +387,8 @@ export function CoherenceBriefing({
     if (!berData || !berData.programs || berData.programs.length === 0) {
       return null;
     }
-    return computeFinancingCoherence(berData);
-  }, [berData]);
+    return computeFinancingCoherence(berData, locale);
+  }, [berData, locale]);
 
   // Reviewed spending rolled up to the biodiversity-OUTCOME taxonomy (primary
   // GLOBE), so the centerpiece can lead with where money concentrates AND which
@@ -535,9 +536,9 @@ export function CoherenceBriefing({
   }, [btrData, countryName]);
 
   // Synthetic Target stand-ins for funded budget lines, so a budget↔commitment
-  // match on the Financing slide opens the SAME PairDrawer (full rationale +
-  // both sides). sourceDocument "BER" uses the reserved doc token; sourceLabel
-  // carries the budget code.
+  // match on the Financing slide (non-Panama DocumentCoverage layout) opens the
+  // SAME PairDrawer (full rationale + both sides). sourceDocument "BER" uses
+  // the reserved doc token; sourceLabel carries the budget code.
   const budgetPairTargets = useMemo(() => {
     const map = new Map<string, Target>();
     if (!berData?.programs?.length) return map;
@@ -905,9 +906,10 @@ export function CoherenceBriefing({
     [targetMap, actionPairTargets, alignment],
   );
 
-  // Financing drill-down: open a budget-line↔commitment match in the same
-  // PairDrawer. The pair lives in `budgetAlignment`; the budget side is a
-  // synthetic Target stand-in from `budgetPairTargets`.
+  // Financing drill-down (non-Panama DocumentCoverage layout): open a
+  // budget-line↔commitment match in the same PairDrawer. The pair lives in
+  // `budgetAlignment`; the budget side is a synthetic Target stand-in from
+  // `budgetPairTargets`.
   const openBudgetPair = useCallback(
     (programBerId: string, targetId: string) => {
       const tTarget = targetMap.get(targetId);
@@ -1325,6 +1327,12 @@ export function CoherenceBriefing({
       );
     }
     if (activeSection === FINANCING_SECTION_ID && financing) {
+      // Panama drops the centerpiece: its FundingTargetGrid stretches across
+      // both columns via `lg:w-[calc(100%+520px)]` + `lg:invisible` on the
+      // aside, so the finance-outcome centerpiece would be duplicative.
+      // Every other country keeps the centerpiece (the budget object itself:
+      // what it is, where money concentrates, unspent share).
+      if (countryId === "panama") return null;
       return (
         <FinancingCenterpiece
           summary={financing}
@@ -1554,20 +1562,27 @@ export function CoherenceBriefing({
               <div
                 ref={setSectionRef(FINANCING_SECTION_ID)}
                 data-section-id={FINANCING_SECTION_ID}
-                // The finding copy is brief; without a min-height this short
-                // section would win "active" while still low in the viewport,
-                // leaving the previous section visible beside the sticky
-                // Financing visual. Fill the column on desktop so the finding
-                // stays in sync with its centerpiece (top-aligned, not centred,
-                // to match the top-pinned sticky visual).
-                className="lg:min-h-[80vh]"
+                // Panama has no sticky centerpiece (renderActiveCenterpiece
+                // returns null and the aside is invisible), so the
+                // FundingTargetGrid extends 520px to the right into the empty
+                // aside area (480px aside + 40px gap-x on the outer grid).
+                // Every other country keeps the normal column width with its
+                // FinancingCenterpiece on the right.
+                className={
+                  "lg:min-h-[80vh] " +
+                  (countryId === "panama" ? "lg:w-[calc(100%+520px)]" : "")
+                }
               >
                 <FinancingSection
                   summary={financing}
                   commitmentCount={visibleTargets.length}
                   coverage={budgetCoverage}
                   countryConfig={countryConfig}
+                  countryId={countryId}
                   countryName={countryName}
+                  targets={targets}
+                  budgetAlignment={budgetAlignment}
+                  berData={berData}
                   onOpenBudgetPair={openBudgetPair}
                 />
               </div>
@@ -1596,8 +1611,17 @@ export function CoherenceBriefing({
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
               the coherence matrix (synced with the ranked list on the left);
               where-to-focus swaps in the concentration waffle; every other
-              slide shows the wheel. */}
-          <aside className="hidden lg:block">
+              slide shows the wheel. On Panama the financing slide hides the
+              aside so the FundingTargetGrid can stretch into this space —
+              its per-doc dot rows already carry the doc filter implicitly. */}
+          <aside
+            className={
+              "hidden lg:block " +
+              (activeSection === FINANCING_SECTION_ID && countryId === "panama"
+                ? "lg:invisible"
+                : "")
+            }
+          >
             <div className="sticky top-[124px]">
               {/* Interactive doc legend: add/remove documents right at the
                   visual, so toggling a document visibly adds or drops its arc

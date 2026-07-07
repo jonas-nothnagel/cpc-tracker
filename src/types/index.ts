@@ -729,7 +729,22 @@ export interface AdaptationGoal {
 export interface BerBudgetProgram {
   code: string;
   name: string;
+  /** Optional English display name. When absent the UI falls back to `name`.
+   *  Pipeline emits this for Panama (parse_panama_ber.py) — substantive
+   *  programme names stay Spanish (MEF proper nouns); overhead rollups carry
+   *  a curated English equivalent. */
+  nameEn?: string;
+  /** Optional owning institution (Spanish source-of-record). Emitted by
+   *  parse_panama_ber.py for Panama; absent for Mongolia. */
+  institution?: string;
+  /** Optional curated English institution name. See `institution`. */
+  institutionEn?: string;
   description: string;
+  /** Optional Spanish UI description. Distinct from `description` (which is
+   *  the LLM-input narrative kept cache-stable for budget_alignment). */
+  descriptionEs?: string;
+  /** Optional English UI description. See `descriptionEs`. */
+  descriptionEn?: string;
   type: "environmental" | "non_environmental";
 }
 
@@ -737,6 +752,13 @@ export interface BerBudgetProgram {
 export interface BerExpenditureSeries {
   code: string;
   name: string;
+  /** Optional English display name (see BerBudgetProgram.nameEn). */
+  nameEn?: string;
+  /** Optional owning institution (Spanish source-of-record). See
+   *  BerBudgetProgram.institution. */
+  institution?: string;
+  /** Optional curated English institution name. */
+  institutionEn?: string;
   /** Values by year in the report's unit (e.g. billion MNT). null = no data. */
   values: Record<string, number | null>;
 }

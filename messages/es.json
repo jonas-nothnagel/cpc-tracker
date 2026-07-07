@@ -615,6 +615,44 @@
       "matched": {
         "headline": "El gasto en biodiversidad examinado de {country} cubre {share} las metas de política.",
         "body": "En {docCount, plural, one {# documento de política} other {# documentos de política}} hay {total, plural, one {# meta} other {# metas}}. {reached} tienen una línea presupuestaria correspondiente en este examen; las otras {outsideReach} no tienen ninguna."
+      },
+      "targetGrid": {
+        "kpi": {
+          "reviewed": "Metas revisadas",
+          "wellFunded": "Bien financiadas",
+          "wellFundedCaption": "≥ umbral del top 10 de gasto",
+          "underFunded": "Sub-financiadas",
+          "underFundedCaption": "≤ umbral del bottom 10 de gasto",
+          "unfunded": "Sin gasto alineado",
+          "unfundedCaption": "ningún programa juzgado alineado"
+        },
+        "tier": {
+          "well-funded": "Bien financiada",
+          "normal": "Financiada",
+          "under-funded": "Sub-financiada",
+          "unfunded": "Sin gasto alineado"
+        },
+        "detail": {
+          "placeholder": "Haga clic en cualquier punto para ver la meta, el nivel de financiamiento y los programas que la IA juzgó alineados con ella.",
+          "close": "Cerrar detalles de la meta",
+          "readMore": "Leer más",
+          "showLess": "Ver menos",
+          "alignedSpend": "Gasto alineado",
+          "alignedProgrammes": "Programas alineados",
+          "spendPerYear": "Gasto por año",
+          "topContributing": "Principales programas que contribuyen",
+          "moreProgrammes": "+ {count, plural, one {# programa alineado más} other {# programas alineados más}}",
+          "noContributors": "No hay programas de alineación alta o media para esta meta.",
+          "showAllProgrammes": "Ver los {count, plural, one {# programa} other {# programas}}, agrupados por institución",
+          "showTopProgrammes": "Ver principales contribuyentes",
+          "programmeCode": "Código",
+          "programmeInstitution": "Institución",
+          "programmeAlignment": "Alineación",
+          "programmeDescription": "Descripción",
+          "programmeYearlySpend": "Gasto anual del programa",
+          "otherInstitution": "Otras",
+          "institutionSubtotal": "{count, plural, one {# programa} other {# programas}} · {money}"
+        }
       }
     },
     "financingCenter": {
@@ -1268,7 +1306,7 @@
       "label": "Presupuesto de biodiversidad",
       "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación GLOBE.",
       "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa arcos por GLOBE y sombrea cada uno por su proporción del gasto BER etiquetado.",
-      "mongoliaNote": "BER de Mongolia (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "mongoliaNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
       "fallbackAmount": "0 MNT"
     },
@@ -1780,7 +1818,7 @@
       "taxonomyRollup": "Agregación por taxonomía",
       "programOption": "Programa ({count, number} líneas BER)",
       "expenditureLabel": "Gasto ({period})",
-      "barChartNote": "Una vista de gráfico de barras desagregada por ministerio se añadirá una vez que se conecte el mapeo de programa a ministerio del BER de Mongolia (flujo de trabajo independiente).",
+      "barChartNote": "Una vista de gráfico de barras desagregada por ministerio se añadirá una vez que se conecte el mapeo de programa a ministerio del BER (flujo de trabajo independiente).",
       "viewLabels": {
         "globe_sub": "Taxonomía de biodiversidad BIOFIN GLOBE",
         "sector": "Sectores de mitigación climática IPCC"
@@ -1816,7 +1854,7 @@
       },
       "scopeNote": {
         "title": "Qué muestra y qué no muestra esta sección",
-        "berOnly": "<strong>Solo gasto en biodiversidad (BER).</strong> El etiquetado más amplio del presupuesto verde (indicadores de mitigación y adaptación climática en ~1.400 proyectos) es una fuente de datos de Mongolia independiente aún no integrada.",
+        "berOnly": "<strong>Solo gasto en biodiversidad (BER).</strong> El etiquetado más amplio del presupuesto verde (indicadores de mitigación y adaptación climática) es una fuente de datos independiente aún no integrada.",
         "classification": "La clasificación de programa a política es <strong>generada por LLM</strong>. Cada programa recibe una etiqueta primaria de etiqueta única y cualquier etiqueta con puntaje ≥ 0.5 como multietiqueta.",
         "period": "Período: horizonte de análisis del BER {programPeriod}; datos anuales detallados {period}.",
         "reconciliation": "La reconciliación de subprogramas (por partida) está en curso; la vista actual es solo a nivel de programa ({count, number} líneas de reporte del BER)."

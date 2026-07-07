@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { arc as d3Arc } from "d3-shape";
 import {
   getDocColor,
@@ -2850,6 +2850,7 @@ export function PolicyCoherenceExplorer({
   // persistent workbench rail header) owns the chat surface instead.
   const showInternalChat = !isEmbed;
   const [showAtAGlance, setShowAtAGlance] = useState(!isEmbed);
+  const locale = useLocale();
 
   // Embed mode adopts the briefing's lighter chrome: pill-shaped controls and a
   // softer card, so the re-hosted explorer reads as part of the new design.
@@ -3086,8 +3087,9 @@ export function PolicyCoherenceExplorer({
         berData: berData ?? null,
         globeSubcategories: globeSubcategories ?? [],
         classifications,
+        locale,
       }),
-    [berData, globeSubcategories, classifications],
+    [berData, globeSubcategories, classifications, locale],
   );
 
   /** True iff the shading should actually paint right now: data present,

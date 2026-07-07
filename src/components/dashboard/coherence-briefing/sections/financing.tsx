@@ -1,41 +1,49 @@
 "use client";
 
 /**
- * Financing — the Level 2 slide. One question: how much of the policy does this
- * budget have a budget line for, and which targets does it leave with none?
+ * Financing — the Level 2 slide. One question: which policy targets have
+ * money behind them, and which don't?
  *
- * What the pipeline (budget_align.py) actually does, stated honestly: it matches
- * each policy target to the budget's own lines (programmes) on the same goal,
- * keeping only HIGH-confidence thematic matches. So a target "has a matching
- * budget line" when a FUNDED programme (spend > 0) is judged HIGH against it.
- * This shows where a budget line EXISTS for a target, NOT that money is actually
- * spent on it, and is distinct from the policy-to-policy coherence elsewhere.
+ * Two evidence layouts share this slide, keyed off `countryId`:
  *
- * Left column:
- *   - HEADLINE: names the budget and how much of the policy it matches.
- *   - BODY: grounds the numbers (N targets across the documents, M matched).
- *   - A per-DOCUMENT dot-map: one uniform dot per target, filled = has a
- *     matching budget line, hollow = none. Open a document to see both sides:
- *     the targets with a matching line (and which line), and the targets with
- *     none.
+ *   - PANAMA: the `FundingTargetGrid` — every visible target is one dot,
+ *     colored by funding tier (well-funded / funded / under-funded / no
+ *     aligned spend), grouped by document. Click a dot to pop open a
+ *     drawer with the target text, contributing programmes, and a per-year
+ *     aligned-spend bar chart. "Aligned spend" = sum of executed spend
+ *     across programmes the LLM judged high/medium-aligned with the
+ *     target — AI-judged semantic coherence, not audited flow.
  *
- * Right column (FinancingCenterpiece): the budget object itself. What it is,
- * where the money concentrates, and how much of the plan went unspent.
+ *   - EVERY OTHER COUNTRY (Mongolia today): the `DocumentCoverage`
+ *     dot-map — one uniform dot per target, filled = has a HIGH-confidence
+ *     matching budget line, hollow = none. Opening a document shows both
+ *     sides (matched + unmatched). Rationale opens in the shared
+ *     PairDrawer via `onOpenBudgetPair`.
  *
- * NOTE: "reviewed biodiversity spending" is BER-specific (the only budget wired
- * today, and deliberately framed as a snapshot review, not the whole budget). If
- * a non-biodiversity budget is ever added, revisit the headline noun.
+ * NOTE: "reviewed biodiversity spending" is BER-specific (the only budget
+ * wired today, and deliberately framed as a snapshot review, not the whole
+ * budget). If a non-biodiversity budget is ever added, revisit the noun.
  */
 
-import { useTranslations } from "next-intl";
+import { useMemo } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
-import type {
-  BudgetCoverage,
-  BudgetCoverageDoc,
-  FinancingCoherenceSummary,
+import {
+  computeFundingTargetRows,
+  groupFundingRowsByDoc,
+  visibleFinancingDocIds,
+  type BudgetCoverage,
+  type BudgetCoverageDoc,
+  type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
-import type { CountryConfig } from "@/types";
+import type {
+  AlignmentResult,
+  BerData,
+  CountryConfig,
+  Target,
+} from "@/types";
+import { FundingTargetGrid } from "./funding-target-grid";
 
 export const FINANCING_SECTION_ID = "financing";
 
@@ -44,18 +52,29 @@ export function FinancingSection({
   commitmentCount,
   coverage,
   countryConfig,
+  countryId,
   countryName,
+  targets,
+  budgetAlignment,
+  berData,
   onOpenBudgetPair,
 }: {
   summary: FinancingCoherenceSummary;
   commitmentCount: number;
   coverage: BudgetCoverage | null;
   countryConfig: CountryConfig | null;
+  countryId?: string;
   countryName: string;
-  /** Open the shared drawer on a budget-line↔commitment match (full rationale). */
+  targets: Target[];
+  budgetAlignment: AlignmentResult[] | null;
+  berData: BerData | null;
+  /** Open the shared drawer on a budget-line↔commitment match (full rationale).
+   *  Used only by the DocumentCoverage layout (non-Panama). */
   onOpenBudgetPair: (programBerId: string, targetId: string) => void;
 }) {
   const t = useTranslations("briefing.financing");
+  const locale = useLocale();
+  const isPanama = countryId === "panama";
   const sentence = composeSentence(
     coverage,
     summary,
@@ -63,21 +82,60 @@ export function FinancingSection({
     countryName,
     t,
   );
+
+  // Per-target funding rows powering the Panama dot grid. Computed only when
+  // Panama is active — skip the join for other countries.
+  const grid = useMemo(() => {
+    if (!isPanama) return null;
+    if (!berData || !budgetAlignment) return null;
+    const visibleDocIds = visibleFinancingDocIds(countryConfig);
+    const rows = computeFundingTargetRows({
+      targets,
+      alignment: budgetAlignment,
+      berData,
+      countryConfig,
+      locale,
+      visibleDocIds,
+    });
+    if (rows.length === 0) return null;
+    const docs = groupFundingRowsByDoc(rows, countryConfig);
+    const totals = {
+      reviewed: rows.length,
+      wellFunded: rows.filter((r) => r.tier === "well-funded").length,
+      underFunded: rows.filter((r) => r.tier === "under-funded").length,
+      unfunded: rows.filter((r) => r.tier === "unfunded").length,
+    };
+    return { docs, totals };
+  }, [isPanama, targets, budgetAlignment, berData, countryConfig, locale]);
+
+  let evidence: React.ReactNode = undefined;
+  if (isPanama && grid) {
+    evidence = (
+      <FundingTargetGrid
+        docs={grid.docs}
+        unit={berData?.unit ?? "million"}
+        currency={berData?.currency ?? ""}
+        totals={grid.totals}
+        mode="drawer"
+      />
+    );
+  } else if (!isPanama && coverage && coverage.byDocument.length > 0) {
+    evidence = (
+      <DocumentCoverage
+        coverage={coverage}
+        countryConfig={countryConfig}
+        onOpenBudgetPair={onOpenBudgetPair}
+      />
+    );
+  }
+
   return (
     <SlideFrame
       id={FINANCING_SECTION_ID}
       eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
-      evidence={
-        coverage && coverage.byDocument.length > 0 ? (
-          <DocumentCoverage
-            coverage={coverage}
-            countryConfig={countryConfig}
-            onOpenBudgetPair={onOpenBudgetPair}
-          />
-        ) : undefined
-      }
+      evidence={evidence}
     />
   );
 }
@@ -181,9 +239,6 @@ function DocCoverageRow({
               })}
             </span>
           </div>
-          {/* Dot-map: one uniform dot per target. Filled = has a matching
-              budget line; hollow = none. Matched dots first so the proportion
-              reads at a glance. */}
           <div className="flex flex-wrap gap-1">
             {doc.links.map((link) => (
               <span
@@ -214,8 +269,6 @@ function DocCoverageRow({
               <ul className="space-y-1 max-h-72 overflow-y-auto pr-1">
                 {doc.links.map((link) => (
                   <li key={link.targetId}>
-                    {/* Click opens the shared drawer with both sides and the
-                        full AI rationale — no truncated inline paragraph. */}
                     <button
                       type="button"
                       onClick={() =>
@@ -316,8 +369,8 @@ function composeSentence(
     };
   }
 
-  // Budget-to-target matching not available for this corpus (rare for Mongolia,
-  // where the alignment exists). Name the budget; do not headline a number.
+  // Budget-to-target matching not available for this corpus. Name the budget;
+  // do not headline a number.
   if (!coverage || coverage.byDocument.length === 0) {
     return {
       headline: t("noMatch.headline", {

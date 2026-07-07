@@ -4,16 +4,14 @@
     "doc_b": "ENR",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "ENR (REDD+ Strategy)",
-    "aligned_count": 1427,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
+    "aligned_count": 1433,
+    "flagged_count": 0,
+    "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Shared REDD+ delivery through safeguards and coordination",
-      "reinforce": "The two documents largely align around REDD+ implementation that links on-the-ground measures, such as PIEA incentives, forest fire management, restoration, and community programmes, with enabling systems in the strategy, especially safeguards, monitoring, reporting, participation, and national coordination roundtables. This pattern often points to a common delivery model where watershed and forest actions are supported by institutional arrangements for carbon accounting, safeguard compliance, community participation, and forest monitoring.",
-      "clash": "Possible misalignment appears only once in this set. It concerns restoration-focused forest carbon enhancement in the CNR and commercial reforestation in the ENR, where plantation siting and the use of exotic species could, in overlapping landscapes, pull away from connectivity and ecological restoration objectives unless design parameters are well aligned.",
-      "coordination_hint": "Coordination could be most useful where restoration and reforestation meet, by linking zoning, species choices, safeguards, and monitoring arrangements across the two documents.",
+      "storyline_name": "Linking REDD+ incentives, restoration, and safeguards",
+      "reinforce": "The two documents strongly align around REDD+ delivery through concrete instruments, especially PIEA expansion, payment for ecosystem services, restoration finance, forest fire management, and measurement for results-based payments. A recurring pattern is that the CNR's place-based incentive and restoration actions are reinforced by the ENR's enabling mechanisms, including forest monitoring, REDD+ coordination roundtables, the 311 grievance and safeguard system, outreach, ecotourism training, and legal protections for REDD+ territories.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Coordination could focus on linking CNR implementation areas and beneficiary groups with ENR monitoring, safeguards, training, and payment-for-results mechanisms, which may help translate broad REDD+ strategy tools into operational support on the ground.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -23,14 +21,14 @@
     "doc_b": "HR",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "HR (Nature Pledge Roadmap)",
-    "aligned_count": 201,
+    "aligned_count": 207,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Shared land-use incentives and forest governance",
-      "reinforce": "The two documents often pull in the same direction through land-use incentives, forest restoration, forest fire management, and national monitoring and policy frameworks, especially where REDD+ measures are linked to the Nature Pledge mitigation portfolio, restoration baselines, and deforestation-priority territories. A recurring pattern is that HR governance tools, such as climate-risk observatories, early warning systems, Escazú-related participation arrangements, protected-area frameworks, and incentive reviews, could support implementation of CNR actions in watersheds, forest landscapes, and community territories.",
-      "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Coordination could be most useful where PIEA expansion, restoration, fire management, and community incentive programs overlap with HR systems for mitigation tracking, restoration planning, territorial monitoring, and conservation governance.",
+      "storyline_name": "Linking forest incentives with national nature governance",
+      "reinforce": "The two documents align with a recurring pattern in which REDD+ forest measures, including PIEA incentives, restoration, forest fire management, and community-focused support for Indigenous Peoples, Afro-descendants, and small producers, are reinforced by the Nature Pledge Roadmap’s governance, planning, and monitoring instruments. This often points to practical links through the updated National Forest Restoration Program, illegal deforestation prioritization, Escazú-related participation and safeguards, Target 30 coordination architecture, territorial adaptation planning, early warning and agroclimatic systems, and cleaner production criteria in shared rural and forest landscapes.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Coordination could focus on using the Roadmap’s territorial planning, safeguards, monitoring, and climate-information systems to inform where REDD+ incentives, restoration, and fire-management actions are prioritized and tracked.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -40,14 +38,14 @@
     "doc_b": "NP",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "NP (Nature Pledge)",
-    "aligned_count": 232,
+    "aligned_count": 246,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Shared land-use incentives and forest governance",
-      "reinforce": "The two documents often pull in the same direction through PIEA incentives, forest restoration, agroforestry and silvopastoral practices, and community-focused programmes for Indigenous Peoples, Afro-descendants, and small-scale producers. Alignment also recurs around REDD+ strategy updates, forest monitoring and safeguards systems, traceability, and finance mechanisms that support zero illegal deforestation, protected-area management, transparency, and biodiversity-land-climate co-benefits.",
-      "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Coordination could help link REDD+ incentive delivery, forest monitoring, and restoration finance with the Nature Pledge's targets on deforestation, protected areas, adaptation planning, and transparency systems.",
+      "storyline_name": "Linking land-use systems with nature finance and planning",
+      "reinforce": "The two documents consistently align through land-use governance, incentive schemes, restoration, forest monitoring, and community-based fire management that reinforce Nature Pledge targets on zero illegal deforestation, protected areas, pollution reduction, adaptation planning, and biodiversity-friendly incentive reform. A recurring pattern is that the CNR provides enabling mechanisms, such as REDD+ strategy updates, safeguards, traceability, PIEA incentives, restoration finance, and territorial coordination, while the NP often adds national finance, protected-area planning, adaptation systems, and participation frameworks that could help operationalize those measures.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Coordination may help where REDD+ institutions, PIEA incentives, restoration programmes, and fire brigades intersect with Nature Pledge finance, protected-area and watershed planning, monitoring systems, and community participation arrangements.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -57,619 +55,620 @@
     "doc_b": "PEG",
     "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 131,
-    "flagged_count": 24,
-    "contradiction_types": {
-      "delivery_friction": 23,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Environmental incentives alongside broader land-use modernization",
-      "reinforce": "The two documents often pull in the same direction on low-emissions land use, through PIEA incentives, restoration, forest fire management, community-based restoration, and updated environmental regulations such as payments for environmental services, carbon and biodiversity credits, and oversight tools. Alignment also recurs through enabling systems, including forest monitoring, traceability, digital government, science and innovation, public-sector capacity, and climate-transition planning that could support REDD+ delivery.",
-      "clash": "Possible misalignment recurs where PEG infrastructure, logistics, agricultural expansion, energy corridors, tourism development, housing, and Canal or reservoir works overlap with the same watersheds, forest landscapes, buffer zones, or protected-area-adjacent areas targeted by CNR incentives and restoration. The review cases often point to delivery-side risks from siting, routing, land subdivision, and expanded access patterns that could complicate basin planning, forest connectivity, fire prevention, and conservation-compatible livelihoods, with one case also pointing to competition for land.",
-      "coordination_hint": "Joint spatial planning, zoning, and safeguard alignment across watershed, corridor, agricultural, housing, and restoration decisions could help these agendas support each other more consistently.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PENCYT",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 95,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
-    "synthesis": {
-      "storyline_name": "Innovation systems enabling forest incentive delivery",
-      "reinforce": "Across the aligned pairs, PENCYT often aligns with CNR as an enabling framework for REDD+ delivery, especially through knowledge and technology transfer, digitalization, STI capacity building, and regional innovation hubs that could support planning, monitoring, traceability, and management of PIEA and other land-use incentives. This pattern also recurs around environment, sustainability, and inclusive development objectives, where PENCYT supports CNR's watershed, forest, and community-focused measures without usually sharing the same geography or implementation instrument directly.",
-      "clash": "The only possible misalignment identified is between CNR's incentive programme for Indigenous Peoples, Afro Descendants, and small-scale producers and PENCYT's food modernization vector. In shared rural areas, productivity- and competitiveness-oriented technification could pull implementation toward more intensive land use unless it is connected to zoning, safeguards, agroforestry, non-timber forest products, and other low-impact livelihood models.",
-      "coordination_hint": "Coordination could help where STI tools and agricultural modernization are being applied in forest-linked rural landscapes, so that innovation agendas are connected to REDD+ incentive design, territorial zoning, and low-impact production pathways.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PIOTA",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 78,
-    "flagged_count": 7,
-    "contradiction_types": {
-      "delivery_friction": 5,
-      "resource_competition": 2
-    },
-    "synthesis": {
-      "storyline_name": "Watershed land-use incentives with ecosystem management",
-      "reinforce": "The documents often pull in the same direction in the Panama Canal watershed through PIEA incentives, ecological corridor protection, ecosystem monitoring, GHG inventories, management plans, and community training. A recurring pattern is that CNR finances or structures sustainable land use, restoration, fire management, and inclusive producer incentives, while PIOTA provides the spatial planning, protection rules, monitoring systems, and livelihood links such as ecotourism that support delivery.",
-      "clash": "Possible misalignment recurs mainly where PIOTA road construction and mobility improvements intersect with CNR conservation, restoration, fire prevention, and forest-carbon measures in the same watershed, because new access and routing choices could increase pressure on priority forest areas. A second recurring possible misalignment appears around irrigation and expanded production, where land and water demand could compete with restoration zones, buffer areas, and hydrological conditions needed for forest recovery.",
-      "coordination_hint": "Joint spatial planning on road routing, zoning, watershed water allocation, and safeguards could help these instruments align more consistently in shared CHCP landscapes.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PNRF",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 77,
-    "flagged_count": 0,
-    "contradiction_types": {},
-    "synthesis": {
-      "storyline_name": "Shared forest restoration and incentive delivery pathways",
-      "reinforce": "The two documents largely align around restoring and conserving forest landscapes through concrete delivery tools, especially PIEA incentive expansion, financing for the National Restoration Programme, native regeneration and reforestation, and forest fire management. This pattern often points to nested implementation across the Panama Canal watershed and national territory, with REDD+ policy, monitoring, traceability, certification, and applied research also supporting PNRF goals on sustainable forest management, ecosystem services, and certified forest products.",
-      "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Joint planning across restoration, fire management, and incentive programmes could help connect watershed-level actions with national restoration, ecosystem service, and sustainable forestry objectives.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "CNR",
-    "doc_b": "PNSH",
-    "label_a": "CNR (REDD+ Concept Note)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 119,
-    "flagged_count": 0,
-    "contradiction_types": {},
-    "synthesis": {
-      "storyline_name": "Watershed-based land use and water governance",
-      "reinforce": "The documents largely align through a watershed logic, where REDD+ instruments such as PIEA incentives, forest restoration, and fire management support water sustainability, risk reduction, and freshwater availability, especially in the Panama Canal watershed. This pattern also recurs in enabling measures, with forest and land-use monitoring, safeguards, regulatory updates, and institutional strengthening often pointing to the same direction as water-resource monitoring, early warning, and inter-institutional water governance.",
-      "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Coordination could help link basin-level land-use incentives and restoration with water monitoring, early-warning systems, and regulatory planning, particularly where both documents operate in shared watersheds.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "HR",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "HR (Nature Pledge Roadmap)",
-    "aligned_count": 5509,
-    "flagged_count": 7,
-    "contradiction_types": {
-      "resource_competition": 2,
-      "delivery_friction": 5
-    },
-    "synthesis": {
-      "storyline_name": "Shared environmental governance and territorial safeguards",
-      "reinforce": "The two documents often pull in the same direction through legal reform, monitoring systems, incentive review, and institutional coordination that support forest protection, restoration, sustainable production, and biodiversity management. A recurring pattern is that REDD+ territorial measures, forest monitoring, benefit-sharing, and community participation align with the Nature Pledge's framework laws, protected-area management, restoration planning, climate and risk observatories, and species or agri-food governance tools.",
-      "clash": "The recurring possible misalignment is concentrated around commercial reforestation and tourism expansion in areas that may also be prioritized for protected-area management, priority species conservation, wild-species management, biodiversity-sensitive incentive reform, or protection of organic soils and wetlands. These cases often point to possible overlap in the same land base or delivery space, where plantation siting, exotic species use, new trails, or visitor access could complicate conservation-oriented zoning, habitat management, or wildlife safeguards unless criteria are coordinated.",
-      "coordination_hint": "Shared territorial zoning, species-selection criteria, and interoperability between forest, biodiversity, and tourism planning systems could help keep plantation, restoration, conservation, and visitor-use decisions pulling in the same direction.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "NP",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "NP (Nature Pledge)",
-    "aligned_count": 6417,
-    "flagged_count": 5,
-    "contradiction_types": {
-      "delivery_friction": 5
-    },
-    "synthesis": {
-      "storyline_name": "Shared community safeguards and land governance",
-      "reinforce": "The two documents often pull in the same direction on community participation, indigenous inclusion, gender-responsive delivery, public information, safeguards reporting, and community-based forest oversight. Alignment also recurs around land and forest governance instruments, where REDD+ monitoring, benefit-sharing, incentive design, and restoration or livelihood actions align with protected-area management, biodiversity conservation, climate information systems, and broader biodiversity-land-climate planning under the Nature Pledge.",
-      "clash": "The recurring possible misalignment is around delivery choices in shared landscapes, especially commercial reforestation, forestry production, and tourism access where the Nature Pledge also prioritizes protected-area expansion, ecological connectivity, native-species conservation, and invasive-species prevention. These records often point to spatial overlap and implementation design issues, such as plantation siting, use of exotic species, zoning, and visitor infrastructure, rather than different end goals.",
-      "coordination_hint": "Joint spatial zoning, species-screening, and protected-area compatible planning could help align REDD+ forestry and tourism activities with conservation, connectivity, and invasive-species safeguards in overlapping territories.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PEG",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 3814,
-    "flagged_count": 448,
-    "contradiction_types": {
-      "delivery_friction": 428,
-      "resource_competition": 20
-    },
-    "synthesis": {
-      "storyline_name": "Forest governance linked with broader development delivery",
-      "reinforce": "The two documents often align through enabling systems, especially forest monitoring, safeguards information, restoration planning, climate governance, and community participation in indigenous territories. Alignment is strongest where PEG measures on ecosystem restoration, protected areas, water stewardship, renewable energy access, public-sector capacity, and climate information systems support REDD+ implementation tools such as the Multipurpose National Forest Monitoring System, the SIS, organic agriculture promotion, and community forest monitoring.",
-      "clash": "Possible misalignment recurs where PEG infrastructure, logistics, housing, Canal watershed works, tourism expansion, and export-oriented agricultural modernization could overlap with REDD+ forest restoration, mangrove protection, riparian buffers, indigenous territorial security, and biocommerce areas. Most review cases point to implementation overlap on land use, corridor siting, watershed management, and safeguard application, with a smaller number pointing to potential competition for land between restoration areas and housing expansion.",
-      "coordination_hint": "Joint spatial planning, watershed governance, and early use of REDD+ safeguards and monitoring systems could help keep infrastructure, housing, agriculture, and forest measures pulling in the same direction where they overlap geographically.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PENCYT",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 2654,
+    "aligned_count": 132,
     "flagged_count": 31,
     "contradiction_types": {
-      "resource_competition": 2,
-      "delivery_friction": 29
+      "delivery_friction": 28,
+      "resource_competition": 3
     },
     "synthesis": {
-      "storyline_name": "Innovation support for forest governance and monitoring",
-      "reinforce": "Across the aligned pairs, PENCYT often aligns with REDD+ as an enabling platform for digitalization, R&D, knowledge transfer, and institutional capacity that could support MRV systems, safeguards reporting, biotrade and biocommerce studies, ecosystem service payments, and community training. A second recurring link is inclusive participation, where STI outreach, social and institutional development, and innovation networks could support indigenous engagement, women's participation, and coordination across REDD+ governance bodies.",
-      "clash": "The recurring possible misalignment is concentrated around PENCYT's Food vector, where agricultural technification and productivity gains in rural areas could overlap with REDD+ priorities for forest conservation, protected areas, indigenous territories, mangroves, biological corridors, water easements, and carbon-accounted project areas. This often points to delivery risks through land-use change, infrastructure siting, or incentive design in shared rural landscapes, and in a smaller number of cases to competition for land between commercial reforestation and agricultural uses.",
-      "coordination_hint": "Coordination could help where agricultural innovation, zoning, watershed planning, territorial rights, and REDD+ safeguards are applied together in the same rural and indigenous landscapes.",
+      "storyline_name": "Linking watershed conservation with broader development delivery",
+      "reinforce": "The two documents often align around watershed and forest protection, especially in the Panama Canal basin, through payments for environmental services, PIEA incentives, restoration, fire management, protected-area management, and REDD+ monitoring and traceability systems. Reinforcing links also recur where PEG's community networks, environmental regulation, public administration, finance, and digital tools could enable delivery of CNR incentives for Indigenous Peoples, Afro-descendants, small producers, and forest-compatible livelihoods.",
+      "clash": "Possible misalignment is mostly flagged for review as delivery friction when PEG infrastructure, logistics corridors, Canal water works including the probable Río Indio reservoir, electrification, housing, tourism, industrial expansion, or agro-industrial growth could overlap forest landscapes, buffer zones, or watershed areas targeted by CNR incentives, restoration, and fire prevention. A smaller recurring issue is resource competition over finite land and water in Canal-linked watershed areas, particularly between conservation and restoration measures on one side and major infrastructure or housing expansion on the other.",
+      "coordination_hint": "Joint spatial planning, basin-level safeguards, and early routing or siting review could help align PEG infrastructure and growth measures with CNR watershed incentives, restoration, and fire-management priorities.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "ENR",
-    "doc_b": "PIOTA",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 2155,
-    "flagged_count": 132,
-    "contradiction_types": {
-      "delivery_friction": 121,
-      "resource_competition": 11
-    },
-    "synthesis": {
-      "storyline_name": "Watershed governance linked with forest monitoring",
-      "reinforce": "The two documents often pull in the same direction through monitoring and governance instruments, especially GHG inventories, forest and ecosystem monitoring systems, safeguards, and inter-institutional coordination across watershed and environmental bodies. Alignment also recurs around conservation and restoration in the Canal watershed, where ecological corridors, protective vegetation cover, payment-for-environmental-services schemes, and local land-use planning can support REDD+ land restoration and sustainable management activities.",
-      "clash": "Possible misalignment recurs mainly around PIOTA road construction and rehabilitation in the Canal watershed, which could overlap with REDD+ priorities for forest restoration, protected areas, biological corridors, riparian zones, indigenous forest governance, and carbon-measured conservation activities. A smaller recurring pattern concerns irrigation and agricultural production support in the watershed, which could compete for land or water with forest protection, protected-area management, and community forest oversight in overlapping areas.",
-      "coordination_hint": "Joint spatial planning, using watershed zoning, road siting, safeguards screening, and shared monitoring data, could help keep transport, irrigation, and forest-carbon activities compatible in overlapping landscapes.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PNRF",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 2161,
-    "flagged_count": 23,
-    "contradiction_types": {
-      "delivery_friction": 22,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Shared forest governance and restoration delivery mechanisms",
-      "reinforce": "The two documents largely align around forest conservation, restoration, and reduced deforestation, often through complementary instruments such as institutional frameworks, safeguards, stakeholder participation, community capacity building, MRV and reference-level updates, and payments for ecosystem services or results-based payments. The sample also points to practical links between REDD+ governance tools and PNRF delivery goals in reforestation, watershed restoration, natural forest protection, and sustainable forest management.",
-      "clash": "Possible misalignment recurs mainly where REDD+ conservation, safeguards, protected-area management, riparian and corridor restoration, and indigenous monitoring intersect with PNRF support for small and medium-sized forestry industry, because implementation could pull on the same forest landscapes and oversight systems. A smaller recurring issue appears around commercial reforestation, including exotic species, where siting and land allocation could matter if plantation expansion overlaps with natural forests or ecologically sensitive restoration areas.",
-      "coordination_hint": "Clear zoning, sustainable sourcing rules, and alignment between REDD+ safeguards, restoration priorities, and forestry-industry or plantation siting decisions could help keep these instruments pulling in the same direction.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "ENR",
-    "doc_b": "PNSH",
-    "label_a": "ENR (REDD+ Strategy)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 2899,
-    "flagged_count": 19,
-    "contradiction_types": {
-      "delivery_friction": 19
-    },
-    "synthesis": {
-      "storyline_name": "Watershed governance alongside infrastructure siting pressures",
-      "reinforce": "The two documents often pull in the same direction on watershed-related governance, especially through ecosystem restoration around headwaters and riparian zones, protected-area and forest management, safeguards, monitoring, and stakeholder participation. Across the aligned pairs, REDD+ forest and community measures tend to support PNSH goals on water sustainability, risk management, water information, and institutional strengthening by helping maintain watershed function and improving coordination and inclusion.",
-      "clash": "The recurring possible misalignment is concentrated around PNSH Action 2.3 on increasing freshwater availability through reservoirs and related water works, which could overlap with forests, protected areas, headwaters, biological corridors, and indigenous territories covered by REDD+ measures. This often points to delivery-side pressure around siting, hydrological alteration, land-use change, and safeguard compliance, rather than a difference in overall goals.",
-      "coordination_hint": "Joint basin-level spatial planning, early safeguard review, and coordination with protected-area and indigenous-territory processes could help keep water infrastructure and forest-water objectives aligned in shared landscapes.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "NP",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "NP (Nature Pledge)",
-    "aligned_count": 1035,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Shared territorial planning and environmental information systems",
-      "reinforce": "The two documents often pull in the same direction through territorial planning tools, monitoring platforms, and governance frameworks that connect restoration, protected areas, adaptation plans, marine-coastal management, early warning systems, and transparency arrangements such as Escazú-related access to information. A recurring pattern is that HR provides operational architecture, baselines, indicator flows, observatories, financing, and sector criteria, while NP applies these through protected-area management, local and regional adaptation plans, agrifood transformation, species management, and corporate biodiversity reporting.",
-      "clash": "Possible misalignment appears only once in this set, around land and planning space where agrifood transformation in priority districts could compete with expanded protected-area coverage and stricter zoning under SINAP. The issue seems less about overall direction and more about how district selection, land-use rules, and ecological connectivity are sequenced in overlapping territories.",
-      "coordination_hint": "Joint territorial zoning, shared geospatial baselines, and interoperable planning and monitoring systems could help align agricultural transition, restoration, and protected-area expansion in the same districts and watersheds.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "PEG",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 605,
-    "flagged_count": 83,
-    "contradiction_types": {
-      "delivery_friction": 73,
-      "resource_competition": 10
-    },
-    "synthesis": {
-      "storyline_name": "Shared reliance on territorial data and safeguards",
-      "reinforce": "Across many aligned pairs, the two documents align with each other through national data systems, regulatory tools, and territorial planning that support climate, biodiversity, water, and restoration decisions. This recurs in links between HR observatories, MRV, adaptation and restoration targeting, and PEG instruments on green regulation, protected areas, science and innovation, public-sector capability, and watershed management.",
-      "clash": "Possible misalignment often points to how PEG infrastructure, housing, logistics, energy, tourism, and agro-industrial expansion could intersect with the same watersheds, corridors, coastal zones, forests, and species-priority areas that HR seeks to conserve, restore, or manage through adaptation planning. A second recurring pattern is competition over land and water in shared territories, especially around Canal and reservoir areas, agricultural expansion zones, and protected or restoration landscapes.",
-      "coordination_hint": "Joint use of spatial planning, watershed and biodiversity screening, and HR monitoring platforms could help both documents pull in the same direction in shared territories.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
+    "doc_a": "CNR",
     "doc_b": "PENCYT",
-    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 467,
-    "flagged_count": 3,
-    "contradiction_types": {
-      "delivery_friction": 3
-    },
+    "aligned_count": 108,
+    "flagged_count": 0,
+    "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Innovation systems supporting nature policy delivery",
-      "reinforce": "Across many pairs, the Nature Pledge Roadmap and PENCYT align through enabling functions such as research agendas, monitoring systems, data standards, knowledge transfer, and institutional coordination. This recurs in areas like forest monitoring, marine-coastal and urban baselines, early warning systems, waste characterization, productive transformation, and legal or governance frameworks where STI capacity could support implementation.",
-      "clash": "The recurring possible misalignment is concentrated in PENCYT's Food vector, where agricultural, agri-food, and fish-farming modernization may overlap with protected areas, priority species management, and biodiversity-related incentive reform in the same rural landscapes and watersheds. The review cases often point to delivery questions around land-use zoning, wildlife coexistence, watershed safeguards, siting, and how productivity support is shaped when biodiversity-positive incentive changes are introduced.",
-      "coordination_hint": "Spatial planning, biodiversity safeguards, and innovation support targeted to sustainable production practices could help these agendas pull in the same direction in overlapping rural and coastal areas.",
+      "storyline_name": "Enabling STI capacities support REDD+ implementation",
+      "reinforce": "The alignment consistently tends to be enabling rather than direct. PENCYT's R&D investment, STI infrastructure, digitalization, knowledge transfer, regional innovation hubs, and sustainability principles could reinforce CNR mechanisms such as PIEA incentive rollout, forest fire monitoring and early warning, restoration planning, traceability, and institutional management for land-use measures.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Light coordination around digital systems, applied research, and regional innovation support could help translate broad STI instruments into practical support for REDD+ incentives, fire management, and restoration delivery.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "HR",
+    "doc_a": "CNR",
     "doc_b": "PIOTA",
-    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 325,
-    "flagged_count": 20,
-    "contradiction_types": {
-      "delivery_friction": 18,
-      "resource_competition": 2
-    },
-    "synthesis": {
-      "storyline_name": "National nature governance supporting watershed delivery",
-      "reinforce": "The recurring alignment is that the Nature Pledge Roadmap tends to provide national frameworks that PIOTA can use in the Canal watershed, especially legal and governance instruments, MRV and monitoring systems, adaptation planning methods, risk observatories, and financing architecture. This often points to practical support for PIOTA actions on protective vegetation cover, ecological corridors, ecosystem monitoring, land-use planning, GHG inventories, and some urban green-blue and service-planning measures.",
-      "clash": "The main possible misalignment recurs around PIOTA road construction and rehabilitation in the CHCP, which could overlap with HR priorities on mitigation, restoration, protected areas, species corridors, wetlands and organic soils, adaptation planning, climate-risk management, and participation safeguards if routing and design are not closely aligned. A smaller recurring pattern concerns irrigation and productive infrastructure in shared watershed landscapes, where land and water allocation could compete with restoration, conservation zoning, species management, and biodiversity-oriented incentive reform.",
-      "coordination_hint": "Joint spatial screening, using watershed zoning, risk and biodiversity data, and shared safeguard criteria, could help align transport and productive investments with the Nature Pledge frameworks already envisaged.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "PNRF",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 283,
-    "flagged_count": 3,
-    "contradiction_types": {
-      "delivery_friction": 3
-    },
-    "synthesis": {
-      "storyline_name": "Forest restoration through shared landscape planning tools",
-      "reinforce": "The strongest recurring pattern is that the Nature Pledge Roadmap aligns with the Forest Restoration policy on forest restoration, conservation, and management in overlapping landscapes, especially protected areas, biological corridors, riparian zones, buffer zones, and degraded lands. This often points to shared use of restoration baselines, zoning, conservation arrangements, monitoring, and sustainable forest management instruments, while many other links are broader enabling ones through adaptation planning, data systems, watershed management, traceability, and sustainable production frameworks.",
-      "clash": "The main possible misalignment recurs around development of small and medium-sized forestry industry where it may intersect with protected areas, biological corridors, priority species territories, and biodiversity incentive reform. These review cases often point to delivery questions about where forestry activity expands, how incentives are designed, and whether zoning, wildlife safeguards, and biodiversity criteria are applied in the same landscapes.",
-      "coordination_hint": "Closer coordination on territorial zoning, restoration baselines, biodiversity safeguards, and incentive design could help keep forestry development and conservation measures pulling in the same direction in shared forest landscapes.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "HR",
-    "doc_b": "PNSH",
-    "label_a": "HR (Nature Pledge Roadmap)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 490,
+    "aligned_count": 82,
     "flagged_count": 6,
     "contradiction_types": {
-      "delivery_friction": 6
-    },
-    "synthesis": {
-      "storyline_name": "Shared water governance and ecosystem information systems",
-      "reinforce": "The two documents often pull in the same direction through monitoring, planning, and governance tools linked to watersheds, water quality, climate risk, and early warning. This recurs in pairs on hydrometeorological early warning, pollution reduction, regulatory updates, protected-area and watershed management, and information systems that support cross-sector water decisions.",
-      "clash": "The recurring possible misalignment is concentrated around PNSH Action 2.3 on increasing freshwater availability through reservoirs, river interventions, agricultural water reserves, and cloud seeding, where delivery could overlap with protected areas, priority species habitats, wetlands, organic soils, local adaptation priorities, and downstream coastal ecosystems. Across all review pairs, the issue is not overall policy direction but how infrastructure siting, flow management, and basin-level implementation interact with conservation and territorial safeguards.",
-      "coordination_hint": "Joint basin planning, shared zoning and safeguards, and use of monitoring data on wetlands, species, and downstream flows could help align water-storage investments with conservation and adaptation priorities.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NP",
-    "doc_b": "PEG",
-    "label_a": "NP (Nature Pledge)",
-    "label_b": "PEG (Gov't Strategic Plan)",
-    "aligned_count": 789,
-    "flagged_count": 86,
-    "contradiction_types": {
-      "delivery_friction": 81,
-      "resource_competition": 5
-    },
-    "synthesis": {
-      "storyline_name": "Integrated nature governance with land-use delivery",
-      "reinforce": "The two documents often align around integrated climate, biodiversity, land, and marine governance, especially through restoration plans, marine-coastal adaptation and monitoring systems, green-transition law and finance, and community participation mechanisms. This recurs in pairs linking the Nature Pledge to PEG actions on ecosystem restoration, protected and marine area management, local land-use planning, and international nature commitments, where shared data, zoning, and governance instruments pull in the same direction.",
-      "clash": "Possible misalignment recurs where PEG delivery on logistics, Canal and reservoir infrastructure, tourism, housing, industry, and agro-industrial expansion could overlap with NP priorities for protected areas, ecological connectivity, wetlands, forests, invasive-species control, and locally led adaptation plans. A smaller pattern also points to potential competition over land, water, watershed space, and financing capacity, especially in areas connected to Canal investments, agricultural expansion, and restoration or adaptation funding.",
-      "coordination_hint": "Joint spatial planning, watershed-level screening, and early use of NP monitoring, transparency, and participation systems could help both documents stay aligned as infrastructure, tourism, agriculture, and restoration measures move into the same territories.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NP",
-    "doc_b": "PENCYT",
-    "label_a": "NP (Nature Pledge)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 584,
-    "flagged_count": 4,
-    "contradiction_types": {
-      "delivery_friction": 4
-    },
-    "synthesis": {
-      "storyline_name": "Science systems supporting nature data and delivery",
-      "reinforce": "Across the aligned pairs, NP often aligns with PENCYT through enabling mechanisms such as research infrastructure, STI ecosystem coordination, knowledge transfer, and data platforms that can support protected-area monitoring, climate-risk observatories, agroclimatic information systems, biosafety, and access and benefit-sharing frameworks. A particularly clear recurring area is waste and circular economy, where NP targets on plastic pollution and urban solid waste align with PENCYT's environment vector through shared instruments like waste baselines, recycling infrastructure, circular-economy governance, and resource-management innovation.",
-      "clash": "The recurring possible misalignment is concentrated in PENCYT's Food vector, where agricultural and fish-farming technification, competitiveness, and incentive structures could overlap with NP goals for biological corridors, protected areas, biodiversity-friendly subsidy reform, and zero illegal deforestation. This pattern tends to point to delivery risks in rural land-use areas if productivity gains, new crop development, or value-chain expansion are not sufficiently guided by zoning, forest safeguards, and biodiversity criteria.",
-      "coordination_hint": "Joint planning between nature, agriculture, and STI actors could help align rural innovation incentives, land-use zoning, and monitoring systems so productivity improvements and conservation measures pull in the same direction.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NP",
-    "doc_b": "PIOTA",
-    "label_a": "NP (Nature Pledge)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 428,
-    "flagged_count": 18,
-    "contradiction_types": {
-      "delivery_friction": 17,
+      "delivery_friction": 5,
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Watershed resilience through planning and safeguards",
-      "reinforce": "The two documents often pull in the same direction on climate-resilient watershed management, using local land-use plans, climate-risk observatories, ecosystem monitoring, urban green-blue infrastructure, sustainable production, and pollution-control measures in the Canal watershed. A recurring pattern is that NP provides national frameworks, finance, data systems, and biodiversity or adaptation instruments, while PIOTA translates these into place-based actions on conservation, water, housing, energy, and local livelihoods.",
-      "clash": "Possible misalignment recurs mainly around PIOTA Pillar 1.2 road construction and mobility works in the Canal watershed, which could intersect with NP goals on restoration, protected areas, ecological corridors, species management, invasive-species control, pollution reduction, forest protection, wetland and soil conservation, adaptation planning, and environmental safeguards. A smaller recurring issue appears around water and production support in PIOTA Pillar 2.2, where irrigation, reservoir use, or incentive design could compete with protected-area zoning, biodiversity-safe subsidy reform, or watershed water allocation objectives.",
-      "coordination_hint": "Joint spatial planning, watershed-sensitive infrastructure design, and shared use of risk, biodiversity, and water-allocation data could help keep mobility and production measures aligned with conservation and adaptation objectives.",
+      "storyline_name": "Linking watershed incentives with conservation planning",
+      "reinforce": "The documents often align through incentive-based sustainable land use in the Panama Canal watershed, especially where CNR's PIEA, restoration, forest carbon, and community incentive measures reinforce PIOTA actions on ecological corridors, protective vegetation cover, ecosystem monitoring, GHG inventories, and ecotourism or agrotourism planning. A recurring mechanism is that PIOTA provides planning and evidence tools, such as management plans, inventories, local governance spaces, and watershed planning, while CNR provides on-the-ground incentives, restoration finance, PES-type approaches, and community livelihood support.",
+      "clash": "Recurring possible misalignment is mainly flagged for review around PIOTA road construction and rehabilitation in the CHCP, which could increase access, fragmentation, or land-use pressure in the same forest and restoration areas targeted by CNR's PIEA, forest carbon, and fire management actions. One additional issue flagged for review is possible competition over land and especially water where forest restoration and connectivity objectives overlap with irrigation and agricultural production infrastructure.",
+      "coordination_hint": "Joint spatial planning, routing, zoning, and safeguard review could help keep mobility, irrigation, restoration, and incentive measures mutually supportive in overlapping watershed areas.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "NP",
+    "doc_a": "CNR",
     "doc_b": "PNRF",
-    "label_a": "NP (Nature Pledge)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 347,
-    "flagged_count": 7,
+    "aligned_count": 76,
+    "flagged_count": 1,
     "contradiction_types": {
-      "delivery_friction": 7
+      "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Forest restoration through shared governance and safeguards",
-      "reinforce": "The two documents often pull in the same direction around forest restoration, conservation, and watershed protection, with NP governance tools such as interinstitutional coordination, legal frameworks, transparency systems, pollution reduction, and inclusion measures supporting PNRF objectives on reforestation, natural forest conservation, riparian restoration, and ecosystem services. Alignment also recurs where biodiversity-oriented instruments, such as invasive species control, subsidy reform, corporate biodiversity reporting, and ecosystem-service valuation, could support more sustainable forest management and forestry supply chains.",
-      "clash": "Possible misalignment recurs where NP protected-area expansion, species conservation, and biodiversity-safe incentive reform meet PNRF aims to expand forestry raw material supply and develop small and medium-sized forestry industry. The review cases often point to delivery questions in the same forest and watershed landscapes, especially around zoning, sourcing, habitat safeguards, and whether production-oriented forestry activity is clearly separated from strictly protected or high ecological value areas.",
-      "coordination_hint": "Joint spatial planning, safeguard criteria, and incentive design could help clarify where restoration, conservation, and forestry production may proceed in the same landscapes without undermining biodiversity objectives.",
+      "storyline_name": "Aligning restoration incentives with forest recovery",
+      "reinforce": "The two documents strongly align around restoring degraded forest landscapes, reducing deforestation and degradation, and improving watershed and buffer-zone management. This recurs through concrete mechanisms such as financing the National Restoration Programme, PIEA incentive expansion inside and outside the Panama Canal watershed, native regeneration and reforestation, fire prevention brigades, and REDD+ monitoring, safeguards, traceability, and certification that reinforce PNRF restoration and conservation objectives.",
+      "clash": "One possible misalignment was flagged for review where CNR's emphasis on ecological restoration, native species, and connectivity in protected and buffer areas meets PNRF's objective to develop small and medium-sized forestry industry. The concern tends to be delivery friction rather than a settled contradiction, if production-oriented activities, harvesting, or related infrastructure were to overlap with restoration zones or sensitive forest landscapes.",
+      "coordination_hint": "Shared zoning, safeguards, and sustainable forest management rules could help keep restoration, fire management, and forestry industry activities compatible where they meet in the same landscapes.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "NP",
+    "doc_a": "CNR",
     "doc_b": "PNSH",
-    "label_a": "NP (Nature Pledge)",
+    "label_a": "CNR (REDD+ Concept Note)",
     "label_b": "PNSH (Water Security)",
-    "aligned_count": 593,
-    "flagged_count": 11,
+    "aligned_count": 118,
+    "flagged_count": 1,
     "contradiction_types": {
-      "delivery_friction": 10,
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Shared water resilience through data and ecosystems",
-      "reinforce": "The documents often align through climate and water information systems, including transparency platforms, agroclimatic and adaptation monitoring, early warning, and water planning tools that support risk-informed decisions. They also pull in the same direction where biodiversity protection, pollution reduction, watershed restoration, urban green-blue infrastructure, and participatory water governance support water quality, water sustainability, and resilient service delivery.",
-      "clash": "A recurring possible misalignment centers on PNSH Action 2.3, where reservoirs, river interventions, agricultural water reserves, and related infrastructure could overlap with NP objectives for protected areas, restoration corridors, species habitat, wetlands, forests, organic soils, invasive-species control, and biodiversity-friendly incentives. The review cases often point to implementation risks in shared basins and freshwater-connected landscapes, especially through siting, hydrological alteration, habitat change, and competition for land and water resources.",
-      "coordination_hint": "Basin-level planning that links water-storage projects with conservation zoning, environmental flows, biodiversity monitoring, and safeguard criteria could help these agendas support each other in the same landscapes.",
+      "storyline_name": "Linking forest and water planning at basin scale",
+      "reinforce": "The two documents often align through watershed-scale mechanisms, where REDD+ land-use incentives, forest restoration, and fire management could reinforce water security by protecting sources, improving hydrological regulation, and supporting resilience in drinking water systems. A second recurring pattern is enabling governance, where basin planning, monitoring, institutional strengthening, education, and regulatory updates in PNSH tend to reinforce CNR implementation without requiring tightly shared operations.",
+      "clash": "One possible misalignment was flagged for review around PNSH Action 2.3 on multipurpose reservoirs and increased freshwater availability. It points to potential resource competition in shared river basins, where reservoir siting, rainwater harvesting, or water allocation could overlap with forest conservation areas and REDD+ land-use incentives.",
+      "coordination_hint": "Joint basin-level planning, zoning, and information-sharing on watershed priorities could help capture the recurring co-benefits while reviewing locations where water infrastructure and forest measures may overlap.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "PEG",
-    "doc_b": "PENCYT",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PENCYT (Science & Innovation Plan)",
-    "aligned_count": 471,
-    "flagged_count": 5,
-    "contradiction_types": {
-      "delivery_friction": 3,
-      "resource_competition": 2
-    },
-    "synthesis": {
-      "storyline_name": "Innovation as an enabling layer for delivery",
-      "reinforce": "Across many pairs, PEG's sector actions on agriculture, digitalization, education, water, energy, logistics, and environmental management align with PENCYT's instruments for R&D investment, technology transfer, regional innovation hubs, and stronger STI capacities. The recurring pattern is indirect but practical support, where PEG creates demand for tools such as remote sensing, AI, biotechnology, grid management, and training, and PENCYT provides financing, collaboration mechanisms, and knowledge systems that could supply them.",
-      "clash": "The recurring possible misalignment appears in two places. First, PEG's logistics, canal, reservoir, and rural production expansion can create delivery-side pressure on the biodiversity, watershed, and restoration outcomes emphasized in PENCYT's environment and food vectors. Second, PEG's fiscal consolidation and tighter control of spending and exemptions could compete with PENCYT's planned expansion of public R&D spending and fiscal incentives for private innovation.",
-      "coordination_hint": "Integrated budgeting and spatial planning, alongside environmental safeguards and targeted innovation incentives, could help both documents pull in the same direction during implementation.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PEG",
-    "doc_b": "PIOTA",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 291,
-    "flagged_count": 25,
-    "contradiction_types": {
-      "delivery_friction": 24,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Watershed governance alongside infrastructure-led development",
-      "reinforce": "The documents often align around environmental governance for the Canal watershed, especially through ecosystem monitoring, restoration, protected-area management, water-resource protection, GHG inventories, and regulatory or data systems that support implementation. They also pull in the same direction where national enabling measures, such as open data, fiscal planning, skills, innovation, and service expansion, could support PIOTA's local land-use planning, basic services, sustainable production, and community-based conservation.",
-      "clash": "Possible misalignment recurs mainly where PEG infrastructure and growth measures, especially logistics corridors, Canal reliability works, tourism, energy, housing, and roads, overlap with PIOTA land-use controls, ecological corridors, protective vegetation, watershed services, and ecosystem management in the CHCP. One narrower possible misalignment also appears around shared water resources, where Canal water-security investments and PIOTA irrigation or reuse measures could compete for finite water or reservoir-related space.",
-      "coordination_hint": "Joint spatial planning, siting, phasing, and watershed-sensitive safeguards could help these agendas proceed together, especially where major infrastructure intersects protected sites, service networks, or regulated land in the Canal watershed.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PEG",
-    "doc_b": "PNRF",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 184,
-    "flagged_count": 31,
-    "contradiction_types": {
-      "delivery_friction": 30,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Forest restoration enabled by cross-government systems",
-      "reinforce": "The two documents often pull in the same direction on restoring forest cover, degraded ecosystems, watersheds, riparian zones, buffer zones, and biological corridors, with PEG providing broad climate, protected-area, community-restoration, and watershed-management actions that align with PNRF's site-based restoration objectives. A second recurring pattern is enabling support, where PEG's science and innovation agenda, open data and public management reforms, digital tools, and public-sector capacity can support forestry research, permitting, monitoring, land records, and implementation of restoration and sustainable forest management.",
-      "clash": "Possible misalignment recurs mainly where PEG's infrastructure and land-development measures, especially logistics corridors, Canal and reservoir works, energy transmission and generation, housing expansion, tourism development, industrial siting, and agricultural commercialization, could overlap spatially with forests, degraded lands, watersheds, riparian zones, buffer zones, and corridors targeted by PNRF. One smaller recurring theme also points to potential misalignment through competition for land and watershed resources between agricultural expansion or intensification and restoration in productive rural landscapes.",
-      "coordination_hint": "Shared spatial planning, watershed zoning, project siting, and environmental safeguard sequencing could help these documents stay aligned where restoration areas overlap with infrastructure, housing, tourism, energy, or agricultural investments.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PEG",
-    "doc_b": "PNSH",
-    "label_a": "PEG (Gov't Strategic Plan)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 429,
-    "flagged_count": 14,
+    "doc_a": "ENR",
+    "doc_b": "HR",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "HR (Nature Pledge Roadmap)",
+    "aligned_count": 5743,
+    "flagged_count": 6,
     "contradiction_types": {
       "delivery_friction": 5,
-      "resource_competition": 9
-    },
-    "synthesis": {
-      "storyline_name": "Water allocation and planning across growth sectors",
-      "reinforce": "The two documents often pull in the same direction on water security, especially where PEG expands drinking water services, agricultural resilience, digital public management, and climate or ecosystem action, while PNSH provides service coverage, water-resource information, risk monitoring, and participatory water governance. A recurring mechanism is enabling support, where hydrometeorological monitoring, open data, watershed information, and institutional capacity could help agriculture, housing, energy, and environmental management make more water-informed decisions.",
-      "clash": "Possible misalignment recurs where PEG's logistics, Canal, agro-industrial, and some environmental or regulatory measures intersect with PNSH's reservoir building, potable water expansion, and water sustainability agenda in the same basins or service areas. The review cases often point to competition over finite freshwater, infrastructure siting, environmental flows, and permitting or sequencing needs around reservoirs, logistics corridors, and major water-dependent investments.",
-      "coordination_hint": "Integrated basin planning, shared water-allocation analysis, and early coordination on siting, safeguards, and service priorities could help keep major infrastructure, productive uses, and household water objectives aligned.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PENCYT",
-    "doc_b": "PIOTA",
-    "label_a": "PENCYT (Science & Innovation Plan)",
-    "label_b": "PIOTA (Canal Watershed Plan)",
-    "aligned_count": 207,
-    "flagged_count": 3,
-    "contradiction_types": {
-      "delivery_friction": 3
-    },
-    "synthesis": {
-      "storyline_name": "Innovation-enabled watershed service and livelihood modernization",
-      "reinforce": "Across the aligned pairs, PENCYT often aligns with PIOTA as an enabling STI layer for watershed actions, through technification, digital tools, research capacity, university and firm partnerships, and training centers. This recurs in environmental monitoring, water and sanitation management, irrigation and treated-water reuse, sustainable housing and mobility planning, and local value chains such as agriculture, agrotourism, and microenterprise development.",
-      "clash": "The recurring possible misalignment is concentrated in delivery choices where infrastructure or productive expansion meets conservation and sustainability aims in the Canal watershed. In particular, road construction and rehabilitation, and agricultural technification near protected sites or ecological corridors, could create implementation pressures unless spatial planning, environmental design, and safeguards are closely connected.",
-      "coordination_hint": "Joint use of STI tools, land-use planning, and environmental assessment processes could help connect PIOTA's place-based investments with PENCYT's sustainability and innovation objectives.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PENCYT",
-    "doc_b": "PNRF",
-    "label_a": "PENCYT (Science & Innovation Plan)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 159,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
-    "synthesis": {
-      "storyline_name": "STI enablers supporting forest restoration delivery",
-      "reinforce": "Across the aligned pairs, PENCYT often aligns with PNRF by providing cross-cutting enablers such as R&D investment, knowledge and technology transfer, digitalization, scientific culture, and innovation incentives that could support forest restoration, conservation, ecosystem-service valuation, and forestry-sector development. A recurring mechanism is indirect support through better monitoring, valuation methods, research capacity, public participation, and technology uptake in forestry and watershed management rather than shared on-the-ground actions.",
-      "clash": "There is one identified possible misalignment, linked to PENCYT's rural agricultural technification and productivity agenda alongside PNRF's protection and restoration of riparian zones, water recharge areas, buffer zones, and biological corridors. The record points to possible delivery-side misalignment where intensification, new crops, or infrastructure near sensitive ecological areas could complicate restoration outcomes unless land-use safeguards are coordinated.",
-      "coordination_hint": "Coordination on land-use zoning, environmental safeguards, and the targeting of agricultural innovation in ecologically sensitive rural areas could help these agendas continue to pull in the same direction.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PENCYT",
-    "doc_b": "PNSH",
-    "label_a": "PENCYT (Science & Innovation Plan)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 285,
-    "flagged_count": 1,
-    "contradiction_types": {
-      "delivery_friction": 1
-    },
-    "synthesis": {
-      "storyline_name": "Innovation support for water system modernization",
-      "reinforce": "Across the aligned pairs, PENCYT often aligns with PNSH by providing enabling instruments for water planning and service improvement, especially R&D agendas, knowledge and technology transfer, digitalization, pilot projects, and stronger data and monitoring systems. A second recurring link is through inclusion, health, and scientific culture, where STI capacity-building, outreach, and socially oriented innovation support water coverage, sanitation expansion, risk management, and participatory water governance.",
-      "clash": "Possible misalignment appears only once in this set. It relates to freshwater availability measures such as reservoirs, basin interventions, and cloud seeding, which could place pressure on biodiversity and natural-resource stewardship objectives in PENCYT's environment vector unless integrated studies and safeguards are used.",
-      "coordination_hint": "Joint basin-level research, environmental assessment, and technology-planning processes could help connect STI tools with water infrastructure and risk-management decisions while accounting for biodiversity considerations.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "PIOTA",
-    "doc_b": "PNRF",
-    "label_a": "PIOTA (Canal Watershed Plan)",
-    "label_b": "PNRF (Forest Restoration)",
-    "aligned_count": 119,
-    "flagged_count": 10,
-    "contradiction_types": {
-      "delivery_friction": 9,
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Watershed restoration through protection and planning",
-      "reinforce": "The two documents often pull in the same direction on conserving and restoring forested watershed landscapes, especially through protective vegetation cover, ecological corridors, protected-area management, payment for environmental services, and restoration in water-producing watersheds. Alignment also recurs through enabling tools such as ecosystem monitoring, GHG and sink inventories, community education, land-use planning, and technology or research measures that could support forest and watershed restoration delivery.",
-      "clash": "Possible misalignment recurs mainly where PIOTA's mobility works, especially road construction and rehabilitation in the Canal watershed, could overlap with areas targeted by PNRF for reforestation, natural forest protection, riparian and recharge-zone restoration, and biological corridors. A smaller recurring issue is competition over shared watershed resources, where irrigation expansion and treated-water reuse for production could affect recharge areas, riparian zones, or other landscapes that PNRF seeks to protect and restore, and forestry industry expansion could also create pressure near protected priority sites if geographies overlap.",
-      "coordination_hint": "Joint spatial planning, routing, zoning, and watershed safeguards could help align transport, irrigation, protection, and restoration activities where the same landscapes may be affected.",
+      "storyline_name": "Reinforcing forest governance, finance, and monitoring systems",
+      "reinforce": "The two documents strongly align around forest and nature governance tools, including regulatory review, protected-area and restoration planning, REDD+ safeguards, institutional diagnostics, data-flow agreements, and monitoring and evaluation systems. Alignment also recurs through enabling mechanisms such as communication platforms, community and Indigenous participation channels, ranger and traceability capacity, and financing architecture, including carbon market and nature-finance instruments that could support restoration, conservation, and territorial action.",
+      "clash": "A recurring possible misalignment flagged for review concerns how commercial reforestation and tourism expansion are implemented in landscapes also prioritized for species conservation, illegal-deforestation control, and organic-soil or wetland protection. The friction often points to siting, species choice, incentive design, and land allocation, where plantations using exotic species or new trails in protected and corridor areas could require closer zoning and safeguards to align with biodiversity and high-carbon-soil objectives.",
+      "coordination_hint": "Joint zoning, species-screening, and shared safeguards across reforestation, tourism, species conservation, and high-carbon-soil planning could help keep delivery aligned in overlapping territories.",
       "confidence": "high"
     },
     "synthesis_error": null
   },
   {
-    "doc_a": "PIOTA",
-    "doc_b": "PNSH",
-    "label_a": "PIOTA (Canal Watershed Plan)",
-    "label_b": "PNSH (Water Security)",
-    "aligned_count": 227,
+    "doc_a": "ENR",
+    "doc_b": "NP",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "NP (Nature Pledge)",
+    "aligned_count": 6721,
     "flagged_count": 2,
     "contradiction_types": {
       "resource_competition": 1,
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Watershed service expansion and risk management",
-      "reinforce": "The documents often pull in the same direction on water and sanitation service expansion in the Canal watershed, especially through drinking water coverage, sanitation planning, leak reduction, discharge control, and risk-informed infrastructure. A second recurring pattern aligns PIOTA's land-use planning, ecosystem monitoring, vegetation protection, and irrigation efficiency with PNSH instruments on preventive risk management, early warning, institutional strengthening, regulation updates, and water education and research.",
-      "clash": "Possible misalignment appears in two specific mechanisms only. One concerns competition for finite basin or aquifer water and infrastructure capacity between irrigation and potable supply expansion, and the other concerns reservoir siting or expansion overlapping with protected sites, ecological corridors, or restoration areas in the watershed.",
-      "coordination_hint": "Joint basin-level planning on water allocation, infrastructure siting, reuse, and environmental safeguards could help these place-based and national measures support each other more consistently.",
+      "storyline_name": "Aligning forest governance with integrated nature action",
+      "reinforce": "The two documents strongly align around forest governance, safeguards, participation, and benefit-sharing as enabling mechanisms for biodiversity, climate, and livelihood outcomes. This recurs through links between REDD+ legal reform, community and indigenous capacity-building, FPIC, monitoring and communication systems, and the Nature Pledge’s territorial coordination, transparency, adaptation planning, zero-deforestation, and Panama Pact with Nature regulatory architecture.",
+      "clash": "Only limited friction is flagged for review, and it centers on commercial reforestation on private and state lands. This tends to point to possible misalignment where plantation siting could compete with protected area expansion, and where the use of exotic species may need review against invasive species prevention and biosecurity objectives.",
+      "coordination_hint": "Land-use zoning, species-screening, and shared safeguards under the broader climate and nature governance framework could help distinguish where commercial reforestation, conservation expansion, and invasive-species controls may proceed compatibly.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PEG",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PEG (Gov't Strategic Plan)",
+    "aligned_count": 4110,
+    "flagged_count": 517,
+    "contradiction_types": {
+      "delivery_friction": 480,
+      "resource_competition": 37
+    },
+    "synthesis": {
+      "storyline_name": "Linking climate governance with broader development delivery",
+      "reinforce": "The two documents often align through enabling systems, REDD+ accounting rules, forest monitoring, safeguards, grievance channels, inter-institutional roundtables, and the nationwide Reduce Your Footprint program, which reinforce PEG measures on green-transition law, carbon-credit regulation, restoration planning, open data, and public-sector capacity. A recurring pattern is that PEG's public finance, regulatory modernization, restoration, and administrative professionalization could support REDD+ implementation, monitoring, benefit tracking, and low-carbon investment without requiring identical sector actions.",
+      "clash": "Recurring friction is mostly flagged for review around delivery, especially where PEG infrastructure, logistics, energy, housing, tourism, Canal-water works, or agro-industrial expansion could overlap with forests, protected areas, water easements, biological corridors, indigenous territories, or ecotourism areas targeted by REDD+. A smaller pattern of possible misalignment concerns resource competition, particularly where watershed or land-use demands from major infrastructure could compete with agroforestry, restoration, and natural regeneration on the same landscapes.",
+      "coordination_hint": "Joint spatial planning, safeguard application, and shared monitoring across infrastructure, watershed, tourism, agriculture, and forest authorities could help keep PEG delivery aligned with REDD+ territories, accounting systems, and restoration priorities.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PENCYT",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 2902,
+    "flagged_count": 15,
+    "contradiction_types": {
+      "resource_competition": 1,
+      "delivery_friction": 14
+    },
+    "synthesis": {
+      "storyline_name": "Link forest delivery to STI incentives and capacities",
+      "reinforce": "The two documents largely align through enabling mechanisms, where PENCYT's R&D investment, innovation incentives, research infrastructure, knowledge transfer, digitalization, and collaboration platforms could reinforce REDD+ implementation tools such as biotrade and biocommerce incentives, MRV and measurement protocols, monitoring systems, protected-area management, and community training. A recurring theme is that STI instruments often point to practical support for REDD+ through financing, technical capacity, certification, technology transfer, outreach, and more inclusive participation in territorial governance.",
+      "clash": "Recurring possible misalignment is concentrated around PENCYT's Food development vector and ENR forest protection measures, especially where agricultural and fish-farming modernization shares rural or coastal space with natural forests, protected areas, indigenous territories, mangroves, restoration zones, and forest carbon conservation. These cases are flagged for review mainly as delivery friction, and once as resource competition, often pointing to pressure around land use, titling, safeguards, boundary demarcation, and policy incentives that may need to be screened for forest impacts.",
+      "coordination_hint": "Coordination could help where STI support for rural productivity is linked with zoning, safeguard application, tenure and boundary clarity, and forest-sensitive innovation standards in shared rural and coastal landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PIOTA",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 2332,
+    "flagged_count": 173,
+    "contradiction_types": {
+      "delivery_friction": 164,
+      "resource_competition": 9
+    },
+    "synthesis": {
+      "storyline_name": "Linking watershed planning with forest-climate safeguards",
+      "reinforce": "The two documents often align through enabling instruments rather than identical actions, especially GHG inventories and monitoring systems, payment for ecosystem services and reforestation finance, and inclusive governance mechanisms for women, Indigenous peoples, and local communities. This recurs where PIOTA's watershed measures on sustainable production, protective vegetation cover, local planning, and environmental management could reinforce REDD+ restoration, low-carbon development, and safeguard implementation in the Canal watershed context.",
+      "clash": "Possible misalignment is flagged mainly around PIOTA road construction and rehabilitation, which tends to intersect with REDD+ aims for forest conservation, biological corridors, water easement restoration, protected-area management, FPIC, and safeguard compliance in the CHCP. A smaller recurring issue is resource competition, where commercial reforestation or intensified agricultural and irrigation measures could compete with protected areas, ecological corridors, or forest-adjacent land and water resources, and has been flagged for review.",
+      "coordination_hint": "Joint spatial planning, zoning, and safeguard screening, especially for transport, irrigation, and protection corridors in the CHCP, could help keep watershed investments aligned with REDD+ monitoring, FPIC, and forest-restoration objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PNRF",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 2187,
+    "flagged_count": 31,
+    "contradiction_types": {
+      "delivery_friction": 31
+    },
+    "synthesis": {
+      "storyline_name": "Link restoration finance, monitoring, and safeguards",
+      "reinforce": "The two documents largely align around forest restoration and conservation, with REDD+ instruments such as forest monitoring systems, safeguards, working groups, results-based measurement, and payment for ecosystem services reinforcing PNRF objectives on reducing deforestation, restoring riparian and watershed areas, valuing ecosystem services, and conserving natural forests. This reinforcing pattern often points to ENR providing enabling mechanisms, legal frameworks, finance, tenure support, and MRV tools, while PNRF provides the landscape restoration and forestry outcomes those mechanisms could support.",
+      "clash": "Recurring possible misalignment is flagged for review where ENR protections and safeguards for REDD+ territories, protected areas, indigenous territories, mangroves, riparian zones, and forest carbon stocks meet PNRF's objective to develop small and medium-sized forestry industry, and in one case its production-oriented vision for the forestry sector. The friction tends to concern delivery choices such as zoning, siting of commercial plantations including exotic species, sourcing, access, and how industry expansion is kept separate from sensitive conservation and restoration areas.",
+      "coordination_hint": "Clear zoning, sourcing rules, and shared safeguard and monitoring arrangements could help keep restoration, conservation, and forestry industry measures aligned in overlapping forest landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ENR",
+    "doc_b": "PNSH",
+    "label_a": "ENR (REDD+ Strategy)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 3158,
+    "flagged_count": 14,
+    "contradiction_types": {
+      "delivery_friction": 14
+    },
+    "synthesis": {
+      "storyline_name": "Link forest and watershed management measures",
+      "reinforce": "The two documents largely align where REDD+ forest protection, headwater and riparian restoration, water easement management, and forest monitoring reinforce water security objectives such as water availability, preventive risk management, and hydrometeorological monitoring. A recurring enabling pattern also appears around governance instruments, including training, stakeholder participation, territorial security for indigenous communities, and monitoring systems that could support basin-level planning and resilience.",
+      "clash": "Recurring possible misalignment is flagged for review around PNSH Action 2.3 on reservoirs and related water infrastructure, which could create localized delivery friction with REDD+ measures for conserving natural forests, protected-area management, water easement regeneration, biodiversity safeguards, and legal security of indigenous or protected territories. One additional friction pattern is flagged where dredging, channeling, and urban drainage works under preventive risk management could disrupt riparian restoration and biological corridor functions if implemented in the same basins.",
+      "coordination_hint": "Joint basin-level spatial planning, environmental-flow review, and early coordination on safeguards, protected-area boundaries, and indigenous consent processes could help align water infrastructure delivery with forest and riparian conservation measures.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "NP",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "NP (Nature Pledge)",
+    "aligned_count": 1055,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Reinforce implementation through shared planning and data systems",
+      "reinforce": "These documents largely align through enabling systems for implementation, especially standardized adaptation planning, observatories and monitoring platforms, indicator data-flow agreements, and transparency architecture such as ReNAM, OSIGA, the Climate Risk Observatory, and marine-coastal monitoring. Alignment also recurs where NP outcome targets on restoration, corridors, agrifood transformation, pollution reduction, coastal adaptation, wetlands, and environmental justice are reinforced by HR actions on territorial prioritization, inter-institutional coordination, legal and safeguard frameworks, and national baselines.",
+      "clash": "One possible misalignment was flagged for review around land use in overlapping terrestrial areas, where HR criteria for selecting 21 priority districts for agrifood transformation could create delivery friction with NP expansion and management of protected areas under SINAP. The issue often points to shared footprints near protected areas, watersheds, and ecological connectivity zones, rather than a settled contradiction, and could depend on zoning, safeguards, and territorial planning.",
+      "coordination_hint": "Closer coordination on territorial zoning, shared safeguards, and common monitoring across adaptation, agrifood, restoration, and protected-area planning could help maintain alignment in overlapping landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PEG",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PEG (Gov't Strategic Plan)",
+    "aligned_count": 633,
+    "flagged_count": 87,
+    "contradiction_types": {
+      "delivery_friction": 71,
+      "resource_competition": 16
+    },
+    "synthesis": {
+      "storyline_name": "Linking territorial planning with environmental safeguards",
+      "reinforce": "The two documents often align through shared use of territorial planning, regulatory modernization, and monitoring systems to connect climate, biodiversity, water, and productive development. This recurs in links between restoration plans, protected-area management, marine and wetlands monitoring, mitigation portfolios, agri-food district targeting, and community-based rural implementation.",
+      "clash": "Possible misalignment is most often flagged for review where PEG infrastructure, logistics, housing, energy, tourism, or industrial expansion could place delivery pressure on the same land, water, coastal, forest, or indigenous territories that HR seeks to govern through biodiversity criteria, adaptation planning, FPIC, species protection, and risk observatories. A smaller recurring pattern concerns resource competition around Canal-linked water infrastructure and other major investments intersecting with wetlands, organic soils, restoration finance, and marine-coastal monitoring.",
+      "coordination_hint": "Using shared spatial planning, safeguard screening, and HR monitoring and consultation mechanisms early in PEG project design could help keep infrastructure and productive investments aligned with climate, biodiversity, and territorial governance objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PENCYT",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 486,
+    "flagged_count": 2,
+    "contradiction_types": {
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Enabling nature delivery through STI systems",
+      "reinforce": "The recurring pattern is that PENCYT aligns with HR mainly as an enabling platform for data systems, research capacity, digitalization, innovation finance, and inter-institutional collaboration that HR actions often need for MRV, observatories, baselines, surveillance, and territorial planning. This recurs across climate and agroclimatic observatories, organic soils and marine-coastal monitoring, agri-food district selection, biodiversity incentive review, and the broader governance and financing architecture of the Nature Pledge, where the science plan tends to reinforce implementation capacity rather than define the same on-the-ground actions.",
+      "clash": "Recurring friction is limited but flagged for review around the Food development vector, where agricultural and fish-farming modernization could create delivery friction with protected-area management updates and with biodiversity-related subsidy and incentive reform. The overlap appears to sit in shared rural, watershed, land-use, and aquatic spaces, where productivity-oriented innovation and conservation or incentive-screening measures may need closer alignment.",
+      "coordination_hint": "A practical coordination point could be to link PENCYT food-innovation measures with HR zoning, watershed planning, and biodiversity screening criteria, while using shared data and monitoring platforms to identify where implementation pathways align with each other.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PIOTA",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 337,
+    "flagged_count": 28,
+    "contradiction_types": {
+      "delivery_friction": 26,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Aligning watershed planning with climate and nature tools",
+      "reinforce": "The two documents often align through territorial planning, watershed governance, and risk-informed local instruments. Recurring links include local land-use plans, local and regional adaptation planning, ecosystem and climate monitoring systems, municipal regulations, and financing or incentive frameworks that could support conservation, restoration, cleaner urban development, and sustainable production in the Canal watershed.",
+      "clash": "Possible misalignment is flagged mainly around PIOTA Pillar 1.2, especially road construction and rehabilitation within the Canal watershed. Across many HR targets, this recurs as delivery friction where routing, siting, drainage, habitat connectivity, pollution control, biosafety oversight, early warning, and participation processes could be harder to align, and one pair also flags resource competition around irrigation and productive expansion in areas linked to organic soils, wetlands, and shared hydrological resources.",
+      "coordination_hint": "Joint spatial screening of CHCP transport and production investments against HR conservation, adaptation, monitoring, and safeguard criteria could help surface where routing, zoning, permitting, and watershed protections may need closer alignment.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PNRF",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 287,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 5
+    },
+    "synthesis": {
+      "storyline_name": "Aligning forest restoration with territorial conservation tools",
+      "reinforce": "The two documents largely align around forest restoration, deforestation reduction, and protection of sensitive landscapes, especially through territorial prioritization, forest monitoring, restoration baselines, and action in water-producing watersheds, riparian zones, recharge areas, protected areas, buffer zones, and biological corridors. This pattern often points to HR providing enabling governance and technical instruments, such as SINAP updates, climate-risk observatories, adaptation planning, species prioritization, and organic-soils MRV, that could reinforce PNRF restoration, conservation, and sustainable forest management objectives.",
+      "clash": "Recurring possible misalignment is narrowly concentrated around PNRF Objective 9 on developing small and medium-sized forestry industry, where implementation could overlap with protected areas, priority species habitats, and organic-soil landscapes, or with future biodiversity-related incentive reforms. These cases are flagged for review as delivery friction because the forestry industry objective is broad and does not specify siting, safeguards, or incentive conditions, so zoning, species-sensitive design, and biodiversity criteria may matter in shared landscapes.",
+      "coordination_hint": "Coordination could focus on linking forestry industry development and restoration planning to SINAP rules, territorial zoning, species protocols, organic-soil criteria, and biodiversity-positive incentive design in the same landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "HR",
+    "doc_b": "PNSH",
+    "label_a": "HR (Nature Pledge Roadmap)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 498,
+    "flagged_count": 6,
+    "contradiction_types": {
+      "delivery_friction": 6
+    },
+    "synthesis": {
+      "storyline_name": "Link water security delivery with nature governance",
+      "reinforce": "The two documents often align through watershed planning, water-quality improvement, monitoring systems, and regulatory updates. Recurring links include strategic watershed management, marine and water-quality monitoring, early warning and agroclimatic information platforms, sanitation and drinking water efficiency projects, and participatory mechanisms for water conflict resolution and regulatory reform.",
+      "clash": "Recurring friction is flagged for review around PNSH Action 2.3 on reservoirs and other freshwater-availability infrastructure, where delivery in shared basins could complicate HR objectives on low-emission planning, protected areas and strategic watersheds, priority species, organic soils and wetlands, biodiversity-sensitive incentives, and nature-finance priorities. The possible misalignment tends to concern siting, hydrological change, emissions-sensitive design, and competition for the same landscapes rather than a settled policy contradiction.",
+      "coordination_hint": "Basin-level spatial planning, shared safeguards and screening, and interoperable monitoring and participation mechanisms could help align reservoir and water-supply investments with conservation, climate, and finance frameworks.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PEG",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PEG (Gov't Strategic Plan)",
+    "aligned_count": 807,
+    "flagged_count": 87,
+    "contradiction_types": {
+      "delivery_friction": 75,
+      "resource_competition": 12
+    },
+    "synthesis": {
+      "storyline_name": "Linking green transition tools with nature delivery",
+      "reinforce": "The two documents often align through green-transition instruments, including restoration plans, plastics regulation, renewable energy and decarbonization measures, community networks, and broader governance for climate and biodiversity action. Reinforcement also recurs through enabling systems such as open data, monitoring platforms, transparency rules, environmental finance, and participation and benefit-sharing frameworks that could support implementation of NP targets on restoration, pollution reduction, adaptation, and inclusive conservation.",
+      "clash": "Recurring possible misalignment is mostly flagged for review where PEG infrastructure, logistics, industrial, housing, tourism, energy, and agro-industrial expansion could overlap spatially with NP goals for urban green space, protected areas, biological corridors, forests, wetlands, coastal adaptation, and local adaptation plans. The mechanism is usually delivery friction rather than a settled policy conflict, with siting, routing, land-use change, pollution pressures, and consultation or safeguard timing often pointing to review needs, and a smaller number of cases also noting possible competition over watershed and wetland space linked to Canal-related water infrastructure.",
+      "coordination_hint": "Joint spatial planning, early risk screening, and alignment of safeguards, disclosure, and community consultation across infrastructure and nature investments could help keep the two agendas mutually supportive.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PENCYT",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 593,
+    "flagged_count": 2,
+    "contradiction_types": {
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Enable nature goals through STI systems and tools",
+      "reinforce": "The documents largely align through enabling mechanisms, with PENCYT's R&D investment, research infrastructure, innovation ecosystem, digitalization, technology transfer, and territorial STI capacities tending to reinforce NP delivery on biosafety regulation, agroclimatic and geospatial information systems, climate-resilient energy planning, urban green-blue space monitoring, and marine-coastal adaptation. A second recurring pattern is that NP's participation, equity, benefit-sharing, and territorial coordination provisions often point to governance conditions that could strengthen STI uptake in rural modernization, biodiversity-based bioeconomy, and environmental innovation agendas.",
+      "clash": "Recurring friction is limited and is flagged for review in one area, the Food development vector alongside NP land and forest protection targets. The flagged pairs suggest agricultural technification and competitiveness measures could create delivery friction with protected area expansion, watershed and fishing-zone conservation, and zero illegal deforestation unless land-use planning, siting, and safeguards are closely coordinated.",
+      "coordination_hint": "Joint planning between environmental, land-use, and STI actors could help connect innovation investments and rural modernization with protected-area zoning, forest safeguards, and shared environmental data systems.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PIOTA",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 432,
+    "flagged_count": 26,
+    "contradiction_types": {
+      "delivery_friction": 25,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Linking watershed management with national nature systems",
+      "reinforce": "The documents often align through shared use of ecosystem monitoring, transparency platforms, adaptation planning, and community participation mechanisms, especially around CHCP ecosystem monitoring, local and regional adaptation plans, agroclimatic information, and household energy efficiency. This recurring pattern suggests the NP tends to provide national frameworks, data systems, finance, and inclusion principles that reinforce PIOTA's place-based actions on watershed protection, ecological corridors, sustainable production, tourism, and community training.",
+      "clash": "Recurring possible misalignment is mostly flagged for review around PIOTA road construction and rehabilitation in the CHCP, which could create delivery friction with NP objectives on protected areas, restoration, species conservation, wetlands and organic soils, adaptation planning, participation safeguards, and environmental justice. A smaller additional issue is resource competition, where expanded protected areas and conservation zoning could compete with irrigation, agricultural support infrastructure, and reservoir-based production for land or especially water in overlapping watershed areas.",
+      "coordination_hint": "Spatial planning, shared watershed zoning, and use of NP monitoring and participation safeguards in PIOTA infrastructure and production decisions could help manage these overlaps.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PNRF",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 355,
+    "flagged_count": 4,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Linking restoration finance and zoning with biodiversity goals",
+      "reinforce": "The two documents largely align around restoring degraded land, safeguarding natural forests, and protecting riparian zones, recharge areas, buffer zones, corridors, and mangroves through reforestation, conservation, and sustainable forest management. This pattern is reinforced by concrete enabling mechanisms in the NP, including reform of biodiversity-harmful incentives, dedicated financing through the Panama Natural Fund and Reforestation Fund, protected area expansion, and cross-cutting coordination principles that could support PNRF delivery in shared landscapes.",
+      "clash": "A narrower set of pairs is flagged for review where NP protected area expansion and biodiversity incentive reform may create possible misalignment with PNRF aims to expand certified raw material supply and support small and medium forestry industry. The recurring mechanism is land-use zoning and access to forest landscapes, especially where production-oriented restoration or forestry activity could overlap with strictly protected or high ecological value areas, and where subsidy reform could affect existing industry incentives.",
+      "coordination_hint": "Clear spatial zoning, separation of protected and production areas, and alignment of forestry incentives with biodiversity-positive finance could help both documents reinforce each other in shared forest and watershed landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NP",
+    "doc_b": "PNSH",
+    "label_a": "NP (Nature Pledge)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 596,
+    "flagged_count": 11,
+    "contradiction_types": {
+      "delivery_friction": 10,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "linking water security with environmental monitoring",
+      "reinforce": "The two documents often align through shared climate and water information systems, especially risk monitoring, early warning, adaptation tracking, and institutional information services such as the Climate Risk Observatory, hydrometeorological monitoring, SIHAGO, and the marine-coastal and wetlands monitoring system. Alignment also recurs around enabling governance mechanisms, including regulatory updates, inter-institutional coordination, participation, education, and planning that could reinforce watershed management, sanitation, pollution reduction, and coastal resilience.",
+      "clash": "Recurring possible misalignment is concentrated around PNSH Action 2.3 on increasing freshwater availability, where reservoir construction, reservoir conversion, river interventions, cloud seeding, and related storage works are flagged for review against NP targets on ecological connectivity, protected areas, species conservation, invasive species control, forest protection, organic soils and wetlands, and watershed-to-coast ecosystem conditions. One pair also points to possible resource competition, where reservoirs and agricultural water supply could compete with restoration areas, mangroves, biological corridors, and shared land and freshwater resources in the same basins.",
+      "coordination_hint": "Basin-level planning, shared environmental monitoring, and early integration of siting, flow-management, and safeguard reviews could help align water infrastructure delivery with conservation and wetland objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PENCYT",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PENCYT (Science & Innovation Plan)",
+    "aligned_count": 476,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 3,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Linking STI system-building to sector delivery",
+      "reinforce": "The documents largely align around using science, technology and innovation as an enabling system for delivery in agriculture, water, marine protection, digital transformation, and public services. A recurring pattern is that PEG provides concrete instruments such as research infrastructure, AI and IoT adoption, producer training, community networks, and public-sector modernization, while PENCYT reinforces these through R&D investment, scientific culture, territorial innovation hubs, and strategic-sector innovation agendas.",
+      "clash": "A smaller set of pairs is flagged for review where logistics, Canal, reservoir, and related infrastructure expansion could create delivery friction with PENCYT's sustainability, biodiversity, and natural-resource governance aims. Resource competition also recurs around finite public finance for fiscal consolidation versus higher public R&D spending, and around shared water resources between Canal reliability investments and agri-food modernization.",
+      "coordination_hint": "Joint planning on sustainability criteria, watershed allocation, and budget sequencing could help keep infrastructure, fiscal, and STI investments aligned with both documents' broader objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PIOTA",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 295,
+    "flagged_count": 40,
+    "contradiction_types": {
+      "delivery_friction": 36,
+      "resource_competition": 4
+    },
+    "synthesis": {
+      "storyline_name": "Linking watershed conservation with enabling systems",
+      "reinforce": "The two documents often align around Canal watershed protection through concrete mechanisms such as protective vegetation cover, ecosystem monitoring, management plans, forest restoration, payment for environmental services, and conservation finance. They also reinforce each other through enabling measures, including training centers, MSME and financial inclusion support, science and technology transfer, renewable energy, and water and sanitation improvements that could support PIOTA delivery in the CHCP.",
+      "clash": "Possible misalignment is most often flagged for review where PEG infrastructure and growth measures, especially roads, logistics corridors, housing, tourism expansion, Canal-linked works, and the probable Río Indio reservoir, intersect with PIOTA conservation, ecological corridor, land-use, and watershed management actions in the CHCP. A smaller recurring issue is resource competition around Canal water management, where major supply infrastructure could compete with PIOTA's water-efficiency, discharge-control, and Water Footprint measures for the same basin resources and management capacity.",
+      "coordination_hint": "Joint spatial planning, basin allocation review, and sequencing of infrastructure with CHCP zoning, ecological corridor mapping, and watershed safeguards could help keep the many areas of alignment while addressing flagged implementation pressure points.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PNRF",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 205,
+    "flagged_count": 33,
+    "contradiction_types": {
+      "delivery_friction": 31,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Linking restoration delivery with cross-government enablers",
+      "reinforce": "PEG often aligns with PNRF by reinforcing enabling conditions for forest restoration and forestry development, especially through updated environmental regulation, restoration programs, community-based implementation, open data, public-sector capacity, science and innovation, and broader climate and nature frameworks. The strongest recurring overlap is around restoration of degraded ecosystems, biological corridors, protected areas, and water-producing watersheds, with PEG measures on audits, regulatory modernization, and local actor mobilization tending to support PNRF delivery.",
+      "clash": "Possible misalignment is flagged for review mainly where PEG infrastructure and land-development measures, especially logistics corridors, Canal and reservoir works, housing, tourism expansion, energy transmission, and industrial siting, could overlap with forests, degraded soils, riparian zones, recharge areas, buffer zones, biological corridors, and restoration landscapes targeted by PNRF. A smaller recurring issue is resource competition over land, particularly where housing expansion could compete with areas intended for reforestation, degraded-land recovery, or forest conservation.",
+      "coordination_hint": "Joint spatial planning, routing, and zoning, combined with watershed and forest safeguards, could help keep PEG infrastructure and development delivery aligned with PNRF restoration priorities in overlapping landscapes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PEG",
+    "doc_b": "PNSH",
+    "label_a": "PEG (Gov't Strategic Plan)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 443,
+    "flagged_count": 16,
+    "contradiction_types": {
+      "resource_competition": 8,
+      "delivery_friction": 8
+    },
+    "synthesis": {
+      "storyline_name": "Align water service expansion with competing infrastructure demands",
+      "reinforce": "The two documents often align on expanding and modernizing water and sanitation systems, especially through PEG measures on drinking water distribution, IDAAN modernization, wastewater infrastructure, and risk-informed service upgrades that directly reinforce PNSH goals on universal access, service efficiency, and preventive water management. A broader enabling pattern also recurs where PEG actions on fiscal management, open data, digital tools, electrification, agriculture, housing, education, and ecosystem restoration could support PNSH delivery through financing, data systems, training, watershed information, and service conditions.",
+      "clash": "Possible misalignment is repeatedly flagged where PEG logistics expansion, Canal water-security investments, and some agricultural growth measures could draw on the same finite water resources, basin capacity, or public investment needed for drinking water, sanitation, and wider water allocation under the PNSH. Delivery friction also recurs around siting and permitting, where transport corridors, reservoirs, river interventions, and other major works may intersect flood-prone areas, protected landscapes, restoration zones, or stricter environmental oversight and therefore are flagged for review.",
+      "coordination_hint": "Joint basin-level planning on water allocation, infrastructure siting, environmental safeguards, and sequencing of major investments could help both documents align more consistently in shared watersheds and service areas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PENCYT",
+    "doc_b": "PIOTA",
+    "label_a": "PENCYT (Science & Innovation Plan)",
+    "label_b": "PIOTA (Canal Watershed Plan)",
+    "aligned_count": 218,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Linking STI tools to watershed management",
+      "reinforce": "The documents largely align with each other by connecting national science, technology, and innovation capacities to PIOTA's watershed actions, especially environmental monitoring, ecosystem management, technified production, water efficiency, GHG inventories, and ecotourism or agrotourism planning. A recurring mechanism is the use of research infrastructure, university and company partnerships, innovation incentives, and science outreach to reinforce place-based conservation, resource management, and productive modernization in the Canal watershed.",
+      "clash": "One possible misalignment was flagged for review around PIOTA's road construction and rehabilitation in the watershed, which could create delivery friction with PENCYT's emphasis on preventing biodiversity and natural resource deterioration. This friction appears tied to how transport works are designed and located in sensitive areas, rather than to a broad policy disagreement across the two documents.",
+      "coordination_hint": "Coordination on spatial planning, environmental monitoring, and innovation-based design standards could help align watershed infrastructure delivery with biodiversity and resource-management objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PENCYT",
+    "doc_b": "PNRF",
+    "label_a": "PENCYT (Science & Innovation Plan)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 175,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Enabling forest restoration through STI systems",
+      "reinforce": "These documents align with around science, technology and innovation as enabling tools for forest restoration and management, especially through research infrastructure, R&D investment, digital monitoring, knowledge transfer, and collaboration among public entities, universities, companies, and research centers. The pattern often points to PENCYT reinforcing PNRF objectives on reforestation, deforestation reduction, certified forestry raw materials, ecosystem service valuation, and forestry education and applied research, mainly through system-wide innovation mechanisms rather than shared on-the-ground instruments.",
+      "clash": "No recurring friction flagged in this set.",
+      "coordination_hint": "Linking PENCYT research, digitalization, and technology-transfer mechanisms with PNRF forestry and watershed priorities could help translate broad STI capacities into sector-specific restoration and sustainable forest management applications.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PENCYT",
+    "doc_b": "PNSH",
+    "label_a": "PENCYT (Science & Innovation Plan)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 286,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Enable water security through STI tools",
+      "reinforce": "The documents largely align with PENCYT's STI capacities, digitalization, R&D incentives, technology transfer, and scientific culture measures reinforcing PNSH actions on water planning, monitoring, demand management, sanitation efficiency, early warning, and education. A recurring mechanism is that research infrastructure, data systems, modeling, automation, public-private innovation, and outreach could strengthen studies, regulatory updating, utility operations, watershed information, and citizen engagement around sustainable water use.",
+      "clash": "One possible misalignment was flagged for review around PNSH freshwater-availability measures, especially reservoirs, river interventions, and cloud seeding, where delivery could create pressures in ecosystems that PENCYT's environment vector seeks to protect. This friction appears limited in the evidence provided and tends to point to implementation choices such as siting, safeguards, and multipurpose planning rather than a broad policy-level divide.",
+      "coordination_hint": "Joint review of water infrastructure and availability projects with STI, environmental, and monitoring actors could help align innovation support with biodiversity safeguards and evidence-based design.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PIOTA",
+    "doc_b": "PNRF",
+    "label_a": "PIOTA (Canal Watershed Plan)",
+    "label_b": "PNRF (Forest Restoration)",
+    "aligned_count": 129,
+    "flagged_count": 11,
+    "contradiction_types": {
+      "delivery_friction": 10,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Link watershed planning with forest restoration safeguards",
+      "reinforce": "The two documents often align around watershed and ecosystem stewardship, especially where PIOTA's land-use planning, ecosystem monitoring, GHG inventories, protective vegetation cover, and payment-for-environmental-services mechanisms reinforce PNRF objectives on reforestation, reducing deforestation, protecting riparian and recharge zones, and valuing forest ecosystem services. A recurring enabling link is that PIOTA's municipal planning, community education, training centers, and water-management instruments could support forest restoration, conservation finance, and forestry knowledge generation, even when the operational overlap is partial and place-specific to the Canal watershed.",
+      "clash": "Recurring possible misalignment is mostly flagged for review around PIOTA's mobility package, particularly road construction and rehabilitation in the Canal watershed, which could create land-use pressure, fragmentation, or added access in areas relevant to forest restoration, natural forest protection, riparian zones, buffer zones, and biological corridors under PNRF. A smaller pattern flagged for review concerns possible resource competition between PIOTA's ecological corridor protection and PNRF's support for small and medium forestry industry, where land, biomass supply, or infrastructure needs could overlap with protected or restorable areas.",
+      "coordination_hint": "Joint spatial screening of road routes, corridor boundaries, restoration zones, and forestry activity areas could help align implementation and safeguards where the two documents intersect in the Canal watershed.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "PIOTA",
+    "doc_b": "PNSH",
+    "label_a": "PIOTA (Canal Watershed Plan)",
+    "label_b": "PNSH (Water Security)",
+    "aligned_count": 226,
+    "flagged_count": 7,
+    "contradiction_types": {
+      "delivery_friction": 6,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Link watershed protection and water service planning",
+      "reinforce": "The documents often align through watershed-service mechanisms, where PIOTA's protective vegetation, ecological corridors, ecosystem monitoring, leak reduction, treated-water reuse, and inclusive local committees reinforce PNSH actions on drinking water coverage, freshwater-demand management, water availability studies, early warning, and participatory water governance. A recurring pattern is that PIOTA's place-based conservation, efficiency, and monitoring instruments in the Canal watershed could strengthen the evidence base, source protection, and community uptake for PNSH water security investments and regulations.",
+      "clash": "Possible misalignment is flagged mainly around PIOTA's mobility and road works in the Canal watershed, which could complicate PNSH water objectives through siting pressures, land disturbance, runoff, drainage, and local consultation needs in sensitive watershed areas. A smaller recurring issue is resource competition, where PIOTA irrigation and reuse measures and PNSH expansion of drinking water services may draw on the same finite water sources and related infrastructure, and reservoir expansion is also flagged for review where it may overlap with protected ecological corridors.",
+      "coordination_hint": "Joint spatial planning, hydrological screening, and shared watershed committees could help align road, reservoir, irrigation, and water-service investments where the two documents intersect.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -679,16 +678,16 @@
     "doc_b": "PNSH",
     "label_a": "PNRF (Forest Restoration)",
     "label_b": "PNSH (Water Security)",
-    "aligned_count": 177,
+    "aligned_count": 178,
     "flagged_count": 2,
     "contradiction_types": {
       "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Watershed restoration supporting water security delivery",
-      "reinforce": "Across the aligned pairs, the documents often pull in the same direction through watershed mechanisms, forest restoration, riparian and recharge-zone protection, and recognition of forest ecosystem services that support infiltration, flow regulation, water quality, and risk reduction. Alignment also recurs through enabling instruments such as research, monitoring, education, institutional strengthening, sanitation improvements, and regulatory updates, which could support basin-level planning and water governance alongside forest restoration.",
-      "clash": "The recurring possible misalignment is narrow and centers on PNSH Action 2.3, where reservoir and other water-storage infrastructure could overlap with natural forests, riparian zones, recharge areas, and river landscapes that PNRF seeks to conserve or restore. The records often point to delivery-side issues around siting and landscape change, rather than different end goals, with potential pressure on the same hydrologically important areas.",
-      "coordination_hint": "Joint watershed planning, including infrastructure siting, environmental studies, and forest and riparian safeguards, could help align reservoir expansion with restoration and conservation priorities in overlapping basins.",
+      "storyline_name": "Linking watershed restoration with water security planning",
+      "reinforce": "The two documents largely align through a recurring forest-water nexus, where restoring water-producing watersheds, riparian zones, recharge areas, natural forests, and degraded soils tends to reinforce water availability, flow regulation, erosion control, source-water quality, and preventive risk management. This also recurs in enabling instruments such as water-resource monitoring, watershed information, education and applied research, regulatory updates, and broader water governance, which often points to complementary planning across forest and water institutions.",
+      "clash": "A limited possible misalignment is flagged for review around PNSH Action 2.3 on increasing freshwater availability through reservoirs and related infrastructure. In overlapping river basins and catchments, these works could create delivery friction with PNRF objectives to safeguard natural forests and protect or restore riparian zones, recharge areas, buffer zones, and biological corridors, especially through siting and land-use pressures.",
+      "coordination_hint": "Joint watershed-level planning, using shared hydrological information and early attention to infrastructure siting and safeguards, could help retain the reinforcing links while managing the limited friction flagged for review.",
       "confidence": "high"
     },
     "synthesis_error": null

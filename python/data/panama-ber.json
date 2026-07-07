@@ -1,0 +1,1002 @@
+{
+  "programs": [
+    {
+      "code": "BER_PA_01_01",
+      "name": "Rehabil. y Mantenim. Aeroportuario",
+      "nameEn": "Rehabil. y Mantenim. Aeroportuario",
+      "description": "Programme \"Rehabil. y Mantenim. Aeroportuario\" under the AUTORIDAD AERONÁUTICA CIVIL. Line associated with airport management, rehabilitation or maintenance with an environmental link, including green areas, wildlife control or environmental conditions at airfields. Executed expenditure 2015–2024: 4.7M PAB total (avg 0.5M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Rehabil. y Mantenim. Aeroportuario» en Autoridad Aeronáutica Civil. Línea asociada a gestión, rehabilitación o mantenimiento aeroportuario con vínculo ambiental, incluyendo áreas verdes, control de fauna o condiciones ambientales de los aeródromos.",
+      "descriptionEn": "Programme \"Rehabil. y Mantenim. Aeroportuario\" under the Civil Aviation Authority. Line associated with airport management, rehabilitation or maintenance with an environmental link, including green areas, wildlife control or environmental conditions at airfields.",
+      "type": "environmental",
+      "institution": "Autoridad Aeronáutica Civil",
+      "institutionEn": "Civil Aviation Authority"
+    },
+    {
+      "code": "BER_PA_02_01",
+      "name": "Admón. de los Recursos Acuáticos",
+      "nameEn": "Admón. de los Recursos Acuáticos",
+      "description": "Programme \"Admón. de los Recursos Acuáticos\" under the AUTORIDAD DE LOS RECURSOS ACUÁTICOS DE PANAMÁ. Line linked to the administration, management, research, oversight or sustainable promotion of aquatic, fisheries or aquaculture resources. Executed expenditure 2015–2024: 40.2M PAB total (avg 4.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Admón. de los Recursos Acuáticos» en Autoridad De Los Recursos Acuáticos De Panamá. Línea vinculada a la administración, ordenación, investigación, fiscalización o fomento sostenible de recursos acuáticos, pesqueros o acuícolas.",
+      "descriptionEn": "Programme \"Admón. de los Recursos Acuáticos\" under the Aquatic Resources Authority of Panama. Line linked to the administration, management, research, oversight or sustainable promotion of aquatic, fisheries or aquaculture resources.",
+      "type": "environmental",
+      "institution": "Autoridad De Los Recursos Acuáticos De Panamá",
+      "institutionEn": "Aquatic Resources Authority of Panama"
+    },
+    {
+      "code": "BER_PA_02_02",
+      "name": "Desarr. y Conserv. Rec. Acuáticos",
+      "nameEn": "Desarr. y Conserv. Rec. Acuáticos",
+      "description": "Programme \"Desarr. y Conserv. Rec. Acuáticos\" under the AUTORIDAD DE LOS RECURSOS ACUÁTICOS DE PANAMÁ. Line linked to the administration, management, research, oversight or sustainable promotion of aquatic, fisheries or aquaculture resources. Executed expenditure 2015–2024: 40.8M PAB total (avg 4.1M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Desarr. y Conserv. Rec. Acuáticos» en Autoridad De Los Recursos Acuáticos De Panamá. Línea vinculada a la administración, ordenación, investigación, fiscalización o fomento sostenible de recursos acuáticos, pesqueros o acuícolas.",
+      "descriptionEn": "Programme \"Desarr. y Conserv. Rec. Acuáticos\" under the Aquatic Resources Authority of Panama. Line linked to the administration, management, research, oversight or sustainable promotion of aquatic, fisheries or aquaculture resources.",
+      "type": "environmental",
+      "institution": "Autoridad De Los Recursos Acuáticos De Panamá",
+      "institutionEn": "Aquatic Resources Authority of Panama"
+    },
+    {
+      "code": "BER_PA_02_03",
+      "name": "Invest. y Desar. Recursos Acuáticos",
+      "nameEn": "Invest. y Desar. Recursos Acuáticos",
+      "description": "Programme \"Invest. y Desar. Recursos Acuáticos\" under the AUTORIDAD DE LOS RECURSOS ACUÁTICOS DE PANAMÁ. Line linked to the administration, management, research, oversight or sustainable promotion of aquatic, fisheries or aquaculture resources. Executed expenditure 2015–2024: 17.1M PAB total (avg 1.7M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Invest. y Desar. Recursos Acuáticos» en Autoridad De Los Recursos Acuáticos De Panamá. Línea vinculada a la administración, ordenación, investigación, fiscalización o fomento sostenible de recursos acuáticos, pesqueros o acuícolas.",
+      "descriptionEn": "Programme \"Invest. y Desar. Recursos Acuáticos\" under the Aquatic Resources Authority of Panama. Line linked to the administration, management, research, oversight or sustainable promotion of aquatic, fisheries or aquaculture resources.",
+      "type": "environmental",
+      "institution": "Autoridad De Los Recursos Acuáticos De Panamá",
+      "institutionEn": "Aquatic Resources Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_01",
+      "name": "Construcción de Infra. Turística",
+      "nameEn": "Construcción de Infra. Turística",
+      "description": "Programme \"Construcción de Infra. Turística\" under the AUTORIDAD DE TURISMO DE PANAMÁ. Line related to tourism management or destination development, with a possible contribution to biodiversity when oriented toward sustainable tourism, natural heritage or site management. Executed expenditure 2015–2024: 0.0M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Construcción de Infra. Turística» en Autoridad De Turismo De Panamá. Línea relacionada con gestión turística o desarrollo de destinos, con posible contribución a biodiversidad cuando se orienta a turismo sostenible, patrimonio natural o manejo de sitios.",
+      "descriptionEn": "Programme \"Construcción de Infra. Turística\" under the Tourism Authority of Panama. Line related to tourism management or destination development, with a possible contribution to biodiversity when oriented toward sustainable tourism, natural heritage or site management.",
+      "type": "environmental",
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_02",
+      "name": "Centros Culturales y de Exhibiciones",
+      "nameEn": "Centros Culturales y de Exhibiciones",
+      "description": "Programme \"Centros Culturales y de Exhibiciones\" under the AUTORIDAD DE TURISMO DE PANAMÁ. Budget line or programmatic grouping of the Autoridad de Turismo de Panamá included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 0.0M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Centros Culturales y de Exhibiciones» en Autoridad De Turismo De Panamá. Línea presupuestaria o agrupación programática de Autoridad de Turismo de Panamá incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Centros Culturales y de Exhibiciones\" under the Tourism Authority of Panama. Budget line or programmatic grouping of the Autoridad de Turismo de Panamá included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_03",
+      "name": "Desarrollo del Ecoturismo en los Lagos de Panamá Norte",
+      "nameEn": "Desarrollo del Ecoturismo en los Lagos de Panamá Norte",
+      "description": "Programme \"Desarrollo del Ecoturismo en los Lagos de Panamá Norte\" under the AUTORIDAD DE TURISMO DE PANAMÁ. Line related to tourism management or destination development, with a possible contribution to biodiversity when oriented toward sustainable tourism, natural heritage or site management. Executed expenditure 2015–2024: 0.0M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Desarrollo del Ecoturismo en los Lagos de Panamá Norte» en Autoridad De Turismo De Panamá. Línea relacionada con gestión turística o desarrollo de destinos, con posible contribución a biodiversidad cuando se orienta a turismo sostenible, patrimonio natural o manejo de sitios.",
+      "descriptionEn": "Programme \"Desarrollo del Ecoturismo en los Lagos de Panamá Norte\" under the Tourism Authority of Panama. Line related to tourism management or destination development, with a possible contribution to biodiversity when oriented toward sustainable tourism, natural heritage or site management.",
+      "type": "environmental",
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_04",
+      "name": "Integracion de las Ciudades  V T",
+      "nameEn": "Integracion de las Ciudades  V T",
+      "description": "Programme \"Integracion de las Ciudades  V T\" under the AUTORIDAD DE TURISMO DE PANAMÁ. Budget line or programmatic grouping of the Autoridad de Turismo de Panamá included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 0.3M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Integracion de las Ciudades  V T» en Autoridad De Turismo De Panamá. Línea presupuestaria o agrupación programática de Autoridad de Turismo de Panamá incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Integracion de las Ciudades  V T\" under the Tourism Authority of Panama. Budget line or programmatic grouping of the Autoridad de Turismo de Panamá included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_05",
+      "name": "Integración de las Ciudades Voc. T.",
+      "nameEn": "Integración de las Ciudades Voc. T.",
+      "description": "Programme \"Integración de las Ciudades Voc. T.\" under the AUTORIDAD DE TURISMO DE PANAMÁ. Budget line or programmatic grouping of the Autoridad de Turismo de Panamá included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 0.4M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Integración de las Ciudades Voc. T.» en Autoridad De Turismo De Panamá. Línea presupuestaria o agrupación programática de Autoridad de Turismo de Panamá incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Integración de las Ciudades Voc. T.\" under the Tourism Authority of Panama. Budget line or programmatic grouping of the Autoridad de Turismo de Panamá included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_06",
+      "name": "Promoción Turística",
+      "nameEn": "Promoción Turística",
+      "description": "Programme \"Promoción Turística\" under the AUTORIDAD DE TURISMO DE PANAMÁ. Line related to tourism management or destination development, with a possible contribution to biodiversity when oriented toward sustainable tourism, natural heritage or site management. Executed expenditure 2015–2024: 11.8M PAB total (avg 1.2M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Promoción Turística» en Autoridad De Turismo De Panamá. Línea relacionada con gestión turística o desarrollo de destinos, con posible contribución a biodiversidad cuando se orienta a turismo sostenible, patrimonio natural o manejo de sitios.",
+      "descriptionEn": "Programme \"Promoción Turística\" under the Tourism Authority of Panama. Line related to tourism management or destination development, with a possible contribution to biodiversity when oriented toward sustainable tourism, natural heritage or site management.",
+      "type": "environmental",
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_04_01",
+      "name": "Programa Nal. de Titulación de Tierra",
+      "nameEn": "Programa Nal. de Titulación de Tierra",
+      "description": "Programme \"Programa Nal. de Titulación de Tierra\" under the AUTORIDAD NACIONAL DE ADMINISTRACIÓN DE TIERRAS. Line associated with territorial and cadastral administration, regulation or information, relevant as an enabling condition for land-use planning, tenure and territorial management. Executed expenditure 2015–2024: 0.3M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Programa Nal. de Titulación de Tierra» en Autoridad Nacional De Administración De Tierras. Línea asociada a administración, regulación o información territorial y catastral, relevante como condición habilitante para ordenamiento, tenencia y gestión del territorio.",
+      "descriptionEn": "Programme \"Programa Nal. de Titulación de Tierra\" under the National Land Administration Authority. Line associated with territorial and cadastral administration, regulation or information, relevant as an enabling condition for land-use planning, tenure and territorial management.",
+      "type": "environmental",
+      "institution": "Autoridad Nacional De Administración De Tierras",
+      "institutionEn": "National Land Administration Authority"
+    },
+    {
+      "code": "BER_PA_05_01",
+      "name": "Const. y Remodelac. de Instalaciones",
+      "nameEn": "Const. y Remodelac. de Instalaciones",
+      "description": "Programme \"Const. y Remodelac. de Instalaciones\" under the INSTITUTO CONMEMORATIVO GORGAS DE ESTUDIOS DE LA SALUD. Budget line or programmatic grouping of the Instituto Conmemorativo Gorgas de Estudios de la Salud included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 39.9M PAB total (avg 4.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Const. y Remodelac. de Instalaciones» en Instituto Conmemorativo Gorgas De Estudios De La Salud. Línea presupuestaria o agrupación programática de Instituto Conmemorativo Gorgas de Estudios de la Salud incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Const. y Remodelac. de Instalaciones\" under the Gorgas Memorial Institute for Health Studies. Budget line or programmatic grouping of the Instituto Conmemorativo Gorgas de Estudios de la Salud included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Instituto Conmemorativo Gorgas De Estudios De La Salud",
+      "institutionEn": "Gorgas Memorial Institute for Health Studies"
+    },
+    {
+      "code": "BER_PA_06_01",
+      "name": "Apoyo Invest. e innovación Agropecuaria",
+      "nameEn": "Apoyo Invest. e innovación Agropecuaria",
+      "description": "Programme \"Apoyo Invest. e innovación Agropecuaria\" under the INSTITUTO DE INNOVACIÓN AGROPECUARIA. Research, innovation, laboratory or technical knowledge generation line, relevant when it provides evidence for public health, agroecosystems, natural resources or biodiversity. Executed expenditure 2015–2024: 3.3M PAB total (avg 0.3M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Apoyo Invest. e innovación Agropecuaria» en Instituto De Innovación Agropecuaria. Línea de investigación, innovación, laboratorio o generación de conocimiento técnico, relevante cuando aporta evidencia para salud pública, agroecosistemas, recursos naturales o biodiversidad.",
+      "descriptionEn": "Programme \"Apoyo Invest. e innovación Agropecuaria\" under the Agricultural Innovation Institute. Research, innovation, laboratory or technical knowledge generation line, relevant when it provides evidence for public health, agroecosystems, natural resources or biodiversity.",
+      "type": "environmental",
+      "institution": "Instituto De Innovación Agropecuaria",
+      "institutionEn": "Agricultural Innovation Institute"
+    },
+    {
+      "code": "BER_PA_06_02",
+      "name": "Investigaciones  Agropecuarias",
+      "nameEn": "Investigaciones  Agropecuarias",
+      "description": "Programme \"Investigaciones  Agropecuarias\" under the INSTITUTO DE INNOVACIÓN AGROPECUARIA. Research, innovation, laboratory or technical knowledge generation line, relevant when it provides evidence for public health, agroecosystems, natural resources or biodiversity. Executed expenditure 2015–2024: 2.1M PAB total (avg 0.2M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Investigaciones  Agropecuarias» en Instituto De Innovación Agropecuaria. Línea de investigación, innovación, laboratorio o generación de conocimiento técnico, relevante cuando aporta evidencia para salud pública, agroecosistemas, recursos naturales o biodiversidad.",
+      "descriptionEn": "Programme \"Investigaciones  Agropecuarias\" under the Agricultural Innovation Institute. Research, innovation, laboratory or technical knowledge generation line, relevant when it provides evidence for public health, agroecosystems, natural resources or biodiversity.",
+      "type": "environmental",
+      "institution": "Instituto De Innovación Agropecuaria",
+      "institutionEn": "Agricultural Innovation Institute"
+    },
+    {
+      "code": "BER_PA_07_01",
+      "name": "Áreas Protegidas y Biodiversidad",
+      "nameEn": "Áreas Protegidas y Biodiversidad",
+      "description": "Programme \"Áreas Protegidas y Biodiversidad\" under the MINISTERIO DE AMBIENTE. Line linked to environmental management, conservation, restoration, natural resource management, protected areas, forests, biodiversity or climate actions with a biodiversity contribution. Executed expenditure 2015–2024: 98.5M PAB total (avg 9.8M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Áreas Protegidas y Biodiversidad» en Ministerio De Ambiente. Línea vinculada a gestión ambiental, conservación, restauración, manejo de recursos naturales, áreas protegidas, bosques, biodiversidad o acciones climáticas con contribución a biodiversidad.",
+      "descriptionEn": "Programme \"Áreas Protegidas y Biodiversidad\" under the Ministry of Environment. Line linked to environmental management, conservation, restoration, natural resource management, protected areas, forests, biodiversity or climate actions with a biodiversity contribution.",
+      "type": "environmental",
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_02",
+      "name": "Gestión  Ambiental",
+      "nameEn": "Gestión  Ambiental",
+      "description": "Programme \"Gestión  Ambiental\" under the MINISTERIO DE AMBIENTE. Budget line or programmatic grouping of the Ministerio de Ambiente included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 30.3M PAB total (avg 3.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Gestión  Ambiental» en Ministerio De Ambiente. Línea presupuestaria o agrupación programática de Ministerio de Ambiente incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Gestión  Ambiental\" under the Ministry of Environment. Budget line or programmatic grouping of the Ministerio de Ambiente included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_03",
+      "name": "Gestión Ambiental",
+      "nameEn": "Gestión Ambiental",
+      "description": "Programme \"Gestión Ambiental\" under the MINISTERIO DE AMBIENTE. Budget line or programmatic grouping of the Ministerio de Ambiente included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 45.0M PAB total (avg 4.5M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Gestión Ambiental» en Ministerio De Ambiente. Línea presupuestaria o agrupación programática de Ministerio de Ambiente incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Gestión Ambiental\" under the Ministry of Environment. Budget line or programmatic grouping of the Ministerio de Ambiente included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_04",
+      "name": "Gestión Integrada  de Cuencas  Hidrog.",
+      "nameEn": "Gestión Integrada  de Cuencas  Hidrog.",
+      "description": "Programme \"Gestión Integrada  de Cuencas  Hidrog.\" under the MINISTERIO DE AMBIENTE. Line linked to environmental management, conservation, restoration, natural resource management, protected areas, forests, biodiversity or climate actions with a biodiversity contribution. Executed expenditure 2015–2024: 46.9M PAB total (avg 4.7M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Gestión Integrada  de Cuencas  Hidrog.» en Ministerio De Ambiente. Línea vinculada a gestión ambiental, conservación, restauración, manejo de recursos naturales, áreas protegidas, bosques, biodiversidad o acciones climáticas con contribución a biodiversidad.",
+      "descriptionEn": "Programme \"Gestión Integrada  de Cuencas  Hidrog.\" under the Ministry of Environment. Line linked to environmental management, conservation, restoration, natural resource management, protected areas, forests, biodiversity or climate actions with a biodiversity contribution.",
+      "type": "environmental",
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_05",
+      "name": "Gestión Integrada de Cuencas Hidrog.",
+      "nameEn": "Gestión Integrada de Cuencas Hidrog.",
+      "description": "Programme \"Gestión Integrada de Cuencas Hidrog.\" under the MINISTERIO DE AMBIENTE. Line linked to environmental management, conservation, restoration, natural resource management, protected areas, forests, biodiversity or climate actions with a biodiversity contribution. Executed expenditure 2015–2024: 46.3M PAB total (avg 4.6M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Gestión Integrada de Cuencas Hidrog.» en Ministerio De Ambiente. Línea vinculada a gestión ambiental, conservación, restauración, manejo de recursos naturales, áreas protegidas, bosques, biodiversidad o acciones climáticas con contribución a biodiversidad.",
+      "descriptionEn": "Programme \"Gestión Integrada de Cuencas Hidrog.\" under the Ministry of Environment. Line linked to environmental management, conservation, restoration, natural resource management, protected areas, forests, biodiversity or climate actions with a biodiversity contribution.",
+      "type": "environmental",
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_OVERHEAD",
+      "name": "Apoyo institucional — Ministerio De Ambiente",
+      "nameEn": "Institutional support — Ministry of Environment",
+      "description": "Cross-cutting institutional support and general administration at the MINISTERIO DE AMBIENTE. Line for direction, planning, administration or institutional strengthening that operates as enabling expenditure for sectoral management associated with biodiversity. Executed expenditure 2015–2024: 134.7M PAB total (avg 13.5M/year). Descriptions sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Apoyo institucional transversal y administración general en Ministerio De Ambiente. Línea de dirección, planificación, administración o fortalecimiento institucional que opera como gasto habilitante para la gestión sectorial asociada a biodiversidad.",
+      "descriptionEn": "Cross-cutting institutional support and general administration at the Ministry of Environment. Line for direction, planning, administration or institutional strengthening that operates as enabling expenditure for sectoral management associated with biodiversity.",
+      "type": "environmental",
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_08_01",
+      "name": "Transferencias",
+      "nameEn": "Transferencias",
+      "description": "Programme \"Transferencias\" under the MINISTERIO DE COMERCIO E INDUSTRIAS. Budget line or programmatic grouping of the Ministerio de Comercio e Industrias included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 0.1M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Transferencias» en Ministerio De Comercio E Industrias. Línea presupuestaria o agrupación programática de Ministerio de Comercio e Industrias incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Transferencias\" under the Ministry of Commerce and Industries. Budget line or programmatic grouping of the Ministerio de Comercio e Industrias included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Comercio E Industrias",
+      "institutionEn": "Ministry of Commerce and Industries"
+    },
+    {
+      "code": "BER_PA_09_01",
+      "name": "Asistencia Técnica Agrícola",
+      "nameEn": "Asistencia Técnica Agrícola",
+      "description": "Programme \"Asistencia Técnica Agrícola\" under the MINISTERIO DE DESARROLLO AGROPECUARIO. Agricultural/livestock line associated with productive promotion, health, seeds, research or infrastructure; its contribution to biodiversity depends on sustainable practices, resilience and agroecosystem management. Executed expenditure 2015–2024: 14.2M PAB total (avg 1.4M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Asistencia Técnica Agrícola» en Ministerio De Desarrollo Agropecuario. Línea agropecuaria asociada a fomento productivo, sanidad, semillas, investigación o infraestructura; su contribución a biodiversidad depende de prácticas sostenibles, resiliencia y manejo de agroecosistemas.",
+      "descriptionEn": "Programme \"Asistencia Técnica Agrícola\" under the Ministry of Agricultural Development. Agricultural/livestock line associated with productive promotion, health, seeds, research or infrastructure; its contribution to biodiversity depends on sustainable practices, resilience and agroecosystem management.",
+      "type": "environmental",
+      "institution": "Ministerio De Desarrollo Agropecuario",
+      "institutionEn": "Ministry of Agricultural Development"
+    },
+    {
+      "code": "BER_PA_09_02",
+      "name": "Asistencia Técnica Pecuaria",
+      "nameEn": "Asistencia Técnica Pecuaria",
+      "description": "Programme \"Asistencia Técnica Pecuaria\" under the MINISTERIO DE DESARROLLO AGROPECUARIO. Agricultural/livestock line associated with productive promotion, health, seeds, research or infrastructure; its contribution to biodiversity depends on sustainable practices, resilience and agroecosystem management. Executed expenditure 2015–2024: 56.4M PAB total (avg 5.6M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Asistencia Técnica Pecuaria» en Ministerio De Desarrollo Agropecuario. Línea agropecuaria asociada a fomento productivo, sanidad, semillas, investigación o infraestructura; su contribución a biodiversidad depende de prácticas sostenibles, resiliencia y manejo de agroecosistemas.",
+      "descriptionEn": "Programme \"Asistencia Técnica Pecuaria\" under the Ministry of Agricultural Development. Agricultural/livestock line associated with productive promotion, health, seeds, research or infrastructure; its contribution to biodiversity depends on sustainable practices, resilience and agroecosystem management.",
+      "type": "environmental",
+      "institution": "Ministerio De Desarrollo Agropecuario",
+      "institutionEn": "Ministry of Agricultural Development"
+    },
+    {
+      "code": "BER_PA_09_03",
+      "name": "Sanidad Agropecuaria",
+      "nameEn": "Sanidad Agropecuaria",
+      "description": "Programme \"Sanidad Agropecuaria\" under the MINISTERIO DE DESARROLLO AGROPECUARIO. Agricultural/livestock line associated with productive promotion, health, seeds, research or infrastructure; its contribution to biodiversity depends on sustainable practices, resilience and agroecosystem management. Executed expenditure 2015–2024: 138.9M PAB total (avg 13.9M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Sanidad Agropecuaria» en Ministerio De Desarrollo Agropecuario. Línea agropecuaria asociada a fomento productivo, sanidad, semillas, investigación o infraestructura; su contribución a biodiversidad depende de prácticas sostenibles, resiliencia y manejo de agroecosistemas.",
+      "descriptionEn": "Programme \"Sanidad Agropecuaria\" under the Ministry of Agricultural Development. Agricultural/livestock line associated with productive promotion, health, seeds, research or infrastructure; its contribution to biodiversity depends on sustainable practices, resilience and agroecosystem management.",
+      "type": "environmental",
+      "institution": "Ministerio De Desarrollo Agropecuario",
+      "institutionEn": "Ministry of Agricultural Development"
+    },
+    {
+      "code": "BER_PA_10_01",
+      "name": "Fort Gest. Eco. y Admón. Finan.",
+      "nameEn": "Fort Gest. Eco. y Admón. Finan.",
+      "description": "Programme \"Fort Gest. Eco. y Admón. Finan.\" under the MINISTERIO DE ECONOMÍA Y FINANZAS. Budget line or programmatic grouping of the Ministerio de Economía y Finanzas included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 7.8M PAB total (avg 0.8M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Fort Gest. Eco. y Admón. Finan.» en Ministerio De Economía Y Finanzas. Línea presupuestaria o agrupación programática de Ministerio de Economía y Finanzas incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Fort Gest. Eco. y Admón. Finan.\" under the Ministry of Economy and Finance. Budget line or programmatic grouping of the Ministerio de Economía y Finanzas included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Economía Y Finanzas",
+      "institutionEn": "Ministry of Economy and Finance"
+    },
+    {
+      "code": "BER_PA_10_02",
+      "name": "Transferencias Varias",
+      "nameEn": "Transferencias Varias",
+      "description": "Programme \"Transferencias Varias\" under the MINISTERIO DE ECONOMÍA Y FINANZAS. Budget line or programmatic grouping of the Ministerio de Economía y Finanzas included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 18.6M PAB total (avg 1.9M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Transferencias Varias» en Ministerio De Economía Y Finanzas. Línea presupuestaria o agrupación programática de Ministerio de Economía y Finanzas incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Transferencias Varias\" under the Ministry of Economy and Finance. Budget line or programmatic grouping of the Ministerio de Economía y Finanzas included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Economía Y Finanzas",
+      "institutionEn": "Ministry of Economy and Finance"
+    },
+    {
+      "code": "BER_PA_11_01",
+      "name": "Transferencias Varias",
+      "nameEn": "Transferencias Varias",
+      "description": "Programme \"Transferencias Varias\" under the MINISTERIO DE RELACIONES EXTERIORES. Budget line or programmatic grouping of the Ministerio de Relaciones Exteriores included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 1.3M PAB total (avg 0.1M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Transferencias Varias» en Ministerio De Relaciones Exteriores. Línea presupuestaria o agrupación programática de Ministerio de Relaciones Exteriores incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Transferencias Varias\" under the Ministry of Foreign Relations. Budget line or programmatic grouping of the Ministerio de Relaciones Exteriores included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Relaciones Exteriores",
+      "institutionEn": "Ministry of Foreign Relations"
+    },
+    {
+      "code": "BER_PA_12_01",
+      "name": "Otros Proyectos de Inversión",
+      "nameEn": "Otros Proyectos de Inversión",
+      "description": "Programme \"Otros Proyectos de Inversión\" under the MINISTERIO DE SALUD. Budget line or programmatic grouping of the Ministerio de Salud included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 0.0M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Otros Proyectos de Inversión» en Ministerio De Salud. Línea presupuestaria o agrupación programática de Ministerio de Salud incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Otros Proyectos de Inversión\" under the Ministry of Health. Budget line or programmatic grouping of the Ministerio de Salud included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_12_02",
+      "name": "Multifase de transformación del sector  salud",
+      "nameEn": "Multifase de transformación del sector  salud",
+      "description": "Programme \"Multifase de transformación del sector  salud\" under the MINISTERIO DE SALUD. Line linked to surveillance, research or sanitary control; its relationship with biodiversity is indirect when it addresses health-environment interactions, vectors, pollution or ecological conditions. Executed expenditure 2015–2024: 0.0M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Multifase de transformación del sector  salud» en Ministerio De Salud. Línea vinculada a vigilancia, investigación o control sanitario; su relación con biodiversidad es indirecta cuando aborda interacciones salud-ambiente, vectores, contaminación o condiciones ecológicas.",
+      "descriptionEn": "Programme \"Multifase de transformación del sector  salud\" under the Ministry of Health. Line linked to surveillance, research or sanitary control; its relationship with biodiversity is indirect when it addresses health-environment interactions, vectors, pollution or ecological conditions.",
+      "type": "environmental",
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_12_03",
+      "name": "Investigación Contaminantes Organicos y Mercurio",
+      "nameEn": "Investigación Contaminantes Organicos y Mercurio",
+      "description": "Programme \"Investigación Contaminantes Organicos y Mercurio\" under the MINISTERIO DE SALUD. Research, innovation, laboratory or technical knowledge generation line, relevant when it provides evidence for public health, agroecosystems, natural resources or biodiversity. Executed expenditure 2015–2024: 0.0M PAB total (avg 0.0M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Investigación Contaminantes Organicos y Mercurio» en Ministerio De Salud. Línea de investigación, innovación, laboratorio o generación de conocimiento técnico, relevante cuando aporta evidencia para salud pública, agroecosistemas, recursos naturales o biodiversidad.",
+      "descriptionEn": "Programme \"Investigación Contaminantes Organicos y Mercurio\" under the Ministry of Health. Research, innovation, laboratory or technical knowledge generation line, relevant when it provides evidence for public health, agroecosystems, natural resources or biodiversity.",
+      "type": "environmental",
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_12_04",
+      "name": "Salud Ambiental",
+      "nameEn": "Salud Ambiental",
+      "description": "Programme \"Salud Ambiental\" under the MINISTERIO DE SALUD. Line linked to surveillance, research or sanitary control; its relationship with biodiversity is indirect when it addresses health-environment interactions, vectors, pollution or ecological conditions. Executed expenditure 2015–2024: 0.8M PAB total (avg 0.1M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Salud Ambiental» en Ministerio De Salud. Línea vinculada a vigilancia, investigación o control sanitario; su relación con biodiversidad es indirecta cuando aborda interacciones salud-ambiente, vectores, contaminación o condiciones ecológicas.",
+      "descriptionEn": "Programme \"Salud Ambiental\" under the Ministry of Health. Line linked to surveillance, research or sanitary control; its relationship with biodiversity is indirect when it addresses health-environment interactions, vectors, pollution or ecological conditions.",
+      "type": "environmental",
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_14_01",
+      "name": "Desarrollo Integral - Áreas Prioritarias",
+      "nameEn": "Desarrollo Integral - Áreas Prioritarias",
+      "description": "Programme \"Desarrollo Integral - Áreas Prioritarias\" under the PRESIDENCIA DE LA REPÚBLICA. Budget line or programmatic grouping of the Presidencia de la República included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 1.5M PAB total (avg 0.2M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Desarrollo Integral - Áreas Prioritarias» en Presidencia De La República. Línea presupuestaria o agrupación programática de Presidencia de la República incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Desarrollo Integral - Áreas Prioritarias\" under the Office of the President. Budget line or programmatic grouping of the Presidencia de la República included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Presidencia De La República",
+      "institutionEn": "Office of the President"
+    },
+    {
+      "code": "BER_PA_14_02",
+      "name": "Desarrollo Integral Áreas Prioritarias",
+      "nameEn": "Desarrollo Integral Áreas Prioritarias",
+      "description": "Programme \"Desarrollo Integral Áreas Prioritarias\" under the PRESIDENCIA DE LA REPÚBLICA. Budget line or programmatic grouping of the Presidencia de la República included for its direct or indirect contribution to biodiversity according to the BIOFIN classification. Executed expenditure 2015–2024: 12.5M PAB total (avg 1.3M/year). Description sourced from Tablas_adicionales descriptive layer (LLM-generated, Panama BIOFIN team preferred).",
+      "descriptionEs": "Programa «Desarrollo Integral Áreas Prioritarias» en Presidencia De La República. Línea presupuestaria o agrupación programática de Presidencia de la República incluida por su contribución directa o indirecta a biodiversidad según la clasificación BIOFIN.",
+      "descriptionEn": "Programme \"Desarrollo Integral Áreas Prioritarias\" under the Office of the President. Budget line or programmatic grouping of the Presidencia de la República included for its direct or indirect contribution to biodiversity according to the BIOFIN classification.",
+      "type": "environmental",
+      "institution": "Presidencia De La República",
+      "institutionEn": "Office of the President"
+    }
+  ],
+  "expenditure": [
+    {
+      "code": "BER_PA_01_01",
+      "name": "Rehabil. y Mantenim. Aeroportuario",
+      "nameEn": "Rehabil. y Mantenim. Aeroportuario",
+      "values": {
+        "2015": 0.138,
+        "2016": 0.3028,
+        "2017": 0.2483,
+        "2018": 0.2816,
+        "2019": 0.4015,
+        "2020": 0.4398,
+        "2021": 0.432,
+        "2022": 0.6502,
+        "2023": 0.8694,
+        "2024": 0.9066
+      },
+      "institution": "Autoridad Aeronáutica Civil",
+      "institutionEn": "Civil Aviation Authority"
+    },
+    {
+      "code": "BER_PA_02_01",
+      "name": "Admón. de los Recursos Acuáticos",
+      "nameEn": "Admón. de los Recursos Acuáticos",
+      "values": {
+        "2015": 3.1057,
+        "2016": 3.9073,
+        "2017": 3.7605,
+        "2018": 4.2067,
+        "2019": 3.6279,
+        "2020": 3.1541,
+        "2021": 3.725,
+        "2022": 4.1292,
+        "2023": 5.9899,
+        "2024": 4.6059
+      },
+      "institution": "Autoridad De Los Recursos Acuáticos De Panamá",
+      "institutionEn": "Aquatic Resources Authority of Panama"
+    },
+    {
+      "code": "BER_PA_02_02",
+      "name": "Desarr. y Conserv. Rec. Acuáticos",
+      "nameEn": "Desarr. y Conserv. Rec. Acuáticos",
+      "values": {
+        "2015": 3.9179,
+        "2016": 4.1153,
+        "2017": 4.6808,
+        "2018": 3.5521,
+        "2019": 3.4365,
+        "2020": 3.8491,
+        "2021": 4.1394,
+        "2022": 4.3716,
+        "2023": 4.5486,
+        "2024": 4.1607
+      },
+      "institution": "Autoridad De Los Recursos Acuáticos De Panamá",
+      "institutionEn": "Aquatic Resources Authority of Panama"
+    },
+    {
+      "code": "BER_PA_02_03",
+      "name": "Invest. y Desar. Recursos Acuáticos",
+      "nameEn": "Invest. y Desar. Recursos Acuáticos",
+      "values": {
+        "2015": 0.3137,
+        "2016": 1.1776,
+        "2017": 1.1173,
+        "2018": 1.4164,
+        "2019": 1.2996,
+        "2020": 0.4724,
+        "2021": 0.5507,
+        "2022": 4.4175,
+        "2023": 5.7812,
+        "2024": 0.5652
+      },
+      "institution": "Autoridad De Los Recursos Acuáticos De Panamá",
+      "institutionEn": "Aquatic Resources Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_01",
+      "name": "Construcción de Infra. Turística",
+      "nameEn": "Construcción de Infra. Turística",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_02",
+      "name": "Centros Culturales y de Exhibiciones",
+      "nameEn": "Centros Culturales y de Exhibiciones",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_03",
+      "name": "Desarrollo del Ecoturismo en los Lagos de Panamá Norte",
+      "nameEn": "Desarrollo del Ecoturismo en los Lagos de Panamá Norte",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_04",
+      "name": "Integracion de las Ciudades  V T",
+      "nameEn": "Integracion de las Ciudades  V T",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.2674,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_05",
+      "name": "Integración de las Ciudades Voc. T.",
+      "nameEn": "Integración de las Ciudades Voc. T.",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.3383,
+        "2024": 0.0458
+      },
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_03_06",
+      "name": "Promoción Turística",
+      "nameEn": "Promoción Turística",
+      "values": {
+        "2015": 0.3779,
+        "2016": 2.9661,
+        "2017": 2.3651,
+        "2018": 1.6578,
+        "2019": 1.8153,
+        "2020": 0.3535,
+        "2021": 0.3276,
+        "2022": 0.719,
+        "2023": 0.7366,
+        "2024": 0.4808
+      },
+      "institution": "Autoridad De Turismo De Panamá",
+      "institutionEn": "Tourism Authority of Panama"
+    },
+    {
+      "code": "BER_PA_04_01",
+      "name": "Programa Nal. de Titulación de Tierra",
+      "nameEn": "Programa Nal. de Titulación de Tierra",
+      "values": {
+        "2015": 0.3304,
+        "2016": 0.0027,
+        "2017": 0.0157,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Autoridad Nacional De Administración De Tierras",
+      "institutionEn": "National Land Administration Authority"
+    },
+    {
+      "code": "BER_PA_05_01",
+      "name": "Const. y Remodelac. de Instalaciones",
+      "nameEn": "Const. y Remodelac. de Instalaciones",
+      "values": {
+        "2015": 0.7238,
+        "2016": 1.1015,
+        "2017": 1.4821,
+        "2018": 0.7589,
+        "2019": 1.7435,
+        "2020": 1.0142,
+        "2021": 1.4515,
+        "2022": 13.3781,
+        "2023": 13.5267,
+        "2024": 4.7414
+      },
+      "institution": "Instituto Conmemorativo Gorgas De Estudios De La Salud",
+      "institutionEn": "Gorgas Memorial Institute for Health Studies"
+    },
+    {
+      "code": "BER_PA_06_01",
+      "name": "Apoyo Invest. e innovación Agropecuaria",
+      "nameEn": "Apoyo Invest. e innovación Agropecuaria",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.1262,
+        "2022": 0.1782,
+        "2023": 1.7786,
+        "2024": 1.2554
+      },
+      "institution": "Instituto De Innovación Agropecuaria",
+      "institutionEn": "Agricultural Innovation Institute"
+    },
+    {
+      "code": "BER_PA_06_02",
+      "name": "Investigaciones  Agropecuarias",
+      "nameEn": "Investigaciones  Agropecuarias",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.6245,
+        "2022": 0.4993,
+        "2023": 0.499,
+        "2024": 0.5149
+      },
+      "institution": "Instituto De Innovación Agropecuaria",
+      "institutionEn": "Agricultural Innovation Institute"
+    },
+    {
+      "code": "BER_PA_07_01",
+      "name": "Áreas Protegidas y Biodiversidad",
+      "nameEn": "Áreas Protegidas y Biodiversidad",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 11.4965,
+        "2018": 10.625,
+        "2019": 13.089,
+        "2020": 13.2956,
+        "2021": 11.3282,
+        "2022": 10.3299,
+        "2023": 11.9291,
+        "2024": 16.3888
+      },
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_02",
+      "name": "Gestión  Ambiental",
+      "nameEn": "Gestión  Ambiental",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 4.7759,
+        "2018": 6.4716,
+        "2019": 5.2837,
+        "2020": 3.1939,
+        "2021": 1.9473,
+        "2022": 1.4353,
+        "2023": 4.2265,
+        "2024": 2.9326
+      },
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_03",
+      "name": "Gestión Ambiental",
+      "nameEn": "Gestión Ambiental",
+      "values": {
+        "2015": 0.0,
+        "2016": 3.7141,
+        "2017": 5.3709,
+        "2018": 4.9756,
+        "2019": 4.9984,
+        "2020": 5.2791,
+        "2021": 5.0057,
+        "2022": 5.0078,
+        "2023": 5.2006,
+        "2024": 5.4965
+      },
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_04",
+      "name": "Gestión Integrada  de Cuencas  Hidrog.",
+      "nameEn": "Gestión Integrada  de Cuencas  Hidrog.",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 10.2052,
+        "2018": 12.8466,
+        "2019": 12.4495,
+        "2020": 3.677,
+        "2021": 2.0395,
+        "2022": 1.1799,
+        "2023": 3.4686,
+        "2024": 0.9927
+      },
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_05",
+      "name": "Gestión Integrada de Cuencas Hidrog.",
+      "nameEn": "Gestión Integrada de Cuencas Hidrog.",
+      "values": {
+        "2015": 0.0,
+        "2016": 3.1259,
+        "2017": 4.9275,
+        "2018": 4.7843,
+        "2019": 5.3524,
+        "2020": 5.5011,
+        "2021": 5.5654,
+        "2022": 5.3978,
+        "2023": 5.6994,
+        "2024": 5.9934
+      },
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_07_OVERHEAD",
+      "name": "Apoyo institucional — Ministerio De Ambiente",
+      "nameEn": "Institutional support — Ministry of Environment",
+      "values": {
+        "2015": 0.0,
+        "2016": 17.2943,
+        "2017": 14.8331,
+        "2018": 13.7077,
+        "2019": 14.8638,
+        "2020": 12.3583,
+        "2021": 14.368,
+        "2022": 17.0567,
+        "2023": 14.3291,
+        "2024": 15.8749
+      },
+      "institution": "Ministerio De Ambiente",
+      "institutionEn": "Ministry of Environment"
+    },
+    {
+      "code": "BER_PA_08_01",
+      "name": "Transferencias",
+      "nameEn": "Transferencias",
+      "values": {
+        "2015": 0.01,
+        "2016": 0.0106,
+        "2017": 0.0109,
+        "2018": 0.0116,
+        "2019": 0.0109,
+        "2020": 0.0,
+        "2021": 0.012,
+        "2022": 0.0116,
+        "2023": 0.016,
+        "2024": 0.0128
+      },
+      "institution": "Ministerio De Comercio E Industrias",
+      "institutionEn": "Ministry of Commerce and Industries"
+    },
+    {
+      "code": "BER_PA_09_01",
+      "name": "Asistencia Técnica Agrícola",
+      "nameEn": "Asistencia Técnica Agrícola",
+      "values": {
+        "2015": 1.3439,
+        "2016": 1.3783,
+        "2017": 1.0867,
+        "2018": 1.3621,
+        "2019": 1.439,
+        "2020": 1.4248,
+        "2021": 1.5961,
+        "2022": 1.5486,
+        "2023": 1.5417,
+        "2024": 1.4396
+      },
+      "institution": "Ministerio De Desarrollo Agropecuario",
+      "institutionEn": "Ministry of Agricultural Development"
+    },
+    {
+      "code": "BER_PA_09_02",
+      "name": "Asistencia Técnica Pecuaria",
+      "nameEn": "Asistencia Técnica Pecuaria",
+      "values": {
+        "2015": 2.966,
+        "2016": 3.3792,
+        "2017": 4.3258,
+        "2018": 6.1652,
+        "2019": 7.5427,
+        "2020": 7.2437,
+        "2021": 7.6134,
+        "2022": 6.6637,
+        "2023": 5.908,
+        "2024": 4.6132
+      },
+      "institution": "Ministerio De Desarrollo Agropecuario",
+      "institutionEn": "Ministry of Agricultural Development"
+    },
+    {
+      "code": "BER_PA_09_03",
+      "name": "Sanidad Agropecuaria",
+      "nameEn": "Sanidad Agropecuaria",
+      "values": {
+        "2015": 17.6347,
+        "2016": 16.7608,
+        "2017": 14.3843,
+        "2018": 13.0016,
+        "2019": 5.3462,
+        "2020": 11.7868,
+        "2021": 14.7375,
+        "2022": 14.8277,
+        "2023": 15.3438,
+        "2024": 15.0301
+      },
+      "institution": "Ministerio De Desarrollo Agropecuario",
+      "institutionEn": "Ministry of Agricultural Development"
+    },
+    {
+      "code": "BER_PA_10_01",
+      "name": "Fort Gest. Eco. y Admón. Finan.",
+      "nameEn": "Fort Gest. Eco. y Admón. Finan.",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 7.843
+      },
+      "institution": "Ministerio De Economía Y Finanzas",
+      "institutionEn": "Ministry of Economy and Finance"
+    },
+    {
+      "code": "BER_PA_10_02",
+      "name": "Transferencias Varias",
+      "nameEn": "Transferencias Varias",
+      "values": {
+        "2015": 0.0,
+        "2016": 10.28,
+        "2017": 8.29,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Ministerio De Economía Y Finanzas",
+      "institutionEn": "Ministry of Economy and Finance"
+    },
+    {
+      "code": "BER_PA_11_01",
+      "name": "Transferencias Varias",
+      "nameEn": "Transferencias Varias",
+      "values": {
+        "2015": 0.061,
+        "2016": 0.061,
+        "2017": 0.146,
+        "2018": 0.146,
+        "2019": 0.146,
+        "2020": 0.146,
+        "2021": 0.146,
+        "2022": 0.146,
+        "2023": 0.146,
+        "2024": 0.146
+      },
+      "institution": "Ministerio De Relaciones Exteriores",
+      "institutionEn": "Ministry of Foreign Relations"
+    },
+    {
+      "code": "BER_PA_12_01",
+      "name": "Otros Proyectos de Inversión",
+      "nameEn": "Otros Proyectos de Inversión",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_12_02",
+      "name": "Multifase de transformación del sector  salud",
+      "nameEn": "Multifase de transformación del sector  salud",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_12_03",
+      "name": "Investigación Contaminantes Organicos y Mercurio",
+      "nameEn": "Investigación Contaminantes Organicos y Mercurio",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_12_04",
+      "name": "Salud Ambiental",
+      "nameEn": "Salud Ambiental",
+      "values": {
+        "2015": 0.0,
+        "2016": 0.2315,
+        "2017": 0.1834,
+        "2018": 0.3714,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Ministerio De Salud",
+      "institutionEn": "Ministry of Health"
+    },
+    {
+      "code": "BER_PA_14_01",
+      "name": "Desarrollo Integral - Áreas Prioritarias",
+      "nameEn": "Desarrollo Integral - Áreas Prioritarias",
+      "values": {
+        "2015": 0.4244,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.5982,
+        "2020": 0.4799,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Presidencia De La República",
+      "institutionEn": "Office of the President"
+    },
+    {
+      "code": "BER_PA_14_02",
+      "name": "Desarrollo Integral Áreas Prioritarias",
+      "nameEn": "Desarrollo Integral Áreas Prioritarias",
+      "values": {
+        "2015": 6.5103,
+        "2016": 6.0186,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0
+      },
+      "institution": "Presidencia De La República",
+      "institutionEn": "Office of the President"
+    }
+  ],
+  "currency": "PAB",
+  "unit": "million",
+  "period": {
+    "start": 2015,
+    "end": 2024
+  }
+}

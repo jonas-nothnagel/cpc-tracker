@@ -59,15 +59,19 @@ function totalExpenditure(series: BerExpenditureSeries): number {
 }
 
 /**
- * Formats a value assumed to be in billions of the given currency.
- * Scales up to trillions (T) or down to millions (M) as appropriate.
- * The currency word is the only unit in the output — we avoid concatenating
- * the caller's scale label (e.g. "billion MNT") with our own scale suffix,
- * which previously produced strings like "100M billion MNT".
+ * Formats a money value in the given unit and currency. Scales up to trillions
+ * (T) or down to millions (M) as appropriate. The currency word is the only
+ * unit in the output — we avoid concatenating the caller's scale label (e.g.
+ * "billion MNT") with our own scale suffix, which previously produced strings
+ * like "100M billion MNT".
+ *
+ * unit accepts "billion" (Mongolia BER) or "million" (Panama BER). The value
+ * is normalized internally to billions before the T/B/M scale logic runs.
  */
-function formatMoney(valueInBillions: number, currency: string): string {
+export function formatMoney(value: number, unit: string, currency: string): string {
   const cur = currency.trim();
   const suffix = cur ? ` ${cur}` : "";
+  const valueInBillions = unit === "million" ? value / 1000 : value;
   if (valueInBillions >= 1000) return `${(valueInBillions / 1000).toFixed(1)}T${suffix}`;
   if (valueInBillions >= 1) return `${valueInBillions.toFixed(1)}B${suffix}`;
   if (valueInBillions >= 0.001) return `${(valueInBillions * 1000).toFixed(0)}M${suffix}`;
@@ -180,9 +184,10 @@ export function FinancingCoherence({
       ? (stats.totalExpenditure / actualTotalExpenditure) * 100
       : 0;
 
+  const moneyUnit = berData.unit;
   const moneyFormatter = React.useCallback(
-    (v: number) => formatMoney(v, moneyCurrency),
-    [moneyCurrency],
+    (v: number) => formatMoney(v, moneyUnit, moneyCurrency),
+    [moneyUnit, moneyCurrency],
   );
 
   const infoBox = (
@@ -285,7 +290,7 @@ export function FinancingCoherence({
               period: periodLabel,
             })}
           </li>
-          <li>{t("scopeNote.reconciliation", { count: 28 })}</li>
+          <li>{t("scopeNote.reconciliation", { count: berData.programs.length })}</li>
         </ul>
       </div>
 

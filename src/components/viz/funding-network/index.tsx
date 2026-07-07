@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { pickBerName } from "@/lib/financing-coherence";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { ALIGNMENT_COLORS, getDocColor, getDocLabel } from "@/lib/utils";
@@ -64,6 +65,7 @@ export function FundingNetwork({
   countryConfig,
 }: FundingNetworkProps) {
   const t = useTranslations("viz.fundingNetwork");
+  const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [selectedNode, setSelectedNode] = useState<NetworkNode | null>(null);
@@ -85,6 +87,7 @@ export function FundingNetwork({
     budgetPseudoTargets,
     berData,
     targetAlignment,
+    locale,
   });
 
   const { tick } = useForceSimulation({
@@ -212,7 +215,7 @@ export function FundingNetwork({
                       >
                         <div className="flex-1">
                           <span className="font-medium text-[var(--undp-black)]">
-                            {prog?.name ?? ps.code}
+                            {prog ? pickBerName(prog, locale) : ps.code}
                           </span>
                           <span className="text-[var(--undp-gray)] ml-1">
                             ({ps.code})
