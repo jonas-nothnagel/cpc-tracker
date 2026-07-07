@@ -1,17 +1,27 @@
 import { describe, it, expect } from "vitest";
 import { join } from "path";
 import { derivePaths } from "@/app/api/dashboard/route";
+import { listAvailableModels } from "@/lib/dashboard-data";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
 const PYTHON_DATA = join(PROJECT_ROOT, "python", "data");
 
+/** Countries with per-model subdirs on disk resolve to {country}/{model};
+ *  flat-layout countries resolve to the country dir itself. */
+function expectedOutputDir(country: string): string {
+  const models = listAvailableModels(country);
+  return models.length > 0
+    ? join(PYTHON_OUTPUT, country, models[0])
+    : join(PYTHON_OUTPUT, country);
+}
+
 describe("derivePaths — country path", () => {
-  it("resolves Mongolia to python/output/mongolia/ and mongolia-targets.json", () => {
+  it("resolves Mongolia to its output dir and mongolia-targets.json", () => {
     const result = derivePaths(null, "mongolia");
     expect(result.kind).toBe("country");
     if (result.kind !== "country") return;
-    expect(result.paths.outputDir).toBe(join(PYTHON_OUTPUT, "mongolia"));
+    expect(result.paths.outputDir).toBe(expectedOutputDir("mongolia"));
     expect(result.paths.dataDir).toBe(PYTHON_DATA);
     expect(result.paths.targetsFile).toBe("mongolia-targets.json");
     expect(result.paths.iso3).toBe("mng");
@@ -32,7 +42,7 @@ describe("derivePaths — country path", () => {
     const result = derivePaths(null, "MONGOLIA");
     expect(result.kind).toBe("country");
     if (result.kind !== "country") return;
-    expect(result.paths.outputDir).toBe(join(PYTHON_OUTPUT, "mongolia"));
+    expect(result.paths.outputDir).toBe(expectedOutputDir("mongolia"));
   });
 
   it("rejects path-traversal attempts at the validation step", () => {
