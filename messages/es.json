@@ -157,9 +157,8 @@
       "fullExplorer": "Explorador completo de coherencia"
     },
     "storylineCard": {
-      "boxAligned": "{count, plural, one {1 par alineado} other {# pares alineados}}",
-      "boxMisaligned": "{count, plural, one {1 par} other {# pares}} con posible desalineación",
-      "boxMoreDocs": "+{count}"
+      "boxAligned": "{count, plural, one {1 par alineado} other {# pares alineados}} entre los documentos que conecta este tema",
+      "boxMisaligned": "{count, plural, one {1 par} other {# pares}} con posible desalineación agrupados bajo este tema"
     },
     "primerCard": {
       "alignedRelation": "FUERTEMENTE ALINEADO CON",
@@ -553,15 +552,11 @@
       "reach": "alcanzan",
       "strongAlignment": "alineación fuerte",
       "potentialMisalignment": "posible desalineación",
-      "anchoredBy": ", ancladas en el tema",
-      "mostProminentlyAround": ", de forma más prominente en torno al tema",
       "pairsShow": "{count, plural, one {par muestra} other {pares muestran}}",
-      "pairsParen": "pares",
       "alignedDefinition": "Dos metas que tiran en la misma dirección: una respalda o impulsa a la otra. Un par real evaluado de este conjunto:",
       "flaggedDefinition": "Dos metas que la IA identificó como posiblemente en tensión entre sí: un aviso para revisión humana, no un hallazgo definitivo. Un par real evaluado:",
       "popoverAriaLabel": "Mostrar un ejemplo de {term}",
       "clickToOpenPair": "Pulse el término para abrir este par",
-      "storylineOpenTitle": "Abrir el tema «{name}»",
       "howPipelineBuilt": "Cómo la canalización construyó esta vista",
       "onePairFromEnd": "Un par evaluado de cada extremo del espectro.",
       "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",

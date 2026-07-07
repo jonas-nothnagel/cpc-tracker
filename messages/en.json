@@ -157,9 +157,8 @@
       "fullExplorer": "Full coherence explorer"
     },
     "storylineCard": {
-      "boxAligned": "{count, plural, one {1 aligned pair} other {# aligned pairs}}",
-      "boxMisaligned": "{count, plural, one {1 pair} other {# pairs}} showing potential misalignment",
-      "boxMoreDocs": "+{count}"
+      "boxAligned": "{count, plural, one {1 aligned pair} other {# aligned pairs}} across the documents this theme connects",
+      "boxMisaligned": "{count, plural, one {1 pair} other {# pairs}} showing potential misalignment grouped under this theme"
     },
     "primerCard": {
       "alignedRelation": "STRONGLY ALIGNED WITH",
@@ -553,15 +552,11 @@
       "reach": "reach",
       "strongAlignment": "strong alignment",
       "potentialMisalignment": "potential misalignment",
-      "anchoredBy": ", anchored by the theme",
-      "mostProminentlyAround": ", most prominently around the theme",
       "pairsShow": "{count, plural, one {pair shows} other {pairs show}}",
-      "pairsParen": "pairs",
       "alignedDefinition": "Two targets that pull in the same direction: one supports or advances the other. A real scored pair from this set:",
       "flaggedDefinition": "Two targets the AI identified as possibly working against each other: a prompt for human review, not a settled finding. A real scored pair:",
       "popoverAriaLabel": "Show an example of {term}",
       "clickToOpenPair": "Click the term to open this pair",
-      "storylineOpenTitle": "Open the “{name}” theme",
       "howPipelineBuilt": "How the pipeline built this view",
       "onePairFromEnd": "One scored pair from each end of the spectrum.",
       "notEnoughPairs": "Not enough scored pairs to show an underlying example.",

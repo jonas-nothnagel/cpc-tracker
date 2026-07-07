@@ -9,18 +9,19 @@
  * different formats (stats strip, AI-synthesis paragraph, storyline
  * cards). For non-technical policymakers that was overstimulating.
  * Everything now collapses into a single synthesis sentence in the
- * SlideFrame body, with the two leading theme names embedded as
- * inline-clickable buttons.
+ * SlideFrame body.
  *
- * Per the theme-synthesis rework (July 2026, iterated on first
+ * Per the theme-synthesis rework (July 2026, iterated on stakeholder
  * feedback): themes render as two side-by-side columns — top coherent
  * themes left, top potentially misaligned themes right — of compact
- * boxes (name, document-composition strip in wheel-matching colors,
- * live count), capped at three per column with an inline expander, so
- * the reader gets the contrast and prioritization instead of 5-7
- * equal text blocks. Hovering a box fades the adjacent wheel to that
- * theme's documents and its polarity's ribbons. Every count shown
- * here is live-computed from the visible alignment
+ * boxes (name, clamped description, live count worded to say what it
+ * counts), capped at three per column with an inline expander, so the
+ * reader gets the contrast and prioritization instead of 5-7 equal
+ * text blocks. The synthesis sentence no longer embeds the leading
+ * theme names (the boxes directly below carry them). Hovering a box
+ * fades the adjacent wheel to that theme's documents and its
+ * polarity's ribbons, behind a short hover-intent delay. Every count
+ * shown here is live-computed from the visible alignment
  * (computeStorylineLiveStats); the persisted pair_count is never
  * displayed. Themes with no live pairs under the current document
  * selection drop out with a quiet note.
@@ -108,7 +109,6 @@ export function DirectionSection({
     () => computeStorylineLiveStats(storylines, alignment, targets),
     [storylines, alignment, targets],
   );
-  const liveCountOf = (s: CorpusStoryline) => liveStats.get(s)?.liveCount ?? 0;
   // Themes with no live pairs under the current selection drop out.
   const visibleStorylines = useMemo(
     () => storylines.filter((s) => (liveStats.get(s)?.liveCount ?? 0) > 0),
@@ -116,23 +116,14 @@ export function DirectionSection({
   );
   const hiddenThemeCount = storylines.length - visibleStorylines.length;
 
-  const previewReinforce =
-    rankStorylines(visibleStorylines, "reinforcement", liveCountOf)[0] ?? null;
-  const previewFriction =
-    rankStorylines(visibleStorylines, "friction", liveCountOf)[0] ?? null;
-
   const synthesis = (
     <SynthesisSentence
       countryName={countryName}
       documentCount={documentCount}
       verdict={verdict}
       concentration={concentration}
-      reinforce={previewReinforce}
-      friction={previewFriction}
-      liveCountOf={liveCountOf}
       primer={primer}
       countryConfig={countryConfig}
-      onOpenStoryline={onOpenStoryline}
       onOpenPair={onOpenPair}
       onHighlightPair={onHighlightPair}
     />
@@ -150,7 +141,6 @@ export function DirectionSection({
             visibleStorylines={visibleStorylines}
             hiddenThemeCount={hiddenThemeCount}
             liveStats={liveStats}
-            countryConfig={countryConfig}
             onOpenStoryline={onOpenStoryline}
             onSpotlightTheme={onSpotlightTheme}
           />
@@ -180,14 +170,12 @@ function RecurringThemesBlock({
   visibleStorylines,
   hiddenThemeCount,
   liveStats,
-  countryConfig,
   onOpenStoryline,
   onSpotlightTheme,
 }: {
   visibleStorylines: CorpusStoryline[];
   hiddenThemeCount: number;
   liveStats: Map<CorpusStoryline, StorylineLiveStats>;
-  countryConfig: CountryConfig | null;
   onOpenStoryline: (s: CorpusStoryline) => void;
   onSpotlightTheme?: (spotlight: ThemeSpotlight | null) => void;
 }) {
@@ -202,7 +190,6 @@ function RecurringThemesBlock({
           tone="aligns"
           storylines={aligns}
           liveStats={liveStats}
-          countryConfig={countryConfig}
           onOpenStoryline={onOpenStoryline}
           onSpotlightTheme={onSpotlightTheme}
         />
@@ -210,7 +197,6 @@ function RecurringThemesBlock({
           tone="review"
           storylines={review}
           liveStats={liveStats}
-          countryConfig={countryConfig}
           onOpenStoryline={onOpenStoryline}
           onSpotlightTheme={onSpotlightTheme}
         />
@@ -228,14 +214,12 @@ function ThemeColumn({
   tone,
   storylines,
   liveStats,
-  countryConfig,
   onOpenStoryline,
   onSpotlightTheme,
 }: {
   tone: "aligns" | "review";
   storylines: CorpusStoryline[];
   liveStats: Map<CorpusStoryline, StorylineLiveStats>;
-  countryConfig: CountryConfig | null;
   onOpenStoryline: (s: CorpusStoryline) => void;
   onSpotlightTheme?: (spotlight: ThemeSpotlight | null) => void;
 }) {
@@ -280,7 +264,6 @@ function ThemeColumn({
                   stats={
                     liveStats.get(s) ?? { liveCount: 0, docCounts: new Map() }
                   }
-                  countryConfig={countryConfig}
                   onOpen={() => onOpenStoryline(s)}
                   onSpotlight={onSpotlightTheme}
                 />
@@ -338,12 +321,8 @@ function SynthesisSentence({
   documentCount,
   verdict,
   concentration,
-  reinforce,
-  friction,
-  liveCountOf,
   primer,
   countryConfig,
-  onOpenStoryline,
   onOpenPair,
   onHighlightPair,
 }: {
@@ -351,12 +330,8 @@ function SynthesisSentence({
   documentCount: number;
   verdict: HeadlineVerdict;
   concentration: TargetConcentration;
-  reinforce: CorpusStoryline | null;
-  friction: CorpusStoryline | null;
-  liveCountOf: (s: CorpusStoryline) => number;
   primer: PrimerExamples;
   countryConfig: CountryConfig | null;
-  onOpenStoryline: (s: CorpusStoryline) => void;
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
@@ -385,20 +360,6 @@ function SynthesisSentence({
       >
         {t("strongAlignment")}
       </AlignmentTermPopover>
-      {reinforce && (
-        <>
-          {t("anchoredBy")}{" "}
-          <InlineStorylineLink
-            storyline={reinforce}
-            onOpen={() => onOpenStoryline(reinforce)}
-          />
-          {" "}
-          (<span className="tabular-nums">
-            {liveCountOf(reinforce).toLocaleString()}
-          </span>
-          {" "}{t("pairsParen")})
-        </>
-      )}
       .{" "}
       <span className="tabular-nums">
         {verdict.tensionPairs.toLocaleString()}
@@ -414,20 +375,6 @@ function SynthesisSentence({
       >
         {t("potentialMisalignment")}
       </AlignmentTermPopover>
-      {friction && (
-        <>
-          {t("mostProminentlyAround")}{" "}
-          <InlineStorylineLink
-            storyline={friction}
-            onOpen={() => onOpenStoryline(friction)}
-          />
-          {" "}
-          (<span className="tabular-nums">
-            {liveCountOf(friction).toLocaleString()}
-          </span>
-          {" "}{t("pairsParen")})
-        </>
-      )}
       {focusText && <>; {focusText}</>}
       .
     </>
@@ -535,26 +482,6 @@ function AlignmentTermPopover({
           document.body,
         )}
     </span>
-  );
-}
-
-function InlineStorylineLink({
-  storyline,
-  onOpen,
-}: {
-  storyline: CorpusStoryline;
-  onOpen: () => void;
-}) {
-  const t = useTranslations("briefing.direction");
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className="text-[var(--undp-black)] underline underline-offset-2 decoration-1 hover:decoration-2 italic"
-      title={t("storylineOpenTitle", { name: storyline.name })}
-    >
-      {storyline.name}
-    </button>
   );
 }
 

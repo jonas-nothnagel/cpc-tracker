@@ -337,6 +337,11 @@ export function FeedbackControl({
   );
 }
 
+const THUMB_COLORS = {
+  up: "#196127",
+  down: "#dc2626",
+} as const;
+
 function ThumbButton({
   direction,
   active,
@@ -350,6 +355,10 @@ function ThumbButton({
   label: string;
   onClick: () => void;
 }) {
+  // Polarity-coloured circular buttons (green up / terracotta down) so the
+  // feedback affordance is visible at a glance; user testing showed the
+  // gray inline thumbs were being missed.
+  const color = THUMB_COLORS[direction];
   return (
     <button
       type="button"
@@ -357,12 +366,24 @@ function ThumbButton({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className="p-1 text-[var(--undp-gray)] hover:text-[var(--undp-black)] disabled:opacity-50"
-      style={active ? { color: "var(--undp-black)" } : undefined}
+      className="inline-flex h-7 w-7 items-center justify-center rounded-full border transition-colors disabled:opacity-50"
+      style={{
+        color,
+        borderColor: active ? color : `${color}66`,
+        backgroundColor: active ? `${color}1a` : "#ffffff",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = `${color}14`;
+        e.currentTarget.style.borderColor = color;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = active ? `${color}1a` : "#ffffff";
+        e.currentTarget.style.borderColor = active ? color : `${color}66`;
+      }}
     >
       <svg
-        width="14"
-        height="14"
+        width="15"
+        height="15"
         viewBox="0 0 24 24"
         fill={active ? "currentColor" : "none"}
         stroke="currentColor"

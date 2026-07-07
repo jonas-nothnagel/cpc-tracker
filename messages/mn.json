@@ -157,9 +157,8 @@
       "fullExplorer": "Бүрэн уялдаа судлагч"
     },
     "storylineCard": {
-      "boxAligned": "{count, plural, one {1 уялдсан хос} other {# уялдсан хос}}",
-      "boxMisaligned": "болзошгүй үл нийцэлтэй {count, plural, one {1 хос} other {# хос}}",
-      "boxMoreDocs": "+{count}"
+      "boxAligned": "Энэ сэдвийн холбосон баримт бичгүүд дэх {count, plural, one {1 уялдсан хос} other {# уялдсан хос}}",
+      "boxMisaligned": "Энэ сэдэвт багтсан болзошгүй үл нийцэлтэй {count, plural, one {1 хос} other {# хос}}"
     },
     "primerCard": {
       "alignedRelation": "ХҮЧТЭЙ УЯЛДСАН",
@@ -553,15 +552,11 @@
       "reach": "хүрнэ",
       "strongAlignment": "хүчтэй уялдаа",
       "potentialMisalignment": "болзошгүй үл нийцэл",
-      "anchoredBy": ", дараах сэдвээр тогтоосон",
-      "mostProminentlyAround": ", хамгийн тод нь дараах сэдвийн эргэн тойронд",
       "pairsShow": "{count, plural, one {хос харуулна} other {хос харуулна}}",
-      "pairsParen": "хос",
       "alignedDefinition": "Нэг чиглэлд татах хоёр зорилт: нэг нь нөгөөг дэмжих эсвэл ахиулна. Энэ багцаас бодит оноологдсон хос:",
       "flaggedDefinition": "AI-н хоорондоо эсрэгцэж байж болзошгүй гэж тогтоосон хоёр зорилт: эцсийн дүгнэлт биш, хүний нягтлалд зориулсан сэрэмж. Бодит оноологдсон хос:",
       "popoverAriaLabel": "{term}-н жишээг харуулах",
       "clickToOpenPair": "Энэ хосыг нээхийн тулд нэр томьёо дээр дарна уу",
-      "storylineOpenTitle": "“{name}” сэдвийг нээх",
       "howPipelineBuilt": "Пайплайн энэ харагдацыг хэрхэн бүтээсэн",
       "onePairFromEnd": "Спектрийн төгсгөл бүрээс нэг оноологдсон хос.",
       "notEnoughPairs": "Үндсэн жишээ харуулахад хангалттай оноологдсон хос байхгүй.",

@@ -293,6 +293,28 @@ export function ThemeDrawer({
             {theme.description}
           </p>
 
+          {theme.pathway && (
+            <section className="flex gap-2.5 border-l-2 border-[#94a3b8] pl-3">
+              <span
+                aria-hidden="true"
+                className="mt-px text-[15px] leading-none text-[var(--undp-gray)]"
+              >
+                ↳
+              </span>
+              <div>
+                <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
+                  {t("pathwayHeading")}
+                </p>
+                <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
+                  {theme.pathway}
+                </p>
+                <p className="mt-1.5 text-[10px] text-[var(--undp-gray)] leading-relaxed">
+                  {t("pathwayCaveat")}
+                </p>
+              </div>
+            </section>
+          )}
+
           {profile.byDoc.length > 0 && (
             <section>
               <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
@@ -426,20 +448,6 @@ export function ThemeDrawer({
               </div>
             )}
           </section>
-
-          {theme.pathway && (
-            <section className="border-t border-gray-200 pt-4">
-              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
-                {t("pathwayHeading")}
-              </p>
-              <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
-                {theme.pathway}
-              </p>
-              <p className="mt-1.5 text-[10px] text-[var(--undp-gray)] leading-relaxed">
-                {t("pathwayCaveat")}
-              </p>
-            </section>
-          )}
 
           <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
             {t("aiDisclaimer")}
