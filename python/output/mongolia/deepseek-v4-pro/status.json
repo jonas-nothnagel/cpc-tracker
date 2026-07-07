@@ -13,13 +13,12 @@
     "relevantClassifications": 2046,
     "totalPairs": 9678,
     "alignmentLevels": {
-      "flagged": 8215,
-      "low": 1275,
-      "none": 99,
-      "medium": 35,
-      "high": 54
+      "flagged": 9537,
+      "none": 73,
+      "medium": 18,
+      "high": 50
     },
-    "totalContradictions": 8215,
+    "totalContradictions": 9537,
     "measureAlignmentPairs": 6327,
     "measurePseudoTargets": 39,
     "budgetAlignmentPairs": 4284,
