@@ -1,0 +1,218 @@
+{
+  "storylines": [
+    {
+      "name": "Sustainable Land Management Efforts Aligning",
+      "type": "reinforcement",
+      "description": "Multiple targets share compatible priorities around sustainable land management, with potential synergies in areas like reforestation, sustainable agriculture, and ecosystem restoration. Coordinated planning and implementation could enhance their mutual benefits.",
+      "contributing_doc_pairs": [
+        "FSS<->NRVTS",
+        "ILDN<->NBSAP",
+        "NAP<->NRVTS",
+        "NBSAP<->NRVTS"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 503,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NRVTS"
+      ]
+    },
+    {
+      "name": "Agricultural Expansion Competes with Conservation Goals",
+      "type": "friction",
+      "description": "The expansion of agricultural activities could potentially conflict with conservation goals, particularly around protected areas, pollution, and resource competition. Careful land-use planning and zoning could mitigate these risks.",
+      "contributing_doc_pairs": [
+        "FSS<->NBSAP",
+        "FSS<->SECTORAL",
+        "NBSAP<->SECTORAL",
+        "NRVTS<->SECTORAL"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 281,
+      "spans_documents": [
+        "FSS",
+        "NBSAP",
+        "NRVTS",
+        "SECTORAL"
+      ]
+    },
+    {
+      "name": "Climate Resilience and Environmental Conservation Efforts",
+      "type": "reinforcement",
+      "description": "Targets share compatible priorities around climate change adaptation, environmental sustainability, and resilience, with potential synergies in practices that support both agricultural productivity and ecosystem health.",
+      "contributing_doc_pairs": [
+        "NAP<->NBSAP",
+        "NAP<->NDC",
+        "NAP<->NRVTS",
+        "ILDN<->NAP"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 432,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC",
+        "NRVTS"
+      ]
+    },
+    {
+      "name": "Livestock Production Strains Pasture Resources",
+      "type": "friction",
+      "description": "Targets related to increasing meat supply and livestock production could potentially strain pasture resources and compete with goals for sustainable pasture management and reducing pasture overuse.",
+      "contributing_doc_pairs": [
+        "NAP<->NDC",
+        "NBSAP<->NDC",
+        "ILDN<->NDC"
+      ],
+      "confidence": "medium",
+      "unknown_doc_pairs": [],
+      "pair_count": 46,
+      "spans_documents": [
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NDC"
+      ]
+    },
+    {
+      "name": "Coordinated Planning Enhances Synergies",
+      "type": "reinforcement",
+      "description": "Coordinated land-use planning and implementation of sustainable practices could help mitigate potential frictions and enhance synergies between targets, particularly in areas like sustainable forest management and ecosystem conservation.",
+      "contributing_doc_pairs": [
+        "FSS<->ILDN",
+        "ILDN<->NBSAP",
+        "NAP<->NBSAP",
+        "NBSAP<->NRVTS"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 411,
+      "spans_documents": [
+        "FSS",
+        "ILDN",
+        "NAP",
+        "NBSAP",
+        "NRVTS"
+      ]
+    }
+  ],
+  "summary_paragraph": "The country's policy coherence analysis reveals recurring storylines that highlight both synergies and tensions across various targets. Sustainable land management efforts tend to align across multiple documents, with coordinated planning flagged for review to enhance mutual benefits. However, agricultural expansion recurs in friction with conservation goals, pointing to the need for careful land-use planning. Overall, the analysis reinforces the importance of coordinated implementation to mitigate potential conflicts and enhance synergies.",
+  "doc_pair_count": 19,
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Sustainable Land Management Efforts Aligning",
+          "type": "reinforcement",
+          "description": "Multiple targets share compatible priorities around sustainable land management, with potential synergies in areas like reforestation, sustainable agriculture, and ecosystem restoration. Coordinated planning and implementation could enhance their mutual benefits.",
+          "contributing_doc_pairs": [
+            "FSS<->NRVTS",
+            "ILDN<->NBSAP",
+            "NAP<->NRVTS",
+            "NBSAP<->NRVTS"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 503,
+          "spans_documents": [
+            "FSS",
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NRVTS"
+          ]
+        },
+        {
+          "name": "Agricultural Expansion Competes with Conservation Goals",
+          "type": "friction",
+          "description": "The expansion of agricultural activities could potentially conflict with conservation goals, particularly around protected areas, pollution, and resource competition. Careful land-use planning and zoning could mitigate these risks.",
+          "contributing_doc_pairs": [
+            "FSS<->NBSAP",
+            "FSS<->SECTORAL",
+            "NBSAP<->SECTORAL",
+            "NRVTS<->SECTORAL"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 281,
+          "spans_documents": [
+            "FSS",
+            "NBSAP",
+            "NRVTS",
+            "SECTORAL"
+          ]
+        },
+        {
+          "name": "Climate Resilience and Environmental Conservation Efforts",
+          "type": "reinforcement",
+          "description": "Targets share compatible priorities around climate change adaptation, environmental sustainability, and resilience, with potential synergies in practices that support both agricultural productivity and ecosystem health.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "NAP<->NRVTS",
+            "ILDN<->NAP"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 432,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC",
+            "NRVTS"
+          ]
+        },
+        {
+          "name": "Livestock Production Strains Pasture Resources",
+          "type": "friction",
+          "description": "Targets related to increasing meat supply and livestock production could potentially strain pasture resources and compete with goals for sustainable pasture management and reducing pasture overuse.",
+          "contributing_doc_pairs": [
+            "NAP<->NDC",
+            "NBSAP<->NDC",
+            "ILDN<->NDC"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 46,
+          "spans_documents": [
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ]
+        },
+        {
+          "name": "Coordinated Planning Enhances Synergies",
+          "type": "reinforcement",
+          "description": "Coordinated land-use planning and implementation of sustainable practices could help mitigate potential frictions and enhance synergies between targets, particularly in areas like sustainable forest management and ecosystem conservation.",
+          "contributing_doc_pairs": [
+            "FSS<->ILDN",
+            "ILDN<->NBSAP",
+            "NAP<->NBSAP",
+            "NBSAP<->NRVTS"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 411,
+          "spans_documents": [
+            "FSS",
+            "ILDN",
+            "NAP",
+            "NBSAP",
+            "NRVTS"
+          ]
+        }
+      ],
+      "summary_paragraph": "The country's policy coherence analysis reveals recurring storylines that highlight both synergies and tensions across various targets. Sustainable land management efforts tend to align across multiple documents, with coordinated planning flagged for review to enhance mutual benefits. However, agricultural expansion recurs in friction with conservation goals, pointing to the need for careful land-use planning. Overall, the analysis reinforces the importance of coordinated implementation to mitigate potential conflicts and enhance synergies.",
+      "doc_pair_count": 19
+    }
+  }
+}

@@ -1,0 +1,1582 @@
+{
+  "synthesis": [
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "1",
+      "category_name": "Reduce impact and risk of climate change in the livestock sector, ensure sustain…",
+      "aligned_count": 1000,
+      "flagged_count": 426,
+      "pool_composition": {
+        "primary_count": 1664,
+        "relevant_only_count": 1429
+      },
+      "contradiction_types": {
+        "resource_competition": 11,
+        "delivery_friction": 8
+      },
+      "synthesis": {
+        "storyline_name": "Managing livestock and pastureland for climate resilience",
+        "reinforce": "Targets around improving pasture management and sustainable agriculture practices tend to align, sharing goals and thematic areas that could support each other through complementary efforts.",
+        "clash": "Some targets related to livestock expansion and agricultural development could potentially compete with conservation goals or create delivery friction if not properly coordinated, particularly around land and resource use.",
+        "coordination_hint": "Coordinated land-use planning and safeguards could help mitigate potential frictions and enhance synergies within the sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "2",
+      "category_name": "Establish a sustainable supply chain mechanism of healthy food products, livesto…",
+      "aligned_count": 1434,
+      "flagged_count": 662,
+      "pool_composition": {
+        "primary_count": 3410,
+        "relevant_only_count": 1381
+      },
+      "contradiction_types": {
+        "resource_competition": 23,
+        "delivery_friction": 12,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Sustainable agriculture and land use practices evolve",
+        "reinforce": "Targets within this sector often align through shared goals on sustainable agriculture, biodiversity conservation, and climate resilience, with many pairs showing medium alignment through complementary efforts or parallel actions.",
+        "clash": "Flagged pairs suggest potential friction due to resource competition and delivery friction, particularly between agricultural expansion or intensification and biodiversity or land restoration goals.",
+        "coordination_hint": "Careful land-use planning and safeguards could mitigate potential frictions and support aligned implementation within this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "3",
+      "category_name": "Introducing optimal water consumption and build capacity to increase water reser…",
+      "aligned_count": 514,
+      "flagged_count": 193,
+      "pool_composition": {
+        "primary_count": 454,
+        "relevant_only_count": 1039
+      },
+      "contradiction_types": {
+        "resource_competition": 13,
+        "goal_conflict": 2,
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Managing water resources for sustainable agriculture and ecosystems",
+        "reinforce": "Targets related to ecosystem services, pasture management, and climate-resilient agriculture often align through shared goals and complementary actions, such as improving water supply and managing livestock.",
+        "clash": "Possible misalignment recurs between targets expanding irrigated agriculture and those conserving ecosystems or protected areas, often due to competition for land and water resources.",
+        "coordination_hint": "Careful land-use planning and water resource management could mitigate potential frictions and support aligned implementation within this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "4",
+      "category_name": "Create forest ecosystems well adapted to climate change and enhance carbon seque…",
+      "aligned_count": 1453,
+      "flagged_count": 347,
+      "pool_composition": {
+        "primary_count": 1674,
+        "relevant_only_count": 1645
+      },
+      "contradiction_types": {
+        "resource_competition": 14,
+        "delivery_friction": 7,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Enhancing forest ecosystems and carbon sequestration efforts",
+        "reinforce": "Targets related to forest conservation, sustainable land management, and biodiversity often align, with efforts like reforestation and protected area expansion complementing each other. Capacity-building and cooperation in biodiversity conservation also support ecosystem protection goals.",
+        "clash": "Expansion of agricultural land and intensification of livestock farming can potentially conflict with forest conservation and land degradation neutrality goals, requiring careful land-use planning and zoning to mitigate delivery frictions.",
+        "coordination_hint": "Coordinated planning and safeguards could help manage potential frictions between agricultural development and forest ecosystem conservation in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "5",
+      "category_name": "Enable adaptation opportunities and adaptive capacities for vulnerable biodivers…",
+      "aligned_count": 1836,
+      "flagged_count": 489,
+      "pool_composition": {
+        "primary_count": 2834,
+        "relevant_only_count": 1789
+      },
+      "contradiction_types": {
+        "resource_competition": 18,
+        "delivery_friction": 12,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Enhancing Adaptive Capacities through Complementary Conservation Efforts",
+        "reinforce": "Targets within this sector often align through shared environmental conservation goals and complementary actions, such as sustainable land management and ecosystem restoration, which can support each other through parallel efforts or shared enabling conditions.",
+        "clash": "Possible misalignment recurs due to potential resource competition or delivery friction between targets, such as agricultural expansion conflicting with conservation goals or land restoration efforts, requiring careful planning and coordination to mitigate.",
+        "coordination_hint": "Coordinated land-use planning and safeguards could help manage potential frictions and enhance synergies within this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "6",
+      "category_name": "Build resilience to natural disasters by reducing the risks and adapting to impa…",
+      "aligned_count": 1388,
+      "flagged_count": 255,
+      "pool_composition": {
+        "primary_count": 729,
+        "relevant_only_count": 2626
+      },
+      "contradiction_types": {
+        "resource_competition": 7,
+        "delivery_friction": 4,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Building climate resilience through coordinated land management",
+        "reinforce": "Targets within this sector often align on enhancing resilience to climate change, with complementary efforts in disaster risk reduction, sustainable agriculture, and ecosystem conservation. Coordinated implementation can enhance efficiency and outcomes.",
+        "clash": "Possible misalignment recurs between agricultural expansion and ecosystem conservation or restoration goals, potentially competing for land or water resources. Careful planning and resource allocation can mitigate these tensions.",
+        "coordination_hint": "Coordinated land-use planning and safeguards tend to mitigate potential frictions between agricultural development and environmental conservation goals in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "7",
+      "category_name": "Strengthening healthcare services and capacities for early warning of potential …",
+      "aligned_count": 216,
+      "flagged_count": 34,
+      "pool_composition": {
+        "primary_count": 60,
+        "relevant_only_count": 493
+      },
+      "contradiction_types": {
+        "delivery_friction": 1,
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Balancing agricultural expansion with environmental sustainability",
+        "reinforce": "Targets related to Land Degradation Neutrality and climate change adaptation often align through shared environmental goals and complementary actions, such as sustainable land management and early warning systems.",
+        "clash": "Agricultural expansion targets sometimes conflict with environmental goals, such as reducing pollution and achieving Land Degradation Neutrality, due to potential unsustainable practices.",
+        "coordination_hint": "Coordinated planning and implementation of sustainable practices could mitigate potential frictions between agricultural development and environmental protection targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "adaptation_goal",
+      "category_id": "8",
+      "category_name": "Establish a system providing social safeguard, insurance and prevention measures…",
+      "aligned_count": 458,
+      "flagged_count": 37,
+      "pool_composition": {
+        "primary_count": 550,
+        "relevant_only_count": 719
+      },
+      "contradiction_types": {
+        "resource_competition": 1
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural expansion strains climate adaptation resources",
+        "reinforce": "Targets related to land management and climate resilience often align, with efforts like agroforestry and sustainable land management supporting broader climate adaptation goals. Initiatives to improve agricultural insurance and climate risk reduction also tend to complement each other.",
+        "clash": "Expansion of agricultural land and livestock farming sometimes competes with climate change adaptation and land degradation neutrality goals, particularly if not managed sustainably. Increased meat supply and fertiliser production targets may also conflict with sustainable consumption and biodiversity conservation efforts.",
+        "coordination_hint": "Careful planning and management of agricultural expansion and livestock farming practices tends to mitigate potential friction with climate change adaptation and land degradation neutrality goals.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_1",
+      "category_name": "Access and benefit sharing",
+      "aligned_count": 41,
+      "flagged_count": 44,
+      "pool_composition": {
+        "primary_count": 99,
+        "relevant_only_count": 113
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Livestock intensification and biodiversity conservation efforts interact",
+        "reinforce": "Targets related to genetic resource conservation and sustainable agriculture practices tend to align, supporting each other through parallel efforts or shared enabling conditions, particularly in preserving genetic diversity and promoting sustainable livestock practices.",
+        "clash": "Intensification of livestock farming often points to potential friction with biodiversity conservation and sustainable pasture management goals, as it may increase pressure on ecosystems and pastures if not properly managed.",
+        "coordination_hint": "Careful planning, zoning, and sustainable practices could mitigate potential frictions between livestock intensification and biodiversity conservation targets in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_2",
+      "category_name": "Biodiversity awareness and knowledge",
+      "aligned_count": 376,
+      "flagged_count": 83,
+      "pool_composition": {
+        "primary_count": 599,
+        "relevant_only_count": 768
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Biodiversity awareness and knowledge efforts align with sustainable land use",
+        "reinforce": "Targets around sustainable pasture management, ecosystem services valuation, and biodiversity conservation often point to complementary efforts that could support each other through joint planning or coordinated implementation. Medium alignment recurs between targets focusing on environmental conservation and sustainable land use practices.",
+        "clash": "Possible misalignment tends to occur between targets promoting agricultural expansion or intensification and those focused on biodiversity conservation or ecosystem protection, often due to potential competition for land or resources. Flagged pairs suggest that careful land-use planning and zoning could mitigate these risks.",
+        "coordination_hint": "Coordinated planning and safeguards tend to be necessary to ensure that agricultural expansion or intensification aligns with biodiversity conservation goals in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_3",
+      "category_name": "Biosafety",
+      "aligned_count": 20,
+      "flagged_count": 4,
+      "pool_composition": {
+        "primary_count": 116,
+        "relevant_only_count": 0
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Biosafety targets often align with environmental conservation efforts",
+        "reinforce": "Targets related to invasive alien species management and biosafety often align with broader environmental conservation goals, such as protecting forests, wetlands, and biodiversity. They share common themes and could support each other indirectly through coordinated planning and implementation.",
+        "clash": "Possible misalignment occurs when agricultural expansion targets potentially introduce or spread invasive alien species, undermining biosafety goals. This friction can be managed through coordinated planning, safeguards, and measures to prevent the spread of invasive species.",
+        "coordination_hint": "Coordinating invasive alien species management with agricultural expansion and environmental conservation efforts tends to enhance overall ecosystem resilience and sustainability in the Biosafety sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_4",
+      "category_name": "Green economy",
+      "aligned_count": 344,
+      "flagged_count": 56,
+      "pool_composition": {
+        "primary_count": 381,
+        "relevant_only_count": 779
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Green economy targets show mixed alignment and friction",
+        "reinforce": "Targets related to sustainable agriculture and climate resilience often point to compatible priorities and potential synergies, particularly in areas like livestock management and crop production. Coordinated planning and funding could enhance their mutual impact.",
+        "clash": "Friction tends to arise from potential resource competition and delivery friction, particularly between agricultural expansion and conservation efforts, requiring careful planning and management to mitigate. Targets related to livestock development and land restoration often need coordinated implementation to avoid undermining each other's goals.",
+        "coordination_hint": "Careful land-use planning, zoning, and resource allocation could help mitigate potential frictions and enhance synergies within the green economy sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_5",
+      "category_name": "Biodiversity planning and finance",
+      "aligned_count": 1558,
+      "flagged_count": 332,
+      "pool_composition": {
+        "primary_count": 2178,
+        "relevant_only_count": 1712
+      },
+      "contradiction_types": {
+        "resource_competition": 12,
+        "delivery_friction": 7,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Biodiversity planning and finance targets often intersect",
+        "reinforce": "Targets within the biodiversity planning and finance sector often align through shared goals on ecosystem restoration, sustainable land management, and climate resilience, with potential synergies in implementation.",
+        "clash": "Friction tends to arise from competing demands on land resources between agricultural expansion and conservation or restoration goals, potentially leading to resource competition or delivery friction if not managed through coordinated planning.",
+        "coordination_hint": "Careful land-use planning and zoning could help mitigate potential frictions and enhance synergies between biodiversity conservation and agricultural development targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_6",
+      "category_name": "Pollution management",
+      "aligned_count": 358,
+      "flagged_count": 142,
+      "pool_composition": {
+        "primary_count": 273,
+        "relevant_only_count": 896
+      },
+      "contradiction_types": {
+        "delivery_friction": 1,
+        "resource_competition": 3
+      },
+      "synthesis": {
+        "storyline_name": "Sustainable land management and pollution reduction efforts",
+        "reinforce": "Targets within the pollution management sector often align through shared goals on sustainable land use, soil conservation, and environmental protection, with coordinated planning potentially enhancing their mutual effectiveness.",
+        "clash": "Flagged pairs in this sector tend to highlight potential resource competition and delivery friction, particularly between livestock production targets and environmental conservation goals, requiring careful management and coordination to mitigate.",
+        "coordination_hint": "Coordinated land-use planning and sustainable practices could help mitigate potential frictions between environmental conservation and agricultural production targets in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_7",
+      "category_name": "Protected areas and other conservation measures",
+      "aligned_count": 969,
+      "flagged_count": 246,
+      "pool_composition": {
+        "primary_count": 1035,
+        "relevant_only_count": 991
+      },
+      "contradiction_types": {
+        "resource_competition": 11,
+        "delivery_friction": 6,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Conservation and agriculture interact in protected areas",
+        "reinforce": "Targets related to protected areas and sustainable land use often align, with efforts to conserve ecosystems and promote sustainable agriculture potentially supporting each other through coordinated planning and implementation.",
+        "clash": "Possible misalignment recurs between agricultural expansion targets and conservation goals, particularly where agricultural development may encroach on protected areas or vulnerable ecosystems, creating resource competition.",
+        "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions between conservation and agricultural development targets in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_8",
+      "category_name": "Restoration",
+      "aligned_count": 928,
+      "flagged_count": 197,
+      "pool_composition": {
+        "primary_count": 470,
+        "relevant_only_count": 1500
+      },
+      "contradiction_types": {
+        "resource_competition": 6,
+        "delivery_friction": 4,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Restoration efforts face resource competition and coordination needs",
+        "reinforce": "Targets within the Restoration sector often align through complementary environmental conservation goals, such as reforestation and ecosystem regeneration efforts, which could support each other through coordinated planning and implementation.",
+        "clash": "Flagged pairs in the Restoration sector tend to highlight potential resource competition between agricultural expansion or intensive livestock farming and restoration or conservation goals, requiring careful land-use planning and zoning to mitigate.",
+        "coordination_hint": "Coordinated land-use planning and water resource management could help mitigate potential frictions between restoration and agricultural or livestock development targets in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "globe",
+      "category_id": "globe_9",
+      "category_name": "Sustainable use",
+      "aligned_count": 1984,
+      "flagged_count": 668,
+      "pool_composition": {
+        "primary_count": 5252,
+        "relevant_only_count": 351
+      },
+      "contradiction_types": {
+        "resource_competition": 24,
+        "delivery_friction": 12,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Sustainable land use and ecosystem management efforts",
+        "reinforce": "Targets often align around sustainable land management, reforestation, and biodiversity conservation, with coordinated planning potentially enhancing their mutual effectiveness. Many pairs share compatible environmental goals and complementary actions.",
+        "clash": "Possible misalignment recurs between agricultural expansion and conservation goals, with potential resource competition or delivery friction if not managed through coordinated land-use planning and sustainable practices. Flagged pairs often point to tensions between livestock development and protected area management.",
+        "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions and enhance synergies within this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_0",
+      "category_name": "Protection, management, and restoration of marine and coastal habitats",
+      "aligned_count": 89,
+      "flagged_count": 21,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 205
+      },
+      "contradiction_types": {
+        "resource_competition": 1,
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Balancing ecosystem conservation with agricultural expansion",
+        "reinforce": "Targets related to ecosystem management and biodiversity conservation often align with those focusing on sustainable land use and climate adaptation, particularly when they share compatible priorities around environmental sustainability.",
+        "clash": "Possible misalignment recurs between targets promoting agricultural expansion or intensification and those focused on ecosystem conservation, often due to competition for land and resources or potential environmental pressures.",
+        "coordination_hint": "Careful land-use planning and safeguards tend to mitigate potential frictions between agricultural development and ecosystem conservation goals.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_1",
+      "category_name": "Agriculture and livestock management",
+      "aligned_count": 1717,
+      "flagged_count": 672,
+      "pool_composition": {
+        "primary_count": 4691,
+        "relevant_only_count": 624
+      },
+      "contradiction_types": {
+        "resource_competition": 24,
+        "delivery_friction": 12,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Sustainable land management and agricultural productivity",
+        "reinforce": "Targets often point to sustainable livestock management and land restoration, with complementary actions that could enhance each other through coordination. Medium alignment recurs between targets related to climate-resilient agriculture and sustainable land use.",
+        "clash": "Possible misalignment recurs between targets promoting agricultural expansion or intensification and those focused on biodiversity conservation or land restoration, often pointing to potential resource competition or delivery friction. Flagged pairs suggest that careful planning and coordination are needed to mitigate these risks.",
+        "coordination_hint": "Coordinated land-use planning and sustainable practices could help reconcile competing demands on land resources within the agriculture and livestock management sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_2",
+      "category_name": "Water management",
+      "aligned_count": 431,
+      "flagged_count": 181,
+      "pool_composition": {
+        "primary_count": 376,
+        "relevant_only_count": 949
+      },
+      "contradiction_types": {
+        "resource_competition": 13,
+        "goal_conflict": 2,
+        "delivery_friction": 2
+      },
+      "synthesis": {
+        "storyline_name": "Water management targets often intersect with agricultural expansion",
+        "reinforce": "Targets around climate resilience and sustainable water management tend to align, particularly when focused on improving agricultural practices and livestock management. They often share common goals and could support each other through coordinated planning or implementation.",
+        "clash": "The expansion of irrigated agriculture often points to potential resource competition with conservation efforts and ecosystem restoration, particularly for water resources and land. This friction is manageable through careful planning, zoning, and water management.",
+        "coordination_hint": "Coordinated planning and resource management could mitigate potential frictions between agricultural expansion and conservation goals in the water management sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_3",
+      "category_name": "Forest management, restoration, and protection",
+      "aligned_count": 1105,
+      "flagged_count": 194,
+      "pool_composition": {
+        "primary_count": 978,
+        "relevant_only_count": 1397
+      },
+      "contradiction_types": {
+        "resource_competition": 5,
+        "delivery_friction": 3,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Forest management balances conservation and agricultural expansion",
+        "reinforce": "Targets often align through shared goals on sustainable forest management, reforestation, and biodiversity conservation, with coordinated planning potentially enhancing their effectiveness.",
+        "clash": "Possible misalignment recurs between agricultural expansion targets and forest conservation goals, with potential competition for land and water resources, requiring careful land-use planning and safeguards to mitigate.",
+        "coordination_hint": "Coordinated land-use planning tends to be crucial for balancing forest conservation and agricultural development in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_4",
+      "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+      "aligned_count": 715,
+      "flagged_count": 181,
+      "pool_composition": {
+        "primary_count": 237,
+        "relevant_only_count": 1320
+      },
+      "contradiction_types": {
+        "resource_competition": 6,
+        "delivery_friction": 5
+      },
+      "synthesis": {
+        "storyline_name": "Balancing agricultural expansion with ecosystem conservation",
+        "reinforce": "Targets often align through complementary environmental goals, such as reducing pollution and conserving ecosystems, with potential for coordinated implementation to enhance outcomes.",
+        "clash": "Possible misalignment recurs between agricultural expansion targets and ecosystem conservation goals, potentially leading to delivery friction or resource competition if not managed sustainably.",
+        "coordination_hint": "Coordinated land-use planning and safeguards could mitigate potential frictions between agricultural development and ecosystem protection targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_5",
+      "category_name": "Ecosystem protection and connectivity",
+      "aligned_count": 1178,
+      "flagged_count": 296,
+      "pool_composition": {
+        "primary_count": 1905,
+        "relevant_only_count": 984
+      },
+      "contradiction_types": {
+        "resource_competition": 14,
+        "delivery_friction": 8,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Ecosystem protection through coordinated land use planning",
+        "reinforce": "Targets often align around ecosystem resilience and sustainable use, with joint planning or funding potentially enhancing conservation outcomes. Protected area expansion and sustainable forest management are common goals.",
+        "clash": "Possible misalignment recurs between agricultural expansion and biodiversity conservation, with potential resource competition or ecosystem pressure if not managed sustainably. Livestock farming and fertiliser production can conflict with protected area goals.",
+        "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions between agricultural development and ecosystem protection targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_6",
+      "category_name": "Soil fertility management and restoration",
+      "aligned_count": 932,
+      "flagged_count": 316,
+      "pool_composition": {
+        "primary_count": 684,
+        "relevant_only_count": 1667
+      },
+      "contradiction_types": {
+        "resource_competition": 13,
+        "delivery_friction": 6,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Soil Fertility Management through Coordinated Land Use",
+        "reinforce": "Targets around sustainable agriculture and pastureland management tend to align, with coordinated implementation potentially enhancing efficiency and outcomes through shared enabling conditions and parallel efforts.",
+        "clash": "Expansion of agricultural land and intensification of livestock farming often points to potential resource competition with land restoration and conservation efforts, requiring careful planning and zoning to mitigate.",
+        "coordination_hint": "Coordinated land-use planning and resource allocation could help mitigate potential frictions and enhance synergies within the soil fertility management sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_7",
+      "category_name": "Nature-based risk management and disaster prevention",
+      "aligned_count": 1027,
+      "flagged_count": 190,
+      "pool_composition": {
+        "primary_count": 1060,
+        "relevant_only_count": 1796
+      },
+      "contradiction_types": {
+        "resource_competition": 5,
+        "delivery_friction": 4,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Balancing land use and environmental protection measures",
+        "reinforce": "Targets related to sustainable land management, reforestation, and climate-resilient agriculture often align, sharing compatible priorities around environmental resilience and land degradation neutrality. Coordinated implementation can enhance efficiency and maximize restoration outcomes.",
+        "clash": "Expanding agricultural and livestock activities can create resource competition and delivery friction with targets focused on environmental protection and biodiversity conservation, particularly if not managed sustainably. Careful planning and coordination are necessary to mitigate these risks.",
+        "coordination_hint": "Coordinating land-use planning and sustainable practices across sectors tends to mitigate potential frictions and enhance mutual supportiveness.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_8",
+      "category_name": "Nature-based carbon sequestration",
+      "aligned_count": 745,
+      "flagged_count": 161,
+      "pool_composition": {
+        "primary_count": 239,
+        "relevant_only_count": 1544
+      },
+      "contradiction_types": {
+        "delivery_friction": 1,
+        "goal_conflict": 2,
+        "resource_competition": 3
+      },
+      "synthesis": {
+        "storyline_name": "Nature-based carbon sequestration efforts face resource competition",
+        "reinforce": "Targets around forest conservation, reforestation, and sustainable land management often align, with coordinated efforts potentially enhancing environmental outcomes. Many targets share compatible priorities and could support each other through parallel efforts or joint planning.",
+        "clash": "Friction tends to arise from competing land-use demands, such as between agricultural expansion and reforestation or forest conservation goals, potentially straining resources like land and water. Livestock production targets sometimes conflict with biodiversity conservation and ecosystem resilience goals.",
+        "coordination_hint": "Careful land-use planning and resource allocation could mitigate potential frictions and enhance synergies within the nature-based carbon sequestration sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "nbs",
+      "category_id": "nbs_9",
+      "category_name": "Urban settlements management",
+      "aligned_count": 20,
+      "flagged_count": 0,
+      "pool_composition": {
+        "primary_count": 104,
+        "relevant_only_count": 0
+      },
+      "contradiction_types": {},
+      "synthesis": {
+        "storyline_name": "Urban green infrastructure initiatives align with resilience goals",
+        "reinforce": "Targets related to urban green and blue infrastructure often align with and support broader environmental and climate resilience goals, particularly through initiatives like urban greening and sustainable forest management. These alignments are facilitated by shared thematic and geographic focuses.",
+        "clash": "No friction flagged in this sector.",
+        "coordination_hint": "Coordinating urban greening efforts with broader environmental and climate adaptation plans tends to enhance resilience and efficiency in urban settlements management.",
+        "confidence": "high"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_agriculture",
+      "category_name": "Agriculture",
+      "aligned_count": 1881,
+      "flagged_count": 646,
+      "pool_composition": {
+        "primary_count": 3915,
+        "relevant_only_count": 1564
+      },
+      "contradiction_types": {
+        "resource_competition": 20,
+        "delivery_friction": 12,
+        "goal_conflict": 1
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural expansion and sustainability measures interact",
+        "reinforce": "Targets around climate-resilient agriculture, sustainable livestock management, and land rehabilitation tend to align, with coordinated implementation potentially enhancing efficiency and outcomes. High alignment is seen in targets focusing on improving livestock management and resilience within pastoral ecosystems.",
+        "clash": "Possible misalignment recurs around agricultural expansion and sustainability goals, with potential resource competition between targets for land, water, and ecosystem services. Flagged pairs often point to conflicts between intensifying agriculture or livestock and environmental conservation or restoration objectives.",
+        "coordination_hint": "Careful land-use planning, zoning, and safeguards could mitigate potential frictions and enhance synergies within the agriculture sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_energy",
+      "category_name": "Energy",
+      "aligned_count": 46,
+      "flagged_count": 39,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 201
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Energy sector targets often interact with environmental goals",
+        "reinforce": "Targets related to stable energy supply for food production and reducing pollution tend to align through parallel efforts or shared enabling conditions, supporting sustainable agricultural practices and environmental protection.",
+        "clash": "Possible misalignment recurs between energy subsidies for agricultural production and environmental targets, as intensified agriculture may increase pollution or ecosystem pressure, potentially undermining biodiversity and pollution reduction goals.",
+        "coordination_hint": "Coordinated planning and safeguards in agricultural practices and energy supply could mitigate potential friction and enhance alignment between energy and environmental targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_ippu",
+      "category_name": "Industrial processes and product use",
+      "aligned_count": 97,
+      "flagged_count": 85,
+      "pool_composition": {
+        "primary_count": 367,
+        "relevant_only_count": 271
+      },
+      "contradiction_types": {
+        "delivery_friction": 4,
+        "resource_competition": 2
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural development and environmental sustainability intersect",
+        "reinforce": "Targets often point to improving agricultural productivity and reducing pollution, with some alignment between sustainable agricultural practices and environmental protection goals.",
+        "clash": "Possible misalignment recurs between agricultural expansion and environmental conservation, with some targets potentially intensifying land use or pollution if not managed sustainably.",
+        "coordination_hint": "Careful planning and coordination could mitigate frictions and enhance synergies between agricultural development and environmental sustainability targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_lulucf",
+      "category_name": "Land use, land-use change and forestry (LULUCF)",
+      "aligned_count": 2130,
+      "flagged_count": 597,
+      "pool_composition": {
+        "primary_count": 3896,
+        "relevant_only_count": 1580
+      },
+      "contradiction_types": {
+        "resource_competition": 22,
+        "delivery_friction": 11,
+        "goal_conflict": 2
+      },
+      "synthesis": {
+        "storyline_name": "Sustainable land use and agriculture practices evolving",
+        "reinforce": "Targets around sustainable agriculture, reforestation, and ecosystem restoration often point to complementary efforts in land management and environmental conservation. They tend to align through joint planning or implementation, particularly in managing pastureland and promoting sustainable livestock practices.",
+        "clash": "Possible misalignment recurs between agricultural expansion and biodiversity conservation or ecosystem restoration goals, often due to competition for land and water resources. Flagged pairs suggest potential delivery friction between intensification of livestock farming and sustainable pastureland use.",
+        "coordination_hint": "Careful land-use planning and zoning could mitigate potential competition between agricultural expansion and conservation goals in the LULUCF sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_other",
+      "category_name": "Other / Cross-cutting",
+      "aligned_count": 1025,
+      "flagged_count": 172,
+      "pool_composition": {
+        "primary_count": 1953,
+        "relevant_only_count": 1049
+      },
+      "contradiction_types": {
+        "resource_competition": 4,
+        "goal_conflict": 1,
+        "delivery_friction": 3
+      },
+      "synthesis": {
+        "storyline_name": "Environmental and agricultural targets interact through resource management",
+        "reinforce": "Targets around climate resilience, sustainable land management, and biodiversity conservation often align through complementary actions and shared goals, such as enhancing ecosystem services and promoting sustainable agriculture practices.",
+        "clash": "Friction tends to arise between targets promoting agricultural intensification or expansion and those focused on biodiversity conservation or sustainable water management, due to potential resource competition or environmental degradation.",
+        "coordination_hint": "Careful planning and integration of sustainability safeguards could help mitigate potential frictions and enhance synergies between environmental and agricultural targets.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_transport",
+      "category_name": "Transport",
+      "aligned_count": 35,
+      "flagged_count": 19,
+      "pool_composition": {
+        "primary_count": 26,
+        "relevant_only_count": 116
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural expansion and pollution reduction efforts interact",
+        "reinforce": "Targets related to sustainable agriculture and environmental protection often align, with efforts to reduce pollution supporting sustainable agricultural practices and vice versa. Shared goals around environmental sustainability and ecosystem health recur across targets.",
+        "clash": "Some targets promoting agricultural expansion and intensification may conflict with pollution reduction goals if not managed sustainably, potentially leading to increased environmental pressures. Friction often arises from the potential for unsustainable practices in agricultural development.",
+        "coordination_hint": "Coordinated planning and implementation of sustainable practices could help mitigate potential frictions between agricultural development and pollution reduction targets in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    },
+    {
+      "taxonomy_type": "sector",
+      "category_id": "sector_waste",
+      "category_name": "Waste",
+      "aligned_count": 59,
+      "flagged_count": 25,
+      "pool_composition": {
+        "primary_count": 0,
+        "relevant_only_count": 283
+      },
+      "contradiction_types": {
+        "delivery_friction": 1
+      },
+      "synthesis": {
+        "storyline_name": "Agricultural expansion and environmental protection in Waste sector",
+        "reinforce": "Targets related to pollution reduction and sustainable agricultural practices often align, with coordinated implementation potentially enhancing environmental outcomes.",
+        "clash": "Expansion of agricultural land and intensification of farming practices sometimes conflict with pollution reduction goals, requiring careful management and safeguards to mitigate environmental pressures.",
+        "coordination_hint": "Coordinated planning and implementation of sustainable practices tends to support both agricultural development and environmental protection goals in this sector.",
+        "confidence": "medium"
+      },
+      "synthesis_error": null
+    }
+  ],
+  "states": {
+    "": [
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "1",
+        "category_name": "Reduce impact and risk of climate change in the livestock sector, ensure sustain…",
+        "aligned_count": 1000,
+        "flagged_count": 426,
+        "pool_composition": {
+          "primary_count": 1664,
+          "relevant_only_count": 1429
+        },
+        "contradiction_types": {
+          "resource_competition": 11,
+          "delivery_friction": 8
+        },
+        "synthesis": {
+          "storyline_name": "Managing livestock and pastureland for climate resilience",
+          "reinforce": "Targets around improving pasture management and sustainable agriculture practices tend to align, sharing goals and thematic areas that could support each other through complementary efforts.",
+          "clash": "Some targets related to livestock expansion and agricultural development could potentially compete with conservation goals or create delivery friction if not properly coordinated, particularly around land and resource use.",
+          "coordination_hint": "Coordinated land-use planning and safeguards could help mitigate potential frictions and enhance synergies within the sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "2",
+        "category_name": "Establish a sustainable supply chain mechanism of healthy food products, livesto…",
+        "aligned_count": 1434,
+        "flagged_count": 662,
+        "pool_composition": {
+          "primary_count": 3410,
+          "relevant_only_count": 1381
+        },
+        "contradiction_types": {
+          "resource_competition": 23,
+          "delivery_friction": 12,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Sustainable agriculture and land use practices evolve",
+          "reinforce": "Targets within this sector often align through shared goals on sustainable agriculture, biodiversity conservation, and climate resilience, with many pairs showing medium alignment through complementary efforts or parallel actions.",
+          "clash": "Flagged pairs suggest potential friction due to resource competition and delivery friction, particularly between agricultural expansion or intensification and biodiversity or land restoration goals.",
+          "coordination_hint": "Careful land-use planning and safeguards could mitigate potential frictions and support aligned implementation within this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "3",
+        "category_name": "Introducing optimal water consumption and build capacity to increase water reser…",
+        "aligned_count": 514,
+        "flagged_count": 193,
+        "pool_composition": {
+          "primary_count": 454,
+          "relevant_only_count": 1039
+        },
+        "contradiction_types": {
+          "resource_competition": 13,
+          "goal_conflict": 2,
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Managing water resources for sustainable agriculture and ecosystems",
+          "reinforce": "Targets related to ecosystem services, pasture management, and climate-resilient agriculture often align through shared goals and complementary actions, such as improving water supply and managing livestock.",
+          "clash": "Possible misalignment recurs between targets expanding irrigated agriculture and those conserving ecosystems or protected areas, often due to competition for land and water resources.",
+          "coordination_hint": "Careful land-use planning and water resource management could mitigate potential frictions and support aligned implementation within this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "4",
+        "category_name": "Create forest ecosystems well adapted to climate change and enhance carbon seque…",
+        "aligned_count": 1453,
+        "flagged_count": 347,
+        "pool_composition": {
+          "primary_count": 1674,
+          "relevant_only_count": 1645
+        },
+        "contradiction_types": {
+          "resource_competition": 14,
+          "delivery_friction": 7,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Enhancing forest ecosystems and carbon sequestration efforts",
+          "reinforce": "Targets related to forest conservation, sustainable land management, and biodiversity often align, with efforts like reforestation and protected area expansion complementing each other. Capacity-building and cooperation in biodiversity conservation also support ecosystem protection goals.",
+          "clash": "Expansion of agricultural land and intensification of livestock farming can potentially conflict with forest conservation and land degradation neutrality goals, requiring careful land-use planning and zoning to mitigate delivery frictions.",
+          "coordination_hint": "Coordinated planning and safeguards could help manage potential frictions between agricultural development and forest ecosystem conservation in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "5",
+        "category_name": "Enable adaptation opportunities and adaptive capacities for vulnerable biodivers…",
+        "aligned_count": 1836,
+        "flagged_count": 489,
+        "pool_composition": {
+          "primary_count": 2834,
+          "relevant_only_count": 1789
+        },
+        "contradiction_types": {
+          "resource_competition": 18,
+          "delivery_friction": 12,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Enhancing Adaptive Capacities through Complementary Conservation Efforts",
+          "reinforce": "Targets within this sector often align through shared environmental conservation goals and complementary actions, such as sustainable land management and ecosystem restoration, which can support each other through parallel efforts or shared enabling conditions.",
+          "clash": "Possible misalignment recurs due to potential resource competition or delivery friction between targets, such as agricultural expansion conflicting with conservation goals or land restoration efforts, requiring careful planning and coordination to mitigate.",
+          "coordination_hint": "Coordinated land-use planning and safeguards could help manage potential frictions and enhance synergies within this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "6",
+        "category_name": "Build resilience to natural disasters by reducing the risks and adapting to impa…",
+        "aligned_count": 1388,
+        "flagged_count": 255,
+        "pool_composition": {
+          "primary_count": 729,
+          "relevant_only_count": 2626
+        },
+        "contradiction_types": {
+          "resource_competition": 7,
+          "delivery_friction": 4,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Building climate resilience through coordinated land management",
+          "reinforce": "Targets within this sector often align on enhancing resilience to climate change, with complementary efforts in disaster risk reduction, sustainable agriculture, and ecosystem conservation. Coordinated implementation can enhance efficiency and outcomes.",
+          "clash": "Possible misalignment recurs between agricultural expansion and ecosystem conservation or restoration goals, potentially competing for land or water resources. Careful planning and resource allocation can mitigate these tensions.",
+          "coordination_hint": "Coordinated land-use planning and safeguards tend to mitigate potential frictions between agricultural development and environmental conservation goals in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "7",
+        "category_name": "Strengthening healthcare services and capacities for early warning of potential …",
+        "aligned_count": 216,
+        "flagged_count": 34,
+        "pool_composition": {
+          "primary_count": 60,
+          "relevant_only_count": 493
+        },
+        "contradiction_types": {
+          "delivery_friction": 1,
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Balancing agricultural expansion with environmental sustainability",
+          "reinforce": "Targets related to Land Degradation Neutrality and climate change adaptation often align through shared environmental goals and complementary actions, such as sustainable land management and early warning systems.",
+          "clash": "Agricultural expansion targets sometimes conflict with environmental goals, such as reducing pollution and achieving Land Degradation Neutrality, due to potential unsustainable practices.",
+          "coordination_hint": "Coordinated planning and implementation of sustainable practices could mitigate potential frictions between agricultural development and environmental protection targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "adaptation_goal",
+        "category_id": "8",
+        "category_name": "Establish a system providing social safeguard, insurance and prevention measures…",
+        "aligned_count": 458,
+        "flagged_count": 37,
+        "pool_composition": {
+          "primary_count": 550,
+          "relevant_only_count": 719
+        },
+        "contradiction_types": {
+          "resource_competition": 1
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural expansion strains climate adaptation resources",
+          "reinforce": "Targets related to land management and climate resilience often align, with efforts like agroforestry and sustainable land management supporting broader climate adaptation goals. Initiatives to improve agricultural insurance and climate risk reduction also tend to complement each other.",
+          "clash": "Expansion of agricultural land and livestock farming sometimes competes with climate change adaptation and land degradation neutrality goals, particularly if not managed sustainably. Increased meat supply and fertiliser production targets may also conflict with sustainable consumption and biodiversity conservation efforts.",
+          "coordination_hint": "Careful planning and management of agricultural expansion and livestock farming practices tends to mitigate potential friction with climate change adaptation and land degradation neutrality goals.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_1",
+        "category_name": "Access and benefit sharing",
+        "aligned_count": 41,
+        "flagged_count": 44,
+        "pool_composition": {
+          "primary_count": 99,
+          "relevant_only_count": 113
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Livestock intensification and biodiversity conservation efforts interact",
+          "reinforce": "Targets related to genetic resource conservation and sustainable agriculture practices tend to align, supporting each other through parallel efforts or shared enabling conditions, particularly in preserving genetic diversity and promoting sustainable livestock practices.",
+          "clash": "Intensification of livestock farming often points to potential friction with biodiversity conservation and sustainable pasture management goals, as it may increase pressure on ecosystems and pastures if not properly managed.",
+          "coordination_hint": "Careful planning, zoning, and sustainable practices could mitigate potential frictions between livestock intensification and biodiversity conservation targets in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_2",
+        "category_name": "Biodiversity awareness and knowledge",
+        "aligned_count": 376,
+        "flagged_count": 83,
+        "pool_composition": {
+          "primary_count": 599,
+          "relevant_only_count": 768
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Biodiversity awareness and knowledge efforts align with sustainable land use",
+          "reinforce": "Targets around sustainable pasture management, ecosystem services valuation, and biodiversity conservation often point to complementary efforts that could support each other through joint planning or coordinated implementation. Medium alignment recurs between targets focusing on environmental conservation and sustainable land use practices.",
+          "clash": "Possible misalignment tends to occur between targets promoting agricultural expansion or intensification and those focused on biodiversity conservation or ecosystem protection, often due to potential competition for land or resources. Flagged pairs suggest that careful land-use planning and zoning could mitigate these risks.",
+          "coordination_hint": "Coordinated planning and safeguards tend to be necessary to ensure that agricultural expansion or intensification aligns with biodiversity conservation goals in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_3",
+        "category_name": "Biosafety",
+        "aligned_count": 20,
+        "flagged_count": 4,
+        "pool_composition": {
+          "primary_count": 116,
+          "relevant_only_count": 0
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Biosafety targets often align with environmental conservation efforts",
+          "reinforce": "Targets related to invasive alien species management and biosafety often align with broader environmental conservation goals, such as protecting forests, wetlands, and biodiversity. They share common themes and could support each other indirectly through coordinated planning and implementation.",
+          "clash": "Possible misalignment occurs when agricultural expansion targets potentially introduce or spread invasive alien species, undermining biosafety goals. This friction can be managed through coordinated planning, safeguards, and measures to prevent the spread of invasive species.",
+          "coordination_hint": "Coordinating invasive alien species management with agricultural expansion and environmental conservation efforts tends to enhance overall ecosystem resilience and sustainability in the Biosafety sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_4",
+        "category_name": "Green economy",
+        "aligned_count": 344,
+        "flagged_count": 56,
+        "pool_composition": {
+          "primary_count": 381,
+          "relevant_only_count": 779
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Green economy targets show mixed alignment and friction",
+          "reinforce": "Targets related to sustainable agriculture and climate resilience often point to compatible priorities and potential synergies, particularly in areas like livestock management and crop production. Coordinated planning and funding could enhance their mutual impact.",
+          "clash": "Friction tends to arise from potential resource competition and delivery friction, particularly between agricultural expansion and conservation efforts, requiring careful planning and management to mitigate. Targets related to livestock development and land restoration often need coordinated implementation to avoid undermining each other's goals.",
+          "coordination_hint": "Careful land-use planning, zoning, and resource allocation could help mitigate potential frictions and enhance synergies within the green economy sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_5",
+        "category_name": "Biodiversity planning and finance",
+        "aligned_count": 1558,
+        "flagged_count": 332,
+        "pool_composition": {
+          "primary_count": 2178,
+          "relevant_only_count": 1712
+        },
+        "contradiction_types": {
+          "resource_competition": 12,
+          "delivery_friction": 7,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Biodiversity planning and finance targets often intersect",
+          "reinforce": "Targets within the biodiversity planning and finance sector often align through shared goals on ecosystem restoration, sustainable land management, and climate resilience, with potential synergies in implementation.",
+          "clash": "Friction tends to arise from competing demands on land resources between agricultural expansion and conservation or restoration goals, potentially leading to resource competition or delivery friction if not managed through coordinated planning.",
+          "coordination_hint": "Careful land-use planning and zoning could help mitigate potential frictions and enhance synergies between biodiversity conservation and agricultural development targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_6",
+        "category_name": "Pollution management",
+        "aligned_count": 358,
+        "flagged_count": 142,
+        "pool_composition": {
+          "primary_count": 273,
+          "relevant_only_count": 896
+        },
+        "contradiction_types": {
+          "delivery_friction": 1,
+          "resource_competition": 3
+        },
+        "synthesis": {
+          "storyline_name": "Sustainable land management and pollution reduction efforts",
+          "reinforce": "Targets within the pollution management sector often align through shared goals on sustainable land use, soil conservation, and environmental protection, with coordinated planning potentially enhancing their mutual effectiveness.",
+          "clash": "Flagged pairs in this sector tend to highlight potential resource competition and delivery friction, particularly between livestock production targets and environmental conservation goals, requiring careful management and coordination to mitigate.",
+          "coordination_hint": "Coordinated land-use planning and sustainable practices could help mitigate potential frictions between environmental conservation and agricultural production targets in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_7",
+        "category_name": "Protected areas and other conservation measures",
+        "aligned_count": 969,
+        "flagged_count": 246,
+        "pool_composition": {
+          "primary_count": 1035,
+          "relevant_only_count": 991
+        },
+        "contradiction_types": {
+          "resource_competition": 11,
+          "delivery_friction": 6,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Conservation and agriculture interact in protected areas",
+          "reinforce": "Targets related to protected areas and sustainable land use often align, with efforts to conserve ecosystems and promote sustainable agriculture potentially supporting each other through coordinated planning and implementation.",
+          "clash": "Possible misalignment recurs between agricultural expansion targets and conservation goals, particularly where agricultural development may encroach on protected areas or vulnerable ecosystems, creating resource competition.",
+          "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions between conservation and agricultural development targets in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_8",
+        "category_name": "Restoration",
+        "aligned_count": 928,
+        "flagged_count": 197,
+        "pool_composition": {
+          "primary_count": 470,
+          "relevant_only_count": 1500
+        },
+        "contradiction_types": {
+          "resource_competition": 6,
+          "delivery_friction": 4,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Restoration efforts face resource competition and coordination needs",
+          "reinforce": "Targets within the Restoration sector often align through complementary environmental conservation goals, such as reforestation and ecosystem regeneration efforts, which could support each other through coordinated planning and implementation.",
+          "clash": "Flagged pairs in the Restoration sector tend to highlight potential resource competition between agricultural expansion or intensive livestock farming and restoration or conservation goals, requiring careful land-use planning and zoning to mitigate.",
+          "coordination_hint": "Coordinated land-use planning and water resource management could help mitigate potential frictions between restoration and agricultural or livestock development targets in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "globe",
+        "category_id": "globe_9",
+        "category_name": "Sustainable use",
+        "aligned_count": 1984,
+        "flagged_count": 668,
+        "pool_composition": {
+          "primary_count": 5252,
+          "relevant_only_count": 351
+        },
+        "contradiction_types": {
+          "resource_competition": 24,
+          "delivery_friction": 12,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Sustainable land use and ecosystem management efforts",
+          "reinforce": "Targets often align around sustainable land management, reforestation, and biodiversity conservation, with coordinated planning potentially enhancing their mutual effectiveness. Many pairs share compatible environmental goals and complementary actions.",
+          "clash": "Possible misalignment recurs between agricultural expansion and conservation goals, with potential resource competition or delivery friction if not managed through coordinated land-use planning and sustainable practices. Flagged pairs often point to tensions between livestock development and protected area management.",
+          "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions and enhance synergies within this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_0",
+        "category_name": "Protection, management, and restoration of marine and coastal habitats",
+        "aligned_count": 89,
+        "flagged_count": 21,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 205
+        },
+        "contradiction_types": {
+          "resource_competition": 1,
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Balancing ecosystem conservation with agricultural expansion",
+          "reinforce": "Targets related to ecosystem management and biodiversity conservation often align with those focusing on sustainable land use and climate adaptation, particularly when they share compatible priorities around environmental sustainability.",
+          "clash": "Possible misalignment recurs between targets promoting agricultural expansion or intensification and those focused on ecosystem conservation, often due to competition for land and resources or potential environmental pressures.",
+          "coordination_hint": "Careful land-use planning and safeguards tend to mitigate potential frictions between agricultural development and ecosystem conservation goals.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_1",
+        "category_name": "Agriculture and livestock management",
+        "aligned_count": 1717,
+        "flagged_count": 672,
+        "pool_composition": {
+          "primary_count": 4691,
+          "relevant_only_count": 624
+        },
+        "contradiction_types": {
+          "resource_competition": 24,
+          "delivery_friction": 12,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Sustainable land management and agricultural productivity",
+          "reinforce": "Targets often point to sustainable livestock management and land restoration, with complementary actions that could enhance each other through coordination. Medium alignment recurs between targets related to climate-resilient agriculture and sustainable land use.",
+          "clash": "Possible misalignment recurs between targets promoting agricultural expansion or intensification and those focused on biodiversity conservation or land restoration, often pointing to potential resource competition or delivery friction. Flagged pairs suggest that careful planning and coordination are needed to mitigate these risks.",
+          "coordination_hint": "Coordinated land-use planning and sustainable practices could help reconcile competing demands on land resources within the agriculture and livestock management sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_2",
+        "category_name": "Water management",
+        "aligned_count": 431,
+        "flagged_count": 181,
+        "pool_composition": {
+          "primary_count": 376,
+          "relevant_only_count": 949
+        },
+        "contradiction_types": {
+          "resource_competition": 13,
+          "goal_conflict": 2,
+          "delivery_friction": 2
+        },
+        "synthesis": {
+          "storyline_name": "Water management targets often intersect with agricultural expansion",
+          "reinforce": "Targets around climate resilience and sustainable water management tend to align, particularly when focused on improving agricultural practices and livestock management. They often share common goals and could support each other through coordinated planning or implementation.",
+          "clash": "The expansion of irrigated agriculture often points to potential resource competition with conservation efforts and ecosystem restoration, particularly for water resources and land. This friction is manageable through careful planning, zoning, and water management.",
+          "coordination_hint": "Coordinated planning and resource management could mitigate potential frictions between agricultural expansion and conservation goals in the water management sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_3",
+        "category_name": "Forest management, restoration, and protection",
+        "aligned_count": 1105,
+        "flagged_count": 194,
+        "pool_composition": {
+          "primary_count": 978,
+          "relevant_only_count": 1397
+        },
+        "contradiction_types": {
+          "resource_competition": 5,
+          "delivery_friction": 3,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Forest management balances conservation and agricultural expansion",
+          "reinforce": "Targets often align through shared goals on sustainable forest management, reforestation, and biodiversity conservation, with coordinated planning potentially enhancing their effectiveness.",
+          "clash": "Possible misalignment recurs between agricultural expansion targets and forest conservation goals, with potential competition for land and water resources, requiring careful land-use planning and safeguards to mitigate.",
+          "coordination_hint": "Coordinated land-use planning tends to be crucial for balancing forest conservation and agricultural development in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_4",
+        "category_name": "Protection and restoration of wetlands and freshwater ecosystems",
+        "aligned_count": 715,
+        "flagged_count": 181,
+        "pool_composition": {
+          "primary_count": 237,
+          "relevant_only_count": 1320
+        },
+        "contradiction_types": {
+          "resource_competition": 6,
+          "delivery_friction": 5
+        },
+        "synthesis": {
+          "storyline_name": "Balancing agricultural expansion with ecosystem conservation",
+          "reinforce": "Targets often align through complementary environmental goals, such as reducing pollution and conserving ecosystems, with potential for coordinated implementation to enhance outcomes.",
+          "clash": "Possible misalignment recurs between agricultural expansion targets and ecosystem conservation goals, potentially leading to delivery friction or resource competition if not managed sustainably.",
+          "coordination_hint": "Coordinated land-use planning and safeguards could mitigate potential frictions between agricultural development and ecosystem protection targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_5",
+        "category_name": "Ecosystem protection and connectivity",
+        "aligned_count": 1178,
+        "flagged_count": 296,
+        "pool_composition": {
+          "primary_count": 1905,
+          "relevant_only_count": 984
+        },
+        "contradiction_types": {
+          "resource_competition": 14,
+          "delivery_friction": 8,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Ecosystem protection through coordinated land use planning",
+          "reinforce": "Targets often align around ecosystem resilience and sustainable use, with joint planning or funding potentially enhancing conservation outcomes. Protected area expansion and sustainable forest management are common goals.",
+          "clash": "Possible misalignment recurs between agricultural expansion and biodiversity conservation, with potential resource competition or ecosystem pressure if not managed sustainably. Livestock farming and fertiliser production can conflict with protected area goals.",
+          "coordination_hint": "Careful land-use planning and zoning could mitigate potential frictions between agricultural development and ecosystem protection targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_6",
+        "category_name": "Soil fertility management and restoration",
+        "aligned_count": 932,
+        "flagged_count": 316,
+        "pool_composition": {
+          "primary_count": 684,
+          "relevant_only_count": 1667
+        },
+        "contradiction_types": {
+          "resource_competition": 13,
+          "delivery_friction": 6,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Soil Fertility Management through Coordinated Land Use",
+          "reinforce": "Targets around sustainable agriculture and pastureland management tend to align, with coordinated implementation potentially enhancing efficiency and outcomes through shared enabling conditions and parallel efforts.",
+          "clash": "Expansion of agricultural land and intensification of livestock farming often points to potential resource competition with land restoration and conservation efforts, requiring careful planning and zoning to mitigate.",
+          "coordination_hint": "Coordinated land-use planning and resource allocation could help mitigate potential frictions and enhance synergies within the soil fertility management sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_7",
+        "category_name": "Nature-based risk management and disaster prevention",
+        "aligned_count": 1027,
+        "flagged_count": 190,
+        "pool_composition": {
+          "primary_count": 1060,
+          "relevant_only_count": 1796
+        },
+        "contradiction_types": {
+          "resource_competition": 5,
+          "delivery_friction": 4,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Balancing land use and environmental protection measures",
+          "reinforce": "Targets related to sustainable land management, reforestation, and climate-resilient agriculture often align, sharing compatible priorities around environmental resilience and land degradation neutrality. Coordinated implementation can enhance efficiency and maximize restoration outcomes.",
+          "clash": "Expanding agricultural and livestock activities can create resource competition and delivery friction with targets focused on environmental protection and biodiversity conservation, particularly if not managed sustainably. Careful planning and coordination are necessary to mitigate these risks.",
+          "coordination_hint": "Coordinating land-use planning and sustainable practices across sectors tends to mitigate potential frictions and enhance mutual supportiveness.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_8",
+        "category_name": "Nature-based carbon sequestration",
+        "aligned_count": 745,
+        "flagged_count": 161,
+        "pool_composition": {
+          "primary_count": 239,
+          "relevant_only_count": 1544
+        },
+        "contradiction_types": {
+          "delivery_friction": 1,
+          "goal_conflict": 2,
+          "resource_competition": 3
+        },
+        "synthesis": {
+          "storyline_name": "Nature-based carbon sequestration efforts face resource competition",
+          "reinforce": "Targets around forest conservation, reforestation, and sustainable land management often align, with coordinated efforts potentially enhancing environmental outcomes. Many targets share compatible priorities and could support each other through parallel efforts or joint planning.",
+          "clash": "Friction tends to arise from competing land-use demands, such as between agricultural expansion and reforestation or forest conservation goals, potentially straining resources like land and water. Livestock production targets sometimes conflict with biodiversity conservation and ecosystem resilience goals.",
+          "coordination_hint": "Careful land-use planning and resource allocation could mitigate potential frictions and enhance synergies within the nature-based carbon sequestration sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "nbs",
+        "category_id": "nbs_9",
+        "category_name": "Urban settlements management",
+        "aligned_count": 20,
+        "flagged_count": 0,
+        "pool_composition": {
+          "primary_count": 104,
+          "relevant_only_count": 0
+        },
+        "contradiction_types": {},
+        "synthesis": {
+          "storyline_name": "Urban green infrastructure initiatives align with resilience goals",
+          "reinforce": "Targets related to urban green and blue infrastructure often align with and support broader environmental and climate resilience goals, particularly through initiatives like urban greening and sustainable forest management. These alignments are facilitated by shared thematic and geographic focuses.",
+          "clash": "No friction flagged in this sector.",
+          "coordination_hint": "Coordinating urban greening efforts with broader environmental and climate adaptation plans tends to enhance resilience and efficiency in urban settlements management.",
+          "confidence": "high"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_agriculture",
+        "category_name": "Agriculture",
+        "aligned_count": 1881,
+        "flagged_count": 646,
+        "pool_composition": {
+          "primary_count": 3915,
+          "relevant_only_count": 1564
+        },
+        "contradiction_types": {
+          "resource_competition": 20,
+          "delivery_friction": 12,
+          "goal_conflict": 1
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural expansion and sustainability measures interact",
+          "reinforce": "Targets around climate-resilient agriculture, sustainable livestock management, and land rehabilitation tend to align, with coordinated implementation potentially enhancing efficiency and outcomes. High alignment is seen in targets focusing on improving livestock management and resilience within pastoral ecosystems.",
+          "clash": "Possible misalignment recurs around agricultural expansion and sustainability goals, with potential resource competition between targets for land, water, and ecosystem services. Flagged pairs often point to conflicts between intensifying agriculture or livestock and environmental conservation or restoration objectives.",
+          "coordination_hint": "Careful land-use planning, zoning, and safeguards could mitigate potential frictions and enhance synergies within the agriculture sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_energy",
+        "category_name": "Energy",
+        "aligned_count": 46,
+        "flagged_count": 39,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 201
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Energy sector targets often interact with environmental goals",
+          "reinforce": "Targets related to stable energy supply for food production and reducing pollution tend to align through parallel efforts or shared enabling conditions, supporting sustainable agricultural practices and environmental protection.",
+          "clash": "Possible misalignment recurs between energy subsidies for agricultural production and environmental targets, as intensified agriculture may increase pollution or ecosystem pressure, potentially undermining biodiversity and pollution reduction goals.",
+          "coordination_hint": "Coordinated planning and safeguards in agricultural practices and energy supply could mitigate potential friction and enhance alignment between energy and environmental targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_ippu",
+        "category_name": "Industrial processes and product use",
+        "aligned_count": 97,
+        "flagged_count": 85,
+        "pool_composition": {
+          "primary_count": 367,
+          "relevant_only_count": 271
+        },
+        "contradiction_types": {
+          "delivery_friction": 4,
+          "resource_competition": 2
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural development and environmental sustainability intersect",
+          "reinforce": "Targets often point to improving agricultural productivity and reducing pollution, with some alignment between sustainable agricultural practices and environmental protection goals.",
+          "clash": "Possible misalignment recurs between agricultural expansion and environmental conservation, with some targets potentially intensifying land use or pollution if not managed sustainably.",
+          "coordination_hint": "Careful planning and coordination could mitigate frictions and enhance synergies between agricultural development and environmental sustainability targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_lulucf",
+        "category_name": "Land use, land-use change and forestry (LULUCF)",
+        "aligned_count": 2130,
+        "flagged_count": 597,
+        "pool_composition": {
+          "primary_count": 3896,
+          "relevant_only_count": 1580
+        },
+        "contradiction_types": {
+          "resource_competition": 22,
+          "delivery_friction": 11,
+          "goal_conflict": 2
+        },
+        "synthesis": {
+          "storyline_name": "Sustainable land use and agriculture practices evolving",
+          "reinforce": "Targets around sustainable agriculture, reforestation, and ecosystem restoration often point to complementary efforts in land management and environmental conservation. They tend to align through joint planning or implementation, particularly in managing pastureland and promoting sustainable livestock practices.",
+          "clash": "Possible misalignment recurs between agricultural expansion and biodiversity conservation or ecosystem restoration goals, often due to competition for land and water resources. Flagged pairs suggest potential delivery friction between intensification of livestock farming and sustainable pastureland use.",
+          "coordination_hint": "Careful land-use planning and zoning could mitigate potential competition between agricultural expansion and conservation goals in the LULUCF sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_other",
+        "category_name": "Other / Cross-cutting",
+        "aligned_count": 1025,
+        "flagged_count": 172,
+        "pool_composition": {
+          "primary_count": 1953,
+          "relevant_only_count": 1049
+        },
+        "contradiction_types": {
+          "resource_competition": 4,
+          "goal_conflict": 1,
+          "delivery_friction": 3
+        },
+        "synthesis": {
+          "storyline_name": "Environmental and agricultural targets interact through resource management",
+          "reinforce": "Targets around climate resilience, sustainable land management, and biodiversity conservation often align through complementary actions and shared goals, such as enhancing ecosystem services and promoting sustainable agriculture practices.",
+          "clash": "Friction tends to arise between targets promoting agricultural intensification or expansion and those focused on biodiversity conservation or sustainable water management, due to potential resource competition or environmental degradation.",
+          "coordination_hint": "Careful planning and integration of sustainability safeguards could help mitigate potential frictions and enhance synergies between environmental and agricultural targets.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_transport",
+        "category_name": "Transport",
+        "aligned_count": 35,
+        "flagged_count": 19,
+        "pool_composition": {
+          "primary_count": 26,
+          "relevant_only_count": 116
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural expansion and pollution reduction efforts interact",
+          "reinforce": "Targets related to sustainable agriculture and environmental protection often align, with efforts to reduce pollution supporting sustainable agricultural practices and vice versa. Shared goals around environmental sustainability and ecosystem health recur across targets.",
+          "clash": "Some targets promoting agricultural expansion and intensification may conflict with pollution reduction goals if not managed sustainably, potentially leading to increased environmental pressures. Friction often arises from the potential for unsustainable practices in agricultural development.",
+          "coordination_hint": "Coordinated planning and implementation of sustainable practices could help mitigate potential frictions between agricultural development and pollution reduction targets in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      },
+      {
+        "taxonomy_type": "sector",
+        "category_id": "sector_waste",
+        "category_name": "Waste",
+        "aligned_count": 59,
+        "flagged_count": 25,
+        "pool_composition": {
+          "primary_count": 0,
+          "relevant_only_count": 283
+        },
+        "contradiction_types": {
+          "delivery_friction": 1
+        },
+        "synthesis": {
+          "storyline_name": "Agricultural expansion and environmental protection in Waste sector",
+          "reinforce": "Targets related to pollution reduction and sustainable agricultural practices often align, with coordinated implementation potentially enhancing environmental outcomes.",
+          "clash": "Expansion of agricultural land and intensification of farming practices sometimes conflict with pollution reduction goals, requiring careful management and safeguards to mitigate environmental pressures.",
+          "coordination_hint": "Coordinated planning and implementation of sustainable practices tends to support both agricultural development and environmental protection goals in this sector.",
+          "confidence": "medium"
+        },
+        "synthesis_error": null
+      }
+    ]
+  }
+}

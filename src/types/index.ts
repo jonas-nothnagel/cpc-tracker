@@ -321,6 +321,211 @@ export function isContradiction(level: AlignmentLevel): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// Cross-model comparison report
+// ---------------------------------------------------------------------------
+//
+// Mirrors python/output/{country}/_model_comparison.json produced by
+// python/src/analyze_model_comparison.py. Shape is keyed by model slug
+// everywhere so the page can iterate without coupling to a specific lineup.
+
+export interface PairFlagDetails {
+  /** goal_conflict | resource_competition | delivery_friction | unspecified (or any future enum value). */
+  mechanism: string;
+  /** "manageable" / "needs intervention" / "unknown" — assessor's view of whether the misalignment is addressable. */
+  manageability: string;
+  /** "low" / "medium" / "high" / "unknown" — model's self-reported confidence. */
+  confidence: string;
+  /** Resources both targets contest (e.g., "landscape", "budget"). May be empty. */
+  contestedResources: string[];
+}
+
+export interface ModelDisagreementRow {
+  targetAId: string;
+  targetBId: string;
+  /** Each model's alignment label for this pair. */
+  labels: Record<string, AlignmentLevel>;
+  /** Each model's AI-generated rationale (verbatim). */
+  descriptions: Record<string, string>;
+  /** Per-model flagged-pair metadata (mechanism, confidence, manageability,
+   *  contestedResources). Only present for models whose alignment label is
+   *  "flagged" on this pair — non-flagged models are absent from the map. */
+  flagDetails: Record<string, PairFlagDetails>;
+  /** Number of distinct labels across all models on this pair (≥2 for a row to appear). */
+  distinctLabelCount: number;
+  /** Ordinal spread used as the tiebreak sort key (see analyze_model_comparison.py). */
+  ordinalSpread: number;
+}
+
+export interface TargetSummary {
+  id: string;
+  /** Target statement verbatim from the source policy document. */
+  text: string;
+  /** Source document slug (e.g., "NDC", "NBSAP", "FSS"). */
+  sourceDocument: string;
+  /** Reviewer-facing source label (e.g., "1 Spatial planning"). */
+  sourceLabel: string;
+  /** Implementation activities listed under the target, when present.
+   *  Often the most concrete signal for evaluating cross-target tension. */
+  activities?: string;
+}
+
+export interface ModelCostSummary {
+  elapsedSeconds: number | null;
+  callCount: number | null;
+  trackedCallCount: number | null;
+  estimatedCallCount: number | null;
+  cachedCallCount: number | null;
+  energyWh: number | null;
+  waterMl: number | null;
+  co2Geq: number | null;
+  footprintSource: "measured" | "estimated" | "mixed" | "unavailable" | null;
+}
+
+export interface ModelVocabCompliance {
+  /** Raw word occurrence counts across all rationales for this model. */
+  tensionWordHits: number;
+  contradictionWordHits: number;
+  /** Count of rationales containing ≥1 banned word. */
+  pairsWithViolation: number;
+  /** pairsWithViolation / total pairs. */
+  violationRate: number;
+}
+
+export interface ModelFlaggingOverlap {
+  /** Pair counts keyed by "1" | "2" | "3" | "4" — pairs flagged by exactly N models. */
+  flaggedByCount: Record<string, number>;
+  /** Pairs flagged by all N models (the high-confidence concerns). */
+  consensusFlaggedCount: number;
+  /** Pairs flagged by at least one model (the union). */
+  unionFlaggedCount: number;
+}
+
+export interface ModelRationaleCharacter {
+  /** Mean whitespace-token count across all rationales. */
+  avgWords: number;
+  /** Median whitespace-token count. */
+  medianWords: number;
+  /** Fraction of rationales containing any digit. */
+  pctNumeric: number;
+  /** Fraction of rationales citing an observed target-ID prefix (NDC, FSS, ILDN, BTR …). */
+  pctPolicyCitation: number;
+}
+
+export interface JudgeScore {
+  specificity: number;
+  reasoning: number;
+  useful: number;
+}
+
+export interface JudgeAggregate {
+  avgSpecificity: number;
+  avgReasoning: number;
+  avgUseful: number;
+  /** Number of pairs in the sample where this model's rationale was picked as the winner. */
+  winCount: number;
+  /** Number of pairs where the judge produced a usable score for this model. */
+  sampleSize: number;
+}
+
+export interface JudgeVerdict {
+  targetAId: string;
+  targetBId: string;
+  /** Verbatim rationale per model slug — used to render side-by-side cards. */
+  rationales: Record<string, string>;
+  /** Slug → "A" | "B" | "C" | "D" — how this pair was anonymized to the judge. */
+  shuffleMap: Record<string, string>;
+  /** Judge's score per model slug. Slugs missing here means the judge skipped scoring them. */
+  scores: Record<string, JudgeScore>;
+  /** Winning slug per the judge (null if unparseable). */
+  winnerSlug: string | null;
+  /** Judge's 1–2 sentence rationale for picking the winner. */
+  winnerReasoning: string;
+}
+
+export interface ModelComparisonReport {
+  country: string;
+  /** Target ID → statement + source-doc metadata. Populated for every target
+   *  ID that appears in any row set; the UI uses this to render the actual
+   *  policy statements alongside model rationales. */
+  targets: Record<string, TargetSummary>;
+  /** Model slugs, flagship-first (matches listAvailableModels ordering). */
+  models: string[];
+  /** Slug listed first — used for ordering and as the cost-pricing reference, NOT as ground truth. */
+  flagship: string;
+  /** Order of labels used for matrix rows/cols. */
+  alignmentLevels: AlignmentLevel[];
+  /** Pairs evaluated by every model (set intersection across all alignment.json). */
+  pairCount: number;
+  /** Sample of pair-keys present in one model but not all (for diagnostics). */
+  missingPairs: Record<string, [string, string][]>;
+  /** Per-model count of each alignment label across the common pairs. */
+  distributions: Record<string, Record<AlignmentLevel, number>>;
+  /** modelA → modelB → fraction of common pairs they agree on (descriptive only). */
+  agreementMatrix: Record<string, Record<string, number>>;
+  /** modelA → modelB → Cohen's κ (descriptive only). */
+  kappaMatrix: Record<string, Record<string, number>>;
+  /** How many pairs were flagged by exactly N of the M models. */
+  flaggingOverlap: ModelFlaggingOverlap;
+  /** Per model: top-N pairs only this model flagged — the model's distinctive signal. */
+  uniqueSignal: Record<string, ModelDisagreementRow[]>;
+  /** Per model: deterministic-random sample from the FULL solo-flag set (for evaluation). */
+  uniqueSignalRandomSample: Record<string, ModelDisagreementRow[]>;
+  /** Per model: total count of solo flags (so the UI can frame "30 of 6,882"). */
+  uniqueSignalTotal: Record<string, number>;
+  /** Deterministic-random sample of pairs flagged by every model (consensus). */
+  consensusFlaggedRandomSample: ModelDisagreementRow[];
+  /** Top-N most-contested pairs (capped at 50 in the analyzer). */
+  disagreements: ModelDisagreementRow[];
+  /** Per model: mechanism counts for flagged records. */
+  mechanisms: Record<string, Record<string, number>>;
+  /** Per model: cheap proxies for rationale specificity and citation behaviour. */
+  rationaleCharacter: Record<string, ModelRationaleCharacter>;
+  /** Per model: cost + footprint summary lifted from status.json. */
+  costs: Record<string, ModelCostSummary>;
+  /** Per model: banned-vocabulary audit (CLAUDE.md guardrail). */
+  vocabCompliance: Record<string, ModelVocabCompliance>;
+  /** Judge model used for the rationale-quality sample (null when the judge pass wasn't run). */
+  judgeModel: string | null;
+  /** Number of disagreement pairs sent to the judge (null when not run). */
+  judgeSampleSize: number | null;
+  /** Per-model aggregate scores from the judge pass (null when not run). */
+  judgeAggregates: Record<string, JudgeAggregate> | null;
+  /** Per-pair judge verdicts including unanonymized rationales (null when not run). */
+  judgeVerdicts: JudgeVerdict[] | null;
+}
+
+// ---------------------------------------------------------------------------
+// Manual evaluation ratings
+// ---------------------------------------------------------------------------
+//
+// Human ratings on individual flagged pairs. Stored server-side at
+// `python/output/{country}/_ratings.json` (NOT localStorage — see
+// memory/feedback_server_side_storage.md). Ratings persist across reviewers,
+// browsers, and deploys; the same file is updated by every POST to
+// `/api/ratings/[country]`.
+
+export type PairRatingValue = "real" | "thin" | "skip";
+
+export interface PairRating {
+  rating: PairRatingValue;
+  /** Optional free-text note the reviewer added alongside the rating. */
+  note: string;
+  /** Date.now() at the moment of the latest rating write. */
+  ts: number;
+}
+
+/** Keyed by `${targetAId}::${targetBId}` (no canonical sorting — pair IDs come from the analyzer artifact and already match the source ordering). */
+export type RatingsByCountry = Record<string, PairRating>;
+
+/** One appended line in `python/output/ratings-ledger.jsonl`. The API route
+ *  writes these; `loadRatings` folds them into a `RatingsByCountry` map by
+ *  keeping the highest-`ts` event per `pairKey`. */
+export interface PairRatingEvent extends PairRating {
+  country: string;
+  pairKey: string;
+}
+
+// ---------------------------------------------------------------------------
 // LLM Synthesis layer (post-processing of alignment.json + classifications.json)
 // ---------------------------------------------------------------------------
 //

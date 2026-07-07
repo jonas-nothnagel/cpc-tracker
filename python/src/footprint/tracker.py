@@ -53,8 +53,20 @@ class FootprintTotals:
     minerals_ugsbeq: float = 0.0
     call_count: int = 0  # total call_llm invocations (incl. cached)
     tracked_call_count: int = 0  # non-cached calls where impacts were captured
+    estimated_call_count: int = 0  # calls where impacts were approximated via per-token coefficients
     cached_call_count: int = 0  # calls served from disk cache (no new footprint)
     model: str | None = None  # last model used — for display purposes
+
+
+# Per-1000-output-token coefficients used when EcoLogits has no registry entry
+# for the model (e.g. DeepSeek-V4-Pro, Phi-4 freshly released on Azure Foundry).
+# Rough "flagship OSS 70B-class" baseline so cross-model footprint comparison
+# stays meaningful instead of collapsing to zero. Rows derived from these are
+# tagged ``estimated`` in the snapshot so consumers can distinguish them.
+_ESTIMATE_ENERGY_WH_PER_KTOK = 1.5
+_ESTIMATE_WATER_ML_PER_KTOK = 0.6
+_ESTIMATE_CO2_GEQ_PER_KTOK = 0.6
+_ESTIMATE_MINERALS_UGSBEQ_PER_KTOK = 0.15
 
 
 def _impact_value(field: Any) -> float:
@@ -84,6 +96,17 @@ def _normalise_model_name(model: str) -> str:
     if "/" in model:
         return model.split("/", 1)[1]
     return model
+
+
+def _classify_source(totals: "FootprintTotals") -> str:
+    """Classify a totals bucket as measured / estimated / mixed / unavailable."""
+    has_tracked = totals.tracked_call_count > 0
+    has_estimated = totals.estimated_call_count > 0
+    if not _ECOLOGITS_AVAILABLE or (not has_tracked and not has_estimated):
+        return "unavailable"
+    if has_tracked and has_estimated:
+        return "mixed"
+    return "measured" if has_tracked else "estimated"
 
 
 def _impacts_are_empty(impacts: Any) -> bool:
@@ -116,6 +139,7 @@ class FootprintTracker:
         self._lock = asyncio.Lock()
         self._warned_missing = False
         self._warned_fallback = False
+        self._warned_token_estimate = False
 
     def _bucket(self, model: str) -> FootprintTotals:
         """Return the per-model accumulator, creating it on first use.
@@ -127,6 +151,23 @@ class FootprintTracker:
             bucket = FootprintTotals(model=model)
             self._by_model[model] = bucket
         return bucket
+
+    def _add_token_estimate(
+        self, output_tokens: int, *targets: FootprintTotals
+    ) -> None:
+        """Add coarse per-token impacts to each target.
+
+        Used when EcoLogits has no registry entry for the model, so the only
+        signal we have is output token count. Coefficients are documented at
+        module top; rows incrementing through here MUST also increment
+        estimated_call_count so the snapshot can flag the result.
+        """
+        ktok = output_tokens / 1000.0
+        for target in targets:
+            target.energy_wh += _ESTIMATE_ENERGY_WH_PER_KTOK * ktok
+            target.water_ml += _ESTIMATE_WATER_ML_PER_KTOK * ktok
+            target.co2_geq += _ESTIMATE_CO2_GEQ_PER_KTOK * ktok
+            target.minerals_ugsbeq += _ESTIMATE_MINERALS_UGSBEQ_PER_KTOK * ktok
 
     def _add_impacts(self, impacts: Any, *targets: FootprintTotals) -> None:
         """Add one response's impacts to each target (the flat total + its model bucket)."""
@@ -209,12 +250,20 @@ class FootprintTracker:
                     electricity_mix_zone=electricity_zone(),
                 )
                 if _impacts_are_empty(fallback):
-                    if not self._warned_missing:
-                        logger.warning(
-                            f"EcoLogits fallback returned empty impacts for '{normalised}'. "
-                            "Model may not be in the registry."
+                    # Model not in EcoLogits registry. Use a coarse per-token
+                    # estimate so cross-model footprint comparison stays
+                    # meaningful instead of collapsing to zero. The result is
+                    # flagged ``estimated`` in the snapshot.
+                    self._add_token_estimate(int(output_tokens), self._totals, bucket)
+                    self._totals.estimated_call_count += 1
+                    bucket.estimated_call_count += 1
+                    if not self._warned_token_estimate:
+                        logger.info(
+                            f"EcoLogits has no registry entry for '{normalised}'. "
+                            "Using generic per-token coefficients; footprint will "
+                            "be flagged 'estimated' in output."
                         )
-                        self._warned_missing = True
+                        self._warned_token_estimate = True
                     return
                 self._add_impacts(fallback, self._totals, bucket)
                 self._totals.tracked_call_count += 1
@@ -246,14 +295,24 @@ class FootprintTracker:
         The flat top-level keys are unchanged for backward compatibility with
         the existing footprint.json / status.json consumers. The additive
         ``by_model`` list disaggregates the same impacts per model.
+
+        ``source`` is one of: ``measured`` (every footprint-bearing call had
+        registry-backed impacts), ``estimated`` (every footprint-bearing call
+        fell back to per-token coefficients), ``mixed`` (both), or
+        ``unavailable`` (no footprint captured at all).
         """
         data = asdict(self._totals)
-        data["available"] = _ECOLOGITS_AVAILABLE and self._totals.tracked_call_count > 0
-        data["source"] = "measured" if data["available"] else "unavailable"
+        data["available"] = _ECOLOGITS_AVAILABLE and (
+            self._totals.tracked_call_count + self._totals.estimated_call_count
+        ) > 0
+        data["source"] = _classify_source(self._totals)
         data["by_model"] = [
             {
                 **asdict(bucket),
-                "available": _ECOLOGITS_AVAILABLE and bucket.tracked_call_count > 0,
+                "available": _ECOLOGITS_AVAILABLE and (
+                    bucket.tracked_call_count + bucket.estimated_call_count
+                ) > 0,
+                "source": _classify_source(bucket),
             }
             for bucket in self._by_model.values()
         ]
@@ -263,6 +322,8 @@ class FootprintTracker:
         self._totals = FootprintTotals()
         self._by_model = {}
         self._warned_missing = False
+        self._warned_fallback = False
+        self._warned_token_estimate = False
 
     def seed(self, initial: dict[str, Any]) -> None:
         """Seed the tracker with pre-existing footprint totals.
@@ -283,6 +344,9 @@ class FootprintTracker:
         self._totals.call_count += int(initial.get("call_count", 0) or 0)
         self._totals.tracked_call_count += int(
             initial.get("tracked_call_count", 0) or 0
+        )
+        self._totals.estimated_call_count += int(
+            initial.get("estimated_call_count", 0) or 0
         )
         self._totals.cached_call_count += int(
             initial.get("cached_call_count", 0) or 0

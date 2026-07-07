@@ -16,6 +16,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { downloadFile } from "@/lib/download";
 import { cumulativeByComponent } from "@/lib/footprint/rollup";
 import type {
   FootprintMetrics,
@@ -131,18 +132,6 @@ function toCsv(events: LedgerEvent[]): string {
     rows.push(CSV_COLUMNS.map((c) => csvCell(e[c])).join(","));
   }
   return rows.join("\n");
-}
-
-function download(filename: string, content: string, type: string): void {
-  const blob = new Blob([content], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
 }
 
 // ---------------------------------------------------------------------------
@@ -444,9 +433,9 @@ function Dashboard({ data }: { data: FootprintRollup }) {
   const regionBars = toBars(data.byRegion, (k) => k);
 
   const exportCsv = () =>
-    download(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");
+    downloadFile(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");
   const exportJson = () =>
-    download(
+    downloadFile(
       `cpc-footprint-${stamp}.json`,
       JSON.stringify(data, null, 2),
       "application/json",

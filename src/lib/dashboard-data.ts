@@ -16,17 +16,69 @@
  * and held for the container's lifetime is correct.
  */
 
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { join } from "path";
 import { gzipSync } from "node:zlib";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
+import type {
+  ModelComparisonReport,
+  PairRating,
+  PairRatingValue,
+  RatingsByCountry,
+} from "@/types";
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
 const PYTHON_DATA = join(PROJECT_ROOT, "python", "data");
 const ANALYSES_DIR = join(PROJECT_ROOT, "python", "analyses");
+
+/** Path-traversal guard for model query params. Mirrors python/src/run_analysis.py
+ *  slugify_model: lowercase, hyphens, digits, ASCII letters only. */
+const MODEL_SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
+
+export function isValidModelSlug(slug: string): boolean {
+  return MODEL_SLUG_RE.test(slug);
+}
+
+/** Slugs we treat as the "production / flagship" model when a country has
+ *  multiple runs and the caller didn't pick one. Order matters: first match
+ *  wins. Keeps reviewers landing on the production result, not on an
+ *  alphabetically-first comparison run. */
+const PREFERRED_DEFAULT_SLUGS = ["gpt-5-4", "gpt-5-5"];
+
+/** List per-model output subdirs that exist for a country, e.g. ['gpt-5-4',
+ *  'gpt-5-4-mini']. Returns [] when the country dir is flat (single-model
+ *  legacy layout) — callers should treat that as "no model selector".
+ *  Sorted with the flagship-default slug first when present, then
+ *  alphabetical for the rest, so a no-?model= request lands on the
+ *  production model rather than whichever slug sorts first lexically. */
+export function listAvailableModels(country: string): string[] {
+  const countryDir = join(PYTHON_OUTPUT, country.toLowerCase());
+  if (!existsSync(countryDir)) return [];
+  try {
+    const found = readdirSync(countryDir)
+      .filter((name) => MODEL_SLUG_RE.test(name))
+      .filter((name) => {
+        const sub = join(countryDir, name);
+        try {
+          return statSync(sub).isDirectory() && existsSync(join(sub, "alignment.json"));
+        } catch {
+          return false;
+        }
+      })
+      .sort();
+    // Promote the first preferred default that exists to position 0.
+    const preferred = PREFERRED_DEFAULT_SLUGS.find((slug) => found.includes(slug));
+    if (preferred) {
+      return [preferred, ...found.filter((s) => s !== preferred)];
+    }
+    return found;
+  } catch {
+    return [];
+  }
+}
 
 export function readJson<T>(filePath: string): T | null {
   try {
@@ -35,6 +87,71 @@ export function readJson<T>(filePath: string): T | null {
   } catch {
     return null;
   }
+}
+
+/** Cross-model comparison artifact, produced by
+ *  `python -m src.analyze_model_comparison --country <id>`. Returns null
+ *  when the artifact hasn't been generated yet (e.g. a fresh country with
+ *  only one model run); callers should treat that as "no analysis to show". */
+const modelComparisonCache = new Map<string, ModelComparisonReport | null>();
+export function loadModelComparison(country: string): ModelComparisonReport | null {
+  const id = country.toLowerCase();
+  // In dev, skip the cache so analyzer reruns are visible on next request.
+  // Prod (container lifetime cache) keeps the original optimization.
+  if (process.env.NODE_ENV !== "development" && modelComparisonCache.has(id)) {
+    return modelComparisonCache.get(id) ?? null;
+  }
+  const report = readJson<ModelComparisonReport>(
+    join(PYTHON_OUTPUT, id, "_model_comparison.json"),
+  );
+  modelComparisonCache.set(id, report);
+  return report;
+}
+
+/** Human ratings on individual flagged pairs. Streams the append-only
+ *  ledger at `python/output/ratings-ledger.jsonl` and folds events to
+ *  `{ pairKey → latest rating for this country }`. Intentionally NOT
+ *  cached: reviewer writes flip the file at runtime, so each page render
+ *  re-reads. Fold is O(events) — fast enough for anything short of
+ *  hundreds of thousands of ratings. */
+const RATING_VALUES: ReadonlySet<PairRatingValue> = new Set(["real", "thin", "skip"]);
+
+export function loadRatings(country: string): RatingsByCountry {
+  const path = join(PYTHON_OUTPUT, "ratings-ledger.jsonl");
+  if (!existsSync(path)) return {};
+  const id = country.toLowerCase();
+  const out: RatingsByCountry = {};
+  let raw: string;
+  try {
+    raw = readFileSync(path, "utf-8");
+  } catch {
+    return {};
+  }
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    let evt: unknown;
+    try {
+      evt = JSON.parse(trimmed);
+    } catch {
+      continue;
+    }
+    if (!evt || typeof evt !== "object") continue;
+    const e = evt as Record<string, unknown>;
+    if (typeof e.country !== "string" || e.country.toLowerCase() !== id) continue;
+    if (typeof e.pairKey !== "string") continue;
+    if (typeof e.rating !== "string" || !RATING_VALUES.has(e.rating as PairRatingValue)) continue;
+    const ts = typeof e.ts === "number" && Number.isFinite(e.ts) ? e.ts : 0;
+    const previous = out[e.pairKey];
+    if (previous && previous.ts >= ts) continue;
+    const rating: PairRating = {
+      rating: e.rating as PairRatingValue,
+      note: typeof e.note === "string" ? e.note : "",
+      ts,
+    };
+    out[e.pairKey] = rating;
+  }
+  return out;
 }
 
 /**
@@ -54,6 +171,9 @@ export type DerivedPaths = {
   /** ISO3 code (lowercase) for external NR7 data lookups. Null on the upload
    *  flow because analysisId data doesn't have a registry entry. */
   iso3: string | null;
+  /** The model slug that resolved this path, when ?model= was passed. Null
+   *  for upload flow and for country requests with no per-model subdirs. */
+  model: string | null;
 };
 
 export type DerivedPathsResult =
@@ -72,6 +192,7 @@ export type DerivedPathsResult =
 export function derivePaths(
   rawAnalysisId: string | null,
   rawCountry: string | null,
+  rawModel: string | null = null,
 ): DerivedPathsResult {
   // analysisId wins when both are present. Keep the existing analysisId
   // validation shape (regex + existsSync fall-through handled by the caller).
@@ -91,6 +212,7 @@ export function derivePaths(
         outputDir: join(analysisBase, "output"),
         targetsFile: "targets.json",
         iso3: null,
+        model: null,
       },
     };
   }
@@ -107,13 +229,37 @@ export function derivePaths(
   if (!entry) {
     return { kind: "error", status: 400, error: "Country not in registry" };
   }
+
+  // Per-model output subdir resolution. The model slug must match the strict
+  // format guard (no path traversal). If the country has any per-model subdirs
+  // and the caller didn't request one, default to the first available so the
+  // initial dashboard load still finds outputs after the migration to the
+  // {country}/{model}/ layout.
+  const countryDir = join(PYTHON_OUTPUT, entry.id);
+  let resolvedModel: string | null = null;
+  if (rawModel) {
+    if (!isValidModelSlug(rawModel)) {
+      return { kind: "error", status: 400, error: "Invalid model format" };
+    }
+    const modelDir = join(countryDir, rawModel);
+    if (!existsSync(modelDir)) {
+      return { kind: "error", status: 404, error: "Model output not found for country" };
+    }
+    resolvedModel = rawModel;
+  } else {
+    const available = listAvailableModels(entry.id);
+    if (available.length > 0) resolvedModel = available[0];
+  }
+  const outputDir = resolvedModel ? join(countryDir, resolvedModel) : countryDir;
+
   return {
     kind: "country",
     paths: {
       dataDir: PYTHON_DATA,
-      outputDir: join(PYTHON_OUTPUT, entry.id),
+      outputDir,
       targetsFile: `${entry.id}-targets.json`,
       iso3: entry.iso3,
+      model: resolvedModel,
     },
   };
 }
@@ -141,6 +287,12 @@ export interface DashboardResponse {
   /** Legacy bare array OR the new { synthesis, states } object. */
   sectorSynthesis: unknown;
   countryConfig: Record<string, unknown> | null;
+  /** The model slug whose outputs assembled this payload, when the country
+   *  has per-model subdirs. Null when the country has no per-model layout. */
+  model: string | null;
+  /** All model slugs available for this country. Empty when the country has
+   *  no per-model layout. Drives the model selector. */
+  availableModels: string[];
 }
 
 export type AssembleResult =
@@ -175,7 +327,18 @@ export function assembleDashboardData(
   kind: "country" | "analysis",
   locale?: string,
 ): AssembleResult {
-  const { dataDir, outputDir, targetsFile, iso3 } = paths;
+  const { dataDir, outputDir, targetsFile, iso3, model } = paths;
+  // Country-level model registry, surfaced in the payload so the frontend
+  // can render the selector without an extra round trip. Upload flow has no
+  // per-model layout, so this is empty there. The country id is derived from
+  // the targets filename (e.g. mongolia-targets.json → mongolia) so we don't
+  // have to parse `outputDir` to figure out whether a model subdir is in play.
+  const countryIdMatch = kind === "country"
+    ? targetsFile.match(/^(.+)-targets\.json$/)
+    : null;
+  const availableModels = countryIdMatch
+    ? listAvailableModels(countryIdMatch[1])
+    : [];
 
   const targets = readJson<unknown[]>(join(dataDir, targetsFile));
   const categories = readJson<{
@@ -473,6 +636,8 @@ export function assembleDashboardData(
       corpusThemes: corpusThemes ?? null,
       sectorSynthesis: sectorSynthesis ?? [],
       countryConfig: finalConfig ?? null,
+      model,
+      availableModels,
     },
   };
 }
@@ -503,8 +668,9 @@ export type CountryPayloadResult =
 export function getCountryDashboardPayload(
   country: string,
   locale?: string,
+  model?: string | null,
 ): CountryPayloadResult {
-  const result = derivePaths(null, country);
+  const result = derivePaths(null, country, model ?? null);
   if (result.kind === "error") {
     return { kind: "error", status: result.status, error: result.error };
   }
@@ -513,10 +679,13 @@ export function getCountryDashboardPayload(
   }
 
   // Canonical id from the registry (derivePaths already validated it exists).
-  // The cache key is per-locale: each locale serves a different narrative
-  // (machine-translated synthesis) while sharing the rest of the dataset.
+  // The cache key is per-locale AND per-model: each combination produces a
+  // distinct payload (different narratives, different alignment outputs).
   const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
-  const key = locale && locale !== "en" ? `${canonical}:${locale}` : canonical;
+  const resolvedModel = result.paths.model;
+  const localeKey = locale && locale !== "en" ? `:${locale}` : "";
+  const modelKey = resolvedModel ? `@${resolvedModel}` : "";
+  const key = `${canonical}${modelKey}${localeKey}`;
   const cached = countryPayloadCache.get(key);
   if (cached) return { kind: "ok", payload: cached };
 

@@ -12,11 +12,13 @@
  */
 
 import { useEffect, useState } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { getCountry, listVisibleCountries } from "@/config/countries";
 import { CoherenceBriefing } from "./coherence-briefing";
+import { ModelSelector } from "./model-selector";
 import type {
   Target,
   PolicyDocumentType,
@@ -63,6 +65,12 @@ interface DashboardData {
   corpusThemes: CorpusThemesPayload | null;
   sectorSynthesis: SectorSynthesisPayload | SectorSynthesis[];
   countryConfig: CountryConfig | null;
+  /** Model slug whose outputs assembled this payload (null when the country
+   *  has no per-model layout). */
+  model: string | null;
+  /** All model slugs that have been run for this country. Empty when the
+   *  country still uses the flat layout. Drives the model selector. */
+  availableModels: string[];
 }
 
 function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
@@ -162,6 +170,8 @@ function normalize(raw: DashboardResponse, locale?: string): DashboardData {
       (r.sectorSynthesis as SectorSynthesisPayload | SectorSynthesis[] | null) ??
       [],
     countryConfig: (r.countryConfig as CountryConfig | null) ?? null,
+    model: (r.model as string | null) ?? null,
+    availableModels: (r.availableModels as string[] | undefined) ?? [],
   };
 }
 
@@ -183,6 +193,10 @@ export function CoherenceDashboard({
 }) {
   const t = useTranslations("dashboard");
   const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const selectedModel = searchParams.get("model");
   const [data, setData] = useState<DashboardData | null>(
     initialData ? normalize(initialData, locale) : null,
   );
@@ -192,14 +206,16 @@ export function CoherenceDashboard({
 
   useEffect(() => {
     if (!analysisId && !country) return;
-    // Pilot/country flow with a server-inlined payload: state was already
-    // seeded from initialData, so there's nothing to fetch.
-    if (initialData) return;
+    // initialData seeds the FIRST render only; once the user toggles a
+    // different model via the selector, we always refetch so the displayed
+    // payload matches the URL.
+    if (initialData && !selectedModel) return;
 
     const localeQuery = locale && locale !== "en" ? `&locale=${encodeURIComponent(locale)}` : "";
+    const modelQuery = selectedModel ? `&model=${encodeURIComponent(selectedModel)}` : "";
     const url = analysisId
       ? `/api/dashboard?analysisId=${encodeURIComponent(analysisId)}${localeQuery}`
-      : `/api/dashboard?country=${encodeURIComponent(country!)}${localeQuery}`;
+      : `/api/dashboard?country=${encodeURIComponent(country!)}${localeQuery}${modelQuery}`;
 
     let cancelled = false;
     fetch(url)
@@ -209,6 +225,9 @@ export function CoherenceDashboard({
       })
       .then((raw) => {
         if (cancelled) return;
+        // Clear any previous error from a prior model toggle, atomically with
+        // the new payload landing — no cascading render in the effect body.
+        setError(null);
         setData(normalize(raw as DashboardResponse, locale));
       })
       .catch((e) => {
@@ -218,7 +237,13 @@ export function CoherenceDashboard({
     return () => {
       cancelled = true;
     };
-  }, [analysisId, country, initialData, locale]);
+  }, [analysisId, country, initialData, locale, selectedModel]);
+
+  const handleModelChange = (next: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("model", next);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   if (error) {
     return (
@@ -269,6 +294,15 @@ export function CoherenceDashboard({
         currentCountryId={country}
         countries={basePath ? undefined : listVisibleCountries().map((c) => ({ id: c.id, name: c.name }))}
         basePath={basePath}
+      />
+
+      <ModelSelector
+        availableModels={data.availableModels}
+        selectedModel={data.model}
+        onChange={handleModelChange}
+        // The comparison page is a Mongolia-only route for now (the only
+        // country with multiple per-model runs on disk).
+        comparisonHref={country === "mongolia" ? "/mongolia/model-comparison" : undefined}
       />
 
       <CoherenceBriefing

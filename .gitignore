@@ -82,8 +82,11 @@ external-docs/
 # Deployment artifacts
 .vercel
 
-# Pipeline run logs (regenerated each run, not checked in)
+# Pipeline run logs (regenerated each run, not checked in). Pipeline
+# *outputs* (the JSON artifacts the dashboard reads) stay tracked under
+# python/output/{country}/{model}/ — only logs are excluded.
 python/logs/
+python/output/.run-logs/
 
 # Local raw country corpora (zips + extracted, too large for git).
 # Anchored to the repo root so `python/data/` (committed pipeline inputs)
