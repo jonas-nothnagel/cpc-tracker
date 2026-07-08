@@ -30,6 +30,7 @@ from src.llm import _augment_system_with_language, read_cache, set_language  # n
 from src.align import (  # noqa: E402
     ADVISOR_SYSTEM,
     ADVISOR_USER_TEMPLATE,
+    ALIGNMENT_CACHE_NAMESPACE,
     ANALYST_SYSTEM,
     ANALYST_USER_TEMPLATE,
     DOC_TYPE_LABELS,
@@ -41,6 +42,7 @@ from src.measure_align import (  # noqa: E402
     CROSS_TYPE_INTRO_FRAMING,
     MEASURE_ADVISOR_SYSTEM,
     MEASURE_ADVISOR_USER_TEMPLATE,
+    MEASURE_CACHE_NAMESPACE,
     MEASURE_INTRO_FRAMING,
     _side_label,
     generate_measure_pairs,
@@ -168,7 +170,8 @@ def main() -> None:
     d_hits = sum(1 for v in decomp_cache.values() if v is not None)
     print(f"  decompose            {d_hits:>4}/{len(sample_targets):<4} {verdict(d_hits, len(sample_targets))}")
 
-    # 2. Corpus alignment ("alignment_v2") on the first N generated pairs.
+    # 2. Corpus alignment on the first N generated pairs. The namespace is
+    #    imported from the pipeline so the probe can never drift from it.
     pairs = generate_pairs(targets)[:n]
     a_hits = a_n = 0
     for ta, tb in pairs:
@@ -177,12 +180,12 @@ def main() -> None:
         if da is None or db is None:
             continue  # cannot reconstruct: counts as unknown, reported below
         a_n += 1
-        if _hit("alignment_v2", *advisor_call(ta, tb, da, db, labels)) is not None:
+        if _hit(ALIGNMENT_CACHE_NAMESPACE, *advisor_call(ta, tb, da, db, labels)) is not None:
             a_hits += 1
     note = "" if a_n == len(pairs) else f"  ({len(pairs) - a_n} unknowable: upstream decomp cold)"
-    print(f"  alignment_v2         {a_hits:>4}/{a_n:<4} {verdict(a_hits, a_n)}{note}")
+    print(f"  {ALIGNMENT_CACHE_NAMESPACE:<20} {a_hits:>4}/{a_n:<4} {verdict(a_hits, a_n)}{note}")
 
-    # 3. Measure alignment ("measure_alignment_v3"), when BTR data exists.
+    # 3. Measure alignment, when BTR data exists.
     # OUTPUT_DIR honors CPC_OUTPUT_DIR, so the probe reads the same outputs
     # the run would (a hardcoded repo-local path would silently probe stale
     # or absent data in exactly the redirected setups that need the probe).
@@ -211,11 +214,11 @@ def main() -> None:
                 continue
             m_n += 1
             if _hit(
-                "measure_alignment_v3", *measure_advisor_call(ta, m, dt, dm, labels)
+                MEASURE_CACHE_NAMESPACE, *measure_advisor_call(ta, m, dt, dm, labels)
             ) is not None:
                 m_hits += 1
         note = "" if m_n == len(m_pairs) else f"  ({len(m_pairs) - m_n} unknowable: upstream decomp cold)"
-        print(f"  measure_alignment_v3 {m_hits:>4}/{m_n:<4} {verdict(m_hits, m_n)}{note}")
+        print(f"  {MEASURE_CACHE_NAMESPACE:<20} {m_hits:>4}/{m_n:<4} {verdict(m_hits, m_n)}{note}")
 
     print(
         "\nWARM = re-run is free for that step. COLD = full recompute "

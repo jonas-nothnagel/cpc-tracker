@@ -38,7 +38,7 @@ from .classify_globe import (
     derive_globe_top_level_classifications,
     load_few_shot_examples,
 )
-from .align import build_analyst_call, decompose_targets, generate_pairs, assess_alignment
+from .align import PROMPT_VERSION, build_analyst_call, decompose_targets, generate_pairs, assess_alignment
 from .extract_friction_dimensions import enrich_with_friction_dimensions
 from .llm import (
     _augment_system_with_language,
@@ -151,6 +151,9 @@ def write_status(
         "completedAt": datetime.now(timezone.utc).isoformat() if status in ("completed", "failed") else None,
         "error": error,
         "summary": summary,
+        # Which advisor-prompt revision produced this run's alignment verdicts.
+        # Comparison artifacts refuse to mix revisions (see analyze_model_comparison).
+        "promptVersion": PROMPT_VERSION,
         "footprint": get_footprint_tracker().snapshot(),
     }
     (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))

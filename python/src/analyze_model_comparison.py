@@ -547,6 +547,18 @@ def consensus_flagged_random_sample(
     return [_row_from_pair(all_idx, key) for key in sampled]
 
 
+def prompt_version(country_dir: Path, slug: str) -> str | None:
+    """Advisor-prompt revision recorded in the model's status.json (None if the
+    run predates provenance stamping)."""
+    status_path = country_dir / slug / "status.json"
+    if not status_path.exists():
+        return None
+    try:
+        return json.loads(status_path.read_text()).get("promptVersion")
+    except Exception:
+        return None
+
+
 def cost_summary(country_dir: Path, slug: str) -> dict[str, Any]:
     """Pull headline cost + footprint figures from the model's status.json."""
     status_path = country_dir / slug / "status.json"
@@ -650,6 +662,17 @@ def analyze(
 
     costs = {slug: cost_summary(country_dir, slug) for slug in slugs}
 
+    prompt_versions = {slug: prompt_version(country_dir, slug) for slug in slugs}
+    if len(set(prompt_versions.values())) > 1:
+        # Agreement/kappa across different advisor-prompt revisions measures the
+        # prompt diff, not the models. Surface loudly; the artifact still emits
+        # so the mix is inspectable, but it must not ship as a comparison.
+        print(
+            "WARNING: models were run with different advisor-prompt versions "
+            f"({prompt_versions}); cross-model agreement stats are NOT comparable. "
+            "Re-run the outdated models before using this artifact."
+        )
+
     vocab = {slug: vocab_compliance(idx) for slug, idx in all_idx.items()}
 
     # Collect target IDs that appear in any row set, then emit a small map
@@ -694,6 +717,7 @@ def analyze(
         "mechanisms": mechanisms,
         "rationaleCharacter": rationale_char,
         "costs": costs,
+        "promptVersions": prompt_versions,
         "vocabCompliance": vocab,
         # Judge fields are populated by main() when --with-judge is passed.
         "judgeModel": None,
