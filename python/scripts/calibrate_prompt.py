@@ -17,8 +17,9 @@ Usage (from python/):
     # Strata + old-arm stats only; makes no LLM calls:
     .venv/bin/python scripts/calibrate_prompt.py --dry-run
 
-    # New-arm calls via the NCTP endpoint configured in the project .env:
-    .venv/bin/python scripts/calibrate_prompt.py --endpoint nctp
+    # New-arm calls via the Azure endpoint configured in the project .env
+    # (model string = deployment name, as the comparison runs were served):
+    .venv/bin/python scripts/calibrate_prompt.py --endpoint azure
 
     # Trust LLM_BASE_URL / keys already exported in the environment:
     .venv/bin/python scripts/calibrate_prompt.py --endpoint env
@@ -53,27 +54,26 @@ def configure_endpoint(mode: str) -> None:
     """Set provider env vars BEFORE any src import (config reads env at import).
 
     llm.py routes to Azure whenever AZURE_OPENAI_ENDPOINT is set, regardless of
-    LLM_BASE_URL, so every mode explicitly blanks it. Values are written into
-    os.environ ahead of src.config's load_dotenv, which never overrides
-    variables that already exist.
+    LLM_BASE_URL; there the model string becomes the deployment name, which is
+    how the multi-model comparison runs were served (Azure AI Foundry
+    deployments like DeepSeek-V4-Pro). Values are written into os.environ ahead
+    of src.config's load_dotenv, which never overrides variables that already
+    exist.
     """
     from dotenv import load_dotenv
 
     load_dotenv(_PYTHON_DIR.parent / ".env")
-    if mode == "nctp":
-        base = os.getenv("NCTP_BASE_URL")
-        key = os.getenv("NCTP_API_KEY")
-        if not base or not key:
-            raise SystemExit("--endpoint nctp: NCTP_BASE_URL / NCTP_API_KEY missing from .env")
-        os.environ["LLM_BASE_URL"] = base
-        os.environ["OPENROUTER_API_KEY"] = key  # config prefers this name
-        os.environ["LLM_API_KEY"] = key
+    if mode == "azure":
+        if not os.getenv("AZURE_OPENAI_ENDPOINT"):
+            raise SystemExit("--endpoint azure: AZURE_OPENAI_ENDPOINT missing from .env")
     elif mode == "none":
         # Dry runs make no calls; an unreachable base URL turns any bug that
-        # tries into a loud connection error instead of a paid request.
+        # tries into a loud connection error instead of a paid request, and
+        # blanking the Azure endpoint keeps llm.py off its Azure path.
         os.environ["LLM_BASE_URL"] = "http://127.0.0.1:9"
         os.environ.setdefault("OPENROUTER_API_KEY", "unused")
-    os.environ["AZURE_OPENAI_ENDPOINT"] = ""
+        os.environ["AZURE_OPENAI_ENDPOINT"] = ""
+    # mode == "env": trust the caller's environment/.env exactly as loaded.
 
 
 def flag_rate(idx, keys) -> float:
@@ -106,7 +106,7 @@ def main() -> int:
     )
     ap.add_argument(
         "--endpoint",
-        choices=["nctp", "env"],
+        choices=["azure", "env"],
         help="required unless --dry-run: where new-arm calls go",
     )
     args = ap.parse_args()
