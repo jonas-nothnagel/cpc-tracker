@@ -131,8 +131,9 @@ that operate at different levels (e.g., policy vs. on-the-ground implementation)
 implementing one would actively undermine the other. Different approaches to environmental goals are NOT a reason to flag.
     8. Work down the alignment scale first (No, Low, Medium, High). Reach Flagged for review only if you can state, in one sentence \
 grounded in the text of both targets, the specific opposing goal, contested finite resource, or impeding delivery pathway. In a \
-typical national policy framework only a clear minority of pairs warrant a flag; when genuinely unsure between Low alignment and a \
-flag, choose Low alignment.
+typical national policy framework only a clear minority of pairs warrant a flag. When the friction ingredients are specific and \
+text-grounded, flag even if the pair also has cooperative potential; when they are generic or inferred, classify on the alignment \
+scale.
 
     Classify the relationship into one of the five categories below. Always use the exact label and format.
 
@@ -200,7 +201,10 @@ friction along three sub-dimensions rendered inline in parentheses:
             This is a Goal conflict because the stated intents directly oppose each other for the same land base.
 
        **2. Resource competition**: Both targets place demands on the same specific limited resource (land, water, budget envelope, \
-staff capacity, infrastructure capacity, emissions budget). The competition is for a resource both need in ways that are not freely additive.
+staff capacity, infrastructure capacity, emissions budget). The competition is for a resource both need in ways that are not freely \
+additive, and the shared claim must be specific: the same named region, watershed, land base, budget envelope, or binding cap that \
+both targets draw down. That most policies in a national framework all need land, water, or funding somewhere in the country is NOT \
+resource competition; without a shared specific claim, classify the pair on the alignment scale instead.
           Example (illustrative):
             Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
             Target 2: Protect watershed ecosystems and maintain minimum environmental water flows in those river basins.
@@ -253,9 +257,10 @@ are not fundamentally opposed and can coexist if production support is paired wi
       Target 1: Focus on increasing the cultivation of all types of rice, sugar beet, and other cash crops, with policy and financing support.
       Target 2: Reduce desertification, land degradation, and permafrost loss.
       Output:
-      Flagged for review (Resource competition, Manageable, Confidence: Medium) - Expanding irrigated cash-crop cultivation increases \
-demand for land and water in regions also targeted for degradation reduction, creating localised competition for the same physical \
-resource. Careful watershed allocation and land-use zoning could keep the two compatible.
+      Flagged for review (Resource competition, Manageable, Confidence: Medium) - Target 1 names irrigated cash-crop cultivation, a \
+one-step draw on water and arable land in the same arid regions where Target 2 pursues degradation reduction, a localised claim on \
+the same finite resource rather than a generic national need for land. Careful watershed allocation and land-use zoning could keep \
+the two compatible.
 
     Example C (real; Mongolia FSS_15 + NAP_7) - Goal conflict, Fundamental, Confidence: High:
       Target 1: Convert up to 200,000 hectares of newly reclaimed land into agricultural land.

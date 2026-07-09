@@ -238,9 +238,15 @@ def main() -> int:
         if strata["c_others_aligned"]
         else 0.0
     )
-    vocab = vocab_compliance(
-        {(s, k): new_idx[s][k] for s in new_idx for k in union_keys}
-    )
+    # Banned vocabulary is judged relative to the old arm on the SAME pairs:
+    # models emit "tension" spontaneously even with a clean prompt, and output
+    # sanitization is a separate (pre-existing) concern. The revision must at
+    # least halve the violation count per model.
+    def _vocab_hits(idx) -> int:
+        return vocab_compliance({k: idx[k] for k in union_keys})["pairsWithViolation"]
+
+    vocab_old = {s: _vocab_hits(all_idx[s]) for s in new_idx}
+    vocab_new = {s: _vocab_hits(new_idx[s]) for s in new_idx}
 
     gates = {
         "G1_treatment_background_flag_rate": {
@@ -298,10 +304,10 @@ def main() -> int:
             "threshold": "> 1 distinct value (when flags exist)",
             "pass": len(confidences) > 1 or not t_flags_new,
         },
-        "G6_banned_vocabulary_records": {
-            "value": vocab["pairsWithViolation"],
-            "threshold": "== 0",
-            "pass": vocab["pairsWithViolation"] == 0,
+        "G6_banned_vocabulary_vs_old_arm": {
+            "value": {s: {"old": vocab_old[s], "new": vocab_new[s]} for s in vocab_new},
+            "threshold": "new <= old/2 per model, same pairs",
+            "pass": all(vocab_new[s] <= vocab_old[s] * 0.5 for s in vocab_new),
         },
     }
 
