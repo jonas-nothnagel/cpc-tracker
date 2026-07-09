@@ -1,0 +1,3907 @@
+{
+  "promptVersion": "2.2",
+  "cacheNamespace": "alignment_v3",
+  "country": "mongolia",
+  "treatment": "deepseek-v4-pro",
+  "control": "gpt-5-4",
+  "strataSizes": {
+    "a_consensus": 184,
+    "b_control_flags_nonconsensus": 60,
+    "c_others_aligned": 100,
+    "d_background": 100
+  },
+  "adjudicatedConsensus": {
+    "real": 4,
+    "thin": 4,
+    "skip": 2
+  },
+  "unionPairs": 439,
+  "gates": {
+    "G1_treatment_background_flag_rate": {
+      "value": 0.21,
+      "threshold": "<= 0.25",
+      "pass": true
+    },
+    "G2_treatment_consensus_retention_vetted": {
+      "value": 0.8089887640449438,
+      "threshold": ">= 0.90 (thin/skip-rated pairs excluded)",
+      "pass": false
+    },
+    "G2b_treatment_confirmed_keeps_flagged": {
+      "value": 0.0,
+      "threshold": ">= 0.75 of human-confirmed flags",
+      "pass": false
+    },
+    "G3a_control_label_change_rate": {
+      "value": 0.19134396355353075,
+      "threshold": "<= 0.15",
+      "pass": false
+    },
+    "G3b_control_consensus_retention_vetted": {
+      "value": 0.8595505617977528,
+      "threshold": ">= 0.90 (thin/skip-rated pairs excluded)",
+      "pass": false
+    },
+    "G3d_control_confirmed_keeps_flagged": {
+      "value": 0.0,
+      "threshold": ">= 0.75 of human-confirmed flags",
+      "pass": false
+    },
+    "G3c_control_background_drift": {
+      "value": 0.06999999999999999,
+      "threshold": "<= 0.05",
+      "pass": false
+    },
+    "G4a_treatment_others_aligned_flag_rate": {
+      "value": 0.12,
+      "threshold": "<= 0.10",
+      "pass": false
+    },
+    "G4b_treatment_others_aligned_medium_high_share": {
+      "value": 0.87,
+      "threshold": ">= 0.50",
+      "pass": true
+    },
+    "G5a_treatment_modal_flag_payload_share": {
+      "value": {
+        "treatment": 0.7941176470588235,
+        "control": 0.5297297297297298
+      },
+      "threshold": "treatment <= max(0.5, control + 0.10); sub-field tuples concentrate naturally when flags are few and homogeneous",
+      "pass": false
+    },
+    "G5b_treatment_confidence_not_collapsed": {
+      "value": [
+        "high",
+        "medium"
+      ],
+      "threshold": "> 1 distinct value (when flags exist)",
+      "pass": true
+    },
+    "G6_banned_vocabulary_vs_old_arm": {
+      "value": {
+        "deepseek-v4-pro": {
+          "old": 150,
+          "new": 32
+        },
+        "gpt-5-4": {
+          "old": 45,
+          "new": 23
+        }
+      },
+      "threshold": "new <= old/2 per model, same pairs",
+      "pass": false
+    }
+  },
+  "allGatesPass": false,
+  "newDistribution": {
+    "deepseek-v4-pro": {
+      "medium": 165,
+      "none": 27,
+      "flagged": 204,
+      "high": 43
+    },
+    "gpt-5-4": {
+      "medium": 153,
+      "low": 42,
+      "flagged": 185,
+      "high": 59
+    }
+  },
+  "treatmentChangedVerdicts": [
+    {
+      "pair": [
+        "FSS_1",
+        "NDC_11"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural and livestock systems in Mongolia and share a focus on improving food and feed security, but they operate through different mechanisms and serve distinct primary goals. The FSS target establishes a legal and regulatory framework for food supply and trade, while the NDC target implements on-the-ground measures for livestock water and feed resilience, creating complementary but independently deliverable efforts."
+      }
+    },
+    {
+      "pair": [
+        "FSS_1",
+        "NRVTS_23"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target includes a bill to amend the Law Prohibiting Exploration and Exploitation of Mineral Resources in Headwater Areas, which can indirectly support wetland protection by safeguarding water sources, but the LDN target focuses specifically on wetland area maintenance without specifying actions or geography. The overlap is thematic and enabling rather than directly coordinated, as the FSS target's primary focus is agricultural legal frameworks and food security, not wetland conservation."
+      }
+    },
+    {
+      "pair": [
+        "FSS_10",
+        "NRVTS_17"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture sector and share a focus on improving agricultural outcomes, with the FSS target aiming to enhance workforce skills and the LDN target aiming to increase yields. They could support each other through a more skilled workforce enabling better agricultural practices, but they remain independently implementable with distinct primary goals and no direct operational overlap specified."
+      }
+    },
+    {
+      "pair": [
+        "FSS_10",
+        "NRVTS_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on restructuring higher education and vocational training for food, agriculture, and light industry personnel, while the LDN target addresses on-the-ground forest management through vegetation removal and invasive species control. They share no common geography, actors, or implementation activities, and aligning them would not yield any mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_11",
+        "NAP_8"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on energy-cost subsidies for food producers to boost domestic production, while the NAP target develops climate-disaster databases and insurance systems. They share no common actions, ecosystems, actors, or implementation pathways that would make coordination meaningful."
+      }
+    },
+    {
+      "pair": [
+        "FSS_11",
+        "NBSAP_16"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address subsidies and incentives in the agriculture and energy sectors, creating a clear thematic and operational overlap where green subsidy reform could directly shape the energy support measures for food producers. However, the FSS target focuses narrowly on ensuring stable, low-cost energy for domestic food production, while the NBSAP target aims broadly to repurpose harmful subsidies across multiple sectors, making them independently implementable without mutual dependence."
+      }
+    },
+    {
+      "pair": [
+        "FSS_11",
+        "NDC_16"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture and food production sector and share a focus on strengthening domestic food systems, but they address different dimensions: one ensures energy and utility inputs for production continuity, while the other builds climate resilience through crop variety adaptation. They could support each other through parallel efforts, as stable energy supply and resilient crop varieties together enhance food security, but they remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_11",
+        "NRVTS_23"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on energy subsidies and cost exemptions for food producers to boost domestic production, while the LDN target aims to halt wetland loss by 2030 without specifying any actions or actors. They share no common geography, ecosystem, or implementation pathway, so aligning them would not yield practical benefit."
+      }
+    },
+    {
+      "pair": [
+        "FSS_11",
+        "SECTORAL_4"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture and land-use domain and share a broad interest in sustainable production, but they focus on different sub-sectors (energy-intensive food production vs. pasture management) and distinct actor groups (major food producers vs. herders). They could support each other through parallel efforts under a national food-and-land framework, but lack direct operational overlap for coordinated implementation."
+      }
+    },
+    {
+      "pair": [
+        "FSS_12",
+        "NRVTS_25"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on reviving traditional food preparation methods and creating innovative food products within Mongolia's food and beverage sector, while the LDN target broadly promotes sustainable use of wetland ecosystems without specifying any actions, actors, or geographic overlap. There is no shared implementation pathway, ecosystem, or operational connection between these two targets."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "NAP_3"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in rural landscapes and share a broad interest in land-based activities, but the FSS target promotes agricultural expansion through relocation incentives while the NAP target focuses on ecosystem protection and monitoring, with no specific geographic or operational overlap stated. They could coexist through spatial planning that directs agricultural development away from protected ecosystems, though they remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "NAP_4"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address rural land use and agricultural activities, creating a shared geographic and sectoral focus, but their primary goals differ: one aims to curb centralization through relocation support, while the other targets desertification and land degradation reduction. Coordinated implementation could occur if relocated farmers adopt sustainable practices that align with land rehabilitation efforts, but the targets remain independently implementable and lack direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "NBSAP_11"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within rural development and natural resource management, but they focus on different primary objectives: one on decentralizing population and supporting relocated farmers, the other on genetic resource governance and benefit-sharing. They could support each other through shared enabling conditions like improved agricultural practices and rural livelihoods, but they remain independently implementable and serve distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "NBSAP_12"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target promotes agricultural and livestock activities for relocated citizens to balance urban-rural development, while the NBSAP target seeks to integrate biodiversity into all sectoral planning, including agriculture. They share a thematic overlap in the food and agriculture sector, and the NBSAP target could provide a framework to ensure the FSS target's activities incorporate biodiversity safeguards, but they remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "NDC_12"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address livestock farming and agriculture in rural areas, sharing a clear thematic and sectoral overlap. However, the FSS target focuses on relocation incentives and financial support for decentralisation, while the NDC target emphasises technological modernisation and capacity building, making them complementary but independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "NRVTS_6"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on rural development through agricultural and livestock support for relocated citizens, while the LDN target addresses updating reforestation standards and norms. They share no common geography, actors, or implementation activities, and aligning them would not yield any practical benefit."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "SECTORAL_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address livestock and agriculture in rural areas and share a broad goal of balanced development, but they operate through different mechanisms and at different scales. The FSS target focuses on relocating people and businesses to rural areas to curb centralization, while the Vision 2050 target aims to align livestock numbers with ecological carrying capacity through regulatory and financial measures, creating potential for coordinated implementation but no direct dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_13",
+        "SECTORAL_4"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address rural land use and agricultural activities, creating a shared thematic focus on balancing development with environmental sustainability. However, the FSS target promotes agricultural expansion by relocated citizens, while the Vision 2050 target focuses on regulating pasture use to reduce degradation, making them complementary but independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NAP_6"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture and water sectors and share a focus on expanding irrigated cropland and improving water supply for agricultural use, creating clear thematic and operational overlap. However, the FSS target emphasizes land conversion and plot-size optimization for crop production, while the NAP target prioritizes water ecosystem services and wildlife/livestock water supply, making them complementary but independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NBSAP_15"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on agricultural land expansion, irrigation, and soil monitoring, while the NBSAP target addresses governance and risk assessment for genetically modified organisms. They share no common geography, actors, or implementation pathways, and aligning them would not yield any mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NBSAP_16"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on agricultural land expansion and irrigation, while the NBSAP target addresses subsidy reform across sectors including agriculture, creating a clear thematic link through agricultural policy. They could support each other if green criteria guide the conversion of new land, but they remain independently implementable and serve distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NDC_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land use and management, creating a shared geographic and thematic space where agricultural expansion and biodiversity protection could be coordinated through integrated land-use planning. However, the FSS target focuses on converting new land for crop production while the NDC target aims to expand protected areas and ecological corridors, making them independently implementable with potential for synergy but no direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NDC_13"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land management in Mongolia and share a broad agricultural and land-use planning context, but they focus on different land types (cropland vs. pasture) and distinct primary actions (conversion and irrigation vs. pasture restoration and governance). They could support each other through integrated land-use planning, but remain independently implementable without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NDC_4"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land and water resource management in agricultural and rural contexts, with the FSS target focusing on expanding irrigated cropland and the NDC target including measures like constructing irrigation ponds and delivering water for pasture and household use. They share compatible priorities around agricultural water use and could support each other through coordinated planning, but they remain independently implementable and serve distinct primary goals\u2014agricultural land expansion versus water sector resilience."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "NRVTS_6"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on agricultural land expansion and irrigation, while the LDN target addresses reforestation standards, creating a thematic link through land-use planning but no direct operational overlap. They could support each other through integrated land-use frameworks that balance agricultural development with forest restoration, but they remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "SECTORAL_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural land management and could benefit from coordinated land-use planning, but they focus on different systems (crop cultivation vs. livestock grazing) and do not share specific geographic or operational overlap. The crop expansion target's actions, such as converting virgin land and increasing irrigated wheat, operate independently from the grazing pressure target's herd size limits and pasture payment systems."
+      }
+    },
+    {
+      "pair": [
+        "FSS_15",
+        "SECTORAL_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural land use and its environmental impacts, sharing a thematic focus on agriculture and land management. However, the FSS target emphasizes expanding agricultural land and irrigation, while the Vision 2050 target focuses on reducing harmful subsidies and redirecting finance toward conservation, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_16",
+        "NDC_2"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address the preservation and sustainable use of plant genetic resources, with the FSS target focusing on seed farms, variety testing, and certified seed production, while the NDC target includes establishing gene banks and promoting sustainable use of genetic diversity. They share compatible goals and could reinforce each other through coordinated seed and gene bank infrastructure, but they remain independently implementable with distinct primary actions and scales."
+      }
+    },
+    {
+      "pair": [
+        "FSS_16",
+        "NRVTS_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agricultural sector and share a focus on improving crop production and yields, with the FSS target establishing seed farms and variety testing that could directly support the LDN target's goal of increasing yields. However, the FSS target is specifically about seed system infrastructure and genetic resources, while the LDN target is a high-level yield metric without specified actions, making them complementary but independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_16",
+        "SECTORAL_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to strengthen the agriculture sector through improved seed systems and climate adaptation, and they share the same broad ecosystem and target audience. However, the FSS target focuses narrowly on seed infrastructure and variety testing, while the Vision 2050 target addresses sector-wide transformation through legal, cooperative, and zonal measures, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_16",
+        "SECTORAL_3"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture sector and aim to strengthen agricultural resilience, with the FSS target focusing on seed system development and the Vision 2050 target on climate risk management. They could support each other through shared enabling conditions, such as the FSS target's regionally suited varieties reducing vulnerability to climate disasters, but they pursue distinct primary goals and do not depend on each other for implementation."
+      }
+    },
+    {
+      "pair": [
+        "FSS_17",
+        "NRVTS_16"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address soil health and sustainable land management in Mongolia's agricultural and pastoral landscapes, creating a thematic overlap around reducing degradation and improving fertility. However, the FSS target focuses on crop production through mechanisation and technology adoption, while the LDN target supports research into silvo-pastoral systems for nomadic pasture use, making them complementary but independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_17",
+        "NRVTS_20"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to reduce soil degradation and improve soil fertility in agricultural settings, with the FSS target providing specific actions like advanced technologies and crop rotation that directly support the LDN target's goal of preventing erosion. Coordinated implementation would enhance outcomes by combining the LDN target's clear erosion-prevention objective with the FSS target's detailed modernization and soil management measures."
+      }
+    },
+    {
+      "pair": [
+        "FSS_17",
+        "SECTORAL_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural practices and soil health in Mongolia, with the FSS target promoting technological modernization to reduce soil degradation and the Vision 2050 target aiming to phase down harmful agricultural subsidies and redirect support toward conservation. They share compatible goals around sustainable land management and could reinforce each other through aligned financial incentives and technical support, but they remain independently implementable with distinct primary mechanisms."
+      }
+    },
+    {
+      "pair": [
+        "FSS_18",
+        "NBSAP_17"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on increasing domestic feed production for intensive livestock farming, while the NBSAP target aims to mobilize financial resources for biodiversity conservation, with no direct operational overlap in goals, actions, or ecosystems. However, they could support each other through shared enabling conditions, such as using innovative financing mechanisms from the NBSAP target to incentivize sustainable feed production practices that reduce pressure on biodiversity."
+      }
+    },
+    {
+      "pair": [
+        "FSS_18",
+        "NBSAP_6"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within Mongolia's agricultural sector and share a concern for environmental management, but they address different aspects: one focuses on increasing intensive livestock feed production, while the other aims to reduce pollution from pesticides and waste. They could support each other through integrated planning that ensures feed expansion does not worsen pesticide or waste pollution, but they remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_18",
+        "NBSAP_8"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agriculture and livestock systems, with the FSS target aiming to increase domestic feed production and the NBSAP target promoting sustainable agriculture and pasture management to reduce ecosystem degradation. They share thematic and geographic overlap in pastoral and agricultural landscapes, and could support each other through coordinated efforts like aligning feed production incentives with sustainable land-use practices, but they remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_18",
+        "NRVTS_21"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural land management and share a thematic focus on cropland sustainability, with the FSS target aiming to increase domestic feed production and the LDN target seeking to prevent soil erosion on croplands. They could support each other through coordinated soil conservation practices in feed-crop areas, but they remain independently implementable and serve distinct primary goals of production increase versus erosion prevention."
+      }
+    },
+    {
+      "pair": [
+        "FSS_18",
+        "NRVTS_25"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on increasing intensive livestock feed production within the agriculture sector, while the LDN target promotes sustainable use of wetland ecosystems without specifying any actions, actors, or geography. There is no shared implementation pathway, resource, or operational overlap that would make alignment meaningful."
+      }
+    },
+    {
+      "pair": [
+        "FSS_19",
+        "NBSAP_6"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agricultural sector and share a concern for environmental and human health, but they focus on different primary objectives: expanding greenhouse cultivation for food supply versus reducing pollution from pesticides and other sources. They could support each other through integrated pest management in greenhouses or shared monitoring systems, but remain independently implementable with distinct core goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_19",
+        "NBSAP_9"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to enhance human well-being through environmental means, with the FSS target focusing on greenhouse-based food supply and the NBSAP target on broader ecosystem services including water and air quality. They share a beneficiary population and could align through integrated land-use planning that ensures greenhouse expansion does not compromise water resources or ecosystem restoration goals, but they remain independently implementable with distinct primary objectives."
+      }
+    },
+    {
+      "pair": [
+        "FSS_19",
+        "NRVTS_14"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on expanding greenhouse cultivation for fresh produce supply, while the LDN target addresses grassland conservation in spatial planning. They operate in different ecosystems, involve different actors, and pursue unrelated goals with no shared implementation pathway."
+      }
+    },
+    {
+      "pair": [
+        "FSS_19",
+        "SECTORAL_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture sector and share a broad interest in sustainable food systems, but they focus on different mechanisms: one expands greenhouse cultivation for food supply, while the other phases down harmful agricultural subsidies for conservation. They could support each other through coordinated financial incentives, but remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_2",
+        "NBSAP_13"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to improve systems related to food and business practices, with the FSS target focusing on food safety and provision for children and the NBSAP target on biodiversity monitoring and reporting by businesses. They share a broad thematic interest in regulatory frameworks and transparency but operate in different sectors (school food services vs. business biodiversity impacts) without direct operational overlap or dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_2",
+        "NDC_24"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address the food system and could indirectly support each other, as improving food safety and school meal provision may involve domestically sourced meat, which aligns with the NDC's aim to increase domestic meat supply. However, the FSS target focuses on legal frameworks and child nutrition, while the NDC target focuses on livestock emissions reduction, and they lack direct operational overlap or shared implementation pathways."
+      }
+    },
+    {
+      "pair": [
+        "FSS_21",
+        "NAP_10"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agricultural sector and share a focus on water resource management, with the FSS target expanding irrigated crop cultivation and the NAP target establishing water points for pasture management. They could support each other through integrated water resource planning, but they target different agricultural systems (cash crops vs. livestock) and actors (farmers vs. herders), making them independently implementable without strong mutual dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_21",
+        "NBSAP_7"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture and land-use domain and could intersect where expanded irrigated cash-crop cultivation affects forest cover and carbon sequestration goals. However, the FSS target focuses on agricultural production and financing, while the NBSAP target emphasizes climate resilience and biodiversity through forest expansion and nature-based solutions, making them independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_21",
+        "NDC_6"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture-forestry landscape and share a focus on expanding cultivation and afforestation, which could create synergies through integrated land-use planning and shared irrigation technology improvements. However, they target different ecosystems (cash crops vs. forests) and primary actors, and remain independently implementable without direct mutual dependence."
+      }
+    },
+    {
+      "pair": [
+        "FSS_21",
+        "NRVTS_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on expanding irrigated cash-crop cultivation with financial and policy support, while the LDN target addresses sustainable pastureland use through legal instruments. They operate in different agricultural sub-sectors (cropland vs. pastureland) with no shared actions, ecosystems, or implementation pathways."
+      }
+    },
+    {
+      "pair": [
+        "FSS_21",
+        "NRVTS_26"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on expanding irrigated cash-crop cultivation and financing in agriculture, while the LDN target aims to develop a payment-for-ecosystem-services system in headwaters and wetlands. They share no common geography, actors, or implementation pathways that would make coordination meaningful."
+      }
+    },
+    {
+      "pair": [
+        "FSS_22",
+        "NDC_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture sector and share a focus on improving crop production and storage infrastructure, creating potential for coordinated planning around post-harvest handling and input management. However, the FSS target addresses physical storage capacity expansion while the NDC target focuses on precision technology adoption and training, making them independently implementable with only indirect operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_22",
+        "NRVTS_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture and food domain, with the FSS target building storage infrastructure that could support the increased yields targeted by the LDN target. However, they address different parts of the value chain (post-harvest storage vs. on-farm productivity) and lack explicit geographic or operational overlap, so coordinated implementation would offer only indirect benefits."
+      }
+    },
+    {
+      "pair": [
+        "FSS_23",
+        "ILDN_3"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land and water management in Mongolia and could reinforce each other where irrigation expansion occurs within or adjacent to protected-area buffer zones. However, the FSS target focuses on agricultural water infrastructure and irrigated vegetable plots, while the LDN Investment target aims to establish protected areas in under-represented terrestrial ecosystems, so their primary actions and geographies are not inherently linked."
+      }
+    },
+    {
+      "pair": [
+        "FSS_23",
+        "NAP_1"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address climate change adaptation and water management, creating a thematic overlap that could support coordinated efforts in irrigation and disaster risk reduction. However, the FSS target focuses on concrete irrigation infrastructure and agricultural water use, while the NAP target operates at a policy and coordination level across all sectors, making them independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_23",
+        "NRVTS_1"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land and water management within a national climate adaptation framework, but they focus on different ecosystems (irrigated agriculture vs. forests) and distinct primary goals (water-efficient food production vs. forest cover expansion). They could support each other through integrated landscape planning that avoids converting forests for irrigation infrastructure, though they remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_23",
+        "SECTORAL_10"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on water management and freshwater ecosystems, with the FSS target expanding irrigation infrastructure and the Vision 2050 target protecting freshwater source areas, creating direct operational overlap in shared watersheds. Coordinated implementation would ensure that irrigation development does not compromise protected freshwater zones, enhancing both water security and conservation outcomes."
+      }
+    },
+    {
+      "pair": [
+        "FSS_23",
+        "SECTORAL_5"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address water management and agricultural risk reduction, with overlapping actions around irrigation infrastructure and water supply expansion. However, the FSS target focuses on crop irrigation and vegetable plots, while the Vision 2050 target centers on pasture and livestock systems, making them independently implementable but potentially synergistic through shared water resource planning."
+      }
+    },
+    {
+      "pair": [
+        "FSS_24",
+        "NAP_3"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets involve tree planting and ecosystem management within agricultural landscapes, creating a clear thematic overlap around integrating woody vegetation into productive systems. However, the FSS target focuses on agroforestry for food security and exports, while the NAP target aims at broad ecosystem protection and biodiversity monitoring, so they remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_24",
+        "SECTORAL_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to integrate tree planting and sustainable practices into agricultural landscapes to improve productivity and environmental outcomes, with the FSS target's agroforestry and seedling propagation directly supporting the Vision 2050 goal of a climate-adapted, sustainable agriculture sector. Coordinated implementation would enhance efficiency by linking the FSS target's concrete nursery and agroforestry actions to the Vision 2050 target's broader sectoral transformation framework."
+      }
+    },
+    {
+      "pair": [
+        "FSS_25",
+        "NBSAP_17"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on building a physical wheat reserve for food security, while the NBSAP target aims to increase financial resources for biodiversity conservation, with no direct operational overlap in actions or ecosystems. They share a broad national-level context of resource management and could benefit from parallel financial planning, but remain independently implementable with distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_25",
+        "NDC_16"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture and food security domain and share a focus on crop varieties and seed systems, with the FSS target building a strategic wheat reserve and the NDC target establishing seed banks for climate-resilient varieties. They could support each other through shared infrastructure or institutional coordination for seed storage and distribution, but their primary purposes differ: one ensures emergency food supply, while the other enhances long-term climate adaptation through genetic diversity."
+      }
+    },
+    {
+      "pair": [
+        "FSS_26",
+        "NBSAP_16"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural and land-use practices with potential for synergy, as reforming harmful subsidies could support sustainable livestock and pasture management. However, the FSS target focuses on on-the-ground livestock operations and herder participation, while the NBSAP target operates at a policy and regulatory level across multiple sectors, making direct operational coordination indirect."
+      }
+    },
+    {
+      "pair": [
+        "FSS_26",
+        "NDC_11"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on improving livestock water and feed supply, pasture management, and herder support within the same sector and geography. Coordinated implementation would directly enhance efficiency by integrating the FSS target's genetic and database improvements with the NDC target's climate-resilient water and feed infrastructure."
+      }
+    },
+    {
+      "pair": [
+        "FSS_26",
+        "NRVTS_14"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on sustainable grassland and pasture management, with the FSS target detailing specific actions to balance livestock headcount with pasture capacity and the LDN target aiming to integrate grassland conservation into spatial planning. Coordinated implementation would directly reinforce each other, as the FSS target's pasture protection and grazing land reserves provide the on-the-ground data and management practices that the LDN target needs for effective land-use planning."
+      }
+    },
+    {
+      "pair": [
+        "FSS_27",
+        "NDC_11"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on the livestock sector, cooperatives, and improving supply chains for feed and products, with overlapping actions around cooperative development and market infrastructure. Coordinated implementation would enhance efficiency by linking feed security and market access through the same cooperative structures."
+      }
+    },
+    {
+      "pair": [
+        "FSS_27",
+        "SECTORAL_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets operate within the livestock sector and share the same geography, actors, and ultimate aim of a sustainable livestock system. Coordinated implementation would allow the market and cooperative development of the first target to support herders in meeting the carrying-capacity and compliance requirements of the second, enhancing economic viability alongside ecological balance."
+      }
+    },
+    {
+      "pair": [
+        "FSS_28",
+        "NAP_15"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the broader agricultural and rural development domain, and the intensive livestock farming promoted by the FSS target could generate employment and economic stability that indirectly supports the NAP target's goal of reducing community vulnerability. However, they address different primary objectives, with no direct operational overlap in actions, target audiences, or geographic specificity, making coordinated implementation impractical."
+      }
+    },
+    {
+      "pair": [
+        "FSS_28",
+        "NRVTS_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address livestock and pastureland management, creating a thematic overlap around sustainable land use in the livestock sector. However, the FSS target focuses on intensive farming, breeding, and biotechnology with specific output metrics, while the LDN target broadly aims at sustainable pastureland use through legal instruments, lacking operational detail or geographic specificity to enable direct coordination."
+      }
+    },
+    {
+      "pair": [
+        "FSS_28",
+        "SECTORAL_8"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agricultural sector and could share enabling conditions such as water resource management and land-use planning, but they focus on different subsectors (livestock vs. irrigated crop production) and distinct actions. Coordinated implementation is possible where water and land resources overlap, though the targets remain independently implementable without direct mutual dependence."
+      }
+    },
+    {
+      "pair": [
+        "FSS_29",
+        "NAP_11"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets focus on the livestock sector and share goals around improving livestock production and value chains, but they emphasize different aspects: one prioritizes expanding farm operations through financial support, while the other focuses on quality improvement, disease control, and marketing. They could support each other through coordinated investment and health measures, but remain independently implementable with distinct primary outcomes."
+      }
+    },
+    {
+      "pair": [
+        "FSS_29",
+        "NBSAP_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the land-use and agricultural sector, and the NBSAP target's spatial planning and ecosystem assessments could influence where livestock expansion occurs, creating a potential for coordinated land-use decisions. However, the FSS target explicitly promotes livestock farm expansion while the NBSAP target seeks to maintain natural ecosystems and prevent their decline, making them independently implementable with only indirect overlap rather than direct mutual reinforcement."
+      }
+    },
+    {
+      "pair": [
+        "FSS_29",
+        "NBSAP_13"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets engage the business sector and use financial incentives to shape enterprise behavior, creating a shared enabling environment for sustainability-oriented investment. However, the FSS target focuses on expanding intensive livestock operations while the NBSAP target aims to monitor and incentivize biodiversity-friendly business practices, so they operate in different domains with no direct operational overlap or dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_29",
+        "NBSAP_3"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the same national land-use and agricultural policy space, and the livestock expansion target could indirectly affect the ecosystems and connectivity that the protected area target seeks to conserve. However, they focus on different primary objectives, sectors, and implementation pathways, and any synergy would require deliberate spatial planning rather than arising automatically."
+      }
+    },
+    {
+      "pair": [
+        "FSS_29",
+        "NDC_13"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the livestock sector and share a broad interest in sustainable land use, but they focus on different production systems (intensive pig/poultry/fattening farms versus extensive pasture-based herding) and pursue distinct primary goals (enterprise expansion versus pasture restoration). Coordinated implementation could help ensure that expanded intensive livestock operations do not indirectly increase pressure on pastures, but the targets remain independently implementable without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_29",
+        "NDC_3"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agricultural sector and could interact through shared water resources, as livestock expansion increases water demand while the NDC target aims to improve water efficiency and establish sustainable abstraction levels. However, the FSS target focuses on financial support for farm expansion without specifying geographic or watershed-level constraints, making the overlap too general for direct operational coordination."
+      }
+    },
+    {
+      "pair": [
+        "FSS_3",
+        "NRVTS_15"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on updating food safety methodologies, standards, and regulatory documents across the entire food chain, while the LDN target aims to develop legal instruments for sustainable pastureland use. These targets operate in completely different domains with no shared actions, ecosystems, or implementation pathways."
+      }
+    },
+    {
+      "pair": [
+        "FSS_30",
+        "NDC_20"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on beekeeping enterprise development and export growth, while the NDC target addresses climate education and public participation, with no direct operational overlap in actions, ecosystems, or actors. They could support each other indirectly if climate education programs include agricultural or beekeeping contexts, but they remain independently implementable and serve distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "FSS_30",
+        "SECTORAL_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The beekeeping target focuses on agricultural enterprise development and export growth, while the protected areas target aims to expand conservation coverage for ecosystems and freshwater sources. They share a broad national geography and could coexist through land-use planning that avoids placing apiaries in newly protected zones, but they serve distinct primary goals and do not directly support or depend on each other."
+      }
+    },
+    {
+      "pair": [
+        "FSS_31",
+        "NRVTS_11"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address livestock and pasture systems, with the FSS target strengthening veterinary services and the LDN target restoring rotational grazing, creating complementary conditions for sustainable animal husbandry. However, they focus on different primary interventions (disease control versus grazing management) and remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_32",
+        "NDC_22"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address Mongolia's livestock sector and share the goal of improving domestic meat supply and economic turnover, creating a thematic and operational overlap around livestock production and processing. However, the FSS target focuses on incentivizing domestic processing and food safety standards, while the NDC target prioritizes emissions reduction through a strict herd cap and export growth, making them independently implementable with some potential for coordinated efficiency gains."
+      }
+    },
+    {
+      "pair": [
+        "FSS_32",
+        "NDC_25"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address Mongolia's livestock and agriculture sector, with the FSS target incentivising domestic processing of livestock products and the NDC target restoring rangelands to reduce soil carbon loss. They share a broad thematic and geographic overlap in working landscapes, but their actions, immediate outcomes, and primary goals remain distinct and independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_33",
+        "NAP_1"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the national food and climate policy space and could benefit from shared enabling conditions, such as intersectoral coordination and sustainable sourcing. However, the FSS target focuses narrowly on children's food processing infrastructure and domestic supply chains, while the NAP target addresses broad institutional and legal frameworks for climate adaptation, with no direct operational overlap in actions, geography, or actors."
+      }
+    },
+    {
+      "pair": [
+        "FSS_33",
+        "NAP_6"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agricultural and food production domain and could share enabling conditions such as water availability and domestic supply chains, but they focus on different primary outcomes (children's food processing vs. water ecosystem services). The water accumulation and pond construction in the NAP target could support irrigation for the raw materials the FSS target seeks to procure, though the targets remain independently implementable and serve distinct core purposes."
+      }
+    },
+    {
+      "pair": [
+        "FSS_33",
+        "NDC_20"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on expanding food processing infrastructure for children, while the NDC target aims to enhance climate education and public participation, with a specific focus on children and youth. They share a common target audience (children) and could create synergies if climate-smart nutrition or green skills are integrated into the food supply chain, but their primary actions and ecosystems are distinct and independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_33",
+        "NRVTS_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on expanding food processing infrastructure for children's nutrition, while the LDN target aims to increase forest cover and reduce deforestation. They share a broad national land-use context, and the FSS target's demand for domestic agricultural raw materials could indirectly pressure land resources relevant to the LDN target, but the targets operate in different sectors with no direct operational overlap or specific geographic linkage stated."
+      }
+    },
+    {
+      "pair": [
+        "FSS_34",
+        "NRVTS_11"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on school meal financing, nutritional standards, and electronic food supply management within the education sector, while the LDN target addresses seasonal rotational pasture recovery in an unspecified pastoral ecosystem. They share no common geography, actors, or implementation pathways, and aligning them would yield no practical benefit."
+      }
+    },
+    {
+      "pair": [
+        "FSS_35",
+        "NAP_4"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target promotes new food-processing factories that could increase agricultural demand and water use, while the NAP target aims to reduce desertification and land degradation through water protection and sustainable land rehabilitation. They share a broad geographic and sectoral context but lack direct operational overlap, so coordinated implementation could manage potential resource pressures without being mutually dependent."
+      }
+    },
+    {
+      "pair": [
+        "FSS_35",
+        "NDC_3"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on establishing food processing plants, while the NDC target addresses water management and irrigation efficiency across multiple sectors including agriculture. They share a thematic link through the agricultural sector and water use, but the FSS target does not specify water demands or geographic overlap with the NDC target's water management actions, making direct operational synergy unclear."
+      }
+    },
+    {
+      "pair": [
+        "FSS_36",
+        "ILDN_7"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on food transport logistics and vehicle fleets, while the LDN Investment target addresses land degradation neutrality through transformative projects. They operate in completely different domains with no shared geography, actors, or implementation pathways."
+      }
+    },
+    {
+      "pair": [
+        "FSS_37",
+        "NDC_13"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture and land-use sectors and could support each other through improved food system efficiency and sustainable land management, but they focus on different sub-sectors (post-harvest infrastructure vs. pasture management) and do not share specific implementation activities or geographies. Coordinated implementation is possible at a broad policy level, though the targets remain independently implementable without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_38",
+        "NBSAP_18"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The FSS target focuses on modernizing food processing equipment and branding for export-oriented products, while the NBSAP target aims to strengthen scientific research and technical cooperation for biodiversity conservation. They share a broad thematic link through the environment sector and potential for technology transfer, but their specific actions, ecosystems, and target audiences differ significantly, making coordinated implementation impractical without additional bridging mechanisms."
+      }
+    },
+    {
+      "pair": [
+        "FSS_4",
+        "SECTORAL_9"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture and food supply chain domain and share a broad interest in sustainable production, but they focus on different mechanisms and actors. The FSS target establishes a regulatory traceability system for supply chain actors, while the Vision 2050 target promotes sustainable practices through herder cooperatives, creating potential for complementary but independently implementable efforts."
+      }
+    },
+    {
+      "pair": [
+        "FSS_41",
+        "NAP_11"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address aspects of food systems, with the FSS target focusing on consumer education and the NAP target on livestock production and marketing. They could support each other through parallel efforts in public awareness and value chain development, but they operate in different domains with no direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_5",
+        "NDC_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the agriculture and food security domain and could reinforce each other through shared enabling conditions, such as improved agricultural input management supporting more predictable harvests for reserves. However, they pursue distinct primary goals\u2014regulatory framework for food reserves versus technology adoption in crop production\u2014and remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_5",
+        "SECTORAL_3"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture and food security domain and could reinforce each other through enabling conditions, as stable food reserves (FSS target) support disaster response and economic loss reduction (Vision 2050 target). However, they address different mechanisms (regulatory framework for reserves vs. insurance and restocking for climate disasters) and involve distinct actors and actions, so they remain independently implementable without strong operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_6",
+        "NRVTS_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on food safety monitoring and contaminant control within the food supply chain, while the LDN target addresses forest health and wildfire risk reduction through vegetation management. They operate in completely different domains with no shared geography, actors, or implementation pathways, and aligning them would not yield any mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_7",
+        "NAP_11"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to strengthen the food and agriculture sector through scientific and technological improvements, and they share overlapping audiences in livestock and agricultural value chains. However, the FSS target focuses on institutional research capacity and broad production boosts, while the NAP target concentrates on livestock health, marketing, and pasture management, making them complementary but independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "FSS_7",
+        "NRVTS_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on institutional research capacity and agricultural production through a Food Science and Research Institute, while the LDN target addresses grassland management and degradation. They share no common geography, actors, or implementation pathways, and aligning them would not yield any mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_7",
+        "NRVTS_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to boost agricultural production through scientific and technological advances, sharing a clear thematic focus on the food and agriculture sector. However, the FSS target emphasizes institutional and legal framework creation for research, while the LDN target sets a specific, quantitative yield increase goal without detailing implementation actions, making them independently implementable but potentially synergistic through shared research outputs."
+      }
+    },
+    {
+      "pair": [
+        "FSS_7",
+        "NRVTS_18"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the food and agriculture sectors and share a broad goal of advancing agricultural productivity and sustainability. However, the FSS target focuses on institutional research and legal frameworks to boost production, while the LDN target emphasizes on-the-ground agroforestry practices, making them complementary but independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_7",
+        "SECTORAL_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to boost agricultural productivity and sustainability through scientific and structural interventions, sharing the food and agriculture sector as their domain. However, the FSS target focuses narrowly on establishing a research institute and legal framework, while the Vision 2050 target pursues a broad, multi-pronged transformation of the entire sector, making them independently implementable but potentially synergistic through shared research and climate-adaptation efforts."
+      }
+    },
+    {
+      "pair": [
+        "FSS_8",
+        "NDC_3"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural and food-system practices and share overlapping audiences in crop cultivation and livestock farming, creating potential for coordinated water-efficiency and good-practice efforts. However, the FSS target focuses on food-safety compliance and certification across the entire food chain, while the NDC target centers on water-management adaptation, irrigation norms, and flood standards, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_8",
+        "NRVTS_16"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural and land-use practices, with the FSS target promoting good practices across the food chain and the LDN target supporting research on silvo-pastoral systems, creating thematic overlap in sustainable land management. However, the FSS target focuses broadly on food safety and compliance across all food chain stages, while the LDN target is narrowly scoped to research on adaptive silvo-pastoral systems for nomadic pasture use, with no shared actors, geography, or implementation pathways specified."
+      }
+    },
+    {
+      "pair": [
+        "FSS_8",
+        "NRVTS_7"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target addresses food safety and quality compliance across the entire food chain, while the LDN target focuses on genetic conservation of wood species through a gene bank. They share no common goals, actions, ecosystems, or actors, and aligning them would not yield any practical implementation benefit."
+      }
+    },
+    {
+      "pair": [
+        "FSS_8",
+        "SECTORAL_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address the agriculture and food sector with a focus on improving practices and sustainability, creating a shared thematic space. However, the FSS target emphasizes food safety compliance and certification across the entire food chain, while the Vision 2050 target aims for a broader transformation of agriculture toward climate resilience and green economy, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "FSS_9",
+        "NBSAP_1"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on food safety through internal controls and external audits within the production and supply chain, while the NBSAP target addresses biodiversity loss through spatial planning and ecosystem assessments. They share no common geography, actors, or implementation pathways, and aligning them would not yield any mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "FSS_9",
+        "NDC_21"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The FSS target focuses on food safety control systems and audit procedures within the production and supply chain, while the NDC target addresses protection of cultural heritage and traditional knowledge from climate change. These targets operate in completely separate domains with no shared goals, actions, ecosystems, or actors, making any alignment impractical."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_1",
+        "NDC_25"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on restoring heavily degraded rangelands in the steppe region, with the LDN target providing a planning framework that directly supports the NDC target's specific restoration action. Coordinated implementation would enhance outcomes by integrating mitigation hierarchy and offset planning with on-the-ground restoration to reduce soil organic carbon loss."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_1",
+        "NRVTS_11"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on restoring traditional pasture management in the western mountain and steppe rangelands, with the first aiming to mitigate mining impacts through landscape-level planning and the second aiming to recover rotational grazing systems. Coordinated implementation would directly enhance outcomes, as offset and mitigation measures can be designed to support the revival of seasonal pasture rotation."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_2",
+        "NBSAP_19"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within Mongolia and share broad environmental objectives, but they focus on different domains: one on sustainable forest management and ecosystem services, the other on information access, governance, and capacity building for biodiversity. The NBSAP target's outreach and training activities could support the enabling conditions for sustainable forest management, but the targets remain independently implementable without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_2",
+        "NDC_5"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on sustainable forest management in Mongolia's forest landscapes, sharing the same ecosystem, complementary actions (protection, regeneration, and maintenance), and aligned goals of enhancing forest health, carbon storage, and resilience. Coordinated implementation would directly amplify outcomes by combining the NDC's specific protection and restoration measures with the LDN target's ecosystem-services and financing framework."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_3",
+        "NAP_3"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to expand protected areas and improve management of under-represented terrestrial ecosystems in Mongolia, directly linking biodiversity conservation with enhanced ecosystem resilience. Coordinated implementation would pool resources, avoid duplication, and strengthen outcomes for both conservation and climate adaptation."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_4",
+        "NAP_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to reduce land degradation and desertification, with the NAP target providing concrete actions like establishing forest strips and protecting peatlands that directly contribute to the LDN ambition-setting goal. Coordinated implementation would allow the NAP's on-the-ground measures to inform and achieve the LDN targets, enhancing efficiency and measurable outcomes."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_4",
+        "NRVTS_20"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on land degradation neutrality, with the first establishing the ambition and target-setting framework and the second specifying a key implementation area (preventing erosion in agriculture). Coordinated implementation would directly link the overarching LDN ambition to concrete on-the-ground action in agricultural settings."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_5",
+        "NDC_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to reduce pressure on land resources (pasture pressure in the NDC target, land degradation neutrality in the LDN target) and share a broad climate mitigation and adaptation framing. However, the NDC target focuses narrowly on intensive livestock systems and biosecurity, while the LDN target addresses land degradation across unspecified ecosystems, with no shared geography, actors, or implementation activities specified, making direct operational synergy weak."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_5",
+        "NDC_6"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets share a thematic focus on land restoration and climate benefits, with the LDN target's broad goal of leveraging land degradation neutrality for mitigation and adaptation complementing the NDC target's specific afforestation and forest restoration actions. However, the LDN target operates at a higher, multi-benefit policy level without specifying concrete on-the-ground activities, while the NDC target details technological and operational measures in forestry, making direct operational integration possible but not strongly interdependent."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_5",
+        "NRVTS_15"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the land degradation neutrality (LDN) framework and share the broad goal of sustainable land use, with the investment target aiming to catalyze multiple benefits from LDN and the pastureland target focusing on sustainable pastureland use through legal instruments. They could support each other through coordinated funding and institutional mechanisms, but the investment target is high-level and multi-outcome while the pastureland target is specific to one ecosystem and one action type, so they remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_5",
+        "SECTORAL_6"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address sustainable land management and climate adaptation in Mongolia's rangelands, with the LDN target seeking land degradation neutrality and the Vision 2050 target promoting sustainable livestock husbandry. They could support each other through shared enabling conditions like cooperative investment and climate adaptation measures, but they remain independently implementable and serve somewhat distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_5",
+        "SECTORAL_9"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to generate environmental and socio-economic benefits through sustainable land and resource management, and they share a broad thematic focus on climate adaptation and poverty reduction. However, the LDN Investment target operates at a general, multi-outcome level without specifying actors or implementation mechanisms, while the Vision 2050 target is concretely anchored in herder cooperatives and agricultural practices, making direct operational coordination possible but not strongly interdependent."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_6",
+        "NBSAP_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The LDN Investment target focuses on mobilizing finance and rationalizing partnerships, which could create enabling conditions for the NBSAP target's urban green and blue infrastructure expansion if funding is directed there. However, the targets operate in different domains (resource mobilization vs. on-the-ground urban greening) with no explicit shared geography, actors, or implementation actions, so they remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_6",
+        "NBSAP_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The LDN Investment target focuses on partnership rationalization and finance mobilization without specifying any ecosystem, geography, or biodiversity outcome, while the NBSAP target addresses species extinction risk and genetic diversity through concrete conservation actions. There is no shared implementation pathway, actor group, or operational overlap that would make coordinated delivery meaningful."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_6",
+        "NDC_19"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The LDN Investment target focuses on mobilizing finance and rationalizing partnerships, while the NDC target aims to enhance resilience and diversify livelihoods for vulnerable groups. They share a broad climate-finance and adaptation theme, and the LDN target's resource mobilization could create enabling conditions for the NDC's welfare and economic diversification actions, but they operate through different mechanisms and target different primary outcomes without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_7",
+        "NAP_5"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address natural resource management and could reinforce each other where land degradation affects water systems, but they focus on different primary domains (land versus water) and distinct actions (transformative projects versus monitoring systems). Coordinated implementation could enhance outcomes where LDN projects include water-related benefits, though the targets remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_7",
+        "NBSAP_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to restore degraded land and ecosystems, with the LDN target providing a framework for transformative projects that deliver multiple benefits and the NBSAP target specifying a quantitative restoration goal and concrete actions like restoring degraded forests and land. Coordinated implementation would directly amplify outcomes, as LDN projects can serve as the vehicle to achieve the NBSAP's 30 percent restoration target while improving ecological integrity."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_7",
+        "NDC_25"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to restore degraded land, with the NDC target specifying a concrete action (restoring 10% of heavily degraded rangelands) that directly contributes to the LDN target's goal of achieving Land Degradation Neutrality through transformative projects. Coordinated implementation would allow the NDC's rangeland restoration to serve as a measurable component of the LDN target's broader land-restoration portfolio, enhancing efficiency and delivering multiple benefits."
+      }
+    },
+    {
+      "pair": [
+        "ILDN_8",
+        "NDC_22"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address Mongolia's agricultural and rangeland sectors, with the NDC target setting a specific livestock herd cap and emissions reduction goal that directly contributes to the land degradation neutrality outcomes the LDN target monitors. However, the LDN target focuses solely on tracking and reporting progress, while the NDC target involves active herd management and market interventions, so they operate at different implementation levels without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_1",
+        "NBSAP_3"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "The NAP target establishes the legal and institutional frameworks for climate adaptation, which directly enables the NBSAP target's goal of expanding the protected area network to 30% of the country. Both targets share a focus on national-level policy, legal structures, and biodiversity outcomes, and coordinated implementation would strengthen the legal basis and intersectoral coordination needed to achieve the protected area expansion."
+      }
+    },
+    {
+      "pair": [
+        "NAP_1",
+        "NDC_19"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to enhance climate resilience and reduce vulnerability, with the NAP target establishing the institutional and legal frameworks that could enable the NDC target's social protection and livelihood diversification actions. However, the NAP target operates at a policy and coordination level across all sectors, while the NDC target focuses on direct implementation for specific vulnerable groups, so they remain independently implementable without strong operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_1",
+        "NDC_26"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target establishes cross-sectoral coordination and legal frameworks for climate adaptation, which can create the enabling institutional conditions for the NDC target's focus on inclusive, gender-responsive climate budgeting and decision-making. However, the NAP target operates at a broad, systemic governance level across all sectors, while the NDC target specifically addresses social inclusion and gender equity within climate actions, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_1",
+        "NRVTS_27"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target establishes legal and institutional frameworks for climate adaptation and biodiversity planning, while the LDN target focuses on research and development for payment for ecosystem services, creating a potential enabling relationship where the NAP's coordination structures could support LDN's research activities. However, the targets operate at different levels (policy coordination versus research) without explicit operational overlap, making them independently implementable despite their shared interest in ecosystem management."
+      }
+    },
+    {
+      "pair": [
+        "NAP_1",
+        "SECTORAL_1"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target establishes cross-sectoral legal and coordination frameworks for climate adaptation, which could enable the Vision 2050 target's pasture management and livestock regulation by providing institutional support. However, the NAP target operates at a national policy level across all sectors, while the Vision 2050 target focuses specifically on grazing pressure and herder practices in pasturelands, making them independently implementable without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_10",
+        "NDC_24"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address the livestock sector and share a broad goal of sustainability, but they operate through different mechanisms: the NAP target focuses on pasture and water management for herder communities, while the NDC target aims to reduce emissions by increasing domestic meat supply. They could support each other through improved resource efficiency, but their primary actions and expected outcomes are distinct and independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "NAP_10",
+        "NDC_27"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target focuses on on-the-ground sustainable livestock and water management for herder communities, while the NDC target addresses gender-responsive climate policy integration across all sectors. They share a broad climate adaptation theme and could intersect if gender considerations are applied to the livestock interventions, but they operate at different levels (community implementation vs. national policy) with no direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_10",
+        "NRVTS_1"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address sustainable land management and climate resilience, with the NAP target focusing on pasture and water resources for livestock and the LDN target on increasing forest cover. They share a broad environmental goal and could benefit from integrated land-use planning, but they target different ecosystems and actions without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_11",
+        "NBSAP_12"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target focuses on livestock quality, health, and marketing within agricultural value chains, while the NBSAP target aims to integrate biodiversity into all sectoral policies, including agriculture. They share a thematic overlap in the agriculture sector and could support each other through the application of the One Health approach mentioned in the NBSAP target, but they remain independently implementable with distinct primary goals and actors."
+      }
+    },
+    {
+      "pair": [
+        "NAP_11",
+        "NBSAP_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target focuses on livestock quality, disease control, and market access within agricultural value chains, while the NBSAP target aims to increase financial resources for biodiversity conservation through mechanisms like biodiversity offsets and credits. They share a broad environmental and climate policy context, and the NBSAP's biodiversity finance tools could potentially channel private-sector investment toward sustainable livestock practices, but the targets operate in different domains with no direct operational overlap or shared geography specified."
+      }
+    },
+    {
+      "pair": [
+        "NAP_11",
+        "NBSAP_7"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within agricultural landscapes and share livestock and pasture management as a thematic area, but the NAP target focuses on livestock quality, health, and market value chains while the NBSAP target addresses climate resilience, carbon sequestration, and disaster risk reduction through nature-based solutions. They could support each other through integrated land-use planning where improved pasture management contributes to carbon sequestration and ecosystem resilience, but they remain independently implementable with distinct primary goals and actors."
+      }
+    },
+    {
+      "pair": [
+        "NAP_12",
+        "NBSAP_6"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets share a strong operational focus on agricultural soil health, with the NAP target promoting crop rotations, legume cultivation, and reduced fallow, while the NBSAP target directly addresses pesticide contamination in soil and its remediation. Coordinated implementation would enhance outcomes by combining soil fertility practices with pollution reduction, creating measurable synergies for sustainable agriculture and biodiversity."
+      }
+    },
+    {
+      "pair": [
+        "NAP_12",
+        "NDC_4"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets share a focus on water management and agricultural resilience, with overlapping actions such as constructing water accumulation facilities and irrigation ponds, and both involve farmers and local stakeholders. However, the NAP target is narrowly focused on crop-specific soil and water interventions, while the NDC target covers a much broader water-sector resilience agenda across multiple zones and sectors, making them independently implementable but complementary in shared geographies."
+      }
+    },
+    {
+      "pair": [
+        "NAP_12",
+        "NRVTS_3"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural land management and soil conservation, with the NAP target promoting beneficial crop rotations and the LDN target aiming to prevent forest fires that can degrade adjacent agricultural soils. However, the NAP target focuses on cropland interventions while the LDN target centers on forest ecosystem monitoring, making them independently implementable with only indirect synergy."
+      }
+    },
+    {
+      "pair": [
+        "NAP_12",
+        "SECTORAL_7"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to improve soil fertility and develop sustainable, high-yield crop production through agricultural technologies and soil management practices. Coordinated implementation would enhance efficiency by aligning soil conservation, crop rotation, and precision agriculture efforts for the same agricultural stakeholders and ecosystems."
+      }
+    },
+    {
+      "pair": [
+        "NAP_13",
+        "NDC_6"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in the agriculture-forestry landscape and share climate-adaptation framing, but they focus on different ecosystems (cropland vs. forest) and distinct actions (drought-resistant crops vs. afforestation technology). They could support each other through integrated land-use planning, but remain independently implementable without direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_14",
+        "NRVTS_17"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NAP target focuses on public health research and capacity-building to mitigate climate-related health risks, while the LDN target aims to increase agricultural yields to a specific tonnage per hectare. They operate in different domains with no shared actions, ecosystems, or implementation pathways."
+      }
+    },
+    {
+      "pair": [
+        "NAP_15",
+        "NDC_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to reduce climate vulnerability and enhance resilience, with the NAP focusing on social safety nets and livelihood training for vulnerable communities, while the NDC addresses water sector resilience through infrastructure and ecosystem measures. They share a broad adaptation theme and could indirectly support each other\u2014for example, improved water availability from NDC actions could benefit communities targeted by the NAP\u2014but they operate in different domains (social protection vs. water resource management) without direct operational overlap or dependency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_2",
+        "NDC_26"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on building capacity and inclusive participation in climate action, with overlapping audiences such as government officials and vulnerable groups. Coordinated implementation would enhance efficiency by integrating adaptation knowledge with gender-responsive budgeting and decision-making processes."
+      }
+    },
+    {
+      "pair": [
+        "NAP_2",
+        "SECTORAL_9"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address climate change adaptation and capacity building, with the NAP target focusing on knowledge and training for stakeholders and the Vision 2050 target promoting sustainable resource management through herder cooperatives. They share thematic overlap in adaptation and could support each other through coordinated training and cooperative investment, but they remain independently implementable with different primary audiences and actions."
+      }
+    },
+    {
+      "pair": [
+        "NAP_3",
+        "NBSAP_3"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to expand protected area coverage for representative ecosystems and improve management effectiveness, with the NAP target specifying 35% of main ecosystems and the NBSAP target setting a 30% national area goal by 2030. Coordinated implementation would directly enhance efficiency by aligning protection criteria, monitoring systems, and connectivity efforts across the same terrestrial ecosystems."
+      }
+    },
+    {
+      "pair": [
+        "NAP_3",
+        "NBSAP_8"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to protect ecosystems and biodiversity, with the NAP target focusing on protected-area expansion and monitoring while the NBSAP target promotes sustainable agriculture and forestry practices that reduce degradation pressures on those same ecosystems. Coordinated implementation would directly link on-the-ground sustainable land-use measures with the conservation and surveillance goals, enhancing outcomes for ecosystem adaptive capacity."
+      }
+    },
+    {
+      "pair": [
+        "NAP_3",
+        "NRVTS_11"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to improve ecosystem health and biodiversity, with the NAP target focusing on protecting representative and vulnerable ecosystems and the LDN target on recovering traditional pasture systems, which could fall under the broader ecosystem categories mentioned in the NAP. They share compatible goals and could benefit from coordinated monitoring or management practices, but they remain independently implementable and lack explicit operational overlap in their stated actions or geographies."
+      }
+    },
+    {
+      "pair": [
+        "NAP_3",
+        "NRVTS_15"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address ecosystem management and biodiversity, with the NAP target focusing on broad ecosystem protection and the LDN target on sustainable pastureland use, which can be a subset of those ecosystems. They could support each other through shared enabling conditions like legal instruments and monitoring, but they remain independently implementable and serve somewhat distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "NAP_3",
+        "NRVTS_17"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target focuses on protecting and monitoring ecosystems and biodiversity for climate adaptation, while the LDN target aims to increase agricultural yields, which could create enabling conditions through improved land management practices that support both productivity and ecosystem health. However, the targets operate in different domains (conservation vs. agricultural production) without explicit shared actions or geographic overlap, so coordination would be indirect and not mutually dependent."
+      }
+    },
+    {
+      "pair": [
+        "NAP_3",
+        "SECTORAL_8"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the same national land-use and natural-resource framework, and the NAP target\u2019s ecosystem protection could benefit from the Vision 2050 target\u2019s water-efficient irrigation methods if applied outside sensitive areas. However, the Vision 2050 target focuses on expanding irrigated agriculture on fallow and abandoned cropland, while the NAP target focuses on protecting representative and unique ecosystems, with no direct operational overlap or explicit geographic link between the two sets of activities."
+      }
+    },
+    {
+      "pair": [
+        "NAP_4",
+        "NDC_15"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets share the specific action of establishing forest strips to combat land degradation and support sustainable land use, with overlapping geographies in areas affected by desertification and crop production. Coordinated implementation would directly enhance water resource protection, soil rehabilitation, and agricultural resilience through shared forestry and land management interventions."
+      }
+    },
+    {
+      "pair": [
+        "NAP_4",
+        "NRVTS_16"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land degradation and sustainable land management in dryland or pastoral contexts, with the NAP target focusing on direct restoration actions and the LDN target supporting research into adaptive silvo-pastoral systems. They share thematic and geographic overlap and could benefit from coordinated knowledge-sharing, but they remain independently implementable with different primary actions and scales."
+      }
+    },
+    {
+      "pair": [
+        "NAP_4",
+        "SECTORAL_7"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land management in Mongolia and share a broad interest in soil health, with the NAP target focusing on reducing degradation and the Vision 2050 target on improving fertility for agriculture. They could support each other through coordinated actions like sustainable land practices, but they serve distinct primary goals\u2014ecosystem protection versus agricultural competitiveness\u2014and remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "NAP_5",
+        "SECTORAL_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address freshwater resources and could reinforce each other through shared monitoring data and protected-area management. However, the NAP target focuses on establishing monitoring systems for water quality and replenishment, while the Vision 2050 target aims to expand territorial protection coverage, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_6",
+        "NDC_8"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target focuses on water ecosystem services through surface water accumulation and pond construction for irrigation and wildlife, while the NDC target strengthens forest sector policies and management for disaster risk reduction. They share a broad climate adaptation theme and could indirectly support each other through watershed-forest linkages, but they operate in different ecosystems (water vs. forest), with distinct actions and actors, and no direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_6",
+        "SECTORAL_14"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NAP target focuses on on-the-ground water accumulation and pond construction for irrigation, livestock, and aquaculture, while the Vision 2050 target addresses regulatory and awareness-raising measures for ecosystem service valuation. They share a broad thematic concern for water-related ecosystem services, but operate at different implementation levels with no direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_6",
+        "SECTORAL_8"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address water use in agricultural landscapes and share a focus on irrigation, but the NAP target emphasizes surface water accumulation and ecosystem services for wildlife and livestock, while the Vision 2050 target focuses on expanding irrigated cropland through infrastructure and fallow land cultivation. They could support each other through coordinated water resource planning, but they remain independently implementable and serve somewhat distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "NAP_7",
+        "NBSAP_10"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets share urban afforestation and green-space expansion as concrete actions, with the NAP target's \"national movement reforestation and afforestation incl. urban\" directly overlapping the NBSAP target's \"establish new urban forests, parks and green spaces\" and \"citizen-based tree planting.\" Coordinated implementation would pool planting campaigns, nursery resources, and urban master-planning efforts, amplifying both climate-resilience and biodiversity outcomes in the same physical spaces."
+      }
+    },
+    {
+      "pair": [
+        "NAP_7",
+        "NDC_1"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address forest and biodiversity resilience, with the NAP focusing on sustainable forest management and reforestation and the NDC on expanding protected areas and species monitoring. They share compatible goals and could reinforce each other through coordinated land-use planning, but they remain independently implementable and serve distinct primary objectives."
+      }
+    },
+    {
+      "pair": [
+        "NAP_7",
+        "NDC_6"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets share the core goal of expanding afforestation and forest restoration, with specific overlapping actions such as establishing forest seed banks and implementing sustainable forest management. Coordinated implementation would directly enhance genetic diversity, technological innovation, and the overall scale and resilience of forest ecosystems."
+      }
+    },
+    {
+      "pair": [
+        "NAP_7",
+        "NRVTS_18"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets promote tree-based interventions that can overlap in rural landscapes, with the NAP target establishing forest seed banks and reforestation capacity that could supply the agroforestry and shelter belt systems in the LDN target. However, they remain independently implementable, as one focuses on natural forests and urban afforestation while the other concentrates on integrating trees into agricultural systems."
+      }
+    },
+    {
+      "pair": [
+        "NAP_7",
+        "NRVTS_5"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets promote increasing vegetation in urban areas through afforestation and greening actions, sharing the same ecosystem and compatible implementation activities. Coordinated delivery would directly amplify urban forestry outcomes and resource efficiency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_7",
+        "SECTORAL_6"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within Mongolia's land-use and climate-adaptation landscape, and sustainable forest management can indirectly support rangeland health through watershed protection and microclimate regulation. However, they focus on distinct ecosystems (forests vs. rangelands), different primary actors, and separate implementation actions, so coordinated delivery would yield only modest, indirect synergies rather than strong operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NAP_8",
+        "NRVTS_8"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address climate and disaster risk management, with the NAP target aiming to improve insurance and data systems for climate-induced disasters and the LDN target promoting reforestation by forest user groups, which can contribute to disaster risk reduction through ecosystem-based adaptation. They share a broad thematic overlap in building resilience but operate through different mechanisms and actors, making coordinated implementation possible but not directly interdependent."
+      }
+    },
+    {
+      "pair": [
+        "NAP_8",
+        "SECTORAL_13"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land management and resilience, with the NAP target focusing on climate risk data and insurance systems while the Vision 2050 target emphasizes physical land rehabilitation and user accountability. They could support each other through shared enabling conditions, such as using improved risk data to prioritize restoration sites, but they remain independently implementable with distinct primary actions and outcomes."
+      }
+    },
+    {
+      "pair": [
+        "NAP_9",
+        "NBSAP_18"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to strengthen technical and scientific capacity for environmental monitoring and response, with the NAP target focusing on early warning systems for extreme events and the NBSAP target on biodiversity research and innovation. They share compatible priorities around upgrading infrastructure, improving data accuracy, and building human resource capacity, but operate in distinct domains (disaster risk management vs. biodiversity conservation) without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_9",
+        "NDC_3"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address climate adaptation and disaster risk reduction, with the NAP target focusing on early warning systems and the NDC target on water management and flood infrastructure standards. They share a thematic overlap in flood-related extreme events and could support each other through improved forecasting informing water and flood management, but they operate through distinct actions, sectors, and primary audiences without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NAP_9",
+        "NRVTS_18"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address climate resilience and land management, with the NAP target's early warning systems potentially supporting disaster risk reduction in agroforestry areas. However, they operate through distinct mechanisms (forecasting technology vs. on-the-ground tree planting) and lack explicit operational overlap in their stated actions or geographies."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_1",
+        "NDC_25"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to maintain or restore natural ecosystems in Mongolia, with the NBSAP target focusing on spatial planning to prevent ecosystem decline and the NDC target on restoring degraded rangelands in specific ecological zones. Coordinated implementation would directly enhance outcomes, as the NDC's rangeland restoration activities provide a concrete, measurable action that supports the NBSAP's broader goal of maintaining natural ecosystems and integrating biodiversity into land-use plans."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_1",
+        "NRVTS_15"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NBSAP target broadly aims to integrate biodiversity into all territorial and land-use planning, which could encompass the pastureland focus of the LDN target on sustainable use. However, the LDN target is narrowly scoped to developing legal instruments for pastureland, while the NBSAP target covers a wide range of ecosystems and planning processes, making direct operational synergy limited without further specification."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_10",
+        "SECTORAL_6"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets involve urban and peri-urban areas and share a broad interest in sustainable land use, but they focus on different systems (green/blue infrastructure vs. livestock farming) and do not directly support or depend on each other. Coordinated spatial planning could help ensure that intensified farming zones near cities do not encroach on planned urban green spaces, but the targets remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_11",
+        "SECTORAL_12"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the broader environmental and biodiversity policy space, but they address distinct domains: one focuses on genetic resources and benefit-sharing frameworks, while the other targets land degradation and desertification. They could support each other indirectly, for example through shared governance or monitoring systems, but their actions, ecosystems, and primary outcomes remain largely independent."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_12",
+        "SECTORAL_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to integrate environmental sustainability into sectoral planning, with the NBSAP target calling for biodiversity mainstreaming across all sectors and the Vision 2050 target operationalizing this in agriculture through climate-adapted, green-economy-oriented production. Coordinated implementation would directly enhance outcomes, as the NBSAP target provides the policy framework and capacity-building (e.g., One Health, impact assessments, training) that enable the agricultural transformation target to succeed."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_12",
+        "SECTORAL_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NBSAP target aims to mainstream biodiversity across all sectors, which could create an enabling policy environment for the pasture management actions in the Vision 2050 target. However, the NBSAP target operates at a broad, cross-sectoral policy level while the Vision 2050 target focuses on a specific on-the-ground intervention for herders, so they remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_13",
+        "NDC_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets share a thematic focus on biodiversity monitoring, reporting, and conservation, and the NBSAP's financial incentives and reporting standards could support the NDC's ecological monitoring and protection actions. However, they operate in different primary domains (business and finance vs. on-the-ground ecosystem management) and lack a specific shared geography or direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_13",
+        "SECTORAL_2"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the broader environmental and climate policy space and share a focus on sustainability and economic transformation, but they address different sectors (business/finance vs. agriculture) and lack direct operational overlap. The NBSAP target's emphasis on monitoring and incentivizing business biodiversity impacts could indirectly support the Vision 2050 target's goal of a sustainable agriculture sector through financial products and reporting standards, but the targets remain independently implementable with no shared geography or specific joint actions."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_14",
+        "NDC_4"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets promote sustainable resource use and environmental protection, but they operate in different primary domains (consumption/waste vs. water sector resilience) with distinct actions and actors. They could support each other through shared enabling conditions like education and behavioral change, but remain independently implementable without strong operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_14",
+        "NRVTS_6"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NBSAP target focuses on consumption, waste, and education across general public and institutions, while the LDN target addresses technical standards for reforestation aimed at entities setting or following those norms. They share no common actions, ecosystems, or target audiences, and aligning them would not yield any practical implementation benefit."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_16",
+        "NDC_24"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address environmental impacts of economic sectors, with the NBSAP target aiming to reform harmful subsidies in agriculture, energy, and transport, and the NDC target focusing on reducing livestock emissions by increasing meat supply to the domestic market. They share a thematic overlap in the agriculture/livestock domain and could support each other through coordinated subsidy reform and emission reduction efforts, but they remain independently implementable with distinct primary mechanisms and scales."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_17",
+        "NDC_25"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NBSAP target focuses on mobilizing financial resources for biodiversity conservation through fiscal and private-sector mechanisms, while the NDC target addresses on-the-ground restoration of degraded rangelands to reduce soil carbon loss. They share a broad thematic connection in that increased biodiversity finance could potentially fund restoration activities, but the targets operate in different implementation domains (financial policy vs. ecological restoration) without a direct operational link."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_17",
+        "NDC_5"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the broader environmental and climate policy framework and could support each other through shared enabling conditions, such as increased biodiversity finance potentially funding forest protection activities. However, they focus on different primary domains (financial resource mobilization versus on-the-ground forest management) and lack direct operational overlap in their specific actions, actors, or geographies."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_17",
+        "NRVTS_8"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NBSAP target focuses on mobilizing financial resources for biodiversity conservation broadly, while the LDN target mandates reforestation by forest user groups, creating a potential funding link where biodiversity finance could support reforestation activities. However, the targets operate at different scales (national finance systems vs. on-the-ground forest management) and serve distinct primary goals, so coordinated implementation would require deliberate bridging rather than being inherently synergistic."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_17",
+        "SECTORAL_6"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NBSAP target focuses on mobilizing financial resources for biodiversity conservation through fiscal and market-based instruments, while the Vision 2050 target promotes sustainable livestock husbandry through cooperative investment and climate adaptation measures. They share a thematic interest in sustainable resource use and could align through directing biodiversity finance mechanisms toward the livestock sector's climate adaptation and cooperative activities, but they operate in distinct domains with no direct operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_18",
+        "SECTORAL_8"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NBSAP target focuses on capacity-building, technology transfer, and research support for biodiversity conservation, while the Vision 2050 target aims to expand irrigated agricultural production through infrastructure and cultivation of fallow lands. They operate in different sectors (environment vs. agriculture), target different actors (researchers and professionals vs. agricultural enterprises), and share no geographic, resource, or implementation overlap that would make coordination meaningful."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_19",
+        "NDC_2"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to strengthen biodiversity governance and ecosystem protection in Mongolia, with the NBSAP target focusing on information access, training, and outreach to enable effective management, while the NDC target emphasizes on-the-ground conservation actions, protected area expansion, and genetic diversity preservation. They share compatible goals and could reinforce each other through coordinated capacity building and data sharing, but they remain independently implementable with distinct primary activities and audiences."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_19",
+        "NRVTS_24"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to enhance biodiversity conservation and sustainable use, with the NBSAP target focusing on information, outreach, and capacity building, while the LDN target focuses on expanding protected areas. The NBSAP target's actions on promoting nature-based solutions and training officials could support the management and governance of newly protected areas, but the targets operate through distinct primary mechanisms (awareness vs. legal designation) and are independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_2",
+        "NRVTS_12"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to restore degraded grassland ecosystems through active revegetation measures, and the NBSAP target's broad scope explicitly includes the pastureland and abandoned land that the LDN target addresses. Coordinated implementation would allow the LDN target's air seeding and perennial grass sowing to directly contribute to the NBSAP target's 30 percent restoration goal, enhancing efficiency and measurable outcomes."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_20",
+        "SECTORAL_12"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the broader environmental governance framework and share a focus on inclusive, sustainable land and resource management, but they address different primary domains (social participation and rights vs. biophysical land restoration). Coordinated implementation could occur where community-led restoration projects or gender-responsive land management practices overlap, though the targets remain independently implementable with distinct core objectives."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_3",
+        "NDC_11"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate in terrestrial ecosystems and share a broad climate-nature framing, but they focus on different geographies, actors, and primary objectives. The NBSAP target pursues area-based conservation and connectivity, while the NDC target strengthens livestock water and feed security, and any synergy would require deliberate spatial coordination rather than arising automatically."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_3",
+        "SECTORAL_13"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to expand and improve the management of protected and restored terrestrial areas, with the NBSAP target focusing on designating 30% of the country under protection and the Vision 2050 target on rehabilitating degraded land for productive reuse. Coordinated implementation would allow restored lands to be assessed for inclusion in the protected area network, enhancing ecological connectivity and achieving both conservation and restoration outcomes more efficiently."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_4",
+        "NDC_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to reduce extinction risk and conserve genetic diversity through species assessments, protected areas, connectivity, and gene banks, with overlapping actions and actors. Coordinated implementation would directly amplify outcomes by aligning monitoring, legal frameworks, and on-the-ground conservation across shared ecosystems and species."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_4",
+        "NRVTS_17"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets operate within the broader environmental and climate policy framework, but they focus on different domains: one on biodiversity conservation and species protection, the other on agricultural productivity. While increased agricultural yields could create pressure on habitats and connectivity areas that the NBSAP target seeks to protect, the targets themselves do not specify shared geography, actions, or actors that would enable direct coordination or cause concrete friction."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_4",
+        "SECTORAL_5"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land management in ways that could affect biodiversity, but they operate in different primary domains (species conservation vs. livestock agriculture) and do not share specific geographies or actors. Coordinated implementation could create synergies if pasture management actions are designed to also protect wildlife corridors and connectivity, but the targets remain independently implementable."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_6",
+        "NDC_24"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address environmental pressures in Mongolia and share a broad concern for reducing harmful impacts, with the NBSAP target covering pesticide and chemical pollution and the NDC target addressing livestock emissions. However, they operate in different domains (crop inputs and waste management versus meat supply and herd management) without direct operational overlap, so coordinated implementation would yield only indirect benefits."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_7",
+        "NDC_7"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to expand forest cover and improve forest management for carbon sequestration and climate resilience, with overlapping actions such as monitoring, policy strengthening, and sustainable use. Coordinated implementation would directly enhance outcomes by aligning forest monitoring systems, capacity building, and nature-based solution investments."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_7",
+        "SECTORAL_10"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets prioritize expanding forest cover and protecting forest ecosystems, with the NBSAP target aiming to increase carbon sequestration through forest expansion and the Vision 2050 target setting specific protected forest area increases. Coordinated implementation would directly enhance outcomes by aligning forest protection and expansion efforts, optimizing resources for biodiversity resilience and climate mitigation."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_7",
+        "SECTORAL_15"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets share a broad goal of reducing negative impacts on biodiversity and ecosystems, with the NBSAP target focusing on climate-related resilience and the Vision 2050 target on reforming harmful subsidies. They could support each other through integrated nature-based solutions and redirected financial flows, but they operate through distinct primary mechanisms (on-the-ground ecosystem management vs. economic policy reform) and do not directly depend on each other for implementation."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_9",
+        "NDC_23"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NBSAP target focuses on ecosystem services, air quality, and drinking water through nature-based solutions, while the NDC target addresses livestock CO2 emissions through circulation and export improvements. They share no common geography, actors, or implementation pathways, and aligning them would not yield mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_9",
+        "NRVTS_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to restore degraded lands through reforestation and nature-based solutions, sharing the same action of tree planting and ecosystem recovery. Coordinated implementation would directly enhance forest cover restoration and ecosystem service benefits, with the NBSAP target providing valuation and planning frameworks that support the LDN reforestation goal."
+      }
+    },
+    {
+      "pair": [
+        "NBSAP_9",
+        "SECTORAL_11"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to restore and enhance ecosystem services, with the NBSAP target broadly addressing nature's benefits including air and water quality, and the Vision 2050 target specifically increasing forest cover and carbon sequestration. Reforestation and afforestation actions under Vision 2050 can contribute to improved air quality and water regulation, creating thematic overlap, but the NBSAP target covers a wider range of ecosystems and services, and the two remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NDC_1",
+        "NRVTS_2"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land-based ecosystems and share a broad goal of enhancing ecological health, with the NDC target's actions on expanding protected areas and ecological corridors potentially creating enabling conditions for the LDN target's reforestation on degraded lands. However, the NDC target focuses on biodiversity protection and species migration through legal designations and assessments, while the LDN target is specifically about restoring forest cover on fire-, pest-, and deforestation-affected lands, making them independently implementable with only partial operational overlap."
+      }
+    },
+    {
+      "pair": [
+        "NDC_1",
+        "NRVTS_26"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land-based ecosystems and biodiversity, with the NDC target focusing on legal protection and species monitoring while the LDN target aims to develop a payment for ecosystem services system. They could support each other if the payment system incentivizes conservation in the protected areas and corridors the NDC target seeks to expand, but the LDN target lacks specified actions, geography, or outcomes, making practical coordination uncertain."
+      }
+    },
+    {
+      "pair": [
+        "NDC_1",
+        "SECTORAL_9"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address climate adaptation and sustainable resource use in land-based ecosystems, with the NDC focusing on biodiversity protection and the Vision 2050 target on agricultural cooperatives. They could support each other if cooperative investments and sustainable practices in agriculture are designed to avoid encroaching on protected areas and ecological corridors, but they remain independently implementable with distinct primary goals and actors."
+      }
+    },
+    {
+      "pair": [
+        "NDC_10",
+        "SECTORAL_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets aim to reduce environmental pressure from livestock farming, with the NDC target focusing on intensive, biosecure methods to lower pasture pressure and the Vision 2050 target seeking to phase down harmful agricultural subsidies and redirect support toward conservation. They share a thematic overlap around sustainable agriculture and could reinforce each other if financial support for intensive farming is designed to align with subsidy reform, but they remain independently implementable and serve distinct primary mechanisms."
+      }
+    },
+    {
+      "pair": [
+        "NDC_12",
+        "NRVTS_11"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on improving pasture management and livestock production systems, with the NDC target introducing smart technologies and the LDN target recovering traditional rotational practices. Coordinated implementation could integrate modern monitoring tools with traditional knowledge to enhance pasture sustainability and productivity."
+      }
+    },
+    {
+      "pair": [
+        "NDC_13",
+        "SECTORAL_3"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address pasture and livestock systems in Mongolia and share herder households as a key audience, creating clear thematic and actor overlap. However, the NDC target focuses on long-term pasture governance and restoration, while the Vision 2050 target concentrates on post-disaster financial protection and recovery, making them complementary but independently implementable without strong operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NDC_15",
+        "SECTORAL_15"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address agricultural systems and share a broad interest in sustainability, but they operate through different mechanisms: one promotes technology adoption and infrastructure for high yields, while the other focuses on subsidy reform to reduce ecosystem harm. They could support each other through parallel efforts, but lack direct operational overlap in actions, geography, or actors."
+      }
+    },
+    {
+      "pair": [
+        "NDC_16",
+        "NRVTS_1"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NDC target focuses on agricultural crop resilience through breeding and seed systems, while the LDN target aims to expand forest cover and reduce deforestation. They operate in different ecosystems (cropland vs. forests), involve different actors, and share no implementation pathways or geographic overlap that would make coordination meaningful."
+      }
+    },
+    {
+      "pair": [
+        "NDC_16",
+        "NRVTS_27"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "low"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NDC target focuses on agricultural resilience through crop variety adaptation and seed systems, while the LDN target addresses payment for ecosystem services research and development with no specified actions, geography, or actors. There is no shared implementation pathway, ecosystem, or operational overlap that would make coordination meaningful."
+      }
+    },
+    {
+      "pair": [
+        "NDC_19",
+        "NRVTS_17"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NDC target focuses on social resilience and livelihood diversification for vulnerable groups, while the LDN target aims to increase agricultural yields to a specific metric. They share a broad thematic overlap in sustainable livelihoods and agriculture, and could support each other if yield increases benefit vulnerable farmers, but they operate through different primary mechanisms and lack explicit operational linkage."
+      }
+    },
+    {
+      "pair": [
+        "NDC_19",
+        "NRVTS_18"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NDC target focuses on social resilience and livelihood diversification for vulnerable groups, while the LDN target promotes agroforestry and shelter belt development, which can contribute to sustainable livelihoods and economic diversification. They share a thematic overlap in supporting sustainable livelihoods and could be coordinated in areas where agroforestry projects directly benefit climate-vulnerable communities, but they remain independently implementable with distinct primary goals and actors."
+      }
+    },
+    {
+      "pair": [
+        "NDC_2",
+        "SECTORAL_5"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address Mongolia's pasture and rangeland ecosystems, with the NDC target focusing on protection and regeneration of vulnerable ecosystems and the Vision 2050 target focusing on sustainable livestock management through carrying capacity limits and pasture improvement. Coordinated implementation could align conservation actions with regulated grazing, but the targets remain independently implementable and serve somewhat distinct primary goals."
+      }
+    },
+    {
+      "pair": [
+        "NDC_22",
+        "SECTORAL_12"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets address the same agricultural and rangeland sector, with the NDC target's livestock herd cap and emissions reduction directly supporting the Vision 2050 target's goals of protecting soil and reducing land degradation. Coordinated implementation would enhance outcomes, as maintaining the herd within ecological carrying capacity is a concrete action that prevents overgrazing and desertification."
+      }
+    },
+    {
+      "pair": [
+        "NDC_24",
+        "SECTORAL_1"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on the livestock sector and aim to manage herd sizes and grazing practices to achieve environmental outcomes, with the NDC target seeking emissions reductions and the Vision 2050 target seeking ecological balance through carrying capacity alignment. Coordinated implementation would directly enhance efficiency, as reducing livestock numbers to match pasture capacity simultaneously lowers CO2 emissions and balances grazing pressure."
+      }
+    },
+    {
+      "pair": [
+        "NDC_24",
+        "SECTORAL_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NDC target aims to reduce livestock emissions by increasing domestic meat supply, while the Vision 2050 target seeks to phase down harmful agricultural subsidies and redirect support toward conservation, creating a shared focus on the livestock sector and its environmental impacts. They could reinforce each other if subsidy reform shifts financial incentives away from emission-intensive practices, but the NDC's emphasis on expanding meat supply and the Vision 2050's focus on subsidy assessment operate through distinct mechanisms without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NDC_24",
+        "SECTORAL_4"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on the livestock sector and pasture management in Mongolia, with the NDC target aiming to reduce livestock CO2 emissions and the Vision 2050 target establishing legal and management frameworks to reduce pasture degradation. Coordinated implementation would directly enhance outcomes, as improved pasture management reduces degradation and desertification while also contributing to lower livestock emissions through better grazing practices and land use."
+      }
+    },
+    {
+      "pair": [
+        "NDC_24",
+        "SECTORAL_5"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "high"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address the livestock sector and share a focus on reducing emissions and managing livestock numbers, creating a clear thematic and operational overlap. However, the NDC target emphasizes increasing meat supply to the domestic market, which could conflict with the Vision 2050 target's approach of setting upper limits on livestock based on carrying capacity, making them independently implementable with some potential tension but not direct opposition."
+      }
+    },
+    {
+      "pair": [
+        "NDC_25",
+        "SECTORAL_12"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to reduce land degradation and restore degraded land, with the NDC target specifying a concrete action (restoring 10% of heavily degraded rangelands) that directly contributes to the Vision 2050 target's broader goal of restoring degraded and contaminated land. Coordinated implementation would allow the NDC's rangeland restoration to serve as a measurable, operational component of the Vision 2050 framework, enhancing efficiency and outcomes for soil protection and desertification reversal."
+      }
+    },
+    {
+      "pair": [
+        "NDC_26",
+        "SECTORAL_3"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "none",
+        "confidence": null,
+        "description": "The NDC target focuses on social inclusion, gender-responsive budgeting, and decision-making processes across all climate actions, while the Vision 2050 target concentrates on agricultural insurance, restocking support, and a specific farm adaptation project for farmers and herders. They share no common geography, actors, or implementation activities, and aligning them would not yield any mutual benefit or policy efficiency."
+      }
+    },
+    {
+      "pair": [
+        "NDC_3",
+        "NRVTS_20"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NDC target addresses water management across multiple sectors including agriculture, and its actions on irrigation regimes and ecological flows directly support the LDN target's goal of preventing erosion in agricultural settings. However, the LDN target lacks specified actions, audience, or outcomes, making practical coordination dependent on how it is operationalized."
+      }
+    },
+    {
+      "pair": [
+        "NDC_3",
+        "SECTORAL_4"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address water and pasture management within Mongolia's rural landscapes, and the NDC's irrigation revisions and ecological flow determinations could support the Vision 2050 target's pasture management plans by improving water availability and reducing degradation. However, the NDC target operates across multiple sectors with a broad water-governance focus, while the Vision 2050 target is narrowly centered on herder contracts and grazing practices, making them independently implementable without strong mutual dependence."
+      }
+    },
+    {
+      "pair": [
+        "NDC_4",
+        "SECTORAL_2"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address water management and climate adaptation in Mongolia, with the NDC target detailing specific water-sector interventions and the Vision 2050 target promoting climate-adapted agriculture, creating thematic overlap around water use for livelihoods. However, the NDC target focuses on water resource monitoring, storage, and ecosystem protection across diverse zones, while the Vision 2050 target centers on agricultural transformation and herder livelihoods, making them independently implementable with only partial operational synergy."
+      }
+    },
+    {
+      "pair": [
+        "NDC_6",
+        "SECTORAL_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on expanding forest cover and protection, with the NDC target promoting afforestation and restoration through technology and the Vision 2050 target mandating an increase in protected forest area to 50% by 2030 and 60% by 2050. Coordinated implementation would allow afforestation efforts to directly contribute to meeting protected area targets, enhancing both carbon sequestration and biodiversity outcomes."
+      }
+    },
+    {
+      "pair": [
+        "NDC_8",
+        "NRVTS_9"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The NDC target focuses on strengthening forest sector policies, management, and protection, while the LDN target addresses integrating greening programs into urban development planning, creating a thematic overlap around sustainable land use and green infrastructure. They could support each other through shared enabling conditions like improved planning and monitoring systems, but they operate in distinct ecosystems (forests vs. urban areas) and serve different primary goals, making coordinated implementation possible but not strongly interdependent."
+      }
+    },
+    {
+      "pair": [
+        "NRVTS_10",
+        "SECTORAL_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address terrestrial ecosystem conservation and could share spatial and institutional overlap where grasslands qualify for inclusion in the protected-area expansion. However, the LDN target focuses narrowly on halting grassland degradation through sustainable management, while the Vision 2050 target sets area-based protection targets across multiple ecosystem types, making them independently implementable without mutual dependence."
+      }
+    },
+    {
+      "pair": [
+        "NRVTS_11",
+        "SECTORAL_11"
+      ],
+      "stratum": "b_control_flags_nonconsensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land-based ecosystems and contribute to environmental sustainability, but they focus on different ecosystem types (pasture vs. forest) and distinct primary goals (rotational grazing recovery vs. forest cover expansion). They could support each other through integrated landscape planning, but remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NRVTS_11",
+        "SECTORAL_4"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets aim to restore and protect pasture systems from degradation, with the LDN target focusing on recovering traditional rotational practices and the Vision 2050 target establishing the legal and management frameworks to enable such practices. Coordinated implementation would directly reinforce each other, as the Vision 2050 target creates the enabling conditions for the LDN target's rotational system to succeed."
+      }
+    },
+    {
+      "pair": [
+        "NRVTS_15",
+        "SECTORAL_10"
+      ],
+      "stratum": "d_background",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "Both targets address land management and conservation within the same national framework, but they operate on different ecosystems (pastureland vs. a broad network of protected areas) and through distinct mechanisms (legal instruments for sustainable use vs. spatial expansion of protection). They could support each other through integrated land-use planning, but remain independently implementable without direct operational dependency."
+      }
+    },
+    {
+      "pair": [
+        "NRVTS_16",
+        "SECTORAL_4"
+      ],
+      "stratum": "c_others_aligned",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "high",
+        "confidence": null,
+        "description": "Both targets focus on pasture management and reducing degradation, with the LDN target researching adaptive silvo-pastoral systems and the Vision 2050 target establishing legal and contractual frameworks for sustainable pasture use. Coordinated implementation would allow research findings to directly inform the legal and management systems, enhancing the effectiveness of both."
+      }
+    },
+    {
+      "pair": [
+        "NRVTS_17",
+        "SECTORAL_15"
+      ],
+      "stratum": "a_consensus",
+      "old": {
+        "alignment": "flagged",
+        "confidence": "medium"
+      },
+      "new": {
+        "alignment": "medium",
+        "confidence": null,
+        "description": "The LDN target aims to increase agricultural yields, while the Vision 2050 target seeks to phase down harmful agricultural subsidies and redirect support toward conservation, creating a clear thematic overlap in the agriculture sector. They could support each other if yield improvements are achieved through practices that reduce harmful subsidies, but they remain independently implementable and serve distinct primary goals."
+      }
+    }
+  ],
+  "spotReadSample": [
+    [
+      "FSS_21",
+      "NDC_6"
+    ],
+    [
+      "NBSAP_17",
+      "NDC_5"
+    ],
+    [
+      "FSS_32",
+      "NDC_22"
+    ],
+    [
+      "FSS_36",
+      "ILDN_7"
+    ],
+    [
+      "FSS_22",
+      "NRVTS_17"
+    ],
+    [
+      "FSS_25",
+      "NBSAP_17"
+    ],
+    [
+      "NBSAP_1",
+      "NDC_25"
+    ],
+    [
+      "NBSAP_12",
+      "SECTORAL_2"
+    ],
+    [
+      "FSS_35",
+      "NDC_3"
+    ],
+    [
+      "NAP_13",
+      "NDC_6"
+    ],
+    [
+      "FSS_29",
+      "NBSAP_13"
+    ],
+    [
+      "FSS_26",
+      "NBSAP_16"
+    ],
+    [
+      "NAP_3",
+      "NBSAP_3"
+    ],
+    [
+      "NBSAP_11",
+      "SECTORAL_12"
+    ],
+    [
+      "FSS_11",
+      "SECTORAL_4"
+    ],
+    [
+      "FSS_27",
+      "SECTORAL_1"
+    ],
+    [
+      "FSS_13",
+      "NBSAP_11"
+    ],
+    [
+      "NBSAP_18",
+      "SECTORAL_8"
+    ],
+    [
+      "FSS_7",
+      "NRVTS_18"
+    ],
+    [
+      "NBSAP_10",
+      "SECTORAL_6"
+    ]
+  ]
+}
