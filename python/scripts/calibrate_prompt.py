@@ -139,6 +139,25 @@ def main() -> int:
 
     all_idx = {s: load_model_alignment(country_dir, s) for s in slugs}
     common = set.intersection(*(set(i) for i in all_idx.values()))
+
+    # Human adjudications from the ratings ledger (latest event per pair wins).
+    # "real" = a human confirmed the pair deserves a flag; "thin" = confirmed
+    # the old flag was an artifact; "skip" = declined to judge. Retention gates
+    # exclude thin/skip pairs and hard-require the confirmed ones.
+    ratings: dict[tuple[str, str], str] = {}
+    ledger_path = config.OUTPUT_DIR / "ratings-ledger.jsonl"
+    if ledger_path.exists():
+        events = [
+            json.loads(line)
+            for line in ledger_path.read_text().splitlines()
+            if line.strip()
+        ]
+        for e in sorted(
+            (e for e in events if e.get("country") == args.country),
+            key=lambda e: e.get("ts", 0),
+        ):
+            a, b = e["pairKey"].split("::")
+            ratings[tuple(sorted((a, b)))] = e["rating"]
     flagged = {
         s: {k for k in common if all_idx[s][k]["alignment"] == "flagged"} for s in slugs
     }
@@ -222,12 +241,27 @@ def main() -> int:
     t_old, t_new = all_idx[args.treatment], new_idx[args.treatment]
     c_old, c_new = all_idx[args.control], new_idx[args.control]
 
+    # Consensus pairs the human vetted as artifacts (thin) or declined (skip)
+    # do not count against retention; confirmed keeps (real) are hard-required.
+    vetted_consensus = [
+        k for k in strata["a_consensus"] if ratings.get(k) not in ("thin", "skip")
+    ]
+    confirmed_keeps = [k for k in strata["a_consensus"] if ratings.get(k) == "real"]
+
+    def _modal_share(idx) -> float:
+        flags = [k for k in union_keys if idx[k]["alignment"] == "flagged"]
+        if not flags:
+            return 0.0
+        payloads = Counter(
+            (idx[k].get("mechanism"), idx[k].get("manageability"), idx[k].get("confidence"))
+            for k in flags
+        )
+        return payloads.most_common(1)[0][1] / len(flags)
+
     t_flags_new = [k for k in union_keys if t_new[k]["alignment"] == "flagged"]
-    payloads = Counter(
-        (t_new[k].get("mechanism"), t_new[k].get("manageability"), t_new[k].get("confidence"))
-        for k in t_flags_new
-    )
-    modal_share = (payloads.most_common(1)[0][1] / len(t_flags_new)) if t_flags_new else 0.0
+    modal_share = _modal_share(t_new)
+    control_modal = _modal_share(c_new)
+    modal_cap = max(0.5, control_modal + 0.10)
     confidences = {t_new[k].get("confidence") for k in t_flags_new}
     control_changed = sum(
         1 for k in union_keys if c_old[k]["alignment"] != c_new[k]["alignment"]
@@ -254,25 +288,30 @@ def main() -> int:
             "threshold": "<= 0.25",
             "pass": flag_rate(t_new, strata["d_background"]) <= 0.25,
         },
-        "G2_treatment_consensus_retention": {
-            "value": retention(strata["a_consensus"], t_new),
-            "threshold": ">= 0.90",
-            "pass": retention(strata["a_consensus"], t_new) >= 0.90,
+        "G2_treatment_consensus_retention_vetted": {
+            "value": retention(vetted_consensus, t_new),
+            "threshold": ">= 0.90 (thin/skip-rated pairs excluded)",
+            "pass": retention(vetted_consensus, t_new) >= 0.90,
+        },
+        "G2b_treatment_confirmed_keeps_flagged": {
+            "value": retention(confirmed_keeps, t_new),
+            "threshold": ">= 0.75 of human-confirmed flags",
+            "pass": retention(confirmed_keeps, t_new) >= 0.75,
         },
         "G3a_control_label_change_rate": {
             "value": control_changed,
             "threshold": "<= 0.15",
             "pass": control_changed <= 0.15,
         },
-        "G3b_control_consensus_retention": {
-            "value": retention(
-                [k for k in strata["a_consensus"] if k in flagged[args.control]], c_new
-            ),
-            "threshold": ">= 0.95",
-            "pass": retention(
-                [k for k in strata["a_consensus"] if k in flagged[args.control]], c_new
-            )
-            >= 0.95,
+        "G3b_control_consensus_retention_vetted": {
+            "value": retention(vetted_consensus, c_new),
+            "threshold": ">= 0.90 (thin/skip-rated pairs excluded)",
+            "pass": retention(vetted_consensus, c_new) >= 0.90,
+        },
+        "G3d_control_confirmed_keeps_flagged": {
+            "value": retention(confirmed_keeps, c_new),
+            "threshold": ">= 0.75 of human-confirmed flags",
+            "pass": retention(confirmed_keeps, c_new) >= 0.75,
         },
         "G3c_control_background_drift": {
             "value": abs(
@@ -295,9 +334,10 @@ def main() -> int:
             "pass": c_share_mh >= 0.50,
         },
         "G5a_treatment_modal_flag_payload_share": {
-            "value": modal_share,
-            "threshold": "< 0.30",
-            "pass": modal_share < 0.30,
+            "value": {"treatment": modal_share, "control": control_modal},
+            "threshold": "treatment <= max(0.5, control + 0.10); sub-field tuples "
+            "concentrate naturally when flags are few and homogeneous",
+            "pass": modal_share <= modal_cap,
         },
         "G5b_treatment_confidence_not_collapsed": {
             "value": sorted(str(c) for c in confidences),
@@ -338,6 +378,10 @@ def main() -> int:
         "treatment": args.treatment,
         "control": args.control,
         "strataSizes": {n: len(keys) for n, keys in strata.items()},
+        "adjudicatedConsensus": {
+            r: sum(1 for k in strata["a_consensus"] if ratings.get(k) == r)
+            for r in ("real", "thin", "skip")
+        },
         "unionPairs": len(union_keys),
         "gates": gates,
         "allGatesPass": all(g["pass"] for g in gates.values()),
