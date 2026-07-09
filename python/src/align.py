@@ -107,8 +107,10 @@ The friction itself must still be concrete: the opposing goal, the shared finite
 named in the targets' text, or follow in a single direct step from activities the text names (irrigation expansion implies demand \
 on basin water: one step, flaggable; energy subsidies imply more production, which might someday add pressure on distant lands: \
 two steps, not flaggable). An explicit commitment in one target to cap, reduce, reform, or hold neutral an activity or pressure \
-that the other target expands or subsidises also counts as a named ingredient: the commitment itself is the contested claim. \
-If connecting the two targets needs a chain of maybes, do not flag the pair.
+that the other target expands or subsidises also counts as a named ingredient, but only when the expanded activity is itself a \
+named driver of what the commitment binds (subsidies a reform names, pollution an expansion emits, the same herd a cap limits). \
+A commitment to improve the environment in general does not turn every expansion into a conflict, and the national budget as a \
+whole is not a shared budget envelope. If connecting the two targets needs a chain of maybes, do not flag the pair.
 
     Within the single flagged state, you separately characterise three sub-dimensions, rendered inline in parentheses: \
 the mechanism (what kind of friction), the manageability (can coordination resolve it, or would a target need to be redesigned), \
@@ -205,10 +207,10 @@ friction along three sub-dimensions rendered inline in parentheses:
        **2. Resource competition**: Both targets place demands on the same specific limited resource (land, water, budget envelope, \
 staff capacity, infrastructure capacity, emissions budget). The competition is for a resource both need in ways that are not freely \
 additive, and the shared claim must be specific: the same named region, watershed, land base, budget envelope, or binding cap that \
-both targets draw down. An explicit cap, reduction, reform, or no-net-loss commitment that the other target's expansion or \
-subsidy works against is such a claim: the commitment is the contested resource. That most policies in a national framework all \
-need land, water, or funding somewhere in the country is NOT resource competition; without a shared specific claim, classify the \
-pair on the alignment scale instead.
+both targets draw down. An explicit cap, reduction, reform, or no-net-loss commitment is such a claim only when the other \
+target's expansion or subsidy is a named driver of what that commitment binds; the commitment is then the contested resource. \
+That most policies in a national framework all need land, water, or funding somewhere in the country is NOT resource \
+competition; without a shared specific claim, classify the pair on the alignment scale instead.
           Example (illustrative):
             Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
             Target 2: Protect watershed ecosystems and maintain minimum environmental water flows in those river basins.
