@@ -1,0 +1,476 @@
+[
+  {
+    "text": "Target 3: Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per annum14 in 2015.",
+    "label": "Target 3",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "Target 3: Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per \nannum2 in 2015.",
+        "section": "Executive summary",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Target 3: Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per \nannum8 in 2015.",
+        "section": "3.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Target 3: Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per annum14 in 2015.",
+        "section": "Target 3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• Improving agricultural land use to prevent land degradation.",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Increase productivity of 1260.5 sq. km of agricultural land (cropland) by establishing windbreaks, easing intrusion of livestock and promoting irrigated technologies.",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document",
+    "activities": "Developing agroforestry including shelterbelt system development",
+    "activitySources": [
+      {
+        "text": "Developing agroforestry including shelterbelt system development",
+        "sourceText": "Developing \nagroforestry including \nshelterbelt system \ndevelopment",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Target 4: Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)15.",
+    "label": "Target 4",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "Target 4: Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)3.",
+        "section": "Executive summary",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Target 4: Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)9.",
+        "section": "3.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Target 4: Ensure no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)15.",
+        "section": "Target 4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• Restoring wetlands",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Improve wetland productivity by 30%.",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Restore 30% of wetland currently transformed to the other land cover classes.",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "Target 1: Reduce deforestation and forest degradation to maintain the forest area and reach 9% of the total area by 2030 compared to 7.85%1 in 2015.",
+    "label": "Target 1",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "sources": [
+      {
+        "sourceText": "maintain a forest area to reach 9% of the total area;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Target 1: Reduce deforestation and forest degradation to maintain the forest area and reach 9% \nof the total area by 2030 compared to 7.85%1 in 2015.",
+        "section": "Executive summary",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• Target 1: Reduce deforestation and forest degradation to maintain the forest area and reach 9% \nof the total area by 2030 compared to 7.85%7 in 2015.",
+        "section": "3.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "expand special protected areas to reach 30% of the total area;",
+    "label": "1.1",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "expand special protected areas to reach 30% of the total area;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "bring under the protection about 60% of all headwaters;",
+    "label": "1.1",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "bring under the protection about 60% of all headwaters;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "introduce no-till soil processing in arable land;",
+    "label": "1.1",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "introduce no-till soil processing in arable land;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "improve water availability for arable land to increase the irrigated area to up to 120 thousand hectares;",
+    "label": "1.1",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "improve water availability for arable land to increase the irrigated area to up to 120 thousand \nhectares;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "Target 2: Promote sustainable grassland management and stop further grassland degradation.",
+    "label": "Target 2",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "regulate and manage animal numbers in alignment with pasture carrying capacity;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Maintain the appropriate ratio between types of animals and herd composition;",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Target 2: Promote sustainable grassland management and stop further grassland degradation.",
+        "section": "Executive summary",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• Target 2: Promote sustainable grassland management and stop further grassland degradation.",
+        "section": "3.1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• Mitigating land degradation in grassland",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Restoring 30% of grassland currently transformed to other lands",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Improving 30% of grassland where productivity decline is observed",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "Support green development and enhance the living standards of herders and agriculture workers.",
+    "label": "1.1",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sources": [
+      {
+        "sourceText": "Support green development and enhance the living standards of herders and agriculture \nworkers.",
+        "section": "1.1",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "NRVTS",
+    "labelSource": "document"
+  },
+  {
+    "text": "Reducing forest degradation: Afforestation of 50% of forest transformed to grassland; Increase forested area in/around urban lands by 1.8 sq.km; Improve forest productivity on 12,138.51 sq. km are by improving forest management and forestry activities.",
+    "label": "Reducing forest degradation",
+    "pageNumbers": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "sources": [
+      {
+        "sourceText": "• Reducing forest degradation:",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Afforestation of 50% of forest transformed to grassland",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Increase forested area in/around urban lands by 1.8 sq.km",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "o Improve forest productivity on 12,138.51 sq. km are by improving forest management and forestry activities.",
+        "section": "National targets to achieve land degradation neutrality by 2030",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "NRVTS",
+    "activities": "Afforestation of 50% of forest transformed to grassland\nIncrease forested area in/around urban lands by 1.8 sq.km\nImprove forest productivity on 12,138.51 sq. km are by improving forest management and forestry activities.",
+    "activitySources": [
+      {
+        "text": "Afforestation of 50% of forest transformed to grassland",
+        "sourceText": "o Afforestation of 50% of forest transformed to grassland",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Increase forested area in/around urban lands by 1.8 sq.km",
+        "sourceText": "o Increase forested area in/around urban lands by 1.8 sq.km",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Improve forest productivity on 12,138.51 sq. km are by improving forest management and forestry activities.",
+        "sourceText": "o Improve forest productivity on 12,138.51 sq. km are by improving forest management \nand forestry activities.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  }
+]

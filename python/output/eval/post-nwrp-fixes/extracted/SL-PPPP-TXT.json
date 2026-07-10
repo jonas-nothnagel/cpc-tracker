@@ -1,0 +1,92 @@
+[
+  {
+    "text": "The main objective of the National Physical Planning Policy is to provide all development agencies in Sri Lanka and potential developers with a broad national level guiding framework for the planning and execution of development activities, which will directly impact upon the physical environment of the island and its territorial waters, and to establish facilities, amenities and service related to infrastructure incidental to the development of the physical environment.",
+    "label": "Main objective",
+    "pageNumbers": [
+      0
+    ],
+    "sources": [
+      {
+        "sourceText": "The main objective of the National Physical Planning Policy is to provide all development agencies in Sri Lanka and potential developers with a broad national level guiding framework for the planning and execution of development activities, which will directly impact upon the physical environment of the island and its territorial waters, and to establish facilities, amenities and service related to infrastructure incidental to the development of the physical environment.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PPPP"
+  },
+  {
+    "text": "Conservation of the ‘Critical’ and the ‘Unique’: Adequate sensitivity towards unique environmental settings, water resources, natural ecosystems and cultural landscapes in all development activities, adequate measures taken for the conservation and assurance of their sustainability.",
+    "label": "Conservation of Critical and Unique",
+    "pageNumbers": [
+      0
+    ],
+    "sources": [
+      {
+        "sourceText": "Conservation of the ‘Critical’ and the ‘Unique’: Adequate sensitivity towards unique environmental settings, water resources, natural ecosystems and cultural landscapes in all development activities, adequate measures taken for the conservation and assurance of their sustainability.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PPPP"
+  },
+  {
+    "text": "Promotion of the ‘Livability’ for ‘Human’ and other living beings: Selection of the environments that are most appropriate for human habitation in terms of favorable climatic conditions, safety from disasters, availability of essential services and resources to fulfill basic needs, in the planning of human settlements.",
+    "label": "Promotion of Livability",
+    "pageNumbers": [
+      0
+    ],
+    "sources": [
+      {
+        "sourceText": "Promotion of the ‘Livability’ for ‘Human’ and other living beings: Selection of the environments that are most appropriate for human habitation in terms of favorable climatic conditions, safety from disasters, availability of essential services and resources to fulfill basic needs, in the planning of human settlements.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PPPP"
+  },
+  {
+    "text": "Optimization of the ‘Utility’ of the ‘Available’: More attention to optimize the utility of the available resources and infrastructure, rather than endeavoring into entirely new ventures in future development activities, considering the economic constraints and fulfilling Sustainable Development Goals declared by the United Nations.",
+    "label": "Optimization of Utility",
+    "pageNumbers": [
+      0
+    ],
+    "sources": [
+      {
+        "sourceText": "Optimization of the ‘Utility’ of the ‘Available’: More attention to optimize the utility of the available resources and infrastructure, rather than endeavoring into entirely new ventures in future development activities, considering the economic constraints and fulfilling Sustainable Development Goals declared by the United Nations.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PPPP"
+  },
+  {
+    "text": "Exploration of the ‘Potentials’ and the ‘Enhancement’ of the use. Due consideration given to exploit the potentials of the locations with human resource: where populations with various skills and education levels are available; other resources: such as natural reserves and scenic settings; and in-built potentials such as areas with competitive advantage for diversified developments.",
+    "label": "Exploration of Potentials",
+    "pageNumbers": [
+      0
+    ],
+    "sources": [
+      {
+        "sourceText": "Exploration of the ‘Potentials’ and the ‘Enhancement’ of the use. Due consideration given to exploit the potentials of the locations with human resource: where populations with various skills and education levels are available; other resources: such as natural reserves and scenic settings; and in-built potentials such as areas with competitive advantage for diversified developments.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "PPPP"
+  },
+  {
+    "text": "The development of marine and aquatic resources.",
+    "label": "Marine and aquatic resources",
+    "pageNumbers": [
+      0
+    ],
+    "sources": [
+      {
+        "sourceText": "e. The development of marine and aquatic resources.",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "PPPP"
+  }
+]

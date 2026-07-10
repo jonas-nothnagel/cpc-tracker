@@ -95,6 +95,17 @@
       "notes": "Expert gold from data_sri_lanka_2Jul26.xlsx (fresh, uncontaminated): 192 rows across THREE levels (Goals, Statements, Actions X.Y — the Resolution-36 pattern). By the pipeline's granularity rules the Action rows belong in activities, not targets; read recall level-aware and check the goldCoveredByActivities metric. NAP here = National AGRICULTURAL Policy, not adaptation plan."
     },
     {
+      "docCode": "SL-NWRP",
+      "country": "sri-lanka",
+      "tier": 1,
+      "goldFile": "python/data/sri-lanka-targets.json",
+      "docPath": "dev_data_scripts/sharepoint_sync/Sri Lanka/Policies/National Water Resource Policy 2023.pdf",
+      "docType": "national water resources policy",
+      "sourceDocument": "NWRP",
+      "language": "en",
+      "notes": "Trilingual parallel-translation fixture: Sinhala pp.1-~34 / Tamil ~35-74 / English 75-104, with legacy-font Sinhala/Tamil that extracts as Latin gibberish. Gold = the 33 expert-curated corpus rows (English Section 7 'Policy | Strategy' table; sourceLabel carries the doc-native 'Policy N'/'Strategy N' names); 33/33 quotes reachable in the PDF text layer. The 2 Jul 26 pipeline run extracted the Sinhala AND Tamil Section 7 tables (machine-translated duplicates) and produced zero rows from the document's own English Section 7 - this doc gates the parallel-language handling."
+    },
+    {
       "docCode": "NP",
       "country": "panama",
       "tier": 3,

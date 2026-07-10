@@ -1,0 +1,446 @@
+[
+  {
+    "text": "Mongolia has committed to set a national voluntary LDN target, establish an LDN baseline, and formulate associated measures to achieve LDN.",
+    "label": "1. Quick Facts",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Mongolia has committed to set a national voluntary LDN target, establish an LDN\nbaseline, and formulate associated measures to achieve LDN.",
+        "section": "1. Quick Facts",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "Mongolia is among the countries that have committed to set a\nnational voluntary LDN target, establish an LDN baseline, and formulate associated measures.",
+        "section": "6. Opportunities- The Way Forward",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "ILDN",
+    "labelSource": "document",
+    "activities": "LDN targets: setting targets and establishing the level of ambition;\nLeverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction;\nPartnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance;\nTransformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits;\nMonitoring and reporting: tracking progress towards achieving the LDN targets.",
+    "activitySources": [
+      {
+        "text": "LDN targets: setting targets and establishing the level of ambition;",
+        "sourceText": "(1) LDN targets: setting targets and establishing the level of ambition;",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Leverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction;",
+        "sourceText": "(2) Leverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction;",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Partnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance;",
+        "sourceText": "(3) Partnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance;",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Transformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits;",
+        "sourceText": "(4) Transformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits;",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Monitoring and reporting: tracking progress towards achieving the LDN targets.",
+        "sourceText": "(5) Monitoring and reporting: tracking progress towards achieving the LDN targets.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Agriculture, Forestry and Other Land Uses (AFOLU) targets: Reduce GHG emissions from deforestation and forest degradation by 2% by 2020 and 5% by 2030",
+    "label": "AFOLU targets",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Agriculture, Forestry and Other\nLand\nUses (AFOLU) targets: Reduce\nGHG emissions from\ndeforestation and forest degradation by 2% by 2020 and 5% by 2030",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Agriculture: A comprehensive plan for emission reductions in the livestock sub-sector for implementation between 2020 and 2030",
+    "label": "Agriculture",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Agriculture:\nA comprehensive plan for emission reductions in the livestock sub-sector for\nimplementation between 2020 and 2030",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Sustainable Forest Management: To make forests resilient to climate change by improving their productivity and changing their composition and structure",
+    "label": "Sustainable Forest Management",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Sustainable Forest Management: To make forests resilient to climate change by improving their\nproductivity and changing their composition and structure",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Reforestation: Forest area will be increased to 9% by 2030 through reforestation activities; To reduce forest degradation rate caused by human activities, fires, insects and diseases; To increase efficiency of reforestation actions; To reduce forest degradation rate",
+    "label": "Reforestation",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Reforestation: Forest area will be increased to 9% by 2030 through reforestation activities; To\nreduce forest degradation rate caused by human activities, fires, insects and diseases; To increase\nefficiency of reforestation actions; To reduce forest degradation rate",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Land and Soil Management: To reduce bare fallow to 30% ; To introduce crop rotation system with 3-4 routes and 3-5 crops; To expand irrigated cropland by 2- 2.5 times; To increase irrigated cropland, reduce soil water loss and decrease soil carbon emissions",
+    "label": "Land and Soil Management",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Land and Soil Management: To reduce bare fallow to 30% ; To introduce crop rotation system with\n3-4 routes and 3-5 crops; To expand irrigated cropland by 2- 2.5 times; To increase irrigated\ncropland, reduce soil water loss and decrease soil carbon emissions",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "activities": "To reduce bare fallow to 30%\nTo introduce crop rotation system with 3-4 routes and 3-5 crops\nTo expand irrigated cropland by 2- 2.5 times\nTo increase irrigated cropland, reduce soil water loss and decrease soil carbon emissions",
+    "activitySources": [
+      {
+        "text": "To reduce bare fallow to 30%",
+        "sourceText": "To reduce bare fallow to 30%",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "To introduce crop rotation system with 3-4 routes and 3-5 crops",
+        "sourceText": "To introduce crop rotation system with 3-4 routes and 3-5 crops",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "To expand irrigated cropland by 2- 2.5 times",
+        "sourceText": "To expand irrigated cropland by 2- 2.5 times",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "To increase irrigated cropland, reduce soil water loss and decrease soil carbon emissions",
+        "sourceText": "To increase irrigated cropland, reduce soil water loss and decrease soil carbon emissions",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Livestock: Reduce rate of pasture degradation; Regulate headcounts and types of animals including wild animals to match with pasture carrying capacities; To implement sustainable pasture management",
+    "label": "Livestock",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Livestock: Reduce rate of pasture degradation; Regulate headcounts and types of animals including\nwild animals to match with pasture carrying capacities; To implement sustainable pasture\nmanagement",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "activities": "Reduce rate of pasture degradation\nRegulate headcounts and types of animals including wild animals to match with pasture carrying capacities\nTo implement sustainable pasture management",
+    "activitySources": [
+      {
+        "text": "Reduce rate of pasture degradation",
+        "sourceText": "Reduce rate of pasture degradation",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Regulate headcounts and types of animals including wild animals to match with pasture carrying capacities",
+        "sourceText": "Regulate headcounts and types of animals including wild animals to match with pasture carrying capacities",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "To implement sustainable pasture management",
+        "sourceText": "To implement sustainable pasture management",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Disaster Risk Management: To enhance and improve early warning and prevention systems for natural disasters",
+    "label": "Disaster Risk Management",
+    "pageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "sources": [
+      {
+        "sourceText": "Disaster Risk Management: To enhance and improve early warning and prevention systems for\nnatural disasters",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN"
+  },
+  {
+    "text": "Reduce negative impacts of mining on rangelands in the western mountain and steppe region by incorporating mitigation hierarchy and offset for land degradation into the landscape level planning and management.",
+    "label": "5. Ongoing Projects and Programmes",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Land Degradation Offset and Mitigation in Western Mongolia. The objective of this project is to reduce negative\nimpacts of mining on rangelands in the western mountain and steppe region by incorporating mitigation hierarchy\nand offset for land degradation into the landscape level planning and management.",
+        "section": "5. Ongoing Projects and Programmes",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "labelSource": "document"
+  },
+  {
+    "text": "Sustainable forest management in Mongolia's forest landscape secures the flow of multiple ecosystem services and benefits, including biological diversity, reduced degradation, and carbon storage, while enhancing resilience to climate change.",
+    "label": "5. Ongoing Projects and Programmes",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Mainstreaming Biodiversity Conservation, Sustainable Forest Management and Carbon Sink Enhancement Into\nMongolia's Productive Forest Landscapes. Sustainable forest management in Mongolia's forest landscape\nsecures the flow of multiple ecosystem services and benefits, including biological diversity, reduced degradation,\nand carbon storage, while enhancing resilience to climate change.",
+        "section": "5. Ongoing Projects and Programmes",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "labelSource": "document"
+  },
+  {
+    "text": "Catalyze the strategic expansion of Mongolia's protected areas system through establishment of a network of managed resource protected areas in under-represented terrestrial ecosystems, catering for the dual objectives of biodiversity conservation and livelihood enhancement.",
+    "label": "5. Ongoing Projects and Programmes",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Network of Managed Resource Protected Areas. The project aims to catalyze the strategic expansion of\nMongolia's protected areas system through establishment of a network of managed resource protected areas in\nunder-represented terrestrial ecosystems, catering for the dual objectives of biodiversity conservation and\nlivelihood enhancement.",
+        "section": "5. Ongoing Projects and Programmes",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "labelSource": "document"
+  },
+  {
+    "text": "combat desertification, restore degraded land and soil, including land affected by desertification, drought and floods, and strive to achieve a land degradation-neutral world by 2030",
+    "label": "SDG target 15.3",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "Sustainable Development Goal 15 'Life on Land' and its target 15.3 on Land Degradation Neutrality (LDN)\nparticularly encourage countries to 'combat desertification, restore degraded land and soil, including land affected\nby desertification, drought and floods, and strive to achieve a land degradation-neutral world by 2030'.",
+        "section": "6. Opportunities- The Way Forward",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "labelSource": "document",
+    "activities": "LDN targets: setting targets and establishing the level of ambition;\nLeverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction;\nPartnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance;\nTransformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits;\nMonitoring and reporting: tracking progress towards achieving the LDN targets.",
+    "activitySources": [
+      {
+        "text": "LDN targets: setting targets and establishing the level of ambition;",
+        "sourceText": "(1) LDN targets: setting targets and establishing the level of ambition;",
+        "section": "1",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Leverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction;",
+        "sourceText": "(2) Leverage and impact: catalyzing the multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction;",
+        "section": "2",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Partnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance;",
+        "sourceText": "(3) Partnerships and resource mobilization: rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance;",
+        "section": "3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Transformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits;",
+        "sourceText": "(4) Transformative action: designing and implementing bold LDN transformative projects that deliver multiple benefits;",
+        "section": "4",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "Monitoring and reporting: tracking progress towards achieving the LDN targets.",
+        "sourceText": "(5) Monitoring and reporting: tracking progress towards achieving the LDN targets.",
+        "section": "5",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "the restoration of 0.6 million hectares of degraded land under the Bonn Challenge",
+    "label": "6. Opportunities- The Way Forward",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20
+    ],
+    "sources": [
+      {
+        "sourceText": "The LDN targets provide Mongolia with a strong vehicle for fostering coherence of policies and actions by aligning\nthe national LDN targets with measures from the Nationally Determined Contributions and other national\ncommitments, such as the restoration of 0.6 million hectares of degraded land under the Bonn Challenge.",
+        "section": "6. Opportunities- The Way Forward",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "ILDN",
+    "labelSource": "document"
+  }
+]
