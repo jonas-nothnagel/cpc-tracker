@@ -34,7 +34,13 @@ from .extract_validation import (
     validate_quotes_in_document,
 )
 from .footprint import append_event, electricity_zone
-from .llm import call_llm, call_llm_batch, get_footprint_tracker, set_language
+from .llm import (
+    call_llm,
+    call_llm_batch,
+    call_llm_batch_detailed,
+    get_footprint_tracker,
+    set_language,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +57,14 @@ MIN_TARGET_LENGTH = int(os.getenv("CPC_MIN_TARGET_LENGTH", "10"))
 # past the completion-token budget, truncates mid-JSON, and used to zero
 # the whole document.
 CONSOLIDATE_WINDOW = int(os.getenv("CPC_CONSOLIDATE_WINDOW", "24"))
+
+# Completion-token ceiling for the per-chunk extraction calls. Reasoning
+# models spend completion tokens on reasoning before output, and a dense
+# chunk (the NWRP Section-7 policy/strategy table) produces 19k+ chars of
+# JSON: at the old 4000-token ceiling 4 of that document's 6 chunks came
+# back truncated mid-JSON and extracted to zero. A ceiling, not a target —
+# short responses cost the same as before.
+EXTRACT_MAX_TOKENS = int(os.getenv("CPC_EXTRACT_MAX_TOKENS", "12000"))
 
 # Documents whose full text fits this budget get the WHOLE document as
 # activities-extraction context instead of quote-anchored windows. Why: the
@@ -214,7 +228,10 @@ RULES:
    Anything beyond this — rewording, action-verb prefacing, summarising, expanding \
    abbreviations, adding context — is FORBIDDEN at this stage.
 4. Do NOT extract background descriptions, context, definitions, procedural \
-   text, or stakeholder lists.
+   text, or stakeholder lists. Statements assigning institutional roles and \
+   responsibilities (which body administers, coordinates, or is custodian of \
+   what) are governance descriptions, not policy targets — do not extract \
+   them either.
 5. If a section has no policy targets, return an empty array: []
 6. As weak calibration only: a typical {doc_type} document contains \
    {expected_count} targets in total, but real counts vary widely by country \
@@ -275,6 +292,8 @@ policy targets, goals, or commitments.
 Sections that are NOT relevant (return false):
 - Table of contents, lists of abbreviations, acknowledgments, forewords
 - Administrative/procedural text (stakeholder lists, meeting schedules)
+- Institutional roles-and-responsibilities descriptions (which body \
+administers or coordinates what) with no policy commitments or goals
 - Background/context with no policy commitments or goals
 - Annexes with only reference data, indicators, or methodology descriptions
 - Repeated headers/footers, formatting artifacts, cover pages
@@ -298,6 +317,45 @@ contain policy targets:
 ---
 {text}
 ---"""
+
+# ---------------------------------------------------------------------------
+# Parallel-translation check prompt (multilingual documents)
+# ---------------------------------------------------------------------------
+
+PARALLEL_CHECK_SYSTEM = """\
+You are checking the structure of a multilingual policy document for an \
+extraction pipeline. Two blocks of pages from the SAME document are shown: \
+BLOCK A is in the pipeline's working language; BLOCK B appears to be in a \
+different language or script (possibly a legacy font encoding that renders \
+as unreadable Latin characters).
+
+Decide whether BLOCK B is a parallel translation of BLOCK A — the same \
+policy content published again in another language — or whether it contains \
+UNIQUE content that BLOCK A does not have.
+
+Signals of a parallel translation: same document title and front matter, \
+same section structure and numbering, the same tables, the same counts of \
+numbered items, the same figures/percentages/years appearing in the same \
+order.
+
+When uncertain, answer {"parallel": false} — keeping a unique block is \
+safe; skipping one loses content.
+
+Return ONLY a JSON object: {"parallel": true} or {"parallel": false}
+No explanation, no markdown fences."""
+
+PARALLEL_CHECK_USER = """\
+BLOCK A (working language, pages {a_pages}) — head and middle samples:
+---
+{a_sample}
+---
+
+BLOCK B (candidate parallel translation, pages {b_pages}) — head and middle samples:
+---
+{b_sample}
+---
+
+Is BLOCK B a parallel translation of BLOCK A?"""
 
 # ---------------------------------------------------------------------------
 # Consolidation prompt (second pass)
@@ -351,9 +409,15 @@ When merging:
   original-language text under the same rules as "text", and never translate \
   "sources[].sourceText".
 
+Output the final items in the same order as the input candidates (document \
+order); merging keeps the position of the earliest merged candidate.
+
 Return a JSON array. Each object must have:
 - "text": the policy target (display + pipeline input)
-- "label": a short descriptive label (max 8 words)
+- "label": a short descriptive label (max 8 words). When a candidate carries \
+  a document-provided name ("Policy 1", "Goal 2.3", "Target 4"), keep that \
+  name verbatim — never replace it with an invented phrase; when merging, \
+  keep the kept candidate's label
 - "pageNumbers": array of page numbers where this target appears
 - "sources": array of {{ "sourceText": "...", "section": "..." }} entries — \
   preserved verbatim from input candidates, never invented
@@ -783,11 +847,425 @@ def detect_language(text: str) -> tuple[str, str]:
 
 
 # ---------------------------------------------------------------------------
+# Language blocks (parallel-translation handling)
+#
+# Some national policy PDFs publish the same content two or three times in
+# sequential language blocks (observed: Sri Lanka NWRP 2023 — Sinhala, Tamil,
+# then English, with the Sinhala/Tamil pages in legacy font encodings that
+# extract as Latin gibberish). Extracting every block yields machine-
+# translated duplicates of the working-language content and drowns out the
+# document's own working-language text. The functions below segment a
+# document into contiguous language blocks, deterministically; skipping a
+# block additionally requires a numeric-fingerprint overlap AND an LLM
+# confirmation, and is always surfaced as a document warning — never silent.
+#
+# Detection is deterministic on purpose: statistical detectors (lingua)
+# return arbitrary languages at high confidence on legacy-font gibberish,
+# so they must not drive per-page decisions.
+# ---------------------------------------------------------------------------
+
+# Unicode script ranges checked before any Latin-script heuristics. The
+# Cyrillic → "mn" mapping reflects this pipeline's corpus (Mongolian policy
+# documents), not a general claim about Cyrillic text.
+_SCRIPT_RANGES: list[tuple[str, int, int]] = [
+    ("si", 0x0D80, 0x0DFF),  # Sinhala
+    ("ta", 0x0B80, 0x0BFF),  # Tamil
+    ("mn", 0x0400, 0x04FF),  # Cyrillic (Mongolian in this corpus)
+    ("ar", 0x0600, 0x06FF),  # Arabic
+    ("hi", 0x0900, 0x097F),  # Devanagari
+    ("zh", 0x4E00, 0x9FFF),  # CJK
+]
+
+# Stopword sets for the Latin-script languages the pipeline names. Density
+# separates cleanly on real pages: English pages of the NWRP fixture score
+# ~0.29-0.34, legacy-font gibberish 0.00-0.09.
+_STOPWORDS: dict[str, frozenset[str]] = {
+    "en": frozenset(
+        "the of and to in for on with by is are be as that this from at or "
+        "an it its will shall through".split()
+    ),
+    "es": frozenset(
+        "el la los las de del y en para por con una un se que es al como su "
+        "más este esta sobre entre".split()
+    ),
+    "fr": frozenset(
+        "le la les des de du et en pour par avec une un dans que qui est au "
+        "aux sur ce cette ainsi dont".split()
+    ),
+}
+_STOPWORD_DENSITY_MIN = 0.12
+
+_LANG_DISPLAY = {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French",
+    "mn": "Mongolian",
+    "si": "Sinhala",
+    "ta": "Tamil",
+    "ar": "Arabic",
+    "hi": "Hindi",
+    "zh": "Chinese",
+}
+
+# Gates for skipping a non-working-language block as a parallel translation.
+# All three must agree (size, numeric overlap, LLM confirmation); any
+# uncertainty keeps the block.
+_PARALLEL_MIN_PAGES = 5
+_PARALLEL_MIN_CHARS = 10_000
+_PARALLEL_MIN_NUMERIC_OVERLAP = 0.35
+
+
+def _lang_display(code: str) -> str:
+    return _LANG_DISPLAY.get(code, "an unidentified language")
+
+
+def _classify_page_language(text: str) -> str:
+    """Deterministic per-page language class.
+
+    Returns an ISO-ish code from _SCRIPT_RANGES / _STOPWORDS, or "und" for
+    pages with no reliable signal — short pages, numeric/TOC pages, and
+    legacy-font gibberish all land in "und".
+    """
+    stripped = text.strip()
+    if len(stripped) < 100:
+        return "und"
+    alpha = [ch for ch in stripped if ch.isalpha()]
+    if not alpha:
+        return "und"
+    for code, lo, hi in _SCRIPT_RANGES:
+        hits = sum(1 for ch in alpha if lo <= ord(ch) <= hi)
+        if hits / len(alpha) > 0.5:
+            return code
+    tokens = re.findall(r"[a-zà-ÿ']+", stripped.lower())
+    if len(tokens) < 20:
+        return "und"
+    best_code, best_density = "und", 0.0
+    for code, words in _STOPWORDS.items():
+        density = sum(1 for t in tokens if t in words) / len(tokens)
+        if density > best_density:
+            best_code, best_density = code, density
+    return best_code if best_density >= _STOPWORD_DENSITY_MIN else "und"
+
+
+@dataclass
+class LanguageBlock:
+    """A contiguous run of pages sharing one language class."""
+    lang: str
+    pages: list[PageSpan]
+
+    @property
+    def text(self) -> str:
+        return "\n\n".join(p.text for p in self.pages)
+
+    @property
+    def chars(self) -> int:
+        return sum(len(p.text) for p in self.pages)
+
+    @property
+    def page_range(self) -> list[int]:
+        return [self.pages[0].page, self.pages[-1].page] if self.pages else []
+
+
+def split_language_blocks(doc: DocumentText) -> list[LanguageBlock]:
+    """Group contiguous pages into language blocks with run-length smoothing.
+
+    A class change requires at least 2 consecutive pages of the new class;
+    isolated single-page flips (photo pages, numeric tables, one-page
+    summaries) absorb into the surrounding block. Documents that resolve to
+    a single block behave exactly as before this function existed — the
+    caller must gate all new behaviour on len(blocks) > 1.
+    """
+    pages = doc.pages
+    if len(pages) < 2:
+        return [LanguageBlock(lang=_classify_page_language(doc.full_text), pages=list(pages))]
+
+    runs: list[list[Any]] = []  # [class | None, list[PageSpan]]
+    for page in pages:
+        cls = _classify_page_language(page.text)
+        if runs and runs[-1][0] == cls:
+            runs[-1][1].append(page)
+        else:
+            runs.append([cls, [page]])
+
+    merged: list[list[Any]] = []
+    for cls, run_pages in runs:
+        if not merged:
+            # A leading short run has no previous block; it adopts the class
+            # of the first real run that follows (placeholder None).
+            merged.append([cls if len(run_pages) >= 2 else None, list(run_pages)])
+        elif len(run_pages) < 2 or cls == merged[-1][0]:
+            merged[-1][1].extend(run_pages)
+        elif merged[-1][0] is None:
+            merged[-1][0] = cls
+            merged[-1][1].extend(run_pages)
+        else:
+            merged.append([cls, list(run_pages)])
+
+    # Adjacent same-class blocks can appear after absorption; fold them.
+    folded: list[list[Any]] = []
+    for cls, run_pages in merged:
+        if folded and folded[-1][0] == cls:
+            folded[-1][1].extend(run_pages)
+        else:
+            folded.append([cls, run_pages])
+
+    if len(folded) == 1 and folded[0][0] is None:
+        folded[0][0] = _classify_page_language(doc.full_text)
+
+    # "und" runs are usually low-signal pages OF the surrounding block —
+    # figure, table, and annex pages whose stopword density falls below the
+    # threshold (observed: PNSH fragments into 8 runs this way). They stand
+    # alone only when substantial relative to the largest known-language
+    # block, which is the legacy-font parallel-translation signature
+    # (NWRP: 111k chars of gibberish vs 50k of English); otherwise they
+    # absorb into the neighbouring block, which restores the single-block
+    # legacy path for ordinary documents.
+    known_max = max(
+        (
+            sum(len(p.text) for p in run_pages)
+            for cls, run_pages in folded
+            if cls not in (None, "und")
+        ),
+        default=0,
+    )
+    absorbed: list[list[Any]] = []
+    pending: list[PageSpan] = []  # leading und pages awaiting a block to join
+    for cls, run_pages in folded:
+        run_chars = sum(len(p.text) for p in run_pages)
+        stands_alone = cls not in (None, "und") or not known_max or (
+            run_chars >= 0.5 * known_max or len(run_pages) >= 15
+        )
+        if stands_alone:
+            if pending:
+                run_pages = pending + run_pages
+                pending = []
+            if absorbed and absorbed[-1][0] == cls:
+                absorbed[-1][1].extend(run_pages)
+            else:
+                absorbed.append([cls, run_pages])
+        elif absorbed:
+            absorbed[-1][1].extend(run_pages)
+        else:
+            pending.extend(run_pages)
+    if pending:
+        if absorbed:
+            absorbed[0][1][:0] = pending
+        else:
+            absorbed.append(["und", pending])
+
+    return [LanguageBlock(lang=cls or "und", pages=run_pages) for cls, run_pages in absorbed]
+
+
+_NUMERIC_TOKEN_RE = re.compile(r"\d+(?:[.,]\d+)*")
+
+
+def _digit_jaccard(a: str, b: str) -> float:
+    """Jaccard overlap of the numeric tokens in two texts.
+
+    Parallel translations of the same policy content share their numbers
+    (years, percentages, section counts) even when the scripts share nothing
+    else. Measured on the NWRP fixture: Sinhala↔English 0.44, Tamil↔English
+    0.76, vs 0.22 for an unrelated English document.
+    """
+    ta = set(_NUMERIC_TOKEN_RE.findall(a))
+    tb = set(_NUMERIC_TOKEN_RE.findall(b))
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def _block_sample(text: str, head: int = 3000, mid: int = 1500) -> str:
+    """Head + middle sample of a language block for the parallel check."""
+    if len(text) <= head + mid:
+        return text
+    mid_start = (len(text) - mid) // 2
+    return f"{text[:head]}\n[...]\n{text[mid_start : mid_start + mid]}"
+
+
+def _parse_parallel(raw: str) -> bool:
+    """Parse the parallel-check response. Defaults to False (keep the block)."""
+    raw = raw.strip()
+    if raw.startswith("```"):
+        raw = re.sub(r"^```(?:json)?\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+    try:
+        data = json.loads(raw)
+        if isinstance(data, dict):
+            return data.get("parallel") is True
+    except json.JSONDecodeError:
+        pass
+    return False
+
+
+async def _select_language_blocks(
+    blocks: list[LanguageBlock],
+    working_lang: str,
+) -> list[LanguageBlock]:
+    """Decide which language blocks of a multi-block document to extract.
+
+    Working-language blocks are always kept. A non-working block is skipped
+    ONLY as a confirmed parallel translation: it must be substantial
+    (>= _PARALLEL_MIN_PAGES pages or _PARALLEL_MIN_CHARS chars), share the
+    working block's numeric fingerprint (>= _PARALLEL_MIN_NUMERIC_OVERLAP),
+    AND be confirmed by the LLM parallel check. Anything less is kept and
+    extracted as today, with a warning. Every decision lands in
+    RUN_META["languageBlocks"]; skips additionally emit a
+    PARALLEL_TRANSLATION_SKIPPED document warning.
+    """
+    working = [b for b in blocks if b.lang == working_lang]
+    block_meta: list[dict[str, Any]] = []
+    if not working:
+        RUN_META.setdefault("documentWarnings", []).append({
+            "code": "MIXED_LANGUAGE_CONTENT",
+            "detail": (
+                f"document splits into {len(blocks)} language blocks but none "
+                f"matches the working language '{working_lang}'; all blocks kept"
+            ),
+        })
+        RUN_META["languageBlocks"] = [
+            {"lang": b.lang, "pages": b.page_range, "chars": b.chars, "action": "kept"}
+            for b in blocks
+        ]
+        return blocks
+
+    working_text = "\n\n".join(b.text for b in working)
+
+    candidates: list[tuple[int, float]] = []  # (block index, numeric overlap)
+    calls: list[dict[str, Any]] = []
+    for i, block in enumerate(blocks):
+        if block.lang == working_lang:
+            continue
+        substantial = (
+            len(block.pages) >= _PARALLEL_MIN_PAGES
+            or block.chars >= _PARALLEL_MIN_CHARS
+        )
+        overlap = _digit_jaccard(block.text, working_text) if substantial else 0.0
+        if substantial and overlap >= _PARALLEL_MIN_NUMERIC_OVERLAP:
+            candidates.append((i, overlap))
+            calls.append({
+                "system": PARALLEL_CHECK_SYSTEM,
+                "user": PARALLEL_CHECK_USER.format(
+                    a_pages="-".join(str(p) for p in working[0].page_range),
+                    a_sample=_block_sample(working_text),
+                    b_pages="-".join(str(p) for p in block.page_range),
+                    b_sample=_block_sample(block.text),
+                ),
+                "max_tokens": 50,
+            })
+
+    confirmed: dict[int, float] = {}
+    if calls:
+        results = await call_llm_batch(
+            calls, cache_namespace="parallel_check", desc="Parallel-translation check"
+        )
+        for (i, overlap), raw in zip(candidates, results):
+            if _parse_parallel(raw):
+                confirmed[i] = overlap
+
+    kept: list[LanguageBlock] = []
+    for i, block in enumerate(blocks):
+        meta: dict[str, Any] = {
+            "lang": block.lang,
+            "pages": block.page_range,
+            "chars": block.chars,
+        }
+        if block.lang == working_lang:
+            meta["action"] = "working"
+            kept.append(block)
+        elif i in confirmed:
+            meta["action"] = "skipped-parallel"
+            meta["numericOverlap"] = round(confirmed[i], 2)
+            RUN_META.setdefault("documentWarnings", []).append({
+                "code": "PARALLEL_TRANSLATION_SKIPPED",
+                "pages": block.page_range,
+                "langGuess": block.lang,
+                "numericOverlap": round(confirmed[i], 2),
+                "workingLanguage": working_lang,
+            })
+            logger.info(
+                "Skipping pages %s (%s): confirmed parallel translation of the "
+                "%s block (numeric overlap %.2f)",
+                block.page_range, block.lang, working_lang, confirmed[i],
+            )
+        else:
+            meta["action"] = "kept"
+            kept.append(block)
+            RUN_META.setdefault("documentWarnings", []).append({
+                "code": (
+                    "UNKNOWN_LANGUAGE_BLOCK"
+                    if block.lang == "und"
+                    else "MIXED_LANGUAGE_CONTENT"
+                ),
+                "pages": block.page_range,
+                "langGuess": block.lang,
+            })
+        block_meta.append(meta)
+
+    RUN_META["languageBlocks"] = block_meta
+    return kept
+
+
+# ---------------------------------------------------------------------------
 # JSON parsing
 # ---------------------------------------------------------------------------
 
 
 _VALID_CLEANUPS = {"verbatim", "cleaned", "synthesis"}
+
+# Section anchors the LLM claims must look like something a document would
+# actually provide: numbering ("7", "6.2.12", "II/3"), a section word with
+# optional numbering ("Goal 2", "Annex III", "Chapter 4: Adaptation"), or a
+# plausible natural-language heading (DOCX extraction deliberately feeds
+# heading names as sections). Everything else — echoed [TABLE] markers,
+# legacy-font gibberish like "nfhs;if" — is dropped, never invented.
+_SECTION_NUMBERING_RE = re.compile(
+    r"^[\divxlc]+(?:[./-][\divxlca-z]+)*\.?$", re.IGNORECASE
+)
+_SECTION_WORD_RE = re.compile(
+    r"^(?:goal|policy|policies|strategy|strategies|target|objective|section|"
+    r"chapter|annex|appendix|part|article|measure|action|priority|pillar|"
+    r"axis|outcome|table)\b[\w\s.:()/-]{0,60}$",
+    re.IGNORECASE,
+)
+_VOWEL_RE = re.compile(r"[aeiouáéíóúàèìòùâêîôûäëïöü]", re.IGNORECASE)
+
+
+def _valid_section_part(part: str) -> bool:
+    if _SECTION_NUMBERING_RE.match(part) or _SECTION_WORD_RE.match(part):
+        return True
+    # Plausible natural-language heading: mostly letters, contains a vowel,
+    # no stray symbols, not a two-letter fragment.
+    if len(part) < 4 or len(part) > 80 or "%" in part:
+        return False
+    compact = part.replace(" ", "")
+    letters = sum(1 for c in compact if c.isalpha())
+    return bool(_VOWEL_RE.search(part)) and letters >= 0.6 * max(len(compact), 1)
+
+
+def _clean_section(raw: Any) -> str | None:
+    """Validate/normalise an LLM-provided section anchor. None = drop it."""
+    if raw is None:
+        return None
+    s = re.sub(r"\s+", " ", str(raw)).strip()
+    if not s:
+        return None
+    kept = []
+    for part in re.split(r"[;,]", s):
+        part = part.strip().strip("[]")
+        # The literal TABLE token is the text extractors' own [TABLE] marker
+        # echoed back — exact-token only, so "Table 3" survives.
+        if not part or part.upper() == "TABLE":
+            continue
+        if _valid_section_part(part):
+            kept.append(part)
+    if not kept:
+        if s:
+            dropped = RUN_META.setdefault("sectionsDropped", {"count": 0, "examples": []})
+            dropped["count"] += 1
+            if len(dropped["examples"]) < 10 and s not in dropped["examples"]:
+                dropped["examples"].append(s[:40])
+        return None
+    return "; ".join(kept)[:120]
 
 
 def _parse_sources(item: dict[str, Any]) -> list[dict[str, Any]]:
@@ -795,7 +1273,8 @@ def _parse_sources(item: dict[str, Any]) -> list[dict[str, Any]]:
 
     Accepts either the new schema ("sources": [{sourceText, section?}, ...]) or
     the legacy single-source schema ("sourceText": "...") and returns a list of
-    {sourceText, section?} dicts. Empty-string sources are dropped.
+    {sourceText, section?} dicts. Empty-string sources are dropped; section
+    anchors are validated by _clean_section.
     """
     raw = item.get("sources")
     out: list[dict[str, Any]] = []
@@ -806,9 +1285,9 @@ def _parse_sources(item: dict[str, Any]) -> list[dict[str, Any]]:
                 if not txt:
                     continue
                 entry: dict[str, Any] = {"sourceText": txt}
-                section = src.get("section")
+                section = _clean_section(src.get("section"))
                 if section:
-                    entry["section"] = str(section).strip()[:120]
+                    entry["section"] = section
                 out.append(entry)
             elif isinstance(src, str) and src.strip():
                 out.append({"sourceText": src.strip()})
@@ -825,41 +1304,103 @@ def _parse_json_array(
     return _parse_json_array_status(raw, min_length=min_length)[0]
 
 
+def _salvage_truncated_array(raw: str) -> list[Any] | None:
+    """Recover the complete leading objects of a truncated JSON array.
+
+    A response cut off at the completion-token ceiling ends mid-object,
+    usually mid-string (observed on the NWRP Section-7 table chunk: 19k
+    chars ending inside a sourceText). Every object that closed cleanly is
+    still valid — keep those instead of dropping the whole chunk. Returns
+    None when nothing is recoverable.
+    """
+    start = raw.find("[")
+    if start < 0:
+        return None
+    depth = 0
+    in_str = False
+    esc = False
+    last_complete = -1
+    for i in range(start, len(raw)):
+        ch = raw[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch in "[{":
+            depth += 1
+        elif ch in "]}":
+            depth -= 1
+            if depth == 1 and ch == "}":
+                last_complete = i
+    if last_complete < 0:
+        return None
+    try:
+        items = json.loads(raw[start : last_complete + 1] + "]")
+    except json.JSONDecodeError:
+        return None
+    return items if isinstance(items, list) and items else None
+
+
 def _parse_json_array_status(
     raw: str,
     min_length: int = MIN_TARGET_LENGTH,
-) -> tuple[list[dict[str, Any]], bool]:
-    """Like _parse_json_array but also reports whether parsing SUCCEEDED.
+    salvage_truncated: bool = False,
+) -> tuple[list[dict[str, Any]], bool, bool]:
+    """Like _parse_json_array but also reports HOW parsing went.
 
-    A legitimately empty array ("[]") returns ([], True); a truncated or
-    malformed response returns ([], False). Callers that would otherwise
-    silently discard upstream work (consolidation) must check the flag and
-    fall back instead of treating garbage as "no targets".
+    Returns (items, parse_ok, truncated). A legitimately empty array ("[]")
+    returns ([], True, False); a malformed response returns ([], False,
+    False). Callers that would otherwise silently discard upstream work
+    (consolidation) must check parse_ok and fall back instead of treating
+    garbage as "no targets".
+
+    With salvage_truncated=True, a response that fails to parse is treated
+    as a truncation and its complete leading objects are recovered
+    (items, True, True). Only safe where partial recovery beats total loss
+    — per-chunk extraction. NEVER enable it for consolidation: candidates
+    beyond the cut would be silently lost, whereas the parse-failure
+    fallback keeps the whole un-consolidated window.
     """
     raw = raw.strip()
     if raw.startswith("```"):
         raw = re.sub(r"^```(?:json)?\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
 
+    truncated = False
     try:
         items = json.loads(raw)
     except json.JSONDecodeError:
         match = re.search(r"\[.*\]", raw, re.DOTALL)
+        items = None
         if match:
             try:
                 items = json.loads(match.group())
             except json.JSONDecodeError:
-                logger.warning("Could not parse extraction response as JSON")
-                return [], False
-        else:
+                items = None
+        if items is None and salvage_truncated:
+            items = _salvage_truncated_array(raw)
+            if items is not None:
+                truncated = True
+                logger.warning(
+                    "Extraction response truncated mid-JSON — salvaged %d "
+                    "complete item(s); the chunk's tail items are lost",
+                    len(items),
+                )
+        if items is None:
             if raw:
                 logger.warning("Could not parse extraction response as JSON")
             # Empty responses (e.g. content-filtered calls) are NOT a
             # trustworthy "no targets" signal either.
-            return [], False
+            return [], False, False
 
     if not isinstance(items, list):
-        return [], False
+        return [], False, False
 
     valid = []
     for item in items:
@@ -916,7 +1457,7 @@ def _parse_json_array_status(
                 entry["textCleanup"] = "verbatim" if norm_text == norm_src else "cleaned"
 
             valid.append(entry)
-    return valid, True
+    return valid, True, truncated
 
 
 def _expected_count(source_document: str, doc_type: str) -> str:
@@ -1333,7 +1874,7 @@ async def _extract_activities(
             if isinstance(a, dict):
                 txt = str(a.get("text", "")).strip()
                 src_txt = str(a.get("sourceText", "")).strip()
-                section = str(a.get("section", "")).strip()
+                section = _clean_section(a.get("section"))
                 if not txt and src_txt:
                     txt = src_txt
                 if not txt:
@@ -1440,25 +1981,75 @@ async def extract_from_text(
     if not full_text.strip():
         return []
 
-    # Language detection
+    # Language blocks: multi-block documents (parallel translations) get
+    # block-aware handling; single-block documents keep the exact legacy
+    # behaviour (and therefore their LLM cache).
+    blocks = split_language_blocks(doc)
+    multi_block = len(blocks) > 1
+
+    # Language detection. The working language is the explicit --language
+    # override when given; for multi-block documents it is otherwise the
+    # largest known-language block (the head/mid/tail majority vote is
+    # meaningless when the document opens with two other languages).
     lang_code = language or "en"
-    lang_name = "English"
+    lang_name = _lang_display(language) if language else "English"
     if not language:
-        lang_code, lang_name = detect_language(full_text)
+        known = [b for b in blocks if b.lang != "und"] if multi_block else []
+        if known:
+            largest = max(known, key=lambda b: b.chars)
+            lang_code, lang_name = largest.lang, _lang_display(largest.lang)
+        else:
+            lang_code, lang_name = detect_language(full_text)
 
     is_english = lang_code == "en"
 
-    # Chunking
-    chunks = chunk_text(doc, max_chars=max_chunk_chars, overlap_chars=overlap_chars)
+    # Chunking. Multi-block documents chunk per retained block so no chunk
+    # straddles a language boundary; each chunk knows its block's language.
+    if multi_block:
+        kept_blocks = await _select_language_blocks(blocks, lang_code)
+        chunks = []
+        chunk_langs: dict[int, str] = {}
+        for block in kept_blocks:
+            block_chunks = chunk_text(
+                DocumentText(pages=block.pages),
+                max_chars=max_chunk_chars,
+                overlap_chars=overlap_chars,
+            )
+            for c in block_chunks:
+                chunk_langs[id(c)] = block.lang
+            chunks.extend(block_chunks)
+    else:
+        chunks = chunk_text(doc, max_chars=max_chunk_chars, overlap_chars=overlap_chars)
+        chunk_langs = {id(c): lang_code for c in chunks}
     expected = _expected_count(source_document, doc_type)
     logger.info(
         f"Extracting from {len(chunks)} chunks ({len(full_text)} chars, "
         f"language={lang_code})"
     )
 
+    # Per-chunk accounting: one record per chunk, stamped through every phase
+    # (relevance verdict, extraction outcome, candidate count) so a chunk that
+    # yields nothing is diagnosable from the meta sidecar alone.
+    RUN_META["language"] = {"code": lang_code, "explicit": bool(language)}
+    chunk_records: list[dict[str, Any]] = [
+        {
+            "index": i,
+            "pages": [c.pages[0], c.pages[-1]] if c.pages else [],
+            "chars": len(c.text),
+            "language": chunk_langs.get(id(c), lang_code),
+            "relevance": "not-run",
+        }
+        for i, c in enumerate(chunks)
+    ]
+    RUN_META["chunks"] = chunk_records
+    _chunk_record = {id(c): rec for c, rec in zip(chunks, chunk_records)}
+
     # Phase 0: Relevance filter (concurrent)
     if not skip_relevance_filter and len(chunks) > 1:
         filterable = [c for c in chunks if len(c.text.strip()) >= 80]
+        for c in chunks:
+            if len(c.text.strip()) < 80:
+                _chunk_record[id(c)]["relevance"] = "short-skip"
         if filterable:
             filter_calls = [
                 {
@@ -1474,17 +2065,25 @@ async def extract_from_text(
                 }
                 for chunk in filterable
             ]
-            filter_results = await call_llm_batch(
+            filter_results = await call_llm_batch_detailed(
                 filter_calls,
                 cache_namespace="relevance_filter",
                 desc="Relevance filter",
             )
             relevant_chunks = []
             dropped_pages: list[int] = []
-            for chunk, raw in zip(filterable, filter_results):
+            for chunk, (raw, info) in zip(filterable, filter_results):
+                rec = _chunk_record[id(chunk)]
+                if info["status"] != "ok":
+                    # A filtered/empty relevance call defaults to "relevant"
+                    # in _parse_relevance — label it so that default is
+                    # visible rather than silent.
+                    rec["relevanceCallStatus"] = info["status"]
                 if _parse_relevance(raw):
                     relevant_chunks.append(chunk)
+                    rec["relevance"] = "relevant"
                 else:
+                    rec["relevance"] = "filtered"
                     dropped_pages.extend(chunk.pages)
                     logger.info(
                         f"  Filtered out chunk (pages {chunk.pages}): irrelevant"
@@ -1508,25 +2107,31 @@ async def extract_from_text(
     if not chunks:
         return []
 
-    # Build system prompt with optional language addendum
-    system = EXTRACT_SYSTEM.format(
+    # Build system prompt with optional language addendum. The addendum is
+    # per chunk: in a multi-block document a kept non-working-language block
+    # extracts in translate mode while working-language chunks do not.
+    base_system = EXTRACT_SYSTEM.format(
         few_shot=FEW_SHOT_EXAMPLES,
         doc_type=doc_type,
         expected_count=expected,
     )
-    if not is_english:
-        system += MULTILANG_ADDENDUM.format(language_name=lang_name)
+
+    def _system_for(c_lang: str) -> str:
+        if c_lang == "en":
+            return base_system
+        name = lang_name if c_lang == lang_code else _lang_display(c_lang)
+        return base_system + MULTILANG_ADDENDUM.format(language_name=name)
 
     # Phase 1: Per-chunk extraction (concurrent)
     extract_calls = [
         {
-            "system": system,
+            "system": _system_for(chunk_langs.get(id(chunk), lang_code)),
             "user": EXTRACT_USER.format(doc_type=doc_type, text=chunk.text),
-            "max_tokens": 4000,
+            "max_tokens": EXTRACT_MAX_TOKENS,
         }
         for chunk in chunks
     ]
-    raw_results = await call_llm_batch(
+    raw_results = await call_llm_batch_detailed(
         extract_calls,
         cache_namespace="extract",
         desc="Target extraction",
@@ -1534,17 +2139,42 @@ async def extract_from_text(
 
     all_candidates: list[dict[str, Any]] = []
     chunk_parse_failures = 0
-    for chunk, raw in zip(chunks, raw_results):
-        items, parse_ok = _parse_json_array_status(raw, min_length=min_length)
+    for chunk, (raw, info) in zip(chunks, raw_results):
+        items, parse_ok, truncated = _parse_json_array_status(
+            raw, min_length=min_length, salvage_truncated=True
+        )
         if not parse_ok:
             chunk_parse_failures += 1
+        rec = _chunk_record.get(id(chunk))
+        if rec is not None:
+            rec["extraction"] = {
+                "status": info["status"],
+                "cached": info["cached"],
+                "parseOk": parse_ok,
+                "candidates": len(items),
+            }
+            if truncated:
+                rec["extraction"]["truncated"] = True
+        if truncated:
+            RUN_META.setdefault("documentWarnings", []).append({
+                "code": "TRUNCATED_EXTRACTION",
+                "pages": chunk.pages,
+                "recovered": len(items),
+            })
+        if info["status"] == "content_filter":
+            RUN_META.setdefault("documentWarnings", []).append({
+                "code": "CONTENT_FILTER",
+                "phase": "extraction",
+                "pages": chunk.pages,
+            })
         logger.info(f"  Chunk (pages {chunk.pages}): {len(items)} candidates")
 
+        c_lang = chunk_langs.get(id(chunk), lang_code)
         for item in items:
             item["sourceDocument"] = source_document
             item["pageNumbers"] = chunk.pages
-            if not is_english:
-                item["language"] = lang_code
+            if c_lang != "en":
+                item["language"] = c_lang
                 if item.get("textOriginal"):
                     # The original came verbatim from the document; the
                     # English working text is machine-translated.
@@ -1591,6 +2221,12 @@ async def extract_from_text(
         # an item that lost its own would fabricate provenance; absent pages
         # are more honest than wrong ones.
 
+    # Deterministic post-passes: restore document-provided labels that the
+    # consolidation rephrased away, then sort into document order — reviewers
+    # compare the list against the document top-to-bottom.
+    _restore_doc_labels(final, all_candidates)
+    final = _sort_by_document_position(final, doc)
+
     # Validate that synthesised text is grounded in its sources before we move
     # on to activities extraction. Logs warnings and stamps `_provenanceFlag`
     # on any target whose display text contains a number / year / unit not
@@ -1634,7 +2270,7 @@ def _restore_original_text(
     """
     by_quote: dict[str, dict[str, Any]] = {}
     for cand in candidates:
-        if not cand.get("textOriginal"):
+        if not (cand.get("textOriginal") or cand.get("language")):
             continue
         for src in cand.get("sources") or []:
             key = normalise_for_matching(str(src.get("sourceText", "")))
@@ -1644,24 +2280,148 @@ def _restore_original_text(
                 by_quote[key] = cand if key not in by_quote else {}
     restored = 0
     for item in items:
-        if item.get("textOriginal"):
-            continue
         sources = item.get("sources") or []
         if not sources:
             continue
         key = normalise_for_matching(str(sources[0].get("sourceText", "")))
         cand = by_quote.get(key)
-        if cand and cand.get("textOriginal") and item.get("textCleanup") != "synthesis":
+        if not cand:
+            continue
+        if (
+            not item.get("textOriginal")
+            and cand.get("textOriginal")
+            and item.get("textCleanup") != "synthesis"
+        ):
             item["textOriginal"] = cand["textOriginal"]
             if cand.get("labelOriginal"):
                 item["labelOriginal"] = cand["labelOriginal"]
             restored += 1
+        # In a multi-block document the per-candidate language stamp is the
+        # only record of which language block an item came from; restore it
+        # the same way (monolingual documents re-stamp it later anyway).
+        if not item.get("language") and cand.get("language"):
+            item["language"] = cand["language"]
+        if (
+            item.get("textOriginal")
+            and item.get("language")
+            and not item.get("textOriginalSource")
+        ):
+            item["textOriginalSource"] = "source"
     if restored:
         logger.info(
             "Restored textOriginal on %d consolidated target(s) from their "
             "source candidates",
             restored,
         )
+
+
+# A label that looks document-provided: one or two words plus numbering
+# ("Policy 3", "Forestry 1", "Goal 2.3"), hierarchical numbering ("4.2.6",
+# "2/3"), a letter-number code ("A7.3", "M24"), or numbering followed by a
+# name ("1.1 Food/agri legislation drafts"). Bare integers are NOT accepted
+# as derived labels — "1" alone says nothing without its table context.
+_DOC_LABEL_RE = re.compile(
+    r"^(?:"
+    r"[A-Za-z][\w()-]*(?:\s+[A-Za-z][\w()-]*)?\s+\d+(?:[./]\d+)*[a-z]?"
+    r"|\d+(?:[./]\d+)+[a-z]?"
+    r"|[A-Z]{1,3}\d+(?:\.\d+)*"
+    r"|\d+(?:[./]\d+)*[.)]?\s+\S.+"
+    r")$",
+    re.IGNORECASE,
+)
+_LEADING_NUMBERING_RE = re.compile(r"^\s*(\d+(?:[./]\d+)+[a-z]?)[.)\s|-]")
+
+
+def _restore_doc_labels(
+    items: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+) -> None:
+    """Deterministically restore document-provided labels lost downstream.
+
+    Phase 1 is instructed to keep document-provided names ("Policy 1",
+    "Goal 2.3") as labels, but consolidation can rephrase them into invented
+    noun phrases. For each final item whose label does not look
+    document-provided, try, in order: (a) its first source's section anchor,
+    (b) the leading hierarchical numbering of its first source quote,
+    (c) the label of the unique candidate sharing that source quote (same
+    ambiguity sentinel as _restore_original_text). On success the label is
+    replaced and labelSource="document" recorded; otherwise the LLM label
+    stays — a derived label is never invented.
+    """
+    by_quote: dict[str, dict[str, Any]] = {}
+    for cand in candidates:
+        for src in cand.get("sources") or []:
+            key = normalise_for_matching(str(src.get("sourceText", "")))
+            if key:
+                by_quote[key] = cand if key not in by_quote else {}
+    restored = 0
+    for item in items:
+        if _DOC_LABEL_RE.match(str(item.get("label", "")).strip()):
+            item["labelSource"] = "document"
+            continue
+        sources = item.get("sources") or []
+        if not sources:
+            continue
+        derived: str | None = None
+        section = str(sources[0].get("section", "")).strip()
+        if section and _DOC_LABEL_RE.match(section):
+            derived = section
+        if not derived:
+            m = _LEADING_NUMBERING_RE.match(str(sources[0].get("sourceText", "")))
+            if m:
+                derived = m.group(1)
+        if not derived:
+            key = normalise_for_matching(str(sources[0].get("sourceText", "")))
+            cand = by_quote.get(key)
+            if cand:
+                cand_label = str(cand.get("label", "")).strip()
+                if _DOC_LABEL_RE.match(cand_label):
+                    derived = cand_label
+        if derived:
+            item["label"] = derived[:80]
+            item["labelSource"] = "document"
+            restored += 1
+    if restored:
+        logger.info(
+            "Restored document-provided labels on %d target(s)", restored
+        )
+
+
+def _sort_by_document_position(
+    items: list[dict[str, Any]],
+    doc: DocumentText,
+) -> list[dict[str, Any]]:
+    """Stable-sort the final targets into document order.
+
+    Consolidation windows may re-emit targets in any order, and multi-block
+    documents concatenate per-block extractions; reviewers compare the list
+    against the document top-to-bottom. Sort key = character offset of the
+    first locatable source quote in the normalised document; fallback = the
+    offset of the item's first page; items with neither keep their relative
+    position at the end. Stable, deterministic, no fields fabricated.
+    """
+    norm_doc = normalise_for_matching(doc.full_text)
+    # Approximate normalised offset of each page's start (fallback key only).
+    page_offset: dict[int, int] = {}
+    norm_len = 0
+    for span in doc.pages:
+        page_offset.setdefault(span.page, norm_len)
+        norm_len += len(normalise_for_matching(span.text)) + 1
+
+    def key(indexed: tuple[int, dict[str, Any]]) -> tuple[int, int]:
+        idx, item = indexed
+        for src in item.get("sources") or []:
+            quote = normalise_for_matching(str(src.get("sourceText", "")))
+            if quote:
+                pos = norm_doc.find(quote)
+                if pos >= 0:
+                    return (pos, idx)
+        pages = item.get("pageNumbers") or []
+        if pages and min(pages) in page_offset:
+            return (page_offset[min(pages)], idx)
+        return (len(norm_doc) + 1, idx)
+
+    return [item for _idx, item in sorted(enumerate(items), key=key)]
 
 
 async def _consolidate_windows(
@@ -1725,14 +2485,25 @@ async def _consolidate_windows(
             "max_tokens": 16000,
         })
 
-    raw_results = await call_llm_batch(
+    raw_results = await call_llm_batch_detailed(
         calls, cache_namespace="extract_consolidate", desc="Consolidation"
     )
 
     final: list[dict[str, Any]] = []
     fallbacks = 0
-    for window, raw in zip(windows, raw_results):
-        items, parse_ok = _parse_json_array_status(raw, min_length=min_length)
+    window_records: list[dict[str, Any]] = []
+    for window, (raw, info) in zip(windows, raw_results):
+        # salvage_truncated stays OFF here: the parse-failure fallback keeps
+        # the whole un-consolidated window, which loses nothing.
+        items, parse_ok, _ = _parse_json_array_status(raw, min_length=min_length)
+        record: dict[str, Any] = {
+            "candidatesIn": len(window),
+            "itemsOut": len(items) if parse_ok else len(window),
+            "fallback": not parse_ok,
+        }
+        if info["status"] != "ok":
+            record["callStatus"] = info["status"]
+        window_records.append(record)
         if not parse_ok:
             fallbacks += 1
             logger.warning(
@@ -1745,6 +2516,7 @@ async def _consolidate_windows(
             _restore_original_text(items, window)
             final.extend(items)
 
+    RUN_META["consolidationWindows"] = window_records
     if fallbacks:
         RUN_META["consolidationFallbacks"] = fallbacks
     logger.info(

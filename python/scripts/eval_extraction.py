@@ -114,6 +114,7 @@ def _prompt_hash() -> str:
         ex.RELEVANCE_FILTER_SYSTEM, ex.RELEVANCE_FILTER_USER,
         ex.CONSOLIDATE_SYSTEM, ex.CONSOLIDATE_USER,
         ex.ACTIVITIES_SYSTEM, ex.ACTIVITIES_USER, ex.MULTILANG_ADDENDUM,
+        ex.PARALLEL_CHECK_SYSTEM, ex.PARALLEL_CHECK_USER,
     ])
     return sha256(blob.encode()).hexdigest()[:12]
 
@@ -391,6 +392,10 @@ async def evaluate_document(
             logging.getLogger().removeHandler(counter)
         extract_seconds = time.perf_counter() - t0
         result["extractionSource"] = "fresh run"
+        # One-stop diagnostics: the per-chunk accounting extract.py builds
+        # (relevance verdicts, extraction outcomes, consolidation windows).
+        if ex.RUN_META:
+            result["runMeta"] = json.loads(json.dumps(ex.RUN_META))
 
     fp_after = tracker.snapshot()
     extracted_file.parent.mkdir(parents=True, exist_ok=True)
