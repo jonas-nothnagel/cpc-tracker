@@ -6,10 +6,12 @@ for stakeholders, vendors, and reviewers who need to understand and stress-test
 how the AI produces the text that ends up in the tool — and to verify that
 nothing is fabricated along the way.
 
-*Last verified against the pipeline (`python/src/`) at commit `480a040`+ on
-2026-07-02 (extraction-eval branch: English-first output, windowed
-consolidation, quote-in-document validation, scanned-PDF detection, eval
-harness). Re-verify and bump this stamp whenever extraction behaviour changes.*
+*Last verified against the pipeline (`python/src/`) on 2026-07-10
+(extraction-multilingual-hardening branch: language-block handling for
+parallel-translation documents, truncation salvage, document-order output,
+document-native label restoration, section-anchor validation, per-chunk run
+diagnostics). Re-verify and bump this stamp whenever extraction behaviour
+changes.*
 
 The audit principle, in one line:
 
@@ -31,13 +33,16 @@ flowchart TD
     U[User uploads PDF / DOCX / TXT] --> S{Scanned-PDF\ncheck}
     S -->|no text layer| ERR[(Structured error:\nNO_TEXT_LAYER, exit 3)]
     S -->|ok / partial warning| P[Parse + page-aware text]
-    P --> C[Chunk: ~30k chars, 2k overlap]
+    P --> L{Language blocks\nparallel-translation check}
+    L -->|confirmed parallel block| XL[Skipped pages\nloud warning]
+    L -->|working / kept blocks| C[Chunk per block:\n~30k chars, 2k overlap]
     C --> R{Phase 0\nRelevance filter}
-    R -->|relevant| E[Phase 1\nPer-chunk target extraction]
+    R -->|relevant| E[Phase 1\nPer-chunk target extraction\nwith truncation salvage]
     R -->|drop| X[Discarded chunks]
     E --> D[Deterministic near-dup merge]
     D --> Con[Phase 2\nWindowed consolidation\nwith parse-failure fallback]
-    Con --> Val[Claim-grounding validator]
+    Con --> Lbl[Doc-native label restore\n+ document-order sort]
+    Lbl --> Val[Claim-grounding validator]
     Val --> Act[Phase 3\nActivities extraction]
     Act --> QV[Quote-in-document validator]
     QV --> Out[(JSON output:\ntext EN + textOriginal + sources[] + textCleanup)]
@@ -46,8 +51,8 @@ flowchart TD
     classDef io  fill:#efe,stroke:#696;
     classDef val fill:#fee,stroke:#966;
     class R,E,Con,Act llm
-    class P,C,D,Out io
-    class Val,QV,S val
+    class P,C,D,Lbl,Out io
+    class Val,QV,S,L val
 ```
 
 Boxes coloured blue are LLM calls. Green boxes are deterministic local code.
@@ -69,6 +74,7 @@ items).
 {
   "text":        "ENGLISH working text (machine-translated when the source is not English)",
   "label":       "short descriptive label (≤ 8 words, document numbering preserved)",
+  "labelSource": "\"document\" when the label is the document's own name/numbering (restored deterministically when consolidation rephrased it)",
   "sourceDocument": "NDC | NBSAP | NAP | LDN | SECTORAL | OTHER",
   "country":     "(when --country was given)",
   "pageNumbers": [12, 13],
@@ -136,11 +142,43 @@ extracted, and the reviewer should know that.
   has no reliable page boundaries, so spans carry `page=0`.
 - **TXT**: read verbatim as a single `PageSpan`.
 
+### 0b. Language blocks (parallel-translation handling)
+
+Some national policies publish the same content two or three times in
+sequential language blocks (observed: the Sri Lanka National Water Resources
+Policy 2023 — Sinhala, Tamil, then English, with the Sinhala/Tamil pages in
+legacy font encodings that extract as Latin gibberish). Extracting every
+block yields machine-translated duplicates of the working-language content;
+the 2 Jul 2026 expert review traced "re-written text", invented titles, and
+scrambled order on that document to exactly this.
+
+`split_language_blocks(doc)` classifies each page deterministically (Unicode
+script ranges, then an en/es/fr stopword-density vote; statistical detectors
+like lingua are deliberately NOT used per page — they return arbitrary
+languages at high confidence on legacy-font gibberish) and groups contiguous
+pages with run-length smoothing. Low-signal "und" runs absorb into their
+neighbouring block unless they are substantial relative to the largest
+known-language block — the parallel-translation signature.
+
+Documents that resolve to a single block behave exactly as before (and keep
+their LLM cache). For multi-block documents, a non-working-language block is
+skipped ONLY as a confirmed parallel translation: it must be substantial
+(≥ 5 pages or 10 k chars), share the working block's numeric fingerprint
+(digit-token Jaccard ≥ 0.35; measured 0.44–0.78 for true translations vs
+0.22 for unrelated documents), AND be confirmed by a small LLM check
+(`parallel_check` namespace). Anything less is kept and extracted in
+translate mode with a warning. Skips are never silent: the sidecar records
+`PARALLEL_TRANSLATION_SKIPPED` with the page range, and every block decision
+lands in `languageBlocks`.
+
 ### 1. Chunking
 
 `chunk_text(doc, max_chars=30000, overlap_chars=2000)` splits the document on
 double-newlines (paragraph boundaries) into chunks of ≤ 30 k characters with
 2 k of overlap. Each chunk carries the list of source page numbers it touches.
+Multi-block documents chunk per retained language block, so no chunk straddles
+a language boundary and each chunk knows its block's language (the translate-
+mode addendum is applied per chunk, not per document).
 
 ### 2. Phase 0 — Relevance filter
 
@@ -185,6 +223,22 @@ For non-English documents, a language addendum instructs the model to return
 cached responses with the older `text_eng` convention are inverted into this
 shape at parse time.)
 
+**Truncation salvage:** a response cut off at the completion-token ceiling
+ends mid-JSON; previously the whole chunk extracted to zero (observed: 4 of
+6 NWRP chunks, including the entire English Section-7 policy table, died at
+the old 4 000-token ceiling). The ceiling is now 12 000
+(`CPC_EXTRACT_MAX_TOKENS`), and when a response still truncates, the complete
+leading objects are salvaged deterministically, the chunk record is marked
+`truncated`, and a `TRUNCATED_EXTRACTION` warning (with the recovered count)
+lands in the sidecar. Salvage is Phase-1 only — consolidation keeps its
+safer keep-the-window fallback.
+
+Section anchors the model claims (`sources[].section`) are validated by
+`_clean_section`: document numbering, known section words, or plausible
+natural-language headings pass; echoed `[TABLE]` markers and legacy-font
+gibberish (`"nfhs;if"`) are dropped, never invented, and counted in the
+sidecar (`sectionsDropped`).
+
 Cached by chunk content (`cache_namespace="extract"`).
 
 ### 4. Deterministic near-duplicate merge
@@ -223,8 +277,25 @@ When the merged `text` combines wording from several sources, `textCleanup`
 becomes `"synthesis"`. The prompt is explicit that **every concrete claim in
 the merged text must appear in at least one merged source** — and that
 contradicting numbers should be kept as separate targets, never invented away.
+It also requires document-provided names ("Policy 1", "Goal 2.3") to be kept
+verbatim as labels and output order to follow input (document) order.
 
 Cached by candidate content (`cache_namespace="extract_consolidate"`).
+
+### 5b. Deterministic post-passes: label restore + document order
+
+Model compliance with the label and order instructions is not guaranteed, so
+two local passes run after consolidation:
+
+- `_restore_doc_labels`: a final item whose label does not look
+  document-provided gets one derived, in order of preference, from its first
+  source's section anchor, the leading hierarchical numbering of its first
+  source quote, or the label of the unique Phase-1 candidate sharing that
+  quote. On success `labelSource: "document"` is recorded; otherwise the LLM
+  label stays — a label is never invented.
+- `_sort_by_document_position`: the final list is stable-sorted by the
+  character offset of each target's first locatable source quote (fallback:
+  first page), so reviewers read the sheet top-to-bottom like the document.
 
 ### 6. Claim-grounding validator (post-LLM)
 
@@ -288,7 +359,13 @@ cd python
 uv run python -m src.extract --file <doc.pdf> --source-document PNSH \
     --country Panama --output pnsh.extracted.json
 
-# 2. Human review: edit/delete items in pnsh.extracted.json by hand.
+# 2. Human review: edit/delete items in pnsh.extracted.json by hand — or
+#    export the expert-review spreadsheet (the "Targets for review" sheet
+#    with source text, activities, a machine-translation note for rows whose
+#    English is not the document's own wording, and dropdown review columns):
+uv run python -m scripts.export_review_xlsx --input pnsh.extracted.json \
+    --output pnsh_targets_for_review.xlsx --country Panama \
+    --document "Plan Nacional de Seguridad Hídrica" --doc PNSH
 
 # 3. Promote into the curated corpus (strict QC: refuses validator-flagged
 #    records unless --allow-flagged), or write a standalone targets file:
@@ -342,9 +419,18 @@ next run produces fresh outputs.
 
 Each run also emits a `*.footprint.json` sidecar with EcoLogits energy / CO₂
 estimates so the API route can return the environmental footprint of an
-upload, and (when warnings occurred) a `*.meta.json` sidecar with document
-warnings and pipeline self-reports (`consolidationFallbacks`,
-`chunkParseFailures`, `quotesNotFound`).
+upload, and a `*.meta.json` sidecar with document warnings and pipeline
+self-reports. The sidecar now carries full per-chunk accounting so a chunk
+that yields nothing is diagnosable without re-running: `chunks` (page range,
+language, relevance verdict, extraction status incl. content-filter hits and
+truncation salvage, candidate count), `consolidationWindows`
+(candidatesIn/itemsOut/fallback per window), `languageBlocks` (per-block
+keep/skip decisions), `sectionsDropped`, plus the existing
+`consolidationFallbacks`, `chunkParseFailures`, `quotesNotFound`, and
+document warnings (`PARALLEL_TRANSLATION_SKIPPED`, `TRUNCATED_EXTRACTION`,
+`CONTENT_FILTER`, `MIXED_LANGUAGE_CONTENT`, `UNKNOWN_LANGUAGE_BLOCK`, ...).
+The evaluation harness copies the same accounting into each doc's
+`runMeta` in `report.json`.
 
 ---
 
@@ -356,6 +442,9 @@ warnings and pipeline self-reports (`consolidationFallbacks`,
 | LLM invents a "verbatim" quote that is not in the document. | Quote-in-document validator stamps `_quoteMatch` on every source; `not_found` flags the target for review; promotion refuses flagged records without `--allow-flagged`. |
 | LLM injects a number / year that is not in the document. | Claim-grounding validator (English text AND original-language text) stamps `_provenanceFlag`. |
 | Consolidation response truncates and parses to nothing, silently zeroing the document. | Windowed consolidation bounds response size; parse-failure fallback keeps the un-consolidated candidates and records it in the sidecar. |
+| Extraction response truncates at the completion-token ceiling and the whole chunk yields zero targets. | 12 000-token ceiling (`CPC_EXTRACT_MAX_TOKENS`); deterministic salvage of complete leading objects; `TRUNCATED_EXTRACTION` warning with recovered count. |
+| A multilingual document's parallel translations extract as machine-translated duplicates, drowning out the document's own working-language text. | Language-block segmentation; a block is skipped only when size, numeric-fingerprint overlap, AND an LLM check all agree it is a parallel translation — and the skip is a loud sidecar warning, never silent. |
+| Labels or section anchors are invented (noun-phrase titles replacing "Policy 1"; gibberish sections echoed from bad text layers). | Consolidation prompt preserves document-provided names; deterministic label restore (`labelSource: "document"`); `_clean_section` drops implausible anchors and counts them in the sidecar. |
 | Consolidation drops sources or the original-language text when merging. | Consolidation prompt explicitly forbids dropping sources and requires `textOriginal` preservation; sources are required in the output schema. |
 | Scanned/image PDF silently yields zero targets. | Text-layer detection: structured error for image-only documents, reviewer warning for partial text layers. |
 | Activities are invented. | Activities prompt has the same verbatim contract; per-activity `sourceText` carried on `activitySources`; claim-grounding and quote-in-document validators run over them. |
