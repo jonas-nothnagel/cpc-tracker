@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import type { AnalyticsSummary, SectionUsage } from "@/lib/analytics/types";
 
+import { SectionMiniature } from "./miniatures";
+
 /**
  * "What gets used" — the usage map. A vertical schematic mirroring the real
  * coherence dashboard top-to-bottom: one row per section, shaded darker the
@@ -25,9 +27,11 @@ const ZERO_FILL = "#f1f5f9";
 export function UsageMap({
   sectionUsage,
   elementsBySection,
+  regionsBySection,
 }: {
   sectionUsage: SectionUsage[];
   elementsBySection: AnalyticsSummary["elementsBySection"];
+  regionsBySection: AnalyticsSummary["regionsBySection"];
 }) {
   const [openSection, setOpenSection] = useState<string | null>(null);
   const maxShare = Math.max(...sectionUsage.map((s) => s.shareOfInteractions));
@@ -45,8 +49,8 @@ export function UsageMap({
     <section>
       <p className="mb-4 max-w-3xl text-sm text-slate-500">
         Each row is one part of the country dashboard, in the order it appears
-        on the page. Darker = used more. Click a row to see what people
-        clicked inside it.
+        on the page. Darker = used more. Click a row to see a sketch of that
+        part, shaded by what people used inside it.
       </p>
 
       {allZero ? (
@@ -68,6 +72,7 @@ export function UsageMap({
                 setOpenSection(openSection === s.section ? null : s.section)
               }
               elements={elementsBySection[s.section] ?? []}
+              regions={regionsBySection[s.section] ?? []}
             />
           ))}
         </ol>
@@ -88,6 +93,7 @@ function UsageRow({
   open,
   onToggle,
   elements,
+  regions,
 }: {
   usage: SectionUsage;
   maxShare: number;
@@ -95,6 +101,7 @@ function UsageRow({
   open: boolean;
   onToggle: () => void;
   elements: { label: string; count: number }[];
+  regions: { region: string; count: number }[];
 }) {
   const neverUsed = usage.interactions === 0 && usage.views === 0;
   const rarelyUsed = !neverUsed && usage.shareOfInteractions < 0.05;
@@ -155,28 +162,49 @@ function UsageRow({
       </button>
 
       {open && (
-        <div className="mx-4 rounded-b-lg border border-t-0 border-slate-200 bg-slate-50 px-4 py-3">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            What people clicked here
-          </h3>
-          {elements.length === 0 ? (
-            <p className="text-sm text-slate-400">
-              No one has used this part yet.
-            </p>
-          ) : (
-            <table className="w-full text-sm">
-              <tbody>
-                {elements.map((el) => (
-                  <tr key={el.label} className="border-b border-slate-200/70 last:border-0">
-                    <td className="py-1 pr-4 text-slate-700">{el.label}</td>
-                    <td className="py-1 text-right tabular-nums text-slate-600">
-                      {el.count} {el.count === 1 ? "time" : "times"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+        <div className="mx-4 rounded-b-lg border border-t-0 border-slate-200 bg-slate-50 px-4 py-4">
+          <div className="grid gap-5 lg:grid-cols-[3fr_2fr]">
+            <div>
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Where people interact — hover for details
+              </h3>
+              {elements.length === 0 && (
+                <p className="mb-2 text-sm text-slate-400">
+                  No one has used this part yet — here is what it looks like.
+                </p>
+              )}
+              <SectionMiniature
+                section={usage.section}
+                sectionName={usage.name}
+                regionCounts={regions}
+                elements={elements}
+              />
+            </div>
+            <div>
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Most-used controls
+              </h3>
+              {elements.length === 0 ? (
+                <p className="text-sm text-slate-400">Nothing yet.</p>
+              ) : (
+                <table className="w-full text-sm">
+                  <tbody>
+                    {elements.slice(0, 8).map((el) => (
+                      <tr
+                        key={el.label}
+                        className="border-b border-slate-200/70 last:border-0"
+                      >
+                        <td className="py-1 pr-4 text-slate-700">{el.label}</td>
+                        <td className="py-1 text-right tabular-nums text-slate-600">
+                          {el.count} {el.count === 1 ? "time" : "times"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </li>

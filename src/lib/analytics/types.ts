@@ -138,8 +138,10 @@ export interface AnalyticsSummary {
   last24h: { views: number; visitors: number; recent: RecentEvent[] };
   /** "What gets used": all coherence-dashboard sections, page order, zero-filled. */
   sectionUsage: SectionUsage[];
-  /** Ranked controls per section (top 10), for the usage-map drill-down. */
+  /** Ranked controls per section (top 20), for the usage-map drill-down. */
   elementsBySection: Record<string, { label: string; count: number }[]>;
+  /** Interactions per miniature region (sparse; zero-count regions omitted). */
+  regionsBySection: Record<string, { region: string; count: number }[]>;
 }
 
 /** One row of the "what gets used" usage map. */

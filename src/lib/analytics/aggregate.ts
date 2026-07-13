@@ -1,3 +1,4 @@
+import { regionForLabel } from "./miniature-regions";
 import { DRAWER_KIND_SECTION, SECTION_IDS, SECTION_REGISTRY } from "./sections";
 import type {
   AnalyticsEvent,
@@ -149,11 +150,13 @@ export function aggregate(
     .filter((ts) => !Number.isNaN(Date.parse(ts)))
     .sort();
 
-  const { sectionUsage, elementsBySection } = aggregateSections(events);
+  const { sectionUsage, elementsBySection, regionsBySection } =
+    aggregateSections(events);
 
   return {
     sectionUsage,
     elementsBySection,
+    regionsBySection,
     range: {
       from: timestamps[0] ?? "",
       to: timestamps[timestamps.length - 1] ?? "",
@@ -189,12 +192,16 @@ export function aggregate(
 function aggregateSections(events: AnalyticsEvent[]): {
   sectionUsage: SectionUsage[];
   elementsBySection: Record<string, { label: string; count: number }[]>;
+  regionsBySection: Record<string, { region: string; count: number }[]>;
 } {
   const onDashboard = events.filter((e) => DASHBOARD_ROUTES.has(e.route));
 
-  // Interactions + element ranking.
+  // Interactions + element ranking + miniature-region rollup. Region counts
+  // sum exactly to `interactions` per section: every label lands somewhere
+  // (the registry's catch-all region guarantees it).
   const interactionsBySection = new Map<string, number>();
   const elementCounts = new Map<string, Map<string, number>>();
+  const regionCounts = new Map<string, Map<string, number>>();
   const bump = (section: string, label: string) => {
     interactionsBySection.set(
       section,
@@ -203,6 +210,10 @@ function aggregateSections(events: AnalyticsEvent[]): {
     const labels = elementCounts.get(section) ?? new Map<string, number>();
     labels.set(label, (labels.get(label) ?? 0) + 1);
     elementCounts.set(section, labels);
+    const regions = regionCounts.get(section) ?? new Map<string, number>();
+    const region = regionForLabel(section, label);
+    regions.set(region, (regions.get(region) ?? 0) + 1);
+    regionCounts.set(section, regions);
   };
   for (const e of onDashboard) {
     if (e.type === "click") {
@@ -299,11 +310,19 @@ function aggregateSections(events: AnalyticsEvent[]): {
   for (const [section, labels] of elementCounts) {
     elementsBySection[section] = [...labels.entries()]
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
+      .slice(0, 20)
       .map(([label, count]) => ({ label, count }));
   }
 
-  return { sectionUsage, elementsBySection };
+  const regionsBySection: Record<string, { region: string; count: number }[]> =
+    {};
+  for (const [section, regions] of regionCounts) {
+    regionsBySection[section] = [...regions.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([region, count]) => ({ region, count }));
+  }
+
+  return { sectionUsage, elementsBySection, regionsBySection };
 }
 
 /** Strip identifying fields for the activity feed. */

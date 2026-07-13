@@ -252,4 +252,37 @@ describe("sectionUsage", () => {
       { label: "Wheel: connection ribbon", count: 1 },
     ]);
   });
+
+  it("rolls interactions up into miniature regions", () => {
+    const summary = aggregate(
+      [
+        ev({ type: "click", section: "direction", label: "Wheel: document arc" }),
+        ev({ type: "click", section: "direction", label: "Wheel: connection ribbon" }),
+        ev({ type: "click", section: "direction", label: "Show an example of strong alignment" }),
+        ev({ type: "click", section: "direction", label: "??" }), // -> other
+        ev({ type: "track", name: "drawer_opened", props: { kind: "sector" } }),
+      ],
+      NOW,
+    );
+    expect(summary.regionsBySection.direction).toEqual([
+      { region: "wheel", count: 2 },
+      { region: "term-buttons", count: 1 },
+      { region: "other", count: 1 },
+    ]);
+    // Drawer kind sector -> "Detail panel: sector" -> sector-rows region.
+    expect(summary.regionsBySection.sectors).toEqual([
+      { region: "sector-rows", count: 1 },
+    ]);
+    // Region counts sum to the section's interactions.
+    const byId = Object.fromEntries(
+      summary.sectionUsage.map((s) => [s.section, s]),
+    );
+    const directionRegionSum = summary.regionsBySection.direction.reduce(
+      (a, r) => a + r.count,
+      0,
+    );
+    expect(directionRegionSum).toBe(byId.direction.interactions);
+    // Inactive sections are absent from the sparse record.
+    expect(summary.regionsBySection.financing).toBeUndefined();
+  });
 });

@@ -95,6 +95,7 @@ export function AnalyticsDashboard({
         <UsageMap
           sectionUsage={summary.sectionUsage}
           elementsBySection={summary.elementsBySection}
+          regionsBySection={summary.regionsBySection}
         />
       ) : (
         <TrafficView summary={summary} />
