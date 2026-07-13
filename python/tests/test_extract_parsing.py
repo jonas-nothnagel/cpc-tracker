@@ -209,28 +209,44 @@ class TestDedupeCandidates:
 
 class TestParseJsonArrayStatus:
     def test_valid_array(self):
-        items, ok = _parse_json_array_status('[{"text": "A long enough target"}]')
+        items, ok, truncated = _parse_json_array_status('[{"text": "A long enough target"}]')
         assert ok is True
+        assert truncated is False
         assert len(items) == 1
 
     def test_legit_empty_array_is_ok(self):
-        items, ok = _parse_json_array_status("[]")
+        items, ok, truncated = _parse_json_array_status("[]")
         assert ok is True
+        assert truncated is False
         assert items == []
 
     def test_truncated_json_is_failure(self):
-        truncated = '[{"text": "A long enough target"}, {"text": "cut off he'
-        items, ok = _parse_json_array_status(truncated)
+        truncated_raw = '[{"text": "A long enough target"}, {"text": "cut off he'
+        items, ok, truncated = _parse_json_array_status(truncated_raw)
         assert ok is False
+        assert truncated is False
         assert items == []
+
+    def test_truncated_json_salvage_recovers_leading_items(self):
+        # With salvage enabled (Phase-1 extraction), the complete leading
+        # objects of a ceiling-truncated response are recovered and the
+        # truncation is reported so the sidecar can warn about lost tails.
+        truncated_raw = '[{"text": "A long enough target"}, {"text": "cut off he'
+        items, ok, truncated = _parse_json_array_status(
+            truncated_raw, salvage_truncated=True
+        )
+        assert ok is True
+        assert truncated is True
+        assert len(items) == 1
 
     def test_empty_response_is_failure(self):
         # Content-filtered calls return "" — never a trustworthy "no targets".
-        items, ok = _parse_json_array_status("")
+        items, ok, truncated = _parse_json_array_status("")
         assert ok is False
+        assert truncated is False
 
     def test_fenced_json_ok(self):
-        items, ok = _parse_json_array_status('```json\n[{"text": "A long enough target"}]\n```')
+        items, ok, truncated = _parse_json_array_status('```json\n[{"text": "A long enough target"}]\n```')
         assert ok is True
         assert len(items) == 1
 
@@ -362,7 +378,7 @@ class TestEnglishFirstParsing:
             '"labelOriginal": "Objetivo 3.2", '
             '"sources": [{"sourceText": "Restaurar 1.500 hectáreas de bosque para 2030"}]}]'
         )
-        items, ok = _parse_json_array_status(raw)
+        items, ok, _truncated = _parse_json_array_status(raw)
         assert ok
         item = items[0]
         assert item["text"].startswith("Restore")
@@ -378,7 +394,7 @@ class TestEnglishFirstParsing:
             '"text_eng": "Restore 1,500 hectares of forest", '
             '"label_eng": "Objective 3.2"}]'
         )
-        items, ok = _parse_json_array_status(raw)
+        items, ok, _truncated = _parse_json_array_status(raw)
         assert ok
         item = items[0]
         assert item["text"] == "Restore 1,500 hectares of forest"

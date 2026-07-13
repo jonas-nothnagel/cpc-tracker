@@ -1,0 +1,670 @@
+[
+  {
+    "text": "Reduce greenhouse gas emissions by 11% by 2035 relative to the reference scenario; and restore 100,000 hectares of critical ecosystems, while simultaneously strengthening the effective management of protected areas and other spaces of high ecological value.",
+    "label": "Unified Nature Pledge target",
+    "pageNumbers": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "textOriginal": "Reducir sus emisiones de gases de efecto invernadero en un 11 % al año 2035 respecto al escenario de referencia; y Restaurar 100,000 hectáreas de ecosistemas críticos, fortaleciendo simultáneamente la gestión efectiva de áreas protegidas y otros espacios de alto valor ecológico.",
+    "labelOriginal": "Meta unificada del Nature Pledge",
+    "sources": [
+      {
+        "sourceText": "• \nReducir sus emisiones de gases de efecto invernadero en un 11 % al año 2035 respecto \nal escenario de referencia; y",
+        "section": "3.3",
+        "_quoteMatch": "exact"
+      },
+      {
+        "sourceText": "• \nRestaurar 100,000 hectáreas de ecosistemas críticos, fortaleciendo simultáneamente la \ngestión efectiva de áreas protegidas y otros espacios de alto valor ecológico.",
+        "section": "3.3",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "synthesis",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Implement permanent training and certification programs; promote technical and South-South cooperation; create talent retention mechanisms and inter-institutional knowledge networks.",
+    "label": "Human resources and technical",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Implementar programas permanentes de capacitación y certificación; promover cooperación técnica y Sur-Sur; crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+    "labelOriginal": "Recursos humanos y técnicos",
+    "sources": [
+      {
+        "sourceText": "Implementar programas permanentes de capacitación y certificación; promover cooperación técnica y Sur-Sur; crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+        "section": "Recursos humanos y técnicos",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Implement permanent training and certification programs\npromote technical and South-South cooperation\ncreate talent retention mechanisms and inter-institutional knowledge networks.",
+    "activitySources": [
+      {
+        "text": "Implement permanent training and certification programs",
+        "sourceText": "Implementar programas permanentes de capacitación y certificación",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "promote technical and South-South cooperation",
+        "sourceText": "promover cooperación técnica y Sur-Sur",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "create talent retention mechanisms and inter-institutional knowledge networks.",
+        "sourceText": "crear mecanismos de retención de talento y redes interinstitucionales de conocimiento.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Harmonize and update normative frameworks under a common vision, integrating climate, biodiversity, and land commitments and establishing more stable and binding legal instruments.",
+    "label": "Normative framework planning",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Armonizar y actualizar marcos normativos bajo una visión común, integrando los compromisos climáticos, de biodiversidad y de tierras y estableciendo instrumentos jurídicos más estables y vinculantes.",
+    "labelOriginal": "Marco normativo y planificación",
+    "sources": [
+      {
+        "sourceText": "El Nature Pledge permite armonizar y actualizar marcos normativos bajo una visión común, integrando los compromisos climáticos, de biodiversidad y de tierras y estableciendo instrumentos jurídicos más estables y vinculantes.",
+        "section": "Marco normativo y planificación",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Develop innovative financial instruments; strengthen the Panama Natural Fund; create economic incentives for sustainable practices.",
+    "label": "Financing and incentives",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Desarrollas instrumentos financieros innovadores; fortalecer el Fondo Panamá Natural; crear incentivos económicos para prácticas sostenibles.",
+    "labelOriginal": "Financiamiento e incentivos",
+    "sources": [
+      {
+        "sourceText": "Desarrollas instrumentos financieros innovadores; fortalecer el Fondo Panamá Natural; crear incentivos económicos para prácticas sostenibles.",
+        "section": "Financiamiento e incentivos",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Develop innovative financial instruments\nstrengthen the Panama Natural Fund\ncreate economic incentives for sustainable practices.",
+    "activitySources": [
+      {
+        "text": "Develop innovative financial instruments",
+        "sourceText": "Desarrollas instrumentos financieros innovadores;",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "strengthen the Panama Natural Fund",
+        "sourceText": "fortalecer el Fondo Panamá Natural;",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "create economic incentives for sustainable practices.",
+        "sourceText": "crear incentivos económicos para prácticas sostenibles.",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Develop a unified national MRV system, supported by the PNTC, that centralizes climate, biodiversity, and land data, enabling impact assessment and evidence-based decision-making.",
+    "label": "Information and MRV",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Desarrollar un sistema nacional unificado de MRV, apoyado en la PNTC, que centralice datos de clima, biodiversidad y tierras, permitiendo evaluar impactos y orientas decisiones basadas en evidencia.",
+    "labelOriginal": "Información y MRV",
+    "sources": [
+      {
+        "sourceText": "Desarrollar un sistema nacional unificado de MRV, apoyado en la PNTC, que centralice datos de clima, biodiversidad y tierras, permitiendo evaluar impactos y orientas decisiones basadas en evidencia.",
+        "section": "Información y MRV",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Promote the adoption of emerging technologies (remote sensing, artificial intelligence, early warning systems) and NbS to strengthen climate resilience and environmental monitoring.",
+    "label": "Technology and infrastructure",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Impulsar la adopción de tecnologías emergentes (teledetección, inteligencia artificial, sistemas de alerta temprana) y SbN para fortalecer la resiliencia climática y el monitoreo ambiental.",
+    "labelOriginal": "Tecnología e infraestructura",
+    "sources": [
+      {
+        "sourceText": "Impulsar la adopción de tecnologías emergentes (teledetección, inteligencia artificial, sistemas de alerta temprana) y SbN para fortalecer la resiliencia climática y el monitoreo ambiental.",
+        "section": "Tecnología e infraestructura",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Reorient management toward measurable results; strengthen the national MRV system; integrate budgets and monitoring mechanisms that ensure continuity and territorial implementation.",
+    "label": "Implementation continuity",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Reorientar la gestión hacia resultados medibles; fortalecer el sistema nacional de MRV; integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial.",
+    "labelOriginal": "Continuidad y enfoque en la implementación",
+    "sources": [
+      {
+        "sourceText": "Reorientar la gestión hacia resultados medibles; fortalecer el sistema nacional de MRV; integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial.",
+        "section": "Continuidad y enfoque en la implementación",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Reorient management toward measurable results\nstrengthen the national MRV system\nintegrate budgets and monitoring mechanisms that ensure continuity and territorial implementation",
+    "activitySources": [
+      {
+        "text": "Reorient management toward measurable results",
+        "sourceText": "Reorientar la gestión hacia resultados medibles",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "strengthen the national MRV system",
+        "sourceText": "fortalecer el sistema nacional de MRV",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "integrate budgets and monitoring mechanisms that ensure continuity and territorial implementation",
+        "sourceText": "integrar presupuestos y mecanismos de seguimiento que aseguren continuidad y ejecución territorial",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Strengthen participatory governance; establish conservation agreements and payments for ecosystem services; foster public-private partnerships and partnerships with academia; promote multi-stakeholder dialogue platforms.",
+    "label": "Social participation alliances",
+    "pageNumbers": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "textOriginal": "Fortalecer la gobernanza participativa; establecer acuerdos de conservación y pagos por servicios ecosistémicos; fomentar alianzas público-privadas y con la academia; promover plataformas de diálogo multiactor.",
+    "labelOriginal": "Participación social y alianzas multisectoriales",
+    "sources": [
+      {
+        "sourceText": "Fortalecer la gobernanza participativa; establecer acuerdos de conservación y pagos por servicios ecosistémicos; fomentar alianzas público-privadas y con la academia; promover plataformas de diálogo multiactor.",
+        "section": "Participación social y alianzas multisectoriales",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source",
+    "activities": "Strengthen participatory governance\nestablish conservation agreements and payments for ecosystem services\nfoster public-private partnerships and with academia\npromote multi-stakeholder dialogue platforms",
+    "activitySources": [
+      {
+        "text": "Strengthen participatory governance",
+        "sourceText": "Fortalecer la gobernanza participativa",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "establish conservation agreements and payments for ecosystem services",
+        "sourceText": "establecer acuerdos de conservación y pagos por servicios ecosistémicos",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "foster public-private partnerships and with academia",
+        "sourceText": "fomentar alianzas público-privadas y con la academia",
+        "_quoteMatch": "exact"
+      },
+      {
+        "text": "promote multi-stakeholder dialogue platforms",
+        "sourceText": "promover plataformas de diálogo multiactor",
+        "_quoteMatch": "exact"
+      }
+    ]
+  },
+  {
+    "text": "Climate Change and Green Transition Framework Law and regulatory package",
+    "label": "Climate framework law",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Ley Marco de Cambio Climático y Transición Verde y paquete normativo",
+    "labelOriginal": "Ley marco climática",
+    "sources": [
+      {
+        "sourceText": "Meta 30: Ley Marco de Cambio Climático y Transición Verde y paquete normativo",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Redesign of incentives and subsidies",
+    "label": "Incentives redesign",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Rediseño de incentivos y subsidios",
+    "labelOriginal": "Rediseño de incentivos",
+    "sources": [
+      {
+        "sourceText": "Meta 14: Rediseño de incentivos y subsidios",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Local and regional adaptation plans",
+    "label": "Adaptation plans",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Planes locales y regionales de adaptación",
+    "labelOriginal": "Planes de adaptación",
+    "sources": [
+      {
+        "sourceText": "Meta 22: Planes locales y regionales de adaptación",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Climate risk observatories",
+    "label": "Risk observatories",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Observatorios de riesgo climático",
+    "labelOriginal": "Observatorios de riesgo",
+    "sources": [
+      {
+        "sourceText": "Meta 27:  Observatorios de riesgo climático",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "National Integrated Marine-Coastal and Wetlands Monitoring System",
+    "label": "Marine wetlands monitoring",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Sistema Nacional Integrado de Monitoreo Marino–Costero y de Humedales",
+    "labelOriginal": "Monitoreo marino y humedales",
+    "sources": [
+      {
+        "sourceText": "Meta 26: Sistema Nacional Integrado de Monitoreo Marino–Costero y de Humedales",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "normalized"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Office of the Agricultural Geospatial Information System with agroclimatic data",
+    "label": "Agricultural geospatial office",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Oficina del Sistema de Información Geoespacial Agropecuaria con datos agroclimáticos",
+    "labelOriginal": "Oficina geoespacial agropecuaria",
+    "sources": [
+      {
+        "sourceText": "Meta 21: Oficina del Sistema de Información Geoespacial Agropecuaria con datos agroclimáticos",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Multi-hazard early warning systems",
+    "label": "Early warning systems",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Sistemas de Alerta Temprana Multirriesgo",
+    "labelOriginal": "Alerta temprana multirriesgo",
+    "sources": [
+      {
+        "sourceText": "Meta 19: Sistemas de Alerta Temprana Multirriesgo",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "National Monitoring System for Adaptation and Loss and Damage",
+    "label": "Adaptation loss monitoring",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Sistema Nacional de Monitoreo de Adaptación y Pérdidas y Daños",
+    "labelOriginal": "Monitoreo de adaptación",
+    "sources": [
+      {
+        "sourceText": "Meta 25: Sistema Nacional de Monitoreo de Adaptación y Pérdidas y Daños",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Information on genetic resources, benefit-sharing, and free, prior and informed consent",
+    "label": "Genetic resources information",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Información de recursos genéticos, distribución de beneficios; y consentimiento libre, previo e informado",
+    "labelOriginal": "Recursos genéticos",
+    "sources": [
+      {
+        "sourceText": "Meta 9: Información de recursos genéticos, distribución de beneficios; y consentimiento libre, previo e informado",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Restoration and biological corridors",
+    "label": "Restoration corridors",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Restauración y corredores biológicos",
+    "labelOriginal": "Restauración y corredores",
+    "sources": [
+      {
+        "sourceText": "Meta 2: Restauración y corredores biológicos",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Strengthening of SINAP",
+    "label": "Strengthen SINAP",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Fortalecimiento del SINAP.",
+    "labelOriginal": "Fortalecer SINAP",
+    "sources": [
+      {
+        "sourceText": "Meta 3: Fortalecimiento del SINAP.",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  },
+  {
+    "text": "Implementation of the marine-coastal adaptation plan",
+    "label": "Marine adaptation plan",
+    "pageNumbers": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "textOriginal": "Implementación de plan de adaptación marino – costero",
+    "labelOriginal": "Plan adaptación marino-costero",
+    "sources": [
+      {
+        "sourceText": "Meta 23: Implementación de plan de adaptación marino – costero",
+        "section": "Tabla 5.2",
+        "_quoteMatch": "exact"
+      }
+    ],
+    "textCleanup": "cleaned",
+    "sourceDocument": "HR",
+    "language": "es",
+    "textOriginalSource": "source"
+  }
+]

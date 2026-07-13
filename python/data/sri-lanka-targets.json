@@ -4323,7 +4323,7 @@
       9,
       10
     ],
-    "activities": "Ensure sustainable management of the living marine resources based on the best available evidence from social, economic and ecological sciences.\nApply ecosystem and precautionary approaches to promote responsible fisheries management.\nEnhance the stocks of endangered, threatened and protected species.\nEnhance fish stocks in the territorial sea and the exclusive economic zone (EEZ) by ranching and habitat enhancement.\nPrevent overcapacity of the fishing fleet.\nDivert marine fishing efforts from over-exploited areas to unexploited or under- exploited areas.\nPromote the use of fishing practices and equipment that cause comparatively low adverse impacts on the environment.\nMaintain the ban of fishing in Sri Lanka waters by foreign fishing vessels except for research and development purposes.\nPromote responsible fisheries in compliance with requirements stipulated in international treaties concerning management of fisheries.\nLimit the new access to high seas fishing only to fishing vessels equipped with state- of-the-art technology for fish detection, on-board fish quality maintenance, etc.\nApply ecosystem approach to management of fisheries in inland waters.\nEnsure conservation of aquatic biodiversity in inland waters.\nRegulate the length and engine capacity of fishing vessel fishing in lagoons and estuaries.\nNot allow the use of motorized boats for fishing in reservoirs.\nApply temporal and spatial planning in development of aquaculture.\nAllocate land and water resources for aquaculture projects only after environmental, socio-economic and cultural impact assessments.\nEnsure that aquaculture projects are implemented in strict compliance with conditions of approval.\nStrengthen the aquaculture-animal healthcare activities.\nPromote the use of best management practices (BMPs) in aquaculture.",
+    "activities": "Ensure sustainable management of the living marine resources based on the best available evidence from social, economic and ecological sciences.\nApply ecosystem and precautionary approaches to promote responsible fisheries management.\nEnhance the stocks of endangered, threatened and protected species.\nEnhance fish stocks in the territorial sea and the exclusive economic zone (EEZ) by ranching and habitat enhancement.\nPrevent overcapacity of the fishing fleet.\nDivert marine fishing efforts from over-exploited areas to unexploited or under- exploited areas.\nPromote the use of fishing practices and equipment that cause comparatively low adverse impacts on the environment.\nMaintain the ban of fishing in Sri Lanka waters by foreign fishing vessels except for research and development purposes.\nPromote responsible fisheries in compliance with requirements stipulated in international treaties concerning management of fisheries.\nLimit the new access to high seas fishing only to fishing vessels equipped with state- of-the-art technology for fish detection, on-board fish quality maintenance, etc.\nApply ecosystem approach to management of fisheries in inland waters.\nEnsure conservation of aquatic biodiversity in inland waters.\nRegulate the length and engine capacity of fishing vessel fishing in lagoons and estuaries.\nNot allow the use of motorized boats for fishing in reservoirs.\nApply temporal and spatial planning in development of aquaculture.\nAllocate land and water resources for aquaculture projects only after environmental, socio-economic and cultural impact assessments.\nEnsure that aquaculture projects are implemented in strict compliance with conditions of approval.\nStrengthen the aquaculture-animal healthcare activities.\nPromote the use of best management practices (BMPs) in aquaculture.\nLevy a royalty for exploitation of fish stocks in EEZ, and use the proceeds for management and development of fisheries.\nLevy a fee for allocation of fish catch quotas to local fishing vessels fishing in high seas, and use the proceeds for management and development of fisheries.\nUse management information systems for planning, management and reporting.\nStrengthen the co-governance and management processes.\nApply temporal and spatial planning.\nDevelop human resources required.\nUse management information systems for planning, development, management and reporting.\nStrengthen the co-governance and co-management processes.\nDevelop human resources required for governance.\nUtilize part of the earnings from fisheries in each inland waterbody for sustainable management of fisheries in the respective waterbody.\nDevelop a strategy to address the environmental and climatic-change challenges, and impacts of natural disasters.\nTake possible precautions to prevent marine pollution given its direct adverse impacts on fish and other living marine aquatic resources.\nProvide assistance to the communities affected by disasters to resettle and recommence livelihoods.\nFormulate an inter-institutional network system of responsible authorities to address impacts of natural disasters.\nDevelop peoples’ resilience capacity to cope with climatic change impacts.\nImprove the research work and institutional involvement to fill the information gaps and develop a database on climate change related issues.\nUse subsidies only as a tool in management of the sector.\nWean away the fishers from the mentality of dependency on subsidies.\nPromote the private sector participation in the sector.\nPromote the establishment of public – private partnerships (PPPs) for investment in the sector.\nWork for prevention of corruption and economic fraud including fish-laundering in the fisheries and aquaculture sector.",
     "activitySources": [
       {
         "text": "Apply ecosystem approach to management of fisheries in inland waters.",
@@ -4387,6 +4387,153 @@
         "_quoteMatch": "exact",
         "addedByReviewer": true,
         "section": "4.2.9"
+      },
+      {
+        "text": "Levy a royalty for exploitation of fish stocks in EEZ, and use the proceeds for management and development of fisheries.",
+        "sourceText": "4.1.11. Levy a royalty for exploitation of fish stocks in EEZ, and use the proceeds for management and development of fisheries.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.11"
+      },
+      {
+        "text": "Levy a fee for allocation of fish catch quotas to local fishing vessels fishing in high seas, and use the proceeds for management and development of fisheries.",
+        "sourceText": "4.1.12. Levy a fee for allocation of fish catch quotas to local fishing vessels fishing in high seas, and use the proceeds for management and development of fisheries.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.12"
+      },
+      {
+        "text": "Use management information systems for planning, management and reporting.",
+        "sourceText": "4.1.13. Use management information systems for planning, management and reporting.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.13"
+      },
+      {
+        "text": "Strengthen the co-governance and management processes.",
+        "sourceText": "4.1.14. Strengthen the co-governance and management processes.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.14"
+      },
+      {
+        "text": "Apply temporal and spatial planning.",
+        "sourceText": "4.1.15. Apply temporal and spatial planning.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.15"
+      },
+      {
+        "text": "Develop human resources required.",
+        "sourceText": "4.1.16. Develop human resources required.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.16"
+      },
+      {
+        "text": "Use management information systems for planning, development, management and reporting.",
+        "sourceText": "4.2.10. Use management information systems for planning, development, management and reporting.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.10"
+      },
+      {
+        "text": "Strengthen the co-governance and co-management processes.",
+        "sourceText": "4.2.11. Strengthen the co-governance and co-management processes.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.11"
+      },
+      {
+        "text": "Develop human resources required for governance.",
+        "sourceText": "4.2.12. Develop human resources required for governance.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.12"
+      },
+      {
+        "text": "Utilize part of the earnings from fisheries in each inland waterbody for sustainable management of fisheries in the respective waterbody.",
+        "sourceText": "4.2.13. Utilize part of the earnings from fisheries in each inland waterbody for sustainable management of fisheries in the respective waterbody.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.2.13"
+      },
+      {
+        "text": "Develop a strategy to address the environmental and climatic-change challenges, and impacts of natural disasters.",
+        "sourceText": "4.5.9. Develop a strategy to address the environmental and climatic-change challenges, and impacts of natural disasters.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.9"
+      },
+      {
+        "text": "Take possible precautions to prevent marine pollution given its direct adverse impacts on fish and other living marine aquatic resources.",
+        "sourceText": "4.5.10. Take possible precautions to prevent marine pollution given its direct adverse impacts on fish and other living marine aquatic resources.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.10"
+      },
+      {
+        "text": "Provide assistance to the communities affected by disasters to resettle and recommence livelihoods.",
+        "sourceText": "4.5.11. Provide assistance to the communities affected by disasters to resettle and recommence livelihoods.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.11"
+      },
+      {
+        "text": "Formulate an inter-institutional network system of responsible authorities to address impacts of natural disasters.",
+        "sourceText": "4.5.12. Formulate an inter-institutional network system of responsible authorities to address impacts of natural disasters.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.12"
+      },
+      {
+        "text": "Develop peoples’ resilience capacity to cope with climatic change impacts.",
+        "sourceText": "4.5.13. Develop peoples’ resilience capacity to cope with climatic change impacts.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.13"
+      },
+      {
+        "text": "Improve the research work and institutional involvement to fill the information gaps and develop a database on climate change related issues.",
+        "sourceText": "4.5.14. Improve the research work and institutional involvement to fill the information gaps and develop a database on climate change related issues.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.14"
+      },
+      {
+        "text": "Use subsidies only as a tool in management of the sector.",
+        "sourceText": "4.5.29. Use subsidies only as a tool in management of the sector.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.29"
+      },
+      {
+        "text": "Wean away the fishers from the mentality of dependency on subsidies.",
+        "sourceText": "4.5.30. Wean away the fishers from the mentality of dependency on subsidies.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.30"
+      },
+      {
+        "text": "Promote the private sector participation in the sector.",
+        "sourceText": "4.5.33. Promote the private sector participation in the sector.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.33"
+      },
+      {
+        "text": "Promote the establishment of public – private partnerships (PPPs) for investment in the sector.",
+        "sourceText": "4.5.34. Promote the establishment of public – private partnerships (PPPs) for investment in the sector.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.34"
+      },
+      {
+        "text": "Work for prevention of corruption and economic fraud including fish-laundering in the fisheries and aquaculture sector.",
+        "sourceText": "4.5.36. Work for prevention of corruption and economic fraud including fish-laundering in the fisheries and aquaculture sector.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.36"
       }
     ]
   },
@@ -4416,7 +4563,16 @@
       9,
       10
     ],
-    "activities": "Participate actively in the regional and international fisheries management forums.\nComply with fisheries management measures stipulated in international treaties and by Regional Fisheries Management Organizations (RFMO)s.\nCooperate with other coastal states directly and through RFMOs for conservation and management of highly migratory and straddling fish stocks.\nCooperate with the Food and Agriculture Organization (FAO) in conservation and management of fisheries resources.\nComply with the requirements stipulated in international labour conventions and international maritime conventions in regard to maritime labour."
+    "activities": "Participate actively in the regional and international fisheries management forums.\nComply with fisheries management measures stipulated in international treaties and by Regional Fisheries Management Organizations (RFMO)s.\nCooperate with other coastal states directly and through RFMOs for conservation and management of highly migratory and straddling fish stocks.\nCooperate with the Food and Agriculture Organization (FAO) in conservation and management of fisheries resources.\nComply with the requirements stipulated in international labour conventions and international maritime conventions in regard to maritime labour.\nProvide port access and assistance as a port State in accordance with the international law to foreign fishing vessels in distress.",
+    "activitySources": [
+      {
+        "text": "Provide port access and assistance as a port State in accordance with the international law to foreign fishing vessels in distress.",
+        "sourceText": "4.1.26. Provide port access and assistance as a port State in accordance with the international law to foreign fishing vessels in distress.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.26"
+      }
+    ]
   },
   {
     "id": "NFAP_3",
@@ -4444,7 +4600,51 @@
       9,
       10
     ],
-    "activities": "Strengthen the fisheries forecasting system for fishers to obtain information on locations for productive fishing.\nPromote fishing for un-exploited or under-exploited fish stocks in EEZ.\nPromote the use of locally produced bait including live bait in line fisheries.\nPromote foreign fish landings in a responsible manner in accordance with the relevant international treaties."
+    "activities": "Strengthen the fisheries forecasting system for fishers to obtain information on locations for productive fishing.\nPromote fishing for un-exploited or under-exploited fish stocks in EEZ.\nPromote the use of locally produced bait including live bait in line fisheries.\nPromote foreign fish landings in a responsible manner in accordance with the relevant international treaties.\nEstablish and operate the major fishery harbors through the Ceylon Fishery Harbours Corporation (CFHC).\nPromote operation of fishery harbours under the “green fishery harbour” concept and as multi-purpose fishery harbours.\nPromote the private sector to establish and operate other infrastructure facilities.\nDevelop anchorages and minor fish landing sites and hand over to fisher communities in the respective areas for operation and maintenance.\nControl the possible overcapacity of the fishing fleet.\nImprove quality assurance of fishing vessels.",
+    "activitySources": [
+      {
+        "text": "Establish and operate the major fishery harbors through the Ceylon Fishery Harbours Corporation (CFHC).",
+        "sourceText": "4.1.27. Establish and operate the major fishery harbors through the Ceylon Fishery Harbours Corporation (CFHC).",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.27"
+      },
+      {
+        "text": "Promote operation of fishery harbours under the “green fishery harbour” concept and as multi-purpose fishery harbours.",
+        "sourceText": "4.1.28. Promote operation of fishery harbours under the “green fishery harbour” concept and as multi-purpose fishery harbours.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.28"
+      },
+      {
+        "text": "Promote the private sector to establish and operate other infrastructure facilities.",
+        "sourceText": "4.1.29. Promote the private sector to establish and operate other infrastructure facilities.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.29"
+      },
+      {
+        "text": "Develop anchorages and minor fish landing sites and hand over to fisher communities in the respective areas for operation and maintenance.",
+        "sourceText": "4.1.30. Develop anchorages and minor fish landing sites and hand over to fisher communities in the respective areas for operation and maintenance.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.30"
+      },
+      {
+        "text": "Control the possible overcapacity of the fishing fleet.",
+        "sourceText": "4.1.31. Control the possible overcapacity of the fishing fleet.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.31"
+      },
+      {
+        "text": "Improve quality assurance of fishing vessels.",
+        "sourceText": "4.1.32. Improve quality assurance of fishing vessels.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.32"
+      }
+    ]
   },
   {
     "id": "NFAP_4",
@@ -4739,7 +4939,7 @@
       9,
       10
     ],
-    "activities": "Work for generation of more employment opportunities in the sector where possible.\nAssist women in the fisher communities to set up micro-business enterprises with special attention to widows.\nProvide training and capacity building programs to assist women and marginalized groups to take up supplementary income generation activities.\nEncourage communities to commence business activities including integrated sustainable tourism.\nMotivate communities to commence aquaculture or culture-based fisheries as income activities in wetland areas associated with their villages.\nTrain school leavers in advanced technology related to fisheries, aquaculture and new marine industries targeting employment.\nTrain skippers and crew members for foreign employment.\nContinue to implement the poverty alleviation programmes that provides sustainable livelihoods.",
+    "activities": "Work for generation of more employment opportunities in the sector where possible.\nAssist women in the fisher communities to set up micro-business enterprises with special attention to widows.\nProvide training and capacity building programs to assist women and marginalized groups to take up supplementary income generation activities.\nEncourage communities to commence business activities including integrated sustainable tourism.\nMotivate communities to commence aquaculture or culture-based fisheries as income activities in wetland areas associated with their villages.\nTrain school leavers in advanced technology related to fisheries, aquaculture and new marine industries targeting employment.\nTrain skippers and crew members for foreign employment.\nContinue to implement the poverty alleviation programmes that provides sustainable livelihoods.\nPromote the establishment of new marine industries utilizing living marine resources.\nRegulate the access to marine bioprospecting with equitable sharing of benefits.\nPromote integration of marine activities to ensure maximum efficiency,\nPromote recreational fisheries without conflicting with mainstream fisheries.\nPromote establishment of marinas and marine-based tourism activities.\nConserve ship wrecks for enhancement of fish stocks and promotion of tourism.\nApply the “green-harbour concept” in development and management of fishery harbours.\nPromote conservation of the marine and coastal environment.",
     "activitySources": [
       {
         "text": "Work for generation of more employment opportunities in the sector where possible.",
@@ -4796,6 +4996,62 @@
         "_quoteMatch": "exact",
         "addedByReviewer": true,
         "section": "4.5.8"
+      },
+      {
+        "text": "Promote the establishment of new marine industries utilizing living marine resources.",
+        "sourceText": "4.4.1. Promote the establishment of new marine industries utilizing living marine resources.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.1"
+      },
+      {
+        "text": "Regulate the access to marine bioprospecting with equitable sharing of benefits.",
+        "sourceText": "4.4.2. Regulate the access to marine bioprospecting with equitable sharing of benefits.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.2"
+      },
+      {
+        "text": "Promote integration of marine activities to ensure maximum efficiency,",
+        "sourceText": "4.4.3. Promote integration of marine activities to ensure maximum efficiency,",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.3"
+      },
+      {
+        "text": "Promote recreational fisheries without conflicting with mainstream fisheries.",
+        "sourceText": "4.4.4. Promote recreational fisheries without conflicting with mainstream fisheries.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.4"
+      },
+      {
+        "text": "Promote establishment of marinas and marine-based tourism activities.",
+        "sourceText": "4.4.5. Promote establishment of marinas and marine-based tourism activities.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.5"
+      },
+      {
+        "text": "Conserve ship wrecks for enhancement of fish stocks and promotion of tourism.",
+        "sourceText": "4.4.6. Conserve ship wrecks for enhancement of fish stocks and promotion of tourism.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.6"
+      },
+      {
+        "text": "Apply the “green-harbour concept” in development and management of fishery harbours.",
+        "sourceText": "4.4.7. Apply the “green-harbour concept” in development and management of fishery harbours.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.7"
+      },
+      {
+        "text": "Promote conservation of the marine and coastal environment.",
+        "sourceText": "4.4.8. Promote conservation of the marine and coastal environment.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.4.8"
       }
     ]
   },
@@ -4825,7 +5081,7 @@
       9,
       10
     ],
-    "activities": "Take measures to prevent alcoholism in fishing communities.\nEnsure that adequate compensation is provided to fisher communities who will be affected by development activities in the respective areas.\nImprove the social safety net and social security protection for the fishers and fish workers including women.\nRespect the tenure rights of the traditional, migrant, subsistence and artisanal fishing communities to land, waters and fish resources.\nMake right holders responsible for sustainable use of the resources.\nEnsure safe, healthy and fair working conditions at sea, inland waters and on land.\nInvolve fishing communities in designing, planning and implementation of fisheries management measures.\nBuild the capacity of fishers and ensure their effective participation in fisheries management.\nPromote investment in human resource development such as health, education, literacy and digital inclusion in fishing communities.\nProgressively realize rights of the small scale fishers and fishworkers to an adequate standard of living in accordance with the national and international human right standards.",
+    "activities": "Take measures to prevent alcoholism in fishing communities.\nEnsure that adequate compensation is provided to fisher communities who will be affected by development activities in the respective areas.\nImprove the social safety net and social security protection for the fishers and fish workers including women.\nRespect the tenure rights of the traditional, migrant, subsistence and artisanal fishing communities to land, waters and fish resources.\nMake right holders responsible for sustainable use of the resources.\nEnsure safe, healthy and fair working conditions at sea, inland waters and on land.\nInvolve fishing communities in designing, planning and implementation of fisheries management measures.\nBuild the capacity of fishers and ensure their effective participation in fisheries management.\nPromote investment in human resource development such as health, education, literacy and digital inclusion in fishing communities.\nProgressively realize rights of the small scale fishers and fishworkers to an adequate standard of living in accordance with the national and international human right standards.\nEnsure safe, healthy and fair working conditions at sea and on land in accordance with international standards.\nPromote the establishment of insurance schemes concerning safety at sea and occupational safety.\nPromote equal opportunities for women’s participation in the activities of the sector.\nMake gender mainstreaming an integral part of small scale fisheries development strategies.\nCreate conditions for both men and women to have equal access to resources and benefits.\nEncourage both men and women to participate jointly in fi n ding soljutions to their problems. Improvement of the Socio-Economic Conditions of the Fisher Communities\nEncourage private financial institutions to develop financial instruments to ensure financial inclusion for fishers.\nEncourage fisher communities to deal with banks and other formal credit institutions for their financial requirements.\nEnsure that no human rights are violated in development and management of fisheries and aquaculture.\nRecognize, empower and strengthen fisheries cooperatives in addressing issues in fisheries and fisher wellbeing, and in representing fishing communities at decision making platforms.\nLiaise with fisheries cooperatives in integrated coastal zone management. 5. CONCLUSION This Policy was formulated taking guidance from the Government economic policy framework document, “V2025 A Country Enriched”. Implementation of the Policy is expected to contribute to achievement of the Government’s economic vision, i.e., to make Sri Lanka a rich country by 2025 by transforming the country into the hub of the Indian Ocean with a knowledge-based, highly competitive, social-market economy. The Government’s role in the development of the sector is basically confined to management with the objective of ensuring the sustainability and equitable distribution of the benefits of the development. The private sector is expected to undertake commercial activities in the sector. However, the Government will continue to invest in certain areas such as development of infrastructure facilities, in which the private sector is perhaps reluctant to invest owing to their long payback periods. Implementation of the Policy is expected to ensure sustainability of the fisheries and aquaculture industry, through effective governance and management mechanisms with the participation of all stakeholders through a participatory and holistic process. Such a process will ensure the achievement of both ecosystem health goals and human development goals. The outcome will be a transformation of the fisheries and aquaculture industry to a knowledge-based, sustainable and modern industry that benefits all stakeholders.",
     "activitySources": [
       {
         "text": "Take measures to prevent alcoholism in fishing communities.",
@@ -4896,6 +5152,83 @@
         "_quoteMatch": "exact",
         "addedByReviewer": true,
         "section": "4.5.28"
+      },
+      {
+        "text": "Ensure safe, healthy and fair working conditions at sea and on land in accordance with international standards.",
+        "sourceText": "4.1.33. Ensure safe, healthy and fair working conditions at sea and on land in accordance with international standards.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.33"
+      },
+      {
+        "text": "Promote the establishment of insurance schemes concerning safety at sea and occupational safety.",
+        "sourceText": "4.1.34. Promote the establishment of insurance schemes concerning safety at sea and occupational safety.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.1.34"
+      },
+      {
+        "text": "Promote equal opportunities for women’s participation in the activities of the sector.",
+        "sourceText": "4.5.15. Promote equal opportunities for women’s participation in the activities of the sector.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.15"
+      },
+      {
+        "text": "Make gender mainstreaming an integral part of small scale fisheries development strategies.",
+        "sourceText": "4.5.16. Make gender mainstreaming an integral part of small scale fisheries development strategies.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.16"
+      },
+      {
+        "text": "Create conditions for both men and women to have equal access to resources and benefits.",
+        "sourceText": "4.5.17. Create conditions for both men and women to have equal access to resources and benefits.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.17"
+      },
+      {
+        "text": "Encourage both men and women to participate jointly in fi n ding soljutions to their problems. Improvement of the Socio-Economic Conditions of the Fisher Communities",
+        "sourceText": "4.5.18. Encourage both men and women to participate jointly in fi n ding soljutions to their problems. Improvement of the Socio-Economic Conditions of the Fisher Communities",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.18"
+      },
+      {
+        "text": "Encourage private financial institutions to develop financial instruments to ensure financial inclusion for fishers.",
+        "sourceText": "4.5.31. Encourage private financial institutions to develop financial instruments to ensure financial inclusion for fishers.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.31"
+      },
+      {
+        "text": "Encourage fisher communities to deal with banks and other formal credit institutions for their financial requirements.",
+        "sourceText": "4.5.32. Encourage fisher communities to deal with banks and other formal credit institutions for their financial requirements.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.32"
+      },
+      {
+        "text": "Ensure that no human rights are violated in development and management of fisheries and aquaculture.",
+        "sourceText": "4.5.35. Ensure that no human rights are violated in development and management of fisheries and aquaculture.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.35"
+      },
+      {
+        "text": "Recognize, empower and strengthen fisheries cooperatives in addressing issues in fisheries and fisher wellbeing, and in representing fishing communities at decision making platforms.",
+        "sourceText": "4.5.37. Recognize, empower and strengthen fisheries cooperatives in addressing issues in fisheries and fisher wellbeing, and in representing fishing communities at decision making platforms.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.37"
+      },
+      {
+        "text": "Liaise with fisheries cooperatives in integrated coastal zone management. 5. CONCLUSION This Policy was formulated taking guidance from the Government economic policy framework document, “V2025 A Country Enriched”. Implementation of the Policy is expected to contribute to achievement of the Government’s economic vision, i.e., to make Sri Lanka a rich country by 2025 by transforming the country into the hub of the Indian Ocean with a knowledge-based, highly competitive, social-market economy. The Government’s role in the development of the sector is basically confined to management with the objective of ensuring the sustainability and equitable distribution of the benefits of the development. The private sector is expected to undertake commercial activities in the sector. However, the Government will continue to invest in certain areas such as development of infrastructure facilities, in which the private sector is perhaps reluctant to invest owing to their long payback periods. Implementation of the Policy is expected to ensure sustainability of the fisheries and aquaculture industry, through effective governance and management mechanisms with the participation of all stakeholders through a participatory and holistic process. Such a process will ensure the achievement of both ecosystem health goals and human development goals. The outcome will be a transformation of the fisheries and aquaculture industry to a knowledge-based, sustainable and modern industry that benefits all stakeholders.",
+        "sourceText": "4.5.38. Liaise with fisheries cooperatives in integrated coastal zone management. 5. CONCLUSION This Policy was formulated taking guidance from the Government economic policy framework document, “V2025 A Country Enriched”. Implementation of the Policy is expected to contribute to achievement of the Government’s economic vision, i.e., to make Sri Lanka a rich country by 2025 by transforming the country into the hub of the Indian Ocean with a knowledge-based, highly competitive, social-market economy. The Government’s role in the development of the sector is basically confined to management with the objective of ensuring the sustainability and equitable distribution of the benefits of the development. The private sector is expected to undertake commercial activities in the sector. However, the Government will continue to invest in certain areas such as development of infrastructure facilities, in which the private sector is perhaps reluctant to invest owing to their long payback periods. Implementation of the Policy is expected to ensure sustainability of the fisheries and aquaculture industry, through effective governance and management mechanisms with the participation of all stakeholders through a participatory and holistic process. Such a process will ensure the achievement of both ecosystem health goals and human development goals. The outcome will be a transformation of the fisheries and aquaculture industry to a knowledge-based, sustainable and modern industry that benefits all stakeholders.",
+        "_quoteMatch": "exact",
+        "addedByReviewer": true,
+        "section": "4.5.38"
       }
     ]
   },

@@ -61,16 +61,16 @@
     "doc_b": "NFAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 15,
-    "flagged_count": 4,
+    "aligned_count": 16,
+    "flagged_count": 3,
     "contradiction_types": {
-      "delivery_friction": 4
+      "delivery_friction": 3
     },
     "synthesis": {
-      "storyline_name": "Catchment and wetland links to fisheries",
-      "reinforce": "The documents often align through shared sustainable resource management, where forest cover, wetland protection, soil condition, and erosion control can support fisheries by improving watershed function, water quality, habitat condition, and sediment control. This recurs most clearly around inland fisheries and aquaculture, but the linkage is usually enabling rather than based on the same delivery instruments or actors.",
-      "clash": "Possible misalignment recurs where fisheries growth measures, especially aquaculture expansion, export-oriented production, and village-based enterprise activities, could increase pressure to convert or modify wetlands or add localized land-use pressure in wetland-associated areas. The review records point mainly to delivery pathways, such as pond siting, access infrastructure, and business development in shared aquatic landscapes, rather than to opposing policy goals.",
-      "coordination_hint": "Wetland-sensitive zoning, siting, and safeguards across land and fisheries planning could help maintain the shared environmental benefits while managing delivery risks in inland and wetland areas.",
+      "storyline_name": "Land-water ecosystem management across wetlands and catchments",
+      "reinforce": "The documents often align through indirect land-water linkages, where forest cover, soil protection, and reduced erosion in catchments support water quality, habitat condition, and productivity relevant to inland fisheries, aquaculture, estuaries, and coastal systems. Alignment also recurs around sustainable resource management, community participation, and science-based planning, especially where wetland protection and fisheries governance pull in the same direction for habitat conservation and livelihood support.",
+      "clash": "Possible misalignment recurs around wetland-related delivery pathways, because aquaculture expansion, export-oriented aquatic production, and fisheries-linked enterprise or tourism development could increase pressure to convert wetlands for ponds, access, facilities, or other infrastructure. This pattern is limited to LDN's wetland-conversion target and tends to reflect shared geography and siting choices rather than opposing policy goals.",
+      "coordination_hint": "Wetland-sensitive spatial planning, siting, and safeguards across land, aquaculture, and fisheries agencies could help capture the land-water synergies while reducing potential misalignment in shared wetland areas.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -176,17 +176,17 @@
     "doc_b": "NFAP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 975,
-    "flagged_count": 18,
+    "aligned_count": 926,
+    "flagged_count": 17,
     "contradiction_types": {
-      "delivery_friction": 5,
-      "resource_competition": 13
+      "resource_competition": 11,
+      "delivery_friction": 6
     },
     "synthesis": {
-      "storyline_name": "Shared food-system markets and water dependencies",
-      "reinforce": "The two documents often pull in the same direction on agri-food commercialization, especially through market information, branding, food safety standards, distribution systems, export readiness, and post-harvest value addition. Alignment also recurs around enabling systems such as technology uptake, extension, training, and quality infrastructure that support producer incomes and supply-chain performance across agriculture and fisheries.",
-      "clash": "Possible misalignment recurs most clearly around shared freshwater systems, where irrigation efficiency, groundwater controls, reservoir rehabilitation, and agricultural input use could interact with aquaculture, inland fisheries, and export-oriented fish production through water allocation, water quality, and infrastructure operations. A second recurring pattern is delivery-side pressure between agricultural technology or input expansion and fisheries objectives for ecosystem safeguards, biodiversity protection, and science-based aquatic resource management.",
-      "coordination_hint": "Basin-level water planning, reservoir operation coordination, and shared environmental safeguards for inputs, aquaculture siting, and export production could help keep these agendas aligned in places where agriculture and fisheries use the same water systems.",
+      "storyline_name": "Shared food-system support with water governance overlap",
+      "reinforce": "The two documents often pull in the same direction on enabling measures for rural livelihoods and food-system performance, especially through market access, value addition, producer organizations, credit, technology transfer, extension, and participatory governance. Alignment also recurs around knowledge and science-based management, climate resilience, catchment management, and coordination across agencies, although this is usually supportive rather than direct joint delivery.",
+      "clash": "Possible misalignment recurs mainly where agricultural irrigation, reservoir rehabilitation, groundwater controls, and nutrient use intersect with inland aquaculture, reservoir fisheries, and export-oriented fish production that depend on the same freshwater systems. A second recurring pattern is delivery-side pressure between agricultural deregulation or production expansion and fisheries objectives on ecosystem services, biodiversity safeguards, biosecurity, and science-based management in inland and coastal waters.",
+      "coordination_hint": "Basin-level water allocation, reservoir operating rules, and shared environmental safeguards for aquaculture, irrigation, and watershed management could help keep the two policy agendas aligned in places where they meet on the same water bodies.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -276,17 +276,17 @@
     "doc_b": "NFAP",
     "label_a": "NBSAP (Nature)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 97,
-    "flagged_count": 44,
+    "aligned_count": 95,
+    "flagged_count": 45,
     "contradiction_types": {
-      "delivery_friction": 43,
+      "delivery_friction": 44,
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Shared aquatic governance with growth safeguards",
-      "reinforce": "The two documents often pull in the same direction on fisheries-related biodiversity governance, especially through science-based decision-making, participatory management, international compliance, community welfare, and gender-responsive approaches in aquatic and coastal systems. Alignment also recurs through enabling measures such as funding, business risk disclosure, waste reduction, and biosecurity, which can support more sustainable fisheries, aquaculture, and fish value chains.",
-      "clash": "Possible misalignment recurs where NFAP delivery pathways emphasize production, exports, aquaculture expansion, new exotic species, or new marine and wetland enterprises in the same coastal, marine, and inland-water spaces that the NBSAP seeks to conserve, restore, keep low in pollution, or protect from invasive alien species. One direct possible misalignment also appears between reducing overconsumption and increasing per capita fish consumption, while most other review cases point to implementation pressure rather than opposing goals.",
-      "coordination_hint": "Closer coordination on spatial planning, aquaculture siting, species screening, harvest safeguards, pollution controls, and traceability could help these documents support both fisheries growth and biodiversity outcomes in shared aquatic ecosystems.",
+      "storyline_name": "Shared aquatic sustainability with expansion pressures",
+      "reinforce": "The two documents often pull in the same direction on sustainable fisheries and aquaculture, especially where the NBSAP provides enabling tools such as gender-responsive governance, participatory and evidence-based decision-making, funding and capacity support, pollution reduction, and sustainable-use principles. Alignment also recurs around marine and inland biodiversity management through biosecurity, international compliance, waste reduction in fish value chains, and community welfare measures that can support more sustainable resource use.",
+      "clash": "Possible misalignment recurs mainly where NFAP production, export, consumption, tourism, harbour, marina, and aquaculture expansion pathways overlap with NBSAP aims on area conservation, ecosystem restoration, species protection, climate resilience, pollution control, and invasive alien species prevention. A particularly clear pattern concerns exotic species, expanded fishing effort, and coastal or inland infrastructure, which could increase pressure in the same marine, coastal, wetland, and freshwater spaces that the NBSAP seeks to conserve or restore, and there is also one direct possible misalignment between reducing overconsumption and increasing per capita fish consumption.",
+      "coordination_hint": "Joint spatial planning, biosecurity screening, species controls, and biodiversity safeguards for aquaculture, fisheries infrastructure, and market expansion could help keep shared marine and inland-water objectives aligned.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -352,17 +352,17 @@
     "doc_b": "NFAP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 441,
-    "flagged_count": 36,
+    "aligned_count": 453,
+    "flagged_count": 34,
     "contradiction_types": {
-      "resource_competition": 7,
-      "delivery_friction": 29
+      "resource_competition": 8,
+      "delivery_friction": 26
     },
     "synthesis": {
-      "storyline_name": "Climate-resilient fisheries management and coastal siting",
-      "reinforce": "The documents often pull in the same direction where climate information, research, and risk-management tools support fisheries decisions, especially weather forecasting and sea-safety systems, fisheries and aquatic research, and science-based resource management. Alignment also recurs through enabling infrastructure and efficiency measures, such as reliable energy, transport, water management, and data systems that could support fish processing, cold chains, post-harvest loss reduction, and community resilience.",
-      "clash": "Possible misalignment recurs where NFAP production, export, aquaculture, and coastal livelihood expansion overlap with NDC priorities for protected areas, habitat restoration, blue carbon ecosystems, ecological connectivity, and ecosystem-based management in vulnerable marine and inland waters. A second recurring pattern is resource competition, where aquaculture and export growth could draw on the same emissions space, freshwater, and water infrastructure that the NDC seeks to conserve or manage efficiently.",
-      "coordination_hint": "Joint spatial planning, species and biosecurity controls, and linking fisheries growth measures to ecosystem, water, and emissions safeguards could help these documents pull in the same direction in shared coastal and inland areas.",
+      "storyline_name": "Coastal ecosystem management alongside fisheries expansion",
+      "reinforce": "The documents often pull in the same direction where climate-resilient coastal and marine planning supports science-based fisheries management, especially through area designation, management plans, forecasting, risk management, and ecosystem-based approaches. Alignment also recurs around enabling conditions for fisher welfare and livelihoods, where loss and damage systems, early warning, resilient infrastructure, wastewater management, and coastal restoration could support safer and more resilient fisheries communities.",
+      "clash": "Possible misalignment recurs where NFAP production, export, aquaculture, harbour, vessel, tourism, and livelihood expansion may overlap with NDC priorities for protected areas, habitat restoration, blue carbon ecosystems, seascape connectivity, and ecosystem-based management in vulnerable coastal and inland waters. A second recurring pattern is resource competition, where expanded marine and inland fisheries activity could draw on the same emissions budget, freshwater resources, and water infrastructure that the NDC allocates to mitigation and water management objectives.",
+      "coordination_hint": "Joint spatial planning, water allocation, and biosecurity screening, linked with low-emission fisheries pathways and habitat safeguards, could help both documents align more consistently in shared coastal and inland aquatic areas.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -432,17 +432,17 @@
     "doc_b": "NMP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 90,
-    "flagged_count": 67,
+    "aligned_count": 100,
+    "flagged_count": 70,
     "contradiction_types": {
-      "delivery_friction": 50,
-      "resource_competition": 17
+      "delivery_friction": 54,
+      "resource_competition": 16
     },
     "synthesis": {
-      "storyline_name": "Cross-sector environmental governance and spatial allocation",
-      "reinforce": "The two documents often pull in the same direction through broad governance tools, especially environmental regulation, prior approval in sensitive areas, mine closure and rehabilitation, data sharing, capacity building, and collaboration across agencies and research bodies. These links tend to be enabling rather than joint delivery, with mining safeguards and governance measures supporting fisheries objectives where coastal, marine, or inland water systems overlap.",
-      "clash": "Possible misalignment recurs around spatial allocation for mineral investment and exploration, especially where land with mineral potential, cleared deposits, or future mineral investment areas could overlap with fishing community tenure, aquaculture sites, inland waters, coastal ecosystems, and fisheries infrastructure. A second recurring pattern is delivery-side pressure from mineral exploration, mining-related infrastructure, and permitted activity in sensitive areas, which could affect water quality, habitat conditions, access, and local livelihoods unless managed carefully.",
-      "coordination_hint": "Shared spatial planning, land and water zoning, and coordinated environmental approval and safeguard processes could help keep fisheries uses and mineral development compatible in overlapping coastal and inland areas.",
+      "storyline_name": "Cross-sector overlap in coastal and inland zoning",
+      "reinforce": "The two documents often pull in the same direction through enabling safeguards in the minerals policy, such as prior approval in environmentally sensitive areas, coastal resource management, restoration and rehabilitation, polluter-pays tools, and governance norms on transparency and participation that could support fisheries, aquaculture, and aquatic ecosystem protection. Alignment also recurs around broad value-addition and compliance agendas, where fisheries supply-chain upgrading and international obligations align with minerals-sector standards, enforcement capacity, and contamination-prevention procedures.",
+      "clash": "Possible misalignment recurs mainly in delivery where mineral zoning, reserve allocation, exploration, ready-for-investment deposit declarations, and mining-facilitating regulation could overlap with fishing grounds, inland waters, coastal habitats, aquaculture sites, and fisher community access rights. A second recurring pattern is resource competition over land and adjacent water spaces, especially where the minerals policy prioritizes land availability or mineral use in certain areas that fisheries policy also relies on for aquaculture, coastal livelihoods, export infrastructure, and habitat management.",
+      "coordination_hint": "Joint spatial planning, consultation, and impact assessment across coastal, inland-water, and adjacent land areas could help keep mineral siting, rehabilitation, and fisheries access arrangements aligned where the same places are involved.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -452,17 +452,17 @@
     "doc_b": "NWRP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 222,
-    "flagged_count": 28,
+    "aligned_count": 224,
+    "flagged_count": 26,
     "contradiction_types": {
-      "resource_competition": 25,
-      "delivery_friction": 3
+      "resource_competition": 24,
+      "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Shared dependence on water allocation and stewardship",
-      "reinforce": "The two documents often align through enabling water governance for fisheries, especially stakeholder participation, river basin planning, legal and institutional updates, and conservation of wetlands, watersheds, aquifers, and surface water. This alignment tends to be strongest where inland fisheries, aquaculture, fish supply chains, and fisher livelihoods depend on coordinated water allocation, water quality management, and planning across national and local levels.",
-      "clash": "Possible misalignment recurs mainly where NFAP ambitions to expand aquaculture, export production, and water-dependent livelihoods could increase demand on the same finite water, aquifer, watershed, and wetland systems that NWRP seeks to allocate, conserve, and use efficiently. A smaller recurring pattern concerns delivery around water quality and wetland conservation, where more intensive aquaculture or livelihood activity could require closer alignment with standards, siting, pollution controls, and land-use safeguards.",
-      "coordination_hint": "Joint basin and aquifer planning, with shared rules on siting, allocation, water quality, and wetland safeguards, could help keep fisheries growth and water stewardship pulling in the same direction.",
+      "storyline_name": "Water governance enabling fisheries growth pathways",
+      "reinforce": "Across many aligned pairs, the NWRP tends to provide enabling conditions for NFAP goals through water laws, basin and aquifer planning, water quality standards, stakeholder participation, and coordination across levels of government. This often points to shared support around inland fisheries, aquaculture, fish supply chains, and coastal or watershed-linked ecosystems, although the overlap is usually indirect rather than a joint delivery mechanism.",
+      "clash": "The recurring possible misalignment is competition over finite freshwater, basin, aquifer, and watershed resources, especially where NFAP aquaculture expansion and export-oriented production increase water demand alongside NWRP allocation, conservation, rights, and efficiency measures. A smaller but repeated pattern also concerns water quality, where intensified aquaculture activity could make compliance with standards and monitoring requirements more demanding.",
+      "coordination_hint": "Basin-level allocation, siting, water-use efficiency, and water-quality monitoring arrangements that include fisheries and aquaculture actors could help keep production, conservation, and multi-user water management pulling in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -472,16 +472,16 @@
     "doc_b": "PPPP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 21,
-    "flagged_count": 9,
+    "aligned_count": 23,
+    "flagged_count": 7,
     "contradiction_types": {
-      "delivery_friction": 9
+      "delivery_friction": 7
     },
     "synthesis": {
-      "storyline_name": "Spatial planning support with ecosystem-use pressures",
-      "reinforce": "The two documents often align through spatial planning, conservation safeguards, and better use of existing infrastructure, especially where fisheries, aquaculture, post-harvest facilities, and fishing settlements depend on water resources and environmentally sensitive locations. Across many pairs, PPPP provides an enabling land-use and settlement framework that supports NFAP goals on sustainable resource management, community welfare, value chains, and place-based livelihoods, even when the overlap is broad rather than operationally direct.",
-      "clash": "Possible misalignment recurs where NFAP seeks production growth, export expansion, livelihood development, or community access in coastal, inland-water, wetland, or reserve-linked areas that PPPP also treats as sensitive conservation or diversified development spaces. The review cases often point to shared pressure around siting, zoning, habitat protection, access to fishing grounds, and use of scenic or reserve areas, particularly under PPPP Components 1 and 4.",
-      "coordination_hint": "Integrated zoning, environmental assessment, and site selection across fisheries, aquaculture, settlement, and reserve-area planning could help these documents pull in the same direction in overlapping coastal and inland-water locations.",
+      "storyline_name": "Spatial planning support for fisheries development",
+      "reinforce": "The two documents often pull in the same direction where fisheries actions depend on spatial planning, environmental safeguards, and better use of existing infrastructure, such as harbour, landing, processing, and aquaculture sites. This recurs across conservation-sensitive planning, settlement livability, and infrastructure optimization, where PPPP provides enabling zoning and siting principles that align with NFAP resource management, post-harvest improvement, community welfare, and livelihood development.",
+      "clash": "A recurring possible misalignment appears when NFAP production or export expansion, especially marine infrastructure, aquaculture intensification, and development in coastal or inland water areas, overlaps with PPPP conservation priorities or place-based development in reserves and scenic locations. The review cases consistently point to delivery-stage pressure on the same ecosystems or sites, suggesting that siting, zoning, and environmental controls could become important where fisheries growth and broader land-water development meet.",
+      "coordination_hint": "Joint coastal and inland zoning, linked environmental assessment, and early site screening could help align fisheries expansion with conservation-sensitive and location-based planning decisions.",
       "confidence": "high"
     },
     "synthesis_error": null
