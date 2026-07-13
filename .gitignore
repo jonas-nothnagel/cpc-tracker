@@ -63,10 +63,11 @@ python/analyses/
 python/output/.cache/
 python/tmp/
 
-# User feedback ledgers (live data; written at runtime to the persistent
-# volume. Never commit: start.sh re-syncs committed output dirs from the
-# image on every deploy and would wipe the persistent copy.)
+# User feedback + usage analytics ledgers (live data; written at runtime to
+# the persistent volume. Never commit: start.sh re-syncs committed output
+# dirs from the image on every deploy and would wipe the persistent copy.)
 python/output/feedback/
+python/output/analytics/
 
 # Compound-engineering review run artifacts
 .context/

@@ -18,6 +18,7 @@ import {
   useNr7BadgeLabels,
   type Nr7Status,
 } from "@/lib/labels";
+import { track } from "@/lib/analytics/client";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -3446,6 +3447,8 @@ export function PolicyCoherenceExplorer({
           history,
         });
 
+        // Removable usage analytics: see src/lib/analytics/README.md.
+        track("chat_message_sent");
         const res = await fetch("/api/coherence-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
