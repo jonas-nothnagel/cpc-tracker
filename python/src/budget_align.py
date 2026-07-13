@@ -26,10 +26,14 @@ from .llm import call_llm_batch
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Budget alignment: reuses canonical v2.1 advisor prompt via intro_framing
+# Budget alignment: reuses canonical v2.2 advisor prompt via intro_framing
 # ---------------------------------------------------------------------------
 
-BUDGET_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the v2.1 system prompt.
+BUDGET_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the canonical system prompt.
+
+# Bumped with the canonical prompt version so responses from different prompt
+# revisions never share a cache dir.
+BUDGET_CACHE_NAMESPACE = "budget_alignment_v3"
 
 # Framing injected into the canonical ADVISOR_USER_TEMPLATE's {intro_framing}
 # slot. Tells the advisor it is comparing a policy target against a budget
@@ -43,7 +47,7 @@ BUDGET_INTRO_FRAMING = (
     "in the same broad sector that does not meaningfully fund the target's "
     "specific goals is Low alignment; a programme whose expenditure works "
     "against the target (e.g. subsidies for activities the target seeks to curb) "
-    "is Flagged for review.\n"
+    "is Flagged for review, provided the friction meets the flagging gate above.\n"
 )
 
 
@@ -234,7 +238,8 @@ async def assess_budget_alignment(
 
     results = await call_llm_batch(
         calls,
-        cache_namespace="budget_alignment_v2",
+        # v3: canonical prompt v2.2 (flagging gate tightened).
+        cache_namespace=BUDGET_CACHE_NAMESPACE,
         desc="Budget alignment",
     )
 

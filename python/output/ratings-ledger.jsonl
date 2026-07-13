@@ -2,3 +2,13 @@
 {"country":"mongolia","pairKey":"ILDN_8::NRVTS_26","rating":"thin","note":"","ts":1782889631197}
 {"country":"mongolia","pairKey":"ILDN_8::NRVTS_26","rating":"real","note":"","ts":1782889641158}
 {"country":"mongolia","pairKey":"FSS_19::NBSAP_9","rating":"real","note":"","ts":1782894266378}
+{"country": "mongolia", "pairKey": "FSS_1::NRVTS_23", "rating": "real", "note": "v2.2 round-2 consensus-drop adjudication. keep: ag-expansion framework vs quantified no-net-loss wetland commitment", "ts": 1783600662620}
+{"country": "mongolia", "pairKey": "FSS_18::NBSAP_6", "rating": "real", "note": "v2.2 round-2 consensus-drop adjudication. keep: intensive feed expansion vs explicit pollution-reduction commitment", "ts": 1783600662621}
+{"country": "mongolia", "pairKey": "FSS_21::NRVTS_15", "rating": "thin", "note": "v2.2 round-2 consensus-drop adjudication. correct drop: counterpart is an enabling legal mechanism, link unspecified", "ts": 1783600662622}
+{"country": "mongolia", "pairKey": "FSS_28::NRVTS_15", "rating": "skip", "note": "v2.2 round-2 consensus-drop adjudication. unsure: livestock expansion vs pasture legal mechanism", "ts": 1783600662623}
+{"country": "mongolia", "pairKey": "FSS_28::SECTORAL_8", "rating": "thin", "note": "v2.2 round-2 consensus-drop adjudication. correct drop: co-expansion without a shared specific claim", "ts": 1783600662624}
+{"country": "mongolia", "pairKey": "FSS_29::NDC_3", "rating": "thin", "note": "v2.2 round-2 consensus-drop adjudication. correct drop: counterpart is an enabling policy-environment target", "ts": 1783600662625}
+{"country": "mongolia", "pairKey": "FSS_32::NDC_22", "rating": "skip", "note": "v2.2 round-2 consensus-drop adjudication. unsure: processing incentives vs herd cap, chain to herd growth indirect", "ts": 1783600662626}
+{"country": "mongolia", "pairKey": "FSS_33::NRVTS_1", "rating": "thin", "note": "v2.2 round-2 consensus-drop adjudication. correct drop: cross-sector inference chain", "ts": 1783600662627}
+{"country": "mongolia", "pairKey": "NDC_10::SECTORAL_15", "rating": "real", "note": "v2.2 round-2 consensus-drop adjudication. keep: livestock support vs explicit harmful-subsidy reform commitment", "ts": 1783600662628}
+{"country": "mongolia", "pairKey": "NRVTS_17::SECTORAL_15", "rating": "real", "note": "v2.2 round-2 consensus-drop adjudication. keep: yield push vs explicit harmful-subsidy reform commitment", "ts": 1783600662629}

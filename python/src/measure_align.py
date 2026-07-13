@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Adapted Agent 2 prompt for implementation alignment
 # ---------------------------------------------------------------------------
-# WHY THIS DIVERGES FROM THE v2.1 TEMPLATE (2026-06-10): the canonical template
+# WHY THIS DIVERGES FROM THE CANONICAL TEMPLATE (2026-06-10): the canonical template
 # frames every pair as "two targets" ("Goal: Compare two structured targets...",
 # "- {type} target: ...") and gives no instruction on how the explanation should
 # refer to the sides. With one side being a reported BTR action, ~70% of the
@@ -38,6 +38,10 @@ logger = logging.getLogger(__name__)
 # minimise verdict churn and rubric drift) and rewrites only the pair-framing
 # lines plus an explicit wording rule for the explanation. align.py itself is
 # untouched, so the target-target / budget / NR7 prompt caches stay valid.
+
+# Bumped with the canonical prompt version so responses from different prompt
+# revisions never share a cache dir.
+MEASURE_CACHE_NAMESPACE = "measure_alignment_v4"
 
 MEASURE_ADVISOR_SYSTEM = (
     "You are an Implementation Alignment Advisor, ensuring factual, graded "
@@ -78,7 +82,7 @@ _MEASURE_STEP2 = (
 for _needle in (_CANON_GOAL, _CANON_TASK1, _CANON_STEP2):
     if ADVISOR_USER_TEMPLATE.count(_needle) != 1:
         raise RuntimeError(
-            "align.py's v2.1 ADVISOR_USER_TEMPLATE changed (needle count "
+            "align.py's ADVISOR_USER_TEMPLATE changed (needle count "
             f"{ADVISOR_USER_TEMPLATE.count(_needle)} != 1); update the "
             f"measure-alignment rewrites in measure_align.py: {_needle[:60]}..."
         )
@@ -112,7 +116,8 @@ MEASURE_INTRO_FRAMING = (
     "same scoring rubric. An action that directly implements the target is High alignment; "
     "an action that operates in the same broad sector but does not advance the target's "
     "specific goals is Low alignment; an action that creates real-world friction with the "
-    "target (e.g. expanding livestock while the target caps the herd) is Flagged for review.\n"
+    "target (e.g. expanding livestock while the target caps the herd) is Flagged for review, "
+    "provided the friction meets the flagging gate above.\n"
     '    Wording rule for the explanation: refer to the policy side as "the target" (or by '
     'its document name) and to the BTR side as "the reported action" or "the action". '
     'Never call the reported action a target, and never write "both targets".\n'
@@ -380,8 +385,9 @@ async def assess_measure_alignment(
     results = await call_llm_batch(
         calls,
         # v3: side-correct framing + explanation wording rule (2026-06-10).
-        # New namespace so stale "both targets" rationales are never reused.
-        cache_namespace="measure_alignment_v3",
+        # v4: canonical prompt v2.2 (flagging gate tightened); bumped so v2.1
+        # and v2.2 responses never share a cache dir.
+        cache_namespace=MEASURE_CACHE_NAMESPACE,
         desc="Measure alignment",
     )
 

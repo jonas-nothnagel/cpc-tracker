@@ -144,6 +144,62 @@ def _split_flagged_parenthetical(text: str) -> tuple[str | None, str | None, str
     return mechanism, manageability, confidence
 
 
+# After a verdict label: optional closing emphasis/quotes, an optional
+# "(Mechanism, Manageability, Confidence)" parenthetical, then the dash that
+# introduces the explanation. Rubric mentions use ":" and hedging mentions
+# use "." — neither matches.
+_VERDICT_DASH_RE = r'[\s"\'*“”]*(?:\([^)]*\))?[\s"\'*“”]*[-–—]'
+
+
+def _find_verdict_label(lower: str) -> tuple[int, str, str] | None:
+    """Locate the label occurrence that states the verdict.
+
+    Returns (index, label_text, level_code) into `lower`, or None when no
+    label appears at all. Models answer in two structural styles, and a
+    naive "first ALIGNMENT_MAP entry found anywhere" match corrupts both:
+
+    - Verdict-first: "Label (…) - explanation", where the explanation may
+      re-state another level as hedging ("…a reviewer might read this as
+      Low alignment"). The leading label is the verdict.
+    - Reasoning-first: chain-of-thought that names other levels while
+      weighing them ('not strong enough to be "High alignment"'), closing
+      with a verdict statement ("Output: Low alignment - …", "The best
+      answer is: **Medium alignment** - …"). The LAST occurrence in the
+      mandated "Label (…) - explanation" shape is the verdict.
+
+    Fallback for anything else: the earliest occurrence in the text.
+    """
+    # 1. Verdict-first: label at the very start of the response.
+    for label_text, level_code in ALIGNMENT_MAP.items():
+        if lower.startswith(label_text):
+            return 0, label_text, level_code
+
+    # 2. Reasoning-first: verdict statements follow the prompt's mandated
+    #    "Label (…) - explanation" shape ("Output: Medium alignment - …",
+    #    "The best answer is: **Low alignment** - …"), while level names
+    #    inside reasoning prose don't ('not strong enough to be "High
+    #    alignment"') and neither do rubric bullets ("**High alignment**:
+    #    strong overlap"). Take the LAST dash-shaped occurrence — the
+    #    verdict closes a reasoning-first response.
+    last_dash_match: tuple[int, str, str] | None = None
+    for label_text, level_code in ALIGNMENT_MAP.items():
+        for m in re.finditer(re.escape(label_text) + _VERDICT_DASH_RE, lower):
+            if last_dash_match is None or m.start() > last_dash_match[0]:
+                last_dash_match = (m.start(), label_text, level_code)
+    if last_dash_match is not None:
+        return last_dash_match
+
+    # 3. Fallback: earliest occurrence anywhere in the response.
+    earliest: tuple[int, str, str] | None = None
+    for label_text, level_code in ALIGNMENT_MAP.items():
+        found_at = lower.find(label_text)
+        if found_at == -1:
+            continue
+        if earliest is None or found_at < earliest[0]:
+            earliest = (found_at, label_text, level_code)
+    return earliest
+
+
 def parse_alignment(
     raw: str,
 ) -> tuple[str, str, str | None, str | None, str | None]:
@@ -174,48 +230,52 @@ def parse_alignment(
         if json_result is not None:
             return json_result
 
-    # Primary: "Label - explanation" text format
-    for label_text, level_code in ALIGNMENT_MAP.items():
-        if label_text in lower:
-            mechanism: str | None = None
-            manageability: str | None = None
-            confidence: str | None = None
+    # Primary: "Label - explanation" text format.
+    match = _find_verdict_label(lower)
+    if match is not None:
+        idx, label_text, level_code = match
+        mechanism: str | None = None
+        manageability: str | None = None
+        confidence: str | None = None
 
-            if level_code in FLAGGED_LEVELS:
-                # v2.1 canonical "Flagged for review (Mechanism, Manageability, Confidence: Level)"
-                if label_text == "flagged for review":
-                    mechanism, manageability, confidence = _split_flagged_parenthetical(raw_stripped)
-                else:
-                    # legacy v1: parenthesised contradiction type only
-                    m = re.search(r"\(([^)]+)\)", raw_stripped)
-                    legacy_type = MECHANISM_MAP.get(m.group(1).strip().lower()) if m else None
+        # Parentheticals belong to the verdict statement, so search from the
+        # verdict label onward — reasoning-first responses may contain
+        # unrelated "(...)" text earlier in their chain of thought.
+        from_verdict = raw_stripped[idx:]
+        if level_code in FLAGGED_LEVELS:
+            # v2.1 canonical "Flagged for review (Mechanism, Manageability, Confidence: Level)"
+            if label_text == "flagged for review":
+                mechanism, manageability, confidence = _split_flagged_parenthetical(from_verdict)
+            else:
+                # legacy v1: parenthesised contradiction type only
+                m = re.search(r"\(([^)]+)\)", from_verdict)
+                legacy_type = MECHANISM_MAP.get(m.group(1).strip().lower()) if m else None
 
-                    # derive manageability + confidence from the legacy severity label
-                    # (recover the stored v1 enum key from the label_text the LLM emitted)
-                    legacy_level_key = {
-                        "likely conflict": "likely_conflict",
-                        "possible conflict": "possible_conflict",
-                        "possible misalignment": "possible_misalignment",
-                        "high contradiction": "likely_conflict",
-                        "moderate contradiction": "possible_conflict",
-                        "low tension": "possible_misalignment",
-                    }.get(label_text)
-                    if legacy_level_key and legacy_level_key in LEGACY_LEVEL_TO_FIELDS:
-                        _, manageability, confidence = LEGACY_LEVEL_TO_FIELDS[legacy_level_key]
-                    mechanism = legacy_type or "delivery_friction"
+                # derive manageability + confidence from the legacy severity label
+                # (recover the stored v1 enum key from the label_text the LLM emitted)
+                legacy_level_key = {
+                    "likely conflict": "likely_conflict",
+                    "possible conflict": "possible_conflict",
+                    "possible misalignment": "possible_misalignment",
+                    "high contradiction": "likely_conflict",
+                    "moderate contradiction": "possible_conflict",
+                    "low tension": "possible_misalignment",
+                }.get(label_text)
+                if legacy_level_key and legacy_level_key in LEGACY_LEVEL_TO_FIELDS:
+                    _, manageability, confidence = LEGACY_LEVEL_TO_FIELDS[legacy_level_key]
+                mechanism = legacy_type or "delivery_friction"
 
-            # Extract explanation: split on first " - " after the label
-            idx = lower.index(label_text)
-            after_label = raw_stripped[idx + len(label_text):]
-            # Skip past optional "(...)" parenthetical
-            after_paren = re.sub(r"^\s*\([^)]*\)\s*", "", after_label)
-            parts = after_paren.split("-", 1)
-            explanation = (
-                parts[1].strip()
-                if len(parts) > 1
-                else after_paren.strip().lstrip("-").strip()
-            )
-            return level_code, explanation, mechanism, manageability, confidence
+        # Extract explanation: split on first " - " after the label
+        after_label = raw_stripped[idx + len(label_text):]
+        # Skip past optional "(...)" parenthetical
+        after_paren = re.sub(r"^\s*\([^)]*\)\s*", "", after_label)
+        parts = after_paren.split("-", 1)
+        explanation = (
+            parts[1].strip()
+            if len(parts) > 1
+            else after_paren.strip().lstrip("-").strip()
+        )
+        return level_code, explanation, mechanism, manageability, confidence
 
     # Fallback: JSON format (also handles fenced JSON like ```json {...} ```)
     json_result = _try_parse_json(raw_stripped)
