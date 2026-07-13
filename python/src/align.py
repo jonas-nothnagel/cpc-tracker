@@ -76,7 +76,15 @@ ADVISOR_SYSTEM = (
     "share some degree of alignment."
 )
 
-# v2.1 canonical template. Use as-is for target-target alignment by passing
+# Single source of truth for the advisor prompt revision. Stamped into
+# status.json by run_analysis so artifacts record which prompt produced them.
+PROMPT_VERSION = "2.2"
+
+# Bumped with the prompt so v2.1 and v2.2 responses never share a cache dir;
+# the old namespace stays on disk as the pre-revision arm for calibration.
+ALIGNMENT_CACHE_NAMESPACE = "alignment_v3"
+
+# v2.2 canonical template. Use as-is for target-target alignment by passing
 # intro_framing="". The wrapper modules in measure_align.py, budget_align.py,
 # and nr7_align.py format with their own framing string so the same scoring
 # rubric drives every alignment family.
@@ -94,8 +102,11 @@ only when you can name a specific real-world friction (goal opposition, competit
 undermining). Two targets operating in different sectors or at different scales are NOT flagged; they are simply unrelated \
 (No alignment) or weakly aligned (Low alignment). DO flag for review when targets create real-world trade-offs even when both \
 are positively framed, for example expanding agricultural operations in the same area an ecosystem-restoration target seeks \
-to protect, even if both mention "sustainability". Because policy text is aspirational, you observe text-level friction signals, \
-not implementation outcomes, so even a clearly named friction is flagged for review, not asserted as a contradiction.
+to protect, even if both mention "sustainability". A flag asserts a possible conflict worth human review, never a certainty. \
+The friction itself must still be concrete: the opposing goal, the shared finite resource, or the impeding delivery pathway must be \
+named in the targets' text, or follow in a single direct step from activities the text names (irrigation expansion implies demand \
+on basin water: one step, flaggable; energy subsidies imply more production, which might someday add pressure on distant lands: \
+two steps, not flaggable). If connecting the two targets needs a chain of maybes, do not flag the pair.
 
     Within the single flagged state, you separately characterise three sub-dimensions, rendered inline in parentheses: \
 the mechanism (what kind of friction), the manageability (can coordination resolve it, or would a target need to be redesigned), \
@@ -108,7 +119,7 @@ and your confidence (how strongly the text supports the flag).
     2. Compare the goal, action, ecosystem, target audience, and expected impact of both targets to assess their relationship.
     2a. Pay particular attention to overlaps or conflicts in specific implementation activities and actions/measures, not only high-level goals.
     2b. Check whether the targets reference the same geographic area, watershed, or ecosystem. Targets that compete for the same \
-physical space or resources within a shared geography are more likely to create implementation tensions, even when both use positive framing.
+physical space or resources within a shared geography are more likely to create implementation friction, even when both use positive framing.
     3. Consider hierarchical relationships between ecosystems. Recognize that specific ecosystems (e.g., mangroves, coral reefs) \
 may fall under broader categories such as coastal-marine ecosystems.
     4. Determine whether aligning these targets would optimize resources, avoid duplication, or create synergies that enhance \
@@ -118,6 +129,11 @@ that operate at different levels (e.g., policy vs. on-the-ground implementation)
     6. Focus on real-world feasibility. Do not propose alignment based solely on similar wording or superficial themes.
     7. Only flag pairs for review when targets have genuinely opposing objectives, compete for the same specific resources, or when \
 implementing one would actively undermine the other. Different approaches to environmental goals are NOT a reason to flag.
+    8. Work down the alignment scale first (No, Low, Medium, High). Reach Flagged for review only if you can state, in one sentence \
+grounded in the text of both targets, the specific opposing goal, contested finite resource, or impeding delivery pathway. In a \
+typical national policy framework only a clear minority of pairs warrant a flag. When the friction ingredients are specific and \
+text-grounded, flag even if the pair also has cooperative potential; when they are generic or inferred, classify on the alignment \
+scale.
 
     Classify the relationship into one of the five categories below. Always use the exact label and format.
 
@@ -168,7 +184,7 @@ would significantly enhance outcomes, efficiency, or scale; the targets directly
       High alignment - Both targets focus on the same ecosystem (mangroves), within the same timeframe, and involve similar actions \
 and actors. Coordinated implementation would clearly enhance efficiency and maximize both climate and biodiversity outcomes.
 
-    === FLAGGED FOR REVIEW (use only when a specific real-world friction is identifiable) ===
+    === FLAGGED FOR REVIEW (use only when a specific real-world friction is identifiable in the text of the pair) ===
 
     **5.** "Flagged for review" - The targets pull against each other in a way that warrants closer human review. You characterise the \
 friction along three sub-dimensions rendered inline in parentheses:
@@ -182,18 +198,22 @@ friction along three sub-dimensions rendered inline in parentheses:
           Example (illustrative):
             Target 1: Convert 500,000 hectares of forest land to commercial agriculture by 2030.
             Target 2: Increase national forest cover by 20% and halt all deforestation by 2030.
-            This is a Goal conflict because the targets contradict each other at the level of stated intent for the same land base.
+            This is a Goal conflict because the stated intents directly oppose each other for the same land base.
 
        **2. Resource competition**: Both targets place demands on the same specific limited resource (land, water, budget envelope, \
-staff capacity, infrastructure capacity, emissions budget). The competition is for a resource both need in ways that are not freely additive.
+staff capacity, infrastructure capacity, emissions budget). The competition is for a resource both need in ways that are not freely \
+additive, and the shared claim must be specific: the same named region, watershed, land base, budget envelope, or binding cap that \
+both targets draw down. That most policies in a national framework all need land, water, or funding somewhere in the country is NOT \
+resource competition; without a shared specific claim, classify the pair on the alignment scale instead.
           Example (illustrative):
             Target 1: Rapidly expand irrigation infrastructure for crop production across arid regions.
             Target 2: Protect watershed ecosystems and maintain minimum environmental water flows in those river basins.
             This is Resource competition because both depend on the same finite water in the same basins.
 
        **3. Delivery friction**: The targets pursue compatible or even similar goals, but how one is implemented undermines how the \
-other is implemented. Includes mismatched scales, timelines, or operational intensities. This is the most common case for modern policy \
-documents that broadly share goals but compete in delivery.
+other is implemented. Includes mismatched scales, timelines, or operational intensities. The impeding pathway must be identifiable \
+in the text of this pair, not assumed from the sectors involved; delivery friction is not a default bucket for pairs that merely \
+share a country and a delivery system.
           Example (illustrative):
             Target 1: Strengthen REDD+ safeguards and forest stewardship monitoring.
             Target 2: Establish more effective logistics corridors, ports, and oil-related infrastructure.
@@ -214,9 +234,14 @@ friction?" If yes, Manageable. If at least one target would need to be revised o
 
        - **High**: Both targets contain language that clearly indicates the named friction. A human reviewer would almost certainly \
 agree this warrants closer review.
-       - **Medium**: The text supports the friction, but a reviewer might reasonably read it as Low alignment or No alignment instead.
-       - **Low**: The friction is inferred from indirect signals, the policy text does not name it directly and you are extrapolating. \
-Treat as a hunch worth checking, not a finding.
+       - **Medium**: The friction ingredients are named in the text or follow in one direct step from named activities, but the \
+severity, scale, or geographic overlap is uncertain.
+       - **Low**: The friction ingredients are present in the text but weakly stated, for example the shared resource or pathway is \
+named only in passing or its scope is ambiguous.
+
+       Confidence grades the strength of a flag that already passed the boundary rule; it never substitutes for that rule. If you \
+cannot point to text in both targets that names the friction ingredients, do not flag at any confidence; classify the pair on the \
+alignment scale instead.
 
     Worked examples of Flagged for review:
 
@@ -224,17 +249,18 @@ Treat as a hunch worth checking, not a finding.
       Target 1: Ensure a stable supply of energy, steam, heat and fuel for food supply and domestic production.
       Target 2: Improve the adaptive capacity of ecosystems and biodiversity.
       Output:
-      Flagged for review (Delivery friction, Manageable, Confidence: Medium) - Subsidised energy and fuel for food production can \
-intensify agricultural pressure on ecosystems and habitats the adaptation target seeks to protect. The two are not fundamentally \
-opposed and can coexist if production support is paired with siting and intensity safeguards.
+      Flagged for review (Delivery friction, Manageable, Confidence: Medium) - Target 1 names energy and fuel support for food \
+production, and intensified production presses in one step on the ecosystems and habitats Target 2 names as its object. The two \
+are not fundamentally opposed and can coexist if production support is paired with siting and intensity safeguards.
 
     Example B (real; Mongolia FSS_21 + NAP_4) - Resource competition, Manageable, Confidence: Medium:
       Target 1: Focus on increasing the cultivation of all types of rice, sugar beet, and other cash crops, with policy and financing support.
       Target 2: Reduce desertification, land degradation, and permafrost loss.
       Output:
-      Flagged for review (Resource competition, Manageable, Confidence: Medium) - Expanding irrigated cash-crop cultivation increases \
-demand for land and water in regions also targeted for degradation reduction, creating localised competition for the same physical \
-resource. Careful watershed allocation and land-use zoning could keep the two compatible.
+      Flagged for review (Resource competition, Manageable, Confidence: Medium) - Target 1 names irrigated cash-crop cultivation, a \
+one-step draw on water and arable land in the same arid regions where Target 2 pursues degradation reduction, a localised claim on \
+the same finite resource rather than a generic national need for land. Careful watershed allocation and land-use zoning could keep \
+the two compatible.
 
     Example C (real; Mongolia FSS_15 + NAP_7) - Goal conflict, Fundamental, Confidence: High:
       Target 1: Convert up to 200,000 hectares of newly reclaimed land into agricultural land.
@@ -252,14 +278,16 @@ would require revising either the conversion area or the reforestation footprint
 land use in the Canal watershed, while logistics expansion creates development pressure linked to the Canal economy in the same \
 geography. Coordinated spatial planning and safeguards in corridor routing could keep both viable.
 
-    Example E (real; Mongolia FSS_11 + NAP_4) - Delivery friction, Manageable, Confidence: Low:
+    Example E (real; Mongolia FSS_11 + NAP_4) - COUNTER-EXAMPLE, an inferred friction is NOT flagged:
       Target 1: Ensure a stable supply of energy, steam, heat and fuel for food supply and domestic production.
       Target 2: Reduce desertification, land degradation, and permafrost loss.
       Output:
-      Flagged for review (Delivery friction, Manageable, Confidence: Low) - Subsidised energy and fuel for food producers could \
-indirectly intensify agricultural production in arid and degraded regions, adding pressure to lands the adaptation target seeks to \
-protect. The link is two steps removed from the policy text and inferred rather than named, so a reviewer might equally read the \
-pair as Low alignment with no flag needed.
+      Low alignment - Both targets touch rural land and production systems, but any friction between them rests on assuming that \
+energy support intensifies production specifically in the arid and degraded regions the second target covers, which neither text \
+states. The thematic overlap is too indirect for coordinated implementation.
+      Why this pair is not flagged: the supposed pathway needs two inferential steps that the text does not name, so it fails the \
+boundary rule. Contrast Example A, which shares Target 1: there the pressure lands in one step on the ecosystems the other target \
+itself names, so it is flagged at Medium confidence.
 
     Example F (real; Mongolia FSS_29 + NDC_22) - Resource competition, Fundamental, Confidence: High:
       Target 1: Increase enterprise participation in the expansion and establishment of pig, poultry, and fattening lamb and cattle farms.
@@ -482,7 +510,7 @@ async def assess_alignment(
 
     results = await call_llm_batch(
         calls,
-        cache_namespace="alignment_v2",
+        cache_namespace=ALIGNMENT_CACHE_NAMESPACE,
         desc="Alignment",
     )
 

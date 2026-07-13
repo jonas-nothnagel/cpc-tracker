@@ -26,10 +26,14 @@ from .llm import call_llm_batch
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# NR7 progress alignment: reuses canonical v2.1 advisor prompt via intro_framing
+# NR7 progress alignment: reuses canonical v2.2 advisor prompt via intro_framing
 # ---------------------------------------------------------------------------
 
-NR7_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the v2.1 system prompt.
+NR7_ADVISOR_SYSTEM = ADVISOR_SYSTEM  # Reuse the canonical system prompt.
+
+# Bumped with the canonical prompt version so responses from different prompt
+# revisions never share a cache dir.
+NR7_CACHE_NAMESPACE = "nr7_alignment_v3"
 
 NR7_INTRO_FRAMING = (
     "\n    Context for this comparison: one side of this pair is a national biodiversity "
@@ -37,7 +41,8 @@ NR7_INTRO_FRAMING = (
     "country's National Report (NR7) to the CBD. Apply the same scoring rubric. An action "
     "that directly implements the target is High alignment; an action in the same broad "
     "theme that does not meaningfully advance the target is Low alignment; an action that "
-    "works against the target is Flagged for review.\n"
+    "works against the target is Flagged for review, provided the friction meets "
+    "the flagging gate above.\n"
 )
 
 
@@ -196,7 +201,8 @@ async def assess_nr7_alignment(
         pair_keys.append((target["id"], action["id"]))
 
     results = await call_llm_batch(
-        calls, cache_namespace="nr7_alignment_v2", desc="NR7 alignment"
+        # v3: canonical prompt v2.2 (flagging gate tightened).
+        calls, cache_namespace=NR7_CACHE_NAMESPACE, desc="NR7 alignment"
     )
 
     alignment_results = []

@@ -133,6 +133,83 @@ class TestParseAlignmentContradiction:
         assert conf == "high"
         assert "finite resource" in explanation
 
+    def test_leading_label_wins_over_level_named_in_explanation(self):
+        """The verdict is the EARLIEST label in the response. DeepSeek-style
+        responses open with the correct label but close the explanation with
+        hedging that names another level; dict-order matching used to adopt
+        that later mention as the verdict and keep only the trailing
+        fragment (usually '.') as the explanation."""
+        raw = (
+            "Flagged for review (Delivery friction, Manageable, Confidence: Medium) - "
+            "The NAP target builds adaptation capacity, while the NBSAP target "
+            "integrates biodiversity into land-use planning; capacity-building could "
+            "intensify land use, so a reviewer might see this as Low alignment."
+        )
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "delivery_friction"
+        assert mgmt == "manageable"
+        assert conf == "medium"
+        assert "adaptation capacity" in explanation
+
+    def test_positive_verdict_restating_another_level_keeps_leading_label(self):
+        """Same leading-label rule on the positive side."""
+        raw = (
+            "Medium alignment - Shared reforestation goals, though a stricter "
+            "reading could argue for low alignment given the different regions."
+        )
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "medium"
+        assert "reforestation" in explanation
+
+    def test_reasoning_first_verdict_on_output_line(self):
+        """Llama-style: chain-of-thought that names other levels while
+        weighing them, verdict stated last as 'Output: Label - explanation'.
+        The old dict-order match adopted the reasoning's 'No alignment'
+        mention as the verdict."""
+        raw = (
+            "Let's compare the targets.\n\n"
+            'The alignment is not strong enough to be considered "High alignment" '
+            'or "Medium alignment". It\'s also not "No alignment" because both '
+            "contribute to broader environmental goals.\n\n"
+            "Output:\n"
+            "Low alignment - The targets share a broad environmental theme but "
+            "differ in their specific objectives and actions."
+        )
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "low"
+        assert "broad environmental theme" in explanation
+
+    def test_reasoning_first_verdict_inline_with_emphasis(self):
+        """Llama-style variant: 'The best answer is: **Label** - explanation'."""
+        raw = (
+            "Considering the differences in goals and audiences, and the lack of "
+            "direct overlap, high alignment can be ruled out.\n\n"
+            "The best answer is: **No alignment** - These targets operate in "
+            "different domains with distinct goals and audiences."
+        )
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "none"
+        assert "different domains" in explanation
+
+    def test_reasoning_first_flagged_parenthetical_anchored_at_verdict(self):
+        """A reasoning-first flagged verdict must take its (Mechanism, …)
+        payload from the verdict statement, not from an earlier parenthetical
+        in the chain of thought."""
+        raw = (
+            "The FSS target (agriculture and irrigation) may compete with the "
+            "NBSAP target for water.\n\n"
+            "Therefore, the classification is: Flagged for review "
+            "(Resource competition, Manageable, Confidence: Medium) - The "
+            "irrigation expansion could compete with ecosystem water needs."
+        )
+        level, explanation, mech, mgmt, conf = parse_alignment(raw)
+        assert level == "flagged"
+        assert mech == "resource_competition"
+        assert mgmt == "manageable"
+        assert conf == "medium"
+        assert "irrigation expansion" in explanation
+
 
 # ---------------------------------------------------------------------------
 # parse_alignment — fallback / edge cases
