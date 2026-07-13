@@ -61,16 +61,16 @@
     "doc_b": "NFAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 15,
-    "flagged_count": 4,
+    "aligned_count": 16,
+    "flagged_count": 3,
     "contradiction_types": {
-      "delivery_friction": 4
+      "delivery_friction": 3
     },
     "synthesis": {
-      "storyline_name": "Vínculos entre las cuencas hidrográficas y los humedales con la pesca",
-      "reinforce": "Los documentos suelen alinearse mediante una gestión sostenible compartida de los recursos, en la que la cobertura forestal, la protección de los humedales, el estado del suelo y el control de la erosión pueden apoyar a la pesca al mejorar el funcionamiento de las cuencas hidrográficas, la calidad del agua, el estado del hábitat y el control de los sedimentos. Esto se repite con mayor claridad en torno a la pesca continental y la acuicultura, pero el vínculo suele ser habilitador más que basarse en los mismos instrumentos de implementación o actores.",
-      "clash": "La posible desalineación reaparece cuando las medidas de crecimiento del sector pesquero, especialmente la expansión de la acuicultura, la producción orientada a la exportación y las actividades empresariales de base comunitaria, podrían aumentar la presión para convertir o modificar humedales o añadir presión localizada sobre el uso de la tierra en zonas asociadas a humedales. La revisión señala principalmente vías de implementación, como la ubicación de estanques, la infraestructura de acceso y el desarrollo empresarial en paisajes acuáticos compartidos, más que objetivos de política opuestos.",
-      "coordination_hint": "La zonificación, la ubicación y las salvaguardias sensibles a los humedales en la planificación del uso de la tierra y de la pesca podrían ayudar a mantener los beneficios ambientales compartidos, al tiempo que se gestionan los riesgos de implementación en las zonas interiores y de humedales.",
+      "storyline_name": "Gestión de los ecosistemas terrestres y acuáticos en humedales y cuencas hidrográficas",
+      "reinforce": "Los documentos suelen alinearse mediante vínculos indirectos entre la tierra y el agua, donde la cobertura forestal, la protección del suelo y la reducción de la erosión en las cuencas hidrográficas favorecen la calidad del agua, el estado de los hábitats y la productividad pertinentes para la pesca continental, la acuicultura, los estuarios y los sistemas costeros. La alineación también se repite en torno a la gestión sostenible de los recursos, la participación comunitaria y la planificación basada en la ciencia, especialmente cuando la protección de los humedales y la gobernanza pesquera avanzan en la misma dirección para la conservación de los hábitats y el apoyo a los medios de vida.",
+      "clash": "La posible desalineación reaparece en torno a las vías de implementación relacionadas con los humedales, porque la expansión de la acuicultura, la producción acuática orientada a la exportación y el desarrollo empresarial o turístico vinculado a la pesca podrían aumentar la presión para convertir humedales para estanques, accesos, instalaciones u otra infraestructura. Este patrón se limita al objetivo de conversión de humedales de LDN y tiende a reflejar una geografía compartida y decisiones de emplazamiento más que objetivos de política opuestos.",
+      "coordination_hint": "La planificación espacial sensible a los humedales, la ubicación y las salvaguardias en todos los organismos de tierras, acuicultura y pesca podrían ayudar a aprovechar las sinergias entre la tierra y el agua, al tiempo que reducen la posible desalineación en las zonas de humedales compartidas.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -176,17 +176,17 @@
     "doc_b": "NFAP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 975,
-    "flagged_count": 18,
+    "aligned_count": 926,
+    "flagged_count": 17,
     "contradiction_types": {
-      "delivery_friction": 5,
-      "resource_competition": 13
+      "resource_competition": 11,
+      "delivery_friction": 6
     },
     "synthesis": {
-      "storyline_name": "Mercados compartidos de sistemas alimentarios y dependencias hídricas",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en la comercialización agroalimentaria, especialmente mediante la información de mercado, la creación de marcas, las normas de inocuidad alimentaria, los sistemas de distribución, la preparación para la exportación y la adición de valor poscosecha. La alineación también se repite en torno a sistemas facilitadores como la adopción de tecnología, la extensión, la capacitación y la infraestructura de calidad que respaldan los ingresos de los productores y el desempeño de la cadena de suministro en la agricultura y la pesca.",
-      "clash": "La posible desalineación se repite con mayor claridad en torno a los sistemas compartidos de agua dulce, donde la eficiencia del riego, los controles de las aguas subterráneas, la rehabilitación de embalses y el uso de insumos agrícolas podrían interactuar con la acuicultura, la pesca continental y la producción pesquera orientada a la exportación a través de la asignación de agua, la calidad del agua y las operaciones de infraestructura. Un segundo patrón recurrente es la presión del lado de la oferta entre la tecnología agrícola o la expansión de insumos y los objetivos del sector pesquero en materia de salvaguardias ecosistémicas, protección de la biodiversidad y gestión de los recursos acuáticos basada en la ciencia.",
-      "coordination_hint": "La planificación hídrica a nivel de cuenca, la coordinación de la operación de los embalses y las salvaguardias ambientales compartidas para los insumos, la ubicación de la acuicultura y la producción de exportación podrían ayudar a mantener estas agendas alineadas en lugares donde la agricultura y la pesca utilizan los mismos sistemas hídricos.",
+      "storyline_name": "Apoyo compartido a los sistemas alimentarios con superposición en la gobernanza del agua",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en cuanto a las medidas facilitadoras para los medios de vida rurales y el desempeño de los sistemas alimentarios, especialmente mediante el acceso a los mercados, el valor añadido, las organizaciones de productores, el crédito, la transferencia de tecnología, la extensión y la gobernanza participativa. La alineación también se repite en torno a la gestión basada en el conocimiento y la ciencia, la resiliencia climática, la gestión de cuencas y la coordinación entre organismos, aunque esto suele ser de apoyo más que de ejecución conjunta directa.",
+      "clash": "La posible desalineación se repite principalmente allí donde el riego agrícola, la rehabilitación de embalses, los controles de las aguas subterráneas y el uso de nutrientes se cruzan con la acuicultura continental, la pesca en embalses y la producción pesquera orientada a la exportación que dependen de los mismos sistemas de agua dulce. Un segundo patrón recurrente es la presión del lado de la oferta entre la desregulación agrícola o la expansión de la producción y los objetivos de la pesca en materia de servicios ecosistémicos, salvaguardias de la biodiversidad, bioseguridad y gestión basada en la ciencia en aguas continentales y costeras.",
+      "coordination_hint": "La asignación de agua a nivel de cuenca, las normas de operación de los embalses y las salvaguardias ambientales compartidas para la acuicultura, el riego y la gestión de cuencas hidrográficas podrían ayudar a mantener alineadas las dos agendas de política en los lugares donde coinciden sobre los mismos cuerpos de agua.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -276,17 +276,17 @@
     "doc_b": "NFAP",
     "label_a": "NBSAP (Nature)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 97,
-    "flagged_count": 44,
+    "aligned_count": 95,
+    "flagged_count": 45,
     "contradiction_types": {
-      "delivery_friction": 43,
+      "delivery_friction": 44,
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Gobernanza acuática compartida con salvaguardias para el crecimiento",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en la gobernanza de la biodiversidad relacionada con la pesca, especialmente mediante la toma de decisiones basada en la ciencia, la gestión participativa, el cumplimiento internacional, el bienestar de las comunidades y los enfoques con perspectiva de género en los sistemas acuáticos y costeros. La alineación también se repite mediante medidas habilitadoras como la financiación, la divulgación de riesgos empresariales, la reducción de residuos y la bioseguridad, que pueden apoyar una pesca, una acuicultura y unas cadenas de valor del pescado más sostenibles.",
-      "clash": "La posible desalineación reaparece cuando las vías de implementación del NFAP hacen hincapié en la producción, las exportaciones, la expansión de la acuicultura, nuevas especies exóticas o nuevas actividades empresariales marinas y de humedales en los mismos espacios costeros, marinos y de aguas continentales que el NBSAP procura conservar, restaurar, mantener con bajos niveles de contaminación o proteger frente a especies exóticas invasoras. Otra posible desalineación directa también aparece entre la reducción del sobreconsumo y el aumento del consumo de pescado per cápita, mientras que la mayoría de los demás casos examinados apuntan a presión de implementación más que a objetivos opuestos.",
-      "coordination_hint": "Una coordinación más estrecha en materia de ordenación espacial, ubicación de la acuicultura, evaluación de especies, salvaguardias para la captura, controles de la contaminación y trazabilidad podría ayudar a que estos documentos apoyen tanto el crecimiento de la pesca como los resultados en materia de biodiversidad en ecosistemas acuáticos compartidos.",
+      "storyline_name": "Sostenibilidad acuática compartida con presiones de expansión",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en materia de pesca y acuicultura sostenibles, especialmente cuando la NBSAP proporciona herramientas facilitadoras como una gobernanza con perspectiva de género, una toma de decisiones participativa y basada en la evidencia, apoyo financiero y de capacidades, reducción de la contaminación y principios de uso sostenible. La alineación también se repite en torno a la gestión de la biodiversidad marina y continental mediante la bioseguridad, el cumplimiento internacional, la reducción de residuos en las cadenas de valor pesqueras y medidas de bienestar comunitario que pueden respaldar un uso más sostenible de los recursos.",
+      "clash": "La posible desalineación se repite principalmente allí donde las trayectorias de producción, exportación, consumo, turismo, puerto, marina y expansión de la acuicultura del NFAP se superponen con los objetivos del NBSAP en materia de conservación de áreas, restauración de ecosistemas, protección de especies, resiliencia climática, control de la contaminación y prevención de especies exóticas invasoras. Un patrón particularmente claro se refiere a las especies exóticas, la ampliación del esfuerzo pesquero y la infraestructura costera o interior, que podrían aumentar la presión en los mismos espacios marinos, costeros, de humedales y de agua dulce que el NBSAP busca conservar o restaurar, y también existe una posible desalineación directa entre la reducción del sobreconsumo y el aumento del consumo de pescado per cápita.",
+      "coordination_hint": "La planificación espacial conjunta, la evaluación de bioseguridad, los controles de especies y las salvaguardias de biodiversidad para la acuicultura, la infraestructura pesquera y la expansión del mercado podrían ayudar a mantener alineados los objetivos compartidos relativos a los ecosistemas marinos y de aguas continentales.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -352,17 +352,17 @@
     "doc_b": "NFAP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 441,
-    "flagged_count": 36,
+    "aligned_count": 453,
+    "flagged_count": 34,
     "contradiction_types": {
-      "resource_competition": 7,
-      "delivery_friction": 29
+      "resource_competition": 8,
+      "delivery_friction": 26
     },
     "synthesis": {
-      "storyline_name": "Gestión pesquera resiliente al clima y ubicación costera",
-      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando la información climática, la investigación y las herramientas de gestión del riesgo respaldan las decisiones sobre pesca, especialmente la previsión meteorológica y los sistemas de seguridad marítima, la investigación pesquera y acuática, y la gestión de los recursos basada en la ciencia. La alineación también se repite mediante infraestructura habilitadora y medidas de eficiencia, como energía fiable, transporte, gestión del agua y sistemas de datos que podrían respaldar el procesamiento del pescado, las cadenas de frío, la reducción de las pérdidas posteriores a la captura y la resiliencia comunitaria.",
-      "clash": "La posible desalineación se repite allí donde la expansión de la producción, las exportaciones, la acuicultura y los medios de vida costeros del NFAP se superpone con las prioridades de la NDC relativas a las áreas protegidas, la restauración de hábitats, los ecosistemas de carbono azul, la conectividad ecológica y la gestión basada en ecosistemas en aguas marinas e interiores vulnerables. Un segundo patrón recurrente es la competencia por los recursos, donde el crecimiento de la acuicultura y de las exportaciones podría recurrir al mismo espacio de emisiones, agua dulce e infraestructura hídrica que la NDC procura conservar o gestionar de manera eficiente.",
-      "coordination_hint": "La planificación espacial conjunta, los controles de especies y bioseguridad, y la vinculación de las medidas de crecimiento de la pesca con salvaguardias para los ecosistemas, el agua y las emisiones podrían ayudar a que estos documentos avancen en la misma dirección en las zonas costeras e interiores compartidas.",
+      "storyline_name": "Gestión de los ecosistemas costeros junto con la expansión de la pesca",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando la planificación costera y marina resiliente al clima respalda la gestión pesquera basada en la ciencia, especialmente mediante la designación de áreas, los planes de gestión, la previsión, la gestión del riesgo y los enfoques basados en los ecosistemas. La alineación también se repite en torno a las condiciones habilitantes para el bienestar y los medios de vida de los pescadores, donde los sistemas de pérdidas y daños, la alerta temprana, la infraestructura resiliente, la gestión de aguas residuales y la restauración costera podrían apoyar a comunidades pesqueras más seguras y resilientes.",
+      "clash": "La posible desalineación se repite cuando la producción, exportación, acuicultura, puertos, embarcaciones, turismo y expansión de los medios de vida del NFAP pueden superponerse con las prioridades de la NDC relativas a las áreas protegidas, la restauración de hábitats, los ecosistemas de carbono azul, la conectividad del paisaje marino y la gestión basada en los ecosistemas en aguas costeras e interiores vulnerables. Un segundo patrón recurrente es la competencia por los recursos, donde la expansión de la actividad pesquera marina y continental podría recurrir al mismo presupuesto de emisiones, recursos de agua dulce e infraestructura hídrica que la NDC asigna a los objetivos de mitigación y gestión del agua.",
+      "coordination_hint": "La planificación espacial conjunta, la asignación de agua y la evaluación de bioseguridad, vinculadas con trayectorias de pesca de bajas emisiones y salvaguardias de hábitats, podrían ayudar a que ambos documentos se alineen de manera más coherente en las zonas acuáticas costeras e interiores compartidas.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -432,17 +432,17 @@
     "doc_b": "NMP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 90,
-    "flagged_count": 67,
+    "aligned_count": 100,
+    "flagged_count": 70,
     "contradiction_types": {
-      "delivery_friction": 50,
-      "resource_competition": 17
+      "delivery_friction": 54,
+      "resource_competition": 16
     },
     "synthesis": {
-      "storyline_name": "Gobernanza ambiental intersectorial y asignación espacial",
-      "reinforce": "Los dos documentos suelen avanzar en la misma dirección mediante instrumentos amplios de gobernanza, especialmente la regulación ambiental, la aprobación previa en zonas sensibles, el cierre y la rehabilitación de minas, el intercambio de datos, el fortalecimiento de capacidades y la colaboración entre organismos y entidades de investigación. Estos vínculos tienden a ser facilitadores más que de ejecución conjunta, y las salvaguardias mineras y las medidas de gobernanza respaldan los objetivos de la pesca allí donde se superponen los sistemas costeros, marinos o de aguas continentales.",
-      "clash": "La posible desalineación reaparece en torno a la asignación espacial para la inversión y la exploración de minerales, especialmente cuando las tierras con potencial mineral, los yacimientos despejados o las futuras áreas de inversión minera podrían superponerse con la tenencia de las comunidades pesqueras, los sitios de acuicultura, las aguas continentales, los ecosistemas costeros y la infraestructura pesquera. Un segundo patrón recurrente es la presión del lado de la implementación derivada de la exploración mineral, la infraestructura relacionada con la minería y la actividad autorizada en zonas sensibles, que podría afectar la calidad del agua, las condiciones del hábitat, el acceso y los medios de vida locales, a menos que se gestione cuidadosamente.",
-      "coordination_hint": "La planificación espacial compartida, la zonificación de tierras y aguas, y los procesos coordinados de aprobación ambiental y salvaguardias podrían ayudar a mantener compatibles los usos pesqueros y el desarrollo mineral en zonas costeras e interiores superpuestas.",
+      "storyline_name": "Superposición intersectorial en la zonificación costera y continental",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante salvaguardias habilitantes en la política de minerales, como la aprobación previa en áreas ambientalmente sensibles, la gestión de los recursos costeros, la restauración y rehabilitación, los instrumentos de quien contamina paga, y las normas de gobernanza sobre transparencia y participación que podrían apoyar la pesca, la acuicultura y la protección de los ecosistemas acuáticos. La alineación también se repite en torno a amplias agendas de valor agregado y cumplimiento, donde la mejora de la cadena de suministro pesquera y las obligaciones internacionales se alinean con las normas del sector de los minerales, la capacidad de aplicación y los procedimientos de prevención de la contaminación.",
+      "clash": "La posible desalineación se repite principalmente en la implementación, donde la zonificación minera, la asignación de reservas, la exploración, las declaraciones de yacimientos listos para la inversión y la regulación que facilita la minería podrían superponerse con las zonas de pesca, las aguas continentales, los hábitats costeros, los sitios de acuicultura y los derechos de acceso de las comunidades pesqueras. Un segundo patrón recurrente es la competencia por los recursos sobre la tierra y los espacios acuáticos adyacentes, especialmente cuando la política de minerales prioriza la disponibilidad de tierras o el uso de minerales en determinadas zonas de las que la política pesquera también depende para la acuicultura, los medios de vida costeros, la infraestructura de exportación y la gestión de hábitats.",
+      "coordination_hint": "La planificación espacial conjunta, la consulta y la evaluación de impactos en las zonas costeras, de aguas continentales y terrestres adyacentes podrían ayudar a mantener alineadas la ubicación de las actividades mineras, la rehabilitación y las disposiciones de acceso a la pesca cuando estén implicados los mismos lugares.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -452,17 +452,17 @@
     "doc_b": "NWRP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 222,
-    "flagged_count": 28,
+    "aligned_count": 224,
+    "flagged_count": 26,
     "contradiction_types": {
-      "resource_competition": 25,
-      "delivery_friction": 3
+      "resource_competition": 24,
+      "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Dependencia compartida de la asignación y la gestión responsable del agua",
-      "reinforce": "Los dos documentos suelen alinearse mediante la habilitación de la gobernanza del agua para la pesca, especialmente la participación de las partes interesadas, la planificación de cuencas fluviales, las actualizaciones jurídicas e institucionales, y la conservación de humedales, cuencas hidrográficas, acuíferos y aguas superficiales. Esta alineación tiende a ser más sólida cuando la pesca continental, la acuicultura, las cadenas de suministro de pescado y los medios de vida de los pescadores dependen de una asignación coordinada del agua, la gestión de la calidad del agua y la planificación en los niveles nacional y local.",
-      "clash": "La posible desalineación se repite principalmente allí donde las ambiciones del NFAP de ampliar la acuicultura, la producción de exportación y los medios de vida dependientes del agua podrían aumentar la demanda sobre los mismos sistemas finitos de agua, acuíferos, cuencas hidrográficas y humedales que el NWRP procura asignar, conservar y utilizar de manera eficiente. Un patrón recurrente menor se refiere a la implementación en torno a la calidad del agua y la conservación de los humedales, donde una acuicultura o una actividad de medios de vida más intensivas podrían requerir una alineación más estrecha con las normas, la ubicación, los controles de la contaminación y las salvaguardias del uso de la tierra.",
-      "coordination_hint": "La planificación conjunta de cuencas y acuíferos, con normas compartidas sobre ubicación, asignación, calidad del agua y salvaguardias para los humedales, podría ayudar a mantener el crecimiento de la pesca y la gestión responsable del agua avanzando en la misma dirección.",
+      "storyline_name": "Gobernanza del agua que posibilita trayectorias de crecimiento de la pesca",
+      "reinforce": "En muchos pares alineados, el NWRP tiende a proporcionar condiciones habilitantes para los objetivos del NFAP mediante leyes sobre el agua, planificación de cuencas y acuíferos, normas de calidad del agua, participación de las partes interesadas y coordinación entre niveles de gobierno. Esto a menudo apunta a un apoyo compartido en torno a las pesquerías continentales, la acuicultura, las cadenas de suministro de pescado y los ecosistemas costeros o vinculados a las cuencas hidrográficas, aunque la superposición suele ser indirecta más que un mecanismo conjunto de implementación.",
+      "clash": "La posible desalineación recurrente es la competencia por recursos finitos de agua dulce, de cuencas, acuíferos y vertientes, especialmente cuando la expansión de la acuicultura del NFAP y la producción orientada a la exportación incrementan la demanda de agua junto con las medidas del NWRP relativas a asignación, conservación, derechos y eficiencia. Un patrón menor pero repetido también se refiere a la calidad del agua, donde la intensificación de la actividad acuícola podría hacer más exigente el cumplimiento de las normas y los requisitos de seguimiento.",
+      "coordination_hint": "Los mecanismos de asignación a nivel de cuenca, ubicación, eficiencia en el uso del agua y seguimiento de la calidad del agua que incluyan a los actores de la pesca y la acuicultura podrían ayudar a mantener la producción, la conservación y la gestión del agua para múltiples usuarios avanzando en la misma dirección.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -472,16 +472,16 @@
     "doc_b": "PPPP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 21,
-    "flagged_count": 9,
+    "aligned_count": 23,
+    "flagged_count": 7,
     "contradiction_types": {
-      "delivery_friction": 9
+      "delivery_friction": 7
     },
     "synthesis": {
-      "storyline_name": "Apoyo a la planificación espacial con presiones de uso de los ecosistemas",
-      "reinforce": "Los dos documentos suelen alinearse mediante la planificación espacial, las salvaguardias de conservación y un mejor uso de la infraestructura existente, especialmente cuando la pesca, la acuicultura, las instalaciones posteriores a la cosecha y los asentamientos pesqueros dependen de los recursos hídricos y de ubicaciones ambientalmente sensibles. En muchos pares, PPPP proporciona un marco habilitador de uso del suelo y asentamientos que respalda los objetivos de NFAP sobre la gestión sostenible de los recursos, el bienestar comunitario, las cadenas de valor y los medios de vida basados en el territorio, incluso cuando la superposición es amplia en lugar de ser directamente operativa.",
-      "clash": "La posible desalineación reaparece cuando el NFAP busca el crecimiento de la producción, la expansión de las exportaciones, el desarrollo de los medios de vida o el acceso comunitario en zonas costeras, de aguas continentales, humedales o áreas vinculadas a reservas que el PPPP también trata como espacios sensibles de conservación o de desarrollo diversificado. Los casos examinados suelen señalar una presión compartida en torno a la ubicación, la zonificación, la protección de hábitats, el acceso a las zonas de pesca y el uso de áreas paisajísticas o de reserva, en particular en el marco de los Componentes 1 y 4 del PPPP.",
-      "coordination_hint": "La zonificación integrada, la evaluación ambiental y la selección de emplazamientos en la planificación de la pesca, la acuicultura, los asentamientos y las áreas de reserva podrían ayudar a que estos documentos avancen en la misma dirección en las zonas costeras y de aguas continentales superpuestas.",
+      "storyline_name": "Apoyo a la planificación espacial para el desarrollo de la pesca",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando las acciones pesqueras dependen de la planificación espacial, las salvaguardias ambientales y un mejor uso de la infraestructura existente, como los sitios portuarios, de desembarque, de procesamiento y de acuicultura. Esto se repite en la planificación sensible a la conservación, la habitabilidad de los asentamientos y la optimización de la infraestructura, donde PPPP proporciona principios facilitadores de zonificación y ubicación que se alinean con la gestión de recursos de NFAP, la mejora posterior a la captura, el bienestar comunitario y el desarrollo de medios de vida.",
+      "clash": "Una posible desalineación recurrente aparece cuando la producción de NFAP o la expansión de las exportaciones, especialmente la infraestructura marina, la intensificación de la acuicultura y el desarrollo en zonas costeras o de aguas continentales, se superponen con las prioridades de conservación de PPPP o con el desarrollo territorial en reservas y lugares paisajísticos. Los casos examinados señalan sistemáticamente una presión en la etapa de implementación sobre los mismos ecosistemas o sitios, lo que sugiere que la localización, la zonificación y los controles ambientales podrían adquirir importancia allí donde coinciden el crecimiento de la pesca y el desarrollo más amplio de las zonas terrestres y acuáticas.",
+      "coordination_hint": "La zonificación conjunta de las zonas costeras e interiores, la evaluación ambiental vinculada y la selección temprana de emplazamientos podrían ayudar a armonizar la expansión de la pesca con decisiones de planificación sensibles a la conservación y basadas en la ubicación.",
       "confidence": "high"
     },
     "synthesis_error": null
