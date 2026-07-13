@@ -296,12 +296,27 @@ async def call_llm_detailed(
 
     system = _augment_system_with_language(system)
 
-    # Check cache first
+    # Check cache first. A response that was truncated at the completion
+    # ceiling (finish_reason="length") is only reused while the requested
+    # budget is not larger than the one it was produced under — otherwise
+    # raising CPC_EXTRACT_MAX_TOKENS and re-running could never recover the
+    # lost tail (max_tokens is deliberately not part of the cache key).
     entry = read_cache_entry(cache_namespace, system, user, model)
     if entry is not None:
         cached, meta = entry
-        await tracker.record_cached(model)
-        return cached, {"status": _call_status(cached, meta), "cached": True}
+        stale_truncation = (
+            meta.get("truncated")
+            and max_tokens is not None
+            and max_tokens > int(meta.get("maxTokens") or 0)
+        )
+        if not stale_truncation:
+            await tracker.record_cached(model)
+            return cached, {"status": _call_status(cached, meta), "cached": True}
+        logger.info(
+            "Cache entry was truncated at %s tokens; re-calling with the "
+            "larger budget %s",
+            meta.get("maxTokens"), max_tokens,
+        )
 
     client = get_client()
     sem = get_semaphore()
@@ -347,10 +362,21 @@ async def call_llm_detailed(
                 latency_s = time.perf_counter() - call_start
                 await tracker.record_response(response, model, latency_s=latency_s)
                 content = response.choices[0].message.content or ""
+                finish = getattr(response.choices[0], "finish_reason", None)
 
-                # Cache the result
-                write_cache(cache_namespace, system, user, model, content)
-                return content, {"status": _call_status(content, {}), "cached": False}
+                # Cache the result; mark ceiling-truncated responses so a
+                # future call with a larger budget re-runs instead of
+                # replaying the cut-off content.
+                meta = (
+                    {"truncated": True, "maxTokens": max_tokens}
+                    if finish == "length"
+                    else None
+                )
+                write_cache(cache_namespace, system, user, model, content, meta=meta)
+                info = {"status": _call_status(content, {}), "cached": False}
+                if finish == "length":
+                    info["truncated"] = True
+                return content, info
 
         except Exception as e:
             last_error = e

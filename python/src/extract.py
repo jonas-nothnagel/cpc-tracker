@@ -1032,8 +1032,13 @@ def split_language_blocks(doc: DocumentText) -> list[LanguageBlock]:
     pending: list[PageSpan] = []  # leading und pages awaiting a block to join
     for cls, run_pages in folded:
         run_chars = sum(len(p.text) for p in run_pages)
+        # Relative-size gate only: a fixed page count would let a long
+        # low-density annex of a monolingual document stand alone and flip
+        # the whole document onto the multi-block path (cache invalidation,
+        # spurious translate mode). A real parallel-translation block is
+        # comparable in bulk to the working-language block.
         stands_alone = cls not in (None, "und") or not known_max or (
-            run_chars >= 0.5 * known_max or len(run_pages) >= 15
+            run_chars >= 0.5 * known_max
         )
         if stands_alone:
             if pending:
@@ -1150,7 +1155,9 @@ async def _select_language_blocks(
                     b_pages="-".join(str(p) for p in block.page_range),
                     b_sample=_block_sample(block.text),
                 ),
-                "max_tokens": 50,
+                # Reasoning models spend completion tokens on reasoning
+                # before output; give the tiny JSON answer real headroom.
+                "max_tokens": 300,
             })
 
     confirmed: dict[int, float] = {}
@@ -1232,6 +1239,16 @@ _VOWEL_RE = re.compile(r"[aeiouáéíóúàèìòùâêîôûäëïöü]", re.IG
 
 def _valid_section_part(part: str) -> bool:
     if _SECTION_NUMBERING_RE.match(part) or _SECTION_WORD_RE.match(part):
+        return True
+    # Genuine non-Latin scripts (Cyrillic U+0400+, Sinhala, Tamil, CJK ...)
+    # are real headings echoed from the document — accept them. The cutoff
+    # at U+0370 (beyond Latin Extended) matters: legacy-font gibberish is
+    # ASCII/Latin-1 and must NOT pass through this branch.
+    if any(ord(c) >= 0x0370 and c.isalpha() for c in part):
+        return True
+    # Acronym anchors ("SDG 14", "GGA", "NDC 3.0") carry no vowel but are
+    # document-provided identifiers.
+    if re.fullmatch(r"[A-Z]{2,8}(?:[\s-]?\d+(?:\.\d+)*)?", part):
         return True
     # Plausible natural-language heading: mostly letters, contains a vowel,
     # no stray symbols, not a two-letter fragment.
@@ -2117,7 +2134,12 @@ async def extract_from_text(
     )
 
     def _system_for(c_lang: str) -> str:
-        if c_lang == "en":
+        # A kept "und" block means we could NOT identify a language —
+        # usually low-signal working-language content (dense tables,
+        # annexes). Claiming it is foreign and asking for translation
+        # would be unfounded and invites rewriting; extract it plainly,
+        # which is exactly the pre-block-handling behaviour.
+        if c_lang in ("en", "und"):
             return base_system
         name = lang_name if c_lang == lang_code else _lang_display(c_lang)
         return base_system + MULTILANG_ADDENDUM.format(language_name=name)
@@ -2173,7 +2195,9 @@ async def extract_from_text(
         for item in items:
             item["sourceDocument"] = source_document
             item["pageNumbers"] = chunk.pages
-            if c_lang != "en":
+            # "und" chunks are extracted plainly (see _system_for) and get
+            # no language claim — stamping one would be fabricated metadata.
+            if c_lang not in ("en", "und"):
                 item["language"] = c_lang
                 if item.get("textOriginal"):
                     # The original came verbatim from the document; the
@@ -2213,7 +2237,13 @@ async def extract_from_text(
 
     for item in final:
         item["sourceDocument"] = source_document
-        if not is_english:
+        # Blanket language stamping is only correct when the whole document
+        # shares one language; in a multi-block document it would overwrite
+        # the per-chunk stamps (e.g. re-labelling a kept English block's
+        # items with a Spanish working language). Multi-block items keep
+        # their Phase-1 stamps, carried through consolidation by
+        # _restore_original_text.
+        if not is_english and not multi_block:
             item["language"] = lang_code
             if item.get("textOriginal"):
                 item["textOriginalSource"] = "source"
@@ -2268,16 +2298,22 @@ def _restore_original_text(
     returned: there is no verbatim original for merged text, the sources
     array is its original-language provenance.
     """
+    # Two independent quote->candidate maps: mixing them would let a
+    # language-only candidate collide with a textOriginal-bearing candidate
+    # on a shared quote (chunk-overlap duplicates) and blank the sentinel,
+    # losing restorations that used to succeed. Each map keeps main's
+    # first-writer-wins + ambiguity-sentinel semantics for its own field.
     by_quote: dict[str, dict[str, Any]] = {}
+    by_quote_lang: dict[str, dict[str, Any]] = {}
     for cand in candidates:
-        if not (cand.get("textOriginal") or cand.get("language")):
-            continue
         for src in cand.get("sources") or []:
             key = normalise_for_matching(str(src.get("sourceText", "")))
-            if key:
-                # First writer wins; duplicate quotes across candidates are
-                # ambiguous and skipped at lookup time via sentinel.
+            if not key:
+                continue
+            if cand.get("textOriginal"):
                 by_quote[key] = cand if key not in by_quote else {}
+            if cand.get("language"):
+                by_quote_lang[key] = cand if key not in by_quote_lang else {}
     restored = 0
     for item in items:
         sources = item.get("sources") or []
@@ -2285,10 +2321,9 @@ def _restore_original_text(
             continue
         key = normalise_for_matching(str(sources[0].get("sourceText", "")))
         cand = by_quote.get(key)
-        if not cand:
-            continue
         if (
-            not item.get("textOriginal")
+            cand
+            and not item.get("textOriginal")
             and cand.get("textOriginal")
             and item.get("textCleanup") != "synthesis"
         ):
@@ -2299,8 +2334,9 @@ def _restore_original_text(
         # In a multi-block document the per-candidate language stamp is the
         # only record of which language block an item came from; restore it
         # the same way (monolingual documents re-stamp it later anyway).
-        if not item.get("language") and cand.get("language"):
-            item["language"] = cand["language"]
+        lang_cand = by_quote_lang.get(key)
+        if lang_cand and not item.get("language") and lang_cand.get("language"):
+            item["language"] = lang_cand["language"]
         if (
             item.get("textOriginal")
             and item.get("language")
@@ -2315,12 +2351,26 @@ def _restore_original_text(
         )
 
 
-# A label that looks document-provided: one or two words plus numbering
-# ("Policy 3", "Forestry 1", "Goal 2.3"), hierarchical numbering ("4.2.6",
-# "2/3"), a letter-number code ("A7.3", "M24"), or numbering followed by a
-# name ("1.1 Food/agri legislation drafts"). Bare integers are NOT accepted
-# as derived labels — "1" alone says nothing without its table context.
-_DOC_LABEL_RE = re.compile(
+# Two tiers of "looks document-provided":
+# - STRICT gates the labelSource="document" provenance claim and label
+#   derivation: a known section word plus numbering ("Policy 3", "Goal 2.3"),
+#   hierarchical numbering ("4.2.6", "2/3"), or a letter-number code ("A7.3",
+#   "M24"). These forms are unmistakably document naming.
+# - PROTECT (a superset) only prevents derivation from OVERWRITING an
+#   existing label that may be document-provided ("Forestry 1", "1.1
+#   Food/agri legislation drafts") — such labels are kept but NOT stamped,
+#   because an LLM-invented phrase ending in a number ("Forest cover 32")
+#   would match too, and stamping it would overclaim provenance.
+# Bare integers are never accepted as derived labels — "1" alone says
+# nothing without its table context.
+_DOC_LABEL_STRICT_RE = re.compile(
+    r"^(?:(?:policy|strategy|goal|target|objective|measure|action|priority|"
+    r"pillar|axis|outcome|section|annex)\s+\d+(?:[./]\d+)*[a-z]?"
+    r"|\d+(?:[./]\d+)+[a-z]?"
+    r"|[A-Z]{1,3}\d+(?:\.\d+)*)$",
+    re.IGNORECASE,
+)
+_DOC_LABEL_PROTECT_RE = re.compile(
     r"^(?:"
     r"[A-Za-z][\w()-]*(?:\s+[A-Za-z][\w()-]*)?\s+\d+(?:[./]\d+)*[a-z]?"
     r"|\d+(?:[./]\d+)+[a-z]?"
@@ -2356,15 +2406,20 @@ def _restore_doc_labels(
                 by_quote[key] = cand if key not in by_quote else {}
     restored = 0
     for item in items:
-        if _DOC_LABEL_RE.match(str(item.get("label", "")).strip()):
+        label = str(item.get("label", "")).strip()
+        if _DOC_LABEL_STRICT_RE.match(label):
             item["labelSource"] = "document"
+            continue
+        if _DOC_LABEL_PROTECT_RE.match(label):
+            # Possibly document-provided ("Forestry 1") — keep it, but do
+            # not stamp provenance we cannot substantiate.
             continue
         sources = item.get("sources") or []
         if not sources:
             continue
         derived: str | None = None
         section = str(sources[0].get("section", "")).strip()
-        if section and _DOC_LABEL_RE.match(section):
+        if section and _DOC_LABEL_STRICT_RE.match(section):
             derived = section
         if not derived:
             m = _LEADING_NUMBERING_RE.match(str(sources[0].get("sourceText", "")))
@@ -2375,7 +2430,7 @@ def _restore_doc_labels(
             cand = by_quote.get(key)
             if cand:
                 cand_label = str(cand.get("label", "")).strip()
-                if _DOC_LABEL_RE.match(cand_label):
+                if _DOC_LABEL_STRICT_RE.match(cand_label):
                     derived = cand_label
         if derived:
             item["label"] = derived[:80]
