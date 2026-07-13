@@ -1,7 +1,9 @@
+import { DRAWER_KIND_SECTION, SECTION_IDS, SECTION_REGISTRY } from "./sections";
 import type {
   AnalyticsEvent,
   AnalyticsSummary,
   RecentEvent,
+  SectionUsage,
 } from "./types";
 
 /**
@@ -15,6 +17,10 @@ import type {
  */
 
 const DAY_MS = 24 * 60 * 60_000;
+/** Dwell samples above this are parked tabs, not reading (cap, not drop). */
+const SECTION_DWELL_MAX_MS = 15 * 60_000;
+/** Routes where the coherence dashboard (and its sections) renders. */
+const DASHBOARD_ROUTES = new Set(["/dashboard", "/[country]"]);
 
 export function aggregate(
   events: AnalyticsEvent[],
@@ -143,7 +149,11 @@ export function aggregate(
     .filter((ts) => !Number.isNaN(Date.parse(ts)))
     .sort();
 
+  const { sectionUsage, elementsBySection } = aggregateSections(events);
+
   return {
+    sectionUsage,
+    elementsBySection,
     range: {
       from: timestamps[0] ?? "",
       to: timestamps[timestamps.length - 1] ?? "",
@@ -163,6 +173,137 @@ export function aggregate(
     durationByRoute,
     last24h,
   };
+}
+
+/**
+ * Section-level usage for the coherence dashboard ("what gets used most vs
+ * least"). Considers only events on dashboard routes. Interactions = clicks
+ * carrying a section (rows written before 2026-07 lack the field → `?? null`)
+ * plus drawer_opened tracks whose kind maps unambiguously to one section.
+ * Views/viewers come from section_viewed tracks, with consecutive
+ * same-session same-section events collapsed (scroll bounce). Dwell is
+ * DERIVED: the gap from a section_viewed to the session's next event
+ * (section change or page view/leave), capped; approximate by design.
+ * Always returns all registry sections, zero-filled, in page order.
+ */
+function aggregateSections(events: AnalyticsEvent[]): {
+  sectionUsage: SectionUsage[];
+  elementsBySection: Record<string, { label: string; count: number }[]>;
+} {
+  const onDashboard = events.filter((e) => DASHBOARD_ROUTES.has(e.route));
+
+  // Interactions + element ranking.
+  const interactionsBySection = new Map<string, number>();
+  const elementCounts = new Map<string, Map<string, number>>();
+  const bump = (section: string, label: string) => {
+    interactionsBySection.set(
+      section,
+      (interactionsBySection.get(section) ?? 0) + 1,
+    );
+    const labels = elementCounts.get(section) ?? new Map<string, number>();
+    labels.set(label, (labels.get(label) ?? 0) + 1);
+    elementCounts.set(section, labels);
+  };
+  for (const e of onDashboard) {
+    if (e.type === "click") {
+      const section = e.section ?? null;
+      if (section !== null && SECTION_IDS.has(section)) bump(section, e.label);
+    } else if (e.type === "track" && e.name === "drawer_opened") {
+      const kind = typeof e.props.kind === "string" ? e.props.kind : "";
+      const section = DRAWER_KIND_SECTION[kind];
+      if (section) bump(section, `Detail panel: ${kind}`);
+    }
+  }
+  const totalInteractions = [...interactionsBySection.values()].reduce(
+    (a, b) => a + b,
+    0,
+  );
+
+  // section_viewed per session, in ts order, scroll bounces collapsed.
+  // `section: null` entries are page views/leaves: they end a dwell sample
+  // and break a "same section" run without counting as a section view.
+  const bySession = new Map<
+    string,
+    { ts: number; section: string | null; clientId: string }[]
+  >();
+  for (const e of onDashboard) {
+    const t = Date.parse(e.ts);
+    if (Number.isNaN(t)) continue;
+    let section: string | null = null;
+    if (e.type === "track" && e.name === "section_viewed") {
+      const raw = e.props.section;
+      if (typeof raw !== "string" || !SECTION_IDS.has(raw)) continue;
+      section = raw;
+    } else if (e.type !== "page_view" && e.type !== "page_leave") {
+      continue;
+    }
+    const list = bySession.get(e.sessionId) ?? [];
+    list.push({ ts: t, section, clientId: e.clientId });
+    bySession.set(e.sessionId, list);
+  }
+
+  const viewsBySection = new Map<string, number>();
+  const viewersBySection = new Map<string, Set<string>>();
+  const dwellBySection = new Map<string, number[]>();
+  for (const list of bySession.values()) {
+    list.sort((a, b) => a.ts - b.ts);
+    let prevSection: string | null = null;
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      if (item.section === null) {
+        prevSection = null;
+        continue;
+      }
+      if (item.section === prevSection) continue; // collapsed scroll bounce
+      prevSection = item.section;
+      viewsBySection.set(
+        item.section,
+        (viewsBySection.get(item.section) ?? 0) + 1,
+      );
+      const viewers = viewersBySection.get(item.section) ?? new Set<string>();
+      viewers.add(item.clientId);
+      viewersBySection.set(item.section, viewers);
+      // Dwell ends at the next DIFFERENT section (or page view/leave) —
+      // collapsed same-section bounces extend the stay, they don't end it.
+      const next = list
+        .slice(i + 1)
+        .find((n) => n.section !== item.section);
+      if (next) {
+        const dwell = Math.min(next.ts - item.ts, SECTION_DWELL_MAX_MS);
+        const samples = dwellBySection.get(item.section) ?? [];
+        samples.push(dwell);
+        dwellBySection.set(item.section, samples);
+      }
+    }
+  }
+
+  const sectionUsage: SectionUsage[] = SECTION_REGISTRY.map((s) => {
+    const interactions = interactionsBySection.get(s.id) ?? 0;
+    return {
+      section: s.id,
+      name: s.name,
+      blurb: s.blurb,
+      order: s.order,
+      conditional: s.conditional ?? false,
+      interactions,
+      viewers: viewersBySection.get(s.id)?.size ?? 0,
+      views: viewsBySection.get(s.id) ?? 0,
+      medianDwellMs: median(dwellBySection.get(s.id) ?? []),
+      shareOfInteractions:
+        totalInteractions > 0 ? interactions / totalInteractions : 0,
+    };
+  });
+
+  const elementsBySection: Record<string, { label: string; count: number }[]> =
+    {};
+  for (const [section, labels] of elementCounts) {
+    elementsBySection[section] = [...labels.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([label, count]) => ({ label, count }));
+  }
+
+  return { sectionUsage, elementsBySection };
 }
 
 /** Strip identifying fields for the activity feed. */

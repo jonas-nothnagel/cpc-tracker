@@ -39,8 +39,15 @@ export default async function AnalyticsPage({
   const months = clampMonths(first(params.months));
   const events = readAnalyticsEvents(lastMonths(months));
   const summary = aggregate(events);
+  const initialView = first(params.view) === "traffic" ? "traffic" : "usage";
 
-  return <AnalyticsDashboard summary={summary} months={months} />;
+  return (
+    <AnalyticsDashboard
+      summary={summary}
+      months={months}
+      initialView={initialView}
+    />
+  );
 }
 
 function first(value: string | string[] | undefined): string | null {

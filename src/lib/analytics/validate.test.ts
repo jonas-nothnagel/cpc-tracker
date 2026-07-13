@@ -140,6 +140,20 @@ describe("parseAnalyticsBatch", () => {
     expect(parse([{ ...leave, durationMs: "NaN" }]).ok).toBe(false);
   });
 
+  it("stores whitelisted click sections and degrades unknown ones to null", () => {
+    const click = { ...base, type: "click", role: "button", label: "Arc" };
+    const result = parse([
+      { ...click, section: "direction" },
+      { ...click, section: "not-a-section" },
+      { ...click, section: "../etc" },
+      { ...click },
+    ]);
+    if (!result.ok) throw new Error(result.error);
+    expect(
+      result.events.map((e) => (e.type === "click" ? e.section : "wrong")),
+    ).toEqual(["direction", null, null, null]);
+  });
+
   it("truncates long click labels and normalizes hrefs", () => {
     const click = { ...base, type: "click", role: "button" };
     const result = parse([

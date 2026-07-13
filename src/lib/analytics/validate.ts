@@ -1,6 +1,7 @@
 import { isValidCountryId } from "@/config/countries";
 
 import { ROUTE_PATTERNS } from "./route-pattern";
+import { SECTION_IDS } from "./sections";
 import {
   ANALYTICS_BATCH_MAX_EVENTS,
   ANALYTICS_DURATION_MAX_MS,
@@ -154,6 +155,8 @@ function parseEvent(item: unknown, now: Date): AnalyticsEvent | null {
       } else if (rawHref && INTERNAL_HREF.test(rawHref)) {
         href = rawHref.slice(0, ANALYTICS_HREF_MAX);
       }
+      // Unknown/foreign sections degrade to null; never reject the click.
+      const rawSection = str(e.section);
       return {
         ...envelope,
         type: "click",
@@ -161,6 +164,8 @@ function parseEvent(item: unknown, now: Date): AnalyticsEvent | null {
         label: label.slice(0, ANALYTICS_LABEL_MAX),
         role: role as ClickRole,
         href,
+        section:
+          rawSection && SECTION_IDS.has(rawSection) ? rawSection : null,
       };
     }
     case "track": {

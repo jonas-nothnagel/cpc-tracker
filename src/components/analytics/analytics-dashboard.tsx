@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -13,13 +14,19 @@ import {
   YAxis,
 } from "recharts";
 
+import { ROUTE_NAMES, TRACK_EVENT_NAMES } from "@/lib/analytics/sections";
 import type { AnalyticsSummary } from "@/lib/analytics/types";
 
+import { UsageMap } from "./usage-map";
+
 /**
- * Internal usage-analytics dashboard renderer. Receives the pre-aggregated,
+ * Internal usage-analytics dashboard renderer for a NON-TECHNICAL audience:
+ * two tabs — "What gets used" (the section usage map, the headline answer)
+ * and "Traffic" (visit-level charts). Receives the pre-aggregated,
  * identifier-free summary from the server page; follows the visual idiom of
  * src/components/sustainability/sustainability-client.tsx (UNDP palette,
- * thin marks, recessive grid).
+ * thin marks, recessive grid). Plain language only: no "events", "routes",
+ * or ids in any user-visible string.
  *
  * REMOVABLE SYSTEM: see src/lib/analytics/README.md.
  */
@@ -28,37 +35,115 @@ const UNDP_BLUE = "#0468b1";
 const TEAL = "#02a38a";
 const GRID = "#f0f0f0";
 
+type View = "usage" | "traffic";
+
+const EVENT_TYPE_NAMES: Record<string, string> = {
+  page_view: "Opened a page",
+  page_leave: "Left a page",
+  click: "Clicked",
+  track: "Used a feature",
+};
+
+const routeName = (route: string) => ROUTE_NAMES[route] ?? route;
+
 export function AnalyticsDashboard({
   summary,
   months,
+  initialView,
 }: {
   summary: AnalyticsSummary;
   months: number;
+  initialView: View;
 }) {
+  const [view, setView] = useState<View>(initialView);
+
+  const switchView = (next: View) => {
+    setView(next);
+    const url = new URL(window.location.href);
+    url.searchParams.set("view", next);
+    window.history.replaceState(null, "", url);
+  };
+
   return (
     <main className="mx-auto max-w-5xl px-6 py-10 text-slate-800">
-      <header className="mb-8">
-        <h1 className="text-2xl font-semibold">Usage analytics</h1>
+      <header className="mb-6">
+        <h1 className="text-2xl font-semibold">How the tool is being used</h1>
         <p className="mt-1 text-sm text-slate-500">
           Internal dashboard · last {months} month{months === 1 ? "" : "s"}
           {summary.range.from &&
             ` · ${summary.range.from.slice(0, 10)} to ${summary.range.to.slice(0, 10)}`}
-          {" · anonymous first-party events"}
+          {" · anonymous, collected by this tool itself"}
         </p>
       </header>
 
+      <div role="tablist" className="mb-8 flex gap-1 border-b border-slate-200">
+        <TabButton
+          active={view === "usage"}
+          onClick={() => switchView("usage")}
+        >
+          What gets used
+        </TabButton>
+        <TabButton
+          active={view === "traffic"}
+          onClick={() => switchView("traffic")}
+        >
+          Traffic
+        </TabButton>
+      </div>
+
+      {view === "usage" ? (
+        <UsageMap
+          sectionUsage={summary.sectionUsage}
+          elementsBySection={summary.elementsBySection}
+        />
+      ) : (
+        <TrafficView summary={summary} />
+      )}
+    </main>
+  );
+}
+
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={active}
+      onClick={onClick}
+      className={`-mb-px rounded-t-md px-4 py-2 text-sm font-medium ${
+        active
+          ? "border border-b-white border-slate-200 text-[#0468b1]"
+          : "text-slate-500 hover:text-slate-700"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function TrafficView({ summary }: { summary: AnalyticsSummary }) {
+  return (
+    <>
       <section className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        <StatTile label="Visitors" value={summary.totals.visitors} />
+        <StatTile label="People" value={summary.totals.visitors} />
         <StatTile label="Page views" value={summary.totals.views} />
-        <StatTile label="Sessions" value={summary.sessions.count} />
+        <StatTile label="Visits" value={summary.sessions.count} />
         <StatTile
-          label="Median session"
+          label="Typical visit length"
           value={fmtDuration(summary.sessions.medianDurationMs)}
         />
         <StatTile
           label="Views (24 h)"
           value={summary.last24h.views}
-          hint={`${summary.last24h.visitors} visitor${summary.last24h.visitors === 1 ? "" : "s"}`}
+          hint={`${summary.last24h.visitors} ${summary.last24h.visitors === 1 ? "person" : "people"}`}
         />
       </section>
 
@@ -91,7 +176,7 @@ export function AnalyticsDashboard({
             <Area
               type="monotone"
               dataKey="visitors"
-              name="Visitors"
+              name="People"
               stroke={TEAL}
               strokeWidth={2}
               fill="none"
@@ -101,15 +186,15 @@ export function AnalyticsDashboard({
       </Section>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <Section title="Views by page">
+        <Section title="Visits by page">
           <RouteBars
             data={summary.viewsByRoute.map((r) => ({
-              name: r.route,
+              name: routeName(r.route),
               value: r.views,
             }))}
           />
         </Section>
-        <Section title="Views by country">
+        <Section title="Visits by country">
           {summary.countrySplit.length === 0 ? (
             <Empty />
           ) : (
@@ -124,34 +209,41 @@ export function AnalyticsDashboard({
       </div>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <Section title="Top clicks">
+        <Section title="Most-clicked buttons and links">
           <PlainTable
-            head={["Page", "Element", "Clicks"]}
-            rows={summary.topClicks.map((c) => [c.route, c.label, c.count])}
+            head={["Page", "Button or link", "Clicks"]}
+            rows={summary.topClicks.map((c) => [
+              routeName(c.route),
+              c.label,
+              c.count,
+            ])}
           />
         </Section>
-        <Section title="Tracked interactions">
+        <Section title="Feature usage">
           <PlainTable
-            head={["Event", "Count"]}
-            rows={summary.topTrackEvents.map((t) => [t.name, t.count])}
+            head={["What people did", "Times"]}
+            rows={summary.topTrackEvents.map((t) => [
+              TRACK_EVENT_NAMES[t.name] ?? t.name,
+              t.count,
+            ])}
           />
         </Section>
       </div>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <Section title="Time on page (median)">
+        <Section title="Typical time on each page">
           <PlainTable
-            head={["Page", "Median", "Measured views"]}
+            head={["Page", "Typical time", "Measured visits"]}
             rows={summary.durationByRoute.map((d) => [
-              d.route,
+              routeName(d.route),
               fmtDuration(d.medianMs),
               d.views,
             ])}
           />
         </Section>
-        <Section title="Locales">
+        <Section title="Languages">
           <PlainTable
-            head={["Locale", "Views"]}
+            head={["Language", "Page views"]}
             rows={summary.localeSplit.map((l) => [l.locale, l.views])}
           />
         </Section>
@@ -159,17 +251,17 @@ export function AnalyticsDashboard({
 
       <Section title="Recent activity (last 24 h)">
         <PlainTable
-          head={["Time (UTC)", "Type", "Page", "Country", "Detail"]}
+          head={["Time (UTC)", "What happened", "Page", "Country", "Detail"]}
           rows={summary.last24h.recent.map((e) => [
             e.ts.slice(11, 19),
-            e.type,
-            e.route,
+            EVENT_TYPE_NAMES[e.type] ?? e.type,
+            routeName(e.route),
             e.country ?? "—",
             e.detail,
           ])}
         />
       </Section>
-    </main>
+    </>
   );
 }
 

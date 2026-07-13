@@ -124,6 +124,8 @@ export function recordClick(click: {
   label: string;
   role: ClickRole;
   href: string | null;
+  /** data-section-id ancestor at click time; null off-dashboard. */
+  section: string | null;
 }): void {
   if (!isEnabled()) return;
   enqueue({
@@ -132,6 +134,7 @@ export function recordClick(click: {
     label: click.label,
     role: click.role,
     href: click.href ? click.href.slice(0, ANALYTICS_HREF_MAX) : click.href,
+    section: click.section,
   });
 }
 

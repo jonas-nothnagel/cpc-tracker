@@ -21,7 +21,7 @@ function ev(overrides: Partial<AnalyticsEvent> & { type: AnalyticsEvent["type"] 
       : {}),
     ...(overrides.type === "page_leave" ? { viewId: "v0000001", durationMs: 0 } : {}),
     ...(overrides.type === "click"
-      ? { label: "Run analysis", role: "button", href: null }
+      ? { label: "Run analysis", role: "button", href: null, section: null }
       : {}),
     ...(overrides.type === "track" ? { name: "drawer_opened", props: {} } : {}),
     ...overrides,
@@ -128,5 +128,128 @@ describe("aggregate", () => {
     expect(summary.last24h.visitors).toBe(1);
     expect(summary.last24h.recent).toHaveLength(1);
     expect(JSON.stringify(summary.last24h.recent)).not.toContain("new");
+  });
+});
+
+describe("sectionUsage", () => {
+  const sectionView = (section: string, ts: string, extra = {}) =>
+    ev({ type: "track", name: "section_viewed", props: { section }, ts, ...extra });
+
+  it("always returns all sections zero-filled, in page order", () => {
+    const summary = aggregate([], NOW);
+    expect(summary.sectionUsage).toHaveLength(9);
+    expect(summary.sectionUsage.map((s) => s.section)).toEqual([
+      "direction",
+      "doc-focus",
+      "doc-pairs",
+      "friction-types",
+      "where-to-focus",
+      "sectors",
+      "financing",
+      "implementation",
+      "explore",
+    ]);
+    for (const s of summary.sectionUsage) {
+      expect(s).toMatchObject({
+        interactions: 0,
+        viewers: 0,
+        views: 0,
+        medianDwellMs: 0,
+        shareOfInteractions: 0,
+      });
+    }
+    expect(summary.sectionUsage[6].conditional).toBe(true); // financing
+  });
+
+  it("counts attributed clicks and shares sum to 1; unattributed and off-dashboard clicks excluded", () => {
+    const summary = aggregate(
+      [
+        ev({ type: "click", section: "direction", label: "Wheel: document arc" }),
+        ev({ type: "click", section: "direction", label: "Wheel: document arc" }),
+        ev({ type: "click", section: "sectors", label: "Lens tab" }),
+        ev({ type: "click", label: "Header link" }), // no section
+        ev({ type: "click", section: "direction", route: "/methodology" }), // off-dashboard
+      ],
+      NOW,
+    );
+    const byId = Object.fromEntries(
+      summary.sectionUsage.map((s) => [s.section, s]),
+    );
+    expect(byId.direction.interactions).toBe(2);
+    expect(byId.sectors.interactions).toBe(1);
+    const shares = summary.sectionUsage.map((s) => s.shareOfInteractions);
+    expect(shares.reduce((a, b) => a + b, 0)).toBeCloseTo(1);
+    expect(byId.direction.shareOfInteractions).toBeCloseTo(2 / 3);
+  });
+
+  it("tolerates legacy click rows without a section field", () => {
+    const legacy = ev({ type: "click" }) as unknown as Record<string, unknown>;
+    delete legacy.section;
+    const summary = aggregate([legacy as unknown as AnalyticsEvent], NOW);
+    expect(summary.sectionUsage.every((s) => s.interactions === 0)).toBe(true);
+  });
+
+  it("maps unambiguous drawer kinds to sections, excludes target-pair", () => {
+    const summary = aggregate(
+      [
+        ev({ type: "track", name: "drawer_opened", props: { kind: "sector" } }),
+        ev({ type: "track", name: "drawer_opened", props: { kind: "theme" } }),
+        ev({ type: "track", name: "drawer_opened", props: { kind: "target-pair" } }),
+      ],
+      NOW,
+    );
+    const byId = Object.fromEntries(
+      summary.sectionUsage.map((s) => [s.section, s]),
+    );
+    expect(byId.sectors.interactions).toBe(1);
+    expect(byId.direction.interactions).toBe(1);
+    const total = summary.sectionUsage.reduce((a, s) => a + s.interactions, 0);
+    expect(total).toBe(2); // target-pair dropped
+    expect(summary.elementsBySection.sectors[0]).toEqual({
+      label: "Detail panel: sector",
+      count: 1,
+    });
+  });
+
+  it("collapses scroll bounces, dedups viewers, and derives capped dwell", () => {
+    const summary = aggregate(
+      [
+        sectionView("direction", "2026-07-13T10:00:00Z"),
+        sectionView("direction", "2026-07-13T10:00:05Z"), // bounce: collapsed
+        sectionView("doc-focus", "2026-07-13T10:00:30Z"), // direction dwell 30s
+        sectionView("direction", "2026-07-13T10:01:00Z"), // re-entry: new view
+        // second browser, long parked gap → dwell capped at 15 min
+        sectionView("direction", "2026-07-13T11:00:00Z", { clientId: "c2", sessionId: "s2" }),
+        sectionView("doc-focus", "2026-07-13T11:40:00Z", { clientId: "c2", sessionId: "s2" }),
+      ],
+      NOW,
+    );
+    const byId = Object.fromEntries(
+      summary.sectionUsage.map((s) => [s.section, s]),
+    );
+    expect(byId.direction.views).toBe(3); // 2 in s1 (bounce collapsed) + 1 in s2
+    expect(byId.direction.viewers).toBe(2); // c1, c2
+    // dwell samples: 30s (s1) and 15min cap (s2); s1 re-entry has no successor.
+    expect(byId.direction.medianDwellMs).toBe(
+      Math.round((30_000 + 15 * 60_000) / 2),
+    );
+    expect(byId["doc-focus"].views).toBe(2);
+    // s1 doc-focus → direction re-entry 30s later; s2 doc-focus has no successor.
+    expect(byId["doc-focus"].medianDwellMs).toBe(30_000);
+  });
+
+  it("ranks elements per section for the drill-down", () => {
+    const summary = aggregate(
+      [
+        ev({ type: "click", section: "direction", label: "Wheel: document arc" }),
+        ev({ type: "click", section: "direction", label: "Wheel: document arc" }),
+        ev({ type: "click", section: "direction", label: "Wheel: connection ribbon" }),
+      ],
+      NOW,
+    );
+    expect(summary.elementsBySection.direction).toEqual([
+      { label: "Wheel: document arc", count: 2 },
+      { label: "Wheel: connection ribbon", count: 1 },
+    ]);
   });
 });

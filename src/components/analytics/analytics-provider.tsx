@@ -78,10 +78,16 @@ export function AnalyticsProvider() {
         href =
           el.origin === window.location.origin ? el.pathname : "external";
       }
+      // Section attribution: section wrappers carry data-section-id, and the
+      // sticky centerpiece/expand modal mirror the active section's id.
+      const section =
+        el.closest("[data-section-id]")?.getAttribute("data-section-id") ??
+        null;
       recordClick({
         label,
         role: clickRole(el.tagName, el.getAttribute("role")),
         href,
+        section,
       });
     };
 

@@ -49,18 +49,25 @@ one-line, deletable statement.
 
    Expected hits: the `<AnalyticsProvider />` mount in
    `src/app/[locale]/layout.tsx` (also drop the then-unused
-   `import { Suspense } from "react"` there) and the `track(...)` call sites
+   `import { Suspense } from "react"` there), the `track(...)` call sites
    in dashboard/upload/chat components (revert `onChange`/`onStepChange`
-   wrappers to their plain callbacks).
+   wrappers to their plain callbacks), and the `section_viewed` import +
+   effect in `src/components/dashboard/coherence-briefing/index.tsx`.
 
-   Rehearsed 2026-07-13: after these steps `pnpm build`, `pnpm test`
-   (392 tests), and `pnpm lint` were all green.
+   Rehearsed 2026-07-13 (v1 scope): after these steps `pnpm build`,
+   `pnpm test`, and `pnpm lint` were all green.
 
 3. Optional (inert if left): remove `ANALYTICS_DASHBOARD_TOKEN` and
    `NEXT_PUBLIC_ANALYTICS_DISABLED` from `.env.example`, the
    `python/output/analytics` lines from `.gitignore` / `.dockerignore`, the
    `analytics` token from the skip-case in `start.sh`, and the `analytics`
    token from the matcher regex in `src/proxy.ts`.
+
+   Also inert if left: the `data-track="..."` attributes on wheel/matrix/
+   explorer elements and the `data-section-id={activeSection}` attributes on
+   the centerpiece containers — plain data attributes that nothing reads
+   once the provider is gone. Delete them only if you want a spotless tree
+   (grep `data-track=` and `data-section-id={activeSection}`).
 
 4. Verify: `pnpm build && pnpm test` — both green. Collected data (if any)
    remains on the persistent volume under `analytics/`; delete that

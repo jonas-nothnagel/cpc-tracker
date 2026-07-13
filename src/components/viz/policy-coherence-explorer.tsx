@@ -4171,6 +4171,7 @@ export function PolicyCoherenceExplorer({
                         strokeOpacity={isUnfunded ? 0.2 : 0.35}
                         strokeWidth={0.75}
                         className="cursor-pointer"
+                        data-track="Explore: budget wedge"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArcClick(arc.id);
@@ -4256,6 +4257,7 @@ export function PolicyCoherenceExplorer({
                       stroke={isFocal && !activeId ? rimColor : "none"}
                       strokeWidth={isFocal && !activeId ? 1.5 : 0}
                       className="transition-opacity duration-200 cursor-pointer"
+                      data-track="Explore: category arc"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleArcClick(arc.id);
@@ -4443,6 +4445,7 @@ export function PolicyCoherenceExplorer({
                       strokeWidth={isEmbed ? 1 : 1.5}
                       opacity={isDimmed ? 0.12 : isEmbed ? 0.8 : 1}
                       className="transition-opacity duration-200 cursor-pointer"
+                      data-track="Explore: target dot"
                       onMouseEnter={() => {
                         if (!selectedId) setHoveredId(node.id);
                       }}
@@ -4693,6 +4696,7 @@ export function PolicyCoherenceExplorer({
                         fontWeight={isFocal && !activeId ? 700 : isEmbed ? 500 : 600}
                         fill={labelFill}
                         style={{ letterSpacing: isEmbed ? "0.015em" : "0.04em", transition: "fill 200ms, font-size 200ms" }}
+                        data-track="Explore: category arc"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArcClick(arc.id);

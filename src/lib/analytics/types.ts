@@ -70,6 +70,12 @@ export interface ClickEvent extends AnalyticsEnvelope {
   role: ClickRole;
   /** Internal pathname for links; external targets stored as "external". */
   href: string | null;
+  /**
+   * Dashboard section (data-section-id ancestor at click time; whitelisted
+   * against SECTION_IDS in sections.ts). Added 2026-07 without a schema
+   * bump: rows written earlier lack the field — readers must `?? null`.
+   */
+  section: string | null;
 }
 
 export interface TrackEvent extends AnalyticsEnvelope {
@@ -130,6 +136,31 @@ export interface AnalyticsSummary {
   };
   durationByRoute: { route: string; medianMs: number; views: number }[];
   last24h: { views: number; visitors: number; recent: RecentEvent[] };
+  /** "What gets used": all coherence-dashboard sections, page order, zero-filled. */
+  sectionUsage: SectionUsage[];
+  /** Ranked controls per section (top 10), for the usage-map drill-down. */
+  elementsBySection: Record<string, { label: string; count: number }[]>;
+}
+
+/** One row of the "what gets used" usage map. */
+export interface SectionUsage {
+  section: string;
+  name: string;
+  blurb: string;
+  /** 1-based position on the dashboard page. */
+  order: number;
+  /** Only rendered for countries with the relevant data (BER/BTR). */
+  conditional: boolean;
+  /** Attributed clicks + unambiguous drawer opens. */
+  interactions: number;
+  /** Unique browsers that scrolled the section into view. */
+  viewers: number;
+  /** Times the section was scrolled into view (bounces collapsed). */
+  views: number;
+  /** Approximate: derived from event gaps, capped; 0 when unknown. */
+  medianDwellMs: number;
+  /** interactions / all attributed interactions; 0..1. */
+  shareOfInteractions: number;
 }
 
 /** Sanitized activity-feed row; never carries clientId/sessionId. */
