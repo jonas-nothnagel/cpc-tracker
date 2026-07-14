@@ -191,6 +191,7 @@ export function EvaluationSections({
   return (
     <div className="space-y-10 mt-10">
       <EvaluationTutorial models={report.models} />
+      <RatingsLedgerSummary report={report} ratings={ratings} />
       <EvaluationSampleTabs
         report={report}
         ratings={ratings}
@@ -202,6 +203,131 @@ export function EvaluationSections({
         onChangeRating={applyRating}
       />
     </div>
+  );
+}
+
+/**
+ * Break the ratings ledger down against the CURRENT report so a re-run never
+ * reads as data loss: ratings persist across model re-runs, but each re-run
+ * redraws the deterministic samples, so previously rated pairs may no longer
+ * appear in the sections below. Pure and exported for tests.
+ */
+export function summarizeLedger(
+  report: Pick<
+    ModelComparisonReport,
+    "models" | "uniqueSignalRandomSample" | "consensusFlaggedRandomSample"
+  >,
+  ratings: RatingsByCountry,
+): {
+  totalRated: number;
+  inCurrentSamples: number;
+  fromEarlierRuns: number;
+  perModel: { slug: string; sampleSize: number; rated: number }[];
+  consensus: { sampleSize: number; rated: number };
+} {
+  const ratedKeys = new Set(Object.keys(ratings));
+  const currentKeys = new Set<string>();
+  const perModel = report.models.map((slug) => {
+    const sample = report.uniqueSignalRandomSample?.[slug] ?? [];
+    let rated = 0;
+    for (const row of sample) {
+      const key = pairKeyOf(row);
+      currentKeys.add(key);
+      if (ratedKeys.has(key)) rated++;
+    }
+    return { slug, sampleSize: sample.length, rated };
+  });
+  const consensusSample = report.consensusFlaggedRandomSample ?? [];
+  let consensusRated = 0;
+  for (const row of consensusSample) {
+    const key = pairKeyOf(row);
+    currentKeys.add(key);
+    if (ratedKeys.has(key)) consensusRated++;
+  }
+  let inCurrentSamples = 0;
+  for (const key of ratedKeys) if (currentKeys.has(key)) inCurrentSamples++;
+  return {
+    totalRated: ratedKeys.size,
+    inCurrentSamples,
+    fromEarlierRuns: ratedKeys.size - inCurrentSamples,
+    perModel,
+    consensus: { sampleSize: consensusSample.length, rated: consensusRated },
+  };
+}
+
+/** "Your evaluation ledger" panel: totals + per-model sample coverage. */
+function RatingsLedgerSummary({
+  report,
+  ratings,
+}: {
+  report: ModelComparisonReport;
+  ratings: RatingsByCountry;
+}) {
+  const s = summarizeLedger(report, ratings);
+  if (s.totalRated === 0) return null;
+  return (
+    <section className="bg-white border border-gray-200 rounded-lg p-5">
+      <h2 className="text-base font-medium text-[var(--undp-black)] mb-1">
+        Your evaluation ledger
+      </h2>
+      <p className="text-xs text-[var(--undp-gray)] mb-3 max-w-3xl">
+        Every rating is saved permanently on the server, including across
+        model re-runs. When the comparison is regenerated, the samples below
+        are re-drawn — so earlier ratings may not appear in the current
+        samples, but they are not lost.
+      </p>
+      <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-[var(--undp-black)] mb-3">
+        <span>
+          <span className="font-medium">{s.totalRated}</span> pairs rated in
+          total (incl. skips)
+        </span>
+        <span>
+          <span className="font-medium">{s.inCurrentSamples}</span> appear in
+          the current samples
+        </span>
+        {s.fromEarlierRuns > 0 && (
+          <span className="text-[var(--undp-gray)]">
+            {s.fromEarlierRuns} rated against earlier runs (saved, not shown
+            below)
+          </span>
+        )}
+      </div>
+      <table className="text-xs w-full max-w-xl">
+        <thead>
+          <tr className="text-left text-[var(--undp-gray)] border-b border-gray-200">
+            <th className="py-1 pr-4 font-medium">Sample</th>
+            <th className="py-1 pr-4 font-medium">Rated</th>
+            <th className="py-1 font-medium">Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          {s.perModel.map((m) => (
+            <tr key={m.slug} className="border-b border-gray-100 last:border-0">
+              <td className="py-1 pr-4">
+                <span
+                  className="inline-block w-2 h-2 rounded-full mr-1.5"
+                  style={{ backgroundColor: modelColor(m.slug) }}
+                />
+                {prettify(m.slug)} solo flags
+              </td>
+              <td className="py-1 pr-4 tabular-nums">
+                {m.rated} of {m.sampleSize}
+              </td>
+              <td className="py-1 tabular-nums">{m.sampleSize - m.rated}</td>
+            </tr>
+          ))}
+          <tr>
+            <td className="py-1 pr-4">Consensus-flagged pairs</td>
+            <td className="py-1 pr-4 tabular-nums">
+              {s.consensus.rated} of {s.consensus.sampleSize}
+            </td>
+            <td className="py-1 tabular-nums">
+              {s.consensus.sampleSize - s.consensus.rated}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   );
 }
 
