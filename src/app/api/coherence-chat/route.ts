@@ -22,6 +22,8 @@
 
 import { NextResponse } from "next/server";
 
+// Removable usage analytics: see src/lib/analytics/README.md.
+import { appendChatQuery } from "@/lib/analytics/chat-queries";
 import { appendEvent } from "@/lib/footprint/ledger";
 import { estimateChatImpacts } from "@/lib/footprint/ecologits-api";
 import type { ChatContextMeta } from "@/lib/chat-context-selection";
@@ -1093,6 +1095,9 @@ export async function POST(req: Request) {
   if (!context) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });
   }
+
+  // Removable usage analytics: see src/lib/analytics/README.md.
+  appendChatQuery(query, context.country, req.headers.get("dnt"));
 
   // Empty visible-docs short circuit: when the user has hidden every
   // document on the wheel, there's literally nothing for the chat to reason

@@ -1425,6 +1425,7 @@
       "genericError": "Sorry, that didn't work.",
       "askPlaceholderProminent": "Ask anything about these policies…",
       "askAriaProminent": "Ask the assistant about the policy documents",
+      "storageNotice": "Questions are stored anonymously to improve the tool.",
       "askProminent": "Ask →",
       "askPoliciesLabel": "Ask the policies"
     },

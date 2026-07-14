@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
+import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { FootprintChip } from "@/components/sustainability/footprint-chip";
 import { routing } from "@/i18n/routing";
 
@@ -60,6 +62,10 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           {children}
           <FootprintChip />
+          {/* Removable usage analytics: see src/lib/analytics/README.md. */}
+          <Suspense fallback={null}>
+            <AnalyticsProvider />
+          </Suspense>
         </NextIntlClientProvider>
       </body>
     </html>

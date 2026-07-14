@@ -715,6 +715,7 @@ export function WheelCenterpiece({
                 d={d}
                 fill={arcFill}
                 opacity={isGhost ? 0.25 : isFocus ? 1 : 0.85}
+                data-track="Wheel: document arc"
                 onClick={clickable ? () => handleArcClick(arc) : undefined}
                 onMouseEnter={hoverable ? () => handleArcHover(arc) : undefined}
                 onMouseLeave={hoverable ? () => handleArcHover(null) : undefined}
@@ -777,6 +778,7 @@ export function WheelCenterpiece({
           return (
             <g
               key={`agg-${key}`}
+              data-track="Wheel: connection ribbon"
               onMouseEnter={() => setHovered(key)}
               onMouseLeave={() => setHovered(null)}
               onClick={clickable ? () => handleAggregateClick(agg) : undefined}
@@ -1067,6 +1069,7 @@ export function WheelCenterpiece({
                   fontWeight={isFocus ? 700 : 500}
                   fill="var(--undp-black)"
                   opacity={isGhost ? 0.4 : 1}
+                  data-track="Wheel: document arc"
                   onClick={
                     labelClickable ? () => handleArcClick(arc) : undefined
                   }
@@ -1128,6 +1131,7 @@ export function WheelCenterpiece({
             })}
             {!state.suppressFocusReadout && (
               <g
+                data-track="Wheel: clear focus"
                 onClick={onArcClick ? () => onArcClick(null) : undefined}
                 className={onArcClick ? "cursor-pointer" : undefined}
                 style={{ animation: "wbReadout 300ms ease-out both" }}

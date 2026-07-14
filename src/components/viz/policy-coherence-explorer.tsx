@@ -18,6 +18,7 @@ import {
   useNr7BadgeLabels,
   type Nr7Status,
 } from "@/lib/labels";
+import { track } from "@/lib/analytics/client";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -1632,6 +1633,12 @@ function ChatBar({
           </div>
         )}
       </form>
+
+      {/* Disclosure for the chat-query ledger (removable usage analytics:
+          see src/lib/analytics/README.md). */}
+      <p className="px-1 text-[10px] text-[var(--undp-gray)]/80">
+        {t("storageNotice")}
+      </p>
 
       {chat.loading && (
         <div className="text-[11px] text-[var(--undp-gray)] italic px-1">
@@ -3446,6 +3453,8 @@ export function PolicyCoherenceExplorer({
           history,
         });
 
+        // Removable usage analytics: see src/lib/analytics/README.md.
+        track("chat_message_sent");
         const res = await fetch("/api/coherence-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -4168,6 +4177,7 @@ export function PolicyCoherenceExplorer({
                         strokeOpacity={isUnfunded ? 0.2 : 0.35}
                         strokeWidth={0.75}
                         className="cursor-pointer"
+                        data-track="Explore: budget wedge"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArcClick(arc.id);
@@ -4253,6 +4263,7 @@ export function PolicyCoherenceExplorer({
                       stroke={isFocal && !activeId ? rimColor : "none"}
                       strokeWidth={isFocal && !activeId ? 1.5 : 0}
                       className="transition-opacity duration-200 cursor-pointer"
+                      data-track="Explore: category arc"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleArcClick(arc.id);
@@ -4440,6 +4451,7 @@ export function PolicyCoherenceExplorer({
                       strokeWidth={isEmbed ? 1 : 1.5}
                       opacity={isDimmed ? 0.12 : isEmbed ? 0.8 : 1}
                       className="transition-opacity duration-200 cursor-pointer"
+                      data-track="Explore: target dot"
                       onMouseEnter={() => {
                         if (!selectedId) setHoveredId(node.id);
                       }}
@@ -4690,6 +4702,7 @@ export function PolicyCoherenceExplorer({
                         fontWeight={isFocal && !activeId ? 700 : isEmbed ? 500 : 600}
                         fill={labelFill}
                         style={{ letterSpacing: isEmbed ? "0.015em" : "0.04em", transition: "fill 200ms, font-size 200ms" }}
+                        data-track="Explore: category arc"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArcClick(arc.id);

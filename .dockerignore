@@ -19,9 +19,11 @@ python/**/*.pyc
 python/output/.cache
 python/analyses
 python/tmp
-# Feedback ledgers live only on the persistent volume; bundling them in the
-# image would let start.sh's country re-sync wipe live feedback on deploy.
+# Feedback + analytics ledgers live only on the persistent volume; bundling
+# them in the image would let start.sh's country re-sync wipe live data on
+# deploy.
 python/output/feedback
+python/output/analytics
 
 # Country / pilot scratch space we don't want shipped
 dev_data_scripts/sharepoint_sync
