@@ -126,7 +126,6 @@ export function DocFocusSection({
   return (
     <SlideFrame
       id={DOC_FOCUS_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       controls={
@@ -230,7 +229,7 @@ function DocSwitcher({
       aria-label={t("switcherAriaLabel")}
       className="flex flex-wrap items-center gap-1.5"
     >
-      <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mr-2">
+      <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mr-2">
         {t("focusOn")}
       </span>
       {ordered.map((d) => {
@@ -284,7 +283,7 @@ function DocFocusEvidence({
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
           {t("fullTitle")}
         </p>
         <DocInfoPopover
@@ -312,7 +311,7 @@ function DocFocusEvidence({
             />
           )}
           <div>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
               {t("whereShowsMisalignment", { label })}
             </p>
             <ul className="divide-y divide-gray-200 border-y border-gray-200">
@@ -329,11 +328,11 @@ function DocFocusEvidence({
               ))}
             </ul>
             {remainder > 0 && (
-              <p className="mt-2 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
+              <p className="mt-2 text-[11px] text-[var(--undp-gray)] tabular-nums">
                 {t("morePairs", { count: remainder, label })}
               </p>
             )}
-            <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
+            <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
               {t("notSettledFindings")}
             </p>
           </div>
@@ -378,12 +377,12 @@ function FlaggedPairRow({
         className="w-full text-left py-2.5 px-1 rounded hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center justify-between gap-2 mb-1">
-          <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+          <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
             {t("targetSide", { doc: focusedDocLabel })}
           </span>
           {mechanism && (
             <span
-              className="text-[9.5px] uppercase tracking-wider font-semibold shrink-0"
+              className="text-[11px] uppercase tracking-wider font-semibold shrink-0"
               style={{ color: MECHANISM_COLORS[mechanism] }}
             >
               {contradictionLabels[mechanism]}
@@ -391,7 +390,7 @@ function FlaggedPairRow({
           )}
         </div>
         <p
-          className="text-[12.5px] text-[var(--undp-black)] leading-snug overflow-hidden"
+          className="text-[12px] text-[var(--undp-black)] leading-snug overflow-hidden"
           style={{
             fontFamily: HEADLINE_SERIF,
             display: "-webkit-box",
@@ -401,7 +400,7 @@ function FlaggedPairRow({
         >
           {focused.text}
         </p>
-        <p className="mt-1.5 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+        <p className="mt-1.5 text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
           {t("peerSide", { doc: peerDocLabel })}
         </p>
       </button>

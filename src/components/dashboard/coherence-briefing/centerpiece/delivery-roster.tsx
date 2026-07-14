@@ -58,7 +58,7 @@ export function DeliveryRoster({
     <div className="px-1 space-y-6">
       {/* What the report IS: source, country, and the action mix. */}
       <div>
-        <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
           {t("header.eyebrow")}
         </p>
         <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">
@@ -79,7 +79,7 @@ export function DeliveryRoster({
       {/* Involvement rows: institution + its actions as status dots, each row
           explorable to a one-line action list. */}
       <div>
-        <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
           {t("roster.heading")}
         </p>
         <ul className="space-y-2.5">
@@ -97,7 +97,7 @@ export function DeliveryRoster({
                       </span>
                       <span
                         aria-hidden="true"
-                        className="text-[var(--undp-gray)]/50 text-[10px]"
+                        className="text-[var(--undp-gray)]/50 text-[11px]"
                       >
                         +
                       </span>

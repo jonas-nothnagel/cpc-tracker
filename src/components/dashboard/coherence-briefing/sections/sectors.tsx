@@ -121,7 +121,6 @@ export function SectorsSection({
   return (
     <SlideFrame
       id={SECTORS_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       controls={
@@ -243,7 +242,7 @@ function LensChipRow({
     <div className="flex flex-col gap-3">
       {availableLenses.length > 0 && (
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
+          <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
             {t("groupBy")}
           </span>
           {availableLenses.map((opt) => {
@@ -268,7 +267,7 @@ function LensChipRow({
         </div>
       )}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
+        <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
           {t("show")}
         </span>
         {FILTER_OPTIONS.map((opt) => {
@@ -304,7 +303,7 @@ function SectorColumnHeader({
   const t = useTranslations("briefing.sectors");
   return (
     <div
-      className={`${GRID} px-1 pb-1 mb-1 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]`}
+      className={`${GRID} px-1 pb-1 mb-1 text-[11px] uppercase tracking-wider text-[var(--undp-gray)]`}
     >
       <span>{t("col.sector")}</span>
       <button
@@ -497,7 +496,7 @@ function SectorRow({
           >
             {row.categoryName}
           </p>
-          <p className="text-[10px] text-[var(--undp-gray)] tabular-nums leading-tight mt-0.5">
+          <p className="text-[11px] text-[var(--undp-gray)] tabular-nums leading-tight mt-0.5">
             {t("primaryCount", { count: row.targetCount })}
             {hasPool && row.relevantOnlyCount !== null
               ? " · " + t("relevantCount", { count: row.relevantOnlyCount })

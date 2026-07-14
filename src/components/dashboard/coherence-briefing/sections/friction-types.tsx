@@ -32,9 +32,7 @@ export function FrictionTypesSection({
   if (totals.total === 0) {
     return (
       <SlideFrame
-        id={FRICTION_TYPES_SECTION_ID}
-        eyebrow={t("emptyEyebrow")}
-        headline={t("emptyHeadline")}
+        id={FRICTION_TYPES_SECTION_ID}        headline={t("emptyHeadline")}
         body={t("emptyBody")}
       />
     );
@@ -43,7 +41,6 @@ export function FrictionTypesSection({
   return (
     <SlideFrame
       id={FRICTION_TYPES_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={composeHeadline(totals, t)}
       body={composeBody(totals, labels, t)}
       evidence={

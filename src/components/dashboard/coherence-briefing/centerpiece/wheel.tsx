@@ -810,6 +810,10 @@ export function WheelCenterpiece({
                   }}
                 />
               )}
+              {/* Terracotta flagged core, drawn dashed (not just red) so a
+                  possible misalignment stays distinguishable from the solid
+                  green aligned base without relying on colour, mirroring the
+                  legend's dashed sample (colour-blind-safe). */}
               {showTension && (
                 <path
                   d={curvePath(a.x, a.y, b.x, b.y)}
@@ -831,7 +835,7 @@ export function WheelCenterpiece({
                               ? 0.55
                               : 0.7
                   }
-                  strokeDasharray="5 3"
+                  strokeDasharray="6 4"
                   strokeLinecap="round"
                   style={{
                     transition: "stroke-opacity 220ms",
@@ -922,7 +926,7 @@ export function WheelCenterpiece({
                   fill="none"
                   stroke={color}
                   strokeWidth={2.5}
-                  strokeDasharray={contra ? "5 3" : "none"}
+                  strokeDasharray={contra ? "6 4" : "none"}
                   strokeLinecap="round"
                   strokeOpacity={0.95}
                 />

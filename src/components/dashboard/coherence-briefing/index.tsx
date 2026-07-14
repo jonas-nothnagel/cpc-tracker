@@ -1632,16 +1632,13 @@ export function CoherenceBriefing({
                 countryConfig={countryConfig}
                 onToggle={toggleDoc}
               />
-              <div className="relative mb-2">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] text-center">
-                  {sectionLabels[activeSection]}
-                </p>
+              <div className="mb-2 flex justify-end">
                 <button
                   type="button"
                   onClick={() => setExpanded(true)}
                   aria-label={t("expand.aria")}
                   title={t("expand.aria")}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+                  className="inline-flex items-center gap-1 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
                 >
                   <svg
                     width="11"
@@ -1822,7 +1819,7 @@ function JumpNav({
                     : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                 }`}
               >
-                <span className="text-[10px] tabular-nums opacity-60 mr-1.5">
+                <span className="text-[11px] tabular-nums opacity-60 mr-1.5">
                   0{i + 1}
                 </span>
                 {sectionLabels[id]}
@@ -1869,7 +1866,7 @@ function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
 function LegendRow({ label, children }: { label: string; children: ReactNode }) {
   return (
     <>
-      <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+      <span className="uppercase tracking-wider text-[11px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
         {label}
       </span>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
@@ -1929,7 +1926,7 @@ function FooterLink({ countryId }: { countryId?: string }) {
     ? `/prototypes?country=${encodeURIComponent(countryId)}`
     : "/";
   return (
-    <div className="fixed bottom-3 left-6 z-10 text-[10px] text-[var(--undp-gray)]">
+    <div className="fixed bottom-3 left-6 z-10 text-[11px] text-[var(--undp-gray)]">
       <Link
         href={dashboardHref}
         className="hover:text-[var(--undp-black)] hover:underline"

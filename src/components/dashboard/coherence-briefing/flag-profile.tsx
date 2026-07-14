@@ -25,6 +25,7 @@ import {
 } from "@/lib/coherence-briefing";
 import { useDrawerHistory } from "@/lib/use-drawer-history";
 import { DrawerBackButton } from "@/components/ui/drawer-back-button";
+import { useFocusTrap } from "@/components/ui/use-focus-trap";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
@@ -122,6 +123,8 @@ export function FlagProfileDrawer({
       document.body.style.overflow = prev;
     };
   }, [subject]);
+
+  const panelRef = useFocusTrap<HTMLElement>(subject !== null);
 
   const targetMap = useMemo(
     () => new Map(targets.map((t) => [t.id, t])),
@@ -251,6 +254,7 @@ export function FlagProfileDrawer({
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={t("dialogAria", { name: headerTitle })}
@@ -343,7 +347,7 @@ export function FlagProfileDrawer({
                   subjectKind={subject.kind}
                 />
               )}
-              <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
+              <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
                 {t("aiDisclaimer")}
               </p>
             </>
@@ -368,7 +372,7 @@ function DocBadge({
         className="inline-block w-2 h-2 rounded-full"
         style={{ backgroundColor: getDocColor(countryConfig, docType) }}
       />
-      <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+      <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
         {getDocMediumLabel(countryConfig, docType)}
       </span>
     </span>
@@ -451,7 +455,7 @@ function CompositionColumn({
   const max = rows[0]?.count ?? 0;
   return (
     <div>
-      <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {title}
       </p>
       {rows.length === 0 ? (
@@ -526,7 +530,7 @@ function ManageabilityBar({
   const fPct = Math.round((fundamental / total) * 100);
   return (
     <div>
-      <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {t("manageability.title")}
       </p>
       <div
@@ -571,7 +575,7 @@ function RepresentativePairs({
   const t = useTranslations("briefing.drawer.flagProfile");
   return (
     <div className="border-t border-gray-200 pt-4">
-      <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {subjectKind === "target"
           ? t("examples.target")
           : t("examples.representative")}
@@ -600,7 +604,7 @@ function RepresentativePairs({
                   sharedContext={pair.sharedContext}
                 />
               </div>
-              <p className="text-[10px] text-[var(--undp-gray)] mb-1">
+              <p className="text-[11px] text-[var(--undp-gray)] mb-1">
                 {getDocMediumLabel(countryConfig, a.sourceDocument)}{" "}
                 {a.sourceLabel} ↔{" "}
                 {getDocMediumLabel(countryConfig, b.sourceDocument)}{" "}
@@ -649,7 +653,7 @@ function TargetFrictionTreeView({
   if (tree.byMechanism.length === 0) return null;
   return (
     <div className="border-t border-gray-200 pt-4">
-      <p className="text-[9.5px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
         {t("tree.heading")}
       </p>
       <div className="space-y-4">
@@ -709,7 +713,7 @@ function MechanismBranch({
       <div className="mt-1.5 ml-[0.3rem] border-l border-gray-200 pl-3.5 space-y-2.5">
         {group.byDoc.map((doc) => (
           <div key={doc.peerDoc}>
-            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+            <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
               {doc.peerDoc === focalDoc ? "within" : "vs"}{" "}
               {getDocMediumLabel(countryConfig, doc.peerDoc)}
               <span className="ml-1.5 tabular-nums">

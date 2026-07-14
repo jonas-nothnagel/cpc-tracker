@@ -67,7 +67,7 @@ export function DocMetaCard({
         </p>
       )}
       {meta.docKind && (
-        <p className="flex items-start gap-1.5 text-[12.5px] font-medium text-[var(--undp-black)] leading-snug">
+        <p className="flex items-start gap-1.5 text-[12px] font-medium text-[var(--undp-black)] leading-snug">
           {!hideDot && (
             <span
               aria-hidden="true"
@@ -85,7 +85,7 @@ export function DocMetaCard({
       )}
       {meta.objective && (
         <p
-          className="text-[12.5px] italic text-[var(--undp-black)] leading-snug"
+          className="text-[12px] italic text-[var(--undp-black)] leading-snug"
           style={{ fontFamily: HEADLINE_SERIF }}
         >
           {meta.objective}
@@ -96,7 +96,7 @@ export function DocMetaCard({
           href={meta.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-[12.5px] font-medium text-[var(--undp-blue)] hover:underline"
+          className="inline-flex items-center gap-1 text-[12px] font-medium text-[var(--undp-blue)] hover:underline"
         >
           {t("viewDocument")}
           <span aria-hidden="true">↗</span>

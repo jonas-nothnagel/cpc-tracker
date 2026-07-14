@@ -170,7 +170,7 @@
       "flaggedRelation": "POSIBLEMENTE DESALINEADO CON"
     },
     "wheel": {
-      "wheelAria": "Rueda de coherencia de políticas",
+      "wheelAria": "Rueda de coherencia de políticas: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política",
       "unclassified": "Sin clasificar",
       "arcTargetCount": "{count, plural, one {# meta} other {# metas}}",
       "arcFrictionShare": "{pct}% de los vínculos entre documentos posiblemente desalineados",

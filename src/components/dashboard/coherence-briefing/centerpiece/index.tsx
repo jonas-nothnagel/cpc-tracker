@@ -131,13 +131,13 @@ export function WheelLegend({
   const t = useTranslations("briefing.centerLegend");
   return (
     <div
-      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)] ${
+      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)] ${
         justify === "start" ? "justify-start" : "justify-center"
       }`}
     >
       <LegendDot color="#196127" label={t("legend.aligned")} />
       <LegendDot color="#dc2626" label={t("legend.potentialMis")} dashed />
-      <span className="text-[10px] text-[var(--undp-gray)]/70">
+      <span className="text-[11px] text-[var(--undp-gray)]/70">
         {t("legend.ribbonWidth")}
       </span>
     </div>

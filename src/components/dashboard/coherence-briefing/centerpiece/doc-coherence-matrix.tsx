@@ -120,7 +120,7 @@ export function DocCoherenceMatrix({
                 style={{ height: HEADER_HEIGHT }}
               >
                 <span
-                  className="text-[10px] leading-tight text-center text-[var(--undp-gray)]"
+                  className="text-[11px] leading-tight text-center text-[var(--undp-gray)]"
                   style={{ wordSpacing: "-1px" }}
                   title={getDocMediumLabel(countryConfig, d.docType)}
                 >
@@ -139,7 +139,7 @@ export function DocCoherenceMatrix({
           {ordered.map((rowDoc, ri) => (
             <Fragment key={`r-${rowDoc.docType}`}>
               <div
-                className="flex items-center justify-end pr-2 text-[10px] text-[var(--undp-gray)] truncate"
+                className="flex items-center justify-end pr-2 text-[11px] text-[var(--undp-gray)] truncate"
                 style={{ maxWidth: 140 }}
                 title={getDocMediumLabel(countryConfig, rowDoc.docType)}
               >
@@ -217,7 +217,7 @@ export function DocCoherenceMatrix({
         {/* 2-col grid: the label column auto-sizes to the widest label across
             locales, so a longer label can't overflow into the text. */}
         <div className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 gap-y-1.5">
-          <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+          <span className="uppercase tracking-wider text-[11px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
             {t("groupColours")}
           </span>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
@@ -236,7 +236,7 @@ export function DocCoherenceMatrix({
               {t("flagged")}
             </span>
           </div>
-          <span className="uppercase tracking-wider text-[9px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
+          <span className="uppercase tracking-wider text-[11px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
             {t("groupIntensity")}
           </span>
           <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
@@ -253,7 +253,7 @@ export function DocCoherenceMatrix({
             <span className="text-[var(--undp-gray)]/80">{t("legendHint")}</span>
           </div>
         </div>
-        <p className="text-[10px] text-[var(--undp-gray)]/60 text-center mt-1">
+        <p className="text-[11px] text-[var(--undp-gray)]/60 text-center mt-1">
           ({t("clickHint")})
         </p>
       </div>

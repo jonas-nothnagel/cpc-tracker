@@ -225,7 +225,7 @@ export function DocToggleLegend({
   if (allDocs.length === 0) return null;
   return (
     <div className="mb-3">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[10px]">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[11px]">
         {allDocs.map((doc) => (
           <DocToggleItem
             key={doc}
@@ -236,7 +236,7 @@ export function DocToggleLegend({
           />
         ))}
       </div>
-      <p className="mt-1.5 text-center text-[9px] uppercase tracking-wider text-[var(--undp-gray)]/70">
+      <p className="mt-1.5 text-center text-[11px] uppercase tracking-wider text-[var(--undp-gray)]/70">
         {t("toggle.clickToAddRemove")}
       </p>
     </div>
