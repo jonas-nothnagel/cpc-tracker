@@ -810,10 +810,12 @@ export function WheelCenterpiece({
                   }}
                 />
               )}
-              {/* Terracotta flagged core, drawn dashed (not just red) so a
-                  possible misalignment stays distinguishable from the solid
-                  green aligned base without relying on colour, mirroring the
-                  legend's dashed sample (colour-blind-safe). */}
+              {/* Terracotta flagged core, drawn as a dashed thread (not just
+                  red) so a possible misalignment stays distinguishable from the
+                  solid green aligned base without relying on colour. Uses the
+                  same 6/4 dash rhythm as the LegendDot in centerpiece/index.tsx
+                  so the colour-blind cue reads consistently across the wheel and
+                  its legend. */}
               {showTension && (
                 <path
                   d={curvePath(a.x, a.y, b.x, b.y)}
