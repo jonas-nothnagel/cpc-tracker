@@ -18,6 +18,8 @@ import {
   buildExtractionReviewEvent,
   submitExtractionReview,
 } from "@/lib/upload-helpers";
+// Removable usage analytics: see src/lib/analytics/README.md.
+import { track } from "@/lib/analytics/client";
 import { getFeedbackClientId } from "@/lib/feedback/client-id";
 import { useTargets } from "@/hooks/useTargets";
 import { useExtraction } from "@/hooks/useExtraction";
@@ -342,6 +344,8 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
   async function runAnalysis() {
     setSubmitting(true);
     setSubmitError(null);
+    // Removable usage analytics: see src/lib/analytics/README.md.
+    track("analysis_run_started");
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -392,7 +396,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
         {/* Wizard navigation */}
         <WizardNav
           currentStep={step}
-          onStepChange={setStep}
+          onStepChange={(s) => (track("upload_step", { step: s }), setStep(s))}
           canProceed={canProceed}
           hasExtractionPending={
             step !== 0 && extraction.extractedItems.length > 0

@@ -31,6 +31,8 @@ import {
 } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+// Removable usage analytics: see src/lib/analytics/README.md.
+import { track } from "@/lib/analytics/client";
 import { Modal } from "@/components/ui/modal";
 import {
   SECTORS_SECTION_ID,
@@ -1301,6 +1303,9 @@ export function CoherenceBriefing({
     return () => observer.disconnect();
   }, []);
 
+  // Removable usage analytics: see src/lib/analytics/README.md.
+  useEffect(() => void track("section_viewed", { section: activeSection }), [activeSection]);
+
   const setSectionRef = useCallback(
     (id: SectionId) => (el: HTMLElement | null) => {
       sectionRefs.current[id] = el;
@@ -1622,7 +1627,9 @@ export function CoherenceBriefing({
                 : "")
             }
           >
-            <div className="sticky top-[124px]">
+            {/* data-section-id: attributes centerpiece clicks to the section
+                driving the sticky swap (removable usage analytics). */}
+            <div className="sticky top-[124px]" data-section-id={activeSection}>
               {/* Interactive doc legend: add/remove documents right at the
                   visual, so toggling a document visibly adds or drops its arc
                   (or matrix row). Also the document colour key. */}
@@ -1755,7 +1762,7 @@ export function CoherenceBriefing({
         title={sectionLabels[activeSection]}
         maxWidth="max-w-5xl"
       >
-        <div className="p-6 flex justify-center">
+        <div className="p-6 flex justify-center" data-section-id={activeSection}>
           {expanded ? renderActiveCenterpiece(true) : null}
         </div>
       </Modal>

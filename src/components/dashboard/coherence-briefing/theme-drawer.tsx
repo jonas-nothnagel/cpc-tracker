@@ -41,6 +41,7 @@ import {
   rankStorylines,
   type StorylineProfile,
 } from "@/lib/coherence-briefing";
+import { track } from "@/lib/analytics/client";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { FeedbackControl } from "./feedback-control";
 import type {
@@ -134,6 +135,8 @@ export function ThemeDrawer({
 }: ThemeDrawerProps) {
   const t = useTranslations("briefing.drawer.theme");
   const isOpen = theme !== null || allStorylines !== null;
+  // Removable usage analytics: see src/lib/analytics/README.md.
+  useEffect(() => void (isOpen && track("drawer_opened", { kind: theme ? "theme" : "storylines" })), [isOpen, theme]);
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {

@@ -21,7 +21,9 @@ set -euo pipefail
 REGISTRY="policycoherence.azurecr.io"
 REGISTRY_NAME="policycoherence"
 IMAGE="cpc-tracker"
-APP_URL="https://cpc-tracker-c657.azurewebsites.net/"
+APP_NAME="cpc-tracker-c657"
+RESOURCE_GROUP="undphqbppsai001"
+APP_URL="https://${APP_NAME}.azurewebsites.net/"
 
 # ── Parse flags ──────────────────────────────────────────────────────────
 SKIP_CONFIRM=0
@@ -161,6 +163,48 @@ echo
 echo "▸ Logging in to ${REGISTRY}…"
 az acr login --name "${REGISTRY_NAME}" >/dev/null
 
+# ── 1b. Analytics dashboard token (App Service app setting) ──────────────
+# Ensures ANALYTICS_DASHBOARD_TOKEN is set so /analytics works in prod
+# (unset ⇒ the dashboard 404s by design; see src/lib/analytics/README.md).
+# An existing remote value is NEVER overwritten — rotating the token is a
+# deliberate act: az webapp config appsettings set --settings ANALYTICS_DASHBOARD_TOKEN=<new>
+echo "▸ Checking ANALYTICS_DASHBOARD_TOKEN app setting…"
+# A failed READ must skip this step, not fall through to `set` — otherwise a
+# transient az error would look like "unset" and rotate a live token.
+if ! REMOTE_TOKEN=$(az webapp config appsettings list \
+  --name "${APP_NAME}" --resource-group "${RESOURCE_GROUP}" \
+  --query "[?name=='ANALYTICS_DASHBOARD_TOKEN'].value | [0]" -o tsv 2>/dev/null); then
+  echo "  ⚠️  Could not read app settings; skipping token check (deploy continues)."
+  REMOTE_TOKEN="__READ_FAILED__"
+fi
+if [ "${REMOTE_TOKEN}" = "__READ_FAILED__" ]; then
+  : # handled above
+elif [ -n "${REMOTE_TOKEN}" ]; then
+  echo "  ✓ Already set (…${REMOTE_TOKEN: -4}); leaving as-is."
+else
+  # Prefer a token provided via the environment; otherwise generate one.
+  NEW_TOKEN="${ANALYTICS_DASHBOARD_TOKEN:-}"
+  TOKEN_SOURCE="from your environment"
+  if [ -z "${NEW_TOKEN}" ]; then
+    NEW_TOKEN=$(openssl rand -hex 16)
+    TOKEN_SOURCE="freshly generated"
+  fi
+  az webapp config appsettings set \
+    --name "${APP_NAME}" --resource-group "${RESOURCE_GROUP}" \
+    --settings "ANALYTICS_DASHBOARD_TOKEN=${NEW_TOKEN}" >/dev/null
+  echo "  ✓ Set ANALYTICS_DASHBOARD_TOKEN (${TOKEN_SOURCE})."
+  if [ "${TOKEN_SOURCE}" = "freshly generated" ]; then
+    echo
+    echo "  ┌─────────────────────────────────────────────────────────────┐"
+    echo "    Analytics dashboard key (store it somewhere safe — it is"
+    echo "    shown only this once):"
+    echo
+    echo "      ${APP_URL}analytics?key=${NEW_TOKEN}"
+    echo "  └─────────────────────────────────────────────────────────────┘"
+    echo
+  fi
+fi
+
 # ── 2. Buildx build + push ───────────────────────────────────────────────
 # Mirror the original GHA: dual tag (sha + latest), registry cache for speed
 # on subsequent runs. The cache image is namespaced under :buildcache to keep
@@ -194,5 +238,5 @@ done
 echo
 echo "❌ App did not return 200 within 5 minutes."
 echo "   Check container logs:"
-echo "   az webapp log tail --name cpc-tracker-c657 --resource-group undphqbppsai001"
+echo "   az webapp log tail --name ${APP_NAME} --resource-group ${RESOURCE_GROUP}"
 exit 1

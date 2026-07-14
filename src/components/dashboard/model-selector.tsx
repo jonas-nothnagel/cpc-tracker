@@ -16,6 +16,8 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+// Removable usage analytics: see src/lib/analytics/README.md.
+import { track } from "@/lib/analytics/client";
 
 const DEFAULT_LABEL_BY_SLUG: Record<string, { label: string; tier: string }> = {
   "gpt-5-4": { label: "GPT-5.4", tier: "flagship proprietary" },
@@ -67,7 +69,7 @@ export function ModelSelector({
       <select
         id="model-selector"
         value={active}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => (track("model_switched", { model: e.target.value }), onChange(e.target.value))}
         className="text-sm border border-gray-200 rounded-md px-2 py-1 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]"
       >
         {availableModels.map((slug) => {

@@ -20,6 +20,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFocusTrap } from "@/components/ui/use-focus-trap";
+import { track } from "@/lib/analytics/client";
 import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import {
   useAlignmentLabels,
@@ -58,6 +59,8 @@ export function SectorDrawer({
   ) => void;
 }) {
   const t = useTranslations("briefing.drawer.sector");
+  // Removable usage analytics: see src/lib/analytics/README.md.
+  useEffect(() => void (briefing && track("drawer_opened", { kind: "sector" })), [briefing]);
   useEffect(() => {
     if (!briefing) return;
     const onKey = (e: KeyboardEvent) => {

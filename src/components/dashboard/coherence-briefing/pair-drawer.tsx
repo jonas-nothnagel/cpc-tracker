@@ -26,6 +26,7 @@ import {
   useAlignmentLabels,
   useContradictionTypeLabels,
 } from "@/lib/labels";
+import { track } from "@/lib/analytics/client";
 import { useDrawerHistory } from "@/lib/use-drawer-history";
 import { DrawerBackButton } from "@/components/ui/drawer-back-button";
 import { useFocusTrap } from "@/components/ui/use-focus-trap";
@@ -110,6 +111,9 @@ export function PairDrawer({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [data, onClose, canGoBack, goBack]);
+
+  // Removable usage analytics: see src/lib/analytics/README.md.
+  useEffect(() => void (data && track("drawer_opened", { kind: data.mode })), [data]);
 
   useEffect(() => {
     if (!data) return;

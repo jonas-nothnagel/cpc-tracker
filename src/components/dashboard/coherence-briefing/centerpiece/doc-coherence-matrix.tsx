@@ -182,6 +182,7 @@ export function DocCoherenceMatrix({
                   <button
                     key={cellKey}
                     type="button"
+                    data-track="Doc matrix: cell"
                     onClick={() => onCellClick?.(rowDoc.docType, colDoc.docType)}
                     onMouseEnter={() => onHoverPair?.(pairKey)}
                     onMouseLeave={() => onHoverPair?.(null)}
