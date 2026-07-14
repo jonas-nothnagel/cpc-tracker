@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import {
   listAvailableModels,
   loadModelComparison,
+  loadModelFlaggedPairKeys,
   loadRatings,
 } from "@/lib/dashboard-data";
 import { EvaluationSections } from "@/components/model-comparison/analysis-sections";
@@ -20,6 +21,7 @@ export default async function MongoliaModelEvaluationPage() {
 
   const report = loadModelComparison(COUNTRY);
   const ratings = loadRatings(COUNTRY);
+  const flaggedByModel = loadModelFlaggedPairKeys(COUNTRY);
 
   return (
     <div
@@ -43,15 +45,20 @@ export default async function MongoliaModelEvaluationPage() {
           Rate individual flagged pairs as &ldquo;real concern&rdquo;,
           &ldquo;thin / not actionable&rdquo;, or &ldquo;skip&rdquo;. The
           tool produces a precision estimate per sample with a Wilson 95%
-          confidence interval. Ratings persist to{" "}
+          confidence interval. Ratings persist to the server-side ledger{" "}
           <code className="font-mono text-[10px] px-1 bg-gray-100">
-            python/output/{COUNTRY}/_ratings.json
+            python/output/ratings-ledger.jsonl
           </code>{" "}
-          on the server — visible across browsers, devices, and reviewers.
+          — visible across browsers, devices, and reviewers, and kept across
+          model re-runs and deploys.
         </p>
 
         {report ? (
-          <EvaluationSections report={report} initialRatings={ratings} />
+          <EvaluationSections
+            report={report}
+            initialRatings={ratings}
+            flaggedByModel={flaggedByModel}
+          />
         ) : (
           <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">
             Run{" "}

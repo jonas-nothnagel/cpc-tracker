@@ -116,6 +116,46 @@ export function loadModelComparison(country: string): ModelComparisonReport | nu
  *  hundreds of thousands of ratings. */
 const RATING_VALUES: ReadonlySet<PairRatingValue> = new Set(["real", "thin", "skip"]);
 
+/**
+ * Per-model flagged pair keys from each model's full alignment output
+ * ("A::B", row order as generated). Lets the evaluation page attribute
+ * ledger ratings to models: a rating counts "for" a model when that model
+ * currently flags the pair — stable across comparison re-runs, unlike the
+ * re-drawn samples. Missing/broken files yield an empty list for that model.
+ */
+export function loadModelFlaggedPairKeys(
+  country: string,
+): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const model of listAvailableModels(country)) {
+    out[model] = [];
+    try {
+      const raw = readFileSync(
+        join(PYTHON_OUTPUT, country.toLowerCase(), model, "alignment.json"),
+        "utf-8",
+      );
+      const rows = JSON.parse(raw) as {
+        targetAId?: string;
+        targetBId?: string;
+        alignment?: string;
+      }[];
+      if (!Array.isArray(rows)) continue;
+      for (const row of rows) {
+        if (
+          row.alignment === "flagged" &&
+          typeof row.targetAId === "string" &&
+          typeof row.targetBId === "string"
+        ) {
+          out[model].push(`${row.targetAId}::${row.targetBId}`);
+        }
+      }
+    } catch {
+      // Leave the model's list empty; the page degrades to sample-only counts.
+    }
+  }
+  return out;
+}
+
 export function loadRatings(country: string): RatingsByCountry {
   const path = join(PYTHON_OUTPUT, "ratings-ledger.jsonl");
   if (!existsSync(path)) return {};
