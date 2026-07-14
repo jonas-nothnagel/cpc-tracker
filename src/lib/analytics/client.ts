@@ -187,7 +187,16 @@ function enqueue(event: AnalyticsPostEvent): void {
   }
 }
 
+let cachedTz: string | undefined;
+
 function envelope() {
+  if (cachedTz === undefined) {
+    try {
+      cachedTz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+    } catch {
+      cachedTz = "";
+    }
+  }
   return {
     ts: new Date().toISOString().replace(/\.\d+Z$/, "Z"),
     clientId: getFeedbackClientId(),
@@ -197,6 +206,8 @@ function envelope() {
     country: context.country,
     viewport: viewportBucket(window.innerWidth),
     ua: uaFamily(navigator.userAgent),
+    // The server derives viewerCountry from this and discards the timezone.
+    tz: cachedTz,
   };
 }
 

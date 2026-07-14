@@ -43,6 +43,14 @@ export interface AnalyticsEnvelope {
   viewport: ViewportBucket;
   /** Coarse family only, "browser/os" (e.g. "chrome/windows"); never raw UA. */
   ua: string;
+  /**
+   * Where the VIEWER is (vs `country` = which dashboard they view): ISO
+   * 3166-1 alpha-2, derived SERVER-SIDE at ingest from the browser's IANA
+   * timezone — the timezone itself and IPs are never stored. Approximate by
+   * design (timezones spanning countries, UTC → null). Added 2026-07
+   * without a schema bump; older rows lack it — readers must `?? null`.
+   */
+  viewerCountry: string | null;
 }
 
 export interface PageViewEvent extends AnalyticsEnvelope {
@@ -90,8 +98,13 @@ export type AnalyticsEvent =
   | ClickEvent
   | TrackEvent;
 
-/** POST /api/analytics body: client-stamped events minus the server-stamped schema. */
-export type AnalyticsPostEvent = DistributiveOmit<AnalyticsEvent, "schema">;
+/** POST /api/analytics body: client-stamped events minus the server-stamped
+ *  fields; the client sends its IANA timezone (`tz`) and the server derives
+ *  `viewerCountry` from it at ingest. */
+export type AnalyticsPostEvent = DistributiveOmit<
+  AnalyticsEvent,
+  "schema" | "viewerCountry"
+> & { tz?: string };
 export interface AnalyticsPostBody {
   events: AnalyticsPostEvent[];
 }
@@ -142,6 +155,8 @@ export interface AnalyticsSummary {
   elementsBySection: Record<string, { label: string; count: number }[]>;
   /** Interactions per miniature region (sparse; zero-count regions omitted). */
   regionsBySection: Record<string, { region: string; count: number }[]>;
+  /** Viewer locations (ISO alpha-2 from timezone; "unknown" bucket for null). */
+  viewerCountrySplit: { code: string; visitors: number; views: number }[];
 }
 
 /** One row of the "what gets used" usage map. */

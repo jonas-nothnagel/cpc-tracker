@@ -104,11 +104,31 @@ describe("parseAnalyticsBatch", () => {
         "country",
         "viewport",
         "ua",
+        "viewerCountry",
         "viewId",
         "analysisId",
         "referrerRoute",
       ].sort(),
     );
+  });
+
+  it("derives viewerCountry from the timezone and never stores the tz", () => {
+    const result = parse([
+      { ...pageView, tz: "Asia/Ulaanbaatar" },
+      { ...pageView, tz: "UTC" },
+      { ...pageView, tz: "Not/AZone" },
+      { ...pageView, tz: "x".repeat(200) },
+      { ...pageView },
+    ]);
+    if (!result.ok) throw new Error(result.error);
+    expect(result.events.map((e) => e.viewerCountry)).toEqual([
+      "MN",
+      null,
+      null,
+      null,
+      null,
+    ]);
+    expect(JSON.stringify(result.events)).not.toContain("Ulaanbaatar");
   });
 
   it("nullifies invalid referrerRoute/analysisId instead of rejecting", () => {

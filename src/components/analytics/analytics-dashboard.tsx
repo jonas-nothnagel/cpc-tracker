@@ -46,6 +46,17 @@ const EVENT_TYPE_NAMES: Record<string, string> = {
 
 const routeName = (route: string) => ROUTE_NAMES[route] ?? route;
 
+/** "MN" → "Mongolia" via the built-in region names; "unknown" → friendly. */
+const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
+function regionName(code: string): string {
+  if (code === "unknown") return "Unknown (timezone not recognized)";
+  try {
+    return REGION_NAMES.of(code) ?? code;
+  } catch {
+    return code;
+  }
+}
+
 export interface ChatQueriesProp {
   total: number;
   recent: { ts: string; query: string; country: string | null }[];
@@ -295,6 +306,21 @@ function TrafficView({ summary }: { summary: AnalyticsSummary }) {
           />
         </Section>
       </div>
+
+      <Section title="Where people use the tool from">
+        <p className="-mt-1 mb-3 text-xs text-slate-400">
+          Estimated from the browser&apos;s timezone — no location permission
+          or IP address is used, so this is approximate.
+        </p>
+        <PlainTable
+          head={["Viewer location", "People", "Page views"]}
+          rows={summary.viewerCountrySplit.map((v) => [
+            regionName(v.code),
+            v.visitors,
+            v.views,
+          ])}
+        />
+      </Section>
 
       <Section title="Recent activity (last 24 h)">
         <PlainTable

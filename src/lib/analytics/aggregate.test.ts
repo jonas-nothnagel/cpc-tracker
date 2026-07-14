@@ -100,6 +100,23 @@ describe("aggregate", () => {
     ]);
   });
 
+  it("splits viewer locations with an unknown bucket for legacy rows", () => {
+    const summary = aggregate(
+      [
+        ev({ type: "page_view", viewerCountry: "MN", clientId: "a" }),
+        ev({ type: "page_view", viewerCountry: "MN", clientId: "a" }),
+        ev({ type: "page_view", viewerCountry: "PA", clientId: "b" }),
+        ev({ type: "page_view", clientId: "c" }), // legacy: no field
+      ],
+      NOW,
+    );
+    expect(summary.viewerCountrySplit).toEqual([
+      { code: "MN", visitors: 1, views: 2 },
+      { code: "PA", visitors: 1, views: 1 },
+      { code: "unknown", visitors: 1, views: 1 },
+    ]);
+  });
+
   it("folds top clicks preserving labels with spaces", () => {
     const summary = aggregate(
       [

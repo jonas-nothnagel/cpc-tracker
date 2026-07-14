@@ -17,6 +17,10 @@ one-line, deletable statement.
 - No IPs, no raw user agents (coarse `chrome/linux`-style families only), no
   raw URLs (whitelisted route patterns only), no input values (elements
   containing form controls never contribute label text).
+- Viewer location is a coarse country code derived AT INGEST from the
+  browser's IANA timezone (`countries-and-timezones`, server-only); the
+  timezone itself is discarded, and no IP lookup, geolocation permission,
+  or external geo service is involved. Approximate by design.
 - Visitor id is the same pseudonymous per-browser UUID as the feedback
   ledgers; session id is per-tab, rotated after 30 min idle.
 - The server rebuilds every stored row field-by-field from a whitelist
@@ -68,7 +72,8 @@ one-line, deletable statement.
    Rehearsed 2026-07-13 (v1 scope): after these steps `pnpm build`,
    `pnpm test`, and `pnpm lint` were all green.
 
-3. Optional (inert if left): remove `ANALYTICS_DASHBOARD_TOKEN` and
+3. Optional (inert if left): `pnpm remove countries-and-timezones` (used
+   only by the analytics validator), remove `ANALYTICS_DASHBOARD_TOKEN` and
    `NEXT_PUBLIC_ANALYTICS_DISABLED` from `.env.example`, the
    `python/output/analytics` lines from `.gitignore` / `.dockerignore`, the
    `analytics` token from the skip-case in `start.sh`, and the `analytics`

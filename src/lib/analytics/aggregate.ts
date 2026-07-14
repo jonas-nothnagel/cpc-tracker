@@ -88,6 +88,24 @@ export function aggregate(
     views.filter((v) => v.country !== null),
     (v) => v.country as string,
   ).map(([country, views]) => ({ country, views }));
+
+  // Viewer locations (timezone-derived at ingest; legacy rows lack the
+  // field → "unknown" bucket so totals stay honest).
+  const byViewerCountry = new Map<
+    string,
+    { visitors: Set<string>; views: number }
+  >();
+  for (const v of views) {
+    const code = v.viewerCountry ?? "unknown";
+    const entry =
+      byViewerCountry.get(code) ?? { visitors: new Set<string>(), views: 0 };
+    entry.visitors.add(v.clientId);
+    entry.views += 1;
+    byViewerCountry.set(code, entry);
+  }
+  const viewerCountrySplit = [...byViewerCountry.entries()]
+    .map(([code, d]) => ({ code, visitors: d.visitors.size, views: d.views }))
+    .sort((a, b) => b.views - a.views);
   const localeSplit = countBy(views, (v) => v.locale).map(
     ([locale, views]) => ({ locale, views }),
   );
@@ -169,6 +187,7 @@ export function aggregate(
     dailyUniques,
     viewsByRoute,
     countrySplit,
+    viewerCountrySplit,
     localeSplit,
     topClicks,
     topTrackEvents,

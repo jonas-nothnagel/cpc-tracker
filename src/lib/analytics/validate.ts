@@ -1,3 +1,5 @@
+import { getCountryForTimezone } from "countries-and-timezones";
+
 import { isValidCountryId } from "@/config/countries";
 
 import { ROUTE_PATTERNS } from "./route-pattern";
@@ -111,6 +113,7 @@ function parseEvent(item: unknown, now: Date): AnalyticsEvent | null {
     country,
     viewport: viewport as ViewportBucket,
     ua,
+    viewerCountry: viewerCountryFromTz(str(e.tz)),
   };
 
   switch (e.type) {
@@ -193,6 +196,17 @@ function parseEvent(item: unknown, now: Date): AnalyticsEvent | null {
 
 function str(value: unknown): string | null {
   return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+/**
+ * Viewer country from the browser's IANA timezone, derived AT INGEST — the
+ * timezone string itself is discarded (finer-grained than we want to keep).
+ * Unknown/ambiguous zones (bad input, "UTC") → null.
+ */
+function viewerCountryFromTz(tz: string | null): string | null {
+  if (!tz || tz.length > 64) return null;
+  const country = getCountryForTimezone(tz);
+  return country && /^[A-Z]{2}$/.test(country.id) ? country.id : null;
 }
 
 /** Accept the client clock within ±10 min; otherwise stamp server time. */
