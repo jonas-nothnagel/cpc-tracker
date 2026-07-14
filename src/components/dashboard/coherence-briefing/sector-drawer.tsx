@@ -19,6 +19,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useFocusTrap } from "@/components/ui/use-focus-trap";
 import { track } from "@/lib/analytics/client";
 import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import {
@@ -78,6 +79,8 @@ export function SectorDrawer({
     };
   }, [briefing]);
 
+  const panelRef = useFocusTrap<HTMLElement>(briefing !== null);
+
   if (!briefing) return null;
 
   // Sector header sentence, localized (replaces the old lib-composed English).
@@ -110,6 +113,7 @@ export function SectorDrawer({
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={t("dialogAria", { name: briefing.categoryName })}
@@ -137,7 +141,7 @@ export function SectorDrawer({
               {briefing.recurringHub &&
                 briefing.recurringHub.flaggedPairCount >= 2 && (
                   <p className="mt-2 text-[11px] text-[var(--undp-gray)] line-clamp-3">
-                    <span className="uppercase tracking-wider text-[9px] font-semibold mr-1">
+                    <span className="uppercase tracking-wider text-[11px] font-semibold mr-1">
                       {t("recursLabel")}
                     </span>
                     {briefing.recurringHub.target.sourceLabel} ·{" "}
@@ -281,7 +285,7 @@ function SectorSynthesisBlock({
       </div>
       {coordination_hint && (
         <div className="border-l-2 border-gray-300 pl-3">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
+          <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
             {t("coordinationPathway")}
           </p>
           <p className="text-[13px] text-[var(--undp-black)] leading-relaxed italic">
@@ -290,7 +294,7 @@ function SectorSynthesisBlock({
         </div>
       )}
       <div className="border-t border-gray-200 pt-4">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
           {t("poolComposition")}
         </p>
         <p className="text-[14px] text-[var(--undp-black)] tabular-nums font-medium">
@@ -315,7 +319,7 @@ function SectorSynthesisBlock({
           </p>
         )}
       </div>
-      <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
+      <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
         {t("aiDisclaimer")}
       </p>
     </section>
@@ -379,7 +383,7 @@ function StorylinePanel({
               : { backgroundColor: dotColor }
           }
         />
-        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
+        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
           {label}
         </p>
       </div>
@@ -415,7 +419,7 @@ function ExamplesColumn({
   const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
   return (
     <div>
-      <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
         {variant === "flagged"
           ? t("examples.flagged")
           : t("examples.aligned")}
@@ -445,7 +449,7 @@ function ExamplesColumn({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+          className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
         >
           {expanded ? t("showFewer") : t("showMore", { count: remaining })}
         </button>
@@ -493,7 +497,7 @@ function ExampleRow({
       >
         <div className="mb-1">
           <span
-            className="inline-block text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="inline-block text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -503,12 +507,12 @@ function ExampleRow({
             {alignmentLabels[pair.alignment]}
           </span>
           {facets.length > 0 && (
-            <p className="mt-1 text-[10px] text-[var(--undp-gray)] leading-tight">
+            <p className="mt-1 text-[11px] text-[var(--undp-gray)] leading-tight">
               {facets.join(" · ")}
             </p>
           )}
         </div>
-        <p className="text-[10px] text-[var(--undp-gray)] mb-1">
+        <p className="text-[11px] text-[var(--undp-gray)] mb-1">
           {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
         </p>
         {pair.description && (

@@ -21,7 +21,6 @@ const HEADLINE_SERIF =
 
 export function SlideFrame({
   id,
-  eyebrow,
   headline,
   body,
   controls,
@@ -29,7 +28,6 @@ export function SlideFrame({
   disclosure,
 }: {
   id: string;
-  eyebrow: string;
   headline: ReactNode;
   body?: ReactNode;
   controls?: ReactNode;
@@ -42,9 +40,6 @@ export function SlideFrame({
       className="scroll-mt-24 pt-2"
       aria-labelledby={`${id}-heading`}
     >
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
-        {eyebrow}
-      </p>
       <h2
         id={`${id}-heading`}
         className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-4"

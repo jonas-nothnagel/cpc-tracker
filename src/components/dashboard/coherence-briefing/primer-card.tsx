@@ -44,7 +44,7 @@ export function PrimerCardBody({
     kind === "aligned" ? t("alignedRelation") : t("flaggedRelation");
   return (
     <>
-      <p className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">
+      <p className="text-[11px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">
         {labelA} · {line.targetA.sourceLabel}
       </p>
       <p className="text-[13px] text-[var(--undp-black)] leading-snug line-clamp-3">
@@ -58,7 +58,7 @@ export function PrimerCardBody({
           style={{ backgroundColor: `${color}80` }}
         />
         <span
-          className="text-[9px] uppercase tracking-wider font-semibold whitespace-nowrap"
+          className="text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap"
           style={{ color }}
         >
           {relationLabel}
@@ -70,7 +70,7 @@ export function PrimerCardBody({
         />
       </div>
 
-      <p className="text-[9px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">
+      <p className="text-[11px] uppercase tracking-wider font-semibold mb-1.5 text-[var(--undp-gray)]">
         {labelB} · {line.targetB.sourceLabel}
       </p>
       <p className="text-[13px] text-[var(--undp-black)] leading-snug line-clamp-3">

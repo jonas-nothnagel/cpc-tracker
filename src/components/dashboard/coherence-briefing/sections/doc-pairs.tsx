@@ -104,7 +104,6 @@ export function DocPairsSection({
   return (
     <SlideFrame
       id={DOC_PAIRS_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={headline}
       body={body}
       evidence={
@@ -190,7 +189,7 @@ function DocPairRanking({
   const t = useTranslations("briefing.docPairs");
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
         {t("allPairings", { count: docPairs.length })}
       </p>
       <ol className="divide-y divide-gray-200 border-y border-gray-200">
@@ -211,7 +210,7 @@ function DocPairRanking({
           );
         })}
       </ol>
-      <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
+      <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
         {t("aiDisclaimer")}
       </p>
     </div>
@@ -303,7 +302,7 @@ function DocPairRow({
             }}
           >
             <span
-              className="not-italic font-semibold uppercase tracking-wider text-[9.5px] mr-1.5"
+              className="not-italic font-semibold uppercase tracking-wider text-[11px] mr-1.5"
               style={{ color: excerptColor }}
             >
               {excerptPrefix} ·

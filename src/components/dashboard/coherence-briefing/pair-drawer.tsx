@@ -29,6 +29,7 @@ import {
 import { track } from "@/lib/analytics/client";
 import { useDrawerHistory } from "@/lib/use-drawer-history";
 import { DrawerBackButton } from "@/components/ui/drawer-back-button";
+import { useFocusTrap } from "@/components/ui/use-focus-trap";
 import { isContradiction } from "@/types";
 import { FeedbackControl } from "./feedback-control";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
@@ -123,6 +124,8 @@ export function PairDrawer({
     };
   }, [data]);
 
+  const panelRef = useFocusTrap<HTMLElement>(data !== null);
+
   if (!data || !renderData) return null;
 
   const backLabel =
@@ -142,6 +145,7 @@ export function PairDrawer({
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={
@@ -244,7 +248,7 @@ function TargetPairBody({
             }}
           />
           <span
-            className="text-[10px] uppercase tracking-wider font-medium"
+            className="text-[11px] uppercase tracking-wider font-medium"
             style={{ color }}
           >
             {contra ? t("connector.flagged") : t("connector.aligned")}
@@ -266,7 +270,7 @@ function TargetPairBody({
         {pair.description && (
           <section className="border-t border-gray-200 pt-4">
             <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
-              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
                 {t("aiRationaleLabel")}
               </p>
               <FrictionDimensionChip
@@ -278,7 +282,7 @@ function TargetPairBody({
             <p className="text-sm text-[var(--undp-black)] leading-relaxed italic">
               {pair.description}
             </p>
-            <p className="mt-3 text-[10px] text-[var(--undp-gray)] leading-relaxed">
+            <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
               {t("aiRationaleDisclaimer")}
             </p>
           </section>
@@ -359,7 +363,7 @@ function TargetCard({
       }
     >
       <p
-        className="text-[10px] uppercase tracking-wider font-medium mb-2"
+        className="text-[11px] uppercase tracking-wider font-medium mb-2"
         style={{ color: isStandIn ? standInColor : color }}
       >
         {tagLine}
@@ -368,7 +372,7 @@ function TargetCard({
         {target.text}
       </p>
       {(target.isQuantitative || target.isTimeBound) && (
-        <p className="mt-2 text-[10px] text-[var(--undp-gray)] uppercase tracking-wider">
+        <p className="mt-2 text-[11px] text-[var(--undp-gray)] uppercase tracking-wider">
           {[
             target.isQuantitative ? t("badge.quantitative") : null,
             target.isTimeBound ? t("badge.timeBound") : null,
@@ -377,7 +381,7 @@ function TargetCard({
             .join(" · ")}
         </p>
       )}
-      <p className="mt-2 text-[10px] text-[var(--undp-gray)]">
+      <p className="mt-2 text-[11px] text-[var(--undp-gray)]">
         {t("sourceLabel", { name: docFull })}
       </p>
     </div>
@@ -508,7 +512,7 @@ function DocPairBody({
         )}
         {!failed && docPair.synthesis.coordination_hint && (
           <div className="border-l-2 border-gray-300 pl-3">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
+            <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
               {t("coordinationPathway")}
             </p>
             <p className="text-[13px] text-[var(--undp-black)] leading-relaxed italic">
@@ -517,7 +521,7 @@ function DocPairBody({
           </div>
         )}
         <CountsStrip docPair={docPair} />
-        <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
+        <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
           {t("aiDisclaimer")}
         </p>
         {failed && (
@@ -606,7 +610,7 @@ function StorylinePanel({
               : { backgroundColor: dotColor }
           }
         />
-        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
+        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
           {label}
         </p>
       </div>
@@ -655,7 +659,7 @@ function ExamplesColumn({
       : t("examples.aligned", { count: examples.length });
   return (
     <div>
-      <p className="text-[9px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
         {exampleHeader}
       </p>
       {visible.length === 0 ? (
@@ -685,7 +689,7 @@ function ExamplesColumn({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+          className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
         >
           {expanded ? t("showFewer") : t("showMore", { count: remaining })}
         </button>
@@ -728,7 +732,7 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
   }
   return (
     <div className="border-t border-gray-200 pt-4">
-      <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {t("poolComposition")}
       </p>
       <p className="text-[15px] text-[var(--undp-black)] tabular-nums font-medium">
@@ -774,7 +778,7 @@ function FallbackTargetPairList({
   return (
     <section className="border-t border-gray-200 pt-4">
       <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
           {showAligned
             ? t("fallback.allPairs", {
                 count: flaggedPairs.length + alignedPairs.length,
@@ -847,7 +851,7 @@ function TargetPairRow({
       >
         <div className="flex items-center gap-1.5 mb-1 flex-wrap">
           <span
-            className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -865,7 +869,7 @@ function TargetPairRow({
             sharedContext={pair.sharedContext}
           />
         </div>
-        <p className="text-[10px] text-[var(--undp-gray)] mb-0.5">
+        <p className="text-[11px] text-[var(--undp-gray)] mb-0.5">
           {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
         </p>
         {pair.description && (

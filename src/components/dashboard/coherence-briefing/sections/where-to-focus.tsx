@@ -42,7 +42,6 @@ export function WhereToFocusSection({
   return (
     <SlideFrame
       id={WHERE_TO_FOCUS_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       evidence={
@@ -59,7 +58,7 @@ export function WhereToFocusSection({
               countryConfig={countryConfig}
               onOpenTarget={onOpenTarget}
             />
-            <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
               {t("mostContested")}
             </p>
             <ul className="border-y border-gray-200 divide-y divide-gray-100">
@@ -167,12 +166,12 @@ function HotspotRow({
               className="inline-block w-2 h-2 rounded-full shrink-0"
               style={{ backgroundColor: color }}
             />
-            <span className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+            <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
               {docLabel} {target.sourceLabel}
             </span>
           </div>
           <p
-            className="text-[13.5px] text-[var(--undp-black)] leading-snug truncate"
+            className="text-[13px] text-[var(--undp-black)] leading-snug truncate"
             title={target.text}
           >
             {target.text}
@@ -228,7 +227,7 @@ function ConcentrationBar({
   return (
     <div className="mb-7">
       <div className="flex items-baseline justify-between mb-1.5">
-        <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
           {t("bar.title")}
         </p>
         <p className="text-[11px] tabular-nums text-[var(--undp-black)] font-medium">
