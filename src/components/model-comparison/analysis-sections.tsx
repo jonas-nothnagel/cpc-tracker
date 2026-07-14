@@ -168,9 +168,13 @@ export function AnalysisSections({ report }: { report: ModelComparisonReport }) 
 export function EvaluationSections({
   report,
   initialRatings = {},
+  flaggedByModel = {},
 }: {
   report: ModelComparisonReport;
   initialRatings?: RatingsByCountry;
+  /** Per-model FULL flagged pair keys (loadModelFlaggedPairKeys); used to
+   *  attribute ledger ratings to models beyond the re-drawn samples. */
+  flaggedByModel?: Record<string, string[]>;
 }) {
   const [ratings, setRatings] = useState<RatingsByCountry>(initialRatings);
 
@@ -191,10 +195,15 @@ export function EvaluationSections({
   return (
     <div className="space-y-10 mt-10">
       <EvaluationTutorial models={report.models} />
-      <RatingsLedgerSummary report={report} ratings={ratings} />
+      <RatingsLedgerSummary
+        report={report}
+        ratings={ratings}
+        flaggedByModel={flaggedByModel}
+      />
       <EvaluationSampleTabs
         report={report}
         ratings={ratings}
+        flaggedByModel={flaggedByModel}
         onChangeRating={applyRating}
       />
       <ConsensusEvaluation
@@ -218,11 +227,20 @@ export function summarizeLedger(
     "models" | "uniqueSignalRandomSample" | "consensusFlaggedRandomSample"
   >,
   ratings: RatingsByCountry,
+  flaggedByModel: Record<string, string[]> = {},
 ): {
   totalRated: number;
   inCurrentSamples: number;
   fromEarlierRuns: number;
-  perModel: { slug: string; sampleSize: number; rated: number }[];
+  perModel: {
+    slug: string;
+    sampleSize: number;
+    rated: number;
+    /** Ledger ratings anywhere in this model's FULL current flag set —
+     *  a pair both models flag counts for both (attribution is honest,
+     *  not exclusive). 0 when the flag set wasn't provided. */
+    priorRated: number;
+  }[];
   consensus: { sampleSize: number; rated: number };
 } {
   const ratedKeys = new Set(Object.keys(ratings));
@@ -235,7 +253,17 @@ export function summarizeLedger(
       currentKeys.add(key);
       if (ratedKeys.has(key)) rated++;
     }
-    return { slug, sampleSize: sample.length, rated };
+    // Order-insensitive membership: ledger keys follow sample row order,
+    // which normally matches alignment.json, but don't depend on it.
+    const flagged = new Set<string>();
+    for (const key of flaggedByModel[slug] ?? []) {
+      flagged.add(key);
+      const [a, b] = key.split("::");
+      if (a && b) flagged.add(`${b}::${a}`);
+    }
+    let priorRated = 0;
+    for (const key of ratedKeys) if (flagged.has(key)) priorRated++;
+    return { slug, sampleSize: sample.length, rated, priorRated };
   });
   const consensusSample = report.consensusFlaggedRandomSample ?? [];
   let consensusRated = 0;
@@ -259,12 +287,15 @@ export function summarizeLedger(
 function RatingsLedgerSummary({
   report,
   ratings,
+  flaggedByModel = {},
 }: {
   report: ModelComparisonReport;
   ratings: RatingsByCountry;
+  flaggedByModel?: Record<string, string[]>;
 }) {
-  const s = summarizeLedger(report, ratings);
+  const s = summarizeLedger(report, ratings, flaggedByModel);
   if (s.totalRated === 0) return null;
+  const hasFlagSets = Object.values(flaggedByModel).some((l) => l.length > 0);
   return (
     <section className="bg-white border border-gray-200 rounded-lg p-5">
       <h2 className="text-base font-medium text-[var(--undp-black)] mb-1">
@@ -292,12 +323,17 @@ function RatingsLedgerSummary({
           </span>
         )}
       </div>
-      <table className="text-xs w-full max-w-xl">
+      <table className="text-xs w-full max-w-2xl">
         <thead>
           <tr className="text-left text-[var(--undp-gray)] border-b border-gray-200">
             <th className="py-1 pr-4 font-medium">Sample</th>
-            <th className="py-1 pr-4 font-medium">Rated</th>
-            <th className="py-1 font-medium">Remaining</th>
+            <th className="py-1 pr-4 font-medium">This sample</th>
+            <th className="py-1 pr-4 font-medium">Remaining</th>
+            {hasFlagSets && (
+              <th className="py-1 font-medium">
+                Rated among this model&apos;s flags (all runs)
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -313,7 +349,12 @@ function RatingsLedgerSummary({
               <td className="py-1 pr-4 tabular-nums">
                 {m.rated} of {m.sampleSize}
               </td>
-              <td className="py-1 tabular-nums">{m.sampleSize - m.rated}</td>
+              <td className="py-1 pr-4 tabular-nums">
+                {m.sampleSize - m.rated}
+              </td>
+              {hasFlagSets && (
+                <td className="py-1 tabular-nums">{m.priorRated}</td>
+              )}
             </tr>
           ))}
           <tr>
@@ -321,12 +362,21 @@ function RatingsLedgerSummary({
             <td className="py-1 pr-4 tabular-nums">
               {s.consensus.rated} of {s.consensus.sampleSize}
             </td>
-            <td className="py-1 tabular-nums">
+            <td className="py-1 pr-4 tabular-nums">
               {s.consensus.sampleSize - s.consensus.rated}
             </td>
+            {hasFlagSets && <td className="py-1 text-[var(--undp-gray)]">—</td>}
           </tr>
         </tbody>
       </table>
+      {hasFlagSets && (
+        <p className="text-[11px] text-[var(--undp-gray)] mt-2 max-w-2xl">
+          &ldquo;Rated among this model&apos;s flags&rdquo; counts every pair
+          you have ever rated that this model flags in the current run —
+          including ratings made against earlier samples. A pair flagged by
+          several models counts for each of them.
+        </p>
+      )}
     </section>
   );
 }
@@ -2038,15 +2088,20 @@ function EvaluationSampleSection({
 function EvaluationSampleTabs({
   report,
   ratings,
+  flaggedByModel = {},
   onChangeRating,
 }: {
   report: ModelComparisonReport;
   ratings: RatingsByCountry;
+  flaggedByModel?: Record<string, string[]>;
   onChangeRating: (pairKey: string, next: PairRating | null) => void;
 }) {
   const [active, setActive] = useState(report.models[0] ?? "");
   const sample = report.uniqueSignalRandomSample?.[active] ?? [];
   const total = report.uniqueSignalTotal?.[active] ?? 0;
+  const ledger = summarizeLedger(report, ratings, flaggedByModel);
+  const priorRatedOf = (slug: string) =>
+    ledger.perModel.find((m) => m.slug === slug)?.priorRated ?? 0;
 
   return (
     <section>
@@ -2090,7 +2145,10 @@ function EvaluationSampleTabs({
                   isActive ? "opacity-80" : "text-[var(--undp-gray)]"
                 }`}
               >
-                ({ratedCount}/{sampleForModel.length})
+                ({ratedCount}/{sampleForModel.length}
+                {priorRatedOf(slug) > 0 &&
+                  ` · ${priorRatedOf(slug)} rated overall`}
+                )
               </span>
             </button>
           );

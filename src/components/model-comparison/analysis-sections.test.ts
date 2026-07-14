@@ -31,10 +31,31 @@ describe("summarizeLedger", () => {
     expect(s.inCurrentSamples).toBe(2);
     expect(s.fromEarlierRuns).toBe(2);
     expect(s.perModel).toEqual([
-      { slug: "gpt-5-4", sampleSize: 2, rated: 1 },
-      { slug: "deepseek-v4-pro", sampleSize: 1, rated: 0 },
+      { slug: "gpt-5-4", sampleSize: 2, rated: 1, priorRated: 0 },
+      { slug: "deepseek-v4-pro", sampleSize: 1, rated: 0, priorRated: 0 },
     ]);
     expect(s.consensus).toEqual({ sampleSize: 1, rated: 1 });
+  });
+
+  it("attributes prior ratings per model via the full flag sets", () => {
+    const ratings: RatingsByCountry = {
+      "NDC_1::FSS_2": rating(), // gpt sample + gpt flags
+      "OLD_1::OLD_2": rating(), // only in gpt's full flag set
+      "OLD_3::OLD_4": rating(), // flagged by BOTH models
+      "OLD_6::OLD_5": rating(), // deepseek flags it reversed (order-insensitive)
+      "GONE_1::GONE_2": rating(), // no current model flags it
+    };
+    const s = summarizeLedger(report, ratings, {
+      "gpt-5-4": ["NDC_1::FSS_2", "OLD_1::OLD_2", "OLD_3::OLD_4"],
+      "deepseek-v4-pro": ["OLD_3::OLD_4", "OLD_5::OLD_6"],
+    });
+    expect(s.perModel).toEqual([
+      { slug: "gpt-5-4", sampleSize: 2, rated: 1, priorRated: 3 },
+      { slug: "deepseek-v4-pro", sampleSize: 1, rated: 0, priorRated: 2 },
+    ]);
+    // The dropped pair still counts in the global totals.
+    expect(s.totalRated).toBe(5);
+    expect(s.fromEarlierRuns).toBe(4);
   });
 
   it("handles an empty ledger and missing sample maps", () => {
@@ -44,7 +65,9 @@ describe("summarizeLedger", () => {
     );
     expect(s.totalRated).toBe(0);
     expect(s.fromEarlierRuns).toBe(0);
-    expect(s.perModel).toEqual([{ slug: "gpt-5-4", sampleSize: 0, rated: 0 }]);
+    expect(s.perModel).toEqual([
+      { slug: "gpt-5-4", sampleSize: 0, rated: 0, priorRated: 0 },
+    ]);
   });
 
   it("counts a pair rated in multiple samples once in the totals", () => {

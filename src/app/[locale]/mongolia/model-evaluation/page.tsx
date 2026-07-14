@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import {
   listAvailableModels,
   loadModelComparison,
+  loadModelFlaggedPairKeys,
   loadRatings,
 } from "@/lib/dashboard-data";
 import { EvaluationSections } from "@/components/model-comparison/analysis-sections";
@@ -20,6 +21,7 @@ export default async function MongoliaModelEvaluationPage() {
 
   const report = loadModelComparison(COUNTRY);
   const ratings = loadRatings(COUNTRY);
+  const flaggedByModel = loadModelFlaggedPairKeys(COUNTRY);
 
   return (
     <div
@@ -52,7 +54,11 @@ export default async function MongoliaModelEvaluationPage() {
         </p>
 
         {report ? (
-          <EvaluationSections report={report} initialRatings={ratings} />
+          <EvaluationSections
+            report={report}
+            initialRatings={ratings}
+            flaggedByModel={flaggedByModel}
+          />
         ) : (
           <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">
             Run{" "}
