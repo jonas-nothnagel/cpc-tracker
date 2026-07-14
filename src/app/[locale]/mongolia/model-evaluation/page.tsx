@@ -11,6 +11,12 @@ import { EvaluationSections } from "@/components/model-comparison/analysis-secti
 
 const COUNTRY = "mongolia";
 
+// Ratings and model outputs live on the persistent volume and change at
+// runtime (reviewer clicks, pipeline re-runs). Without this the page is
+// statically prerendered at DOCKER BUILD time, baking in the committed seed
+// ledger — live ratings then silently vanish on every reload.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata() {
   return { title: "Mongolia model evaluation | CPC Analyzer" };
 }
