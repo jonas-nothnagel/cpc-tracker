@@ -1634,6 +1634,12 @@ function ChatBar({
         )}
       </form>
 
+      {/* Disclosure for the chat-query ledger (removable usage analytics:
+          see src/lib/analytics/README.md). */}
+      <p className="px-1 text-[10px] text-[var(--undp-gray)]/80">
+        {t("storageNotice")}
+      </p>
+
       {chat.loading && (
         <div className="text-[11px] text-[var(--undp-gray)] italic px-1">
           {t("thinking")}

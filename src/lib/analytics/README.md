@@ -25,6 +25,13 @@ one-line, deletable statement.
   disables collection per deployment.
 - The dashboard requires `ANALYTICS_DASHBOARD_TOKEN` (unset ⇒ 404) and only
   ever receives identifier-free aggregates.
+- **Exception — chat questions are stored verbatim** (added July 2026 by
+  explicit decision): the coherence-chat route appends each question to
+  `analytics/chat-queries-YYYY-MM.jsonl` (`chat-queries.ts`). Mitigations:
+  stored WITHOUT any visitor/session id so questions cannot be linked into
+  a per-person profile; a disclosure line under the chat input
+  (`explorer.chat.storageNotice`, en/es/mn); DNT and
+  `NEXT_PUBLIC_ANALYTICS_DISABLED=1` also suppress capture server-side.
 
 ## Turning it off without code changes
 
@@ -51,8 +58,12 @@ one-line, deletable statement.
    `src/app/[locale]/layout.tsx` (also drop the then-unused
    `import { Suspense } from "react"` there), the `track(...)` call sites
    in dashboard/upload/chat components (revert `onChange`/`onStepChange`
-   wrappers to their plain callbacks), and the `section_viewed` import +
-   effect in `src/components/dashboard/coherence-briefing/index.tsx`.
+   wrappers to their plain callbacks), the `section_viewed` import +
+   effect in `src/components/dashboard/coherence-briefing/index.tsx`, the
+   `appendChatQuery` import + call in
+   `src/app/api/coherence-chat/route.ts`, and the disclosure `<p>` block in
+   `policy-coherence-explorer.tsx` (also delete the
+   `explorer.chat.storageNotice` key from `messages/{en,es,mn}.json`).
 
    Rehearsed 2026-07-13 (v1 scope): after these steps `pnpm build`,
    `pnpm test`, and `pnpm lint` were all green.

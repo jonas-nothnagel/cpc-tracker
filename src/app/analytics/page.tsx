@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { AnalyticsDashboard } from "@/components/analytics/analytics-dashboard";
 import { aggregate } from "@/lib/analytics/aggregate";
+import { readChatQueries } from "@/lib/analytics/chat-queries";
 import { lastMonths } from "@/lib/analytics/paths";
 import { readAnalyticsEvents } from "@/lib/analytics/store";
 
@@ -40,12 +41,20 @@ export default async function AnalyticsPage({
   const events = readAnalyticsEvents(lastMonths(months));
   const summary = aggregate(events);
   const initialView = first(params.view) === "traffic" ? "traffic" : "usage";
+  const allQueries = readChatQueries(lastMonths(months));
+  const chatQueries = {
+    total: allQueries.length,
+    recent: allQueries
+      .slice(0, 30)
+      .map(({ ts, query, country }) => ({ ts, query, country })),
+  };
 
   return (
     <AnalyticsDashboard
       summary={summary}
       months={months}
       initialView={initialView}
+      chatQueries={chatQueries}
     />
   );
 }

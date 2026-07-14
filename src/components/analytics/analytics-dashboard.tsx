@@ -46,14 +46,21 @@ const EVENT_TYPE_NAMES: Record<string, string> = {
 
 const routeName = (route: string) => ROUTE_NAMES[route] ?? route;
 
+export interface ChatQueriesProp {
+  total: number;
+  recent: { ts: string; query: string; country: string | null }[];
+}
+
 export function AnalyticsDashboard({
   summary,
   months,
   initialView,
+  chatQueries,
 }: {
   summary: AnalyticsSummary;
   months: number;
   initialView: View;
+  chatQueries: ChatQueriesProp;
 }) {
   const [view, setView] = useState<View>(initialView);
 
@@ -92,11 +99,14 @@ export function AnalyticsDashboard({
       </div>
 
       {view === "usage" ? (
-        <UsageMap
-          sectionUsage={summary.sectionUsage}
-          elementsBySection={summary.elementsBySection}
-          regionsBySection={summary.regionsBySection}
-        />
+        <>
+          <UsageMap
+            sectionUsage={summary.sectionUsage}
+            elementsBySection={summary.elementsBySection}
+            regionsBySection={summary.regionsBySection}
+          />
+          <ChatQuestions chatQueries={chatQueries} />
+        </>
       ) : (
         <TrafficView summary={summary} />
       )}
@@ -127,6 +137,42 @@ function TabButton({
     >
       {children}
     </button>
+  );
+}
+
+/**
+ * Verbatim questions asked to the assistant (chat-query ledger; stored
+ * without visitor ids and disclosed in the chat UI). Shows what people are
+ * actually trying to learn from the tool.
+ */
+function ChatQuestions({ chatQueries }: { chatQueries: ChatQueriesProp }) {
+  return (
+    <section className="mt-10">
+      <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-slate-600">
+        Questions people ask the assistant
+      </h2>
+      <p className="mb-3 text-xs text-slate-400">
+        {chatQueries.total === 0
+          ? "No questions asked yet."
+          : `${chatQueries.total} question${chatQueries.total === 1 ? "" : "s"} in this period · newest first · stored without any visitor id`}
+      </p>
+      {chatQueries.recent.length > 0 && (
+        <ul className="space-y-1.5">
+          {chatQueries.recent.map((q, i) => (
+            <li
+              key={`${q.ts}-${i}`}
+              className="rounded-lg border border-slate-200 bg-white px-4 py-2.5"
+            >
+              <p className="text-sm text-slate-700">{q.query}</p>
+              <p className="mt-0.5 text-[11px] text-slate-400">
+                {q.ts.slice(0, 10)}
+                {q.country ? ` · ${q.country}` : ""}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 

@@ -1425,6 +1425,7 @@
       "genericError": "Lo siento, eso no funcionó.",
       "askPlaceholderProminent": "Pregunte cualquier cosa sobre estas políticas…",
       "askAriaProminent": "Pregunte al asistente sobre los documentos de política",
+      "storageNotice": "Las preguntas se guardan de forma anónima para mejorar la herramienta.",
       "askProminent": "Preguntar →",
       "askPoliciesLabel": "Pregunte a las políticas"
     },
