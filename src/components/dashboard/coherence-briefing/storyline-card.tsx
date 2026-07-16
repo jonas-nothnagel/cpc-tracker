@@ -82,6 +82,8 @@ export function ThemeBox({
   return (
     <button
       type="button"
+      // Guided-tour anchor; the tour spotlights the first rendered box.
+      data-tour="theme-card"
       onClick={() => {
         hide();
         onOpen();

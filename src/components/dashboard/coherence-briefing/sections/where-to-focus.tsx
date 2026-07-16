@@ -11,6 +11,7 @@
 
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { TourButton } from "../tour/tour-button";
 import type {
   TargetConcentration,
   TargetConcentrationEntry,
@@ -44,6 +45,11 @@ export function WhereToFocusSection({
       id={WHERE_TO_FOCUS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      tourButton={
+        hotspots.length > 0 ? (
+          <TourButton tourId="whereToFocus" scopeId={WHERE_TO_FOCUS_SECTION_ID} />
+        ) : undefined
+      }
       evidence={
         hotspots.length === 0 ? (
           <p className="text-sm italic text-[var(--undp-gray)]">
@@ -61,7 +67,10 @@ export function WhereToFocusSection({
             <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
               {t("mostContested")}
             </p>
-            <ul className="border-y border-gray-200 divide-y divide-gray-100">
+            <ul
+              className="border-y border-gray-200 divide-y divide-gray-100"
+              data-tour="hotspot-list"
+            >
               {hotspots.map((h) => (
                 <HotspotRow
                   key={h.target.id}
@@ -234,7 +243,10 @@ function ConcentrationBar({
           {t("bar.totalPairs", { count: totalFlaggedPairs })}
         </p>
       </div>
-      <div className="flex h-7 w-full overflow-hidden rounded-sm bg-gray-100 gap-px">
+      <div
+        className="flex h-7 w-full overflow-hidden rounded-sm bg-gray-100 gap-px"
+        data-tour="concentration-bar"
+      >
         {topTargets.map((entry) => {
           const widthPct = (entry.marginalPairCount / totalFlaggedPairs) * 100;
           const docLabel = getDocMediumLabel(
@@ -279,7 +291,10 @@ function ConcentrationBar({
           />
         )}
       </div>
-      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]">
+      <div
+        className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]"
+        data-tour="concentration-legend"
+      >
         <span className="text-[var(--undp-black)]">
           <span className="font-medium">
             {t("bar.targetCount", { count: topTargets.length })}

@@ -84,6 +84,8 @@ import { PairDrawer, type PairDrawerData } from "./pair-drawer";
 import { ThemeDrawer } from "./theme-drawer";
 import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
 import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
+import { TourButton } from "./tour/tour-button";
+import type { BriefingTourId } from "./tour/steps";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { getDocTypeOrder } from "@/lib/utils";
@@ -1314,6 +1316,25 @@ export function CoherenceBriefing({
   );
 
   // The active section's sticky visual. Extracted so the same graphic + legend
+  // Scope root for the guided tour: `data-tour` targets are resolved inside
+  // this element, so the tour spotlights the inline centerpiece rather than
+  // the copy inside the expand overlay.
+  const stickyCenterRef = useRef<HTMLDivElement | null>(null);
+  // Which "How to read this chart" tour matches the centerpiece currently in
+  // the sticky column. Mirrors renderActiveCenterpiece's branches.
+  const activeTourId: BriefingTourId =
+    activeSection === DOC_PAIRS_SECTION_ID
+      ? "docMatrix"
+      : activeSection === FINANCING_SECTION_ID &&
+          financing &&
+          countryId !== "panama"
+        ? "financing"
+        : activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster
+          ? implCenterView === "flow" && institutionFlow
+            ? "institutionFlow"
+            : "deliveryRoster"
+          : "wheel";
+
   // renders both inline (the ~480px column) and inside the expand overlay; the
   // only difference is the wheel's height cap.
   const renderActiveCenterpiece = (inModal: boolean) => {
@@ -1629,17 +1650,25 @@ export function CoherenceBriefing({
           >
             {/* data-section-id: attributes centerpiece clicks to the section
                 driving the sticky swap (removable usage analytics). */}
-            <div className="sticky top-[124px]" data-section-id={activeSection}>
+            <div
+              ref={stickyCenterRef}
+              className="sticky top-[124px]"
+              data-section-id={activeSection}
+            >
               {/* Interactive doc legend: add/remove documents right at the
                   visual, so toggling a document visibly adds or drops its arc
                   (or matrix row). Also the document colour key. */}
-              <DocToggleLegend
-                allDocs={allDocs}
-                hiddenDocs={hiddenDocs}
-                countryConfig={countryConfig}
-                onToggle={toggleDoc}
-              />
-              <div className="mb-2 flex justify-end">
+              <div data-tour="doc-toggle">
+                <DocToggleLegend
+                  allDocs={allDocs}
+                  hiddenDocs={hiddenDocs}
+                  countryConfig={countryConfig}
+                  onToggle={toggleDoc}
+                />
+              </div>
+              <div className="mb-2 flex items-center justify-between">
+                {/* Guided walkthrough of the current centerpiece. */}
+                <TourButton tourId={activeTourId} scopeRef={stickyCenterRef} />
                 <button
                   type="button"
                   onClick={() => setExpanded(true)}
