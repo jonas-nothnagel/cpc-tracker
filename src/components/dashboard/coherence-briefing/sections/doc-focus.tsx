@@ -34,6 +34,7 @@ import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
 import { DocInfoPopover } from "../doc-meta-card";
+import { TourButton } from "../tour/tour-button";
 import {
   buildAnchorHeadline,
   buildDocFocusFrictions,
@@ -129,6 +130,7 @@ export function DocFocusSection({
       eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
+      tourButton={<TourButton tourId="docFocus" scopeId={DOC_FOCUS_SECTION_ID} />}
       controls={
         <DocSwitcher
           availableDocs={availableDocs}
@@ -229,6 +231,7 @@ function DocSwitcher({
       role="group"
       aria-label={t("switcherAriaLabel")}
       className="flex flex-wrap items-center gap-1.5"
+      data-tour="doc-switcher"
     >
       <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mr-2">
         {t("focusOn")}
@@ -315,7 +318,10 @@ function DocFocusEvidence({
             <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
               {t("whereShowsMisalignment", { label })}
             </p>
-            <ul className="divide-y divide-gray-200 border-y border-gray-200">
+            <ul
+              className="divide-y divide-gray-200 border-y border-gray-200"
+              data-tour="flagged-pairs"
+            >
               {shown.map((line) => (
                 <FlaggedPairRow
                   key={`${line.pair.targetAId}__${line.pair.targetBId}`}

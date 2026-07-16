@@ -42,6 +42,7 @@ import {
   type PrimerHighlightPair,
 } from "../primer-card";
 import { ThemeBox, type ThemeSpotlight } from "../storyline-card";
+import { TourButton } from "../tour/tour-button";
 import { ALIGNMENT_COLORS, getDocFullLabel } from "@/lib/utils";
 import {
   computeStorylineLiveStats,
@@ -134,6 +135,11 @@ export function DirectionSection({
       eyebrow={t("eyebrow")}
       headline={t(`verdict.${verdict.bucket}`)}
       body={synthesis}
+      tourButton={
+        corpusThemes && storylines.length > 0 ? (
+          <TourButton tourId="directionThemes" scopeId={DIRECTION_SECTION_ID} />
+        ) : undefined
+      }
       evidence={
         corpusThemes && storylines.length > 0 ? (
           <RecurringThemesBlock
@@ -194,7 +200,7 @@ function RecurringThemesBlock({
   const review = byCount("friction");
   return (
     <div className="space-y-3">
-      <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
+      <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2" data-tour="themes-columns">
         <ThemeColumn
           tone="aligns"
           storylines={aligns}

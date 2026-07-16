@@ -252,6 +252,8 @@ export function InstitutionFlow({
             className="overflow-visible"
           >
             {/* Ribbons first, so the thin node bars and labels sit on top. */}
+            {/* data-tour groups: spotlight anchors for the guided tour. */}
+            <g data-tour="flow-ribbons">
             {layout.placedLinks.map((l) => {
               const xm = (LEFT_X1 + RIGHT_X0) / 2;
               const focused =
@@ -294,8 +296,10 @@ export function InstitutionFlow({
                 </path>
               );
             })}
+            </g>
 
             {/* Institution nodes + right-aligned labels. */}
+            <g data-tour="flow-institutions">
             {layout.institutions.map((inst, i) => {
               const node = layout.instNodes[i];
               return (
@@ -326,8 +330,10 @@ export function InstitutionFlow({
                 </g>
               );
             })}
+            </g>
 
             {/* Document nodes (their colour) + left-aligned labels. */}
+            <g data-tour="flow-documents">
             {documents.map((d, i) => {
               const node = layout.docNodes[i];
               const color = getDocColor(countryConfig, d.doc);
@@ -359,6 +365,7 @@ export function InstitutionFlow({
                 </g>
               );
             })}
+            </g>
           </svg>
 
           {/* Focus hint: at rest invites the hover; on hover names the focused
@@ -384,7 +391,7 @@ export function InstitutionFlow({
           {/* Drill-down: the targets behind the selected ribbon, each opening
               the shared drawer with the AI rationale. */}
           {selectedLink ? (
-            <div className="border-t border-gray-200 pt-2.5">
+            <div className="border-t border-gray-200 pt-2.5" data-tour="flow-drilldown">
               <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
                 {truncate(selectedInstLabel, 28)} ·{" "}
                 {getDocMediumLabel(countryConfig, selectedLink.doc)}{" "}
@@ -425,7 +432,7 @@ export function InstitutionFlow({
               </ul>
             </div>
           ) : (
-            <p className="text-[11px] italic text-[var(--undp-gray)]">
+            <p className="text-[11px] italic text-[var(--undp-gray)]" data-tour="flow-drilldown">
               {t("flow.selectHint")}
             </p>
           )}

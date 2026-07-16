@@ -17,6 +17,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { TourButton } from "../tour/tour-button";
 import { computeDocPairBalance, getDocPairKey } from "@/lib/coherence-briefing";
 import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
 import type {
@@ -107,6 +108,11 @@ export function DocPairsSection({
       eyebrow={t("eyebrow")}
       headline={headline}
       body={body}
+      tourButton={
+        ranked.length > 0 ? (
+          <TourButton tourId="docPairs" scopeId={DOC_PAIRS_SECTION_ID} />
+        ) : undefined
+      }
       evidence={
         ranked.length === 0 ? (
           <p className="text-sm italic text-[var(--undp-gray)]">
@@ -193,7 +199,10 @@ function DocPairRanking({
       <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
         {t("allPairings", { count: docPairs.length })}
       </p>
-      <ol className="divide-y divide-gray-200 border-y border-gray-200">
+      <ol
+        className="divide-y divide-gray-200 border-y border-gray-200"
+        data-tour="pair-list"
+      >
         {docPairs.map((dp) => {
           const key = getDocPairKey(dp.doc_a, dp.doc_b);
           return (
@@ -311,7 +320,11 @@ function DocPairRow({
             {excerptText}
           </p>
         )}
-        <div className="grid grid-cols-[1fr_auto] items-center gap-3">
+        {/* Every row carries the anchor; the tour spotlights the first match. */}
+        <div
+          className="grid grid-cols-[1fr_auto] items-center gap-3"
+          data-tour="pair-balance"
+        >
           <div
             className="relative h-2.5 rounded-full overflow-hidden bg-gray-100"
             style={{ width: `${Math.max(totalWidthPct, 6)}%` }}

@@ -686,6 +686,8 @@ export function WheelCenterpiece({
         />
 
         {/* Rim arcs */}
+        {/* data-tour groups: spotlight anchors for the guided tour. */}
+        <g data-tour="wheel-arcs">
         {arcs.map((arc) => {
           const d = arcGen({
             startAngle: arc.startAngle,
@@ -737,8 +739,10 @@ export function WheelCenterpiece({
             </g>
           );
         })}
+        </g>
 
         {/* Aggregate ribbons (always per arc-pair) */}
+        <g data-tour="wheel-ribbons">
         {Array.from(aggregates.values()).map((agg) => {
           const aArc = arcsById.get(agg.aId);
           const bArc = arcsById.get(agg.bId);
@@ -844,6 +848,7 @@ export function WheelCenterpiece({
             </g>
           );
         })}
+        </g>
 
         {/* Hover readout for the active ribbon. Pinned to the top of the
             viewBox (clear of the ribbon mass and the centre focus readout) and
@@ -978,6 +983,7 @@ export function WheelCenterpiece({
             neighbours apart, then an elbow leader line bridges the rim to the
             relaxed label position. Ported from the dashboard explorer so
             labels never stack on dense corpora (e.g. the sector lenses). */}
+        <g data-tour="wheel-labels">
         {(() => {
           const LABEL_H = 14;
           const CHAR_W = 6.5;
@@ -1095,6 +1101,7 @@ export function WheelCenterpiece({
             );
           });
         })()}
+        </g>
 
         {/* Document-focus overlay: per-doc balance bands + centre readout. */}
         {focusInfo && (

@@ -59,22 +59,29 @@ export function FinancingCenterpiece({
 }) {
   return (
     <div className="px-1 space-y-6">
-      <BudgetObjectHeader summary={summary} countryName={countryName} />
-      {outcomeBudget ? (
-        <OutcomeConcentration
-          outcomeBudget={outcomeBudget}
-          subcategoriesByPrimary={outcomeSubcategories ?? null}
-        />
-      ) : (
-        <Concentration summary={summary} />
-      )}
+      {/* data-tour wrappers: spotlight anchors for the guided tour. */}
+      <div data-tour="financing-source">
+        <BudgetObjectHeader summary={summary} countryName={countryName} />
+      </div>
+      <div data-tour="financing-concentration">
+        {outcomeBudget ? (
+          <OutcomeConcentration
+            outcomeBudget={outcomeBudget}
+            subcategoriesByPrimary={outcomeSubcategories ?? null}
+          />
+        ) : (
+          <Concentration summary={summary} />
+        )}
+      </div>
       {summary.execution && (
-        <ExecutionBar
-          execution={summary.execution}
-          unit={summary.unit}
-          currency={summary.currency}
-          reviewPeriod={summary.periodLabel}
-        />
+        <div data-tour="financing-execution">
+          <ExecutionBar
+            execution={summary.execution}
+            unit={summary.unit}
+            currency={summary.currency}
+            reviewPeriod={summary.periodLabel}
+          />
+        </div>
       )}
     </div>
   );

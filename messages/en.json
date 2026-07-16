@@ -154,6 +154,224 @@
       "button": "Expand",
       "aria": "Expand the graphic"
     },
+    "tour": {
+      "openAria": "How to read this chart",
+      "controls": {
+        "next": "Next",
+        "back": "Back",
+        "done": "Done",
+        "close": "Close the walkthrough",
+        "progress": "Step {current} of {total}"
+      },
+      "wheel": {
+        "steps": {
+          "arcs": {
+            "title": "The coloured arcs are policy documents",
+            "body": "Each arc on the outer rim is one policy document (or one sector, depending on the view). Longer arcs contain more targets."
+          },
+          "ribbons": {
+            "title": "Ribbons connect documents",
+            "body": "Each ribbon links two documents whose targets were compared. Green shows pairs that support each other; the dashed red share shows pairs flagged as potential misalignments. Wider ribbons mean more compared pairs. These links are AI-estimated prompts for review, not verdicts."
+          },
+          "labels": {
+            "title": "Labels name each document",
+            "body": "A thin guide line points from each arc to its name. Clicking a label or its arc focuses the wheel on that document."
+          },
+          "docToggle": {
+            "title": "Choose which documents you see",
+            "body": "This colour key is also a filter: click a document to add it to or remove it from the picture. The colours match the arcs on the wheel."
+          }
+        }
+      },
+      "docMatrix": {
+        "steps": {
+          "grid": {
+            "title": "One cell per document pair",
+            "body": "Each cell compares the targets of its row document with its column document. Click a cell to open the details for that pair."
+          },
+          "diagonal": {
+            "title": "The diagonal stays blank",
+            "body": "Cells on the diagonal would compare a document with itself, so they are left empty."
+          },
+          "colours": {
+            "title": "Green and red show the balance",
+            "body": "Greener cells have a larger share of mutually supportive target pairs; redder cells have a larger share flagged as potential misalignments. These comparisons are AI-estimated starting points for review."
+          },
+          "intensity": {
+            "title": "Stronger colour, further from typical",
+            "body": "Colour strength shows how far a pair sits from the typical level across all the documents shown here. Pale cells are close to typical; deep colours are the outliers worth a closer look."
+          }
+        }
+      },
+      "financing": {
+        "steps": {
+          "source": {
+            "title": "What this budget data is",
+            "body": "This names the spending review the figures come from — the country, the period, and the budget lines it covers. Open the list to inspect every budget line."
+          },
+          "concentration": {
+            "title": "Where the money concentrates",
+            "body": "This breakdown shows how the reviewed spending is distributed across areas, next to how many policy targets sit in each. Areas that carry targets but no recorded budget are listed as well."
+          },
+          "execution": {
+            "title": "Planned versus actually spent",
+            "body": "This bar compares planned spending with what was actually spent, over the programme's own period — which can be wider than the review period above."
+          }
+        }
+      },
+      "deliveryRoster": {
+        "steps": {
+          "statusKey": {
+            "title": "The dots are reported actions",
+            "body": "Each dot is one action from the country's own report, coloured by its reported status — from planned (hollow) through to implemented (green)."
+          },
+          "rows": {
+            "title": "One row per institution",
+            "body": "Each row lists an institution the report names, with its actions shown as dots. Click a row to read those actions one by one."
+          },
+          "caveat": {
+            "title": "Read the counts with care",
+            "body": "An action that names several institutions counts once for each of them, so the numbers show involvement — not shares of the work, and never a ranking."
+          }
+        }
+      },
+      "institutionFlow": {
+        "steps": {
+          "institutions": {
+            "title": "Institutions on the left",
+            "body": "Each bar on the left is an institution the country's report names on reported actions. Taller bars carry more actions."
+          },
+          "ribbons": {
+            "title": "Ribbons show where effort lands",
+            "body": "Each ribbon connects an institution to a policy document its reported actions relate to. Wider ribbons mean more matched targets. These matches are AI-estimated and meant for review."
+          },
+          "documents": {
+            "title": "Documents on the right",
+            "body": "Each bar on the right is a policy document, in the same colour it has across the rest of the briefing."
+          },
+          "drilldown": {
+            "title": "Click a ribbon for the detail",
+            "body": "Selecting a ribbon lists the specific targets behind it, and each target opens the full explanation of the match."
+          }
+        }
+      },
+      "frictionTypes": {
+        "steps": {
+          "bar": {
+            "title": "One bar, split by kind of friction",
+            "body": "The bar splits all flagged target pairs by the kind of friction involved. Each segment's width is that kind's share; click a segment to see where it plays out."
+          },
+          "mechanisms": {
+            "title": "The three kinds, explained",
+            "body": "Each column names one kind of friction, with its share, its count, and a short description of what it means."
+          },
+          "total": {
+            "title": "The number behind the bar",
+            "body": "This is the total number of target pairs flagged for review as potential misalignments — the pairs the bar splits by kind."
+          }
+        }
+      },
+      "directionThemes": {
+        "steps": {
+          "columns": {
+            "title": "Two columns of recurring themes",
+            "body": "The left column groups themes where documents mostly support one another; the right column groups themes flagged as potential misalignments. The themes are AI-derived groupings of related target pairs."
+          },
+          "card": {
+            "title": "Each card is one theme",
+            "body": "A card shows the theme's name, a short description, and how many target pairs sit behind it under the current selection. The thin bar compares that count with the other themes in its column."
+          },
+          "interact": {
+            "title": "Explore a theme",
+            "body": "Click a card to open the detail with the pairs behind the theme. On larger screens, resting your pointer on a card previews the theme's documents on the wheel to the right."
+          }
+        }
+      },
+      "docFocus": {
+        "steps": {
+          "switcher": {
+            "title": "Pick a document to focus on",
+            "body": "These buttons switch the whole slide to one policy document. The headline, chart, and list below update to that document's relationships."
+          },
+          "chart": {
+            "title": "What kind of friction",
+            "body": "This bar splits the focused document's flagged target pairs by the kind of friction involved. Each segment's width is that kind's share; click a segment for the detail."
+          },
+          "pairs": {
+            "title": "The pairs worth reviewing",
+            "body": "Each row is one target pair flagged as a potential misalignment between the focused document and a peer document. Click a row for the full explanation. These flags are AI-estimated prompts for review, not verdicts."
+          }
+        }
+      },
+      "docPairs": {
+        "steps": {
+          "list": {
+            "title": "All document pairings, ranked",
+            "body": "Each row is one pair of documents, ranked by how many target pairs were compared between them, with a short AI-written note on what the pattern is about."
+          },
+          "balance": {
+            "title": "The green and red balance bar",
+            "body": "The bar's total length reflects how many target pairs were compared for the pairing; green is the share that support each other, red the share flagged as potential misalignments."
+          },
+          "sync": {
+            "title": "The list and the matrix move together",
+            "body": "On larger screens, resting your pointer on a row lights up the matching cell in the coherence matrix to the right — and hovering a cell lights its row here. Click either to open the pair's detail."
+          }
+        }
+      },
+      "sectors": {
+        "steps": {
+          "lenses": {
+            "title": "Choose a grouping",
+            "body": "These chips re-frame the table: group targets by a different sector classification, and choose whether to show supportive links, potential misalignments, or both."
+          },
+          "columns": {
+            "title": "Two measures per sector",
+            "body": "\"Targets\" counts how many targets fall in the sector; \"flagged share\" is the portion of its reviewed pairs flagged for review. Click either heading to sort by it."
+          },
+          "rows": {
+            "title": "One row per sector",
+            "body": "Each row is a sector with its two bars. Click a row to open the sector's detail; on larger screens, hovering highlights the sector on the wheel to the right."
+          },
+          "flagShare": {
+            "title": "Reading the flagged-share bar",
+            "body": "The red bar shows the share of reviewed target pairs flagged as potential misalignments. The small dark tick marks the average across all sectors shown, so you can see which sectors sit above or below it."
+          }
+        }
+      },
+      "whereToFocus": {
+        "steps": {
+          "bar": {
+            "title": "Most friction traces to a few targets",
+            "body": "Each coloured chunk is one target, sized by the flagged pairs it accounts for and coloured by its source document. The grey tail is every other target. Click a chunk to open that target's profile."
+          },
+          "legend": {
+            "title": "What the numbers mean",
+            "body": "This line states how many targets carry what share of all flagged pairs, and what the grey area stands for."
+          },
+          "list": {
+            "title": "The most contested targets",
+            "body": "Each row is one target with the number of flagged pairs it appears in, shown as a bar scaled to the top target. Click a row for the full profile. These counts come from AI-flagged pairs and are review prompts, not findings."
+          }
+        }
+      },
+      "implementationCoverage": {
+        "steps": {
+          "legend": {
+            "title": "Reading the dots",
+            "body": "Each dot is one target in a document: filled means at least one reported action was matched to it; hollow means none was. These matches are AI-estimated."
+          },
+          "dots": {
+            "title": "One map per document",
+            "body": "Every document lists its targets as dots in its own colour. Click a document to expand it and read the matched actions, the gaps, and the pairs to review."
+          },
+          "review": {
+            "title": "The red review lane",
+            "body": "A red bar and count appear when reported actions may pull against some of this document's targets. These are AI-estimated prompts for review, not findings."
+          }
+        }
+      }
+    },
     "explorer": {
       "title": "Explore the full data",
       "backToChat": "Back to chat"

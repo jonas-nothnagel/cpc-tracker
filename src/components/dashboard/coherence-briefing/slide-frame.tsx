@@ -27,6 +27,7 @@ export function SlideFrame({
   controls,
   evidence,
   disclosure,
+  tourButton,
 }: {
   id: string;
   eyebrow: string;
@@ -35,6 +36,8 @@ export function SlideFrame({
   controls?: ReactNode;
   evidence?: ReactNode;
   disclosure?: ReactNode;
+  /** Guided-tour trigger for the slide's evidence, shown beside the eyebrow. */
+  tourButton?: ReactNode;
 }) {
   return (
     <section
@@ -42,8 +45,9 @@ export function SlideFrame({
       className="scroll-mt-24 pt-2"
       aria-labelledby={`${id}-heading`}
     >
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2 flex items-center gap-2">
         {eyebrow}
+        {tourButton}
       </p>
       <h2
         id={`${id}-heading`}

@@ -82,7 +82,7 @@ export function DeliveryRoster({
         <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
           {t("roster.heading")}
         </p>
-        <ul className="space-y-2.5">
+        <ul className="space-y-2.5" data-tour="roster-rows">
           {shown.map((inst) => (
             <li key={inst.key}>
               <details className="group">
@@ -151,7 +151,10 @@ export function DeliveryRoster({
         )}
 
         {/* Status legend with counts. */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-[11px] text-[var(--undp-gray)]">
+        <div
+          className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-[11px] text-[var(--undp-gray)]"
+          data-tour="roster-status-key"
+        >
           {roster.statusMix.map((s) => {
             const style = statusStyle(s.status);
             return (
@@ -170,12 +173,14 @@ export function DeliveryRoster({
             );
           })}
         </div>
-        <p className="mt-2 text-[11px] italic text-[var(--undp-gray)]">
-          {t("roster.involvementNote")}
-        </p>
-        <p className="mt-1 text-[11px] italic text-[var(--undp-gray)]">
-          {t("statusNote")}
-        </p>
+        <div data-tour="roster-caveat">
+          <p className="mt-2 text-[11px] italic text-[var(--undp-gray)]">
+            {t("roster.involvementNote")}
+          </p>
+          <p className="mt-1 text-[11px] italic text-[var(--undp-gray)]">
+            {t("statusNote")}
+          </p>
+        </div>
       </div>
     </div>
   );

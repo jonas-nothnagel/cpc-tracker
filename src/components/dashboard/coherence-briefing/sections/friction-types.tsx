@@ -14,6 +14,7 @@
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
+import { TourButton } from "../tour/tour-button";
 import type { FrictionTypeTotals } from "@/lib/coherence-briefing";
 import { useContradictionTypeLabels } from "@/lib/labels";
 import type { AlignmentMechanism } from "@/types";
@@ -46,6 +47,9 @@ export function FrictionTypesSection({
       eyebrow={t("eyebrow")}
       headline={composeHeadline(totals, t)}
       body={composeBody(totals, labels, t)}
+      tourButton={
+        <TourButton tourId="frictionTypes" scopeId={FRICTION_TYPES_SECTION_ID} />
+      }
       evidence={
         <FrictionTypeChart totals={totals} onSegmentClick={onOpenType} />
       }
