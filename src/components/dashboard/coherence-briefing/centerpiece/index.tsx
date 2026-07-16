@@ -131,13 +131,13 @@ export function WheelLegend({
   const t = useTranslations("briefing.centerLegend");
   return (
     <div
-      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-[var(--undp-gray)] ${
+      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)] ${
         justify === "start" ? "justify-start" : "justify-center"
       }`}
     >
       <LegendDot color="#196127" label={t("legend.aligned")} />
       <LegendDot color="#dc2626" label={t("legend.potentialMis")} dashed />
-      <span className="text-[10px] text-[var(--undp-gray)]/70">
+      <span className="text-[11px] text-[var(--undp-gray)]/70">
         {t("legend.ribbonWidth")}
       </span>
     </div>
@@ -160,7 +160,8 @@ function LegendDot({
         className="inline-block w-4 h-[3px] rounded-full"
         style={{
           background: dashed
-            ? `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 7px)`
+            ? // 6/4 dash rhythm, matching the flagged ribbon core in wheel.tsx
+              `repeating-linear-gradient(90deg, ${color} 0 6px, transparent 6px 10px)`
             : color,
         }}
       />

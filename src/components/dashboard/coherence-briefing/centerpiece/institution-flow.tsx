@@ -224,7 +224,7 @@ export function InstitutionFlow({
   return (
     <div className="px-1 space-y-4">
       <div>
-        <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
           {t("header.eyebrow")}
         </p>
         <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">
@@ -392,7 +392,7 @@ export function InstitutionFlow({
               the shared drawer with the AI rationale. */}
           {selectedLink ? (
             <div className="border-t border-gray-200 pt-2.5" data-tour="flow-drilldown">
-              <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
                 {truncate(selectedInstLabel, 28)} ·{" "}
                 {getDocMediumLabel(countryConfig, selectedLink.doc)}{" "}
                 <span className="text-[var(--undp-gray)]/60">

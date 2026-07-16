@@ -95,7 +95,7 @@ export function ThemeBox({
       className="flex h-full w-full flex-col text-left rounded border border-gray-200 bg-white px-3.5 py-3 hover:border-gray-400 transition-colors"
     >
       <p
-        className="min-h-[2.75em] text-[13.5px] text-[var(--undp-black)] leading-snug overflow-hidden"
+        className="min-h-[2.75em] text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
         style={{
           fontFamily: HEADLINE_SERIF,
           display: "-webkit-box",
@@ -120,7 +120,7 @@ export function ThemeBox({
         <span className="text-[15px] font-semibold tabular-nums text-[var(--undp-black)]">
           {stats.liveCount.toLocaleString()}
         </span>
-        <span className="truncate text-[10.5px] text-[var(--undp-gray)]">
+        <span className="truncate text-[11px] text-[var(--undp-gray)]">
           {isReinforce
             ? t("boxAlignedLabel", { count: stats.liveCount })
             : t("boxMisalignedLabel", { count: stats.liveCount })}

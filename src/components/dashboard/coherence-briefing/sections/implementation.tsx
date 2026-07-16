@@ -82,7 +82,6 @@ export function ImplementationSection({
   return (
     <SlideFrame
       id={IMPLEMENTATION_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       tourButton={
@@ -303,7 +302,7 @@ function DocCoverageRow({
               </span>
               <span
                 aria-hidden="true"
-                className="text-[var(--undp-gray)]/50 text-[10px]"
+                className="text-[var(--undp-gray)]/50 text-[11px]"
               >
                 +
               </span>
@@ -464,7 +463,7 @@ function TargetGroup({
   return (
     <div>
       <p
-        className="text-[10px] uppercase tracking-[0.14em] mb-1"
+        className="text-[11px] uppercase tracking-[0.14em] mb-1"
         style={{ color: headingColor ?? "var(--undp-gray)" }}
       >
         {heading} <span className="text-[var(--undp-gray)]/60">· {count}</span>
@@ -599,7 +598,7 @@ function Nr7Note({
   const label = badgeLabels[status as keyof typeof badgeLabels] ?? status;
   return (
     <span
-      className="shrink-0 self-center text-[10px] leading-none"
+      className="shrink-0 self-center text-[11px] leading-none"
       style={{ color }}
       title={`${t("nr7.selfAssessment")} ${label}`}
     >

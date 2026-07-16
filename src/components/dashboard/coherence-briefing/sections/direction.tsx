@@ -132,7 +132,6 @@ export function DirectionSection({
   return (
     <SlideFrame
       id={DIRECTION_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={t(`verdict.${verdict.bucket}`)}
       body={synthesis}
       tourButton={
@@ -216,11 +215,11 @@ function RecurringThemesBlock({
           onSpotlightTheme={onSpotlightTheme}
         />
       </div>
-      <p className="text-[10.5px] text-[var(--undp-gray)] leading-relaxed">
+      <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
         {t("groups.countsLegend")}
       </p>
       {hiddenThemeCount > 0 && (
-        <p className="text-[10.5px] italic text-[var(--undp-gray)]">
+        <p className="text-[11px] italic text-[var(--undp-gray)]">
           {t("groups.hiddenForSelection", { count: hiddenThemeCount })}
         </p>
       )}
@@ -256,7 +255,7 @@ function ThemeColumn({
   return (
     <div>
       <p
-        className="mb-2 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] font-semibold"
+        className="mb-2 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] font-semibold"
         style={{ color: headerColor }}
       >
         <span
@@ -498,7 +497,7 @@ function AlignmentTermPopover({
               line={example}
               countryConfig={countryConfig}
             />
-            <p className="mt-3 text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+            <p className="mt-3 text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
               {t("clickToOpenPair")}
             </p>
           </div>,
@@ -551,9 +550,20 @@ function PrimerDisclosure({
         aria-expanded={!collapsed}
         aria-controls={id}
       >
-        <span aria-hidden="true" className="text-[10px]">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <svg
+          viewBox="0 0 12 12"
+          fill="none"
+          aria-hidden="true"
+          className={`h-2.5 w-2.5 transition-transform duration-200 ${collapsed ? "" : "rotate-90"}`}
+        >
+          <path
+            d="M4.5 2.5 8 6l-3.5 3.5"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
         {t("howPipelineBuilt")}
       </button>
       {!collapsed && (

@@ -241,7 +241,7 @@ export function FeedbackControl({
         aria-label={t("groupAria")}
         className="flex items-center gap-3 flex-wrap"
       >
-        <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)]">
+        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
           {t("prompt")}
         </p>
         <ThumbButton
@@ -325,7 +325,7 @@ export function FeedbackControl({
         </div>
       )}
 
-      <p className="mt-1.5 text-[10px] text-[var(--undp-gray)]">
+      <p className="mt-1.5 text-[11px] text-[var(--undp-gray)]">
         {t("anonNote")}
       </p>
       {failed && (

@@ -100,7 +100,7 @@ function BudgetObjectHeader({
   const t = useTranslations("briefing.financingCenter");
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
         {t("header.eyebrow")}
       </p>
       <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">
@@ -122,7 +122,7 @@ function BudgetObjectHeader({
           </span>
           <span
             aria-hidden="true"
-            className="text-[var(--undp-gray)]/50 text-[10px]"
+            className="text-[var(--undp-gray)]/50 text-[11px]"
           >
             {" "}
             +
@@ -177,7 +177,7 @@ function Concentration({
 
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
         {t("concentration.eyebrow", {
           amount: formatBerMoney(total, summary.unit, summary.currency),
           period: summary.periodLabel,
@@ -228,7 +228,7 @@ function Concentration({
                   {rest.length > 0 && (
                     <span
                       aria-hidden="true"
-                      className="text-[var(--undp-gray)]/60 text-[10px]"
+                      className="text-[var(--undp-gray)]/60 text-[11px]"
                     >
                       ({rest.length}) +
                     </span>
@@ -314,7 +314,7 @@ function OutcomeConcentration({
 
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
         {t("outcome.eyebrow", { amount })}
       </p>
 
@@ -342,7 +342,7 @@ function OutcomeConcentration({
       {/* Column headers — name the two number columns so a share and a target
           count are never read as the same quantity. */}
       <div
-        className={`${OUTCOME_COLS} text-[9.5px] uppercase tracking-[0.1em] text-[var(--undp-gray)] mb-1`}
+        className={`${OUTCOME_COLS} text-[11px] uppercase tracking-[0.1em] text-[var(--undp-gray)] mb-1`}
       >
         <span />
         <span className="text-right" title={t("outcome.shareCaveat")}>
@@ -440,7 +440,7 @@ function OutcomeRow({
         {hasSubs ? (
           <span
             aria-hidden="true"
-            className="w-3 shrink-0 text-[9px] text-[var(--undp-gray)]/60 transition-transform group-open:rotate-90"
+            className="w-3 shrink-0 text-[11px] text-[var(--undp-gray)]/60 transition-transform group-open:rotate-90"
           >
             ▸
           </span>
@@ -485,7 +485,7 @@ function OutcomeRow({
           {subs.map((s) => (
             <li key={s.id} className={`${OUTCOME_COLS} py-[2px] text-[11px]`}>
               <span className="flex items-center gap-1.5 min-w-0 pl-[18px]">
-                <span className="font-mono text-[9.5px] text-[var(--undp-gray)]/70 shrink-0">
+                <span className="font-mono text-[11px] text-[var(--undp-gray)]/70 shrink-0">
                   {s.id}
                 </span>
                 <span
@@ -498,7 +498,7 @@ function OutcomeRow({
               {s.hasBudget ? (
                 <ShareCell share={s.shareOfTotalBudget} maxShare={maxShare} dim />
               ) : (
-                <span className="text-right text-[10.5px] text-[var(--undp-gray)]/60">
+                <span className="text-right text-[11px] text-[var(--undp-gray)]/60">
                   {t("outcome.noBudget")}
                 </span>
               )}
@@ -571,7 +571,7 @@ function ExecutionBar({
   const widerThanReview = execution.period !== reviewPeriod;
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
         {programName
           ? t("execution.eyebrowNamed", {
               program: programName,
@@ -610,7 +610,7 @@ function ExecutionBar({
         )}
       </p>
       {widerThanReview && (
-        <p className="text-[10.5px] text-[var(--undp-gray)]/80 mt-1 leading-snug">
+        <p className="text-[11px] text-[var(--undp-gray)]/80 mt-1 leading-snug">
           {t("execution.scopeNote", {
             period: execution.period,
             reviewPeriod,

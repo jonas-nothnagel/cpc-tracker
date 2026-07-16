@@ -388,7 +388,7 @@
       "flaggedRelation": "POTENTIALLY MISALIGNED WITH"
     },
     "wheel": {
-      "wheelAria": "Policy coherence wheel",
+      "wheelAria": "Policy coherence wheel: aligned and potentially misaligned target pairs across national policy documents",
       "unclassified": "Unclassified",
       "arcTargetCount": "{count, plural, one {# target} other {# targets}}",
       "arcFrictionShare": "{pct}% of cross-document links potentially misaligned",

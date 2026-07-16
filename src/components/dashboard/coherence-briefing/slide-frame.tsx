@@ -21,7 +21,6 @@ const HEADLINE_SERIF =
 
 export function SlideFrame({
   id,
-  eyebrow,
   headline,
   body,
   controls,
@@ -30,13 +29,12 @@ export function SlideFrame({
   tourButton,
 }: {
   id: string;
-  eyebrow: string;
   headline: ReactNode;
   body?: ReactNode;
   controls?: ReactNode;
   evidence?: ReactNode;
   disclosure?: ReactNode;
-  /** Guided-tour trigger for the slide's evidence, shown beside the eyebrow. */
+  /** Guided-tour trigger for the slide's evidence, shown inline in the heading. */
   tourButton?: ReactNode;
 }) {
   return (
@@ -45,16 +43,18 @@ export function SlideFrame({
       className="scroll-mt-24 pt-2"
       aria-labelledby={`${id}-heading`}
     >
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--undp-gray)] mb-2 flex items-center gap-2">
-        {eyebrow}
-        {tourButton}
-      </p>
       <h2
         id={`${id}-heading`}
         className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-4"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
         {headline}
+        {/* Guided-tour trigger, inline in the heading like the InfoBox
+            convention elsewhere (the eyebrow row it used to live in was
+            removed in the density distill). */}
+        {tourButton && (
+          <span className="inline-flex align-middle ml-2.5">{tourButton}</span>
+        )}
       </h2>
       {body && (
         <p className="text-[15px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-4">

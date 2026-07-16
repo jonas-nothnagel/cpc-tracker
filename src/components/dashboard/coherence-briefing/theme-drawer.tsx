@@ -18,8 +18,9 @@
  * themes, the strongest alignments.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type RefObject } from "react";
 import { useTranslations } from "next-intl";
+import { useFocusTrap } from "@/components/ui/use-focus-trap";
 import {
   ALIGNMENT_COLORS,
   MECHANISM_COLORS,
@@ -154,6 +155,10 @@ export function ThemeDrawer({
     };
   }, [isOpen]);
 
+  // Shared across both render paths (main drawer and the AllStorylinesView
+  // branch); only one panel is ever mounted at a time, so a single ref is safe.
+  const panelRef = useFocusTrap<HTMLElement>(isOpen);
+
   const groups = useMemo<DocPairGroup[]>(() => {
     if (!theme) return [];
     const out: DocPairGroup[] = [];
@@ -225,6 +230,7 @@ export function ThemeDrawer({
         targetsById={targetsById}
         onPick={(s) => onOpenSingleTheme?.(s)}
         onClose={onClose}
+        panelRef={panelRef}
       />
     );
   }
@@ -245,6 +251,7 @@ export function ThemeDrawer({
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={t("dialogAria", { name: theme.name })}
@@ -306,13 +313,13 @@ export function ThemeDrawer({
                 ↳
               </span>
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
+                <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
                   {t("pathwayHeading")}
                 </p>
                 <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
                   {theme.pathway}
                 </p>
-                <p className="mt-1.5 text-[10px] text-[var(--undp-gray)] leading-relaxed">
+                <p className="mt-1.5 text-[11px] text-[var(--undp-gray)] leading-relaxed">
                   {t("pathwayCaveat")}
                 </p>
               </div>
@@ -321,7 +328,7 @@ export function ThemeDrawer({
 
           {profile.byDoc.length > 0 && (
             <section>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
                 {t("drivingDocs", {
                   docs: profile.byDoc.length,
                   total: totalDocCount,
@@ -361,7 +368,7 @@ export function ThemeDrawer({
 
           {profile.topTargets.length > 0 && (
             <section>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
                 {t("topTargets")}
               </p>
               <ol className="divide-y divide-gray-200 border-y border-gray-200">
@@ -411,14 +418,14 @@ export function ThemeDrawer({
 
           {profile.byTheme.length > 0 && (
             <section>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
                 {t("sectorsTouched")}
               </p>
               <ul className="flex flex-wrap gap-1.5">
                 {profile.byTheme.map((c) => (
                   <li
                     key={c.categoryId}
-                    className="text-[10.5px] px-2 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] tabular-nums"
+                    className="text-[11px] px-2 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] tabular-nums"
                   >
                     {c.categoryName}{" "}
                     <span className="text-[var(--undp-gray)]/70">
@@ -431,7 +438,7 @@ export function ThemeDrawer({
           )}
 
           <section>
-            <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+            <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
               {t("pairsInTheme")}
             </p>
             {groups.length === 0 || totalRecords === 0 ? (
@@ -453,7 +460,7 @@ export function ThemeDrawer({
             )}
           </section>
 
-          <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
+          <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
             {t("aiDisclaimer")}
           </p>
         </div>
@@ -523,7 +530,7 @@ function DocPairGroupBlock({
         >
           {labelA} ↔ {labelB}
         </p>
-        <p className="text-[10px] text-[var(--undp-gray)] tabular-nums">
+        <p className="text-[11px] text-[var(--undp-gray)] tabular-nums">
           {t("recordsCount", { count: group.records.length })}
         </p>
       </div>
@@ -586,7 +593,7 @@ function ExampleRow({
       >
         <div className="flex items-center gap-2 mb-1 flex-wrap">
           <span
-            className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -598,7 +605,7 @@ function ExampleRow({
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />
           )}
-          <span className="text-[10px] text-[var(--undp-gray)]">
+          <span className="text-[11px] text-[var(--undp-gray)]">
             {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
           </span>
         </div>
@@ -642,7 +649,7 @@ export function SubFieldChip({
     const c = MECHANISM_COLORS[value as AlignmentMechanism];
     return (
       <span
-        className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full border"
+        className="text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full border"
         style={{
           color: c,
           borderColor: `${c}55`,
@@ -659,7 +666,7 @@ export function SubFieldChip({
     // the old red "fundamental" treatment would re-introduce the judgy tone.
     return (
       <span
-        className="text-[9px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-full border"
+        className="text-[11px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-full border"
         style={{
           color: "#475569",
           borderColor: "#cbd5e1",
@@ -674,7 +681,7 @@ export function SubFieldChip({
   const low = value === "low";
   return (
     <span
-      className="text-[9px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-full"
+      className="text-[11px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-full"
       style={{
         color: low ? "#92400e" : "#475569",
         backgroundColor: low ? "#fffbeb" : "#f1f5f9",
@@ -726,7 +733,7 @@ export function FrictionDimensionChip({
   if (!label) return null;
   return (
     <span
-      className="text-[10px] px-1.5 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] whitespace-nowrap"
+      className="text-[11px] px-1.5 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] whitespace-nowrap"
       title={label}
     >
       {label}
@@ -770,12 +777,14 @@ function AllStorylinesView({
   targetsById,
   onPick,
   onClose,
+  panelRef,
 }: {
   storylines: CorpusStoryline[];
   alignment: AlignmentResult[];
   targetsById: Map<string, Target>;
   onPick: (s: CorpusStoryline) => void;
   onClose: () => void;
+  panelRef: RefObject<HTMLElement | null>;
 }) {
   const t = useTranslations("briefing.drawer.theme");
   const liveStats = useMemo(
@@ -800,6 +809,7 @@ function AllStorylinesView({
         className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
       />
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={t("all.dialogAria")}
@@ -853,7 +863,7 @@ function AllStorylinesView({
               onPick={onPick}
             />
           )}
-          <p className="text-[10px] text-[var(--undp-gray)] leading-relaxed">
+          <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
             {t("aiDisclaimer")}
           </p>
         </div>
@@ -885,7 +895,7 @@ function StorylineGroup({
   );
   return (
     <section>
-      <p className="text-[10px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
         {label}
       </p>
       <ul className="space-y-2">
@@ -908,12 +918,12 @@ function StorylineGroup({
                 />
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-[13.5px] text-[var(--undp-black)] leading-snug"
+                    className="text-[13px] text-[var(--undp-black)] leading-snug"
                     style={{ fontFamily: HEADLINE_SERIF }}
                   >
                     {s.name}
                   </p>
-                  <p className="mt-1 text-[10.5px] text-[var(--undp-gray)] tabular-nums">
+                  <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
                     {t("storylineMeta", {
                       docs: s.spans_documents.length,
                       pairs: liveCountOf(s),

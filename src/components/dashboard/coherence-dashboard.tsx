@@ -271,9 +271,25 @@ export function CoherenceDashboard({
       <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#fbfaf7" }}>
         <Header subtitle={t("loading.subtitle")} basePath={basePath} />
         <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
-          <div className="h-7 w-72 bg-gray-100 rounded animate-pulse mb-2" />
-          <div className="h-4 w-96 bg-gray-100 rounded animate-pulse mb-8" />
-          <div className="h-[520px] bg-gray-50 border border-gray-100 rounded-lg animate-pulse" />
+          <div className="h-8 w-72 bg-gray-100 rounded animate-pulse mb-3" />
+          <div className="h-4 w-96 bg-gray-100 rounded animate-pulse mb-10" />
+          {/* Skeleton mirrors the briefing layout: a finding + evidence column on
+              the left and the circular wheel on the right, so the wait previews
+              what is about to load rather than a blank block. */}
+          <div className="grid gap-8 lg:grid-cols-[1fr_480px]">
+            <div className="space-y-4">
+              <div className="h-7 w-full max-w-md bg-gray-100 rounded animate-pulse" />
+              <div className="h-4 w-full max-w-prose bg-gray-100 rounded animate-pulse" />
+              <div className="h-4 w-5/6 max-w-prose bg-gray-100 rounded animate-pulse" />
+              <div className="mt-6 space-y-3">
+                <div className="h-16 bg-gray-50 border border-gray-100 rounded-lg animate-pulse" />
+                <div className="h-16 bg-gray-50 border border-gray-100 rounded-lg animate-pulse" />
+              </div>
+            </div>
+            <div className="hidden lg:flex items-start justify-center">
+              <div className="w-[420px] h-[420px] rounded-full border border-gray-100 bg-gray-50 animate-pulse" />
+            </div>
+          </div>
         </main>
       </div>
     );

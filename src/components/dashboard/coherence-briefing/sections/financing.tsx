@@ -132,7 +132,6 @@ export function FinancingSection({
   return (
     <SlideFrame
       id={FINANCING_SECTION_ID}
-      eyebrow={t("eyebrow")}
       headline={sentence.headline}
       body={sentence.body}
       evidence={evidence}
@@ -222,7 +221,7 @@ function DocCoverageRow({
               </span>
               <span
                 aria-hidden="true"
-                className="text-[var(--undp-gray)]/50 text-[10px]"
+                className="text-[var(--undp-gray)]/50 text-[11px]"
               >
                 +
               </span>
@@ -263,7 +262,7 @@ function DocCoverageRow({
         <div className="mt-2.5 ml-3.5 space-y-3">
           {doc.links.length > 0 && (
             <div>
-              <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
                 {t("matchedHeading")}
               </p>
               <ul className="space-y-1 max-h-72 overflow-y-auto pr-1">
@@ -303,7 +302,7 @@ function DocCoverageRow({
           )}
           {doc.uncovered.length > 0 ? (
             <div>
-              <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
                 {t("unmatchedHeading")}
               </p>
               <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">

@@ -80,10 +80,14 @@ body {
   transform-origin: center center;
 }
 
-/* Prevent Recharts focus outline on chart click */
-.recharts-surface:focus {
-  outline: none;
-}
+/* Suppress the Recharts outline on mouse click, but keep a visible focus ring
+   for keyboard users (:focus-visible only fires for keyboard/programmatic focus). */
+.recharts-surface:focus,
 .recharts-wrapper:focus {
   outline: none;
+}
+.recharts-surface:focus-visible,
+.recharts-wrapper:focus-visible {
+  outline: 2px solid var(--undp-blue);
+  outline-offset: 2px;
 }

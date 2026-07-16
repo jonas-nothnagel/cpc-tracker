@@ -168,7 +168,7 @@ function SegmentTotal({
   return (
     <div>
       <p
-        className="text-[9.5px] uppercase tracking-wider font-semibold inline-flex items-center gap-1.5"
+        className="text-[11px] uppercase tracking-wider font-semibold inline-flex items-center gap-1.5"
         style={{ color }}
       >
         <span
@@ -184,7 +184,7 @@ function SegmentTotal({
           ({value.toLocaleString()})
         </span>
       </p>
-      <p className="text-[10px] text-[var(--undp-gray)] leading-snug mt-1">
+      <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-1">
         {descriptions[type]}
       </p>
     </div>
