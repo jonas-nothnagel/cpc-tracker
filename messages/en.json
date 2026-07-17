@@ -281,11 +281,7 @@
         "steps": {
           "switcher": {
             "title": "Pick a document to focus on",
-            "body": "These buttons switch the whole slide to one policy document. The headline, chart, and list below update to that document's relationships."
-          },
-          "chart": {
-            "title": "What kind of friction",
-            "body": "This bar splits the focused document's flagged target pairs by the kind of friction involved. Each segment's width is that kind's share; click a segment for the detail."
+            "body": "These buttons switch the whole slide to one policy document. The headline and the list below update to that document's relationships."
           },
           "pairs": {
             "title": "The pairs worth reviewing",

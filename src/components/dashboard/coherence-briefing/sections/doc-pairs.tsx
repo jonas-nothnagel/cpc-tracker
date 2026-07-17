@@ -90,14 +90,17 @@ export function DocPairsSection({
         (dp) => getDocPairKey(dp.doc_a, dp.doc_b) === focusedKey,
       )
     : -1;
-  const visible = showAll ? ranked : ranked.slice(0, VISIBLE_CAP);
+  // A handed-over row ranked below the cap force-expands the list for as long as
+  // it stays focused. Deriving this (rather than setting showAll from the effect)
+  // keeps the scroll effect free of setState, so it never cascades renders or
+  // fights the user's "Show fewer" click during the highlight window.
+  const expanded = showAll || focusedIdx >= VISIBLE_CAP;
+  const visible = expanded ? ranked : ranked.slice(0, VISIBLE_CAP);
 
-  // Side effect only: expand the list if the handed-over row is hidden, scroll
-  // it into view, then ask the host to clear its pending state after the
-  // highlight window so the ring fades on the next render.
+  // Side effect only: scroll the handed-over row into view, then ask the host to
+  // clear its pending state after the highlight window so the ring fades.
   useEffect(() => {
     if (!focusedKey) return;
-    if (focusedIdx >= VISIBLE_CAP) setShowAll(true);
     const el = rowRefs.current.get(focusedKey);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -106,7 +109,7 @@ export function DocPairsSection({
       onClearFocusedDocPair?.();
     }, HIGHLIGHT_MS);
     return () => window.clearTimeout(timer);
-  }, [focusedKey, focusedIdx, showAll, onClearFocusedDocPair]);
+  }, [focusedKey, onClearFocusedDocPair]);
 
   return (
     <SlideFrame
@@ -125,7 +128,7 @@ export function DocPairsSection({
           <DocPairRanking
             docPairs={visible}
             totalCount={ranked.length}
-            showAll={showAll}
+            showAll={expanded}
             onToggleShowAll={() => setShowAll((v) => !v)}
             maxTotal={maxTotal}
             countryConfig={countryConfig}

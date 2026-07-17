@@ -234,9 +234,16 @@ export const MECHANISM_COLORS: Record<ContradictionType, string> = {
 export const ALIGNED_COLOR = ALIGNMENT_COLORS.high;
 export const FLAGGED_COLOR = ALIGNMENT_COLORS.flagged;
 
-/** The same two hexes as RGB triples, for rgba() shading (e.g. the doc matrix). */
-export const ALIGNED_RGB: [number, number, number] = [25, 97, 39];
-export const FLAGGED_RGB: [number, number, number] = [220, 38, 38];
+/** Parse a `#rrggbb` hex string into an [r, g, b] triple. */
+function hexToRgb(hex: string): [number, number, number] {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+/** The same two hexes as RGB triples, for rgba() shading (e.g. the doc matrix).
+ *  Derived from the hexes above so the three surfaces cannot drift apart. */
+export const ALIGNED_RGB: [number, number, number] = hexToRgb(ALIGNED_COLOR);
+export const FLAGGED_RGB: [number, number, number] = hexToRgb(FLAGGED_COLOR);
 
 /** Reserved BTR document colors, shared by badges that split mitigation/adaptation. */
 export const BTR_MITIGATION_COLOR = RESERVED_DOC_TYPES.BTR.color;

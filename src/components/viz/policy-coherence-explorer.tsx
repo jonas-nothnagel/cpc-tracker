@@ -3963,8 +3963,9 @@ export function PolicyCoherenceExplorer({
   // active/connected rings (r + 5 / r + 3) and the group indicator dot stable.
   const NODE_RADIUS = 4.5;
 
-  // Target search, extracted so the workbench can place it in the top controls
-  // row (a primary control) while the standalone variants keep it in Row 2.
+  // Target search for the standalone/embed variants (rendered in Row 2 of the
+  // controls). The workbench variant returns its own layout before this and does
+  // not surface search.
   const targetSearch = (
     <div className="relative">
       <input

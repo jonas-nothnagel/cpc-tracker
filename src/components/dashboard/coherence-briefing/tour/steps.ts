@@ -76,7 +76,6 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
   ],
   docFocus: [
     { id: "switcher", target: "doc-switcher", placement: "bottom" },
-    { id: "chart", target: "friction-bar", placement: "bottom" },
     { id: "pairs", target: "flagged-pairs", placement: "top" },
   ],
   docPairs: [

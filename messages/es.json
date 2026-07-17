@@ -281,11 +281,7 @@
         "steps": {
           "switcher": {
             "title": "Elija un documento para enfocar",
-            "body": "Estos botones cambian toda la diapositiva a un documento de política. El titular, el gráfico y la lista de abajo se actualizan a las relaciones de ese documento."
-          },
-          "chart": {
-            "title": "Qué tipo de fricción",
-            "body": "Esta barra divide los pares de objetivos señalados del documento enfocado según el tipo de fricción. El ancho de cada segmento es la proporción de ese tipo; haga clic en un segmento para ver el detalle."
+            "body": "Estos botones cambian toda la diapositiva a un documento de política. El titular y la lista de abajo se actualizan a las relaciones de ese documento."
           },
           "pairs": {
             "title": "Los pares que conviene revisar",
